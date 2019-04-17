@@ -9,14 +9,14 @@ namespace System.ServiceModel.Channels
     {
         internal NamedPipeSettings()
         {
-            this.ApplicationContainerSettings = new ApplicationContainerSettings();
+            ApplicationContainerSettings = new ApplicationContainerSettings();
         }
 
         private NamedPipeSettings(NamedPipeSettings elementToBeCloned)
         {
             if (elementToBeCloned.ApplicationContainerSettings != null)
             {
-                this.ApplicationContainerSettings = elementToBeCloned.ApplicationContainerSettings.Clone();
+                ApplicationContainerSettings = elementToBeCloned.ApplicationContainerSettings.Clone();
             }
         }
 
@@ -38,7 +38,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (!this.ApplicationContainerSettings.IsMatch(pipeSettings.ApplicationContainerSettings))
+            if (!ApplicationContainerSettings.IsMatch(pipeSettings.ApplicationContainerSettings))
             {
                 return false;
             }

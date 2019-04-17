@@ -34,7 +34,10 @@ namespace System.ServiceModel
             {
                 // Throw exception if there was a failure calling EndOpen in the callback (skips remaining items)
                 if (_exception != null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(_exception);
+                }
+
                 CallbackState callbackState = new CallbackState(this, collection[index]);
                 IAsyncResult result = collection[index].BeginOpen(_timeoutHelper.RemainingTime(), s_nestedCallback, callbackState);
                 if (result.CompletedSynchronously)
@@ -48,18 +51,22 @@ namespace System.ServiceModel
         private static void Callback(IAsyncResult result)
         {
             if (result.CompletedSynchronously)
+            {
                 return;
+            }
+
             CallbackState callbackState = (CallbackState)result.AsyncState;
             try
             {
                 callbackState.Instance.EndOpen(result);
                 callbackState.Result.Decrement(false);
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
+                {
                     throw;
+                }
 
                 callbackState.Result.Decrement(false, e);
             }
@@ -68,20 +75,27 @@ namespace System.ServiceModel
         private void Decrement(bool completedSynchronously)
         {
             if (completedSynchronously == false)
+            {
                 _completedSynchronously = false;
+            }
+
             if (Interlocked.Decrement(ref _count) == 0)
             {
                 if (_exception != null)
+                {
                     Complete(_completedSynchronously, _exception);
+                }
                 else
+                {
                     Complete(_completedSynchronously);
+                }
             }
         }
 
         private void Decrement(bool completedSynchronously, Exception exception)
         {
             _exception = exception;
-            this.Decrement(completedSynchronously);
+            Decrement(completedSynchronously);
         }
 
         public static void End(IAsyncResult result)
@@ -91,19 +105,15 @@ namespace System.ServiceModel
 
         internal class CallbackState
         {
-            private ICommunicationObject _instance;
             private OpenCollectionAsyncResult _result;
 
             public CallbackState(OpenCollectionAsyncResult result, ICommunicationObject instance)
             {
                 _result = result;
-                _instance = instance;
+                Instance = instance;
             }
 
-            public ICommunicationObject Instance
-            {
-                get { return _instance; }
-            }
+            public ICommunicationObject Instance { get; }
 
             public OpenCollectionAsyncResult Result
             {

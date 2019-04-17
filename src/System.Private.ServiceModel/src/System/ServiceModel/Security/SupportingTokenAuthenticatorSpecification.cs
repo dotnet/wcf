@@ -10,10 +10,6 @@ namespace System.ServiceModel.Security
 {
     internal class SupportingTokenAuthenticatorSpecification
     {
-        private SecurityTokenAttachmentMode _tokenAttachmentMode;
-        private SecurityTokenAuthenticator _tokenAuthenticator;
-        private SecurityTokenResolver _tokenResolver;
-        private SecurityTokenParameters _tokenParameters;
         private bool _isTokenOptional;
 
         public SupportingTokenAuthenticatorSpecification(SecurityTokenAuthenticator tokenAuthenticator, SecurityTokenResolver securityTokenResolver, SecurityTokenAttachmentMode attachmentMode, SecurityTokenParameters tokenParameters)
@@ -23,43 +19,21 @@ namespace System.ServiceModel.Security
 
         internal SupportingTokenAuthenticatorSpecification(SecurityTokenAuthenticator tokenAuthenticator, SecurityTokenResolver securityTokenResolver, SecurityTokenAttachmentMode attachmentMode, SecurityTokenParameters tokenParameters, bool isTokenOptional)
         {
-            if (tokenAuthenticator == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenAuthenticator");
-            }
-
             SecurityTokenAttachmentModeHelper.Validate(attachmentMode);
-
-            if (tokenParameters == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenParameters");
-            }
-            _tokenAuthenticator = tokenAuthenticator;
-            _tokenResolver = securityTokenResolver;
-            _tokenAttachmentMode = attachmentMode;
-            _tokenParameters = tokenParameters;
+            TokenAuthenticator = tokenAuthenticator ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenAuthenticator));
+            TokenResolver = securityTokenResolver;
+            SecurityTokenAttachmentMode = attachmentMode;
+            TokenParameters = tokenParameters ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenParameters));
             _isTokenOptional = isTokenOptional;
         }
 
-        public SecurityTokenAuthenticator TokenAuthenticator
-        {
-            get { return _tokenAuthenticator; }
-        }
+        public SecurityTokenAuthenticator TokenAuthenticator { get; }
 
-        public SecurityTokenResolver TokenResolver
-        {
-            get { return _tokenResolver; }
-        }
+        public SecurityTokenResolver TokenResolver { get; }
 
-        public SecurityTokenAttachmentMode SecurityTokenAttachmentMode
-        {
-            get { return _tokenAttachmentMode; }
-        }
+        public SecurityTokenAttachmentMode SecurityTokenAttachmentMode { get; }
 
-        public SecurityTokenParameters TokenParameters
-        {
-            get { return _tokenParameters; }
-        }
+        public SecurityTokenParameters TokenParameters { get; }
 
         internal bool IsTokenOptional
         {

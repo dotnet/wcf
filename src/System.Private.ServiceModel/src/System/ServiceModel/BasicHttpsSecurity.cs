@@ -11,7 +11,6 @@ namespace System.ServiceModel
     public sealed class BasicHttpsSecurity
     {
         internal const BasicHttpsSecurityMode DefaultMode = BasicHttpsSecurityMode.Transport;
-        private BasicHttpSecurity _basicHttpSecurity;
 
         public BasicHttpsSecurity()
             : this(DefaultMode, new HttpTransportSecurity())
@@ -22,11 +21,11 @@ namespace System.ServiceModel
         {
             if (!BasicHttpsSecurityModeHelper.IsDefined(mode))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("mode"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(mode)));
             }
             HttpTransportSecurity httpTransportSecurity = transportSecurity == null ? new HttpTransportSecurity() : transportSecurity;
             BasicHttpSecurityMode basicHttpSecurityMode = BasicHttpsSecurityModeHelper.ToBasicHttpSecurityMode(mode);
-            _basicHttpSecurity = new BasicHttpSecurity()
+            BasicHttpSecurity = new BasicHttpSecurity()
             {
                 Mode = basicHttpSecurityMode,
                 Transport = httpTransportSecurity
@@ -37,17 +36,17 @@ namespace System.ServiceModel
         {
             get
             {
-                return BasicHttpsSecurityModeHelper.ToBasicHttpsSecurityMode(_basicHttpSecurity.Mode);
+                return BasicHttpsSecurityModeHelper.ToBasicHttpsSecurityMode(BasicHttpSecurity.Mode);
             }
 
             set
             {
                 if (!BasicHttpsSecurityModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
-                _basicHttpSecurity.Mode = BasicHttpsSecurityModeHelper.ToBasicHttpSecurityMode(value);
+                BasicHttpSecurity.Mode = BasicHttpsSecurityModeHelper.ToBasicHttpSecurityMode(value);
             }
         }
 
@@ -55,22 +54,16 @@ namespace System.ServiceModel
         {
             get
             {
-                return _basicHttpSecurity.Transport;
+                return BasicHttpSecurity.Transport;
             }
 
             set
             {
-                _basicHttpSecurity.Transport = value;
+                BasicHttpSecurity.Transport = value;
             }
         }
 
-        internal BasicHttpSecurity BasicHttpSecurity
-        {
-            get
-            {
-                return _basicHttpSecurity;
-            }
-        }
+        internal BasicHttpSecurity BasicHttpSecurity { get; }
 
         internal static BasicHttpSecurity ToBasicHttpSecurity(BasicHttpsSecurity basicHttpsSecurity)
         {
@@ -110,22 +103,22 @@ namespace System.ServiceModel
 
         internal void EnableTransportSecurity(HttpsTransportBindingElement https)
         {
-            _basicHttpSecurity.EnableTransportSecurity(https);
+            BasicHttpSecurity.EnableTransportSecurity(https);
         }
 
         internal void EnableTransportAuthentication(HttpTransportBindingElement http)
         {
-            _basicHttpSecurity.EnableTransportAuthentication(http);
+            BasicHttpSecurity.EnableTransportAuthentication(http);
         }
 
         internal void DisableTransportAuthentication(HttpTransportBindingElement http)
         {
-            _basicHttpSecurity.DisableTransportAuthentication(http);
+            BasicHttpSecurity.DisableTransportAuthentication(http);
         }
 
         internal SecurityBindingElement CreateMessageSecurity()
         {
-            return _basicHttpSecurity.CreateMessageSecurity();
+            return BasicHttpSecurity.CreateMessageSecurity();
         }
     }
 }

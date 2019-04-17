@@ -40,17 +40,26 @@ namespace System.ServiceModel
         public bool TryLookup(string key, out XmlDictionaryString value)
         {
             if (key == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("key"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(key)));
+            }
+
             if (_dictionary == null)
             {
                 Dictionary<string, int> dictionary = new Dictionary<string, int>(_count);
                 for (int i = 0; i < _count; i++)
+                {
                     dictionary.Add(_strings[i], i);
+                }
+
                 _dictionary = dictionary;
             }
             int id;
             if (_dictionary.TryGetValue(key, out id))
+            {
                 return TryLookup(id, out value);
+            }
+
             value = null;
             return false;
         }
@@ -67,7 +76,10 @@ namespace System.ServiceModel
             if (key < keyThreshold)
             {
                 if (_dictionaryStrings1 == null)
+                {
                     _dictionaryStrings1 = new XmlDictionaryString[keyThreshold];
+                }
+
                 s = _dictionaryStrings1[key];
                 if (s == null)
                 {
@@ -78,7 +90,10 @@ namespace System.ServiceModel
             else
             {
                 if (_dictionaryStrings2 == null)
+                {
                     _dictionaryStrings2 = new XmlDictionaryString[_count - keyThreshold];
+                }
+
                 s = _dictionaryStrings2[key - keyThreshold];
                 if (s == null)
                 {
@@ -93,7 +108,10 @@ namespace System.ServiceModel
         public bool TryLookup(XmlDictionaryString key, out XmlDictionaryString value)
         {
             if (key == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("key"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(key)));
+            }
+
             if (key.Dictionary == this)
             {
                 value = key;
@@ -102,7 +120,10 @@ namespace System.ServiceModel
             if (key.Dictionary == CurrentVersion)
             {
                 if (_versionedDictionaryStrings == null)
+                {
                     _versionedDictionaryStrings = new XmlDictionaryString[CurrentVersion._count];
+                }
+
                 XmlDictionaryString s = _versionedDictionaryStrings[key.Key];
                 if (s == null)
                 {

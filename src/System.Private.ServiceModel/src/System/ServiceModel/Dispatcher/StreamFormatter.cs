@@ -16,9 +16,6 @@ namespace System.ServiceModel.Dispatcher
 {
     internal class StreamFormatter
     {
-        private string _wrapperName;
-        private string _wrapperNS;
-        private string _partName;
         private string _partNS;
         private int _streamIndex;
         private bool _isRequest;
@@ -29,19 +26,27 @@ namespace System.ServiceModel.Dispatcher
         {
             MessagePartDescription streamPart = ValidateAndGetStreamPart(messageDescription, isRequest, operationName);
             if (streamPart == null)
+            {
                 return null;
+            }
+
             return new StreamFormatter(messageDescription, streamPart, operationName, isRequest);
         }
 
         private StreamFormatter(MessageDescription messageDescription, MessagePartDescription streamPart, string operationName, bool isRequest)
         {
             if ((object)streamPart == (object)messageDescription.Body.ReturnValue)
+            {
                 _streamIndex = returnValueIndex;
+            }
             else
+            {
                 _streamIndex = streamPart.Index;
-            _wrapperName = messageDescription.Body.WrapperName;
-            _wrapperNS = messageDescription.Body.WrapperNamespace;
-            _partName = streamPart.Name;
+            }
+
+            WrapperName = messageDescription.Body.WrapperName;
+            WrapperNamespace = messageDescription.Body.WrapperNamespace;
+            PartName = streamPart.Name;
             _partNS = streamPart.Namespace;
             _isRequest = isRequest;
             _operationName = operationName;
@@ -67,9 +72,15 @@ namespace System.ServiceModel.Dispatcher
         {
             Stream streamValue = GetStreamValue(parameters, returnValue);
             if (streamValue == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(PartName);
+            }
+
             if (WrapperName != null)
+            {
                 writer.WriteStartElement(WrapperName, WrapperNamespace);
+            }
+
             writer.WriteStartElement(PartName, PartNamespace);
             return streamValue;
         }
@@ -78,9 +89,15 @@ namespace System.ServiceModel.Dispatcher
         {
             Stream streamValue = GetStreamValue(parameters, returnValue);
             if (streamValue == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(PartName);
+            }
+
             if (WrapperName != null)
+            {
                 await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace);
+            }
+
             await writer.WriteStartElementAsync(null, PartName, PartNamespace);
             return streamValue;
         }
@@ -88,15 +105,20 @@ namespace System.ServiceModel.Dispatcher
         private void WriteEndWrapperIfNecessary(XmlDictionaryWriter writer)
         {
             writer.WriteEndElement();
-            if (_wrapperName != null)
+            if (WrapperName != null)
+            {
                 writer.WriteEndElement();
+            }
         }
 
         private Task WriteEndWrapperIfNecessaryAsync(XmlDictionaryWriter writer)
         {
             writer.WriteEndElement();
-            if (_wrapperName != null)
+            if (WrapperName != null)
+            {
                 writer.WriteEndElement();
+            }
+
             return Task.CompletedTask;
         }
 
@@ -147,22 +169,11 @@ namespace System.ServiceModel.Dispatcher
             SetStreamValue(parameters, ref retVal, new MessageBodyStream(message, WrapperName, WrapperNamespace, PartName, PartNamespace, _isRequest));
         }
 
-        internal string WrapperName
-        {
-            get { return _wrapperName; }
-            set { _wrapperName = value; }
-        }
+        internal string WrapperName { get; set; }
 
-        internal string WrapperNamespace
-        {
-            get { return _wrapperNS; }
-            set { _wrapperNS = value; }
-        }
+        internal string WrapperNamespace { get; set; }
 
-        internal string PartName
-        {
-            get { return _partName; }
-        }
+        internal string PartName { get; }
 
         internal string PartNamespace
         {
@@ -173,31 +184,47 @@ namespace System.ServiceModel.Dispatcher
         private Stream GetStreamValue(object[] parameters, object returnValue)
         {
             if (_streamIndex == returnValueIndex)
+            {
                 return (Stream)returnValue;
+            }
+
             return (Stream)parameters[_streamIndex];
         }
 
         private void SetStreamValue(object[] parameters, ref object returnValue, Stream streamValue)
         {
             if (_streamIndex == returnValueIndex)
+            {
                 returnValue = streamValue;
+            }
             else
+            {
                 parameters[_streamIndex] = streamValue;
+            }
         }
 
         private static MessagePartDescription ValidateAndGetStreamPart(MessageDescription messageDescription, bool isRequest, string operationName)
         {
             MessagePartDescription part = GetStreamPart(messageDescription);
             if (part != null)
+            {
                 return part;
+            }
+
             if (HasStream(messageDescription))
             {
                 if (messageDescription.IsTypedMessage)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidStreamInTypedMessage, messageDescription.MessageName)));
+                }
                 else if (isRequest)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidStreamInRequest, operationName)));
+                }
                 else
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidStreamInResponse, operationName)));
+                }
             }
             return null;
         }
@@ -205,11 +232,16 @@ namespace System.ServiceModel.Dispatcher
         private static bool HasStream(MessageDescription messageDescription)
         {
             if (messageDescription.Body.ReturnValue != null && messageDescription.Body.ReturnValue.Type == typeof(Stream))
+            {
                 return true;
+            }
+
             foreach (MessagePartDescription part in messageDescription.Body.Parts)
             {
                 if (part.Type == typeof(Stream))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -219,14 +251,22 @@ namespace System.ServiceModel.Dispatcher
             if (OperationFormatter.IsValidReturnValue(messageDescription.Body.ReturnValue))
             {
                 if (messageDescription.Body.Parts.Count == 0)
+                {
                     if (messageDescription.Body.ReturnValue.Type == typeof(Stream))
+                    {
                         return messageDescription.Body.ReturnValue;
+                    }
+                }
             }
             else
             {
                 if (messageDescription.Body.Parts.Count == 1)
+                {
                     if (messageDescription.Body.Parts[0].Type == typeof(Stream))
+                    {
                         return messageDescription.Body.Parts[0];
+                    }
+                }
             }
             return null;
         }
@@ -283,15 +323,26 @@ namespace System.ServiceModel.Dispatcher
             {
                 EnsureStreamIsOpen();
                 if (buffer == null)
-                    throw TraceUtility.ThrowHelperError(new ArgumentNullException("buffer"), _message);
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentNullException(nameof(buffer)), _message);
+                }
+
                 if (offset < 0)
-                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", offset,
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(offset), offset,
                                                     SR.Format(SR.ValueMustBeNonNegative)), _message);
+                }
+
                 if (count < 0)
-                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", count,
+                {
+                    throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(count), count,
                                                     SR.Format(SR.ValueMustBeNonNegative)), _message);
+                }
+
                 if (buffer.Length - offset < count)
+                {
                     throw TraceUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.SFxInvalidStreamOffsetLength, offset + count)), _message);
+                }
 
                 try
                 {
@@ -327,7 +378,10 @@ namespace System.ServiceModel.Dispatcher
                 catch (Exception ex)
                 {
                     if (Fx.IsFatal(ex))
+                    {
                         throw;
+                    }
+
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new IOException(SR.Format(SR.SFxStreamIOException), ex));
                 }
             }
@@ -335,8 +389,10 @@ namespace System.ServiceModel.Dispatcher
             private void EnsureStreamIsOpen()
             {
                 if (_message.State == MessageState.Closed)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(SR.Format(
                         _isRequest ? SR.SFxStreamRequestMessageClosed : SR.SFxStreamResponseMessageClosed)));
+                }
             }
 
             private static void Exhaust(XmlDictionaryReader reader)
@@ -412,7 +468,9 @@ namespace System.ServiceModel.Dispatcher
             public static void WriteValue(XmlDictionaryWriter writer, OperationStreamProvider value)
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
+                }
 
                 Stream stream = value.GetStream();
                 if (stream == null)
@@ -448,7 +506,9 @@ namespace System.ServiceModel.Dispatcher
             public static async Task WriteValueAsync(XmlDictionaryWriter writer, OperationStreamProvider value)
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
+                }
 
                 Stream stream = value.GetStream();
                 if (stream == null)

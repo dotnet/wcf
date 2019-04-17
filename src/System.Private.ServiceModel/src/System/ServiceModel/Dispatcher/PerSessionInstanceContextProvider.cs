@@ -25,7 +25,7 @@ namespace System.ServiceModel.Dispatcher
             //  5. If the channel is sessionful then its bound to the InstanceContext.
             //  6. Bind channel to the InstanceContext.
             //  7. For all further requests on the same channel, we will return ServiceChannel.InstanceContext which will be non null.
-            ServiceChannel serviceChannel = this.GetServiceChannelFromProxy(channel);
+            ServiceChannel serviceChannel = GetServiceChannelFromProxy(channel);
             Contract.Assert((serviceChannel != null), "System.ServiceModel.Dispatcher.PerSessionInstanceContextProvider.GetExistingInstanceContext(), serviceChannel != null");
             return (serviceChannel != null) ? serviceChannel.InstanceContext : null;
         }

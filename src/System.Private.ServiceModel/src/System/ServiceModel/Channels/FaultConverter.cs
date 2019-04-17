@@ -21,20 +21,20 @@ namespace System.ServiceModel.Channels
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
             if (fault == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("fault");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(fault));
             }
 
-            bool created = this.OnTryCreateException(message, fault, out exception);
+            bool created = OnTryCreateException(message, fault, out exception);
 
             if (created)
             {
                 if (exception == null)
                 {
-                    string text = SR.Format(SR.FaultConverterDidNotCreateException, this.GetType().Name);
+                    string text = SR.Format(SR.FaultConverterDidNotCreateException, GetType().Name);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }
@@ -43,7 +43,7 @@ namespace System.ServiceModel.Channels
             {
                 if (exception != null)
                 {
-                    string text = SR.Format(SR.FaultConverterCreatedException, this.GetType().Name);
+                    string text = SR.Format(SR.FaultConverterCreatedException, GetType().Name);
                     Exception error = new InvalidOperationException(text, exception);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }
@@ -54,13 +54,13 @@ namespace System.ServiceModel.Channels
 
         public bool TryCreateFaultMessage(Exception exception, out Message message)
         {
-            bool created = this.OnTryCreateFaultMessage(exception, out message);
+            bool created = OnTryCreateFaultMessage(exception, out message);
 
             if (created)
             {
                 if (message == null)
                 {
-                    string text = SR.Format(SR.FaultConverterDidNotCreateFaultMessage, this.GetType().Name);
+                    string text = SR.Format(SR.FaultConverterDidNotCreateFaultMessage, GetType().Name);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }
@@ -69,7 +69,7 @@ namespace System.ServiceModel.Channels
             {
                 if (message != null)
                 {
-                    string text = SR.Format(SR.FaultConverterCreatedFaultMessage, this.GetType().Name);
+                    string text = SR.Format(SR.FaultConverterCreatedFaultMessage, GetType().Name);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }

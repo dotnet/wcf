@@ -6,7 +6,6 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Runtime;
-using System.Runtime.InteropServices;
 using System.ServiceModel.Security;
 using System.ServiceModel.Channels.ConnectionHelpers;
 using System.Threading.Tasks;
@@ -16,7 +15,6 @@ namespace System.ServiceModel.Channels
     internal abstract class FramingDuplexSessionChannel : TransportDuplexSessionChannel
     {
         private static EndpointAddress s_anonymousEndpointAddress = new EndpointAddress(EndpointAddress.AnonymousUri, new AddressHeader[0]);
-        private IConnection _connection;
         private bool _exposeConnectionProperty;
 
         private FramingDuplexSessionChannel(ChannelManagerBase manager, IConnectionOrientedTransportFactorySettings settings,
@@ -31,20 +29,10 @@ namespace System.ServiceModel.Channels
             : this(factory, settings, s_anonymousEndpointAddress, settings.MessageVersion.Addressing == AddressingVersion.None ? null : new Uri("http://www.w3.org/2005/08/addressing/anonymous"),
             remoteAddress, via, exposeConnectionProperty)
         {
-            this.Session = FramingConnectionDuplexSession.CreateSession(this, settings.Upgrade);
+            Session = FramingConnectionDuplexSession.CreateSession(this, settings.Upgrade);
         }
 
-        protected IConnection Connection
-        {
-            get
-            {
-                return _connection;
-            }
-            set
-            {
-                _connection = value;
-            }
-        }
+        protected IConnection Connection { get; set; }
 
         protected override bool IsStreamedOutput
         {
@@ -63,14 +51,14 @@ namespace System.ServiceModel.Channels
 
         protected override void CompleteClose(TimeSpan timeout)
         {
-            this.ReturnConnectionIfNecessary(false, timeout);
+            ReturnConnectionIfNecessary(false, timeout);
         }
 
         protected override void PrepareMessage(Message message)
         {
             if (_exposeConnectionProperty)
             {
-                message.Properties[ConnectionMessageProperty.Name] = _connection;
+                message.Properties[ConnectionMessageProperty.Name] = Connection;
             }
             base.PrepareMessage(message);
         }
@@ -81,26 +69,26 @@ namespace System.ServiceModel.Channels
             ArraySegment<byte> messageData;
 
             allowOutputBatching = message.Properties.AllowOutputBatching;
-            messageData = this.EncodeMessage(message);
+            messageData = EncodeMessage(message);
 
-            this.Connection.Write(messageData.Array, messageData.Offset, messageData.Count, !allowOutputBatching,
-                timeout, this.BufferManager);
+            Connection.Write(messageData.Array, messageData.Offset, messageData.Count, !allowOutputBatching,
+                timeout, BufferManager);
         }
 
         protected override AsyncCompletionResult BeginCloseOutput(TimeSpan timeout, Action<object> callback, object state)
         {
-            return this.Connection.BeginWrite(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length,
+            return Connection.BeginWrite(SessionEncoder.EndBytes, 0, SessionEncoder.EndBytes.Length,
                     true, timeout, callback, state);
         }
 
         protected override void FinishWritingMessage()
         {
-            this.Connection.EndWrite();
+            Connection.EndWrite();
         }
 
         protected override AsyncCompletionResult StartWritingBufferedMessage(Message message, ArraySegment<byte> messageData, bool allowOutputBatching, TimeSpan timeout, Action<object> callback, object state)
         {
-            return this.Connection.BeginWrite(messageData.Array, messageData.Offset, messageData.Count,
+            return Connection.BeginWrite(messageData.Array, messageData.Offset, messageData.Count,
                     !allowOutputBatching, timeout, callback, state);
         }
 
@@ -113,7 +101,7 @@ namespace System.ServiceModel.Channels
         protected override ArraySegment<byte> EncodeMessage(Message message)
         {
             ArraySegment<byte> messageData = MessageEncoder.WriteMessage(message,
-                int.MaxValue, this.BufferManager, SessionEncoder.MaxMessageFrameSize);
+                int.MaxValue, BufferManager, SessionEncoder.MaxMessageFrameSize);
 
             messageData = SessionEncoder.EncodeMessageFrame(messageData);
 
@@ -156,7 +144,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (_remoteIdentity == null)
                         {
-                            SecurityMessageProperty security = this.Channel.RemoteSecurity;
+                            SecurityMessageProperty security = Channel.RemoteSecurity;
                             if (security != null && security.ServiceSecurityContext != null &&
                                 security.ServiceSecurityContext.IdentityClaim != null &&
                                 security.ServiceSecurityContext.PrimaryIdentity != null)
@@ -187,7 +175,7 @@ namespace System.ServiceModel.Channels
             : base(factory, settings, remoteAddress, via, exposeConnectionProperty)
         {
             _settings = settings;
-            this.MessageEncoder = settings.MessageEncoderFactory.CreateSessionEncoder();
+            MessageEncoder = settings.MessageEncoderFactory.CreateSessionEncoder();
             _upgrade = settings.Upgrade;
             _flowIdentity = flowIdentity;
             _connectionPoolHelper = new DuplexConnectionPoolHelper(this, connectionPool, connectionInitiator);
@@ -195,8 +183,8 @@ namespace System.ServiceModel.Channels
 
         private ArraySegment<byte> CreatePreamble()
         {
-            EncodedVia encodedVia = new EncodedVia(this.Via.AbsoluteUri);
-            EncodedContentType encodedContentType = EncodedContentType.Create(this.MessageEncoder.ContentType);
+            EncodedVia encodedVia = new EncodedVia(Via.AbsoluteUri);
+            EncodedContentType encodedContentType = EncodedContentType.Create(MessageEncoder.ContentType);
 
             // calculate preamble length
             int startSize = ClientDuplexEncoder.ModeBytes.Length + SessionEncoder.CalcStartSize(encodedVia, encodedContentType);
@@ -261,7 +249,7 @@ namespace System.ServiceModel.Channels
 
                 if (_upgrade != null)
                 {
-                    StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                    StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(RemoteAddress, Via);
 
                     await upgradeInitiator.OpenAsync(timeoutHelper.RemainingTime());
                     var connectionWrapper = new OutWrapper<IConnection>();
@@ -270,7 +258,7 @@ namespace System.ServiceModel.Channels
                     connection = connectionWrapper.Value;
                     if (!upgradeInitiated)
                     {
-                        await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, this.Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime());
+                        await ConnectionUpgradeHelper.DecodeFramingFaultAsync(_decoder, connection, Via, MessageEncoder.ContentType, timeoutHelper.RemainingTime());
                     }
 
                     SetRemoteSecurity(upgradeInitiator);
@@ -314,12 +302,12 @@ namespace System.ServiceModel.Channels
 
                 if (_upgrade != null)
                 {
-                    StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(this.RemoteAddress, this.Via);
+                    StreamUpgradeInitiator upgradeInitiator = _upgrade.CreateUpgradeInitiator(RemoteAddress, Via);
 
                     upgradeInitiator.Open(timeoutHelper.RemainingTime());
                     if (!ConnectionUpgradeHelper.InitiateUpgrade(upgradeInitiator, ref connection, _decoder, this, ref timeoutHelper))
                     {
-                        ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, this.Via, MessageEncoder.ContentType, ref timeoutHelper);
+                        ConnectionUpgradeHelper.DecodeFramingFault(_decoder, connection, Via, MessageEncoder.ContentType, ref timeoutHelper);
                     }
 
                     SetRemoteSecurity(upgradeInitiator);
@@ -420,19 +408,19 @@ namespace System.ServiceModel.Channels
 
             lock (ThisLock)
             {
-                if (this.State != CommunicationState.Opening)
+                if (State != CommunicationState.Opening)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new CommunicationObjectAbortedException(SR.Format(SR.DuplexChannelAbortedDuringOpen, this.Via)));
+                        new CommunicationObjectAbortedException(SR.Format(SR.DuplexChannelAbortedDuringOpen, Via)));
                 }
 
-                this.Connection = connection;
+                Connection = connection;
             }
         }
 
         private void SetRemoteSecurity(StreamUpgradeInitiator upgradeInitiator)
         {
-            this.RemoteSecurity = StreamSecurityUpgradeInitiator.GetRemoteSecurity(upgradeInitiator);
+            RemoteSecurity = StreamSecurityUpgradeInitiator.GetRemoteSecurity(upgradeInitiator);
         }
 
         protected override void PrepareMessage(Message message)
@@ -626,7 +614,7 @@ namespace System.ServiceModel.Channels
         {
             if (decoder.CurrentState != ClientFramingDecoderState.ReadingFaultString)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new System.ServiceModel.Security.MessageSecurityException(
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(
                     SR.ServerRejectedUpgradeRequest));
             }
         }

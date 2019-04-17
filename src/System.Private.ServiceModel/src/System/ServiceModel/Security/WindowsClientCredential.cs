@@ -23,7 +23,10 @@ namespace System.ServiceModel.Security
         internal WindowsClientCredential(WindowsClientCredential other)
         {
             if (other._windowsCredentials != null)
+            {
                 _windowsCredentials = SecurityUtils.GetNetworkCredentialsCopy(other._windowsCredentials);
+            }
+
             _allowedImpersonationLevel = other._allowedImpersonationLevel;
             _allowNtlm = other._allowNtlm;
             _isReadOnly = other._isReadOnly;
@@ -54,7 +57,10 @@ namespace System.ServiceModel.Security
             get
             {
                 if (_windowsCredentials == null)
+                {
                     _windowsCredentials = new NetworkCredential();
+                }
+
                 return _windowsCredentials;
             }
             set
@@ -64,7 +70,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        [ObsoleteAttribute("This property is deprecated and is maintained for backward compatibility only. The local machine policy will be used to determine if NTLM should be used.")]
+        [Obsolete("This property is deprecated and is maintained for backward compatibility only. The local machine policy will be used to determine if NTLM should be used.")]
         public bool AllowNtlm
         {
             get

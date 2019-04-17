@@ -32,7 +32,7 @@ namespace System.ServiceModel.Channels
             }
             if (ns == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("ns");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(ns));
             }
 
             if (ns.Length > 0)
@@ -51,11 +51,11 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRange0));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRange0));
                 }
                 if (TimeoutHelper.IsTooLarge(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRangeTooBig));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRangeTooBig));
                 }
 
                 _closeTimeout = value;
@@ -67,14 +67,18 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_name == null)
-                    _name = this.GetType().Name;
+                {
+                    _name = GetType().Name;
+                }
 
                 return _name;
             }
             set
             {
                 if (string.IsNullOrEmpty(value))
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.SFXBindingNameCannotBeNullOrEmpty);
+                }
 
                 _name = value;
             }
@@ -87,7 +91,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
                 if (value.Length > 0)
@@ -105,11 +109,11 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRange0));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRange0));
                 }
                 if (TimeoutHelper.IsTooLarge(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRangeTooBig));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRangeTooBig));
                 }
 
                 _openTimeout = value;
@@ -123,11 +127,11 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRange0));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRange0));
                 }
                 if (TimeoutHelper.IsTooLarge(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRangeTooBig));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRangeTooBig));
                 }
 
                 _receiveTimeout = value;
@@ -140,7 +144,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.GetProperty<MessageVersion>(new BindingParameterCollection());
+                return GetProperty<MessageVersion>(new BindingParameterCollection());
             }
         }
 
@@ -151,11 +155,11 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRange0));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRange0));
                 }
                 if (TimeoutHelper.IsTooLarge(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SR.SFxTimeoutOutOfRangeTooBig));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value, SR.SFxTimeoutOutOfRangeTooBig));
                 }
 
                 _sendTimeout = value;
@@ -164,7 +168,7 @@ namespace System.ServiceModel.Channels
 
         public IChannelFactory<TChannel> BuildChannelFactory<TChannel>(params object[] parameters)
         {
-            return this.BuildChannelFactory<TChannel>(new BindingParameterCollection(parameters));
+            return BuildChannelFactory<TChannel>(new BindingParameterCollection(parameters));
         }
 
         public virtual IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingParameterCollection parameters)
@@ -173,14 +177,14 @@ namespace System.ServiceModel.Channels
             BindingContext context = new BindingContext(new CustomBinding(this), parameters);
             IChannelFactory<TChannel> channelFactory = context.BuildInnerChannelFactory<TChannel>();
             context.ValidateBindingElementsConsumed();
-            this.ValidateSecurityCapabilities(channelFactory.GetProperty<ISecurityCapabilities>(), parameters);
+            ValidateSecurityCapabilities(channelFactory.GetProperty<ISecurityCapabilities>(), parameters);
 
             return channelFactory;
         }
 
         private void ValidateSecurityCapabilities(ISecurityCapabilities runtimeSecurityCapabilities, BindingParameterCollection parameters)
         {
-            ISecurityCapabilities bindingSecurityCapabilities = this.GetProperty<ISecurityCapabilities>(parameters);
+            ISecurityCapabilities bindingSecurityCapabilities = GetProperty<ISecurityCapabilities>(parameters);
 
             if (!SecurityCapabilities.IsEqual(bindingSecurityCapabilities, runtimeSecurityCapabilities))
             {
@@ -191,7 +195,7 @@ namespace System.ServiceModel.Channels
 
         public bool CanBuildChannelFactory<TChannel>(params object[] parameters)
         {
-            return this.CanBuildChannelFactory<TChannel>(new BindingParameterCollection(parameters));
+            return CanBuildChannelFactory<TChannel>(new BindingParameterCollection(parameters));
         }
 
         public virtual bool CanBuildChannelFactory<TChannel>(BindingParameterCollection parameters)
@@ -217,14 +221,16 @@ namespace System.ServiceModel.Channels
 
         internal void EnsureInvariants(string contractName)
         {
-            BindingElementCollection elements = this.CreateBindingElements();
+            BindingElementCollection elements = CreateBindingElements();
             TransportBindingElement transport = null;
             int index;
             for (index = 0; index < elements.Count; index++)
             {
                 transport = elements[index] as TransportBindingElement;
                 if (transport != null)
+                {
                     break;
+                }
             }
 
             if (transport == null)
@@ -232,7 +238,7 @@ namespace System.ServiceModel.Channels
                 if (contractName == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SR.Format(SR.CustomBindingRequiresTransport, this.Name)));
+                        SR.Format(SR.CustomBindingRequiresTransport, Name)));
                 }
                 else
                 {
@@ -243,7 +249,7 @@ namespace System.ServiceModel.Channels
             if (index != elements.Count - 1)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.Format(SR.TransportBindingElementMustBeLast, this.Name, transport.GetType().Name)));
+                    SR.Format(SR.TransportBindingElementMustBeLast, Name, transport.GetType().Name)));
             }
             if (string.IsNullOrEmpty(transport.Scheme))
             {
@@ -251,19 +257,19 @@ namespace System.ServiceModel.Channels
                     SR.Format(SR.InvalidBindingScheme, transport.GetType().Name)));
             }
 
-            if (this.MessageVersion == null)
+            if (MessageVersion == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SR.Format(SR.MessageVersionMissingFromBinding, this.Name)));
+                    SR.Format(SR.MessageVersionMissingFromBinding, Name)));
             }
         }
 
         internal void CopyTimeouts(IDefaultCommunicationTimeouts source)
         {
-            this.CloseTimeout = source.CloseTimeout;
-            this.OpenTimeout = source.OpenTimeout;
-            this.ReceiveTimeout = source.ReceiveTimeout;
-            this.SendTimeout = source.SendTimeout;
+            CloseTimeout = source.CloseTimeout;
+            OpenTimeout = source.OpenTimeout;
+            ReceiveTimeout = source.ReceiveTimeout;
+            SendTimeout = source.SendTimeout;
         }
     }
 }

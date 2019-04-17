@@ -17,11 +17,13 @@ namespace System.ServiceModel
         public UriSchemeKeyedCollection(params Uri[] addresses)
         {
             if (addresses == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("addresses");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(addresses));
+            }
 
             for (int i = 0; i < addresses.Length; i++)
             {
-                this.Add(addresses[i]);
+                Add(addresses[i]);
             }
         }
 
@@ -33,8 +35,10 @@ namespace System.ServiceModel
         protected override void InsertItem(int index, Uri item)
         {
             ValidateBaseAddress(item, "item");
-            if (this.Contains(item.Scheme))
+            if (Contains(item.Scheme))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", SR.Format(SR.BaseAddressDuplicateScheme, item.Scheme));
+            }
 
             base.InsertItem(index, item);
         }
@@ -44,8 +48,10 @@ namespace System.ServiceModel
             ValidateBaseAddress(item, "item");
             if (this[index].Scheme != item.Scheme)
             {
-                if (this.Contains(item.Scheme))
+                if (Contains(item.Scheme))
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", SR.Format(SR.BaseAddressDuplicateScheme, item.Scheme));
+                }
             }
             base.SetItem(index, item);
         }

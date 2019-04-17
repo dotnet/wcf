@@ -13,27 +13,23 @@ namespace System.ServiceModel.Security.Tokens
     public class SspiSecurityToken : SecurityToken
     {
         private string _id;
-        private readonly TokenImpersonationLevel _impersonationLevel;
-        private readonly bool _allowNtlm;
-        private readonly NetworkCredential _networkCredential;
-        private readonly bool _extractGroupsForWindowsAccounts;
         private readonly bool _allowUnauthenticatedCallers = SspiSecurityTokenProvider.DefaultAllowUnauthenticatedCallers;
         private readonly DateTime _effectiveTime;
         private readonly DateTime _expirationTime;
 
         public SspiSecurityToken(TokenImpersonationLevel impersonationLevel, bool allowNtlm, NetworkCredential networkCredential)
         {
-            _impersonationLevel = impersonationLevel;
-            _allowNtlm = allowNtlm;
-            _networkCredential = SecurityUtils.GetNetworkCredentialsCopy(networkCredential);
+            ImpersonationLevel = impersonationLevel;
+            AllowNtlm = allowNtlm;
+            NetworkCredential = SecurityUtils.GetNetworkCredentialsCopy(networkCredential);
             _effectiveTime = DateTime.UtcNow;
             _expirationTime = _effectiveTime.AddHours(10);
         }
 
         public SspiSecurityToken(NetworkCredential networkCredential, bool extractGroupsForWindowsAccounts, bool allowUnauthenticatedCallers)
         {
-            _networkCredential = SecurityUtils.GetNetworkCredentialsCopy(networkCredential);
-            _extractGroupsForWindowsAccounts = extractGroupsForWindowsAccounts;
+            NetworkCredential = SecurityUtils.GetNetworkCredentialsCopy(networkCredential);
+            ExtractGroupsForWindowsAccounts = extractGroupsForWindowsAccounts;
             _allowUnauthenticatedCallers = allowUnauthenticatedCallers;
             _effectiveTime = DateTime.UtcNow;
             _expirationTime = _effectiveTime.AddHours(10);
@@ -44,7 +40,10 @@ namespace System.ServiceModel.Security.Tokens
             get
             {
                 if (_id == null)
+                {
                     _id = SecurityUniqueId.Create().Value;
+                }
+
                 return _id;
             }
         }
@@ -67,37 +66,13 @@ namespace System.ServiceModel.Security.Tokens
             }
         }
 
-        public TokenImpersonationLevel ImpersonationLevel
-        {
-            get
-            {
-                return _impersonationLevel;
-            }
-        }
+        public TokenImpersonationLevel ImpersonationLevel { get; }
 
-        public bool AllowNtlm
-        {
-            get
-            {
-                return _allowNtlm;
-            }
-        }
+        public bool AllowNtlm { get; }
 
-        public NetworkCredential NetworkCredential
-        {
-            get
-            {
-                return _networkCredential;
-            }
-        }
+        public NetworkCredential NetworkCredential { get; }
 
-        public bool ExtractGroupsForWindowsAccounts
-        {
-            get
-            {
-                return _extractGroupsForWindowsAccounts;
-            }
-        }
+        public bool ExtractGroupsForWindowsAccounts { get; }
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {

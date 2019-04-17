@@ -21,7 +21,6 @@ namespace System.ServiceModel.Security
         private SecurityTokenSpecification _recipientToken;
 
         private ServiceSecurityContext _securityContext;
-        private ReadOnlyCollection<IAuthorizationPolicy> _externalAuthorizationPolicies;
         private string _senderIdPrefix = "_";
         private bool _disposed = false;
 
@@ -44,17 +43,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public ReadOnlyCollection<IAuthorizationPolicy> ExternalAuthorizationPolicies
-        {
-            get
-            {
-                return _externalAuthorizationPolicies;
-            }
-            set
-            {
-                _externalAuthorizationPolicies = value;
-            }
-        }
+        public ReadOnlyCollection<IAuthorizationPolicy> ExternalAuthorizationPolicies { get; set; }
 
         public SecurityTokenSpecification ProtectionToken
         {
@@ -173,7 +162,7 @@ namespace System.ServiceModel.Security
             ThrowIfDisposed();
             SecurityMessageProperty result = new SecurityMessageProperty();
 
-            if (this.HasOutgoingSupportingTokens)
+            if (HasOutgoingSupportingTokens)
             {
                 for (int i = 0; i < _outgoingSupportingTokens.Count; ++i)
                 {
@@ -181,7 +170,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            if (this.HasIncomingSupportingTokens)
+            if (HasIncomingSupportingTokens)
             {
                 for (int i = 0; i < _incomingSupportingTokens.Count; ++i)
                 {
@@ -190,7 +179,7 @@ namespace System.ServiceModel.Security
             }
 
             result._securityContext = _securityContext;
-            result._externalAuthorizationPolicies = _externalAuthorizationPolicies;
+            result.ExternalAuthorizationPolicies = ExternalAuthorizationPolicies;
             result._senderIdPrefix = _senderIdPrefix;
 
             result._protectionToken = _protectionToken;
@@ -204,11 +193,15 @@ namespace System.ServiceModel.Security
         public static SecurityMessageProperty GetOrCreate(Message message)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            }
 
             SecurityMessageProperty result = null;
             if (message.Properties != null)
+            {
                 result = message.Properties.Security;
+            }
 
             if (result == null)
             {
@@ -243,7 +236,7 @@ namespace System.ServiceModel.Security
         internal ReadOnlyCollection<IAuthorizationPolicy> GetInitiatorTokenAuthorizationPolicies(bool includeTransportToken, SecurityContextSecurityToken supportingSessionTokenToExclude)
         {
             // fast path
-            if (!this.HasIncomingSupportingTokens)
+            if (!HasIncomingSupportingTokens)
             {
                 if (_transportToken != null && _initiatorToken == null && _protectionToken == null)
                 {
@@ -273,7 +266,7 @@ namespace System.ServiceModel.Security
             }
             AddAuthorizationPolicies(_initiatorToken, policies);
             AddAuthorizationPolicies(_protectionToken, policies);
-            if (this.HasIncomingSupportingTokens)
+            if (HasIncomingSupportingTokens)
             {
                 for (int i = 0; i < _incomingSupportingTokens.Count; ++i)
                 {
@@ -313,7 +306,7 @@ namespace System.ServiceModel.Security
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
     }

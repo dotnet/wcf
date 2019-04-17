@@ -3,11 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Runtime;
-using System.Runtime.Diagnostics;
-using System.ServiceModel;
-using System.ServiceModel.Diagnostics;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -24,21 +20,25 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginSend(message, this.DefaultSendTimeout, callback, state);
+            return BeginSend(message, DefaultSendTimeout, callback, state);
         }
 
         public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            }
 
             if (timeout < TimeSpan.Zero)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("timeout", timeout, SR.SFxTimeoutOutOfRange0));
+                    new ArgumentOutOfRangeException(nameof(timeout), timeout, SR.SFxTimeoutOutOfRange0));
+            }
 
             ThrowIfDisposedOrNotOpen();
             AddHeadersTo(message);
-            this.EmitTrace(message);
+            EmitTrace(message);
             return OnSendAsync(message, timeout).ToApm(callback, state);
         }
 
@@ -69,22 +69,26 @@ namespace System.ServiceModel.Channels
 
         public void Send(Message message)
         {
-            this.Send(message, this.DefaultSendTimeout);
+            Send(message, DefaultSendTimeout);
         }
 
         public void Send(Message message, TimeSpan timeout)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            }
 
             if (timeout < TimeSpan.Zero)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("timeout", timeout, SR.SFxTimeoutOutOfRange0));
+                    new ArgumentOutOfRangeException(nameof(timeout), timeout, SR.SFxTimeoutOutOfRange0));
+            }
 
             ThrowIfDisposedOrNotOpen();
 
             AddHeadersTo(message);
-            this.EmitTrace(message);
+            EmitTrace(message);
             OnSend(message, timeout);
         }
 

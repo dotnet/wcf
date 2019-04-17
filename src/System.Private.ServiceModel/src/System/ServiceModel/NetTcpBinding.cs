@@ -4,7 +4,6 @@
 
 
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.ServiceModel.Channels;
 using System.Xml;
 
@@ -15,7 +14,6 @@ namespace System.ServiceModel
         // private BindingElements
         private TcpTransportBindingElement _transport;
         private BinaryMessageEncodingBindingElement _encoding;
-        private long _maxBufferPoolSize;
         private NetTcpSecurity _security = new NetTcpSecurity();
 
         public NetTcpBinding() { Initialize(); }
@@ -51,14 +49,7 @@ namespace System.ServiceModel
         }
 
         [DefaultValue(TransportDefaults.MaxBufferPoolSize)]
-        public long MaxBufferPoolSize
-        {
-            get { return _maxBufferPoolSize; }
-            set
-            {
-                _maxBufferPoolSize = value;
-            }
-        }
+        public long MaxBufferPoolSize { get; set; }
 
         [DefaultValue(TransportDefaults.MaxBufferSize)]
         public int MaxBufferSize
@@ -80,7 +71,10 @@ namespace System.ServiceModel
             set
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
                 value.CopyTo(_encoding.ReaderQuotas);
             }
         }
@@ -97,9 +91,7 @@ namespace System.ServiceModel
             get { return _security; }
             set
             {
-                if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                _security = value;
+                _security = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -110,7 +102,7 @@ namespace System.ServiceModel
 
             // NetNative and CoreCLR initialize to what TransportBindingElement does in the desktop
             // This property is not available in shipped contracts
-            _maxBufferPoolSize = TransportDefaults.MaxBufferPoolSize;
+            MaxBufferPoolSize = TransportDefaults.MaxBufferPoolSize;
         }
 
         // check that properties of the HttpTransportBindingElement and 
@@ -119,10 +111,14 @@ namespace System.ServiceModel
         private bool IsBindingElementsMatch(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding)
         {
             if (!_transport.IsMatch(transport))
+            {
                 return false;
+            }
 
             if (!_encoding.IsMatch(encoding))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -133,7 +129,7 @@ namespace System.ServiceModel
 
         public override BindingElementCollection CreateBindingElements()
         {
-            this.CheckSettings();
+            CheckSettings();
 
             // return collection of BindingElements
             BindingElementCollection bindingElements = new BindingElementCollection();
@@ -141,7 +137,9 @@ namespace System.ServiceModel
             // add security (*optional)
             SecurityBindingElement wsSecurity = CreateMessageSecurity();
             if (wsSecurity != null)
+            {
                 bindingElements.Add(wsSecurity);
+            }
             // add encoding
             bindingElements.Add(_encoding);
             // add transport security

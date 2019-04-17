@@ -18,7 +18,7 @@ namespace System.ServiceModel.Description
 
         public MetadataLocation(string location)
         {
-            this.Location = location;
+            Location = location;
         }
 
         [XmlText]
@@ -31,7 +31,9 @@ namespace System.ServiceModel.Description
                 {
                     Uri uri;
                     if (!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out uri))
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.SFxMetadataReferenceInvalidLocation, value));
+                    }
                 }
 
                 _location = value;

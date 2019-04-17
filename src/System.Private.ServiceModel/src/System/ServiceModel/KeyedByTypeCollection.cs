@@ -19,7 +19,9 @@ namespace System.Collections.Generic
             : base(null, 4)
         {
             if (items == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("items");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(items));
+            }
 
             foreach (TItem item in items)
             {
@@ -29,17 +31,17 @@ namespace System.Collections.Generic
 
         public T Find<T>()
         {
-            return this.Find<T>(false);
+            return Find<T>(false);
         }
 
         public T Remove<T>()
         {
-            return this.Find<T>(true);
+            return Find<T>(true);
         }
 
         private T Find<T>(bool remove)
         {
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 TItem settings = this[i];
                 if (settings is T)
@@ -56,12 +58,12 @@ namespace System.Collections.Generic
 
         public Collection<T> FindAll<T>()
         {
-            return this.FindAll<T>(false);
+            return FindAll<T>(false);
         }
 
         public Collection<T> RemoveAll<T>()
         {
-            return this.FindAll<T>(true);
+            return FindAll<T>(true);
         }
 
         private Collection<T> FindAll<T>(bool remove)
@@ -79,7 +81,7 @@ namespace System.Collections.Generic
             {
                 foreach (T settings in result)
                 {
-                    this.Remove((TItem)(object)settings);
+                    Remove((TItem)(object)settings);
                 }
             }
 
@@ -90,7 +92,7 @@ namespace System.Collections.Generic
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
 
             return item.GetType();
@@ -100,10 +102,10 @@ namespace System.Collections.Generic
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
 
-            if (this.Contains(item.GetType()))
+            if (Contains(item.GetType()))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", SR.Format(SR.DuplicateBehavior1, item.GetType().FullName));
             }
@@ -115,7 +117,7 @@ namespace System.Collections.Generic
         {
             if (item == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
             }
 
             base.SetItem(index, item);

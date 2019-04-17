@@ -5,9 +5,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime;
 using System.Runtime.Serialization;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
@@ -52,13 +50,24 @@ namespace System.IdentityModel.Claims
         private Claim(string claimType, object resource, string right, IEqualityComparer<Claim> comparer)
         {
             if (claimType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claimType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claimType));
+            }
+
             if (claimType.Length <= 0)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("claimType", SR.ArgumentCannotBeEmptyString);
+            }
+
             if (right == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("right");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(right));
+            }
+
             if (right.Length <= 0)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("right", SR.ArgumentCannotBeEmptyString);
+            }
 
             _claimType = claimType;
             _resource = resource;
@@ -83,7 +92,9 @@ namespace System.IdentityModel.Claims
             get
             {
                 if (s_system == null)
+                {
                     s_system = new Claim(ClaimTypes.System, XsiConstants.System, Rights.Identity);
+                }
 
                 return s_system;
             }
@@ -108,7 +119,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateDnsClaim(string dns)
         {
             if (dns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dns");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(dns));
+            }
 
             return new Claim(ClaimTypes.Dns, dns, Rights.PossessProperty, ClaimComparer.Dns);
         }
@@ -116,7 +129,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateHashClaim(byte[] hash)
         {
             if (hash == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("hash");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(hash));
+            }
 
             return new Claim(ClaimTypes.Hash, SecurityUtils.CloneBuffer(hash), Rights.PossessProperty, ClaimComparer.Hash);
         }
@@ -125,7 +140,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateNameClaim(string name)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name));
+            }
 
             return new Claim(ClaimTypes.Name, name, Rights.PossessProperty);
         }
@@ -133,7 +150,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateSpnClaim(string spn)
         {
             if (spn == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("spn");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(spn));
+            }
 
             return new Claim(ClaimTypes.Spn, spn, Rights.PossessProperty);
         }
@@ -141,7 +160,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateThumbprintClaim(byte[] thumbprint)
         {
             if (thumbprint == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("thumbprint");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(thumbprint));
+            }
 
             return new Claim(ClaimTypes.Thumbprint, SecurityUtils.CloneBuffer(thumbprint), Rights.PossessProperty, ClaimComparer.Thumbprint);
         }
@@ -149,7 +170,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateUpnClaim(string upn)
         {
             if (upn == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("upn");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(upn));
+            }
 
             return new Claim(ClaimTypes.Upn, upn, Rights.PossessProperty, ClaimComparer.Upn);
         }
@@ -157,7 +180,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateUriClaim(Uri uri)
         {
             if (uri == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("uri");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(uri));
+            }
 
             return new Claim(ClaimTypes.Uri, uri, Rights.PossessProperty);
         }
@@ -165,7 +190,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateWindowsSidClaim(SecurityIdentifier sid)
         {
             if (sid == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("sid");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(sid));
+            }
 
             return new Claim(ClaimTypes.Sid, sid, Rights.PossessProperty);
         }
@@ -173,7 +200,9 @@ namespace System.IdentityModel.Claims
         public static Claim CreateX500DistinguishedNameClaim(X500DistinguishedName x500DistinguishedName)
         {
             if (x500DistinguishedName == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("x500DistinguishedName");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(x500DistinguishedName));
+            }
 
             return new Claim(ClaimTypes.X500DistinguishedName, x500DistinguishedName, Rights.PossessProperty, ClaimComparer.X500DistinguishedName);
         }
@@ -181,14 +210,20 @@ namespace System.IdentityModel.Claims
         public override bool Equals(object obj)
         {
             if (_comparer == null)
+            {
                 _comparer = ClaimComparer.GetComparer(_claimType);
+            }
+
             return _comparer.Equals(this, obj as Claim);
         }
 
         public override int GetHashCode()
         {
             if (_comparer == null)
+            {
                 _comparer = ClaimComparer.GetComparer(_claimType);
+            }
+
             return _comparer.GetHashCode(this);
         }
 

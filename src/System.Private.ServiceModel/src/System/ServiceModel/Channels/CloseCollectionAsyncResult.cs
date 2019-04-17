@@ -37,7 +37,6 @@ namespace System.ServiceModel
                 {
                     result = collection[index].BeginClose(timeoutHelper.RemainingTime(), s_nestedCallback, callbackState);
                 }
-#pragma warning suppress 56500 // covered by FxCOP
                 catch (Exception e)
                 {
                     if (Fx.IsFatal(e))
@@ -64,7 +63,6 @@ namespace System.ServiceModel
             {
                 communicationObject.EndClose(result);
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -93,20 +91,27 @@ namespace System.ServiceModel
         private void Decrement(bool completedSynchronously)
         {
             if (completedSynchronously == false)
+            {
                 _completedSynchronously = false;
+            }
+
             if (Interlocked.Decrement(ref _count) == 0)
             {
                 if (_exception != null)
+                {
                     Complete(_completedSynchronously, _exception);
+                }
                 else
+                {
                     Complete(_completedSynchronously);
+                }
             }
         }
 
         private void Decrement(bool completedSynchronously, Exception exception)
         {
             _exception = exception;
-            this.Decrement(completedSynchronously);
+            Decrement(completedSynchronously);
         }
 
         public static void End(IAsyncResult result)
@@ -116,19 +121,15 @@ namespace System.ServiceModel
 
         internal class CallbackState
         {
-            private ICommunicationObject _instance;
             private CloseCollectionAsyncResult _result;
 
             public CallbackState(CloseCollectionAsyncResult result, ICommunicationObject instance)
             {
                 _result = result;
-                _instance = instance;
+                Instance = instance;
             }
 
-            public ICommunicationObject Instance
-            {
-                get { return _instance; }
-            }
+            public ICommunicationObject Instance { get; }
 
             public CloseCollectionAsyncResult Result
             {

@@ -24,11 +24,10 @@ namespace System.ServiceModel.Channels
 
         public TextMessageEncodingBindingElement(MessageVersion messageVersion, Encoding writeEncoding)
         {
-            if (messageVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageVersion");
-
             if (writeEncoding == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writeEncoding");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writeEncoding));
+            }
 
             TextEncoderDefaults.ValidateEncoding(writeEncoding);
 
@@ -36,7 +35,7 @@ namespace System.ServiceModel.Channels
             _maxWritePoolSize = EncoderDefaults.MaxWritePoolSize;
             _readerQuotas = new XmlDictionaryReaderQuotas();
             EncoderDefaults.ReaderQuotas.CopyTo(_readerQuotas);
-            _messageVersion = messageVersion;
+            _messageVersion = messageVersion ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(messageVersion));
             _writeEncoding = writeEncoding;
         }
 
@@ -62,7 +61,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                                                     SR.ValueMustBePositive));
                 }
                 _maxReadPoolSize = value;
@@ -80,7 +79,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                                                     SR.ValueMustBePositive));
                 }
                 _maxWritePoolSize = value;
@@ -96,7 +95,10 @@ namespace System.ServiceModel.Channels
             set
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
                 value.CopyTo(_readerQuotas);
             }
         }
@@ -109,12 +111,7 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                }
-
-                _messageVersion = value;
+                _messageVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
             }
         }
 
@@ -128,7 +125,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
                 TextEncoderDefaults.ValidateEncoding(value);
@@ -148,14 +145,14 @@ namespace System.ServiceModel.Channels
 
         public override MessageEncoderFactory CreateMessageEncoderFactory()
         {
-            return new TextMessageEncoderFactory(MessageVersion, WriteEncoding, this.MaxReadPoolSize, this.MaxWritePoolSize, this.ReaderQuotas);
+            return new TextMessageEncoderFactory(MessageVersion, WriteEncoding, MaxReadPoolSize, MaxWritePoolSize, ReaderQuotas);
         }
 
         public override T GetProperty<T>(BindingContext context)
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(XmlDictionaryReaderQuotas))
             {
@@ -175,32 +172,61 @@ namespace System.ServiceModel.Channels
         internal override bool IsMatch(BindingElement b)
         {
             if (!base.IsMatch(b))
+            {
                 return false;
+            }
 
             TextMessageEncodingBindingElement text = b as TextMessageEncodingBindingElement;
             if (text == null)
+            {
                 return false;
+            }
+
             if (_maxReadPoolSize != text.MaxReadPoolSize)
+            {
                 return false;
+            }
+
             if (_maxWritePoolSize != text.MaxWritePoolSize)
+            {
                 return false;
+            }
 
             // compare XmlDictionaryReaderQuotas
             if (_readerQuotas.MaxStringContentLength != text.ReaderQuotas.MaxStringContentLength)
+            {
                 return false;
-            if (_readerQuotas.MaxArrayLength != text.ReaderQuotas.MaxArrayLength)
-                return false;
-            if (_readerQuotas.MaxBytesPerRead != text.ReaderQuotas.MaxBytesPerRead)
-                return false;
-            if (_readerQuotas.MaxDepth != text.ReaderQuotas.MaxDepth)
-                return false;
-            if (_readerQuotas.MaxNameTableCharCount != text.ReaderQuotas.MaxNameTableCharCount)
-                return false;
+            }
 
-            if (this.WriteEncoding.WebName != text.WriteEncoding.WebName)
+            if (_readerQuotas.MaxArrayLength != text.ReaderQuotas.MaxArrayLength)
+            {
                 return false;
-            if (!this.MessageVersion.IsMatch(text.MessageVersion))
+            }
+
+            if (_readerQuotas.MaxBytesPerRead != text.ReaderQuotas.MaxBytesPerRead)
+            {
                 return false;
+            }
+
+            if (_readerQuotas.MaxDepth != text.ReaderQuotas.MaxDepth)
+            {
+                return false;
+            }
+
+            if (_readerQuotas.MaxNameTableCharCount != text.ReaderQuotas.MaxNameTableCharCount)
+            {
+                return false;
+            }
+
+            if (WriteEncoding.WebName != text.WriteEncoding.WebName)
+            {
+                return false;
+            }
+
+            if (!MessageVersion.IsMatch(text.MessageVersion))
+            {
+                return false;
+            }
 
             return true;
         }

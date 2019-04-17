@@ -15,64 +15,45 @@ namespace System.ServiceModel.Description
     public class OperationDescription
     {
         internal const string SessionOpenedAction = Channels.WebSocketTransportSettings.ConnectionOpenedAction;
-
-        private XmlName _name;
-        private bool _isInitiating;
-        private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
         private ContractDescription _declaringContract;
-        private FaultDescriptionCollection _faults;
-        private MessageDescriptionCollection _messages;
-        private KeyedByTypeCollection<IOperationBehavior> _behaviors;
-        private Collection<Type> _knownTypes;
-        private MethodInfo _beginMethod;
-        private MethodInfo _endMethod;
-        private MethodInfo _syncMethod;
         private MethodInfo _taskMethod;
-        private bool _validateRpcWrapperName = true;
         private bool _hasNoDisposableParameters;
 
         public OperationDescription(string name, ContractDescription declaringContract)
         {
             if (name == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name));
             }
             if (name.Length == 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("name", SR.SFxOperationDescriptionNameCannotBeEmpty));
+                    new ArgumentOutOfRangeException(nameof(name), SR.SFxOperationDescriptionNameCannotBeEmpty));
             }
-            _name = new XmlName(name, true /*isEncoded*/);
-            if (declaringContract == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("declaringContract");
-            }
-            _declaringContract = declaringContract;
-            _isInitiating = true;
-            _isTerminating = false;
-            _faults = new FaultDescriptionCollection();
-            _messages = new MessageDescriptionCollection();
-            _behaviors = new KeyedByTypeCollection<IOperationBehavior>();
-            _knownTypes = new Collection<Type>();
+            XmlName = new XmlName(name, true /*isEncoded*/);
+            _declaringContract = declaringContract ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(declaringContract));
+            IsInitiating = true;
+            IsTerminating = false;
+            Faults = new FaultDescriptionCollection();
+            Messages = new MessageDescriptionCollection();
+            Behaviors = new KeyedByTypeCollection<IOperationBehavior>();
+            KnownTypes = new Collection<Type>();
         }
 
         internal OperationDescription(string name, ContractDescription declaringContract, bool validateRpcWrapperName)
             : this(name, declaringContract)
         {
-            _validateRpcWrapperName = validateRpcWrapperName;
+            IsValidateRpcWrapperName = validateRpcWrapperName;
         }
 
         public KeyedCollection<Type, IOperationBehavior> OperationBehaviors
         {
-            get { return this.Behaviors; }
+            get { return Behaviors; }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public KeyedByTypeCollection<IOperationBehavior> Behaviors
-        {
-            get { return _behaviors; }
-        }
+        public KeyedByTypeCollection<IOperationBehavior> Behaviors { get; }
 
         // Not serializable on purpose, metadata import/export cannot
         // produce it, only available when binding to runtime
@@ -84,31 +65,23 @@ namespace System.ServiceModel.Description
 
         // Not serializable on purpose, metadata import/export cannot
         // produce it, only available when binding to runtime
-        public MethodInfo SyncMethod
-        {
-            get { return _syncMethod; }
-            set { _syncMethod = value; }
-        }
+        public MethodInfo SyncMethod { get; set; }
 
         // Not serializable on purpose, metadata import/export cannot
         // produce it, only available when binding to runtime
-        public MethodInfo BeginMethod
-        {
-            get { return _beginMethod; }
-            set { _beginMethod = value; }
-        }
+        public MethodInfo BeginMethod { get; set; }
 
         internal MethodInfo OperationMethod
         {
             get
             {
-                if (this.SyncMethod == null)
+                if (SyncMethod == null)
                 {
-                    return this.TaskMethod ?? this.BeginMethod;
+                    return TaskMethod ?? BeginMethod;
                 }
                 else
                 {
-                    return this.SyncMethod;
+                    return SyncMethod;
                 }
             }
         }
@@ -122,11 +95,7 @@ namespace System.ServiceModel.Description
 
         // Not serializable on purpose, metadata import/export cannot
         // produce it, only available when binding to runtime
-        public MethodInfo EndMethod
-        {
-            get { return _endMethod; }
-            set { _endMethod = value; }
-        }
+        public MethodInfo EndMethod { get; set; }
 
         public ContractDescription DeclaringContract
         {
@@ -135,7 +104,7 @@ namespace System.ServiceModel.Description
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("DeclaringContract");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(DeclaringContract));
                 }
                 else
                 {
@@ -144,21 +113,14 @@ namespace System.ServiceModel.Description
             }
         }
 
-        public FaultDescriptionCollection Faults
-        {
-            get { return _faults; }
-        }
+        public FaultDescriptionCollection Faults { get; }
 
         public bool IsOneWay
         {
-            get { return this.Messages.Count == 1; }
+            get { return Messages.Count == 1; }
         }
 
-        public bool IsInitiating
-        {
-            get { return _isInitiating; }
-            set { _isInitiating = value; }
-        }
+        public bool IsInitiating { get; set; }
 
         internal bool IsServerInitiated()
         {
@@ -166,39 +128,26 @@ namespace System.ServiceModel.Description
             return Messages[0].Direction == MessageDirection.Output;
         }
 
-        public bool IsTerminating
-        {
-            get { return _isTerminating; }
-            set { _isTerminating = value; }
-        }
+        public bool IsTerminating { get; set; }
 
-        public Collection<Type> KnownTypes
-        {
-            get { return _knownTypes; }
-        }
+        public Collection<Type> KnownTypes { get; }
 
         // Messages[0] is the 'request' (first of MEP), and for non-oneway MEPs, Messages[1] is the 'response' (second of MEP)
-        public MessageDescriptionCollection Messages
-        {
-            get { return _messages; }
-        }
+        public MessageDescriptionCollection Messages { get; }
 
-        internal XmlName XmlName
-        {
-            get { return _name; }
-        }
+        internal XmlName XmlName { get; }
 
         internal string CodeName
         {
-            get { return _name.DecodedName; }
+            get { return XmlName.DecodedName; }
         }
 
         public string Name
         {
-            get { return _name.EncodedName; }
+            get { return XmlName.EncodedName; }
         }
 
-        internal bool IsValidateRpcWrapperName { get { return _validateRpcWrapperName; } }
+        internal bool IsValidateRpcWrapperName { get; } = true;
 
         internal Type TaskTResult
         {
@@ -211,8 +160,8 @@ namespace System.ServiceModel.Description
             get
             {
                 // For non-oneway operations, Messages[1] is the 'response'
-                return (this.Messages.Count > 1) &&
-                    (this.Messages[1].Body.Parts.Count > 0);
+                return (Messages.Count > 1) &&
+                    (Messages[1].Body.Parts.Count > 0);
             }
         }
 
@@ -224,9 +173,9 @@ namespace System.ServiceModel.Description
 
         internal void EnsureInvariants()
         {
-            if (this.Messages.Count != 1 && this.Messages.Count != 2)
+            if (Messages.Count != 1 && Messages.Count != 2)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new System.InvalidOperationException(SR.Format(SR.SFxOperationMustHaveOneOrTwoMessages, this.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxOperationMustHaveOneOrTwoMessages, Name)));
             }
         }
     }

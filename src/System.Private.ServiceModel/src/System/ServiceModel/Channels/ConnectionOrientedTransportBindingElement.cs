@@ -12,8 +12,6 @@ namespace System.ServiceModel.Channels
 
     {
         private int _connectionBufferSize;
-        private bool _exposeConnectionProperty;
-        private TimeSpan _maxOutputDelay;
         private int _maxBufferSize;
         private bool _maxBufferSizeInitialized;
         private TransferMode _transferMode;
@@ -22,7 +20,7 @@ namespace System.ServiceModel.Channels
             : base()
         {
             _connectionBufferSize = ConnectionOrientedTransportDefaults.ConnectionBufferSize;
-            _maxOutputDelay = ConnectionOrientedTransportDefaults.MaxOutputDelay;
+            MaxOutputDelay = ConnectionOrientedTransportDefaults.MaxOutputDelay;
             _maxBufferSize = TransportDefaults.MaxBufferSize;
             _transferMode = ConnectionOrientedTransportDefaults.TransferMode;
         }
@@ -31,7 +29,7 @@ namespace System.ServiceModel.Channels
             : base(elementToBeCloned)
         {
             _connectionBufferSize = elementToBeCloned._connectionBufferSize;
-            _exposeConnectionProperty = elementToBeCloned._exposeConnectionProperty;
+            ExposeConnectionProperty = elementToBeCloned.ExposeConnectionProperty;
             _maxBufferSize = elementToBeCloned._maxBufferSize;
             _maxBufferSizeInitialized = elementToBeCloned._maxBufferSizeInitialized;
             _transferMode = elementToBeCloned._transferMode;
@@ -50,7 +48,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.ValueMustBeNonNegative));
                 }
 
@@ -59,17 +57,7 @@ namespace System.ServiceModel.Channels
         }
 
         // client
-        internal bool ExposeConnectionProperty
-        {
-            get
-            {
-                return _exposeConnectionProperty;
-            }
-            set
-            {
-                _exposeConnectionProperty = value;
-            }
-        }
+        internal bool ExposeConnectionProperty { get; set; }
 
         // server
         [DefaultValue(TransportDefaults.MaxBufferSize)]
@@ -96,7 +84,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                         SR.ValueMustBePositive));
                 }
 
@@ -105,13 +93,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        internal TimeSpan MaxOutputDelay
-        {
-            get
-            {
-                return _maxOutputDelay;
-            }
-        }
+        internal TimeSpan MaxOutputDelay { get; }
 
         [DefaultValue(ConnectionOrientedTransportDefaults.TransferMode)]
         public TransferMode TransferMode
@@ -131,7 +113,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
             if (TransferMode == TransferMode.Buffered)
@@ -148,12 +130,12 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
             if (typeof(T) == typeof(TransferMode))
             {
-                return (T)(object)this.TransferMode;
+                return (T)(object)TransferMode;
             }
             else
             {
@@ -164,20 +146,30 @@ namespace System.ServiceModel.Channels
         internal override bool IsMatch(BindingElement b)
         {
             if (!base.IsMatch(b))
+            {
                 return false;
+            }
 
             ConnectionOrientedTransportBindingElement connection = b as ConnectionOrientedTransportBindingElement;
             if (connection == null)
+            {
                 return false;
+            }
 
             if (_connectionBufferSize != connection._connectionBufferSize)
+            {
                 return false;
+            }
 
             if (_maxBufferSize != connection._maxBufferSize)
+            {
                 return false;
+            }
 
             if (_transferMode != connection._transferMode)
+            {
                 return false;
+            }
 
             return true;
         }

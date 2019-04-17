@@ -22,8 +22,8 @@ namespace System.ServiceModel.Security
 
         public InMemoryNonceCache(TimeSpan cachingTime, int maxCachedNonces)
         {
-            this.CacheSize = maxCachedNonces;
-            this.CachingTimeSpan = cachingTime;
+            CacheSize = maxCachedNonces;
+            CachingTimeSpan = cachingTime;
             _cacheImpl = new NonceCacheImpl(cachingTime, maxCachedNonces);
         }
 
@@ -41,8 +41,8 @@ namespace System.ServiceModel.Security
         {
             StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
             writer.WriteLine("NonceCache:");
-            writer.WriteLine("   Caching Timespan: {0}", this.CachingTimeSpan);
-            writer.WriteLine("   Capacity: {0}", this.CacheSize);
+            writer.WriteLine("   Caching Timespan: {0}", CachingTimeSpan);
+            writer.WriteLine("   Capacity: {0}", CacheSize);
             return writer.ToString();
         }
 
@@ -66,9 +66,15 @@ namespace System.ServiceModel.Security
             public bool TryAddNonce(byte[] nonce)
             {
                 if (nonce == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("nonce");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(nonce));
+                }
+
                 if (nonce.Length < s_minimumNonceLength)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.NonceLengthTooShort);
+                }
+
                 DateTime expirationTime = TimeoutHelper.Add(DateTime.UtcNow, _cachingTimeSpan);
                 return base.TryAddItem(nonce, s_dummyItem, expirationTime, false);
             }
@@ -76,13 +82,23 @@ namespace System.ServiceModel.Security
             public bool CheckNonce(byte[] nonce)
             {
                 if (nonce == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("nonce");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(nonce));
+                }
+
                 if (nonce.Length < s_minimumNonceLength)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.NonceLengthTooShort);
+                }
+
                 if (base.GetItem(nonce) != null)
+                {
                     return true;
+                }
                 else
+                {
                     return false;
+                }
             }
 
             /// <summary>
@@ -90,7 +106,7 @@ namespace System.ServiceModel.Security
             /// The hash code is obtained from the nonce byte array  by making an int of
             /// the first 4 bytes
             /// </summary>
-            internal sealed class NonceKeyComparer : IEqualityComparer, System.Collections.Generic.IEqualityComparer<byte[]>
+            internal sealed class NonceKeyComparer : IEqualityComparer, Collections.Generic.IEqualityComparer<byte[]>
             {
                 public int GetHashCode(object o)
                 {
@@ -111,12 +127,18 @@ namespace System.ServiceModel.Security
                 public int Compare(byte[] x, byte[] y)
                 {
                     if (Object.ReferenceEquals(x, y))
+                    {
                         return 0;
+                    }
 
                     if (x == null)
+                    {
                         return -1;
+                    }
                     else if (y == null)
+                    {
                         return 1;
+                    }
 
                     byte[] nonce1 = (byte[])x;
                     int length1 = nonce1.Length;

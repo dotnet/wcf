@@ -3,12 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 
 namespace System.ServiceModel.Channels
 {
     public interface IOutputSessionChannel
         : IOutputChannel, ISessionChannel<IOutputSession>
+    {
+    }
+
+    public interface IAsyncOutputSessionChannel
+    : IOutputSessionChannel, IAsyncOutputChannel
     {
     }
 }

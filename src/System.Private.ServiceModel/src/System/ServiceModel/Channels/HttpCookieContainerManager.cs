@@ -26,7 +26,7 @@ namespace System.ServiceModel.Channels
 
             set
             {
-                this.IsInitialized = true;
+                IsInitialized = true;
                 _cookieContainer = value;
             }
         }

@@ -3,31 +3,27 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Runtime;
-
 namespace System.ServiceModel.Channels
 {
     internal class ChannelBuilder
     {
-        private CustomBinding _binding;
         private BindingContext _context;
-        private BindingParameterCollection _bindingParameters;
 
         public ChannelBuilder(BindingContext context, bool addChannelDemuxerIfRequired)
         {
             _context = context;
             if (addChannelDemuxerIfRequired)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                AddDemuxerBindingElement(context.RemainingBindingElements);
             }
-            _binding = new CustomBinding(context.Binding, context.RemainingBindingElements);
-            _bindingParameters = context.BindingParameters;
+            Binding = new CustomBinding(context.Binding, context.RemainingBindingElements);
+            BindingParameters = context.BindingParameters;
         }
 
         public ChannelBuilder(Binding binding, BindingParameterCollection bindingParameters, bool addChannelDemuxerIfRequired)
         {
-            _binding = new CustomBinding(binding);
-            _bindingParameters = bindingParameters;
+            Binding = new CustomBinding(binding);
+            BindingParameters = bindingParameters;
             if (addChannelDemuxerIfRequired)
             {
                 throw ExceptionHelper.PlatformNotSupported();
@@ -36,22 +32,29 @@ namespace System.ServiceModel.Channels
 
         public ChannelBuilder(ChannelBuilder channelBuilder)
         {
-            _binding = new CustomBinding(channelBuilder.Binding);
-            _bindingParameters = channelBuilder.BindingParameters;
+            Binding = new CustomBinding(channelBuilder.Binding);
+            BindingParameters = channelBuilder.BindingParameters;
         }
 
-        public CustomBinding Binding
+        public CustomBinding Binding { get; set; }
+
+        public BindingParameterCollection BindingParameters { get; set; }
+
+        private void AddDemuxerBindingElement(BindingElementCollection elements)
         {
-            get { return _binding; }
-            set { _binding = value; }
+            if (elements.Find<ChannelDemuxerBindingElement>() == null)
+            {
+                // add the channel demuxer binding element right above the transport
+                TransportBindingElement transport = elements.Find<TransportBindingElement>();
+                if (transport == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.TransportBindingElementNotFound));
+                }
+                // cache the context state in the demuxer so that the same context state can be provided to the transport
+                // when building auxilliary channels and listeners (for ex, for security negotiation)
+                elements.Insert(elements.IndexOf(transport), new ChannelDemuxerBindingElement(true));
+            }
         }
-
-        public BindingParameterCollection BindingParameters
-        {
-            get { return _bindingParameters; }
-            set { _bindingParameters = value; }
-        }
-
 
         public IChannelFactory<TChannel> BuildChannelFactory<TChannel>()
         {
@@ -63,13 +66,13 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                return _binding.BuildChannelFactory<TChannel>(_bindingParameters);
+                return Binding.BuildChannelFactory<TChannel>(BindingParameters);
             }
         }
 
         public bool CanBuildChannelFactory<TChannel>()
         {
-            return _binding.CanBuildChannelFactory<TChannel>(_bindingParameters);
+            return Binding.CanBuildChannelFactory<TChannel>(BindingParameters);
         }
     }
 }

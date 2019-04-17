@@ -17,23 +17,18 @@ namespace System.ServiceModel.Dispatcher
     public class ChannelDispatcher : ChannelDispatcherBase
     {
         private SynchronizedCollection<IChannelInitializer> _channelInitializers;
-        private CommunicationObjectManager<IChannel> _channels;
         private EndpointDispatcherCollection _endpointDispatchers;
-        private Collection<IErrorHandler> _errorHandlers;
-        private EndpointDispatcherTable _filterTable;
         private bool _receiveContextEnabled;
         private readonly IChannelListener _listener = null;
         private ListenerHandler _listenerHandler;
         private int _maxTransactedBatchSize;
         private MessageVersion _messageVersion;
-        private SynchronizedChannelCollection<IChannel> _pendingChannels; // app has not yet seen these.
         private bool _receiveSynchronously;
         private bool _sendAsynchronously;
         private int _maxPendingReceives;
         private bool _includeExceptionDetailInFaults;
         private bool _session = false;
         private SharedRuntimeState _shared;
-        private IDefaultCommunicationTimeouts _timeouts = null;
         private TimeSpan _transactionTimeout;
         private bool _performDefaultCloseInput;
         private EventTraceActivity _eventTraceActivity;
@@ -41,17 +36,17 @@ namespace System.ServiceModel.Dispatcher
 
         internal ChannelDispatcher(SharedRuntimeState shared)
         {
-            this.Initialize(shared);
+            Initialize(shared);
         }
 
         private void Initialize(SharedRuntimeState shared)
         {
             _shared = shared;
             _endpointDispatchers = new EndpointDispatcherCollection(this);
-            _channelInitializers = this.NewBehaviorCollection<IChannelInitializer>();
-            _channels = new CommunicationObjectManager<IChannel>(this.ThisLock);
-            _pendingChannels = new SynchronizedChannelCollection<IChannel>(this.ThisLock);
-            _errorHandlers = new Collection<IErrorHandler>();
+            _channelInitializers = NewBehaviorCollection<IChannelInitializer>();
+            Channels = new CommunicationObjectManager<IChannel>(ThisLock);
+            PendingChannels = new SynchronizedChannelCollection<IChannel>(ThisLock);
+            ErrorHandlers = new Collection<IErrorHandler>();
             _receiveSynchronously = false;
             _transactionTimeout = TimeSpan.Zero;
             _maxPendingReceives = 1; //Default maxpending receives is 1;
@@ -65,9 +60,9 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                if (_timeouts != null)
+                if (DefaultCommunicationTimeouts != null)
                 {
-                    return _timeouts.CloseTimeout;
+                    return DefaultCommunicationTimeouts.CloseTimeout;
                 }
                 else
                 {
@@ -80,9 +75,9 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                if (_timeouts != null)
+                if (DefaultCommunicationTimeouts != null)
                 {
-                    return _timeouts.OpenTimeout;
+                    return DefaultCommunicationTimeouts.OpenTimeout;
                 }
                 else
                 {
@@ -91,25 +86,16 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        internal EndpointDispatcherTable EndpointDispatcherTable
-        {
-            get { return _filterTable; }
-        }
+        internal EndpointDispatcherTable EndpointDispatcherTable { get; private set; }
 
-        internal CommunicationObjectManager<IChannel> Channels
-        {
-            get { return _channels; }
-        }
+        internal CommunicationObjectManager<IChannel> Channels { get; private set; }
 
         public SynchronizedCollection<EndpointDispatcher> Endpoints
         {
             get { return _endpointDispatchers; }
         }
 
-        public Collection<IErrorHandler> ErrorHandlers
-        {
-            get { return _errorHandlers; }
-        }
+        public Collection<IErrorHandler> ErrorHandlers { get; private set; }
 
         public MessageVersion MessageVersion
         {
@@ -117,7 +103,7 @@ namespace System.ServiceModel.Dispatcher
             set
             {
                 _messageVersion = value;
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
             }
         }
 
@@ -126,7 +112,7 @@ namespace System.ServiceModel.Dispatcher
             get { return _shared.EnableFaults; }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _shared.EnableFaults = value;
             }
         }
@@ -144,7 +130,7 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _receiveContextEnabled = value;
             }
         }
@@ -170,11 +156,11 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (value < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                                                     SR.ValueMustBeNonNegative));
                 }
 
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _maxTransactedBatchSize = value;
             }
         }
@@ -184,15 +170,12 @@ namespace System.ServiceModel.Dispatcher
             get { return _shared.ManualAddressing; }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _shared.ManualAddressing = value;
             }
         }
 
-        internal SynchronizedChannelCollection<IChannel> PendingChannels
-        {
-            get { return _pendingChannels; }
-        }
+        internal SynchronizedChannelCollection<IChannel> PendingChannels { get; private set; }
 
         public bool ReceiveSynchronously
         {
@@ -202,7 +185,7 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _receiveSynchronously = value;
             }
         }
@@ -215,7 +198,7 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _sendAsynchronously = value;
             }
         }
@@ -228,7 +211,7 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                this.ThrowIfDisposedOrImmutable();
+                ThrowIfDisposedOrImmutable();
                 _maxPendingReceives = value;
             }
         }
@@ -238,26 +221,23 @@ namespace System.ServiceModel.Dispatcher
             get { return _includeExceptionDetailInFaults; }
             set
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    this.ThrowIfDisposedOrImmutable();
+                    ThrowIfDisposedOrImmutable();
                     _includeExceptionDetailInFaults = value;
                 }
             }
         }
 
-        internal IDefaultCommunicationTimeouts DefaultCommunicationTimeouts
-        {
-            get { return _timeouts; }
-        }
+        internal IDefaultCommunicationTimeouts DefaultCommunicationTimeouts { get; } = null;
 
         private void AbortPendingChannels()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                for (int i = _pendingChannels.Count - 1; i >= 0; i--)
+                for (int i = PendingChannels.Count - 1; i >= 0; i--)
                 {
-                    _pendingChannels[i].Abort();
+                    PendingChannels[i].Abort();
                 }
             }
         }
@@ -267,12 +247,12 @@ namespace System.ServiceModel.Dispatcher
             // we have to perform some slightly convoluted logic here due to 
             // backwards compat. We probably need an IAsyncChannelDispatcher 
             // interface that has timeouts and async
-            this.CloseInput();
+            CloseInput();
 
             if (_performDefaultCloseInput)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
                     ListenerHandler handler = _listenerHandler;
                     if (handler != null)
@@ -299,20 +279,20 @@ namespace System.ServiceModel.Dispatcher
 
         private void OnListenerFaulted(object sender, EventArgs e)
         {
-            this.Fault();
+            Fault();
         }
 
         internal bool HandleError(Exception error)
         {
             ErrorHandlerFaultInfo dummy = new ErrorHandlerFaultInfo();
-            return this.HandleError(error, ref dummy);
+            return HandleError(error, ref dummy);
         }
 
         internal bool HandleError(Exception error, ref ErrorHandlerFaultInfo faultInfo)
         {
             ErrorBehavior behavior;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (_errorBehavior != null)
                 {
@@ -336,7 +316,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal void InitializeChannel(IClientChannel channel)
         {
-            this.ThrowIfDisposedOrNotOpen();
+            ThrowIfDisposedOrNotOpen();
             try
             {
                 for (int i = 0; i < _channelInitializers.Count; ++i)
@@ -361,24 +341,24 @@ namespace System.ServiceModel.Dispatcher
 
         private void OnAddEndpoint(EndpointDispatcher endpoint)
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 endpoint.Attach(this);
 
-                if (this.State == CommunicationState.Opened)
+                if (State == CommunicationState.Opened)
                 {
-                    _filterTable.AddEndpoint(endpoint);
+                    EndpointDispatcherTable.AddEndpoint(endpoint);
                 }
             }
         }
 
         private void OnRemoveEndpoint(EndpointDispatcher endpoint)
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (this.State == CommunicationState.Opened)
+                if (State == CommunicationState.Opened)
                 {
-                    _filterTable.RemoveEndpoint(endpoint);
+                    EndpointDispatcherTable.RemoveEndpoint(endpoint);
                 }
 
                 endpoint.Detach(this);
@@ -398,7 +378,7 @@ namespace System.ServiceModel.Dispatcher
                 handler.Abort();
             }
 
-            this.AbortPendingChannels();
+            AbortPendingChannels();
         }
 
         protected override void OnClose(TimeSpan timeout)
@@ -416,7 +396,7 @@ namespace System.ServiceModel.Dispatcher
                 handler.Close(timeoutHelper.RemainingTime());
             }
 
-            this.AbortPendingChannels();
+            AbortPendingChannels();
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -445,7 +425,7 @@ namespace System.ServiceModel.Dispatcher
             }
             finally
             {
-                this.AbortPendingChannels();
+                AbortPendingChannels();
             }
         }
 
@@ -473,13 +453,13 @@ namespace System.ServiceModel.Dispatcher
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            this.OnClose(timeout);
+            OnClose(timeout);
             return TaskHelpers.CompletedTask();
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
         {
-            this.OnOpen(timeout);
+            OnOpen(timeout);
             return TaskHelpers.CompletedTask();
         }
 
@@ -506,9 +486,9 @@ namespace System.ServiceModel.Dispatcher
             Collection<string> namesSeen = new Collection<string>();
             StringBuilder endpointContractNames = new StringBuilder();
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                foreach (EndpointDispatcher ed in this.Endpoints)
+                foreach (EndpointDispatcher ed in Endpoints)
                 {
                     if (!namesSeen.Contains(ed.ContractName))
                     {
@@ -576,7 +556,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 _eventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
                 WcfEventSource.Instance.ListenerOpenStart(_eventTraceActivity,
-                    (this.Listener != null) ? this.Listener.Uri.ToString() : string.Empty, Guid.Empty);
+                    (Listener != null) ? Listener.Uri.ToString() : string.Empty, Guid.Empty);
                 // Desktop: (this.host != null && host.EventTraceActivity != null) ? this.host.EventTraceActivity.ActivityId : Guid.Empty);
             }
 
@@ -595,7 +575,7 @@ namespace System.ServiceModel.Dispatcher
 
             _errorBehavior = new ErrorBehavior(this);
 
-            _filterTable = new EndpointDispatcherTable(this.ThisLock);
+            EndpointDispatcherTable = new EndpointDispatcherTable(ThisLock);
             for (int i = 0; i < _endpointDispatchers.Count; i++)
             {
                 EndpointDispatcher endpoint = _endpointDispatchers[i];
@@ -604,11 +584,11 @@ namespace System.ServiceModel.Dispatcher
                 // Lock down the DispatchRuntime.
                 endpoint.DispatchRuntime.LockDownProperties();
 
-                _filterTable.AddEndpoint(endpoint);
+                EndpointDispatcherTable.AddEndpoint(endpoint);
             }
 
             IListenerBinder binder = ListenerBinder.GetBinder(_listener, _messageVersion);
-            _listenerHandler = new ListenerHandler(binder, this, _timeouts);
+            _listenerHandler = new ListenerHandler(binder, this, DefaultCommunicationTimeouts);
             _listenerHandler.Open();  // This never throws, which is why it's ok for it to happen in OnOpened
         }
 
@@ -616,7 +596,7 @@ namespace System.ServiceModel.Dispatcher
         {
             ErrorBehavior behavior;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (_errorBehavior != null)
                 {
@@ -658,7 +638,7 @@ namespace System.ServiceModel.Dispatcher
 
             protected override void ClearItems()
             {
-                foreach (EndpointDispatcher item in this.Items)
+                foreach (EndpointDispatcher item in Items)
                 {
                     _owner.OnRemoveEndpoint(item);
                 }
@@ -668,7 +648,9 @@ namespace System.ServiceModel.Dispatcher
             protected override void InsertItem(int index, EndpointDispatcher item)
             {
                 if (item == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
+                }
 
                 _owner.OnAddEndpoint(item);
                 base.InsertItem(index, item);
@@ -676,7 +658,7 @@ namespace System.ServiceModel.Dispatcher
 
             protected override void RemoveItem(int index)
             {
-                EndpointDispatcher item = this.Items[index];
+                EndpointDispatcher item = Items[index];
                 base.RemoveItem(index);
                 _owner.OnRemoveEndpoint(item);
             }
@@ -708,7 +690,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (item == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
                 }
 
                 _outer.ThrowIfDisposedOrImmutable();
@@ -725,7 +707,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (item == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
                 }
 
                 _outer.ThrowIfDisposedOrImmutable();

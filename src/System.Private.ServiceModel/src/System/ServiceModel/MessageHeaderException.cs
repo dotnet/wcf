@@ -10,9 +10,7 @@ namespace System.ServiceModel
 {
     public class MessageHeaderException : ProtocolException
     {
-        private string _headerName;
         private string _headerNamespace;
-        private bool _isDuplicate;
 
         public MessageHeaderException(string message)
             : this(message, null, null)
@@ -41,17 +39,17 @@ namespace System.ServiceModel
         public MessageHeaderException(string message, string headerName, string ns, bool isDuplicate, Exception innerException)
             : base(message, innerException)
         {
-            _headerName = headerName;
+            HeaderName = headerName;
             _headerNamespace = ns;
-            _isDuplicate = isDuplicate;
+            IsDuplicate = isDuplicate;
         }
 
-        public string HeaderName { get { return _headerName; } }
+        public string HeaderName { get; }
 
         public string HeaderNamespace { get { return _headerNamespace; } }
 
         // IsDuplicate==true means there was more than one; IsDuplicate==false means there were zero
-        public bool IsDuplicate { get { return _isDuplicate; } }
+        public bool IsDuplicate { get; }
 
         internal Message ProvideFault(MessageVersion messageVersion)
         {

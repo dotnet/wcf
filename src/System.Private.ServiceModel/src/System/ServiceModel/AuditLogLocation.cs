@@ -20,7 +20,9 @@ namespace System.ServiceModel
         public static bool IsDefined(AuditLogLocation auditLogLocation)
         {
             if (auditLogLocation == AuditLogLocation.Security && !SecurityAuditHelper.IsSecurityAuditSupported)
+            {
                 throw ExceptionHelper.PlatformNotSupported(SR.SecurityAuditPlatformNotSupported);
+            }
 
             return auditLogLocation == AuditLogLocation.Default
                 || auditLogLocation == AuditLogLocation.Application

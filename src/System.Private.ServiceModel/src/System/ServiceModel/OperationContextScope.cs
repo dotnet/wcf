@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.ServiceModel.Channels;
-using System.Threading;
 
 namespace System.ServiceModel
 {
@@ -21,12 +18,12 @@ namespace System.ServiceModel
 
         public OperationContextScope(IContextChannel channel)
         {
-            this.PushContext(new OperationContext(channel));
+            PushContext(new OperationContext(channel));
         }
 
         public OperationContextScope(OperationContext context)
         {
-            this.PushContext(context);
+            PushContext(context);
         }
 
         public void Dispose()
@@ -34,7 +31,7 @@ namespace System.ServiceModel
             if (!_disposed)
             {
                 _disposed = true;
-                this.PopContext();
+                PopContext();
             }
         }
 
@@ -48,16 +45,22 @@ namespace System.ServiceModel
         private void PopContext()
         {
             if (OperationContextScope.s_currentScope != this)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxInterleavedContextScopes0));
+            }
 
             if (OperationContext.Current != _currentContext)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxContextModifiedInsideScope0));
+            }
 
             OperationContextScope.s_currentScope = _originalScope;
             OperationContext.Current = _originalContext;
 
             if (_currentContext != null)
+            {
                 _currentContext.SetClientReply(null, false);
+            }
         }
     }
 }

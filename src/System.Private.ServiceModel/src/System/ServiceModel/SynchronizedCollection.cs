@@ -8,61 +8,56 @@ using System.Reflection;
 
 namespace System.Collections.Generic
 {
-    [System.Runtime.InteropServices.ComVisible(false)]
+    [Runtime.InteropServices.ComVisible(false)]
     public class SynchronizedCollection<T> : IList<T>, IList
     {
-        private List<T> _items;
         private object _sync;
 
         public SynchronizedCollection()
         {
-            _items = new List<T>();
+            Items = new List<T>();
             _sync = new Object();
         }
 
         public SynchronizedCollection(object syncRoot)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
-
-            _items = new List<T>();
-            _sync = syncRoot;
+            Items = new List<T>();
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         public SynchronizedCollection(object syncRoot, IEnumerable<T> list)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
             if (list == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("list"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(list)));
+            }
 
-            _items = new List<T>(list);
-            _sync = syncRoot;
+            Items = new List<T>(list);
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         public SynchronizedCollection(object syncRoot, params T[] list)
         {
-            if (syncRoot == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("syncRoot"));
             if (list == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("list"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(list)));
+            }
 
-            _items = new List<T>(list.Length);
+            Items = new List<T>(list.Length);
             for (int i = 0; i < list.Length; i++)
-                _items.Add(list[i]);
+            {
+                Items.Add(list[i]);
+            }
 
-            _sync = syncRoot;
+            _sync = syncRoot ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(syncRoot)));
         }
 
         public int Count
         {
-            get { lock (_sync) { return _items.Count; } }
+            get { lock (_sync) { return Items.Count; } }
         }
 
-        protected List<T> Items
-        {
-            get { return _items; }
-        }
+        protected List<T> Items { get; }
 
         public object SyncRoot
         {
@@ -75,18 +70,20 @@ namespace System.Collections.Generic
             {
                 lock (_sync)
                 {
-                    return _items[index];
+                    return Items[index];
                 }
             }
             set
             {
                 lock (_sync)
                 {
-                    if (index < 0 || index >= _items.Count)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SR.Format(SR.ValueMustBeInRange, 0, _items.Count - 1)));
+                    if (index < 0 || index >= Items.Count)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(index), index,
+                                                    SR.Format(SR.ValueMustBeInRange, 0, Items.Count - 1)));
+                    }
 
-                    this.SetItem(index, value);
+                    SetItem(index, value);
                 }
             }
         }
@@ -95,8 +92,8 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                int index = _items.Count;
-                this.InsertItem(index, item);
+                int index = Items.Count;
+                InsertItem(index, item);
             }
         }
 
@@ -104,7 +101,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                this.ClearItems();
+                ClearItems();
             }
         }
 
@@ -112,7 +109,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                _items.CopyTo(array, index);
+                Items.CopyTo(array, index);
             }
         }
 
@@ -120,7 +117,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                return _items.Contains(item);
+                return Items.Contains(item);
             }
         }
 
@@ -128,7 +125,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                return _items.GetEnumerator();
+                return Items.GetEnumerator();
             }
         }
 
@@ -136,7 +133,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                return this.InternalIndexOf(item);
+                return InternalIndexOf(item);
             }
         }
 
@@ -144,21 +141,23 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                if (index < 0 || index > _items.Count)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SR.Format(SR.ValueMustBeInRange, 0, _items.Count)));
+                if (index < 0 || index > Items.Count)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(index), index,
+                                                    SR.Format(SR.ValueMustBeInRange, 0, Items.Count)));
+                }
 
-                this.InsertItem(index, item);
+                InsertItem(index, item);
             }
         }
 
         private int InternalIndexOf(T item)
         {
-            int count = _items.Count;
+            int count = Items.Count;
 
             for (int i = 0; i < count; i++)
             {
-                if (object.Equals(_items[i], item))
+                if (object.Equals(Items[i], item))
                 {
                     return i;
                 }
@@ -170,11 +169,13 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                int index = this.InternalIndexOf(item);
+                int index = InternalIndexOf(item);
                 if (index < 0)
+                {
                     return false;
+                }
 
-                this.RemoveItem(index);
+                RemoveItem(index);
                 return true;
             }
         }
@@ -183,33 +184,34 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                if (index < 0 || index >= _items.Count)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SR.Format(SR.ValueMustBeInRange, 0, _items.Count - 1)));
+                if (index < 0 || index >= Items.Count)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(index), index,
+                                                    SR.Format(SR.ValueMustBeInRange, 0, Items.Count - 1)));
+                }
 
-
-                this.RemoveItem(index);
+                RemoveItem(index);
             }
         }
 
         protected virtual void ClearItems()
         {
-            _items.Clear();
+            Items.Clear();
         }
 
         protected virtual void InsertItem(int index, T item)
         {
-            _items.Insert(index, item);
+            Items.Insert(index, item);
         }
 
         protected virtual void RemoveItem(int index)
         {
-            _items.RemoveAt(index);
+            Items.RemoveAt(index);
         }
 
         protected virtual void SetItem(int index, T item)
         {
-            _items[index] = item;
+            Items[index] = item;
         }
 
         bool ICollection<T>.IsReadOnly
@@ -219,7 +221,7 @@ namespace System.Collections.Generic
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IList)_items).GetEnumerator();
+            return ((IList)Items).GetEnumerator();
         }
 
         bool ICollection.IsSynchronized
@@ -236,7 +238,7 @@ namespace System.Collections.Generic
         {
             lock (_sync)
             {
-                ((IList)_items).CopyTo(array, index);
+                ((IList)Items).CopyTo(array, index);
             }
         }
 
@@ -269,33 +271,33 @@ namespace System.Collections.Generic
 
             lock (_sync)
             {
-                this.Add((T)value);
-                return this.Count - 1;
+                Add((T)value);
+                return Count - 1;
             }
         }
 
         bool IList.Contains(object value)
         {
             VerifyValueType(value);
-            return this.Contains((T)value);
+            return Contains((T)value);
         }
 
         int IList.IndexOf(object value)
         {
             VerifyValueType(value);
-            return this.IndexOf((T)value);
+            return IndexOf((T)value);
         }
 
         void IList.Insert(int index, object value)
         {
             VerifyValueType(value);
-            this.Insert(index, (T)value);
+            Insert(index, (T)value);
         }
 
         void IList.Remove(object value)
         {
             VerifyValueType(value);
-            this.Remove((T)value);
+            Remove((T)value);
         }
 
         private static void VerifyValueType(object value)

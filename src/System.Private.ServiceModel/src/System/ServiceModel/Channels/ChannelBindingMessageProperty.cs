@@ -18,14 +18,9 @@ namespace System.ServiceModel.Channels
 
         public ChannelBindingMessageProperty(ChannelBinding channelBinding, bool ownsCleanup)
         {
-            if (channelBinding == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channelBinding");
-            }
-
             _refCount = 1;
             _thisLock = new object();
-            _channelBinding = channelBinding;
+            _channelBinding = channelBinding ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelBinding));
             _ownsCleanup = ownsCleanup;
         }
 
@@ -52,7 +47,7 @@ namespace System.ServiceModel.Channels
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
 
             return TryGet(message.Properties, out property);
@@ -62,7 +57,7 @@ namespace System.ServiceModel.Channels
         {
             if (properties == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("properties");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(properties));
             }
 
             property = null;
@@ -81,7 +76,7 @@ namespace System.ServiceModel.Channels
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
 
             AddTo(message.Properties);
@@ -92,7 +87,7 @@ namespace System.ServiceModel.Channels
             ThrowIfDisposed();
             if (properties == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("properties");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(properties));
             }
 
             properties.Add(ChannelBindingMessageProperty.Name, this);
@@ -110,11 +105,11 @@ namespace System.ServiceModel.Channels
 
         public void Dispose()
         {
-            if (!this.IsDisposed)
+            if (!IsDisposed)
             {
                 lock (_thisLock)
                 {
-                    if (!this.IsDisposed && --_refCount == 0)
+                    if (!IsDisposed && --_refCount == 0)
                     {
                         if (_ownsCleanup)
                         {
@@ -128,9 +123,9 @@ namespace System.ServiceModel.Channels
 
         private void ThrowIfDisposed()
         {
-            if (this.IsDisposed)
+            if (IsDisposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
     }

@@ -3,12 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
-using System.ServiceModel;
 
 namespace System.IdentityModel.Selectors
 {

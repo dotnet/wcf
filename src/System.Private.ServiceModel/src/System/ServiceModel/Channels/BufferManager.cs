@@ -17,13 +17,13 @@ namespace System.ServiceModel.Channels
         {
             if (maxBufferPoolSize < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxBufferPoolSize",
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maxBufferPoolSize),
                     maxBufferPoolSize, SR.ValueMustBeNonNegative));
             }
 
             if (maxBufferSize < 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxBufferSize",
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maxBufferSize),
                     maxBufferSize, SR.ValueMustBeNonNegative));
             }
 
@@ -44,42 +44,37 @@ namespace System.ServiceModel.Channels
 
         internal class WrappingBufferManager : BufferManager
         {
-            private InternalBufferManager _innerBufferManager;
-
             public WrappingBufferManager(InternalBufferManager innerBufferManager)
             {
-                _innerBufferManager = innerBufferManager;
+                InternalBufferManager = innerBufferManager;
             }
 
-            public InternalBufferManager InternalBufferManager
-            {
-                get { return _innerBufferManager; }
-            }
+            public InternalBufferManager InternalBufferManager { get; }
 
             public override byte[] TakeBuffer(int bufferSize)
             {
                 if (bufferSize < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("bufferSize", bufferSize,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(bufferSize), bufferSize,
                         SR.ValueMustBeNonNegative));
                 }
 
-                return _innerBufferManager.TakeBuffer(bufferSize);
+                return InternalBufferManager.TakeBuffer(bufferSize);
             }
 
             public override void ReturnBuffer(byte[] buffer)
             {
                 if (buffer == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("buffer");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(buffer));
                 }
 
-                _innerBufferManager.ReturnBuffer(buffer);
+                InternalBufferManager.ReturnBuffer(buffer);
             }
 
             public override void Clear()
             {
-                _innerBufferManager.Clear();
+                InternalBufferManager.Clear();
             }
         }
 

@@ -5,10 +5,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Security.Principal;
 using System.ServiceModel;
 
@@ -33,19 +29,40 @@ namespace System.IdentityModel.Claims
         public static IEqualityComparer<Claim> GetComparer(string claimType)
         {
             if (claimType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claimType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claimType));
+            }
+
             if (claimType == ClaimTypes.Dns)
+            {
                 return Dns;
+            }
+
             if (claimType == ClaimTypes.Hash)
+            {
                 return Hash;
+            }
+
             if (claimType == ClaimTypes.Rsa)
+            {
                 return Rsa;
+            }
+
             if (claimType == ClaimTypes.Thumbprint)
+            {
                 return Thumbprint;
+            }
+
             if (claimType == ClaimTypes.Upn)
+            {
                 return Upn;
+            }
+
             if (claimType == ClaimTypes.X500DistinguishedName)
+            {
                 return X500DistinguishedName;
+            }
+
             return Default;
         }
 
@@ -137,13 +154,19 @@ namespace System.IdentityModel.Claims
         public bool Equals(Claim claim1, Claim claim2)
         {
             if (ReferenceEquals(claim1, claim2))
+            {
                 return true;
+            }
 
             if (claim1 == null || claim2 == null)
+            {
                 return false;
+            }
 
             if (claim1.ClaimType != claim2.ClaimType || claim1.Right != claim2.Right)
+            {
                 return false;
+            }
 
             return _resourceComparer.Equals(claim1.Resource, claim2.Resource);
         }
@@ -151,7 +174,9 @@ namespace System.IdentityModel.Claims
         public int GetHashCode(Claim claim)
         {
             if (claim == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("claim");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(claim));
+            }
 
             return claim.ClaimType.GetHashCode() ^ claim.Right.GetHashCode()
                    ^ ((claim.Resource == null) ? 0 : _resourceComparer.GetHashCode(claim.Resource));
@@ -162,16 +187,25 @@ namespace System.IdentityModel.Claims
             bool IEqualityComparer.Equals(object obj1, object obj2)
             {
                 if (obj1 == null && obj2 == null)
+                {
                     return true;
+                }
+
                 if (obj1 == null || obj2 == null)
+                {
                     return false;
+                }
+
                 return obj1.Equals(obj2);
             }
 
             int IEqualityComparer.GetHashCode(object obj)
             {
                 if (obj == null)
+                {
                     return 0;
+                }
+
                 return obj.GetHashCode();
             }
         }
@@ -181,20 +215,28 @@ namespace System.IdentityModel.Claims
             bool IEqualityComparer.Equals(object obj1, object obj2)
             {
                 if (ReferenceEquals(obj1, obj2))
+                {
                     return true;
+                }
 
                 byte[] bytes1 = obj1 as byte[];
                 byte[] bytes2 = obj2 as byte[];
                 if (bytes1 == null || bytes2 == null)
+                {
                     return false;
+                }
 
                 if (bytes1.Length != bytes2.Length)
+                {
                     return false;
+                }
 
                 for (int i = 0; i < bytes1.Length; ++i)
                 {
                     if (bytes1[i] != bytes2[i])
+                    {
                         return false;
+                    }
                 }
 
                 return true;
@@ -204,7 +246,9 @@ namespace System.IdentityModel.Claims
             {
                 byte[] bytes = obj as byte[];
                 if (bytes == null)
+                {
                     return 0;
+                }
 
                 int hashCode = 0;
                 for (int i = 0; i < bytes.Length && i < 4; ++i)
@@ -221,7 +265,10 @@ namespace System.IdentityModel.Claims
             bool IEqualityComparer.Equals(object obj1, object obj2)
             {
                 if (ReferenceEquals(obj1, obj2))
+                {
                     return true;
+                }
+
                 throw ExceptionHelper.PlatformNotSupported();
             }
 
@@ -243,7 +290,10 @@ namespace System.IdentityModel.Claims
             bool IEqualityComparer.Equals(object obj1, object obj2)
             {
                 if (ReferenceEquals(obj1, obj2))
+                {
                     return true;
+                }
+
                 throw ExceptionHelper.PlatformNotSupported();
             }
 
@@ -258,21 +308,29 @@ namespace System.IdentityModel.Claims
             bool IEqualityComparer.Equals(object obj1, object obj2)
             {
                 if (StringComparer.OrdinalIgnoreCase.Equals(obj1 as string, obj2 as string))
+                {
                     return true;
+                }
 
                 string upn1 = obj1 as string;
                 string upn2 = obj2 as string;
                 if (upn1 == null || upn2 == null)
+                {
                     return false;
+                }
 
                 SecurityIdentifier sid1;
                 if (!TryLookupSidFromName(upn1, out sid1))
+                {
                     return false;
+                }
 
                 // Normalize to sid
                 SecurityIdentifier sid2;
                 if (!TryLookupSidFromName(upn2, out sid2))
+                {
                     return false;
+                }
 
                 return sid1 == sid2;
             }
@@ -281,12 +339,16 @@ namespace System.IdentityModel.Claims
             {
                 string upn = obj as string;
                 if (upn == null)
+                {
                     return 0;
+                }
 
                 // Normalize to sid
                 SecurityIdentifier sid;
                 if (TryLookupSidFromName(upn, out sid))
+                {
                     return sid.GetHashCode();
+                }
 
                 return StringComparer.OrdinalIgnoreCase.GetHashCode(upn);
             }

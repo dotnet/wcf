@@ -7,27 +7,18 @@ using System.Xml;
 
 namespace System.ServiceModel.Security
 {
-    using ISignatureValueSecurityElement = System.IdentityModel.ISignatureValueSecurityElement;
-    using DictionaryManager = System.IdentityModel.DictionaryManager;
+    using ISignatureValueSecurityElement = IdentityModel.ISignatureValueSecurityElement;
+    using DictionaryManager = IdentityModel.DictionaryManager;
 
     internal class SignatureConfirmationElement : ISignatureValueSecurityElement
     {
         private SecurityVersion _version;
-        private string _id;
         private byte[] _signatureValue;
 
         public SignatureConfirmationElement(string id, byte[] signatureValue, SecurityVersion version)
         {
-            if (id == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
-            }
-            if (signatureValue == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("signatureValue");
-            }
-            _id = id;
-            _signatureValue = signatureValue;
+            Id = id ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
+            _signatureValue = signatureValue ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(signatureValue));
             _version = version;
         }
 
@@ -36,10 +27,7 @@ namespace System.ServiceModel.Security
             get { return true; }
         }
 
-        public string Id
-        {
-            get { return _id; }
-        }
+        public string Id { get; }
 
         public byte[] GetSignatureValue()
         {
@@ -48,7 +36,7 @@ namespace System.ServiceModel.Security
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
         {
-            _version.WriteSignatureConfirmation(writer, _id, _signatureValue);
+            _version.WriteSignatureConfirmation(writer, Id, _signatureValue);
         }
     }
 }

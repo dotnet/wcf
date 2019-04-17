@@ -5,21 +5,14 @@
 
 namespace System.ServiceModel.Security
 {
-    using System.Collections.Generic;
     using System.ServiceModel;
     using System.IO;
-    using System.IdentityModel.Claims;
-    using System.IdentityModel.Policy;
-    using System.ServiceModel.Security.Tokens;
-    using System.Threading;
-    using System.Globalization;
-    using System.ServiceModel.Diagnostics;
     using System.Text;
     using System.Xml;
 
-    using CanonicalFormWriter = System.IdentityModel.CanonicalFormWriter;
-    using SignatureResourcePool = System.IdentityModel.SignatureResourcePool;
-    using HashStream = System.IdentityModel.HashStream;
+    using CanonicalFormWriter = IdentityModel.CanonicalFormWriter;
+    using SignatureResourcePool = IdentityModel.SignatureResourcePool;
+    using HashStream = IdentityModel.HashStream;
 
     internal abstract class WSUtilitySpecificationVersion
     {
@@ -35,11 +28,9 @@ namespace System.ServiceModel.Security
             "yyyy-MM-ddTHH:mm:ssZ"
         };
 
-        private readonly XmlDictionaryString _namespaceUri;
-
         internal WSUtilitySpecificationVersion(XmlDictionaryString namespaceUri)
         {
-            _namespaceUri = namespaceUri;
+            NamespaceUri = namespaceUri;
         }
 
         public static WSUtilitySpecificationVersion Default
@@ -47,10 +38,7 @@ namespace System.ServiceModel.Security
             get { return OneDotZero; }
         }
 
-        internal XmlDictionaryString NamespaceUri
-        {
-            get { return _namespaceUri; }
-        }
+        internal XmlDictionaryString NamespaceUri { get; }
 
         public static WSUtilitySpecificationVersion OneDotZero
         {
@@ -67,17 +55,12 @@ namespace System.ServiceModel.Security
 
         private sealed class WSUtilitySpecificationVersionOneDotZero : WSUtilitySpecificationVersion
         {
-            private static readonly WSUtilitySpecificationVersionOneDotZero s_instance = new WSUtilitySpecificationVersionOneDotZero();
-
             private WSUtilitySpecificationVersionOneDotZero()
                 : base(XD.UtilityDictionary.Namespace)
             {
             }
 
-            public static WSUtilitySpecificationVersionOneDotZero Instance
-            {
-                get { return s_instance; }
-            }
+            public static WSUtilitySpecificationVersionOneDotZero Instance { get; } = new WSUtilitySpecificationVersionOneDotZero();
 
             internal override bool IsReaderAtTimestamp(XmlDictionaryReader reader)
             {
@@ -86,7 +69,47 @@ namespace System.ServiceModel.Security
 
             internal override SecurityTimestamp ReadTimestamp(XmlDictionaryReader reader, string digestAlgorithm, SignatureResourcePool resourcePool)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                bool canonicalize = digestAlgorithm != null && reader.CanCanonicalize;
+                HashStream hashStream = null;
+
+                reader.MoveToStartElement(XD.UtilityDictionary.Timestamp, XD.UtilityDictionary.Namespace);
+                if (canonicalize)
+                {
+                    hashStream = resourcePool.TakeHashStream(digestAlgorithm);
+                    reader.StartCanonicalization(hashStream, false, null);
+                }
+                string id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+                reader.ReadStartElement();
+
+                reader.ReadStartElement(XD.UtilityDictionary.CreatedElement, XD.UtilityDictionary.Namespace);
+                DateTime creationTimeUtc = reader.ReadContentAsDateTime().ToUniversalTime();
+                reader.ReadEndElement();
+
+                DateTime expiryTimeUtc;
+                if (reader.IsStartElement(XD.UtilityDictionary.ExpiresElement, XD.UtilityDictionary.Namespace))
+                {
+                    reader.ReadStartElement();
+                    expiryTimeUtc = reader.ReadContentAsDateTime().ToUniversalTime();
+                    reader.ReadEndElement();
+                }
+                else
+                {
+                    expiryTimeUtc = SecurityUtils.MaxUtcDateTime;
+                }
+
+                reader.ReadEndElement();
+
+                byte[] digest;
+                if (canonicalize)
+                {
+                    reader.EndCanonicalization();
+                    digest = hashStream.FlushHashAndGetValue();
+                }
+                else
+                {
+                    digest = null;
+                }
+                return new SecurityTimestamp(creationTimeUtc, expiryTimeUtc, id, digestAlgorithm, digest);
             }
 
             internal override void WriteTimestamp(XmlDictionaryWriter writer, SecurityTimestamp timestamp)
@@ -134,8 +157,6 @@ namespace System.ServiceModel.Security
             private readonly byte[] _fragment3;
             private readonly byte[] _fragment4;
 
-            private static readonly TimestampCanonicalFormWriter s_instance = new TimestampCanonicalFormWriter();
-
             private TimestampCanonicalFormWriter()
             {
                 Encoding encoding = CanonicalFormWriter.Utf8WithoutPreamble;
@@ -145,10 +166,7 @@ namespace System.ServiceModel.Security
                 _fragment4 = encoding.GetBytes(xml4);
             }
 
-            public static TimestampCanonicalFormWriter Instance
-            {
-                get { return s_instance; }
-            }
+            public static TimestampCanonicalFormWriter Instance { get; } = new TimestampCanonicalFormWriter();
 
             public void WriteCanonicalForm(Stream stream, string id, char[] created, char[] expires, byte[] workBuffer)
             {

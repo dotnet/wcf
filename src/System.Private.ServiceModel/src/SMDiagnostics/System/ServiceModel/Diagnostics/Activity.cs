@@ -10,15 +10,14 @@ namespace System.ServiceModel.Diagnostics
     internal class Activity : IDisposable
     {
         protected Guid parentId;
-        private Guid _currentId;
         private bool _mustDispose = false;
 
         protected Activity(Guid activityId, Guid parentId)
         {
-            _currentId = activityId;
+            Id = activityId;
             this.parentId = parentId;
             _mustDispose = true;
-            DiagnosticTraceBase.ActivityId = _currentId;
+            DiagnosticTraceBase.ActivityId = Id;
         }
 
         internal static Activity CreateActivity(Guid activityId)
@@ -40,14 +39,11 @@ namespace System.ServiceModel.Diagnostics
             if (_mustDispose)
             {
                 _mustDispose = false;
-                DiagnosticTraceBase.ActivityId = this.parentId;
+                DiagnosticTraceBase.ActivityId = parentId;
             }
             GC.SuppressFinalize(this);
         }
 
-        protected Guid Id
-        {
-            get { return _currentId; }
-        }
+        protected Guid Id { get; }
     }
 }

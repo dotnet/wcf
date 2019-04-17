@@ -34,9 +34,9 @@ namespace System.ServiceModel.Channels
         private WebSocketTransportSettings(WebSocketTransportSettings settings)
         {
             Fx.Assert(settings != null, "settings should not be null.");
-            this.TransportUsage = settings.TransportUsage;
-            this.SubProtocol = settings.SubProtocol;
-            this.KeepAliveInterval = settings.KeepAliveInterval;
+            TransportUsage = settings.TransportUsage;
+            SubProtocol = settings.SubProtocol;
+            KeepAliveInterval = settings.KeepAliveInterval;
         }
 
         [DefaultValue(WebSocketDefaults.TransportUsage)]
@@ -137,9 +137,9 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            return this.TransportUsage == other.TransportUsage
-                   && this.KeepAliveInterval == other.KeepAliveInterval
-                   && StringComparer.OrdinalIgnoreCase.Compare(this.SubProtocol, other.SubProtocol) == 0;
+            return TransportUsage == other.TransportUsage
+                   && KeepAliveInterval == other.KeepAliveInterval
+                   && StringComparer.OrdinalIgnoreCase.Compare(SubProtocol, other.SubProtocol) == 0;
         }
 
         public override bool Equals(object obj)
@@ -150,16 +150,16 @@ namespace System.ServiceModel.Channels
             }
 
             WebSocketTransportSettings settings = obj as WebSocketTransportSettings;
-            return this.Equals(settings);
+            return Equals(settings);
         }
 
         public override int GetHashCode()
         {
-            int hashcode = this.TransportUsage.GetHashCode()
-                           ^ this.KeepAliveInterval.GetHashCode();
-            if (this.SubProtocol != null)
+            int hashcode = TransportUsage.GetHashCode()
+                           ^ KeepAliveInterval.GetHashCode();
+            if (SubProtocol != null)
             {
-                hashcode ^= this.SubProtocol.ToLowerInvariant().GetHashCode();
+                hashcode ^= SubProtocol.ToLowerInvariant().GetHashCode();
             }
 
             return hashcode;

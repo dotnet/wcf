@@ -34,8 +34,6 @@ namespace System.ServiceModel.Channels
         private SocketAsyncEventArgs _asyncReadEventArgs;
         private TimeSpan _readFinTimeout;
         private int _asyncReadSize;
-        private byte[] _readBuffer;
-        private int _asyncReadBufferSize;
         private object _asyncReadState;
         private Action<object> _asyncReadCallback;
         private Exception _asyncReadException;
@@ -62,23 +60,17 @@ namespace System.ServiceModel.Channels
             _connectionBufferPool = connectionBufferPool ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(connectionBufferPool));
             _socket = socket ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(socket));
             _closeState = CloseState.Open;
-            _readBuffer = _connectionBufferPool.Take();
-            _asyncReadBufferSize = _readBuffer.Length;
+            AsyncReadBuffer = _connectionBufferPool.Take();
+            AsyncReadBufferSize = AsyncReadBuffer.Length;
             _sendTimeout = _receiveTimeout = TimeSpan.MaxValue;
             _closeState = CloseState.Open;
-            _socket.SendBufferSize = _socket.ReceiveBufferSize = _asyncReadBufferSize;
+            _socket.SendBufferSize = _socket.ReceiveBufferSize = AsyncReadBufferSize;
             _sendTimeout = _receiveTimeout = TimeSpan.MaxValue;
         }
 
-        public int AsyncReadBufferSize
-        {
-            get { return _asyncReadBufferSize; }
-        }
+        public int AsyncReadBufferSize { get; }
 
-        public byte[] AsyncReadBuffer
-        {
-            get { return _readBuffer; }
-        }
+        public byte[] AsyncReadBuffer { get; private set; }
 
         private object ThisLock
         {
@@ -494,7 +486,7 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     ConvertObjectDisposedException(new ObjectDisposedException(
-                    this.GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
+                    GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
             }
         }
 
@@ -504,7 +496,7 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     ConvertObjectDisposedException(new ObjectDisposedException(
-                    this.GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
+                    GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
             }
         }
 
@@ -842,8 +834,8 @@ namespace System.ServiceModel.Channels
             Action<object> callback, object state)
         {
             ConnectionUtilities.ValidateBufferBounds(AsyncReadBufferSize, offset, size);
-            this.ThrowIfNotOpen();
-            var completionResult = this.BeginReadCore(offset, size, timeout, callback, state);
+            ThrowIfNotOpen();
+            var completionResult = BeginReadCore(offset, size, timeout, callback, state);
             if (completionResult == AsyncCompletionResult.Completed && WcfEventSource.Instance.SocketReadStopIsEnabled())
             {
                 TraceSocketReadStop(_asyncReadSize, true);
@@ -1120,7 +1112,7 @@ namespace System.ServiceModel.Channels
         private void ReturnReadBuffer()
         {
             // We release the buffer only if there is no outstanding I/O
-            this.TryReturnReadBuffer();
+            TryReturnReadBuffer();
         }
 
         // This method should be called inside ThisLock
@@ -1129,10 +1121,10 @@ namespace System.ServiceModel.Channels
             // The buffer must not be returned and nulled when an abort occurs. Since the buffer
             // is also accessed by higher layers, code that has not yet realized the stack is
             // aborted may be attempting to read from the buffer.
-            if (_readBuffer != null && !_aborted)
+            if (AsyncReadBuffer != null && !_aborted)
             {
-                _connectionBufferPool.Return(_readBuffer);
-                _readBuffer = null;
+                _connectionBufferPool.Return(AsyncReadBuffer);
+                AsyncReadBuffer = null;
             }
         }
 
@@ -1261,7 +1253,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 _asyncReadEventArgs = new SocketAsyncEventArgs();
-                _asyncReadEventArgs.SetBuffer(_readBuffer, 0, _readBuffer.Length);
+                _asyncReadEventArgs.SetBuffer(AsyncReadBuffer, 0, AsyncReadBuffer.Length);
                 _asyncReadEventArgs.Completed += s_onReceiveAsyncCompleted;
             }
         }

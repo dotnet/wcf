@@ -8,7 +8,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime;
-using System.Runtime.CompilerServices;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
@@ -80,9 +79,13 @@ namespace System.ServiceModel.Channels
                 if (operation == null)
                 {
                     if (_serviceChannel.Factory != null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.SFxMethodNotSupported1, method.Name)));
+                    }
                     else
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.SFxMethodNotSupportedOnCallback1, method.Name)));
+                    }
                 }
 
                 MethodType methodType;
@@ -124,7 +127,7 @@ namespace System.ServiceModel.Channels
         {
             if (args == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("args");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(args));
             }
 
             if (targetMethod == null)
@@ -318,8 +321,8 @@ namespace System.ServiceModel.Channels
                 if (ServiceModelActivity.Current == null ||
                     ServiceModelActivity.Current.ActivityType != ActivityType.Close)
                 {
-                    MethodData methodData = this.GetMethodData(methodCall);
-                    if (methodData.MethodBase.DeclaringType == typeof(System.ServiceModel.ICommunicationObject)
+                    MethodData methodData = GetMethodData(methodCall);
+                    if (methodData.MethodBase.DeclaringType == typeof(ICommunicationObject)
                         && methodData.MethodBase.Name.Equals("Close", StringComparison.Ordinal))
                     {
                         activityName = SR.Format(SR.ActivityClose, _serviceChannel.GetType().FullName);
@@ -476,8 +479,6 @@ namespace System.ServiceModel.Channels
 
         internal struct MethodData
         {
-            private MethodBase _methodBase;
-            private MethodType _methodType;
             private ProxyOperationRuntime _operation;
 
             public MethodData(MethodBase methodBase, MethodType methodType)
@@ -487,20 +488,14 @@ namespace System.ServiceModel.Channels
 
             public MethodData(MethodBase methodBase, MethodType methodType, ProxyOperationRuntime operation)
             {
-                _methodBase = methodBase;
-                _methodType = methodType;
+                MethodBase = methodBase;
+                MethodType = methodType;
                 _operation = operation;
             }
 
-            public MethodBase MethodBase
-            {
-                get { return _methodBase; }
-            }
+            public MethodBase MethodBase { get; }
 
-            public MethodType MethodType
-            {
-                get { return _methodType; }
-            }
+            public MethodType MethodType { get; }
 
             public ProxyOperationRuntime Operation
             {

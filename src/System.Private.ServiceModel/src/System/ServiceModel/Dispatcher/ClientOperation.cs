@@ -21,7 +21,7 @@ namespace System.ServiceModel.Dispatcher
         {
             get
             {
-                return this.parameterInspectors;
+                return parameterInspectors;
             }
         }
         internal SynchronizedCollection<IParameterInspector> parameterInspectors;
@@ -29,26 +29,19 @@ namespace System.ServiceModel.Dispatcher
 
     public sealed class ClientOperation : ClientOperationCompatBase
     {
-        private string _action;
-        private SynchronizedCollection<FaultContractInfo> _faultContractInfos;
         private bool _serializeRequest;
         private bool _deserializeReply;
-        private IClientMessageFormatter _formatter;
         private IClientFaultFormatter _faultFormatter;
         private bool _isInitiating = true;
         private bool _isOneWay;
         private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
-        private string _name;
-
         private ClientRuntime _parent;
-        private string _replyAction;
         private MethodInfo _beginMethod;
         private MethodInfo _endMethod;
         private MethodInfo _syncMethod;
         private MethodInfo _taskMethod;
         private Type _taskTResult;
-        private bool _isFaultFormatterSetExplicit = false;
 
         public ClientOperation(ClientRuntime parent, string name, string action)
             : this(parent, name, action, null)
@@ -57,30 +50,18 @@ namespace System.ServiceModel.Dispatcher
 
         public ClientOperation(ClientRuntime parent, string name, string action, string replyAction)
         {
-            if (parent == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
+            _parent = parent ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
+            Name = name ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name));
+            Action = action;
+            ReplyAction = replyAction;
 
-            if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name");
-
-            _parent = parent;
-            _name = name;
-            _action = action;
-            _replyAction = replyAction;
-
-            _faultContractInfos = parent.NewBehaviorCollection<FaultContractInfo>();
-            this.parameterInspectors = parent.NewBehaviorCollection<IParameterInspector>();
+            FaultContractInfos = parent.NewBehaviorCollection<FaultContractInfo>();
+            parameterInspectors = parent.NewBehaviorCollection<IParameterInspector>();
         }
 
-        public string Action
-        {
-            get { return _action; }
-        }
+        public string Action { get; }
 
-        public SynchronizedCollection<FaultContractInfo> FaultContractInfos
-        {
-            get { return _faultContractInfos; }
-        }
+        public SynchronizedCollection<FaultContractInfo> FaultContractInfos { get; }
 
         public MethodInfo BeginMethod
         {
@@ -123,13 +104,13 @@ namespace System.ServiceModel.Dispatcher
 
         public IClientMessageFormatter Formatter
         {
-            get { return _formatter; }
+            get { return InternalFormatter; }
             set
             {
                 lock (_parent.ThisLock)
                 {
                     _parent.InvalidateRuntime();
-                    _formatter = value;
+                    InternalFormatter = value;
                 }
             }
         }
@@ -140,7 +121,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_faultFormatter == null)
                 {
-                    _faultFormatter = new DataContractSerializerFaultFormatter(_faultContractInfos);
+                    _faultFormatter = new DataContractSerializerFaultFormatter(FaultContractInfos);
                 }
                 return _faultFormatter;
             }
@@ -150,24 +131,14 @@ namespace System.ServiceModel.Dispatcher
                 {
                     _parent.InvalidateRuntime();
                     _faultFormatter = value;
-                    _isFaultFormatterSetExplicit = true;
+                    IsFaultFormatterSetExplicit = true;
                 }
             }
         }
 
-        internal bool IsFaultFormatterSetExplicit
-        {
-            get
-            {
-                return _isFaultFormatterSetExplicit;
-            }
-        }
+        internal bool IsFaultFormatterSetExplicit { get; private set; } = false;
 
-        internal IClientMessageFormatter InternalFormatter
-        {
-            get { return _formatter; }
-            set { _formatter = value; }
-        }
+        internal IClientMessageFormatter InternalFormatter { get; set; }
 
         public bool IsInitiating
         {
@@ -208,20 +179,17 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         public ICollection<IParameterInspector> ClientParameterInspectors
         {
-            get { return this.ParameterInspectors; }
+            get { return ParameterInspectors; }
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new SynchronizedCollection<IParameterInspector> ParameterInspectors
         {
-            get { return this.parameterInspectors; }
+            get { return parameterInspectors; }
         }
 
         public ClientRuntime Parent
@@ -229,10 +197,7 @@ namespace System.ServiceModel.Dispatcher
             get { return _parent; }
         }
 
-        public string ReplyAction
-        {
-            get { return _replyAction; }
-        }
+        public string ReplyAction { get; }
 
         public bool SerializeRequest
         {

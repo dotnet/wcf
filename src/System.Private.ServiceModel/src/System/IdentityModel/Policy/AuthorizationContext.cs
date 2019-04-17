@@ -6,7 +6,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IdentityModel.Claims;
-using System.ServiceModel;
 
 namespace System.IdentityModel.Policy
 {

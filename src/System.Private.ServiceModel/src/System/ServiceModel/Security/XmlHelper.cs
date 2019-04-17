@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security
         {
             if (parent == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
             }
 
             XmlElement result = null;
@@ -82,7 +82,7 @@ namespace System.ServiceModel.Security
         {
             if (parent == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
             }
 
             for (int i = 0; i < parent.ChildNodes.Count; ++i)
@@ -263,6 +263,20 @@ namespace System.ServiceModel.Security
             return value;
         }
 
+        internal static string ReadTextElementAsTrimmedString(XmlElement element)
+        {
+            if (element == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(element));
+            }
+
+            using (XmlReader reader = new XmlNodeReader(element))
+            {
+                reader.MoveToContent();
+                return XmlUtil.Trim(reader.ReadElementContentAsString());
+            }
+        }
+
         internal static void SplitIntoPrefixAndName(string qName, out string prefix, out string name)
         {
             string[] parts = qName.Split(':');
@@ -287,17 +301,17 @@ namespace System.ServiceModel.Security
         {
             if (idPrefix == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("idPrefix"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(idPrefix)));
             }
 
             if (idPrefix.Length == 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("idPrefix", SR.Format(SR.ValueMustBeGreaterThanZero)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(idPrefix), SR.Format(SR.ValueMustBeGreaterThanZero)));
             }
 
             if ((!Char.IsLetter(idPrefix[0]) && idPrefix[0] != '_'))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("idPrefix", SR.Format(SR.InValidateIdPrefix, idPrefix[0])));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(idPrefix), SR.Format(SR.InValidateIdPrefix, idPrefix[0])));
             }
 
             for (int i = 1; i < idPrefix.Length; i++)
@@ -305,7 +319,7 @@ namespace System.ServiceModel.Security
                 char c = idPrefix[i];
                 if (!Char.IsLetter(c) && !Char.IsNumber(c) && c != '.' && c != '_' && c != '-')
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("idPrefix", SR.Format(SR.InValidateId, idPrefix[i])));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(idPrefix), SR.Format(SR.InValidateId, idPrefix[i])));
                 }
             }
         }

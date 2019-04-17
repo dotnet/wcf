@@ -10,27 +10,25 @@ namespace System.ServiceModel.Description
     public class MessageBodyDescription
     {
         private XmlName _wrapperName;
-        private string _wrapperNs;
-        private MessagePartDescriptionCollection _parts;
         private MessagePartDescription _returnValue;
 
         public MessageBodyDescription()
         {
-            _parts = new MessagePartDescriptionCollection();
+            Parts = new MessagePartDescriptionCollection();
         }
 
         internal MessageBodyDescription(MessageBodyDescription other)
         {
-            this.WrapperName = other.WrapperName;
-            this.WrapperNamespace = other.WrapperNamespace;
-            _parts = new MessagePartDescriptionCollection();
+            WrapperName = other.WrapperName;
+            WrapperNamespace = other.WrapperNamespace;
+            Parts = new MessagePartDescriptionCollection();
             foreach (MessagePartDescription mpd in other.Parts)
             {
-                this.Parts.Add(mpd.Clone());
+                Parts.Add(mpd.Clone());
             }
             if (other.ReturnValue != null)
             {
-                this.ReturnValue = other.ReturnValue.Clone();
+                ReturnValue = other.ReturnValue.Clone();
             }
         }
 
@@ -39,10 +37,7 @@ namespace System.ServiceModel.Description
             return new MessageBodyDescription(this);
         }
 
-        public MessagePartDescriptionCollection Parts
-        {
-            get { return _parts; }
-        }
+        public MessagePartDescriptionCollection Parts { get; }
 
         [DefaultValue(null)]
         public MessagePartDescription ReturnValue
@@ -59,10 +54,6 @@ namespace System.ServiceModel.Description
         }
 
         [DefaultValue(null)]
-        public string WrapperNamespace
-        {
-            get { return _wrapperNs; }
-            set { _wrapperNs = value; }
-        }
+        public string WrapperNamespace { get; set; }
     }
 }

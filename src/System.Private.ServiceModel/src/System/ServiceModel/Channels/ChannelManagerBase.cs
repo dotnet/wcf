@@ -16,32 +16,32 @@ namespace System.ServiceModel.Channels
 
         internal TimeSpan InternalReceiveTimeout
         {
-            get { return this.DefaultReceiveTimeout; }
+            get { return DefaultReceiveTimeout; }
         }
 
         internal TimeSpan InternalSendTimeout
         {
-            get { return this.DefaultSendTimeout; }
+            get { return DefaultSendTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.CloseTimeout
         {
-            get { return this.DefaultCloseTimeout; }
+            get { return DefaultCloseTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.OpenTimeout
         {
-            get { return this.DefaultOpenTimeout; }
+            get { return DefaultOpenTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.ReceiveTimeout
         {
-            get { return this.DefaultReceiveTimeout; }
+            get { return DefaultReceiveTimeout; }
         }
 
         TimeSpan IDefaultCommunicationTimeouts.SendTimeout
         {
-            get { return this.DefaultSendTimeout; }
+            get { return DefaultSendTimeout; }
         }
 
         internal Exception CreateChannelTypeNotSupportedException(Type type)

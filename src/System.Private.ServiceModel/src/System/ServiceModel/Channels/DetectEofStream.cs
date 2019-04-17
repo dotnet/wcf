@@ -10,22 +10,17 @@ namespace System.ServiceModel.Channels
 {
     internal abstract class DetectEofStream : DelegatingStream
     {
-        private bool _isAtEof;
-
         protected DetectEofStream(Stream stream)
             : base(stream)
         {
-            _isAtEof = false;
+            IsAtEof = false;
         }
 
-        protected bool IsAtEof
-        {
-            get { return _isAtEof; }
-        }
+        protected bool IsAtEof { get; private set; }
 
         public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, Threading.CancellationToken cancellationToken)
         {
-            if (_isAtEof)
+            if (IsAtEof)
             {
                 return 0;
             }
@@ -49,7 +44,7 @@ namespace System.ServiceModel.Channels
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (_isAtEof)
+            if (IsAtEof)
             {
                 return 0;
             }
@@ -63,10 +58,10 @@ namespace System.ServiceModel.Channels
 
         private void ReceivedEof()
         {
-            if (!_isAtEof)
+            if (!IsAtEof)
             {
-                _isAtEof = true;
-                this.OnReceivedEof();
+                IsAtEof = true;
+                OnReceivedEof();
             }
         }
 

@@ -117,12 +117,11 @@ namespace System.ServiceModel.Channels
 
         internal class DnsCacheEntry
         {
-            private DateTime _timeStamp;
             private IPAddress[] _addressList;
 
             public DnsCacheEntry(IPAddress[] addressList, DateTime timeStamp)
             {
-                _timeStamp = timeStamp;
+                TimeStamp = timeStamp;
                 _addressList = addressList;
             }
 
@@ -134,13 +133,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            public DateTime TimeStamp
-            {
-                get
-                {
-                    return _timeStamp;
-                }
-            }
+            public DateTime TimeStamp { get; }
         }
     }
 }

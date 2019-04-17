@@ -10,11 +10,7 @@ namespace System.ServiceModel.Channels
 {
     public abstract class TransportChannelFactory<TChannel> : ChannelFactoryBase<TChannel>, ITransportFactorySettings
     {
-        private BufferManager _bufferManager;
-        private long _maxBufferPoolSize;
         private long _maxReceivedMessageSize;
-        private MessageEncoderFactory _messageEncoderFactory;
-        private bool _manualAddressing;
         private MessageVersion _messageVersion;
 
         protected TransportChannelFactory(TransportBindingElement bindingElement, BindingContext context)
@@ -26,8 +22,8 @@ namespace System.ServiceModel.Channels
                                           MessageEncoderFactory defaultMessageEncoderFactory)
             : base(context.Binding)
         {
-            _manualAddressing = bindingElement.ManualAddressing;
-            _maxBufferPoolSize = bindingElement.MaxBufferPoolSize;
+            ManualAddressing = bindingElement.ManualAddressing;
+            MaxBufferPoolSize = bindingElement.MaxBufferPoolSize;
             _maxReceivedMessageSize = bindingElement.MaxReceivedMessageSize;
 
             Collection<MessageEncodingBindingElement> messageEncoderBindingElements
@@ -39,35 +35,27 @@ namespace System.ServiceModel.Channels
             }
             else if (messageEncoderBindingElements.Count == 1)
             {
-                _messageEncoderFactory = messageEncoderBindingElements[0].CreateMessageEncoderFactory();
+                MessageEncoderFactory = messageEncoderBindingElements[0].CreateMessageEncoderFactory();
                 context.BindingParameters.Remove<MessageEncodingBindingElement>();
             }
             else
             {
-                _messageEncoderFactory = defaultMessageEncoderFactory;
+                MessageEncoderFactory = defaultMessageEncoderFactory;
             }
 
-            if (null != _messageEncoderFactory)
-                _messageVersion = _messageEncoderFactory.MessageVersion;
+            if (null != MessageEncoderFactory)
+            {
+                _messageVersion = MessageEncoderFactory.MessageVersion;
+            }
             else
+            {
                 _messageVersion = MessageVersion.None;
-        }
-
-        public BufferManager BufferManager
-        {
-            get
-            {
-                return _bufferManager;
             }
         }
 
-        public long MaxBufferPoolSize
-        {
-            get
-            {
-                return _maxBufferPoolSize;
-            }
-        }
+        public BufferManager BufferManager { get; private set; }
+
+        public long MaxBufferPoolSize { get; }
 
         public long MaxReceivedMessageSize
         {
@@ -77,13 +65,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public MessageEncoderFactory MessageEncoderFactory
-        {
-            get
-            {
-                return _messageEncoderFactory;
-            }
-        }
+        public MessageEncoderFactory MessageEncoderFactory { get; }
 
         public MessageVersion MessageVersion
         {
@@ -93,13 +75,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public bool ManualAddressing
-        {
-            get
-            {
-                return _manualAddressing;
-            }
-        }
+        public bool ManualAddressing { get; }
 
         public abstract string Scheme { get; }
 
@@ -107,15 +83,19 @@ namespace System.ServiceModel.Channels
         {
             if (typeof(T) == typeof(MessageVersion))
             {
-                return (T)(object)this.MessageVersion;
+                return (T)(object)MessageVersion;
             }
 
             if (typeof(T) == typeof(FaultConverter))
             {
-                if (null == this.MessageEncoderFactory)
+                if (null == MessageEncoderFactory)
+                {
                     return null;
+                }
                 else
-                    return this.MessageEncoderFactory.Encoder.GetProperty<T>();
+                {
+                    return MessageEncoderFactory.Encoder.GetProperty<T>();
+                }
             }
 
             if (typeof(T) == typeof(ITransportFactorySettings))
@@ -153,35 +133,39 @@ namespace System.ServiceModel.Channels
 
         private void OnCloseOrAbort()
         {
-            if (_bufferManager != null)
+            if (BufferManager != null)
             {
-                _bufferManager.Clear();
+                BufferManager.Clear();
             }
         }
 
         public virtual int GetMaxBufferSize()
         {
             if (MaxReceivedMessageSize > int.MaxValue)
+            {
                 return int.MaxValue;
+            }
             else
+            {
                 return (int)MaxReceivedMessageSize;
+            }
         }
 
         protected override void OnOpening()
         {
             base.OnOpening();
-            _bufferManager = BufferManager.CreateBufferManager(MaxBufferPoolSize, GetMaxBufferSize());
+            BufferManager = BufferManager.CreateBufferManager(MaxBufferPoolSize, GetMaxBufferSize());
         }
 
         public void ValidateScheme(Uri via)
         {
-            if (via.Scheme != this.Scheme)
+            if (via.Scheme != Scheme)
             {
                 // URI schemes are case-insensitive, so try a case insensitive compare now
-                if (string.Compare(via.Scheme, this.Scheme, StringComparison.OrdinalIgnoreCase) != 0)
+                if (string.Compare(via.Scheme, Scheme, StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("via", SR.Format(SR.InvalidUriScheme,
-                        via.Scheme, this.Scheme));
+                        via.Scheme, Scheme));
                 }
             }
         }

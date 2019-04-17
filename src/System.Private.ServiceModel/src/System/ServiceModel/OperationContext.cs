@@ -15,19 +15,14 @@ namespace System.ServiceModel
     {
         [ThreadStatic]
         private static Holder s_currentContext;
-
-        private ServiceChannel _channel;
         private Message _clientReply;
         private bool _closeClientReply;
         private ExtensionCollection<OperationContext> _extensions;
-        private RequestContext _requestContext;
         private Message _request;
-        private InstanceContext _instanceContext;
         private bool _isServiceReentrant = false;
         internal IPrincipal threadPrincipal;
         private MessageProperties _outgoingMessageProperties;
         private MessageHeaders _outgoingMessageHeaders;
-        private MessageVersion _outgoingMessageVersion;
         private EndpointDispatcher _endpointDispatcher;
 
         public event EventHandler OperationCompleted;
@@ -35,7 +30,9 @@ namespace System.ServiceModel
         public OperationContext(IContextChannel channel)
         {
             if (channel == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("channel"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(channel)));
+            }
 
             ServiceChannel serviceChannel = channel as ServiceChannel;
 
@@ -47,8 +44,8 @@ namespace System.ServiceModel
 
             if (serviceChannel != null)
             {
-                _outgoingMessageVersion = serviceChannel.MessageVersion;
-                _channel = serviceChannel;
+                OutgoingMessageVersion = serviceChannel.MessageVersion;
+                InternalServiceChannel = serviceChannel;
             }
             else
             {
@@ -63,23 +60,20 @@ namespace System.ServiceModel
 
         internal OperationContext(MessageVersion outgoingMessageVersion)
         {
-            if (outgoingMessageVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("outgoingMessageVersion"));
-
-            _outgoingMessageVersion = outgoingMessageVersion;
+            OutgoingMessageVersion = outgoingMessageVersion ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(outgoingMessageVersion)));
         }
 
         internal OperationContext(RequestContext requestContext, Message request, ServiceChannel channel)
         {
-            _channel = channel;
-            _requestContext = requestContext;
+            InternalServiceChannel = channel;
+            RequestContext = requestContext;
             _request = request;
-            _outgoingMessageVersion = channel.MessageVersion;
+            OutgoingMessageVersion = channel.MessageVersion;
         }
 
         public IContextChannel Channel
         {
-            get { return this.GetCallbackChannel<IContextChannel>(); }
+            get { return GetCallbackChannel<IContextChannel>(); }
         }
 
         public static OperationContext Current
@@ -153,11 +147,7 @@ namespace System.ServiceModel
             get { return _clientReply ?? _request; }
         }
 
-        internal ServiceChannel InternalServiceChannel
-        {
-            get { return _channel; }
-            set { _channel = value; }
-        }
+        internal ServiceChannel InternalServiceChannel { get; set; }
 
         internal bool HasOutgoingMessageHeaders
         {
@@ -169,7 +159,9 @@ namespace System.ServiceModel
             get
             {
                 if (_outgoingMessageHeaders == null)
-                    _outgoingMessageHeaders = new MessageHeaders(this.OutgoingMessageVersion);
+                {
+                    _outgoingMessageHeaders = new MessageHeaders(OutgoingMessageVersion);
+                }
 
                 return _outgoingMessageHeaders;
             }
@@ -185,16 +177,15 @@ namespace System.ServiceModel
             get
             {
                 if (_outgoingMessageProperties == null)
+                {
                     _outgoingMessageProperties = new MessageProperties();
+                }
 
                 return _outgoingMessageProperties;
             }
         }
 
-        internal MessageVersion OutgoingMessageVersion
-        {
-            get { return _outgoingMessageVersion; }
-        }
+        internal MessageVersion OutgoingMessageVersion { get; }
 
         public MessageHeaders IncomingMessageHeaders
         {
@@ -202,9 +193,13 @@ namespace System.ServiceModel
             {
                 Message message = _clientReply ?? _request;
                 if (message != null)
+                {
                     return message.Headers;
+                }
                 else
+                {
                     return null;
+                }
             }
         }
 
@@ -214,9 +209,13 @@ namespace System.ServiceModel
             {
                 Message message = _clientReply ?? _request;
                 if (message != null)
+                {
                     return message.Properties;
+                }
                 else
+                {
                     return null;
+                }
             }
         }
 
@@ -226,44 +225,47 @@ namespace System.ServiceModel
             {
                 Message message = _clientReply ?? _request;
                 if (message != null)
+                {
                     return message.Version;
+                }
                 else
+                {
                     return null;
+                }
             }
         }
 
-        public InstanceContext InstanceContext
-        {
-            get { return _instanceContext; }
-        }
+        public InstanceContext InstanceContext { get; private set; }
 
-        public RequestContext RequestContext
-        {
-            get { return _requestContext; }
-            set { _requestContext = value; }
-        }
+        public RequestContext RequestContext { get; set; }
 
 
         public string SessionId
         {
             get
             {
-                if (_channel != null)
+                if (InternalServiceChannel != null)
                 {
-                    IChannel inner = _channel.InnerChannel;
+                    IChannel inner = InternalServiceChannel.InnerChannel;
                     if (inner != null)
                     {
                         ISessionChannel<IDuplexSession> duplex = inner as ISessionChannel<IDuplexSession>;
                         if ((duplex != null) && (duplex.Session != null))
+                        {
                             return duplex.Session.Id;
+                        }
 
                         ISessionChannel<IInputSession> input = inner as ISessionChannel<IInputSession>;
                         if ((input != null) && (input.Session != null))
+                        {
                             return input.Session.Id;
+                        }
 
                         ISessionChannel<IOutputSession> output = inner as ISessionChannel<IOutputSession>;
                         if ((output != null) && (output.Session != null))
+                        {
                             return output.Session.Id;
+                        }
                     }
                 }
                 return null;
@@ -273,8 +275,8 @@ namespace System.ServiceModel
 
         internal IPrincipal ThreadPrincipal
         {
-            get { return this.threadPrincipal; }
-            set { this.threadPrincipal = value; }
+            get { return threadPrincipal; }
+            set { threadPrincipal = value; }
         }
 
         public ClaimsPrincipal ClaimsPrincipal
@@ -292,7 +294,7 @@ namespace System.ServiceModel
         {
             try
             {
-                EventHandler handler = this.OperationCompleted;
+                EventHandler handler = OperationCompleted;
 
                 if (handler != null)
                 {
@@ -302,7 +304,9 @@ namespace System.ServiceModel
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
+                {
                     throw;
+                }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(e);
             }
@@ -310,29 +314,31 @@ namespace System.ServiceModel
 
         public T GetCallbackChannel<T>()
         {
-            if (_channel == null || this.IsUserContext)
+            if (InternalServiceChannel == null || IsUserContext)
+            {
                 return default(T);
+            }
 
             // yes, we might throw InvalidCastException here.  Is it really
             // better to check and throw something else instead?
-            return (T)_channel.Proxy;
+            return (T)InternalServiceChannel.Proxy;
         }
 
         internal void ReInit(RequestContext requestContext, Message request, ServiceChannel channel)
         {
-            _requestContext = requestContext;
+            RequestContext = requestContext;
             _request = request;
-            _channel = channel;
+            InternalServiceChannel = channel;
         }
 
         internal void Recycle()
         {
-            _requestContext = null;
+            RequestContext = null;
             _request = null;
             _extensions = null;
-            _instanceContext = null;
-            this.threadPrincipal = null;
-            this.SetClientReply(null, false);
+            InstanceContext = null;
+            threadPrincipal = null;
+            SetClientReply(null, false);
         }
 
         internal void SetClientReply(Message message, bool closeMessage)
@@ -359,25 +365,12 @@ namespace System.ServiceModel
 
         internal void SetInstanceContext(InstanceContext instanceContext)
         {
-            _instanceContext = instanceContext;
+            InstanceContext = instanceContext;
         }
 
         internal class Holder
         {
-            private OperationContext _context;
-
-            public OperationContext Context
-            {
-                get
-                {
-                    return _context;
-                }
-
-                set
-                {
-                    _context = value;
-                }
-            }
+            public OperationContext Context { get; set; }
         }
     }
 }

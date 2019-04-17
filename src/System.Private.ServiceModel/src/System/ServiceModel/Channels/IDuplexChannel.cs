@@ -3,11 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 
 namespace System.ServiceModel.Channels
 {
     public interface IDuplexChannel : IInputChannel, IOutputChannel
+    {
+    }
+
+    internal interface IAsyncDuplexChannel : IDuplexChannel, IAsyncInputChannel, IAsyncOutputChannel
     {
     }
 }

@@ -13,10 +13,7 @@ namespace System.ServiceModel
 {
     public class MessageHeader<T>
     {
-        private string _actor;
-        private bool _mustUnderstand;
         private bool _relay;
-        private T _content;
 
         public MessageHeader()
         {
@@ -29,29 +26,17 @@ namespace System.ServiceModel
 
         public MessageHeader(T content, bool mustUnderstand, string actor, bool relay)
         {
-            _content = content;
-            _mustUnderstand = mustUnderstand;
-            _actor = actor;
+            Content = content;
+            MustUnderstand = mustUnderstand;
+            Actor = actor;
             _relay = relay;
         }
 
-        public string Actor
-        {
-            get { return _actor; }
-            set { _actor = value; }
-        }
+        public string Actor { get; set; }
 
-        public T Content
-        {
-            get { return _content; }
-            set { _content = value; }
-        }
+        public T Content { get; set; }
 
-        public bool MustUnderstand
-        {
-            get { return _mustUnderstand; }
-            set { _mustUnderstand = value; }
-        }
+        public bool MustUnderstand { get; set; }
 
         public bool Relay
         {
@@ -66,7 +51,7 @@ namespace System.ServiceModel
 
         public MessageHeader GetUntypedHeader(string name, string ns)
         {
-            return MessageHeader.CreateHeader(name, ns, _content, _mustUnderstand, _actor, _relay);
+            return MessageHeader.CreateHeader(name, ns, Content, MustUnderstand, Actor, _relay);
         }
     }
 
@@ -100,7 +85,10 @@ namespace System.ServiceModel
         internal static Type GetHeaderType(Type headerParameterType)
         {
             if (headerParameterType.IsGenericType() && headerParameterType.GetGenericTypeDefinition() == typeof(MessageHeader<>))
+            {
                 return headerParameterType.GetGenericArguments()[0];
+            }
+
             return headerParameterType;
         }
 
@@ -167,11 +155,16 @@ namespace System.ServiceModel
                 relay = false;
                 actor = null;
                 if (typedHeaderInstance == null)
+                {
                     return null;
+                }
 
                 MessageHeader<T> header = typedHeaderInstance as MessageHeader<T>;
                 if (header == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException("typedHeaderInstance"));
+                }
+
                 mustUnderstand = header.MustUnderstand;
                 relay = header.Relay;
                 actor = header.Actor;

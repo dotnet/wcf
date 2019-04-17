@@ -4,23 +4,19 @@
 
 
 using System.Runtime;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
     internal abstract class LayeredChannelFactory<TChannel> : ChannelFactoryBase<TChannel>
     {
-        private IChannelFactory _innerChannelFactory;
-
         public LayeredChannelFactory(IDefaultCommunicationTimeouts timeouts, IChannelFactory innerChannelFactory)
             : base(timeouts)
         {
-            _innerChannelFactory = innerChannelFactory;
+            InnerChannelFactory = innerChannelFactory;
         }
 
-        protected IChannelFactory InnerChannelFactory
-        {
-            get { return _innerChannelFactory; }
-        }
+        protected IChannelFactory InnerChannelFactory { get; }
 
         public override T GetProperty<T>()
         {
@@ -35,22 +31,22 @@ namespace System.ServiceModel.Channels
                 return baseProperty;
             }
 
-            return _innerChannelFactory.GetProperty<T>();
+            return InnerChannelFactory.GetProperty<T>();
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerChannelFactory.BeginOpen(timeout, callback, state);
+            return InnerChannelFactory.BeginOpen(timeout, callback, state);
         }
 
         protected override void OnEndOpen(IAsyncResult result)
         {
-            _innerChannelFactory.EndOpen(result);
+            InnerChannelFactory.EndOpen(result);
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerChannelFactory);
+            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, InnerChannelFactory);
         }
 
         protected override void OnEndClose(IAsyncResult result)
@@ -58,26 +54,38 @@ namespace System.ServiceModel.Channels
             ChainedCloseAsyncResult.End(result);
         }
 
+        protected internal override async Task OnCloseAsync(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
+            await InnerChannelFactory.CloseHelperAsync(timeoutHelper.RemainingTime());
+        }
+
         protected override void OnClose(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
             base.OnClose(timeoutHelper.RemainingTime());
-            _innerChannelFactory.Close(timeoutHelper.RemainingTime());
+            InnerChannelFactory.Close(timeoutHelper.RemainingTime());
+        }
+
+        protected internal override Task OnOpenAsync(TimeSpan timeout)
+        {
+            return InnerChannelFactory.OpenHelperAsync(timeout);
         }
 
         protected override void OnOpen(TimeSpan timeout)
         {
-            _innerChannelFactory.Open(timeout);
+            InnerChannelFactory.Open(timeout);
         }
 
         protected override void OnAbort()
         {
             base.OnAbort();
-            _innerChannelFactory.Abort();
+            InnerChannelFactory.Abort();
         }
     }
 
-    internal class LayeredInputChannel : LayeredChannel<IInputChannel>, IInputChannel
+    internal class LayeredInputChannel : LayeredChannel<IInputChannel>, IAsyncInputChannel
     {
         public LayeredInputChannel(ChannelManagerBase channelManager, IInputChannel innerChannel)
             : base(channelManager, innerChannel)
@@ -89,85 +97,143 @@ namespace System.ServiceModel.Channels
             get { return InnerChannel.LocalAddress; }
         }
 
-        private void InternalOnReceive(Message message)
+        private Task InternalOnReceiveAsync(Message message)
         {
             if (message != null)
             {
-                this.OnReceive(message);
+                return OnReceiveAsync(message);
             }
+
+            return Task.CompletedTask;
         }
 
-        protected virtual void OnReceive(Message message)
+        protected virtual Task OnReceiveAsync(Message message)
         {
+            return Task.CompletedTask;
         }
 
         public Message Receive()
         {
-            Message message = InnerChannel.Receive();
-            this.InternalOnReceive(message);
+            return ReceiveAsync().GetAwaiter().GetResult();
+        }
+
+        public async Task<Message> ReceiveAsync(TimeSpan timeout)
+        {
+            Message message;
+            if (InnerChannel is IAsyncInputChannel asyncInputChannel)
+            {
+                message = await asyncInputChannel.ReceiveAsync(timeout);
+            }
+            else
+            {
+                message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, timeout, null);
+            }
+
+            await InternalOnReceiveAsync(message);
+            return message;
+        }
+
+        public async Task<Message> ReceiveAsync()
+        {
+            Message message;
+            if (InnerChannel is IAsyncInputChannel asyncInputChannel)
+            {
+                message = await asyncInputChannel.ReceiveAsync();
+            }
+            else
+            {
+                message = await Task.Factory.FromAsync(InnerChannel.BeginReceive, InnerChannel.EndReceive, null);
+            }
+
+            await InternalOnReceiveAsync(message);
             return message;
         }
 
         public Message Receive(TimeSpan timeout)
         {
-            Message message = InnerChannel.Receive(timeout);
-            this.InternalOnReceive(message);
-            return message;
+            return ReceiveAsync(timeout).GetAwaiter().GetResult();
         }
 
         public IAsyncResult BeginReceive(AsyncCallback callback, object state)
         {
-            return InnerChannel.BeginReceive(callback, state);
+            return ReceiveAsync().ToApm(callback, state);
         }
 
         public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return InnerChannel.BeginReceive(timeout, callback, state);
+            return ReceiveAsync(timeout).ToApm(callback, state);
         }
 
         public Message EndReceive(IAsyncResult result)
         {
-            Message message = InnerChannel.EndReceive(result);
-            this.InternalOnReceive(message);
-            return message;
+            return result.ToApmEnd<Message>();
         }
 
         public IAsyncResult BeginTryReceive(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return InnerChannel.BeginTryReceive(timeout, callback, state);
+            return TryReceiveAsync(timeout).ToApm(callback, state);
         }
 
         public bool EndTryReceive(IAsyncResult result, out Message message)
         {
-            bool retVal = InnerChannel.EndTryReceive(result, out message);
-            this.InternalOnReceive(message);
+            bool retVal;
+            (retVal, message) = result.ToApmEnd<(bool, Message)>();
             return retVal;
+        }
+
+        public async Task<(bool, Message)> TryReceiveAsync(TimeSpan timeout)
+        {
+            bool retVal;
+            Message message;
+            if (InnerChannel is IAsyncInputChannel asyncInputChannel)
+            {
+                (retVal, message) = await asyncInputChannel.TryReceiveAsync(timeout);
+            }
+            else
+            {
+                (retVal, message) = await TaskHelpers.FromAsync<TimeSpan, bool, Message>(InnerChannel.BeginTryReceive, InnerChannel.EndTryReceive, timeout, null);
+            }
+
+            await InternalOnReceiveAsync(message);
+            return (retVal, message);
         }
 
         public bool TryReceive(TimeSpan timeout, out Message message)
         {
-            bool retVal = InnerChannel.TryReceive(timeout, out message);
-            this.InternalOnReceive(message);
+            bool retVal;
+            (retVal, message) = TryReceiveAsync(timeout).GetAwaiter().GetResult();
             return retVal;
+        }
+
+        public Task<bool> WaitForMessageAsync(TimeSpan timeout)
+        {
+            if (InnerChannel is IAsyncInputChannel asyncInputChannel)
+            {
+                return asyncInputChannel.WaitForMessageAsync(timeout);
+            }
+            else
+            {
+                return Task.Factory.FromAsync(InnerChannel.BeginWaitForMessage, InnerChannel.EndWaitForMessage, timeout, null);
+            }
         }
 
         public bool WaitForMessage(TimeSpan timeout)
         {
-            return InnerChannel.WaitForMessage(timeout);
+            return WaitForMessageAsync(timeout).GetAwaiter().GetResult();
         }
 
         public IAsyncResult BeginWaitForMessage(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return InnerChannel.BeginWaitForMessage(timeout, callback, state);
+            return WaitForMessageAsync(timeout).ToApm(callback, state);
         }
 
         public bool EndWaitForMessage(IAsyncResult result)
         {
-            return InnerChannel.EndWaitForMessage(result);
+            return result.ToApmEnd<bool>();
         }
     }
 
-    internal class LayeredDuplexChannel : LayeredInputChannel, IDuplexChannel
+    internal class LayeredDuplexChannel : LayeredInputChannel, IAsyncDuplexChannel
     {
         private IOutputChannel _innerOutputChannel;
         private EndpointAddress _localAddress;
@@ -209,31 +275,28 @@ namespace System.ServiceModel.Channels
             base.OnAbort();
         }
 
-        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return new ChainedCloseAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose, _innerOutputChannel);
-        }
+        protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override void OnEndClose(IAsyncResult result)
-        {
-            ChainedCloseAsyncResult.End(result);
-        }
+        protected override void OnEndClose(IAsyncResult result) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override void OnClose(TimeSpan timeout)
+        protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            _innerOutputChannel.Close(timeoutHelper.RemainingTime());
-            base.OnClose(timeoutHelper.RemainingTime());
+            await _innerOutputChannel.CloseHelperAsync(timeout);
+            await base.OnCloseAsync(timeoutHelper.RemainingTime());
         }
 
-        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-        {
-            return new ChainedOpenAsyncResult(timeout, callback, state, base.OnBeginOpen, base.OnEndOpen, _innerOutputChannel);
-        }
+        protected override void OnClose(TimeSpan timeout) => throw ExceptionHelper.PlatformNotSupported();
 
-        protected override void OnEndOpen(IAsyncResult result)
+        protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected override void OnEndOpen(IAsyncResult result) => throw ExceptionHelper.PlatformNotSupported();
+
+        protected internal override async Task OnOpenAsync(TimeSpan timeout)
         {
-            ChainedOpenAsyncResult.End(result);
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await base.OnOpenAsync(timeoutHelper.RemainingTime());
+            await _innerOutputChannel.OpenHelperAsync(timeoutHelper.RemainingTime());
         }
 
         protected override void OnOpen(TimeSpan timeout)
@@ -243,34 +306,51 @@ namespace System.ServiceModel.Channels
             _innerOutputChannel.Open(timeoutHelper.RemainingTime());
         }
 
+        public Task SendAsync(Message message)
+        {
+            return SendAsync(message, DefaultSendTimeout);
+        }
+
+        public Task SendAsync(Message message, TimeSpan timeout)
+        {
+            if (_innerOutputChannel is IAsyncOutputChannel asyncOutputChannel)
+            {
+                return asyncOutputChannel.SendAsync(message, timeout);
+            }
+            else
+            {
+                return Task.Factory.FromAsync(_innerOutputChannel.BeginSend, _innerOutputChannel.EndSend, message, timeout, null);
+            }
+        }
+
         public void Send(Message message)
         {
-            this.Send(message, this.DefaultSendTimeout);
+            Send(message, DefaultSendTimeout);
         }
 
         public void Send(Message message, TimeSpan timeout)
         {
-            _innerOutputChannel.Send(message, timeout);
+            SendAsync(message, timeout).GetAwaiter().GetResult();
         }
 
         public IAsyncResult BeginSend(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginSend(message, this.DefaultSendTimeout, callback, state);
+            return BeginSend(message, DefaultSendTimeout, callback, state);
         }
 
         public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return _innerOutputChannel.BeginSend(message, timeout, callback, state);
+            return SendAsync(message, timeout).ToApm(callback, state);
         }
 
         public void EndSend(IAsyncResult result)
         {
-            _innerOutputChannel.EndSend(result);
+            result.ToApmEnd();
         }
 
         private void OnInnerOutputChannelFaulted(object sender, EventArgs e)
         {
-            this.Fault();
+            Fault();
         }
     }
 }

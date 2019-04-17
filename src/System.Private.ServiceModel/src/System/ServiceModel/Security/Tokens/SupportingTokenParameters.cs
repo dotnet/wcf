@@ -4,33 +4,41 @@
 
 
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
-using System.ServiceModel.Diagnostics;
 using System.Text;
 
 namespace System.ServiceModel.Security.Tokens
 {
     public class SupportingTokenParameters
     {
-        private Collection<SecurityTokenParameters> _signed = new Collection<SecurityTokenParameters>();
-        private Collection<SecurityTokenParameters> _signedEncrypted = new Collection<SecurityTokenParameters>();
-        private Collection<SecurityTokenParameters> _endorsing = new Collection<SecurityTokenParameters>();
         private Collection<SecurityTokenParameters> _signedEndorsing = new Collection<SecurityTokenParameters>();
 
         private SupportingTokenParameters(SupportingTokenParameters other)
         {
             if (other == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("other");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(other));
+            }
 
-            foreach (SecurityTokenParameters p in other._signed)
-                _signed.Add((SecurityTokenParameters)p.Clone());
-            foreach (SecurityTokenParameters p in other._signedEncrypted)
-                _signedEncrypted.Add((SecurityTokenParameters)p.Clone());
-            foreach (SecurityTokenParameters p in other._endorsing)
-                _endorsing.Add((SecurityTokenParameters)p.Clone());
+            foreach (SecurityTokenParameters p in other.Signed)
+            {
+                Signed.Add((SecurityTokenParameters)p.Clone());
+            }
+
+            foreach (SecurityTokenParameters p in other.SignedEncrypted)
+            {
+                SignedEncrypted.Add((SecurityTokenParameters)p.Clone());
+            }
+
+            foreach (SecurityTokenParameters p in other.Endorsing)
+            {
+                Endorsing.Add((SecurityTokenParameters)p.Clone());
+            }
+
             foreach (SecurityTokenParameters p in other._signedEndorsing)
+            {
                 _signedEndorsing.Add((SecurityTokenParameters)p.Clone());
+            }
         }
 
         public SupportingTokenParameters()
@@ -38,13 +46,7 @@ namespace System.ServiceModel.Security.Tokens
             // empty
         }
 
-        public Collection<SecurityTokenParameters> Endorsing
-        {
-            get
-            {
-                return _endorsing;
-            }
-        }
+        public Collection<SecurityTokenParameters> Endorsing { get; } = new Collection<SecurityTokenParameters>();
 
         public Collection<SecurityTokenParameters> SignedEndorsing
         {
@@ -54,25 +56,13 @@ namespace System.ServiceModel.Security.Tokens
             }
         }
 
-        public Collection<SecurityTokenParameters> Signed
-        {
-            get
-            {
-                return _signed;
-            }
-        }
+        public Collection<SecurityTokenParameters> Signed { get; } = new Collection<SecurityTokenParameters>();
 
-        public Collection<SecurityTokenParameters> SignedEncrypted
-        {
-            get
-            {
-                return _signedEncrypted;
-            }
-        }
+        public Collection<SecurityTokenParameters> SignedEncrypted { get; } = new Collection<SecurityTokenParameters>();
 
         public void SetKeyDerivation(bool requireDerivedKeys)
         {
-            foreach (SecurityTokenParameters t in _endorsing)
+            foreach (SecurityTokenParameters t in Endorsing)
             {
                 if (t.HasAsymmetricKey)
                 {
@@ -98,13 +88,22 @@ namespace System.ServiceModel.Security.Tokens
 
         internal bool IsSetKeyDerivation(bool requireDerivedKeys)
         {
-            foreach (SecurityTokenParameters t in _endorsing)
+            foreach (SecurityTokenParameters t in Endorsing)
+            {
                 if (t.RequireDerivedKeys != requireDerivedKeys)
+                {
                     return false;
+                }
+            }
 
             foreach (SecurityTokenParameters t in _signedEndorsing)
+            {
                 if (t.RequireDerivedKeys != requireDerivedKeys)
+                {
                     return false;
+                }
+            }
+
             return true;
         }
 
@@ -113,49 +112,65 @@ namespace System.ServiceModel.Security.Tokens
             StringBuilder sb = new StringBuilder();
             int k;
 
-            if (_endorsing.Count == 0)
+            if (Endorsing.Count == 0)
+            {
                 sb.AppendLine("No endorsing tokens.");
+            }
             else
-                for (k = 0; k < _endorsing.Count; k++)
+            {
+                for (k = 0; k < Endorsing.Count; k++)
                 {
                     sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "Endorsing[{0}]", k.ToString(CultureInfo.InvariantCulture)));
-                    sb.AppendLine("  " + _endorsing[k].ToString().Trim().Replace("\n", "\n  "));
+                    sb.AppendLine("  " + Endorsing[k].ToString().Trim().Replace("\n", "\n  "));
                 }
+            }
 
-            if (_signed.Count == 0)
+            if (Signed.Count == 0)
+            {
                 sb.AppendLine("No signed tokens.");
+            }
             else
-                for (k = 0; k < _signed.Count; k++)
+            {
+                for (k = 0; k < Signed.Count; k++)
                 {
                     sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "Signed[{0}]", k.ToString(CultureInfo.InvariantCulture)));
-                    sb.AppendLine("  " + _signed[k].ToString().Trim().Replace("\n", "\n  "));
+                    sb.AppendLine("  " + Signed[k].ToString().Trim().Replace("\n", "\n  "));
                 }
+            }
 
-            if (_signedEncrypted.Count == 0)
+            if (SignedEncrypted.Count == 0)
+            {
                 sb.AppendLine("No signed encrypted tokens.");
+            }
             else
-                for (k = 0; k < _signedEncrypted.Count; k++)
+            {
+                for (k = 0; k < SignedEncrypted.Count; k++)
                 {
                     sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "SignedEncrypted[{0}]", k.ToString(CultureInfo.InvariantCulture)));
-                    sb.AppendLine("  " + _signedEncrypted[k].ToString().Trim().Replace("\n", "\n  "));
+                    sb.AppendLine("  " + SignedEncrypted[k].ToString().Trim().Replace("\n", "\n  "));
                 }
+            }
 
             if (_signedEndorsing.Count == 0)
+            {
                 sb.AppendLine("No signed endorsing tokens.");
+            }
             else
+            {
                 for (k = 0; k < _signedEndorsing.Count; k++)
                 {
                     sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "SignedEndorsing[{0}]", k.ToString(CultureInfo.InvariantCulture)));
                     sb.AppendLine("  " + _signedEndorsing[k].ToString().Trim().Replace("\n", "\n  "));
                 }
+            }
 
             return sb.ToString().Trim();
         }
 
         public SupportingTokenParameters Clone()
         {
-            SupportingTokenParameters parameters = this.CloneCore();
-            if (parameters == null || parameters.GetType() != this.GetType())
+            SupportingTokenParameters parameters = CloneCore();
+            if (parameters == null || parameters.GetType() != GetType())
             {
             }
 
@@ -169,7 +184,7 @@ namespace System.ServiceModel.Security.Tokens
 
         internal bool IsEmpty()
         {
-            return _signed.Count == 0 && _signedEncrypted.Count == 0 && _endorsing.Count == 0 && _signedEndorsing.Count == 0;
+            return Signed.Count == 0 && SignedEncrypted.Count == 0 && Endorsing.Count == 0 && _signedEndorsing.Count == 0;
         }
     }
 }

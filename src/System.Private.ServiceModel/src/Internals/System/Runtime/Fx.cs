@@ -13,7 +13,6 @@ using System.Runtime.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security;
-using System.ServiceModel;
 
 namespace System.Runtime
 {
@@ -34,7 +33,6 @@ namespace System.Runtime
         private static ExceptionTrace s_exceptionTrace;
         private static EtwDiagnosticTrace s_diagnosticTrace;
         private static bool? s_isUap;
-
         private static ExceptionHandler s_asynchronousThreadExceptionHandler;
 
         internal static bool IsUap
@@ -153,7 +151,7 @@ namespace System.Runtime
 
         // This never returns.  The Exception return type lets you write 'throw AssertAndFailFast()' which tells the compiler/tools that
         // execution stops.
-        [Fx.Tag.SecurityNote(Critical = "Calls into critical method Environment.FailFast",
+        [Tag.SecurityNote(Critical = "Calls into critical method Environment.FailFast",
             Safe = "The side affect of the app crashing is actually intended here")]
         [SecuritySafeCritical]
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -379,7 +377,7 @@ namespace System.Runtime
 
         [SuppressMessage(FxCop.Category.Design, FxCop.Rule.DoNotCatchGeneralExceptionTypes,
             Justification = "Don't want to hide the exception which is about to crash the process.")]
-        [Fx.Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
+        [Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
         private static void TraceExceptionNoThrow(Exception exception)
         {
             try
@@ -399,7 +397,7 @@ namespace System.Runtime
             Justification = "Don't want to hide the exception which is about to crash the process.")]
         [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.IsFatalRule,
             Justification = "Don't want to hide the exception which is about to crash the process.")]
-        [Fx.Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
+        [Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
         private static bool HandleAtThreadBase(Exception exception)
         {
             // This area is too sensitive to do anything but return.
@@ -446,7 +444,7 @@ namespace System.Runtime
 
         public abstract class ExceptionHandler
         {
-            [Fx.Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
+            [Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
             public abstract bool HandleException(Exception exception);
         }
 
@@ -544,7 +542,7 @@ namespace System.Runtime
                 public FriendAccessAllowedAttribute(string assemblyName) :
                     base()
                 {
-                    this.AssemblyName = assemblyName;
+                    AssemblyName = assemblyName;
                 }
 
                 public string AssemblyName { get; set; }
@@ -573,7 +571,6 @@ namespace System.Runtime
             [Conditional("CODE_ANALYSIS_CDF")]
             public sealed class CacheAttribute : Attribute
             {
-                private readonly Type _elementType;
                 private readonly CacheAttrition _cacheAttrition;
 
                 public CacheAttribute(Type elementType, CacheAttrition cacheAttrition)
@@ -582,22 +579,11 @@ namespace System.Runtime
                     SizeLimit = Strings.Unbounded;
                     Timeout = Strings.Infinite;
 
-                    if (elementType == null)
-                    {
-                        throw Fx.Exception.ArgumentNull("elementType");
-                    }
-
-                    _elementType = elementType;
+                    ElementType = elementType ?? throw Fx.Exception.ArgumentNull("elementType");
                     _cacheAttrition = cacheAttrition;
                 }
 
-                public Type ElementType
-                {
-                    get
-                    {
-                        return _elementType;
-                    }
-                }
+                public Type ElementType { get; }
 
                 public CacheAttrition CacheAttrition
                 {
@@ -616,28 +602,15 @@ namespace System.Runtime
             [Conditional("CODE_ANALYSIS_CDF")]
             public sealed class QueueAttribute : Attribute
             {
-                private readonly Type _elementType;
-
                 public QueueAttribute(Type elementType)
                 {
                     Scope = Strings.DeclaringInstance;
                     SizeLimit = Strings.Unbounded;
 
-                    if (elementType == null)
-                    {
-                        throw Fx.Exception.ArgumentNull("elementType");
-                    }
-
-                    _elementType = elementType;
+                    ElementType = elementType ?? throw Fx.Exception.ArgumentNull("elementType");
                 }
 
-                public Type ElementType
-                {
-                    get
-                    {
-                        return _elementType;
-                    }
-                }
+                public Type ElementType { get; }
 
                 public string Scope { get; set; }
                 public string SizeLimit { get; set; }
@@ -649,8 +622,6 @@ namespace System.Runtime
             [Conditional("CODE_ANALYSIS_CDF")]
             public sealed class ThrottleAttribute : Attribute
             {
-                private readonly ThrottleAction _throttleAction;
-                private readonly ThrottleMetric _throttleMetric;
                 private readonly string _limit;
 
                 public ThrottleAttribute(ThrottleAction throttleAction, ThrottleMetric throttleMetric, string limit)
@@ -662,26 +633,14 @@ namespace System.Runtime
                         throw Fx.Exception.ArgumentNullOrEmpty("limit");
                     }
 
-                    _throttleAction = throttleAction;
-                    _throttleMetric = throttleMetric;
+                    ThrottleAction = throttleAction;
+                    ThrottleMetric = throttleMetric;
                     _limit = limit;
                 }
 
-                public ThrottleAction ThrottleAction
-                {
-                    get
-                    {
-                        return _throttleAction;
-                    }
-                }
+                public ThrottleAction ThrottleAction { get; }
 
-                public ThrottleMetric ThrottleMetric
-                {
-                    get
-                    {
-                        return _throttleMetric;
-                    }
-                }
+                public ThrottleMetric ThrottleMetric { get; }
 
                 public string Limit
                 {
@@ -702,22 +661,15 @@ namespace System.Runtime
             [Conditional("CODE_ANALYSIS_CDF")]
             public sealed class ExternalResourceAttribute : Attribute
             {
-                private readonly Location _location;
                 private readonly string _description;
 
                 public ExternalResourceAttribute(Location location, string description)
                 {
-                    _location = location;
+                    Location = location;
                     _description = description;
                 }
 
-                public Location Location
-                {
-                    get
-                    {
-                        return _location;
-                    }
-                }
+                public Location Location { get; }
 
                 public string Description
                 {
@@ -750,20 +702,12 @@ namespace System.Runtime
             [Conditional("CODE_ANALYSIS_CDF")]
             public sealed class SynchronizationPrimitiveAttribute : Attribute
             {
-                private readonly BlocksUsing _blocksUsing;
-
                 public SynchronizationPrimitiveAttribute(BlocksUsing blocksUsing)
                 {
-                    _blocksUsing = blocksUsing;
+                    BlocksUsing = blocksUsing;
                 }
 
-                public BlocksUsing BlocksUsing
-                {
-                    get
-                    {
-                        return _blocksUsing;
-                    }
-                }
+                public BlocksUsing BlocksUsing { get; }
 
                 public bool SupportsAsync { get; set; }
                 public bool Spins { get; set; }
@@ -814,31 +758,20 @@ namespace System.Runtime
             [Conditional("CODE_ANALYSIS_CDF")]
             public class ThrowsAttribute : Attribute
             {
-                private readonly Type _exceptionType;
                 private readonly string _diagnosis;
 
                 public ThrowsAttribute(Type exceptionType, string diagnosis)
                 {
-                    if (exceptionType == null)
-                    {
-                        throw Fx.Exception.ArgumentNull("exceptionType");
-                    }
                     if (string.IsNullOrEmpty(diagnosis))
                     {
                         throw Fx.Exception.ArgumentNullOrEmpty("diagnosis");
                     }
 
-                    _exceptionType = exceptionType;
+                    ExceptionType = exceptionType ?? throw Fx.Exception.ArgumentNull("exceptionType");
                     _diagnosis = diagnosis;
                 }
 
-                public Type ExceptionType
-                {
-                    get
-                    {
-                        return _exceptionType;
-                    }
-                }
+                public Type ExceptionType { get; }
 
                 public string Diagnosis
                 {
@@ -881,7 +814,7 @@ namespace System.Runtime
 
                 public XamlVisibleAttribute(bool visible)
                 {
-                    this.Visible = visible;
+                    Visible = visible;
                 }
 
                 public bool Visible
@@ -922,11 +855,11 @@ namespace System.Runtime
 
         internal abstract class Thunk<T> where T : class
         {
-            [Fx.Tag.SecurityNote(Critical = "Make these safe to use in SecurityCritical contexts.")]
+            [Tag.SecurityNote(Critical = "Make these safe to use in SecurityCritical contexts.")]
             [SecurityCritical]
             private T _callback;
 
-            [Fx.Tag.SecurityNote(Critical = "Accesses critical field.", Safe = "Data provided by caller.")]
+            [Tag.SecurityNote(Critical = "Accesses critical field.", Safe = "Data provided by caller.")]
             [SecuritySafeCritical]
             protected Thunk(T callback)
             {
@@ -935,7 +868,7 @@ namespace System.Runtime
 
             internal T Callback
             {
-                [Fx.Tag.SecurityNote(Critical = "Accesses critical field.", Safe = "Data is not privileged.")]
+                [Tag.SecurityNote(Critical = "Accesses critical field.", Safe = "Data is not privileged.")]
                 [SecuritySafeCritical]
                 get
                 {
@@ -957,7 +890,7 @@ namespace System.Runtime
                     return new Action<T1>(UnhandledExceptionFrame);
                 }
             }
-            [Fx.Tag.SecurityNote(Critical = "Calls PrepareConstrainedRegions which has a LinkDemand",
+            [Tag.SecurityNote(Critical = "Calls PrepareConstrainedRegions which has a LinkDemand",
                             Safe = "Guaranteed not to call into PT user code from the finally.")]
             [SecuritySafeCritical]
 
@@ -990,7 +923,7 @@ namespace System.Runtime
                     return new AsyncCallback(UnhandledExceptionFrame);
                 }
             }
-            [Fx.Tag.SecurityNote(Critical = "Calls PrepareConstrainedRegions which has a LinkDemand",
+            [Tag.SecurityNote(Critical = "Calls PrepareConstrainedRegions which has a LinkDemand",
                             Safe = "Guaranteed not to call into PT user code from the finally.")]
             [SecuritySafeCritical]
 

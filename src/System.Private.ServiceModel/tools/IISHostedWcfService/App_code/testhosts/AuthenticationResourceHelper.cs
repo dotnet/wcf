@@ -4,9 +4,12 @@
 
 
 using System;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 
 namespace WcfService
 {
@@ -22,6 +25,12 @@ namespace WcfService
         {
             var authManager = new ResourceBasicServiceAuthorizationManager();
             serviceHost.Description.Behaviors.Add(authManager);
+        }
+
+        public static void ConfigureServiceHostUserNameAuth(ServiceHost serviceHost)
+        {
+            serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
+            serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new SideChannelHeaderUserNamePasswordValidator();
         }
 
         private class ResourceBasicServiceAuthorizationManager : BasicServiceAuthorizationManager
@@ -89,6 +98,22 @@ namespace WcfService
 
                 var requestProperty = (HttpRequestMessageProperty)message.Properties[HttpRequestMessageProperty.Name];
                 return requestProperty.Headers.Get(DigestRealmHeaderName);
+            }
+        }
+
+        private class SideChannelHeaderUserNamePasswordValidator : UserNamePasswordValidator
+        {
+            public override void Validate(string userName, string password)
+            {
+                char[] usernameArr = userName.ToCharArray();
+                Array.Reverse(usernameArr);
+                string expectedPassword = new string(usernameArr);
+                if (password.Equals(expectedPassword))
+                {
+                    return;
+                }
+
+                throw new SecurityTokenValidationException("UserName authentication failed, username or password incorrect");
             }
         }
     }

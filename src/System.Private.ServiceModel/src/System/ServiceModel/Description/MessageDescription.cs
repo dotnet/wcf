@@ -16,44 +16,40 @@ namespace System.ServiceModel.Description
     public class MessageDescription
     {
         private static Type s_typeOfUntypedMessage;
-        private string _action;
-        private MessageDirection _direction;
         private MessageDescriptionItems _items;
-        private XmlName _messageName;
-        private Type _messageType;
-        private XmlQualifiedName _xsdType;
         private ProtectionLevel _protectionLevel;
-        private bool _hasProtectionLevel;
 
         public MessageDescription(string action, MessageDirection direction) : this(action, direction, null) { }
         internal MessageDescription(string action, MessageDirection direction, MessageDescriptionItems items)
         {
             if (!MessageDirectionHelper.IsDefined(direction))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("direction"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(direction)));
+            }
 
-            _action = action;
-            _direction = direction;
+            Action = action;
+            Direction = direction;
             _items = items;
         }
 
         internal MessageDescription(MessageDescription other)
         {
-            _action = other._action;
-            _direction = other._direction;
-            this.Items.Body = other.Items.Body.Clone();
+            Action = other.Action;
+            Direction = other.Direction;
+            Items.Body = other.Items.Body.Clone();
             foreach (MessageHeaderDescription mhd in other.Items.Headers)
             {
-                this.Items.Headers.Add(mhd.Clone() as MessageHeaderDescription);
+                Items.Headers.Add(mhd.Clone() as MessageHeaderDescription);
             }
             foreach (MessagePropertyDescription mpd in other.Items.Properties)
             {
-                this.Items.Properties.Add(mpd.Clone() as MessagePropertyDescription);
+                Items.Properties.Add(mpd.Clone() as MessagePropertyDescription);
             }
-            this.MessageName = other.MessageName;
-            this.MessageType = other.MessageType;
-            this.XsdTypeName = other.XsdTypeName;
-            _hasProtectionLevel = other._hasProtectionLevel;
-            this.ProtectionLevel = other.ProtectionLevel;
+            MessageName = other.MessageName;
+            MessageType = other.MessageType;
+            XsdTypeName = other.XsdTypeName;
+            HasProtectionLevel = other.HasProtectionLevel;
+            ProtectionLevel = other.ProtectionLevel;
         }
 
         internal MessageDescription Clone()
@@ -61,21 +57,14 @@ namespace System.ServiceModel.Description
             return new MessageDescription(this);
         }
 
-        public string Action
-        {
-            get { return _action; }
-            internal set { _action = value; }
-        }
+        public string Action { get; internal set; }
 
         public MessageBodyDescription Body
         {
             get { return Items.Body; }
         }
 
-        public MessageDirection Direction
-        {
-            get { return _direction; }
-        }
+        public MessageDirection Direction { get; }
 
         public MessageHeaderDescriptionCollection Headers
         {
@@ -92,7 +81,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_items == null)
+                {
                     _items = new MessageDescriptionItems();
+                }
+
                 return _items;
             }
         }
@@ -103,21 +95,21 @@ namespace System.ServiceModel.Description
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
         public bool ShouldSerializeProtectionLevel()
         {
-            return this.HasProtectionLevel;
+            return HasProtectionLevel;
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; }
 
         internal static Type TypeOfUntypedMessage
         {
@@ -131,26 +123,18 @@ namespace System.ServiceModel.Description
             }
         }
 
-        internal XmlName MessageName
-        {
-            get { return _messageName; }
-            set { _messageName = value; }
-        }
+        internal XmlName MessageName { get; set; }
 
         // Not serializable on purpose, metadata import/export cannot
         // produce it, only available when binding to runtime
         [DefaultValue(null)]
-        public Type MessageType
-        {
-            get { return _messageType; }
-            set { _messageType = value; }
-        }
+        public Type MessageType { get; set; }
 
         internal bool IsTypedMessage
         {
             get
             {
-                return _messageType != null;
+                return MessageType != null;
             }
         }
 
@@ -171,16 +155,12 @@ namespace System.ServiceModel.Description
             }
         }
 
-        internal XmlQualifiedName XsdTypeName
-        {
-            get { return _xsdType; }
-            set { _xsdType = value; }
-        }
+        internal XmlQualifiedName XsdTypeName { get; set; }
 
         internal void ResetProtectionLevel()
         {
             _protectionLevel = ProtectionLevel.None;
-            _hasProtectionLevel = false;
+            HasProtectionLevel = false;
         }
     }
 
@@ -195,7 +175,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_body == null)
+                {
                     _body = new MessageBodyDescription();
+                }
+
                 return _body;
             }
             set
@@ -209,7 +192,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_headers == null)
+                {
                     _headers = new MessageHeaderDescriptionCollection();
+                }
+
                 return _headers;
             }
         }
@@ -219,7 +205,10 @@ namespace System.ServiceModel.Description
             get
             {
                 if (_properties == null)
+                {
                     _properties = new MessagePropertyDescriptionCollection();
+                }
+
                 return _properties;
             }
         }
