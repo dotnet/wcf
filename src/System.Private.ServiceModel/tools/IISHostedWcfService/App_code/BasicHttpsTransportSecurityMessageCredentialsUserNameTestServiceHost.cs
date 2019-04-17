@@ -9,23 +9,23 @@ using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class HttpsTransportSecurityMessageCredentialsUserNameTestServiceHostFactory : ServiceHostFactory
+    public class BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHostFactory : ServiceHostFactory
     {
         protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
         {
-            HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost serviceHost = new HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(serviceType, baseAddresses);
+            BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost serviceHost = new BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(serviceType, baseAddresses);
             return serviceHost;
         }
     }
 
-    internal class HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost : TestServiceHostBase<IWcfService>
+    internal class BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "https-message-credentials-username"; } }
 
         protected override Binding GetBinding()
         {
-            WSHttpBinding binding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
-            binding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
 
             return binding;
         }
@@ -36,7 +36,7 @@ namespace WcfService
             AuthenticationResourceHelper.ConfigureServiceHostUserNameAuth(this);
         }
 
-        public HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(Type serviceType, params Uri[] baseAddresses) : base(serviceType, baseAddresses)
+        public BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(Type serviceType, params Uri[] baseAddresses) : base(serviceType, baseAddresses)
         {
         }
     }

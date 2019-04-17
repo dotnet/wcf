@@ -302,14 +302,14 @@ namespace System.ServiceModel
             {
                 return;
             }
-            else if (mode == BasicHttpSecurityMode.Message || mode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            else if (mode == BasicHttpSecurityMode.Message)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, "Mode", mode)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedSecuritySetting, nameof(security.Mode), mode)));
             }
 
             // Transport.ClientCredentialType = InheritedFromHost are not supported.
             Fx.Assert(
-                (mode == BasicHttpSecurityMode.Transport) || (mode == BasicHttpSecurityMode.TransportCredentialOnly),
+                (mode == BasicHttpSecurityMode.Transport) || (mode == BasicHttpSecurityMode.TransportCredentialOnly) || (mode == BasicHttpSecurityMode.TransportWithMessageCredential),
                 "Unexpected BasicHttpSecurityMode value: " + mode);
             HttpTransportSecurity transport = security.Transport;
             if (transport != null && transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)

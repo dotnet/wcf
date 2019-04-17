@@ -2496,4 +2496,7 @@
   <data name="UnknownTokenAuthenticatorUsedInTokenProcessing" xml:space="preserve">
     <value>An unrecognized token authenticator '{0}' was used for token processing.</value>
   </data>
+  <data name="BasicHttpMessageSecurityRequiresCertificate" xml:space="preserve">
+    <value>BasicHttp binding requires that BasicHttpBinding.Security.Message.ClientCredentialType be equivalent to the BasicHttpMessageCredentialType.Certificate credential type for secure messages. Select Transport or TransportWithMessageCredential security for UserName credentials.</value>
+  </data>
 </root>

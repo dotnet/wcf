@@ -1,21 +1,19 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Security;
+using System.Text;
+using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
-public class TransportWithMessageCredentialSecurityTests : ConditionalWcfTest
+public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
-           nameof(Client_Certificate_Installed),
-           nameof(SSL_Available))]
+               nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
     [OuterLoop]
     public static void Https_SecModeTransWithMessCred_CertClientCredential_Succeeds()
     {
@@ -28,9 +26,9 @@ public class TransportWithMessageCredentialSecurityTests : ConditionalWcfTest
         try
         {
             // *** SETUP *** \\
-            WSHttpBinding binding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
-            binding.Security.Message.ClientCredentialType = MessageCredentialType.Certificate;
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeCert));
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.Certificate;
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.BasicHttps_SecModeTransWithMessCred_ClientCredTypeCert));
             clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
@@ -57,7 +55,6 @@ public class TransportWithMessageCredentialSecurityTests : ConditionalWcfTest
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
-        //Https_SecModeTransWithMessCred_ClientCredTypeUserName
     }
 
     [WcfFact]

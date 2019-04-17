@@ -20,11 +20,18 @@ namespace System.ServiceModel
         Certificate = 1,
         UserName = 0,
     }
+    public sealed partial class BasicHttpMessageSecurity
+    {
+        public BasicHttpMessageSecurity() { }
+        public System.ServiceModel.BasicHttpMessageCredentialType ClientCredentialType { get { return default(System.ServiceModel.BasicHttpMessageCredentialType); } set { } }
+        public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
+    }
     public sealed partial class BasicHttpSecurity
     {
         public BasicHttpSecurity() { }
         public System.ServiceModel.BasicHttpSecurityMode Mode { get { return default(System.ServiceModel.BasicHttpSecurityMode); } set { } }
         public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
+        public System.ServiceModel.BasicHttpMessageSecurity Message { get { return default(System.ServiceModel.BasicHttpMessageSecurity); } set { } }
     }
     public enum BasicHttpSecurityMode
     {
