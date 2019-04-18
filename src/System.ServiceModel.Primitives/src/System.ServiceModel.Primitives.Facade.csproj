@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
-    <!--<TargetFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netcoreapp2.1;netstandard1.0;netstandard1.1;netstandard1.3;netstandard2.0;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10</TargetFrameworks>-->
-    <TargetFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netstandard1.0;netstandard1.1;netstandard1.3;netstandard2.0;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10</TargetFrameworks>
+    <TargetFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netcoreapp2.1;netstandard1.0;netstandard1.1;netstandard1.3;netstandard2.0;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
@@ -22,12 +21,6 @@
   <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0' And '$(TargetFramework)' != 'netcoreapp2.1'">
     <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
     <HarvestFromPackage>true</HarvestFromPackage>
-  </PropertyGroup>
-
-  <!-- Don't generate facade for netcoreapp2.1, no new API added, just a new property only supported on netcoreapp2.1 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-    <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
-    <HarvestFromPackage>false</HarvestFromPackage>
   </PropertyGroup>
   
   <!-- the following represent dependencies copied from the old package -->
