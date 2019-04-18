@@ -1,19 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
-    <TargetFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netstandard1.1;netstandard1.3;netstandard2.0;portable-net45+win8;win8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10</TargetFrameworks>
     <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
+
+    <BuildFrameworks>netstandard2.0;</BuildFrameworks>
+    <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netstandard1.1;netstandard1.3;portable-net45+win8;win8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
+    <TargetFrameworks>$(BuildFrameworks)$(HarvestFrameworks)</TargetFrameworks>
+    <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
+    <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="'$(IsBuilding)' == 'true'">
     <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
   </ItemGroup>
 
   <!-- non-building TargetFrameworks copy from old package -->
-  <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+  <PropertyGroup Condition="'$(IsHarvesting)' == 'true'">
     <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
     <HarvestFromPackage>true</HarvestFromPackage>
   </PropertyGroup>
