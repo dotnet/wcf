@@ -100,7 +100,6 @@ namespace SelfHostedWCFService
             CreateHost<TcpSessionTestServiceHost, WcfService.SessionTestsDefaultService>("SessionTestsDefaultService.svc", tcpBaseAddress);
             CreateHost<TcpSessionShortTimeoutTestServiceHost, WcfService.SessionTestsShortTimeoutService>("SessionTestsShortTimeoutService.svc", tcpBaseAddress);
             CreateHost<TcpSessionDuplexTestServiceHost, WcfService.SessionTestsDuplexService>("SessionTestsDuplexService.svc", tcpBaseAddress);
-            CreateHost<TcpSoap12WSANoneTestServiceHost, WcfService.WcfService>("TcpSoap12WSANone.svc", tcpBaseAddress);
             CreateHost<TcpSoap11WSA10TestServiceHost, WcfService.WcfService>("TcpSoap11WSA10.svc", tcpBaseAddress);
             CreateHost<DuplexWebSocketTestServiceHost, WcfWebSocketService>("DuplexWebSocket.svc", websocketBaseAddress);
             CreateHost<WebSocketTransportTestServiceHost, WcfWebSocketTransportUsageAlwaysService>("WebSocketTransport.svc", websocketBaseAddress);

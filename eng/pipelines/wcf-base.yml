@@ -64,7 +64,6 @@ jobs:
 
         - _msbuildCommonParameters: ''
         - _archiveTestsParameter: ''
-        - _testArgs: /p:ServiceUri=wcfcoresrv5.cloudapp.net/wcftestservice1 /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
 
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
           - _msbuildCommonParameters: /p:OfficialBuildId=$(Build.BuildNumber)
@@ -76,6 +75,12 @@ jobs:
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - group: DotNet-HelixApi-Access
 
+        - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+
+        - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService
+
+        - _testArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
         - _args: -preparemachine -configuration $(_BuildConfig) /p:Test=$(_unitTests) /p:IntegrationTest=$(_integrationTests) /p:Sign=$(_sign) /p:Pack=$(_pack) /p:Publish=$(_publish)
         - _commonArguments: $(_args)
 
