@@ -101,7 +101,7 @@ jobs:
           - _xUnitRunnerVersion: 2.4.1
           - _dotNetCliPackageType: sdk
           - _dotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
-          - _xUnitWorkItemTimeout: 400
+          - _xUnitWorkItemTimeout: '00:10:00'
 
         # pass along job properties
         ${{ each property in job }}:
@@ -120,7 +120,7 @@ jobs:
         enablePublishBuildArtifacts: true
 
         ${{ if eq(job.timeoutInMinutes, '') }}:
-          timeoutInMinutes: 150
+          timeoutInMinutes: 15
 
         steps:
           - ${{ if ne(job.preBuildSteps[0], '') }}:
