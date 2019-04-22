@@ -3,14 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Net.Http.Headers;
+using System.Net;
 
 namespace System.ServiceModel.Security.Tokens
 {
     public sealed class InitiatorServiceModelSecurityTokenRequirement : ServiceModelSecurityTokenRequirement
     {
-        private HttpHeaders _httpHeaders;
-
         public InitiatorServiceModelSecurityTokenRequirement()
             : base()
         {
@@ -25,7 +23,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[TargetAddressProperty] = value;
+                Properties[TargetAddressProperty] = value;
             }
         }
 
@@ -37,7 +35,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[ViaProperty] = value;
+                Properties[ViaProperty] = value;
             }
         }
 
@@ -45,11 +43,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return GetPropertyOrDefault<bool>(IsOutOfBandTokenProperty, false);
+                return GetPropertyOrDefault(IsOutOfBandTokenProperty, false);
             }
             set
             {
-                this.Properties[IsOutOfBandTokenProperty] = value;
+                Properties[IsOutOfBandTokenProperty] = value;
             }
         }
 
@@ -57,25 +55,15 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return GetPropertyOrDefault<bool>(PreferSslCertificateAuthenticatorProperty, false);
+                return GetPropertyOrDefault(PreferSslCertificateAuthenticatorProperty, false);
             }
             set
             {
-                this.Properties[PreferSslCertificateAuthenticatorProperty] = value;
+                Properties[PreferSslCertificateAuthenticatorProperty] = value;
             }
         }
 
-        internal HttpHeaders HttpHeaders
-        {
-            get
-            {
-                return _httpHeaders;
-            }
-            set
-            {
-                _httpHeaders = value;
-            }
-        }
+        internal WebHeaderCollection WebHeaders { get; set; }
 
         public override string ToString()
         {

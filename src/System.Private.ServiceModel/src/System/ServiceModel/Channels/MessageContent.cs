@@ -38,7 +38,7 @@ namespace System.ServiceModel.Channels
 
         public Message Message { get { return _message; } }
 
-        internal  Task WriteCompletionTask { get { return _writeCompletedTcs.Task; } }
+        internal Task WriteCompletionTask { get { return _writeCompletedTcs.Task; } }
 
         private void PrepareContentHeaders()
         {

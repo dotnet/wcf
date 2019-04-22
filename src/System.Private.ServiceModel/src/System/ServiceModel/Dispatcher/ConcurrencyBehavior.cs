@@ -3,10 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Collections.Generic;
 using System.Runtime;
-using System.ServiceModel;
 using System.Threading;
 
 namespace System.ServiceModel.Dispatcher
@@ -255,25 +253,31 @@ namespace System.ServiceModel.Dispatcher
             // Finishing old work takes precedence over new work.
             if ((_calloutMessageQueue != null) && (_calloutMessageQueue.Count > 0))
             {
-                return this.DequeueFrom(_calloutMessageQueue);
+                return DequeueFrom(_calloutMessageQueue);
             }
             else
             {
-                return this.DequeueFrom(_newMessageQueue);
+                return DequeueFrom(_newMessageQueue);
             }
         }
 
         internal void EnqueueNewMessage(ConcurrencyBehavior.IWaiter waiter)
         {
             if (_newMessageQueue == null)
+            {
                 _newMessageQueue = new Queue<ConcurrencyBehavior.IWaiter>();
+            }
+
             _newMessageQueue.Enqueue(waiter);
         }
 
         internal void EnqueueCalloutMessage(ConcurrencyBehavior.IWaiter waiter)
         {
             if (_calloutMessageQueue == null)
+            {
                 _calloutMessageQueue = new Queue<ConcurrencyBehavior.IWaiter>();
+            }
+
             _calloutMessageQueue.Enqueue(waiter);
         }
     }

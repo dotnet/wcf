@@ -4,7 +4,6 @@
 
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Diagnostics;
 using System.Threading;
@@ -14,10 +13,7 @@ namespace System.ServiceModel.Channels
 {
     public abstract class RequestChannel : ChannelBase, IRequestChannel, IAsyncRequestChannel
     {
-        private bool _manualAddressing;
         private List<IRequestBase> _outstandingRequests = new List<IRequestBase>();
-        private EndpointAddress _to;
-        private Uri _via;
         private TaskCompletionSource<object> _closedTcs;
 
         private bool _closed;
@@ -30,38 +26,20 @@ namespace System.ServiceModel.Channels
             {
                 if (to == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("to");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(to));
                 }
             }
 
-            _manualAddressing = manualAddressing;
-            _to = to;
-            _via = via;
+            ManualAddressing = manualAddressing;
+            RemoteAddress = to;
+            Via = via;
         }
 
-        protected bool ManualAddressing
-        {
-            get
-            {
-                return _manualAddressing;
-            }
-        }
+        protected bool ManualAddressing { get; }
 
-        public EndpointAddress RemoteAddress
-        {
-            get
-            {
-                return _to;
-            }
-        }
+        public EndpointAddress RemoteAddress { get; }
 
-        public Uri Via
-        {
-            get
-            {
-                return _via;
-            }
-        }
+        public Uri Via { get; }
 
         protected void AbortPendingRequests()
         {
@@ -95,7 +73,7 @@ namespace System.ServiceModel.Channels
 
         private IRequestBase[] SetupWaitForPendingRequests()
         {
-            return this.CopyPendingRequests(true);
+            return CopyPendingRequests(true);
         }
 
         protected void WaitForPendingRequests(TimeSpan timeout)
@@ -225,7 +203,7 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginRequest(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginRequest(message, this.DefaultSendTimeout, callback, state);
+            return BeginRequest(message, DefaultSendTimeout, callback, state);
         }
 
         public IAsyncResult BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state)
@@ -242,7 +220,7 @@ namespace System.ServiceModel.Channels
 
         public Message Request(Message message)
         {
-            return this.Request(message, this.DefaultSendTimeout);
+            return Request(message, DefaultSendTimeout);
         }
 
         public Message Request(Message message, TimeSpan timeout)
@@ -252,7 +230,7 @@ namespace System.ServiceModel.Channels
 
         public Task<Message> RequestAsync(Message message)
         {
-            return RequestAsync(message, this.DefaultSendTimeout);
+            return RequestAsync(message, DefaultSendTimeout);
         }
 
         private async Task<Message> RequestAsyncInternal(Message message, TimeSpan timeout)
@@ -265,12 +243,14 @@ namespace System.ServiceModel.Channels
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
 
             if (timeout < TimeSpan.Zero)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("timeout", timeout, SR.SFxTimeoutOutOfRange0));
+                    new ArgumentOutOfRangeException(nameof(timeout), timeout, SR.SFxTimeoutOutOfRange0));
+            }
 
             ThrowIfDisposedOrNotOpen();
 
@@ -315,9 +295,9 @@ namespace System.ServiceModel.Channels
 
         protected virtual void AddHeadersTo(Message message)
         {
-            if (!_manualAddressing && _to != null)
+            if (!ManualAddressing && RemoteAddress != null)
             {
-                _to.ApplyTo(message);
+                RemoteAddress.ApplyTo(message);
             }
         }
     }

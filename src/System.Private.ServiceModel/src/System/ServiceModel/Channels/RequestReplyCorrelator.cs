@@ -52,7 +52,9 @@ namespace System.ServiceModel.Channels
                 value = (T)_states[key];
 
                 if (remove)
+                {
                     _states.Remove(key);
+                }
             }
 
             return value;
@@ -77,7 +79,10 @@ namespace System.ServiceModel.Channels
         {
             UniqueId relatesTo = reply.Headers.RelatesTo;
             if (relatesTo == null)
+            {
                 throw TraceUtility.ThrowHelperError(new ArgumentException(SR.SuppliedMessageIsNotAReplyItHasNoRelatesTo0), reply);
+            }
+
             return relatesTo;
         }
 
@@ -146,7 +151,9 @@ namespace System.ServiceModel.Channels
         internal static void PrepareReply(Message reply, UniqueId messageId)
         {
             if (object.ReferenceEquals(messageId, null))
+            {
                 throw TraceUtility.ThrowHelperError(new InvalidOperationException(SR.MissingMessageID), reply);
+            }
 
             MessageHeaders replyHeaders = reply.Headers;
 
@@ -183,47 +190,39 @@ namespace System.ServiceModel.Channels
 
         internal struct ReplyToInfo
         {
-            private readonly EndpointAddress _faultTo;
-            private readonly EndpointAddress _from;
             private readonly EndpointAddress _replyTo;
 
             internal ReplyToInfo(Message message)
             {
-                _faultTo = message.Headers.FaultTo;
+                FaultTo = message.Headers.FaultTo;
                 _replyTo = message.Headers.ReplyTo;
                 if (message.Version.Addressing == AddressingVersion.WSAddressingAugust2004)
                 {
-                    _from = message.Headers.From;
+                    From = message.Headers.From;
                 }
-                else 
+                else
                 {
-                    _from = null;
+                    From = null;
                 }
             }
 
-            internal EndpointAddress FaultTo
-            {
-                get { return _faultTo; }
-            }
+            internal EndpointAddress FaultTo { get; }
 
-            internal EndpointAddress From
-            {
-                get { return _from; }
-            }
+            internal EndpointAddress From { get; }
 
             internal bool HasFaultTo
             {
-                get { return !IsTrivial(this.FaultTo); }
+                get { return !IsTrivial(FaultTo); }
             }
 
             internal bool HasFrom
             {
-                get { return !IsTrivial(this.From); }
+                get { return !IsTrivial(From); }
             }
 
             internal bool HasReplyTo
             {
-                get { return !IsTrivial(this.ReplyTo); }
+                get { return !IsTrivial(ReplyTo); }
             }
 
             internal EndpointAddress ReplyTo
@@ -253,8 +252,11 @@ namespace System.ServiceModel.Channels
             {
                 Key other = obj as Key;
                 if (other == null)
+                {
                     return false;
-                return other.MessageId == this.MessageId && other.StateType == this.StateType;
+                }
+
+                return other.MessageId == MessageId && other.StateType == StateType;
             }
 
             [SuppressMessage(FxCop.Category.Usage, "CA2303:FlagTypeGetHashCode", Justification = "The hashcode is not used for identity purposes for embedded types.")]

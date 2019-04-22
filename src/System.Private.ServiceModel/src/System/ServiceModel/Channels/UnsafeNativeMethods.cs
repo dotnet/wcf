@@ -5,8 +5,6 @@
 
 #define WSARECV
 
-using System.Runtime;
-using System.Security;
 
 namespace System.ServiceModel.Channels
 {

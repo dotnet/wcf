@@ -3,11 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace System.ServiceModel
 {
@@ -16,7 +13,9 @@ namespace System.ServiceModel
         public DnsEndpointIdentity(string dnsName)
         {
             if (dnsName == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dnsName");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(dnsName));
+            }
 
             base.Initialize(Claim.CreateDnsClaim(dnsName));
         }
@@ -24,10 +23,14 @@ namespace System.ServiceModel
         public DnsEndpointIdentity(Claim identity)
         {
             if (identity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identity");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identity));
+            }
 
             if (!identity.ClaimType.Equals(ClaimTypes.Dns))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.UnrecognizedClaimTypeForIdentity, identity.ClaimType, ClaimTypes.Dns));
+            }
 
             base.Initialize(identity);
         }
@@ -35,9 +38,11 @@ namespace System.ServiceModel
         internal override void WriteContentsTo(XmlDictionaryWriter writer)
         {
             if (writer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
+            }
 
-            writer.WriteElementString(XD.AddressingDictionary.Dns, XD.AddressingDictionary.IdentityExtensionNamespace, (string)this.IdentityClaim.Resource);
+            writer.WriteElementString(XD.AddressingDictionary.Dns, XD.AddressingDictionary.IdentityExtensionNamespace, (string)IdentityClaim.Resource);
         }
     }
 }

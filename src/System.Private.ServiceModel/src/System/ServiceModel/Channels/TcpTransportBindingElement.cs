@@ -7,24 +7,19 @@ namespace System.ServiceModel.Channels
 {
     public class TcpTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
-        private TcpConnectionPoolSettings _connectionPoolSettings;
-
         public TcpTransportBindingElement()
             : base()
         {
-            _connectionPoolSettings = new TcpConnectionPoolSettings();
+            ConnectionPoolSettings = new TcpConnectionPoolSettings();
         }
 
         protected TcpTransportBindingElement(TcpTransportBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            _connectionPoolSettings = elementToBeCloned._connectionPoolSettings.Clone();
+            ConnectionPoolSettings = elementToBeCloned.ConnectionPoolSettings.Clone();
         }
 
-        public TcpConnectionPoolSettings ConnectionPoolSettings
-        {
-            get { return _connectionPoolSettings; }
-        }
+        public TcpConnectionPoolSettings ConnectionPoolSettings { get; }
 
         public override string Scheme
         {
@@ -40,10 +35,10 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
 
-            if (!this.CanBuildChannelFactory<TChannel>(context))
+            if (!CanBuildChannelFactory<TChannel>(context))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)));
             }
@@ -55,7 +50,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(IBindingDeliveryCapabilities))
             {
@@ -85,7 +80,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (!_connectionPoolSettings.IsMatch(tcp._connectionPoolSettings))
+            if (!ConnectionPoolSettings.IsMatch(tcp.ConnectionPoolSettings))
             {
                 return false;
             }

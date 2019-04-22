@@ -105,12 +105,12 @@ namespace System.Runtime
 
         public bool ClientMessageInspectorBeforeSendInvokedIsEnabled()
         {
-            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting 
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting
             | Keywords.ServiceModel
             , EventChannel.Analytic);
         }
 
-        [Event(EventIds.ClientMessageInspectorBeforeSendInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientMessageInspectorBeforeSendInvoked, Task = Tasks.ClientRuntime, Keywords = Keywords.Troubleshooting 
+        [Event(EventIds.ClientMessageInspectorBeforeSendInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.ClientRuntimeClientMessageInspectorBeforeSendInvoked, Task = Tasks.ClientRuntime, Keywords = Keywords.Troubleshooting
             | Keywords.ServiceModel
             | ChannelKeywords.Analytic,
             Message = "The Dispatcher invoked 'BeforeSendRequest' on a ClientMessageInspector of type  '{0}'.")]
@@ -2830,7 +2830,7 @@ namespace System.Runtime
             public const EventKeywords Operational = unchecked((EventKeywords)0x4000000000000000);
             public const EventKeywords Analytic = unchecked((EventKeywords)0x2000000000000000);
             public const EventKeywords Debug = unchecked((EventKeywords)0x1000000000000000);
-		}
+        }
 
         #endregion
     }

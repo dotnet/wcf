@@ -5,12 +5,10 @@
 
 using System.Globalization;
 using System.Runtime;
-using System.Runtime.CompilerServices;
 using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
-using System.Threading;
 using System.Xml;
 using SessionIdleManager = System.ServiceModel.Channels.ServiceChannel.SessionIdleManager;
 
@@ -20,8 +18,6 @@ namespace System.ServiceModel.Dispatcher
     {
         public static readonly TimeSpan CloseAfterFaultTimeout = TimeSpan.FromSeconds(10);
         public const string MessageBufferPropertyName = "_RequestMessageBuffer_";
-
-        private readonly IChannelBinder _binder;
         private readonly DuplexChannelBinder _duplexBinder;
         private readonly bool _incrementedActivityCountInConstructor;
         private readonly bool _isCallback;
@@ -37,9 +33,7 @@ namespace System.ServiceModel.Dispatcher
         private static Action<object> s_openAndEnsurePump = new Action<object>(ChannelHandler.OpenAndEnsurePump);
 
         private RequestInfo _requestInfo;
-        private ServiceChannel _channel;
         private bool _doneReceiving;
-        private bool _hasRegisterBeenCalled;
         private bool _hasSession;
         private int _isPumpAcquired;
         private bool _isChannelTerminated;
@@ -59,8 +53,8 @@ namespace System.ServiceModel.Dispatcher
 
             _messageVersion = messageVersion;
             _isManualAddressing = clientRuntime.ManualAddressing;
-            _binder = binder;
-            _channel = channel;
+            Binder = binder;
+            Channel = channel;
 
             _isConcurrent = true;
             _duplexBinder = binder as DuplexChannelBinder;
@@ -86,7 +80,7 @@ namespace System.ServiceModel.Dispatcher
 
             _messageVersion = messageVersion;
             _isManualAddressing = channelDispatcher.ManualAddressing;
-            _binder = binder;
+            Binder = binder;
             _listener = listener;
 
             _receiveSynchronously = channelDispatcher.ReceiveSynchronously;
@@ -102,12 +96,12 @@ namespace System.ServiceModel.Dispatcher
 
             if (channelDispatcher.BufferedReceiveEnabled)
             {
-                _binder = new BufferedReceiveBinder(_binder);
+                Binder = new BufferedReceiveBinder(Binder);
             }
 
-            _receiver = new ErrorHandlingReceiver(_binder, channelDispatcher);
+            _receiver = new ErrorHandlingReceiver(Binder, channelDispatcher);
             _idleManager = idleManager;
-            Fx.Assert((_idleManager != null) == (_binder.HasSession && _listener.ChannelDispatcher.DefaultCommunicationTimeouts.ReceiveTimeout != TimeSpan.MaxValue), "idle manager is present only when there is a session with a finite receive timeout");
+            Fx.Assert((_idleManager != null) == (Binder.HasSession && _listener.ChannelDispatcher.DefaultCommunicationTimeouts.ReceiveTimeout != TimeSpan.MaxValue), "idle manager is present only when there is a session with a finite receive timeout");
 
             _requestInfo = new RequestInfo(this);
 
@@ -118,24 +112,15 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        internal IChannelBinder Binder
-        {
-            get { return _binder; }
-        }
+        internal IChannelBinder Binder { get; }
 
-        internal ServiceChannel Channel
-        {
-            get { return _channel; }
-        }
+        internal ServiceChannel Channel { get; private set; }
 
-        internal bool HasRegisterBeenCalled
-        {
-            get { return _hasRegisterBeenCalled; }
-        }
+        internal bool HasRegisterBeenCalled { get; private set; }
 
         private bool IsOpen
         {
-            get { return _binder.Channel.State == CommunicationState.Opened; }
+            get { return Binder.Channel.State == CommunicationState.Opened; }
         }
 
         private object ThisLock
@@ -171,24 +156,24 @@ namespace System.ServiceModel.Dispatcher
 
         private void Register()
         {
-            _hasRegisterBeenCalled = true;
-            if (_binder.Channel.State == CommunicationState.Created)
+            HasRegisterBeenCalled = true;
+            if (Binder.Channel.State == CommunicationState.Created)
             {
                 ActionItem.Schedule(s_openAndEnsurePump, this);
             }
             else
             {
-                this.EnsurePump();
+                EnsurePump();
             }
         }
 
         private void AsyncMessagePump()
         {
-            IAsyncResult result = this.BeginTryReceive();
+            IAsyncResult result = BeginTryReceive();
 
             if ((result != null) && result.CompletedSynchronously)
             {
-                this.AsyncMessagePump(result);
+                AsyncMessagePump(result);
             }
         }
 
@@ -196,16 +181,16 @@ namespace System.ServiceModel.Dispatcher
         {
             if (WcfEventSource.Instance.ChannelReceiveStopIsEnabled())
             {
-                WcfEventSource.Instance.ChannelReceiveStop(this.EventTraceActivity, this.GetHashCode());
+                WcfEventSource.Instance.ChannelReceiveStop(EventTraceActivity, GetHashCode());
             }
 
-            for (;;)
+            for (; ; )
             {
                 RequestContext request;
 
-                while (!this.EndTryReceive(result, out request))
+                while (!EndTryReceive(result, out request))
                 {
-                    result = this.BeginTryReceive();
+                    result = BeginTryReceive();
 
                     if ((result == null) || !result.CompletedSynchronously)
                     {
@@ -223,7 +208,7 @@ namespace System.ServiceModel.Dispatcher
                     break;
                 }
 
-                result = this.BeginTryReceive();
+                result = BeginTryReceive();
 
                 if (result == null || !result.CompletedSynchronously)
                 {
@@ -238,7 +223,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (WcfEventSource.Instance.ChannelReceiveStartIsEnabled())
             {
-                WcfEventSource.Instance.ChannelReceiveStart(this.EventTraceActivity, this.GetHashCode());
+                WcfEventSource.Instance.ChannelReceiveStart(EventTraceActivity, GetHashCode());
             }
 
             return _receiver.BeginTryReceive(TimeSpan.MaxValue, ChannelHandler.s_onAsyncReceiveComplete, this);
@@ -315,13 +300,13 @@ namespace System.ServiceModel.Dispatcher
                 {
                     throw;
                 }
-                return this.HandleError(e, request, channel);
+                return HandleError(e, request, channel);
             }
             finally
             {
                 if (!releasedPump)
                 {
-                    this.ReleasePump();
+                    ReleasePump();
                 }
             }
         }
@@ -341,7 +326,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (valid)
             {
-                this.HandleReceiveComplete(requestContext);
+                HandleReceiveComplete(requestContext);
             }
 
             return valid;
@@ -349,29 +334,29 @@ namespace System.ServiceModel.Dispatcher
 
         private void EnsureChannelAndEndpoint(RequestContext request)
         {
-            _requestInfo.Channel = _channel;
+            _requestInfo.Channel = Channel;
 
             if (_requestInfo.Channel == null)
             {
                 bool addressMatched;
                 if (_hasSession)
                 {
-                    _requestInfo.Channel = this.GetSessionChannel(request.RequestMessage, out _requestInfo.Endpoint, out addressMatched);
+                    _requestInfo.Channel = GetSessionChannel(request.RequestMessage, out _requestInfo.Endpoint, out addressMatched);
                 }
                 else
                 {
-                    _requestInfo.Channel = this.GetDatagramChannel(request.RequestMessage, out _requestInfo.Endpoint, out addressMatched);
+                    _requestInfo.Channel = GetDatagramChannel(request.RequestMessage, out _requestInfo.Endpoint, out addressMatched);
                 }
 
                 if (_requestInfo.Channel == null)
                 {
                     if (addressMatched)
                     {
-                        this.ReplyContractFilterDidNotMatch(request);
+                        ReplyContractFilterDidNotMatch(request);
                     }
                     else
                     {
-                        this.ReplyAddressFilterDidNotMatch(request);
+                        ReplyAddressFilterDidNotMatch(request);
                     }
                 }
             }
@@ -410,7 +395,7 @@ namespace System.ServiceModel.Dispatcher
                 }
                 else
                 {
-                    IAsyncResult result = this.BeginTryReceive();
+                    IAsyncResult result = BeginTryReceive();
                     if ((result != null) && result.CompletedSynchronously)
                     {
                         ActionItem.Schedule(ChannelHandler.s_onContinueAsyncReceive, result);
@@ -422,7 +407,7 @@ namespace System.ServiceModel.Dispatcher
         private ServiceChannel GetDatagramChannel(Message message, out EndpointDispatcher endpoint, out bool addressMatched)
         {
             addressMatched = false;
-            endpoint = this.GetEndpointDispatcher(message, out addressMatched);
+            endpoint = GetEndpointDispatcher(message, out addressMatched);
 
             if (endpoint == null)
             {
@@ -435,8 +420,8 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if (endpoint.DatagramChannel == null)
                     {
-                        endpoint.DatagramChannel = new ServiceChannel(_binder, endpoint, _listener.ChannelDispatcher, _idleManager);
-                        this.InitializeServiceChannel(endpoint.DatagramChannel);
+                        endpoint.DatagramChannel = new ServiceChannel(Binder, endpoint, _listener.ChannelDispatcher, _idleManager);
+                        InitializeServiceChannel(endpoint.DatagramChannel);
                     }
                 }
             }
@@ -453,31 +438,31 @@ namespace System.ServiceModel.Dispatcher
         {
             addressMatched = false;
 
-            if (_channel == null)
+            if (Channel == null)
             {
-                lock (this.ThisLock)
+                lock (ThisLock)
                 {
-                    if (_channel == null)
+                    if (Channel == null)
                     {
-                        endpoint = this.GetEndpointDispatcher(message, out addressMatched);
+                        endpoint = GetEndpointDispatcher(message, out addressMatched);
                         if (endpoint != null)
                         {
-                            _channel = new ServiceChannel(_binder, endpoint, _listener.ChannelDispatcher, _idleManager);
-                            this.InitializeServiceChannel(_channel);
+                            Channel = new ServiceChannel(Binder, endpoint, _listener.ChannelDispatcher, _idleManager);
+                            InitializeServiceChannel(Channel);
                         }
                     }
                 }
             }
 
-            if (_channel == null)
+            if (Channel == null)
             {
                 endpoint = null;
             }
             else
             {
-                endpoint = _channel.EndpointDispatcher;
+                endpoint = Channel.EndpointDispatcher;
             }
-            return _channel;
+            return Channel;
         }
 
         private void InitializeServiceChannel(ServiceChannel channel)
@@ -506,19 +491,19 @@ namespace System.ServiceModel.Dispatcher
         {
             if (_listener != null)
             {
-                _listener.ChannelDispatcher.ProvideFault(e, _requestInfo.Channel == null ? _binder.Channel.GetProperty<FaultConverter>() : _requestInfo.Channel.GetProperty<FaultConverter>(), ref faultInfo);
+                _listener.ChannelDispatcher.ProvideFault(e, _requestInfo.Channel == null ? Binder.Channel.GetProperty<FaultConverter>() : _requestInfo.Channel.GetProperty<FaultConverter>(), ref faultInfo);
             }
-            else if (_channel != null)
+            else if (Channel != null)
             {
-                DispatchRuntime dispatchBehavior = _channel.ClientRuntime.CallbackDispatchRuntime;
-                dispatchBehavior.ChannelDispatcher.ProvideFault(e, _channel.GetProperty<FaultConverter>(), ref faultInfo);
+                DispatchRuntime dispatchBehavior = Channel.ClientRuntime.CallbackDispatchRuntime;
+                dispatchBehavior.ChannelDispatcher.ProvideFault(e, Channel.GetProperty<FaultConverter>(), ref faultInfo);
             }
         }
 
         internal bool HandleError(Exception e)
         {
             ErrorHandlerFaultInfo dummy = new ErrorHandlerFaultInfo();
-            return this.HandleError(e, ref dummy);
+            return HandleError(e, ref dummy);
         }
 
         private bool HandleError(Exception e, ref ErrorHandlerFaultInfo faultInfo)
@@ -532,9 +517,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 return _listener.ChannelDispatcher.HandleError(e, ref faultInfo);
             }
-            else if (_channel != null)
+            else if (Channel != null)
             {
-                return _channel.ClientRuntime.CallbackDispatchRuntime.ChannelDispatcher.HandleError(e, ref faultInfo);
+                return Channel.ClientRuntime.CallbackDispatchRuntime.ChannelDispatcher.HandleError(e, ref faultInfo);
             }
             else
             {
@@ -550,7 +535,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (!replySentAsync)
             {
-                return this.HandleErrorContinuation(e, request, channel, ref faultInfo, replied);
+                return HandleErrorContinuation(e, request, channel, ref faultInfo, replied);
             }
             else
             {
@@ -572,14 +557,14 @@ namespace System.ServiceModel.Dispatcher
                     {
                         throw;
                     }
-                    this.HandleError(e1);
+                    HandleError(e1);
                 }
             }
             else
             {
                 request.Abort();
             }
-            if (!this.HandleError(e, ref faultInfo) && _hasSession)
+            if (!HandleError(e, ref faultInfo) && _hasSession)
             {
                 if (channel != null)
                 {
@@ -596,11 +581,11 @@ namespace System.ServiceModel.Dispatcher
                             {
                                 throw;
                             }
-                            this.HandleError(e2);
+                            HandleError(e2);
                         }
                         try
                         {
-                            _binder.CloseAfterFault(timeoutHelper.RemainingTime());
+                            Binder.CloseAfterFault(timeoutHelper.RemainingTime());
                         }
                         catch (Exception e3)
                         {
@@ -608,13 +593,13 @@ namespace System.ServiceModel.Dispatcher
                             {
                                 throw;
                             }
-                            this.HandleError(e3);
+                            HandleError(e3);
                         }
                     }
                     else
                     {
                         channel.Abort();
-                        _binder.Abort();
+                        Binder.Abort();
                     }
                 }
                 else
@@ -623,7 +608,7 @@ namespace System.ServiceModel.Dispatcher
                     {
                         try
                         {
-                            _binder.CloseAfterFault(CloseAfterFaultTimeout);
+                            Binder.CloseAfterFault(CloseAfterFaultTimeout);
                         }
                         catch (Exception e4)
                         {
@@ -631,12 +616,12 @@ namespace System.ServiceModel.Dispatcher
                             {
                                 throw;
                             }
-                            this.HandleError(e4);
+                            HandleError(e4);
                         }
                     }
                     else
                     {
-                        _binder.Abort();
+                        Binder.Abort();
                     }
                 }
             }
@@ -648,16 +633,16 @@ namespace System.ServiceModel.Dispatcher
         {
             try
             {
-                if (_channel != null)
+                if (Channel != null)
                 {
-                    _channel.HandleReceiveComplete(context);
+                    Channel.HandleReceiveComplete(context);
                 }
                 else
                 {
                     if (context == null && _hasSession)
                     {
                         bool close;
-                        lock (this.ThisLock)
+                        lock (ThisLock)
                         {
                             close = !_doneReceiving;
                             _doneReceiving = true;
@@ -695,9 +680,9 @@ namespace System.ServiceModel.Dispatcher
             ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ? TraceUtility.ExtractActivity(request.RequestMessage) : null;
             using (ServiceModelActivity.BoundOperation(activity))
             {
-                if (this.HandleRequestAsReply(request))
+                if (HandleRequestAsReply(request))
                 {
-                    this.ReleasePump();
+                    ReleasePump();
                     return true;
                 }
 
@@ -715,7 +700,7 @@ namespace System.ServiceModel.Dispatcher
 
                 _requestInfo.RequestContext = request;
 
-                if (!this.TryRetrievingInstanceContext(request))
+                if (!TryRetrievingInstanceContext(request))
                 {
                     //Would have replied and close the request.
                     return true;
@@ -723,7 +708,7 @@ namespace System.ServiceModel.Dispatcher
 
                 _requestInfo.Channel.CompletedIOOperation();
 
-                if (!this.DispatchAndReleasePump(request, true, currentOperationContext))
+                if (!DispatchAndReleasePump(request, true, currentOperationContext))
                 {
                     // this.DispatchDone will be called to continue
                     return false;
@@ -784,7 +769,7 @@ namespace System.ServiceModel.Dispatcher
             Exception exception = null;
             try
             {
-                _binder.Channel.Open();
+                Binder.Channel.Open();
             }
             catch (Exception e)
             {
@@ -803,7 +788,7 @@ namespace System.ServiceModel.Dispatcher
                     idleManager.CancelTimer();
                 }
 
-                bool errorHandled = this.HandleError(exception);
+                bool errorHandled = HandleError(exception);
 
                 if (_incrementedActivityCountInConstructor)
                 {
@@ -812,12 +797,12 @@ namespace System.ServiceModel.Dispatcher
 
                 if (!errorHandled)
                 {
-                    _binder.Channel.Abort();
+                    Binder.Channel.Abort();
                 }
             }
             else
             {
-                this.EnsurePump();
+                EnsurePump();
             }
         }
 
@@ -828,7 +813,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (valid)
             {
-                this.HandleReceiveComplete(requestContext);
+                HandleReceiveComplete(requestContext);
             }
 
             return valid;
@@ -895,7 +880,7 @@ namespace System.ServiceModel.Dispatcher
             faultInfo.Fault = fault;
             bool replied, replySentAsync;
             ProvideFaultAndReplyFailure(request, exception, ref faultInfo, out replied, out replySentAsync);
-            this.HandleError(exception, ref faultInfo);
+            HandleError(exception, ref faultInfo);
         }
 
         private void ProvideFaultAndReplyFailure(RequestContext request, Exception exception, ref ErrorHandlerFaultInfo faultInfo, out bool replied, out bool replySentAsync)
@@ -907,7 +892,6 @@ namespace System.ServiceModel.Dispatcher
             {
                 requestMessageIsFault = request.RequestMessage.IsFault;
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -922,14 +906,14 @@ namespace System.ServiceModel.Dispatcher
             {
                 enableFaults = _listener.ChannelDispatcher.EnableFaults;
             }
-            else if (_channel != null && _channel.IsClient)
+            else if (Channel != null && Channel.IsClient)
             {
-                enableFaults = _channel.ClientRuntime.EnableFaults;
+                enableFaults = Channel.ClientRuntime.EnableFaults;
             }
 
             if ((!requestMessageIsFault) && enableFaults)
             {
-                this.ProvideFault(exception, ref faultInfo);
+                ProvideFault(exception, ref faultInfo);
                 if (faultInfo.Fault != null)
                 {
                     Message reply = faultInfo.Fault;
@@ -937,11 +921,11 @@ namespace System.ServiceModel.Dispatcher
                     {
                         try
                         {
-                            if (this.PrepareReply(request, reply))
+                            if (PrepareReply(request, reply))
                             {
                                 if (_sendAsynchronously)
                                 {
-                                    var state = new ContinuationState { ChannelHandler = this, Channel = _channel, Exception = exception, FaultInfo = faultInfo, Request = request, Reply = reply };
+                                    var state = new ContinuationState { ChannelHandler = this, Channel = Channel, Exception = exception, FaultInfo = faultInfo, Request = request, Reply = reply };
                                     var result = request.BeginReply(reply, ChannelHandler.s_onAsyncReplyComplete, state);
                                     if (result.CompletedSynchronously)
                                     {
@@ -968,14 +952,13 @@ namespace System.ServiceModel.Dispatcher
                             }
                         }
                     }
-#pragma warning suppress 56500 // covered by FxCOP
                     catch (Exception e)
                     {
                         if (Fx.IsFatal(e))
                         {
                             throw;
                         }
-                        this.HandleError(e);
+                        HandleError(e);
                     }
                 }
             }
@@ -1004,7 +987,6 @@ namespace System.ServiceModel.Dispatcher
             {
                 requestMessage = request.RequestMessage;
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -1045,7 +1027,7 @@ namespace System.ServiceModel.Dispatcher
             // if the channel is closed in a different
             // thread. 99% this check will avoid false
             // exceptions.
-            return this.IsOpen && canSendReply;
+            return IsOpen && canSendReply;
         }
 
         private static void AsyncReplyComplete(IAsyncResult result, ContinuationState state)
@@ -1135,7 +1117,7 @@ namespace System.ServiceModel.Dispatcher
                 OperationContext currentOperationContext = new OperationContext();
                 OperationContext.Current = currentOperationContext;
 
-                for (;;)
+                for (; ; )
                 {
                     RequestContext request;
 
@@ -1173,7 +1155,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (!_requestInfo.EndpointLookupDone)
                 {
-                    this.EnsureChannelAndEndpoint(request);
+                    EnsureChannelAndEndpoint(request);
                 }
 
                 if (_requestInfo.Channel == null)
@@ -1196,7 +1178,7 @@ namespace System.ServiceModel.Dispatcher
                             throw;
                         }
                         _requestInfo.Channel = null;
-                        this.HandleError(e, request, _channel);
+                        HandleError(e, request, Channel);
                         return false;
                     }
                 }
@@ -1231,14 +1213,14 @@ namespace System.ServiceModel.Dispatcher
                     throw;
                 }
 
-                this.HandleError(e, request, _channel);
+                HandleError(e, request, Channel);
                 return false;
             }
             finally
             {
                 if (releasePump)
                 {
-                    this.ReleasePump();
+                    ReleasePump();
                 }
             }
             return true;
@@ -1275,22 +1257,22 @@ namespace System.ServiceModel.Dispatcher
 
             public RequestInfo(ChannelHandler channelHandler)
             {
-                this.Endpoint = null;
-                this.ExistingInstanceContext = null;
-                this.Channel = null;
-                this.EndpointLookupDone = false;
-                this.DispatchRuntime = null;
-                this.RequestContext = null;
-                this.ChannelHandler = channelHandler;
+                Endpoint = null;
+                ExistingInstanceContext = null;
+                Channel = null;
+                EndpointLookupDone = false;
+                DispatchRuntime = null;
+                RequestContext = null;
+                ChannelHandler = channelHandler;
             }
 
             public void Cleanup()
             {
-                this.Endpoint = null;
-                this.ExistingInstanceContext = null;
-                this.Channel = null;
-                this.EndpointLookupDone = false;
-                this.RequestContext = null;
+                Endpoint = null;
+                ExistingInstanceContext = null;
+                Channel = null;
+                EndpointLookupDone = false;
+                RequestContext = null;
             }
         }
 

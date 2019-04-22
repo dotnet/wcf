@@ -29,7 +29,10 @@ namespace System.IdentityModel.Policy
             get
             {
                 if (s_empty == null)
+                {
                     s_empty = new DefaultAuthorizationContext(new DefaultEvaluationContext());
+                }
+
                 return s_empty;
             }
         }
@@ -39,7 +42,10 @@ namespace System.IdentityModel.Policy
             get
             {
                 if (_id == null)
+                {
                     _id = SecurityUniqueId.Create();
+                }
+
                 return _id.Value;
             }
         }

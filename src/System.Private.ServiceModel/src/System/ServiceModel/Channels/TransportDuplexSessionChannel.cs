@@ -5,7 +5,6 @@
 
 using System.Runtime;
 using System.Runtime.Diagnostics;
-using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security;
 using System.Threading;
@@ -15,15 +14,8 @@ namespace System.ServiceModel.Channels
 {
     public abstract class TransportDuplexSessionChannel : TransportOutputChannel, IDuplexSessionChannel
     {
-        private BufferManager _bufferManager;
-        private IDuplexSession _duplexSession;
         private bool _isInputSessionClosed;
         private bool _isOutputSessionClosed;
-        private MessageEncoder _messageEncoder;
-        private SynchronizedMessageSource _messageSource;
-        private SecurityMessageProperty _remoteSecurity;
-        private EndpointAddress _localAddress;
-        private SemaphoreSlim _sendLock;
         private Uri _localVia;
         private static Action<object> s_onWriteComplete = new Action<object>(OnWriteComplete);
 
@@ -36,63 +28,33 @@ namespace System.ServiceModel.Channels
                   Uri via)
                 : base(manager, remoteAddress, via, settings.ManualAddressing, settings.MessageVersion)
         {
-            _localAddress = localAddress;
+            LocalAddress = localAddress;
             _localVia = localVia;
-            _bufferManager = settings.BufferManager;
-            _sendLock = new SemaphoreSlim(1);
-            _messageEncoder = settings.MessageEncoderFactory.CreateSessionEncoder();
-            this.Session = new ConnectionDuplexSession(this);
+            BufferManager = settings.BufferManager;
+            SendLock = new SemaphoreSlim(1);
+            MessageEncoder = settings.MessageEncoderFactory.CreateSessionEncoder();
+            Session = new ConnectionDuplexSession(this);
         }
 
-        public EndpointAddress LocalAddress
-        {
-            get { return _localAddress; }
-        }
+        public EndpointAddress LocalAddress { get; }
 
-        public SecurityMessageProperty RemoteSecurity
-        {
-            get { return _remoteSecurity; }
-            protected set { _remoteSecurity = value; }
-        }
+        public SecurityMessageProperty RemoteSecurity { get; protected set; }
 
-        public IDuplexSession Session
-        {
-            get { return _duplexSession; }
-            protected set { _duplexSession = value; }
-        }
+        public IDuplexSession Session { get; protected set; }
 
-        protected SemaphoreSlim SendLock
-        {
-            get
-            {
-                return _sendLock;
-            }
-        }
+        protected SemaphoreSlim SendLock { get; }
 
-        protected BufferManager BufferManager
-        {
-            get
-            {
-                return _bufferManager;
-            }
-        }
+        protected BufferManager BufferManager { get; }
 
-        protected MessageEncoder MessageEncoder
-        {
-            get { return _messageEncoder; }
-            set { _messageEncoder = value; }
-        }
+        protected MessageEncoder MessageEncoder { get; set; }
 
-        internal SynchronizedMessageSource MessageSource
-        {
-            get { return _messageSource; }
-        }
+        internal SynchronizedMessageSource MessageSource { get; private set; }
 
         protected abstract bool IsStreamedOutput { get; }
 
         public Message Receive()
         {
-            return this.Receive(this.DefaultReceiveTimeout);
+            return Receive(DefaultReceiveTimeout);
         }
 
         public Message Receive(TimeSpan timeout)
@@ -106,8 +68,8 @@ namespace System.ServiceModel.Channels
             bool shouldFault = true;
             try
             {
-                message = _messageSource.Receive(timeout);
-                this.OnReceiveMessage(message);
+                message = MessageSource.Receive(timeout);
+                OnReceiveMessage(message);
                 shouldFault = false;
                 return message;
             }
@@ -121,7 +83,7 @@ namespace System.ServiceModel.Channels
                         message = null;
                     }
 
-                    this.Fault();
+                    Fault();
                 }
             }
         }
@@ -137,8 +99,8 @@ namespace System.ServiceModel.Channels
             bool shouldFault = true;
             try
             {
-                message = await _messageSource.ReceiveAsync(timeout);
-                this.OnReceiveMessage(message);
+                message = await MessageSource.ReceiveAsync(timeout);
+                OnReceiveMessage(message);
                 shouldFault = false;
                 return message;
             }
@@ -152,19 +114,19 @@ namespace System.ServiceModel.Channels
                         message = null;
                     }
 
-                    this.Fault();
+                    Fault();
                 }
             }
         }
 
         public IAsyncResult BeginReceive(AsyncCallback callback, object state)
         {
-            return this.BeginReceive(this.DefaultReceiveTimeout, callback, state);
+            return BeginReceive(DefaultReceiveTimeout, callback, state);
         }
 
         public IAsyncResult BeginReceive(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return this.ReceiveAsync(timeout).ToApm(callback, state);
+            return ReceiveAsync(timeout).ToApm(callback, state);
         }
 
         public Message EndReceive(IAsyncResult result)
@@ -174,7 +136,7 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginTryReceive(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return this.ReceiveAsync(timeout).ToApm(callback, state);
+            return ReceiveAsync(timeout).ToApm(callback, state);
         }
 
         public bool EndTryReceive(IAsyncResult result, out Message message)
@@ -201,7 +163,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                message = this.Receive(timeout);
+                message = Receive(timeout);
                 return true;
             }
             catch (TimeoutException e)
@@ -225,7 +187,7 @@ namespace System.ServiceModel.Channels
             bool shouldFault = true;
             try
             {
-                bool success = await _messageSource.WaitForMessageAsync(timeout);
+                bool success = await MessageSource.WaitForMessageAsync(timeout);
                 shouldFault = !success; // need to fault if we've timed out because we're now toast
                 return success;
             }
@@ -233,7 +195,7 @@ namespace System.ServiceModel.Channels
             {
                 if (shouldFault)
                 {
-                    this.Fault();
+                    Fault();
                 }
             }
         }
@@ -248,7 +210,7 @@ namespace System.ServiceModel.Channels
             bool shouldFault = true;
             try
             {
-                bool success = _messageSource.WaitForMessage(timeout);
+                bool success = MessageSource.WaitForMessage(timeout);
                 shouldFault = !success; // need to fault if we've timed out because we're now toast
                 return success;
             }
@@ -256,14 +218,14 @@ namespace System.ServiceModel.Channels
             {
                 if (shouldFault)
                 {
-                    this.Fault();
+                    Fault();
                 }
             }
         }
 
         public IAsyncResult BeginWaitForMessage(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return this.WaitForMessageAsync(timeout).ToApm(callback, state);
+            return WaitForMessageAsync(timeout).ToApm(callback, state);
         }
 
         public bool EndWaitForMessage(IAsyncResult result)
@@ -273,7 +235,7 @@ namespace System.ServiceModel.Channels
 
         protected void SetMessageSource(IMessageSource messageSource)
         {
-            _messageSource = new SynchronizedMessageSource(messageSource);
+            MessageSource = new SynchronizedMessageSource(messageSource);
         }
 
         protected abstract Task CloseOutputSessionCoreAsync(TimeSpan timeout);
@@ -290,7 +252,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!await _sendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
@@ -317,21 +279,21 @@ namespace System.ServiceModel.Channels
                 bool shouldFault = true;
                 try
                 {
-                    await this.CloseOutputSessionCoreAsync(timeout);
-                    this.OnOutputSessionClosed(ref timeoutHelper);
+                    await CloseOutputSessionCoreAsync(timeout);
+                    OnOutputSessionClosed(ref timeoutHelper);
                     shouldFault = false;
                 }
                 finally
                 {
                     if (shouldFault)
                     {
-                        this.Fault();
+                        Fault();
                     }
                 }
             }
             finally
             {
-                _sendLock.Release();
+                SendLock.Release();
             }
         }
 
@@ -345,7 +307,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!_sendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!SendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
@@ -372,21 +334,21 @@ namespace System.ServiceModel.Channels
                 bool shouldFault = true;
                 try
                 {
-                    this.CloseOutputSessionCore(timeout);
-                    this.OnOutputSessionClosed(ref timeoutHelper);
+                    CloseOutputSessionCore(timeout);
+                    OnOutputSessionClosed(ref timeoutHelper);
                     shouldFault = false;
                 }
                 finally
                 {
                     if (shouldFault)
                     {
-                        this.Fault();
+                        Fault();
                     }
                 }
             }
             finally
             {
-                _sendLock.Release();
+                SendLock.Release();
             }
         }
 
@@ -395,43 +357,43 @@ namespace System.ServiceModel.Channels
 
         protected override void OnAbort()
         {
-            this.ReturnConnectionIfNecessary(true, TimeSpan.Zero);
+            ReturnConnectionIfNecessary(true, TimeSpan.Zero);
         }
 
         protected override void OnFaulted()
         {
             base.OnFaulted();
-            this.ReturnConnectionIfNecessary(true, TimeSpan.Zero);
+            ReturnConnectionIfNecessary(true, TimeSpan.Zero);
         }
 
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            await this.CloseOutputSessionAsync(timeoutHelper.RemainingTime());
+            await CloseOutputSessionAsync(timeoutHelper.RemainingTime());
 
             // close input session if necessary
             if (!_isInputSessionClosed)
             {
-                await this.EnsureInputClosedAsync(timeoutHelper.RemainingTime());
-                this.OnInputSessionClosed();
+                await EnsureInputClosedAsync(timeoutHelper.RemainingTime());
+                OnInputSessionClosed();
             }
 
-            this.CompleteClose(timeoutHelper.RemainingTime());
+            CompleteClose(timeoutHelper.RemainingTime());
         }
 
         protected override void OnClose(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            this.CloseOutputSession(timeoutHelper.RemainingTime());
+            CloseOutputSession(timeoutHelper.RemainingTime());
 
             // close input session if necessary
             if (!_isInputSessionClosed)
             {
-                this.EnsureInputClosed(timeoutHelper.RemainingTime());
-                this.OnInputSessionClosed();
+                EnsureInputClosed(timeoutHelper.RemainingTime());
+                OnInputSessionClosed();
             }
 
-            this.CompleteClose(timeoutHelper.RemainingTime());
+            CompleteClose(timeoutHelper.RemainingTime());
         }
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -455,11 +417,11 @@ namespace System.ServiceModel.Channels
         {
             if (message == null)
             {
-                this.OnInputSessionClosed();
+                OnInputSessionClosed();
             }
             else
             {
-                this.PrepareMessage(message);
+                PrepareMessage(message);
             }
         }
 
@@ -472,7 +434,7 @@ namespace System.ServiceModel.Channels
         {
             message.Properties.Via = _localVia;
 
-            this.ApplyChannelBinding(message);
+            ApplyChannelBinding(message);
 
             if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled)
             {
@@ -488,7 +450,7 @@ namespace System.ServiceModel.Channels
                 {
                     WcfEventSource.Instance.MessageReceivedByTransport(
                         eventTraceActivity,
-                        this.LocalAddress != null && this.LocalAddress.Uri != null ? this.LocalAddress.Uri.AbsoluteUri : string.Empty,
+                        LocalAddress != null && LocalAddress.Uri != null ? LocalAddress.Uri.AbsoluteUri : string.Empty,
                         relatedActivityId);
                 }
             }
@@ -510,7 +472,7 @@ namespace System.ServiceModel.Channels
 
         protected override async Task OnSendAsync(Message message, TimeSpan timeout)
         {
-            this.ThrowIfDisposedOrNotOpen();
+            ThrowIfDisposedOrNotOpen();
 
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
@@ -518,7 +480,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!await _sendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!await SendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
                                             SR.Format(SR.SendToViaTimedOut, Via, timeout),
@@ -530,30 +492,30 @@ namespace System.ServiceModel.Channels
             try
             {
                 // check again in case the previous send faulted while we were waiting for the lock
-                this.ThrowIfDisposedOrNotOpen();
-                this.ThrowIfOutputSessionClosed();
+                ThrowIfDisposedOrNotOpen();
+                ThrowIfOutputSessionClosed();
 
                 bool success = false;
                 try
                 {
-                    this.ApplyChannelBinding(message);
+                    ApplyChannelBinding(message);
 
                     var tcs = new TaskCompletionSource<bool>(this);
 
                     AsyncCompletionResult completionResult;
-                    if (this.IsStreamedOutput)
+                    if (IsStreamedOutput)
                     {
-                        completionResult = this.StartWritingStreamedMessage(message, timeoutHelper.RemainingTime(), s_onWriteComplete, tcs);
+                        completionResult = StartWritingStreamedMessage(message, timeoutHelper.RemainingTime(), s_onWriteComplete, tcs);
                     }
                     else
                     {
                         bool allowOutputBatching;
                         ArraySegment<byte> messageData;
                         allowOutputBatching = message.Properties.AllowOutputBatching;
-                        messageData = this.EncodeMessage(message);
+                        messageData = EncodeMessage(message);
 
                         buffer = messageData.Array;
-                        completionResult = this.StartWritingBufferedMessage(
+                        completionResult = StartWritingBufferedMessage(
                                                                           message,
                                                                           messageData,
                                                                           allowOutputBatching,
@@ -569,30 +531,30 @@ namespace System.ServiceModel.Channels
 
                     await tcs.Task;
 
-                    this.FinishWritingMessage();
+                    FinishWritingMessage();
 
                     success = true;
                     if (WcfEventSource.Instance.MessageSentByTransportIsEnabled())
                     {
                         EventTraceActivity eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                        WcfEventSource.Instance.MessageSentByTransport(eventTraceActivity, this.RemoteAddress.Uri.AbsoluteUri);
+                        WcfEventSource.Instance.MessageSentByTransport(eventTraceActivity, RemoteAddress.Uri.AbsoluteUri);
                     }
                 }
                 finally
                 {
                     if (!success)
                     {
-                        this.Fault();
+                        Fault();
                     }
                 }
             }
             finally
             {
-                _sendLock.Release();
+                SendLock.Release();
             }
             if (buffer != null)
             {
-                _bufferManager.ReturnBuffer(buffer);
+                BufferManager.ReturnBuffer(buffer);
             }
         }
 
@@ -600,7 +562,7 @@ namespace System.ServiceModel.Channels
         {
             if (state == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("state");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(state));
             }
 
             var tcs = state as TaskCompletionSource<bool>;
@@ -615,7 +577,7 @@ namespace System.ServiceModel.Channels
 
         protected override void OnSend(Message message, TimeSpan timeout)
         {
-            this.ThrowIfDisposedOrNotOpen();
+            ThrowIfDisposedOrNotOpen();
 
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
@@ -623,7 +585,7 @@ namespace System.ServiceModel.Channels
             // SemaphoreSlim doesn't accept timeouts > Int32.MaxValue.
             // Using TimeoutHelper.RemainingTime() would yield a value less than TimeSpan.MaxValue
             // and would result in the value Int32.MaxValue so we must use the original timeout specified.
-            if (!_sendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
+            if (!SendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
                                             SR.Format(SR.SendToViaTimedOut, Via, timeout),
@@ -633,33 +595,33 @@ namespace System.ServiceModel.Channels
             try
             {
                 // check again in case the previous send faulted while we were waiting for the lock
-                this.ThrowIfDisposedOrNotOpen();
-                this.ThrowIfOutputSessionClosed();
+                ThrowIfDisposedOrNotOpen();
+                ThrowIfOutputSessionClosed();
 
                 bool success = false;
                 try
                 {
-                    this.ApplyChannelBinding(message);
+                    ApplyChannelBinding(message);
 
-                    this.OnSendCore(message, timeoutHelper.RemainingTime());
+                    OnSendCore(message, timeoutHelper.RemainingTime());
                     success = true;
                     if (WcfEventSource.Instance.MessageSentByTransportIsEnabled())
                     {
                         EventTraceActivity eventTraceActivity = EventTraceActivityHelper.TryExtractActivity(message);
-                        WcfEventSource.Instance.MessageSentByTransport(eventTraceActivity, this.RemoteAddress.Uri.AbsoluteUri);
+                        WcfEventSource.Instance.MessageSentByTransport(eventTraceActivity, RemoteAddress.Uri.AbsoluteUri);
                     }
                 }
                 finally
                 {
                     if (!success)
                     {
-                        this.Fault();
+                        Fault();
                     }
                 }
             }
             finally
             {
-                _sendLock.Release();
+                SendLock.Release();
             }
         }
 
@@ -677,7 +639,7 @@ namespace System.ServiceModel.Channels
 
         private async Task EnsureInputClosedAsync(TimeSpan timeout)
         {
-            Message message = await this.MessageSource.ReceiveAsync(timeout);
+            Message message = await MessageSource.ReceiveAsync(timeout);
             if (message != null)
             {
                 using (message)
@@ -690,7 +652,7 @@ namespace System.ServiceModel.Channels
 
         private void EnsureInputClosed(TimeSpan timeout)
         {
-            Message message = this.MessageSource.Receive(timeout);
+            Message message = MessageSource.Receive(timeout);
             if (message != null)
             {
                 using (message)
@@ -728,20 +690,19 @@ namespace System.ServiceModel.Channels
 
             if (releaseConnection)
             {
-                this.ReturnConnectionIfNecessary(false, timeoutHelper.RemainingTime());
+                ReturnConnectionIfNecessary(false, timeoutHelper.RemainingTime());
             }
         }
 
         public class ConnectionDuplexSession : IDuplexSession
         {
             private static UriGenerator s_uriGenerator;
-            private TransportDuplexSessionChannel _channel;
             private string _id;
 
             public ConnectionDuplexSession(TransportDuplexSessionChannel channel)
                 : base()
             {
-                _channel = channel;
+                Channel = channel;
             }
 
             public string Id
@@ -750,7 +711,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (_id == null)
                     {
-                        lock (_channel)
+                        lock (Channel)
                         {
                             if (_id == null)
                             {
@@ -763,10 +724,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            public TransportDuplexSessionChannel Channel
-            {
-                get { return _channel; }
-            }
+            public TransportDuplexSessionChannel Channel { get; }
 
             private static UriGenerator UriGenerator
             {
@@ -783,12 +741,12 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginCloseOutputSession(AsyncCallback callback, object state)
             {
-                return this.BeginCloseOutputSession(_channel.DefaultCloseTimeout, callback, state);
+                return BeginCloseOutputSession(Channel.DefaultCloseTimeout, callback, state);
             }
 
             public IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return _channel.CloseOutputSessionAsync(timeout).ToApm(callback, state);
+                return Channel.CloseOutputSessionAsync(timeout).ToApm(callback, state);
             }
 
             public void EndCloseOutputSession(IAsyncResult result)
@@ -798,12 +756,12 @@ namespace System.ServiceModel.Channels
 
             public void CloseOutputSession()
             {
-                this.CloseOutputSession(_channel.DefaultCloseTimeout);
+                CloseOutputSession(Channel.DefaultCloseTimeout);
             }
 
             public void CloseOutputSession(TimeSpan timeout)
             {
-                _channel.CloseOutputSession(timeout);
+                Channel.CloseOutputSession(timeout);
             }
         }
     }

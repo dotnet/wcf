@@ -5,14 +5,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
-using System.IO;
-using System.Runtime;
-using System.Runtime.Serialization;
-using System.Security.Principal;
-using System.ServiceModel;
-using System.ServiceModel.Dispatcher;
 using System.Xml;
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
@@ -28,11 +21,7 @@ namespace System.ServiceModel.Security.Tokens
 
         public SecurityContextCookieSerializer(SecurityStateEncoder securityStateEncoder, IList<Type> knownTypes)
         {
-            if (securityStateEncoder == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("securityStateEncoder");
-            }
-            _securityStateEncoder = securityStateEncoder;
+            _securityStateEncoder = securityStateEncoder ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(securityStateEncoder));
             _knownTypes = knownTypes ?? new List<Type>();
         }
 

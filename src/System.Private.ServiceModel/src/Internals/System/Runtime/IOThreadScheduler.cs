@@ -13,9 +13,9 @@ namespace System.Runtime
     {
         // Do not increase the maximum capacity above 32k!  It must be a power of two, 0x8000 or less, in order to
         // work with the strategy for 'headTail'.
-        const int MaximumCapacity = 0x8000;
+        private const int MaximumCapacity = 0x8000;
 
-        static class Bits
+        private static class Bits
         {
             public const int HiShift = 32 / 2;
 
@@ -50,9 +50,9 @@ namespace System.Runtime
             }
         }
 
-        static IOThreadScheduler current = new IOThreadScheduler(32);
+        private static IOThreadScheduler s_current = new IOThreadScheduler(32);
 
-        readonly Slot[] slots;
+        private readonly Slot[] _slots;
 
         // This field holds both the head (HiWord) and tail (LoWord) indicies into the slot array.  This limits each
         // value to 64k.  In order to be able to distinguish wrapping the slot array (allowed) from wrapping the
@@ -65,15 +65,15 @@ namespace System.Runtime
         //
         // When the tail is *two* slots ahead of the head (equivalent to a count of -1), that means the IOTS is
         // idle.  Hence, we start out headTail with a -2 (equivalent) in the head and zero in the tail.
-        int headTail = -2 << Bits.HiShift;
+        private int _headTail = -2 << Bits.HiShift;
 
-        IOThreadScheduler(int capacity)
+        private IOThreadScheduler(int capacity)
         {
             Contract.Assert(capacity > 0, "Capacity must be positive.");
             Contract.Assert(capacity <= 0x8000, "Capacity cannot exceed 32k.");
 
-            slots = new Slot[capacity];
-            Contract.Assert((slots.Length & SlotMask) == 0, "Capacity must be a power of two.");
+            _slots = new Slot[capacity];
+            Contract.Assert((_slots.Length & SlotMask) == 0, "Capacity must be a power of two.");
         }
 
         public static void ScheduleCallbackNoFlow(SendOrPostCallback callback, object state)
@@ -90,7 +90,7 @@ namespace System.Runtime
                 finally
                 {
                     // Called in a finally because it needs to run uninterrupted in order to maintain consistency.
-                    queued = current.ScheduleCallbackHelper(callback, state);
+                    queued = s_current.ScheduleCallbackHelper(callback, state);
                 }
             }
         }
@@ -127,17 +127,17 @@ namespace System.Runtime
 
 
         // Returns true if successfully scheduled, false otherwise.
-        bool ScheduleCallbackHelper(SendOrPostCallback callback, object state)
+        private bool ScheduleCallbackHelper(SendOrPostCallback callback, object state)
         {
             // See if there's a free slot.  Fortunately the overflow bit is simply lost.
-            int slot = Interlocked.Add(ref headTail, Bits.HiOne);
+            int slot = Interlocked.Add(ref _headTail, Bits.HiOne);
 
             // If this brings us to 'empty', then the IOTS used to be 'idle'.  Remember that, and increment
             // again.  This doesn't need to be in a loop, because until we call Post(), we can't go back to idle.
             bool wasIdle = Bits.Count(slot) == 0;
             if (wasIdle)
             {
-                slot = Interlocked.Add(ref headTail, Bits.HiOne);
+                slot = Interlocked.Add(ref _headTail, Bits.HiOne);
                 Contract.Assert(Bits.Count(slot) != 0, "IOTS went idle when it shouldn't have.");
             }
 
@@ -151,14 +151,14 @@ namespace System.Runtime
             }
 
             bool wrapped;
-            bool queued = slots[slot >> Bits.HiShift & SlotMask].TryEnqueueWorkItem(callback, state, out wrapped);
+            bool queued = _slots[slot >> Bits.HiShift & SlotMask].TryEnqueueWorkItem(callback, state, out wrapped);
 
             if (wrapped)
             {
                 // Wrapped around the circular buffer.  Create a new, bigger IOThreadScheduler.
                 IOThreadScheduler next =
-                    new IOThreadScheduler(Math.Min(slots.Length * 2, MaximumCapacity));
-                Interlocked.CompareExchange<IOThreadScheduler>(ref current, next, this);
+                    new IOThreadScheduler(Math.Min(_slots.Length * 2, MaximumCapacity));
+                Interlocked.CompareExchange(ref s_current, next, this);
             }
 
             if (wasIdle)
@@ -170,21 +170,21 @@ namespace System.Runtime
             return queued;
         }
 
-        void CompletionCallback(out SendOrPostCallback callback, out object state)
+        private void CompletionCallback(out SendOrPostCallback callback, out object state)
         {
-            int slot = headTail;
+            int slot = _headTail;
             while (true)
             {
                 Contract.Assert(Bits.Count(slot) != -1, "CompletionCallback called on idle IOTS!");
 
                 bool wasEmpty = Bits.Count(slot) == 0;
 
-                if (slot == (slot = Interlocked.CompareExchange(ref headTail, Bits.IncrementLo(slot), slot)))
+                if (slot == (slot = Interlocked.CompareExchange(ref _headTail, Bits.IncrementLo(slot), slot)))
                 {
                     if (!wasEmpty)
                     {
                         Task.Factory.StartNew(IOCallback, this, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-                        slots[slot & SlotMask].DequeueWorkItem(out callback, out state);
+                        _slots[slot & SlotMask].DequeueWorkItem(out callback, out state);
                         return;
                     }
 
@@ -196,16 +196,16 @@ namespace System.Runtime
             state = null;
         }
 
-        bool TryCoalesce(out SendOrPostCallback callback, out object state)
+        private bool TryCoalesce(out SendOrPostCallback callback, out object state)
         {
-            int slot = headTail;
+            int slot = _headTail;
             while (true)
             {
                 if (Bits.Count(slot) > 0)
                 {
-                    if (slot == (slot = Interlocked.CompareExchange(ref headTail, Bits.IncrementLo(slot), slot)))
+                    if (slot == (slot = Interlocked.CompareExchange(ref _headTail, Bits.IncrementLo(slot), slot)))
                     {
-                        slots[slot & SlotMask].DequeueWorkItem(out callback, out state);
+                        _slots[slot & SlotMask].DequeueWorkItem(out callback, out state);
                         return true;
                     }
                     continue;
@@ -219,11 +219,11 @@ namespace System.Runtime
             return false;
         }
 
-        int SlotMask
+        private int SlotMask
         {
             get
             {
-                return slots.Length - 1;
+                return _slots.Length - 1;
             }
         }
 
@@ -240,7 +240,7 @@ namespace System.Runtime
             }
         }
 
-        void Cleanup()
+        private void Cleanup()
         {
             //if (overlapped != null)
             //{
@@ -252,15 +252,15 @@ namespace System.Runtime
 
         private void DebugVerifyHeadTail()
         {
-            if (slots != null)
+            if (_slots != null)
             {
                 // The headTail value could technically be zero if the constructor was aborted early.  The
                 // constructor wasn't aborted early if the slot array got created.
-                Contract.Assert(Bits.Count(headTail) == -1, "IOTS finalized while not idle.");
+                Contract.Assert(Bits.Count(_headTail) == -1, "IOTS finalized while not idle.");
 
-                for (int i = 0; i < slots.Length; i++)
+                for (int i = 0; i < _slots.Length; i++)
                 {
-                    slots[i].DebugVerifyEmpty();
+                    _slots[i].DebugVerifyEmpty();
                 }
             }
         }
@@ -305,35 +305,35 @@ namespace System.Runtime
 
         // Slot is configured to have an explicit size of 64 bytes. This is to prevent two different slots being accessed
         // by two different CPU cores from having cache line contention when doing interlocked operations on Slot.gate.
-        [StructLayout(LayoutKind.Sequential, Size=64)]
-        struct Slot
+        [StructLayout(LayoutKind.Sequential, Size = 64)]
+        private struct Slot
         {
-            int gate;
-            SendOrPostCallback callback;
-            object state;
+            private int _gate;
+            private SendOrPostCallback _callback;
+            private object _state;
 
             public bool TryEnqueueWorkItem(SendOrPostCallback callback, object state, out bool wrapped)
             {
                 // Register our arrival and check the state of this slot.  If the slot was already full, we wrapped.
-                int gateSnapshot = Interlocked.Increment(ref gate);
+                int gateSnapshot = Interlocked.Increment(ref _gate);
                 wrapped = (gateSnapshot & Bits.LoCountMask) != 1;
                 if (wrapped)
                 {
                     if ((gateSnapshot & Bits.LoHiBit) != 0 && Bits.IsComplete(gateSnapshot))
                     {
-                        Interlocked.CompareExchange(ref gate, 0, gateSnapshot);
+                        Interlocked.CompareExchange(ref _gate, 0, gateSnapshot);
                     }
                     return false;
                 }
 
-                Contract.Assert(this.callback == null, "Slot already has a work item.");
+                Contract.Assert(_callback == null, "Slot already has a work item.");
                 Contract.Assert((gateSnapshot & Bits.HiBits) == 0, "Slot already marked.");
 
-                this.state = state;
-                this.callback = callback;
+                _state = state;
+                _callback = callback;
 
                 // Set the special bit to show that the slot is filled.
-                gateSnapshot = Interlocked.Add(ref gate, Bits.LoHiBit);
+                gateSnapshot = Interlocked.Add(ref _gate, Bits.LoHiBit);
                 Contract.Assert((gateSnapshot & Bits.HiBits) == Bits.LoHiBit, "Slot already empty.");
 
                 if ((gateSnapshot & Bits.HiCountMask) == 0)
@@ -343,17 +343,17 @@ namespace System.Runtime
                 }
 
                 // Oops - someone already came looking for this work.  We have to abort and reschedule.
-                this.state = null;
-                this.callback = null;
+                _state = null;
+                _callback = null;
 
                 // Indicate that the slot is clear.  We might be able to bypass setting the high bit.
                 if (gateSnapshot >> Bits.HiShift != (gateSnapshot & Bits.LoCountMask) ||
-                    Interlocked.CompareExchange(ref gate, 0, gateSnapshot) != gateSnapshot)
+                    Interlocked.CompareExchange(ref _gate, 0, gateSnapshot) != gateSnapshot)
                 {
-                    gateSnapshot = Interlocked.Add(ref gate, Bits.HiHiBit);
+                    gateSnapshot = Interlocked.Add(ref _gate, Bits.HiHiBit);
                     if (Bits.IsComplete(gateSnapshot))
                     {
-                        Interlocked.CompareExchange(ref gate, 0, gateSnapshot);
+                        Interlocked.CompareExchange(ref _gate, 0, gateSnapshot);
                     }
                 }
 
@@ -363,7 +363,7 @@ namespace System.Runtime
             public void DequeueWorkItem(out SendOrPostCallback callback, out object state)
             {
                 // Stake our claim on the item.
-                int gateSnapshot = Interlocked.Add(ref gate, Bits.HiOne);
+                int gateSnapshot = Interlocked.Add(ref _gate, Bits.HiOne);
 
                 if ((gateSnapshot & Bits.LoHiBit) == 0)
                 {
@@ -379,20 +379,20 @@ namespace System.Runtime
                 // If we're the first, we get to do the work.
                 if ((gateSnapshot & Bits.HiCountMask) == Bits.HiOne)
                 {
-                    callback = this.callback;
-                    state = this.state;
-                    this.state = null;
-                    this.callback = null;
+                    callback = _callback;
+                    state = _state;
+                    _state = null;
+                    _callback = null;
 
                     // Indicate that the slot is clear.
                     // We should be able to bypass setting the high-bit in the common case.
                     if ((gateSnapshot & Bits.LoCountMask) != 1 ||
-                        Interlocked.CompareExchange(ref gate, 0, gateSnapshot) != gateSnapshot)
+                        Interlocked.CompareExchange(ref _gate, 0, gateSnapshot) != gateSnapshot)
                     {
-                        gateSnapshot = Interlocked.Add(ref gate, Bits.HiHiBit);
+                        gateSnapshot = Interlocked.Add(ref _gate, Bits.HiHiBit);
                         if (Bits.IsComplete(gateSnapshot))
                         {
-                            Interlocked.CompareExchange(ref gate, 0, gateSnapshot);
+                            Interlocked.CompareExchange(ref _gate, 0, gateSnapshot);
                         }
                     }
                 }
@@ -404,7 +404,7 @@ namespace System.Runtime
                     // If we're the last, we get to reset the slot.
                     if (Bits.IsComplete(gateSnapshot))
                     {
-                        Interlocked.CompareExchange(ref gate, 0, gateSnapshot);
+                        Interlocked.CompareExchange(ref _gate, 0, gateSnapshot);
                     }
                 }
             }
@@ -412,9 +412,9 @@ namespace System.Runtime
 #if DEBUG
             public void DebugVerifyEmpty()
             {
-                Contract.Assert(gate == 0, "Finalized with unfinished slot.");
-                Contract.Assert(callback == null, "Finalized with leaked callback.");
-                Contract.Assert(state == null, "Finalized with leaked state.");
+                Contract.Assert(_gate == 0, "Finalized with unfinished slot.");
+                Contract.Assert(_callback == null, "Finalized with leaked callback.");
+                Contract.Assert(_state == null, "Finalized with leaked state.");
             }
 #endif
         }

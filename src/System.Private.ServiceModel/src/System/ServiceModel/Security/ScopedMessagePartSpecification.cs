@@ -11,14 +11,12 @@ namespace System.ServiceModel.Security
 {
     public class ScopedMessagePartSpecification
     {
-        private MessagePartSpecification _channelParts;
         private Dictionary<string, MessagePartSpecification> _actionParts;
         private Dictionary<string, MessagePartSpecification> _readOnlyNormalizedActionParts;
-        private bool _isReadOnly;
 
         public ScopedMessagePartSpecification()
         {
-            _channelParts = new MessagePartSpecification();
+            ChannelParts = new MessagePartSpecification();
             _actionParts = new Dictionary<string, MessagePartSpecification>();
         }
 
@@ -30,29 +28,19 @@ namespace System.ServiceModel.Security
             }
         }
 
-        public MessagePartSpecification ChannelParts
-        {
-            get
-            {
-                return _channelParts;
-            }
-        }
+        public MessagePartSpecification ChannelParts { get; }
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return _isReadOnly;
-            }
-        }
+        public bool IsReadOnly { get; private set; }
 
         public ScopedMessagePartSpecification(ScopedMessagePartSpecification other)
             : this()
         {
             if (other == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("other"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(other)));
+            }
 
-            _channelParts.Union(other._channelParts);
+            ChannelParts.Union(other.ChannelParts);
             if (other._actionParts != null)
             {
                 foreach (string action in other._actionParts.Keys)
@@ -67,53 +55,68 @@ namespace System.ServiceModel.Security
         internal ScopedMessagePartSpecification(ScopedMessagePartSpecification other, bool newIncludeBody)
             : this(other)
         {
-            _channelParts.IsBodyIncluded = newIncludeBody;
+            ChannelParts.IsBodyIncluded = newIncludeBody;
             foreach (string action in _actionParts.Keys)
+            {
                 _actionParts[action].IsBodyIncluded = newIncludeBody;
+            }
         }
 
         public void AddParts(MessagePartSpecification parts)
         {
             if (parts == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("parts"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(parts)));
+            }
 
             ThrowIfReadOnly();
 
-            _channelParts.Union(parts);
+            ChannelParts.Union(parts);
         }
 
         public void AddParts(MessagePartSpecification parts, string action)
         {
             if (action == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("action"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(action)));
+            }
+
             if (parts == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("parts"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(parts)));
+            }
 
             ThrowIfReadOnly();
 
             if (!_actionParts.ContainsKey(action))
+            {
                 _actionParts[action] = new MessagePartSpecification();
+            }
+
             _actionParts[action].Union(parts);
         }
 
         internal void AddParts(MessagePartSpecification parts, XmlDictionaryString action)
         {
             if (action == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("action"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(action)));
+            }
+
             AddParts(parts, action.Value);
         }
 
         internal bool IsEmpty()
         {
             bool result;
-            if (!_channelParts.IsEmpty())
+            if (!ChannelParts.IsEmpty())
             {
                 result = false;
             }
             else
             {
                 result = true;
-                foreach (string action in this.Actions)
+                foreach (string action in Actions)
                 {
                     MessagePartSpecification parts;
                     if (TryGetParts(action, true, out parts))
@@ -133,23 +136,35 @@ namespace System.ServiceModel.Security
         public bool TryGetParts(string action, bool excludeChannelScope, out MessagePartSpecification parts)
         {
             if (action == null)
+            {
                 action = MessageHeaders.WildcardAction;
+            }
+
             parts = null;
 
-            if (_isReadOnly)
+            if (IsReadOnly)
             {
                 if (_readOnlyNormalizedActionParts.ContainsKey(action))
+                {
                     if (excludeChannelScope)
+                    {
                         parts = _actionParts[action];
+                    }
                     else
+                    {
                         parts = _readOnlyNormalizedActionParts[action];
+                    }
+                }
             }
             else if (_actionParts.ContainsKey(action))
             {
                 MessagePartSpecification p = new MessagePartSpecification();
                 p.Union(_actionParts[action]);
                 if (!excludeChannelScope)
-                    p.Union(_channelParts);
+                {
+                    p.Union(ChannelParts);
+                }
+
                 parts = p;
             }
 
@@ -160,12 +175,12 @@ namespace System.ServiceModel.Security
         {
             if (target == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("target");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(target));
             }
-            target.ChannelParts.IsBodyIncluded = this.ChannelParts.IsBodyIncluded;
+            target.ChannelParts.IsBodyIncluded = ChannelParts.IsBodyIncluded;
             foreach (XmlQualifiedName headerType in ChannelParts.HeaderTypes)
             {
-                if (!target._channelParts.IsHeaderIncluded(headerType.Name, headerType.Namespace))
+                if (!target.ChannelParts.IsHeaderIncluded(headerType.Name, headerType.Namespace))
                 {
                     target.ChannelParts.HeaderTypes.Add(headerType);
                 }
@@ -178,30 +193,32 @@ namespace System.ServiceModel.Security
 
         public bool TryGetParts(string action, out MessagePartSpecification parts)
         {
-            return this.TryGetParts(action, false, out parts);
+            return TryGetParts(action, false, out parts);
         }
 
         public void MakeReadOnly()
         {
-            if (!_isReadOnly)
+            if (!IsReadOnly)
             {
                 _readOnlyNormalizedActionParts = new Dictionary<string, MessagePartSpecification>();
                 foreach (string action in _actionParts.Keys)
                 {
                     MessagePartSpecification p = new MessagePartSpecification();
                     p.Union(_actionParts[action]);
-                    p.Union(_channelParts);
+                    p.Union(ChannelParts);
                     p.MakeReadOnly();
                     _readOnlyNormalizedActionParts[action] = p;
                 }
-                _isReadOnly = true;
+                IsReadOnly = true;
             }
         }
 
         private void ThrowIfReadOnly()
         {
-            if (_isReadOnly)
+            if (IsReadOnly)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
+            }
         }
     }
 }

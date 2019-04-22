@@ -3,12 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Xml;
-using System.Text;
-using System.Reflection;
-using System.Diagnostics;
-using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.ServiceModel.Channels;
@@ -36,11 +31,7 @@ namespace System.ServiceModel.Dispatcher
 
         private void Initialize(SynchronizedCollection<XmlSerializerOperationBehavior.Reflector.XmlSerializerFaultContractInfo> xmlSerializerFaultContractInfos)
         {
-            if (xmlSerializerFaultContractInfos == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlSerializerFaultContractInfos");
-            }
-            _xmlSerializerFaultContractInfos = xmlSerializerFaultContractInfos;
+            _xmlSerializerFaultContractInfos = xmlSerializerFaultContractInfos ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(xmlSerializerFaultContractInfos));
         }
 
         protected override XmlObjectSerializer GetSerializer(Type detailType, string faultExceptionAction, out string action)
@@ -59,12 +50,16 @@ namespace System.ServiceModel.Dispatcher
             if (faultInfo != null)
             {
                 if (action == null)
+                {
                     action = faultInfo.FaultContractInfo.Action;
+                }
 
                 return faultInfo.Serializer;
             }
             else
+            {
                 return new XmlSerializerObjectSerializer(detailType);
+            }
         }
 
         protected override FaultException CreateFaultException(MessageFault messageFault, string action)
@@ -104,7 +99,9 @@ namespace System.ServiceModel.Dispatcher
                         FaultException faultException = CreateFaultException(messageFault, action,
                             detailObj, detailType, detailReader);
                         if (faultException != null)
+                        {
                             return faultException;
+                        }
                     }
                     catch (SerializationException)
                     {

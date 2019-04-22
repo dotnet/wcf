@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.Xml;
@@ -51,7 +50,6 @@ namespace System.ServiceModel.Diagnostics
                     }
                 }
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -67,7 +65,7 @@ namespace System.ServiceModel.Diagnostics
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
             activityId = Guid.Empty;
             correlationId = Guid.Empty;
@@ -90,7 +88,6 @@ namespace System.ServiceModel.Diagnostics
                     }
                 }
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -105,7 +102,7 @@ namespace System.ServiceModel.Diagnostics
         {
             if (message == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
             }
             if (message.State != MessageState.Closed && message.Headers.MessageVersion.Envelope != EnvelopeVersion.None)
             {
@@ -121,7 +118,7 @@ namespace System.ServiceModel.Diagnostics
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
             writer.WriteAttributeString("CorrelationId", _headerId.ToString());
             writer.WriteValue(_guid);

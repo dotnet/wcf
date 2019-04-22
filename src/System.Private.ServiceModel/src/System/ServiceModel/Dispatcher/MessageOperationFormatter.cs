@@ -17,7 +17,10 @@ namespace System.ServiceModel.Dispatcher
             get
             {
                 if (MessageOperationFormatter.s_instance == null)
+                {
                     MessageOperationFormatter.s_instance = new MessageOperationFormatter();
+                }
+
                 return MessageOperationFormatter.s_instance;
             }
         }
@@ -25,9 +28,14 @@ namespace System.ServiceModel.Dispatcher
         public object DeserializeReply(Message message, object[] parameters)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
+            }
+
             if (parameters != null && parameters.Length > 0)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.SFxParametersMustBeEmpty));
+            }
 
             return message;
         }
@@ -35,11 +43,19 @@ namespace System.ServiceModel.Dispatcher
         public void DeserializeRequest(Message message, object[] parameters)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
+            }
+
             if (parameters == null)
-                throw TraceUtility.ThrowHelperError(new ArgumentNullException("parameters"), message);
+            {
+                throw TraceUtility.ThrowHelperError(new ArgumentNullException(nameof(parameters)), message);
+            }
+
             if (parameters.Length != 1)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.SFxParameterMustBeArrayOfOneElement));
+            }
 
             parameters[0] = message;
         }
@@ -47,9 +63,14 @@ namespace System.ServiceModel.Dispatcher
         public Message SerializeReply(MessageVersion messageVersion, object[] parameters, object result)
         {
             if (!(result is Message))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.SFxResultMustBeMessage));
+            }
+
             if (parameters != null && parameters.Length > 0)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.SFxParametersMustBeEmpty));
+            }
 
             return (Message)result;
         }
@@ -57,9 +78,14 @@ namespace System.ServiceModel.Dispatcher
         public Message SerializeRequest(MessageVersion messageVersion, object[] parameters)
         {
             if (parameters == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("parameters"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(parameters)));
+            }
+
             if (parameters.Length != 1 || !(parameters[0] is Message))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.SFxParameterMustBeMessage));
+            }
 
             return (Message)parameters[0];
         }

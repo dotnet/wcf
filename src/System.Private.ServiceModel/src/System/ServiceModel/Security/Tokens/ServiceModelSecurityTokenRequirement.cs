@@ -50,7 +50,7 @@ namespace System.ServiceModel.Security.Tokens
         protected ServiceModelSecurityTokenRequirement()
             : base()
         {
-            this.Properties[SupportSecurityContextCancellationProperty] = defaultSupportSecurityContextCancellation;
+            Properties[SupportSecurityContextCancellationProperty] = defaultSupportSecurityContextCancellation;
         }
 
         static public string SecurityAlgorithmSuiteProperty { get { return securityAlgorithmSuiteProperty; } }
@@ -88,7 +88,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return GetPropertyOrDefault<bool>(IsInitiatorProperty, false);
+                return GetPropertyOrDefault(IsInitiatorProperty, false);
             }
         }
 
@@ -100,7 +100,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[SecurityAlgorithmSuiteProperty] = value;
+                Properties[SecurityAlgorithmSuiteProperty] = value;
             }
         }
 
@@ -112,7 +112,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[SecurityBindingElementProperty] = value;
+                Properties[SecurityBindingElementProperty] = value;
             }
         }
 
@@ -124,7 +124,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[IssuerAddressProperty] = value;
+                Properties[IssuerAddressProperty] = value;
             }
         }
 
@@ -136,7 +136,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[IssuerBindingProperty] = value;
+                Properties[IssuerBindingProperty] = value;
             }
         }
 
@@ -148,7 +148,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[SecureConversationSecurityBindingElementProperty] = value;
+                Properties[SecureConversationSecurityBindingElementProperty] = value;
             }
         }
 
@@ -160,7 +160,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[MessageSecurityVersionProperty] = value;
+                Properties[MessageSecurityVersionProperty] = value;
             }
         }
 
@@ -169,11 +169,11 @@ namespace System.ServiceModel.Security.Tokens
             get
             {
                 MessageSecurityVersion messageSecurityVersion;
-                return (this.TryGetProperty<MessageSecurityVersion>(DefaultMessageSecurityVersionProperty, out messageSecurityVersion)) ? messageSecurityVersion : null;
+                return (TryGetProperty(DefaultMessageSecurityVersionProperty, out messageSecurityVersion)) ? messageSecurityVersion : null;
             }
             set
             {
-                this.Properties[DefaultMessageSecurityVersionProperty] = (object)value;
+                Properties[DefaultMessageSecurityVersionProperty] = (object)value;
             }
         }
 
@@ -185,7 +185,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[TransportSchemeProperty] = value;
+                Properties[TransportSchemeProperty] = value;
             }
         }
 
@@ -193,11 +193,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return GetPropertyOrDefault<bool>(SupportSecurityContextCancellationProperty, defaultSupportSecurityContextCancellation);
+                return GetPropertyOrDefault(SupportSecurityContextCancellationProperty, defaultSupportSecurityContextCancellation);
             }
             set
             {
-                this.Properties[SupportSecurityContextCancellationProperty] = value;
+                Properties[SupportSecurityContextCancellationProperty] = value;
             }
         }
 
@@ -209,14 +209,14 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[duplexClientLocalAddressProperty] = value;
+                Properties[duplexClientLocalAddressProperty] = value;
             }
         }
 
         internal TValue GetPropertyOrDefault<TValue>(string propertyName, TValue defaultValue)
         {
             TValue result;
-            if (!TryGetProperty<TValue>(propertyName, out result))
+            if (!TryGetProperty(propertyName, out result))
             {
                 result = defaultValue;
             }
@@ -227,10 +227,10 @@ namespace System.ServiceModel.Security.Tokens
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "{0}:", this.GetType().ToString()));
-            foreach (string propertyName in this.Properties.Keys)
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "{0}:", GetType().ToString()));
+            foreach (string propertyName in Properties.Keys)
             {
-                object propertyValue = this.Properties[propertyName];
+                object propertyValue = Properties[propertyName];
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "PropertyName: {0}", propertyName));
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "PropertyValue: {0}", propertyValue));
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "---"));

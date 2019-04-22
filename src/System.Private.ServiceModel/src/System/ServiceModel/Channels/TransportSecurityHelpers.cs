@@ -14,7 +14,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -24,12 +23,12 @@ namespace System.ServiceModel.Channels
         // used for HTTP (from HttpChannelUtilities.GetCredential)
         public static async Task<NetworkCredential> GetSspiCredentialAsync(SecurityTokenProviderContainer tokenProvider,
             OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper,
-            CancellationToken cancellationToken)
+            TimeSpan timeout)
         {
             OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>();
             OutWrapper<bool> allowNtlmWrapper = new OutWrapper<bool>();
             NetworkCredential result = await GetSspiCredentialAsync(tokenProvider.TokenProvider as SspiSecurityTokenProvider,
-                dummyExtractWindowsGroupClaimsWrapper, impersonationLevelWrapper, allowNtlmWrapper, cancellationToken);
+                dummyExtractWindowsGroupClaimsWrapper, impersonationLevelWrapper, allowNtlmWrapper, timeout);
             authenticationLevelWrapper.Value = allowNtlmWrapper.Value ?
                 AuthenticationLevel.MutualAuthRequested : AuthenticationLevel.MutualAuthRequired;
             return result;
@@ -37,11 +36,11 @@ namespace System.ServiceModel.Channels
 
         // used by client WindowsStream security (from InitiateUpgrade)
         public static Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
-            OutWrapper<TokenImpersonationLevel> impersonationLevel, OutWrapper<bool> allowNtlm, CancellationToken cancellationToken)
+            OutWrapper<TokenImpersonationLevel> impersonationLevel, OutWrapper<bool> allowNtlm, TimeSpan timeout)
         {
             OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>();
             return GetSspiCredentialAsync(tokenProvider,
-                dummyExtractWindowsGroupClaimsWrapper, impersonationLevel, allowNtlm, cancellationToken);
+                dummyExtractWindowsGroupClaimsWrapper, impersonationLevel, allowNtlm, timeout);
         }
 
         // used by server WindowsStream security (from Open)
@@ -66,7 +65,7 @@ namespace System.ServiceModel.Channels
                         OutWrapper<bool> dummyAllowNtlmWrapper = new OutWrapper<bool>();
                         OutWrapper<bool> extractGroupsForWindowsAccountsWrapper = new OutWrapper<bool>();
                         result = GetSspiCredentialAsync((SspiSecurityTokenProvider)tokenProvider, extractGroupsForWindowsAccountsWrapper,
-                            dummyImpersonationLevelWrapper, dummyAllowNtlmWrapper, timeoutHelper.GetCancellationToken()).GetAwaiter().GetResult();
+                            dummyImpersonationLevelWrapper, dummyAllowNtlmWrapper, timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
 
                         success = true;
                     }
@@ -89,7 +88,7 @@ namespace System.ServiceModel.Channels
             OutWrapper<bool> extractGroupsForWindowsAccounts,
             OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper,
             OutWrapper<bool> allowNtlmWrapper,
-            CancellationToken cancellationToken)
+            TimeSpan timeout)
         {
             NetworkCredential credential = null;
             extractGroupsForWindowsAccounts.Value = TransportDefaults.ExtractGroupsForWindowsAccounts;
@@ -98,7 +97,7 @@ namespace System.ServiceModel.Channels
 
             if (tokenProvider != null)
             {
-                SspiSecurityToken token = await TransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, cancellationToken);
+                SspiSecurityToken token = await TransportSecurityHelpers.GetTokenAsync<SspiSecurityToken>(tokenProvider, timeout);
                 if (token != null)
                 {
                     extractGroupsForWindowsAccounts.Value = token.ExtractGroupsForWindowsAccounts;
@@ -225,10 +224,10 @@ namespace System.ServiceModel.Channels
             return null;
         }
 
-        private static async Task<T> GetTokenAsync<T>(SecurityTokenProvider tokenProvider, CancellationToken cancellationToken)
+        private static async Task<T> GetTokenAsync<T>(SecurityTokenProvider tokenProvider, TimeSpan timeout)
             where T : SecurityToken
         {
-            SecurityToken result = await tokenProvider.GetTokenAsync(cancellationToken);
+            SecurityToken result = await tokenProvider.GetTokenAsync(timeout);
             if ((result != null) && !(result is T))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(
@@ -237,13 +236,13 @@ namespace System.ServiceModel.Channels
             return result as T;
         }
 
-        public static async Task<NetworkCredential> GetUserNameCredentialAsync(SecurityTokenProviderContainer tokenProvider, CancellationToken cancellationToken)
+        public static async Task<NetworkCredential> GetUserNameCredentialAsync(SecurityTokenProviderContainer tokenProvider, TimeSpan timeout)
         {
             NetworkCredential result = null;
 
             if (tokenProvider != null && tokenProvider.TokenProvider != null)
             {
-                UserNameSecurityToken token = await GetTokenAsync<UserNameSecurityToken>(tokenProvider.TokenProvider, cancellationToken);
+                UserNameSecurityToken token = await GetTokenAsync<UserNameSecurityToken>(tokenProvider.TokenProvider, timeout);
                 if (token != null)
                 {
                     result = new NetworkCredential(token.UserName, token.Password);

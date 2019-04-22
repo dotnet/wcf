@@ -15,17 +15,10 @@ namespace System.ServiceModel.Dispatcher
     internal class ProxyOperationRuntime
     {
         private readonly IClientMessageFormatter _formatter;
-        private readonly bool _isInitiating;
-        private readonly bool _isOneWay;
-        private readonly bool _isTerminating;
         private readonly bool _isSessionOpenNotificationEnabled;
-        private readonly string _name;
         private readonly IParameterInspector[] _parameterInspectors;
-        private readonly IClientFaultFormatter _faultFormatter;
         private readonly ImmutableClientRuntime _parent;
-        private bool _serializeRequest;
         private bool _deserializeReply;
-        private string _action;
         private string _replyAction;
 
         private MethodInfo _beginMethod;
@@ -39,27 +32,27 @@ namespace System.ServiceModel.Dispatcher
         internal ProxyOperationRuntime(ClientOperation operation, ImmutableClientRuntime parent)
         {
             if (operation == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("operation");
-            if (parent == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(operation));
+            }
 
-            _parent = parent;
+            _parent = parent ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
             _formatter = operation.Formatter;
-            _isInitiating = operation.IsInitiating;
-            _isOneWay = operation.IsOneWay;
-            _isTerminating = operation.IsTerminating;
+            IsInitiating = operation.IsInitiating;
+            IsOneWay = operation.IsOneWay;
+            IsTerminating = operation.IsTerminating;
             _isSessionOpenNotificationEnabled = operation.IsSessionOpenNotificationEnabled;
-            _name = operation.Name;
+            Name = operation.Name;
             _parameterInspectors = EmptyArray<IParameterInspector>.ToArray(operation.ParameterInspectors);
-            _faultFormatter = operation.FaultFormatter;
-            _serializeRequest = operation.SerializeRequest;
+            FaultFormatter = operation.FaultFormatter;
+            SerializeRequest = operation.SerializeRequest;
             _deserializeReply = operation.DeserializeReply;
-            _action = operation.Action;
+            Action = operation.Action;
             _replyAction = operation.ReplyAction;
             _beginMethod = operation.BeginMethod;
             _syncMethod = operation.SyncMethod;
             _taskMethod = operation.TaskMethod;
-            this.TaskTResult = operation.TaskTResult;
+            TaskTResult = operation.TaskTResult;
 
             if (_beginMethod != null)
             {
@@ -82,46 +75,28 @@ namespace System.ServiceModel.Dispatcher
                 _returnParam = _syncMethod.ReturnParameter;
             }
 
-            if (_formatter == null && (_serializeRequest || _deserializeReply))
+            if (_formatter == null && (SerializeRequest || _deserializeReply))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientRuntimeRequiresFormatter0, _name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.ClientRuntimeRequiresFormatter0, Name)));
             }
         }
 
-        internal string Action
-        {
-            get { return _action; }
-        }
+        internal string Action { get; }
 
-        internal IClientFaultFormatter FaultFormatter
-        {
-            get { return _faultFormatter; }
-        }
+        internal IClientFaultFormatter FaultFormatter { get; }
 
-        internal bool IsInitiating
-        {
-            get { return _isInitiating; }
-        }
+        internal bool IsInitiating { get; }
 
-        internal bool IsOneWay
-        {
-            get { return _isOneWay; }
-        }
+        internal bool IsOneWay { get; }
 
-        internal bool IsTerminating
-        {
-            get { return _isTerminating; }
-        }
+        internal bool IsTerminating { get; }
 
         internal bool IsSessionOpenNotificationEnabled
         {
             get { return _isSessionOpenNotificationEnabled; }
         }
 
-        internal string Name
-        {
-            get { return _name; }
-        }
+        internal string Name { get; }
 
         internal ImmutableClientRuntime Parent
         {
@@ -138,10 +113,7 @@ namespace System.ServiceModel.Dispatcher
             get { return _deserializeReply; }
         }
 
-        internal bool SerializeRequest
-        {
-            get { return _serializeRequest; }
-        }
+        internal bool SerializeRequest { get; }
 
         internal Type TaskTResult
         {
@@ -151,7 +123,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal void AfterReply(ref ProxyRpc rpc)
         {
-            if (!_isOneWay)
+            if (!IsOneWay)
             {
                 Message reply = rpc.Reply;
 
@@ -179,7 +151,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     for (int i = _parameterInspectors.Length - 1; i >= 0; i--)
                     {
-                        _parameterInspectors[i].AfterCall(_name,
+                        _parameterInspectors[i].AfterCall(Name,
                                                               rpc.OutputParameters,
                                                               rpc.ReturnValue,
                                                               rpc.Correlation[offset + i]);
@@ -220,7 +192,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 for (int i = 0; i < _parameterInspectors.Length; i++)
                 {
-                    rpc.Correlation[offset + i] = _parameterInspectors[i].BeforeCall(_name, rpc.InputParameters);
+                    rpc.Correlation[offset + i] = _parameterInspectors[i].BeforeCall(Name, rpc.InputParameters);
                     if (WcfEventSource.Instance.ClientParameterInspectorBeforeCallInvokedIsEnabled())
                     {
                         WcfEventSource.Instance.ClientParameterInspectorBeforeCallInvoked(rpc.EventTraceActivity, _parameterInspectors[i].GetType().FullName);
@@ -240,7 +212,7 @@ namespace System.ServiceModel.Dispatcher
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(e);
             }
 
-            if (_serializeRequest)
+            if (SerializeRequest)
             {
                 if (WcfEventSource.Instance.ClientFormatterSerializeRequestStartIsEnabled())
                 {
@@ -260,12 +232,14 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (rpc.InputParameters[0] == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxProxyRuntimeMessageCannotBeNull, _name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxProxyRuntimeMessageCannotBeNull, Name)));
                 }
 
                 rpc.Request = (Message)rpc.InputParameters[0];
                 if (!IsValidAction(rpc.Request, Action))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidRequestAction, this.Name, rpc.Request.Headers.Action ?? "{NULL}", this.Action)));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxInvalidRequestAction, Name, rpc.Request.Headers.Action ?? "{NULL}", Action)));
+                }
             }
         }
 
@@ -321,7 +295,10 @@ namespace System.ServiceModel.Dispatcher
                 outs = new object[_outParams.Length];
             }
             if (_inParams.Length == 0)
+            {
                 return Array.Empty<object>();
+            }
+
             return methodCall.Args;
         }
 

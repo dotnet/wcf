@@ -4,13 +4,11 @@
 
 
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Diagnostics;
 using System.Security;
-using System.ServiceModel;
 
 namespace System.Runtime
 {
@@ -55,7 +53,7 @@ namespace System.Runtime
                 return AsError(targetInvocationException.InnerException);
             }
 
-            return TraceException<Exception>(exception);
+            return TraceException(exception);
         }
 
         public Exception AsError(Exception exception, string eventSource)
@@ -74,7 +72,7 @@ namespace System.Runtime
                 return AsError(targetInvocationException.InnerException, eventSource);
             }
 
-            return TraceException<Exception>(exception, eventSource);
+            return TraceException(exception, eventSource);
         }
 
         public Exception AsError(TargetInvocationException targetInvocationException, string eventSource)
@@ -157,7 +155,7 @@ namespace System.Runtime
                 }
 
                 // All inner exceptions are traced
-                TraceException<Exception>(innerException, eventSource);
+                TraceException(innerException, eventSource);
             }
 
             if (favoredException == null)
@@ -171,27 +169,27 @@ namespace System.Runtime
 
         public ArgumentException Argument(string paramName, string message)
         {
-            return TraceException<ArgumentException>(new ArgumentException(message, paramName));
+            return TraceException(new ArgumentException(message, paramName));
         }
 
         public ArgumentNullException ArgumentNull(string paramName)
         {
-            return TraceException<ArgumentNullException>(new ArgumentNullException(paramName));
+            return TraceException(new ArgumentNullException(paramName));
         }
 
         public ArgumentNullException ArgumentNull(string paramName, string message)
         {
-            return TraceException<ArgumentNullException>(new ArgumentNullException(paramName, message));
+            return TraceException(new ArgumentNullException(paramName, message));
         }
 
         public ArgumentException ArgumentNullOrEmpty(string paramName)
         {
-            return this.Argument(paramName, InternalSR.ArgumentNullOrEmpty(paramName));
+            return Argument(paramName, InternalSR.ArgumentNullOrEmpty(paramName));
         }
 
         public ArgumentOutOfRangeException ArgumentOutOfRange(string paramName, object actualValue, string message)
         {
-            return TraceException<ArgumentOutOfRangeException>(new ArgumentOutOfRangeException(paramName, actualValue, message));
+            return TraceException(new ArgumentOutOfRangeException(paramName, actualValue, message));
         }
 
         // When throwing ObjectDisposedException, it is highly recommended that you use this ctor
@@ -202,7 +200,7 @@ namespace System.Runtime
         public ObjectDisposedException ObjectDisposed(string message)
         {
             // pass in null, not disposedObject.GetType().FullName as per the above guideline
-            return TraceException<ObjectDisposedException>(new ObjectDisposedException(null, message));
+            return TraceException(new ObjectDisposedException(null, message));
         }
 
         public void TraceUnhandledException(Exception exception)
@@ -243,7 +241,7 @@ namespace System.Runtime
         private TException TraceException<TException>(TException exception)
             where TException : Exception
         {
-            return TraceException<TException>(exception, _eventSourceName);
+            return TraceException(exception, _eventSourceName);
         }
         [Fx.Tag.SecurityNote(Critical = "Calls 'System.Runtime.Interop.UnsafeNativeMethods.IsDebuggerPresent()' which is a P/Invoke method",
                     Safe = "Does not leak any resource, needed for debugging")]

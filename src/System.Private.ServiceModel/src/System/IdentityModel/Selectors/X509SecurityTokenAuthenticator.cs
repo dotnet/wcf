@@ -40,12 +40,7 @@ namespace System.IdentityModel.Selectors
 
         internal X509SecurityTokenAuthenticator(X509CertificateValidator validator, bool mapToWindows, bool includeWindowsGroups, bool cloneHandle)
         {
-            if (validator == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("validator");
-            }
-
-            _validator = validator;
+            _validator = validator ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(validator));
             _mapToWindows = mapToWindows;
             _includeWindowsGroups = includeWindowsGroups;
             _cloneHandle = cloneHandle;

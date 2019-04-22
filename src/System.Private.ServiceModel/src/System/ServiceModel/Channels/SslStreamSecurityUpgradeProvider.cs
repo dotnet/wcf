@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
@@ -17,7 +15,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -25,35 +22,29 @@ namespace System.ServiceModel.Channels
     internal class SslStreamSecurityUpgradeProvider : StreamSecurityUpgradeProvider, IStreamUpgradeChannelBindingProvider
     {
         private SecurityTokenAuthenticator _clientCertificateAuthenticator;
-        private SecurityTokenManager _clientSecurityTokenManager;
         private SecurityTokenProvider _serverTokenProvider;
         private EndpointIdentity _identity;
-        private IdentityVerifier _identityVerifier;
-        private X509Certificate2 _serverCertificate;
-        private bool _requireClientCertificate;
-        private string _scheme;
-        private SslProtocols _sslProtocols;
         private bool _enableChannelBinding;
 
         private SslStreamSecurityUpgradeProvider(IDefaultCommunicationTimeouts timeouts, SecurityTokenManager clientSecurityTokenManager, bool requireClientCertificate, string scheme, IdentityVerifier identityVerifier, SslProtocols sslProtocols)
             : base(timeouts)
         {
-            _identityVerifier = identityVerifier;
-            _scheme = scheme;
-            _clientSecurityTokenManager = clientSecurityTokenManager;
-            _requireClientCertificate = requireClientCertificate;
-            _sslProtocols = sslProtocols;
+            IdentityVerifier = identityVerifier;
+            Scheme = scheme;
+            ClientSecurityTokenManager = clientSecurityTokenManager;
+            RequireClientCertificate = requireClientCertificate;
+            SslProtocols = sslProtocols;
         }
 
         private SslStreamSecurityUpgradeProvider(IDefaultCommunicationTimeouts timeouts, SecurityTokenProvider serverTokenProvider, bool requireClientCertificate, SecurityTokenAuthenticator clientCertificateAuthenticator, string scheme, IdentityVerifier identityVerifier, SslProtocols sslProtocols)
             : base(timeouts)
         {
             _serverTokenProvider = serverTokenProvider;
-            _requireClientCertificate = requireClientCertificate;
+            RequireClientCertificate = requireClientCertificate;
             _clientCertificateAuthenticator = clientCertificateAuthenticator;
-            _identityVerifier = identityVerifier;
-            _scheme = scheme;
-            _sslProtocols = sslProtocols;
+            IdentityVerifier = identityVerifier;
+            Scheme = scheme;
+            SslProtocols = sslProtocols;
         }
 
         public static SslStreamSecurityUpgradeProvider CreateClientProvider(
@@ -80,7 +71,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if ((_identity == null) && (_serverCertificate != null))
+                if ((_identity == null) && (ServerCertificate != null))
                 {
                     // this.identity = SecurityUtils.GetServiceCertificateIdentity(this.serverCertificate);
                     throw ExceptionHelper.PlatformNotSupported("SslStreamSecurityUpgradeProvider.Identity - server certificate");
@@ -90,29 +81,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public IdentityVerifier IdentityVerifier
-        {
-            get
-            {
-                return _identityVerifier;
-            }
-        }
+        public IdentityVerifier IdentityVerifier { get; }
 
-        public bool RequireClientCertificate
-        {
-            get
-            {
-                return _requireClientCertificate;
-            }
-        }
+        public bool RequireClientCertificate { get; }
 
-        public X509Certificate2 ServerCertificate
-        {
-            get
-            {
-                return _serverCertificate;
-            }
-        }
+        public X509Certificate2 ServerCertificate { get; private set; }
 
         public SecurityTokenAuthenticator ClientCertificateAuthenticator
         {
@@ -127,23 +100,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public SecurityTokenManager ClientSecurityTokenManager
-        {
-            get
-            {
-                return _clientSecurityTokenManager;
-            }
-        }
+        public SecurityTokenManager ClientSecurityTokenManager { get; }
 
-        public string Scheme
-        {
-            get { return _scheme; }
-        }
+        public string Scheme { get; }
 
-        public SslProtocols SslProtocols
-        {
-            get { return _sslProtocols; }
-        }
+        public SslProtocols SslProtocols { get; }
 
         public override T GetProperty<T>()
         {
@@ -159,7 +120,7 @@ namespace System.ServiceModel.Channels
         {
             if (upgradeInitiator == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("upgradeInitiator");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(upgradeInitiator));
             }
 
             SslStreamSecurityUpgradeInitiator sslUpgradeInitiator = upgradeInitiator as SslStreamSecurityUpgradeInitiator;
@@ -171,7 +132,7 @@ namespace System.ServiceModel.Channels
 
             if (kind != ChannelBindingKind.Endpoint)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("kind", SR.Format(SR.StreamUpgradeUnsupportedChannelBindingKind, this.GetType(), kind));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("kind", SR.Format(SR.StreamUpgradeUnsupportedChannelBindingKind, GetType(), kind));
             }
 
             return sslUpgradeInitiator.ChannelBinding;
@@ -240,33 +201,30 @@ namespace System.ServiceModel.Channels
                     SR.InvalidTokenProvided, _serverTokenProvider.GetType(), typeof(X509SecurityToken))));
             }
 
-            _serverCertificate = new X509Certificate2(x509Token.Certificate);
+            ServerCertificate = new X509Certificate2(x509Token.Certificate);
         }
 
         private void CleanupServerCertificate()
         {
-            if (_serverCertificate != null)
+            if (ServerCertificate != null)
             {
-                _serverCertificate.Dispose();
-                _serverCertificate = null;
+                ServerCertificate.Dispose();
+                ServerCertificate = null;
             }
         }
 
         protected override void OnOpen(TimeSpan timeout)
         {
-            using (CancellationTokenSource cts = new CancellationTokenSource(timeout))
-            {
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-                SecurityUtils.OpenTokenAuthenticatorIfRequired(ClientCertificateAuthenticator, timeoutHelper.RemainingTime());
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            SecurityUtils.OpenTokenAuthenticatorIfRequired(ClientCertificateAuthenticator, timeoutHelper.RemainingTime());
 
-                if (_serverTokenProvider != null)
-                {
-                    SecurityUtils.OpenTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
-                    SecurityToken token = _serverTokenProvider.GetTokenAsync(cts.Token).GetAwaiter().GetResult();
-                    SetupServerCertificate(token);
-                    SecurityUtils.CloseTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
-                    _serverTokenProvider = null;
-                }
+            if (_serverTokenProvider != null)
+            {
+                SecurityUtils.OpenTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
+                SecurityToken token = _serverTokenProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                SetupServerCertificate(token);
+                SecurityUtils.CloseTokenProviderIfRequired(_serverTokenProvider, timeoutHelper.RemainingTime());
+                _serverTokenProvider = null;
             }
         }
 
@@ -369,10 +327,7 @@ namespace System.ServiceModel.Channels
             if (_clientCertificateProvider != null)
             {
                 SecurityUtils.OpenTokenProviderIfRequired(_clientCertificateProvider, timeoutHelper.RemainingTime());
-                using (CancellationTokenSource cts = new CancellationTokenSource(timeoutHelper.RemainingTime()))
-                {
-                    _clientToken = (X509SecurityToken)_clientCertificateProvider.GetTokenAsync(cts.Token).GetAwaiter().GetResult();
-                }
+                _clientToken = (X509SecurityToken)_clientCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
             }
         }
 
@@ -383,10 +338,7 @@ namespace System.ServiceModel.Channels
             if (_clientCertificateProvider != null)
             {
                 SecurityUtils.OpenTokenProviderIfRequired(_clientCertificateProvider, timeoutHelper.RemainingTime());
-                using (CancellationTokenSource cts = new CancellationTokenSource(timeoutHelper.RemainingTime()))
-                {
-                    _clientToken = (X509SecurityToken)(await _clientCertificateProvider.GetTokenAsync(cts.Token));
-                }
+                _clientToken = (X509SecurityToken)await _clientCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime());
             }
         }
 
@@ -436,7 +388,7 @@ namespace System.ServiceModel.Channels
                 selectionCallback = ClientCertificateSelectionCallback;
             }
 
-            SslStream sslStream = new SslStream(stream, false, this.ValidateRemoteCertificate, selectionCallback);
+            SslStream sslStream = new SslStream(stream, false, ValidateRemoteCertificate, selectionCallback);
 
             try
             {
@@ -460,7 +412,7 @@ namespace System.ServiceModel.Channels
 
             remoteSecurityWrapper.Value = _serverSecurity;
 
-            if (this.IsChannelBindingSupportEnabled)
+            if (IsChannelBindingSupportEnabled)
             {
                 _channelBindingToken = ChannelBindingUtility.GetToken(sslStream);
             }

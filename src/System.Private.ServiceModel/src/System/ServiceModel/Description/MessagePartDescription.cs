@@ -14,18 +14,8 @@ namespace System.ServiceModel.Description
     [DebuggerDisplay("Name={_name}, Namespace={_ns}, Type={Type}, Index={_index}}")]
     public class MessagePartDescription
     {
-        private XmlName _name;
-        private string _ns;
-        private int _index;
-        private Type _type;
-        private int _serializationPosition;
         private ProtectionLevel _protectionLevel;
-        private bool _hasProtectionLevel;
-        private MemberInfo _memberInfo;
         private ICustomAttributeProvider _additionalAttributesProvider;
-
-        private bool _multiple;
-        private string _baseType;
         private string _uniquePartName;
 
         public MessagePartDescription(string name, string ns)
@@ -35,29 +25,29 @@ namespace System.ServiceModel.Description
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name", SR.SFxParameterNameCannotBeNull);
             }
 
-            _name = new XmlName(name, true /*isEncoded*/);
+            XmlName = new XmlName(name, true /*isEncoded*/);
 
             if (!string.IsNullOrEmpty(ns))
             {
                 NamingHelper.CheckUriParameter(ns, "ns");
             }
 
-            _ns = ns;
+            Namespace = ns;
         }
 
         internal MessagePartDescription(MessagePartDescription other)
         {
-            _name = other._name;
-            _ns = other._ns;
-            _index = other._index;
-            _type = other._type;
-            _serializationPosition = other._serializationPosition;
-            _hasProtectionLevel = other._hasProtectionLevel;
+            XmlName = other.XmlName;
+            Namespace = other.Namespace;
+            Index = other.Index;
+            Type = other.Type;
+            SerializationPosition = other.SerializationPosition;
+            HasProtectionLevel = other.HasProtectionLevel;
             _protectionLevel = other._protectionLevel;
-            _memberInfo = other._memberInfo;
-            _multiple = other._multiple;
+            MemberInfo = other.MemberInfo;
+            Multiple = other.Multiple;
             _additionalAttributesProvider = other._additionalAttributesProvider;
-            _baseType = other._baseType;
+            BaseType = other.BaseType;
             _uniquePartName = other._uniquePartName;
         }
 
@@ -66,50 +56,28 @@ namespace System.ServiceModel.Description
             return new MessagePartDescription(this);
         }
 
-        internal string BaseType
-        {
-            get { return _baseType; }
-            set { _baseType = value; }
-        }
+        internal string BaseType { get; set; }
 
-        internal XmlName XmlName
-        {
-            get { return _name; }
-        }
+        internal XmlName XmlName { get; }
 
         internal string CodeName
         {
-            get { return _name.DecodedName; }
+            get { return XmlName.DecodedName; }
         }
 
         public string Name
         {
-            get { return _name.EncodedName; }
+            get { return XmlName.EncodedName; }
         }
 
-        public string Namespace
-        {
-            get { return _ns; }
-        }
+        public string Namespace { get; }
 
-        public Type Type
-        {
-            get { return _type; }
-            set { _type = value; }
-        }
+        public Type Type { get; set; }
 
-        public int Index
-        {
-            get { return _index; }
-            set { _index = value; }
-        }
+        public int Index { get; set; }
 
         [DefaultValue(false)]
-        public bool Multiple
-        {
-            get { return _multiple; }
-            set { _multiple = value; }
-        }
+        public bool Multiple { get; set; }
 
         public ProtectionLevel ProtectionLevel
         {
@@ -117,26 +85,22 @@ namespace System.ServiceModel.Description
             set
             {
                 if (!ProtectionLevelHelper.IsDefined(value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
                 _protectionLevel = value;
-                _hasProtectionLevel = true;
+                HasProtectionLevel = true;
             }
         }
 
-        public bool HasProtectionLevel
-        {
-            get { return _hasProtectionLevel; }
-        }
+        public bool HasProtectionLevel { get; private set; }
 
-        public MemberInfo MemberInfo
-        {
-            get { return _memberInfo; }
-            set { _memberInfo = value; }
-        }
+        public MemberInfo MemberInfo { get; set; }
 
         internal ICustomAttributeProvider AdditionalAttributesProvider
         {
-            get { return _additionalAttributesProvider ?? _memberInfo; }
+            get { return _additionalAttributesProvider ?? MemberInfo; }
             set { _additionalAttributesProvider = value; }
         }
 
@@ -146,16 +110,12 @@ namespace System.ServiceModel.Description
             set { _uniquePartName = value; }
         }
 
-        internal int SerializationPosition
-        {
-            get { return _serializationPosition; }
-            set { _serializationPosition = value; }
-        }
+        internal int SerializationPosition { get; set; }
 
         internal void ResetProtectionLevel()
         {
             _protectionLevel = ProtectionLevel.None;
-            _hasProtectionLevel = false;
+            HasProtectionLevel = false;
         }
     }
 }

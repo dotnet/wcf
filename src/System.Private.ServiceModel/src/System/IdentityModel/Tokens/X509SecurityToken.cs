@@ -14,7 +14,7 @@ namespace System.IdentityModel.Tokens
     {
         private string _id;
         private X509Certificate2 _certificate;
-        // private ReadOnlyCollection<SecurityKey> _securityKeys;
+        private ReadOnlyCollection<SecurityKey> _securityKeys;
         private DateTime _effectiveTime = SecurityUtils.MaxUtcDateTime;
         private DateTime _expirationTime = SecurityUtils.MinUtcDateTime;
         private bool _disposed = false;
@@ -48,11 +48,11 @@ namespace System.IdentityModel.Tokens
         internal X509SecurityToken(X509Certificate2 certificate, string id, bool clone, bool disposable)
         {
             if (certificate == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
-            if (id == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
 
-            _id = id;
+            _id = id ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
 
             _certificate = clone ? new X509Certificate2(certificate) : certificate;
 
@@ -70,14 +70,13 @@ namespace System.IdentityModel.Tokens
             get
             {
                 ThrowIfDisposed();
-                throw ExceptionHelper.PlatformNotSupported("X509SecurityToken.SecurityKeys");
-                //if (_securityKeys == null)
-                //{
-                //    List<SecurityKey> temp = new List<SecurityKey>(1);
-                //    temp.Add(new X509AsymmetricSecurityKey(_certificate));
-                //    _securityKeys = temp.AsReadOnly();
-                //}
-                //return _securityKeys;
+                if (_securityKeys == null)
+                {
+                    List<SecurityKey> temp = new List<SecurityKey>(1);
+                    temp.Add(new X509AsymmetricSecurityKey(_certificate));
+                    _securityKeys = temp.AsReadOnly();
+                }
+                return _securityKeys;
             }
         }
 
@@ -87,7 +86,10 @@ namespace System.IdentityModel.Tokens
             {
                 ThrowIfDisposed();
                 if (_effectiveTime == SecurityUtils.MaxUtcDateTime)
+                {
                     _effectiveTime = _certificate.NotBefore.ToUniversalTime();
+                }
+
                 return _effectiveTime;
             }
         }
@@ -98,7 +100,10 @@ namespace System.IdentityModel.Tokens
             {
                 ThrowIfDisposed();
                 if (_expirationTime == SecurityUtils.MinUtcDateTime)
+                {
                     _expirationTime = _certificate.NotAfter.ToUniversalTime();
+                }
+
                 return _expirationTime;
             }
         }
@@ -127,7 +132,7 @@ namespace System.IdentityModel.Tokens
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
     }

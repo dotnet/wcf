@@ -15,10 +15,6 @@ namespace System.ServiceModel.Channels
     internal abstract class WebSocketTransportDuplexSessionChannel : TransportDuplexSessionChannel
     {
         private static readonly AsyncCallback s_streamedWriteCallback = Fx.ThunkCallback(StreamWriteCallback);
-        private readonly WebSocketTransportSettings _webSocketSettings;
-        private readonly TransferMode _transferMode;
-        private readonly int _maxBufferSize;
-        private readonly ITransportFactorySettings _transportFactorySettings;
         private readonly WebSocketCloseDetails _webSocketCloseDetails = new WebSocketCloseDetails();
         private Action<object> _waitCallback;
         private WebSocket _webSocket;
@@ -32,10 +28,10 @@ namespace System.ServiceModel.Channels
             : base(channelFactory, channelFactory, EndpointAddress.AnonymousAddress, channelFactory.MessageVersion.Addressing.AnonymousUri, remoteAddress, via)
         {
             Fx.Assert(channelFactory.WebSocketSettings != null, "channelFactory.WebSocketTransportSettings should not be null.");
-            _webSocketSettings = channelFactory.WebSocketSettings;
-            _transferMode = channelFactory.TransferMode;
-            _maxBufferSize = channelFactory.MaxBufferSize;
-            _transportFactorySettings = channelFactory;
+            WebSocketSettings = channelFactory.WebSocketSettings;
+            TransferMode = channelFactory.TransferMode;
+            MaxBufferSize = channelFactory.MaxBufferSize;
+            TransportFactorySettings = channelFactory;
         }
 
         protected WebSocket WebSocket
@@ -53,31 +49,13 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        protected WebSocketTransportSettings WebSocketSettings
-        {
-            get { return _webSocketSettings; }
-        }
+        protected WebSocketTransportSettings WebSocketSettings { get; }
 
-        protected TransferMode TransferMode
-        {
-            get { return _transferMode; }
-        }
+        protected TransferMode TransferMode { get; }
 
-        protected int MaxBufferSize
-        {
-            get
-            {
-                return _maxBufferSize;
-            }
-        }
+        protected int MaxBufferSize { get; }
 
-        protected ITransportFactorySettings TransportFactorySettings
-        {
-            get
-            {
-                return _transportFactorySettings;
-            }
-        }
+        protected ITransportFactorySettings TransportFactorySettings { get; }
 
         protected override void OnAbort()
         {
@@ -1291,20 +1269,13 @@ namespace System.ServiceModel.Channels
 
         private class WebSocketCloseDetails
         {
-            private WebSocketCloseStatus _outputCloseStatus = WebSocketCloseStatus.NormalClosure;
             private string _outputCloseStatusDescription;
 
             public WebSocketCloseStatus? InputCloseStatus { get; internal set; }
 
             public string InputCloseStatusDescription { get; internal set; }
 
-            internal WebSocketCloseStatus OutputCloseStatus
-            {
-                get
-                {
-                    return _outputCloseStatus;
-                }
-            }
+            internal WebSocketCloseStatus OutputCloseStatus { get; private set; } = WebSocketCloseStatus.NormalClosure;
 
             internal string OutputCloseStatusDescription
             {
@@ -1316,7 +1287,7 @@ namespace System.ServiceModel.Channels
 
             public void SetOutputCloseStatus(WebSocketCloseStatus closeStatus, string closeStatusDescription)
             {
-                _outputCloseStatus = closeStatus;
+                OutputCloseStatus = closeStatus;
                 _outputCloseStatusDescription = closeStatusDescription;
             }
         }

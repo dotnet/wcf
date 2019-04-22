@@ -36,22 +36,22 @@ namespace System.ServiceModel.Dispatcher
         private void OnChannelClosed(object sender, EventArgs args)
         {
             TChannel channel = (TChannel)sender;
-            this.Remove(channel);
+            Remove(channel);
         }
 
         private void OnChannelFaulted(object sender, EventArgs args)
         {
             TChannel channel = (TChannel)sender;
-            this.Remove(channel);
+            Remove(channel);
         }
 
         protected override void ClearItems()
         {
-            List<TChannel> items = this.Items;
+            List<TChannel> items = Items;
 
             for (int i = 0; i < items.Count; i++)
             {
-                this.RemovingChannel(items[i]);
+                RemovingChannel(items[i]);
             }
 
             base.ClearItems();
@@ -59,25 +59,25 @@ namespace System.ServiceModel.Dispatcher
 
         protected override void InsertItem(int index, TChannel item)
         {
-            this.AddingChannel(item);
+            AddingChannel(item);
             base.InsertItem(index, item);
         }
 
         protected override void RemoveItem(int index)
         {
-            TChannel oldItem = this.Items[index];
+            TChannel oldItem = Items[index];
 
             base.RemoveItem(index);
-            this.RemovingChannel(oldItem);
+            RemovingChannel(oldItem);
         }
 
         protected override void SetItem(int index, TChannel item)
         {
-            TChannel oldItem = this.Items[index];
+            TChannel oldItem = Items[index];
 
-            this.AddingChannel(item);
+            AddingChannel(item);
             base.SetItem(index, item);
-            this.RemovingChannel(oldItem);
+            RemovingChannel(oldItem);
         }
     }
 }

@@ -6,10 +6,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Runtime;
 using System.Runtime.Serialization;
-using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
 using System.Threading;
 using System.Xml;
@@ -18,10 +16,8 @@ namespace System.ServiceModel.Channels
 {
     public sealed class MessageHeaders : IEnumerable<MessageHeaderInfo>
     {
-        private int _collectionVersion;
         private int _headerCount;
         private Header[] _headers;
-        private MessageVersion _version;
         private IBufferedMessageData _bufferedMessageData;
         private UnderstoodHeaders _understoodHeaders;
         private const int InitialHeaderCount = 4;
@@ -53,14 +49,20 @@ namespace System.ServiceModel.Channels
             if (maxSizeOfHeaders < 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("maxSizeOfHeaders", maxSizeOfHeaders,
+                    new ArgumentOutOfRangeException(nameof(maxSizeOfHeaders), maxSizeOfHeaders,
                     SR.ValueMustBeNonNegative));
             }
 
             if (version == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("version"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(version)));
+            }
+
             if (reader == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("reader"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(reader)));
+            }
+
             if (reader.IsEmptyElement)
             {
                 reader.Read();
@@ -72,7 +74,10 @@ namespace System.ServiceModel.Channels
             while (reader.IsStartElement())
             {
                 if (xmlBuffer == null)
+                {
                     xmlBuffer = new XmlBuffer(maxSizeOfHeaders);
+                }
+
                 BufferedHeader bufferedHeader = new BufferedHeader(version, xmlBuffer, reader, envelopeAttributes, headerAttributes);
                 HeaderProcessing processing = bufferedHeader.MustUnderstand ? HeaderProcessing.MustUnderstand : 0;
                 HeaderKind kind = GetHeaderKind(bufferedHeader);
@@ -90,7 +95,7 @@ namespace System.ServiceModel.Channels
                 maxSizeOfHeaders -= xmlBuffer.BufferSize;
             }
             reader.ReadEndElement();
-            _collectionVersion = 0;
+            CollectionVersion = 0;
         }
 
         internal MessageHeaders(MessageVersion version, XmlDictionaryReader reader, IBufferedMessageData bufferedMessageData, RecycledMessageState recycledMessageState, bool[] understoodHeaders, bool understoodHeadersModified)
@@ -101,22 +106,24 @@ namespace System.ServiceModel.Channels
 
         internal MessageHeaders(MessageVersion version, MessageHeaders headers, IBufferedMessageData bufferedMessageData)
         {
-            _version = version;
+            MessageVersion = version;
             _bufferedMessageData = bufferedMessageData;
             _headerCount = headers._headerCount;
             _headers = new Header[_headerCount];
             Array.Copy(headers._headers, _headers, _headerCount);
-            _collectionVersion = 0;
+            CollectionVersion = 0;
         }
 
         public MessageHeaders(MessageHeaders collection)
         {
             if (collection == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("collection");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(collection));
+            }
 
-            Init(collection._version, collection._headers.Length);
+            Init(collection.MessageVersion, collection._headers.Length);
             CopyHeadersFrom(collection);
-            _collectionVersion = 0;
+            CollectionVersion = 0;
         }
 
         public string Action
@@ -125,21 +132,31 @@ namespace System.ServiceModel.Channels
             {
                 int index = FindHeaderProperty(HeaderKind.Action);
                 if (index < 0)
+                {
                     return null;
+                }
+
                 ActionHeader actionHeader = _headers[index].HeaderInfo as ActionHeader;
                 if (actionHeader != null)
+                {
                     return actionHeader.Action;
+                }
+
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    return ActionHeader.ReadHeaderValue(reader, _version.Addressing);
+                    return ActionHeader.ReadHeaderValue(reader, MessageVersion.Addressing);
                 }
             }
             set
             {
                 if (value != null)
-                    SetActionHeader(ActionHeader.Create(value, _version.Addressing));
+                {
+                    SetActionHeader(ActionHeader.Create(value, MessageVersion.Addressing));
+                }
                 else
+                {
                     SetHeaderProperty(HeaderKind.Action, null);
+                }
             }
         }
 
@@ -150,13 +167,10 @@ namespace System.ServiceModel.Channels
 
         internal bool ContainsOnlyBufferedMessageHeaders
         {
-            get { return (_bufferedMessageData != null && _collectionVersion == 0); }
+            get { return (_bufferedMessageData != null && CollectionVersion == 0); }
         }
 
-        internal int CollectionVersion
-        {
-            get { return _collectionVersion; }
-        }
+        internal int CollectionVersion { get; private set; }
 
         public int Count
         {
@@ -169,21 +183,31 @@ namespace System.ServiceModel.Channels
             {
                 int index = FindHeaderProperty(HeaderKind.FaultTo);
                 if (index < 0)
+                {
                     return null;
+                }
+
                 FaultToHeader faultToHeader = _headers[index].HeaderInfo as FaultToHeader;
                 if (faultToHeader != null)
+                {
                     return faultToHeader.FaultTo;
+                }
+
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    return FaultToHeader.ReadHeaderValue(reader, _version.Addressing);
+                    return FaultToHeader.ReadHeaderValue(reader, MessageVersion.Addressing);
                 }
             }
             set
             {
                 if (value != null)
-                    SetFaultToHeader(FaultToHeader.Create(value, _version.Addressing));
+                {
+                    SetFaultToHeader(FaultToHeader.Create(value, MessageVersion.Addressing));
+                }
                 else
+                {
                     SetHeaderProperty(HeaderKind.FaultTo, null);
+                }
             }
         }
 
@@ -193,21 +217,31 @@ namespace System.ServiceModel.Channels
             {
                 int index = FindHeaderProperty(HeaderKind.From);
                 if (index < 0)
+                {
                     return null;
+                }
+
                 FromHeader fromHeader = _headers[index].HeaderInfo as FromHeader;
                 if (fromHeader != null)
+                {
                     return fromHeader.From;
+                }
+
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    return FromHeader.ReadHeaderValue(reader, _version.Addressing);
+                    return FromHeader.ReadHeaderValue(reader, MessageVersion.Addressing);
                 }
             }
             set
             {
                 if (value != null)
-                    SetFromHeader(FromHeader.Create(value, _version.Addressing));
+                {
+                    SetFromHeader(FromHeader.Create(value, MessageVersion.Addressing));
+                }
                 else
+                {
                     SetHeaderProperty(HeaderKind.From, null);
+                }
             }
         }
 
@@ -232,28 +266,35 @@ namespace System.ServiceModel.Channels
             {
                 int index = FindHeaderProperty(HeaderKind.MessageId);
                 if (index < 0)
+                {
                     return null;
+                }
+
                 MessageIDHeader messageIDHeader = _headers[index].HeaderInfo as MessageIDHeader;
                 if (messageIDHeader != null)
+                {
                     return messageIDHeader.MessageId;
+                }
+
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    return MessageIDHeader.ReadHeaderValue(reader, _version.Addressing);
+                    return MessageIDHeader.ReadHeaderValue(reader, MessageVersion.Addressing);
                 }
             }
             set
             {
                 if (value != null)
-                    SetMessageIDHeader(MessageIDHeader.Create(value, _version.Addressing));
+                {
+                    SetMessageIDHeader(MessageIDHeader.Create(value, MessageVersion.Addressing));
+                }
                 else
+                {
                     SetHeaderProperty(HeaderKind.MessageId, null);
+                }
             }
         }
 
-        public MessageVersion MessageVersion
-        {
-            get { return _version; }
-        }
+        public MessageVersion MessageVersion { get; private set; }
 
         public UniqueId RelatesTo
         {
@@ -273,21 +314,31 @@ namespace System.ServiceModel.Channels
             {
                 int index = FindHeaderProperty(HeaderKind.ReplyTo);
                 if (index < 0)
+                {
                     return null;
+                }
+
                 ReplyToHeader replyToHeader = _headers[index].HeaderInfo as ReplyToHeader;
                 if (replyToHeader != null)
+                {
                     return replyToHeader.ReplyTo;
+                }
+
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    return ReplyToHeader.ReadHeaderValue(reader, _version.Addressing);
+                    return ReplyToHeader.ReadHeaderValue(reader, MessageVersion.Addressing);
                 }
             }
             set
             {
                 if (value != null)
-                    SetReplyToHeader(ReplyToHeader.Create(value, _version.Addressing));
+                {
+                    SetReplyToHeader(ReplyToHeader.Create(value, MessageVersion.Addressing));
+                }
                 else
+                {
                     SetHeaderProperty(HeaderKind.ReplyTo, null);
+                }
             }
         }
 
@@ -297,21 +348,31 @@ namespace System.ServiceModel.Channels
             {
                 int index = FindHeaderProperty(HeaderKind.To);
                 if (index < 0)
+                {
                     return null;
+                }
+
                 ToHeader toHeader = _headers[index].HeaderInfo as ToHeader;
                 if (toHeader != null)
+                {
                     return toHeader.To;
+                }
+
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    return ToHeader.ReadHeaderValue(reader, _version.Addressing);
+                    return ToHeader.ReadHeaderValue(reader, MessageVersion.Addressing);
                 }
             }
             set
             {
                 if (value != null)
-                    SetToHeader(ToHeader.Create(value, _version.Addressing));
+                {
+                    SetToHeader(ToHeader.Create(value, MessageVersion.Addressing));
+                }
                 else
+                {
                     SetHeaderProperty(HeaderKind.To, null);
+                }
             }
         }
 
@@ -320,7 +381,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_understoodHeaders == null)
+                {
                     _understoodHeaders = new UnderstoodHeaders(this, _understoodHeadersModified);
+                }
+
                 return _understoodHeaders;
             }
         }
@@ -332,7 +396,7 @@ namespace System.ServiceModel.Channels
                 if (index < 0 || index >= _headerCount)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new ArgumentOutOfRangeException("index", index,
+                        new ArgumentOutOfRangeException(nameof(index), index,
                         SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
                 }
 
@@ -389,7 +453,10 @@ namespace System.ServiceModel.Channels
         internal void AddUnderstood(MessageHeaderInfo headerInfo)
         {
             if (headerInfo == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("headerInfo"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(headerInfo)));
+            }
+
             for (int i = 0; i < _headerCount; i++)
             {
                 if ((object)_headers[i].HeaderInfo == (object)headerInfo)
@@ -419,7 +486,9 @@ namespace System.ServiceModel.Channels
                     if (reader.NodeType != XmlNodeType.Element)
                     {
                         if (reader.MoveToContent() != XmlNodeType.Element)
+                        {
                             break;
+                        }
                     }
 
                     Header header = _headers[i];
@@ -444,7 +513,7 @@ namespace System.ServiceModel.Channels
             writer.WriteNode(reader, false);
             buffer.CloseSection();
             buffer.Close();
-            return new BufferedHeader(_version, buffer, 0, headerInfo);
+            return new BufferedHeader(MessageVersion, buffer, 0, headerInfo);
         }
 
         private BufferedHeader CaptureBufferedHeader(IBufferedMessageData bufferedMessageData, MessageHeaderInfo headerInfo, int bufferedMessageHeaderIndex)
@@ -454,32 +523,38 @@ namespace System.ServiceModel.Channels
             WriteBufferedMessageHeader(bufferedMessageData, bufferedMessageHeaderIndex, writer);
             buffer.CloseSection();
             buffer.Close();
-            return new BufferedHeader(_version, buffer, 0, headerInfo);
+            return new BufferedHeader(MessageVersion, buffer, 0, headerInfo);
         }
 
         private BufferedHeader CaptureWriteableHeader(MessageHeader writeableHeader)
         {
             XmlBuffer buffer = new XmlBuffer(int.MaxValue);
             XmlDictionaryWriter writer = buffer.OpenSection(XmlDictionaryReaderQuotas.Max);
-            writeableHeader.WriteHeader(writer, _version);
+            writeableHeader.WriteHeader(writer, MessageVersion);
             buffer.CloseSection();
             buffer.Close();
-            return new BufferedHeader(_version, buffer, 0, writeableHeader);
+            return new BufferedHeader(MessageVersion, buffer, 0, writeableHeader);
         }
 
         public void Clear()
         {
             for (int i = 0; i < _headerCount; i++)
+            {
                 _headers[i] = new Header();
+            }
+
             _headerCount = 0;
-            _collectionVersion++;
+            CollectionVersion++;
             _bufferedMessageData = null;
         }
 
         public void CopyHeaderFrom(Message message, int headerIndex)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
+            }
+
             CopyHeaderFrom(message.Headers, headerIndex);
         }
 
@@ -487,24 +562,27 @@ namespace System.ServiceModel.Channels
         {
             if (collection == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("collection");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(collection));
             }
 
-            if (collection._version != _version)
+            if (collection.MessageVersion != MessageVersion)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionMismatch, collection._version.ToString(), _version.ToString()), "collection"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionMismatch, collection.MessageVersion.ToString(), MessageVersion.ToString()), "collection"));
             }
 
             if (headerIndex < 0 || headerIndex >= collection._headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, collection._headerCount)));
             }
             Header header = collection._headers[headerIndex];
             HeaderProcessing processing = header.HeaderInfo.MustUnderstand ? HeaderProcessing.MustUnderstand : 0;
             if ((header.HeaderProcessing & HeaderProcessing.Understood) != 0 || header.HeaderKind != HeaderKind.Unknown)
+            {
                 processing |= HeaderProcessing.Understood;
+            }
+
             switch (header.HeaderType)
             {
                 case HeaderType.BufferedMessageHeader:
@@ -525,33 +603,43 @@ namespace System.ServiceModel.Channels
         public void CopyHeadersFrom(Message message)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("message"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(message)));
+            }
+
             CopyHeadersFrom(message.Headers);
         }
 
         public void CopyHeadersFrom(MessageHeaders collection)
         {
             if (collection == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("collection"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(collection)));
+            }
+
             for (int i = 0; i < collection._headerCount; i++)
+            {
                 CopyHeaderFrom(collection, i);
+            }
         }
 
         public void CopyTo(MessageHeaderInfo[] array, int index)
         {
             if (array == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("array");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(array));
             }
 
             if (index < 0 || (index + _headerCount) > array.Length)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("index", index,
+                    new ArgumentOutOfRangeException(nameof(index), index,
                     SR.Format(SR.ValueMustBeInRange, 0, array.Length - _headerCount)));
             }
             for (int i = 0; i < _headerCount; i++)
+            {
                 array[i + index] = _headers[i].HeaderInfo;
+            }
         }
 
         private Exception CreateDuplicateHeaderException(HeaderKind kind)
@@ -582,26 +670,31 @@ namespace System.ServiceModel.Channels
             }
 
             return new MessageHeaderException(
-                SR.Format(SR.MultipleMessageHeaders, name, _version.Addressing.Namespace),
+                SR.Format(SR.MultipleMessageHeaders, name, MessageVersion.Addressing.Namespace),
                 name,
-                _version.Addressing.Namespace,
+                MessageVersion.Addressing.Namespace,
                 true);
         }
 
         public int FindHeader(string name, string ns)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
-            if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("ns"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
 
-            if (ns == _version.Addressing.Namespace)
+            if (ns == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(ns)));
+            }
+
+            if (ns == MessageVersion.Addressing.Namespace)
             {
                 return FindAddressingHeader(name, ns);
             }
             else
             {
-                return FindNonAddressingHeader(name, ns, _version.Envelope.UltimateDestinationActorValues);
+                return FindNonAddressingHeader(name, ns, MessageVersion.Envelope.UltimateDestinationActorValues);
             }
         }
 
@@ -644,7 +737,10 @@ namespace System.ServiceModel.Channels
                                 if (foundAt >= 0)
                                 {
                                     if (actors.Length == 1)
+                                    {
                                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageHeaderException(SR.Format(SR.MultipleMessageHeadersWithActor, name, ns, actors[0]), name, ns, true));
+                                    }
+
                                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageHeaderException(SR.Format(SR.MultipleMessageHeaders, name, ns), name, ns, true));
                                 }
                                 foundAt = i;
@@ -659,11 +755,20 @@ namespace System.ServiceModel.Channels
         public int FindHeader(string name, string ns, params string[] actors)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("ns"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(ns)));
+            }
+
             if (actors == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("actors"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(actors)));
+            }
+
             int foundAt = -1;
             for (int i = 0; i < _headerCount; i++)
             {
@@ -677,7 +782,10 @@ namespace System.ServiceModel.Channels
                             if (foundAt >= 0)
                             {
                                 if (actors.Length == 1)
+                                {
                                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageHeaderException(SR.Format(SR.MultipleMessageHeadersWithActor, name, ns, actors[0]), name, ns, true));
+                                }
+
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageHeaderException(SR.Format(SR.MultipleMessageHeaders, name, ns), name, ns, true));
                             }
                             foundAt = i;
@@ -696,7 +804,10 @@ namespace System.ServiceModel.Channels
                 if (_headers[i].HeaderKind == kind)
                 {
                     if (index >= 0)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateDuplicateHeaderException(kind));
+                    }
+
                     index = i;
                 }
             }
@@ -723,7 +834,7 @@ namespace System.ServiceModel.Channels
                                 new MessageHeaderException(
                                     SR.Format(SR.MultipleRelatesToHeaders, relationshipType.AbsoluteUri),
                                     AddressingStrings.RelatesTo,
-                                    _version.Addressing.Namespace,
+                                    MessageVersion.Addressing.Namespace,
                                     true));
                         }
                         foundValue = tempValue;
@@ -738,7 +849,7 @@ namespace System.ServiceModel.Channels
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public IEnumerator<MessageHeaderInfo> GetEnumerator()
@@ -773,13 +884,23 @@ namespace System.ServiceModel.Channels
         {
             XmlDictionaryReader reader = bufferedMessageData.GetMessageReader();
             if (reader.NodeType == XmlNodeType.Element)
+            {
                 reader.Read();
+            }
             else
+            {
                 reader.ReadStartElement();
+            }
+
             if (reader.NodeType == XmlNodeType.Element)
+            {
                 reader.Read();
+            }
             else
+            {
                 reader.ReadStartElement();
+            }
+
             return reader;
         }
 
@@ -793,12 +914,18 @@ namespace System.ServiceModel.Channels
             }
 
             XmlDictionaryReader reader = GetBufferedMessageHeaderReaderAtHeaderContents(bufferedMessageData);
-            for (;;)
+            for (; ; )
             {
                 if (reader.NodeType != XmlNodeType.Element)
+                {
                     reader.MoveToContent();
+                }
+
                 if (bufferedMessageHeaderIndex == 0)
+                {
                     break;
+                }
+
                 Skip(reader);
                 bufferedMessageHeaderIndex--;
             }
@@ -841,17 +968,26 @@ namespace System.ServiceModel.Channels
         {
             int index = FindHeader(name, ns, actors);
             if (index < 0)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageHeaderException(SR.Format(SR.HeaderNotFound, name, ns), name, ns));
+            }
+
             return GetHeader<T>(index);
         }
 
         public T GetHeader<T>(string name, string ns, XmlObjectSerializer serializer)
         {
             if (serializer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("serializer"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(serializer)));
+            }
+
             int index = FindHeader(name, ns);
             if (index < 0)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageHeaderException(SR.Format(SR.HeaderNotFound, name, ns), name, ns));
+            }
+
             return GetHeader<T>(index, serializer);
         }
 
@@ -860,7 +996,7 @@ namespace System.ServiceModel.Channels
             if (index < 0 || index >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("index", index,
+                    new ArgumentOutOfRangeException(nameof(index), index,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
 
@@ -871,7 +1007,10 @@ namespace System.ServiceModel.Channels
         public T GetHeader<T>(int index, XmlObjectSerializer serializer)
         {
             if (serializer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("serializer"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(serializer)));
+            }
+
             using (XmlDictionaryReader reader = GetReaderAtHeader(index))
             {
                 return (T)serializer.ReadObject(reader);
@@ -882,9 +1021,9 @@ namespace System.ServiceModel.Channels
         {
             HeaderKind headerKind = HeaderKind.Unknown;
 
-            if (headerInfo.Namespace == _version.Addressing.Namespace)
+            if (headerInfo.Namespace == MessageVersion.Addressing.Namespace)
             {
-                if (_version.Envelope.IsUltimateDestinationActor(headerInfo.Actor))
+                if (MessageVersion.Envelope.IsUltimateDestinationActor(headerInfo.Actor))
                 {
                     string name = headerInfo.Name;
                     if (name.Length > 0)
@@ -940,21 +1079,21 @@ namespace System.ServiceModel.Channels
 
         private void ValidateHeaderKind(HeaderKind headerKind)
         {
-            if (_version.Envelope == EnvelopeVersion.None)
+            if (MessageVersion.Envelope == EnvelopeVersion.None)
             {
                 if (headerKind != HeaderKind.Action && headerKind != HeaderKind.To)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new InvalidOperationException(SR.Format(SR.HeadersCannotBeAddedToEnvelopeVersion, _version.Envelope)));
+                        new InvalidOperationException(SR.Format(SR.HeadersCannotBeAddedToEnvelopeVersion, MessageVersion.Envelope)));
                 }
             }
 
-            if (_version.Addressing == AddressingVersion.None)
+            if (MessageVersion.Addressing == AddressingVersion.None)
             {
                 if (headerKind != HeaderKind.Unknown && headerKind != HeaderKind.Action && headerKind != HeaderKind.To)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new InvalidOperationException(SR.Format(SR.AddressingHeadersCannotBeAddedToAddressingVersion, _version.Addressing)));
+                        new InvalidOperationException(SR.Format(SR.AddressingHeadersCannotBeAddedToAddressingVersion, MessageVersion.Addressing)));
                 }
             }
         }
@@ -964,7 +1103,7 @@ namespace System.ServiceModel.Channels
             if (headerIndex < 0 || headerIndex >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
 
@@ -976,7 +1115,7 @@ namespace System.ServiceModel.Channels
                     MessageHeader writeableHeader = _headers[headerIndex].MessageHeader;
                     BufferedHeader bufferedHeader = CaptureWriteableHeader(writeableHeader);
                     _headers[headerIndex] = new Header(_headers[headerIndex].HeaderKind, bufferedHeader, _headers[headerIndex].HeaderProcessing);
-                    _collectionVersion++;
+                    CollectionVersion++;
                     return bufferedHeader.GetHeaderReader();
                 case HeaderType.BufferedMessageHeader:
                     return GetBufferedMessageHeaderReader(_bufferedMessageData, headerIndex);
@@ -988,7 +1127,9 @@ namespace System.ServiceModel.Channels
         internal UniqueId GetRelatesTo(Uri relationshipType)
         {
             if (relationshipType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("relationshipType"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(relationshipType)));
+            }
 
             UniqueId messageId;
             FindRelatesTo(relationshipType, out messageId);
@@ -1007,7 +1148,7 @@ namespace System.ServiceModel.Channels
             {
                 using (XmlDictionaryReader reader = GetReaderAtHeader(index))
                 {
-                    RelatesToHeader.ReadHeaderValue(reader, _version.Addressing, out relationshipType, out messageId);
+                    RelatesToHeader.ReadHeaderValue(reader, MessageVersion.Addressing, out relationshipType, out messageId);
                 }
             }
         }
@@ -1027,11 +1168,17 @@ namespace System.ServiceModel.Channels
                     if (value != null)
                     {
                         if (attrs == null)
+                        {
                             attrs = new string[_headerCount];
+                        }
+
                         attrs[index] = value;
                     }
                     if (index == _headerCount - 1)
+                    {
                         break;
+                    }
+
                     reader.Skip();
                 }
                 reader.Dispose();
@@ -1048,7 +1195,10 @@ namespace System.ServiceModel.Channels
                             if (value != null)
                             {
                                 if (attrs == null)
+                                {
                                     attrs = new string[_headerCount];
+                                }
+
                                 attrs[index] = value;
                             }
                         }
@@ -1064,7 +1214,7 @@ namespace System.ServiceModel.Channels
             if (index < 0 || index >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", index,
+                    new ArgumentOutOfRangeException(nameof(index), index,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
             MessageHeader messageHeader;
@@ -1076,7 +1226,7 @@ namespace System.ServiceModel.Channels
                 case HeaderType.BufferedMessageHeader:
                     messageHeader = CaptureBufferedHeader(_bufferedMessageData, _headers[index].HeaderInfo, index);
                     _headers[index] = new Header(_headers[index].HeaderKind, messageHeader, _headers[index].HeaderProcessing);
-                    _collectionVersion++;
+                    CollectionVersion++;
                     return messageHeader;
                 default:
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.InvalidEnumValue, _headers[index].HeaderType)));
@@ -1092,7 +1242,9 @@ namespace System.ServiceModel.Channels
                 if (_headers[headerIndex].HeaderProcessing == HeaderProcessing.MustUnderstand)
                 {
                     if (notUnderstoodHeaders == null)
+                    {
                         notUnderstoodHeaders = new Collection<MessageHeaderInfo>();
+                    }
 
                     MessageHeaderInfo headerInfo = _headers[headerIndex].HeaderInfo;
                     notUnderstoodHeaders.Add(headerInfo);
@@ -1104,13 +1256,15 @@ namespace System.ServiceModel.Channels
 
         public bool HaveMandatoryHeadersBeenUnderstood()
         {
-            return HaveMandatoryHeadersBeenUnderstood(_version.Envelope.MustUnderstandActorValues);
+            return HaveMandatoryHeadersBeenUnderstood(MessageVersion.Envelope.MustUnderstandActorValues);
         }
 
         public bool HaveMandatoryHeadersBeenUnderstood(params string[] actors)
         {
             if (actors == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("actors"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(actors)));
+            }
 
             for (int headerIndex = 0; headerIndex < _headerCount; headerIndex++)
             {
@@ -1136,16 +1290,11 @@ namespace System.ServiceModel.Channels
             if (initialSize < 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("initialSize", initialSize,
+                    new ArgumentOutOfRangeException(nameof(initialSize), initialSize,
                     SR.ValueMustBeNonNegative));
             }
 
-            if (version == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("version");
-            }
-
-            _version = version;
+            MessageVersion = version ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(version));
             _headers = new Header[initialSize];
         }
 
@@ -1153,15 +1302,15 @@ namespace System.ServiceModel.Channels
         {
             _nodeCount = 0;
             _attrCount = 0;
-            _version = version;
-            _collectionVersion = 0;
+            MessageVersion = version;
+            CollectionVersion = 0;
         }
 
         internal void Init(MessageVersion version, XmlDictionaryReader reader, IBufferedMessageData bufferedMessageData, RecycledMessageState recycledMessageState, bool[] understoodHeaders, bool understoodHeadersModified)
         {
             _nodeCount = 0;
             _attrCount = 0;
-            _version = version;
+            MessageVersion = version;
             _bufferedMessageData = bufferedMessageData;
 
             if (version.Envelope != EnvelopeVersion.None)
@@ -1201,16 +1350,22 @@ namespace System.ServiceModel.Channels
 
                 reader.ReadEndElement();
             }
-            _collectionVersion = 0;
+            CollectionVersion = 0;
         }
 
         public void Insert(int headerIndex, MessageHeader header)
         {
             if (header == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("header"));
-            if (!header.IsMessageVersionSupported(_version))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(header)));
+            }
+
+            if (!header.IsMessageVersionSupported(MessageVersion))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.MessageHeaderVersionNotSupported,
-                    header.GetType().FullName, _version.Envelope.ToString()), "header"));
+                    header.GetType().FullName, MessageVersion.Envelope.ToString()), "header"));
+            }
+
             Insert(headerIndex, header, GetHeaderKind(header));
         }
 
@@ -1219,11 +1374,18 @@ namespace System.ServiceModel.Channels
             ReadableMessageHeader readableMessageHeader = header as ReadableMessageHeader;
             HeaderProcessing processing = header.MustUnderstand ? HeaderProcessing.MustUnderstand : 0;
             if (kind != HeaderKind.Unknown)
+            {
                 processing |= HeaderProcessing.Understood;
+            }
+
             if (readableMessageHeader != null)
+            {
                 InsertHeader(headerIndex, new Header(kind, readableMessageHeader, processing));
+            }
             else
+            {
                 InsertHeader(headerIndex, new Header(kind, header, processing));
+            }
         }
 
         private void InsertHeader(int headerIndex, Header header)
@@ -1233,7 +1395,7 @@ namespace System.ServiceModel.Channels
             if (headerIndex < 0 || headerIndex > _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
 
@@ -1267,7 +1429,7 @@ namespace System.ServiceModel.Channels
             }
             _headers[headerIndex] = header;
             _headerCount++;
-            _collectionVersion++;
+            CollectionVersion++;
         }
 
         internal bool IsUnderstood(int i)
@@ -1278,13 +1440,18 @@ namespace System.ServiceModel.Channels
         internal bool IsUnderstood(MessageHeaderInfo headerInfo)
         {
             if (headerInfo == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("headerInfo"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(headerInfo)));
+            }
+
             for (int i = 0; i < _headerCount; i++)
             {
                 if ((object)_headers[i].HeaderInfo == (object)headerInfo)
                 {
                     if (IsUnderstood(i))
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -1298,43 +1465,43 @@ namespace System.ServiceModel.Channels
             bool relay;
             bool isRefParam;
 
-            if (_version.Addressing == AddressingVersion.None && reader.NamespaceURI == AddressingVersion.None.Namespace)
+            if (MessageVersion.Addressing == AddressingVersion.None && reader.NamespaceURI == AddressingVersion.None.Namespace)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SR.Format(SR.AddressingHeadersCannotBeAddedToAddressingVersion, _version.Addressing)));
+                    new InvalidOperationException(SR.Format(SR.AddressingHeadersCannotBeAddedToAddressingVersion, MessageVersion.Addressing)));
             }
 
-            MessageHeader.GetHeaderAttributes(reader, _version, out actor, out mustUnderstand, out relay, out isRefParam);
+            MessageHeader.GetHeaderAttributes(reader, MessageVersion, out actor, out mustUnderstand, out relay, out isRefParam);
 
             HeaderKind kind = HeaderKind.Unknown;
             MessageHeaderInfo info = null;
 
-            if (_version.Envelope.IsUltimateDestinationActor(actor))
+            if (MessageVersion.Envelope.IsUltimateDestinationActor(actor))
             {
-                Fx.Assert(_version.Addressing.DictionaryNamespace != null, "non-None Addressing requires a non-null DictionaryNamespace");
-                kind = (HeaderKind)reader.IndexOfLocalName(localNames, _version.Addressing.DictionaryNamespace);
+                Fx.Assert(MessageVersion.Addressing.DictionaryNamespace != null, "non-None Addressing requires a non-null DictionaryNamespace");
+                kind = (HeaderKind)reader.IndexOfLocalName(localNames, MessageVersion.Addressing.DictionaryNamespace);
                 switch (kind)
                 {
                     case HeaderKind.To:
-                        info = ToHeader.ReadHeader(reader, _version.Addressing, recycledMessageState.UriCache, actor, mustUnderstand, relay);
+                        info = ToHeader.ReadHeader(reader, MessageVersion.Addressing, recycledMessageState.UriCache, actor, mustUnderstand, relay);
                         break;
                     case HeaderKind.Action:
-                        info = ActionHeader.ReadHeader(reader, _version.Addressing, actor, mustUnderstand, relay);
+                        info = ActionHeader.ReadHeader(reader, MessageVersion.Addressing, actor, mustUnderstand, relay);
                         break;
                     case HeaderKind.MessageId:
-                        info = MessageIDHeader.ReadHeader(reader, _version.Addressing, actor, mustUnderstand, relay);
+                        info = MessageIDHeader.ReadHeader(reader, MessageVersion.Addressing, actor, mustUnderstand, relay);
                         break;
                     case HeaderKind.RelatesTo:
-                        info = RelatesToHeader.ReadHeader(reader, _version.Addressing, actor, mustUnderstand, relay);
+                        info = RelatesToHeader.ReadHeader(reader, MessageVersion.Addressing, actor, mustUnderstand, relay);
                         break;
                     case HeaderKind.ReplyTo:
-                        info = ReplyToHeader.ReadHeader(reader, _version.Addressing, actor, mustUnderstand, relay);
+                        info = ReplyToHeader.ReadHeader(reader, MessageVersion.Addressing, actor, mustUnderstand, relay);
                         break;
                     case HeaderKind.From:
-                        info = FromHeader.ReadHeader(reader, _version.Addressing, actor, mustUnderstand, relay);
+                        info = FromHeader.ReadHeader(reader, MessageVersion.Addressing, actor, mustUnderstand, relay);
                         break;
                     case HeaderKind.FaultTo:
-                        info = FaultToHeader.ReadHeader(reader, _version.Addressing, actor, mustUnderstand, relay);
+                        info = FaultToHeader.ReadHeader(reader, MessageVersion.Addressing, actor, mustUnderstand, relay);
                         break;
                     default:
                         kind = HeaderKind.Unknown;
@@ -1367,7 +1534,7 @@ namespace System.ServiceModel.Channels
                 }
             }
             Clear();
-            _collectionVersion = 0;
+            CollectionVersion = 0;
             if (_understoodHeaders != null)
             {
                 _understoodHeaders.Modified = false;
@@ -1377,7 +1544,10 @@ namespace System.ServiceModel.Channels
         internal void RemoveUnderstood(MessageHeaderInfo headerInfo)
         {
             if (headerInfo == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("headerInfo"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(headerInfo)));
+            }
+
             for (int i = 0; i < _headerCount; i++)
             {
                 if ((object)_headers[i].HeaderInfo == (object)headerInfo)
@@ -1396,9 +1566,15 @@ namespace System.ServiceModel.Channels
         public void RemoveAll(string name, string ns)
         {
             if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("name"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(name)));
+            }
+
             if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("ns"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(ns)));
+            }
+
             for (int i = _headerCount - 1; i >= 0; i--)
             {
                 MessageHeaderInfo info = _headers[i].HeaderInfo;
@@ -1414,14 +1590,17 @@ namespace System.ServiceModel.Channels
             if (headerIndex < 0 || headerIndex >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
             if (_bufferedMessageData != null && _headers[headerIndex].HeaderType == HeaderType.BufferedMessageHeader)
+            {
                 CaptureBufferedHeaders(headerIndex);
+            }
+
             Array.Copy(_headers, headerIndex + 1, _headers, headerIndex, _headerCount - headerIndex - 1);
             _headers[--_headerCount] = new Header();
-            _collectionVersion++;
+            CollectionVersion++;
         }
 
         internal void ReplaceAt(int headerIndex, MessageHeader header)
@@ -1429,13 +1608,13 @@ namespace System.ServiceModel.Channels
             if (headerIndex < 0 || headerIndex >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
 
             if (header == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("header");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(header));
             }
 
             ReplaceAt(headerIndex, header, GetHeaderKind(header));
@@ -1445,21 +1624,33 @@ namespace System.ServiceModel.Channels
         {
             HeaderProcessing processing = header.MustUnderstand ? HeaderProcessing.MustUnderstand : 0;
             if (kind != HeaderKind.Unknown)
+            {
                 processing |= HeaderProcessing.Understood;
+            }
+
             ReadableMessageHeader readableMessageHeader = header as ReadableMessageHeader;
             if (readableMessageHeader != null)
+            {
                 _headers[headerIndex] = new Header(kind, readableMessageHeader, processing);
+            }
             else
+            {
                 _headers[headerIndex] = new Header(kind, header, processing);
-            _collectionVersion++;
+            }
+
+            CollectionVersion++;
         }
 
         public void SetAction(XmlDictionaryString action)
         {
             if (action == null)
+            {
                 SetHeaderProperty(HeaderKind.Action, null);
+            }
             else
-                SetActionHeader(ActionHeader.Create(action, _version.Addressing));
+            {
+                SetActionHeader(ActionHeader.Create(action, MessageVersion.Addressing));
+            }
         }
 
         internal void SetActionHeader(ActionHeader actionHeader)
@@ -1486,13 +1677,13 @@ namespace System.ServiceModel.Channels
         {
             if (relationshipType == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("relationshipType");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(relationshipType));
             }
 
             RelatesToHeader relatesToHeader;
             if (!object.ReferenceEquals(messageId, null))
             {
-                relatesToHeader = RelatesToHeader.Create(messageId, _version.Addressing, relationshipType);
+                relatesToHeader = RelatesToHeader.Create(messageId, MessageVersion.Addressing, relationshipType);
             }
             else
             {
@@ -1574,20 +1765,20 @@ namespace System.ServiceModel.Channels
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
 
             if (headerIndex < 0 || headerIndex >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
             switch (_headers[headerIndex].HeaderType)
             {
                 case HeaderType.ReadableHeader:
                 case HeaderType.WriteableHeader:
-                    _headers[headerIndex].MessageHeader.WriteStartHeader(writer, _version);
+                    _headers[headerIndex].MessageHeader.WriteStartHeader(writer, MessageVersion);
                     break;
                 case HeaderType.BufferedMessageHeader:
                     WriteStartBufferedMessageHeader(_bufferedMessageData, headerIndex, writer);
@@ -1606,20 +1797,20 @@ namespace System.ServiceModel.Channels
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
 
             if (headerIndex < 0 || headerIndex >= _headerCount)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentOutOfRangeException("headerIndex", headerIndex,
+                    new ArgumentOutOfRangeException(nameof(headerIndex), headerIndex,
                     SR.Format(SR.ValueMustBeInRange, 0, _headerCount)));
             }
             switch (_headers[headerIndex].HeaderType)
             {
                 case HeaderType.ReadableHeader:
                 case HeaderType.WriteableHeader:
-                    _headers[headerIndex].MessageHeader.WriteHeaderContents(writer, _version);
+                    _headers[headerIndex].MessageHeader.WriteHeaderContents(writer, MessageVersion);
                     break;
                 case HeaderType.BufferedMessageHeader:
                     WriteBufferedMessageHeaderContents(_bufferedMessageData, headerIndex, writer);
@@ -1695,44 +1886,35 @@ namespace System.ServiceModel.Channels
 
         internal struct Header
         {
-            private HeaderType _type;
-            private HeaderKind _kind;
-            private HeaderProcessing _processing;
             private MessageHeaderInfo _info;
 
             public Header(HeaderKind kind, MessageHeaderInfo info, HeaderProcessing processing)
             {
-                _kind = kind;
-                _type = HeaderType.BufferedMessageHeader;
+                HeaderKind = kind;
+                HeaderType = HeaderType.BufferedMessageHeader;
                 _info = info;
-                _processing = processing;
+                HeaderProcessing = processing;
             }
 
             public Header(HeaderKind kind, ReadableMessageHeader readableHeader, HeaderProcessing processing)
             {
-                _kind = kind;
-                _type = HeaderType.ReadableHeader;
+                HeaderKind = kind;
+                HeaderType = HeaderType.ReadableHeader;
                 _info = readableHeader;
-                _processing = processing;
+                HeaderProcessing = processing;
             }
 
             public Header(HeaderKind kind, MessageHeader header, HeaderProcessing processing)
             {
-                _kind = kind;
-                _type = HeaderType.WriteableHeader;
+                HeaderKind = kind;
+                HeaderType = HeaderType.WriteableHeader;
                 _info = header;
-                _processing = processing;
+                HeaderProcessing = processing;
             }
 
-            public HeaderType HeaderType
-            {
-                get { return _type; }
-            }
+            public HeaderType HeaderType { get; }
 
-            public HeaderKind HeaderKind
-            {
-                get { return _kind; }
-            }
+            public HeaderKind HeaderKind { get; }
 
             public MessageHeaderInfo HeaderInfo
             {
@@ -1743,22 +1925,18 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    Fx.Assert(_type == HeaderType.WriteableHeader || _type == HeaderType.ReadableHeader, "");
+                    Fx.Assert(HeaderType == HeaderType.WriteableHeader || HeaderType == HeaderType.ReadableHeader, "");
                     return (MessageHeader)_info;
                 }
             }
 
-            public HeaderProcessing HeaderProcessing
-            {
-                get { return _processing; }
-                set { _processing = value; }
-            }
+            public HeaderProcessing HeaderProcessing { get; set; }
 
             public ReadableMessageHeader ReadableHeader
             {
                 get
                 {
-                    Fx.Assert(_type == HeaderType.ReadableHeader, "");
+                    Fx.Assert(HeaderType == HeaderType.ReadableHeader, "");
                     return (ReadableMessageHeader)_info;
                 }
             }

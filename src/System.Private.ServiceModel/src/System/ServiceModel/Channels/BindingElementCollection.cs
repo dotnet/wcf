@@ -18,7 +18,9 @@ namespace System.ServiceModel.Channels
         public BindingElementCollection(IEnumerable<BindingElement> elements)
         {
             if (elements == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elements");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(elements));
+            }
 
             foreach (BindingElement element in elements)
             {
@@ -29,7 +31,9 @@ namespace System.ServiceModel.Channels
         public BindingElementCollection(BindingElement[] elements)
         {
             if (elements == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elements");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(elements));
+            }
 
             for (int i = 0; i < elements.Length; i++)
             {
@@ -41,7 +45,7 @@ namespace System.ServiceModel.Channels
         public BindingElementCollection Clone()
         {
             BindingElementCollection result = new BindingElementCollection();
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 result.Add(this[i].Clone());
             }
@@ -51,7 +55,9 @@ namespace System.ServiceModel.Channels
         public void AddRange(params BindingElement[] elements)
         {
             if (elements == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elements");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(elements));
+            }
 
             for (int i = 0; i < elements.Length; i++)
             {
@@ -62,12 +68,16 @@ namespace System.ServiceModel.Channels
         public bool Contains(Type bindingElementType)
         {
             if (bindingElementType == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingElementType");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingElementType));
+            }
 
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (bindingElementType.GetTypeInfo().IsAssignableFrom(this[i].GetType().GetTypeInfo()))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -84,7 +94,7 @@ namespace System.ServiceModel.Channels
 
         private T Find<T>(bool remove)
         {
-            for (int index = 0; index < this.Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index] is T)
                 {
@@ -113,7 +123,7 @@ namespace System.ServiceModel.Channels
         {
             Collection<T> collection = new Collection<T>();
 
-            for (int index = 0; index < this.Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index] is T)
                 {
@@ -134,7 +144,9 @@ namespace System.ServiceModel.Channels
         protected override void InsertItem(int index, BindingElement item)
         {
             if (item == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
+            }
 
             base.InsertItem(index, item);
         }
@@ -142,7 +154,9 @@ namespace System.ServiceModel.Channels
         protected override void SetItem(int index, BindingElement item)
         {
             if (item == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("item");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(item));
+            }
 
             base.SetItem(index, item);
         }

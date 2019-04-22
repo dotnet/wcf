@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.ServiceModel;
 using System.Xml;
 using System.ComponentModel;
 
@@ -17,7 +16,6 @@ namespace System.ServiceModel.Channels
         private int _maxSessionSize;
         private BinaryVersion _binaryVersion;
         private MessageVersion _messageVersion;
-        private CompressionFormat _compressionFormat;
         private long _maxReceivedMessageSize;
 
         public BinaryMessageEncodingBindingElement()
@@ -29,7 +27,7 @@ namespace System.ServiceModel.Channels
             _maxSessionSize = BinaryEncoderDefaults.MaxSessionSize;
             _binaryVersion = BinaryEncoderDefaults.BinaryVersion;
             _messageVersion = MessageVersion.CreateVersion(BinaryEncoderDefaults.EnvelopeVersion);
-            _compressionFormat = EncoderDefaults.DefaultCompressionFormat;
+            CompressionFormat = EncoderDefaults.DefaultCompressionFormat;
         }
 
         private BinaryMessageEncodingBindingElement(BinaryMessageEncodingBindingElement elementToBeCloned)
@@ -39,25 +37,15 @@ namespace System.ServiceModel.Channels
             _maxWritePoolSize = elementToBeCloned._maxWritePoolSize;
             _readerQuotas = new XmlDictionaryReaderQuotas();
             elementToBeCloned._readerQuotas.CopyTo(_readerQuotas);
-            this.MaxSessionSize = elementToBeCloned.MaxSessionSize;
-            this.BinaryVersion = elementToBeCloned.BinaryVersion;
+            MaxSessionSize = elementToBeCloned.MaxSessionSize;
+            BinaryVersion = elementToBeCloned.BinaryVersion;
             _messageVersion = elementToBeCloned._messageVersion;
-            this.CompressionFormat = elementToBeCloned.CompressionFormat;
+            CompressionFormat = elementToBeCloned.CompressionFormat;
             _maxReceivedMessageSize = elementToBeCloned._maxReceivedMessageSize;
         }
 
         [DefaultValue(EncoderDefaults.DefaultCompressionFormat)]
-        public CompressionFormat CompressionFormat
-        {
-            get
-            {
-                return _compressionFormat;
-            }
-            set
-            {
-                _compressionFormat = value;
-            }
-        }
+        public CompressionFormat CompressionFormat { get; set; }
 
         /* public */
         private BinaryVersion BinaryVersion
@@ -68,11 +56,7 @@ namespace System.ServiceModel.Channels
             }
             set
             {
-                if (value == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
-                }
-                _binaryVersion = value;
+                _binaryVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
             }
         }
 
@@ -83,11 +67,11 @@ namespace System.ServiceModel.Channels
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
                 if (value.Envelope != BinaryEncoderDefaults.EnvelopeVersion)
                 {
-                    string errorMsg = SR.Format(SR.UnsupportedEnvelopeVersion, this.GetType().FullName, BinaryEncoderDefaults.EnvelopeVersion, value.Envelope);
+                    string errorMsg = SR.Format(SR.UnsupportedEnvelopeVersion, GetType().FullName, BinaryEncoderDefaults.EnvelopeVersion, value.Envelope);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(errorMsg));
                 }
 
@@ -106,7 +90,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                                                     SR.ValueMustBePositive));
                 }
                 _maxReadPoolSize = value;
@@ -124,7 +108,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                                                     SR.ValueMustBePositive));
                 }
                 _maxWritePoolSize = value;
@@ -140,7 +124,10 @@ namespace System.ServiceModel.Channels
             set
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
                 value.CopyTo(_readerQuotas);
             }
         }
@@ -156,7 +143,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
                                                     SR.ValueMustBeNonNegative));
                 }
 
@@ -166,15 +153,15 @@ namespace System.ServiceModel.Channels
 
         private void VerifyCompression(BindingContext context)
         {
-            if (_compressionFormat != CompressionFormat.None)
+            if (CompressionFormat != CompressionFormat.None)
             {
                 ITransportCompressionSupport compressionSupport = context.GetInnerProperty<ITransportCompressionSupport>();
-                if (compressionSupport == null || !compressionSupport.IsCompressionFormatSupported(_compressionFormat))
+                if (compressionSupport == null || !compressionSupport.IsCompressionFormatSupported(CompressionFormat))
                 {
                     throw FxTrace.Exception.AsError(new NotSupportedException(SR.Format(
                         SR.TransportDoesNotSupportCompression,
-                        _compressionFormat.ToString(),
-                        this.GetType().Name,
+                        CompressionFormat.ToString(),
+                        GetType().Name,
                         CompressionFormat.None.ToString())));
                 }
             }
@@ -207,21 +194,21 @@ namespace System.ServiceModel.Channels
         public override MessageEncoderFactory CreateMessageEncoderFactory()
         {
             return new BinaryMessageEncoderFactory(
-                this.MessageVersion,
-                this.MaxReadPoolSize,
-                this.MaxWritePoolSize,
-                this.MaxSessionSize,
-                this.ReaderQuotas,
+                MessageVersion,
+                MaxReadPoolSize,
+                MaxWritePoolSize,
+                MaxSessionSize,
+                ReaderQuotas,
                 _maxReceivedMessageSize,
-                this.BinaryVersion,
-                this.CompressionFormat);
+                BinaryVersion,
+                CompressionFormat);
         }
 
         public override T GetProperty<T>(BindingContext context)
         {
             if (context == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(context));
             }
             if (typeof(T) == typeof(XmlDictionaryReaderQuotas))
             {
@@ -236,39 +223,69 @@ namespace System.ServiceModel.Channels
         internal override bool IsMatch(BindingElement b)
         {
             if (!base.IsMatch(b))
+            {
                 return false;
+            }
 
             BinaryMessageEncodingBindingElement binary = b as BinaryMessageEncodingBindingElement;
             if (binary == null)
+            {
                 return false;
+            }
+
             if (_maxReadPoolSize != binary.MaxReadPoolSize)
+            {
                 return false;
+            }
+
             if (_maxWritePoolSize != binary.MaxWritePoolSize)
+            {
                 return false;
+            }
 
             // compare XmlDictionaryReaderQuotas
             if (_readerQuotas.MaxStringContentLength != binary.ReaderQuotas.MaxStringContentLength)
+            {
                 return false;
-            if (_readerQuotas.MaxArrayLength != binary.ReaderQuotas.MaxArrayLength)
-                return false;
-            if (_readerQuotas.MaxBytesPerRead != binary.ReaderQuotas.MaxBytesPerRead)
-                return false;
-            if (_readerQuotas.MaxDepth != binary.ReaderQuotas.MaxDepth)
-                return false;
-            if (_readerQuotas.MaxNameTableCharCount != binary.ReaderQuotas.MaxNameTableCharCount)
-                return false;
+            }
 
-            if (this.MaxSessionSize != binary.MaxSessionSize)
+            if (_readerQuotas.MaxArrayLength != binary.ReaderQuotas.MaxArrayLength)
+            {
                 return false;
-            if (this.CompressionFormat != binary.CompressionFormat)
+            }
+
+            if (_readerQuotas.MaxBytesPerRead != binary.ReaderQuotas.MaxBytesPerRead)
+            {
                 return false;
+            }
+
+            if (_readerQuotas.MaxDepth != binary.ReaderQuotas.MaxDepth)
+            {
+                return false;
+            }
+
+            if (_readerQuotas.MaxNameTableCharCount != binary.ReaderQuotas.MaxNameTableCharCount)
+            {
+                return false;
+            }
+
+            if (MaxSessionSize != binary.MaxSessionSize)
+            {
+                return false;
+            }
+
+            if (CompressionFormat != binary.CompressionFormat)
+            {
+                return false;
+            }
+
             return true;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeReaderQuotas()
         {
-            return (!EncoderDefaults.IsDefaultReaderQuotas(this.ReaderQuotas));
+            return (!EncoderDefaults.IsDefaultReaderQuotas(ReaderQuotas));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

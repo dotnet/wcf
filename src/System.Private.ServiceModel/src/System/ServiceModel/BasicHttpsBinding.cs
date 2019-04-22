@@ -10,7 +10,6 @@ namespace System.ServiceModel
 {
     public class BasicHttpsBinding : HttpBindingBase
     {
-        private WSMessageEncoding _messageEncoding = BasicHttpBindingDefaults.MessageEncoding;
         private BasicHttpsSecurity _basicHttpsSecurity;
 
         public BasicHttpsBinding() : this(BasicHttpsSecurity.DefaultMode) { }
@@ -26,11 +25,7 @@ namespace System.ServiceModel
             _basicHttpsSecurity.Mode = securityMode;
         }
 
-        internal WSMessageEncoding MessageEncoding
-        {
-            get { return _messageEncoding; }
-            set { _messageEncoding = value; }
-        }
+        internal WSMessageEncoding MessageEncoding { get; set; } = BasicHttpBindingDefaults.MessageEncoding;
 
         public BasicHttpsSecurity Security
         {
@@ -41,12 +36,7 @@ namespace System.ServiceModel
 
             set
             {
-                if (value == null)
-                {
-                    throw FxTrace.Exception.ArgumentNull("value");
-                }
-
-                _basicHttpsSecurity = value;
+                _basicHttpsSecurity = value ?? throw FxTrace.Exception.ArgumentNull("value");
             }
         }
 
@@ -90,7 +80,9 @@ namespace System.ServiceModel
             }
             // add encoding
             if (MessageEncoding == WSMessageEncoding.Text)
+            {
                 bindingElements.Add(TextMessageEncodingBindingElement);
+            }
             // add transport (http or https)
             bindingElements.Add(GetTransport());
 

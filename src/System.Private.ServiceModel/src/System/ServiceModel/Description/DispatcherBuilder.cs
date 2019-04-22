@@ -49,19 +49,15 @@ namespace System.ServiceModel.Description
 
         internal class ListenUriInfo
         {
-            private Uri _listenUri;
             private ListenUriMode _listenUriMode;
 
             public ListenUriInfo(Uri listenUri, ListenUriMode listenUriMode)
             {
-                _listenUri = listenUri;
+                ListenUri = listenUri;
                 _listenUriMode = listenUriMode;
             }
 
-            public Uri ListenUri
-            {
-                get { return _listenUri; }
-            }
+            public Uri ListenUri { get; }
 
             public ListenUriMode ListenUriMode
             {
@@ -71,7 +67,7 @@ namespace System.ServiceModel.Description
             // implement Equals and GetHashCode so that we can use this as a key in a dictionary
             public override bool Equals(Object other)
             {
-                return this.Equals(other as ListenUriInfo);
+                return Equals(other as ListenUriInfo);
             }
 
             public bool Equals(ListenUriInfo other)
@@ -87,12 +83,12 @@ namespace System.ServiceModel.Description
                 }
 
                 return (_listenUriMode == other._listenUriMode)
-                    && EndpointAddress.UriEquals(_listenUri, other._listenUri, true /* ignoreCase */, true /* includeHost */);
+                    && EndpointAddress.UriEquals(ListenUri, other.ListenUri, true /* ignoreCase */, true /* includeHost */);
             }
 
             public override int GetHashCode()
             {
-                return EndpointAddress.UriGetHashCode(_listenUri, true /* includeHost */);
+                return EndpointAddress.UriGetHashCode(ListenUri, true /* includeHost */);
             }
         }
 
@@ -281,8 +277,8 @@ namespace System.ServiceModel.Description
             public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection parameters) { }
             public void ApplyClientBehavior(ServiceEndpoint serviceEndpoint, ClientRuntime behavior)
             {
-                behavior.ManualAddressing = this.IsManualAddressing(serviceEndpoint.Binding);
-                behavior.EnableFaults = !this.IsMulticast(serviceEndpoint.Binding);
+                behavior.ManualAddressing = IsManualAddressing(serviceEndpoint.Binding);
+                behavior.EnableFaults = !IsMulticast(serviceEndpoint.Binding);
                 if (serviceEndpoint.Contract.IsDuplex())
                 {
                     behavior.CallbackDispatchRuntime.ChannelDispatcher.MessageVersion = serviceEndpoint.Binding.MessageVersion;
@@ -298,8 +294,8 @@ namespace System.ServiceModel.Description
                     endpointDispatcher.ChannelDispatcher.ReceiveSynchronously = runtimePreferences.ReceiveSynchronously;
                 }
 
-                endpointDispatcher.ChannelDispatcher.ManualAddressing = this.IsManualAddressing(serviceEndpoint.Binding);
-                endpointDispatcher.ChannelDispatcher.EnableFaults = !this.IsMulticast(serviceEndpoint.Binding);
+                endpointDispatcher.ChannelDispatcher.ManualAddressing = IsManualAddressing(serviceEndpoint.Binding);
+                endpointDispatcher.ChannelDispatcher.EnableFaults = !IsMulticast(serviceEndpoint.Binding);
                 endpointDispatcher.ChannelDispatcher.MessageVersion = serviceEndpoint.Binding.MessageVersion;
             }
 

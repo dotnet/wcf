@@ -11,7 +11,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.Xml;
@@ -243,7 +242,7 @@ namespace System.ServiceModel.Description
                 else
                 {
                     // look for IOperationBehaviors on implementation methods in service class hierarchy
-                    ApplyServiceInheritance<IOperationBehavior, KeyedByTypeCollection<IOperationBehavior>>(
+                    ApplyServiceInheritance(
                         implType, opDesc.Behaviors,
                         delegate (Type currentType, KeyedByTypeCollection<IOperationBehavior> behaviors)
                         {
@@ -257,7 +256,7 @@ namespace System.ServiceModel.Description
                     // then look for IOperationBehaviors on interface type
                     if (!isInherited)
                     {
-                        AddBehaviorsAtOneScope<IOperationBehavior, KeyedByTypeCollection<IOperationBehavior>>(
+                        AddBehaviorsAtOneScope(
                             targetIface, opDesc.Behaviors,
                             delegate (Type currentType, KeyedByTypeCollection<IOperationBehavior> behaviors)
                             {
@@ -316,7 +315,7 @@ namespace System.ServiceModel.Description
 
         private static void UpdateContractDescriptionWithAttributesFromServiceType(ContractDescription description, Type serviceType)
         {
-            ApplyServiceInheritance<IContractBehavior, KeyedByTypeCollection<IContractBehavior>>(
+            ApplyServiceInheritance(
                 serviceType, description.Behaviors,
                 delegate (Type currentType, KeyedByTypeCollection<IContractBehavior> behaviors)
                 {
@@ -336,7 +335,9 @@ namespace System.ServiceModel.Description
                 foreach (OperationDescription operationDescription in contractDesc.Operations)
                 {
                     if (!operationDescription.IsServerInitiated())
+                    {
                         operationDescription.KnownTypes.Add(knownType);
+                    }
                 }
             }
 
@@ -349,7 +350,9 @@ namespace System.ServiceModel.Description
                     foreach (OperationDescription operationDescription in contractDesc.Operations)
                     {
                         if (operationDescription.IsServerInitiated())
+                        {
                             operationDescription.KnownTypes.Add(knownType);
+                        }
                     }
                 }
             }
@@ -367,14 +370,20 @@ namespace System.ServiceModel.Description
                     {
                         type = provider as Type;
                         if (type == null && provider is MethodInfo providerAsMethod)
+                        {
                             type = providerAsMethod.DeclaringType;
+                        }
                     }
                     MethodInfo method = type.GetRuntimeMethod(knownTypeAttribute.MethodName, s_knownTypesMethodParamType);
                     if (method == null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxKnownTypeAttributeUnknownMethod3, provider, knownTypeAttribute.MethodName, type.FullName)));
+                    }
 
                     if (!typeof(IEnumerable<Type>).IsAssignableFrom(method.ReturnType))
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxKnownTypeAttributeReturnType3, provider, knownTypeAttribute.MethodName, type.FullName)));
+                    }
 
                     return (IEnumerable<Type>)method.Invoke(null, new object[] { provider });
                 }
@@ -385,7 +394,10 @@ namespace System.ServiceModel.Description
             {
                 ServiceKnownTypeAttribute knownTypeAttribute = (ServiceKnownTypeAttribute)knownTypeAttributes[i];
                 if (knownTypeAttribute.Type == null)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxKnownTypeAttributeInvalid1, provider.ToString())));
+                }
+
                 knownTypes.Add(knownTypeAttribute.Type);
             }
             return knownTypes;
@@ -609,7 +621,7 @@ namespace System.ServiceModel.Description
                 OperationDescription opDesc = serviceEndpoint.Contract.Operations[i];
                 KeyedByTypeCollection<IOperationBehavior> opBehaviors = new KeyedByTypeCollection<IOperationBehavior>();
                 // look for IOperationBehaviors on implementation methods in callback class hierarchy
-                ApplyServiceInheritance<IOperationBehavior, KeyedByTypeCollection<IOperationBehavior>>(
+                ApplyServiceInheritance(
                     implementationType, opBehaviors,
                     delegate (Type currentType, KeyedByTypeCollection<IOperationBehavior> behaviors)
                     {
@@ -985,7 +997,9 @@ namespace System.ServiceModel.Description
             methodAttributes = ServiceReflector.GetCustomAttributes(methodInfo, typeof(ServiceKnownTypeAttribute), false);
             IEnumerable<Type> knownTypes = GetKnownTypes(methodAttributes, methodInfo);
             foreach (Type knownType in knownTypes)
+            {
                 operationDescription.KnownTypes.Add(knownType);
+            }
 
             MessageDirection requestDirection = direction;
             MessageDirection responseDirection = MessageDirectionHelper.Opposite(direction);
@@ -1082,11 +1096,16 @@ namespace System.ServiceModel.Description
             foreach (FaultDescription existingFault in faultDescriptionCollection)
             {
                 if (XmlName.IsNullOrEmpty(existingFault.ElementName) && XmlName.IsNullOrEmpty(fault.ElementName) && existingFault.DetailType == fault.DetailType)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
                         SR.Format(SR.SFxFaultContractDuplicateDetailType, operationName, fault.DetailType)));
+                }
+
                 if (!XmlName.IsNullOrEmpty(existingFault.ElementName) && !XmlName.IsNullOrEmpty(fault.ElementName) && existingFault.ElementName == fault.ElementName && existingFault.Namespace == fault.Namespace)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
                         SR.Format(SR.SFxFaultContractDuplicateElement, operationName, fault.ElementName, fault.Namespace)));
+                }
             }
         }
 
@@ -1098,9 +1117,14 @@ namespace System.ServiceModel.Description
             XmlName faultName = new XmlName(attr.Name ?? NamingHelper.TypeName(attr.DetailType) + FaultSuffix);
             FaultDescription fault = new FaultDescription(NamingHelper.GetMessageAction(contractName, operationName.DecodedName + faultName.DecodedName, attr.Action, false/*isResponse*/));
             if (attr.Name != null)
+            {
                 fault.SetNameAndElement(faultName);
+            }
             else
+            {
                 fault.SetNameOnly(faultName);
+            }
+
             fault.Namespace = attr.Namespace ?? contractNamespace;
             fault.DetailType = attr.DetailType;
             if (attr.HasProtectionLevel)
@@ -1225,7 +1249,10 @@ namespace System.ServiceModel.Description
             {
                 MessagePartDescription partDescription = CreateParameterPartDescription(new XmlName(parameters[index].Name), defaultNS, index, parameters[index], GetParameterType(parameters[index]));
                 if (partDescriptionCollection.Contains(new XmlQualifiedName(partDescription.Name, partDescription.Namespace)))
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidMessageContractException(SR.Format(SR.SFxDuplicateMessageParts, partDescription.Name, partDescription.Namespace)));
+                }
+
                 messageDescription.Body.Parts.Add(partDescription);
             }
 
@@ -1278,7 +1305,10 @@ namespace System.ServiceModel.Description
                 messageItemsInitialized = true;
             }
             else
+            {
                 messageDescription = new MessageDescription(action, direction, null);
+            }
+
             messageDescription.MessageType = typedMessageType;
             messageDescription.MessageName = new XmlName(NamingHelper.TypeName(typedMessageType));
             if (messageContractAttribute.IsWrapped)
@@ -1304,7 +1334,10 @@ namespace System.ServiceModel.Description
                 }
 
                 if (messageItemsInitialized)
+                {
                     continue;
+                }
+
                 foreach (MemberInfo memberInfo in baseType.GetTypeInfo().DeclaredMembers)
                 {
                     if (!(memberInfo is FieldInfo || memberInfo is PropertyInfo))
@@ -1346,7 +1379,9 @@ namespace System.ServiceModel.Description
             }
 
             if (messageItemsInitialized)
+            {
                 return messageDescription;
+            }
 
             List<MessagePartDescription> bodyPartDescriptionList = new List<MessagePartDescription>();
             List<MessageHeaderDescription> headerPartDescriptionList = new List<MessageHeaderDescription>();
@@ -1401,8 +1436,8 @@ namespace System.ServiceModel.Description
                                                                   0);
             }
 
-            AddSortedParts<MessagePartDescription>(bodyPartDescriptionList, messageDescription.Body.Parts);
-            AddSortedParts<MessageHeaderDescription>(headerPartDescriptionList, messageDescription.Headers);
+            AddSortedParts(bodyPartDescriptionList, messageDescription.Body.Parts);
+            AddSortedParts(headerPartDescriptionList, messageDescription.Headers);
             _messages.Add(typedMessageType, messageDescription.Items);
 
             return messageDescription;
@@ -1548,7 +1583,10 @@ namespace System.ServiceModel.Description
         internal static XmlName GetWrapperName(string wrapperName, XmlName defaultName)
         {
             if (string.IsNullOrEmpty(wrapperName))
+            {
                 return defaultName;
+            }
+
             return new XmlName(wrapperName);
         }
 
@@ -1558,7 +1596,7 @@ namespace System.ServiceModel.Description
             MessagePartDescription[] partDescriptions = partDescriptionList.ToArray();
             if (partDescriptions.Length > 1)
             {
-                Array.Sort<MessagePartDescription>(partDescriptions, CompareMessagePartDescriptions);
+                Array.Sort(partDescriptions, CompareMessagePartDescriptions);
             }
             foreach (T partDescription in partDescriptions)
             {
@@ -2028,8 +2066,14 @@ namespace System.ServiceModel.Description
                 IBehavior behavior = toAdd[i];
                 if (!descriptionBehaviors.Contains(behavior.GetType()))
                 {
-                    // 
-                    throw ExceptionHelper.PlatformNotSupported();
+                    if (behavior is IOperationBehavior || behavior is IContractBehavior)
+                    { 
+                        descriptionBehaviors.Add(behavior);
+                    }
+                    else
+                    {
+                        throw ExceptionHelper.PlatformNotSupported();
+                    }
                 }
             }
         }

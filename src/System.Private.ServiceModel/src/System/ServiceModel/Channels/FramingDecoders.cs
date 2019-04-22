@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.ServiceModel;
 using System.IO;
 using System.Text;
 using System.Globalization;
@@ -17,7 +16,7 @@ namespace System.ServiceModel.Channels
         {
             if (size <= 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size, SR.ValueMustBePositive));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(size), size, SR.ValueMustBePositive));
             }
         }
     }
@@ -26,35 +25,34 @@ namespace System.ServiceModel.Channels
     {
         private int _value;
         private short _index;
-        private bool _isValueDecoded;
         private const int LastIndex = 4;
 
         public int Value
         {
             get
             {
-                if (!_isValueDecoded)
+                if (!IsValueDecoded)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
+                }
+
                 return _value;
             }
         }
 
-        public bool IsValueDecoded
-        {
-            get { return _isValueDecoded; }
-        }
+        public bool IsValueDecoded { get; private set; }
 
         public void Reset()
         {
             _index = 0;
             _value = 0;
-            _isValueDecoded = false;
+            IsValueDecoded = false;
         }
 
         public int Decode(byte[] buffer, int offset, int size)
         {
             DecoderHelper.ValidateSize(size);
-            if (_isValueDecoded)
+            if (IsValueDecoded)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
             }
@@ -71,7 +69,7 @@ namespace System.ServiceModel.Channels
                 _index++;
                 if ((next & 0x80) == 0)
                 {
-                    _isValueDecoded = true;
+                    IsValueDecoded = true;
                     break;
                 }
                 offset++;
@@ -110,7 +108,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (_currentState != State.Done)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
+                }
+
                 return _value;
             }
         }
@@ -152,7 +153,10 @@ namespace System.ServiceModel.Channels
                     {
                         bytesConsumed = _bytesNeeded;
                         if (size < _bytesNeeded)
+                        {
                             bytesConsumed = size;
+                        }
+
                         Buffer.BlockCopy(buffer, offset, _encodedBytes, _encodedSize - _bytesNeeded, bytesConsumed);
                         _bytesNeeded -= bytesConsumed;
                         if (_bytesNeeded == 0)
@@ -237,7 +241,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (!IsValueDecoded)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
+                }
+
                 return _via;
             }
         }
@@ -361,24 +368,18 @@ namespace System.ServiceModel.Channels
 
     internal abstract class FramingDecoder
     {
-        private long _streamPosition;
-
         protected FramingDecoder()
         {
         }
 
         protected FramingDecoder(long streamPosition)
         {
-            _streamPosition = streamPosition;
+            StreamPosition = streamPosition;
         }
 
         protected abstract string CurrentStateAsString { get; }
 
-        public long StreamPosition
-        {
-            get { return _streamPosition; }
-            set { _streamPosition = value; }
-        }
+        public long StreamPosition { get; set; }
 
         protected void ValidateFramingMode(FramingMode mode)
         {
@@ -464,35 +465,31 @@ namespace System.ServiceModel.Channels
         private IntDecoder _sizeDecoder;
         private int _chunkBytesNeeded;
         private int _chunkSize;
-        private State _currentState;
 
         public SingletonMessageDecoder(long streamPosition)
             : base(streamPosition)
         {
             _sizeDecoder = new IntDecoder();
-            _currentState = State.ChunkStart;
+            CurrentState = State.ChunkStart;
         }
 
         public void Reset()
         {
-            _currentState = State.ChunkStart;
+            CurrentState = State.ChunkStart;
         }
 
-        public State CurrentState
-        {
-            get { return _currentState; }
-        }
+        public State CurrentState { get; private set; }
 
         protected override string CurrentStateAsString
         {
-            get { return _currentState.ToString(); }
+            get { return CurrentState.ToString(); }
         }
 
         public int ChunkSize
         {
             get
             {
-                if (_currentState < State.ChunkStart)
+                if (CurrentState < State.ChunkStart)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
                 }
@@ -508,7 +505,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 int bytesConsumed;
-                switch (_currentState)
+                switch (CurrentState)
                 {
                     case State.ReadingEnvelopeChunkSize:
                         bytesConsumed = _sizeDecoder.Decode(bytes, offset, size);
@@ -519,18 +516,18 @@ namespace System.ServiceModel.Channels
 
                             if (_chunkSize == 0)
                             {
-                                _currentState = State.EnvelopeEnd;
+                                CurrentState = State.EnvelopeEnd;
                             }
                             else
                             {
-                                _currentState = State.ChunkStart;
+                                CurrentState = State.ChunkStart;
                                 _chunkBytesNeeded = _chunkSize;
                             }
                         }
                         break;
                     case State.ChunkStart:
                         bytesConsumed = 0;
-                        _currentState = State.ReadingEnvelopeBytes;
+                        CurrentState = State.ReadingEnvelopeBytes;
                         break;
                     case State.ReadingEnvelopeBytes:
                         bytesConsumed = size;
@@ -541,17 +538,17 @@ namespace System.ServiceModel.Channels
                         _chunkBytesNeeded -= bytesConsumed;
                         if (_chunkBytesNeeded == 0)
                         {
-                            _currentState = State.ChunkEnd;
+                            CurrentState = State.ChunkEnd;
                         }
                         break;
                     case State.ChunkEnd:
                         bytesConsumed = 0;
-                        _currentState = State.ReadingEnvelopeChunkSize;
+                        CurrentState = State.ReadingEnvelopeChunkSize;
                         break;
                     case State.EnvelopeEnd:
                         ValidateRecordType(FramingRecordType.End, (FramingRecordType)bytes[offset]);
                         bytesConsumed = 1;
-                        _currentState = State.End;
+                        CurrentState = State.End;
                         break;
                     case State.End:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
@@ -604,30 +601,17 @@ namespace System.ServiceModel.Channels
 
     internal abstract class ClientFramingDecoder : FramingDecoder
     {
-        private ClientFramingDecoderState _currentState;
-
         protected ClientFramingDecoder(long streamPosition)
             : base(streamPosition)
         {
-            _currentState = ClientFramingDecoderState.ReadingUpgradeRecord;
+            CurrentState = ClientFramingDecoderState.ReadingUpgradeRecord;
         }
 
-        public ClientFramingDecoderState CurrentState
-        {
-            get
-            {
-                return _currentState;
-            }
-
-            protected set
-            {
-                _currentState = value;
-            }
-        }
+        public ClientFramingDecoderState CurrentState { get; protected set; }
 
         protected override string CurrentStateAsString
         {
-            get { return _currentState.ToString(); }
+            get { return CurrentState.ToString(); }
         }
 
         public abstract string Fault
@@ -660,7 +644,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (CurrentState < ClientFramingDecoderState.EnvelopeStart)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
+                }
+
                 return _envelopeSize;
             }
         }
@@ -670,7 +657,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (CurrentState < ClientFramingDecoderState.Fault)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
+                }
+
                 return _faultDecoder.Value;
             }
         }
@@ -755,10 +745,16 @@ namespace System.ServiceModel.Channels
                     case ClientFramingDecoderState.ReadingEnvelopeBytes:
                         bytesConsumed = size;
                         if (bytesConsumed > _envelopeBytesNeeded)
+                        {
                             bytesConsumed = _envelopeBytesNeeded;
+                        }
+
                         _envelopeBytesNeeded -= bytesConsumed;
                         if (_envelopeBytesNeeded == 0)
+                        {
                             base.CurrentState = ClientFramingDecoderState.EnvelopeEnd;
+                        }
+
                         break;
                     case ClientFramingDecoderState.EnvelopeEnd:
                         bytesConsumed = 0;
@@ -815,7 +811,10 @@ namespace System.ServiceModel.Channels
             get
             {
                 if (CurrentState < ClientFramingDecoderState.Fault)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.FramingValueNotAvailable));
+                }
+
                 return _faultDecoder.Value;
             }
         }

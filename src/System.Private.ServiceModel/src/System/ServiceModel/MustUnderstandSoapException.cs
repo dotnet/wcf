@@ -17,22 +17,21 @@ namespace System.ServiceModel
         public MustUnderstandSoapException() { }
         protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { throw new PlatformNotSupportedException(); }
 
-        private Collection<MessageHeaderInfo> _notUnderstoodHeaders;
         private EnvelopeVersion _envelopeVersion;
 
         public MustUnderstandSoapException(Collection<MessageHeaderInfo> notUnderstoodHeaders, EnvelopeVersion envelopeVersion)
         {
-            _notUnderstoodHeaders = notUnderstoodHeaders;
+            NotUnderstoodHeaders = notUnderstoodHeaders;
             _envelopeVersion = envelopeVersion;
         }
 
-        public Collection<MessageHeaderInfo> NotUnderstoodHeaders { get { return _notUnderstoodHeaders; } }
+        public Collection<MessageHeaderInfo> NotUnderstoodHeaders { get; }
         public EnvelopeVersion EnvelopeVersion { get { return _envelopeVersion; } }
 
         internal Message ProvideFault(MessageVersion messageVersion)
         {
-            string name = _notUnderstoodHeaders[0].Name;
-            string ns = _notUnderstoodHeaders[0].Namespace;
+            string name = NotUnderstoodHeaders[0].Name;
+            string ns = NotUnderstoodHeaders[0].Namespace;
             FaultCode code = new FaultCode(MessageStrings.MustUnderstandFault, _envelopeVersion.Namespace);
             FaultReason reason = new FaultReason(SR.Format(SR.SFxHeaderNotUnderstood, name, ns), CultureInfo.CurrentCulture);
             MessageFault fault = MessageFault.CreateFault(code, reason);
@@ -40,16 +39,16 @@ namespace System.ServiceModel
             Message message = System.ServiceModel.Channels.Message.CreateMessage(messageVersion, fault, faultAction);
             if (_envelopeVersion == EnvelopeVersion.Soap12)
             {
-                this.AddNotUnderstoodHeaders(message.Headers);
+                AddNotUnderstoodHeaders(message.Headers);
             }
             return message;
         }
 
         private void AddNotUnderstoodHeaders(MessageHeaders headers)
         {
-            for (int i = 0; i < _notUnderstoodHeaders.Count; ++i)
+            for (int i = 0; i < NotUnderstoodHeaders.Count; ++i)
             {
-                headers.Add(new NotUnderstoodHeader(_notUnderstoodHeaders[i].Name, _notUnderstoodHeaders[i].Namespace));
+                headers.Add(new NotUnderstoodHeader(NotUnderstoodHeaders[i].Name, NotUnderstoodHeaders[i].Namespace));
             }
         }
 
@@ -76,7 +75,7 @@ namespace System.ServiceModel
 
             protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
             {
-                writer.WriteStartElement(this.Name, this.Namespace);
+                writer.WriteStartElement(Name, Namespace);
                 writer.WriteXmlnsAttribute(null, _notUnderstoodNs);
                 writer.WriteStartAttribute(Message12Strings.QName);
                 writer.WriteQualifiedName(_notUnderstoodName, _notUnderstoodNs);

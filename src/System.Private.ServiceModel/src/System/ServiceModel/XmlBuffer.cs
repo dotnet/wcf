@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.Runtime;
 using System.ServiceModel.Channels;
@@ -29,38 +28,33 @@ namespace System.ServiceModel
 
         internal struct Section
         {
-            private int _offset;
             private int _size;
-            private XmlDictionaryReaderQuotas _quotas;
 
             public Section(int offset, int size, XmlDictionaryReaderQuotas quotas)
             {
-                _offset = offset;
+                Offset = offset;
                 _size = size;
-                _quotas = quotas;
+                Quotas = quotas;
             }
 
-            public int Offset
-            {
-                get { return _offset; }
-            }
+            public int Offset { get; }
 
             public int Size
             {
                 get { return _size; }
             }
 
-            public XmlDictionaryReaderQuotas Quotas
-            {
-                get { return _quotas; }
-            }
+            public XmlDictionaryReaderQuotas Quotas { get; }
         }
 
         public XmlBuffer(int maxBufferSize)
         {
             if (maxBufferSize < 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxBufferSize", maxBufferSize,
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(maxBufferSize), maxBufferSize,
                                                     SR.ValueMustBeNonNegative));
+            }
+
             int initialBufferSize = Math.Min(512, maxBufferSize);
             _stream = new BufferManagerOutputStream(SR.XmlBufferQuotaExceeded, initialBufferSize, maxBufferSize,
                 BufferManager.CreateBufferManager(0, int.MaxValue));
@@ -84,7 +78,10 @@ namespace System.ServiceModel
         public XmlDictionaryWriter OpenSection(XmlDictionaryReaderQuotas quotas)
         {
             if (_bufferState != BufferState.Created)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+            }
+
             _bufferState = BufferState.Writing;
             _quotas = new XmlDictionaryReaderQuotas();
             quotas.CopyTo(_quotas);
@@ -103,7 +100,10 @@ namespace System.ServiceModel
         public void CloseSection()
         {
             if (_bufferState != BufferState.Writing)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+            }
+
             _writer.Dispose();
             _writer = null;
             _bufferState = BufferState.Created;
@@ -115,7 +115,10 @@ namespace System.ServiceModel
         public void Close()
         {
             if (_bufferState != BufferState.Created)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+            }
+
             _bufferState = BufferState.Reading;
             int bufferSize;
             _buffer = _stream.ToArray(out bufferSize);
@@ -131,7 +134,10 @@ namespace System.ServiceModel
         public XmlDictionaryReader GetReader(int sectionIndex)
         {
             if (_bufferState != BufferState.Reading)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+            }
+
             Section section = _sections[sectionIndex];
             XmlDictionaryReader reader = XmlDictionaryReader.CreateBinaryReader(_buffer, section.Offset, section.Size, XD.Dictionary, section.Quotas);
             reader.MoveToContent();
@@ -141,7 +147,10 @@ namespace System.ServiceModel
         public void WriteTo(int sectionIndex, XmlWriter writer)
         {
             if (_bufferState != BufferState.Reading)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateInvalidStateException());
+            }
+
             XmlDictionaryReader reader = GetReader(sectionIndex);
             try
             {

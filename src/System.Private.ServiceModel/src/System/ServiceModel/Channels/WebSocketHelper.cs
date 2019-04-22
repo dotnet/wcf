@@ -5,9 +5,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Http;
 using System.Runtime;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels

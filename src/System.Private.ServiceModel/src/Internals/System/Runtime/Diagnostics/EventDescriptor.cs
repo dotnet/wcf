@@ -128,7 +128,9 @@ namespace System.Runtime.Diagnostics
         public override bool Equals(object obj)
         {
             if (!(obj is EventDescriptor))
+            {
                 return false;
+            }
 
             return Equals((EventDescriptor)obj);
         }

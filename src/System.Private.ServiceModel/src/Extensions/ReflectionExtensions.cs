@@ -119,55 +119,89 @@ namespace System.ServiceModel
         public static TypeCode GetTypeCode(this Type type)
         {
             if (type == null)
+            {
                 return TypeCode.Empty;
+            }
 
             if (type == typeof(Boolean))
+            {
                 return TypeCode.Boolean;
+            }
 
             if (type == typeof(Char))
+            {
                 return TypeCode.Char;
+            }
 
             if (type == typeof(SByte))
+            {
                 return TypeCode.SByte;
+            }
 
             if (type == typeof(Byte))
+            {
                 return TypeCode.Byte;
+            }
 
             if (type == typeof(Int16))
+            {
                 return TypeCode.Int16;
+            }
 
             if (type == typeof(UInt16))
+            {
                 return TypeCode.UInt16;
+            }
 
             if (type == typeof(Int32))
+            {
                 return TypeCode.Int32;
+            }
 
             if (type == typeof(UInt32))
+            {
                 return TypeCode.UInt32;
+            }
 
             if (type == typeof(Int64))
+            {
                 return TypeCode.Int64;
+            }
 
             if (type == typeof(UInt64))
+            {
                 return TypeCode.UInt64;
+            }
 
             if (type == typeof(Single))
+            {
                 return TypeCode.Single;
+            }
 
             if (type == typeof(Double))
+            {
                 return TypeCode.Double;
+            }
 
             if (type == typeof(Decimal))
+            {
                 return TypeCode.Decimal;
+            }
 
             if (type == typeof(DateTime))
+            {
                 return TypeCode.DateTime;
+            }
 
             if (type == typeof(String))
+            {
                 return TypeCode.String;
+            }
 
             if (type.GetTypeInfo().IsEnum)
+            {
                 return GetTypeCode(Enum.GetUnderlyingType(type));
+            }
 
             return TypeCode.Object;
         }

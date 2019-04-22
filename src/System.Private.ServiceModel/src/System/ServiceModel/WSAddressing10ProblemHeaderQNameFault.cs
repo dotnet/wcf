@@ -137,13 +137,13 @@ namespace System.ServiceModel
 
             protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
             {
-                writer.WriteStartElement(this.Name, this.Namespace);
+                writer.WriteStartElement(Name, Namespace);
             }
 
             protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
             {
-                writer.WriteStartElement(Addressing10Strings.ProblemHeaderQName, this.Namespace);
-                writer.WriteQualifiedName(_invalidHeaderName, this.Namespace);
+                writer.WriteStartElement(Addressing10Strings.ProblemHeaderQName, Namespace);
+                writer.WriteQualifiedName(_invalidHeaderName, Namespace);
                 writer.WriteEndElement();
             }
         }

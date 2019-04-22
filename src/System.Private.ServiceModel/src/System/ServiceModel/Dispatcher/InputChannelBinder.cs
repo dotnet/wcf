@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Runtime;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Diagnostics;
 
@@ -14,17 +12,16 @@ namespace System.ServiceModel.Dispatcher
     internal class InputChannelBinder : IChannelBinder
     {
         private IInputChannel _channel;
-        private Uri _listenUri;
 
         internal InputChannelBinder(IInputChannel channel, Uri listenUri)
         {
             if (!((channel != null)))
             {
                 Fx.Assert("InputChannelBinder.InputChannelBinder: (channel != null)");
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channel");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channel));
             }
             _channel = channel;
-            _listenUri = listenUri;
+            ListenUri = listenUri;
         }
 
         public IChannel Channel
@@ -37,10 +34,7 @@ namespace System.ServiceModel.Dispatcher
             get { return _channel is ISessionChannel<IInputSession>; }
         }
 
-        public Uri ListenUri
-        {
-            get { return _listenUri; }
-        }
+        public Uri ListenUri { get; }
 
         public EndpointAddress LocalAddress
         {
@@ -75,7 +69,7 @@ namespace System.ServiceModel.Dispatcher
             Message message;
             if (_channel.EndTryReceive(result, out message))
             {
-                requestContext = this.WrapMessage(message);
+                requestContext = WrapMessage(message);
                 return true;
             }
             else
@@ -87,7 +81,7 @@ namespace System.ServiceModel.Dispatcher
 
         public RequestContext CreateRequestContext(Message message)
         {
-            return this.WrapMessage(message);
+            return WrapMessage(message);
         }
 
         public IAsyncResult BeginSend(Message message, TimeSpan timeout, AsyncCallback callback, object state)
@@ -110,7 +104,7 @@ namespace System.ServiceModel.Dispatcher
             Message message;
             if (_channel.TryReceive(timeout, out message))
             {
-                requestContext = this.WrapMessage(message);
+                requestContext = WrapMessage(message);
                 return true;
             }
             else

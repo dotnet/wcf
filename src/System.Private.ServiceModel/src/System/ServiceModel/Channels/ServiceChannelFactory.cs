@@ -4,10 +4,8 @@
 
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Description;
-using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
 using System.Threading.Tasks;
 
@@ -20,28 +18,22 @@ namespace System.ServiceModel.Channels
         private ClientRuntime _clientRuntime;
         private RequestReplyCorrelator _requestReplyCorrelator = new RequestReplyCorrelator();
         private IDefaultCommunicationTimeouts _timeouts;
-        private MessageVersion _messageVersion;
 
         public ServiceChannelFactory(ClientRuntime clientRuntime, Binding binding)
             : base()
         {
-            if (clientRuntime == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("clientRuntime");
-            }
-
             _bindingName = binding.Name;
             _channelsList = new List<IChannel>();
-            _clientRuntime = clientRuntime;
+            _clientRuntime = clientRuntime ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(clientRuntime));
             _timeouts = new DefaultCommunicationTimeouts(binding);
-            _messageVersion = binding.MessageVersion;
+            MessageVersion = binding.MessageVersion;
         }
 
         public ClientRuntime ClientRuntime
         {
             get
             {
-                this.ThrowIfDisposed();
+                ThrowIfDisposed();
                 return _clientRuntime;
             }
         }
@@ -75,10 +67,7 @@ namespace System.ServiceModel.Channels
             get { return _timeouts.SendTimeout; }
         }
 
-        public MessageVersion MessageVersion
-        {
-            get { return _messageVersion; }
-        }
+        public MessageVersion MessageVersion { get; }
 
         // special overload for security only
         public static ServiceChannelFactory BuildChannelFactory(ChannelBuilder channelBuilder, ClientRuntime clientRuntime)
@@ -107,7 +96,7 @@ namespace System.ServiceModel.Channels
         {
             if (serviceEndpoint == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("serviceEndpoint");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(serviceEndpoint));
             }
 
             serviceEndpoint.EnsureInvariants();
@@ -260,7 +249,10 @@ namespace System.ServiceModel.Channels
                 {
                     count = _channelsList.Count;
                     if (count == 0)
+                    {
                         return;
+                    }
+
                     channel = _channelsList[0];
                 }
                 channel.Close(timeoutHelper.RemainingTime());
@@ -274,7 +266,9 @@ namespace System.ServiceModel.Channels
             {
                 objectList = new List<ICommunicationObject>();
                 for (int index = 0; index < _channelsList.Count; index++)
+                {
                     objectList.Add(_channelsList[index]);
+                }
             }
             return new CloseCollectionAsyncResult(timeout, callback, state, objectList);
         }
@@ -314,15 +308,15 @@ namespace System.ServiceModel.Channels
 
         public virtual ServiceChannel CreateServiceChannel(EndpointAddress address, Uri via)
         {
-            IChannelBinder binder = this.CreateInnerChannelBinder(address, via);
+            IChannelBinder binder = CreateInnerChannelBinder(address, via);
             ServiceChannel serviceChannel = new ServiceChannel(this, binder);
 
             if (binder is DuplexChannelBinder)
             {
                 DuplexChannelBinder duplexChannelBinder = binder as DuplexChannelBinder;
-                duplexChannelBinder.ChannelHandler = new ChannelHandler(_messageVersion, binder, serviceChannel);
-                duplexChannelBinder.DefaultCloseTimeout = this.DefaultCloseTimeout;
-                duplexChannelBinder.DefaultSendTimeout = this.DefaultSendTimeout;
+                duplexChannelBinder.ChannelHandler = new ChannelHandler(MessageVersion, binder, serviceChannel);
+                duplexChannelBinder.DefaultCloseTimeout = DefaultCloseTimeout;
+                duplexChannelBinder.DefaultSendTimeout = DefaultSendTimeout;
                 duplexChannelBinder.IdentityVerifier = _clientRuntime.IdentityVerifier;
             }
 
@@ -331,14 +325,14 @@ namespace System.ServiceModel.Channels
 
         public TChannel CreateChannel<TChannel>(EndpointAddress address)
         {
-            return this.CreateChannel<TChannel>(address, null);
+            return CreateChannel<TChannel>(address, null);
         }
 
         public TChannel CreateChannel<TChannel>(EndpointAddress address, Uri via)
         {
             if (via == null)
             {
-                via = this.ClientRuntime.Via;
+                via = ClientRuntime.Via;
 
                 if (via == null)
                 {
@@ -346,7 +340,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            ServiceChannel serviceChannel = this.CreateServiceChannel(address, via);
+            ServiceChannel serviceChannel = CreateServiceChannel(address, via);
 
             serviceChannel.Proxy = CreateProxy<TChannel>(MessageDirection.Input, serviceChannel);
 
@@ -387,14 +381,20 @@ namespace System.ServiceModel.Channels
         {
             IChannelBaseProxy cb = transparentProxy as IChannelBaseProxy;
             if (cb != null)
+            {
                 return cb.GetServiceChannel();
+            }
 
             ServiceChannelProxy proxy = transparentProxy as ServiceChannelProxy;
 
             if (proxy != null)
+            {
                 return proxy.GetServiceChannel();
+            }
             else
+            {
                 return null;
+            }
         }
 
         private async Task OnCloseAsyncInternal(TimeSpan timeout)
@@ -408,7 +408,10 @@ namespace System.ServiceModel.Channels
                 {
                     count = _channelsList.Count;
                     if (count == 0)
+                    {
                         return;
+                    }
+
                     channel = _channelsList[0];
                 }
 
@@ -421,52 +424,47 @@ namespace System.ServiceModel.Channels
         internal abstract class TypedServiceChannelFactory<TChannel> : ServiceChannelFactory
             where TChannel : class, IChannel
         {
-            private IChannelFactory<TChannel> _innerChannelFactory;
-
             protected TypedServiceChannelFactory(IChannelFactory<TChannel> innerChannelFactory,
                 ClientRuntime clientRuntime, Binding binding)
                 : base(clientRuntime, binding)
             {
-                _innerChannelFactory = innerChannelFactory;
+                InnerChannelFactory = innerChannelFactory;
             }
 
-            protected IChannelFactory<TChannel> InnerChannelFactory
-            {
-                get { return _innerChannelFactory; }
-            }
+            protected IChannelFactory<TChannel> InnerChannelFactory { get; }
 
             protected override void OnAbort()
             {
                 base.OnAbort();
-                _innerChannelFactory.Abort();
+                InnerChannelFactory.Abort();
             }
 
             protected override void OnOpen(TimeSpan timeout)
             {
-                _innerChannelFactory.Open(timeout);
+                InnerChannelFactory.Open(timeout);
             }
 
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return _innerChannelFactory.BeginOpen(timeout, callback, state);
+                return InnerChannelFactory.BeginOpen(timeout, callback, state);
             }
 
             protected override void OnEndOpen(IAsyncResult result)
             {
-                _innerChannelFactory.EndOpen(result);
+                InnerChannelFactory.EndOpen(result);
             }
 
             protected override void OnClose(TimeSpan timeout)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 base.OnClose(timeoutHelper.RemainingTime());
-                _innerChannelFactory.Close(timeoutHelper.RemainingTime());
+                InnerChannelFactory.Close(timeoutHelper.RemainingTime());
             }
 
             protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
             {
                 return new ChainedAsyncResult(timeout, callback, state, base.OnBeginClose, base.OnEndClose,
-                    _innerChannelFactory.BeginClose, _innerChannelFactory.EndClose);
+                    InnerChannelFactory.BeginClose, InnerChannelFactory.EndClose);
             }
 
             protected override void OnEndClose(IAsyncResult result)
@@ -481,7 +479,7 @@ namespace System.ServiceModel.Channels
 
             protected internal override Task OnOpenAsync(TimeSpan timeout)
             {
-                return OpenOtherAsync(_innerChannelFactory, timeout);
+                return OpenOtherAsync(InnerChannelFactory, timeout);
             }
 
             public override T GetProperty<T>()
@@ -497,7 +495,7 @@ namespace System.ServiceModel.Channels
                     return baseProperty;
                 }
 
-                return _innerChannelFactory.GetProperty<T>();
+                return InnerChannelFactory.GetProperty<T>();
             }
 
             private new async Task OnCloseAsyncInternal(TimeSpan timeout)
@@ -512,7 +510,7 @@ namespace System.ServiceModel.Channels
                     await Task.Factory.FromAsync(base.OnBeginClose, base.OnEndClose, timeoutHelper.RemainingTime(), TaskCreationOptions.None);
                 }
 
-                await CloseOtherAsync(_innerChannelFactory, timeoutHelper.RemainingTime());
+                await CloseOtherAsync(InnerChannelFactory, timeoutHelper.RemainingTime());
             }
         }
 
@@ -525,7 +523,7 @@ namespace System.ServiceModel.Channels
 
             protected override IChannelBinder CreateInnerChannelBinder(EndpointAddress to, Uri via)
             {
-                return new OutputChannelBinder(this.InnerChannelFactory.CreateChannel(to, via));
+                return new OutputChannelBinder(InnerChannelFactory.CreateChannel(to, via));
             }
 
             public override bool CanCreateChannel<TChannel>()
@@ -544,7 +542,7 @@ namespace System.ServiceModel.Channels
 
             protected override IChannelBinder CreateInnerChannelBinder(EndpointAddress to, Uri via)
             {
-                return new DuplexChannelBinder(this.InnerChannelFactory.CreateChannel(to, via), this.RequestReplyCorrelator);
+                return new DuplexChannelBinder(InnerChannelFactory.CreateChannel(to, via), RequestReplyCorrelator);
             }
 
             public override bool CanCreateChannel<TChannel>()
@@ -564,7 +562,7 @@ namespace System.ServiceModel.Channels
 
             protected override IChannelBinder CreateInnerChannelBinder(EndpointAddress to, Uri via)
             {
-                return new RequestChannelBinder(this.InnerChannelFactory.CreateChannel(to, via));
+                return new RequestChannelBinder(InnerChannelFactory.CreateChannel(to, via));
             }
 
             public override bool CanCreateChannel<TChannel>()
@@ -587,7 +585,7 @@ namespace System.ServiceModel.Channels
             {
                 IOutputChannel channel;
                 {
-                    channel = this.InnerChannelFactory.CreateChannel(to, via);
+                    channel = InnerChannelFactory.CreateChannel(to, via);
                 }
 
                 return new OutputChannelBinder(channel);
@@ -614,7 +612,7 @@ namespace System.ServiceModel.Channels
 
             protected override IChannelBinder CreateInnerChannelBinder(EndpointAddress to, Uri via)
             {
-                return new DuplexChannelBinder(this.InnerChannelFactory.CreateChannel(to, via), this.RequestReplyCorrelator, _useActiveAutoClose);
+                return new DuplexChannelBinder(InnerChannelFactory.CreateChannel(to, via), RequestReplyCorrelator, _useActiveAutoClose);
             }
 
             public override bool CanCreateChannel<TChannel>()
@@ -643,7 +641,7 @@ namespace System.ServiceModel.Channels
                 IRequestChannel channel;
 
                 {
-                    channel = this.InnerChannelFactory.CreateChannel(to, via);
+                    channel = InnerChannelFactory.CreateChannel(to, via);
                 }
                 return new RequestChannelBinder(channel);
             }
@@ -659,33 +657,21 @@ namespace System.ServiceModel.Channels
 
         internal class DefaultCommunicationTimeouts : IDefaultCommunicationTimeouts
         {
-            private TimeSpan _closeTimeout;
-            private TimeSpan _openTimeout;
-            private TimeSpan _receiveTimeout;
             private TimeSpan _sendTimeout;
 
             public DefaultCommunicationTimeouts(IDefaultCommunicationTimeouts timeouts)
             {
-                _closeTimeout = timeouts.CloseTimeout;
-                _openTimeout = timeouts.OpenTimeout;
-                _receiveTimeout = timeouts.ReceiveTimeout;
+                CloseTimeout = timeouts.CloseTimeout;
+                OpenTimeout = timeouts.OpenTimeout;
+                ReceiveTimeout = timeouts.ReceiveTimeout;
                 _sendTimeout = timeouts.SendTimeout;
             }
 
-            public TimeSpan CloseTimeout
-            {
-                get { return _closeTimeout; }
-            }
+            public TimeSpan CloseTimeout { get; }
 
-            public TimeSpan OpenTimeout
-            {
-                get { return _openTimeout; }
-            }
+            public TimeSpan OpenTimeout { get; }
 
-            public TimeSpan ReceiveTimeout
-            {
-                get { return _receiveTimeout; }
-            }
+            public TimeSpan ReceiveTimeout { get; }
 
             public TimeSpan SendTimeout
             {

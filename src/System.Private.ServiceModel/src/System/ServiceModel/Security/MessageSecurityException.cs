@@ -9,7 +9,6 @@ namespace System.ServiceModel.Security
 {
     public class MessageSecurityException : CommunicationException
     {
-        private MessageFault _fault;
         private bool _isReplay = false;
 
         public MessageSecurityException()
@@ -27,7 +26,7 @@ namespace System.ServiceModel.Security
         {
         }
 
-        protected MessageSecurityException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        protected MessageSecurityException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             throw new PlatformNotSupportedException();
@@ -36,7 +35,7 @@ namespace System.ServiceModel.Security
         internal MessageSecurityException(string message, Exception innerException, MessageFault fault)
             : base(message, innerException)
         {
-            _fault = fault;
+            Fault = fault;
         }
 
         internal MessageSecurityException(String message, bool isReplay)
@@ -53,9 +52,6 @@ namespace System.ServiceModel.Security
             }
         }
 
-        internal MessageFault Fault
-        {
-            get { return _fault; }
-        }
+        internal MessageFault Fault { get; }
     }
 }

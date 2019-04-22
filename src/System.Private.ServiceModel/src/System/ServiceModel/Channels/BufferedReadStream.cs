@@ -67,7 +67,9 @@ namespace System.ServiceModel.Channels
         private void EnsureNotClosed()
         {
             if (_stream == null)
+            {
                 throw new ObjectDisposedException(nameof(BufferedReadStream));
+            }
         }
 
         private void EnsureCanRead()
@@ -157,12 +159,16 @@ namespace System.ServiceModel.Channels
             Contract.Assert(readBytes >= 0);
 
             if (readBytes == 0)
+            {
                 return 0;
+            }
 
             Contract.Assert(readBytes > 0);
 
             if (readBytes > count)
+            {
                 readBytes = count;
+            }
 
             Array.Copy(_buffer, _readPos, array, offset, readBytes);
             _readPos += readBytes;
@@ -206,7 +212,9 @@ namespace System.ServiceModel.Channels
             // So: If we could not read all bytes the user asked for from the buffer, we will try once from the underlying
             // stream thus ensuring the same blocking behaviour as if the underlying stream was not wrapped in this BufferedStream.
             if (bytesFromBuffer == count)
+            {
                 return bytesFromBuffer;
+            }
 
             int alreadySatisfied = bytesFromBuffer;
             if (bytesFromBuffer > 0)
@@ -249,7 +257,9 @@ namespace System.ServiceModel.Channels
             Contract.Assert(t == null || t.Status == TaskStatus.RanToCompletion);
 
             if (t != null && t.Result == val)
+            {
                 return t;
+            }
 
             t = Task.FromResult(val);
             _lastSyncCompletedReadTask = t;
@@ -298,7 +308,9 @@ namespace System.ServiceModel.Channels
             Contract.Assert(count <= buffer.Length - offset);
             // Fast path check for cancellation already requested
             if (cancellationToken.IsCancellationRequested)
+            {
                 return Task.FromCanceled<int>(cancellationToken);
+            }
 
             EnsureNotClosed();
             EnsureCanRead();
@@ -335,7 +347,9 @@ namespace System.ServiceModel.Channels
                 finally
                 {
                     if (completeSynchronously)  // if this is FALSE, we will be entering ReadFromUnderlyingStreamAsync and releasing there.
+                    {
                         _sem.Release();
+                    }
                 }
             }
 
@@ -364,7 +378,9 @@ namespace System.ServiceModel.Channels
                 // Check it now again.            
                 int bytesFromBuffer = ReadFromBuffer(array, offset, count);
                 if (bytesFromBuffer == count)
+                {
                     return bytesAlreadySatisfied + bytesFromBuffer;
+                }
 
                 if (bytesFromBuffer > 0)
                 {
@@ -387,7 +403,6 @@ namespace System.ServiceModel.Channels
 
                 bytesFromBuffer = ReadFromBuffer(array, offset, count);
                 return bytesAlreadySatisfied + bytesFromBuffer;
-
             }
             finally
             {
@@ -410,7 +425,9 @@ namespace System.ServiceModel.Channels
             }
 
             if (_readPos == _readLen)
+            {
                 return -1;
+            }
 
             int b = _buffer[_readPos++];
             return b;

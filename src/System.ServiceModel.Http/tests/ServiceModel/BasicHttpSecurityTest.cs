@@ -16,7 +16,6 @@ public static class BasicHttpSecurityTest
 {
     [WcfTheory]
     [InlineData(BasicHttpSecurityMode.Message)]
-    [InlineData(BasicHttpSecurityMode.TransportWithMessageCredential)]
     public static void BasicHttpSecurity_MessageSecurityMode_ThrowsPNSE(BasicHttpSecurityMode value)
     {
         var security = new BasicHttpSecurity();

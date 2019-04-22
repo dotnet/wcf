@@ -17,7 +17,7 @@ namespace System.ServiceModel.Dispatcher
             if (channel == null)
             {
                 Fx.Assert("RequestChannelBinder.RequestChannelBinder: (channel != null)");
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("channel");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channel));
             }
             _channel = channel;
         }

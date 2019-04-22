@@ -3,16 +3,11 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections;
-using System.ServiceModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
-using System.IdentityModel.Claims;
-using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
-using System.IdentityModel.Selectors;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
@@ -33,22 +28,32 @@ namespace System.ServiceModel.Security.Tokens
         public const int DefaultNonceLength = 16;
         public const int DefaultDerivedKeyLength = 32;
 
-#pragma warning disable 0649 // Remove this once we do real implementation, this prevents "field is never assigned to" warning. 
         // fields are read from in this class, but lack of implemenation means we never assign them yet. 
         private string _id;
         private byte[] _key;
-        private string _keyDerivationAlgorithm;
         private string _label;
-        private int _length = -1;
         private byte[] _nonce;
-        // either offset or generation must be specified.
-        private int _offset = -1;
-        private int _generation = -1;
-        private SecurityToken _tokenToDerive;
-        private SecurityKeyIdentifierClause _tokenToDeriveIdentifier;
         private ReadOnlyCollection<SecurityKey> _securityKeys;
-#pragma warning restore 0649
 
+        internal DerivedKeySecurityToken(int generation, int offset, int length,
+            string label, int minNonceLength, SecurityToken tokenToDerive,
+            SecurityKeyIdentifierClause tokenToDeriveIdentifier,
+            string derivationAlgorithm, string id)
+        {
+            byte[] nonce = new byte[minNonceLength];
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(nonce);
+
+            Initialize(id, generation, offset, length, label, nonce, tokenToDerive, tokenToDeriveIdentifier, derivationAlgorithm);
+        }
+
+        // create from xml
+        internal DerivedKeySecurityToken(int generation, int offset, int length,
+            string label, byte[] nonce, SecurityToken tokenToDerive,
+            SecurityKeyIdentifierClause tokenToDeriveIdentifier, string derivationAlgorithm, string id)
+        {
+            Initialize(id, generation, offset, length, label, nonce, tokenToDerive, tokenToDeriveIdentifier, derivationAlgorithm, false);
+        }
 
         public override string Id
         {
@@ -57,53 +62,35 @@ namespace System.ServiceModel.Security.Tokens
 
         public override DateTime ValidFrom
         {
-            get { return _tokenToDerive.ValidFrom; }
+            get { return TokenToDerive.ValidFrom; }
         }
 
         public override DateTime ValidTo
         {
-            get { return _tokenToDerive.ValidTo; }
+            get { return TokenToDerive.ValidTo; }
         }
 
-        public string KeyDerivationAlgorithm
-        {
-            get { return _keyDerivationAlgorithm; }
-        }
+        public string KeyDerivationAlgorithm { get; private set; }
 
-        public int Generation
-        {
-            get { return _generation; }
-        }
+        public int Generation { get; private set; } = -1;
 
         public string Label
         {
             get { return _label; }
         }
 
-        public int Length
-        {
-            get { return _length; }
-        }
+        public int Length { get; private set; } = -1;
 
         internal byte[] Nonce
         {
             get { return _nonce; }
         }
 
-        public int Offset
-        {
-            get { return _offset; }
-        }
+        public int Offset { get; private set; } = -1;
 
-        internal SecurityToken TokenToDerive
-        {
-            get { return _tokenToDerive; }
-        }
+        internal SecurityToken TokenToDerive { get; private set; }
 
-        internal SecurityKeyIdentifierClause TokenToDeriveIdentifier
-        {
-            get { return _tokenToDeriveIdentifier; }
-        }
+        internal SecurityKeyIdentifierClause TokenToDeriveIdentifier { get; private set; }
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {
@@ -133,6 +120,95 @@ namespace System.ServiceModel.Security.Tokens
             return (keys != null);
         }
 
+        public override string ToString()
+        {
+            StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
+            writer.WriteLine("DerivedKeySecurityToken:");
+            writer.WriteLine("   Generation: {0}", Generation);
+            writer.WriteLine("   Offset: {0}", Offset);
+            writer.WriteLine("   Length: {0}", Length);
+            writer.WriteLine("   Label: {0}", Label);
+            writer.WriteLine("   Nonce: {0}", Convert.ToBase64String(Nonce));
+            writer.WriteLine("   TokenToDeriveFrom:");
+            using (XmlTextWriter xmlWriter = new XmlTextWriter(writer))
+            {
+                xmlWriter.Formatting = Formatting.Indented;
+                SecurityStandardsManager.DefaultInstance.SecurityTokenSerializer.WriteKeyIdentifierClause(XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter), TokenToDeriveIdentifier);
+            }
+            return writer.ToString();
+        }
+
+        private void Initialize(string id, int generation, int offset, int length, string label, byte[] nonce,
+    SecurityToken tokenToDerive, SecurityKeyIdentifierClause tokenToDeriveIdentifier, string derivationAlgorithm)
+        {
+            Initialize(id, generation, offset, length, label, nonce, tokenToDerive, tokenToDeriveIdentifier, derivationAlgorithm, true);
+        }
+
+        private void Initialize(string id, int generation, int offset, int length, string label, byte[] nonce,
+    SecurityToken tokenToDerive, SecurityKeyIdentifierClause tokenToDeriveIdentifier, string derivationAlgorithm,
+    bool initializeDerivedKey)
+        {
+            if (tokenToDerive == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenToDerive));
+            }
+
+            if (!SecurityUtils.IsSupportedAlgorithm(derivationAlgorithm, tokenToDerive))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.DerivedKeyCannotDeriveFromSecret));
+            }
+
+            if (length == -1)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(length)));
+            }
+            if (offset == -1 && generation == -1)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.DerivedKeyPosAndGenNotSpecified);
+            }
+            if (offset >= 0 && generation >= 0)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.DerivedKeyPosAndGenBothSpecified);
+            }
+
+            _id = id ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
+            _label = label;
+            _nonce = nonce ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(nonce));
+            Length = length;
+            Offset = offset;
+            Generation = generation;
+            TokenToDerive = tokenToDerive;
+            TokenToDeriveIdentifier = tokenToDeriveIdentifier ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenToDeriveIdentifier));
+            KeyDerivationAlgorithm = derivationAlgorithm;
+
+            if (initializeDerivedKey)
+            {
+                InitializeDerivedKey(Length);
+            }
+        }
+
+        internal void InitializeDerivedKey(int maxKeyLength)
+        {
+            if (_key != null)
+            {
+                return;
+            }
+            if (Length > maxKeyLength)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.Format(SR.DerivedKeyLengthTooLong, Length, maxKeyLength));
+            }
+
+            _key = SecurityUtils.GenerateDerivedKey(TokenToDerive, KeyDerivationAlgorithm,
+                (_label != null ? Encoding.UTF8.GetBytes(_label) : s_DefaultLabel), _nonce, Length * 8,
+                ((Offset >= 0) ? Offset : Generation * Length));
+            if ((_key == null) || (_key.Length == 0))
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.DerivedKeyCannotDeriveFromSecret);
+            }
+            List<SecurityKey> temp = new List<SecurityKey>(1);
+            temp.Add(new InMemorySymmetricSecurityKey(_key, false));
+            _securityKeys = temp.AsReadOnly();
+        }
 
         internal static void EnsureAcceptableOffset(int offset, int generation, int length, int maxOffset)
         {

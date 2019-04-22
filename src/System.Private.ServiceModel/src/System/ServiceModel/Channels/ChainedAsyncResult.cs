@@ -41,18 +41,22 @@ namespace System.ServiceModel.Channels
 
             IAsyncResult result = begin1(_timeoutHelper.RemainingTime(), s_begin1Callback, this);
             if (!result.CompletedSynchronously)
+            {
                 return;
+            }
 
             if (Begin1Completed(result))
             {
-                this.Complete(true);
+                Complete(true);
             }
         }
 
         private static void Begin1Callback(IAsyncResult result)
         {
             if (result.CompletedSynchronously)
+            {
                 return;
+            }
 
             ChainedAsyncResult thisPtr = (ChainedAsyncResult)result.AsyncState;
 
@@ -63,7 +67,6 @@ namespace System.ServiceModel.Channels
             {
                 completeSelf = thisPtr.Begin1Completed(result);
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception exception)
             {
                 if (Fx.IsFatal(exception))
@@ -87,7 +90,9 @@ namespace System.ServiceModel.Channels
 
             result = _begin2(_timeoutHelper.RemainingTime(), s_begin2Callback, this);
             if (!result.CompletedSynchronously)
+            {
                 return false;
+            }
 
             _end2(result);
             return true;
@@ -96,7 +101,9 @@ namespace System.ServiceModel.Channels
         private static void Begin2Callback(IAsyncResult result)
         {
             if (result.CompletedSynchronously)
+            {
                 return;
+            }
 
             ChainedAsyncResult thisPtr = (ChainedAsyncResult)result.AsyncState;
 
@@ -106,7 +113,6 @@ namespace System.ServiceModel.Channels
             {
                 thisPtr._end2(result);
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception exception)
             {
                 if (Fx.IsFatal(exception))
@@ -143,9 +149,15 @@ namespace System.ServiceModel.Channels
         {
             _collection = new List<ICommunicationObject>();
             if (objs != null)
+            {
                 for (int index = 0; index < objs.Length; index++)
+                {
                     if (objs[index] != null)
+                    {
                         _collection.Add(objs[index]);
+                    }
+                }
+            }
 
             Begin(BeginClose, EndClose, begin1, end1);
         }
@@ -179,8 +191,12 @@ namespace System.ServiceModel.Channels
             _collection = new List<ICommunicationObject>();
 
             for (int index = 0; index < objs.Length; index++)
+            {
                 if (objs[index] != null)
+                {
                     _collection.Add(objs[index]);
+                }
+            }
 
             Begin(begin1, end1, BeginOpen, EndOpen);
         }

@@ -4,7 +4,6 @@
 
 
 using System.Collections.ObjectModel;
-using System.ServiceModel;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Security.Tokens;
@@ -13,7 +12,6 @@ namespace System.ServiceModel.Security
 {
     public class SupportingTokenSpecification : SecurityTokenSpecification
     {
-        private SecurityTokenAttachmentMode _tokenAttachmentMode;
         private SecurityTokenParameters _tokenParameters;
 
         public SupportingTokenSpecification(SecurityToken token, ReadOnlyCollection<IAuthorizationPolicy> tokenPolicies, SecurityTokenAttachmentMode attachmentMode)
@@ -24,14 +22,11 @@ namespace System.ServiceModel.Security
             : base(token, tokenPolicies)
         {
             SecurityTokenAttachmentModeHelper.Validate(attachmentMode);
-            _tokenAttachmentMode = attachmentMode;
+            SecurityTokenAttachmentMode = attachmentMode;
             _tokenParameters = tokenParameters;
         }
 
-        public SecurityTokenAttachmentMode SecurityTokenAttachmentMode
-        {
-            get { return _tokenAttachmentMode; }
-        }
+        public SecurityTokenAttachmentMode SecurityTokenAttachmentMode { get; }
 
         internal SecurityTokenParameters SecurityTokenParameters
         {

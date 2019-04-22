@@ -3,23 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-
 namespace System.ServiceModel
 {
     [AttributeUsage(ServiceModelAttributeTargets.ServiceContract | ServiceModelAttributeTargets.OperationContract, Inherited = false, AllowMultiple = false)]
     public sealed class XmlSerializerFormatAttribute : Attribute
     {
-        private bool _supportFaults = false;
         private OperationFormatStyle _style;
         private bool _isStyleSet;
         private OperationFormatUse _use;
 
-        public bool SupportFaults
-        {
-            get { return _supportFaults; }
-            set { _supportFaults = value; }
-        }
+        public bool SupportFaults { get; set; } = false;
 
         public OperationFormatStyle Style
         {
@@ -31,7 +24,7 @@ namespace System.ServiceModel
                 _isStyleSet = true;
             }
         }
-        
+
         public OperationFormatUse Use
         {
             get { return _use; }
@@ -45,7 +38,7 @@ namespace System.ServiceModel
                 }
             }
         }
-        
+
         internal bool IsEncoded
         {
             get { return _use == OperationFormatUse.Encoded; }
@@ -56,15 +49,15 @@ namespace System.ServiceModel
         {
             if (!OperationFormatStyleHelper.IsDefined(value))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
             }
         }
-        
+
         internal static void ValidateOperationFormatUse(OperationFormatUse value)
         {
             if (!OperationFormatUseHelper.IsDefined(value))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
             }
         }
     }

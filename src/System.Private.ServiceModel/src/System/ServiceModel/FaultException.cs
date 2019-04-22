@@ -11,94 +11,92 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel
 {
-    [KnownType(typeof(FaultException.FaultCodeData))]
-    [KnownType(typeof(FaultException.FaultCodeData[]))]
-    [KnownType(typeof(FaultException.FaultReasonData))]
-    [KnownType(typeof(FaultException.FaultReasonData[]))]
+    [KnownType(typeof(FaultCodeData))]
+    [KnownType(typeof(FaultCodeData[]))]
+    [KnownType(typeof(FaultReasonData))]
+    [KnownType(typeof(FaultReasonData[]))]
     public class FaultException : CommunicationException
     {
         internal const string Namespace = "http://schemas.xmlsoap.org/Microsoft/WindowsCommunicationFoundation/2005/08/Faults/";
-
-        private string _action;
-        private FaultCode _code;
-        private FaultReason _reason;
         private MessageFault _fault;
 
         public FaultException()
             : base(SR.SFxFaultReason)
         {
-            _code = FaultException.DefaultCode;
-            _reason = FaultException.DefaultReason;
+            Code = FaultException.DefaultCode;
+            Reason = FaultException.DefaultReason;
         }
 
         public FaultException(string reason)
             : base(reason)
         {
-            _code = FaultException.DefaultCode;
-            _reason = FaultException.CreateReason(reason);
+            Code = FaultException.DefaultCode;
+            Reason = FaultException.CreateReason(reason);
         }
 
         public FaultException(FaultReason reason)
             : base(FaultException.GetSafeReasonText(reason))
         {
-            _code = FaultException.DefaultCode;
-            _reason = FaultException.EnsureReason(reason);
+            Code = FaultException.DefaultCode;
+            Reason = FaultException.EnsureReason(reason);
         }
 
         public FaultException(string reason, FaultCode code)
             : base(reason)
         {
-            _code = FaultException.EnsureCode(code);
-            _reason = FaultException.CreateReason(reason);
+            Code = FaultException.EnsureCode(code);
+            Reason = FaultException.CreateReason(reason);
         }
 
         public FaultException(FaultReason reason, FaultCode code)
             : base(FaultException.GetSafeReasonText(reason))
         {
-            _code = FaultException.EnsureCode(code);
-            _reason = FaultException.EnsureReason(reason);
+            Code = FaultException.EnsureCode(code);
+            Reason = FaultException.EnsureReason(reason);
         }
 
         public FaultException(string reason, FaultCode code, string action)
             : base(reason)
         {
-            _code = FaultException.EnsureCode(code);
-            _reason = FaultException.CreateReason(reason);
-            _action = action;
+            Code = FaultException.EnsureCode(code);
+            Reason = FaultException.CreateReason(reason);
+            Action = action;
         }
 
         internal FaultException(string reason, FaultCode code, string action, Exception innerException)
             : base(reason, innerException)
         {
-            _code = FaultException.EnsureCode(code);
-            _reason = FaultException.CreateReason(reason);
-            _action = action;
+            Code = FaultException.EnsureCode(code);
+            Reason = FaultException.CreateReason(reason);
+            Action = action;
         }
 
         public FaultException(FaultReason reason, FaultCode code, string action)
             : base(FaultException.GetSafeReasonText(reason))
         {
-            _code = FaultException.EnsureCode(code);
-            _reason = FaultException.EnsureReason(reason);
-            _action = action;
+            Code = FaultException.EnsureCode(code);
+            Reason = FaultException.EnsureReason(reason);
+            Action = action;
         }
 
         internal FaultException(FaultReason reason, FaultCode code, string action, Exception innerException)
             : base(FaultException.GetSafeReasonText(reason), innerException)
         {
-            _code = FaultException.EnsureCode(code);
-            _reason = FaultException.EnsureReason(reason);
-            _action = action;
+            Code = FaultException.EnsureCode(code);
+            Reason = FaultException.EnsureReason(reason);
+            Action = action;
         }
 
         public FaultException(MessageFault fault)
             : base(FaultException.GetSafeReasonText(GetReason(fault)))
         {
             if (fault == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("fault");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(fault));
+            }
 
-            _code = FaultException.EnsureCode(fault.Code);
-            _reason = FaultException.EnsureReason(fault.Reason);
+            Code = FaultException.EnsureCode(fault.Code);
+            Reason = FaultException.EnsureReason(fault.Reason);
             _fault = fault;
         }
 
@@ -106,12 +104,14 @@ namespace System.ServiceModel
             : base(FaultException.GetSafeReasonText(GetReason(fault)))
         {
             if (fault == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("fault");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(fault));
+            }
 
-            _code = fault.Code;
-            _reason = fault.Reason;
+            Code = fault.Code;
+            Reason = fault.Reason;
             _fault = fault;
-            _action = action;
+            Action = action;
         }
 
         protected FaultException(SerializationInfo info, StreamingContext context)
@@ -120,15 +120,9 @@ namespace System.ServiceModel
             throw new PlatformNotSupportedException();
         }
 
-        public string Action
-        {
-            get { return _action; }
-        }
+        public string Action { get; }
 
-        public FaultCode Code
-        {
-            get { return _code; }
-        }
+        public FaultCode Code { get; }
 
         private static FaultReason DefaultReason
         {
@@ -142,13 +136,10 @@ namespace System.ServiceModel
 
         public override string Message
         {
-            get { return FaultException.GetSafeReasonText(this.Reason); }
+            get { return FaultException.GetSafeReasonText(Reason); }
         }
 
-        public FaultReason Reason
-        {
-            get { return _reason; }
-        }
+        public FaultReason Reason { get; }
 
         internal MessageFault Fault
         {
@@ -169,12 +160,12 @@ namespace System.ServiceModel
         {
             if (messageFault == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageFault");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(messageFault));
             }
 
             if (faultDetailTypes == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("faultDetailTypes");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(faultDetailTypes));
             }
             DataContractSerializerFaultFormatter faultFormatter = new DataContractSerializerFaultFormatter(faultDetailTypes);
             return faultFormatter.Deserialize(messageFault, action);
@@ -188,7 +179,7 @@ namespace System.ServiceModel
             }
             else
             {
-                return MessageFault.CreateFault(_code, _reason);
+                return MessageFault.CreateFault(Code, Reason);
             }
         }
 
@@ -201,7 +192,7 @@ namespace System.ServiceModel
         {
             if (fault == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("fault");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(fault));
             }
             return fault.Reason;
         }
@@ -209,7 +200,9 @@ namespace System.ServiceModel
         internal static string GetSafeReasonText(MessageFault messageFault)
         {
             if (messageFault == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("messageFault");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(messageFault));
+            }
 
             return GetSafeReasonText(messageFault.Reason);
         }
@@ -217,7 +210,9 @@ namespace System.ServiceModel
         internal static string GetSafeReasonText(FaultReason reason)
         {
             if (reason == null)
+            {
                 return SR.SFxUnknownFaultNullReason0;
+            }
 
             try
             {
@@ -332,48 +327,46 @@ namespace System.ServiceModel
 
     public class FaultException<TDetail> : FaultException
     {
-        private TDetail _detail;
-
         public FaultException(TDetail detail)
             : base()
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         public FaultException(TDetail detail, string reason)
             : base(reason)
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         public FaultException(TDetail detail, FaultReason reason)
             : base(reason)
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         public FaultException(TDetail detail, string reason, FaultCode code)
             : base(reason, code)
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         public FaultException(TDetail detail, FaultReason reason, FaultCode code)
             : base(reason, code)
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         public FaultException(TDetail detail, string reason, FaultCode code, string action)
             : base(reason, code, action)
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         public FaultException(TDetail detail, FaultReason reason, FaultCode code, string action)
             : base(reason, code, action)
         {
-            _detail = detail;
+            Detail = detail;
         }
 
         protected FaultException(SerializationInfo info, StreamingContext context)
@@ -382,19 +375,16 @@ namespace System.ServiceModel
             throw new PlatformNotSupportedException();
         }
 
-        public TDetail Detail
-        {
-            get { return _detail; }
-        }
+        public TDetail Detail { get; }
 
         public override MessageFault CreateMessageFault()
         {
-            return MessageFault.CreateFault(this.Code, this.Reason, _detail);
+            return MessageFault.CreateFault(Code, Reason, Detail);
         }
 
         public override string ToString()
         {
-            return SR.Format(SR.SFxFaultExceptionToString3, this.GetType(), this.Message, _detail != null ? _detail.ToString() : String.Empty);
+            return SR.Format(SR.SFxFaultExceptionToString3, GetType(), Message, Detail != null ? Detail.ToString() : String.Empty);
         }
     }
 }

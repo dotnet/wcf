@@ -410,11 +410,11 @@ namespace System.Runtime
 
             public bool Return(T value)
             {
-                if (_items.Count < this.MaxCount)
+                if (_items.Count < MaxCount)
                 {
                     lock (ThisLock)
                     {
-                        if (_items.Count < this.MaxCount)
+                        if (_items.Count < MaxCount)
                         {
                             _items.Push(value);
                             return true;

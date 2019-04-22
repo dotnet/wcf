@@ -15,7 +15,6 @@ namespace System.ServiceModel.Dispatcher
     public class TaskMethodInvoker : IOperationInvoker
     {
         private const string ResultMethodName = "Result";
-        private readonly MethodInfo _taskMethod;
         private InvokeDelegate _invokeDelegate;
         private int _inputParameterCount;
         private int _outputParameterCount;
@@ -25,12 +24,7 @@ namespace System.ServiceModel.Dispatcher
 
         public TaskMethodInvoker(MethodInfo taskMethod, Type taskType)
         {
-            if (taskMethod == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("taskMethod"));
-            }
-
-            _taskMethod = taskMethod;
+            Method = taskMethod ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(taskMethod)));
 
             if (taskType != ServiceReflector.VoidType)
             {
@@ -39,17 +33,17 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        public MethodInfo Method
-        {
-            get { return _taskMethod; }
-        }
+        public MethodInfo Method { get; }
 
         public string MethodName
         {
             get
             {
                 if (_methodName == null)
-                    _methodName = _taskMethod.Name;
+                {
+                    _methodName = Method.Name;
+                }
+
                 return _methodName;
             }
         }
@@ -132,18 +126,25 @@ namespace System.ServiceModel.Dispatcher
             EnsureIsInitialized();
 
             if (instance == null)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new InvalidOperationException(SR.SFxNoServiceObject));
+            }
+
             if (inputs == null)
             {
                 if (_inputParameterCount > 0)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                         new InvalidOperationException(SR.Format(SR.SFxInputParametersToServiceNull, _inputParameterCount)));
+                }
             }
             else if (inputs.Length != _inputParameterCount)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new InvalidOperationException(SR.Format(SR.SFxInputParametersToServiceInvalid, _inputParameterCount,
                         inputs.Length)));
+            }
 
             var outputs = EmptyArray<object>.Allocate(_outputParameterCount);
 
@@ -197,7 +198,7 @@ namespace System.ServiceModel.Dispatcher
                     if (DiagnosticUtility.ShouldUseActivity)
                     {
                         ServiceModelActivity.Start(activity,
-                            SR.Format(SR.ActivityExecuteMethod, _taskMethod.DeclaringType.FullName, _taskMethod.Name),
+                            SR.Format(SR.ActivityExecuteMethod, Method.DeclaringType.FullName, Method.Name),
                             ActivityType.ExecuteUserCode);
                     }
                     if (WcfEventSource.Instance.OperationInvokedIsEnabled())

@@ -32,15 +32,23 @@ namespace System.ServiceModel.Channels
             // make sure that maxSize has room for initialOffset without overflowing, since
             // the effective buffer size is message size + initialOffset
             if (maxSizeQuota <= int.MaxValue - initialOffset)
+            {
                 effectiveMaxSize = maxSizeQuota + initialOffset;
+            }
             else
+            {
                 effectiveMaxSize = int.MaxValue;
+            }
 
             int predictedMessageSize = PredictMessageSize();
             if (predictedMessageSize > effectiveMaxSize)
+            {
                 predictedMessageSize = effectiveMaxSize;
+            }
             else if (predictedMessageSize < initialOffset)
+            {
                 predictedMessageSize = initialOffset;
+            }
 
             try
             {
@@ -76,15 +84,22 @@ namespace System.ServiceModel.Channels
         {
             _sizeHistory = new int[4];
             for (int i = 0; i < sizeHistoryCount; i++)
+            {
                 _sizeHistory[i] = 256;
+            }
         }
 
         private int PredictMessageSize()
         {
             int max = 0;
             for (int i = 0; i < sizeHistoryCount; i++)
+            {
                 if (_sizeHistory[i] > max)
+                {
                     max = _sizeHistory[i];
+                }
+            }
+
             return max + expectedSizeVariance;
         }
 

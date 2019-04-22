@@ -8,7 +8,6 @@ namespace System.ServiceModel.Channels
     internal class TcpChannelFactory<TChannel> : ConnectionOrientedTransportChannelFactory<TChannel>, ITcpChannelFactorySettings
     {
         private static TcpConnectionPoolRegistry s_connectionPoolRegistry = new TcpConnectionPoolRegistry();
-        private TimeSpan _leaseTimeout;
 
         public TcpChannelFactory(TcpTransportBindingElement bindingElement, BindingContext context)
             : base(bindingElement, context,
@@ -17,16 +16,10 @@ namespace System.ServiceModel.Channels
                     bindingElement.ConnectionPoolSettings.MaxOutboundConnectionsPerEndpoint,
                     true)
         {
-            _leaseTimeout = bindingElement.ConnectionPoolSettings.LeaseTimeout;
+            LeaseTimeout = bindingElement.ConnectionPoolSettings.LeaseTimeout;
         }
 
-        public TimeSpan LeaseTimeout
-        {
-            get
-            {
-                return _leaseTimeout;
-            }
-        }
+        public TimeSpan LeaseTimeout { get; }
 
         public override string Scheme
         {

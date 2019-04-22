@@ -23,7 +23,10 @@ namespace System.IdentityModel.Selectors
             get
             {
                 if (s_none == null)
+                {
                     s_none = new NoneX509CertificateValidator();
+                }
+
                 return s_none;
             }
         }
@@ -33,7 +36,10 @@ namespace System.IdentityModel.Selectors
             get
             {
                 if (s_peerTrust == null)
+                {
                     s_peerTrust = new PeerTrustValidator();
+                }
+
                 return s_peerTrust;
             }
         }
@@ -43,7 +49,10 @@ namespace System.IdentityModel.Selectors
             get
             {
                 if (s_chainTrust == null)
+                {
                     s_chainTrust = new ChainTrustValidator();
+                }
+
                 return s_chainTrust;
             }
         }
@@ -53,7 +62,10 @@ namespace System.IdentityModel.Selectors
             get
             {
                 if (s_peerOrChainTrust == null)
+                {
                     s_peerOrChainTrust = new PeerOrChainTrustValidator();
+                }
+
                 return s_peerOrChainTrust;
             }
         }
@@ -61,14 +73,20 @@ namespace System.IdentityModel.Selectors
         public static X509CertificateValidator CreateChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy)
         {
             if (chainPolicy == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("chainPolicy");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(chainPolicy));
+            }
+
             return new ChainTrustValidator(useMachineContext, chainPolicy, X509CertificateChain.DefaultChainPolicyOID);
         }
 
         public static X509CertificateValidator CreatePeerOrChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy)
         {
             if (chainPolicy == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("chainPolicy");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(chainPolicy));
+            }
+
             return new PeerOrChainTrustValidator(useMachineContext, chainPolicy);
         }
 
@@ -79,23 +97,29 @@ namespace System.IdentityModel.Selectors
             public override void Validate(X509Certificate2 certificate)
             {
                 if (certificate == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+                }
             }
         }
 
-        class PeerTrustValidator : X509CertificateValidator
+        private class PeerTrustValidator : X509CertificateValidator
         {
             public override void Validate(X509Certificate2 certificate)
             {
                 if (certificate == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+                }
 
                 Exception exception;
                 if (!TryValidate(certificate, out exception))
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
+                }
             }
 
-            static bool StoreContainsCertificate(StoreName storeName, X509Certificate2 certificate)
+            private static bool StoreContainsCertificate(StoreName storeName, X509Certificate2 certificate)
             {
                 X509Store store = new X509Store(storeName, StoreLocation.CurrentUser);
                 X509Certificate2Collection certificates = null;
@@ -175,7 +199,9 @@ namespace System.IdentityModel.Selectors
             public override void Validate(X509Certificate2 certificate)
             {
                 if (certificate == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+                }
 
                 // implies _useMachineContext = false
                 // ctor for X509Chain(_useMachineContext, _chainPolicyOID) not present in CoreCLR
@@ -211,10 +237,10 @@ namespace System.IdentityModel.Selectors
         }
 
 
-        class PeerOrChainTrustValidator : X509CertificateValidator
+        private class PeerOrChainTrustValidator : X509CertificateValidator
         {
-            X509CertificateValidator _chain;
-            PeerTrustValidator _peer;
+            private X509CertificateValidator _chain;
+            private PeerTrustValidator _peer;
 
             public PeerOrChainTrustValidator()
             {
@@ -231,11 +257,15 @@ namespace System.IdentityModel.Selectors
             public override void Validate(X509Certificate2 certificate)
             {
                 if (certificate == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+                }
 
                 Exception exception;
                 if (_peer.TryValidate(certificate, out exception))
+                {
                     return;
+                }
 
                 try
                 {

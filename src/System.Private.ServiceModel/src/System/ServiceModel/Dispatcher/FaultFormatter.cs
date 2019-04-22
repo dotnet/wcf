@@ -11,9 +11,9 @@ using System.Runtime;
 
 namespace System.ServiceModel.Dispatcher
 {
-     /*
-      This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
-      */
+    /*
+     This class is not exposed on the contract as we only need it public for reflection purpose on .Net Native.
+     */
     public class FaultFormatter : IClientFaultFormatter, IDispatchFaultFormatter
     {
         private FaultContractInfo[] _faultContractInfos;
@@ -22,7 +22,10 @@ namespace System.ServiceModel.Dispatcher
         {
             List<FaultContractInfo> faultContractInfoList = new List<FaultContractInfo>();
             for (int i = 0; i < detailTypes.Length; i++)
+            {
                 faultContractInfoList.Add(new FaultContractInfo(MessageHeaders.WildcardAction, detailTypes[i]));
+            }
+
             AddInfrastructureFaults(faultContractInfoList);
             _faultContractInfos = GetSortedArray(faultContractInfoList);
         }
@@ -64,7 +67,9 @@ namespace System.ServiceModel.Dispatcher
         public FaultException Deserialize(MessageFault messageFault, string action)
         {
             if (!messageFault.HasDetail)
+            {
                 return new FaultException(messageFault, action);
+            }
 
             return CreateFaultException(messageFault, action);
         }
@@ -84,12 +89,16 @@ namespace System.ServiceModel.Dispatcher
             if (faultInfo != null)
             {
                 if (action == null)
+                {
                     action = faultInfo.Action;
+                }
 
                 return faultInfo.Serializer;
             }
             else
+            {
                 return DataContractSerializerDefaults.CreateSerializer(detailType, int.MaxValue /* maxItemsInObjectGraph */ );
+            }
         }
 
         protected virtual FaultException CreateFaultException(MessageFault messageFault, string action)
@@ -127,7 +136,9 @@ namespace System.ServiceModel.Dispatcher
                         FaultException faultException = CreateFaultException(messageFault, action,
                             detailObj, detailType, detailReader);
                         if (faultException != null)
+                        {
                             return faultException;
+                        }
                     }
                     catch (SerializationException)
                     {
@@ -144,7 +155,9 @@ namespace System.ServiceModel.Dispatcher
             {
                 detailReader.MoveToContent();
                 if (detailReader.NodeType != XmlNodeType.EndElement && !detailReader.EOF)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new FormatException(SR.ExtraContentIsPresentInFaultDetail));
+                }
             }
             bool isDetailObjectValid = true;
             if (detailObj == null)
@@ -170,7 +183,7 @@ namespace System.ServiceModel.Dispatcher
         private static FaultContractInfo[] GetSortedArray(List<FaultContractInfo> faultContractInfoList)
         {
             FaultContractInfo[] temp = faultContractInfoList.ToArray();
-            Array.Sort<FaultContractInfo>(temp,
+            Array.Sort(temp,
                 delegate (FaultContractInfo x, FaultContractInfo y)
                 { return string.CompareOrdinal(x.Action, y.Action); }
                 );
@@ -187,7 +200,10 @@ namespace System.ServiceModel.Dispatcher
             if (detailType == null)
             {
                 if (faultException.Fault != null)
+                {
                     return faultException.Fault;
+                }
+
                 return MessageFault.CreateFault(faultException.Code, faultException.Reason);
             }
             Fx.Assert(serializer != null, "");

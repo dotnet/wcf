@@ -9,24 +9,20 @@ namespace System.ServiceModel
     public class Pool<T> where T : class
     {
         private T[] _items;
-        private int _count;
 
         public Pool(int maxCount)
         {
             _items = new T[maxCount];
         }
 
-        public int Count
-        {
-            get { return _count; }
-        }
+        public int Count { get; private set; }
 
         public T Take()
         {
-            if (_count > 0)
+            if (Count > 0)
             {
-                T item = _items[--_count];
-                _items[_count] = null;
+                T item = _items[--Count];
+                _items[Count] = null;
                 return item;
             }
             else
@@ -37,9 +33,9 @@ namespace System.ServiceModel
 
         public bool Return(T item)
         {
-            if (_count < _items.Length)
+            if (Count < _items.Length)
             {
-                _items[_count++] = item;
+                _items[Count++] = item;
                 return true;
             }
             else
@@ -50,9 +46,12 @@ namespace System.ServiceModel
 
         public void Clear()
         {
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < Count; i++)
+            {
                 _items[i] = null;
-            _count = 0;
+            }
+
+            Count = 0;
         }
     }
 }

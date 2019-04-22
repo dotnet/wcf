@@ -8,9 +8,6 @@ using System.Threading;
 
 #if DEBUG
 using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Globalization;
-using System.Security;
 
 #endif //DEBUG
 namespace System.Runtime
@@ -51,7 +48,7 @@ namespace System.Runtime
             private long _remainingMemory;
             private bool _areQuotasBeingTuned;
             private int _totalMisses;
-#if DEBUG && !FEATURE_NETNATIVE
+#if DEBUG
             private ConcurrentDictionary<int, string> _buffersPooled = new ConcurrentDictionary<int, string>();
 #endif //DEBUG
 
@@ -104,7 +101,7 @@ namespace System.Runtime
 
             public override void Clear()
             {
-#if DEBUG && !FEATURE_NETNATIVE
+#if DEBUG
                 _buffersPooled.Clear();
 #endif //DEBUG
 
@@ -273,7 +270,7 @@ namespace System.Runtime
                     returnValue = Fx.AllocateByteArray(bufferSize);
                 }
 
-#if DEBUG && !FEATURE_NETNATIVE
+#if DEBUG
                 string dummy;
                 _buffersPooled.TryRemove(returnValue.GetHashCode(), out dummy);
 #endif //DEBUG
@@ -347,33 +344,20 @@ namespace System.Runtime
 
             internal abstract class BufferPool
             {
-                private int _bufferSize;
                 private int _count;
-                private int _limit;
-                private int _misses;
                 private int _peak;
 
                 public BufferPool(int bufferSize, int limit)
                 {
-                    _bufferSize = bufferSize;
-                    _limit = limit;
+                    BufferSize = bufferSize;
+                    Limit = limit;
                 }
 
-                public int BufferSize
-                {
-                    get { return _bufferSize; }
-                }
+                public int BufferSize { get; }
 
-                public int Limit
-                {
-                    get { return _limit; }
-                }
+                public int Limit { get; }
 
-                public int Misses
-                {
-                    get { return _misses; }
-                    set { _misses = value; }
-                }
+                public int Misses { get; set; }
 
                 public int Peak
                 {
@@ -382,7 +366,7 @@ namespace System.Runtime
 
                 public void Clear()
                 {
-                    this.OnClear();
+                    OnClear();
                     _count = 0;
                 }
 
@@ -398,7 +382,7 @@ namespace System.Runtime
                 public void IncrementCount()
                 {
                     int newValue = _count + 1;
-                    if (newValue <= _limit)
+                    if (newValue <= Limit)
                     {
                         _count = newValue;
                         if (newValue > _peak)
@@ -498,7 +482,7 @@ namespace System.Runtime
                     {
                         lock (ThisLock)
                         {
-                            if (_items.Count < this.Limit)
+                            if (_items.Count < Limit)
                             {
                                 _items.Push(buffer);
                                 return true;
@@ -513,16 +497,11 @@ namespace System.Runtime
 
         internal class GCBufferManager : InternalBufferManager
         {
-            private static GCBufferManager s_value = new GCBufferManager();
-
             private GCBufferManager()
             {
             }
 
-            public static GCBufferManager Value
-            {
-                get { return s_value; }
-            }
+            public static GCBufferManager Value { get; } = new GCBufferManager();
 
             public override void Clear()
             {

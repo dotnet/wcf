@@ -62,7 +62,7 @@ namespace System.ServiceModel.Security
                     mode = ReceiveSecurityHeaderBindingModes.SignedEndorsing;
                     break;
                 default:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
             }
         }
     }

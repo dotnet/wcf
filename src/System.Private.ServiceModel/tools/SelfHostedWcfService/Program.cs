@@ -74,6 +74,10 @@ namespace SelfHostedWCFService
             CreateHost<NetHttpsTestServiceHostUsingWebSockets, WcfService.WcfService>("NetHttpsWebSockets.svc", httpsBaseAddress);
             CreateHost<HttpsCertificateValidationPeerTrustTestServiceHost, WcfService.WcfService>("HttpsCertValModePeerTrust.svc", httpsBaseAddress);
             CreateHost<HttpsCertificateValidationChainTrustTestServiceHost, WcfService.WcfService>("HttpsCertValModeChainTrust.svc", httpsBaseAddress);
+            CreateHost<HttpsTransportSecurityMessageCredentialsCertTestServiceHost, WcfService.WcfService>("HttpsTransSecMessCredsCert.svc", httpsBaseAddress);
+            CreateHost<HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost, WcfService.WcfService>("HttpsTransSecMessCredsUserName.svc", httpsBaseAddress);
+            CreateHost<BasicHttpsTransportSecurityMessageCredentialsCertTestServiceHost, WcfService.WcfService>("BasicHttpsTransSecMessCredsCert.svc", httpsBaseAddress);
+            CreateHost<BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost, WcfService.WcfService>("BasicHttpsTransSecMessCredsUserName.svc", httpsBaseAddress);
             CreateHost<ServiceContractAsyncIntOutTestServiceHost, ServiceContractIntOutService>("ServiceContractAsyncIntOut.svc", httpBaseAddress);
             CreateHost<ServiceContractAsyncUniqueTypeOutTestServiceHost, ServiceContractUniqueTypeOutService>("ServiceContractAsyncUniqueTypeOut.svc", httpBaseAddress);
             CreateHost<ServiceContractAsyncIntRefTestServiceHost, ServiceContractIntRefService>("ServiceContractAsyncIntRef.svc", httpBaseAddress);

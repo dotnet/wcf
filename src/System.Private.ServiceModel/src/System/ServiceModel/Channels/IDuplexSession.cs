@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
+using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
@@ -14,5 +14,11 @@ namespace System.ServiceModel.Channels
         IAsyncResult BeginCloseOutputSession(AsyncCallback callback, object state);
         IAsyncResult BeginCloseOutputSession(TimeSpan timeout, AsyncCallback callback, object state);
         void EndCloseOutputSession(IAsyncResult result);
+    }
+
+    internal interface IAsyncDuplexSession : IInputSession, IOutputSession
+    {
+        Task CloseOutputSessionAsync();
+        Task CloseOutputSessionAsync(TimeSpan timeout);
     }
 }

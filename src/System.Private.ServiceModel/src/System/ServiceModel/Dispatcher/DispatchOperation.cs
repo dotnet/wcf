@@ -9,56 +9,37 @@ namespace System.ServiceModel.Dispatcher
 {
     public sealed class DispatchOperation
     {
-        private readonly string _action;
         private readonly SynchronizedCollection<FaultContractInfo> _faultContractInfos;
-        private IDispatchMessageFormatter _formatter;
         private IDispatchFaultFormatter _faultFormatter;
-        private IOperationInvoker _invoker;
         private bool _isTerminating;
         private bool _isSessionOpenNotificationEnabled;
-        private readonly string _name;
-        private readonly SynchronizedCollection<IParameterInspector> _parameterInspectors;
-        private readonly DispatchRuntime _parent;
         private readonly string _replyAction;
         private bool _deserializeRequest = true;
         private bool _serializeReply = true;
-        private readonly bool _isOneWay;
         private bool _autoDisposeParameters = true;
-        private bool _hasNoDisposableParameters;
         private bool _isFaultFormatterSetExplicit;
 
         public DispatchOperation(DispatchRuntime parent, string name, string action)
         {
-            if (parent == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("parent");
-            if (name == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name");
-
-            _parent = parent;
-            _name = name;
-            _action = action;
+            Parent = parent ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(parent));
+            Name = name ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name));
+            Action = action;
 
             _faultContractInfos = parent.NewBehaviorCollection<FaultContractInfo>();
-            _parameterInspectors = parent.NewBehaviorCollection<IParameterInspector>();
-            _isOneWay = true;
+            ParameterInspectors = parent.NewBehaviorCollection<IParameterInspector>();
+            IsOneWay = true;
         }
 
         public DispatchOperation(DispatchRuntime parent, string name, string action, string replyAction)
             : this(parent, name, action)
         {
             _replyAction = replyAction;
-            _isOneWay = false;
+            IsOneWay = false;
         }
 
-        public bool IsOneWay
-        {
-            get { return _isOneWay; }
-        }
+        public bool IsOneWay { get; }
 
-        public string Action
-        {
-            get { return _action; }
-        }
+        public string Action { get; }
 
         public SynchronizedCollection<FaultContractInfo> FaultContractInfos
         {
@@ -71,9 +52,9 @@ namespace System.ServiceModel.Dispatcher
 
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
+                    Parent.InvalidateRuntime();
                     _autoDisposeParameters = value;
                 }
             }
@@ -81,13 +62,13 @@ namespace System.ServiceModel.Dispatcher
 
         internal IDispatchMessageFormatter Formatter
         {
-            get { return _formatter; }
+            get { return InternalFormatter; }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
-                    _formatter = value;
+                    Parent.InvalidateRuntime();
+                    InternalFormatter = value;
                 }
             }
         }
@@ -104,9 +85,9 @@ namespace System.ServiceModel.Dispatcher
             }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
+                    Parent.InvalidateRuntime();
                     _faultFormatter = value;
                     _isFaultFormatterSetExplicit = true;
                 }
@@ -118,33 +99,21 @@ namespace System.ServiceModel.Dispatcher
             get { return _isFaultFormatterSetExplicit; }
         }
 
-        internal bool HasNoDisposableParameters
-        {
-            get { return _hasNoDisposableParameters; }
-            set { _hasNoDisposableParameters = value; }
-        }
+        internal bool HasNoDisposableParameters { get; set; }
 
-        internal IDispatchMessageFormatter InternalFormatter
-        {
-            get { return _formatter; }
-            set { _formatter = value; }
-        }
+        internal IDispatchMessageFormatter InternalFormatter { get; set; }
 
-        internal IOperationInvoker InternalInvoker
-        {
-            get { return _invoker; }
-            set { _invoker = value; }
-        }
+        internal IOperationInvoker InternalInvoker { get; set; }
 
         public IOperationInvoker Invoker
         {
-            get { return _invoker; }
+            get { return InternalInvoker; }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
-                    _invoker = value;
+                    Parent.InvalidateRuntime();
+                    InternalInvoker = value;
                 }
             }
         }
@@ -154,9 +123,9 @@ namespace System.ServiceModel.Dispatcher
             get { return _isTerminating; }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
+                    Parent.InvalidateRuntime();
                     _isTerminating = value;
                 }
             }
@@ -167,28 +136,19 @@ namespace System.ServiceModel.Dispatcher
             get { return _isSessionOpenNotificationEnabled; }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
+                    Parent.InvalidateRuntime();
                     _isSessionOpenNotificationEnabled = value;
                 }
             }
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
-        public SynchronizedCollection<IParameterInspector> ParameterInspectors
-        {
-            get { return _parameterInspectors; }
-        }
+        public SynchronizedCollection<IParameterInspector> ParameterInspectors { get; }
 
-        public DispatchRuntime Parent
-        {
-            get { return _parent; }
-        }
+        public DispatchRuntime Parent { get; }
 
         public string ReplyAction
         {
@@ -200,9 +160,9 @@ namespace System.ServiceModel.Dispatcher
             get { return _deserializeRequest; }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
+                    Parent.InvalidateRuntime();
                     _deserializeRequest = value;
                 }
             }
@@ -213,9 +173,9 @@ namespace System.ServiceModel.Dispatcher
             get { return _serializeReply; }
             set
             {
-                lock (_parent.ThisLock)
+                lock (Parent.ThisLock)
                 {
-                    _parent.InvalidateRuntime();
+                    Parent.InvalidateRuntime();
                     _serializeReply = value;
                 }
             }

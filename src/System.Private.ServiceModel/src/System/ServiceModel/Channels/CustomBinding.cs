@@ -9,8 +9,6 @@ namespace System.ServiceModel.Channels
 {
     public class CustomBinding : Binding
     {
-        private BindingElementCollection _bindingElements = new BindingElementCollection();
-
         public CustomBinding()
             : base()
         {
@@ -21,12 +19,12 @@ namespace System.ServiceModel.Channels
         {
             if (bindingElementsInTopDownChannelStackOrder == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingElements");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingElementsInTopDownChannelStackOrder));
             }
 
             foreach (BindingElement element in bindingElementsInTopDownChannelStackOrder)
             {
-                _bindingElements.Add(element);
+                Elements.Add(element);
             }
         }
 
@@ -35,12 +33,12 @@ namespace System.ServiceModel.Channels
         {
             if (bindingElementsInTopDownChannelStackOrder == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingElements");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingElementsInTopDownChannelStackOrder));
             }
 
             foreach (BindingElement element in bindingElementsInTopDownChannelStackOrder)
             {
-                _bindingElements.Add(element);
+                Elements.Add(element);
             }
         }
 
@@ -48,12 +46,12 @@ namespace System.ServiceModel.Channels
         {
             if (bindingElementsInTopDownChannelStackOrder == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingElements");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingElementsInTopDownChannelStackOrder));
             }
 
             foreach (BindingElement element in bindingElementsInTopDownChannelStackOrder)
             {
-                _bindingElements.Add(element);
+                Elements.Add(element);
             }
         }
 
@@ -62,12 +60,12 @@ namespace System.ServiceModel.Channels
         {
             if (bindingElements == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("bindingElements");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(bindingElements));
             }
 
             for (int i = 0; i < bindingElements.Count; i++)
             {
-                _bindingElements.Add(bindingElements[i]);
+                Elements.Add(bindingElements[i]);
             }
         }
 
@@ -80,7 +78,7 @@ namespace System.ServiceModel.Channels
         {
             if (binding == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("binding");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
             }
             return binding.CreateBindingElements();
         }
@@ -89,44 +87,38 @@ namespace System.ServiceModel.Channels
         {
             if (binding == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("binding");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(binding));
             }
             if (elements == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elements");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(elements));
             }
 
-            this.Name = binding.Name;
-            this.Namespace = binding.Namespace;
-            this.CloseTimeout = binding.CloseTimeout;
-            this.OpenTimeout = binding.OpenTimeout;
-            this.ReceiveTimeout = binding.ReceiveTimeout;
-            this.SendTimeout = binding.SendTimeout;
+            Name = binding.Name;
+            Namespace = binding.Namespace;
+            CloseTimeout = binding.CloseTimeout;
+            OpenTimeout = binding.OpenTimeout;
+            ReceiveTimeout = binding.ReceiveTimeout;
+            SendTimeout = binding.SendTimeout;
 
             for (int i = 0; i < elements.Count; i++)
             {
-                _bindingElements.Add(elements[i]);
+                Elements.Add(elements[i]);
             }
         }
 
-        public BindingElementCollection Elements
-        {
-            get
-            {
-                return _bindingElements;
-            }
-        }
+        public BindingElementCollection Elements { get; } = new BindingElementCollection();
 
         public override BindingElementCollection CreateBindingElements()
         {
-            return _bindingElements.Clone();
+            return Elements.Clone();
         }
 
         public override string Scheme
         {
             get
             {
-                TransportBindingElement transport = _bindingElements.Find<TransportBindingElement>();
+                TransportBindingElement transport = Elements.Find<TransportBindingElement>();
                 if (transport == null)
                 {
                     return String.Empty;

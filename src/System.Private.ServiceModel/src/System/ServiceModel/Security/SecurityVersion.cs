@@ -13,26 +13,18 @@ namespace System.ServiceModel.Security
 {
     public abstract class SecurityVersion
     {
-        private readonly XmlDictionaryString _headerName;
-        private readonly XmlDictionaryString _headerNamespace;
         private readonly XmlDictionaryString _headerPrefix;
 
         internal SecurityVersion(XmlDictionaryString headerName, XmlDictionaryString headerNamespace, XmlDictionaryString headerPrefix)
         {
-            _headerName = headerName;
-            _headerNamespace = headerNamespace;
+            HeaderName = headerName;
+            HeaderNamespace = headerNamespace;
             _headerPrefix = headerPrefix;
         }
 
-        internal XmlDictionaryString HeaderName
-        {
-            get { return _headerName; }
-        }
+        internal XmlDictionaryString HeaderName { get; }
 
-        internal XmlDictionaryString HeaderNamespace
-        {
-            get { return _headerNamespace; }
-        }
+        internal XmlDictionaryString HeaderNamespace { get; }
 
         internal XmlDictionaryString HeaderPrefix
         {
@@ -89,12 +81,12 @@ namespace System.ServiceModel.Security
 
         internal bool DoesMessageContainSecurityHeader(Message message)
         {
-            return message.Headers.FindHeader(this.HeaderName.Value, this.HeaderNamespace.Value) >= 0;
+            return message.Headers.FindHeader(HeaderName.Value, HeaderNamespace.Value) >= 0;
         }
 
         internal int FindIndexOfSecurityHeader(Message message, string[] actors)
         {
-            return message.Headers.FindHeader(this.HeaderName.Value, this.HeaderNamespace.Value, actors);
+            return message.Headers.FindHeader(HeaderName.Value, HeaderNamespace.Value, actors);
         }
 
         internal virtual bool IsReaderAtSignatureConfirmation(XmlDictionaryReader reader)
@@ -115,10 +107,10 @@ namespace System.ServiceModel.Security
             SecurityStandardsManager standardsManager,
             SecurityAlgorithmSuite algorithmSuite, MessageDirection direction)
         {
-            int headerIndex = message.Headers.FindHeader(this.HeaderName.Value, this.HeaderNamespace.Value, actor);
+            int headerIndex = message.Headers.FindHeader(HeaderName.Value, HeaderNamespace.Value, actor);
             if (headerIndex < 0 && String.IsNullOrEmpty(actor))
             {
-                headerIndex = message.Headers.FindHeader(this.HeaderName.Value, this.HeaderNamespace.Value, message.Version.Envelope.UltimateDestinationActorValues);
+                headerIndex = message.Headers.FindHeader(HeaderName.Value, HeaderNamespace.Value, message.Version.Envelope.UltimateDestinationActorValues);
             }
 
             if (headerIndex < 0)
@@ -140,22 +132,17 @@ namespace System.ServiceModel.Security
 
         internal void WriteStartHeader(XmlDictionaryWriter writer)
         {
-            writer.WriteStartElement(this.HeaderPrefix.Value, this.HeaderName, this.HeaderNamespace);
+            writer.WriteStartElement(HeaderPrefix.Value, HeaderName, HeaderNamespace);
         }
 
         internal class SecurityVersion10 : SecurityVersion
         {
-            private static readonly SecurityVersion10 s_instance = new SecurityVersion10();
-
             protected SecurityVersion10()
                 : base(XD.SecurityJan2004Dictionary.Security, XD.SecurityJan2004Dictionary.Namespace, XD.SecurityJan2004Dictionary.Prefix)
             {
             }
 
-            public static SecurityVersion10 Instance
-            {
-                get { return s_instance; }
-            }
+            public static SecurityVersion10 Instance { get; } = new SecurityVersion10();
 
             internal override XmlDictionaryString FailedAuthenticationFaultCode
             {
@@ -203,17 +190,12 @@ namespace System.ServiceModel.Security
 
         internal sealed class SecurityVersion11 : SecurityVersion10
         {
-            private static readonly SecurityVersion11 s_instance = new SecurityVersion11();
-
             private SecurityVersion11()
                 : base()
             {
             }
 
-            public new static SecurityVersion11 Instance
-            {
-                get { return s_instance; }
-            }
+            public new static SecurityVersion11 Instance { get; } = new SecurityVersion11();
 
             internal override bool SupportsSignatureConfirmation
             {
@@ -265,11 +247,11 @@ namespace System.ServiceModel.Security
             {
                 if (id == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
                 }
                 if (signature == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("signature");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(signature));
                 }
                 writer.WriteStartElement(XD.SecurityXXX2005Dictionary.Prefix.Value, XD.SecurityXXX2005Dictionary.SignatureConfirmation, XD.SecurityXXX2005Dictionary.Namespace);
                 writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, id);

@@ -11,7 +11,6 @@ namespace System.ServiceModel
     public class NetHttpsBinding : HttpBindingBase
     {
         private BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
-        private NetHttpMessageEncoding _messageEncoding;
         private BasicHttpsSecurity _basicHttpsSecurity;
 
         public NetHttpsBinding() : this(BasicHttpsSecurity.DefaultMode) { }
@@ -27,11 +26,7 @@ namespace System.ServiceModel
             _basicHttpsSecurity.Mode = securityMode;
         }
 
-        public NetHttpMessageEncoding MessageEncoding
-        {
-            get { return _messageEncoding; }
-            set { _messageEncoding = value; }
-        }
+        public NetHttpMessageEncoding MessageEncoding { get; set; }
 
         public BasicHttpsSecurity Security
         {
@@ -42,12 +37,7 @@ namespace System.ServiceModel
 
             set
             {
-                if (value == null)
-                {
-                    throw FxTrace.Exception.ArgumentNull("value");
-                }
-
-                _basicHttpsSecurity = value;
+                _basicHttpsSecurity = value ?? throw FxTrace.Exception.ArgumentNull("value");
             }
         }
 
@@ -136,7 +126,7 @@ namespace System.ServiceModel
 
         private void Initialize()
         {
-            _messageEncoding = NetHttpBindingDefaults.MessageEncoding;
+            MessageEncoding = NetHttpBindingDefaults.MessageEncoding;
             _binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement() { MessageVersion = MessageVersion.Soap12WSAddressing10 };
             TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
             InternalWebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;

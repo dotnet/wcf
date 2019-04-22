@@ -95,6 +95,31 @@ namespace System.ServiceModel.Security
         public System.Xml.XmlDictionaryString Prefix { get { return default(System.Xml.XmlDictionaryString); } }
         public static System.ServiceModel.Security.SecureConversationVersion WSSecureConversationFeb2005 { get { return default(System.ServiceModel.Security.SecureConversationVersion); } }
     }
+    public abstract partial class SecurityAlgorithmSuite
+    {
+        protected SecurityAlgorithmSuite() { }
+        public abstract string DefaultCanonicalizationAlgorithm { get; }
+        public abstract string DefaultDigestAlgorithm { get; }
+        public abstract string DefaultEncryptionAlgorithm { get; }
+        public abstract int DefaultEncryptionKeyDerivationLength { get; }
+        public abstract string DefaultSymmetricKeyWrapAlgorithm { get; }
+        public abstract string DefaultAsymmetricKeyWrapAlgorithm { get; }
+        public abstract string DefaultSymmetricSignatureAlgorithm { get; }
+        public abstract string DefaultAsymmetricSignatureAlgorithm { get; }
+        public abstract int DefaultSignatureKeyDerivationLength { get; }
+        public abstract int DefaultSymmetricKeyLength { get; }
+        public virtual bool IsCanonicalizationAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsDigestAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsEncryptionAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsEncryptionKeyDerivationAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsSymmetricKeyWrapAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsAsymmetricKeyWrapAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsSymmetricSignatureAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsAsymmetricSignatureAlgorithmSupported(string algorithm) { return default(bool); }
+        public virtual bool IsSignatureKeyDerivationAlgorithmSupported(string algorithm) { return default(bool); }
+        public abstract bool IsSymmetricKeyLengthSupported(int length);
+        public abstract bool IsAsymmetricKeyLengthSupported(int length);
+    }
     public abstract partial class SecurityPolicyVersion
     {
         internal SecurityPolicyVersion() { }

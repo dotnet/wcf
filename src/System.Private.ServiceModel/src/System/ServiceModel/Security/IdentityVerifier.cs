@@ -6,7 +6,6 @@
 using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Policy;
-using System.Security.Principal;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime;
@@ -43,20 +42,20 @@ namespace System.ServiceModel.Security
         internal bool TryGetIdentity(EndpointAddress reference, Uri via, out EndpointIdentity identity)
         {
             AdjustAddress(ref reference, via);
-            return this.TryGetIdentity(reference, out identity);
+            return TryGetIdentity(reference, out identity);
         }
 
         internal void EnsureOutgoingIdentity(EndpointAddress serviceReference, Uri via, AuthorizationContext authorizationContext)
         {
             AdjustAddress(ref serviceReference, via);
-            this.EnsureIdentity(serviceReference, authorizationContext, SR.IdentityCheckFailedForOutgoingMessage);
+            EnsureIdentity(serviceReference, authorizationContext, SR.IdentityCheckFailedForOutgoingMessage);
         }
 
         internal void EnsureOutgoingIdentity(EndpointAddress serviceReference, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
             if (authorizationPolicies == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authorizationPolicies");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authorizationPolicies));
             }
             AuthorizationContext ac = AuthorizationContext.CreateDefaultAuthorizationContext(authorizationPolicies);
             EnsureIdentity(serviceReference, ac, SR.IdentityCheckFailedForOutgoingMessage);
@@ -66,12 +65,12 @@ namespace System.ServiceModel.Security
         {
             if (authorizationContext == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authorizationContext");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authorizationContext));
             }
             EndpointIdentity identity;
             if (!TryGetIdentity(serviceReference, out identity))
             {
-                SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authorizationContext, this.GetType());
+                SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authorizationContext, GetType());
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SR.Format(errorString, identity, serviceReference)));
             }
             else
@@ -149,23 +148,20 @@ namespace System.ServiceModel.Security
 
         private class DefaultIdentityVerifier : IdentityVerifier
         {
-            private static readonly DefaultIdentityVerifier s_instance = new DefaultIdentityVerifier();
-
-            public static DefaultIdentityVerifier Instance
-            {
-                get { return s_instance; }
-            }
+            public static DefaultIdentityVerifier Instance { get; } = new DefaultIdentityVerifier();
 
             public override bool TryGetIdentity(EndpointAddress reference, out EndpointIdentity identity)
             {
                 if (reference == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reference");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reference));
+                }
 
                 identity = reference.Identity;
 
                 if (identity == null)
                 {
-                    identity = this.TryCreateDnsIdentity(reference);
+                    identity = TryCreateDnsIdentity(reference);
                 }
 
                 if (identity == null)
@@ -185,7 +181,9 @@ namespace System.ServiceModel.Security
                 Uri toAddress = reference.Uri;
 
                 if (!toAddress.IsAbsoluteUri)
+                {
                     return null;
+                }
 
                 return EndpointIdentity.CreateDnsIdentity(toAddress.DnsSafeHost);
             }
@@ -209,11 +207,14 @@ namespace System.ServiceModel.Security
                 EventTraceActivity eventTraceActivity = null;
 
                 if (identity == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("identity");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(identity));
+                }
 
                 if (authContext == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("authContext");
-
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(authContext));
+                }
 
                 if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled)
                 {
@@ -225,7 +226,7 @@ namespace System.ServiceModel.Security
                     ClaimSet claimSet = authContext.ClaimSets[i];
                     if (claimSet.ContainsClaim(identity.IdentityClaim))
                     {
-                        SecurityTraceRecordHelper.TraceIdentityVerificationSuccess(eventTraceActivity, identity, identity.IdentityClaim, this.GetType());
+                        SecurityTraceRecordHelper.TraceIdentityVerificationSuccess(eventTraceActivity, identity, identity.IdentityClaim, GetType());
                         return true;
                     }
 
@@ -237,7 +238,7 @@ namespace System.ServiceModel.Security
                         Claim claim = CheckDnsEquivalence(claimSet, expectedSpn);
                         if (claim != null)
                         {
-                            SecurityTraceRecordHelper.TraceIdentityVerificationSuccess(eventTraceActivity, identity, claim, this.GetType());
+                            SecurityTraceRecordHelper.TraceIdentityVerificationSuccess(eventTraceActivity, identity, claim, GetType());
                             return true;
                         }
                     }
@@ -272,7 +273,7 @@ namespace System.ServiceModel.Security
                     //    }
                     //}
                 }
-                SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authContext, this.GetType());
+                SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authContext, GetType());
                 if (WcfEventSource.Instance.SecurityIdentityVerificationFailureIsEnabled())
                 {
                     WcfEventSource.Instance.SecurityIdentityVerificationFailure(eventTraceActivity);

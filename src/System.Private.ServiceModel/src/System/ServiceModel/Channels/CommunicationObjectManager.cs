@@ -22,16 +22,18 @@ namespace System.ServiceModel.Channels
         {
             bool added = false;
 
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
-                if (this.State == LifetimeState.Opened && !_inputClosed)
+                if (State == LifetimeState.Opened && !_inputClosed)
                 {
                     if (_table.Contains(item))
+                    {
                         return;
+                    }
 
                     _table.Add(item);
                     base.IncrementBusyCountWithoutLock();
-                    item.Closed += this.OnItemClosed;
+                    item.Closed += OnItemClosed;
                     added = true;
                 }
             }
@@ -39,7 +41,7 @@ namespace System.ServiceModel.Channels
             if (!added)
             {
                 item.Abort();
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().ToString()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().ToString()));
             }
         }
 
@@ -53,40 +55,45 @@ namespace System.ServiceModel.Channels
 
         public void DecrementActivityCount()
         {
-            this.DecrementBusyCount();
+            DecrementBusyCount();
         }
 
         public void IncrementActivityCount()
         {
-            this.IncrementBusyCount();
+            IncrementBusyCount();
         }
 
         private void OnItemClosed(object sender, EventArgs args)
         {
-            this.Remove((ItemType)sender);
+            Remove((ItemType)sender);
         }
 
         public void Remove(ItemType item)
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 if (!_table.Contains(item))
+                {
                     return;
+                }
+
                 _table.Remove(item);
             }
 
-            item.Closed -= this.OnItemClosed;
+            item.Closed -= OnItemClosed;
             base.DecrementBusyCount();
         }
 
         public ItemType[] ToArray()
         {
-            lock (this.ThisLock)
+            lock (ThisLock)
             {
                 int index = 0;
                 ItemType[] items = new ItemType[_table.Count];
                 foreach (ItemType item in _table)
+                {
                     items[index++] = item;
+                }
 
                 return items;
             }

@@ -71,13 +71,9 @@ namespace System.ServiceModel
 
         private AddressingVersion _addressingVersion;
         private AddressHeaderCollection _headers;
-        private EndpointIdentity _identity;
-        private Uri _uri;
-        private XmlBuffer _buffer;  // invariant: each section in the buffer will start with a dummy wrapper element
         private int _extensionSection;
         private int _metadataSection;
         private int _pspSection;
-        private bool _isAnonymous;
         private bool _isNone;
         // these are the element name/namespace for the dummy wrapper element that wraps each buffer section
         internal const string DummyName = "Dummy";
@@ -92,7 +88,7 @@ namespace System.ServiceModel
         {
             if (uri == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("uri");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(uri));
             }
 
             Uri u = new Uri(uri);
@@ -109,7 +105,7 @@ namespace System.ServiceModel
         {
             if (uri == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("uri");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(uri));
             }
 
             Init(uri, identity, addressHeaders);
@@ -117,14 +113,14 @@ namespace System.ServiceModel
 
         internal EndpointAddress(Uri newUri, EndpointAddress oldEndpointAddress)
         {
-            Init(oldEndpointAddress._addressingVersion, newUri, oldEndpointAddress._identity, oldEndpointAddress._headers, oldEndpointAddress._buffer, oldEndpointAddress._metadataSection, oldEndpointAddress._extensionSection, oldEndpointAddress._pspSection);
+            Init(oldEndpointAddress._addressingVersion, newUri, oldEndpointAddress.Identity, oldEndpointAddress._headers, oldEndpointAddress.Buffer, oldEndpointAddress._metadataSection, oldEndpointAddress._extensionSection, oldEndpointAddress._pspSection);
         }
 
         internal EndpointAddress(Uri uri, EndpointIdentity identity, AddressHeaderCollection headers, XmlDictionaryReader metadataReader, XmlDictionaryReader extensionReader, XmlDictionaryReader pspReader)
         {
             if (uri == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("uri");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(uri));
             }
 
             XmlBuffer buffer = null;
@@ -168,34 +164,36 @@ namespace System.ServiceModel
         private void Init(AddressingVersion version, Uri uri, EndpointIdentity identity, AddressHeaderCollection headers, XmlBuffer buffer, int metadataSection, int extensionSection, int pspSection)
         {
             if (!uri.IsAbsoluteUri)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("uri", SR.UriMustBeAbsolute);
+            }
 
             _addressingVersion = version;
-            _uri = uri;
-            _identity = identity;
+            Uri = uri;
+            Identity = identity;
             _headers = headers;
-            _buffer = buffer;
+            Buffer = buffer;
             _metadataSection = metadataSection;
             _extensionSection = extensionSection;
             _pspSection = pspSection;
 
             if (version != null)
             {
-                _isAnonymous = uri == version.AnonymousUri;
+                IsAnonymous = uri == version.AnonymousUri;
                 _isNone = uri == version.NoneUri;
             }
             else
             {
-                _isAnonymous = object.ReferenceEquals(uri, AnonymousUri) || uri == AnonymousUri;
+                IsAnonymous = object.ReferenceEquals(uri, AnonymousUri) || uri == AnonymousUri;
                 _isNone = object.ReferenceEquals(uri, NoneUri) || uri == NoneUri;
             }
-            if (_isAnonymous)
+            if (IsAnonymous)
             {
-                _uri = AnonymousUri;
+                Uri = AnonymousUri;
             }
             if (_isNone)
             {
-                _uri = NoneUri;
+                Uri = NoneUri;
             }
         }
 
@@ -204,7 +202,10 @@ namespace System.ServiceModel
             get
             {
                 if (s_anonymousAddress == null)
+                {
                     s_anonymousAddress = new EndpointAddress(AnonymousUri);
+                }
+
                 return s_anonymousAddress;
             }
         }
@@ -214,7 +215,10 @@ namespace System.ServiceModel
             get
             {
                 if (s_anonymousUri == null)
+                {
                     s_anonymousUri = new Uri(AddressingStrings.AnonymousUri);
+                }
+
                 return s_anonymousUri;
             }
         }
@@ -224,18 +228,15 @@ namespace System.ServiceModel
             get
             {
                 if (s_noneUri == null)
+                {
                     s_noneUri = new Uri(AddressingStrings.NoneUri);
+                }
+
                 return s_noneUri;
             }
         }
 
-        internal XmlBuffer Buffer
-        {
-            get
-            {
-                return _buffer;
-            }
-        }
+        internal XmlBuffer Buffer { get; private set; }
 
         public AddressHeaderCollection Headers
         {
@@ -250,21 +251,9 @@ namespace System.ServiceModel
             }
         }
 
-        public EndpointIdentity Identity
-        {
-            get
-            {
-                return _identity;
-            }
-        }
+        public EndpointIdentity Identity { get; private set; }
 
-        public bool IsAnonymous
-        {
-            get
-            {
-                return _isAnonymous;
-            }
-        }
+        public bool IsAnonymous { get; private set; }
 
         public bool IsNone
         {
@@ -274,20 +263,16 @@ namespace System.ServiceModel
             }
         }
 
-        public Uri Uri
-        {
-            get
-            {
-                return _uri;
-            }
-        }
+        public Uri Uri { get; private set; }
 
         public void ApplyTo(Message message)
         {
             if (message == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("message");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            }
 
-            Uri uri = this.Uri;
+            Uri uri = Uri;
             if (IsAnonymous)
             {
                 if (message.Version.Addressing == AddressingVersion.WSAddressing10)
@@ -394,7 +379,9 @@ namespace System.ServiceModel
             // Normalize for trailing slashes
             string uriString = uri.GetComponents(components, UriFormat.Unescaped);
             if (uriString.Length > 0 && uriString[uriString.Length - 1] != '/')
+            {
                 uriString = string.Concat(uriString, "/");
+            }
 
             return StringComparer.OrdinalIgnoreCase.GetHashCode(uriString);
         }
@@ -411,7 +398,7 @@ namespace System.ServiceModel
                 return true;
             }
 
-            Uri thisTo = this.Uri;
+            Uri thisTo = Uri;
             Uri otherTo = endpointAddress.Uri;
 
             if (!UriEquals(thisTo, otherTo, false /* ignoreCase */, true /* includeHostInComparison */))
@@ -419,19 +406,19 @@ namespace System.ServiceModel
                 return false;
             }
 
-            if (this.Identity == null)
+            if (Identity == null)
             {
                 if (endpointAddress.Identity != null)
                 {
                     return false;
                 }
             }
-            else if (!this.Identity.Equals(endpointAddress.Identity))
+            else if (!Identity.Equals(endpointAddress.Identity))
             {
                 return false;
             }
 
-            if (!this.Headers.IsEquivalent(endpointAddress.Headers))
+            if (!Headers.IsEquivalent(endpointAddress.Headers))
             {
                 return false;
             }
@@ -462,31 +449,33 @@ namespace System.ServiceModel
 
         public override int GetHashCode()
         {
-            return UriGetHashCode(_uri, true /* includeHostInComparison */);
+            return UriGetHashCode(Uri, true /* includeHostInComparison */);
         }
 
         // returns reader without starting dummy wrapper element
         internal XmlDictionaryReader GetReaderAtPsp()
         {
-            return GetReaderAtSection(_buffer, _pspSection);
+            return GetReaderAtSection(Buffer, _pspSection);
         }
 
         // returns reader without starting dummy wrapper element
         public XmlDictionaryReader GetReaderAtMetadata()
         {
-            return GetReaderAtSection(_buffer, _metadataSection);
+            return GetReaderAtSection(Buffer, _metadataSection);
         }
 
         // returns reader without starting dummy wrapper element
         public XmlDictionaryReader GetReaderAtExtensions()
         {
-            return GetReaderAtSection(_buffer, _extensionSection);
+            return GetReaderAtSection(Buffer, _extensionSection);
         }
 
         private static XmlDictionaryReader GetReaderAtSection(XmlBuffer buffer, int section)
         {
             if (buffer == null || section < 0)
+            {
                 return null;
+            }
 
             XmlDictionaryReader reader = buffer.GetReader(section);
             reader.MoveToContent();
@@ -524,7 +513,9 @@ namespace System.ServiceModel
         internal static EndpointAddress ReadFrom(XmlDictionaryReader reader, out AddressingVersion version)
         {
             if (reader == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+            }
 
             reader.ReadFullStartElement();
             reader.MoveToContent();
@@ -556,9 +547,14 @@ namespace System.ServiceModel
         public static EndpointAddress ReadFrom(AddressingVersion addressingVersion, XmlDictionaryReader reader)
         {
             if (reader == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+            }
+
             if (addressingVersion == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("addressingVersion");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(addressingVersion));
+            }
 
             reader.ReadFullStartElement();
             EndpointAddress ea = ReadFromDriver(addressingVersion, reader);
@@ -584,7 +580,7 @@ namespace System.ServiceModel
             else if (addressingVersion == AddressingVersion.WSAddressingAugust2004)
             {
                 isAnonymous = ReadContentsFrom200408(reader, out uri, out headers, out identity, out buffer, out metadataSection, out extensionSection, out pspSection);
-            } 
+            }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
@@ -619,7 +615,10 @@ namespace System.ServiceModel
                 if (reader.IsStartElement(XD.AddressingDictionary.Identity, XD.AddressingDictionary.IdentityExtensionNamespace))
                 {
                     if (identity != null)
+                    {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SR.Format(SR.UnexpectedDuplicateElement, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
+                    }
+
                     identity = EndpointIdentity.ReadIdentity(reader);
                 }
                 else if (version != null && reader.NamespaceURI == version.Namespace)
@@ -631,7 +630,10 @@ namespace System.ServiceModel
                     if (bufferWriter == null)
                     {
                         if (buffer == null)
+                        {
                             buffer = new XmlBuffer(short.MaxValue);
+                        }
+
                         bufferWriter = buffer.OpenSection(reader.Quotas);
                         bufferWriter.WriteStartElement(DummyName, DummyNamespace);
                     }
@@ -662,7 +664,7 @@ namespace System.ServiceModel
             extensionSection = -1;
             metadataSection = -1;
             pspSection = -1;
- 
+
             // Cache address string
             reader.MoveToContent();
             if (!reader.IsStartElement(XD.AddressingDictionary.Address, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -670,14 +672,14 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SR.Format(SR.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing200408Dictionary.Namespace.Value)));
             }
             string address = reader.ReadElementContentAsString();
- 
+
             // ReferenceProperites
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.ReferenceProperties, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
             {
                 headers = AddressHeaderCollection.ReadServiceParameters(reader, true);
             }
- 
+
             // ReferenceParameters
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.ReferenceParameters, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -701,9 +703,9 @@ namespace System.ServiceModel
                     headers = AddressHeaderCollection.ReadServiceParameters(reader);
                 }
             }
- 
+
             XmlDictionaryWriter bufferWriter = null;
- 
+
             // PortType
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.PortType, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -711,13 +713,16 @@ namespace System.ServiceModel
                 if (bufferWriter == null)
                 {
                     if (buffer == null)
+                    {
                         buffer = new XmlBuffer(short.MaxValue);
+                    }
+
                     bufferWriter = buffer.OpenSection(reader.Quotas);
                     bufferWriter.WriteStartElement(DummyName, DummyNamespace);
                 }
                 bufferWriter.WriteNode(reader, true);
             }
- 
+
             // ServiceName
             reader.MoveToContent();
             if (reader.IsStartElement(XD.AddressingDictionary.ServiceName, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
@@ -725,13 +730,16 @@ namespace System.ServiceModel
                 if (bufferWriter == null)
                 {
                     if (buffer == null)
+                    {
                         buffer = new XmlBuffer(short.MaxValue);
+                    }
+
                     bufferWriter = buffer.OpenSection(reader.Quotas);
                     bufferWriter.WriteStartElement(DummyName, DummyNamespace);
                 }
                 bufferWriter.WriteNode(reader, true);
             }
- 
+
             // Policy
             reader.MoveToContent();
             while (reader.IsNamespaceUri(PolicyStrings.Namespace))
@@ -739,14 +747,17 @@ namespace System.ServiceModel
                 if (bufferWriter == null)
                 {
                     if (buffer == null)
+                    {
                         buffer = new XmlBuffer(short.MaxValue);
+                    }
+
                     bufferWriter = buffer.OpenSection(reader.Quotas);
                     bufferWriter.WriteStartElement(DummyName, DummyNamespace);
                 }
                 bufferWriter.WriteNode(reader, true);
                 reader.MoveToContent();
             }
- 
+
             // Finish PSP
             if (bufferWriter != null)
             {
@@ -759,8 +770,8 @@ namespace System.ServiceModel
             {
                 pspSection = -1;
             }
- 
- 
+
+
             // Metadata
             if (reader.IsStartElement(System.ServiceModel.Description.MetadataStrings.MetadataExchangeStrings.Metadata,
                                       System.ServiceModel.Description.MetadataStrings.MetadataExchangeStrings.Namespace))
@@ -768,13 +779,16 @@ namespace System.ServiceModel
                 if (bufferWriter == null)
                 {
                     if (buffer == null)
+                    {
                         buffer = new XmlBuffer(short.MaxValue);
+                    }
+
                     bufferWriter = buffer.OpenSection(reader.Quotas);
                     bufferWriter.WriteStartElement(DummyName, DummyNamespace);
                 }
                 bufferWriter.WriteNode(reader, true);
             }
- 
+
             // Finish metadata
             if (bufferWriter != null)
             {
@@ -787,26 +801,32 @@ namespace System.ServiceModel
             {
                 metadataSection = -1;
             }
- 
+
             // Extensions
             reader.MoveToContent();
             buffer = ReadExtensions(reader, AddressingVersion.WSAddressingAugust2004, buffer, out identity, out extensionSection);
- 
+
             // Finished reading
             if (buffer != null)
+            {
                 buffer.Close();
- 
+            }
+
             // Process Address
             if (address == Addressing200408Strings.Anonymous)
             {
                 uri = AddressingVersion.WSAddressingAugust2004.AnonymousUri;
                 if (headers == null && identity == null)
+                {
                     return true;
+                }
             }
             else
             {
                 if (!Uri.TryCreate(address, UriKind.Absolute, out uri))
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.InvalidUriValue, address, XD.AddressingDictionary.Address.Value, AddressingVersion.WSAddressingAugust2004.Namespace)));
+                }
             }
             return false;
         }
@@ -819,7 +839,10 @@ namespace System.ServiceModel
 
             // Cache address string
             if (!reader.IsStartElement(XD.AddressingDictionary.Address, XD.Addressing10Dictionary.Namespace))
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SR.Format(SR.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing10Dictionary.Namespace.Value)));
+            }
+
             string address = reader.ReadElementContentAsString();
 
             // Headers
@@ -909,19 +932,19 @@ namespace System.ServiceModel
 
         public override string ToString()
         {
-            return _uri.ToString();
+            return Uri.ToString();
         }
 
         public void WriteContentsTo(AddressingVersion addressingVersion, XmlDictionaryWriter writer)
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
 
             if (addressingVersion == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("addressingVersion");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(addressingVersion));
             }
 
             if (addressingVersion == AddressingVersion.WSAddressing10)
@@ -945,7 +968,7 @@ namespace System.ServiceModel
 
         private void WriteContentsToNone(XmlDictionaryWriter writer)
         {
-            writer.WriteString(this.Uri.AbsoluteUri);
+            writer.WriteString(Uri.AbsoluteUri);
         }
 
         private void WriteContentsTo200408(XmlDictionaryWriter writer)
@@ -962,10 +985,10 @@ namespace System.ServiceModel
             }
             else
             {
-                writer.WriteString(this.Uri.AbsoluteUri);
+                writer.WriteString(Uri.AbsoluteUri);
             }
             writer.WriteEndElement();
- 
+
             // ReferenceProperties
             if (_headers != null && _headers.HasReferenceProperties)
             {
@@ -973,7 +996,7 @@ namespace System.ServiceModel
                 _headers.WriteReferencePropertyContentsTo(writer);
                 writer.WriteEndElement();
             }
- 
+
             // ReferenceParameters
             if (_headers != null && _headers.HasNonReferenceProperties)
             {
@@ -981,40 +1004,40 @@ namespace System.ServiceModel
                 _headers.WriteNonReferencePropertyContentsTo(writer);
                 writer.WriteEndElement();
             }
- 
+
             // PSP (PortType, ServiceName, Policy)
             XmlDictionaryReader reader = null;
             if (_pspSection >= 0)
             {
-                reader = GetReaderAtSection(_buffer, _pspSection);
+                reader = GetReaderAtSection(Buffer, _pspSection);
                 Copy(writer, reader);
             }
- 
+
             // Metadata
             reader = null;
             if (_metadataSection >= 0)
             {
-                reader = GetReaderAtSection(_buffer, _metadataSection);
+                reader = GetReaderAtSection(Buffer, _metadataSection);
                 Copy(writer, reader);
             }
- 
+
             // EndpointIdentity
-            if (this.Identity != null)
+            if (Identity != null)
             {
-                this.Identity.WriteTo(writer);
+                Identity.WriteTo(writer);
             }
- 
+
             // Extensions
             if (_extensionSection >= 0)
             {
-                reader = GetReaderAtSection(_buffer, _extensionSection);
+                reader = GetReaderAtSection(Buffer, _extensionSection);
                 while (reader.IsStartElement())
                 {
                     if (reader.NamespaceURI == AddressingVersion.WSAddressingAugust2004.Namespace)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SR.Format(SR.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
                     }
- 
+
                     writer.WriteNode(reader, true);
                 }
             }
@@ -1024,7 +1047,7 @@ namespace System.ServiceModel
         {
             // Address
             writer.WriteStartElement(XD.AddressingDictionary.Address, XD.Addressing10Dictionary.Namespace);
-            if (_isAnonymous)
+            if (IsAnonymous)
             {
                 writer.WriteString(XD.Addressing10Dictionary.Anonymous);
             }
@@ -1034,7 +1057,7 @@ namespace System.ServiceModel
             }
             else
             {
-                writer.WriteString(this.Uri.AbsoluteUri);
+                writer.WriteString(Uri.AbsoluteUri);
             }
             writer.WriteEndElement();
 
@@ -1049,22 +1072,22 @@ namespace System.ServiceModel
             // Metadata
             if (_metadataSection >= 0)
             {
-                XmlDictionaryReader reader = GetReaderAtSection(_buffer, _metadataSection);
+                XmlDictionaryReader reader = GetReaderAtSection(Buffer, _metadataSection);
                 writer.WriteStartElement(XD.Addressing10Dictionary.Metadata, XD.Addressing10Dictionary.Namespace);
                 Copy(writer, reader);
                 writer.WriteEndElement();
             }
 
             // EndpointIdentity
-            if (this.Identity != null)
+            if (Identity != null)
             {
-                this.Identity.WriteTo(writer);
+                Identity.WriteTo(writer);
             }
 
             // Extensions
             if (_extensionSection >= 0)
             {
-                XmlDictionaryReader reader = GetReaderAtSection(_buffer, _extensionSection);
+                XmlDictionaryReader reader = GetReaderAtSection(Buffer, _extensionSection);
                 while (reader.IsStartElement())
                 {
                     if (reader.NamespaceURI == AddressingVersion.WSAddressing10.Namespace)
@@ -1093,19 +1116,19 @@ namespace System.ServiceModel
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
             if (addressingVersion == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("addressingVersion");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(addressingVersion));
             }
             if (localName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("localName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(localName));
             }
             if (ns == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("ns");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(ns));
             }
             writer.WriteStartElement(localName, ns);
             WriteContentsTo(addressingVersion, writer);
@@ -1128,19 +1151,19 @@ namespace System.ServiceModel
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
             if (addressingVersion == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("addressingVersion");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(addressingVersion));
             }
             if (localName == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("localName");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(localName));
             }
             if (ns == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("ns");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(ns));
             }
             writer.WriteStartElement(localName, ns);
             WriteContentsTo(addressingVersion, writer);
@@ -1170,9 +1193,6 @@ namespace System.ServiceModel
 
     public class EndpointAddressBuilder
     {
-        private Uri _uri;
-        private EndpointIdentity _identity;
-        private Collection<AddressHeader> _headers;
         private XmlBuffer _extensionBuffer;  // this buffer is wrapped just like in EndpointAddress
         private XmlBuffer _metadataBuffer;   // this buffer is wrapped just like in EndpointAddress
         private bool _hasExtension;
@@ -1181,43 +1201,26 @@ namespace System.ServiceModel
 
         public EndpointAddressBuilder()
         {
-            _headers = new Collection<AddressHeader>();
+            Headers = new Collection<AddressHeader>();
         }
 
         public EndpointAddressBuilder(EndpointAddress address)
         {
-            if (address == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
-            }
-
-            _epr = address;
-            _uri = address.Uri;
-            _identity = address.Identity;
-            _headers = new Collection<AddressHeader>();
-#pragma warning suppress 56506
+            _epr = address ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(address));
+            Uri = address.Uri;
+            Identity = address.Identity;
+            Headers = new Collection<AddressHeader>();
             for (int i = 0; i < address.Headers.Count; i++)
             {
-                _headers.Add(address.Headers[i]);
+                Headers.Add(address.Headers[i]);
             }
         }
 
-        public Uri Uri
-        {
-            get { return _uri; }
-            set { _uri = value; }
-        }
+        public Uri Uri { get; set; }
 
-        public EndpointIdentity Identity
-        {
-            get { return _identity; }
-            set { _identity = value; }
-        }
+        public EndpointIdentity Identity { get; set; }
 
-        public Collection<AddressHeader> Headers
-        {
-            get { return _headers; }
-        }
+        public Collection<AddressHeader> Headers { get; }
 
         public XmlDictionaryReader GetReaderAtMetadata()
         {
@@ -1284,18 +1287,18 @@ namespace System.ServiceModel
             }
             if (identity != null)
             {
-                _identity = identity;
+                Identity = identity;
             }
         }
 
         public EndpointAddress ToEndpointAddress()
         {
             return new EndpointAddress(
-                _uri,
-                _identity,
-                new AddressHeaderCollection(_headers),
-                this.GetReaderAtMetadata(),
-                this.GetReaderAtExtensions(),
+                Uri,
+                Identity,
+                new AddressHeaderCollection(Headers),
+                GetReaderAtMetadata(),
+                GetReaderAtExtensions(),
                 _epr == null ? null : _epr.GetReaderAtPsp());
         }
     }

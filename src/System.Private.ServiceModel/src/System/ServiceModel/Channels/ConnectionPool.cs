@@ -4,12 +4,8 @@
 
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime;
-using System.Runtime.Diagnostics;
-using System.ServiceModel;
-using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Channels
 {
@@ -20,7 +16,6 @@ namespace System.ServiceModel.Channels
         where TItem : class
     {
         private Dictionary<TKey, EndpointConnectionPool> _endpointPools;
-        private int _maxCount;
         private int _openCount;
         // need to make sure we prune over a certain number of endpoint pools
         private int _pruneAccrual;
@@ -28,15 +23,12 @@ namespace System.ServiceModel.Channels
 
         protected CommunicationPool(int maxCount)
         {
-            _maxCount = maxCount;
+            MaxIdleConnectionPoolCount = maxCount;
             _endpointPools = new Dictionary<TKey, EndpointConnectionPool>();
             _openCount = 1;
         }
 
-        public int MaxIdleConnectionPoolCount
-        {
-            get { return _maxCount; }
-        }
+        public int MaxIdleConnectionPoolCount { get; }
 
         protected object ThisLock
         {
@@ -68,7 +60,7 @@ namespace System.ServiceModel.Channels
 
                 if (_openCount == 0)
                 {
-                    this.OnClose(timeout);
+                    OnClose(timeout);
                     return true;
                 }
 
@@ -201,7 +193,7 @@ namespace System.ServiceModel.Channels
         public TItem TakeConnection(EndpointAddress address, Uri via, TimeSpan timeout, out TKey key)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            key = this.GetPoolKey(address, via);
+            key = GetPoolKey(address, via);
             EndpointConnectionPool endpointPool = GetEndpointPool(key, timeoutHelper.RemainingTime());
             return endpointPool.TakeConnection(timeoutHelper.RemainingTime());
         }
@@ -224,23 +216,18 @@ namespace System.ServiceModel.Channels
 
         protected class EndpointConnectionPool
         {
-            private TKey _key;
             private List<TItem> _busyConnections;
             private bool _closed;
             private IdleConnectionPool _idleConnections;
-            private CommunicationPool<TKey, TItem> _parent;
 
             public EndpointConnectionPool(CommunicationPool<TKey, TItem> parent, TKey key)
             {
-                _key = key;
-                _parent = parent;
+                Key = key;
+                Parent = parent;
                 _busyConnections = new List<TItem>();
             }
 
-            protected TKey Key
-            {
-                get { return _key; }
-            }
+            protected TKey Key { get; }
 
             private IdleConnectionPool IdleConnections
             {
@@ -255,10 +242,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            protected CommunicationPool<TKey, TItem> Parent
-            {
-                get { return _parent; }
-            }
+            protected CommunicationPool<TKey, TItem> Parent { get; }
 
             protected object ThisLock
             {
@@ -290,17 +274,17 @@ namespace System.ServiceModel.Channels
 
             protected virtual void AbortItem(TItem item)
             {
-                _parent.AbortItem(item);
+                Parent.AbortItem(item);
             }
 
             protected virtual void CloseItem(TItem item, TimeSpan timeout)
             {
-                _parent.CloseItem(item, timeout);
+                Parent.CloseItem(item, timeout);
             }
 
             protected virtual void CloseItemAsync(TItem item, TimeSpan timeout)
             {
-                _parent.CloseItemAsync(item, timeout);
+                Parent.CloseItemAsync(item, timeout);
             }
 
             public void Abort()
@@ -314,7 +298,9 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     if (_closed)
+                    {
                         return;
+                    }
 
                     _closed = true;
                     idleItemsToClose = SnapshotIdleConnections();
@@ -329,7 +315,9 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     if (_closed)
+                    {
                         return;
+                    }
 
                     _closed = true;
                     itemsToClose = SnapshotIdleConnections();
@@ -340,7 +328,7 @@ namespace System.ServiceModel.Channels
                     TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                     for (int i = 0; i < itemsToClose.Count; i++)
                     {
-                        this.CloseItem(itemsToClose[i], timeoutHelper.RemainingTime());
+                        CloseItem(itemsToClose[i], timeoutHelper.RemainingTime());
                     }
 
                     itemsToClose.Clear();
@@ -355,12 +343,12 @@ namespace System.ServiceModel.Channels
             {
                 for (int i = 0; i < idleItemsToClose.Count; i++)
                 {
-                    this.AbortItem(idleItemsToClose[i]);
+                    AbortItem(idleItemsToClose[i]);
                 }
 
                 for (int i = 0; i < _busyConnections.Count; i++)
                 {
-                    this.AbortItem(_busyConnections[i]);
+                    AbortItem(_busyConnections[i]);
                 }
                 _busyConnections.Clear();
             }
@@ -370,11 +358,13 @@ namespace System.ServiceModel.Channels
             {
                 List<TItem> itemsToClose = new List<TItem>();
                 bool dummy;
-                for (;;)
+                for (; ; )
                 {
                     TItem item = IdleConnections.Take(out dummy);
                     if (item == null)
+                    {
                         break;
+                    }
 
                     itemsToClose.Add(item);
                 }
@@ -408,7 +398,7 @@ namespace System.ServiceModel.Channels
 
             protected virtual IdleConnectionPool GetIdleConnectionPool()
             {
-                return new PoolIdleConnectionPool(_parent.MaxIdleConnectionPoolCount);
+                return new PoolIdleConnectionPool(Parent.MaxIdleConnectionPoolCount);
             }
 
             public virtual void Prune(List<TItem> itemsToClose)
@@ -422,7 +412,9 @@ namespace System.ServiceModel.Channels
                 lock (ThisLock)
                 {
                     if (_closed)
+                    {
                         return null;
+                    }
 
                     bool closeItem;
                     while (true)
@@ -462,7 +454,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (item == null && _busyConnections != null)
                     {
-                        WcfEventSource.Instance.ConnectionPoolMiss(_key != null ? _key.ToString() : string.Empty, _busyConnections.Count);
+                        WcfEventSource.Instance.ConnectionPoolMiss(Key != null ? Key.ToString() : string.Empty, _busyConnections.Count);
                     }
                 }
 
@@ -502,7 +494,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (abortConnection)
                 {
-                    this.AbortItem(connection);
+                    AbortItem(connection);
                     OnConnectionAborted();
                 }
             }
@@ -512,7 +504,7 @@ namespace System.ServiceModel.Channels
                 bool throwing = true;
                 try
                 {
-                    this.CloseItemAsync(connection, timeout);
+                    CloseItemAsync(connection, timeout);
                     throwing = false;
                 }
                 catch (Exception e)
@@ -526,7 +518,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (throwing)
                     {
-                        this.AbortItem(connection);
+                        AbortItem(connection);
                     }
                 }
             }
@@ -601,20 +593,16 @@ namespace System.ServiceModel.Channels
     {
         private int _connectionBufferSize;
         private TimeSpan _maxOutputDelay;
-        private string _name;
 
         protected ConnectionPool(IConnectionOrientedTransportChannelFactorySettings settings, TimeSpan leaseTimeout)
             : base(settings.MaxOutboundConnectionsPerEndpoint, settings.IdleTimeout, leaseTimeout)
         {
             _connectionBufferSize = settings.ConnectionBufferSize;
             _maxOutputDelay = settings.MaxOutputDelay;
-            _name = settings.ConnectionPoolGroupName;
+            Name = settings.ConnectionPoolGroupName;
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         protected override void AbortItem(IConnection item)
         {
@@ -634,10 +622,10 @@ namespace System.ServiceModel.Channels
         public virtual bool IsCompatible(IConnectionOrientedTransportChannelFactorySettings settings)
         {
             return (
-                (_name == settings.ConnectionPoolGroupName) &&
+                (Name == settings.ConnectionPoolGroupName) &&
                 (_connectionBufferSize == settings.ConnectionBufferSize) &&
-                (this.MaxIdleConnectionPoolCount == settings.MaxOutboundConnectionsPerEndpoint) &&
-                (this.IdleTimeout == settings.IdleTimeout) &&
+                (MaxIdleConnectionPoolCount == settings.MaxOutboundConnectionsPerEndpoint) &&
+                (IdleTimeout == settings.IdleTimeout) &&
                 (_maxOutputDelay == settings.MaxOutputDelay)
                 );
         }

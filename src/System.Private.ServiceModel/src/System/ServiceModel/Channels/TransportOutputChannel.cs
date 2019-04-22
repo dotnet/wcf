@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.ServiceModel;
 using System.Xml;
 using System.Runtime.Diagnostics;
 
@@ -12,18 +11,15 @@ namespace System.ServiceModel.Channels
     public abstract class TransportOutputChannel : OutputChannel
     {
         private bool _anyHeadersToAdd;
-        private bool _manualAddressing;
-        private MessageVersion _messageVersion;
         private EndpointAddress _to;
         private Uri _via;
         private ToHeader _toHeader;
-        private EventTraceActivity _channelEventTraceActivity;
 
         protected TransportOutputChannel(ChannelManagerBase channelManager, EndpointAddress to, Uri via, bool manualAddressing, MessageVersion messageVersion)
             : base(channelManager)
         {
-            _manualAddressing = manualAddressing;
-            _messageVersion = messageVersion;
+            ManualAddressing = manualAddressing;
+            MessageVersion = messageVersion;
             _to = to;
             _via = via;
 
@@ -32,11 +28,11 @@ namespace System.ServiceModel.Channels
                 Uri toUri;
                 if (to.IsAnonymous)
                 {
-                    toUri = _messageVersion.Addressing.AnonymousUri;
+                    toUri = MessageVersion.Addressing.AnonymousUri;
                 }
                 else if (to.IsNone)
                 {
-                    toUri = _messageVersion.Addressing.NoneUri;
+                    toUri = MessageVersion.Addressing.NoneUri;
                 }
                 else
                 {
@@ -54,25 +50,13 @@ namespace System.ServiceModel.Channels
 
             if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled)
             {
-                _channelEventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
+                EventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
             }
         }
 
-        protected bool ManualAddressing
-        {
-            get
-            {
-                return _manualAddressing;
-            }
-        }
+        protected bool ManualAddressing { get; }
 
-        public MessageVersion MessageVersion
-        {
-            get
-            {
-                return _messageVersion;
-            }
-        }
+        public MessageVersion MessageVersion { get; }
 
         public override EndpointAddress RemoteAddress
         {
@@ -90,13 +74,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public EventTraceActivity EventTraceActivity
-        {
-            get
-            {
-                return _channelEventTraceActivity;
-            }
-        }
+        public EventTraceActivity EventTraceActivity { get; }
 
         protected override void AddHeadersTo(Message message)
         {
@@ -116,28 +94,23 @@ namespace System.ServiceModel.Channels
 
         internal class ToDictionary : IXmlDictionary
         {
-            private XmlDictionaryString _to;
-
             public ToDictionary(string to)
             {
-                _to = new XmlDictionaryString(this, to, 0);
+                To = new XmlDictionaryString(this, to, 0);
             }
 
-            public XmlDictionaryString To
-            {
-                get
-                {
-                    return _to;
-                }
-            }
+            public XmlDictionaryString To { get; }
 
             public bool TryLookup(string value, out XmlDictionaryString result)
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                if (value == _to.Value)
                 {
-                    result = _to;
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
+                if (value == To.Value)
+                {
+                    result = To;
                     return true;
                 }
                 result = null;
@@ -148,7 +121,7 @@ namespace System.ServiceModel.Channels
             {
                 if (key == 0)
                 {
-                    result = _to;
+                    result = To;
                     return true;
                 }
                 result = null;
@@ -158,10 +131,13 @@ namespace System.ServiceModel.Channels
             public bool TryLookup(XmlDictionaryString value, out XmlDictionaryString result)
             {
                 if (value == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                if (value == _to)
                 {
-                    result = _to;
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
+                if (value == To)
+                {
+                    result = To;
                     return true;
                 }
                 result = null;

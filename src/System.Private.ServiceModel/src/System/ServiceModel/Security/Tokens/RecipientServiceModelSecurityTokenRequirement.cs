@@ -21,7 +21,7 @@ namespace System.ServiceModel.Security.Tokens
             }
             set
             {
-                this.Properties[ListenUriProperty] = value;
+                Properties[ListenUriProperty] = value;
             }
         }
 

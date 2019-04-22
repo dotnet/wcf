@@ -5,10 +5,10 @@
 
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.Runtime
 {
-    [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.PrivatePrimitive, SupportsAsync = true, ReleaseMethod = "Dispatch")]
     internal sealed class InputQueue<T> : IDisposable where T : class
     {
         private static Action<object> s_completeOutstandingReadersCallback;
@@ -18,13 +18,8 @@ namespace System.Runtime
         private static Action<object> s_onInvokeDequeuedCallback;
 
         private QueueState _queueState;
-        [Fx.Tag.SynchronizationObject(Blocking = false, Kind = Fx.Tag.SynchronizationKind.LockStatement)]
-
         private ItemQueue _itemQueue;
-        [Fx.Tag.SynchronizationObject]
-
         private Queue<IQueueReader> _readerQueue;
-        [Fx.Tag.SynchronizationObject]
 
         private List<IQueueWaiter> _waiterList;
 
@@ -143,12 +138,11 @@ namespace System.Runtime
             Dispose();
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close")]
         public T Dequeue(TimeSpan timeout)
         {
             T value;
 
-            if (!this.Dequeue(timeout, out value))
+            if (!Dequeue(timeout, out value))
             {
                 throw Fx.Exception.AsError(new TimeoutException(InternalSR.TimeoutInputQueueDequeue(timeout)));
             }
@@ -156,7 +150,70 @@ namespace System.Runtime
             return value;
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close")]
+        public async Task<T> DequeueAsync(TimeSpan timeout)
+        {
+            (bool success, T value) = await TryDequeueAsync(timeout);
+
+            if (!success)
+            {
+                throw Fx.Exception.AsError(new TimeoutException(InternalSR.TimeoutInputQueueDequeue(timeout)));
+            }
+
+            return value;
+        }
+
+        public async Task<(bool, T)> TryDequeueAsync(TimeSpan timeout)
+        {
+            TaskQueueReader reader = null;
+            Item item = new Item();
+
+            lock (ThisLock)
+            {
+                if (_queueState == QueueState.Open)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        item = _itemQueue.DequeueAvailableItem();
+                    }
+                    else
+                    {
+                        reader = new TaskQueueReader(this);
+                        _readerQueue.Enqueue(reader);
+                    }
+                }
+                else if (_queueState == QueueState.Shutdown)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        item = _itemQueue.DequeueAvailableItem();
+                    }
+                    else if (_itemQueue.HasAnyItem)
+                    {
+                        reader = new TaskQueueReader(this);
+                        _readerQueue.Enqueue(reader);
+                    }
+                    else
+                    {
+                        return (true, default(T));
+                    }
+                }
+                else // queueState == QueueState.Closed
+                {
+                    return (true, default(T));
+                }
+            }
+
+            if (reader != null)
+            {
+                return await reader.WaitAsync(timeout);
+            }
+            else
+            {
+                InvokeDequeuedCallback(item.DequeuedCallback);
+                return (true, item.GetValue());
+            }
+        }
+
         public bool Dequeue(TimeSpan timeout, out T value)
         {
             WaitQueueReader reader = null;
@@ -223,7 +280,7 @@ namespace System.Runtime
             lock (ThisLock)
             {
                 itemAvailable = !((_queueState == QueueState.Closed) || (_queueState == QueueState.Shutdown));
-                this.GetWaiters(out waiters);
+                GetWaiters(out waiters);
 
                 if (_queueState != QueueState.Closed)
                 {
@@ -268,7 +325,6 @@ namespace System.Runtime
             }
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close", Conditional = "!result.IsCompleted")]
         public bool EndDequeue(IAsyncResult result, out T value)
         {
             CompletedAsyncResult<T> typedResult = result as CompletedAsyncResult<T>;
@@ -282,12 +338,11 @@ namespace System.Runtime
             return AsyncQueueReader.End(result, out value);
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Close", Conditional = "!result.IsCompleted")]
         public T EndDequeue(IAsyncResult result)
         {
             T value;
 
-            if (!this.EndDequeue(result, out value))
+            if (!EndDequeue(result, out value))
             {
                 throw Fx.Exception.AsError(new TimeoutException());
             }
@@ -295,7 +350,6 @@ namespace System.Runtime
             return value;
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Dispatch", Conditional = "!result.IsCompleted")]
         public bool EndWaitForItem(IAsyncResult result)
         {
             CompletedAsyncResult<bool> typedResult = result as CompletedAsyncResult<bool>;
@@ -349,7 +403,7 @@ namespace System.Runtime
 
         public void Shutdown()
         {
-            this.Shutdown(null);
+            Shutdown(null);
         }
 
         // Don't let any more items in. Differs from Close in that we keep around
@@ -389,7 +443,6 @@ namespace System.Runtime
             }
         }
 
-        [Fx.Tag.Blocking(CancelMethod = "Dispatch")]
         public bool WaitForItem(TimeSpan timeout)
         {
             WaitQueueWaiter waiter = null;
@@ -441,6 +494,57 @@ namespace System.Runtime
             }
         }
 
+        public Task<bool> WaitForItemAsync(TimeSpan timeout)
+        {
+            TaskQueueWaiter waiter = null;
+            bool itemAvailable = false;
+
+            lock (ThisLock)
+            {
+                if (_queueState == QueueState.Open)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        itemAvailable = true;
+                    }
+                    else
+                    {
+                        waiter = new TaskQueueWaiter();
+                        _waiterList.Add(waiter);
+                    }
+                }
+                else if (_queueState == QueueState.Shutdown)
+                {
+                    if (_itemQueue.HasAvailableItem)
+                    {
+                        itemAvailable = true;
+                    }
+                    else if (_itemQueue.HasAnyItem)
+                    {
+                        waiter = new TaskQueueWaiter();
+                        _waiterList.Add(waiter);
+                    }
+                    else
+                    {
+                        return Task.FromResult(true);
+                    }
+                }
+                else // queueState == QueueState.Closed
+                {
+                    return Task.FromResult(true);
+                }
+            }
+
+            if (waiter != null)
+            {
+                return waiter.WaitAsync(timeout);
+            }
+            else
+            {
+                return Task.FromResult(itemAvailable);
+            }
+        }
+
         public void Dispose()
         {
             bool dispose = false;
@@ -482,7 +586,7 @@ namespace System.Runtime
                 }
                 else
                 {
-                    Action<T> disposeItemCallback = this.DisposeItemCallback;
+                    Action<T> disposeItemCallback = DisposeItemCallback;
                     if (disposeItemCallback != null)
                     {
                         disposeItemCallback(value);
@@ -586,7 +690,7 @@ namespace System.Runtime
             lock (ThisLock)
             {
                 itemAvailable = !((_queueState == QueueState.Closed) || (_queueState == QueueState.Shutdown));
-                this.GetWaiters(out waiters);
+                GetWaiters(out waiters);
 
                 if (_queueState == QueueState.Open)
                 {
@@ -745,8 +849,6 @@ namespace System.Runtime
 
         internal struct Item
         {
-            private Action _dequeuedCallback;
-            private Exception _exception;
             private T _value;
 
             public Item(T value, Action dequeuedCallback)
@@ -762,19 +864,13 @@ namespace System.Runtime
             private Item(T value, Exception exception, Action dequeuedCallback)
             {
                 _value = value;
-                _exception = exception;
-                _dequeuedCallback = dequeuedCallback;
+                Exception = exception;
+                DequeuedCallback = dequeuedCallback;
             }
 
-            public Action DequeuedCallback
-            {
-                get { return _dequeuedCallback; }
-            }
+            public Action DequeuedCallback { get; }
 
-            public Exception Exception
-            {
-                get { return _exception; }
-            }
+            public Exception Exception { get; }
 
             public T Value
             {
@@ -783,15 +879,14 @@ namespace System.Runtime
 
             public T GetValue()
             {
-                if (_exception != null)
+                if (Exception != null)
                 {
-                    throw Fx.Exception.AsError(_exception);
+                    throw Fx.Exception.AsError(Exception);
                 }
 
                 return _value;
             }
         }
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.AsyncResult, SupportsAsync = true, ReleaseMethod = "Set")]
 
         internal class AsyncQueueReader : AsyncResult, IQueueReader
         {
@@ -816,7 +911,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(Conditional = "!result.IsCompleted", CancelMethod = "Set")]
             public static bool End(IAsyncResult result, out T value)
             {
                 AsyncQueueReader readerResult = AsyncResult.End<AsyncQueueReader>(result);
@@ -853,16 +947,11 @@ namespace System.Runtime
                 }
             }
         }
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.AsyncResult, SupportsAsync = true, ReleaseMethod = "Set")]
 
         internal class AsyncQueueWaiter : AsyncResult, IQueueWaiter
         {
             private static Action<object> s_timerCallback = new Action<object>(AsyncQueueWaiter.TimerCallback);
             private bool _itemAvailable;
-            [Fx.Tag.SynchronizationObject(Blocking = false)]
-
-            private object _thisLock = new object();
-
             private Timer _timer;
 
             public AsyncQueueWaiter(TimeSpan timeout, AsyncCallback callback, object state) : base(callback, state)
@@ -873,15 +962,8 @@ namespace System.Runtime
                 }
             }
 
-            private object ThisLock
-            {
-                get
-                {
-                    return _thisLock;
-                }
-            }
+            private object ThisLock { get; } = new object();
 
-            [Fx.Tag.Blocking(Conditional = "!result.IsCompleted", CancelMethod = "Set")]
             public static bool End(IAsyncResult result)
             {
                 AsyncQueueWaiter waiterResult = AsyncResult.End<AsyncQueueWaiter>(result);
@@ -916,7 +998,6 @@ namespace System.Runtime
             private int _head;
             private Item[] _items;
             private int _pendingCount;
-            private int _totalCount;
 
             public ItemQueue()
             {
@@ -925,22 +1006,19 @@ namespace System.Runtime
 
             public bool HasAnyItem
             {
-                get { return _totalCount > 0; }
+                get { return ItemCount > 0; }
             }
 
             public bool HasAvailableItem
             {
-                get { return _totalCount > _pendingCount; }
+                get { return ItemCount > _pendingCount; }
             }
 
-            public int ItemCount
-            {
-                get { return _totalCount; }
-            }
+            public int ItemCount { get; private set; }
 
             public Item DequeueAnyItem()
             {
-                if (_pendingCount == _totalCount)
+                if (_pendingCount == ItemCount)
                 {
                     _pendingCount--;
                 }
@@ -949,7 +1027,7 @@ namespace System.Runtime
 
             public Item DequeueAvailableItem()
             {
-                Fx.AssertAndThrow(_totalCount != _pendingCount, "ItemQueue does not contain any available items");
+                Fx.AssertAndThrow(ItemCount != _pendingCount, "ItemQueue does not contain any available items");
                 return DequeueItemCore();
             }
 
@@ -972,41 +1050,37 @@ namespace System.Runtime
 
             private Item DequeueItemCore()
             {
-                Fx.AssertAndThrow(_totalCount != 0, "ItemQueue does not contain any items");
+                Fx.AssertAndThrow(ItemCount != 0, "ItemQueue does not contain any items");
                 Item item = _items[_head];
                 _items[_head] = new Item();
-                _totalCount--;
+                ItemCount--;
                 _head = (_head + 1) % _items.Length;
                 return item;
             }
 
             private void EnqueueItemCore(Item item)
             {
-                if (_totalCount == _items.Length)
+                if (ItemCount == _items.Length)
                 {
                     Item[] newItems = new Item[_items.Length * 2];
-                    for (int i = 0; i < _totalCount; i++)
+                    for (int i = 0; i < ItemCount; i++)
                     {
                         newItems[i] = _items[(_head + i) % _items.Length];
                     }
                     _head = 0;
                     _items = newItems;
                 }
-                int tail = (_head + _totalCount) % _items.Length;
+                int tail = (_head + ItemCount) % _items.Length;
                 _items[tail] = item;
-                _totalCount++;
+                ItemCount++;
             }
         }
-        [Fx.Tag.SynchronizationObject(Blocking = false)]
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.ManualResetEvent, ReleaseMethod = "Set")]
 
         internal class WaitQueueReader : IQueueReader
         {
             private Exception _exception;
             private InputQueue<T> _inputQueue;
             private T _item;
-            [Fx.Tag.SynchronizationObject]
-
             private ManualResetEvent _waitEvent;
 
             public WaitQueueReader(InputQueue<T> inputQueue)
@@ -1028,7 +1102,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(CancelMethod = "Set")]
             public bool Wait(TimeSpan timeout, out T value)
             {
                 bool isSafeToClose = false;
@@ -1067,12 +1140,50 @@ namespace System.Runtime
                 return true;
             }
         }
-        [Fx.Tag.SynchronizationPrimitive(Fx.Tag.BlocksUsing.ManualResetEvent, ReleaseMethod = "Set")]
+
+        internal class TaskQueueReader : IQueueReader
+        {
+            private TaskCompletionSource<T> _tcs = new TaskCompletionSource<T>();
+            private InputQueue<T> _inputQueue;
+
+            public TaskQueueReader(InputQueue<T> inputQueue)
+            {
+                _inputQueue = inputQueue;
+            }
+
+            public void Set(Item item)
+            {
+                if (item.Exception != null)
+                {
+                    _tcs.TrySetException(item.Exception);
+                }
+                else
+                {
+                    _tcs.TrySetResult(item.Value);
+                }
+            }
+
+            public async Task<(bool, T)> WaitAsync(TimeSpan timeout)
+            {
+                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                {
+                    if (_inputQueue.RemoveReader(this))
+                    {
+                        return (false, default(T));
+                    }
+                    else
+                    {
+                        await _tcs.Task;
+                    }
+                }
+
+                return (true, await _tcs.Task);
+            }
+        }
 
         internal class WaitQueueWaiter : IQueueWaiter
         {
             private bool _itemAvailable;
-            [Fx.Tag.SynchronizationObject]
 
             private ManualResetEvent _waitEvent;
 
@@ -1090,7 +1201,6 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.Blocking(CancelMethod = "Set")]
             public bool Wait(TimeSpan timeout)
             {
                 if (!TimeoutHelper.WaitOne(_waitEvent, timeout))
@@ -1099,6 +1209,34 @@ namespace System.Runtime
                 }
 
                 return _itemAvailable;
+            }
+        }
+
+        internal class TaskQueueWaiter : IQueueWaiter
+        {
+            private TaskCompletionSource<bool> _tcs;
+
+            public TaskQueueWaiter()
+            {
+                _tcs = new TaskCompletionSource<bool>();
+            }
+
+            public void Set(bool itemAvailable)
+            {
+                lock (this)
+                {
+                    _tcs.TrySetResult(itemAvailable);
+                }
+            }
+
+            public async Task<bool> WaitAsync(TimeSpan timeout)
+            {
+                if (!await _tcs.Task.AwaitWithTimeout(timeout))
+                {
+                    return false;
+                }
+
+                return await _tcs.Task;
             }
         }
     }

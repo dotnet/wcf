@@ -4,7 +4,6 @@
 
 
 using System.Runtime;
-using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -104,7 +103,7 @@ namespace System.ServiceModel.Channels
         {
             if (size <= 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size, SR.ValueMustBePositive));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(size), size, SR.ValueMustBePositive));
             }
 
             ThrowPendingWriteException();
@@ -124,7 +123,7 @@ namespace System.ServiceModel.Channels
         {
             if (size <= 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size, SR.ValueMustBePositive));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(size), size, SR.ValueMustBePositive));
             }
 
             ThrowPendingWriteException();
@@ -267,41 +266,27 @@ namespace System.ServiceModel.Channels
 
     internal class BufferedConnectionInitiator : IConnectionInitiator
     {
-        private int _writeBufferSize;
-        private TimeSpan _flushTimeout;
         private IConnectionInitiator _connectionInitiator;
 
         public BufferedConnectionInitiator(IConnectionInitiator connectionInitiator, TimeSpan flushTimeout, int writeBufferSize)
         {
             _connectionInitiator = connectionInitiator;
-            _flushTimeout = flushTimeout;
-            _writeBufferSize = writeBufferSize;
+            FlushTimeout = flushTimeout;
+            WriteBufferSize = writeBufferSize;
         }
 
-        protected TimeSpan FlushTimeout
-        {
-            get
-            {
-                return _flushTimeout;
-            }
-        }
+        protected TimeSpan FlushTimeout { get; }
 
-        protected int WriteBufferSize
-        {
-            get
-            {
-                return _writeBufferSize;
-            }
-        }
+        protected int WriteBufferSize { get; }
 
         public IConnection Connect(Uri uri, TimeSpan timeout)
         {
-            return new BufferedConnection(_connectionInitiator.Connect(uri, timeout), _flushTimeout, _writeBufferSize);
+            return new BufferedConnection(_connectionInitiator.Connect(uri, timeout), FlushTimeout, WriteBufferSize);
         }
 
         public async Task<IConnection> ConnectAsync(Uri uri, TimeSpan timeout)
         {
-            return new BufferedConnection(await _connectionInitiator.ConnectAsync(uri, timeout), _flushTimeout, _writeBufferSize);
+            return new BufferedConnection(await _connectionInitiator.ConnectAsync(uri, timeout), FlushTimeout, WriteBufferSize);
         }
     }
 }

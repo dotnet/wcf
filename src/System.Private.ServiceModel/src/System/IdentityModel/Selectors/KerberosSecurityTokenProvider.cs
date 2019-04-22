@@ -8,15 +8,12 @@ using System.Net;
 using System.Security.Authentication.ExtendedProtection;
 using System.Security.Principal;
 using System.ServiceModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.IdentityModel.Selectors
 {
     public class KerberosSecurityTokenProvider : SecurityTokenProvider
     {
-        private readonly string _servicePrincipalName;
-        private readonly TokenImpersonationLevel _tokenImpersonationLevel;
         private readonly NetworkCredential _networkCredential;
 
         public KerberosSecurityTokenProvider(string servicePrincipalName)
@@ -31,44 +28,36 @@ namespace System.IdentityModel.Selectors
 
         public KerberosSecurityTokenProvider(string servicePrincipalName, TokenImpersonationLevel tokenImpersonationLevel, NetworkCredential networkCredential)
         {
-            if (servicePrincipalName == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("servicePrincipalName");
             if (tokenImpersonationLevel != TokenImpersonationLevel.Identification && tokenImpersonationLevel != TokenImpersonationLevel.Impersonation)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenImpersonationLevel",
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(tokenImpersonationLevel),
                     SR.Format(SR.ImpersonationLevelNotSupported, tokenImpersonationLevel)));
             }
 
-            _servicePrincipalName = servicePrincipalName;
-            _tokenImpersonationLevel = tokenImpersonationLevel;
+            ServicePrincipalName = servicePrincipalName ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(servicePrincipalName));
+            TokenImpersonationLevel = tokenImpersonationLevel;
             _networkCredential = networkCredential;
         }
 
-        public string ServicePrincipalName
-        {
-            get { return _servicePrincipalName; }
-        }
+        public string ServicePrincipalName { get; }
 
-        public TokenImpersonationLevel TokenImpersonationLevel
-        {
-            get { return _tokenImpersonationLevel; }
-        }
+        public TokenImpersonationLevel TokenImpersonationLevel { get; }
 
         public NetworkCredential NetworkCredential
         {
             get { return _networkCredential; }
         }
 
-        internal SecurityToken GetToken(CancellationToken cancellationToken, ChannelBinding channelbinding)
+        internal SecurityToken GetToken(TimeSpan timeout, ChannelBinding channelbinding)
         {
             return new KerberosRequestorSecurityToken(ServicePrincipalName,
                 TokenImpersonationLevel, NetworkCredential,
                 SecurityUniqueId.Create().Value);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
-            return Task.FromResult(GetToken(cancellationToken, null));
+            return Task.FromResult(GetToken(timeout, null));
         }
     }
 }

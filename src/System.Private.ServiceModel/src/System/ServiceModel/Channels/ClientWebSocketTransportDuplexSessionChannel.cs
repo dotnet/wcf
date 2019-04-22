@@ -3,16 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
 using System.Diagnostics.Contracts;
-using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using System.IO;
 using System.Net;
 using System.Net.WebSockets;
 using System.Runtime;
 using System.Security.Cryptography.X509Certificates;
-using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Threading.Tasks;
 
@@ -71,7 +67,7 @@ namespace System.ServiceModel.Channels
 
                 ChannelParameterCollection channelParameterCollection = new ChannelParameterCollection();
 
-                if (HttpChannelFactory<IDuplexSessionChannel>.MapIdentity(this.RemoteAddress, _channelFactory.AuthenticationScheme))
+                if (HttpChannelFactory<IDuplexSessionChannel>.MapIdentity(RemoteAddress, _channelFactory.AuthenticationScheme))
                 {
                     lock (ThisLock)
                     {

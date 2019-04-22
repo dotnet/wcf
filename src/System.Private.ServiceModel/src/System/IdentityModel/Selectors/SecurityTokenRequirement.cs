@@ -6,7 +6,6 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Runtime;
-using System.ServiceModel;
 
 namespace System.IdentityModel.Selectors
 {
@@ -32,7 +31,7 @@ namespace System.IdentityModel.Selectors
         public SecurityTokenRequirement()
         {
             _properties = new Dictionary<string, object>();
-            this.Initialize();
+            Initialize();
         }
 
         static public string TokenTypeProperty { get { return tokenTypeProperty; } }
@@ -48,7 +47,7 @@ namespace System.IdentityModel.Selectors
             get
             {
                 string result;
-                return (this.TryGetProperty<string>(TokenTypeProperty, out result)) ? result : null;
+                return (TryGetProperty(TokenTypeProperty, out result)) ? result : null;
             }
             set
             {
@@ -61,7 +60,7 @@ namespace System.IdentityModel.Selectors
             get
             {
                 bool result;
-                return (this.TryGetProperty<bool>(IsOptionalTokenProperty, out result)) ? result : defaultIsOptionalToken;
+                return (TryGetProperty(IsOptionalTokenProperty, out result)) ? result : defaultIsOptionalToken;
             }
             set
             {
@@ -74,7 +73,7 @@ namespace System.IdentityModel.Selectors
             get
             {
                 bool result;
-                return (this.TryGetProperty<bool>(RequireCryptographicTokenProperty, out result)) ? result : defaultRequireCryptographicToken;
+                return (TryGetProperty(RequireCryptographicTokenProperty, out result)) ? result : defaultRequireCryptographicToken;
             }
             set
             {
@@ -87,7 +86,7 @@ namespace System.IdentityModel.Selectors
             get
             {
                 SecurityKeyUsage result;
-                return (this.TryGetProperty<SecurityKeyUsage>(KeyUsageProperty, out result)) ? result : defaultKeyUsage;
+                return (TryGetProperty(KeyUsageProperty, out result)) ? result : defaultKeyUsage;
             }
             set
             {
@@ -101,7 +100,7 @@ namespace System.IdentityModel.Selectors
             get
             {
                 SecurityKeyType result;
-                return (this.TryGetProperty<SecurityKeyType>(KeyTypeProperty, out result)) ? result : defaultKeyType;
+                return (TryGetProperty(KeyTypeProperty, out result)) ? result : defaultKeyType;
             }
             set
             {
@@ -115,7 +114,7 @@ namespace System.IdentityModel.Selectors
             get
             {
                 int result;
-                return (this.TryGetProperty<int>(KeySizeProperty, out result)) ? result : defaultKeySize;
+                return (TryGetProperty(KeySizeProperty, out result)) ? result : defaultKeySize;
             }
             set
             {
@@ -123,7 +122,7 @@ namespace System.IdentityModel.Selectors
                 {
                     throw Fx.Exception.ArgumentOutOfRange("value", value, SR.ValueMustBeNonNegative);
                 }
-                this.Properties[KeySizeProperty] = value;
+                Properties[KeySizeProperty] = value;
             }
         }
 
@@ -137,17 +136,17 @@ namespace System.IdentityModel.Selectors
 
         private void Initialize()
         {
-            this.KeyType = defaultKeyType;
-            this.KeyUsage = defaultKeyUsage;
-            this.RequireCryptographicToken = defaultRequireCryptographicToken;
-            this.KeySize = defaultKeySize;
-            this.IsOptionalToken = defaultIsOptionalToken;
+            KeyType = defaultKeyType;
+            KeyUsage = defaultKeyUsage;
+            RequireCryptographicToken = defaultRequireCryptographicToken;
+            KeySize = defaultKeySize;
+            IsOptionalToken = defaultIsOptionalToken;
         }
 
         public TValue GetProperty<TValue>(string propertyName)
         {
             TValue result;
-            if (!TryGetProperty<TValue>(propertyName, out result))
+            if (!TryGetProperty(propertyName, out result))
             {
                 throw Fx.Exception.Argument(propertyName, string.Format(SR.SecurityTokenRequirementDoesNotContainProperty, propertyName));
             }

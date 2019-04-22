@@ -3,9 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.Serialization;
 
 namespace System.ServiceModel.Description
 {
@@ -20,7 +18,9 @@ namespace System.ServiceModel.Description
             foreach (FaultDescription description in this)
             {
                 if (description != null && action == description.Action)
+                {
                     return description;
+                }
             }
 
             return null;
@@ -32,7 +32,9 @@ namespace System.ServiceModel.Description
             foreach (FaultDescription description in this)
             {
                 if (description != null && action == description.Action)
+                {
                     descriptions.Add(description);
+                }
             }
 
             return descriptions;

@@ -3,29 +3,22 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System;
-using System.Diagnostics;
 using System.Runtime;
-using System.ServiceModel;
-using System.ServiceModel.Diagnostics;
 
 namespace System.ServiceModel.Channels
 {
     internal abstract class RequestContextBase : RequestContext
     {
-        private TimeSpan _defaultSendTimeout;
         private TimeSpan _defaultCloseTimeout;
         private CommunicationState _state = CommunicationState.Opened;
         private Message _requestMessage;
         private Exception _requestMessageException;
         private bool _replySent;
-        private bool _replyInitiated;
         private bool _aborted;
-        private object _thisLock = new object();
 
         protected RequestContextBase(Message requestMessage, TimeSpan defaultCloseTimeout, TimeSpan defaultSendTimeout)
         {
-            _defaultSendTimeout = defaultSendTimeout;
+            DefaultSendTimeout = defaultSendTimeout;
             _defaultCloseTimeout = defaultCloseTimeout;
             _requestMessage = requestMessage;
         }
@@ -35,7 +28,7 @@ namespace System.ServiceModel.Channels
             _state = CommunicationState.Opened;
             _requestMessageException = null;
             _replySent = false;
-            _replyInitiated = false;
+            ReplyInitiated = false;
             _aborted = false;
             _requestMessage = requestMessage;
         }
@@ -65,18 +58,9 @@ namespace System.ServiceModel.Channels
             _requestMessageException = requestMessageException;
         }
 
-        protected bool ReplyInitiated
-        {
-            get { return _replyInitiated; }
-        }
+        protected bool ReplyInitiated { get; private set; }
 
-        protected object ThisLock
-        {
-            get
-            {
-                return _thisLock;
-            }
-        }
+        protected object ThisLock { get; } = new object();
 
         public bool Aborted
         {
@@ -91,17 +75,16 @@ namespace System.ServiceModel.Channels
             get { return _defaultCloseTimeout; }
         }
 
-        public TimeSpan DefaultSendTimeout
-        {
-            get { return _defaultSendTimeout; }
-        }
+        public TimeSpan DefaultSendTimeout { get; }
 
         public override void Abort()
         {
             lock (ThisLock)
             {
                 if (_state == CommunicationState.Closed)
+                {
                     return;
+                }
 
                 _state = CommunicationState.Closing;
 
@@ -110,7 +93,7 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                this.OnAbort();
+                OnAbort();
             }
             finally
             {
@@ -120,21 +103,23 @@ namespace System.ServiceModel.Channels
 
         public override void Close()
         {
-            this.Close(_defaultCloseTimeout);
+            Close(_defaultCloseTimeout);
         }
 
         public override void Close(TimeSpan timeout)
         {
             if (timeout < TimeSpan.Zero)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("timeout", timeout, SR.ValueMustBeNonNegative));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(timeout), timeout, SR.ValueMustBeNonNegative));
             }
 
             bool sendAck = false;
             lock (ThisLock)
             {
                 if (_state != CommunicationState.Opened)
+                {
                     return;
+                }
 
                 if (TryInitiateReply())
                 {
@@ -161,7 +146,9 @@ namespace System.ServiceModel.Channels
             finally
             {
                 if (throwing)
-                    this.Abort();
+                {
+                    Abort();
+                }
             }
         }
 
@@ -170,15 +157,17 @@ namespace System.ServiceModel.Channels
             base.Dispose(disposing);
 
             if (!disposing)
+            {
                 return;
+            }
 
             if (_replySent)
             {
-                this.Close();
+                Close();
             }
             else
             {
-                this.Abort();
+                Abort();
             }
         }
 
@@ -193,13 +182,19 @@ namespace System.ServiceModel.Channels
             if (_state == CommunicationState.Closed || _state == CommunicationState.Closing)
             {
                 if (_aborted)
+                {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationObjectAbortedException(SR.RequestContextAborted));
+                }
                 else
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
+                }
             }
 
-            if (_replyInitiated)
+            if (ReplyInitiated)
+            {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ReplyAlreadySent));
+            }
         }
 
         /// <summary>
@@ -208,15 +203,15 @@ namespace System.ServiceModel.Channels
         /// </summary>
         protected bool TryInitiateReply()
         {
-            lock (_thisLock)
+            lock (ThisLock)
             {
-                if ((_state != CommunicationState.Opened) || _replyInitiated)
+                if ((_state != CommunicationState.Opened) || ReplyInitiated)
                 {
                     return false;
                 }
                 else
                 {
-                    _replyInitiated = true;
+                    ReplyInitiated = true;
                     return true;
                 }
             }
@@ -224,16 +219,16 @@ namespace System.ServiceModel.Channels
 
         public override IAsyncResult BeginReply(Message message, AsyncCallback callback, object state)
         {
-            return this.BeginReply(message, _defaultSendTimeout, callback, state);
+            return BeginReply(message, DefaultSendTimeout, callback, state);
         }
 
         public override IAsyncResult BeginReply(Message message, TimeSpan timeout, AsyncCallback callback, object state)
         {
             // "null" is a valid reply (signals a 202-style "ack"), so we don't have a null-check here
-            lock (_thisLock)
+            lock (ThisLock)
             {
-                this.ThrowIfInvalidReply();
-                _replyInitiated = true;
+                ThrowIfInvalidReply();
+                ReplyInitiated = true;
             }
 
             return OnBeginReply(message, timeout, callback, state);
@@ -247,19 +242,19 @@ namespace System.ServiceModel.Channels
 
         public override void Reply(Message message)
         {
-            this.Reply(message, _defaultSendTimeout);
+            Reply(message, DefaultSendTimeout);
         }
 
         public override void Reply(Message message, TimeSpan timeout)
         {
             // "null" is a valid reply (signals a 202-style "ack"), so we don't have a null-check here
-            lock (_thisLock)
+            lock (ThisLock)
             {
-                this.ThrowIfInvalidReply();
-                _replyInitiated = true;
+                ThrowIfInvalidReply();
+                ReplyInitiated = true;
             }
 
-            this.OnReply(message, timeout);
+            OnReply(message, timeout);
             _replySent = true;
         }
 
@@ -270,10 +265,10 @@ namespace System.ServiceModel.Channels
         // are disposing the HttpRequestContext, we will see a bunch of warnings in trace log.
         protected void SetReplySent()
         {
-            lock (_thisLock)
+            lock (ThisLock)
             {
-                this.ThrowIfInvalidReply();
-                _replyInitiated = true;
+                ThrowIfInvalidReply();
+                ReplyInitiated = true;
             }
 
             _replySent = true;
@@ -303,7 +298,10 @@ namespace System.ServiceModel.Channels
             lock (_thisLock)
             {
                 if (_context == null)
+                {
                     return;
+                }
+
                 thisContext = _context;
                 _context = null;
             }

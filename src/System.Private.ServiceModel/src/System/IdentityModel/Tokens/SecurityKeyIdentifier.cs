@@ -15,7 +15,6 @@ namespace System.IdentityModel.Tokens
     {
         private const int InitialSize = 2;
         private readonly List<SecurityKeyIdentifierClause> _clauses;
-        private bool _isReadOnly;
 
         public SecurityKeyIdentifier()
         {
@@ -26,7 +25,7 @@ namespace System.IdentityModel.Tokens
         {
             if (clauses == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("clauses");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(clauses));
             }
             _clauses = new List<SecurityKeyIdentifierClause>(clauses.Length);
             for (int i = 0; i < clauses.Length; i++)
@@ -44,7 +43,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                for (int i = 0; i < this.Count; i++)
+                for (int i = 0; i < Count; i++)
                 {
                     if (this[i].CanCreateKey)
                     {
@@ -60,27 +59,24 @@ namespace System.IdentityModel.Tokens
             get { return _clauses.Count; }
         }
 
-        public bool IsReadOnly
-        {
-            get { return _isReadOnly; }
-        }
+        public bool IsReadOnly { get; private set; }
 
         public void Add(SecurityKeyIdentifierClause clause)
         {
-            if (_isReadOnly)
+            if (IsReadOnly)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ObjectIsReadOnly));
             }
             if (clause == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("clause"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(clause)));
             }
             _clauses.Add(clause);
         }
 
         public SecurityKey CreateKey()
         {
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (this[i].CanCreateKey)
                 {
@@ -93,7 +89,7 @@ namespace System.IdentityModel.Tokens
         public TClause Find<TClause>() where TClause : SecurityKeyIdentifierClause
         {
             TClause clause;
-            if (!TryFind<TClause>(out clause))
+            if (!TryFind(out clause))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.NoKeyIdentifierClauseFound, typeof(TClause)), "TClause"));
             }
@@ -107,7 +103,7 @@ namespace System.IdentityModel.Tokens
 
         public void MakeReadOnly()
         {
-            _isReadOnly = true;
+            IsReadOnly = true;
         }
 
         public override string ToString()
@@ -116,11 +112,11 @@ namespace System.IdentityModel.Tokens
             {
                 writer.WriteLine("SecurityKeyIdentifier");
                 writer.WriteLine("    (");
-                writer.WriteLine("    IsReadOnly = {0},", this.IsReadOnly);
-                writer.WriteLine("    Count = {0}{1}", this.Count, this.Count > 0 ? "," : "");
-                for (int i = 0; i < this.Count; i++)
+                writer.WriteLine("    IsReadOnly = {0},", IsReadOnly);
+                writer.WriteLine("    Count = {0}{1}", Count, Count > 0 ? "," : "");
+                for (int i = 0; i < Count; i++)
                 {
-                    writer.WriteLine("    Clause[{0}] = {1}{2}", i, this[i], i < this.Count - 1 ? "," : "");
+                    writer.WriteLine("    Clause[{0}] = {1}{2}", i, this[i], i < Count - 1 ? "," : "");
                 }
                 writer.WriteLine("    )");
                 return writer.ToString();
@@ -144,7 +140,7 @@ namespace System.IdentityModel.Tokens
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

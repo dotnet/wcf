@@ -31,9 +31,11 @@ namespace System.IdentityModel.Claims
         internal X509CertificateClaimSet(X509Certificate2 certificate, bool clone)
         {
             if (certificate == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
-            
-             _certificate = clone ? new X509Certificate2(certificate) : certificate;
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
+            }
+
+            _certificate = clone ? new X509Certificate2(certificate) : certificate;
         }
 
         private X509CertificateClaimSet(X509CertificateClaimSet from)
@@ -74,7 +76,10 @@ namespace System.IdentityModel.Claims
             {
                 ThrowIfDisposed();
                 if (_identity == null)
+                {
                     _identity = new X509Identity(_certificate, false, false);
+                }
+
                 return _identity;
             }
         }
@@ -85,7 +90,10 @@ namespace System.IdentityModel.Claims
             {
                 ThrowIfDisposed();
                 if (_expirationTime == SecurityUtils.MinUtcDateTime)
+                {
                     _expirationTime = _certificate.NotAfter.ToUniversalTime();
+                }
+
                 return _expirationTime;
             }
         }
@@ -113,9 +121,13 @@ namespace System.IdentityModel.Claims
                     }
                     // SelfSigned?
                     else if (StringComparer.OrdinalIgnoreCase.Equals(_certificate.SubjectName.Name, _certificate.IssuerName.Name))
+                    {
                         _issuer = this;
+                    }
                     else
+                    {
                         _issuer = new X500DistinguishedNameClaimSet(_certificate.IssuerName);
+                    }
                 }
                 return _issuer;
             }
@@ -170,7 +182,9 @@ namespace System.IdentityModel.Claims
             // Ordering SubjectName, Dns, SimpleName, Email, Upn
             string value = _certificate.SubjectName.Name;
             if (!string.IsNullOrEmpty(value))
+            {
                 claims.Add(Claim.CreateX500DistinguishedNameClaim(_certificate.SubjectName));
+            }
 
             // A SAN field can have multiple DNS names
             string[] dnsEntries = GetDnsFromExtensions(_certificate);
@@ -193,15 +207,21 @@ namespace System.IdentityModel.Claims
 
             value = _certificate.GetNameInfo(X509NameType.SimpleName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 claims.Add(Claim.CreateNameClaim(value));
+            }
 
             value = _certificate.GetNameInfo(X509NameType.UpnName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 claims.Add(Claim.CreateUpnClaim(value));
+            }
 
             value = _certificate.GetNameInfo(X509NameType.UrlName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 claims.Add(Claim.CreateUriClaim(new Uri(value)));
+            }
 
             //RSA rsa = _certificate.PublicKey.Key as RSA;
             //if (rsa != null)
@@ -213,7 +233,9 @@ namespace System.IdentityModel.Claims
         private void EnsureClaims()
         {
             if (_claims != null)
+            {
                 return;
+            }
 
             _claims = InitializeClaimsCore();
         }
@@ -347,30 +369,27 @@ namespace System.IdentityModel.Claims
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
 
         private class X500DistinguishedNameClaimSet : DefaultClaimSet, IIdentityInfo
         {
-            private IIdentity _identity;
-
             public X500DistinguishedNameClaimSet(X500DistinguishedName x500DistinguishedName)
             {
                 if (x500DistinguishedName == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("x500DistinguishedName");
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(x500DistinguishedName));
+                }
 
-                _identity = new X509Identity(x500DistinguishedName);
+                Identity = new X509Identity(x500DistinguishedName);
                 List<Claim> claims = new List<Claim>(2);
                 claims.Add(new Claim(ClaimTypes.X500DistinguishedName, x500DistinguishedName, Rights.Identity));
                 claims.Add(Claim.CreateX500DistinguishedNameClaim(x500DistinguishedName));
                 Initialize(ClaimSet.Anonymous, claims);
             }
 
-            public IIdentity Identity
-            {
-                get { return _identity; }
-            }
+            public IIdentity Identity { get; }
         }
 
         // We don't have a strongly typed extension to parse Subject Alt Names, so we have to do a workaround 
@@ -507,7 +526,7 @@ namespace System.IdentityModel.Claims
         internal X509Identity(X509Certificate2 certificate, bool clone, bool disposable)
             : base(X509, X509)
         {
-             _certificate = clone ? new X509Certificate2(certificate) : certificate;
+            _certificate = clone ? new X509Certificate2(certificate) : certificate;
 
             _disposable = clone || disposable;
         }
@@ -533,27 +552,39 @@ namespace System.IdentityModel.Claims
         private string GetName()
         {
             if (_x500DistinguishedName != null)
+            {
                 return _x500DistinguishedName.Name;
+            }
 
             string value = _certificate.SubjectName.Name;
             if (!string.IsNullOrEmpty(value))
+            {
                 return value;
+            }
 
             value = _certificate.GetNameInfo(X509NameType.DnsName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 return value;
+            }
 
             value = _certificate.GetNameInfo(X509NameType.SimpleName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 return value;
+            }
 
             value = _certificate.GetNameInfo(X509NameType.EmailName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 return value;
+            }
 
             value = _certificate.GetNameInfo(X509NameType.UpnName, false);
             if (!string.IsNullOrEmpty(value))
+            {
                 return value;
+            }
 
             return String.Empty;
         }
@@ -579,7 +610,7 @@ namespace System.IdentityModel.Claims
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
     }

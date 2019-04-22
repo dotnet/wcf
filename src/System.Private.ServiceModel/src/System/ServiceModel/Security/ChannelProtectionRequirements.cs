@@ -13,73 +13,49 @@ namespace System.ServiceModel.Security
 {
     public class ChannelProtectionRequirements
     {
-        private ScopedMessagePartSpecification _incomingSignatureParts;
-        private ScopedMessagePartSpecification _incomingEncryptionParts;
-        private ScopedMessagePartSpecification _outgoingSignatureParts;
         private ScopedMessagePartSpecification _outgoingEncryptionParts;
-        private bool _isReadOnly;
 
         public ChannelProtectionRequirements()
         {
-            _incomingSignatureParts = new ScopedMessagePartSpecification();
-            _incomingEncryptionParts = new ScopedMessagePartSpecification();
-            _outgoingSignatureParts = new ScopedMessagePartSpecification();
+            IncomingSignatureParts = new ScopedMessagePartSpecification();
+            IncomingEncryptionParts = new ScopedMessagePartSpecification();
+            OutgoingSignatureParts = new ScopedMessagePartSpecification();
             _outgoingEncryptionParts = new ScopedMessagePartSpecification();
         }
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return _isReadOnly;
-            }
-        }
+        public bool IsReadOnly { get; private set; }
 
         public ChannelProtectionRequirements(ChannelProtectionRequirements other)
         {
             if (other == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("other"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(other)));
+            }
 
-            _incomingSignatureParts = new ScopedMessagePartSpecification(other._incomingSignatureParts);
-            _incomingEncryptionParts = new ScopedMessagePartSpecification(other._incomingEncryptionParts);
-            _outgoingSignatureParts = new ScopedMessagePartSpecification(other._outgoingSignatureParts);
+            IncomingSignatureParts = new ScopedMessagePartSpecification(other.IncomingSignatureParts);
+            IncomingEncryptionParts = new ScopedMessagePartSpecification(other.IncomingEncryptionParts);
+            OutgoingSignatureParts = new ScopedMessagePartSpecification(other.OutgoingSignatureParts);
             _outgoingEncryptionParts = new ScopedMessagePartSpecification(other._outgoingEncryptionParts);
         }
 
         internal ChannelProtectionRequirements(ChannelProtectionRequirements other, ProtectionLevel newBodyProtectionLevel)
         {
             if (other == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("other"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(other)));
+            }
 
-            _incomingSignatureParts = new ScopedMessagePartSpecification(other._incomingSignatureParts, newBodyProtectionLevel != ProtectionLevel.None);
-            _incomingEncryptionParts = new ScopedMessagePartSpecification(other._incomingEncryptionParts, newBodyProtectionLevel == ProtectionLevel.EncryptAndSign);
-            _outgoingSignatureParts = new ScopedMessagePartSpecification(other._outgoingSignatureParts, newBodyProtectionLevel != ProtectionLevel.None);
+            IncomingSignatureParts = new ScopedMessagePartSpecification(other.IncomingSignatureParts, newBodyProtectionLevel != ProtectionLevel.None);
+            IncomingEncryptionParts = new ScopedMessagePartSpecification(other.IncomingEncryptionParts, newBodyProtectionLevel == ProtectionLevel.EncryptAndSign);
+            OutgoingSignatureParts = new ScopedMessagePartSpecification(other.OutgoingSignatureParts, newBodyProtectionLevel != ProtectionLevel.None);
             _outgoingEncryptionParts = new ScopedMessagePartSpecification(other._outgoingEncryptionParts, newBodyProtectionLevel == ProtectionLevel.EncryptAndSign);
         }
 
-        public ScopedMessagePartSpecification IncomingSignatureParts
-        {
-            get
-            {
-                return _incomingSignatureParts;
-            }
-        }
+        public ScopedMessagePartSpecification IncomingSignatureParts { get; private set; }
 
-        public ScopedMessagePartSpecification IncomingEncryptionParts
-        {
-            get
-            {
-                return _incomingEncryptionParts;
-            }
-        }
+        public ScopedMessagePartSpecification IncomingEncryptionParts { get; private set; }
 
-        public ScopedMessagePartSpecification OutgoingSignatureParts
-        {
-            get
-            {
-                return _outgoingSignatureParts;
-            }
-        }
+        public ScopedMessagePartSpecification OutgoingSignatureParts { get; private set; }
 
         public ScopedMessagePartSpecification OutgoingEncryptionParts
         {
@@ -91,28 +67,41 @@ namespace System.ServiceModel.Security
 
         public void Add(ChannelProtectionRequirements protectionRequirements)
         {
-            this.Add(protectionRequirements, false);
+            Add(protectionRequirements, false);
         }
 
         public void Add(ChannelProtectionRequirements protectionRequirements, bool channelScopeOnly)
         {
             if (protectionRequirements == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("protectionRequirements"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(protectionRequirements)));
+            }
 
-            if (protectionRequirements._incomingSignatureParts != null)
-                _incomingSignatureParts.AddParts(protectionRequirements._incomingSignatureParts.ChannelParts);
-            if (protectionRequirements._incomingEncryptionParts != null)
-                _incomingEncryptionParts.AddParts(protectionRequirements._incomingEncryptionParts.ChannelParts);
-            if (protectionRequirements._outgoingSignatureParts != null)
-                _outgoingSignatureParts.AddParts(protectionRequirements._outgoingSignatureParts.ChannelParts);
+            if (protectionRequirements.IncomingSignatureParts != null)
+            {
+                IncomingSignatureParts.AddParts(protectionRequirements.IncomingSignatureParts.ChannelParts);
+            }
+
+            if (protectionRequirements.IncomingEncryptionParts != null)
+            {
+                IncomingEncryptionParts.AddParts(protectionRequirements.IncomingEncryptionParts.ChannelParts);
+            }
+
+            if (protectionRequirements.OutgoingSignatureParts != null)
+            {
+                OutgoingSignatureParts.AddParts(protectionRequirements.OutgoingSignatureParts.ChannelParts);
+            }
+
             if (protectionRequirements._outgoingEncryptionParts != null)
+            {
                 _outgoingEncryptionParts.AddParts(protectionRequirements._outgoingEncryptionParts.ChannelParts);
+            }
 
             if (!channelScopeOnly)
             {
-                AddActionParts(_incomingSignatureParts, protectionRequirements._incomingSignatureParts);
-                AddActionParts(_incomingEncryptionParts, protectionRequirements._incomingEncryptionParts);
-                AddActionParts(_outgoingSignatureParts, protectionRequirements._outgoingSignatureParts);
+                AddActionParts(IncomingSignatureParts, protectionRequirements.IncomingSignatureParts);
+                AddActionParts(IncomingEncryptionParts, protectionRequirements.IncomingEncryptionParts);
+                AddActionParts(OutgoingSignatureParts, protectionRequirements.OutgoingSignatureParts);
                 AddActionParts(_outgoingEncryptionParts, protectionRequirements._outgoingEncryptionParts);
             }
         }
@@ -123,19 +112,21 @@ namespace System.ServiceModel.Security
             {
                 MessagePartSpecification p;
                 if (from.TryGetParts(action, true, out p))
+                {
                     to.AddParts(p, action);
+                }
             }
         }
 
         public void MakeReadOnly()
         {
-            if (!_isReadOnly)
+            if (!IsReadOnly)
             {
-                _incomingSignatureParts.MakeReadOnly();
-                _incomingEncryptionParts.MakeReadOnly();
-                _outgoingSignatureParts.MakeReadOnly();
+                IncomingSignatureParts.MakeReadOnly();
+                IncomingEncryptionParts.MakeReadOnly();
+                OutgoingSignatureParts.MakeReadOnly();
                 _outgoingEncryptionParts.MakeReadOnly();
-                _isReadOnly = true;
+                IsReadOnly = true;
             }
         }
 
@@ -144,10 +135,10 @@ namespace System.ServiceModel.Security
             ChannelProtectionRequirements result = new ChannelProtectionRequirements();
 
             result.Add(this, true);
-            result._incomingSignatureParts = new ScopedMessagePartSpecification(this.OutgoingSignatureParts);
-            result._outgoingSignatureParts = new ScopedMessagePartSpecification(this.IncomingSignatureParts);
-            result._incomingEncryptionParts = new ScopedMessagePartSpecification(this.OutgoingEncryptionParts);
-            result._outgoingEncryptionParts = new ScopedMessagePartSpecification(this.IncomingEncryptionParts);
+            result.IncomingSignatureParts = new ScopedMessagePartSpecification(OutgoingSignatureParts);
+            result.OutgoingSignatureParts = new ScopedMessagePartSpecification(IncomingSignatureParts);
+            result.IncomingEncryptionParts = new ScopedMessagePartSpecification(OutgoingEncryptionParts);
+            result._outgoingEncryptionParts = new ScopedMessagePartSpecification(IncomingEncryptionParts);
 
             return result;
         }
@@ -207,7 +198,9 @@ namespace System.ServiceModel.Security
         internal static ChannelProtectionRequirements CreateFromContract(ContractDescription contract, ProtectionLevel defaultRequestProtectionLevel, ProtectionLevel defaultResponseProtectionLevel, bool isForClient)
         {
             if (contract == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("contract"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(contract)));
+            }
 
             ChannelProtectionRequirements requirements = new ChannelProtectionRequirements();
 
@@ -288,14 +281,18 @@ namespace System.ServiceModel.Security
                             ProtectionLevel partProtectionLevel = body.HasProtectionLevel ? body.ProtectionLevel : messageScopeDefaultProtectionLevel;
                             bodyProtectionLevel = ProtectionLevelHelper.Max(bodyProtectionLevel, partProtectionLevel);
                             if (bodyProtectionLevel == ProtectionLevel.EncryptAndSign)
+                            {
                                 break;
+                            }
                         }
                     }
                     if (bodyProtectionLevel != ProtectionLevel.None)
                     {
                         signedParts.IsBodyIncluded = true;
                         if (bodyProtectionLevel == ProtectionLevel.EncryptAndSign)
+                        {
                             encryptedParts.IsBodyIncluded = true;
+                        }
                     }
 
                     // add requirements for message 
@@ -335,16 +332,23 @@ namespace System.ServiceModel.Security
                 XmlQualifiedName headerName = new XmlQualifiedName(header.Name, header.Namespace);
                 signedParts.HeaderTypes.Add(headerName);
                 if (p == ProtectionLevel.EncryptAndSign)
+                {
                     encryptedParts.HeaderTypes.Add(headerName);
+                }
             }
         }
 
         private static void AddFaultProtectionRequirements(FaultDescriptionCollection faults, ChannelProtectionRequirements requirements, ProtectionLevel defaultProtectionLevel, bool addToIncoming)
         {
             if (faults == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("faults"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(faults)));
+            }
+
             if (requirements == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("requirements"));
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(requirements)));
+            }
 
             foreach (FaultDescription fault in faults)
             {

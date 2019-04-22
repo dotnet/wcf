@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Runtime;
 using System.ServiceModel.Channels;
 
@@ -13,17 +12,19 @@ namespace System.ServiceModel
         internal const BasicHttpSecurityMode DefaultMode = BasicHttpSecurityMode.None;
         private BasicHttpSecurityMode _mode;
         private HttpTransportSecurity _transportSecurity;
+        private BasicHttpMessageSecurity _messageSecurity;
 
         public BasicHttpSecurity()
-            : this(DefaultMode, new HttpTransportSecurity())
+            : this(DefaultMode, new HttpTransportSecurity(), new BasicHttpMessageSecurity())
         {
         }
 
-        private BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity)
+        private BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity, BasicHttpMessageSecurity messageSecurity)
         {
             Fx.Assert(BasicHttpSecurityModeHelper.IsDefined(mode), string.Format("Invalid BasicHttpSecurityMode value: {0}.", mode.ToString()));
-            this.Mode = mode;
+            Mode = mode;
             _transportSecurity = transportSecurity == null ? new HttpTransportSecurity() : transportSecurity;
+            _messageSecurity = messageSecurity == null ? new BasicHttpMessageSecurity() : messageSecurity;
         }
 
         public BasicHttpSecurityMode Mode
@@ -31,8 +32,7 @@ namespace System.ServiceModel
             get { return _mode; }
             set
             {
-                if (value == BasicHttpSecurityMode.Message ||
-                    value == BasicHttpSecurityMode.TransportWithMessageCredential)
+                if (value == BasicHttpSecurityMode.Message)
                 {
                     throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.UnsupportedSecuritySetting, nameof(value), value));
                 }
@@ -51,6 +51,15 @@ namespace System.ServiceModel
             set
             {
                 _transportSecurity = (value == null) ? new HttpTransportSecurity() : value;
+            }
+        }
+
+        public BasicHttpMessageSecurity Message
+        {
+            get { return _messageSecurity; }
+            set
+            {
+                _messageSecurity = (value == null) ? new BasicHttpMessageSecurity() : value;
             }
         }
 
@@ -88,10 +97,14 @@ namespace System.ServiceModel
 
         internal SecurityBindingElement CreateMessageSecurity()
         {
-            if (_mode == BasicHttpSecurityMode.Message
-                || _mode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            if (_mode == BasicHttpSecurityMode.Message)
             {
                 throw ExceptionHelper.PlatformNotSupported();
+            }
+
+            if (_mode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            {
+                return _messageSecurity.CreateMessageSecurity(_mode == BasicHttpSecurityMode.TransportWithMessageCredential);
             }
 
             return null;

@@ -4,8 +4,6 @@
 
 using System.Collections.Generic;
 using System.IdentityModel.Policy;
-using System.Runtime;
-using System.Security;
 using System.Security.Principal;
 using System.ServiceModel;
 
@@ -15,7 +13,6 @@ namespace System.IdentityModel.Claims
     {
         internal const bool DefaultIncludeWindowsGroups = true;
         private WindowsIdentity _windowsIdentity;
-        private DateTime _expirationTime;
         private bool _includeWindowsGroups;
         private IList<Claim> _claims;
         private bool _disposed = false;
@@ -54,16 +51,18 @@ namespace System.IdentityModel.Claims
         internal WindowsClaimSet(WindowsIdentity windowsIdentity, string authenticationType, bool includeWindowsGroups, DateTime expirationTime, bool clone)
         {
             if (windowsIdentity == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("windowsIdentity");
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(windowsIdentity));
+            }
 
             _windowsIdentity = clone ? SecurityUtils.CloneWindowsIdentityIfNecessary(windowsIdentity, authenticationType) : windowsIdentity;
             _includeWindowsGroups = includeWindowsGroups;
-            _expirationTime = expirationTime;
+            ExpirationTime = expirationTime;
             _authenticationType = authenticationType;
         }
 
         private WindowsClaimSet(WindowsClaimSet from)
-            : this(from.WindowsIdentity, from._authenticationType, from._includeWindowsGroups, from._expirationTime, true)
+            : this(from.WindowsIdentity, from._authenticationType, from._includeWindowsGroups, from.ExpirationTime, true)
         {
         }
 
@@ -110,10 +109,7 @@ namespace System.IdentityModel.Claims
             get { return ClaimSet.Windows; }
         }
 
-        public DateTime ExpirationTime
-        {
-            get { return _expirationTime; }
-        }
+        public DateTime ExpirationTime { get; }
 
         internal WindowsClaimSet Clone()
         {
@@ -133,7 +129,9 @@ namespace System.IdentityModel.Claims
         private IList<Claim> InitializeClaimsCore()
         {
             if (_windowsIdentity.AccessToken == null)
+            {
                 return new List<Claim>();
+            }
 
             List<Claim> claims = new List<Claim>(3);
             claims.Add(new Claim(ClaimTypes.Sid, _windowsIdentity.User, Rights.Identity));
@@ -153,7 +151,9 @@ namespace System.IdentityModel.Claims
         private void EnsureClaims()
         {
             if (_claims != null)
+            {
                 return;
+            }
 
             _claims = InitializeClaimsCore();
         }
@@ -162,7 +162,7 @@ namespace System.IdentityModel.Claims
         {
             if (_disposed)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(GetType().FullName));
             }
         }
 

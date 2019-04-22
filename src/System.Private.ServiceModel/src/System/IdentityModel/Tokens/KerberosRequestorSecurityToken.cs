@@ -3,11 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Net;
-using System.Security.Authentication.ExtendedProtection;
 using System.Security.Principal;
 using System.ServiceModel;
 
@@ -16,23 +13,18 @@ namespace System.IdentityModel.Tokens
     public class KerberosRequestorSecurityToken : SecurityToken
     {
         private string _id;
-        private readonly string _servicePrincipalName;
         private DateTime _effectiveTime;
         private DateTime _expirationTime;
 
         internal KerberosRequestorSecurityToken(string servicePrincipalName, TokenImpersonationLevel tokenImpersonationLevel, NetworkCredential networkCredential, string id)
         {
-            if (servicePrincipalName == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("servicePrincipalName");
             if (tokenImpersonationLevel != TokenImpersonationLevel.Identification && tokenImpersonationLevel != TokenImpersonationLevel.Impersonation)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenImpersonationLevel",
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(tokenImpersonationLevel),
                     SR.Format(SR.ImpersonationLevelNotSupported, tokenImpersonationLevel)));
             }
-            if (id == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("id");
 
-            _servicePrincipalName = servicePrincipalName;
+            ServicePrincipalName = servicePrincipalName ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(servicePrincipalName));
             if (networkCredential != null && networkCredential != CredentialCache.DefaultNetworkCredentials)
             {
                 if (string.IsNullOrEmpty(networkCredential.UserName))
@@ -42,7 +34,7 @@ namespace System.IdentityModel.Tokens
                 // Note: we don't check the domain, since Lsa accepts
                 // FQ userName.
             }
-            _id = id;
+            _id = id ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(id));
         }
 
         public override string Id
@@ -65,9 +57,6 @@ namespace System.IdentityModel.Tokens
             get { return _expirationTime; }
         }
 
-        public string ServicePrincipalName
-        {
-            get { return _servicePrincipalName; }
-        }
+        public string ServicePrincipalName { get; }
     }
 }

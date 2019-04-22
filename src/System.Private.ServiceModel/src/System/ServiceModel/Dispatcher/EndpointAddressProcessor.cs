@@ -5,11 +5,8 @@
 
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime;
-using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml;
-using System.Xml.Schema;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -93,9 +90,14 @@ namespace System.ServiceModel.Dispatcher
                         }
 
                         if (reader.IsEmptyElement)
+                        {
                             builder.Append("></>");  // Should be the same as an empty tag.
+                        }
                         else
+                        {
                             builder.Append(">");
+                        }
+
                         break;
 
                     case XmlNodeType.EndElement:
@@ -117,7 +119,9 @@ namespace System.ServiceModel.Dispatcher
                     case XmlNodeType.SignificantWhitespace:
                     case XmlNodeType.Text:
                         if (valueLength < 0)
+                        {
                             valueLength = builder.Length;
+                        }
 
                         builder.Append(reader.Value);
                         break;
@@ -141,7 +145,9 @@ namespace System.ServiceModel.Dispatcher
         private static void CompleteValue(StringBuilder builder, int startLength)
         {
             if (startLength < 0)
+            {
                 return;
+            }
 
             int len = builder.Length - startLength;
             builder.Append("^");
@@ -157,9 +163,9 @@ namespace System.ServiceModel.Dispatcher
 
             internal Attr(string l, string ns, string v)
             {
-                this.local = l;
+                local = l;
                 this.ns = ns;
-                this.val = v;
+                val = v;
                 _key = ns + ":" + l;
             }
 

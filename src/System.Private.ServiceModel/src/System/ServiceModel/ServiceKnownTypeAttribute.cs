@@ -8,8 +8,6 @@ namespace System.ServiceModel
     [AttributeUsage(ServiceModelAttributeTargets.ServiceContract | ServiceModelAttributeTargets.OperationContract, Inherited = true, AllowMultiple = true)]
     public sealed class ServiceKnownTypeAttribute : Attribute
     {
-        private Type _declaringType;
-        private string _methodName;
         private Type _type;
 
         private ServiceKnownTypeAttribute()
@@ -24,24 +22,18 @@ namespace System.ServiceModel
 
         public ServiceKnownTypeAttribute(string methodName)
         {
-            _methodName = methodName;
+            MethodName = methodName;
         }
 
         public ServiceKnownTypeAttribute(string methodName, Type declaringType)
         {
-            _methodName = methodName;
-            _declaringType = declaringType;
+            MethodName = methodName;
+            DeclaringType = declaringType;
         }
 
-        public Type DeclaringType
-        {
-            get { return _declaringType; }
-        }
+        public Type DeclaringType { get; }
 
-        public string MethodName
-        {
-            get { return _methodName; }
-        }
+        public string MethodName { get; }
 
         public Type Type
         {

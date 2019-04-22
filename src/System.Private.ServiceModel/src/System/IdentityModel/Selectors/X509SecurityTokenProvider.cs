@@ -6,7 +6,6 @@
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.IdentityModel.Selectors
@@ -22,7 +21,7 @@ namespace System.IdentityModel.Selectors
         {
             if (certificate == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("certificate");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(certificate));
             }
 
             _clone = clone;
@@ -36,7 +35,7 @@ namespace System.IdentityModel.Selectors
             }
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(CancellationToken cancellationToken)
+        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult<SecurityToken>(new X509SecurityToken(certificate: _certificate, clone: _clone, disposable: _clone));
         }

@@ -96,19 +96,31 @@ namespace System.IdentityModel
 
             // defensive programming
             if ((dstOffset < 0) || (srcOffset < 0))
+            {
                 return false;
+            }
 
             if (src == null || srcOffset >= src.Length)
+            {
                 return false;
+            }
+
             if (dst == null || dstOffset >= dst.Length)
+            {
                 return false;
+            }
+
             if ((src.Length - srcOffset) != (dst.Length - dstOffset))
+            {
                 return false;
+            }
 
             for (int i = srcOffset, j = dstOffset; i < src.Length; i++, j++)
             {
                 if (src[i] != dst[j])
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -153,7 +165,9 @@ namespace System.IdentityModel
                     for (int i = 0; i < authorizationPolicies.Count; i++)
                     {
                         if (policyState[i] == done)
+                        {
                             continue;
+                        }
 
                         IAuthorizationPolicy policy = authorizationPolicies[i];
                         if (policy == null)
@@ -301,6 +315,12 @@ namespace System.IdentityModel
             str.Append(certificate.Thumbprint);
         }
 
+        internal static bool TryCreateX509CertificateFromRawData(byte[] rawData, out X509Certificate2 certificate)
+        {
+            certificate = (rawData == null || rawData.Length == 0) ? null : new X509Certificate2(rawData);
+            return certificate != null && certificate.Handle != IntPtr.Zero;
+        }
+
         internal static ReadOnlyCollection<IAuthorizationPolicy> CloneAuthorizationPoliciesIfNecessary(ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
         {
             if (authorizationPolicies != null && authorizationPolicies.Count > 0)
@@ -405,7 +425,10 @@ namespace System.IdentityModel
             get
             {
                 if (_id == null)
+                {
                     _id = SecurityUniqueId.Create();
+                }
+
                 return _id.Value;
             }
         }

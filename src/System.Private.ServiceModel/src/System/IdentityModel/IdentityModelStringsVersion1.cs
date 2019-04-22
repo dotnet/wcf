@@ -297,7 +297,7 @@ namespace System.IdentityModel
         {
             get
             {
-                DiagnosticUtility.DebugAssert(index >= 0 && index < this.Count, "The index is out of range. It should be greater than or equal to 0 and less than" + this.Count.ToString());
+                DiagnosticUtility.DebugAssert(index >= 0 && index < Count, "The index is out of range. It should be greater than or equal to 0 and less than" + Count.ToString());
                 switch (index)
                 {
                     case 0: return String0;

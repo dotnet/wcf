@@ -23,7 +23,7 @@ namespace System.IdentityModel.Selectors
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
             }
             return CanReadTokenCore(reader);
         }
@@ -32,7 +32,7 @@ namespace System.IdentityModel.Selectors
         {
             if (token == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
             }
             return CanWriteTokenCore(token);
         }
@@ -41,7 +41,7 @@ namespace System.IdentityModel.Selectors
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
             }
             return CanReadKeyIdentifierCore(reader);
         }
@@ -50,7 +50,7 @@ namespace System.IdentityModel.Selectors
         {
             if (keyIdentifier == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifier");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifier));
             }
             return CanWriteKeyIdentifierCore(keyIdentifier);
         }
@@ -59,7 +59,7 @@ namespace System.IdentityModel.Selectors
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
             }
             return CanReadKeyIdentifierClauseCore(reader);
         }
@@ -68,7 +68,7 @@ namespace System.IdentityModel.Selectors
         {
             if (keyIdentifierClause == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifierClause");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifierClause));
             }
             return CanWriteKeyIdentifierClauseCore(keyIdentifierClause);
         }
@@ -78,7 +78,7 @@ namespace System.IdentityModel.Selectors
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
             }
             return ReadTokenCore(reader, tokenResolver);
         }
@@ -87,11 +87,11 @@ namespace System.IdentityModel.Selectors
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
             if (token == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("token");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
             }
             WriteTokenCore(writer, token);
         }
@@ -100,7 +100,7 @@ namespace System.IdentityModel.Selectors
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
             }
             return ReadKeyIdentifierCore(reader);
         }
@@ -109,11 +109,11 @@ namespace System.IdentityModel.Selectors
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
             if (keyIdentifier == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifier");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifier));
             }
             WriteKeyIdentifierCore(writer, keyIdentifier);
         }
@@ -122,7 +122,7 @@ namespace System.IdentityModel.Selectors
         {
             if (reader == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
             }
             return ReadKeyIdentifierClauseCore(reader);
         }
@@ -131,11 +131,11 @@ namespace System.IdentityModel.Selectors
         {
             if (writer == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(writer));
             }
             if (keyIdentifierClause == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifierClause");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(keyIdentifierClause));
             }
             WriteKeyIdentifierClauseCore(writer, keyIdentifierClause);
         }
@@ -163,7 +163,7 @@ namespace System.IdentityModel.Selectors
 
             public virtual bool CanReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-                return reader.IsStartElement(this.LocalName, this.NamespaceUri);
+                return reader.IsStartElement(LocalName, NamespaceUri);
             }
 
             public abstract SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader);
@@ -198,7 +198,7 @@ namespace System.IdentityModel.Selectors
 
             public virtual bool CanReadKeyIdentifierCore(XmlDictionaryReader reader)
             {
-                return reader.IsStartElement(this.LocalName, this.NamespaceUri);
+                return reader.IsStartElement(LocalName, NamespaceUri);
             }
 
             public abstract SecurityKeyIdentifier ReadKeyIdentifierCore(XmlDictionaryReader reader);
@@ -224,7 +224,9 @@ namespace System.IdentityModel.Selectors
                 for (int i = 0; i < tokenTypes.Length; ++i)
                 {
                     if (tokenTypes[i].IsAssignableFrom(tokenType))
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -234,13 +236,16 @@ namespace System.IdentityModel.Selectors
             public Type[] GetTokenTypes()
             {
                 if (_tokenTypes == null)
+                {
                     _tokenTypes = GetTokenTypesCore();
+                }
+
                 return _tokenTypes;
             }
 
             public virtual bool SupportsTokenTypeUri(string tokenTypeUri)
             {
-                return (this.TokenTypeUri == tokenTypeUri);
+                return (TokenTypeUri == tokenTypeUri);
             }
         }
     }

@@ -63,7 +63,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
                 if (_useHttpBackedProperty)
@@ -90,7 +90,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
                 }
 
                 if (_useHttpBackedProperty)
@@ -207,7 +207,7 @@ namespace System.ServiceModel.Channels
             public TraditionalHttpRequestMessageProperty()
             {
                 _method = DefaultMethod;
-                this.QueryString = DefaultQueryString;
+                QueryString = DefaultQueryString;
             }
 
             private WebHeaderCollection _headers;
@@ -249,7 +249,7 @@ namespace System.ServiceModel.Channels
                 set
                 {
                     _method = value;
-                    this.HasMethodBeenSet = true;
+                    HasMethodBeenSet = true;
                 }
             }
 
@@ -266,7 +266,7 @@ namespace System.ServiceModel.Channels
             {
                 Contract.Assert(httpRequestMessage != null, "The 'httpRequestMessage' property should never be null.");
 
-                this.HttpRequestMessage = httpRequestMessage;
+                HttpRequestMessage = httpRequestMessage;
             }
 
             public HttpRequestMessage HttpRequestMessage { get; private set; }
@@ -279,7 +279,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (_headers == null)
                     {
-                        _headers = this.HttpRequestMessage.ToWebHeaderCollection();
+                        _headers = HttpRequestMessage.ToWebHeaderCollection();
                     }
 
                     return _headers;
@@ -290,12 +290,12 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    return this.HttpRequestMessage.Method.Method;
+                    return HttpRequestMessage.Method.Method;
                 }
 
                 set
                 {
-                    this.HttpRequestMessage.Method = new HttpMethod(value);
+                    HttpRequestMessage.Method = new HttpMethod(value);
                 }
             }
 
@@ -303,15 +303,15 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    string query = this.HttpRequestMessage.RequestUri.Query;
+                    string query = HttpRequestMessage.RequestUri.Query;
                     return query.Length > 0 ? query.Substring(1) : string.Empty;
                 }
 
                 set
                 {
-                    UriBuilder uriBuilder = new UriBuilder(this.HttpRequestMessage.RequestUri);
+                    UriBuilder uriBuilder = new UriBuilder(HttpRequestMessage.RequestUri);
                     uriBuilder.Query = value;
-                    this.HttpRequestMessage.RequestUri = uriBuilder.Uri;
+                    HttpRequestMessage.RequestUri = uriBuilder.Uri;
                 }
             }
 
@@ -319,7 +319,7 @@ namespace System.ServiceModel.Channels
             {
                 get
                 {
-                    HttpContent content = this.HttpRequestMessage.Content;
+                    HttpContent content = HttpRequestMessage.Content;
                     if (content != null)
                     {
                         long? contentLength = content.Headers.ContentLength;
@@ -336,7 +336,7 @@ namespace System.ServiceModel.Channels
 
                 set
                 {
-                    HttpContent content = this.HttpRequestMessage.Content;
+                    HttpContent content = HttpRequestMessage.Content;
                     if (value && content != null &&
                         (!content.Headers.ContentLength.HasValue ||
                         content.Headers.ContentLength.Value > 0))
@@ -347,12 +347,12 @@ namespace System.ServiceModel.Channels
                             newContent.Headers.AddHeaderWithoutValidation(header);
                         }
 
-                        this.HttpRequestMessage.Content = newContent;
+                        HttpRequestMessage.Content = newContent;
                         content.Dispose();
                     }
                     else if (!value && content == null)
                     {
-                        this.HttpRequestMessage.Content = new ByteArrayContent(Array.Empty<byte>());
+                        HttpRequestMessage.Content = new ByteArrayContent(Array.Empty<byte>());
                     }
                 }
             }
@@ -361,18 +361,18 @@ namespace System.ServiceModel.Channels
             {
                 HttpRequestMessageProperty copiedProperty = new HttpRequestMessageProperty();
 
-                foreach (var headerKey in this.Headers.AllKeys)
+                foreach (var headerKey in Headers.AllKeys)
                 {
-                    copiedProperty.Headers[headerKey] = this.Headers[headerKey];
+                    copiedProperty.Headers[headerKey] = Headers[headerKey];
                 }
 
-                if (this.Method != TraditionalHttpRequestMessageProperty.DefaultMethod)
+                if (Method != TraditionalHttpRequestMessageProperty.DefaultMethod)
                 {
-                    copiedProperty.Method = this.Method;
+                    copiedProperty.Method = Method;
                 }
 
-                copiedProperty.QueryString = this.QueryString;
-                copiedProperty.SuppressEntityBody = this.SuppressEntityBody;
+                copiedProperty.QueryString = QueryString;
+                copiedProperty.SuppressEntityBody = SuppressEntityBody;
 
                 return copiedProperty;
             }
@@ -381,16 +381,16 @@ namespace System.ServiceModel.Channels
             {
                 if (propertyToMerge.HasMethodBeenSet)
                 {
-                    this.Method = propertyToMerge.Method;
+                    Method = propertyToMerge.Method;
                 }
 
                 if (propertyToMerge.QueryString != TraditionalHttpRequestMessageProperty.DefaultQueryString)
                 {
-                    this.QueryString = propertyToMerge.QueryString;
+                    QueryString = propertyToMerge.QueryString;
                 }
 
-                this.SuppressEntityBody = propertyToMerge.SuppressEntityBody;
-                this.HttpRequestMessage.MergeWebHeaderCollection(propertyToMerge.Headers);
+                SuppressEntityBody = propertyToMerge.SuppressEntityBody;
+                HttpRequestMessage.MergeWebHeaderCollection(propertyToMerge.Headers);
             }
         }
     }

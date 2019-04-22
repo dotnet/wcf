@@ -18,7 +18,9 @@ namespace System.ServiceModel.Description
             foreach (MessageDescription description in this)
             {
                 if (description != null && action == description.Action)
+                {
                     return description;
+                }
             }
 
             return null;
@@ -30,7 +32,9 @@ namespace System.ServiceModel.Description
             foreach (MessageDescription description in this)
             {
                 if (description != null && action == description.Action)
+                {
                     descriptions.Add(description);
+                }
             }
 
             return descriptions;

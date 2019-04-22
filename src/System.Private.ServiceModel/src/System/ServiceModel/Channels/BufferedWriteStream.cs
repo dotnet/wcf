@@ -60,7 +60,9 @@ namespace System.ServiceModel.Channels
         private void EnsureNotClosed()
         {
             if (_stream == null)
+            {
                 throw new ObjectDisposedException(nameof(BufferedWriteStream));
+            }
         }
 
         private void EnsureCanWrite()
@@ -408,7 +410,9 @@ namespace System.ServiceModel.Channels
             Contract.Assert(count <= buffer.Length - offset);
             // Fast path check for cancellation already requested
             if (cancellationToken.IsCancellationRequested)
+            {
                 return Task.FromCanceled<int>(cancellationToken);
+            }
 
             EnsureNotClosed();
             EnsureCanWrite();
