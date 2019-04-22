@@ -77,6 +77,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Shim", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "harvest", "src\harvest\harvest.csproj", "{666A3EDD-5C2C-40C2-9945-E04F0A654C1F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\TransportWithMessageCredentialSecurity\Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests.csproj", "{161C03B5-B606-4DC2-BC10-5935D1DADDD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -231,6 +233,10 @@ Global
 		{666A3EDD-5C2C-40C2-9945-E04F0A654C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{666A3EDD-5C2C-40C2-9945-E04F0A654C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{666A3EDD-5C2C-40C2-9945-E04F0A654C1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
