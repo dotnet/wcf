@@ -10,11 +10,11 @@ using Xunit;
 
 public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
-    [WcfFact]
+    //[WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [OuterLoop]
+    //[OuterLoop]
     public static void Https_SecModeTransWithMessCred_CertClientCredential_Succeeds()
     {
         string clientCertThumb = null;
@@ -57,10 +57,10 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
         }
     }
 
-    [WcfFact]
+    //[WcfFact]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
-    [OuterLoop]
+    //[OuterLoop]
     public static void Https_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
     {
         string testString = "Hello";
