@@ -25,6 +25,9 @@ set _buildlog=%~dp0..\..\..\..\msbuildCertificateGenerator.log
 set _buildprefix=echo
 set _buildpostfix=^> "%_buildlog%"
 
+set cmd=msbuild "%_buildproj%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* /t:Restore
+echo %cmd%
+%cmd%
 set cmd=msbuild "%_buildproj%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %*
 echo %cmd%
 %cmd%
