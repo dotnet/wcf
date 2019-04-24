@@ -16,6 +16,7 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
     // The tests in this file use the IRequestChannel shape.
 
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]

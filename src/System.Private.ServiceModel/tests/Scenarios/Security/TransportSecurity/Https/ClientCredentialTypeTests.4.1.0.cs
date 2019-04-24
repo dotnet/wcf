@@ -26,6 +26,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void BasicAuthentication_RoundTrips_Echo()
@@ -95,6 +96,7 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Root_Certificate_Installed))]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Issue(2561, OS = OSID.SLES_12)] // Active Issue - needs investigation
     [OuterLoop]
     public static void BasicAuthenticationInvalidPwd_throw_MessageSecurityException()

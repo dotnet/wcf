@@ -169,6 +169,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
