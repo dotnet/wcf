@@ -56,7 +56,7 @@ namespace Infrastructure.Common
         OSX_10_12 =              0x00100000,
         OSX_10_13 =              0x00200000,
         OSX_10_14 =              0x00400000,
-        AnyOSX = OSX_10_11 | OSX_10_12 | OSX_10_13,
+        AnyOSX = OSX_10_12 | OSX_10_13 | OSX_10_14,
 
         RHEL_7 =                 0x00800000,
         AnyRHEL = RHEL_7,
