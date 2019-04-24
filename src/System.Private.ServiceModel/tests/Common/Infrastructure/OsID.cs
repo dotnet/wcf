@@ -53,9 +53,9 @@ namespace Infrastructure.Common
         SLES_12 =                0x00080000,
         AnyOpenSUSE = OpenSUSE_13_2 | OpenSUSE_42_3 | SLES_12,
 
-        OSX_10_11 =              0x00100000,
-        OSX_10_12 =              0x00200000,
-        OSX_10_13 =              0x00400000,
+        OSX_10_12 =              0x00100000,
+        OSX_10_13 =              0x00200000,
+        OSX_10_14 =              0x00400000,
         AnyOSX = OSX_10_11 | OSX_10_12 | OSX_10_13,
 
         RHEL_7 =                 0x00800000,
