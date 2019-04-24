@@ -44,9 +44,9 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("opensuse.13.2", OSID.OpenSUSE_13_2),
             new Tuple<string, OSID>("opensuse", OSID.AnyOpenSUSE),
 
-            new Tuple<string, OSID>("osx.10.11", OSID.OSX_10_11),
             new Tuple<string, OSID>("osx.10.12", OSID.OSX_10_12),
             new Tuple<string, OSID>("osx.10.13", OSID.OSX_10_13),
+            new Tuple<string, OSID>("osx.10.14", OSID.OSX_10_14),
             new Tuple<string, OSID>("osx", OSID.AnyOSX),
 
             new Tuple<string, OSID>("rhel.7", OSID.RHEL_7),
