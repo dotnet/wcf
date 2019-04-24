@@ -76,9 +76,11 @@ jobs:
 
       variables:
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+          #- macOSQueues: OSX.1012.Amd64.Open+OSX.1013.Amd64.Open
           - macOSQueues: OSX.1012.Amd64.Open+OSX.1013.Amd64.Open
 
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
+          #- macOSQueues: OSX.1012.Amd64+OSX.1013.Amd64+OSX.1014.Amd64
           - macOSQueues: OSX.1012.Amd64+OSX.1013.Amd64+OSX.1014.Amd64
 
         - _xUnitUnitTestProjects:
@@ -92,6 +94,7 @@ jobs:
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Custom\Binding.Custom.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Http\Binding.Http.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Tcp\Binding.Tcp.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\TransportWithMessageCredentialSecurity\Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ChannelLayer\Client.ChannelLayer.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ClientBase\Client.ClientBase.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ExpectedExceptions\Client.ExpectedExceptions.IntegrationTests.csproj;
@@ -118,6 +121,7 @@ jobs:
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Custom\Binding.Custom.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Http\Binding.Http.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Tcp\Binding.Tcp.IntegrationTests.csproj;
+            $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\TransportWithMessageCredentialSecurity\Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ChannelLayer\Client.ChannelLayer.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ClientBase\Client.ClientBase.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Client\ExpectedExceptions\Client.ExpectedExceptions.IntegrationTests.csproj;
