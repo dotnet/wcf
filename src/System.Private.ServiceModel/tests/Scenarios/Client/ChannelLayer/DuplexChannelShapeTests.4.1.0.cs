@@ -15,6 +15,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
     //       returns a concrete type determined by the channel shape requested and other binding related settings.
     // The tests in this file use the IDuplexChannel shape.
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed))]
     [Issue(1438, OS = OSID.Windows_7)]
     [OuterLoop]
