@@ -29,3 +29,9 @@ jobs:
     ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
       parameters:
         isOfficialBuild: true
+
+  # Macos legs
+  - template: /eng/pipelines/macos.yml
+    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
+      parameters:
+        isOfficialBuild: true
