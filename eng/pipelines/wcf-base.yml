@@ -90,7 +90,7 @@ jobs:
 
         # Non-Windows variables
         - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
-          - _buildScript: eng\common\cibuild.sh
+          - _buildScript: ./eng/common/cibuild.sh
 
         # Send to Helix variables
         - ${{ if eq(job.submitToHelix, 'true') }}:
@@ -120,7 +120,7 @@ jobs:
         enablePublishBuildArtifacts: true
 
         ${{ if eq(job.timeoutInMinutes, '') }}:
-          timeoutInMinutes: 15
+          timeoutInMinutes: 45
 
         steps:
           - ${{ if ne(job.preBuildSteps[0], '') }}:
@@ -145,11 +145,11 @@ jobs:
 
           - ${{ if eq(job.submitToHelix, 'true') }}:
             - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-              - template: ../common/templates/steps/send-to-helix.yml
+              - template: ../steps/send-to-helix.yml
                 parameters:
                   HelixSource: $(_helixSource)
                   HelixType: $(_helixType)
-                  HelixTargetQueues: $(helixQueues)
+                  HelixTargetQueues: $(_helixQueues)
                   XUnitProjects: $(_xUnitAllTestProjects)
                   XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
                   XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
