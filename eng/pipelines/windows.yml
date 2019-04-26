@@ -49,6 +49,8 @@ jobs:
               _BuildConfig: Release
               _architecture: x64
               _sign: true
+              _SignType: 'test'
+              _TeamName: 'Wcf Team'
               _unitTests: false
               _integrationTests: false
               _pack: true
@@ -60,6 +62,8 @@ jobs:
               _BuildConfig: Release
               _architecture: x86
               _sign: true
+              _SignType: 'real'
+              _TeamName: 'Wcf Team'
               _unitTests: false
               _integrationTests: false
               _pack: true
