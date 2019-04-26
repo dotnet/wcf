@@ -52,7 +52,7 @@ jobs:
               _architecture: x64
               _sign: true
               _SignType: 'test'
-              _TeamName: 'Wcf Team'
+              _TeamName: WcfCore
               _unitTests: false
               _integrationTests: false
               _pack: true
@@ -65,7 +65,7 @@ jobs:
               _architecture: x86
               _sign: true
               _SignType: 'real'
-              _TeamName: 'Wcf Team'
+              _TeamName: WcfCore
               _unitTests: false
               _integrationTests: false
               _pack: true
