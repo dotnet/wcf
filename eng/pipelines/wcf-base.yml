@@ -127,7 +127,7 @@ jobs:
             - ${{ job.preBuildSteps }}
 
           - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-            - template: UpdatePRService.yml
+            - template: /eng/pipelines/UpdatePRService.yml
               parameters:
                 wcfPRServiceId: $(_wcfPRServiceId)
             - script: $(_buildScript)
