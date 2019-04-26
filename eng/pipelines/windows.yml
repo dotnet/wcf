@@ -48,7 +48,7 @@ jobs:
             x64_Release:
               _BuildConfig: Release
               _architecture: x64
-              _sign: false
+              _sign: true
               _unitTests: false
               _integrationTests: false
               _pack: true
@@ -59,7 +59,7 @@ jobs:
             x86_Release:
               _BuildConfig: Release
               _architecture: x86
-              _sign: false
+              _sign: true
               _unitTests: false
               _integrationTests: false
               _pack: true
