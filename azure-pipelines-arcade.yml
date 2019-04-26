@@ -11,11 +11,11 @@ trigger:
   batch: true
   branches:
     include:
-    - AdoptArcade
+    - master
 
 # trigger ci builds for pull requests into listed branches
 pr:
-- AdoptArcade
+- master
 
 jobs:
   # Windows legs

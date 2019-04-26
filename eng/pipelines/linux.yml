@@ -29,6 +29,7 @@ jobs:
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
+              _wcfPRServiceId: 2
 
             x86_Release:
               _BuildConfig: Release
@@ -40,6 +41,7 @@ jobs:
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
+              _wcfPRServiceId: 2
           
           # Official build LEGS with HELIX Testing
           ${{ if eq(parameters.isOfficialBuild, 'true') }}:
