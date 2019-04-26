@@ -172,6 +172,7 @@ public class Tcp_ClientCredentialTypeCertificateCanonicalNameTests : Conditional
     }
 
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void Certificate_With_CanonicalName_Fqdn_Address_EchoString()

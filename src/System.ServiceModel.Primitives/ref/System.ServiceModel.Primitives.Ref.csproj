@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>4.6.0.0</AssemblyVersion>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+    <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="System.ServiceModel.Primitives.Manual.cs" />
+    <Compile Include="System.ServiceModel.Primitives.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'" >
+    <Compile Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+  </ItemGroup>
+</Project>

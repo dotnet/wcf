@@ -1,35 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <TargetGroup Condition="'$(TargetGroup)'==''" >netstandard2.0</TargetGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <!--[todo:arcade] Re-enable these warnings and fix them.-->
+    <!-- https://xunit.github.io/xunit.analyzers/rules/ -->
+    <NoWarn>$(NoWarn);xUnit1013;xUnit2010;xUnit2006;xUnit1014;xUnit1003;xUnit2000;xUnit2009;xUnit1006</NoWarn>
   </PropertyGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.ServiceModel.Primitives.Tests</RootNamespace>
-    <AssemblyName>System.ServiceModel.Primitives.Tests</AssemblyName>
-    <TestCategories>InnerLoop</TestCategories>
-    <SignAssembly>false</SignAssembly>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{856A232C-4292-4AC7-87FE-41AE0C22C4E4}</ProjectGuid>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Compile Include="**\*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <!-- Some internal types are needed, so we reference the implementation assembly, rather than the reference assembly. -->
-    <TargetingPackExclusions Include="System.ServiceModel.Primitives" />
-    <TargetingPackExclusions Include="System.ServiceModel.Duplex" />
-    <TargetingPackExclusions Include="System.ServiceModel.Http" />
-    <TargetingPackExclusions Include="System.ServiceModel.NetTcp" />
-    <ReferenceFromRuntime Include="System.Private.ServiceModel" />
-    <ReferenceFromRuntime Include="System.ServiceModel.Primitives" />
-    <ReferenceFromRuntime Include="System.ServiceModel.Duplex" />
-
-    <ProjectReference Include='$(WcfUnitTestCommonProj)' />
+    <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include="$(WcfUnitTestCommonProj)" />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

@@ -115,6 +115,7 @@ public partial class Tcp_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed))]
     [OuterLoop]
     public static void TcpClientCredentialType_None_With_ServerAltName_EchoString()

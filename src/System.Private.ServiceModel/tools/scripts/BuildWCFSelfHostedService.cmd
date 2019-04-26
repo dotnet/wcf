@@ -35,7 +35,7 @@ call :build %*
 goto :AfterBuild
 
 :build
-%_buildprefix% msbuild "%_buildproj1%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
+%_buildprefix% msbuild /p:Configuration=Release "%_buildproj1%" /nologo /maxcpucount /verbosity:minimal /nodeReuse:false /fileloggerparameters:Verbosity=diag;LogFile="%_buildlog%";Append %* %_buildpostfix%
 set BUILDERRORLEVEL=%ERRORLEVEL%
 goto :eof
 

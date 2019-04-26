@@ -18,6 +18,7 @@ public partial class HttpsTests : ConditionalWcfTest
     // Client: CustomBinding set MessageVersion to Soap11
     // Server: BasicHttpsBinding default value is Soap11
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [OuterLoop]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
@@ -56,6 +57,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     // Client and Server bindings setup exactly the same using default settings.
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -94,6 +96,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     // Client and Server bindings setup exactly the same using Soap11
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -132,6 +135,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     // Client and Server bindings setup exactly the same using Soap12
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]

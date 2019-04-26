@@ -1,32 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <TargetGroup Condition="'$(TargetGroup)'==''" >netstandard2.0</TargetGroup>
-  </PropertyGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.props))\dir.props" />
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests.Common</RootNamespace>
-    <AssemblyName>UnitTests.Common</AssemblyName>
-    <SignAssembly>false</SignAssembly>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
     <CLSCompliant>false</CLSCompliant>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProjectGuid>{E896294A-AB4A-4AF5-A01C-A19E3972EFF9}</ProjectGuid>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
+  
   <ItemGroup>
-    <Compile Include="**\*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="$(WcfDuplexRefProj)" />
-    <ProjectReference Include="$(WcfHttpRefProj)" />
-    <ProjectReference Include="$(WcfPrimitivesRefProj)" />
+    <ProjectReference Include="..\..\..\src\System.Private.ServiceModel.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="UnitTests.Common.rd.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), dir.targets))\dir.targets" />
 </Project>

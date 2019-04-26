@@ -14,6 +14,7 @@ using Infrastructure.Common;
 public partial class IdentityTests : ConditionalWcfTest
 {
     [WcfFact]
+    [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed), nameof(Client_Certificate_Installed))]
     [OuterLoop]
     // Verify product throws MessageSecurityException when the Dns identity from the server does not match the expectation

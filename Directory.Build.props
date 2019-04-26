@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <ImportNetSdkFromRepoToolset>false</ImportNetSdkFromRepoToolset>
+
+    <!-- Disable localization -->
+    <EnableXlfLocalization>false</EnableXlfLocalization>
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+  <Import Project="eng\ReferenceAssemblies.props" />
+  <Import Project="eng\FacadeAssemblies.props" />
+  <Import Project="eng\Versioning.props"/>
+  <Import Project="eng\TestProperties.props"/>
+  <Import Project="eng\TargetFramework.props" />
+
+  <!-- Packaging props -->
+  <PropertyGroup Condition="'$(CopyrightNetFoundation)' != ''">
+    <Copyright>$(CopyrightNetFoundation)</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include license and third party files to packages -->
+    <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
+    <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

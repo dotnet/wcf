@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
+  <PropertyGroup>
+    <!-- The .NET Core product branding version -->
+    <ProductVersion>3.0.0</ProductVersion>
+    <!-- We need to move to 4.7 as part of our versioning change when we switch to arcade to avoid downgrading versions -->
+    <!-- [todo:arcade] Do not understand this. -->
+    <MajorVersion>4</MajorVersion>
+    <MinorVersion>7</MinorVersion>
+    <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
+    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
+    <PreReleaseVersionLabel>preview4</PreReleaseVersionLabel>
+    <!-- Use the compiler in the CLI instead of in the sdk, since the sdk one doesn't work with netcoreapp3.0 yet -->
+    <!--[todo:arcade] Current compiler is failing to build our generated testproperties code in Infrastructure.Common.csproj-->
+    <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
+    <!-- Opt-in repo features -->
+    <!-- IBC optimization data embedding by default true if Configuration is 'Release' and OfficialBuild is 'true'. -->
+    <!-- [todo:arcade] Setting it to true always seems to be common practice. Not sure if we need to or not. -->
+    <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
+    <!-- Opt-out repo features -->
+    <!-- [todo:arcade] Default Arcade value, imports Localization.targets if true. -->
+    <!-- https://github.com/dotnet/arcade/blob/master/src/Microsoft.DotNet.Arcade.Sdk/tools/Imports.targets#L56 -->
+    <UsingToolXliff>false</UsingToolXliff>
+    <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
+    <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
+  </PropertyGroup>
+  <!-- Arcade dependencies -->
+  <PropertyGroup>
+    <MicrosoftDotNetArcadeSdkPackageVersion>1.0.0-beta.19171.6</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetHelixSdkPackageVersion>2.0.0-beta.19171.6</MicrosoftDotNetHelixSdkPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>1.0.0-beta.19171.6</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>2.4.0-beta.19171.6</MicrosoftDotNetXUnitExtensionsPackageVersion>
+  </PropertyGroup>
+  <!-- CoreFx dependencies -->
+  <PropertyGroup>
+    <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
+    <SystemReflectionDispatchProxyPackageVersion>4.5.0</SystemReflectionDispatchProxyPackageVersion>
+    <SystemSecurityPrincipalWindowsPackageVersion>4.5.0</SystemSecurityPrincipalWindowsPackageVersion>
+    <SystemSecurityCryptographyXmlPackageVersion>4.5.0</SystemSecurityCryptographyXmlPackageVersion>
+    <MicrosoftPrivateCoreFxUAPPackageVersion>4.7.0-preview4.19164.7</MicrosoftPrivateCoreFxUAPPackageVersion>
+  </PropertyGroup>
+  <!-- Additional dependencies -->
+  <PropertyGroup>
+    <XUnitStaFactPackageVersion>0.3.5</XUnitStaFactPackageVersion>
+    <MicrosoftTargetingPackNETFrameworkv472PackageVersion>1.0.0</MicrosoftTargetingPackNETFrameworkv472PackageVersion>
+    <!-- Needed by Infrastructure.Common.csproj -->
+    <MicrosoftDotNetPlatformAbstractionsVersion>2.1.0</MicrosoftDotNetPlatformAbstractionsVersion>
+  </PropertyGroup>
+</Project>
