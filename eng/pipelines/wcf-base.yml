@@ -131,6 +131,7 @@ jobs:
             - template: /eng/pipelines/UpdatePRService.yml
               parameters:
                 wcfPRServiceId: $(_wcfPRServiceId)
+                updateService: $(_UpdateService)
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_testArgs)
