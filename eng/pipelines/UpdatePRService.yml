@@ -50,7 +50,7 @@ steps:
       exit /b %_EXITCODE%
 
     displayName: Set_Operation_PR_or_Branch_Windows
-    condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
+    condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['updateService'], 'true'))
 
     ##   Platform: Unix   ##
     ##   Task: Get the PR ID or Branch name.   ##
@@ -77,7 +77,7 @@ steps:
       fi
 
     displayName: Set_Operation_PR_or_Branch_Unix
-    condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
+    condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['updateService'], 'true'))
 
     ##   Platform: Windows   ##
     ##   Task: Sync the Service to the PR.   ##
@@ -94,7 +94,7 @@ steps:
     env:
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
-    condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
+    condition: and(always(), eq(variables['Agent.Os'], 'Windows_NT'), eq(variables['updateService'], 'true'))
 
     ##   Platform: Unix   ##
     ##   Task: Sync the Service to the PR.   ##
@@ -110,4 +110,4 @@ steps:
     env:
       WCFPRSERVICEURI: ${{ parameters.wcfPRServiceUri }}
       WCFPRSERVICEID: ${{ parameters.wcfPRServiceId }}
-    condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['_UpdateService'], 'true'))
+    condition: and(always(), ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['updateService'], 'true'))

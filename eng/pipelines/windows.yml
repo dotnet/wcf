@@ -30,6 +30,7 @@ jobs:
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
               _wcfPRServiceId: 1
+              _UpdateService: true
 
             x86_Release:
               _BuildConfig: Release
@@ -42,6 +43,7 @@ jobs:
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
               _wcfPRServiceId: 1
+              _UpdateService: true
           
           # Official build LEGS with HELIX Testing
           ${{ if eq(parameters.isOfficialBuild, 'true') }}:
@@ -50,7 +52,7 @@ jobs:
               _architecture: x64
               _sign: true
               _SignType: 'test'
-              _TeamName: 'Wcf Team'
+              _TeamName: WcfCore
               _unitTests: false
               _integrationTests: false
               _pack: true
@@ -63,7 +65,7 @@ jobs:
               _architecture: x86
               _sign: true
               _SignType: 'real'
-              _TeamName: 'Wcf Team'
+              _TeamName: WcfCore
               _unitTests: false
               _integrationTests: false
               _pack: true
