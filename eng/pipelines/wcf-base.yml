@@ -129,7 +129,7 @@ jobs:
           - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
             - template: ../UpdatePRService.yml
               parameters:
-                wcfPRServiceId: 1
+                wcfPRServiceId: $(_wcfPRServiceId)
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_testArgs)
