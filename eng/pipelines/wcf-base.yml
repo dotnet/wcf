@@ -81,7 +81,8 @@ jobs:
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService
 
         - _testArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-        - _args: -preparemachine -configuration $(_BuildConfig) /p:Test=$(_unitTests) /p:IntegrationTest=$(_integrationTests) /p:Sign=$(_sign) /p:SignType=$(_SignType) /p:TeamName=$(_TeamName) /p:Pack=$(_pack) /p:Publish=$(_publish)
+        - _args: -preparemachine -configuration $(_BuildConfig) /p:Test=$(_unitTests) /p:IntegrationTest=$(_integrationTests) /p:Sign=$(_sign) /p:Pack=$(_pack) /p:Publish=$(_publish)
+        - _signArgs: /p:SignType=$(_SignType) /p:TeamName=$(_TeamName)
         - _commonArguments: $(_args)
 
         # Windows variables
@@ -140,6 +141,7 @@ jobs:
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_msbuildCommonParameters)
+                $(_signArgs)
                 $(_testArgs)
 
           - ${{ if ne(job.customBuildSteps[0], '') }}:
