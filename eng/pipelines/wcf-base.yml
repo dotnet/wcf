@@ -62,18 +62,25 @@ jobs:
               - name: ${{ pair.key }}
                 value: ${{ pair.value }}
 
-        - _msbuildCommonParameters: ''
+        - _internalBuildArgs: ''
         - _archiveTestsParameter: ''
 
+        # Only enable publishing in non-public, non PR scenarios.
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          - _msbuildCommonParameters: /p:OfficialBuildId=$(Build.BuildNumber)
-          - _dotnetFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
-          #- group: DotNet-Internal-Tools-Feed <-- Not sure if I need access to this group.
+          # DotNet-Blob-Feed provides: dotnetfeed-storage-access-key-1
+          # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
+          # DotNet-HelixApi-Access provides: HelixApiAccessToken
           - group: DotNet-Blob-Feed
-
-        - ${{ if eq(job.submitToHelix, 'true') }}:
-          - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            - group: DotNet-HelixApi-Access
+          - group: Publish-Build-Assets
+          - group: DotNet-HelixApi-Access
+          - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
+          - _internalBuildArgs: /p:SignType=$(_SignType) /p:TeamName=$(_TeamName)
+              /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
+              /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
+              /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
+              /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
+              /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
+              /p:OfficialBuildId=$(Build.BuildNumber)
 
         - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
 
@@ -140,9 +147,9 @@ jobs:
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - script: $(_buildScript)
                 $(_commonArguments)
-                $(_msbuildCommonParameters)
-                $(_signArgs)
+                $(_internalBuildArgs)
                 $(_testArgs)
+              displayName: Build Everything, Pack, Sign, and Publish
 
           - ${{ if ne(job.customBuildSteps[0], '') }}:
             - ${{ job.customBuildSteps }}

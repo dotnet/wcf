@@ -10,6 +10,7 @@ jobs:
   parameters:
     isOfficialBuild: ${{ parameters.isOfficialBuild }}
     targetOS: Windows_NT
+    enablePublishUsingPipelines: $(_PublishUsingPipelines)
     jobs:
 
     # Legs with Helix testing
@@ -59,9 +60,11 @@ jobs:
               _publish: true
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
+              _DotNetPublishToBlobFeed: true
+              _DotNetArtifactsCategory: .NETCore
 
             x86_Release:
-              _BuildConfig: Release
+              _BuildConfig: Debug
               _architecture: x86
               _sign: true
               _SignType: 'real'
@@ -72,6 +75,8 @@ jobs:
               _publish: true
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
+              _DotNetPublishToBlobFeed: false
+              _DotNetArtifactsCategory: .NETCore
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
