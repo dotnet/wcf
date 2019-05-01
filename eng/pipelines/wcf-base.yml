@@ -156,8 +156,9 @@ jobs:
 
           - ${{ if eq(job.submitToHelix, 'true') }}:
             - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-              - template: ../steps/send-to-helix.yml
-                parameters:
+              - powershell: 'powershell "$env:BUILD_SOURCESDIRECTORY\eng\common\msbuild.ps1 $env:BUILD_SOURCESDIRECTORY\eng\SendToHelix.proj /restore /t:Test /bl:$env:BUILD_SOURCESDIRECTORY\artifacts\log\$env:BuildConfig\SendToHelix.binlog"'
+                displayName: Send Tests To Helix
+                env: 
                   HelixSource: $(_helixSource)
                   HelixType: $(_helixType)
                   HelixTargetQueues: $(_helixQueues)
@@ -170,12 +171,5 @@ jobs:
                   DotNetCliVersion: $(_dotNetCliVersion)
                   EnableXUnitReporter: true
                   XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
-
-                  ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-                    WaitForWorkItemCompletion: false
-                    HelixAccessToken: $(HelixApiAccessToken)
-
-                  ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-                    WaitForWorkItemCompletion: true
-                    HelixAccessToken: ''
-                    Creator: dotnet-wcf
+                  _helixAccessToken: $(HelixApiAccessToken)
+                  _isOfficialBuild: ${{ parameters.isOfficialBuild }}

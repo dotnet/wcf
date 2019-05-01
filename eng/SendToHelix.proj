@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
+  <PropertyGroup>
+    <Language>msbuild</Language>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <HelixAccessToken Condition="'$(_isOfficialBuild)' == 'true'">$(_helixAccessToken)</HelixAccessToken>
+    <WaitForWorkItemCompletion Condition="'$(_isOfficialBuild)' == 'false'">true</WaitForWorkItemCompletion>
+    <Creator Condition="'$(_isOfficialBuild)' == 'false'">dotnet-wcf</Creator>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
+    <HelixPreCommands>"chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh;sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfrootca.crt"</HelixPreCommands>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
+    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tools\scripts'))" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <XUnitProject Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj'))" />
+    <XUnitProject Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.*\tests\*.Tests.csproj'))" />
+  </ItemGroup>
+</Project>
