@@ -170,6 +170,7 @@ jobs:
                   DotNetCliVersion: $(_dotNetCliVersion)
                   EnableXUnitReporter: true
                   XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+                  HelixPreCommands: $(_helixPreCommands)
 
                   ${{ if eq(parameters.isOfficialBuild, 'true') }}:
                     WaitForWorkItemCompletion: false
