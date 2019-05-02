@@ -5,16 +5,21 @@
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
 
-    <BuildFrameworks>netstandard2.0;</BuildFrameworks>
-    <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netstandard1.0;netstandard1.1;netstandard1.3;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
+    <BuildFrameworks>netstandard2.0;net461;</BuildFrameworks>
+    <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;netcore50;netstandard1.0;netstandard1.1;netstandard1.3;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
     <TargetFrameworks>$(BuildFrameworks)$(HarvestFrameworks)</TargetFrameworks>
     <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
     <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsBuilding)' == 'true'">
+  <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' != 'net461'">
     <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' == 'net461'">
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
 
   <!-- non-building TargetFrameworks copy from old package -->
@@ -28,11 +33,6 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>

@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' == 'net461'">
-    <!--<PackageReference Include="Microsoft.TargetingPack.NETFramework.v4.6.1" Version="1.0.1" PrivateAssets="All" />-->
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
@@ -43,10 +42,6 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
-  <!--<ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
-  </ItemGroup>-->
   <ItemGroup Condition="'$(TargetFramework)' == 'netcore50'">
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
     <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
