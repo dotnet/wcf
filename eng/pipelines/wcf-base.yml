@@ -12,6 +12,7 @@ parameters:
   # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries
   #   Default: false
   isOfficialBuild: false
+  System.Debug: true
 
   # EACH JOB SHOULD INCLUDE THE FOLLOWING PROPERTIES (ASIDE FROM THE REQUIRED ONES IN THE JOB SCHEMA)
 
@@ -174,8 +175,7 @@ jobs:
                   XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
                   _helixAccessToken: $(HelixApiAccessToken)
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                condition: and(succeeded(), eq(variables['Agent.Os'], 'Windows_NT'))
-                continueOnError: ${{ parameters.continueOnError }}
+                continueOnError: false
               - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
                 displayName: Send Tests To Helix (Unix)
                 env: 
@@ -195,4 +195,4 @@ jobs:
                   _helixAccessToken: $(HelixApiAccessToken)
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
                 condition: and(succeeded(), ne(variables['Agent.Os'], 'Windows_NT'))
-                continueOnError: ${{ parameters.continueOnError }}
+                continueOnError: false
