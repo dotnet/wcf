@@ -81,7 +81,6 @@ jobs:
       buildExtraArguments: ''
 
       variables:
-        - _helixPreCommands: "chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh;sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfrootca.crt"
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           #- linuxDefaultQueues: Centos.7.Amd64.Open+RedHat.7.Amd64.Open+Debian.8.Amd64.Open+Ubuntu.1604.Amd64.Open+Ubuntu.1804.Amd64.Open+OpenSuse.42.Amd64.Open+Fedora.28.Amd64.Open
           - linuxDefaultQueues: Centos.7.Amd64.Open

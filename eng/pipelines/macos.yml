@@ -79,7 +79,6 @@ jobs:
       buildExtraArguments: ''
 
       variables:
-        - _helixPreCommands: "chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh;sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceUri) --cert-file /tmp/wcfrootca.crt"
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           - macOSQueues: OSX.1012.Amd64.Open+OSX.1013.Amd64.Open
 

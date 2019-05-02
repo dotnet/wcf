@@ -12,9 +12,4 @@
     <WcfScenarioTestCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.Tests.csproj'))</WcfScenarioTestCommonProj>
     <WcfInfrastructureCommonProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj'))</WcfInfrastructureCommonProj>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
-    <HelixCorrelationPayload Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tools\scripts'))" />
-  </ItemGroup>
 </Project>
