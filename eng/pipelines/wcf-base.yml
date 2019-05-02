@@ -174,7 +174,7 @@ jobs:
                   XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
                   _helixAccessToken: $(HelixApiAccessToken)
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                condition: and(${{ parameters.condition }}, eq(variables['Agent.Os'], 'Windows_NT'))
+                condition: and(succeeded(), eq(variables['Agent.Os'], 'Windows_NT'))
                 continueOnError: ${{ parameters.continueOnError }}
               - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
                 displayName: Send Tests To Helix (Unix)
@@ -194,5 +194,5 @@ jobs:
                   XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
                   _helixAccessToken: $(HelixApiAccessToken)
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                condition: and(${{ parameters.condition }}, ne(variables['Agent.Os'], 'Windows_NT'))
+                condition: and(succeeded(), ne(variables['Agent.Os'], 'Windows_NT'))
                 continueOnError: ${{ parameters.continueOnError }}
