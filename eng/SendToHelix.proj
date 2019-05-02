@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <XUnitProject Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj'))" />
-    <XUnitProject Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.*\tests\*.Tests.csproj'))" />
+    <XUnitProjects Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj'))" />
+    <XUnitProjects Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.*\tests\*.Tests.csproj'))" />
+    <XUnitProject Include="$(XUnitProjects.Split(';'))" />
   </ItemGroup>
 </Project>
