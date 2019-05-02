@@ -3,6 +3,7 @@ variables:
   _PublishUsingPipelines: true
   # clean the local repo on the build agents
   Build.Repository.Clean: true
+  System.Debug: true
 
 # trigger ci builds for merged PRs into listed branches
 # Setting batch to true, triggers one build at a time.
