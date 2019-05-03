@@ -2,17 +2,18 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <IsFacadeAssembly Condition="'$(IsFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsFacadeAssembly>
+    <IsPartialFacadeAssembly Condition="'$(IsPartialFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsPartialFacadeAssembly>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(IsFacadeAssembly)'=='true'">
-    <IsPartialFacadeAssembly>true</IsPartialFacadeAssembly>
-    <GenFacadesIgnoreMissingTypes>true</GenFacadesIgnoreMissingTypes>
+  <PropertyGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
+    <!-- [todo:arcade] Set GenFacadesIgnoreMissingTypes to true only for the ServiceModel shim -->
+    <GenFacadesIgnoreMissingTypes Condition="'$(IsReferenceAssembly)' != 'true'">true</GenFacadesIgnoreMissingTypes>
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
     <IsPackable>true</IsPackable>
     <!-- GenFacades requires a PDB -->
     <DebugType>portable</DebugType>
+    <NoWarn Condition="'$(IsReferenceAssembly)' == 'true'">$(NoWarn);0436</NoWarn>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
@@ -20,7 +21,7 @@
   </ItemGroup>
 
   <!--This is where we tell GenFacades what Ref assembly to look for.-->
-  <Target Condition="'$(IsPartialFacadeAssembly)'=='true'" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild">
+  <Target Condition="'$(IsPartialFacadeAssembly)'=='true' AND '$(IsReferenceAssembly)' != 'true'" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild">
     <ItemGroup>
       <ProjectReference Include="..\ref\$(AssemblyName).Ref.csproj">
         <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

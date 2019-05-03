@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1;net461;</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,5 +15,13 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'" >
     <Compile Include="System.ServiceModel.Primitives.Netcoreapp.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
 </Project>
