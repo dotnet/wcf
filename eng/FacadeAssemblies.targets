@@ -6,8 +6,6 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
-    <!-- [todo:arcade] Set GenFacadesIgnoreMissingTypes to true only for the ServiceModel shim -->
-    <GenFacadesIgnoreMissingTypes Condition="'$(IsReferenceAssembly)' != 'true'">true</GenFacadesIgnoreMissingTypes>
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
     <IsPackable>true</IsPackable>
