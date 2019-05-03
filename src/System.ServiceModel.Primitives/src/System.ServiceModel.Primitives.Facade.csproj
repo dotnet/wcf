@@ -22,11 +22,6 @@
                       PackagePath="ref/$(TargetFramework);lib/$(TargetFramework)" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' == 'net461'">
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
-  </ItemGroup>
-
   <!-- non-building TargetFrameworks copy from old package -->
   <PropertyGroup Condition="'$(IsHarvesting)' == 'true'">
     <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
@@ -39,6 +34,10 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>

@@ -12,14 +12,9 @@
     <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' != 'net461'">
-    <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
+  <ItemGroup Condition="'$(IsBuilding)' == 'true'">
+    <ProjectReference Condition="'$(TargetFramework)' != 'net461'" Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' == 'net461'">
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
   </ItemGroup>
 
   <!-- non-building TargetFrameworks copy from old package -->
@@ -30,6 +25,10 @@
 
   <!-- the following represent dependencies copied from the old package -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcore50'">
