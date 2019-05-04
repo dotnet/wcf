@@ -4,15 +4,15 @@
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    
-    <BuildFrameworks>netstandard2.0;netcoreapp2.1;</BuildFrameworks>
-    <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;net461;netcore50;netstandard1.0;netstandard1.1;netstandard1.3;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
+
+    <BuildFrameworks>netstandard2.0;netcoreapp2.1;net461;</BuildFrameworks>
+    <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;netcore50;netstandard1.0;netstandard1.1;netstandard1.3;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
     <TargetFrameworks>$(BuildFrameworks)$(HarvestFrameworks)</TargetFrameworks>
     <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
     <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsBuilding)' == 'true'">
+  <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' != 'net461'">
     <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
 
     <!-- bring in the System.ServiceModel shim for desktop compat -->
@@ -22,12 +22,12 @@
                       PackagePath="ref/$(TargetFramework);lib/$(TargetFramework)" />
   </ItemGroup>
 
-    <!-- non-building TargetFrameworks copy from old package -->
-    <PropertyGroup Condition="'$(IsHarvesting)' == 'true'">
-      <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
-      <HarvestFromPackage>true</HarvestFromPackage>
-    </PropertyGroup>
-  
+  <!-- non-building TargetFrameworks copy from old package -->
+  <PropertyGroup Condition="'$(IsHarvesting)' == 'true'">
+    <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
+    <HarvestFromPackage>true</HarvestFromPackage>
+  </PropertyGroup>
+
   <!-- the following represent dependencies copied from the old package -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
     <Reference Include="System.ServiceModel" />
@@ -40,7 +40,7 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcore50'">
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
     <PackageReference Include="System.ComponentModel.EventBasedAsync" Version="4.3.0" />
