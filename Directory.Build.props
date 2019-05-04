@@ -19,6 +19,11 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IsPartialFacadeAssembly Condition="'$(IsPartialFacadeAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Facade')))">true</IsPartialFacadeAssembly>
+    <IsReferenceAssembly Condition="'$(IsReferenceAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Include license and third party files to packages -->
     <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
