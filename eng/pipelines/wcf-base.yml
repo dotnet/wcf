@@ -175,6 +175,7 @@ jobs:
                     XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
                     _helixAccessToken: $(HelixApiAccessToken)
                     _isOfficialBuild: ${{ parameters.isOfficialBuild }}
+                    ServiceUri: $(_serviceUri)
                   continueOnError: false
               - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
                 - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
@@ -195,4 +196,5 @@ jobs:
                     XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
                     _helixAccessToken: $(HelixApiAccessToken)
                     _isOfficialBuild: ${{ parameters.isOfficialBuild }}
+                    ServiceUri: $(_serviceUri)
                   continueOnError: false
