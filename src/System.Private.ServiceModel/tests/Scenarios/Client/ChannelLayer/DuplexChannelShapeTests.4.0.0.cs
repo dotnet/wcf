@@ -21,6 +21,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
+    [Issue(3610)]
     public static void IDuplexSessionChannel_Tcp_NetTcpBinding()
     {
         IChannelFactory<IDuplexSessionChannel> factory = null;
