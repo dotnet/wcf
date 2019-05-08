@@ -82,8 +82,12 @@ jobs:
               /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
               /p:OfficialBuildId=$(Build.BuildNumber)
 
-        - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+        # PR Service variables.
+        - _wcfPRServiceId: $(_WcfPRServiceId) 
+        - _updateService: $(_UpdateService)
 
+        # Scenario Test Service Uri
+        - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService
 
@@ -139,7 +143,7 @@ jobs:
             - template: /eng/pipelines/UpdatePRService.yml
               parameters:
                 wcfPRServiceId: $(_wcfPRServiceId)
-                updateService: $(_UpdateService)
+                updateService: $(_updateService)
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_testArgs)
