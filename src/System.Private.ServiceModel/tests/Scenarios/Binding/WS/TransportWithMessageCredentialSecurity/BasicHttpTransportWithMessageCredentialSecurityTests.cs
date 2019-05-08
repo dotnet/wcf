@@ -59,6 +59,7 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfFact]
+    [Issue(3610)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
