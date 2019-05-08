@@ -29,7 +29,7 @@ jobs:
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
-              _wcfPRServiceId: 2
+              _WcfPRServiceId: 2
               _UpdateService: true
 
             x86_Release:
@@ -42,7 +42,7 @@ jobs:
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
-              _wcfPRServiceId: 2
+              _WcfPRServiceId: 2
               _UpdateService: true
           
           # Official build LEGS with HELIX Testing

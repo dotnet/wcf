@@ -30,7 +30,7 @@ jobs:
               _publish: false
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
-              _wcfPRServiceId: 1
+              _WcfPRServiceId: 1
               _UpdateService: true
 
             x86_Release:
@@ -43,7 +43,7 @@ jobs:
               _publish: false
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
-              _wcfPRServiceId: 1
+              _WcfPRServiceId: 1
               _UpdateService: true
           
           # Official build LEGS with HELIX Testing
