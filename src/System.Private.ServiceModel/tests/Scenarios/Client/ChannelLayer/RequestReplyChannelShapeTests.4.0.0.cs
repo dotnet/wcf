@@ -127,6 +127,7 @@ public partial class RequestReplyChannelShapeTests
 
     [WcfFact]
     [OuterLoop]
+    [Issue(3610)]
     public static void IRequestChannel_Async_Http_BasicHttpBinding()
     {
         IChannelFactory<IRequestChannel> factory = null;
@@ -180,6 +181,7 @@ public partial class RequestReplyChannelShapeTests
 
     [WcfFact]
     [OuterLoop]
+    [Issue(3610)]
     public static void IRequestChannel_Async_Http_CustomBinding()
     {
         IChannelFactory<IRequestChannel> factory = null;
