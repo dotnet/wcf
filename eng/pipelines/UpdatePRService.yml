@@ -2,6 +2,7 @@ parameters:
   Operation: ''
   wcfPRServiceUri: "http://wcfcoresrv2.cloudapp.net/PRServiceMaster/pr.ashx"
   wcfPRServiceId: ''
+  updateService: false
 
 ##   Description of 'Set_Operation_PR_or_Branch' steps for Windows or Unix   ##
 ##   Have to determine if the run was triggered as a PR or CI and then set 'Operation' accordingly.   ##
