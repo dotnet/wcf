@@ -4,21 +4,21 @@
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="1.0.0-beta.19226.3">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="1.0.0-beta.19259.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>7bec23ce3da545d97f53f99abce457a2e252aa58</Sha>
+      <Sha>94f59ea4816965ecc69f19e6ee82719a7a74459f</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SignTool" Version="1.0.0-beta.19226.3">
+    <Dependency Name="Microsoft.DotNet.SignTool" Version="1.0.0-beta.19259.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>7bec23ce3da545d97f53f99abce457a2e252aa58</Sha>
+      <Sha>94f59ea4816965ecc69f19e6ee82719a7a74459f</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="2.0.0-beta.19226.3">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="2.0.0-beta.19259.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>7bec23ce3da545d97f53f99abce457a2e252aa58</Sha>
+      <Sha>94f59ea4816965ecc69f19e6ee82719a7a74459f</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.GenFacades" Version="1.0.0-beta.19226.3">
+    <Dependency Name="Microsoft.DotNet.GenFacades" Version="1.0.0-beta.19259.1">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>7bec23ce3da545d97f53f99abce457a2e252aa58</Sha>
+      <Sha>94f59ea4816965ecc69f19e6ee82719a7a74459f</Sha>
     </Dependency>
     <!--[todo: arcade] Updating XUnitExtensions to a newer version causes compile errors
     related to the use of "Assert" an xunit type in our Scenario test common project.-->
