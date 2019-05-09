@@ -111,7 +111,7 @@ jobs:
           - _xUnitRuntimeTargetFramework: netcoreapp2.0
           - _xUnitRunnerVersion: 2.4.1
           - _dotNetCliPackageType: sdk
-          - _dotNetCliVersion: 3.0.100-preview-010024 #must be same version as tools dotnet version in the global.json
+          - _dotNetCliVersion: 3.0.100-preview5-011162 #must be same version as tools dotnet version in the global.json
           - _xUnitWorkItemTimeout: '00:10:00'
 
         # pass along job properties
