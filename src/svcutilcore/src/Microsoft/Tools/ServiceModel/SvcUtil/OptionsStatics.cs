@@ -19,6 +19,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             internal const string ExcludeType = "excludeType";
             internal const string CollectionType = "collectionType";
             internal const string Namespace = "namespace";
+            internal const string Quiet = "quiet";
 #if DEBUG
             internal const string Debug = "debug";
 #endif
@@ -35,7 +36,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             internal const string ExcludeType = "et";
             internal const string CollectionType = "ct";
             internal const string Namespace = "n";
-            internal const string Validate = "v";
+            internal const string Quiet = "q";
         }
 
         internal static class Targets
@@ -58,11 +59,12 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             public static readonly CommandSwitch Nostdlib = new CommandSwitch(Options.Cmd.Nostdlib, Options.Cmd.Nostdlib, SwitchType.Flag);
             public static readonly CommandSwitch ExcludeType = new CommandSwitch(Options.Cmd.ExcludeType, Abbr.ExcludeType, SwitchType.ValueList);
             public static readonly CommandSwitch Namespace = new CommandSwitch(Options.Cmd.Namespace, Abbr.Namespace, SwitchType.ValueList);
+            public static readonly CommandSwitch Quiet = new CommandSwitch(Options.Cmd.Quiet, Abbr.Quiet, SwitchType.Flag);
 #if DEBUG
             public static readonly CommandSwitch Debug = new CommandSwitch(Options.Cmd.Debug, Options.Cmd.Debug, SwitchType.Flag);
 #endif
             public static readonly CommandSwitch[] All = new CommandSwitch[] { Directory, Help, NoLogo, Out,
-                                                                        Nostdlib, ExcludeType, Namespace, Reference, SMReference, 
+                                                                        Nostdlib, ExcludeType, Namespace, Reference, SMReference, Quiet,
 #if DEBUG
                                                                         Debug,
 #endif
