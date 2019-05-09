@@ -82,13 +82,13 @@ jobs:
               /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
               /p:OfficialBuildId=$(Build.BuildNumber)
 
-        # PR Service variables.
-        - _updateService: $(_UpdateService)
-
         # Scenario Test Service Uri
         - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+          # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService
+          # For PR and CI test runs we need to update the Service being used by Scenario tests.
+          - _updateService: $(_UpdateService)
 
         - _testArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
         - _args: -preparemachine -configuration $(_BuildConfig) /p:Test=$(_unitTests) /p:IntegrationTest=$(_integrationTests) /p:Sign=$(_sign) /p:Pack=$(_pack) /p:Publish=$(_publish)
