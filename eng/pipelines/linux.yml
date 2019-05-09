@@ -19,9 +19,8 @@ jobs:
         matrix:
           # PR CI build LEGS with HELIX Testing
           ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-            x64_Debug:
+            Debug:
               _BuildConfig: Debug
-              _architecture: x64
               _unitTests: false
               _integrationTests: false
               _sign: false
@@ -29,12 +28,11 @@ jobs:
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
-              _WcfPRServiceId: 2
+              _WcfPRServiceId: 3
               _UpdateService: true
 
-            x86_Release:
+            Release:
               _BuildConfig: Release
-              _architecture: x86
               _unitTests: false
               _integrationTests: false
               _sign: false
@@ -42,14 +40,13 @@ jobs:
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
-              _WcfPRServiceId: 2
+              _WcfPRServiceId: 4
               _UpdateService: true
           
           # Official build LEGS with HELIX Testing
           ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            x64_Release:
-              _BuildConfig: Release
-              _architecture: x64
+            Debug:
+              _BuildConfig: Debug
               _sign: false
               _unitTests: false
               _integrationTests: false
@@ -58,9 +55,8 @@ jobs:
               _helixQueues: $(linuxDefaultQueues)
               _useIISHostedTestArgs: true
 
-            x86_Release:
+            Release:
               _BuildConfig: Release
-              _architecture: x86
               _sign: false
               _unitTests: false
               _integrationTests: false
