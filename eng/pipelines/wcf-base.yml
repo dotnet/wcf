@@ -81,12 +81,12 @@ jobs:
               /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
               /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
               /p:OfficialBuildId=$(Build.BuildNumber)
+          # Service host and uri for official builds
+          - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
 
-        # Scenario Test Service Uri
-        - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
         - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
-          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService
+          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
           # For PR and CI test runs we need to update the Service being used by Scenario tests.
           - _updateService: $(_UpdateService)
 
@@ -105,14 +105,17 @@ jobs:
 
         # Send to Helix variables
         - ${{ if eq(job.submitToHelix, 'true') }}:
-          - _helixSource: official/$(wcfRepo)/$(Build.SourceBranch)
-          - _helixType: build/test
+          - _helixType: build/test/
           - _xUnitPublishTargetFramework: netcoreapp3.0
           - _xUnitRuntimeTargetFramework: netcoreapp2.0
           - _xUnitRunnerVersion: 2.4.1
           - _dotNetCliPackageType: sdk
           - _dotNetCliVersion: 3.0.100-preview5-011162 #must be same version as tools dotnet version in the global.json
           - _xUnitWorkItemTimeout: '00:10:00'
+          - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
+            - _helixSource: official/dotnet/wcf/$(Build.SourceBranch)
+          - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+            - _helixSource: pr/dotnet/wcf/$(Build.SourceBranch)
 
         # pass along job properties
         ${{ each property in job }}:
@@ -143,58 +146,58 @@ jobs:
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_testArgs)
+              displayName: Build Product and Test, Pack and Sign
 
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_internalBuildArgs)
                 $(_testArgs)
-              displayName: Build Everything, Pack, Sign, and Publish
+              displayName: Build Product and Test, Pack and Sign
 
           - ${{ if ne(job.customBuildSteps[0], '') }}:
             - ${{ job.customBuildSteps }}
 
           - ${{ if eq(job.submitToHelix, 'true') }}:
-            - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-              - ${{ if eq(parameters.targetOS, 'Windows_NT') }}:
-                - powershell: 'powershell "$env:BUILD_SOURCESDIRECTORY\eng\common\msbuild.ps1 $env:BUILD_SOURCESDIRECTORY\eng\SendToHelix.proj /restore /t:Test /bl:$env:BUILD_SOURCESDIRECTORY\artifacts\log\$env:BuildConfig\SendToHelix.binlog"'
-                  displayName: Send Tests To Helix (Windows)
-                  env: 
-                    HelixSource: $(_helixSource)
-                    HelixType: $(_helixType)
-                    HelixBuild: $(Build.BuildNumber)
-                    HelixTargetQueues: $(_helixQueues)
-                    XUnitProjects: $(_xUnitAllTestProjects)
-                    XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
-                    XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
-                    XUnitRunnerVersion: $(_xUnitRunnerVersion)
-                    IncludeDotNetCli: true
-                    DotNetCliPackageType: $(_dotNetCliPackageType)
-                    DotNetCliVersion: $(_dotNetCliVersion)
-                    EnableXUnitReporter: true
-                    XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
-                    _helixAccessToken: $(HelixApiAccessToken)
-                    _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                    ServiceUri: $(_serviceUri)
-                  continueOnError: false
-              - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
-                - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
-                  displayName: Send Tests To Helix (Unix)
-                  env: 
-                    HelixSource: $(_helixSource)
-                    HelixType: $(_helixType)
-                    HelixBuild: $(Build.BuildNumber)
-                    HelixTargetQueues: $(_helixQueues)
-                    XUnitProjects: $(_xUnitAllTestProjects)
-                    XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
-                    XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
-                    XUnitRunnerVersion: $(_xUnitRunnerVersion)
-                    IncludeDotNetCli: true
-                    DotNetCliPackageType: $(_dotNetCliPackageType)
-                    DotNetCliVersion: $(_dotNetCliVersion)
-                    EnableXUnitReporter: true
-                    XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
-                    _helixAccessToken: $(HelixApiAccessToken)
-                    _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                    ServiceUri: $(_serviceUri)
-                  continueOnError: false
+            - ${{ if eq(parameters.targetOS, 'Windows_NT') }}:
+              - powershell: 'powershell "$env:BUILD_SOURCESDIRECTORY\eng\common\msbuild.ps1 $env:BUILD_SOURCESDIRECTORY\eng\SendToHelix.proj /restore /t:Test /bl:$env:BUILD_SOURCESDIRECTORY\artifacts\log\$env:BuildConfig\SendToHelix.binlog"'
+                displayName: Send Tests To Helix (Windows)
+                env:
+                  HelixSource: $(_helixSource)
+                  HelixType: $(_helixType)
+                  HelixBuild: $(Build.BuildNumber)
+                  HelixTargetQueues: $(_helixQueues)
+                  XUnitProjects: $(_xUnitAllTestProjects)
+                  XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
+                  XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
+                  XUnitRunnerVersion: $(_xUnitRunnerVersion)
+                  IncludeDotNetCli: true
+                  DotNetCliPackageType: $(_dotNetCliPackageType)
+                  DotNetCliVersion: $(_dotNetCliVersion)
+                  EnableXUnitReporter: true
+                  XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+                  _helixAccessToken: $(HelixApiAccessToken)
+                  _isOfficialBuild: ${{ parameters.isOfficialBuild }}
+                  ServiceHost: $(_serviceUri) #not used on Windows machines
+                continueOnError: false
+            - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
+              - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
+                displayName: Send Tests To Helix (Unix)
+                env:
+                  HelixSource: $(_helixSource)
+                  HelixType: $(_helixType)
+                  HelixBuild: $(Build.BuildNumber)
+                  HelixTargetQueues: $(_helixQueues)
+                  XUnitProjects: $(_xUnitAllTestProjects)
+                  XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
+                  XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
+                  XUnitRunnerVersion: $(_xUnitRunnerVersion)
+                  IncludeDotNetCli: true
+                  DotNetCliPackageType: $(_dotNetCliPackageType)
+                  DotNetCliVersion: $(_dotNetCliVersion)
+                  EnableXUnitReporter: true
+                  XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+                  _helixAccessToken: $(HelixApiAccessToken)
+                  _isOfficialBuild: ${{ parameters.isOfficialBuild }}
+                  ServiceHost: $(_serviceUri)
+                continueOnError: false
