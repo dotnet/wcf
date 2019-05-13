@@ -64,6 +64,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
             // *** CLEANUP *** \\
             replyMessage.Close();
+            channel.Session.CloseOutputSession();
             channel.Close();
             factory.Close();
         }
@@ -121,6 +122,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
             // *** CLEANUP *** \\
             replyMessage.Close();
+            channel.Session.CloseOutputSession();
             channel.Close();
             factory.Close();
         }
