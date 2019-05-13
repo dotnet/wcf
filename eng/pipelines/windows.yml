@@ -76,10 +76,10 @@ jobs:
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          name: NetCoreInternal-Int-Pool
+          name: NetCoreInternal-Pool
           queue: buildpool.windows.10.amd64.vs2017
         ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-          name: NetCorePublic-Int-Pool
+          name: NetCorePublic-Pool
           queue: buildpool.windows.10.amd64.vs2017.open
 
       submitToHelix: true
