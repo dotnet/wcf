@@ -45,7 +45,7 @@ namespace WcfTestCommon
         private readonly TimeSpan _gracePeriod = TimeSpan.FromHours(1);
 
         private const string _authorityCanonicalName = "DO_NOT_TRUST_WcfBridgeRootCA";
-        private const string _signatureAlgorithm = "SHA1WithRSAEncryption";
+        private readonly string _signatureAlgorithm = Org.BouncyCastle.Asn1.Pkcs.PkcsObjectIdentifiers.Sha256WithRsaEncryption.Id;
         private const string _upnObjectId = "1.3.6.1.4.1.311.20.2.3";
         private const int _keyLengthInBits = 2048;
 
