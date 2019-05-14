@@ -106,7 +106,7 @@ jobs:
         # Send to Helix variables
         - ${{ if eq(job.submitToHelix, 'true') }}:
           - _helixType: build/test/
-          - _xUnitPublishTargetFramework: netcoreapp2.1
+          - _xUnitPublishTargetFramework: netcoreapp3.0
           - _xUnitRuntimeTargetFramework: netcoreapp2.0
           - _xUnitRunnerVersion: 2.4.1
           - _dotNetCliPackageType: runtime
