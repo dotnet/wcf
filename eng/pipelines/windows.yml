@@ -1,6 +1,6 @@
 # Windows legs
 parameters:
-  # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries
+  # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries.
   #   Default: false
   isOfficialBuild: false
 
