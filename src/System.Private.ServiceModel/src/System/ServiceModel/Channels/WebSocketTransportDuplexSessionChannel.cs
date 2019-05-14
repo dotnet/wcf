@@ -516,7 +516,13 @@ namespace System.ServiceModel.Channels
 
             public Message Receive(TimeSpan timeout)
             {
-                return ReceiveAsync(timeout).WaitForCompletionNoSpin();
+                return ReceiveAsyncInternal(timeout).WaitForCompletionNoSpin();
+            }
+
+            private async Task<Message> ReceiveAsyncInternal(TimeSpan timeout)
+            {
+                await TaskHelpers.EnsureDefaultTaskScheduler();
+                return await ReceiveAsync(timeout);
             }
 
             private async Task ReadBufferedMessageAsync()
