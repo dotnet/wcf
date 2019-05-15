@@ -13,7 +13,7 @@ using Xunit;
 public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
-    [Issue(3610)]
+    [Issue(2870)]
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
            nameof(SSL_Available))]
@@ -61,7 +61,6 @@ public class WSHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfT
     }
 
     [WcfFact]
-    [Issue(3610)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
