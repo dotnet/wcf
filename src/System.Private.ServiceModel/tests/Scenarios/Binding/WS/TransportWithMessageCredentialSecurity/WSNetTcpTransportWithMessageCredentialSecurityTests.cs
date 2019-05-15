@@ -1,18 +1,24 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using Infrastructure.Common;
 using Xunit;
 
-public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
+public class WSNetTcpTransportWithMessageCredentialSecurityTests : ConditionalWcfTest
 {
     [WcfFact]
     [Issue(2870, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
-               nameof(Client_Certificate_Installed),
-               nameof(SSL_Available))]
+           nameof(Client_Certificate_Installed),
+           nameof(SSL_Available))]
     [OuterLoop]
-    public static void Https_SecModeTransWithMessCred_CertClientCredential_Succeeds()
+    public static void NetTcp_SecModeTransWithMessCred_CertClientCredential_Succeeds()
     {
         string clientCertThumb = null;
         EndpointAddress endpointAddress = null;
@@ -23,9 +29,9 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
         try
         {
             // *** SETUP *** \\
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
-            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.Certificate;
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.BasicHttps_SecModeTransWithMessCred_ClientCredTypeCert));
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.Certificate;
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeCert));
             clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
@@ -55,10 +61,11 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
     }
 
     [WcfFact]
+    [Issue(2870, OS = OSID.AnyOSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
-    public static void Https_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
+    public static void NetTcp_SecModeTransWithMessCred_UserNameClientCredential_Succeeds()
     {
         string testString = "Hello";
         string result = null;
@@ -71,9 +78,9 @@ public class BasicHttpTransportWithMessageCredentialSecurityTests : ConditionalW
         try
         {
             // *** SETUP *** \\
-            WSHttpBinding binding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.TransportWithMessageCredential);
             binding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeUserName));
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Tcp_SecModeTransWithMessCred_ClientCredTypeUserName));
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             username = Guid.NewGuid().ToString("n").Substring(0, 8);

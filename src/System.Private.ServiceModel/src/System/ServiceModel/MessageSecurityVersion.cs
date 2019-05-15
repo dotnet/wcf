@@ -133,7 +133,7 @@ namespace System.ServiceModel
 
             public override string ToString()
             {
-                return "WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11";
+                return nameof(WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11);
             }
         }
 
@@ -158,7 +158,7 @@ namespace System.ServiceModel
 
             public override string ToString()
             {
-                return "WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10";
+                return nameof(WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10);
             }
         }
 
@@ -183,7 +183,7 @@ namespace System.ServiceModel
 
             public override string ToString()
             {
-                return "WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10";
+                return nameof(WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10);
             }
         }
 
@@ -208,7 +208,7 @@ namespace System.ServiceModel
 
             public override string ToString()
             {
-                return "WSSecurity10WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10";
+                return nameof(WSSecurity10WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10);
             }
         }
 
@@ -233,7 +233,7 @@ namespace System.ServiceModel
 
             public override string ToString()
             {
-                return "WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12";
+                return nameof(WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12);
             }
         }
 
@@ -258,7 +258,7 @@ namespace System.ServiceModel
 
             public override string ToString()
             {
-                return "WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10";
+                return nameof(WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10);
             }
         }
     }

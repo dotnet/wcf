@@ -4,33 +4,35 @@
 
 
 using System.ComponentModel;
+using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 
 namespace System.ServiceModel
 {
     public sealed class MessageSecurityOverTcp
     {
         internal const MessageCredentialType DefaultClientCredentialType = MessageCredentialType.Windows;
-        private MessageCredentialType _messageCredentialType;
+        private MessageCredentialType _clientCredentialType;
+        private SecurityAlgorithmSuite _algorithmSuite;
 
         public MessageSecurityOverTcp()
         {
-            _messageCredentialType = DefaultClientCredentialType;
+            _clientCredentialType = DefaultClientCredentialType;
+            _algorithmSuite = SecurityAlgorithmSuite.Default;
         }
 
-        [DefaultValue(MessageSecurityOverTcp.DefaultClientCredentialType)]
+        [DefaultValue(DefaultClientCredentialType)]
         public MessageCredentialType ClientCredentialType
         {
-            get
-            {
-                if (_messageCredentialType != MessageCredentialType.None)
+            get {
+                if (_clientCredentialType == MessageCredentialType.IssuedToken || _clientCredentialType == MessageCredentialType.Windows)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("MessageSecurityOverTcp.ClientCredentialType is not supported for values other than 'MessageCredentialType.None'.");
+                    throw ExceptionHelper.PlatformNotSupported($"MessageSecurityOverTcp.ClientCredentialType is not supported for value {_clientCredentialType}.");
                 }
-                else
-                {
-                    return _messageCredentialType;
-                }
+
+                return _clientCredentialType;
             }
             set
             {
@@ -39,20 +41,75 @@ namespace System.ServiceModel
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
-                if (value != MessageCredentialType.None)
+                if (value == MessageCredentialType.IssuedToken || value == MessageCredentialType.Windows)
                 {
-                    throw ExceptionHelper.PlatformNotSupported("MessageSecurityOverTcp.ClientCredentialType is not supported for values other than 'MessageCredentialType.None'.");
+                    throw ExceptionHelper.PlatformNotSupported($"MessageSecurityOverTcp.ClientCredentialType is not supported for value {value}.");
                 }
-                else
-                {
-                    _messageCredentialType = value;
-                }
+
+                _clientCredentialType = value;
             }
         }
 
-        internal bool InternalShouldSerialize()
+        [DefaultValue(typeof(SecurityAlgorithmSuite), nameof(SecurityAlgorithmSuite.Default))]
+        public SecurityAlgorithmSuite AlgorithmSuite
         {
-            return ClientCredentialType != NetTcpDefaults.MessageSecurityClientCredentialType;
+            get { return _algorithmSuite; }
+            set
+            {
+                _algorithmSuite = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal SecurityBindingElement CreateSecurityBindingElement(bool isSecureTransportMode, bool isReliableSession, BindingElement transportBindingElement)
+        {
+            SecurityBindingElement result;
+            SecurityBindingElement oneShotSecurity;
+            if (isSecureTransportMode)
+            {
+                switch (_clientCredentialType)
+                {
+                    case MessageCredentialType.None:
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ClientCredentialTypeMustBeSpecifiedForMixedMode));
+                    case MessageCredentialType.UserName:
+                        oneShotSecurity = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
+                        break;
+                    case MessageCredentialType.Certificate:
+                        oneShotSecurity = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
+                        break;
+                    case MessageCredentialType.Windows:
+                        throw ExceptionHelper.PlatformNotSupported($"{nameof(MessageCredentialType)}.{nameof(MessageCredentialType.Windows)}");
+                    case MessageCredentialType.IssuedToken:
+                        throw ExceptionHelper.PlatformNotSupported($"{nameof(MessageCredentialType)}.{nameof(MessageCredentialType.IssuedToken)}");
+                    default:
+                        Fx.Assert("unknown ClientCredentialType");
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+                }
+                result = SecurityBindingElement.CreateSecureConversationBindingElement(oneShotSecurity);
+            }
+            else
+            {
+                throw ExceptionHelper.PlatformNotSupported();
+            }
+
+            // set the algorithm suite and issued token params if required
+            result.DefaultAlgorithmSuite = oneShotSecurity.DefaultAlgorithmSuite = this.AlgorithmSuite;
+
+            result.IncludeTimestamp = true;
+            if (!isReliableSession)
+            {
+                result.LocalClientSettings.ReconnectTransportOnFailure = false;
+            }
+            else
+            {
+                throw ExceptionHelper.PlatformNotSupported();
+            }
+
+            // since a session is always bootstrapped, configure the transition sct to live for a short time only
+            result.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
+            oneShotSecurity.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
+
+            return result;
         }
     }
 }

@@ -14,7 +14,6 @@ namespace System.ServiceModel
         internal const SecurityMode DefaultMode = SecurityMode.Transport;
 
         private SecurityMode _mode;
-        private MessageSecurityOverTcp _messageSecurity;
 
         public NetTcpSecurity()
             : this(DefaultMode, new TcpTransportSecurity(), new MessageSecurityOverTcp())
@@ -31,8 +30,8 @@ namespace System.ServiceModel
                                             SecurityMode.Transport.ToString()));
 
             _mode = mode;
-            Transport = transportSecurity == null ? new TcpTransportSecurity() : transportSecurity;
-            _messageSecurity = messageSecurity == null ? new MessageSecurityOverTcp() : messageSecurity;
+            Transport = transportSecurity ?? new TcpTransportSecurity();
+            Message = messageSecurity ?? new MessageSecurityOverTcp();
         }
 
         [DefaultValue(DefaultMode)]
@@ -51,12 +50,7 @@ namespace System.ServiceModel
 
         public TcpTransportSecurity Transport { get; set; }
 
-        public MessageSecurityOverTcp Message
-        {
-            get { return _messageSecurity; }
-            set { _messageSecurity = value; }
-        }
-
+        public MessageSecurityOverTcp Message { get; set; }
 
         internal BindingElement CreateTransportSecurity()
         {
@@ -74,29 +68,20 @@ namespace System.ServiceModel
             }
         }
 
-        internal static UnifiedSecurityMode GetModeFromTransportSecurity(BindingElement transport)
+        internal SecurityBindingElement CreateMessageSecurity(bool isReliableSessionEnabled)
         {
-            if (transport == null)
+            if (_mode == SecurityMode.Message)
             {
-                return UnifiedSecurityMode.None | UnifiedSecurityMode.Message;
+                throw ExceptionHelper.PlatformNotSupported();
+            }
+            else if (_mode == SecurityMode.TransportWithMessageCredential)
+            {
+                return Message.CreateSecurityBindingElement(true, isReliableSessionEnabled, CreateTransportSecurity());
             }
             else
             {
-                return UnifiedSecurityMode.TransportWithMessageCredential | UnifiedSecurityMode.Transport;
+                return null;
             }
-        }
-
-        internal static bool SetTransportSecurity(BindingElement transport, SecurityMode mode, TcpTransportSecurity transportSecurity)
-        {
-            if (mode == SecurityMode.TransportWithMessageCredential)
-            {
-                return TcpTransportSecurity.SetTransportProtectionOnly(transport, transportSecurity);
-            }
-            else if (mode == SecurityMode.Transport)
-            {
-                return TcpTransportSecurity.SetTransportProtectionAndAuthentication(transport, transportSecurity);
-            }
-            return transport == null;
         }
     }
 }

@@ -468,15 +468,7 @@ namespace System.ServiceModel.Channels
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SecurityProtocolCorrelationState correlationState;
                 (correlationState, message) = await SecurityProtocol.SecureOutgoingMessageAsync(message, timeoutHelper.RemainingTime(), null);
-                Message reply;
-                if (InnerChannel is IAsyncRequestChannel asyncRequestChannel)
-                {
-                    reply = await asyncRequestChannel.RequestAsync(message, timeoutHelper.RemainingTime());
-                }
-                else
-                {
-                    reply = await Task.Factory.FromAsync(InnerChannel.BeginRequest, InnerChannel.EndRequest, message, timeoutHelper.RemainingTime(), null);
-                }
+                Message reply = await Task.Factory.FromAsync(InnerChannel.BeginRequest, InnerChannel.EndRequest, message, timeoutHelper.RemainingTime(), null);
 
                 return ProcessReply(reply, correlationState, timeoutHelper.RemainingTime());
             }

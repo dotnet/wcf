@@ -750,7 +750,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        internal class RequestChannelFactory : ChannelFactoryBase<IAsyncRequestChannel>
+        internal class RequestChannelFactory : ChannelFactoryBase<IAsyncRequestChannel>, IChannelFactory<IRequestChannel>
         {
             private ServiceChannelFactory _serviceChannelFactory;
 
@@ -764,6 +764,11 @@ namespace System.ServiceModel.Security
                 return _serviceChannelFactory.CreateChannel<IAsyncRequestChannel>(address, via);
             }
 
+            protected internal override Task OnOpenAsync(TimeSpan timeout)
+            {
+                return _serviceChannelFactory.OpenHelperAsync(timeout);
+            }
+
             protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
             {
                 return _serviceChannelFactory.BeginOpen(timeout, callback, state);
@@ -772,6 +777,11 @@ namespace System.ServiceModel.Security
             protected override void OnEndOpen(IAsyncResult result)
             {
                 _serviceChannelFactory.EndOpen(result);
+            }
+
+            protected internal override Task OnCloseAsync(TimeSpan timeout)
+            {
+                return _serviceChannelFactory.CloseHelperAsync(timeout);
             }
 
             protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -804,6 +814,16 @@ namespace System.ServiceModel.Security
             public override T GetProperty<T>()
             {
                 return _serviceChannelFactory.GetProperty<T>();
+            }
+
+            IRequestChannel IChannelFactory<IRequestChannel>.CreateChannel(EndpointAddress to)
+            {
+                return CreateChannel(to);
+            }
+
+            IRequestChannel IChannelFactory<IRequestChannel>.CreateChannel(EndpointAddress to, Uri via)
+            {
+                return CreateChannel(to, via);
             }
         }
     }
