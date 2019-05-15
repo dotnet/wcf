@@ -416,7 +416,7 @@ namespace System.ServiceModel.Channels
 
             public IAsyncResult BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state)
             {
-                return RequestAsync(message, timeout).ToApm(callback, state);
+                return RequestAsyncInternal(message, timeout).ToApm(callback, state);
             }
 
             public Message EndRequest(IAsyncResult result)
@@ -481,9 +481,15 @@ namespace System.ServiceModel.Channels
                 return ProcessReply(reply, correlationState, timeoutHelper.RemainingTime());
             }
 
+            private async Task<Message> RequestAsyncInternal(Message message, TimeSpan timeout)
+            {
+                await TaskHelpers.EnsureDefaultTaskScheduler();
+                return await RequestAsync(message, timeout);
+            }
+
             public Message Request(Message message, TimeSpan timeout)
             {
-                return RequestAsync(message, timeout).GetAwaiter().GetResult();
+                return RequestAsyncInternal(message, timeout).GetAwaiter().GetResult();
             }
         }
 
