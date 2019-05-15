@@ -208,7 +208,7 @@ namespace System.ServiceModel.Channels
 
         public IAsyncResult BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return RequestAsync(message, timeout).ToApm(callback, state);
+            return RequestAsyncInternal(message, timeout).ToApm(callback, state);
         }
 
         protected abstract IAsyncRequest CreateAsyncRequest(Message message);
