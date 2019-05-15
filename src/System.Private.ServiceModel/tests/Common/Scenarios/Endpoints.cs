@@ -670,6 +670,18 @@ public static partial class Endpoints
         get { return GetEndpointAddress("TcpSoap11WSA10.svc/tcp-Soap11WSA10", protocol: "net.tcp"); }
     }
 
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeCert
+    {
+        get { return GetEndpointAddress("TcpTransSecMessCredsCert.svc//tcp-message-credentials-cert", protocol: "net.tcp"); }
+    }
+
+    public static string Tcp_SecModeTransWithMessCred_ClientCredTypeUserName
+    {
+        get
+        {
+            return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp");
+        }
+    }
     #endregion net.tcp Addresses
 }
 

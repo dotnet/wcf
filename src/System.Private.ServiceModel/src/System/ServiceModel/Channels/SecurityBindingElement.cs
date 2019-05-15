@@ -559,7 +559,7 @@ namespace System.ServiceModel.Channels
         // reflected in the corresponding IsSecureConversationBinding() method.
         static public SecurityBindingElement CreateSecureConversationBindingElement(SecurityBindingElement bootstrapSecurity)
         {
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.CreateSecureConversatationBindingElement is not supported.");
+            return CreateSecureConversationBindingElement(bootstrapSecurity, SecureConversationSecurityTokenParameters.defaultRequireCancellation, null);
         }
 
         static public SecurityBindingElement CreateSecureConversationBindingElement(SecurityBindingElement bootstrapSecurity, bool requireCancellation)

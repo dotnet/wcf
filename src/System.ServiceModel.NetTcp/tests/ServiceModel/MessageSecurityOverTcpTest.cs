@@ -27,9 +27,7 @@ public static class MessageSecurityOverTcpTest
     }
 
     [WcfTheory]
-    [InlineData(MessageCredentialType.Certificate)]
     [InlineData(MessageCredentialType.IssuedToken)]
-    [InlineData(MessageCredentialType.UserName)]
     [InlineData(MessageCredentialType.Windows)]
     public static void ClientCredentialType_Property_Values_Not_Supported(MessageCredentialType credentialType)
     {
@@ -41,6 +39,8 @@ public static class MessageSecurityOverTcpTest
     }
 
     [WcfTheory]
+    [InlineData(MessageCredentialType.Certificate)]
+    [InlineData(MessageCredentialType.UserName)]
     [InlineData(MessageCredentialType.None)]
     public static void ClientCredentialType_Property_Values_Supported(MessageCredentialType credentialType)
     {

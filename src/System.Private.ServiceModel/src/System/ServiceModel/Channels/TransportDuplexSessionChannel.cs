@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    public abstract class TransportDuplexSessionChannel : TransportOutputChannel, IDuplexSessionChannel
+    public abstract class TransportDuplexSessionChannel : TransportOutputChannel, IDuplexSessionChannel, IAsyncDuplexSessionChannel
     {
         private bool _isInputSessionClosed;
         private bool _isOutputSessionClosed;
@@ -52,6 +52,8 @@ namespace System.ServiceModel.Channels
 
         protected abstract bool IsStreamedOutput { get; }
 
+        IAsyncDuplexSession ISessionChannel<IAsyncDuplexSession>.Session => Session as IAsyncDuplexSession;
+
         public Message Receive()
         {
             return Receive(DefaultReceiveTimeout);
@@ -88,6 +90,11 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        public Task<Message> ReceiveAsync()
+        {
+            return ReceiveAsync(DefaultReceiveTimeout);
+        }
+
         public async Task<Message> ReceiveAsync(TimeSpan timeout)
         {
             Message message = null;
@@ -111,7 +118,6 @@ namespace System.ServiceModel.Channels
                     if (message != null)
                     {
                         message.Close();
-                        message = null;
                     }
 
                     Fault();
@@ -156,6 +162,23 @@ namespace System.ServiceModel.Channels
 
                 message = null;
                 return false;
+            }
+        }
+
+        public async Task<(bool, Message)> TryReceiveAsync(TimeSpan timeout)
+        {
+            try
+            {
+                return (true, await ReceiveAsync(timeout));
+            }
+            catch(TimeoutException e)
+            {
+                if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
+                {
+                    WcfEventSource.Instance.ReceiveTimeout(e.Message);
+                }
+
+                return (false, null);
             }
         }
 
@@ -694,7 +717,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        public class ConnectionDuplexSession : IDuplexSession
+        public class ConnectionDuplexSession : IDuplexSession, IAsyncDuplexSession
         {
             private static UriGenerator s_uriGenerator;
             private string _id;
@@ -762,6 +785,16 @@ namespace System.ServiceModel.Channels
             public void CloseOutputSession(TimeSpan timeout)
             {
                 Channel.CloseOutputSession(timeout);
+            }
+
+            public Task CloseOutputSessionAsync()
+            {
+                return CloseOutputSessionAsync(Channel.DefaultCloseTimeout);
+            }
+
+            public Task CloseOutputSessionAsync(TimeSpan timeout)
+            {
+                return Channel.CloseOutputSessionAsync(timeout);
             }
         }
     }

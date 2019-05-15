@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.ComponentModel;
 using System.ServiceModel.Channels;
 using System.Xml;
@@ -23,22 +22,13 @@ namespace System.ServiceModel
             _security.Mode = securityMode;
         }
 
-
         public NetTcpBinding(string configurationName)
             : this()
         {
-            if (!String.IsNullOrEmpty(configurationName))
+            if (!string.IsNullOrEmpty(configurationName))
             {
                 throw ExceptionHelper.PlatformNotSupported();
             }
-        }
-
-        private NetTcpBinding(TcpTransportBindingElement transport,
-                      BinaryMessageEncodingBindingElement encoding,
-                      NetTcpSecurity security)
-            : this()
-        {
-            _security = security;
         }
 
         [DefaultValue(ConnectionOrientedTransportDefaults.TransferMode)]
@@ -148,7 +138,7 @@ namespace System.ServiceModel
             {
                 bindingElements.Add(transportSecurity);
             }
-
+            _transport.ExtendedProtectionPolicy = _security.Transport.ExtendedProtectionPolicy;
             // add transport (tcp)
             bindingElements.Add(_transport);
 
@@ -160,21 +150,15 @@ namespace System.ServiceModel
             return _security.CreateTransportSecurity();
         }
 
-        private static UnifiedSecurityMode GetModeFromTransportSecurity(BindingElement transport)
-        {
-            return NetTcpSecurity.GetModeFromTransportSecurity(transport);
-        }
-
-        private static bool SetTransportSecurity(BindingElement transport, SecurityMode mode, TcpTransportSecurity transportSecurity)
-        {
-            return NetTcpSecurity.SetTransportSecurity(transport, mode, transportSecurity);
-        }
-
         private SecurityBindingElement CreateMessageSecurity()
         {
-            if (_security.Mode == SecurityMode.Message || _security.Mode == SecurityMode.TransportWithMessageCredential)
+            if (_security.Mode == SecurityMode.Message)
             {
-                throw ExceptionHelper.PlatformNotSupported("NetTcpBinding.CreateMessageSecurity is not supported.");
+                throw ExceptionHelper.PlatformNotSupported(nameof(SecurityMode.Message));
+            }
+            if (_security.Mode == SecurityMode.TransportWithMessageCredential)
+            {
+                return _security.CreateMessageSecurity(false);
             }
             else
             {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfHostedWCFService", "SelfHostedWCFService.csproj", "{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}"
 EndProject
@@ -11,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE292131-42A2-43C3-9DAA-8456DEC5CCAC}
 	EndGlobalSection
 EndGlobal

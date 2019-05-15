@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    public abstract class OutputChannel : ChannelBase, IOutputChannel
+    public abstract class OutputChannel : ChannelBase, IOutputChannel, IAsyncOutputChannel
     {
         protected OutputChannel(ChannelManagerBase manager)
             : base(manager)
@@ -92,6 +92,30 @@ namespace System.ServiceModel.Channels
             OnSend(message, timeout);
         }
 
+        public Task SendAsync(Message message)
+        {
+            return SendAsync(message, DefaultSendTimeout);
+        }
+
+        public Task SendAsync(Message message, TimeSpan timeout)
+        {
+            if (message == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(message));
+            }
+
+            if (timeout < TimeSpan.Zero)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    new ArgumentOutOfRangeException(nameof(timeout), timeout, SR.SFxTimeoutOutOfRange0));
+            }
+
+            ThrowIfDisposedOrNotOpen();
+
+            AddHeadersTo(message);
+            EmitTrace(message);
+            return OnSendAsync(message, timeout);
+        }
 
         private void EmitTrace(Message message)
         {

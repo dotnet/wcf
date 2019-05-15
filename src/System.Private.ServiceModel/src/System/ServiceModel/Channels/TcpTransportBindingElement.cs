@@ -3,20 +3,26 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Security.Authentication.ExtendedProtection;
+
 namespace System.ServiceModel.Channels
 {
     public class TcpTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
+        ExtendedProtectionPolicy _extendedProtectionPolicy;
+
         public TcpTransportBindingElement()
             : base()
         {
             ConnectionPoolSettings = new TcpConnectionPoolSettings();
+            _extendedProtectionPolicy = ChannelBindingUtility.DefaultPolicy;
         }
 
         protected TcpTransportBindingElement(TcpTransportBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
             ConnectionPoolSettings = elementToBeCloned.ConnectionPoolSettings.Clone();
+            _extendedProtectionPolicy = elementToBeCloned._extendedProtectionPolicy;
         }
 
         public TcpConnectionPoolSettings ConnectionPoolSettings { get; }
@@ -24,6 +30,30 @@ namespace System.ServiceModel.Channels
         public override string Scheme
         {
             get { return "net.tcp"; }
+        }
+
+        public ExtendedProtectionPolicy ExtendedProtectionPolicy
+        {
+            get
+            {
+                return _extendedProtectionPolicy;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
+                if (value.PolicyEnforcement == PolicyEnforcement.Always &&
+                    !ExtendedProtectionPolicy.OSSupportsExtendedProtection)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                        new PlatformNotSupportedException(SR.ExtendedProtectionNotSupported));
+                }
+
+                _extendedProtectionPolicy = value;
+            }
         }
 
         public override BindingElement Clone()
@@ -56,7 +86,10 @@ namespace System.ServiceModel.Channels
             {
                 return (T)(object)new BindingDeliveryCapabilitiesHelper();
             }
-
+            else if (typeof(T) == typeof(ExtendedProtectionPolicy))
+            {
+                return (T)(object)ExtendedProtectionPolicy;
+            }
             else if (typeof(T) == typeof(ITransportCompressionSupport))
             {
                 return (T)(object)new TransportCompressionSupportHelper();

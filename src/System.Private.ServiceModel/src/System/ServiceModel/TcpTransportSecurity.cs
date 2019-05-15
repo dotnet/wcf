@@ -6,6 +6,7 @@
 using System.ComponentModel;
 using System.Net.Security;
 using System.Security.Authentication;
+using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
@@ -18,12 +19,14 @@ namespace System.ServiceModel
 
         private TcpClientCredentialType _clientCredentialType;
         private ProtectionLevel _protectionLevel;
+        private ExtendedProtectionPolicy _extendedProtectionPolicy;
         private SslProtocols _sslProtocols;
 
         public TcpTransportSecurity()
         {
             _clientCredentialType = DefaultClientCredentialType;
             _protectionLevel = DefaultProtectionLevel;
+            _extendedProtectionPolicy = ChannelBindingUtility.DefaultPolicy;
             _sslProtocols = TransportDefaults.SslProtocols;
         }
 
@@ -38,6 +41,44 @@ namespace System.ServiceModel
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
                 _clientCredentialType = value;
+            }
+        }
+
+        [DefaultValue(DefaultProtectionLevel)]
+        public ProtectionLevel ProtectionLevel
+        {
+            get { return _protectionLevel; }
+            set
+            {
+                if (!ProtectionLevelHelper.IsDefined(value))
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
+                _protectionLevel = value;
+            }
+        }
+
+        public ExtendedProtectionPolicy ExtendedProtectionPolicy
+        {
+            get
+            {
+                return _extendedProtectionPolicy;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(value));
+                }
+
+                if (value.PolicyEnforcement == PolicyEnforcement.Always &&
+                    !ExtendedProtectionPolicy.OSSupportsExtendedProtection)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                        new PlatformNotSupportedException(SR.ExtendedProtectionNotSupported));
+                }
+                _extendedProtectionPolicy = value;
             }
         }
 
@@ -66,29 +107,26 @@ namespace System.ServiceModel
             return result;
         }
 
-        private static bool IsSslBindingElement(BindingElement element, TcpTransportSecurity transportSecurity, out bool requireClientCertificate)
+        private static bool IsSslBindingElement(BindingElement element, TcpTransportSecurity transportSecurity)
         {
-            requireClientCertificate = false;
             SslStreamSecurityBindingElement ssl = element as SslStreamSecurityBindingElement;
             if (ssl == null)
             {
                 return false;
             }
 
-            transportSecurity._protectionLevel = ProtectionLevel.EncryptAndSign;
-            requireClientCertificate = ssl.RequireClientCertificate;
+            transportSecurity.ProtectionLevel = ProtectionLevel.EncryptAndSign;
             return true;
         }
 
         internal BindingElement CreateTransportProtectionOnly()
         {
-            throw ExceptionHelper.PlatformNotSupported("TcpTransportSecurity.CreateTransportProtectionOnly is not supported.");
+            return CreateSslBindingElement(false);
         }
 
         internal static bool SetTransportProtectionOnly(BindingElement transport, TcpTransportSecurity transportSecurity)
         {
-            bool requireClientCertificate;
-            return IsSslBindingElement(transport, transportSecurity, out requireClientCertificate);
+            return IsSslBindingElement(transport, transportSecurity);
         }
 
         internal BindingElement CreateTransportProtectionAndAuthentication()
@@ -103,23 +141,6 @@ namespace System.ServiceModel
                 result.ProtectionLevel = _protectionLevel;
                 return result;
             }
-        }
-
-        internal static bool SetTransportProtectionAndAuthentication(BindingElement transport, TcpTransportSecurity transportSecurity)
-        {
-            bool requireClientCertificate = false;
-            if (transport is WindowsStreamSecurityBindingElement)
-            {
-                transportSecurity.ClientCredentialType = TcpClientCredentialType.Windows;
-                transportSecurity._protectionLevel = ((WindowsStreamSecurityBindingElement)transport).ProtectionLevel;
-                return true;
-            }
-            else if (IsSslBindingElement(transport, transportSecurity, out requireClientCertificate))
-            {
-                transportSecurity.ClientCredentialType = requireClientCertificate ? TcpClientCredentialType.Certificate : TcpClientCredentialType.None;
-                return true;
-            }
-            return false;
         }
 
         internal bool InternalShouldSerialize()
