@@ -110,7 +110,7 @@ jobs:
           - _xUnitRuntimeTargetFramework: netcoreapp2.0
           - _xUnitRunnerVersion: 2.4.1
           - _dotNetCliPackageType: sdk
-          - _dotNetCliVersion: 3.0.100-preview5-011162 #must be same version as tools dotnet version in the global.json
+          - _dotNetCliVersion: 2.1.11 #the version of dotnet for running the tests as listed in the global.json
           - _xUnitWorkItemTimeout: '00:10:00'
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - _helixSource: official/dotnet/wcf/$(Build.SourceBranch)
