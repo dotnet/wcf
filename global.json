@@ -3,7 +3,7 @@
 
         "dotnet": "3.0.100-preview5-011162",
         "runtimes": {
-            "dotnet": [ "2.1.11" ]
+            "dotnet": [ "2.1.9" ]
         }
     },
   "sdk": {
