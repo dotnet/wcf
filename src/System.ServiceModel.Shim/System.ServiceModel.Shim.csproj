@@ -18,6 +18,7 @@
     <AssetTargetFallback>net472</AssetTargetFallback>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
     <MicrosoftTargetingPackNETFrameworkv472Package>Microsoft.TargetingPack.NETFramework.v4.7.2</MicrosoftTargetingPackNETFrameworkv472Package>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

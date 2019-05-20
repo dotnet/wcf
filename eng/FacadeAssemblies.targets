@@ -4,7 +4,6 @@
   <PropertyGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
-    <IsPackable>true</IsPackable>
     <!-- GenFacades requires a PDB -->
     <DebugType>portable</DebugType>
     <NoWarn Condition="'$(IsReferenceAssembly)' == 'true'">$(NoWarn);0436</NoWarn>
