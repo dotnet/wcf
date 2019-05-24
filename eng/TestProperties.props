@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <WcfRootFolder>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..'))</WcfRootFolder>
     <WcfPrivateServiceModelProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj'))</WcfPrivateServiceModelProj>
 
     <WcfDuplexRefProj>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.Duplex\ref\System.ServiceModel.Duplex.Ref.csproj'))</WcfDuplexRefProj>
