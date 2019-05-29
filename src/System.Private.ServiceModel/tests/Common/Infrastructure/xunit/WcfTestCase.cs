@@ -58,7 +58,7 @@ namespace Infrastructure.Common
 
         public int Timeout { get { return 0; } }
 
-        public void Deserialize(IXunitSerializationInfo info) { _testCase.Deserialize(info); }
+        public void Deserialize(IXunitSerializationInfo info) { _testCase?.Deserialize(info); }
 
         public async Task<RunSummary> RunAsync(
             IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments,
