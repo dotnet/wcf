@@ -1492,13 +1492,13 @@ namespace System.ServiceModel.Security
                 return RequestAsync(message, DefaultSendTimeout);
             }
 
-            Message IRequestChannel.Request(Message message) => RequestAsync(message, DefaultSendTimeout).GetAwaiter().GetResult();
+            Message IRequestChannel.Request(Message message) => ((IRequestChannel)this).Request(message, DefaultSendTimeout);
 
-            Message IRequestChannel.Request(Message message, TimeSpan timeout) => RequestAsync(message, timeout).GetAwaiter().GetResult();
+            Message IRequestChannel.Request(Message message, TimeSpan timeout) => RequestAsyncInternal(message, timeout).WaitForCompletionNoSpin();
 
-            IAsyncResult IRequestChannel.BeginRequest(Message message, AsyncCallback callback, object state) => RequestAsync(message, DefaultSendTimeout).ToApm(callback, state);
+            IAsyncResult IRequestChannel.BeginRequest(Message message, AsyncCallback callback, object state) => ((IRequestChannel)this).BeginRequest(message, DefaultSendTimeout, callback, state);
 
-            IAsyncResult IRequestChannel.BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state) => RequestAsync(message, timeout).ToApm(callback, state);
+            IAsyncResult IRequestChannel.BeginRequest(Message message, TimeSpan timeout, AsyncCallback callback, object state) => RequestAsyncInternal(message, timeout).ToApm(callback, state);
 
             Message IRequestChannel.EndRequest(IAsyncResult result) => result.ToApmEnd<Message>();
 
@@ -1543,6 +1543,11 @@ namespace System.ServiceModel.Security
                 return processedReply;
             }
 
+            private async Task<Message> RequestAsyncInternal(Message message, TimeSpan timeout)
+            {
+                await TaskHelpers.EnsureDefaultTaskScheduler();
+                return await RequestAsync(message, timeout);
+            }
 
             public async Task<Message> RequestAsync(Message message, TimeSpan timeout)
             {
