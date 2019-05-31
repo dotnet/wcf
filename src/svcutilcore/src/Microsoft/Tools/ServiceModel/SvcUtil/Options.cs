@@ -417,9 +417,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 if (referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
                     string smassembly = referencedAssembliesArgs[0];
-                    if(smassembly.LastIndexOf("System.ServiceModel.Primitives") == -1)
+                    // Allow the reference to be for System.Private.ServiceModel as well.
+                    if((smassembly.LastIndexOf("System.ServiceModel.Primitives", StringComparison.OrdinalIgnoreCase) == -1) && (smassembly.LastIndexOf("System.Private.ServiceModel", StringComparison.OrdinalIgnoreCase) == -1))
                     {
-                        ToolConsole.WriteError("Need pass the right path of System.ServiceModel.Primitives for smreference parameter");
+                        ToolConsole.WriteError("Need to pass the right path of System.ServiceModel.Primitives for smreference parameter");
                         throw new ArgumentException("Invalid smreference value");
                     }
 
