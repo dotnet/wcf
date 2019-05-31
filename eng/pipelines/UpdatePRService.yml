@@ -5,12 +5,12 @@ parameters:
 
 ##   Description of 'Set_Operation_PR_or_Branch' steps for Windows or Unix   ##
 ##   Have to determine if the run was triggered as a PR or CI and then set 'Operation' accordingly.   ##
-##   (Windows)If 'Operation' is set to "pr" the inline script will set the environment variable 'ghprbPullId' to the id of the executing PR.   ##
-##   (Windows)The variable 'ghprbPullId' is then used by the 'sync-pr' script.
+##   (Windows)If 'Operation' is set to "pr" the inline script will set the environment variable 'branchNameorPrId''ghprbPullId' to the PR ID value parsed from the 'Build.SourceBranch' variable.   ##
+##   (Windows)The variable 'branchNameorPrId' is then used by the 'sync-pr' script.
 ##   (Unix)If 'Operation' is set to "pr" the inline script will set the environment variable 'branchNameorPrId' to the id of the executing PR.   ##
 ##   (Unix)The variable 'branchNameorPrId' is then passed to the 'sync-pr' script.
-##   If 'Operation' is set to 'branch' it will determine the branch being used and set the environment variable 'branchName' to it.
-##   The variable 'branchName' is then passed to the 'sync-pr' script.
+##   If 'Operation' is set to 'branch' it will determine the branch being used and set the environment variable 'branchNameorPrId' to it.
+##   The variable 'branchNameorPrId' is then passed to the 'sync-pr' script.
 steps:
     ##   Platform: Windows   ##
     ##   Task: Get the PR ID or Branch name.   ##
@@ -38,12 +38,13 @@ steps:
       set GHPRBPULLID=%BUILD_SOURCEBRANCH:refs/pull/=%
       set GHPRBPULLID=%GHPRBPULLID:/merge=%
       echo The PR ID is: %GHPRBPULLID%
+      echo ##vso[task.setvariable variable=branchNameorPrId]%GHPRBPULLID%
       goto done
 
       :branch
       echo Set the repo branch to be what build.SourceBranchName is: %BUILD_SOURCEBRANCHNAME%
       REM The following vso call sets a variable that is accessible further down in the PowerShell script to Sync the PR Service.
-      echo ##vso[task.setvariable variable=branchName]origin/%BUILD_SOURCEBRANCHNAME%
+      echo ##vso[task.setvariable variable=branchNameorPrId]origin/%BUILD_SOURCEBRANCHNAME%
       goto done
 
       :done
@@ -86,8 +87,8 @@ steps:
       Write-Host "Variable wcfPRServiceId is set to: $env:WCFPRSERVICEID"
       Write-Host "Variable Operation is set to: $env:operation"
       Write-Host "Variable wcfPRServiceUri is set to: $env:WCFPRSERVICEURI"
-      Write-Host "Variable branchName is set to: $env:branchName"
-      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:operation $env:WCFPRSERVICEURI $env:branchName"" }
+      Write-Host "Variable branchNameorPrId is set to: $env:branchNameorPrId"
+      invoke-command -Scriptblock { & "$env:Build_SourcesDirectory\src\System.Private.ServiceModel\tools\scripts\sync-pr.cmd "$env:WCFPRSERVICEID $env:operation $env:WCFPRSERVICEURI $env:branchNameorPrId"" }
       $LASTEXITCODE
 
     displayName: Sync_PRService_Windows
