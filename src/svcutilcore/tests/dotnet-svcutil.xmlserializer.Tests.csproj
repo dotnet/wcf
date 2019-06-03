@@ -93,7 +93,7 @@
 
     <ItemGroup>
       <!-- Include the Serializer in ReferenceCopyLocalPaths so that it will be binplaced -->
-      <ReferenceCopyLocalPaths Include="$(OutputPath)$(SerializerName).dll" />
+      <ReferenceCopyLocalPaths Include="$(CscOutputAssembly)" />
     </ItemGroup>
   </Target>
 
