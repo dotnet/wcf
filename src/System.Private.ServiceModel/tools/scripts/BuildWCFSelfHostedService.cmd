@@ -2,6 +2,11 @@
 setlocal
 
 if not defined VisualStudioVersion (
+    if defined VS160COMNTOOLS (
+        call "%VS160COMNTOOLS%\VsDevCmd.bat"
+        goto :EnvSet
+    )
+
     if defined VS140COMNTOOLS (
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
         goto :EnvSet
