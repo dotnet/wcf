@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
     <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer</RootNamespace>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -14,7 +14,7 @@
     <ProjectGuid>{EAB2959D-0A16-4F60-A453-765491E1C069}</ProjectGuid>
     <IsPackable>true</IsPackable>
     <MajorVersion>1</MajorVersion>
-    <MinorVersion>2</MinorVersion>
+    <MinorVersion>1</MinorVersion>
     <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=874570</ReleaseNotes>
     
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
