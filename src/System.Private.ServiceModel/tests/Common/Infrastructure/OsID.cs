@@ -48,10 +48,10 @@ namespace Infrastructure.Common
         Fedora_27 =              0x00010000,
         AnyFedora = Fedora_26 | Fedora_27,
 
-        OpenSUSE_13_2 =          0x00020000,
+        SLES_15 =                0x00020000,
         OpenSUSE_42_3 =          0x00040000,
         SLES_12 =                0x00080000,
-        AnyOpenSUSE = OpenSUSE_13_2 | OpenSUSE_42_3 | SLES_12,
+        AnyOpenSUSE = SLES_15 | OpenSUSE_42_3 | SLES_12,
 
         OSX_10_12 =              0x00100000,
         OSX_10_13 =              0x00200000,
