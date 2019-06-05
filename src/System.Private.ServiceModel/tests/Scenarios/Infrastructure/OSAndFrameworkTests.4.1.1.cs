@@ -23,9 +23,11 @@ public class OSAndFrameworkTests
     public static void OSID_Was_Detected()
     {
         Assert.True(OSHelper.Current != OSID.None,
-                String.Format("OSID was not properly detected:{0}  The RuntimeInformation.OSDescription is = \'{1}\"",
+                String.Format("OSID was not properly detected:{0}  The RuntimeInformation.OSDescription is = \'{1}\" {2}  The RuntimeIdentifier is = {3}",
                                Environment.NewLine,
-                               RuntimeInformation.OSDescription));
+                               RuntimeInformation.OSDescription,
+                               Environment.NewLine,
+                               OSHelper.GetRuntimeIdentifier()));
     }
 
     [WcfFact]
