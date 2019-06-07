@@ -21,6 +21,7 @@
   <PropertyGroup Condition="'$(IsHarvesting)' == 'true'">
     <IsPartialFacadeAssembly>false</IsPartialFacadeAssembly>
     <HarvestFromPackage>true</HarvestFromPackage>
+    <NetStandardImplicitPackageVersion Condition="'$(TargetFramework)' == 'netstandard1.1' or '$(TargetFramework)' == 'netstandard1.3'">2.0.3</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
   <!-- the following represent dependencies copied from the old package -->
@@ -37,10 +38,14 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcore50'">
-    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="System.Private.ServiceModel" Version="4.5.3" ExcludeAssets="Compile" />
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+    <!--S.Private.ServiceModel indirectly pulls in these two packages of version 4.3.0 by way of the harvest project
+    Explicitly referencing them from here to avoid a security vulnerability in the 4.3.0 version.-->
+    <PackageReference Include="System.Net.Security" Version="4.3.1" />
+    <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.1'">
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
@@ -50,5 +55,9 @@
     <PackageReference Include="System.Private.ServiceModel" version="4.5.3" ExcludeAssets="Compile" />
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.3.0" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+    <!--S.Private.ServiceModel indirectly pulls in these two packages of version 4.3.0 by way of the harvest project
+    Explicitly referencing them from here to avoid a security vulnerability in the 4.3.0 version.-->
+    <PackageReference Include="System.Net.Security" Version="4.3.1" />
+    <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.1" />
   </ItemGroup>
 </Project>
