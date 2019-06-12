@@ -149,6 +149,7 @@ jobs:
                 $(_commonArguments)
                 $(_testArgs)
               displayName: Build Product and Test, Pack and Sign
+              continueOnError: false
 
           - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
             - script: $(_buildScript)
@@ -156,6 +157,7 @@ jobs:
                 $(_internalBuildArgs)
                 $(_testArgs)
               displayName: Build Product and Test, Pack and Sign
+              continueOnError: false
 
           - ${{ if ne(job.customBuildSteps[0], '') }}:
             - ${{ job.customBuildSteps }}
