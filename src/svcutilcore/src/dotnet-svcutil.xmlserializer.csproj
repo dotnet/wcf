@@ -12,13 +12,18 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{EAB2959D-0A16-4F60-A453-765491E1C069}</ProjectGuid>
+  </PropertyGroup>
+
+  <!--Package Properties-->
+  <PropertyGroup>
     <IsPackable>true</IsPackable>
     <MajorVersion>1</MajorVersion>
     <MinorVersion>1</MinorVersion>
-    <ReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=874570</ReleaseNotes>
-    
+    <PackageReleaseNotes>https://go.microsoft.com/fwlink/?LinkID=874570</PackageReleaseNotes>
     <!-- The partial facade assembly's public key token must exactly match the contract to be filled. -->
     <StrongNameKeyId>Open</StrongNameKeyId>
+    <Description>Generate XML serializers for types used by Service Contracts in an assembly.</Description>
+    <MinClientVersion>2.12</MinClientVersion>
   </PropertyGroup>
 
   <ItemGroup>
