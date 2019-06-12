@@ -15,7 +15,9 @@ namespace System.ServiceModel.NetTcp.Tests
         public static void Init_TransportWithMessageCredentialSecurityMode()
         {
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.TransportWithMessageCredential);
-            binding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
+            MessageSecurityOverTcp message = new MessageSecurityOverTcp();
+            message.ClientCredentialType = MessageCredentialType.UserName;
+            binding.Security.Message = message;
             BindingElementCollection bindingElements = binding.CreateBindingElements();
             SecurityBindingElement secutityBindingElement = bindingElements.Find<SecurityBindingElement>();
 
@@ -25,7 +27,8 @@ namespace System.ServiceModel.NetTcp.Tests
             Assert.True(binding.Security.Message.AlgorithmSuite == SecurityAlgorithmSuite.Default, "AlgorithmSuite should be Default.");
             Assert.True(binding.Security.Message.ClientCredentialType == MessageCredentialType.UserName, "ClientCredentialType should be UserName.");
 
-            binding.Security.Message.ClientCredentialType = MessageCredentialType.Certificate;
+            message.ClientCredentialType = MessageCredentialType.Certificate;
+            binding.Security.Message = message;
             Assert.True(binding.Security.Message.ClientCredentialType == MessageCredentialType.Certificate, "ClientCredentialType should be Certifiacte.");
         }
     }
