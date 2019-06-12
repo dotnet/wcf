@@ -29,7 +29,7 @@ namespace System.ServiceModel.NetTcp.Tests
 
             message.ClientCredentialType = MessageCredentialType.Certificate;
             binding.Security.Message = message;
-            Assert.True(binding.Security.Message.ClientCredentialType == MessageCredentialType.Certificate, "ClientCredentialType should be Certifiacte.");
+            Assert.True(binding.Security.Message.ClientCredentialType == MessageCredentialType.Certificate, "ClientCredentialType should be Certificate.");
         }
     }
 }
