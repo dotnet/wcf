@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel.Channels;
 using Infrastructure.Common;
@@ -21,5 +20,9 @@ public static class TcpTransportBindingElementTest
         // Validate only a non-null TcpConnectionPoolSetting.
         // Its own default values are validated in that type's test methods
         Assert.True(element.ConnectionPoolSettings != null, "ConnectionPoolSettings should not be null.");
+
+        // Validate a non-null ExtendedProtectionPolicy.
+        Assert.True(element.ExtendedProtectionPolicy != null, "ExtendedProtectionPolicy should not be null.");
+        
     }
 }
