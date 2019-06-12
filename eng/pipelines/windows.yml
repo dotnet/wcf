@@ -102,6 +102,7 @@ jobs:
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Security\tests\System.ServiceModel.Security.Tests.csproj;
 
         - _xUnitScenarioTestProjects:
+            $(BUILD.SOURCESDIRECTORY)\src\svcutilcore\tests\dotnet-svcutil.xmlserializer.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Custom\Binding.Custom.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Http\Binding.Http.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Binding\Tcp\Binding.Tcp.IntegrationTests.csproj;
@@ -124,6 +125,7 @@ jobs:
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Security\TransportSecurity\Security.TransportSecurity.IntegrationTests.csproj;
 
         - _xUnitAllTestProjects:
+            $(BUILD.SOURCESDIRECTORY)\src\svcutilcore\tests\dotnet-svcutil.xmlserializer.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Duplex\tests\System.ServiceModel.Duplex.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.Http\tests\System.ServiceModel.Http.Tests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.ServiceModel.NetTcp\tests\System.ServiceModel.NetTcp.Tests.csproj;
