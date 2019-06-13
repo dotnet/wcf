@@ -18,6 +18,11 @@ trigger:
 pr:
 - master
 
+resources:
+  containers:
+  - container: ubuntu_1604_Powershell_62
+    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-16.04-coredeps-d9d81d0-20190612203614
+
 jobs:
   # Windows legs
   - template: /eng/pipelines/windows.yml

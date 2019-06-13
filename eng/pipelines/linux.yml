@@ -27,6 +27,7 @@ jobs:
               _pack: false
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
+              _dockerContainer: ubuntu_1604_Powershell_62
               _useIISHostedTestArgs: true
               _WcfPRServiceId: 3
               _UpdateService: true
@@ -39,6 +40,7 @@ jobs:
               _pack: false
               _publish: false
               _helixQueues: $(linuxDefaultQueues)
+              _dockerContainer: ubuntu_1604_Powershell_62
               _useIISHostedTestArgs: true
               _WcfPRServiceId: 4
               _UpdateService: true
@@ -53,6 +55,7 @@ jobs:
               _pack: true
               _publish: true
               _helixQueues: $(linuxDefaultQueues)
+              _dockerContainer: ubuntu_1604_Powershell_62
               _useIISHostedTestArgs: true
 
             Release:
@@ -63,6 +66,7 @@ jobs:
               _pack: true
               _publish: true
               _helixQueues: $(linuxDefaultQueues)
+              _dockerContainer: ubuntu_1604_Powershell_62
               _useIISHostedTestArgs: true
 
       pool:
@@ -72,7 +76,8 @@ jobs:
         ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           name: NetCorePublic-Pool
           queue: buildpool.ubuntu.1604.amd64.open
-
+      
+      container: $[ variables['_dockerContainer'] ]
       submitToHelix: true
       buildExtraArguments: ''
 
