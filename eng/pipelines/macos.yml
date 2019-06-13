@@ -50,7 +50,7 @@ jobs:
               _sign: false
               _unitTests: false
               _integrationTests: false
-              _pack: true
+              _pack: false
               _publish: true
               _helixQueues: $(macOSQueues)
               _useIISHostedTestArgs: true
@@ -60,7 +60,7 @@ jobs:
               _sign: false
               _unitTests: false
               _integrationTests: false
-              _pack: true
+              _pack: false
               _publish: true
               _helixQueues: $(macOSQueues)
               _useIISHostedTestArgs: true

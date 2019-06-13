@@ -88,7 +88,7 @@
 
   <Target Name="ModifyPackage" AfterTargets="Pack">
     <Message Text="Call $(WcfRootFolder)\src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 to modify the svcutil.xmlserializer.nuspec" />
-    <Exec Command="pwsh -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
+    <Exec Command="powershell -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
   </Target>
 
 </Project>
