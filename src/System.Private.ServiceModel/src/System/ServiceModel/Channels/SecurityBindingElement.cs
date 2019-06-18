@@ -65,15 +65,16 @@ namespace System.ServiceModel.Channels
             {
                 _operationSupportingTokenParameters[key] = elementToBeCloned._operationSupportingTokenParameters[key].Clone();
             }
+            
             _optionalOperationSupportingTokenParameters = new Dictionary<string, SupportingTokenParameters>();
             foreach (string key in elementToBeCloned._optionalOperationSupportingTokenParameters.Keys)
             {
                 _optionalOperationSupportingTokenParameters[key] = elementToBeCloned._optionalOperationSupportingTokenParameters[key].Clone();
             }
+            
             LocalClientSettings = elementToBeCloned.LocalClientSettings.Clone();
             MaxReceivedMessageSize = elementToBeCloned.MaxReceivedMessageSize;
             ReaderQuotas = elementToBeCloned.ReaderQuotas;
-
             EnableUnsecuredResponse = elementToBeCloned.EnableUnsecuredResponse;
         }
 
