@@ -73,6 +73,8 @@ namespace System.ServiceModel.Channels
             LocalClientSettings = elementToBeCloned.LocalClientSettings.Clone();
             MaxReceivedMessageSize = elementToBeCloned.MaxReceivedMessageSize;
             ReaderQuotas = elementToBeCloned.ReaderQuotas;
+
+            EnableUnsecuredResponse = elementToBeCloned.EnableUnsecuredResponse;
         }
 
         public SupportingTokenParameters EndpointSupportingTokenParameters { get; }
