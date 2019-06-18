@@ -10,7 +10,7 @@ Visit [GitHub issue#2927](https://github.com/dotnet/wcf/issues/2927) for Getting
 ## Version History
 
 ### 1.1.0
-* [NuGet Package] - add link as soon as published on NuGet
+* [NuGet Package](https://www.nuget.org/packages/dotnet-svcutil.xmlserializer/1.1.0)
 
 ### 1.0.0
 * [NuGet Package](https://www.nuget.org/packages/dotnet-svcutil.xmlserializer/1.0.0)
