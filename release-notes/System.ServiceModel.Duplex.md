@@ -8,6 +8,21 @@
 
 ## Version History
 
+### 4.6.0-preview6
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/4.6.0-preview6.final)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.0.0-preview6)
+
+### 4.6.0-preview5
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/4.6.0-preview5.final)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.0.0-preview5)
+
+### 4.5.3
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/4.5.3)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v2.1.1)
+
 ### 4.5.1
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Duplex/4.5.1)
