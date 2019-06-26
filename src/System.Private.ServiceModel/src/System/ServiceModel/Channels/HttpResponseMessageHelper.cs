@@ -39,7 +39,7 @@ namespace System.ServiceModel.Channels
         {
             ValidateAuthentication();
             ValidateResponseStatusCode();
-            bool hasContent = await ValidateContentTypeAsync();
+            bool hasContent = await ValidateContentTypeAsync(timeoutHelper);
             Message message = null;
 
             if (!hasContent)
@@ -126,7 +126,7 @@ namespace System.ServiceModel.Channels
             message.Properties.Via = message.Version.Addressing.AnonymousUri;
         }
 
-        private async Task<bool> ValidateContentTypeAsync()
+        private async Task<bool> ValidateContentTypeAsync(TimeoutHelper timeoutHelper)
         {
             var content = _httpResponseMessage.Content;
             if (content != null)
@@ -138,7 +138,7 @@ namespace System.ServiceModel.Channels
 
             if (string.IsNullOrEmpty(_contentType))
             {
-                Stream contentStream = await GetStreamAsync();
+                Stream contentStream = await GetStreamAsync(timeoutHelper);
                 if (contentStream != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.HttpContentTypeHeaderRequired));
@@ -150,7 +150,7 @@ namespace System.ServiceModel.Channels
                 if (!_encoder.IsContentTypeSupported(_contentType))
                 {
                     int bytesToRead = (int)_contentLength;
-                    Stream contentStream = await GetStreamAsync();
+                    Stream contentStream = await GetStreamAsync(timeoutHelper);
                     string responseExcerpt = HttpChannelUtilities.GetResponseStreamExcerptString(contentStream, ref bytesToRead);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(HttpChannelUtilities.TraceResponseException(
                         new ProtocolException(
@@ -168,16 +168,18 @@ namespace System.ServiceModel.Channels
         private Task<Message> ReadStreamAsMessageAsync(TimeoutHelper timeoutHelper)
         {
             var content = _httpResponseMessage.Content;
-            Task<Stream> contentStreamTask = GetStreamAsync();
+            Task<Stream> contentStreamTask = GetStreamAsync(timeoutHelper);
 
             if (TransferModeHelper.IsResponseStreamed(_factory.TransferMode))
             {
                 return ReadStreamedMessageAsync(contentStreamTask);
             }
+
             if (!content.Headers.ContentLength.HasValue)
             {
                 return ReadChunkedBufferedMessageAsync(contentStreamTask, timeoutHelper);
             }
+
             return ReadBufferedMessageAsync(contentStreamTask);
         }
 
@@ -296,7 +298,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async Task<Stream> GetStreamAsync()
+        private async Task<Stream> GetStreamAsync(TimeoutHelper timeoutHelper)
         {
             var content = _httpResponseMessage.Content;
             Stream contentStream = null;
@@ -305,19 +307,19 @@ namespace System.ServiceModel.Channels
             {
                 contentStream = await content.ReadAsStreamAsync();
                 _contentLength = content.Headers.ContentLength.HasValue ? content.Headers.ContentLength.Value : -1;
+                var cancellationToken = await timeoutHelper.GetCancellationTokenAsync();
                 if (_contentLength <= 0)
                 {
                     var preReadBuffer = new byte[1];
-                    if (await contentStream.ReadAsync(preReadBuffer, 0, 1) == 0)
+                    if (await contentStream.ReadAsync(preReadBuffer, 0, 1, cancellationToken) == 0)
                     {
-                        preReadBuffer = null;
                         contentStream.Dispose();
                         contentStream = null;
                     }
                     else
                     {
                         var bufferedStream = new BufferedReadStream(contentStream, _factory.BufferManager);
-                        await bufferedStream.PreReadBufferAsync(preReadBuffer[0], CancellationToken.None);
+                        await bufferedStream.PreReadBufferAsync(preReadBuffer[0], cancellationToken);
                         contentStream = bufferedStream;
                     }
                 }
@@ -326,7 +328,7 @@ namespace System.ServiceModel.Channels
                     // If _contentLength > 0, then the message was sent buffered but we might still
                     // be receiving it streamed. In which case we need a buffered reading stream.
                     var bufferedStream = new BufferedReadStream(contentStream, _factory.BufferManager);
-                    await bufferedStream.PreReadBufferAsync(CancellationToken.None);
+                    await bufferedStream.PreReadBufferAsync(cancellationToken);
                     contentStream = bufferedStream;
                 }
             }
