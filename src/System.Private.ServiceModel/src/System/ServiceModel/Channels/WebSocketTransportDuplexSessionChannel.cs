@@ -337,6 +337,11 @@ namespace System.ServiceModel.Channels
         {
             try
             {
+                if (WebSocket.State == WebSocketState.Closed)
+                {
+                    return Task.CompletedTask; // Nothing to do here.
+                }
+
                 return WebSocket.CloseAsync(_webSocketCloseDetails.OutputCloseStatus, _webSocketCloseDetails.OutputCloseStatusDescription, CancellationToken.None);
             }
             catch (Exception e)
