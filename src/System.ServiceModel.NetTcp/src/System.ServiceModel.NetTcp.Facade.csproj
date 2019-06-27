@@ -29,6 +29,7 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
