@@ -10,7 +10,6 @@ jobs:
   parameters:
     isOfficialBuild: ${{ parameters.isOfficialBuild }}
     targetOS: Windows_NT
-    enablePublishUsingPipelines: $(_PublishUsingPipelines)
     jobs:
 
     # Legs with Helix testing
