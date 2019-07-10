@@ -56,7 +56,7 @@ jobs:
               _publish: true
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
-              _DotNetPublishToBlobFeed: true
+              _DotNetPublishToBlobFeed: false
               _DotNetArtifactsCategory: .NETCore
 
             Release:
@@ -70,7 +70,7 @@ jobs:
               _publish: true
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
-              _DotNetPublishToBlobFeed: false
+              _DotNetPublishToBlobFeed: true
               _DotNetArtifactsCategory: .NETCore
 
       pool:
