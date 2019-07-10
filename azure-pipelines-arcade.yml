@@ -1,6 +1,5 @@
 variables:
   
-  _PublishUsingPipelines: true
   # clean the local repo on the build agents
   Build.Repository.Clean: true
 
