@@ -58,6 +58,7 @@ jobs:
               _useIISHostedTestArgs: true
               _DotNetPublishToBlobFeed: false
               _DotNetArtifactsCategory: .NETCore
+              _PublishUsingPipelines: false
 
             Release:
               _BuildConfig: Release
@@ -72,6 +73,7 @@ jobs:
               _useIISHostedTestArgs: true
               _DotNetPublishToBlobFeed: true
               _DotNetArtifactsCategory: .NETCore
+              _PublishUsingPipelines: true
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:

@@ -215,5 +215,5 @@ jobs:
           vmImage: vs2017-win2016
         name: PublishToBlobFeed
         runAsPublic: false
-        publishUsingPipelines: true
+        publishUsingPipelines: $(_PublishUsingPipelines)
         enablePublishBuildArtifacts: true
