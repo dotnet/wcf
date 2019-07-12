@@ -20,11 +20,9 @@
       <Uri>https://github.com/dotnet/arcade</Uri>
       <Sha>0c81c2bbdc49749e9940bc8858ebd16026d51277</Sha>
     </Dependency>
-    <!--[todo: arcade] Updating XUnitExtensions to a newer version causes compile errors
-    related to the use of "Assert" an xunit type in our Scenario test common project.-->
-    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="2.4.0-beta.19170.2" Pinned="true">
+    <Dependency Name="Microsoft.DotNet.XUnitExtensions" Version="2.4.1-beta.19362.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>1d2edb248bc2dc37fa0669053b0c88f3bffffb26</Sha>
+      <Sha>7894ed0712414a6f62f1fa53f3946939fe5401c7</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
