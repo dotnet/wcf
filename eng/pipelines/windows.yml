@@ -3,6 +3,7 @@ parameters:
   # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries.
   #   Default: false
   isOfficialBuild: false
+  publishUsingPipelines: true
 
 jobs:
 
@@ -10,6 +11,7 @@ jobs:
   parameters:
     isOfficialBuild: ${{ parameters.isOfficialBuild }}
     targetOS: Windows_NT
+    publishingUsingPipelines: ${{ parameters.publishUsingPipelines }}
     jobs:
 
     # Legs with Helix testing
@@ -58,7 +60,7 @@ jobs:
               _useIISHostedTestArgs: true
               _DotNetPublishToBlobFeed: false
               _DotNetArtifactsCategory: .NETCore
-              _PublishUsingPipelines: false
+              _PublishUsingPipelines: ${{ parameters.publishUsingPipelines }}
 
             Release:
               _BuildConfig: Release
@@ -73,7 +75,7 @@ jobs:
               _useIISHostedTestArgs: true
               _DotNetPublishToBlobFeed: true
               _DotNetArtifactsCategory: .NETCore
-              _PublishUsingPipelines: true
+              _PublishUsingPipelines: ${{ parameters.publishUsingPipelines }}
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
@@ -152,3 +154,16 @@ jobs:
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Extensibility\WebSockets\Extensibility.WebSockets.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Infrastructure\Infrastructure.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Security\TransportSecurity\Security.TransportSecurity.IntegrationTests.csproj;
+
+- ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+  - template: ../common/templates/job/publish-build-assets.yml
+    parameters:
+      continueOnError: false
+      dependsOn:
+        - WindowsTest
+      pool:
+        vmImage: vs2017-win2016
+      name: PublishToBlobFeed
+      runAsPublic: false
+      publishUsingPipelines: true
+      enablePublishBuildArtifacts: true
