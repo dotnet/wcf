@@ -205,15 +205,3 @@ jobs:
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
                   ServiceHost: $(_serviceUri)
                 continueOnError: false
-  - ${{ if and(eq(parameters.targetOS, 'Windows_NT'), ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - template: ../common/templates/job/publish-build-assets.yml
-      parameters:
-        continueOnError: false
-        dependsOn:
-          - WindowsTest
-        pool:
-          vmImage: vs2017-win2016
-        name: PublishToBlobFeed
-        runAsPublic: false
-        publishUsingPipelines: $(_PublishUsingPipelines)
-        enablePublishBuildArtifacts: true
