@@ -73,7 +73,7 @@ namespace System.ServiceModel.Channels
     public partial class SslStreamSecurityBindingElement : System.ServiceModel.Channels.BindingElement
     {
         public SslStreamSecurityBindingElement() { }
-        [System.ComponentModel.DefaultValueAttribute((System.Security.Authentication.SslProtocols)(4080))]
+        public bool RequireClientCertificate { get { return default(bool); } set { } }
         public System.Security.Authentication.SslProtocols SslProtocols { get { return default(System.Security.Authentication.SslProtocols); } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
         public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(bool); }

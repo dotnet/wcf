@@ -47,7 +47,7 @@ namespace System.ServiceModel.Channels
         }
 
         [DefaultValue(TransportDefaults.RequireClientCertificate)]
-        internal bool RequireClientCertificate { get; set; }
+        public bool RequireClientCertificate { get; set; }
 
         [DefaultValue(TransportDefaults.SslProtocols)]
         public SslProtocols SslProtocols
