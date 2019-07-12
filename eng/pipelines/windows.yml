@@ -155,15 +155,15 @@ jobs:
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Infrastructure\Infrastructure.IntegrationTests.csproj;
             $(BUILD.SOURCESDIRECTORY)\src\System.Private.ServiceModel\tests\Scenarios\Security\TransportSecurity\Security.TransportSecurity.IntegrationTests.csproj;
 
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-      - template: ../common/templates/job/publish-build-assets.yml
-        parameters:
-          continueOnError: false
-          dependsOn:
-            - WindowsTest
-          pool:
-            vmImage: vs2017-win2016
-          name: PublishToBlobFeed
-          runAsPublic: false
-          publishUsingPipelines: true
-          enablePublishBuildArtifacts: true
+- ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+  - template: ../common/templates/job/publish-build-assets.yml
+    parameters:
+      continueOnError: false
+      dependsOn:
+        - WindowsTest
+      pool:
+        vmImage: vs2017-win2016
+      name: PublishToBlobFeed
+      runAsPublic: false
+      publishUsingPipelines: true
+      enablePublishBuildArtifacts: true
