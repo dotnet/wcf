@@ -1,8 +1,3 @@
-variables:
-  
-  # clean the local repo on the build agents
-  Build.Repository.Clean: true
-
 # trigger ci builds for merged PRs into listed branches
 # Setting batch to true, triggers one build at a time.
 # if there is a push while a build in progress, it will wait,
@@ -15,14 +10,27 @@ trigger:
 
 # trigger ci builds for pull requests into listed branches
 pr:
-- master
+  branches:
+    include:
+    - master
+
+variables:  
+  - name: _TeamName
+    value: WcfCore
+  - name: _PublishUsingPipelines
+    value: true
+  - name: _DotNetArtifactsCategory
+    value: .NETCore
 
 resources:
   containers:
   - container: ubuntu_1604_Powershell_62
     image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-16.04-coredeps-d9d81d0-20190612203614
 
-jobs:
+stages:
+- stage: build
+  displayName: Build
+  jobs:
   # Windows legs
   - template: /eng/pipelines/windows.yml
     ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
@@ -40,3 +48,26 @@ jobs:
     ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
       parameters:
         isOfficialBuild: true
+
+- ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+  - template: eng\common\templates\post-build\post-build.yml
+    parameters:
+      # Symbol validation isn't being very reliable lately. This should be enabled back
+      # once this issue is resolved: https://github.com/dotnet/arcade/issues/2871
+      enableSymbolValidation: false
+      # Sourcelink validation isn't passing for Arcade due to some regressions. This should be
+      # enabled back once this issue is resolved: https://github.com/dotnet/arcade/issues/2912
+      enableSourceLinkValidation: false
+      # This is to enable SDL runs part of Post-Build Validation Stage
+      SDLValidationParameters:
+        enable: true
+        params: ' -SourceToolsList @("policheck","credscan")
+        -TsaInstanceURL "https://devdiv.visualstudio.com/"
+        -TsaProjectName "DEVDIV"
+        -TsaNotificationEmail "subal@microsoft.com"
+        -TsaCodebaseAdmin "REDMOND\\subal"
+        -TsaBugAreaPath "DevDiv\\NET\\NET Core "
+        -TsaIterationPath "DevDiv"
+        -TsaRepositoryName "Arcade"
+        -TsaCodebaseName "Arcade"
+        -TsaPublish $True'

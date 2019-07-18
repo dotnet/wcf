@@ -171,7 +171,7 @@ jobs:
                   HelixType: $(_helixType)
                   HelixBuild: $(Build.BuildNumber)
                   HelixTargetQueues: $(_helixQueues)
-                  XUnitProjects: $(_xUnitAllTestProjects)
+                  #XUnitProjects: $(_xUnitAllTestProjects)
                   XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework) #this is the framework your test projects are targeting
                   XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework) #this is the framework version of xUnit you want to use from the xUnit NuGet package
                   XUnitRunnerVersion: $(_xUnitRunnerVersion) #the version of the xUnit nuget package you want to use
@@ -193,7 +193,7 @@ jobs:
                   HelixType: $(_helixType)
                   HelixBuild: $(Build.BuildNumber)
                   HelixTargetQueues: $(_helixQueues)
-                  XUnitProjects: $(_xUnitAllTestProjects)
+                  #XUnitProjects: $(_xUnitAllTestProjects)
                   XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
                   XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
                   XUnitRunnerVersion: $(_xUnitRunnerVersion)
