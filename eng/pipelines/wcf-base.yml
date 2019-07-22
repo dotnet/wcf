@@ -1,66 +1,20 @@
 parameters:
-  # Required: TargetOS value to know what script commands to use
-  # Accepted values:
-  # - Windows_NT
-  # - Linux
-  # - OSX
   targetOS: ''
 
-  # Required: A collection of jobs to run - https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=vsts&tabs=schema#job
-  jobs: []
-
-  # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries
-  #   Default: false
-  isOfficialBuild: false
-
-  # EACH JOB SHOULD INCLUDE THE FOLLOWING PROPERTIES (ASIDE FROM THE REQUIRED ONES IN THE JOB SCHEMA)
-
-  # Required: as part of the strategy matrix, the following variables should be defined
-  #     _BuildConfig: Debug | Release
-  #     _helixQueues: Windows.Amd64 (Only needed if submitToHelix -> true.) -- Queues should be separated by + if multiple.
-
-  # Required: submitToHelix -> Boolean -> Value to know if it should submit tests payloads to helix.
-
-  # Optional: buildScriptPrefix -> String -> string to append to Unix build script.
-  #   buildScriptPrefix: 'HOME=/home/ ' -> 'HOME=/home/ ./build.sh ...'
-
-  # Optional: buildExtraArguments -> String -> string to append at the end of the build arguments
-  #   buildExtraArguments: /p:RuntimeOS=win10 -> 'build.cmd ... /p:RuntimeOS=win10'
-
-  # Optional: customBuildSteps -> Array -> list of steps to run instead of the common build steps.
-  #   customBuildSteps:
-  #     - script: echo Hello World
-  #       displayName: MyScript
-
-  # Optional: preBuildSteps -> Array -> list of steps to be executed before common build steps.
-  # In example, to install build dependencies, or setup an environment.
-  #   preBuildSteps:
-  #     - script: brew install cmake
-  #       displayName: Install Cmake
-
-  # timeoutInMinutes: if a job doesn't define it, we will default it to 150 minutes
 
 jobs:
-  - ${{ each job in parameters.jobs }}:
-    - template: ../common/templates/job/job.yml
-      parameters:
-        variables:
-
-        # pass along job variables
-        - ${{ each variable in job.variables }}:
-          - ${{ if ne(variable.name, '') }}:
-            - name: ${{ variable.name }}
-              value: ${{ variable.value }}
-          - ${{ if ne(variable.group, '') }}:
-            - group: ${{ variable.group }}
-
-          # handle key-value variable syntax.
-          # example:
-          # - [key]: [value]
-          - ${{ if and(eq(variable.name, ''), eq(variable.group, '')) }}:
-            - ${{ each pair in variable }}:
-              - name: ${{ pair.key }}
-                value: ${{ pair.value }}
+- template: /eng/common/templates/jobs/jobs.yml
+  parameters:
+    enableMicrobuild: true
+    enablePublishBuildArtifacts: true
+    enablePublishBuildAssets: true
+    enablePublishUsingPipelines: $(_PublishUsingPipelines)
+    enableTelemetry: true
+    graphFileGeneration:
+      enabled: true
+      includeToolset: true
+    helixRepo: dotnet/wcf
+      variables:
 
         - _internalBuildArgs: ''
         - _archiveTestsParameter: ''
@@ -130,9 +84,6 @@ jobs:
         name: ${{ job.job }}
         workspace:
           clean: all
-
-        # enabling publish build artifacts, will publish all build logs under /artifacts/log/
-        enablePublishBuildArtifacts: true
 
         ${{ if eq(job.timeoutInMinutes, '') }}:
           timeoutInMinutes: 45

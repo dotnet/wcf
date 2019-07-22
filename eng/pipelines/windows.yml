@@ -3,14 +3,12 @@ parameters:
   # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries.
   #   Default: false
   isOfficialBuild: false
-  publishUsingPipelines: true
 
 jobs:
 - template: wcf-base.yml
   parameters:
     isOfficialBuild: ${{ parameters.isOfficialBuild }}
     targetOS: Windows_NT
-    # Don't see where/how this is used: publishingUsingPipelines: ${{ parameters.publishUsingPipelines }}
     jobs:
 
     # Legs with Helix testing
@@ -57,7 +55,6 @@ jobs:
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
               _DotNetPublishToBlobFeed: false
-              _PublishUsingPipelines: ${{ parameters.publishUsingPipelines }}
 
             Release:
               _BuildConfig: Release
@@ -70,7 +67,6 @@ jobs:
               _helixQueues: $(netcoreappWindowsQueues)
               _useIISHostedTestArgs: true
               _DotNetPublishToBlobFeed: true
-              _PublishUsingPipelines: ${{ parameters.publishUsingPipelines }}
 
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'true') }}:
