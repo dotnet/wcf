@@ -2,17 +2,12 @@
 setlocal
 
 if not defined VisualStudioVersion (
-    if defined VS140COMNTOOLS (
-        call "%VS140COMNTOOLS%\VsDevCmd.bat"
+    if defined VS160COMNTOOLS (
+        call "%VS160COMNTOOLS%\VsDevCmd.bat"
         goto :EnvSet
     )
 
-    if defined VS120COMNTOOLS (
-        call "%VS120COMNTOOLS%\VsDevCmd.bat"
-        goto :EnvSet
-    )
-
-    echo Error: %~nx0 requires Visual Studio 2013 or 2015.
+    echo Error: %~nx0 requires Visual Studio 2019 because the .NET Core 3.0 SDK is needed.
     echo        Please see https://github.com/dotnet/wcf/blob/master/Documentation/developer-guide.md for build instructions.
     exit /b 1
 )
