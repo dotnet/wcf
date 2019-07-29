@@ -7,6 +7,10 @@ Getting Started instructions can be found in the [usage guide](https://go.micros
 
 ## Version History
 
+### 2.0.1 (7/29/2019)
+* Added --sync option to generate synchronous operations in addition to async operations ([#654](https://github.com/dotnet/wcf/issues/654)).
+* Bug fixes ([#3494](https://github.com/dotnet/wcf/issues/3494), [#3542](https://github.com/dotnet/wcf/issues/3542), [#3681](https://github.com/dotnet/wcf/issues/3681), [#3226](https://github.com/dotnet/wcf/issues/3226), [#2332](https://github.com/dotnet/wcf/issues/2332), [#3682](https://github.com/dotnet/wcf/issues/3682)).
+
 ### 2.0.0 (2/18/2019)
 * Changed from a per-project CLI tool to a global CLI tool. ([#3071](https://github.com/dotnet/wcf/issues/3071)). Instead of adding a DotNetCliToolReference to each project in order to use the tool, you can now install it once globally with `dotnet tool install --global dotnet-svcutil`. This requires the .NET Core 2.1 SDK or later.
 * Added new options to support the tool being run from a outside a project context. These are normally inferred based on the project the tool is run on. Since it can now be run with no project context these options allow you to control these settings manually. New options include: --outputDir, --outputFile, --projectFile,  --runtimeIdentifier, and --targetFramework. See `dotnet-svcutil --help` for usage.
