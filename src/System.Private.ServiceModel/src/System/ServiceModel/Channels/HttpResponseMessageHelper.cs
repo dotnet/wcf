@@ -180,7 +180,7 @@ namespace System.ServiceModel.Channels
                 return ReadChunkedBufferedMessageAsync(contentStreamTask, timeoutHelper);
             }
 
-            return ReadBufferedMessageAsync(contentStreamTask);
+            return ReadBufferedMessageAsync(contentStreamTask, timeoutHelper);
         }
 
         private async Task<Message> ReadChunkedBufferedMessageAsync(Task<Stream> inputStreamTask, TimeoutHelper timeoutHelper)
@@ -196,7 +196,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async Task<Message> ReadBufferedMessageAsync(Task<Stream> inputStreamTask)
+        private async Task<Message> ReadBufferedMessageAsync(Task<Stream> inputStreamTask, TimeoutHelper timeoutHelper)
         {
             var inputStream = await inputStreamTask;
             if (_contentLength > _factory.MaxReceivedMessageSize)
@@ -211,10 +211,11 @@ namespace System.ServiceModel.Channels
             byte[] buffer = messageBuffer.Array;
             int offset = 0;
             int count = messageBuffer.Count;
+            var ct = await timeoutHelper.GetCancellationTokenAsync();
 
             while (count > 0)
             {
-                int bytesRead = await inputStream.ReadAsync(buffer, offset, count);
+                int bytesRead = await inputStream.ReadAsync(buffer, offset, count, ct);
                 if (bytesRead == 0) // EOF 
                 {
                     if (_contentLength != -1)
@@ -229,7 +230,7 @@ namespace System.ServiceModel.Channels
                 offset += bytesRead;
             }
 
-            return await DecodeBufferedMessageAsync(new ArraySegment<byte>(buffer, 0, offset), inputStream);
+            return await DecodeBufferedMessageAsync(new ArraySegment<byte>(buffer, 0, offset), inputStream, timeoutHelper);
         }
 
         private async Task<Message> ReadStreamedMessageAsync(Task<Stream> inputStreamTask)
@@ -267,15 +268,16 @@ namespace System.ServiceModel.Channels
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(message, inner));
         }
 
-        private async Task<Message> DecodeBufferedMessageAsync(ArraySegment<byte> buffer, Stream inputStream)
+        private async Task<Message> DecodeBufferedMessageAsync(ArraySegment<byte> buffer, Stream inputStream, TimeoutHelper timeoutHelper)
         {
             try
             {
+                var ct = await timeoutHelper.GetCancellationTokenAsync();
                 // if we're chunked, make sure we've consumed the whole body
                 if (_contentLength == -1 && buffer.Count == _factory.MaxReceivedMessageSize)
                 {
                     byte[] extraBuffer = new byte[1];
-                    int extraReceived = await inputStream.ReadAsync(extraBuffer, 0, 1);
+                    int extraReceived = await inputStream.ReadAsync(extraBuffer, 0, 1, ct);
                     if (extraReceived > 0)
                     {
                         ThrowMaxReceivedMessageSizeExceeded();
