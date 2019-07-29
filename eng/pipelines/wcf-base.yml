@@ -183,6 +183,7 @@ jobs:
                   _helixAccessToken: $(HelixApiAccessToken)
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
                   ServiceHost: $(_serviceUri) #not used on Windows machines
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
                 continueOnError: false
             - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
               - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
@@ -204,4 +205,5 @@ jobs:
                   _helixAccessToken: $(HelixApiAccessToken)
                   _isOfficialBuild: ${{ parameters.isOfficialBuild }}
                   ServiceHost: $(_serviceUri)
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
                 continueOnError: false
