@@ -1,9 +1,3 @@
-# Windows legs
-parameters:
-  # Required: value to specify if the job is comming from an official build to run extra steps and sign binaries.
-  #   Default: false
-  isOfficialBuild: false
-
 jobs:
 - template: wcf-base.yml
   parameters:
@@ -14,76 +8,29 @@ jobs:
     # Legs with Helix testing
     - job: WindowsTest
       displayName: Windows
-      strategy:
-        matrix:
-          # PR & CI builds, includes sending tests to Helix
-          ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-            Debug:
-              _BuildConfig: Debug
-              _unitTests: false
-              _integrationTests: false
-              _sign: false
-              _pack: false
-              _publish: false
-              _helixQueues: $(netcoreappWindowsQueues)
-              _useIISHostedTestArgs: true
-              _WcfPRServiceId: 1
-              _UpdateService: true
-
-            Release:
-              _BuildConfig: Release
-              _unitTests: false
-              _integrationTests: false
-              _sign: false
-              _pack: false
-              _publish: false
-              _helixQueues: $(netcoreappWindowsQueues)
-              _useIISHostedTestArgs: true
-              _WcfPRServiceId: 2
-              _UpdateService: true
-          
-          # Official internal builds, includes sending tests to Helix
-          ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            Debug:
-              _BuildConfig: Debug
-              _sign: true
-              _SignType: 'test'
-              _unitTests: false
-              _integrationTests: false
-              _pack: true
-              _publish: true
-              _helixQueues: $(netcoreappWindowsQueues)
-              _useIISHostedTestArgs: true
-              _DotNetPublishToBlobFeed: false
-
-            Release:
-              _BuildConfig: Release
-              _sign: true
-              _SignType: 'real'
-              _unitTests: false
-              _integrationTests: false
-              _pack: true
-              _publish: true
-              _helixQueues: $(netcoreappWindowsQueues)
-              _useIISHostedTestArgs: true
-              _DotNetPublishToBlobFeed: true
-
+      timeoutInMinutes: 60
+      submitToHelix: true
       pool:
-        ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          name: NetCoreInternal-Pool
-          queue: buildpool.windows.10.amd64.vs2017
         ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           name: NetCorePublic-Pool
           queue: buildpool.windows.10.amd64.vs2017.open
-
-      submitToHelix: true
-      buildExtraArguments: /p:RuntimeOS=win10
-
-      variables:
-        - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-          #- netcoreappWindowsQueues: Windows.7.Amd64.Open+Windows.81.Amd64.Open+Windows.10.Amd64.ClientRS4.ES.Open
-          - netcoreappWindowsQueues: Windows.10.Amd64.ClientRS4.ES.Open
-
-        - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          #- netcoreappWindowsQueues: Windows.7.Amd64+Windows.81.Amd64+Windows.10.Amd64.Core+Windows.10.Amd64.ClientRS4
-          - netcoreappWindowsQueues: Windows.10.Amd64.ClientRS4
+        ${{ if eq(parameters.isOfficialBuild, 'true') }}:
+          name: NetCoreInternal-Pool
+          queue: buildpool.windows.10.amd64.vs2017
+      strategy:
+        matrix:
+          Build_Release:
+            _BuildConfig: Release
+            # PRs or external builds are not signed.
+            ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+              _SignType: test
+              _DotNetPublishToBlobFeed : false
+            ${{ if eq(parameters.isOfficialBuild, 'true') }}:
+              _SignType: real
+              _DotNetPublishToBlobFeed : true
+              _WcfPRServiceId: 1
+          ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+            Build_Debug:
+              _BuildConfig: Debug
+              _SignType: test
+              _WcfPRServiceId: 2

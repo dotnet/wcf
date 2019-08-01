@@ -1,7 +1,3 @@
-parameters:
-  targetOS: ''
-
-
 jobs:
 - template: /eng/common/templates/jobs/jobs.yml
   parameters:
@@ -15,9 +11,8 @@ jobs:
       includeToolset: true
     helixRepo: dotnet/wcf
       variables:
-
-        - _internalBuildArgs: ''
-        - _archiveTestsParameter: ''
+        - _InternalBuildArgs: ''
+        - HelixApiAccessToken: ''
 
         # Only enable publishing in non-public, non PR scenarios.
         - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
@@ -28,13 +23,13 @@ jobs:
           - group: Publish-Build-Assets
           - group: DotNet-HelixApi-Access
           - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
-          - _internalBuildArgs: /p:SignType=$(_SignType) /p:TeamName=$(_TeamName)
+          - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
               /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
               /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
               /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
               /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
               /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
-              /p:OfficialBuildId=$(Build.BuildNumber)
+              /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
           # Service host and uri for official builds
           - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
 
@@ -42,10 +37,12 @@ jobs:
           # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
           # For PR and CI test runs we need to update the Service being used by Scenario tests.
-          - _updateService: $(_UpdateService)
+          # Used in UpdatePRService.yml
+          # I think this can be removed based on the logic.
+          - _updateService: true
 
         - _testArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-        - _args: -preparemachine -configuration $(_BuildConfig) /p:Test=$(_unitTests) /p:IntegrationTest=$(_integrationTests) /p:Sign=$(_sign) /p:Pack=$(_pack) /p:Publish=$(_publish)
+        - _args: -preparemachine -configuration $(_BuildConfig)
         - _signArgs: /p:SignType=$(_SignType) /p:TeamName=$(_TeamName)
         - _commonArguments: $(_args)
 
@@ -78,7 +75,6 @@ jobs:
           ${{ if and(ne(property.key, 'job'), ne(property.key, 'variables')) }}:
             ${{ property.key }}: ${{ property.value }}
 
-        enableMicrobuild: true
         wcfRepo: dotnet/wcf
 
         name: ${{ job.job }}
@@ -99,6 +95,7 @@ jobs:
             - script: $(_buildScript)
                 $(_commonArguments)
                 $(_testArgs)
+                /p:Test=false
               displayName: Build Product and Test, Pack and Sign
               continueOnError: false
 
@@ -107,6 +104,7 @@ jobs:
                 $(_commonArguments)
                 $(_internalBuildArgs)
                 $(_testArgs)
+                /p:Test=false
               displayName: Build Product and Test, Pack and Sign
               continueOnError: false
 
@@ -121,8 +119,6 @@ jobs:
                   HelixSource: $(_helixSource)
                   HelixType: $(_helixType)
                   HelixBuild: $(Build.BuildNumber)
-                  HelixTargetQueues: $(_helixQueues)
-                  #XUnitProjects: $(_xUnitAllTestProjects)
                   XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework) #this is the framework your test projects are targeting
                   XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework) #this is the framework version of xUnit you want to use from the xUnit NuGet package
                   XUnitRunnerVersion: $(_xUnitRunnerVersion) #the version of the xUnit nuget package you want to use
@@ -144,7 +140,6 @@ jobs:
                   HelixType: $(_helixType)
                   HelixBuild: $(Build.BuildNumber)
                   HelixTargetQueues: $(_helixQueues)
-                  #XUnitProjects: $(_xUnitAllTestProjects)
                   XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
                   XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
                   XUnitRunnerVersion: $(_xUnitRunnerVersion)
