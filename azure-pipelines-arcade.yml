@@ -31,23 +31,113 @@ stages:
 - stage: build
   displayName: Build
   jobs:
-  # Windows legs
-  - template: /eng/pipelines/windows.yml
-    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
-      parameters:
-        isOfficialBuild: true
+  - template: /eng/common/templates/jobs/jobs.yml
+    parameters:
+      enableMicrobuild: true
+      enablePublishBuildArtifacts: true
+      enablePublishBuildAssets: true
+      enablePublishUsingPipelines: $(_PublishUsingPipelines)
+      enableTelemetry: true
+      graphFileGeneration:
+        enabled: true
+        includeToolset: true
+      helixRepo: dotnet/wcf
+      jobs:
+      - job: Windows_NT
+        displayName: Windows
+        timeoutInMinutes: 60
+        pool:
+          ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+            name: NetCorePublic-Pool
+            queue: buildpool.windows.10.amd64.vs2017.open
+          ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+            name: NetCoreInternal-Pool
+            queue: buildpool.windows.10.amd64.vs2017
+        variables:
+        - _InternalBuildArgs: ''
+        - HelixApiAccessToken: ''
+        - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
 
-  # Linux legs
-  - template: /eng/pipelines/linux.yml
-    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
-      parameters:
-        isOfficialBuild: true
+        # Internal/Official Build Variables
+        - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+            # Only enable publishing in non-public, non PR scenarios.
+            # DotNet-Blob-Feed provides: dotnetfeed-storage-access-key-1
+            # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
+            # DotNet-HelixApi-Access provides: HelixApiAccessToken
+            - group: DotNet-Blob-Feed
+            - group: Publish-Build-Assets
+            - group: DotNet-HelixApi-Access
+            - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
+            - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
+                /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
+                /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
+                /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
+                /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
+                /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
+                /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+            # Service uri needed for integration tests in official builds
+            - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
 
-  # Macos legs
-  - template: /eng/pipelines/macos.yml
-    ${{ if and(ne(variables['System.TeamProject'], 'public'), notIn(variables['Build.Reason'], 'PullRequest')) }}:
-      parameters:
-        isOfficialBuild: true
+        # Public/PR & CI Build Variables
+        - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+            # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
+            - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+            # For PR and CI test runs we need to update the Service being used by Scenario tests.
+            # Used in UpdatePRService.yml
+            # I think this can be removed based on the logic, setting it to true for now.
+            - _updateService: true
+
+        # Send to Helix variables
+        - _xUnitWorkItemTimeout: '00:10:00'
+
+        strategy:
+          matrix:
+            Release:
+              _BuildConfig: Release
+              # PRs or external builds are not signed.
+              ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+                _SignType: test
+                _DotNetPublishToBlobFeed : false
+                _WcfPRServiceId: 1
+              ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+                _SignType: real
+                _DotNetPublishToBlobFeed : true
+            ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+              Debug:
+                _BuildConfig: Debug
+                _SignType: test
+                _DotNetPublishToBlobFeed : false
+                _WcfPRServiceId: 2
+
+        steps:
+        - checkout: self
+          clean: true
+        - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+          - template: /eng/pipelines/UpdatePRService.yml
+            parameters:
+              wcfPRServiceId: $(_WcfPRServiceId)
+        - script: eng\common\cibuild.cmd
+            -configuration $(_BuildConfig)
+            -preparemachine
+            $(_InternalBuildArgs)
+            $(_TestArgs)
+            /p:Test=false
+          displayName: Windows Build / Publish
+
+        - powershell: eng\common\build.ps1
+            -configuration $(_BuildConfig)
+            -preparemachine
+            -ci
+            -test
+            -integrationTest
+            -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
+            $(_TestArgs)
+            /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
+          displayName: Windows - Run Helix Tests
+          env:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            HelixAccessToken: $(HelixApiAccessToken)
+            XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
 
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
   - template: eng\common\templates\post-build\post-build.yml

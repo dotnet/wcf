@@ -10,146 +10,122 @@ jobs:
       enabled: true
       includeToolset: true
     helixRepo: dotnet/wcf
-      variables:
-        - _InternalBuildArgs: ''
-        - HelixApiAccessToken: ''
+    variables:
+    - _InternalBuildArgs: ''
+    - HelixApiAccessToken: ''
+    # Windows variables
+    - ${{ if eq(variables['Agent.OS'], 'Windows_NT') }}:
+        - _Script: eng\common\cibuild.cmd
+    # Unix variables
+    - ${{ if ne(variables['Agent.OS'], 'Windows_NT') }}:
+        - _Script: ./eng/common/cibuild.sh
+    - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
 
+    # Internal/Official Build Variables
+    - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
         # Only enable publishing in non-public, non PR scenarios.
-        - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-          # DotNet-Blob-Feed provides: dotnetfeed-storage-access-key-1
-          # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
-          # DotNet-HelixApi-Access provides: HelixApiAccessToken
-          - group: DotNet-Blob-Feed
-          - group: Publish-Build-Assets
-          - group: DotNet-HelixApi-Access
-          - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
-          - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
-              /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
-              /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
-              /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
-              /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
-              /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
-              /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
-          # Service host and uri for official builds
-          - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+        # DotNet-Blob-Feed provides: dotnetfeed-storage-access-key-1
+        # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
+        # DotNet-HelixApi-Access provides: HelixApiAccessToken
+        - group: DotNet-Blob-Feed
+        - group: Publish-Build-Assets
+        - group: DotNet-HelixApi-Access
+        - _PublishBlobFeedUrl: https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
+        - _InternalBuildArgs: /p:DotNetSignType=$(_SignType) /p:TeamName=$(_TeamName)
+            /p:DotNetPublishBlobFeedKey=$(dotnetfeed-storage-access-key-1)
+            /p:DotNetPublishBlobFeedUrl=$(_PublishBlobFeedUrl)
+            /p:DotNetPublishToBlobFeed=$(_DotNetPublishToBlobFeed)
+            /p:DotNetPublishUsingPipelines=$(_PublishUsingPipelines)
+            /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
+            /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
+        # Service uri needed for integration tests in official builds
+        - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
 
-        - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-          # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
-          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
-          # For PR and CI test runs we need to update the Service being used by Scenario tests.
-          # Used in UpdatePRService.yml
-          # I think this can be removed based on the logic.
-          - _updateService: true
+    # Public/PR & CI Build Variables
+    - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+        # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
+        - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+        # For PR and CI test runs we need to update the Service being used by Scenario tests.
+        # Used in UpdatePRService.yml
+        # I think this can be removed based on the logic, setting it to true for now.
+        - _updateService: true
 
-        - _testArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-        - _args: -preparemachine -configuration $(_BuildConfig)
-        - _signArgs: /p:SignType=$(_SignType) /p:TeamName=$(_TeamName)
-        - _commonArguments: $(_args)
+    # Send to Helix variables
+    - _xUnitPublishTargetFramework: netcoreapp2.1
+    - _xUnitRuntimeTargetFramework: netcoreapp2.0
+    - _xUnitRunnerVersion: 2.4.1
+    - _dotNetCliPackageType: runtime
+    # The version of dotnet for running the tests as listed in the global.json
+    # Must be a version listed in https://raw.githubusercontent.com/dotnet/core/master/release-notes/releases.json
+    - _dotNetCliVersion: 2.1.9
+    - _xUnitWorkItemTimeout: '00:10:00'
 
-        # Windows variables
-        - ${{ if eq(parameters.targetOS, 'Windows_NT') }}:
-          - _buildScript: eng\common\cibuild.cmd
+    steps:
+    - checkout: self
+      clean: true
+    - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
+      - template: /eng/pipelines/UpdatePRService.yml
+        parameters:
+          wcfPRServiceId: $(_WcfPRServiceId)
+    - ${{ if eq(variables['Agent.OS'], 'Windows_NT') }}:
+      - script: eng\common\cibuild.cmd
+          -configuration $(_BuildConfig)
+          -preparemachine
+          $(_InternalBuildArgs)
+          $(_TestArgs)
+          /p:Test=false
+        displayName: Windows Build / Publish
 
-        # Non-Windows variables
-        - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
-          - _buildScript: ./eng/common/cibuild.sh
+      - powershell: eng\common\build.ps1
+          -configuration $(_BuildConfig)
+          -preparemachine
+          -ci
+          -test
+          -integrationTest
+          -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
+          /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
+        displayName: Windows - Run Helix Tests
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          HelixAccessToken: $(HelixApiAccessToken)
+              
+          # Not Used The Same In Arcade #
+          XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework) #this is the framework your test projects are targeting
+          XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework) #this is the framework version of xUnit you want to use from the xUnit NuGet package
+          XUnitRunnerVersion: $(_xUnitRunnerVersion) #the version of the xUnit nuget package you want to use
+          IncludeDotNetCli: true
+          DotNetCliPackageType: $(_dotNetCliPackageType)
+          DotNetCliVersion: $(_dotNetCliVersion)
+          EnableXUnitReporter: true
+          XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
 
-        # Send to Helix variables
-        - ${{ if eq(job.submitToHelix, 'true') }}:
-          - _helixType: build/test/
-          - _xUnitPublishTargetFramework: netcoreapp2.1
-          - _xUnitRuntimeTargetFramework: netcoreapp2.0
-          - _xUnitRunnerVersion: 2.4.1
-          - _dotNetCliPackageType: runtime
-          # The version of dotnet for running the tests as listed in the global.json
-          # Must be a version listed in https://raw.githubusercontent.com/dotnet/core/master/release-notes/releases.json
-          - _dotNetCliVersion: 2.1.9
-          - _xUnitWorkItemTimeout: '00:10:00'
-          - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            - _helixSource: official/dotnet/wcf/$(Build.SourceBranch)
-          - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-            - _helixSource: pr/dotnet/wcf/$(Build.SourceBranch)
+    - ${{ if ne(variables['Agent.OS'], 'Windows_NT') }}:
+      - script: ./eng/common/cibuild.sh
+          --configuration $(_BuildConfig)
+          --preparemachine
+          /p:Test=false
+        displayName: Unix Build / Publish
 
-        # pass along job properties
-        ${{ each property in job }}:
-          ${{ if and(ne(property.key, 'job'), ne(property.key, 'variables')) }}:
-            ${{ property.key }}: ${{ property.value }}
+      - script: ./eng/common/build.sh
+          --configuration $(_BuildConfig)
+          --preparemachine
+          --ci
+          --test
+          --integrationTest
+          --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
+          /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
+        displayName: Unix - Run Helix Tests
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          HelixAccessToken: $(HelixApiAccessToken)
 
-        wcfRepo: dotnet/wcf
-
-        name: ${{ job.job }}
-        workspace:
-          clean: all
-
-        ${{ if eq(job.timeoutInMinutes, '') }}:
-          timeoutInMinutes: 45
-
-        steps:
-          - ${{ if ne(job.preBuildSteps[0], '') }}:
-            - ${{ job.preBuildSteps }}
-
-          - ${{ if eq(parameters.isOfficialBuild, 'false') }}:
-            - template: /eng/pipelines/UpdatePRService.yml
-              parameters:
-                wcfPRServiceId: $(_WcfPRServiceId)
-            - script: $(_buildScript)
-                $(_commonArguments)
-                $(_testArgs)
-                /p:Test=false
-              displayName: Build Product and Test, Pack and Sign
-              continueOnError: false
-
-          - ${{ if eq(parameters.isOfficialBuild, 'true') }}:
-            - script: $(_buildScript)
-                $(_commonArguments)
-                $(_internalBuildArgs)
-                $(_testArgs)
-                /p:Test=false
-              displayName: Build Product and Test, Pack and Sign
-              continueOnError: false
-
-          - ${{ if ne(job.customBuildSteps[0], '') }}:
-            - ${{ job.customBuildSteps }}
-
-          - ${{ if eq(job.submitToHelix, 'true') }}:
-            - ${{ if eq(parameters.targetOS, 'Windows_NT') }}:
-              - powershell: 'powershell "$env:BUILD_SOURCESDIRECTORY\eng\common\msbuild.ps1 $env:BUILD_SOURCESDIRECTORY\eng\SendToHelix.proj /restore /t:Test /bl:$env:BUILD_SOURCESDIRECTORY\artifacts\log\$env:BuildConfig\SendToHelix.binlog"'
-                displayName: Send Tests To Helix (Windows)
-                env:
-                  HelixSource: $(_helixSource)
-                  HelixType: $(_helixType)
-                  HelixBuild: $(Build.BuildNumber)
-                  XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework) #this is the framework your test projects are targeting
-                  XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework) #this is the framework version of xUnit you want to use from the xUnit NuGet package
-                  XUnitRunnerVersion: $(_xUnitRunnerVersion) #the version of the xUnit nuget package you want to use
-                  IncludeDotNetCli: true
-                  DotNetCliPackageType: $(_dotNetCliPackageType)
-                  DotNetCliVersion: $(_dotNetCliVersion)
-                  EnableXUnitReporter: true
-                  XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
-                  _helixAccessToken: $(HelixApiAccessToken)
-                  _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                  ServiceHost: $(_serviceUri) #not used on Windows machines
-                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-                continueOnError: false
-            - ${{ if ne(parameters.targetOS, 'Windows_NT') }}:
-              - script: $BUILD_SOURCESDIRECTORY/eng/common/msbuild.sh $BUILD_SOURCESDIRECTORY/eng/SendToHelix.proj /restore /t:Test /bl:$BUILD_SOURCESDIRECTORY/artifacts/log/$BuildConfig/SendToHelix.binlog
-                displayName: Send Tests To Helix (Unix)
-                env:
-                  HelixSource: $(_helixSource)
-                  HelixType: $(_helixType)
-                  HelixBuild: $(Build.BuildNumber)
-                  HelixTargetQueues: $(_helixQueues)
-                  XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework)
-                  XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework)
-                  XUnitRunnerVersion: $(_xUnitRunnerVersion)
-                  IncludeDotNetCli: true
-                  DotNetCliPackageType: $(_dotNetCliPackageType)
-                  DotNetCliVersion: $(_dotNetCliVersion)
-                  EnableXUnitReporter: true
-                  XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
-                  _helixAccessToken: $(HelixApiAccessToken)
-                  _isOfficialBuild: ${{ parameters.isOfficialBuild }}
-                  ServiceHost: $(_serviceUri)
-                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-                continueOnError: false
+          # Not Used The Same In Arcade #
+          XUnitPublishTargetFramework: $(_xUnitPublishTargetFramework) #this is the framework your test projects are targeting
+          XUnitRuntimeTargetFramework: $(_xUnitRuntimeTargetFramework) #this is the framework version of xUnit you want to use from the xUnit NuGet package
+          XUnitRunnerVersion: $(_xUnitRunnerVersion) #the version of the xUnit nuget package you want to use
+          IncludeDotNetCli: true
+          DotNetCliPackageType: $(_dotNetCliPackageType)
+          DotNetCliVersion: $(_dotNetCliVersion)
+          EnableXUnitReporter: true
+          XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+          ServiceHost: $(_serviceUri) #Used in SendToHelix project for a Helix pre-command, non-Windows only.

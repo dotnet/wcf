@@ -1,20 +1,61 @@
 <Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
+  <!--https://github.com/dotnet/arcade/blob/67005f7604b46ce338849bb80ccef197134b0fed/src/Microsoft.DotNet.Helix/Sdk/Readme.md-->
   <PropertyGroup>
-    <Language>msbuild</Language>
+    <HelixSource>pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
+    <!--<HelixSource Condition=" '$(HelixAccessToken)' == '' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
+    <HelixSource Condition=" '$(HelixAccessToken)' != '' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>-->
+    <HelixType>test/product/</HelixType>
+    <!--Why is this not build/test/-->
+    <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
+    <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
+
+    <IncludeDotNetCli>true</IncludeDotNetCli>
+
+    <EnableAzurePipelinesReporter>true</EnableAzurePipelinesReporter>
+    <TestRunNamePrefix>$(AGENT_JOBNAME)</TestRunNamePrefix>
+
+    <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <HelixAccessToken Condition="'$(_isOfficialBuild)'">$(_helixAccessToken)</HelixAccessToken>
-    <WaitForWorkItemCompletion Condition="'!$(_isOfficialBuild)'">true</WaitForWorkItemCompletion>
-    <Creator Condition="'!$(_isOfficialBuild)'">dotnet-wcf</Creator>
-  </PropertyGroup>
+  <ItemGroup>
+    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj"/>
+    <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"/>
+  </ItemGroup>
 
-  <!--Add HelixTargetQueues
-  See https://github.com/dotnet/arcade/blob/master/tests/UnitTests.proj-->
+  <ItemGroup Condition=" '$(HelixAccessToken)' != '' ">
+    <HelixTargetQueue Include="Centos.7.Amd64"/>
+    <HelixTargetQueue Include="SLES.15.Amd64"/>
+    <HelixTargetQueue Include="OSX.1014.Amd64"/>
+    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4"/>
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(HelixAccessToken)' == '' ">
+    <IsExternal>true</IsExternal>
+    <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
+    <Creator Condition=" '$(Creator)' == ''">anon</Creator>
+  </PropertyGroup>
+  
+  <ItemGroup Condition=" '$(HelixAccessToken)' == '' ">
+    <!--<HelixTargetQueue Include="Centos.7.Amd64.Open"/>
+    <HelixTargetQueue Include="OSX.1013.Amd64.Open"/>-->
+    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4.ES.Open"/>
+  </ItemGroup>
 
   <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
-    <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh;sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);find $HELIX_CORRELATION_PAYLOAD -type f</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);find . -type f</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
+    <HelixPreCommands></HelixPreCommands>
   </PropertyGroup>
+
+  <PropertyGroup Condition="$(HelixTargetQueue.StartsWith('Windows'))">
+    <HelixPreCommands>$(HelixPreCommands);dir /s %HELIX_CORRELATION_PAYLOAD%</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);dir /s</HelixPreCommands>
+  </PropertyGroup>
+
+  <Target Name="Pack"/> <!--What is this for?-->
+
 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
@@ -23,9 +64,8 @@
     </HelixCorrelationPayload>
   </ItemGroup>
 
-  <ItemGroup>
-    <XUnitProjects Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj'))" />
-    <XUnitProjects Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.*\tests\*.Tests.csproj'))" />
-    <XUnitProject Include="$(XUnitProjects.Split(';'))" />
-  </ItemGroup>
+  <!-- Useless stuff to make Arcade SDK happy -->
+  <PropertyGroup>
+    <Language>msbuild</Language>
+  </PropertyGroup>
 </Project>

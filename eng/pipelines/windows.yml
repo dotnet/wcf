@@ -2,14 +2,12 @@ jobs:
 - template: wcf-base.yml
   parameters:
     isOfficialBuild: ${{ parameters.isOfficialBuild }}
-    targetOS: Windows_NT
     jobs:
 
     # Legs with Helix testing
     - job: WindowsTest
       displayName: Windows
       timeoutInMinutes: 60
-      submitToHelix: true
       pool:
         ${{ if eq(parameters.isOfficialBuild, 'false') }}:
           name: NetCorePublic-Pool
