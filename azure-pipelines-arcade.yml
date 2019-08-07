@@ -28,7 +28,7 @@ resources:
     image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-16.04-coredeps-d9d81d0-20190612203614
 
 stages:
-- stage: build
+- stage: Build
   displayName: Build
   jobs:
   - template: /eng/common/templates/jobs/jobs.yml
@@ -43,8 +43,7 @@ stages:
         includeToolset: true
       helixRepo: dotnet/wcf
       jobs:
-      - job: Windows_NT
-        displayName: Windows
+      - job: Windows
         timeoutInMinutes: 60
         pool:
           ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
@@ -113,7 +112,7 @@ stages:
         - checkout: self
           clean: true
         - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-          - template: /eng/pipelines/UpdatePRService.yml
+          - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
         - script: eng\common\cibuild.cmd
@@ -138,6 +137,36 @@ stages:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             HelixAccessToken: $(HelixApiAccessToken)
             XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+
+      - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        - job: Linux
+          container: ubuntu_1604_Powershell_62
+          pool:
+            ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+              name:  NetCorePublic-Pool
+              queue: BuildPool.Ubuntu.1604.Amd64.Open
+            ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+              name:  NetCoreInternal-Pool
+              queue: BuildPool.Ubuntu.1604.Amd64
+          variables:
+          - HelixApiAccessToken: ''
+          - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+            - group: DotNet-HelixApi-Access
+          - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
+
+          # Internal/Official Build Variables
+          - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+              - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+
+          # Public/PR & CI Build Variables
+          - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+              # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
+              - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+              # For PR and CI test runs we need to update the Service being used by Scenario tests.
+              # Used in UpdatePRService.yml
+              # I think this can be removed based on the logic, setting it to true for now.
+              - _updateService: true
+
 
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
   - template: eng\common\templates\post-build\post-build.yml
