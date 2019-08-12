@@ -59,7 +59,7 @@ c:\temp\WCFEtwTrace.etl
    1. Launch eventvwr.
    2. Window Logs -> Saved Logs, then open the event log
  * perfview
-   1. Download perfview from http://www.microsoft.com/en-us/download/details.aspx?id=28567 
+   1. Download perfview from https://github.com/Microsoft/perfview/blob/master/documentation/Downloading.md 
    2. Open perfview.exe
        * Open the event log file by typing the path into the file path window.
        * Click on Events from the list.
