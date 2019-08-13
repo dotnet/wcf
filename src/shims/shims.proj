@@ -48,7 +48,7 @@
 
     <WriteSigningRequired
         Condition="'@(NetFxContracts)' != '' and '$(SkipSigning)' != 'true' and '$(SignType)' != 'oss'"
-        AuthenticodeSig="Microsoft"
+        AuthenticodeSig="Microsoft400"
         StrongNameSig="%(NetFxContracts.StrongNameSig)"
         MarkerFile="$(GenFacadesOutputPath)%(NetFxContracts.Filename)%(NetFxContracts.Extension).requires_signing" />
 
