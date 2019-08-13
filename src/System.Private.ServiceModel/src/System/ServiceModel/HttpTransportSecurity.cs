@@ -90,7 +90,9 @@ namespace System.ServiceModel
         private void ConfigureAuthentication(HttpTransportBindingElement http)
         {
             http.AuthenticationScheme = HttpClientCredentialTypeHelper.MapToAuthenticationScheme(_clientCredentialType);
+            http.ProxyAuthenticationScheme = HttpProxyCredentialTypeHelper.MapToAuthenticationScheme(_proxyCredentialType);
             http.Realm = Realm;
+            http.ExtendedProtectionPolicy = ExtendedProtectionPolicy;
         }
 
         private static void ConfigureAuthentication(HttpTransportBindingElement http, HttpTransportSecurity transportSecurity)

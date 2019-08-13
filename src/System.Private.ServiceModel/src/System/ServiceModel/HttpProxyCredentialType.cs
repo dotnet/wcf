@@ -27,6 +27,33 @@ namespace System.ServiceModel
                     value == HttpProxyCredentialType.Windows);
         }
 
+        internal static AuthenticationSchemes MapToAuthenticationScheme(HttpProxyCredentialType proxyCredentialType)
+        {
+            AuthenticationSchemes result;
+            switch (proxyCredentialType)
+            {
+                case HttpProxyCredentialType.None:
+                    result = AuthenticationSchemes.Anonymous;
+                    break;
+                case HttpProxyCredentialType.Basic:
+                    result = AuthenticationSchemes.Basic;
+                    break;
+                case HttpProxyCredentialType.Digest:
+                    result = AuthenticationSchemes.Digest;
+                    break;
+                case HttpProxyCredentialType.Ntlm:
+                    result = AuthenticationSchemes.Ntlm;
+                    break;
+                case HttpProxyCredentialType.Windows:
+                    result = AuthenticationSchemes.Negotiate;
+                    break;
+                default:
+                    Fx.Assert("unsupported proxy credential type");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
+            }
+            return result;
+        }
+
         internal static HttpProxyCredentialType MapToProxyCredentialType(AuthenticationSchemes authenticationSchemes)
         {
             HttpProxyCredentialType result;

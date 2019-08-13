@@ -4,6 +4,8 @@
 
 
 using System;
+using System.Net;
+using System.Security.Authentication.ExtendedProtection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Tests.Common;
@@ -310,5 +312,31 @@ public static class BasicHttpBindingTest
         var binding = new BasicHttpBinding();
         binding.TransferMode = transferMode;
         Assert.Equal<TransferMode>(transferMode, binding.TransferMode);
+    }
+
+    [WcfTheory]
+    [InlineData(HttpProxyCredentialType.Basic, AuthenticationSchemes.Basic)]
+    [InlineData(HttpProxyCredentialType.Digest, AuthenticationSchemes.Digest)]
+    [InlineData(HttpProxyCredentialType.None, AuthenticationSchemes.Anonymous)]
+    [InlineData(HttpProxyCredentialType.Ntlm, AuthenticationSchemes.Ntlm)]
+    [InlineData(HttpProxyCredentialType.Windows, AuthenticationSchemes.Negotiate)]
+    public static void ProxyCredentialType_Propagates_To_TransportBindingElement(HttpProxyCredentialType credentialType, AuthenticationSchemes mappedAuthScheme)
+    {
+        var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+        binding.Security.Transport.ProxyCredentialType = credentialType;
+        var be = binding.CreateBindingElements();
+        var htbe = be.Find<HttpTransportBindingElement>();
+        Assert.Equal(mappedAuthScheme, htbe.ProxyAuthenticationScheme);
+    }
+
+    [WcfFact]
+    public static void ExtendedProtectionPolicy_Propagates_To_TransportBindingElement()
+    {
+        var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+        var epp = new ExtendedProtectionPolicy(PolicyEnforcement.Always);
+        binding.Security.Transport.ExtendedProtectionPolicy = epp;
+        var be = binding.CreateBindingElements();
+        var htbe = be.Find<HttpTransportBindingElement>();
+        Assert.Equal(epp, htbe.ExtendedProtectionPolicy);
     }
 }
