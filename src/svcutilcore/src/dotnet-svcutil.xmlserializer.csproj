@@ -87,9 +87,15 @@
     <None Include="..\files\dotnet-svcutil.xmlserializer.targets" Pack="true" PackagePath="build/" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PsCmd>powershell</PsCmd>
+    <!--Current Linux official build machine uses PS 6 which requires 'pwsh' instead of 'powershell'.-->
+    <PsCmd Condition=" '$(OS)' == 'Linux' ">pwsh</PsCmd>
+  </PropertyGroup>
+
   <Target Name="ModifyPackage" AfterTargets="Pack">
     <Message Text="Call $(WcfRootFolder)\src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 to modify the svcutil.xmlserializer.nuspec" />
-    <Exec Command="powershell -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
+    <Exec Command="$(PsCmd) -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
   </Target>
 
 </Project>
