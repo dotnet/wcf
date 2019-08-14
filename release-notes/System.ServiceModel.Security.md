@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 4.6.0-preview8
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Security/4.6.0-preview8.final)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.0.0-preview8)
+
 ### 4.6.0-preview6
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Security/4.6.0-preview6.final)
