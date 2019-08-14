@@ -15,6 +15,11 @@
     <TestRunNamePrefix>$(AGENT_JOBNAME)</TestRunNamePrefix>
 
     <EnableXUnitReporter>true</EnableXUnitReporter>
+
+    <IsWindowsBuild>false</IsWindowsBuild>
+    <IsInternalBuild>false</IsInternalBuild>
+    <IsWindowsBuild Condition="'$(AGENT_OS)' == 'Windows_NT' ">true</IsWindowsBuild>
+    <IsInternalBuild Condition="'$(HelixAccessToken)' != '' ">true</IsInternalBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,11 +27,14 @@
     <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"/>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(HelixAccessToken)' != '' ">
-    <HelixTargetQueue Include="Centos.7.Amd64"/>
-    <HelixTargetQueue Include="SLES.15.Amd64"/>
-    <HelixTargetQueue Include="OSX.1014.Amd64"/>
-    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4"/>
+  <ItemGroup Condition="$(IsWindowsBuild)" >
+    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4" Condition="$(IsInternalBuild)" />
+    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4.ES.Open" Condition="'$(IsInternalBuild)' == 'false' " />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(IsWindowsBuild) == 'false' " >
+    <HelixTargetQueue Include="Centos.7.Amd64" Condition="$(IsInternalBuild)" />
+    <HelixTargetQueue Include="Centos.7.Amd64.Open" Condition="'$(IsInternalBuild)' == 'false' " />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(HelixAccessToken)' == '' ">
@@ -35,23 +43,9 @@
     <Creator Condition=" '$(Creator)' == ''">anon</Creator>
   </PropertyGroup>
   
-  <ItemGroup Condition=" '$(HelixAccessToken)' == '' ">
-    <HelixTargetQueue Include="Centos.7.Amd64.Open"/>
-    <HelixTargetQueue Include="OSX.1013.Amd64.Open"/>
-    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4.ES.Open"/>
-  </ItemGroup>
-
   <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
-    <HelixPreCommands>$(HelixPreCommands);find $HELIX_CORRELATION_PAYLOAD -type f</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);find . -type f</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
-    <HelixPreCommands></HelixPreCommands>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(HelixTargetQueue.StartsWith('Windows'))">
-    <HelixPreCommands>$(HelixPreCommands);dir /s %HELIX_CORRELATION_PAYLOAD%</HelixPreCommands>
-    <HelixPreCommands>$(HelixPreCommands);dir /s</HelixPreCommands>
   </PropertyGroup>
 
   <Target Name="Pack"/> <!--What is this for?-->

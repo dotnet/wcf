@@ -90,11 +90,13 @@
   <PropertyGroup>
     <PsCmd>powershell</PsCmd>
     <!--Current Linux official build machine uses PS 6 which requires 'pwsh' instead of 'powershell'.-->
-    <PsCmd Condition=" '$(OS)' == 'Linux' ">pwsh</PsCmd>
+    <PsCmd Condition=" '$(OS)' != 'Windows_NT' ">pwsh</PsCmd>
   </PropertyGroup>
 
   <Target Name="ModifyPackage" AfterTargets="Pack">
-    <Message Text="Call $(WcfRootFolder)\src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 to modify the svcutil.xmlserializer.nuspec" />
+    <Message Importance="high" Text="Call $(WcfRootFolder)\src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 to modify the svcutil.xmlserializer.nuspec" />
+    <Message Importance="high" Text="The value of environment variable OS is: $(OS)" />
+    <Message Importance="high" Text="The value of property 'PsCmd' is: $(PsCmd)" />
     <Exec Command="$(PsCmd) -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
   </Target>
 

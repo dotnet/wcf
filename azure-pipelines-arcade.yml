@@ -21,6 +21,8 @@ variables:
     value: true
   - name: _DotNetArtifactsCategory
     value: .NETCore
+  - name: System.Debug
+    value: true
 
 resources:
   containers:
@@ -150,7 +152,8 @@ stages:
 
           # For CI builds use wcfcoresrv5
           - ${{ if notin(variables['Build.Reason'], 'PullRequest') }}:
-              - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+              #- _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+              - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
 
           # For PR builds use wcfcoresrv2
           - ${{ if in(variables['Build.Reason'], 'PullRequest') }}:
@@ -204,6 +207,7 @@ stages:
             env:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
               HelixAccessToken: $(HelixApiAccessToken)
+              ServiceHost: $(_serviceUri)
 
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
   - template: eng\common\templates\post-build\post-build.yml
