@@ -4,6 +4,10 @@ WCF Web Service Reference connected services provider is now part of Visual Stud
 
 ## Release History
 
+### 8/13/2019 - Visual Studio 2019 v16.3 Preview 2
+* Updated to use [dotnet-svcutil 2.0.1](https://www.nuget.org/packages/dotnet-svcutil/2.0.1)
+* Bug fixes ([Feedback #612135](https://developercommunity.visualstudio.com/content/problem/612135/unreadable-text-in-configure-wcf-web-service-refer.html), [#3264](https://github.com/dotnet/wcf/issues/3264)).
+
 ### 5/6/2019 - Visual Studio 2019 v16.1 Preview 3 [28902.138.d16.1]
 * Added option to generate synchronous operations on the Client Options page ([#654](https://github.com/dotnet/wcf/issues/654)).
 * Bug fixes ([Feedback #499745](https://developercommunity.visualstudio.com/content/problem/499745/microsoft-wcf-web-service-reference-provider-vs-20-1.html))
