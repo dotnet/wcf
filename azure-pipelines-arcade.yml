@@ -46,7 +46,7 @@ stages:
       helixRepo: dotnet/wcf
       jobs:
       - job: Windows
-        timeoutInMinutes: 60
+        timeoutInMinutes: 90
         pool:
           ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
             name: NetCorePublic-Pool
@@ -140,8 +140,10 @@ stages:
             HelixAccessToken: $(HelixApiAccessToken)
             XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
 
+      # Only build and test Unix in PR and CI builds.
       - ${{ if eq(variables['System.TeamProject'], 'public') }}:
         - job: Linux
+          timeoutInMinutes: 90
           container: ubuntu_1604_Powershell_62
           pool:
             name:  NetCorePublic-Pool
@@ -149,20 +151,8 @@ stages:
           variables:
           - HelixApiAccessToken: ''
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-
-          # For CI builds use wcfcoresrv5
-          - ${{ if notin(variables['Build.Reason'], 'PullRequest') }}:
-              #- _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
-              - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
-
-          # For PR builds use wcfcoresrv2
-          - ${{ if in(variables['Build.Reason'], 'PullRequest') }}:
-              # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
-              - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
-              # For PR and CI test runs we need to update the Service being used by Scenario tests.
-              # Used in UpdatePRService.yml
-              # I think this can be removed based on the logic, setting it to true for now.
-              - _updateService: true
+          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+          - _updateService: true
 
           # Send to Helix variables
           - _xUnitWorkItemTimeout: '00:10:00'
@@ -184,10 +174,66 @@ stages:
           steps:
           - checkout: self
             clean: true
-          - ${{ if in(variables['Build.Reason'], 'PullRequest') }}:
-            - template: /eng/UpdatePRService.yml
-              parameters:
-                wcfPRServiceId: $(_WcfPRServiceId)
+          - template: /eng/UpdatePRService.yml
+            parameters:
+              wcfPRServiceId: $(_WcfPRServiceId)
+          - script: eng/common/cibuild.sh
+              -configuration $(_BuildConfig)
+              -preparemachine
+              $(_TestArgs)
+              /p:Test=false
+            displayName: Unix Build
+          - script: eng/common/build.sh
+              --configuration $(_BuildConfig)
+              --prepareMachine
+              --ci
+              --test
+              --integrationTest
+              --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
+              $(_TestArgs)
+              /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
+            displayName: Linux - Run Helix Tests
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+              HelixAccessToken: $(HelixApiAccessToken)
+              ServiceHost: $(_serviceUri)
+
+      # Only build and test Unix in PR and CI builds.
+      - ${{ if eq(variables['System.TeamProject'], 'public') }}:
+        - job: MacOS
+          timeoutInMinutes: 90
+          pool:
+            name:  Hosted macOS
+            queue: OSX.1013.Amd64.Open
+          variables:
+          - HelixApiAccessToken: ''
+          - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
+          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+          - _updateService: true
+
+          # Send to Helix variables
+          - _xUnitWorkItemTimeout: '00:10:00'
+
+          strategy:
+            matrix:
+              Release:
+                _BuildConfig: Release
+                _SignType: none
+                _DotNetPublishToBlobFeed : false
+                _WcfPRServiceId: 5
+                _PublishType: none
+              Debug:
+                _BuildConfig: Debug
+                _SignType: none
+                _DotNetPublishToBlobFeed : false
+                _WcfPRServiceId: 6
+                _PublishType: none
+          steps:
+          - checkout: self
+            clean: true
+          - template: /eng/UpdatePRService.yml
+            parameters:
+              wcfPRServiceId: $(_WcfPRServiceId)
           - script: eng/common/cibuild.sh
               -configuration $(_BuildConfig)
               -preparemachine
