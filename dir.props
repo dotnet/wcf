@@ -23,6 +23,11 @@
     <IsDotNetFrameworkProductAssembly>true</IsDotNetFrameworkProductAssembly>
   </PropertyGroup>
 
+  <!-- The certificate named Microsoft has been deprecated, default to the newer Microsoft400 -->
+  <PropertyGroup>
+    <AuthenticodeSig Condition="'$(AuthenticodeSig)' == ''">Microsoft400</AuthenticodeSig>
+  </PropertyGroup>
+
   <!-- Common repo directories -->
   <PropertyGroup>
     <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
