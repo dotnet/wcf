@@ -50,7 +50,7 @@ install_root_cert()
 
             $__update_os_certbundle_exec
             ;;
-        "opensuse")
+        "opensuse" | "sles")
             cp -f "${__cafile}" /etc/pki/trust/anchors
 
             if [ $? -ne 0 ]; then
@@ -154,7 +154,7 @@ case ${__os} in
     "centos" | "rhel" | "fedora") 
         __update_os_certbundle_cmd="update-ca-trust"
         ;;
-    "ubuntu" | "debian" | "opensuse")
+    "ubuntu" | "debian" | "opensuse" | "sles")
         __update_os_certbundle_cmd="update-ca-certificates"
         ;;
     *)
