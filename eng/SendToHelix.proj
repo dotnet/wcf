@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
   <!--https://github.com/dotnet/arcade/blob/67005f7604b46ce338849bb80ccef197134b0fed/src/Microsoft.DotNet.Helix/Sdk/Readme.md-->
   <PropertyGroup>
-    <HelixSource>pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
-    <!--<HelixSource Condition=" '$(HelixAccessToken)' == '' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
-    <HelixSource Condition=" '$(HelixAccessToken)' != '' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>-->
-    <HelixType>test/product/</HelixType>
-    <!--Why is this not build/test/-->
+    <HelixSource Condition=" '$(RunAsPublic)' == 'true' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
+    <HelixSource Condition=" '$(RunAsInternal)' == 'true' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
+    <HelixType>test/product/</HelixType><!--Why is this not build/test/-->
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
 
@@ -15,11 +13,6 @@
     <TestRunNamePrefix>$(AGENT_JOBNAME)</TestRunNamePrefix>
 
     <EnableXUnitReporter>true</EnableXUnitReporter>
-
-    <IsWindowsBuild>false</IsWindowsBuild>
-    <IsInternalBuild>false</IsInternalBuild>
-    <IsWindowsBuild Condition="'$(AGENT_OS)' == 'Windows_NT' ">true</IsWindowsBuild>
-    <IsInternalBuild Condition="'$(HelixAccessToken)' != '' ">true</IsInternalBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,12 +20,12 @@
     <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"/>
   </ItemGroup>
 
-  <ItemGroup Condition="$(IsWindowsBuild) AND '$(IsInternalBuild)' == 'false'" >
+  <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsPublic)' == 'true'" >
     <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4.ES.Open" />
     <HelixTargetQueue Include="Windows.10.Amd64.ServerRS4.Open" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(IsWindowsBuild) AND '$(IsInternalBuild)'" >
+  <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="Windows.10.Amd64" />
     <HelixTargetQueue Include="Debian.9.Amd64" />
     <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
@@ -50,7 +43,7 @@
     <HelixTargetQueue Include="OSX.1014.Amd64.Open" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(HelixAccessToken)' == '' ">
+  <PropertyGroup Condition=" '$(RunAsPublic)' == 'true' ">
     <IsExternal>true</IsExternal>
     <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
     <Creator Condition=" '$(Creator)' == ''">anon</Creator>
@@ -62,7 +55,6 @@
   </PropertyGroup>
 
   <Target Name="Pack"/> <!--What is this for?-->
-
 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->

@@ -21,8 +21,16 @@ variables:
     value: true
   - name: _DotNetArtifactsCategory
     value: .NETCore
-  - name: System.Debug
+  - name: _RunAsPublic
     value: true
+  - name: _RunAsInternal
+    value: false
+
+  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+    - name: _RunAsPublic
+      value: false
+    - name: _RunAsInternal
+      value: true
 
 resources:
   containers:
@@ -48,10 +56,10 @@ stages:
       - job: Windows
         timeoutInMinutes: 90
         pool:
-          ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+          ${{ if eq(variables._RunAsPublic, True) }}:
             name: NetCorePublic-Pool
             queue: buildpool.windows.10.amd64.vs2017.open
-          ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+          ${{ if eq(variables._RunAsInternal, True) }}:
             name: NetCoreInternal-Pool
             queue: buildpool.windows.10.amd64.vs2017
         variables:
@@ -60,7 +68,7 @@ stages:
         - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
 
         # Internal/Official Build Variables
-        - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+        - ${{ if eq(variables._RunAsInternal, True) }}:
             # Only enable publishing in non-public, non PR scenarios.
             # DotNet-Blob-Feed provides: dotnetfeed-storage-access-key-1
             # Publish-Build-Assets provides: MaestroAccessToken, BotAccount-dotnet-maestro-bot-PAT
@@ -80,7 +88,7 @@ stages:
             - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
 
         # Public/PR & CI Build Variables
-        - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        - ${{ if eq(variables._RunAsPublic, True) }}:
             # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
             - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
             # For PR and CI test runs we need to update the Service being used by Scenario tests.
@@ -96,14 +104,14 @@ stages:
             Release:
               _BuildConfig: Release
               # PRs or external builds are not signed.
-              ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+              ${{ if eq(variables._RunAsPublic, True) }}:
                 _SignType: test
                 _DotNetPublishToBlobFeed : false
                 _WcfPRServiceId: 1
-              ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+              ${{ if eq(variables._RunAsInternal, True) }}:
                 _SignType: real
                 _DotNetPublishToBlobFeed : true
-            ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+            ${{ if eq(variables._RunAsPublic, True) }}:
               Debug:
                 _BuildConfig: Debug
                 _SignType: test
@@ -113,7 +121,7 @@ stages:
         steps:
         - checkout: self
           clean: true
-        - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+        - ${{ if eq(variables._RunAsPublic, True) }}:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
@@ -139,9 +147,12 @@ stages:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             HelixAccessToken: $(HelixApiAccessToken)
             XUnitWorkItemTimeout: $(_xUnitWorkItemTimeout)
+            RunAsPublic: $(_RunAsPublic)
+            RunAsInternal: $(_RunAsInternal)
+            IsWindowsBuild: true
 
       # Only build and test Unix in PR and CI builds.
-      - ${{ if eq(variables['System.TeamProject'], 'public') }}:
+      - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
           timeoutInMinutes: 90
           container: ubuntu_1604_Powershell_62
@@ -149,7 +160,6 @@ stages:
             name:  NetCorePublic-Pool
             queue: BuildPool.Ubuntu.1604.Amd64.Open
           variables:
-          - HelixApiAccessToken: ''
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
           - _updateService: true
@@ -195,18 +205,19 @@ stages:
             displayName: Linux - Run Helix Tests
             env:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-              HelixAccessToken: $(HelixApiAccessToken)
               ServiceHost: $(_serviceUri)
+              RunAsPublic: $(_RunAsPublic)
+              RunAsInternal: $(_RunAsInternal)
+              IsWindowsBuild: false
 
       # Only build and test Unix in PR and CI builds.
-      - ${{ if eq(variables['System.TeamProject'], 'public') }}:
+      - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
             name:  Hosted macOS
             queue: OSX.1013.Amd64.Open
           variables:
-          - HelixApiAccessToken: ''
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
           - _updateService: true
@@ -252,10 +263,12 @@ stages:
             displayName: Linux - Run Helix Tests
             env:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-              HelixAccessToken: $(HelixApiAccessToken)
               ServiceHost: $(_serviceUri)
+              RunAsPublic: $(_RunAsPublic)
+              RunAsInternal: $(_RunAsInternal)
+              IsWindowsBuild: false
 
-- ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+- ${{ if eq(variables._RunAsInternal, True) }}:
   - template: eng\common\templates\post-build\post-build.yml
     parameters:
       # Symbol validation isn't being very reliable lately. This should be enabled back
