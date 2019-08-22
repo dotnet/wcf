@@ -1,9 +1,8 @@
 <Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
-  <!--https://github.com/dotnet/arcade/blob/67005f7604b46ce338849bb80ccef197134b0fed/src/Microsoft.DotNet.Helix/Sdk/Readme.md-->
   <PropertyGroup>
     <HelixSource Condition=" '$(RunAsPublic)' == 'true' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
     <HelixSource Condition=" '$(RunAsInternal)' == 'true' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
-    <HelixType>test/product/</HelixType><!--Why is this not build/test/-->
+    <HelixType>test/product/</HelixType>
     <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
     <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
 
@@ -28,7 +27,7 @@
   <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="Windows.10.Amd64" />
     <HelixTargetQueue Include="Debian.9.Amd64" />
-    <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
+    <HelixTargetQueue Include="RedHat.7.Amd64" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(AGENT_OS)' == 'Linux'" >
@@ -54,7 +53,7 @@
     <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
   </PropertyGroup>
 
-  <Target Name="Pack"/> <!--What is this for?-->
+  <Target Name="Pack"/>
 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
@@ -63,7 +62,6 @@
     </HelixCorrelationPayload>
   </ItemGroup>
 
-  <!-- Useless stuff to make Arcade SDK happy -->
   <PropertyGroup>
     <Language>msbuild</Language>
   </PropertyGroup>

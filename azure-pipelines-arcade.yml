@@ -271,6 +271,8 @@ stages:
 - ${{ if eq(variables._RunAsInternal, True) }}:
   - template: eng\common\templates\post-build\post-build.yml
     parameters:
+      dependsOn:
+      - Build
       # Symbol validation isn't being very reliable lately. This should be enabled back
       # once this issue is resolved: https://github.com/dotnet/arcade/issues/2871
       enableSymbolValidation: false
@@ -283,10 +285,10 @@ stages:
         params: ' -SourceToolsList @("policheck","credscan")
         -TsaInstanceURL "https://devdiv.visualstudio.com/"
         -TsaProjectName "DEVDIV"
-        -TsaNotificationEmail "subal@microsoft.com"
-        -TsaCodebaseAdmin "REDMOND\\subal"
-        -TsaBugAreaPath "DevDiv\\NET\\NET Core "
+        -TsaNotificationEmail "wcfcoret@microsoft.com"
+        -TsaCodebaseAdmin "REDMOND\stebon"
+        -TsaBugAreaPath "DevDiv\NET\NET Core"
         -TsaIterationPath "DevDiv"
-        -TsaRepositoryName "Arcade"
-        -TsaCodebaseName "Arcade"
+        -TsaRepositoryName "WCF"
+        -TsaCodebaseName "WCF"
         -TsaPublish $True'
