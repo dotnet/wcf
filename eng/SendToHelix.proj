@@ -1,17 +1,59 @@
 <Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
   <PropertyGroup>
-    <Language>msbuild</Language>
+    <HelixSource Condition=" '$(RunAsPublic)' == 'true' ">pr/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
+    <HelixSource Condition=" '$(RunAsInternal)' == 'true' ">official/dotnet/wcf/$(BUILD_SOURCEBRANCH)/</HelixSource>
+    <HelixType>test/product/</HelixType>
+    <HelixBuild>$(BUILD_BUILDNUMBER)</HelixBuild>
+    <HelixBuild Condition="'$(HelixBuild)' == ''">123460.01</HelixBuild>
+
+    <IncludeDotNetCli>true</IncludeDotNetCli>
+
+    <EnableAzurePipelinesReporter>true</EnableAzurePipelinesReporter>
+    <TestRunNamePrefix>$(AGENT_JOBNAME)</TestRunNamePrefix>
+
+    <EnableXUnitReporter>true</EnableXUnitReporter>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <HelixAccessToken Condition="'$(_isOfficialBuild)'">$(_helixAccessToken)</HelixAccessToken>
-    <WaitForWorkItemCompletion Condition="'!$(_isOfficialBuild)'">true</WaitForWorkItemCompletion>
-    <Creator Condition="'!$(_isOfficialBuild)'">dotnet-wcf</Creator>
-  </PropertyGroup>
+  <ItemGroup>
+    <XUnitProject Include="..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj"/>
+    <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"/>
+  </ItemGroup>
 
+  <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsPublic)' == 'true'" >
+    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4.ES.Open" />
+    <HelixTargetQueue Include="Windows.10.Amd64.ServerRS4.Open" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsInternal)'" >
+    <HelixTargetQueue Include="Windows.10.Amd64" />
+    <HelixTargetQueue Include="Debian.9.Amd64" />
+    <HelixTargetQueue Include="RedHat.7.Amd64" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(AGENT_OS)' == 'Linux'" >
+    <HelixTargetQueue Include="Centos.7.Amd64.Open" />
+    <HelixTargetQueue Include="Debian.9.Amd64.Open" />
+    <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
+    <HelixTargetQueue Include="SLES.12.Amd64.Open" />
+    <HelixTargetQueue Include="Ubuntu.1804.Amd64.Open" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(AGENT_OS)' == 'Darwin'" >
+    <HelixTargetQueue Include="OSX.1014.Amd64.Open" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(RunAsPublic)' == 'true' ">
+    <IsExternal>true</IsExternal>
+    <Creator>$(BUILD_SOURCEVERSIONAUTHOR)</Creator>
+    <Creator Condition=" '$(Creator)' == ''">anon</Creator>
+  </PropertyGroup>
+  
   <PropertyGroup Condition="!$(HelixTargetQueue.StartsWith('Windows'))">
-    <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh;sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);chmod a+x $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);sudo -E -n $HELIX_CORRELATION_PAYLOAD/InstallRootCertificate.sh --service-host $(ServiceHost) --cert-file /tmp/wcfrootca.crt</HelixPreCommands>
   </PropertyGroup>
+
+  <Target Name="Pack"/>
 
   <ItemGroup>
     <!-- Directory that is zipped up and sent as a correlation payload to Helix -->
@@ -20,9 +62,7 @@
     </HelixCorrelationPayload>
   </ItemGroup>
 
-  <ItemGroup>
-    <XUnitProjects Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.Private.ServiceModel\tests\Scenarios\**\*.IntegrationTests.csproj'))" />
-    <XUnitProjects Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\src\System.ServiceModel.*\tests\*.Tests.csproj'))" />
-    <XUnitProject Include="$(XUnitProjects.Split(';'))" />
-  </ItemGroup>
+  <PropertyGroup>
+    <Language>msbuild</Language>
+  </PropertyGroup>
 </Project>
