@@ -7,12 +7,14 @@ trigger:
   branches:
     include:
     - master
+    - release/3.0.0
 
 # trigger ci builds for pull requests into listed branches
 pr:
   branches:
     include:
     - master
+    - release/3.0.0
 
 variables:  
   - name: _TeamName
