@@ -5,6 +5,13 @@
 // ------------------------------------------------------------------------------
 
 
+namespace System.IdentityModel.Selectors
+{
+    public abstract class SecurityTokenProvider
+    {
+        protected SecurityTokenProvider() { }
+    }
+}
 namespace System.ServiceModel
 {
     public partial class DnsEndpointIdentity : System.ServiceModel.EndpointIdentity
