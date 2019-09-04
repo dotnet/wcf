@@ -55,11 +55,101 @@ namespace System.Collections.Generic {
         protected override void SetItem(int index, TItem item) { }
     }
 }
-namespace System.IdentityModel.Selectors {
-  public abstract partial class X509CertificateValidator {
-    protected X509CertificateValidator() { }
-    public abstract void Validate(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate);
-  }
+namespace System.IdentityModel.Selectors
+{
+    public abstract partial class SecurityTokenAuthenticator
+    {
+        internal SecurityTokenAuthenticator() { }
+    }
+    public abstract partial class SecurityTokenManager
+    {
+        public abstract System.IdentityModel.Selectors.SecurityTokenProvider CreateSecurityTokenProvider(System.IdentityModel.Selectors.SecurityTokenRequirement tokenRequirement);
+        public abstract System.IdentityModel.Selectors.SecurityTokenSerializer CreateSecurityTokenSerializer(SecurityTokenVersion version);
+        public abstract SecurityTokenAuthenticator CreateSecurityTokenAuthenticator(System.IdentityModel.Selectors.SecurityTokenRequirement tokenRequirement, out SecurityTokenResolver outOfBandTokenResolver);
+    }
+    public abstract partial class SecurityTokenProvider
+    {
+        protected SecurityTokenProvider() { }
+        public virtual bool SupportsTokenRenewal { get { return default(System.Boolean); } }
+        public virtual bool SupportsTokenCancellation { get { return default(System.Boolean); } }
+        public System.IdentityModel.Tokens.SecurityToken GetToken(System.TimeSpan timeout) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        public System.IAsyncResult BeginGetToken(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        public System.IdentityModel.Tokens.SecurityToken EndGetToken(System.IAsyncResult result) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        public System.IdentityModel.Tokens.SecurityToken RenewToken(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        public System.IAsyncResult BeginRenewToken(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        public System.IdentityModel.Tokens.SecurityToken EndRenewToken(System.IAsyncResult result) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        public void CancelToken(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token) { }
+        public System.IAsyncResult BeginCancelToken(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        public void EndCancelToken(System.IAsyncResult result) { }
+        protected abstract System.IdentityModel.Tokens.SecurityToken GetTokenCore(System.TimeSpan timeout);
+        protected virtual System.IdentityModel.Tokens.SecurityToken RenewTokenCore(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        protected virtual void CancelTokenCore(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token) { }
+        protected virtual System.IAsyncResult BeginGetTokenCore(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        protected virtual System.IdentityModel.Tokens.SecurityToken EndGetTokenCore(System.IAsyncResult result) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        protected virtual System.IAsyncResult BeginRenewTokenCore(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        protected virtual System.IdentityModel.Tokens.SecurityToken EndRenewTokenCore(System.IAsyncResult result) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        protected virtual System.IAsyncResult BeginCancelTokenCore(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        protected virtual void EndCancelTokenCore(System.IAsyncResult result) { }
+    }
+    public partial class SecurityTokenRequirement
+    {
+        public SecurityTokenRequirement() { }
+        //public static string TokenTypeProperty { get { return default(string); } }
+        //public static string KeyUsageProperty { get { return default(string); } }
+        //public static string KeyTypeProperty { get { return default(string); } }
+        //public static string KeySizeProperty { get { return default(string); } }
+        //public static string RequireCryptographicTokenProperty { get { return default(string); } }
+        //public static string PeerAuthenticationMode { get { return default(string); } }
+        //public static string IsOptionalTokenProperty { get { return default(string); } }
+        public string TokenType { get { return default(string); } set { } }
+        //public bool RequireCryptographicToken { get { return default(System.Boolean); } set { } }
+        //public SecurityKeyUsage KeyUsage { get { return default(SecurityKeyUsage); } set { } }
+        //public SecurityKeyType KeyType { get { return default(SecurityKeyType); } set { } }
+        //public System.Int32 KeySize { get { return default(System.Int32); } set { } }
+        public System.Collections.Generic.IDictionary<string, object> Properties { get { return default(System.Collections.Generic.IDictionary<string, object>); } }
+        public TValue GetProperty<TValue>(string propertyName) { return default(TValue); }
+        public bool TryGetProperty<TValue>(string propertyName, out TValue result) { result = default(TValue); return default(System.Boolean); }
+    }
+    public abstract partial class SecurityTokenResolver
+    {
+        internal SecurityTokenResolver() { }
+    }
+    public abstract partial class SecurityTokenSerializer
+    {
+        public bool CanReadToken(System.Xml.XmlReader reader) { return default(System.Boolean); }
+        public bool CanWriteToken(System.IdentityModel.Tokens.SecurityToken token) { return default(System.Boolean); }
+        public bool CanReadKeyIdentifier(System.Xml.XmlReader reader) { return default(System.Boolean); }
+        public bool CanWriteKeyIdentifier(System.IdentityModel.Tokens.SecurityKeyIdentifier keyIdentifier) { return default(System.Boolean); }
+        public bool CanReadKeyIdentifierClause(System.Xml.XmlReader reader) { return default(System.Boolean); }
+        public bool CanWriteKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(System.Boolean); }
+        public System.IdentityModel.Tokens.SecurityToken ReadToken(System.Xml.XmlReader reader, System.IdentityModel.Selectors.SecurityTokenResolver tokenResolver) { return default(System.IdentityModel.Tokens.SecurityToken); }
+        public void WriteToken(System.Xml.XmlWriter writer, System.IdentityModel.Tokens.SecurityToken token) { }
+        public System.IdentityModel.Tokens.SecurityKeyIdentifier ReadKeyIdentifier(System.Xml.XmlReader reader) { return default(System.IdentityModel.Tokens.SecurityKeyIdentifier); }
+        public void WriteKeyIdentifier(System.Xml.XmlWriter writer, System.IdentityModel.Tokens.SecurityKeyIdentifier keyIdentifier) { }
+        public System.IdentityModel.Tokens.SecurityKeyIdentifierClause ReadKeyIdentifierClause(System.Xml.XmlReader reader) { return default(System.IdentityModel.Tokens.SecurityKeyIdentifierClause); }
+        public void WriteKeyIdentifierClause(System.Xml.XmlWriter writer, System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { }
+        protected abstract bool CanReadTokenCore(System.Xml.XmlReader reader);
+        protected abstract bool CanWriteTokenCore(System.IdentityModel.Tokens.SecurityToken token);
+        protected abstract bool CanReadKeyIdentifierCore(System.Xml.XmlReader reader);
+        protected abstract bool CanWriteKeyIdentifierCore(System.IdentityModel.Tokens.SecurityKeyIdentifier keyIdentifier);
+        protected abstract bool CanReadKeyIdentifierClauseCore(System.Xml.XmlReader reader);
+        protected abstract bool CanWriteKeyIdentifierClauseCore(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause);
+        protected abstract System.IdentityModel.Tokens.SecurityToken ReadTokenCore(System.Xml.XmlReader reader, System.IdentityModel.Selectors.SecurityTokenResolver tokenResolver);
+        protected abstract void WriteTokenCore(System.Xml.XmlWriter writer, System.IdentityModel.Tokens.SecurityToken token);
+        protected abstract System.IdentityModel.Tokens.SecurityKeyIdentifier ReadKeyIdentifierCore(System.Xml.XmlReader reader);
+        protected abstract void WriteKeyIdentifierCore(System.Xml.XmlWriter writer, System.IdentityModel.Tokens.SecurityKeyIdentifier keyIdentifier);
+        protected abstract System.IdentityModel.Tokens.SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(System.Xml.XmlReader reader);
+        protected abstract void WriteKeyIdentifierClauseCore(System.Xml.XmlWriter writer, System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause);
+    }
+    public abstract partial class SecurityTokenVersion
+    {
+        public abstract System.Collections.ObjectModel.ReadOnlyCollection<string> GetSecuritySpecifications();
+    }
+    public abstract partial class X509CertificateValidator
+    {
+        protected X509CertificateValidator() { }
+        public abstract void Validate(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate);
+    }
 }
 namespace System.IdentityModel.Tokens
 {
@@ -71,6 +161,35 @@ namespace System.IdentityModel.Tokens
         //public abstract bool IsAsymmetricAlgorithm(string algorithm) { return default(bool); }
         //public abstract bool IsSupportedAlgorithm(string algorithm) { return default(bool); }
         //public abstract bool IsSymmetricAlgorithm(string algorithm) { return default(bool); }
+    }
+    public class SecurityKeyIdentifier : System.Collections.Generic.IEnumerable<System.IdentityModel.Tokens.SecurityKeyIdentifierClause>
+    {
+        public SecurityKeyIdentifier() { }
+        public SecurityKeyIdentifier(params System.IdentityModel.Tokens.SecurityKeyIdentifierClause[] clauses) { }
+        public System.IdentityModel.Tokens.SecurityKeyIdentifierClause this[int index] { get { return default(System.IdentityModel.Tokens.SecurityKeyIdentifierClause); } }
+        public bool CanCreateKey { get { return default(System.Boolean); } }
+        public int Count { get { return default(System.Int32); } }
+        public bool IsReadOnly { get { return default(System.Boolean); } }
+        public void Add(System.IdentityModel.Tokens.SecurityKeyIdentifierClause clause) { }
+        public System.IdentityModel.Tokens.SecurityKey CreateKey() { return default(System.IdentityModel.Tokens.SecurityKey); }
+        public TClause Find<TClause>() where TClause : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { return default(TClause); }
+        public System.Collections.Generic.IEnumerator<System.IdentityModel.Tokens.SecurityKeyIdentifierClause> GetEnumerator() { return default(System.Collections.Generic.IEnumerator<System.IdentityModel.Tokens.SecurityKeyIdentifierClause>); }
+        public void MakeReadOnly() { }
+        public override string ToString() { return default(string); }
+        public bool TryFind<TClause>(out TClause clause) where TClause : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { clause = default(TClause); return default(System.Boolean); }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return default(System.Collections.IEnumerator); }
+    }
+    public abstract class SecurityKeyIdentifierClause
+    {
+        protected SecurityKeyIdentifierClause(string clauseType) { }
+        protected SecurityKeyIdentifierClause(string clauseType, byte[] nonce, int length) { }
+        public virtual bool CanCreateKey { get { return default(System.Boolean); } }
+        public string ClauseType { get { return default(string); } }
+        public string Id { get { return default(string); } set { } }
+        public virtual System.IdentityModel.Tokens.SecurityKey CreateKey() { return default(System.IdentityModel.Tokens.SecurityKey); }
+        public virtual bool Matches(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(System.Boolean); }
+        public byte[] GetDerivationNonce() { return default(byte[]); }
+        public int DerivationLength { get { return default(System.Int32); } }
     }
     public abstract partial class SecurityToken
     {
@@ -793,6 +912,9 @@ namespace System.ServiceModel.Channels
     public partial class BindingParameterCollection : System.Collections.ObjectModel.KeyedCollection<System.Type, object>
     {
         public BindingParameterCollection() { }
+        protected override Type GetKeyForItem(object item) { return default(Type); }
+        protected override void SetItem(int index, object item) { }
+        protected override void InsertItem(int index, object item) { }
     }
     public abstract partial class BodyWriter
     {
@@ -1224,7 +1346,7 @@ namespace System.ServiceModel.Channels
         public bool IsFixedSize { get { return default(bool); } }
         public object this[string name] { get { return default(object); } set { } }
         public System.Collections.Generic.ICollection<string> Keys { get { return default(System.Collections.Generic.ICollection<string>); } }
-        bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, System.Object>>.IsReadOnly { get { return default(bool); } }
+        bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Object>>.IsReadOnly { get { return default(bool); } }
         public System.Collections.Generic.ICollection<object> Values { get { return default(System.Collections.Generic.ICollection<object>); } }
         public System.Uri Via { get { return default(System.Uri); } set { } }
         public void Add(string name, object property) { }
@@ -1233,11 +1355,11 @@ namespace System.ServiceModel.Channels
         public void CopyProperties(System.ServiceModel.Channels.MessageProperties properties) { }
         public void Dispose() { }
         public bool Remove(string name) { return default(bool); }
-        void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, System.Object>>.Add(System.Collections.Generic.KeyValuePair<string, object> pair) { }
-        bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, System.Object>>.Contains(System.Collections.Generic.KeyValuePair<string, object> pair) { return default(bool); }
-        void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, System.Object>>.CopyTo(System.Collections.Generic.KeyValuePair<string, object>[] array, int index) { }
-        bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, System.Object>>.Remove(System.Collections.Generic.KeyValuePair<string, object> pair) { return default(bool); }
-        System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>.GetEnumerator() { return default(System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>); }
+        void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Object>>.Add(System.Collections.Generic.KeyValuePair<string, object> pair) { }
+        bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Object>>.Contains(System.Collections.Generic.KeyValuePair<string, object> pair) { return default(bool); }
+        void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Object>>.CopyTo(System.Collections.Generic.KeyValuePair<string, object>[] array, int index) { }
+        bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Object>>.Remove(System.Collections.Generic.KeyValuePair<string, object> pair) { return default(bool); }
+        System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Object>>.GetEnumerator() { return default(System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>); }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return default(System.Collections.IEnumerator); }
         public bool TryGetValue(string name, out object value) { value = default(object); return default(bool); }
     }

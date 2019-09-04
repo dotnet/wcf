@@ -410,6 +410,12 @@ namespace System.ServiceModel.Security
         }
 
         // token provider methods
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            CommunicationObject.ThrowIfClosedOrNotOpen();
+            return DoOperationAsync(SecuritySessionOperation.Issue, _targetAddress, _via, null, timeout).GetAwaiter().GetResult();
+        }
+
         protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             CommunicationObject.ThrowIfClosedOrNotOpen();

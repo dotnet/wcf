@@ -340,6 +340,13 @@ namespace System.ServiceModel
             _innerProvider = innerProvider;
         }
 
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            return new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
+                _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
+                SecurityUniqueId.Create().Value);
+        }
+
         internal Task<SecurityToken> GetTokenAsync(TimeSpan timeout, ChannelBinding channelbinding)
         {
             return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
