@@ -144,6 +144,19 @@ namespace System.ServiceModel.Security
 }
 namespace System.ServiceModel.Security.Tokens
 {
+    public partial class BinarySecretSecurityToken : System.IdentityModel.Tokens.SecurityToken
+    {
+        public BinarySecretSecurityToken(string id, byte[] key) { }
+        public BinarySecretSecurityToken(byte[] key) { }
+        protected BinarySecretSecurityToken(string id, int keySizeInBits, bool allowCrypto) { }
+        protected BinarySecretSecurityToken(string id, byte[] key, bool allowCrypto) { }
+        public override string Id { get { return default(string); } }
+        public override DateTime ValidFrom { get { return default(DateTime); } }
+        public override DateTime ValidTo { get { return default(DateTime); } }
+        public int KeySize { get { return default(int); } }
+        public override System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get { return default(System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey>); } }
+        public byte[] GetKeyBytes() { return default(byte[]); }
+    }
     public partial class SecureConversationSecurityTokenParameters : System.ServiceModel.Security.Tokens.SecurityTokenParameters
     {
         public SecureConversationSecurityTokenParameters() { }
