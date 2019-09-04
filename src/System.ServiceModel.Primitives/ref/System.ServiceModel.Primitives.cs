@@ -61,6 +61,29 @@ namespace System.IdentityModel.Selectors {
     public abstract void Validate(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate);
   }
 }
+namespace System.IdentityModel.Tokens
+{
+    public abstract partial class SecurityKey
+    {
+        internal SecurityKey() { }
+        //public abstract byte[] DecryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
+        //public abstract byte[] EncryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
+        //public abstract bool IsAsymmetricAlgorithm(string algorithm) { return default(bool); }
+        //public abstract bool IsSupportedAlgorithm(string algorithm) { return default(bool); }
+        //public abstract bool IsSymmetricAlgorithm(string algorithm) { return default(bool); }
+    }
+    public abstract partial class SecurityToken
+    {
+        public abstract string Id { get; }
+        public abstract System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get; }
+        public abstract DateTime ValidFrom { get; }
+        public abstract DateTime ValidTo { get; }
+        //public virtual bool CanCreateKeyIdentifierClause<T>() where T : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { return default(bool); }
+        //public virtual T CreateKeyIdentifierClause<T>() where T : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { return default(T); }
+        //public virtual bool MatchesKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(bool); }
+        //public virtual System.IdentityModel.Tokens.SecurityKey ResolveKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(System.IdentityModel.Tokens.SecurityKey); }
+    }
+}
 namespace System.ServiceModel
 {
     public partial class ActionNotSupportedException : System.ServiceModel.CommunicationException
