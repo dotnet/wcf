@@ -56,6 +56,7 @@ namespace System.ServiceModel.Channels
         internal SecurityBindingElement() { }
         public System.ServiceModel.Security.Tokens.SupportingTokenParameters EndpointSupportingTokenParameters { get { return default(System.ServiceModel.Security.Tokens.SupportingTokenParameters); } }
         public bool IncludeTimestamp { get { return default(bool); } set { } }
+        public System.ServiceModel.Security.SecurityAlgorithmSuite DefaultAlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
         public System.ServiceModel.Channels.LocalClientSecuritySettings LocalClientSettings { get { return default(System.ServiceModel.Channels.LocalClientSecuritySettings); } }
         public System.ServiceModel.MessageSecurityVersion MessageSecurityVersion { get { return default(System.ServiceModel.MessageSecurityVersion); } set { } }
         public System.ServiceModel.Channels.SecurityHeaderLayout SecurityHeaderLayout { get { return default(System.ServiceModel.Channels.SecurityHeaderLayout); } set { } }
@@ -97,6 +98,7 @@ namespace System.ServiceModel.Security
     }
     public abstract partial class SecurityAlgorithmSuite
     {
+        static public SecurityAlgorithmSuite TripleDes { get { return default(SecurityAlgorithmSuite); } }
         protected SecurityAlgorithmSuite() { }
         public abstract string DefaultCanonicalizationAlgorithm { get; }
         public abstract string DefaultDigestAlgorithm { get; }
