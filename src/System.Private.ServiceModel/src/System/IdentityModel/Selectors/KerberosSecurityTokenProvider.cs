@@ -55,6 +55,11 @@ namespace System.IdentityModel.Selectors
                 SecurityUniqueId.Create().Value);
         }
 
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            return GetToken(timeout, null);
+        }
+
         protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             return Task.FromResult(GetToken(timeout, null));

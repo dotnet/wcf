@@ -345,6 +345,23 @@ namespace System.ServiceModel.Security
             SecurityUtils.ThrowIfNegotiationFault(message, target);
         }
 
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            CommunicationObject.ThrowIfClosedOrNotOpen();
+            SecurityToken result;
+            lock (ThisLock)
+            {
+                result = GetCurrentServiceToken();
+            }
+
+            if (result == null)
+            {
+                return DoNegotiationAsync(timeout).GetAwaiter().GetResult();
+            }
+
+            return result;
+        }
+
         protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
         {
             CommunicationObject.ThrowIfClosedOrNotOpen();
