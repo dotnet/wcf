@@ -170,6 +170,46 @@ namespace System.ServiceModel.Security.Tokens
         internal SecurityTokenParameters() { }
         public System.ServiceModel.Security.Tokens.SecurityTokenParameters Clone() { return default(System.ServiceModel.Security.Tokens.SecurityTokenParameters); }
     }
+    public abstract partial class ServiceModelSecurityTokenRequirement : System.IdentityModel.Selectors.SecurityTokenRequirement
+    {
+        protected ServiceModelSecurityTokenRequirement() { }
+        //static public string SecurityAlgorithmSuiteProperty { get { return default(string); } }
+        //static public string SecurityBindingElementProperty { get { return default(string); } }
+        //static public string IssuerAddressProperty { get { return default(string); } }
+        //static public string IssuerBindingProperty { get { return default(string); } }
+        //static public string SecureConversationSecurityBindingElementProperty { get { return default(string); } }
+        //static public string SupportSecurityContextCancellationProperty { get { return default(string); } }
+        //static public string MessageSecurityVersionProperty { get { return default(string); } }
+        //static public string IssuerBindingContextProperty { get { return default(string); } }
+        //static public string TransportSchemeProperty { get { return default(string); } }
+        //static public string IsInitiatorProperty { get { return default(string); } }
+        //static public string TargetAddressProperty { get { return default(string); } }
+        //static public string ViaProperty { get { return default(string); } }
+        //static public string ListenUriProperty { get { return default(string); } }
+        //static public string AuditLogLocationProperty { get { return default(string); } }
+        //static public string SuppressAuditFailureProperty { get { return default(string); } }
+        //static public string MessageAuthenticationAuditLevelProperty { get { return default(string); } }
+        //static public string IsOutOfBandTokenProperty { get { return default(string); } }
+        //static public string PreferSslCertificateAuthenticatorProperty { get { return default(string); } }
+        //static public string SupportingTokenAttachmentModeProperty { get { return default(string); } }
+        //static public string MessageDirectionProperty { get { return default(string); } }
+        //static public string HttpAuthenticationSchemeProperty { get { return default(string); } }
+        //static public string IssuedSecurityTokenParametersProperty { get { return default(string); } }
+        //static public string PrivacyNoticeUriProperty { get { return default(string); } }
+        //static public string PrivacyNoticeVersionProperty { get { return default(string); } }
+        //static public string DuplexClientLocalAddressProperty { get { return default(string); } }
+        //static public string EndpointFilterTableProperty { get { return default(string); } }
+        static public string ChannelParametersCollectionProperty { get { return default(string); } }
+        //static public string ExtendedProtectionPolicy { get { return default(string); } }
+        //public bool IsInitiator { get { return default(bool); } }
+        //public System.ServiceModel.Security.SecurityAlgorithmSuite SecurityAlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
+        //public System.ServiceModel.Channels.SecurityBindingElement SecurityBindingElement { get { return default(System.ServiceModel.Channels.SecurityBindingElement); } set { } }
+        //public System.ServiceModel.EndpointAddress IssuerAddress { get { return default(System.ServiceModel.EndpointAddress); } set { } }
+        //public System.ServiceModel.Channels.Binding IssuerBinding { get { return default(System.ServiceModel.Channels.Binding); } set { } }
+        //public System.ServiceModel.Channels.SecurityBindingElement SecureConversationSecurityBindingElement { get { return default(System.ServiceModel.Channels.SecurityBindingElement); } set { } }
+        //public System.IdentityModel.Selectors.SecurityTokenVersion MessageSecurityVersion { get { return default(System.IdentityModel.Selectors.SecurityTokenVersion); } set { } }
+        //public string TransportScheme { get { return default(string); } set { } }
+    }
     public partial class SupportingTokenParameters
     {
         public SupportingTokenParameters() { }
