@@ -416,13 +416,13 @@ namespace System.ServiceModel.Security
             return DoOperationAsync(SecuritySessionOperation.Issue, _targetAddress, _via, null, timeout).GetAwaiter().GetResult();
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
         {
             CommunicationObject.ThrowIfClosedOrNotOpen();
             return DoOperationAsync(SecuritySessionOperation.Issue, _targetAddress, _via, null, timeout);
         }
 
-        protected override Task<SecurityToken> RenewTokenCoreAsync(TimeSpan timeout, SecurityToken tokenToBeRenewed)
+        internal override Task<SecurityToken> RenewTokenCoreInternalAsync(TimeSpan timeout, SecurityToken tokenToBeRenewed)
         {
             CommunicationObject.ThrowIfClosedOrNotOpen();
             return DoOperationAsync(SecuritySessionOperation.Renew, _targetAddress, _via, tokenToBeRenewed, timeout);

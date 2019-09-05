@@ -362,7 +362,7 @@ namespace System.ServiceModel.Security
             return result;
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
         {
             CommunicationObject.ThrowIfClosedOrNotOpen();
             SecurityToken result;
@@ -379,7 +379,7 @@ namespace System.ServiceModel.Security
             return Task.FromResult(result);
         }
 
-        protected override Task CancelTokenCoreAsync(TimeSpan timeout, SecurityToken token)
+        internal override Task CancelTokenCoreInternalAsync(TimeSpan timeout, SecurityToken token)
         {
             if (CacheServiceTokens)
             {

@@ -60,7 +60,7 @@ namespace System.IdentityModel.Selectors
             return GetToken(timeout, null);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
         {
             return Task.FromResult(GetToken(timeout, null));
         }
