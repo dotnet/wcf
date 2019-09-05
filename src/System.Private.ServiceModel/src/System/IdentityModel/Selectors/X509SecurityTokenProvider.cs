@@ -40,9 +40,9 @@ namespace System.IdentityModel.Selectors
             return new X509SecurityToken(certificate: _certificate, clone: _clone, disposable: _clone);
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
         {
-            return Task.FromResult<SecurityToken>(new X509SecurityToken(certificate: _certificate, clone: _clone, disposable: _clone));
+            return Task.FromResult<SecurityToken>(GetTokenCore(timeout));
         }
 
         public void Dispose()

@@ -5,6 +5,7 @@
 
 using System.IdentityModel.Tokens;
 using System.Runtime;
+using System.ServiceModel;
 using System.Threading.Tasks;
 
 namespace System.IdentityModel.Selectors
@@ -23,12 +24,114 @@ namespace System.IdentityModel.Selectors
             get { return false; }
         }
 
+        #region GetToken
+        public SecurityToken GetToken(TimeSpan timeout)
+        {
+            SecurityToken token = GetTokenCore(timeout);
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
+            }
+
+            return token;
+        }
+
+        public IAsyncResult BeginGetToken(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return BeginGetTokenCore(timeout, callback, state);
+        }
+
+        public SecurityToken EndGetToken(IAsyncResult result)
+        {
+            if (result == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(result));
+            }
+
+            SecurityToken token = EndGetTokenCore(result);
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
+            }
+
+            return token;
+        }
+
         public async Task<SecurityToken> GetTokenAsync(TimeSpan timeout)
         {
             SecurityToken token = await GetTokenCoreAsync(timeout);
             if (token == null)
             {
                 throw Fx.Exception.AsError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToGetToken, this)));
+            }
+
+            return token;
+        }
+
+        protected abstract SecurityToken GetTokenCore(TimeSpan timeout);
+
+        protected virtual IAsyncResult BeginGetTokenCore(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return GetTokenCoreInternalAsync(timeout).ToApm(callback, state);
+        }
+
+        protected virtual SecurityToken EndGetTokenCore(IAsyncResult result)
+        {
+            return result.ToApmEnd<SecurityToken>();
+        }
+
+
+        protected virtual Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+        {
+            return Task<SecurityToken>.Factory.FromAsync(BeginGetTokenCore, EndGetTokenCore, timeout, null);
+        }
+
+        // If external concrete implementation overrides GetTokenCoreAsync and calls base.GetTokenCoreAsync, this will call into base class implementation in GetTokenCoreInternalAsync.
+        // This pattern prevents a cycle of GetTokenCoreAsync wrapping {Begin|End}GetTokenCore and {Begin|End}GetTokenCore wrapping GetTokenCoreAsync.
+        internal virtual Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
+        {
+            return Task.FromResult(GetTokenCore(timeout));
+        }
+        #endregion // GetToken
+
+        #region RenewToken
+        public SecurityToken RenewToken(TimeSpan timeout, SecurityToken tokenToBeRenewed)
+        {
+            if (tokenToBeRenewed == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenToBeRenewed));
+            }
+
+            SecurityToken token = RenewTokenCore(timeout, tokenToBeRenewed);
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToRenewToken, this)));
+            }
+
+            return token;
+        }
+
+        public IAsyncResult BeginRenewToken(TimeSpan timeout, SecurityToken tokenToBeRenewed, AsyncCallback callback, object state)
+        {
+            if (tokenToBeRenewed == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenToBeRenewed));
+            }
+
+            return BeginRenewTokenCore(timeout, tokenToBeRenewed, callback, state);
+        }
+
+        public SecurityToken EndRenewToken(IAsyncResult result)
+        {
+            if (result == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(result));
+            }
+
+            SecurityToken token = EndRenewTokenCore(result);
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SR.Format(SR.TokenProviderUnableToRenewToken, this)));
             }
 
             return token;
@@ -50,6 +153,63 @@ namespace System.IdentityModel.Selectors
             return token;
         }
 
+        protected virtual SecurityToken RenewTokenCore(TimeSpan timeout, SecurityToken tokenToBeRenewed)
+        {
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.TokenRenewalNotSupported, this)));
+        }
+
+        protected virtual IAsyncResult BeginRenewTokenCore(TimeSpan timeout, SecurityToken tokenToBeRenewed, AsyncCallback callback, object state)
+        {
+            return RenewTokenCoreInternalAsync(timeout, tokenToBeRenewed).ToApm(callback, state);
+        }
+
+        protected virtual SecurityToken EndRenewTokenCore(IAsyncResult result)
+        {
+            return result.ToApmEnd<SecurityToken>();
+        }
+
+        protected virtual Task<SecurityToken> RenewTokenCoreAsync(TimeSpan timeout, SecurityToken tokenToBeRenewed)
+        {
+            return Task<SecurityToken>.Factory.FromAsync(BeginRenewTokenCore, EndRenewTokenCore, timeout, tokenToBeRenewed, null);
+        }
+
+        internal virtual Task<SecurityToken> RenewTokenCoreInternalAsync(TimeSpan timeout, SecurityToken tokenToBeRenewed)
+        {
+            return Task.FromResult(RenewTokenCore(timeout, tokenToBeRenewed));
+        }
+        #endregion // RenewToken
+
+        #region CancelToken
+        public void CancelToken(TimeSpan timeout, SecurityToken token)
+        {
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
+
+            CancelTokenCore(timeout, token);
+        }
+
+        public IAsyncResult BeginCancelToken(TimeSpan timeout, SecurityToken token, AsyncCallback callback, object state)
+        {
+            if (token == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(token));
+            }
+
+            return BeginCancelTokenCore(timeout, token, callback, state);
+        }
+
+        public void EndCancelToken(IAsyncResult result)
+        {
+            if (result == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(result));
+            }
+
+            EndCancelTokenCore(result);
+        }
+
         public async Task CancelTokenAsync(TimeSpan timeout, SecurityToken token)
         {
             if (token == null)
@@ -60,38 +220,31 @@ namespace System.IdentityModel.Selectors
             await CancelTokenCoreAsync(timeout, token);
         }
 
-        // protected methods
-        protected abstract Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout);
-
-        protected virtual Task<SecurityToken> RenewTokenCoreAsync(TimeSpan timeout, SecurityToken tokenToBeRenewed)
+        protected virtual void CancelTokenCore(TimeSpan timeout, SecurityToken token)
         {
-            throw Fx.Exception.AsError(new NotSupportedException(SR.Format(SR.TokenRenewalNotSupported, this)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.TokenCancellationNotSupported, this)));
+        }
+
+        protected virtual IAsyncResult BeginCancelTokenCore(TimeSpan timeout, SecurityToken token, AsyncCallback callback, object state)
+        {
+            return CancelTokenCoreInternalAsync(timeout, token).ToApm(callback, state);
+        }
+
+        protected virtual void EndCancelTokenCore(IAsyncResult result)
+        {
+            result.ToApmEnd();
         }
 
         protected virtual Task CancelTokenCoreAsync(TimeSpan timeout, SecurityToken token)
         {
-            throw Fx.Exception.AsError(new NotSupportedException(SR.Format(SR.TokenCancellationNotSupported, this)));
+            return Task.Factory.FromAsync(BeginCancelTokenCore, EndCancelTokenCore, timeout, token, null);
         }
 
-        // TODO: This class needs to be reworked to make these methods cooperate with the Task based methods. They are here without implementation to give
-        // the contracts something to type forward to.
-        public SecurityToken GetToken(TimeSpan timeout) { return default(SecurityToken); }
-        public IAsyncResult BeginGetToken(TimeSpan timeout, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        public SecurityToken EndGetToken(IAsyncResult result) { return default(SecurityToken); }
-        public SecurityToken RenewToken(TimeSpan timeout, SecurityToken tokenToBeRenewed) { return default(SecurityToken); }
-        public IAsyncResult BeginRenewToken(TimeSpan timeout, SecurityToken tokenToBeRenewed, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        public SecurityToken EndRenewToken(IAsyncResult result) { return default(SecurityToken); }
-        public void CancelToken(TimeSpan timeout, SecurityToken token) { }
-        public IAsyncResult BeginCancelToken(TimeSpan timeout, SecurityToken token, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        public void EndCancelToken(IAsyncResult result) { }
-        protected abstract SecurityToken GetTokenCore(TimeSpan timeout);
-        protected virtual SecurityToken RenewTokenCore(TimeSpan timeout, SecurityToken tokenToBeRenewed) { return default(SecurityToken); }
-        protected virtual void CancelTokenCore(TimeSpan timeout, SecurityToken token) { }
-        protected virtual IAsyncResult BeginGetTokenCore(TimeSpan timeout, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        protected virtual SecurityToken EndGetTokenCore(IAsyncResult result) { return default(SecurityToken); }
-        protected virtual IAsyncResult BeginRenewTokenCore(TimeSpan timeout, SecurityToken tokenToBeRenewed, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        protected virtual SecurityToken EndRenewTokenCore(IAsyncResult result) { return default(SecurityToken); }
-        protected virtual IAsyncResult BeginCancelTokenCore(TimeSpan timeout, SecurityToken token, AsyncCallback callback, object state) { return default(IAsyncResult); }
-        protected virtual void EndCancelTokenCore(IAsyncResult result) { }
+        internal virtual Task CancelTokenCoreInternalAsync(TimeSpan timeout, SecurityToken token)
+        {
+            CancelTokenCore(timeout, token);
+            return Task.CompletedTask;
+        }
+        #endregion // CancelToken
     }
 }

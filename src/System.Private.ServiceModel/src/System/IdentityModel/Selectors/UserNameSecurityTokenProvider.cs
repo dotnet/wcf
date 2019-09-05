@@ -28,7 +28,7 @@ namespace System.IdentityModel.Selectors
             return _userNameToken;
         }
 
-        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
         {
             return Task.FromResult((SecurityToken)_userNameToken);
         }

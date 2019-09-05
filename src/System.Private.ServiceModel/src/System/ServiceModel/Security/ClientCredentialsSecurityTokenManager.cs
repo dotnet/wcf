@@ -349,11 +349,10 @@ namespace System.ServiceModel
 
         internal Task<SecurityToken> GetTokenAsync(TimeSpan timeout, ChannelBinding channelbinding)
         {
-            return Task.FromResult((SecurityToken)new KerberosRequestorSecurityToken(_innerProvider.ServicePrincipalName,
-                _innerProvider.TokenImpersonationLevel, _innerProvider.NetworkCredential,
-                SecurityUniqueId.Create().Value));
+            return Task.FromResult(GetTokenCore(timeout));
         }
-        protected override Task<SecurityToken> GetTokenCoreAsync(TimeSpan timeout)
+
+        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
         {
             return GetTokenAsync(timeout, null);
         }

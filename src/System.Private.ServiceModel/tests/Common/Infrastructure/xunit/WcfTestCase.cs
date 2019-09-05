@@ -52,7 +52,7 @@ namespace Infrastructure.Common
 
         public Dictionary<string, List<string>> Traits { get { return _testCase.Traits; } }
 
-        public string UniqueID { get { return _testCase.UniqueID; } }
+        public string UniqueID { get { return _testCase?.UniqueID; } }
 
         public Exception InitializationException { get { return null; } }
 
