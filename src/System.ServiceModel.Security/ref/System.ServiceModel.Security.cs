@@ -184,11 +184,11 @@ namespace System.ServiceModel.Security.Tokens
 }
 namespace System.IdentityModel.Policy
 {
-    public interface IAuthorizationPolicy {}
+    public partial interface IAuthorizationPolicy {}
 }
 namespace System.IdentityModel.Tokens
 {
-    public class GenericXmlSecurityToken : System.IdentityModel.Tokens.SecurityToken
+    public partial class GenericXmlSecurityToken : System.IdentityModel.Tokens.SecurityToken
     {
         public GenericXmlSecurityToken(System.Xml.XmlElement tokenXml, 
             System.IdentityModel.Tokens.SecurityToken proofToken, 
