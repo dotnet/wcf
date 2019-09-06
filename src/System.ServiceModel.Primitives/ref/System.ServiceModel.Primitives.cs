@@ -1438,7 +1438,7 @@ namespace System.ServiceModel.Channels
 }
 namespace System.ServiceModel.Description
 {
-    public partial class ClientCredentials : System.ServiceModel.Description.IEndpointBehavior
+    public partial class ClientCredentials : System.ServiceModel.Security.SecurityCredentialsManager, System.ServiceModel.Description.IEndpointBehavior
     {
         public ClientCredentials() { }
         protected ClientCredentials(System.ServiceModel.Description.ClientCredentials other) { }
@@ -1447,6 +1447,7 @@ namespace System.ServiceModel.Description
         public System.ServiceModel.Security.X509CertificateRecipientClientCredential ServiceCertificate { get { return default(System.ServiceModel.Security.X509CertificateRecipientClientCredential); } }
         public System.ServiceModel.Security.UserNamePasswordClientCredential UserName { get { return default(System.ServiceModel.Security.UserNamePasswordClientCredential); } }
         public System.ServiceModel.Security.WindowsClientCredential Windows { get { return default(System.ServiceModel.Security.WindowsClientCredential); } }
+        public override System.IdentityModel.Selectors.SecurityTokenManager CreateSecurityTokenManager() { return default(System.IdentityModel.Selectors.SecurityTokenManager); }
         public virtual void ApplyClientBehavior(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Dispatcher.ClientRuntime behavior) { }
         public System.ServiceModel.Description.ClientCredentials Clone() { return default(System.ServiceModel.Description.ClientCredentials); }
         protected virtual System.ServiceModel.Description.ClientCredentials CloneCore() { return default(System.ServiceModel.Description.ClientCredentials); }
@@ -1742,6 +1743,11 @@ namespace System.ServiceModel.Security
         public SecurityAccessDeniedException(string message) { }
         public SecurityAccessDeniedException(string message, System.Exception innerException) { }
         protected SecurityAccessDeniedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    public abstract partial class SecurityCredentialsManager
+    {
+        protected SecurityCredentialsManager() { }
+        public abstract System.IdentityModel.Selectors.SecurityTokenManager CreateSecurityTokenManager();
     }
     public partial class SecurityNegotiationException : System.ServiceModel.CommunicationException
     {
