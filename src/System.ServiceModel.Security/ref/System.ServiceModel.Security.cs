@@ -222,3 +222,33 @@ namespace System.ServiceModel.Security.Tokens
         public UserNameSecurityTokenParameters() { }
     }
 }
+namespace System.IdentityModel.Policy
+{
+    public partial interface IAuthorizationPolicy {}
+}
+namespace System.IdentityModel.Tokens
+{
+    public partial class GenericXmlSecurityToken : System.IdentityModel.Tokens.SecurityToken
+    {
+        public GenericXmlSecurityToken(System.Xml.XmlElement tokenXml, 
+            System.IdentityModel.Tokens.SecurityToken proofToken, 
+            DateTime effectiveTime, 
+            DateTime expirationTime, 
+            SecurityKeyIdentifierClause internalTokenReference, 
+            SecurityKeyIdentifierClause externalTokenReference, 
+            System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> authorizationPolicies) {}
+        public override string Id { get; }
+        public override DateTime ValidFrom { get; }
+        public override DateTime ValidTo { get; }
+        public override System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get; }
+        // public SecurityKeyIdentifierClause InternalTokenReference { get; }
+        // public SecurityKeyIdentifierClause ExternalTokenReference { get; }
+        // public XmlElement TokenXml { get; }
+        // public SecurityToken ProofToken { get; }
+        // public ReadOnlyCollection<IAuthorizationPolicy> AuthorizationPolicies { get; }
+        // public override string ToString() {}
+        // public override bool CanCreateKeyIdentifierClause<T>() {}
+        // public override T CreateKeyIdentifierClause<T>() {}
+        // public override bool MatchesKeyIdentifierClause(.SecurityKeyIdentifierClause keyIdentifierClause) {}
+    }
+}
