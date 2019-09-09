@@ -83,6 +83,12 @@ namespace System.ServiceModel.Channels
 }
 namespace System.ServiceModel.Security
 {
+    public enum SecurityKeyEntropyMode
+    {
+        ClientEntropy,
+        ServerEntropy,
+        CombinedEntropy
+    }
     public abstract partial class BasicSecurityProfileVersion
     {
         internal BasicSecurityProfileVersion() { }
