@@ -170,6 +170,7 @@ namespace System.ServiceModel.Security.Tokens
         public SecureConversationSecurityTokenParameters() { }
         public SecureConversationSecurityTokenParameters(System.ServiceModel.Channels.SecurityBindingElement bootstrapSecurityBindingElement) { }
         public System.ServiceModel.Channels.SecurityBindingElement BootstrapSecurityBindingElement { get { return default(System.ServiceModel.Channels.SecurityBindingElement); } set { } }
+        public bool RequireCancellation { get { return default(bool); } set {} }
     }
     public abstract partial class SecurityTokenParameters
     {
