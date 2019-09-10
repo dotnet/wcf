@@ -174,6 +174,7 @@ namespace System.ServiceModel.Security.Tokens
     public abstract partial class SecurityTokenParameters
     {
         internal SecurityTokenParameters() { }
+        public bool RequireDerivedKeys { get { return default(bool); } set { } }
         public System.ServiceModel.Security.Tokens.SecurityTokenParameters Clone() { return default(System.ServiceModel.Security.Tokens.SecurityTokenParameters); }
     }
     public abstract partial class ServiceModelSecurityTokenRequirement : System.IdentityModel.Selectors.SecurityTokenRequirement
