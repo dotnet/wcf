@@ -844,6 +844,8 @@ namespace System.ServiceModel.Channels
         public System.ServiceModel.Channels.CompressionFormat CompressionFormat { get { return default(System.ServiceModel.Channels.CompressionFormat); } set { } }
         [System.ComponentModel.DefaultValueAttribute(2048)]
         public int MaxSessionSize { get { return default(int); } set { } }
+        public int MaxReadPoolSize { get { return default(int); } set { } }
+        public int MaxWritePoolSize { get { return default(int); } set { } }
         public override System.ServiceModel.Channels.MessageVersion MessageVersion { get { return default(System.ServiceModel.Channels.MessageVersion); } set { } }
         public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default(System.Xml.XmlDictionaryReaderQuotas); } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
