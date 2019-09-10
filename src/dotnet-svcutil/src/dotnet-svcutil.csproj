@@ -1,0 +1,78 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <!-- disable .net core assembly info generation as we have custom versioning. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyCompany Condition="'$(AssemblyCompany)' == ''">$(AssemblyName)</AssemblyCompany>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dotnet-svcutil</ToolCommandName>
+    <PackageOutputPath>$(OutputPath)</PackageOutputPath>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
+  </ItemGroup>
+
+  <!-- BeforeGenerateVersionFile is defined in version.targets and cannot be overwritten here as it is imported later (.netcore projects only). -->
+  <Target Name="GetNuGetPackageVersion" BeforeTargets="BeforeGenerateVersionFile" Outputs="$(NuGetPackageVersion)">
+    <PropertyGroup>
+      <VersionPrerel Condition="'$(VersionPrerel)' != ''">$(VersionPrerel)-$(VersionBuild)-$(VersionRevision)</VersionPrerel>
+      <NuGetPackageVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionPrerel)</NuGetPackageVersion>
+      <!-- AssemblyInformationalVersionAttribute is used at runtime to find the NuGet package, it must be the as the pkg version. -->
+      <AssemblyInformationalVersion>$(NuGetPackageVersion)</AssemblyInformationalVersion>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Define BeforePack to be able to inject our targets earlier in the process, see .netcore NuGet.Build.Tasks.Pack.targets. -->
+  <PropertyGroup>
+    <BeforePack>GetNuspecParams</BeforePack>
+  </PropertyGroup>
+
+  <!-- GenerateNuspec target is defined in the .netcore NuGet.Build.Tasks.Pack.targets file and is a dependency of the Pack target. -->
+  <Target Name="GetNuspecParams" DependsOnTargets="GetNuGetPackageVersion">
+    <!-- Set these properties in a target as the version.targets is imported later in the msbuild script resolution. -->
+    <PropertyGroup Label="Pack task parameters">
+      <Authors>$(AssemblyCompany)</Authors>
+      <Copyright>$(AssemblyCopyright)</Copyright>
+      <Title>$(AssemblyDescription)</Title>
+      <PackageDescription>$(NuGetPackageDescription)</PackageDescription>
+      <PackageVersion>$(NuGetPackageVersion)</PackageVersion>
+      <PackageTags>netcore,svcutil,WSDL,metadata,WCF</PackageTags>
+      <PackageReleaseNotes>https://go.microsoft.com/fwlink/?linkid=874212</PackageReleaseNotes>
+      <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=874213</PackageProjectUrl>
+      <PackageIconUrl>https://go.microsoft.com/fwlink/?linkid=874328</PackageIconUrl>
+      <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874329</PackageLicenseUrl>
+      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+      <NoDefaultExcludes>true</NoDefaultExcludes>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Add the dotnet-svcutil-lib nupkg to our nuget package. This is needed for the bootstrapper to function. -->
+  <Target Name="AddSvcUtilLib" BeforeTargets="ResolveReferences" DependsOnTargets="GetNuGetPackageVersion">
+    <ItemGroup>
+      <None Include="$(OutputPath)..\dotnet-svcutil-lib.$(NuGetPackageVersion).nupkg" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
+        <BuildAction>None</BuildAction>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+
+      <!-- Our custom version numbers aren't adhered to when building inside VS. Instead we just include all matching nuget packages.
+           Since this is only used during development the extra size shouldn't be a problem. -->
+      <None Include="$(OutputPath)..\dotnet-svcutil-lib.*.nupkg" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
+        <BuildAction>None</BuildAction>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+  </Target>
+</Project>

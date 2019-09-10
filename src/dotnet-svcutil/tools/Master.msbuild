@@ -1,0 +1,77 @@
+<!--
+****************************************************************************************************
+master build project: Provides targets for fully building all projects.
+****************************************************************************************************
+-->
+
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'root.props'))\root.props" />-->
+  <!-- 
+    NOTE: passing properties to the MSBuild task is not a good idea because it overwrites global properties, 
+    if local properties need to be passed in use the AdditionProperties metadata item of the Projects group. 
+  -->
+
+  <PropertyGroup>
+    <BuildInParallel Condition="'$(BuildInParallel)' == ''">false</BuildInParallel>
+    <VersionTimeSeed Condition="'$(VersionTimeSeed)' == ''">$([System.DateTime]::Now)</VersionTimeSeed>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <BuildProject Include="$(RepositoryRoot)**\dotnet-svcutil-lib.csproj">
+      <AdditionalProperties>VersionTimeSeed=$(VersionTimeSeed)</AdditionalProperties>
+      <Targets>Pack</Targets>
+    </BuildProject>
+    <BuildProject Include="$(RepositoryRoot)**\dotnet-svcutil.csproj">
+      <AdditionalProperties>VersionTimeSeed=$(VersionTimeSeed)</AdditionalProperties>
+      <Targets>Pack</Targets>
+    </BuildProject>
+<!-- Commented out for now. Still need to add the tests.
+    <BuildProject Include="$(RepositoryRoot)**\VSTest\Source\dotnet-svcutil.test.csproj">
+      <AdditionalProperties>VersionTimeSeed=$(VersionTimeSeed)</AdditionalProperties>
+      <Targets>Build</Targets>
+    </BuildProject>
+    <BuildProject Include="$(RepositoryRoot)**\VSTest\TestServices\WcfForSvcUtil\WcfForSvcUtil.csproj">
+      <AdditionalProperties>VersionTimeSeed=$(VersionTimeSeed)</AdditionalProperties>
+      <Targets>Build</Targets>
+    </BuildProject>
+    <BuildProject Include="$(RepositoryRoot)**\VSTest\TestServices\WcfProjectNService\WcfProjectNService.csproj">
+      <AdditionalProperties>VersionTimeSeed=$(VersionTimeSeed)</AdditionalProperties>
+      <Targets>Build</Targets>
+    </BuildProject> 
+    <BuildProject Include="$(RepositoryRoot)**\Microsoft.Tools.ServiceModel.Svcutil.csproj">
+      <AdditionalProperties>VersionTimeSeed=$(VersionTimeSeed)</AdditionalProperties>
+    </BuildProject>
+-->
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <BuildProject>
+      <Targets>Build</Targets>
+    </BuildProject>
+  </ItemDefinitionGroup>
+
+  <!-- ********************* Composite targets ********************* -->
+
+  <Target Name="Build" DependsOnTargets="WriteVersionTimeSeed;BuildAssemblies" />
+  <Target Name="Clean" DependsOnTargets="CleanAssemblies" />
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+
+  <!-- ********************* Assembly building targets ********************* -->
+
+  <Target Name="BuildAssemblies">
+    <MSBuild Projects="@(BuildProject)" Targets="%(Targets)" BuildInParallel="$(BuildInParallel)" />
+  </Target>
+
+  <Target Name="CleanAssemblies">
+    <MSBuild Projects="@(BuildProject)" Targets="Clean" BuildInParallel="$(BuildInParallel)" />
+  </Target>
+   
+  <Target Name="WriteVersionTimeSeed">
+    <MakeDir Directories="$(OutputPath)" />
+    <WriteLinesToFile File="$(OutputPath)VersionTimeSeed.log" Lines="$(VersionTimeSeed)" />
+  </Target>
+
+  <Import Project="Common\Global.Post.targets"/>
+
+</Project>

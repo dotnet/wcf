@@ -1,0 +1,30 @@
+<!--
+****************************************************************************************************
+Project-specific settings.
+****************************************************************************************************
+-->
+
+<Project TreatAsLocalProperty="Platform" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <AssemblyProduct>Microsoft® WCF Technologies.</AssemblyProduct>
+    <NuGetPackageDescription>Generates web service reference code that can be invoked from your .NET Core projects.</NuGetPackageDescription>
+  </PropertyGroup>
+
+  <PropertyGroup Label="runtime projects">
+    <VersionMajor>2</VersionMajor>
+    <VersionMinor>0</VersionMinor>
+    <VersionPatch>2</VersionPatch>
+    <VersionPrerel>-preview</VersionPrerel>
+  </PropertyGroup>
+
+  <PropertyGroup Label="common">
+    <VersionStartYear>2017</VersionStartYear>
+    <VersionTimeSeed Condition="'$(BuildingInsideVisualStudio)' == 'true'">$([System.DateTime]::Today.AddMinutes(1430))</VersionTimeSeed>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ProgramFilesX86>$(ProgramFiles(x86))</ProgramFilesX86>
+    <ProgramFilesX86 Condition="'$(ProgramFilesX86)' == ''">$(ProgramFiles)</ProgramFilesX86>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ValueMustBeNonNegative" xml:space="preserve">
+    <value>The value of this argument must be non-negative.</value>
+  </data>
+  <data name="ValueMustBeInRange" xml:space="preserve">
+    <value>The value of this argument must fall within the range {0} to {1}.</value>
+  </data>
+  <data name="ValueMustBeGreaterThanZero" xml:space="preserve">
+    <value>The value of this argument must be greater than 0.</value>
+  </data>
+  <data name="LengthMustBeGreaterThanZero" xml:space="preserve">
+    <value>The length of this argument must be greater than 0.</value>
+  </data>
+  <data name="ArgumentCannotBeEmptyString" xml:space="preserve">
+    <value>The argument must be a non-empty string.</value>
+  </data>
+  <data name="RequiredAttributeMissing" xml:space="preserve">
+    <value>Attribute '{0}' is required on element '{1}'.</value>
+  </data>
+  <data name="SecurityTokenRequirementDoesNotContainProperty" xml:space="preserve">
+    <value>The token requirement does not contain a property '{0}'.</value>
+  </data>
+  <data name="SecurityTokenRequirementHasInvalidTypeForProperty" xml:space="preserve">
+    <value>The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</value>
+  </data>
+  <data name="UnableToResolveKeyReference" xml:space="preserve">
+    <value>The token resolver is unable to resolve the security key reference '{0}'.</value>
+  </data>
+  <data name="UnableToResolveTokenReference" xml:space="preserve">
+    <value>The token resolver is unable to resolve the token reference '{0}'.</value>
+  </data>
+  <data name="XmlBufferQuotaExceeded" xml:space="preserve">
+    <value>The size necessary to buffer the XML content exceeded the buffer quota.</value>
+  </data>
+  <data name="XmlLangAttributeMissing" xml:space="preserve">
+    <value>The required xml:lang attribute is missing.</value>
+  </data>
+  <data name="InvalidXmlQualifiedName" xml:space="preserve">
+    <value>An Xml qualified name was expected. '{0}' was found.</value>
+  </data>
+  <data name="UnboundPrefixInQName" xml:space="preserve">
+    <value>An unbound prefix is used in the '{0}' qualified name.</value>
+  </data>
+  <data name="ExpectedElementMissing" xml:space="preserve">
+    <value>The expected '{0}' element with the '{1}' namespace is missing.</value>
+  </data>
+  <data name="UnexpectedXmlChildNode" xml:space="preserve">
+    <value>XML child node {0} of type {1} is unexpected for element {2}.</value>
+  </data>
+  <data name="TokenCancellationNotSupported" xml:space="preserve">
+    <value>The token provider '{0}' does not support token cancellation.</value>
+  </data>
+  <data name="TokenRenewalNotSupported" xml:space="preserve">
+    <value>The token provider '{0}' does not support token renewal.</value>
+  </data>
+  <data name="TokenProviderUnableToGetToken" xml:space="preserve">
+    <value>The token provider '{0}' was unable to provide a security token.</value>
+  </data>
+  <data name="TokenProviderUnableToRenewToken" xml:space="preserve">
+    <value>The token provider '{0}' was unable to renew the security token.</value>
+  </data>
+  <data name="CannotValidateSecurityTokenType" xml:space="preserve">
+    <value>The security token authenticator '{0}' cannot validate a token of type '{1}'.</value>
+  </data>
+  <data name="UserNameCannotBeEmpty" xml:space="preserve">
+    <value>The username cannot be empty.</value>
+  </data>
+  <data name="LocalIdCannotBeEmpty" xml:space="preserve">
+    <value>The localId cannot be empty. Specify a valid 'localId'.</value>
+  </data>
+  <data name="ProvidedNetworkCredentialsForKerberosHasInvalidUserName" xml:space="preserve">
+    <value>The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</value>
+  </data>
+  <data name="ObjectIsReadOnly" xml:space="preserve">
+    <value>The object is read-only.</value>
+  </data>
+  <data name="UnsupportedKeyDerivationAlgorithm" xml:space="preserve">
+    <value>The '{0}' key derivation algorithm is not supported.</value>
+  </data>
+  <data name="KeyIdentifierCannotCreateKey" xml:space="preserve">
+    <value>This SecurityKeyIdentifier does not have any clause that can create a key.</value>
+  </data>
+  <data name="KeyIdentifierClauseDoesNotSupportKeyCreation" xml:space="preserve">
+    <value>This SecurityKeyIdentifierClause does not support key creation.</value>
+  </data>
+  <data name="TokenDoesNotSupportKeyIdentifierClauseCreation" xml:space="preserve">
+    <value>'{0}' does not support '{1}' creation.</value>
+  </data>
+  <data name="NoKeyIdentifierClauseFound" xml:space="preserve">
+    <value>No clause of type '{0}' was found in the SecurityKeyIdentifier.</value>
+  </data>
+  <data name="CannotFindCert" xml:space="preserve">
+    <value>Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</value>
+  </data>
+  <data name="FoundMultipleCerts" xml:space="preserve">
+    <value>Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</value>
+  </data>
+  <data name="InvalidAsyncResult" xml:space="preserve">
+    <value>Invalid AsyncResult.</value>
+  </data>
+  <data name="UnableToCreateTokenReference" xml:space="preserve">
+    <value>Unable to create a security token reference.</value>
+  </data>
+  <data name="BadEncryptionState" xml:space="preserve">
+    <value>The EncryptedData or EncryptedKey is in an invalid state for this operation.</value>
+  </data>
+  <data name="XmlBufferInInvalidState" xml:space="preserve">
+    <value>An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</value>
+  </data>
+  <data name="ReferenceListCannotBeEmpty" xml:space="preserve">
+    <value>The ReferenceList element must have at least one DataReference or KeyReference.</value>
+  </data>
+  <data name="InvalidDataReferenceInReferenceList" xml:space="preserve">
+    <value>The data reference '{0}' in encryption reference list is not valid.</value>
+  </data>
+  <data name="InvalidX509RawData" xml:space="preserve">
+    <value>Invalid binary representation of an X.509 certificate.</value>
+  </data>
+  <data name="CannotReadKeyIdentifierClause" xml:space="preserve">
+    <value>Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</value>
+  </data>
+  <data name="StandardsManagerCannotWriteObject" xml:space="preserve">
+    <value>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</value>
+  </data>
+  <data name="UnknownEncodingInKeyIdentifier" xml:space="preserve">
+    <value>Unrecognized encoding while reading key identifier.</value>
+  </data>
+  <data name="MultipleSamlAuthorityBindingsInReference" xml:space="preserve">
+    <value>The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</value>
+  </data>
+  <data name="MultipleKeyIdentifiersInReference" xml:space="preserve">
+    <value>The SecurityTokenReference contains multiple KeyIdentifier elements.</value>
+  </data>
+  <data name="DidNotFindKeyIdentifierInReference" xml:space="preserve">
+    <value>The SecurityTokenReference does not contain a KeyIdentifier. </value>
+  </data>
+  <data name="BufferQuotaExceededReadingBase64" xml:space="preserve">
+    <value>Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</value>
+  </data>
+  <data name="CannotReadToken" xml:space="preserve">
+    <value>Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</value>
+  </data>
+  <data name="ErrorDeserializingKeyIdentifierClause" xml:space="preserve">
+    <value>There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</value>
+  </data>
+  <data name="ErrorSerializingKeyIdentifier" xml:space="preserve">
+    <value>There was an error serializing the security key identifier. Please see the inner exception for more details.</value>
+  </data>
+  <data name="ErrorSerializingKeyIdentifierClause" xml:space="preserve">
+    <value>There was an error serializing the security key identifier clause. Please see the inner exception for more details.</value>
+  </data>
+  <data name="NoKeyInfoClausesToWrite" xml:space="preserve">
+    <value>The SecurityKeyIdentifier has no key identifier clauses to write.</value>
+  </data>
+  <data name="XDCannotFindValueInDictionaryString" xml:space="preserve">
+    <value>The '{0}' value is not found in the dictionary string.</value>
+  </data>
+  <data name="X509ChainBuildFail" xml:space="preserve">
+    <value>The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</value>
+  </data>
+  <data name="ImpersonationLevelNotSupported" xml:space="preserve">
+    <value>The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</value>
+  </data>
+  <data name="SamlSerializerRequiresExternalSerializers" xml:space="preserve">
+    <value>The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</value>
+  </data>
+  <data name="SamlSerializerUnableToWriteSecurityKeyIdentifier" xml:space="preserve">
+    <value>The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</value>
+  </data>
+  <data name="SamlSerializerUnableToReadSecurityKeyIdentifier" xml:space="preserve">
+    <value>The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</value>
+  </data>
+  <data name="SamlAssertionMissingSigningCredentials" xml:space="preserve">
+    <value>SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</value>
+  </data>
+  <data name="SamlTokenMissingSignature" xml:space="preserve">
+    <value>The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</value>
+  </data>
+  <data name="SamlSigningTokenNotFound" xml:space="preserve">
+    <value>The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</value>
+  </data>
+  <data name="SAMLAssertionIDIsInvalid" xml:space="preserve">
+    <value>The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</value>
+  </data>
+  <data name="SAMLAssertionIdRequired" xml:space="preserve">
+    <value>The 'assertionId' for a SamlAssertion can not be null or empty.</value>
+  </data>
+  <data name="SAMLAssertionMissingMajorVersionAttributeOnRead" xml:space="preserve">
+    <value>The MajorVersion for the SamAssertion being read is missing or is of length 0.</value>
+  </data>
+  <data name="SAMLAssertionMissingMinorVersionAttributeOnRead" xml:space="preserve">
+    <value>TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</value>
+  </data>
+  <data name="SAMLAssertionIssuerRequired" xml:space="preserve">
+    <value>The 'Issuer' specified for a SamlAssertion cannot be null or empty.</value>
+  </data>
+  <data name="SAMLAssertionMissingIssuerAttributeOnRead" xml:space="preserve">
+    <value>The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</value>
+  </data>
+  <data name="SAMLAssertionRequireOneStatement" xml:space="preserve">
+    <value>A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</value>
+  </data>
+  <data name="SAMLAssertionRequireOneStatementOnRead" xml:space="preserve">
+    <value>The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</value>
+  </data>
+  <data name="SAMLElementNotRecognized" xml:space="preserve">
+    <value>The {0} element is not supported.</value>
+  </data>
+  <data name="SAMLEntityCannotBeNullOrEmpty" xml:space="preserve">
+    <value>The SamlAssertion entity {0} cannot be null or empty.</value>
+  </data>
+  <data name="SAMLTokenNotSerialized" xml:space="preserve">
+    <value>The SamlAssertion could not be serialized to XML. Please see inner exception for details.</value>
+  </data>
+  <data name="SAMLTokenVersionNotSupported" xml:space="preserve">
+    <value>The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</value>
+  </data>
+  <data name="SAMLSignatureAlreadyRead" xml:space="preserve">
+    <value>The signature is already read in the SamlAssertion.</value>
+  </data>
+  <data name="SAMLUnableToLoadUnknownElement" xml:space="preserve">
+    <value>The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</value>
+  </data>
+  <data name="SAMLUnableToResolveSignatureKey" xml:space="preserve">
+    <value>Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</value>
+  </data>
+  <data name="SAMLUnableToLoadAssertion" xml:space="preserve">
+    <value>The &lt;saml:assertion&gt; element failed to load.</value>
+  </data>
+  <data name="SAMLUnableToLoadCondtion" xml:space="preserve">
+    <value>The &lt;saml:conditions&gt; element failed to load.</value>
+  </data>
+  <data name="SAMLUnableToLoadCondtions" xml:space="preserve">
+    <value>The &lt;saml:conditions&gt; element failed to load. </value>
+  </data>
+  <data name="SAMLUnableToLoadAdvice" xml:space="preserve">
+    <value>Failed to load the &lt;saml:advice&gt; element.</value>
+  </data>
+  <data name="SAMLUnableToLoadStatement" xml:space="preserve">
+    <value>Failed to load a SamlStatement.</value>
+  </data>
+  <data name="SymmetricKeyLengthTooShort" xml:space="preserve">
+    <value>The length of the symmetric key specified is too short ({0} bytes).</value>
+  </data>
+  <data name="ID0023" xml:space="preserve">
+    <value>ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</value>
+  </data>
+  <data name="ID4140" xml:space="preserve">
+    <value>ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</value> 
+  </data>
+  <data name="KeyLengthMustBeMultipleOfEight" xml:space="preserve">
+    <value>Key length '{0}' is not a multiple of 8 for symmetric keys.</value>
+  </data>
+</root>

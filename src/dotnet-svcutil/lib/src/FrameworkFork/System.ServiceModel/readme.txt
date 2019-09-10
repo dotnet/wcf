@@ -1,0 +1,1 @@
+Open source location: https://github.com/dotnet/wcf/tree/release/1.0.0/src

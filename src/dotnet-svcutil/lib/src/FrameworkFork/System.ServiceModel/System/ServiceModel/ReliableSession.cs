@@ -1,0 +1,49 @@
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+namespace System.ServiceModel
+{
+    using System.ServiceModel.Channels;
+
+    // The only purpose in life for these classes is so that, on standard bindings, you can say
+    //     binding.ReliableSession.Ordered
+    //     binding.ReliableSession.InactivityTimeout
+    //     binding.ReliableSession.Enabled
+    // where these properties are "bucketized" all under .ReliableSession, which makes them easier to 
+    // discover/Intellisense
+    public class ReliableSession
+    {
+        ReliableSessionBindingElement _element;
+
+        public ReliableSession()
+        {
+            _element = new ReliableSessionBindingElement();
+        }
+
+        public ReliableSession(ReliableSessionBindingElement reliableSessionBindingElement)
+        {
+            if (reliableSessionBindingElement == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reliableSessionBindingElement");
+            _element = reliableSessionBindingElement;
+        }
+    }
+
+    public class OptionalReliableSession : ReliableSession
+    {
+        public OptionalReliableSession() : base() { }
+
+        public OptionalReliableSession(ReliableSessionBindingElement reliableSessionBindingElement) : base(reliableSessionBindingElement) { }
+
+        // We don't include DefaultValue here because this defaults to false, so omitting it would make the XAML somewhat misleading
+        public bool Enabled
+        {
+            get;
+            set;
+        }
+
+        internal void CopySettings(OptionalReliableSession copyFrom)
+        {
+            Enabled = copyFrom.Enabled;
+        }
+    }
+}

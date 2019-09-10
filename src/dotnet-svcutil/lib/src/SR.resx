@@ -1,0 +1,610 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LogoFormat" xml:space="preserve">
+    <value>Microsoft (R) WCF Service Model Proxy Generation Tool for .Net Core platform
+[{0}, Version {1}]
+{2}
+</value>
+  </data>
+  <data name="HelpUsage1" xml:space="preserve">
+    <value>USE:</value>
+  </data>
+  <data name="HelpUsage2" xml:space="preserve">
+    <value> - Generate web service proxy code from running services or static metadata documents. </value>
+  </data>
+  <data name="HelpExamples" xml:space="preserve">
+    <value>-= EXAMPLES =-</value>
+  </data>
+  <data name="HelpExamples2" xml:space="preserve">
+    <value>dotnet-svcutil http://example.com/service.svc?wsdl</value>
+  </data>
+  <data name="HelpExamples3" xml:space="preserve">
+    <value>- Generate client code from a running service or online metadata documents.</value>
+  </data>
+  <data name="HelpExamples6" xml:space="preserve">
+    <value>dotnet-svcutil *.wsdl *.xsd --language:C#</value>
+  </data>
+  <data name="HelpExamples7" xml:space="preserve">
+    <value>- Generate client code in Visual Basic from local metadata documents.</value>
+  </data>
+  <data name="HelpExamples8" xml:space="preserve">
+    <value>dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</value>
+  </data>
+  <data name="HelpExamples9" xml:space="preserve">
+    <value>- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</value>
+  </data>
+  <data name="HelpCommonOptionsCategory" xml:space="preserve">
+    <value>-= COMMON OPTIONS =-</value>
+  </data>
+  <data name="HelpUsageCategory" xml:space="preserve">
+    <value>-= USAGE =-</value>
+  </data>
+  <data name="HelpCodeGenerationSyntaxInput1" xml:space="preserve">
+    <value>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</value>
+  </data>
+  <data name="HelpCodeGenerationSyntaxInput2" xml:space="preserve">
+    <value>The URL to a service endpoint that provides metadata or to a metadata document hosted online.</value>
+  </data>
+  <data name="HelpCodeGenerationSyntaxInput3" xml:space="preserve">
+    <value>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</value>
+  </data>
+  <data name="HelpOptions" xml:space="preserve">
+    <value>Options:</value>
+  </data>
+  <data name="HelpInputUrl" xml:space="preserve">
+    <value>&lt;url&gt;</value>
+  </data>
+  <data name="HelpInputEpr" xml:space="preserve">
+    <value>&lt;epr&gt;</value>
+  </data>
+  <data name="HelpInputMetadataDocumentPath" xml:space="preserve">
+    <value>&lt;metadata document path&gt;</value>
+  </data>
+  <data name="ParametersOut" xml:space="preserve">
+    <value>&lt;file&gt;</value>
+  </data>
+  <data name="ParametersNamespace" xml:space="preserve">
+    <value>&lt;string,string&gt;</value>
+  </data>
+  <data name="ParametersDirectory" xml:space="preserve">
+    <value>&lt;directory&gt;</value>
+  </data>
+  <data name="ParametersLanguage" xml:space="preserve">
+    <value>&lt;language&gt;</value>
+  </data>
+  <data name="ParametersReference" xml:space="preserve">
+    <value>&lt;package&gt;</value>
+  </data>
+  <data name="ParametersExcludeType" xml:space="preserve">
+    <value>&lt;type&gt;</value>
+  </data>
+  <data name="ParametersCollectionType" xml:space="preserve">
+    <value>&lt;type&gt;</value>
+  </data>
+  <data name="HelpNologoFormat" xml:space="preserve">
+    <value>Suppress the copyright and banner message. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpVerbosityFormat" xml:space="preserve">
+    <value>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</value>
+  </data>
+  <data name="HelpDirectoryFormat" xml:space="preserve">
+    <value>Directory to create files in (default: current directory) (Short Form: -{0})</value>
+  </data>
+  <data name="HelpOutFormat" xml:space="preserve">
+    <value>The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpInternalFormat" xml:space="preserve">
+    <value>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpReferenceCodeGenerationFormat" xml:space="preserve">
+    <value>Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpNostdlibFormat" xml:space="preserve">
+    <value>Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpNoTypeReuseFormat" xml:space="preserve">
+    <value>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpExcludeTypeCodeGenerationFormat" xml:space="preserve">
+    <value>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpCollectionTypeFormat" xml:space="preserve">
+    <value>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpAutoSerializerFormat" xml:space="preserve">
+    <value>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpXmlSerializer" xml:space="preserve">
+    <value>Generate data types that use the XmlSerializer for serialization and deserialization</value>
+  </data>
+  <data name="HelpDataContractSerializer" xml:space="preserve">
+    <value>Generate data types that use the Data Contract Serializer for serialization and deserialization</value>
+  </data>
+  <data name="HelpMessageContractFormat" xml:space="preserve">
+    <value>Generate Message Contract types. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpEnableDataBindingFormat" xml:space="preserve">
+    <value>Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpLanguageFormat" xml:space="preserve">
+    <value>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpNamespaceFormat" xml:space="preserve">
+    <value>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpHelpFormat" xml:space="preserve">
+    <value>Display command syntax and options for the tool. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpWrappedFormat" xml:space="preserve">
+    <value>Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</value>
+  </data>
+  <data name="HelpSyncFormat" xml:space="preserve">
+    <value>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</value>
+  </data>
+  <data name="MoreHelpFormat" xml:space="preserve">
+    <value>If you would like more help, type "dotnet-svcutil -{0}"</value>
+  </data>
+  <data name="ErrorPrefix" xml:space="preserve">
+    <value>Error:</value>
+  </data>
+  <data name="WarningPrefix" xml:space="preserve">
+    <value>Warning:</value>
+  </data>
+  <data name="ErrUnknownSwitchFormat" xml:space="preserve">
+    <value>Unrecognized option '{0}' specified.</value>
+  </data>
+  <data name="ErrArgumentWithoutValue" xml:space="preserve">
+    <value>The --{0} option requires a value to be passed, but none was found.</value>
+  </data>
+  <data name="ErrSingleUseSwitchFormat" xml:space="preserve">
+    <value>The --{0} option cannot be specified multiple times.</value>
+  </data>
+  <data name="ErrUnexpectedError" xml:space="preserve">
+    <value>An error occurred in the tool.</value>
+  </data>
+  <data name="ErrCouldNotCreateCodeProviderFormat" xml:space="preserve">
+    <value>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</value>
+  </data>
+  <data name="ErrNotLanguageOrCodeDomTypeFormat" xml:space="preserve">
+    <value>The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</value>
+  </data>
+  <data name="ErrNotCodeDomTypeFormat" xml:space="preserve">
+    <value>The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</value>
+  </data>
+  <data name="ErrCouldNotCreateInstanceFormat" xml:space="preserve">
+    <value>Cannot create instance of the type '{0}' passed to the --{1} option.</value>
+  </data>
+  <data name="ErrDuplicateReferenceValuesFormat" xml:space="preserve">
+    <value>The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</value>
+  </data>
+  <data name="ErrDuplicateValuePassedToTypeArgFormat" xml:space="preserve">
+    <value>The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</value>
+  </data>
+  <data name="ErrCannotDisambiguateSpecifiedTypesFormat" xml:space="preserve">
+    <value>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</value>
+  </data>
+  <data name="ErrCannotLoadSpecifiedTypeFormat" xml:space="preserve">
+    <value>No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</value>
+  </data>
+  <data name="ErrCouldNotLoadTypesFromAssemblyAtFormat" xml:space="preserve">
+    <value>Cannot load any types in assembly '{0}'.</value>
+  </data>
+  <data name="WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat" xml:space="preserve">
+    <value>Cannot load some types in assembly '{0}', types will not be available to the tool.</value>
+  </data>
+  <data name="ErrNoValidInputSpecified" xml:space="preserve">
+    <value>No valid input specified. Specify either a service url or a wsdl file.</value>
+  </data>
+  <data name="ErrInputSchemaParseErrorFormat" xml:space="preserve">
+    <value>XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</value>
+  </data>
+  <data name="ErrInputWsdlParseErrorFormat" xml:space="preserve">
+    <value>WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</value>
+  </data>
+  <data name="ErrInputPolicyParseErrorFormat" xml:space="preserve">
+    <value>WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</value>
+  </data>
+  <data name="ErrInputEPRFileParseErrorFormat" xml:space="preserve">
+    <value>Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</value>
+  </data>
+  <data name="WrnWSMExFailedFormat" xml:space="preserve">
+    <value>WS-Metadata Exchange Error
+    URI: {0}</value>
+  </data>
+  <data name="ErrUnableToRetrieveMetadataFromUriFormat" xml:space="preserve">
+    <value>Cannot obtain Metadata from {0} 
+
+{1}</value>
+  </data>
+  <data name="EnableMetadataHelpMessage" xml:space="preserve">
+    <value>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</value>
+  </data>
+  <data name="ErrUnableToImportMetadata" xml:space="preserve">
+    <value>A critical error occurred while attempting to import metadata.</value>
+  </data>
+  <data name="ErrUnableToLoadInputs" xml:space="preserve">
+    <value>There was an error reading the loaded metadata.</value>
+  </data>
+  <data name="ErrUnableToLoadExtensionsFormat" xml:space="preserve">
+    <value>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</value>
+  </data>
+  <data name="ErrUnableToLoadMetadataDocumentFormat" xml:space="preserve">
+    <value>There was an error reading the metadata from one of the loaded documents.
+Document Identifier: '{0}'.</value>
+  </data>
+  <data name="ErrCodegenError" xml:space="preserve">
+    <value>There was an error trying to generate code in the specified language.
+This could be because the language does not support all the code elements being generated. Consider using another language.</value>
+  </data>
+  <data name="ErrUnableToUniquifyFilenameFormat" xml:space="preserve">
+    <value>Cannot create output filename. Too many files are being created with the prefix '{0}'.</value>
+  </data>
+  <data name="ErrPathTooLongDirOnlyFormat" xml:space="preserve">
+    <value>The resultant path '{0}' is too long. Review the --{1} option value.</value>
+  </data>
+  <data name="ErrPathTooLongFormat" xml:space="preserve">
+    <value>The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</value>
+  </data>
+  <data name="ErrCannotCreateDirectoryFormat" xml:space="preserve">
+    <value>Cannot create directory: '{0}'.</value>
+  </data>
+  <data name="ErrCannotCreateFileFormat" xml:space="preserve">
+    <value>Cannot create output file: '{0}'.</value>
+  </data>
+  <data name="ErrCannotWriteFile" xml:space="preserve">
+    <value>Cannot write to output file.</value>
+  </data>
+  <data name="RetreivingMetadataMsgFormat" xml:space="preserve">
+    <value>Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</value>
+  </data>
+  <data name="GeneratingFiles" xml:space="preserve">
+    <value>Generating files...</value>
+  </data>
+  <data name="NoCodeWasGenerated" xml:space="preserve">
+    <value>No code was generated.
+If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</value>
+  </data>
+  <data name="RequestReplyCallbackContractNotSupported" xml:space="preserve">
+    <value>Request/Reply callback contracts are not supported for .Net Core apps.</value>
+  </data>
+  <data name="ClientCredentialsComment" xml:space="preserve">
+    <value>The client credentials</value>
+  </data>
+  <data name="ConfigureEndpointCommentSummary" xml:space="preserve">
+    <value>Implement this partial method to configure the service endpoint.</value>
+  </data>
+  <data name="ErrBindingElementNotSupportedFormat" xml:space="preserve">
+    <value>Binding element of type '{0}' is not supported.</value>
+  </data>
+  <data name="ErrBindingTypeNotSupportedFormat" xml:space="preserve">
+    <value>Binding type '{0}' is not supported.</value>
+  </data>
+  <data name="ErrEncodingNotSupportedFormat" xml:space="preserve">
+    <value>Encoding '{0}' is not supported.</value>
+  </data>
+  <data name="ErrIncompatibleContractSoapEncodingFormat" xml:space="preserve">
+    <value>The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</value>
+  </data>
+  <data name="ErrMessageVersionNotSupportedFormat" xml:space="preserve">
+    <value>MessageVersion '{0}' is not supported.</value>
+  </data>
+  <data name="ErrNoCompatibleEndpoints" xml:space="preserve">
+    <value>No endpoints compatible with .Net Core apps were found.</value>
+  </data>
+  <data name="ServiceEndpointComment" xml:space="preserve">
+    <value>The endpoint to configure</value>
+  </data>
+  <data name="WrnIncompatibleEndpointFormat" xml:space="preserve">
+    <value>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</value>
+  </data>
+  <data name="CodeExpressionCouldNotFindEndpoint" xml:space="preserve">
+    <value>Could not find endpoint with name '{0}'.</value>
+    <comment>This is not a formatting string (no trailing Format).</comment>
+  </data>
+  <data name="WrnExtraParamsOnInputFileParamIgnoredFormat" xml:space="preserve">
+    <value>An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</value>
+  </data>
+  <data name="Microsoft_Copyright_CommandLine_Logo" xml:space="preserve">
+    <value>Copyright (c) Microsoft Corporation.  All rights reserved.</value>
+  </data>
+  <data name="NotClientBaseType" xml:space="preserve">
+    <value>Type does not inherit from ClientBase&lt;T&gt;</value>
+  </data>
+  <data name="BindingBinaryMessageEncodingVersionNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported binary message encoding version: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingClientCertRequirementNotSupported" xml:space="preserve">
+    <value>Client certificate security requirement is not supported.</value>
+  </data>
+  <data name="BindingElementTypeNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported binding element type: '{0}'.</value>
+  </data>
+  <data name="BindingMessageEncodingElementNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</value>
+  </data>
+  <data name="BindingMessageEncodingNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported message encoding value: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingReliableSessionNotSupported" xml:space="preserve">
+    <value>Reliable session is not supported.</value>
+  </data>
+  <data name="BindingTextMessageEncodingVersionNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</value>
+  </data>
+  <data name="BindingTransactionFlowNotSupported" xml:space="preserve">
+    <value>Transaction flow is not supported.</value>
+  </data>
+  <data name="BindingTransportMessageSecurityVersionNotSupportedFormat" xml:space="preserve">
+    <value>Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</value>
+  </data>
+  <data name="BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat" xml:space="preserve">
+    <value>Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityElementTypeNotSupportedFormat" xml:space="preserve">
+    <value>Transport security element type not supported: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityHeaderLayoutValueNotSupportedFormat" xml:space="preserve">
+    <value>Transport security header layout value is not supported: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityMustIncludeTimestamp" xml:space="preserve">
+    <value>Transport security must include timestamp.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted" xml:space="preserve">
+    <value>Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenParamsRequiringDerivedKeysNotSupported" xml:space="preserve">
+    <value>Security token parameters requiring derived keys is not supported.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenEndorsingParamsTypeFormat" xml:space="preserve">
+    <value>Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat" xml:space="preserve">
+    <value>Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat" xml:space="preserve">
+    <value>Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenParamsTypeNotSupportedFormat" xml:space="preserve">
+    <value>Security token parameters type is not supported: '{0}'. It must be '{1}'.</value>
+  </data>
+  <data name="BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported" xml:space="preserve">
+    <value>Transport security token with signed or signed and endorsing paramaters is not supported.</value>
+  </data>
+  <data name="BindingTransportTypeNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</value>
+  </data>
+  <data name="BindingTypeNotSupportedFormat" xml:space="preserve">
+    <value>Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</value>
+  </data>
+  <data name="ErrUnableToLoadReferenceFormat" xml:space="preserve">
+    <value>Reference cannot be loaded: '{0}', {1}</value>
+  </data>
+  <data name="BindingTransportDetectReplaysNotSupported" xml:space="preserve">
+    <value>Transport Security with DetectReplays enabled is not supported.</value>
+  </data>
+  <data name="HelpTargetFrameworkFormat" xml:space="preserve">
+    <value>The target framework used for building reference projects. (Short Form: -{0}).</value>
+  </data>
+  <data name="ReadingMetadataMessageFormat" xml:space="preserve">
+    <value>Attempting to load metadata from '{0}'.</value>
+  </data>
+  <data name="UsernamePrompt" xml:space="preserve">
+    <value>Enter username (ESC to cancel):</value>
+  </data>
+  <data name="PasswordPrompt" xml:space="preserve">
+    <value>Enter password (ESC to cancel):</value>
+  </data>
+  <data name="WrnUserBasicCredentialsInClearText" xml:space="preserve">
+    <value>The server needs to authenticate your request.
+Your credentials will be sent to the server in clear text.</value>
+  </data>
+  <data name="EnterYesOrNoMessage" xml:space="preserve">
+    <value>Invalid answer.  Please enter 'yes' or 'no':</value>
+  </data>
+  <data name="EnterOrEscapeMessage" xml:space="preserve">
+    <value>Press the ENTER to accept or ESC to cancel:</value>
+  </data>
+  <data name="ErrServerCertFailedValidationFormat" xml:space="preserve">
+    <value>There were errors when validating the server certificate: {0}
+{1}</value>
+  </data>
+  <data name="CertificateIndexPrompt" xml:space="preserve">
+    <value>Please enter the index of the certificate to use or ESC to cancel:</value>
+  </data>
+  <data name="CertificateSelectionMessageFormat" xml:space="preserve">
+    <value>The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</value>
+  </data>
+  <data name="ParametersVerbosity" xml:space="preserve">
+    <value>&lt;verbosity level&gt;</value>
+  </data>
+  <data name="ParametersTargetFramework" xml:space="preserve">
+    <value>&lt;framework&gt;</value>
+  </data>
+  <data name="ErrMoreThanOneProjectFoundFormat" xml:space="preserve">
+    <value>The directory '{0}' contains more than one project file.</value>
+  </data>
+  <data name="WrnUnexpectedArgumentFormat" xml:space="preserve">
+    <value>The specified --{0} option is not expected in the current operational context of the tool!</value>
+  </data>
+  <data name="WsdlOrSchemaFilesMsg" xml:space="preserve">
+    <value>WSDL files</value>
+  </data>
+  <data name="WrnCouldNotGenerateContractOperationsFormat" xml:space="preserve">
+    <value>Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</value>
+  </data>
+  <data name="TelemetryEnabled" xml:space="preserve">
+    <value>This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
+</value>
+  </data>
+  <data name="WrnSpecifiedFilePathNotUndeProjectDirFormat" xml:space="preserve">
+    <value>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</value>
+  </data>
+  <data name="ErrInvalidPathFormat" xml:space="preserve">
+    <value>Invalid path '{0}'. Check the --{1} option value.</value>
+  </data>
+  <data name="ErrMoreThanOneUpdateParamsFilesFoundFormat" xml:space="preserve">
+    <value>More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</value>
+  </data>
+  <data name="ErrNoUpdateParamsFileFoundFormat" xml:space="preserve">
+    <value>The project '{0}' does not have a web service reference that can be updated.</value>
+  </data>
+  <data name="ErrServiceReferenceNotFoundUnderProjectFormat" xml:space="preserve">
+    <value>The specified web service reference '{0}' was not found under the project '{1}'.</value>
+  </data>
+  <data name="ErrProjectToUpdateNotFoundFormat" xml:space="preserve">
+    <value>The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</value>
+  </data>
+  <data name="ErrInvalidOperationNoProjectFileFoundUnderFolderFormat" xml:space="preserve">
+    <value>The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</value>
+  </data>
+  <data name="UseProjectFileOptionOnMultipleFilesMsgFormat" xml:space="preserve">
+    <value>Please use the --{0} option to specify the project to use, possible values: {1}.</value>
+  </data>
+  <data name="ErrOutputFileNotUnderOutputDirFormat" xml:space="preserve">
+    <value>The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</value>
+  </data>
+  <data name="ErrOutputFileAlreadyExistsFormat" xml:space="preserve">
+    <value>The source file '{0}' resolved from the value specified with the option --{1} already exists!</value>
+  </data>
+  <data name="WrnUnexpectedInputsFormat" xml:space="preserve">
+    <value>The specified input(s) {0} are not expected in the current operational context of the tool!</value>
+  </data>
+  <data name="ErrInvalidNamespaceFormat" xml:space="preserve">
+    <value>The specified namespace mappings {0} contain invalid identifiers.</value>
+  </data>
+  <data name="HelpUpdateWebServiceReferenceFormat" xml:space="preserve">
+    <value>Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</value>
+  </data>
+  <data name="ParametersWebServiceReferenceName" xml:space="preserve">
+    <value>&lt;web service reference&gt;</value>
+  </data>
+  <data name="ParametersRuntimeIdentifier" xml:space="preserve">
+    <value>&lt;runtime identifier&gt;</value>
+  </data>
+  <data name="HelpProjectFileFormat" xml:space="preserve">
+    <value>The project file to add the client to (if any). (Short Form: -{0}).</value>
+  </data>
+  <data name="HelpRuntimeIdentifierFormat" xml:space="preserve">
+    <value>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</value>
+  </data>
+  <data name="ParametersProjectFile" xml:space="preserve">
+    <value>&lt;project file&gt;</value>
+  </data>
+</root>

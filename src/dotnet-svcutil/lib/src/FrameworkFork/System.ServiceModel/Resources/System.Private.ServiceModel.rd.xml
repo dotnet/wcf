@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Library Name="*System.Private.ServiceModel*">
+    <!-- WCF needs to instantiate TaskCompletionSource{T} for all service contract operations that return Task{T} -->
+    <Type Name="System.Threading.Tasks.Task{TResult}" Dynamic="Public">
+      <ImpliesType Name="System.Threading.Tasks.TaskCompletionSource{TResult}" Dynamic="Required Public"/>
+    </Type>
+
+    <!-- WCF needs these to be reflectable to instantate Attribute from CustomAttributeData -->
+    <Type Name="System.Runtime.Serialization.DataContractAttribute" Dynamic="Required All" />
+    <Type Name="System.Runtime.Serialization.DataMemberAttribute" Dynamic="Required All" />
+    
+    <Assembly Name="System.Private.ServiceModel">
+      <Namespace Name="System.ServiceModel">
+        <Type Name="BasicHttpBinding" Dynamic="Required All" />
+        <!-- WCF attributes must be reflectable to instantiate Attribute from CustomAttributeData -->
+        <Type Name="FaultContractAttribute" Dynamic="Required All" >
+          <Method Name=".ctor">
+            <TypeParameter Name="detailType" DataContractSerializer="Public" DataContractJsonSerializer="Public" />
+          </Method>
+        </Type>
+         <!-- Objects passed to the InstanceContext ctor require reflection for duplex contracts -->
+        <Type Name="InstanceContext" Dynamic="Required All" >  
+          <Method Name=".ctor">  
+            <Parameter Name="implementation" Dynamic="Required All" />  
+          </Method>  
+        </Type>  
+        <Type Name="MessageBodyMemberAttribute" Dynamic="Required All" />
+        <Type Name="MessageContractMemberAttribute" Dynamic="Required All" />
+        <Type Name="MessageParameterAttribute" Dynamic="Required All" />
+        <Type Name="OperationContractAttribute" Dynamic="Required All" />
+        <Type Name="MessageContractAttribute" Dynamic="Required All" >
+          <AttributeImplies Dynamic="Required All" />
+        </Type>
+        <!-- ServiceContractAttribute on a type makes it available for Reflection -->
+        <Type Name="ServiceContractAttribute" Dynamic="Required All" >
+          <AttributeImplies Dynamic="Required All" />
+          <!-- Type in CallbackContract named property requires reflection -->
+          <Method Name=".ctor">
+             <TypeParameter Name="CallbackContract" Dynamic="Required All" />
+          </Method>
+        </Type>
+        <!-- ExceptionDetail requires serialization for FaultException -->
+        <Type Name="ExceptionDetail" Dynamic="Required All" DataContractJsonSerializer="Public" DataContractSerializer="Public" />
+        <!-- Allowing Reflection on FaultException{Object} permits type instantiation of FaultException{TDetail} -->
+        <Type Name="FaultException{System.Object}" Dynamic="Required All" />
+      </Namespace>
+      <Namespace Name="System.ServiceModel.Channels">
+        <Type Name="Binding" Dynamic="Required All" >
+            <Subtypes Browse="All" />
+        </Type>
+        <Type Name="CustomBinding" Dynamic="Required All" />
+        <Type Name="IRequestChannel" Dynamic="Required All" />
+      </Namespace>
+    </Assembly>
+  </Library>
+</Directives>

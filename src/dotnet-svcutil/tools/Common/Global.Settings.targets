@@ -1,0 +1,92 @@
+﻿<!--
+****************************************************************************************************
+Generic build extensions settings file.
+****************************************************************************************************
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  READ BEFORE CHANGING THIS FILE: 
+  - This file is a generic build library file and changes to it should be avoided to permit future upgrades.
+  - This file should be imported by every project at the very top of the project file.
+  - For project-specific settings use the $(CustomBeforeProjectTargets) which will be imported below (if available).
+  - The CustomBeforeProjectTargets property can be defined externally by means of an environment variable or as an msbuild input property (from the build.cmd file).
+  -->
+
+  <!-- Enlistment paths -->
+
+  <PropertyGroup Label="Project properties">
+    <RepositoryRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'root.props'))\</RepositoryRoot>
+    <EnlistmentRoot>$(RepositoryRoot)</EnlistmentRoot>
+    <BinPath>$(RepositoryRoot)bin\</BinPath>
+    <ObjPath>$(RepositoryRoot)obj\</ObjPath>
+    <BuildTargetsPath>$(MSBuildThisFileDirectory)</BuildTargetsPath>
+    <BuildToolsPath Condition="'$(BuildToolsPath)' == ''">$(BuildTargetsPath)</BuildToolsPath>
+  </PropertyGroup>
+
+  <!-- Extension point for settings -->
+  
+  <PropertyGroup>
+    <CustomBeforeProjectTargets Condition="'$(CustomBeforeProjectTargets)' == ''">$(EnlistmentRoot)tools\build\Project.settings.targets</CustomBeforeProjectTargets>
+  </PropertyGroup>
+
+  <Import Project="$(CustomBeforeProjectTargets)" Condition="Exists('$(CustomBeforeProjectTargets)')" Label="Pre-targets Build Extensibility Point."/>
+
+  <!-- Default properties -->
+
+  <PropertyGroup Label="Common Configuration">
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutSubDir Condition="'$(OutSubDir)' != '' AND !HasTrailingSlash('$(OutSubDir)')">$(OutSubDir)\</OutSubDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath Condition="'$(OutputPath)' == ''">$(BinPath)$(Configuration)\$(OutSubDir)</OutputPath>
+    <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">$(ObjPath)$(Configuration)\$(OutSubDir)$(MSBuildProjectName)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <StrongNamePublicKeysPath Condition="'$(StrongNamePublicKeysPath)' == ''">$(RepositoryRoot)Tools\build\Common\StrongNamePublicKeys\</StrongNamePublicKeysPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Ensure pdb files from the same sources match assemblies built previously (managed only) -->
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <!-- Resource definitions -->
+
+  <PropertyGroup>
+    <AssemblyCompany Condition="'$(AssemblyCompany)' == ''">Microsoft</AssemblyCompany>
+    <AssemblyCopyright Condition="'$(AssemblyCopyright)' == ''">© Microsoft Corporation. All rights reserved.</AssemblyCopyright>
+    <AssemblyDescription Condition="'$(AssemblyDescription)' == ''">$(MSBuildProjectName)</AssemblyDescription>
+    <AssemblyProduct Condition="'$(AssemblyProduct)' == ''">$(MSBuildProjectName)</AssemblyProduct>
+    <AssemblyServiceable Condition="'$(AssemblyServiceable)' == ''">true</AssemblyServiceable>
+    <AssemblyTitle Condition="'$(AssemblyTitle)' == ''">$(AssemblyDescription)</AssemblyTitle>
+    <AssemblyTrademark Condition="'$(AssemblyTrademark)' == ''">Microsoft and Windows are either registered trademarks or trademarks of Microsoft Corporation in the U.S. and/or other countries.</AssemblyTrademark>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <BuildErrorMessage>
+      <Visble>false</Visble>
+    </BuildErrorMessage>
+    <BuildWarningMessage>
+      <Visible>false</Visible>
+    </BuildWarningMessage>
+  </ItemDefinitionGroup>
+  
+  <!-- Extension points for post-targets -->
+
+  <PropertyGroup>
+    <!-- Use CustomAfterMicrosoftCommonTargets property (Microsoft.Common.targets) to inject project post-targets  -->
+    <CustomAfterMicrosoftCommonTargets>$(MSBuildThisFileDirectory)Global.Post.targets</CustomAfterMicrosoftCommonTargets>
+    <!-- CustomAfterMicrosoftCommonCrossTargetingTargets for .netcore projects -->
+    <CustomAfterMicrosoftCommonCrossTargetingTargets>$(CustomAfterMicrosoftCommonTargets)</CustomAfterMicrosoftCommonCrossTargetingTargets>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--Force a rebuild if this file is changed -->
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+</Project>
