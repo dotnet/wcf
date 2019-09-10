@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS0108;CS0219;CS0168;CS0169;CS0414;CS0436;CS0649</NoWarn>
+    <!-- disable .net core assembly info generation as we have custom versioning. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>$(DefineConstants);HIDE_XSL;FEATURE_CORECLR;PRIVATE_RTLIB;NETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>false</IncludeSource>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Be careful when adding package references. They should be the lowest package version for the framework supported by the tool. 
+      If the tool is used on a project with a reference to a lower version the bootstrapper will fail with a nuget package downgrade error. -->
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
+    <PackageReference Include="NuGet.ProjectModel" Version="3.5.0" />
+    <PackageReference Include="NuGet.Versioning" Version="3.5.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.0.1" />
+  </ItemGroup>
+
+  <!-- =============================== Custom project targest =============================== -->
+
+  <!-- Note: Overwriting BeforeBuild target does not work in .netcore, invoking a target with the BeforeTargets=Build does not work as the Build dependencies are invoked first.-->
+  <Target Name="GetSignNuGetPackFiles" BeforeTargets="SignNuGetPackage" DependsOnTargets="GetNuGetPackageVersion">
+    <ItemGroup>
+      <NuGetPackOutput Remove="@(NuGetPackOutput)" />
+      <SignNuGetPackFiles Include="$(RepositoryRoot)bin\**\$(MSBuildProjectName).$(NuGetPackageVersion)*.nupkg" />
+    </ItemGroup>
+  </Target>
+
+  <!-- BeforeGenerateVersionFile is defined in version.targets and cannot be overwritten here as it is imported later (.netcore projects only). -->
+  <Target Name="GetNuGetPackageVersion" BeforeTargets="BeforeGenerateVersionFile" Outputs="$(NuGetPackageVersion)">
+    <PropertyGroup>
+      <VersionPrerel Condition="'$(VersionPrerel)' != ''">$(VersionPrerel)-$(VersionBuild)-$(VersionRevision)</VersionPrerel>
+      <NuGetPackageVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionPrerel)</NuGetPackageVersion>
+      <!-- AssemblyInformationalVersionAttribute is used at runtime to find the NuGet package, it must be the as the pkg version. -->
+      <AssemblyInformationalVersion>$(NuGetPackageVersion)</AssemblyInformationalVersion>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Define BeforePack to be able to inject our targets earlier in the process, see .netcore NuGet.Build.Tasks.Pack.targets. -->
+  <PropertyGroup>
+    <BeforePack>GetNuspecParams</BeforePack>
+  </PropertyGroup>
+
+  <!-- GenerateNuspec target is defined in the .netcore NuGet.Build.Tasks.Pack.targets file and is a dependency of the Pack target. -->
+  <Target Name="GetNuspecParams" DependsOnTargets="GetNuGetPackageVersion">
+    <!-- Set these properties in a target as the version.targets is imported later in the msbuild script resolution. -->
+    <PropertyGroup Label="Pack task parameters">
+      <Authors>$(AssemblyCompany)</Authors>
+      <Copyright>$(AssemblyCopyright)</Copyright>
+      <Title>$(AssemblyDescription)</Title>
+      <PackageDescription>$(NuGetPackageDescription)</PackageDescription>
+      <PackageVersion>$(NuGetPackageVersion)</PackageVersion>
+      <PackageTags>netcore,svcutil,WSDL,metadata,WCF</PackageTags>
+      <PackageReleaseNotes>https://go.microsoft.com/fwlink/?linkid=874212</PackageReleaseNotes>
+      <PackageProjectUrl>https://go.microsoft.com/fwlink/?linkid=874213</PackageProjectUrl>
+      <PackageIconUrl>https://go.microsoft.com/fwlink/?linkid=874328</PackageIconUrl>
+      <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874329</PackageLicenseUrl>
+      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+  </Target>
+
+</Project>
