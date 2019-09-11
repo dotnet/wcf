@@ -202,6 +202,11 @@ namespace System.IdentityModel.Tokens
         //public virtual bool MatchesKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(bool); }
         //public virtual System.IdentityModel.Tokens.SecurityKey ResolveKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(System.IdentityModel.Tokens.SecurityKey); }
     }
+    public abstract partial class SymmetricSecurityKey : SecurityKey
+    {
+        public abstract System.Security.Cryptography.SymmetricAlgorithm GetSymmetricAlgorithm(string algorithm);
+        public abstract byte[] GetSymmetricKey();
+    }
 }
 namespace System.ServiceModel
 {
