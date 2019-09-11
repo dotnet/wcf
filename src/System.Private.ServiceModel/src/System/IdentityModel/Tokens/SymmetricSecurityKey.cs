@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace System.IdentityModel.Tokens
 {
-    internal abstract class SymmetricSecurityKey : SecurityKey
+    public abstract class SymmetricSecurityKey : SecurityKey
     {
         public abstract byte[] GenerateDerivedKey(string algorithm, byte[] label, byte[] nonce, int derivedKeyLength, int offset);
 
