@@ -67,6 +67,8 @@ namespace System.ServiceModel.Channels
         public static System.ServiceModel.Channels.TransportSecurityBindingElement CreateUserNameOverTransportBindingElement() { return default(System.ServiceModel.Channels.TransportSecurityBindingElement); }
         public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default(T); }
         public override string ToString() { return default(string); }
+        public System.ServiceModel.Security.SecurityAlgorithmSuite DefaultAlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
+        public System.ServiceModel.Security.SecurityKeyEntropyMode KeyEntropyMode { get { return default(System.ServiceModel.Security.SecurityKeyEntropyMode);} set { } }
     }
     public enum SecurityHeaderLayout
     {
