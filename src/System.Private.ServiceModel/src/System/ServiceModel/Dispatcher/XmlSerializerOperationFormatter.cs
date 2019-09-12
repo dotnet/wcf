@@ -91,7 +91,7 @@ namespace System.ServiceModel.Dispatcher
                     MemoryStream memoryStream = new MemoryStream();
                     XmlDictionaryWriter bufferWriter = XmlDictionaryWriter.CreateTextWriter(memoryStream);
                     bufferWriter.WriteStartElement("root");
-                    serializer.Serialize(bufferWriter, headerValues, null, _isEncoded ? GetEncoding(message.Version.Envelope) : null);
+                    serializer.Serialize(bufferWriter, headerValues, null, isEncoded ? GetEncoding(message.Version.Envelope) : null);
                     bufferWriter.WriteEndElement();
                     bufferWriter.Flush();
                     XmlDocument doc = new XmlDocument();
@@ -243,7 +243,7 @@ namespace System.ServiceModel.Dispatcher
                 if (!bufferReader.IsEmptyElement)
                 {
                     bufferReader.ReadStartElement();
-                    object[] headerValues = (object[])serializer.Deserialize(bufferReader, _isEncoded ? GetEncoding(message.Version.Envelope) : null);
+                    object[] headerValues = (object[])serializer.Deserialize(bufferReader, isEncoded ? GetEncoding(message.Version.Envelope) : null);
                     int headerIndex = 0;
                     foreach (MessageHeaderDescription headerDescription in messageDescription.Headers)
                     {
