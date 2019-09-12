@@ -18,4 +18,11 @@ public static class SecureConversationSecurityTokenParametersTest
         scstr.RequireCancellation = value;
         Assert.Equal(value, scstr.RequireCancellation);
     }
+
+    [WcfFact]
+    public static void RequireCancellation_DefaultValueIsSameAsNetFramework()
+    {
+        SecureConversationSecurityTokenParameters NetFramework = new SecureConversationSecurityTokenParameters();
+        Assert.True(NetFramework.RequireCancellation);
+    }
 }
