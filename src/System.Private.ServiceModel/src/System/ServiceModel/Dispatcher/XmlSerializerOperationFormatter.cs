@@ -20,7 +20,7 @@ namespace System.ServiceModel.Dispatcher
         private const string soap11Encoding = "http://schemas.xmlsoap.org/soap/encoding/";
         private const string soap12Encoding = "http://www.w3.org/2003/05/soap-encoding";
 
-        private bool isEncoded;
+        private bool _isEncoded;
         private MessageInfo _requestMessageInfo;
         private MessageInfo _replyMessageInfo;
 
@@ -32,7 +32,8 @@ namespace System.ServiceModel.Dispatcher
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxDocEncodedNotSupported, description.Name)));
             }
-            this.isEncoded = xmlSerializerFormatAttribute.IsEncoded;
+
+            _isEncoded = xmlSerializerFormatAttribute.IsEncoded;
 
             _requestMessageInfo = requestMessageInfo;
             _replyMessageInfo = replyMessageInfo;
@@ -90,14 +91,12 @@ namespace System.ServiceModel.Dispatcher
                     MemoryStream memoryStream = new MemoryStream();
                     XmlDictionaryWriter bufferWriter = XmlDictionaryWriter.CreateTextWriter(memoryStream);
                     bufferWriter.WriteStartElement("root");
-                  //  serializer.Serialize(bufferWriter, headerValues, null);
-                    serializer.Serialize(bufferWriter, headerValues, null, isEncoded ? GetEncoding(message.Version.Envelope) : null);
+                    serializer.Serialize(bufferWriter, headerValues, null, _isEncoded ? GetEncoding(message.Version.Envelope) : null);
                     bufferWriter.WriteEndElement();
                     bufferWriter.Flush();
                     XmlDocument doc = new XmlDocument();
                     memoryStream.Position = 0;
                     doc.Load(memoryStream);
-                    //doc.Save(Console.Out);
                     foreach (XmlElement element in doc.DocumentElement.ChildNodes)
                     {
                         MessageHeaderDescription matchingHeaderDescription = headerDescriptionTable.Get(element.LocalName, element.NamespaceURI);
@@ -244,8 +243,7 @@ namespace System.ServiceModel.Dispatcher
                 if (!bufferReader.IsEmptyElement)
                 {
                     bufferReader.ReadStartElement();
-                    //object[] headerValues = (object[])serializer.Deserialize(bufferReader);
-                    object[] headerValues = (object[])serializer.Deserialize(bufferReader, isEncoded ? GetEncoding(message.Version.Envelope) : null);
+                    object[] headerValues = (object[])serializer.Deserialize(bufferReader, _isEncoded ? GetEncoding(message.Version.Envelope) : null);
                     int headerIndex = 0;
                     foreach (MessageHeaderDescription headerDescription in messageDescription.Headers)
                     {
@@ -294,11 +292,12 @@ namespace System.ServiceModel.Dispatcher
 
         protected override void WriteBodyAttributes(XmlDictionaryWriter writer, MessageVersion version)
         {
-            if (isEncoded && version.Envelope == EnvelopeVersion.Soap11)
+            if (_isEncoded && version.Envelope == EnvelopeVersion.Soap11)
             {
                 string encoding = GetEncoding(version.Envelope);
                 writer.WriteAttributeString("encodingStyle", version.Envelope.Namespace, encoding);
             }
+			
             writer.WriteAttributeString("xmlns", "xsi", null, XmlUtil.XmlSerializerSchemaInstanceNamespace);
             writer.WriteAttributeString("xmlns", "xsd", null, XmlUtil.XmlSerializerSchemaNamespace);
         }
@@ -388,7 +387,7 @@ namespace System.ServiceModel.Dispatcher
                 bodyParameters[paramIndex++] = parameters[bodyParts[i].Index];
             }
 
-            string encoding = isEncoded ? GetEncoding(version.Envelope) : null;
+            string encoding = _isEncoded ? GetEncoding(version.Envelope) : null;
             serializer.Serialize(writer, bodyParameters, null);
         }
 
@@ -459,8 +458,7 @@ namespace System.ServiceModel.Dispatcher
                     return null;
                 }
 
-                //object[] bodyParameters = (object[])serializer.Deserialize(reader);
-                object[] bodyParameters = (object[])serializer.Deserialize(reader, isEncoded ? GetEncoding(version.Envelope) : null);
+                object[] bodyParameters = (object[])serializer.Deserialize(reader, _isEncoded ? GetEncoding(version.Envelope) : null);
                 int paramIndex = 0;
                 if (IsValidReturnValue(returnPart))
                 {
@@ -584,7 +582,8 @@ namespace System.ServiceModel.Dispatcher
                     if (_attributes[headerDescription.Index] == null)
                     {
                         _attributes[headerDescription.Index] = new List<MessageHeader<object>>();
-                    } 
+                    }
+					
 					((List<MessageHeader<object>>)_attributes[headerDescription.Index]).Add(new MessageHeader<object>(null, mustUnderstand, actor, relay));
                 }
                 else
