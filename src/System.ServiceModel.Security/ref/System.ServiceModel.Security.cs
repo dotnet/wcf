@@ -261,4 +261,10 @@ namespace System.IdentityModel.Tokens
         // public override T CreateKeyIdentifierClause<T>() {}
         // public override bool MatchesKeyIdentifierClause(.SecurityKeyIdentifierClause keyIdentifierClause) {}
     }
+    public enum SecurityKeyType
+    {
+        SymmetricKey,
+        AsymmetricKey,
+        BearerKey
+    }
 }
