@@ -156,6 +156,7 @@ namespace System.IdentityModel.Tokens
     public abstract partial class SecurityKey
     {
         internal SecurityKey() { }
+        public abstract int KeySize { get; }
         //public abstract byte[] DecryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
         //public abstract byte[] EncryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
         //public abstract bool IsAsymmetricAlgorithm(string algorithm) { return default(bool); }
