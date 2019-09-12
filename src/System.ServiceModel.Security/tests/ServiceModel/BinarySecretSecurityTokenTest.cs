@@ -23,18 +23,32 @@ public static class BinarySecretSecurityTokenTest
         Assert.NotNull(bsst);
         Assert.NotNull(bsst.Id);
         Assert.NotNull(bsst.SecurityKeys);
+        Assert.Single(bsst.SecurityKeys);
         Assert.Equal(DateTime.UtcNow.Date, bsst.ValidFrom.Date);
         Assert.Equal(DateTime.MaxValue, bsst.ValidTo);
         Assert.Equal(keyBytes.Length * 8, bsst.KeySize);
-        Assert.Equal(keyBytes, bsst.GetKeyBytes());
+        Assert.Equal(keyBytes, bsst.GetKeyBytes());     
 
         BinarySecretSecurityToken bsst2 = new BinarySecretSecurityToken(id, keyBytes);
         Assert.NotNull(bsst2);
         Assert.Equal(id, bsst2.Id);
         Assert.NotNull(bsst2.SecurityKeys);
+        Assert.Single(bsst2.SecurityKeys);
         Assert.Equal(DateTime.UtcNow.Date, bsst2.ValidFrom.Date);
         Assert.Equal(DateTime.MaxValue, bsst2.ValidTo);
         Assert.Equal(keyBytes.Length * 8, bsst2.KeySize);
         Assert.Equal(keyBytes, bsst2.GetKeyBytes());
+    }
+
+    [WcfFact]
+    public static void Ctor_Default_IdIsUnique()
+    {
+        byte[] keyBytes = new byte[128];
+        Random rnd = new Random();
+        rnd.NextBytes(keyBytes);
+
+        BinarySecretSecurityToken bsst = new BinarySecretSecurityToken(keyBytes);
+        BinarySecretSecurityToken bsst2 = new BinarySecretSecurityToken(keyBytes);
+        Assert.NotEqual(bsst.Id, bsst2.Id);
     }
 }
