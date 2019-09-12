@@ -361,6 +361,14 @@ namespace System.ServiceModel
             public object[] Results { get { return default(object[]); } }
         }
     }
+    public partial class ClientCredentialsSecurityTokenManager : System.IdentityModel.Selectors.SecurityTokenManager
+    {
+        public ClientCredentialsSecurityTokenManager(System.ServiceModel.Description.ClientCredentials clientCredentials) { }
+        public System.ServiceModel.Description.ClientCredentials ClientCredentials { get { return default(System.ServiceModel.Description.ClientCredentials); } }
+        public override System.IdentityModel.Selectors.SecurityTokenProvider CreateSecurityTokenProvider(System.IdentityModel.Selectors.SecurityTokenRequirement tokenRequirement) { return default(System.IdentityModel.Selectors.SecurityTokenProvider); }
+        public override System.IdentityModel.Selectors.SecurityTokenSerializer CreateSecurityTokenSerializer(System.IdentityModel.Selectors.SecurityTokenVersion version) { return default(System.IdentityModel.Selectors.SecurityTokenSerializer); }
+        public override System.IdentityModel.Selectors.SecurityTokenAuthenticator CreateSecurityTokenAuthenticator(System.IdentityModel.Selectors.SecurityTokenRequirement tokenRequirement, out System.IdentityModel.Selectors.SecurityTokenResolver outOfBandTokenResolver) { outOfBandTokenResolver = default(System.IdentityModel.Selectors.SecurityTokenResolver); return default(System.IdentityModel.Selectors.SecurityTokenAuthenticator); }
+    }
     public partial class CommunicationException : System.Exception
     {
         public CommunicationException() { }
