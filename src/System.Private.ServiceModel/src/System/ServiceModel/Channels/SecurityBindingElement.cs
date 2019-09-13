@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.Net.Security;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
@@ -465,28 +466,16 @@ namespace System.ServiceModel.Channels
             // Only used for services
         }
 
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsMutualCertificateBinding() method.
         static public SecurityBindingElement CreateMutualCertificateBindingElement()
         {
             return CreateMutualCertificateBindingElement(MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11);
         }
 
-        // this method reverses CreateMutualCertificateBindingElement() logic
-        internal static bool IsMutualCertificateBinding(SecurityBindingElement sbe)
-        {
-            return IsMutualCertificateBinding(sbe, false);
-        }
-
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsMutualCertificateBinding() method.
         static public SecurityBindingElement CreateMutualCertificateBindingElement(MessageSecurityVersion version)
         {
             return CreateMutualCertificateBindingElement(version, false);
         }
 
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsMutualCertificateBinding() method.
         static public SecurityBindingElement CreateMutualCertificateBindingElement(MessageSecurityVersion version, bool allowSerializedSigningTokenOnReply)
         {
             if (version == null)
@@ -497,15 +486,6 @@ namespace System.ServiceModel.Channels
             throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.CreateMutualCertificateBindingElement is not supported.");
         }
 
-
-        // this method reverses CreateMutualCertificateBindingElement() logic
-        internal static bool IsMutualCertificateBinding(SecurityBindingElement sbe, bool allowSerializedSigningTokenOnReply)
-        {
-            throw ExceptionHelper.PlatformNotSupported("SecurityBindingElement.IsMutualCertificateBinding is not supported.");
-        }
-
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsUserNameOverTransportBinding() method.
         static public TransportSecurityBindingElement CreateUserNameOverTransportBindingElement()
         {
             var result = new TransportSecurityBindingElement();
@@ -516,15 +496,11 @@ namespace System.ServiceModel.Channels
             return result;
         }
 
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsCertificateOverTransportBinding() method.
         static public TransportSecurityBindingElement CreateCertificateOverTransportBindingElement()
         {
             return CreateCertificateOverTransportBindingElement(MessageSecurityVersion.Default);
         }
 
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsCertificateOverTransportBinding() method.
         static public TransportSecurityBindingElement CreateCertificateOverTransportBindingElement(MessageSecurityVersion version)
         {
             if (version == null)
@@ -558,8 +534,29 @@ namespace System.ServiceModel.Channels
             return result;
         }
 
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsSecureConversationBinding() method.
+        public static TransportSecurityBindingElement CreateIssuedTokenOverTransportBindingElement(IssuedSecurityTokenParameters issuedTokenParameters)
+        {
+            if (issuedTokenParameters == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("issuedTokenParameters");
+
+            issuedTokenParameters.RequireDerivedKeys = false;
+            TransportSecurityBindingElement result = new TransportSecurityBindingElement();
+            if (issuedTokenParameters.KeyType == SecurityKeyType.BearerKey)
+            {
+                result.EndpointSupportingTokenParameters.Signed.Add(issuedTokenParameters);
+                result.MessageSecurityVersion = MessageSecurityVersion.WSSXDefault;
+            }
+            else
+            {
+                result.EndpointSupportingTokenParameters.Endorsing.Add(issuedTokenParameters);
+                result.MessageSecurityVersion = MessageSecurityVersion.Default;
+            }
+            result.LocalClientSettings.DetectReplays = false;
+            result.IncludeTimestamp = true;
+
+            return result;
+        }
+
         static public SecurityBindingElement CreateSecureConversationBindingElement(SecurityBindingElement bootstrapSecurity)
         {
             return CreateSecureConversationBindingElement(bootstrapSecurity, SecureConversationSecurityTokenParameters.defaultRequireCancellation, null);
@@ -570,8 +567,6 @@ namespace System.ServiceModel.Channels
             return CreateSecureConversationBindingElement(bootstrapSecurity, requireCancellation, null);
         }
 
-        // If any changes are made to this method, please make sure that they are
-        // reflected in the corresponding IsSecureConversationBinding() method.
         static public SecurityBindingElement CreateSecureConversationBindingElement(SecurityBindingElement bootstrapSecurity, bool requireCancellation, ChannelProtectionRequirements bootstrapProtectionRequirements)
         {
             if (bootstrapSecurity == null)
