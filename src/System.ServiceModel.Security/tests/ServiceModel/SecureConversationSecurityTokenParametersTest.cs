@@ -14,15 +14,15 @@ public static class SecureConversationSecurityTokenParametersTest
     [InlineData(true)]
     public static void RequireCancellation_Property_Is_Settable(bool value)
     {
-        SecureConversationSecurityTokenParameters scstr = new SecureConversationSecurityTokenParameters();
-        scstr.RequireCancellation = value;
-        Assert.Equal(value, scstr.RequireCancellation);
+        SecureConversationSecurityTokenParameters scstp = new SecureConversationSecurityTokenParameters();
+        scstp.RequireCancellation = value;
+        Assert.Equal(value, scstp.RequireCancellation);
     }
 
     [WcfFact]
     public static void RequireCancellation_DefaultValueIsSameAsNetFramework()
     {
-        SecureConversationSecurityTokenParameters NetFramework = new SecureConversationSecurityTokenParameters();
-        Assert.True(NetFramework.RequireCancellation);
+        SecureConversationSecurityTokenParameters scstp = new SecureConversationSecurityTokenParameters();
+        Assert.True(scstp.RequireCancellation);
     }
 }
