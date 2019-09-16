@@ -156,6 +156,7 @@ namespace System.IdentityModel.Tokens
     public abstract partial class SecurityKey
     {
         internal SecurityKey() { }
+        public abstract int KeySize { get; }
         //public abstract byte[] DecryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
         //public abstract byte[] EncryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
         //public abstract bool IsAsymmetricAlgorithm(string algorithm) { return default(bool); }
@@ -201,6 +202,11 @@ namespace System.IdentityModel.Tokens
         //public virtual T CreateKeyIdentifierClause<T>() where T : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { return default(T); }
         //public virtual bool MatchesKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(bool); }
         //public virtual System.IdentityModel.Tokens.SecurityKey ResolveKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(System.IdentityModel.Tokens.SecurityKey); }
+    }
+    public abstract partial class SymmetricSecurityKey : SecurityKey
+    {
+        public abstract System.Security.Cryptography.SymmetricAlgorithm GetSymmetricAlgorithm(string algorithm);
+        public abstract byte[] GetSymmetricKey();
     }
 }
 namespace System.ServiceModel
@@ -355,6 +361,14 @@ namespace System.ServiceModel
             internal InvokeAsyncCompletedEventArgs() : base(default(System.Exception), default(bool), default(object)) { }
             public object[] Results { get { return default(object[]); } }
         }
+    }
+    public partial class ClientCredentialsSecurityTokenManager : System.IdentityModel.Selectors.SecurityTokenManager
+    {
+        public ClientCredentialsSecurityTokenManager(System.ServiceModel.Description.ClientCredentials clientCredentials) { }
+        public System.ServiceModel.Description.ClientCredentials ClientCredentials { get { return default(System.ServiceModel.Description.ClientCredentials); } }
+        public override System.IdentityModel.Selectors.SecurityTokenProvider CreateSecurityTokenProvider(System.IdentityModel.Selectors.SecurityTokenRequirement tokenRequirement) { return default(System.IdentityModel.Selectors.SecurityTokenProvider); }
+        public override System.IdentityModel.Selectors.SecurityTokenSerializer CreateSecurityTokenSerializer(System.IdentityModel.Selectors.SecurityTokenVersion version) { return default(System.IdentityModel.Selectors.SecurityTokenSerializer); }
+        public override System.IdentityModel.Selectors.SecurityTokenAuthenticator CreateSecurityTokenAuthenticator(System.IdentityModel.Selectors.SecurityTokenRequirement tokenRequirement, out System.IdentityModel.Selectors.SecurityTokenResolver outOfBandTokenResolver) { outOfBandTokenResolver = default(System.IdentityModel.Selectors.SecurityTokenResolver); return default(System.IdentityModel.Selectors.SecurityTokenAuthenticator); }
     }
     public partial class CommunicationException : System.Exception
     {

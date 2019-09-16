@@ -34,6 +34,7 @@ namespace System.ServiceModel.Security.Tokens
         }
 
         public SecureConversationSecurityTokenParameters()
+            : this(null, defaultRequireCancellation, null)
         {
             // empty
         }
