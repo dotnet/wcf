@@ -4,6 +4,7 @@
 
 
 using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using Infrastructure.Common;
 using Xunit;
@@ -26,5 +27,12 @@ public static class SecutityBindingElementTest
         SecurityBindingElement element = binding.Elements.Find<SecurityBindingElement>();
         Assert.True(element != null, "SecurityBindingElement added to binding elements should not be null.");
         Assert.Equal(element, securityBindingElement);
+    }
+
+    [WcfFact]
+    public static void Property_DefaultAlgorithmSuite()
+    {
+        TransportSecurityBindingElement securityBindingElement = new TransportSecurityBindingElement();
+        Assert.Equal(securityBindingElement.DefaultAlgorithmSuite, SecurityAlgorithmSuite.Basic256);
     }
 }
