@@ -24,11 +24,11 @@ public static class GenericXmlSecurityTokenTest
         tokenXml.Attributes.Append(attr);
         UserNameSecurityToken proofToken = new UserNameSecurityToken("user", "password");
         
-        GenericXmlSecurityToken gxst = new GenericXmlSecurityToken(tokenXml, proofToken, DateTime.MinValue, DateTime.MaxValue, null, null, null);
+        GenericXmlSecurityToken gxst = new GenericXmlSecurityToken(tokenXml, proofToken, DateTime.UtcNow, DateTime.MaxValue, null, null, null);
         Assert.NotNull(gxst);
         Assert.NotNull(gxst.Id);
         Assert.Equal(attrValue, gxst.Id);
-        Assert.Equal(DateTime.MinValue, gxst.ValidFrom);
+        Assert.Equal(DateTime.UtcNow.Date, gxst.ValidFrom.Date);
         Assert.Equal(DateTime.MaxValue.Date, gxst.ValidTo.Date);
         Assert.NotNull(gxst.SecurityKeys);
         Assert.Equal(proofToken.SecurityKeys, gxst.SecurityKeys);
