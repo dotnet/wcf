@@ -81,7 +81,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.WS.TransportWithMes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer", "src\svcutilcore\src\dotnet-svcutil.xmlserializer.csproj", "{EAB2959D-0A16-4F60-A453-765491E1C069}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer.Tests", "src\svcutilcore\tests\dotnet-svcutil.xmlserializer.Tests.csproj", "{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer.IntegrationTests", "src\svcutilcore\tests\dotnet-svcutil.xmlserializer.IntegrationTests.csproj", "{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
+namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.IntegrationTests
 {
     public static class SvcutilTests
     {
@@ -21,7 +21,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests
             string outputFile = Path.GetTempFileName() + ".cs";
             Assert.False(File.Exists(outputFile));
             string testassemblypath = Assembly.GetExecutingAssembly().Location;
-            string smassemblypath = testassemblypath.Replace("dotnet-svcutil.xmlserializer.Tests", "System.ServiceModel.Primitives").Replace("Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.Tests.dll", "System.ServiceModel.Primitives.dll").Replace("netcoreapp", "netstandard");
+            string smassemblypath = testassemblypath.Replace("dotnet-svcutil.xmlserializer.IntegrationTests", "System.ServiceModel.Primitives").Replace("Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer.IntegrationTests.dll", "System.ServiceModel.Primitives.dll").Replace("netcoreapp", "netstandard");
             if (File.Exists(smassemblypath))
             {
                 Tool.Main(new string[] { Assembly.GetExecutingAssembly().Location, $"--out:{outputFile}", $"--smreference:{smassemblypath}", $"--quiet"});
