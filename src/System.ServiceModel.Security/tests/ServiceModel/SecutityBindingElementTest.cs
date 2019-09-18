@@ -35,4 +35,11 @@ public static class SecutityBindingElementTest
         TransportSecurityBindingElement securityBindingElement = new TransportSecurityBindingElement();
         Assert.Equal(securityBindingElement.DefaultAlgorithmSuite, SecurityAlgorithmSuite.Basic256);
     }
+
+    [WcfFact]
+    public static void Property_KeyEntropyMode()
+    {
+        TransportSecurityBindingElement securityBindingElement = new TransportSecurityBindingElement();
+        Assert.Equal(securityBindingElement.KeyEntropyMode, SecurityKeyEntropyMode.CombinedEntropy);
+    }
 }
