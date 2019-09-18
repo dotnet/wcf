@@ -12,33 +12,22 @@ public static class SecurityKeyTypeTest
     [WcfFact]
     public static void Get_EnumMembers_Test()
     {
-        SecurityKeyType skt0 = SecurityKeyType.SymmetricKey;
-        Assert.Equal(SecurityKeyType.SymmetricKey, skt0);
+        SecurityKeyType sk = SecurityKeyType.SymmetricKey;
+        Assert.Equal(SecurityKeyType.SymmetricKey, sk);
 
-        SecurityKeyType skt1 = SecurityKeyType.AsymmetricKey;
-        Assert.Equal(SecurityKeyType.AsymmetricKey, skt1);
+        SecurityKeyType ak = SecurityKeyType.AsymmetricKey;
+        Assert.Equal(SecurityKeyType.AsymmetricKey, ak);
 
-        SecurityKeyType skt2 = SecurityKeyType.BearerKey;
-        Assert.Equal(SecurityKeyType.BearerKey, skt2);
+        SecurityKeyType bk = SecurityKeyType.BearerKey;
+        Assert.Equal(SecurityKeyType.BearerKey, bk);
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(2)]
-    public static void TypeConvert_EnumToInt_Test(int value)
+    [InlineData(SecurityKeyType.SymmetricKey, 0)]
+    [InlineData(SecurityKeyType.AsymmetricKey, 1)]
+    [InlineData(SecurityKeyType.BearerKey, 2)]
+    public static void TypeConvert_EnumToInt_Test(SecurityKeyType key, int value)
     {
-        switch (value)
-        {
-            case 0:
-                Assert.Equal((int)SecurityKeyType.SymmetricKey, value);
-                break;
-            case 1:
-                Assert.Equal((int)SecurityKeyType.AsymmetricKey, value);
-                break;
-            default:
-                Assert.Equal((int)SecurityKeyType.BearerKey, value);
-                break;
-        }
+        Assert.Equal((int)key, value);
     }
 }
