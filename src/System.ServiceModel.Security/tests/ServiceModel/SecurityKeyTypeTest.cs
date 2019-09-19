@@ -9,7 +9,7 @@ using Xunit;
 
 public static class SecurityKeyTypeTest
 {
-    [WcfFact]
+    [WcfTheory]
     public static void Get_EnumMembers_Test()
     {
         SecurityKeyType sk = SecurityKeyType.SymmetricKey;
@@ -22,7 +22,7 @@ public static class SecurityKeyTypeTest
         Assert.Equal(SecurityKeyType.BearerKey, bk);
     }
 
-    [Theory]
+    [WcfTheory]
     [InlineData(SecurityKeyType.SymmetricKey, 0)]
     [InlineData(SecurityKeyType.AsymmetricKey, 1)]
     [InlineData(SecurityKeyType.BearerKey, 2)]
