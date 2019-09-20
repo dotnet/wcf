@@ -11,7 +11,7 @@ using Xunit;
 public static class SupportingTokenParametersTest
 {
     [WcfFact]
-    public static void Property_Signd()
+    public static void Property_Signed()
     {
         SupportingTokenParameters stp = new SupportingTokenParameters();
         Assert.NotNull(stp.Signed);
