@@ -81,4 +81,60 @@ public static class BinaryMessageEncodingBindingElementTest
         BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
         Assert.Throws<ArgumentNullException>(() => bindingElement.MessageVersion = null);
     }
+
+    [WcfTheory]
+    [InlineData(64)]
+    public static void MaxReadPoolSize_DefaultValue(int value)
+    {
+        BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
+        bindingElement.MaxReadPoolSize = value;
+        Assert.Equal<int>(value, bindingElement.MaxReadPoolSize);
+    }
+
+    [WcfTheory]
+    [InlineData(1)]
+    [InlineData(int.MaxValue)]
+    public static void MaxReadPoolSize_Property_Sets(int value)
+    {
+        BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
+        bindingElement.MaxReadPoolSize = value;
+        Assert.Equal<int>(value, bindingElement.MaxReadPoolSize);
+    }
+
+    [WcfTheory]
+    [InlineData(0)]
+    [InlineData(int.MinValue)]
+    public static void MaxReadPoolSize_Property_Set_Invalid_Value_Throws(int value)
+    {
+        BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
+        Assert.Throws<ArgumentOutOfRangeException>(() => bindingElement.MaxReadPoolSize = value);
+    }
+
+    [WcfTheory]
+    [InlineData(16)]
+    public static void MaxWritePoolSize_DefaultValue(int value)
+    {
+        BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
+        bindingElement.MaxWritePoolSize = value;
+        Assert.Equal<int>(value, bindingElement.MaxWritePoolSize);
+    }
+
+    [WcfTheory]
+    [InlineData(1)]
+    [InlineData(int.MaxValue)]
+    public static void MaxWritePoolSize_Property_Sets(int value)
+    {
+        BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
+        bindingElement.MaxWritePoolSize = value;
+        Assert.Equal<int>(value, bindingElement.MaxWritePoolSize);
+    }
+
+    [WcfTheory]
+    [InlineData(0)]
+    [InlineData(int.MinValue)]
+    public static void MaxWritePoolSize_Property_Set_Invalid_Value_Throws(int value)
+    {
+        BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
+        Assert.Throws<ArgumentOutOfRangeException>(() => bindingElement.MaxWritePoolSize = value);
+    }
 }
