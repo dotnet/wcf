@@ -101,6 +101,11 @@ namespace System.ServiceModel.Security.Tokens
             set
             {
                 SecurityKeyTypeHelper.Validate(value);
+                if(value == SecurityKeyType.BearerKey)
+                {
+                    throw ExceptionHelper.PlatformNotSupported();
+                }
+
                 _keyType = value;
             }
         }

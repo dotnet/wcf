@@ -42,4 +42,18 @@ public static class SecutityBindingElementTest
         TransportSecurityBindingElement securityBindingElement = new TransportSecurityBindingElement();
         Assert.Equal(securityBindingElement.KeyEntropyMode, SecurityKeyEntropyMode.CombinedEntropy);
     }
+
+    [WcfFact]
+    public static void Method_CreateIssuedTokenOverTransportBindingElement()
+    {
+        IssuedSecurityTokenParameters tokenParameters = new IssuedSecurityTokenParameters();
+        TransportSecurityBindingElement securityBindingElement = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(tokenParameters);
+
+        Assert.Contains(tokenParameters, securityBindingElement.EndpointSupportingTokenParameters.Endorsing);
+        Assert.Equal(System.ServiceModel.MessageSecurityVersion.Default, securityBindingElement.MessageSecurityVersion);
+        Assert.False(securityBindingElement.LocalClientSettings.DetectReplays);
+        Assert.True(securityBindingElement.IncludeTimestamp);
+
+        Assert.Throws<System.ArgumentNullException>(() => SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(null));
+    }
 }
