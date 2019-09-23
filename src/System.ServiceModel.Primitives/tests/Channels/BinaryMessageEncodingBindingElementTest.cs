@@ -84,10 +84,9 @@ public static class BinaryMessageEncodingBindingElementTest
 
     [WcfTheory]
     [InlineData(64)]
-    public static void MaxReadPoolSize_DefaultValue(int value)
+    public static void MaxReadPoolSize_DefaultValueIsSameAsNetFrameWork(int value)
     {
         BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
-        bindingElement.MaxReadPoolSize = value;
         Assert.Equal<int>(value, bindingElement.MaxReadPoolSize);
     }
 
@@ -112,10 +111,9 @@ public static class BinaryMessageEncodingBindingElementTest
 
     [WcfTheory]
     [InlineData(16)]
-    public static void MaxWritePoolSize_DefaultValue(int value)
+    public static void MaxWritePoolSize_DefaultValueIsSameAsNetFrameWork(int value)
     {
         BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
-        bindingElement.MaxWritePoolSize = value;
         Assert.Equal<int>(value, bindingElement.MaxWritePoolSize);
     }
 
