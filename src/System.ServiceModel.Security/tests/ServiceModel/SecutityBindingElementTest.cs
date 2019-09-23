@@ -54,14 +54,6 @@ public static class SecutityBindingElementTest
         Assert.False(securityBindingElement.LocalClientSettings.DetectReplays);
         Assert.True(securityBindingElement.IncludeTimestamp);
 
-        tokenParameters.KeyType = System.IdentityModel.Tokens.SecurityKeyType.BearerKey;
-        securityBindingElement = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(tokenParameters);
-
-        Assert.Contains(tokenParameters, securityBindingElement.EndpointSupportingTokenParameters.Signed);
-        Assert.NotNull(securityBindingElement.MessageSecurityVersion);
-        Assert.False(securityBindingElement.LocalClientSettings.DetectReplays);
-        Assert.True(securityBindingElement.IncludeTimestamp);
-
         Assert.Throws<System.ArgumentNullException>(() => SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(null));
     }
 }
