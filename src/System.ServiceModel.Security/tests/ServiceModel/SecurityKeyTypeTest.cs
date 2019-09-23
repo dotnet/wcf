@@ -10,7 +10,7 @@ using Xunit;
 public static class SecurityKeyTypeTest
 {
     [WcfFact]
-    public static void Get_EnumMembers_Test()
+    public static void Get_EnumMembers()
     {
         SecurityKeyType sk = SecurityKeyType.SymmetricKey;
         Assert.Equal(SecurityKeyType.SymmetricKey, sk);
@@ -26,7 +26,7 @@ public static class SecurityKeyTypeTest
     [InlineData(SecurityKeyType.SymmetricKey, 0)]
     [InlineData(SecurityKeyType.AsymmetricKey, 1)]
     [InlineData(SecurityKeyType.BearerKey, 2)]
-    public static void TypeConvert_EnumToInt_Test(SecurityKeyType key, int value)
+    public static void TypeConvert_EnumToInt(SecurityKeyType key, int value)
     {
         Assert.Equal((int)key, value);
     }
