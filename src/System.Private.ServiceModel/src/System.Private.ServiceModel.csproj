@@ -8,6 +8,8 @@
     <!-- https://docs.microsoft.com/en-us/nuget/reference/target-frameworks -->
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
+    <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
+    <NoWarn>$(NoWarn);NU5131</NoWarn>
     <NoWarn>$(NoWarn);1634;1691;649</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <FileAlignment>512</FileAlignment>
