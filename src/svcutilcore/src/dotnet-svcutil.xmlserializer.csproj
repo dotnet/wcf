@@ -6,7 +6,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <OutputType>Exe</OutputType>
     <TargetExt>.dll</TargetExt>
-    <NoWarn>$(NoWarn);1634;1691;649;168;169</NoWarn>
+    <NoWarn>$(NoWarn);1634;1691;649;168;169;NU5129</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
