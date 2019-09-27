@@ -9,6 +9,18 @@ namespace System.ServiceModel.Description
 {
     public partial class DataContractSerializerOperationBehavior : System.ServiceModel.Description.IOperationBehavior
     {
-        public System.Runtime.Serialization.ISerializationSurrogateProvider SerializationSurrogateProvider { get { return default(System.Runtime.Serialization.ISerializationSurrogateProvider); } set { } }
+        public System.Runtime.Serialization.ISerializationSurrogateProvider SerializationSurrogateProvider { get { return default; } set { } }
+    }
+}
+namespace System.IdentityModel.Selectors
+{
+    public abstract partial class SecurityTokenProvider
+    {
+        public System.Threading.Tasks.Task<System.IdentityModel.Tokens.SecurityToken> GetTokenAsync(System.TimeSpan timeout) { return default; }
+        public System.Threading.Tasks.Task<System.IdentityModel.Tokens.SecurityToken> RenewTokenAsync(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed) { return default; }
+        public System.Threading.Tasks.Task CancelTokenAsync(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token) { return default; }
+        protected virtual System.Threading.Tasks.Task<System.IdentityModel.Tokens.SecurityToken> GetTokenCoreAsync(System.TimeSpan timeout) { return default; }
+        protected virtual System.Threading.Tasks.Task<System.IdentityModel.Tokens.SecurityToken> RenewTokenCoreAsync(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken tokenToBeRenewed) { return default; }
+        protected virtual System.Threading.Tasks.Task CancelTokenCoreAsync(System.TimeSpan timeout, System.IdentityModel.Tokens.SecurityToken token) { return default; }
     }
 }
