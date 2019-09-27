@@ -4,12 +4,9 @@
 
 
 using System;
-using System.Collections.ObjectModel;
 using System.IdentityModel.Selectors;
-using System.IdentityModel.Tokens;
 using Infrastructure.Common;
 using Xunit;
-using Xunit.Sdk;
 
 public static class SecurityTokenRequirementTest
 {
