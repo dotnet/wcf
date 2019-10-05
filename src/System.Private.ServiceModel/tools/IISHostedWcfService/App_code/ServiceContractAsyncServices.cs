@@ -49,6 +49,12 @@ namespace WcfService
             uniqueTypeResponse = new UniqueType();
             uniqueTypeResponse.stringValue = stringRequest;
         }
+
+        public void Request2(out UniqueType uniqueTypeResponse, string stringRequest)
+        {
+            uniqueTypeResponse = new UniqueType();
+            uniqueTypeResponse.stringValue = stringRequest;
+        }
     }
 
     public class ServiceContractUniqueTypeRefSyncService : IServiceContractUniqueTypeRefSyncService

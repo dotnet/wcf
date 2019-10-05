@@ -229,6 +229,14 @@ public static partial class ServiceContractTests
             Assert.True((uniqueType.stringValue == message),
                 String.Format("The value of the 'stringValue' field in the UniqueType instance was not as expected. expected {0} but got {1}", message, uniqueType.stringValue));
 
+            // *** EXECUTE *** \\
+            uniqueType = null;
+            serviceProxy.Request2(out uniqueType, message);
+
+            // *** VALIDATE *** \\
+            Assert.True((uniqueType.stringValue == message),
+                String.Format("The value of the 'stringValue' field in the UniqueType instance was not as expected. expected {0} but got {1}", message, uniqueType.stringValue));
+
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
