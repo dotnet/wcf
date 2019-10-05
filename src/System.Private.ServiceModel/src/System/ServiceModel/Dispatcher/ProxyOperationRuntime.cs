@@ -299,7 +299,7 @@ namespace System.ServiceModel.Dispatcher
                 return Array.Empty<object>();
             }
 
-            return methodCall.Args;
+            return methodCall.InArgs;
         }
 
         internal object[] MapAsyncBeginInputs(MethodCall methodCall, out AsyncCallback callback, out object asyncState)

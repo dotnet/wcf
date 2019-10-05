@@ -11,7 +11,7 @@ using System.ServiceModel.Security;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Name={_name}, Namespace={_ns}, Type={Type}, Index={_index}}")]
+    [DebuggerDisplay("Name={XmlName}, Namespace={Namespace}, Type={Type}, Index={Index}}")]
     public class MessagePartDescription
     {
         private ProtectionLevel _protectionLevel;
@@ -22,14 +22,14 @@ namespace System.ServiceModel.Description
         {
             if (name == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("name", SR.SFxParameterNameCannotBeNull);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(name), SR.SFxParameterNameCannotBeNull);
             }
 
             XmlName = new XmlName(name, true /*isEncoded*/);
 
             if (!string.IsNullOrEmpty(ns))
             {
-                NamingHelper.CheckUriParameter(ns, "ns");
+                NamingHelper.CheckUriParameter(ns, nameof(ns));
             }
 
             Namespace = ns;

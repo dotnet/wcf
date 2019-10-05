@@ -164,9 +164,9 @@ namespace System.ServiceModel.Channels
             {
                 if (operation.TaskTResult == ServiceReflector.VoidType)
                 {
-                    return TaskCreator.CreateTask(channel, operation, methodCall.Args);
+                    return TaskCreator.CreateTask(channel, operation, methodCall.InArgs);
                 }
-                return TaskCreator.CreateGenericTask(channel, operation, methodCall.Args);
+                return TaskCreator.CreateGenericTask(channel, operation, methodCall.InArgs);
             }
 
             private static Task CreateGenericTask(ServiceChannel channel, ProxyOperationRuntime operation, object[] inputParameters)
