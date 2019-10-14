@@ -25,7 +25,7 @@ public static class SymmetricSecurityKeyTest
         string algorit = "DES";
         MockGetSymmetricAlgorithm mgsaalg = new MockGetSymmetricAlgorithm();
         Assert.NotNull(mgsaalg.GetSymmetricAlgorithm(algorit));
-        Assert.IsType<DESCryptoServiceProvider>(mgsaalg.GetSymmetricAlgorithm(algorit));
+        Assert.IsAssignableFrom<DESCryptoServiceProvider>(mgsaalg.GetSymmetricAlgorithm(algorit));
     }
 }
 
