@@ -62,11 +62,11 @@ This repo contains the following library components.
 
 |Component|Description|
 |:--------|:----------|
-|**System.ServiceModel.Primitives**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Primitives.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the common types used by all of the WCF libraries.|
-|**System.ServiceModel.Http**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Http.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).|
-|**System.ServiceModel.NetTcp**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.NetTcp.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).|
-|**System.ServiceModel.Duplex**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Duplex.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that permit 2-way ("duplex") exchanges of messages.|
-|**System.ServiceModel.Security**<br/>[![MyGet Package](https://img.shields.io/myget/dotnet-core/vpre/System.ServiceModel.Security.svg)](https://dotnet.myget.org/gallery/dotnet-core)|Provides the types that support additional security features.|
+|[**System.ServiceModel.Primitives**](https://www.nuget.org/packages/System.ServiceModel.Primitives)|Provides the common types used by all of the WCF libraries.| 
+|[**System.ServiceModel.Http**](https://www.nuget.org/packages/System.ServiceModel.Http)|Provides the types that permit SOAP messages to be exchanged using Http (example: BasicHttpBinding).|
+|[**System.ServiceModel.NetTcp**](https://www.nuget.org/packages/System.ServiceModel.NetTcp)|Provides the types that permit SOAP messages to be exchanged using TCP (example: NetTcpBinding).|
+|[**System.ServiceModel.Duplex**](https://www.nuget.org/packages/System.ServiceModel.Duplex)|Provides the types that permit 2-way ("duplex") exchanges of messages.|
+|[**System.ServiceModel.Security**](https://www.nuget.org/packages/System.ServiceModel.Security)|Provides the types that support additional security features.|
 
 ## License
 
