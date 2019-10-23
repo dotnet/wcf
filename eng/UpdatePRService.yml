@@ -44,7 +44,11 @@ steps:
       :branch
       echo Set the repo branch to be what build.SourceBranchName is: %BUILD_SOURCEBRANCHNAME%
       REM The following vso call sets a variable that is accessible further down in the PowerShell script to Sync the PR Service.
-      echo ##vso[task.setvariable variable=branchNameorPrId]origin/%BUILD_SOURCEBRANCHNAME%
+      IF '%BUILD_SOURCEBRANCHNAME%'=='master' (
+          echo ##vso[task.setvariable variable=branchNameorPrId]origin/%BUILD_SOURCEBRANCHNAME%
+      ) ELSE (
+          echo ##vso[task.setvariable variable=branchNameorPrId]origin/release/%BUILD_SOURCEBRANCHNAME%
+      )
       goto done
 
       :done
@@ -74,7 +78,11 @@ steps:
         echo "Operation mode has been set to: $_OPERATION"
         echo "##vso[task.setvariable variable=operation]$_OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
-        echo "##vso[task.setvariable variable=branchNameorPrId]origin/$BUILD_SOURCEBRANCHNAME"
+        if [[ $BUILD_SOURCEBRANCHNAME = master ]]; then
+          echo "##vso[task.setvariable variable=branchNameorPrId]origin/$BUILD_SOURCEBRANCHNAME"
+        else
+          echo "##vso[task.setvariable variable=branchNameorPrId]origin/release/$BUILD_SOURCEBRANCHNAME"
+        fi
       fi
 
     displayName: Set_Operation_PR_or_Branch_Unix

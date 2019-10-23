@@ -7,14 +7,14 @@ trigger:
   branches:
     include:
     - master
-    - release/3.0.0
+    - release/3.*
 
 # trigger ci builds for pull requests into listed branches
 pr:
   branches:
     include:
     - master
-    - release/3.0.0
+    - release/3.*
 
 variables:  
   - name: _TeamName
@@ -33,6 +33,7 @@ variables:
       value: false
     - name: _RunAsInternal
       value: true
+    - group: DotNet-Wcf-SDLValidation-Params
 
 resources:
   containers:
@@ -285,12 +286,12 @@ stages:
       SDLValidationParameters:
         enable: true
         params: ' -SourceToolsList @("policheck","credscan")
-        -TsaInstanceURL "https://devdiv.visualstudio.com/"
-        -TsaProjectName "DEVDIV"
-        -TsaNotificationEmail "wcfcoret@microsoft.com"
-        -TsaCodebaseAdmin "REDMOND\stebon"
-        -TsaBugAreaPath "DevDiv\NET\NET Core"
-        -TsaIterationPath "DevDiv"
+        -TsaInstanceURL $(_TsaInstanceURL)
+        -TsaProjectName $(_TsaProjectName)
+        -TsaNotificationEmail $(_TsaNotificationEmail)
+        -TsaCodebaseAdmin $(_TsaCodebaseAdmin)
+        -TsaBugAreaPath $(_TsaBugAreaPath)
+        -TsaIterationPath $(_TsaIterationPath)
         -TsaRepositoryName "WCF"
         -TsaCodebaseName "WCF"
         -TsaPublish $True'
