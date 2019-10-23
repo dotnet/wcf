@@ -36,31 +36,31 @@
   <!-- =============================== Custom project targest =============================== -->
 
   <!-- Note: Overwriting BeforeBuild target does not work in .netcore, invoking a target with the BeforeTargets=Build does not work as the Build dependencies are invoked first.-->
-  <Target Name="GetSignNuGetPackFiles" BeforeTargets="SignNuGetPackage" DependsOnTargets="GetNuGetPackageVersion">
+  <!--<Target Name="GetSignNuGetPackFiles" BeforeTargets="SignNuGetPackage" DependsOnTargets="GetNuGetPackageVersion">
     <ItemGroup>
       <NuGetPackOutput Remove="@(NuGetPackOutput)" />
       <SignNuGetPackFiles Include="$(RepositoryRoot)bin\**\$(MSBuildProjectName).$(NuGetPackageVersion)*.nupkg" />
     </ItemGroup>
-  </Target>
+  </Target>-->
 
   <!-- BeforeGenerateVersionFile is defined in version.targets and cannot be overwritten here as it is imported later (.netcore projects only). -->
-  <Target Name="GetNuGetPackageVersion" BeforeTargets="BeforeGenerateVersionFile" Outputs="$(NuGetPackageVersion)">
+  <!--<Target Name="GetNuGetPackageVersion" BeforeTargets="BeforeGenerateVersionFile" Outputs="$(NuGetPackageVersion)">
     <PropertyGroup>
       <VersionPrerel Condition="'$(VersionPrerel)' != ''">$(VersionPrerel)-$(VersionBuild)-$(VersionRevision)</VersionPrerel>
       <NuGetPackageVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch)$(VersionPrerel)</NuGetPackageVersion>
-      <!-- AssemblyInformationalVersionAttribute is used at runtime to find the NuGet package, it must be the as the pkg version. -->
+      --><!-- AssemblyInformationalVersionAttribute is used at runtime to find the NuGet package, it must be the as the pkg version. --><!--
       <AssemblyInformationalVersion>$(NuGetPackageVersion)</AssemblyInformationalVersion>
     </PropertyGroup>
-  </Target>
+  </Target>-->
 
   <!-- Define BeforePack to be able to inject our targets earlier in the process, see .netcore NuGet.Build.Tasks.Pack.targets. -->
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <BeforePack>GetNuspecParams</BeforePack>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <!-- GenerateNuspec target is defined in the .netcore NuGet.Build.Tasks.Pack.targets file and is a dependency of the Pack target. -->
-  <Target Name="GetNuspecParams" DependsOnTargets="GetNuGetPackageVersion">
-    <!-- Set these properties in a target as the version.targets is imported later in the msbuild script resolution. -->
+  <!--<Target Name="GetNuspecParams" DependsOnTargets="GetNuGetPackageVersion">
+    --><!-- Set these properties in a target as the version.targets is imported later in the msbuild script resolution. --><!--
     <PropertyGroup Label="Pack task parameters">
       <Authors>$(AssemblyCompany)</Authors>
       <Copyright>$(AssemblyCopyright)</Copyright>
@@ -74,6 +74,6 @@
       <PackageLicenseUrl>https://go.microsoft.com/fwlink/?linkid=874329</PackageLicenseUrl>
       <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
-  </Target>
+  </Target>-->
 
 </Project>
