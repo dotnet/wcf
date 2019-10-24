@@ -20,8 +20,15 @@ namespace System.ServiceModel.Channels
         // common state
         private Socket _socket;
         private bool _noDelay = false;
-        private TimeSpan _sendTimeout;
-        private TimeSpan _receiveTimeout;
+        private TimeSpan _asyncSendTimeout;
+        private TimeSpan _asyncReceiveTimeout;
+
+        // Socket.SendTimeout/Socket.ReceiveTimeout only work with the synchronous API calls and therefore they
+        // do not get updated when asynchronous Send/Read operations are performed.  In order to make sure we 
+        // Set the proper timeouts on the Socket itself we need to keep these two additional fields.
+        private TimeSpan _socketSyncSendTimeout;
+        private TimeSpan _socketSyncReceiveTimeout;
+
         private CloseState _closeState;
         private bool _aborted;
 
@@ -62,10 +69,10 @@ namespace System.ServiceModel.Channels
             _closeState = CloseState.Open;
             AsyncReadBuffer = _connectionBufferPool.Take();
             AsyncReadBufferSize = AsyncReadBuffer.Length;
-            _sendTimeout = _receiveTimeout = TimeSpan.MaxValue;
             _closeState = CloseState.Open;
             _socket.SendBufferSize = _socket.ReceiveBufferSize = AsyncReadBufferSize;
-            _sendTimeout = _receiveTimeout = TimeSpan.MaxValue;
+            _asyncSendTimeout = _asyncReceiveTimeout = TimeSpan.MaxValue;
+            _socketSyncSendTimeout = _socketSyncReceiveTimeout = TimeSpan.MaxValue;
         }
 
         public int AsyncReadBufferSize { get; }
@@ -204,7 +211,7 @@ namespace System.ServiceModel.Channels
         {
             try
             {
-                socketConnection.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, socketConnection._receiveTimeout), TransferOperation.Read);
+                socketConnection.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, socketConnection._asyncReceiveTimeout), TransferOperation.Read);
             }
             catch (SocketException)
             {
@@ -217,7 +224,7 @@ namespace System.ServiceModel.Channels
             try
             {
                 socketConnection.Abort(4,	// TraceEventType.Warning
-                    SR.Format(SR.SocketAbortedSendTimedOut, socketConnection._sendTimeout), TransferOperation.Write);
+                    SR.Format(SR.SocketAbortedSendTimedOut, socketConnection._asyncSendTimeout), TransferOperation.Write);
             }
             catch (SocketException)
             {
@@ -464,7 +471,7 @@ namespace System.ServiceModel.Channels
             catch (SocketException socketException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    ConvertSendException(socketException, TimeSpan.MaxValue));
+                    ConvertSendException(socketException, TimeSpan.MaxValue, _socketSyncSendTimeout));
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -500,15 +507,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private Exception ConvertSendException(SocketException socketException, TimeSpan remainingTime)
+        private Exception ConvertSendException(SocketException socketException, TimeSpan remainingTime, TimeSpan timeout)
         {
-            return ConvertTransferException(socketException, _sendTimeout, socketException,
+            return ConvertTransferException(socketException, timeout, socketException,
                 _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
         }
 
-        private Exception ConvertReceiveException(SocketException socketException, TimeSpan remainingTime)
+        private Exception ConvertReceiveException(SocketException socketException, TimeSpan remainingTime, TimeSpan timeout)
         {
-            return ConvertTransferException(socketException, _receiveTimeout, socketException,
+            return ConvertTransferException(socketException, timeout, socketException,
                 _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
         }
 
@@ -662,7 +669,7 @@ namespace System.ServiceModel.Channels
             catch (SocketException socketException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    ConvertSendException(socketException, TimeSpan.MaxValue));
+                    ConvertSendException(socketException, TimeSpan.MaxValue, _asyncSendTimeout));
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -759,7 +766,7 @@ namespace System.ServiceModel.Channels
             catch (SocketException socketException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    ConvertSendException(socketException, timeoutHelper.RemainingTime()));
+                    ConvertSendException(socketException, timeoutHelper.RemainingTime(), _socketSyncSendTimeout));
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -812,7 +819,7 @@ namespace System.ServiceModel.Channels
             catch (SocketException socketException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    ConvertReceiveException(socketException, timeoutHelper.RemainingTime()));
+                    ConvertReceiveException(socketException, timeoutHelper.RemainingTime(), _socketSyncReceiveTimeout));
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -894,7 +901,7 @@ namespace System.ServiceModel.Channels
             }
             catch (SocketException socketException)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertReceiveException(socketException, TimeSpan.MaxValue));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout));
             }
             catch (ObjectDisposedException objectDisposedException)
             {
@@ -934,7 +941,7 @@ namespace System.ServiceModel.Channels
             }
             catch (SocketException socketException)
             {
-                _asyncReadException = ConvertReceiveException(socketException, TimeSpan.MaxValue);
+                _asyncReadException = ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout);
             }
             catch (Exception exception)
             {
@@ -1044,7 +1051,7 @@ namespace System.ServiceModel.Channels
             }
             catch (SocketException socketException)
             {
-                _asyncWriteException = ConvertSendException(socketException, TimeSpan.MaxValue);
+                _asyncWriteException = ConvertSendException(socketException, TimeSpan.MaxValue, _asyncSendTimeout);
             }
             catch (Exception exception)
             {
@@ -1164,7 +1171,7 @@ namespace System.ServiceModel.Channels
                         new TimeoutException(SR.Format(SR.TcpConnectionTimedOut, timeout)));
                 }
 
-                if (UpdateTimeout(_receiveTimeout, timeout))
+                if (ShouldUpdateTimeout(_socketSyncReceiveTimeout, timeout))
                 {
                     lock (ThisLock)
                     {
@@ -1174,12 +1181,12 @@ namespace System.ServiceModel.Channels
                         }
                         _socket.ReceiveTimeout = TimeoutHelper.ToMilliseconds(timeout);
                     }
-                    _receiveTimeout = timeout;
+                    _socketSyncReceiveTimeout = timeout;
                 }
             }
             else
             {
-                _receiveTimeout = timeout;
+                _asyncReceiveTimeout = timeout;
                 if (timeout == TimeSpan.MaxValue)
                 {
                     CancelReceiveTimer();
@@ -1204,19 +1211,19 @@ namespace System.ServiceModel.Channels
                         new TimeoutException(SR.Format(SR.TcpConnectionTimedOut, timeout)));
                 }
 
-                if (UpdateTimeout(_sendTimeout, timeout))
+                if (ShouldUpdateTimeout(_socketSyncSendTimeout, timeout))
                 {
                     lock (ThisLock)
                     {
                         ThrowIfNotOpen();
                         _socket.SendTimeout = TimeoutHelper.ToMilliseconds(timeout);
                     }
-                    _sendTimeout = timeout;
+                    _socketSyncSendTimeout = timeout;
                 }
             }
             else
             {
-                _sendTimeout = timeout;
+                _asyncSendTimeout = timeout;
                 if (timeout == TimeSpan.MaxValue)
                 {
                     CancelSendTimer();
@@ -1228,7 +1235,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private bool UpdateTimeout(TimeSpan oldTimeout, TimeSpan newTimeout)
+        private bool ShouldUpdateTimeout(TimeSpan oldTimeout, TimeSpan newTimeout)
         {
             if (oldTimeout == newTimeout)
             {
