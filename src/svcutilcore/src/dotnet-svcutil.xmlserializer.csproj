@@ -12,7 +12,7 @@
     <DebugSymbols>true</DebugSymbols>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProjectGuid>{EAB2959D-0A16-4F60-A453-765491E1C069}</ProjectGuid>
-    <IsShipping>false</IsShipping>
+    <IsShipping>$(Ship_SvcUtilXmlSerPackages)</IsShipping>
   </PropertyGroup>
 
   <!--Package Properties-->
