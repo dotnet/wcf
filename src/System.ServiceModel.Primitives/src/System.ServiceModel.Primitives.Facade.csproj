@@ -13,6 +13,7 @@
     <TargetFrameworks>$(BuildFrameworks)$(HarvestFrameworks)</TargetFrameworks>
     <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
     <IsHarvesting Condition="$(HarvestFrameworks.Contains('$(TargetFramework);'))">true</IsHarvesting>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsBuilding)' == 'true' And '$(TargetFramework)' != 'net461'">

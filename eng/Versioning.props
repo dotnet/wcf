@@ -1,6 +1,8 @@
 <Project>
   <PropertyGroup>
     <GenerateAssemblyInfo Condition="'$(GenerateAssemblyInfo)'==''">true</GenerateAssemblyInfo>
+    <Ship_SvcUtilXmlSerPackages Condition="'$(Ship_SvcUtilXmlSerPackages)'==''">false</Ship_SvcUtilXmlSerPackages>
+    <Ship_WcfPackages Condition="'$(Ship_WcfPackages)'==''">true</Ship_WcfPackages>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GenerateAssemblyInfo)'=='true'">
