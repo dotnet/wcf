@@ -73,7 +73,7 @@ namespace System.ServiceModel.Channels
             _closeState = CloseState.Open;
             _readBuffer = connectionBufferPool.Take();
             _asyncReadBufferSize = _readBuffer.Length;
-            socket.SendBufferSize = socket.ReceiveBufferSize = _asyncReadBufferSize;
+            _socket.SendBufferSize = _socket.ReceiveBufferSize = _asyncReadBufferSize;
             _asyncSendTimeout = _asyncReceiveTimeout = TimeSpan.MaxValue;
             _socketSyncSendTimeout = _socketSyncReceiveTimeout = TimeSpan.MaxValue;
 
@@ -81,14 +81,14 @@ namespace System.ServiceModel.Channels
 
             if (autoBindToCompletionPort)
             {
-                socket.UseOnlyOverlappedIO = false;
+                _socket.UseOnlyOverlappedIO = false;
             }
 
             // In SMSvcHost, sockets must be duplicated to the target process. Binding a handle to a completion port
             // prevents any duplicated handle from ever binding to a completion port. The target process is where we
             // want to use completion ports for performance. This means that in SMSvcHost, socket.UseOnlyOverlappedIO
             // must be set to true to prevent completion port use.
-            if (socket.UseOnlyOverlappedIO)
+            if (_socket.UseOnlyOverlappedIO)
             {
                 // Init BeginRead state
                 if (s_onReceiveCompleted == null)
@@ -135,7 +135,7 @@ namespace System.ServiceModel.Channels
                     catch (ObjectDisposedException objectDisposedException)
                     {
                         Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Undefined);
-                        if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                        if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                         {
                             throw;
                         }
@@ -340,6 +340,9 @@ namespace System.ServiceModel.Channels
 
             try
             {
+                // A FIN (shutdown) packet has already been sent to the remote host and we're waiting for the remote
+                // host to send a FIN back. A pending read on a socket will complete returning zero bytes when a FIN
+                // packet is received.
                 if (BeginReadCore(0, 1, _readFinTimeout, s_onWaitForFinComplete, this) == AsyncCompletionResult.Queued)
                 {
                     return;
@@ -505,7 +508,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Undefined);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -522,7 +525,7 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     ConvertObjectDisposedException(new ObjectDisposedException(
-                    GetType().ToString(), SR.Format(SR.SocketConnectionDisposed)), TransferOperation.Undefined));
+                    GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
             }
         }
 
@@ -532,7 +535,7 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     ConvertObjectDisposedException(new ObjectDisposedException(
-                    GetType().ToString(), SR.Format(SR.SocketConnectionDisposed)), TransferOperation.Undefined));
+                    GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
             }
         }
 
@@ -602,7 +605,7 @@ namespace System.ServiceModel.Channels
             }
             else if (_aborted)
             {
-                return new CommunicationObjectAbortedException(SR.Format(SR.SocketConnectionDisposed), originalException);
+                return new CommunicationObjectAbortedException(SR.SocketConnectionDisposed, originalException);
             }
             else
             {
@@ -638,7 +641,7 @@ namespace System.ServiceModel.Channels
             {
                 if (aborted)
                 {
-                    return new CommunicationObjectAbortedException(SR.Format(SR.TcpLocalConnectionAborted), originalException);
+                    return new CommunicationObjectAbortedException(SR.TcpLocalConnectionAborted, originalException);
                 }
                 else
                 {
@@ -729,7 +732,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -882,7 +885,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -941,7 +944,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -1038,7 +1041,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
