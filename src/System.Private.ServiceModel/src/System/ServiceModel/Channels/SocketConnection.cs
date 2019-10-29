@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Net;
 using System.Net.Sockets;
@@ -14,13 +14,14 @@ namespace System.ServiceModel.Channels
 {
     internal class SocketConnection : IConnection
     {
-        private static EventHandler<SocketAsyncEventArgs> s_onReceiveAsyncCompleted;
-        private static EventHandler<SocketAsyncEventArgs> s_onSocketSendCompleted;
+        static AsyncCallback s_onReceiveCompleted;
+        static EventHandler<SocketAsyncEventArgs> s_onReceiveAsyncCompleted;
+        static EventHandler<SocketAsyncEventArgs> s_onSocketSendCompleted;
 
         // common state
         private Socket _socket;
-        private bool _noDelay = false;
         private TimeSpan _asyncSendTimeout;
+        private TimeSpan _readFinTimeout;
         private TimeSpan _asyncReceiveTimeout;
 
         // Socket.SendTimeout/Socket.ReceiveTimeout only work with the synchronous API calls and therefore they
@@ -30,17 +31,19 @@ namespace System.ServiceModel.Channels
         private TimeSpan _socketSyncReceiveTimeout;
 
         private CloseState _closeState;
+        private bool _isShutdown;
+        private bool _noDelay = false;
         private bool _aborted;
 
         // close state
-        private static Action<object> s_onWaitForFinComplete = new Action<object>(OnWaitForFinComplete);
         private TimeoutHelper _closeTimeoutHelper;
-        private bool _isShutdown;
+        private static Action<object> s_onWaitForFinComplete = new Action<object>(OnWaitForFinComplete);
 
         // read state
-        private SocketAsyncEventArgs _asyncReadEventArgs;
-        private TimeSpan _readFinTimeout;
         private int _asyncReadSize;
+        private SocketAsyncEventArgs _asyncReadEventArgs;
+        private byte[] _readBuffer;
+        private int _asyncReadBufferSize;
         private object _asyncReadState;
         private Action<object> _asyncReadCallback;
         private Exception _asyncReadException;
@@ -53,35 +56,98 @@ namespace System.ServiceModel.Channels
         private Exception _asyncWriteException;
         private bool _asyncWritePending;
 
-        private static Action<SocketConnection> s_onSendTimeout;
-        private static Action<SocketConnection> s_onReceiveTimeout;
         private IOTimer<SocketConnection> _receiveTimer;
+        private static Action<object> s_onReceiveTimeout;
         private IOTimer<SocketConnection> _sendTimer;
+        private static Action<object> s_onSendTimeout;
         private string _timeoutErrorString;
         private TransferOperation _timeoutErrorTransferOperation;
+        private IPEndPoint _remoteEndpoint;
         private ConnectionBufferPool _connectionBufferPool;
-        private string _remoteEndpointAddressString;
+        private string _remoteEndpointAddress;
 
-        public SocketConnection(Socket socket, ConnectionBufferPool connectionBufferPool)
+        public SocketConnection(Socket socket, ConnectionBufferPool connectionBufferPool, bool autoBindToCompletionPort)
         {
             _connectionBufferPool = connectionBufferPool ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(connectionBufferPool));
             _socket = socket ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(socket));
             _closeState = CloseState.Open;
-            AsyncReadBuffer = _connectionBufferPool.Take();
-            AsyncReadBufferSize = AsyncReadBuffer.Length;
-            _closeState = CloseState.Open;
-            _socket.SendBufferSize = _socket.ReceiveBufferSize = AsyncReadBufferSize;
+            _readBuffer = connectionBufferPool.Take();
+            _asyncReadBufferSize = _readBuffer.Length;
+            socket.SendBufferSize = socket.ReceiveBufferSize = _asyncReadBufferSize;
             _asyncSendTimeout = _asyncReceiveTimeout = TimeSpan.MaxValue;
             _socketSyncSendTimeout = _socketSyncReceiveTimeout = TimeSpan.MaxValue;
+
+            _remoteEndpoint = null;
+
+            if (autoBindToCompletionPort)
+            {
+                socket.UseOnlyOverlappedIO = false;
+            }
+
+            // In SMSvcHost, sockets must be duplicated to the target process. Binding a handle to a completion port
+            // prevents any duplicated handle from ever binding to a completion port. The target process is where we
+            // want to use completion ports for performance. This means that in SMSvcHost, socket.UseOnlyOverlappedIO
+            // must be set to true to prevent completion port use.
+            if (socket.UseOnlyOverlappedIO)
+            {
+                // Init BeginRead state
+                if (s_onReceiveCompleted == null)
+                {
+                    s_onReceiveCompleted = Fx.ThunkCallback(new AsyncCallback(OnReceiveCompleted));
+                }
+            }
+        }
+        public int AsyncReadBufferSize
+        {
+            get { return _asyncReadBufferSize; }
         }
 
-        public int AsyncReadBufferSize { get; }
-
-        public byte[] AsyncReadBuffer { get; private set; }
+        public byte[] AsyncReadBuffer
+        {
+            get
+            {
+                return _readBuffer;
+            }
+        }
 
         private object ThisLock
         {
             get { return this; }
+        }
+
+        public IPEndPoint RemoteIPEndPoint
+        {
+            get
+            {
+                // this property should only be called on the receive path
+                if (_remoteEndpoint == null && _closeState == CloseState.Open)
+                {
+                    try
+                    {
+                        _remoteEndpoint = (IPEndPoint)_socket.RemoteEndPoint;
+                    }
+                    catch (SocketException socketException)
+                    {
+                        // will never be a timeout error, so TimeSpan.Zero is ok
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                            ConvertReceiveException(socketException, TimeSpan.Zero, TimeSpan.Zero));
+                    }
+                    catch (ObjectDisposedException objectDisposedException)
+                    {
+                        Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Undefined);
+                        if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                        {
+                            throw;
+                        }
+                        else
+                        {
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
+                        }
+                    }
+                }
+
+                return _remoteEndpoint;
+            }
         }
 
         private IOTimer<SocketConnection> SendTimer
@@ -92,7 +158,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (s_onSendTimeout == null)
                     {
-                        s_onSendTimeout = OnSendTimeout;
+                        s_onSendTimeout = new Action<object>(OnSendTimeout);
                     }
 
                     _sendTimer = new IOTimer<SocketConnection>(s_onSendTimeout, this);
@@ -110,7 +176,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (s_onReceiveTimeout == null)
                     {
-                        s_onReceiveTimeout = OnReceiveTimeout;
+                        s_onReceiveTimeout = new Action<object>(OnReceiveTimeout);
                     }
 
                     _receiveTimer = new IOTimer<SocketConnection>(s_onReceiveTimeout, this);
@@ -120,35 +186,54 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private IPEndPoint RemoteEndPoint
+
+        private string RemoteEndpointAddress
         {
             get
             {
-                if (!_socket.Connected)
+                if (_remoteEndpointAddress == null)
                 {
-                    return null;
-                }
+                    try
+                    {
+                        if (TryGetEndpoints(out IPEndPoint local, out IPEndPoint remote))
+                        {
+                            _remoteEndpointAddress = remote.Address + ":" + remote.Port;
+                        }
+                        else
+                        {
+                            //null indicates not initialized.
+                            _remoteEndpointAddress = string.Empty;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        if (Fx.IsFatal(exception))
+                        {
+                            throw;
+                        }
 
-                return (IPEndPoint)_socket.RemoteEndPoint;
+                    }
+                }
+                return _remoteEndpointAddress;
             }
         }
 
-        private string RemoteEndpointAddressString
+        private static void OnReceiveTimeout(object state)
         {
-            get
-            {
-                if (_remoteEndpointAddressString == null)
-                {
-                    IPEndPoint remote = RemoteEndPoint;
-                    if (remote == null)
-                    {
-                        return string.Empty;
-                    }
-                    _remoteEndpointAddressString = remote.Address + ":" + remote.Port;
-                }
+            SocketConnection thisPtr = (SocketConnection)state;
+            thisPtr.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, thisPtr._asyncReceiveTimeout), TransferOperation.Read);
+        }
 
-                return _remoteEndpointAddressString;
-            }
+        private static void OnSendTimeout(object state)
+        {
+            SocketConnection thisPtr = (SocketConnection)state;
+            thisPtr.Abort(4,	// TraceEventType.Warning
+                SR.Format(SR.SocketAbortedSendTimedOut, thisPtr._asyncSendTimeout), TransferOperation.Write);
+        }
+
+        private static void OnReceiveCompleted(IAsyncResult result)
+        {
+            ((SocketConnection)result.AsyncState).OnReceive(result);
         }
 
         private static void OnReceiveAsyncCompleted(object sender, SocketAsyncEventArgs e)
@@ -159,77 +244,6 @@ namespace System.ServiceModel.Channels
         private static void OnSendAsyncCompleted(object sender, SocketAsyncEventArgs e)
         {
             ((SocketConnection)e.UserToken).OnSendAsync(sender, e);
-        }
-
-        private static void OnWaitForFinComplete(object state)
-        {
-            // Callback for read on a socket which has had Shutdown called on it. When
-            // the response FIN packet is received from the remote host, the pending
-            // read will complete with 0 bytes read. If more than 0 bytes has been read,
-            // then something has gone wrong as we should have no pending data to be received.
-            SocketConnection thisPtr = (SocketConnection)state;
-
-            try
-            {
-                int bytesRead;
-
-                try
-                {
-                    bytesRead = thisPtr.EndRead();
-
-                    if (bytesRead > 0)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                            new CommunicationException(SR.Format(SR.SocketCloseReadReceivedData, thisPtr.RemoteEndPoint)));
-                    }
-                }
-                catch (TimeoutException timeoutException)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                        SR.Format(SR.SocketCloseReadTimeout, thisPtr.RemoteEndPoint, thisPtr._readFinTimeout),
-                        timeoutException));
-                }
-
-                thisPtr.ContinueClose(thisPtr._closeTimeoutHelper.RemainingTime());
-            }
-            catch (Exception e)
-            {
-                if (Fx.IsFatal(e))
-                {
-                    throw;
-                }
-
-                Fx.Exception.TraceUnhandledException(e);
-
-                // The user has no opportunity to clean up the connection in the async and linger
-                // code path, ensure cleanup finishes.
-                thisPtr.Abort();
-            }
-        }
-
-        private static void OnReceiveTimeout(SocketConnection socketConnection)
-        {
-            try
-            {
-                socketConnection.Abort(SR.Format(SR.SocketAbortedReceiveTimedOut, socketConnection._asyncReceiveTimeout), TransferOperation.Read);
-            }
-            catch (SocketException)
-            {
-                // Guard against unhandled SocketException in timer callbacks
-            }
-        }
-
-        private static void OnSendTimeout(SocketConnection socketConnection)
-        {
-            try
-            {
-                socketConnection.Abort(4,	// TraceEventType.Warning
-                    SR.Format(SR.SocketAbortedSendTimedOut, socketConnection._asyncSendTimeout), TransferOperation.Write);
-            }
-            catch (SocketException)
-            {
-                // Guard against unhandled SocketException in timer callbacks
-            }
         }
 
         public void Abort()
@@ -265,23 +279,26 @@ namespace System.ServiceModel.Channels
                 _aborted = true;
                 _closeState = CloseState.Closed;
 
-                if (!_asyncReadPending)
+                if (_asyncReadPending)
+                {
+                    CancelReceiveTimer();
+                }
+                else
                 {
                     DisposeReadEventArgs();
                 }
 
-                if (!_asyncWritePending)
+                if (_asyncWritePending)
+                {
+                    CancelSendTimer();
+                }
+                else
                 {
                     DisposeWriteEventArgs();
                 }
-
-                DisposeReceiveTimer();
-                DisposeSendTimer();
             }
 
-            _socket.LingerState = new LingerOption(true, 0);
-            _socket.Shutdown(SocketShutdown.Both);
-            _socket.Dispose();
+            _socket.Close(0);
         }
 
         private void AbortRead()
@@ -323,9 +340,6 @@ namespace System.ServiceModel.Channels
 
             try
             {
-                // A FIN (shutdown) packet has already been sent to the remote host and we're waiting for the remote
-                // host to send a FIN back. A pending read on a socket will complete returning zero bytes when a FIN
-                // packet is received.
                 if (BeginReadCore(0, 1, _readFinTimeout, s_onWaitForFinComplete, this) == AsyncCompletionResult.Queued)
                 {
                     return;
@@ -333,21 +347,59 @@ namespace System.ServiceModel.Channels
 
                 int bytesRead = EndRead();
 
-                // Any NetTcp session handshake will have been completed at this point so if any data is returned, something
-                // very wrong has happened.
                 if (bytesRead > 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new CommunicationException(SR.Format(SR.SocketCloseReadReceivedData, RemoteEndPoint)));
+                        new CommunicationException(SR.Format(SR.SocketCloseReadReceivedData, _socket.RemoteEndPoint)));
                 }
             }
             catch (TimeoutException timeoutException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                    SR.Format(SR.SocketCloseReadTimeout, RemoteEndPoint, _readFinTimeout), timeoutException));
+                    SR.Format(SR.SocketCloseReadTimeout, _socket.RemoteEndPoint, _readFinTimeout), timeoutException));
             }
 
             ContinueClose(_closeTimeoutHelper.RemainingTime());
+        }
+
+        private static void OnWaitForFinComplete(object state)
+        {
+            SocketConnection thisPtr = (SocketConnection)state;
+
+            try
+            {
+                int bytesRead;
+
+                try
+                {
+                    bytesRead = thisPtr.EndRead();
+
+                    if (bytesRead > 0)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                            new CommunicationException(SR.Format(SR.SocketCloseReadReceivedData, thisPtr._socket.RemoteEndPoint)));
+                    }
+                }
+                catch (TimeoutException timeoutException)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
+                        SR.Format(SR.SocketCloseReadTimeout, thisPtr._socket.RemoteEndPoint, thisPtr._readFinTimeout),
+                        timeoutException));
+                }
+
+                thisPtr.ContinueClose(thisPtr._closeTimeoutHelper.RemainingTime());
+            }
+            catch (Exception e)
+            {
+                if (Fx.IsFatal(e))
+                {
+                    throw;
+                }
+
+                // The user has no opportunity to clean up the connection in the async and linger
+                // code path, ensure cleanup finishes.
+                thisPtr.Abort();
+            }
         }
 
         public void Close(TimeSpan timeout, bool asyncAndLinger)
@@ -362,15 +414,10 @@ namespace System.ServiceModel.Channels
                 _closeState = CloseState.Closing;
             }
 
-            _closeTimeoutHelper = new TimeoutHelper(timeout);
-
             // first we shutdown our send-side
-            Shutdown(timeout);
-            CloseCore(asyncAndLinger);
-        }
+            _closeTimeoutHelper = new TimeoutHelper(timeout);
+            Shutdown(_closeTimeoutHelper.RemainingTime());
 
-        private void CloseCore(bool asyncAndLinger)
-        {
             if (asyncAndLinger)
             {
                 CloseAsyncAndLinger();
@@ -385,10 +432,7 @@ namespace System.ServiceModel.Channels
         {
             byte[] dummy = new byte[1];
 
-            // A FIN (shutdown) packet has already been sent to the remote host and we're waiting for the remote
-            // host to send a FIN back. A pending read on a socket will complete returning zero bytes when a FIN
-            // packet is received.
-
+            // then we check for a FIN from the other side (i.e. read zero)
             int bytesRead;
             _readFinTimeout = _closeTimeoutHelper.RemainingTime();
 
@@ -396,32 +440,25 @@ namespace System.ServiceModel.Channels
             {
                 bytesRead = ReadCore(dummy, 0, 1, _readFinTimeout, true);
 
-                // Any NetTcp session handshake will have been completed at this point so if any data is returned, something
-                // very wrong has happened.
                 if (bytesRead > 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new CommunicationException(SR.Format(SR.SocketCloseReadReceivedData, RemoteEndPoint)));
+                        new CommunicationException(SR.Format(SR.SocketCloseReadReceivedData, _socket.RemoteEndPoint)));
                 }
             }
             catch (TimeoutException timeoutException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                    SR.Format(SR.SocketCloseReadTimeout, RemoteEndPoint, _readFinTimeout), timeoutException));
+                    SR.Format(SR.SocketCloseReadTimeout, _socket.RemoteEndPoint, _readFinTimeout), timeoutException));
             }
 
             // finally we call Close with whatever time is remaining
             ContinueClose(_closeTimeoutHelper.RemainingTime());
         }
 
-        private void ContinueClose(TimeSpan timeout)
+        public void ContinueClose(TimeSpan timeout)
         {
-            // Use linger to attempt a graceful socket shutdown. Allowing a clean shutdown handshake
-            // will allow the service side to close it's socket gracefully too. A hard shutdown would
-            // cause the server to receive an exception which affects performance and scalability.
-            _socket.LingerState = new LingerOption(true, (int)timeout.TotalSeconds);
-            _socket.Shutdown(SocketShutdown.Both);
-            _socket.Dispose();
+            _socket.Close(TimeoutHelper.ToMilliseconds(timeout));
 
             lock (ThisLock)
             {
@@ -441,12 +478,10 @@ namespace System.ServiceModel.Channels
                 }
 
                 _closeState = CloseState.Closed;
-                DisposeReceiveTimer();
-                DisposeSendTimer();
             }
         }
 
-        private void Shutdown(TimeSpan timeout)
+        public void Shutdown(TimeSpan timeout)
         {
             lock (ThisLock)
             {
@@ -458,12 +493,6 @@ namespace System.ServiceModel.Channels
                 _isShutdown = true;
             }
 
-            ShutdownCore(timeout);
-        }
-
-        private void ShutdownCore(TimeSpan timeout)
-        {
-            // Attempt to close the socket gracefully by sending a shutdown (FIN) packet
             try
             {
                 _socket.Shutdown(SocketShutdown.Send);
@@ -476,7 +505,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Undefined);
-                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -493,7 +522,7 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     ConvertObjectDisposedException(new ObjectDisposedException(
-                    GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
+                    GetType().ToString(), SR.Format(SR.SocketConnectionDisposed)), TransferOperation.Undefined));
             }
         }
 
@@ -503,37 +532,77 @@ namespace System.ServiceModel.Channels
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     ConvertObjectDisposedException(new ObjectDisposedException(
-                    GetType().ToString(), SR.SocketConnectionDisposed), TransferOperation.Undefined));
+                    GetType().ToString(), SR.Format(SR.SocketConnectionDisposed)), TransferOperation.Undefined));
             }
+        }
+
+        private bool TryGetEndpoints(out IPEndPoint localIPEndpoint, out IPEndPoint remoteIPEndpoint)
+        {
+            localIPEndpoint = null;
+            remoteIPEndpoint = null;
+
+            if (_closeState == CloseState.Open)
+            {
+                try
+                {
+                    remoteIPEndpoint = _remoteEndpoint ?? (IPEndPoint)_socket.RemoteEndPoint;
+                    localIPEndpoint = (IPEndPoint)_socket.LocalEndPoint;
+                }
+                catch (Exception exception)
+                {
+                    if (Fx.IsFatal(exception))
+                    {
+                        throw;
+                    }
+
+                }
+            }
+
+            return localIPEndpoint != null && remoteIPEndpoint != null;
+        }
+
+        public object GetCoreTransport()
+        {
+            return _socket;
+        }
+
+        public IAsyncResult BeginValidate(Uri uri, AsyncCallback callback, object state)
+        {
+            return new CompletedAsyncResult<bool>(true, callback, state);
+        }
+
+        public bool EndValidate(IAsyncResult result)
+        {
+            return CompletedAsyncResult<bool>.End(result);
         }
 
         private Exception ConvertSendException(SocketException socketException, TimeSpan remainingTime, TimeSpan timeout)
         {
             return ConvertTransferException(socketException, timeout, socketException,
-                _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
+                TransferOperation.Write, _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
         }
 
         private Exception ConvertReceiveException(SocketException socketException, TimeSpan remainingTime, TimeSpan timeout)
         {
             return ConvertTransferException(socketException, timeout, socketException,
-                _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
+                TransferOperation.Read, _aborted, _timeoutErrorString, _timeoutErrorTransferOperation, this, remainingTime);
         }
 
         internal static Exception ConvertTransferException(SocketException socketException, TimeSpan timeout, Exception originalException)
         {
             return ConvertTransferException(socketException, timeout, originalException,
-                false, null, TransferOperation.Undefined, null, TimeSpan.MaxValue);
+                TransferOperation.Undefined, false, null, TransferOperation.Undefined, null, TimeSpan.MaxValue);
         }
 
         private Exception ConvertObjectDisposedException(ObjectDisposedException originalException, TransferOperation transferOperation)
         {
             if (_timeoutErrorString != null)
             {
-                return ConvertTimeoutErrorException(originalException, _timeoutErrorString, _timeoutErrorTransferOperation);
+                return ConvertTimeoutErrorException(originalException, transferOperation, _timeoutErrorString, _timeoutErrorTransferOperation);
             }
             else if (_aborted)
             {
-                return new CommunicationObjectAbortedException(SR.SocketConnectionDisposed, originalException);
+                return new CommunicationObjectAbortedException(SR.Format(SR.SocketConnectionDisposed), originalException);
             }
             else
             {
@@ -542,34 +611,34 @@ namespace System.ServiceModel.Channels
         }
 
         private static Exception ConvertTransferException(SocketException socketException, TimeSpan timeout, Exception originalException,
-            bool aborted, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation,
+            TransferOperation transferOperation, bool aborted, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation,
             SocketConnection socketConnection, TimeSpan remainingTime)
         {
-            if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.ERROR_INVALID_HANDLE)
+            if (socketException.ErrorCode == UnsafeNativeMethods.ERROR_INVALID_HANDLE)
             {
                 return new CommunicationObjectAbortedException(socketException.Message, socketException);
             }
 
             if (timeoutErrorString != null)
             {
-                return ConvertTimeoutErrorException(originalException, timeoutErrorString, timeoutErrorTransferOperation);
+                return ConvertTimeoutErrorException(originalException, transferOperation, timeoutErrorString, timeoutErrorTransferOperation);
             }
 
             // 10053 can occur due to our timeout sockopt firing, so map to TimeoutException in that case
-            if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAECONNABORTED &&
+            if (socketException.ErrorCode == UnsafeNativeMethods.WSAECONNABORTED &&
                 remainingTime <= TimeSpan.Zero)
             {
                 TimeoutException timeoutException = new TimeoutException(SR.Format(SR.TcpConnectionTimedOut, timeout), originalException);
                 return timeoutException;
             }
 
-            if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAENETRESET ||
-                (int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAECONNABORTED ||
-                (int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAECONNRESET)
+            if (socketException.ErrorCode == UnsafeNativeMethods.WSAENETRESET ||
+                socketException.ErrorCode == UnsafeNativeMethods.WSAECONNABORTED ||
+                socketException.ErrorCode == UnsafeNativeMethods.WSAECONNRESET)
             {
                 if (aborted)
                 {
-                    return new CommunicationObjectAbortedException(SR.TcpLocalConnectionAborted, originalException);
+                    return new CommunicationObjectAbortedException(SR.Format(SR.TcpLocalConnectionAborted), originalException);
                 }
                 else
                 {
@@ -577,7 +646,7 @@ namespace System.ServiceModel.Channels
                     return communicationException;
                 }
             }
-            else if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAETIMEDOUT)
+            else if (socketException.ErrorCode == UnsafeNativeMethods.WSAETIMEDOUT)
             {
                 TimeoutException timeoutException = new TimeoutException(SR.Format(SR.TcpConnectionTimedOut, timeout), originalException);
                 return timeoutException;
@@ -586,21 +655,25 @@ namespace System.ServiceModel.Channels
             {
                 if (aborted)
                 {
-                    return new CommunicationObjectAbortedException(SR.Format(SR.TcpTransferError, (int)socketException.SocketErrorCode, socketException.Message), originalException);
+                    return new CommunicationObjectAbortedException(SR.Format(SR.TcpTransferError, socketException.ErrorCode, socketException.Message), originalException);
                 }
                 else
                 {
-                    CommunicationException communicationException = new CommunicationException(SR.Format(SR.TcpTransferError, (int)socketException.SocketErrorCode, socketException.Message), originalException);
+                    CommunicationException communicationException = new CommunicationException(SR.Format(SR.TcpTransferError, socketException.ErrorCode, socketException.Message), originalException);
                     return communicationException;
                 }
             }
         }
 
-        private static Exception ConvertTimeoutErrorException(Exception originalException, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation)
+        private static Exception ConvertTimeoutErrorException(Exception originalException,
+            TransferOperation transferOperation, string timeoutErrorString, TransferOperation timeoutErrorTransferOperation)
         {
-            Contract.Assert(timeoutErrorString != null, "Argument timeoutErrorString must not be null.");
+            if (timeoutErrorString == null)
+            {
+                Fx.Assert("Argument timeoutErrorString must not be null.");
+            }
 
-            if (timeoutErrorTransferOperation != TransferOperation.Undefined)
+            if (transferOperation == timeoutErrorTransferOperation)
             {
                 return new TimeoutException(timeoutErrorString, originalException);
             }
@@ -613,37 +686,19 @@ namespace System.ServiceModel.Channels
         public AsyncCompletionResult BeginWrite(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
             Action<object> callback, object state)
         {
-            if (WcfEventSource.Instance.SocketAsyncWriteStartIsEnabled())
-            {
-                TraceWriteStart(size, true);
-            }
-
-            return BeginWriteCore(buffer, offset, size, immediate, timeout, callback, state);
-        }
-
-        private void TraceWriteStart(int size, bool async)
-        {
-            if (!async)
-            {
-                WcfEventSource.Instance.SocketWriteStart(_socket.GetHashCode(), size, RemoteEndpointAddressString);
-            }
-            else
-            {
-                WcfEventSource.Instance.SocketAsyncWriteStart(_socket.GetHashCode(), size, RemoteEndpointAddressString);
-            }
-        }
-
-        private AsyncCompletionResult BeginWriteCore(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout,
-            Action<object> callback, object state)
-        {
             ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
             bool abortWrite = true;
 
             try
             {
+                if (WcfEventSource.Instance.SocketAsyncWriteStartIsEnabled())
+                {
+                    TraceWriteStart(size, true);
+                }
+
                 lock (ThisLock)
                 {
-                    Contract.Assert(!_asyncWritePending, "Called BeginWrite twice.");
+                    Fx.Assert(!_asyncWritePending, "Called BeginWrite twice.");
                     ThrowIfClosed();
                     EnsureWriteEventArgs();
                     SetImmediate(immediate);
@@ -674,7 +729,7 @@ namespace System.ServiceModel.Channels
             catch (ObjectDisposedException objectDisposedException)
             {
                 Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
+                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
                 {
                     throw;
                 }
@@ -694,11 +749,6 @@ namespace System.ServiceModel.Channels
 
         public void EndWrite()
         {
-            EndWriteCore();
-        }
-
-        private void EndWriteCore()
-        {
             if (_asyncWriteException != null)
             {
                 AbortWrite();
@@ -709,8 +759,7 @@ namespace System.ServiceModel.Channels
             {
                 if (!_asyncWritePending)
                 {
-                    Contract.Assert(false, "SocketConnection.EndWrite called with no write pending.");
-                    throw new Exception("SocketConnection.EndWrite called with no write pending.");
+                    throw Fx.AssertAndThrow("SocketConnection.EndWrite called with no write pending.");
                 }
 
                 SetUserToken(_asyncWriteEventArgs, null);
@@ -723,331 +772,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private void FinishWrite()
-        {
-            Action<object> asyncWriteCallback = _asyncWriteCallback;
-            object asyncWriteState = _asyncWriteState;
-
-            _asyncWriteState = null;
-            _asyncWriteCallback = null;
-
-            asyncWriteCallback(asyncWriteState);
-        }
-
-        public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
-        {
-            WriteCore(buffer, offset, size, immediate, timeout);
-        }
-
-        private void WriteCore(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
-        {
-            // as per http://support.microsoft.com/default.aspx?scid=kb%3ben-us%3b201213
-            // we shouldn't write more than 64K synchronously to a socket
-            const int maxSocketWrite = 64 * 1024;
-
-            ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
-
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            try
-            {
-                SetImmediate(immediate);
-                int bytesToWrite = size;
-
-                while (bytesToWrite > 0)
-                {
-                    SetWriteTimeout(timeoutHelper.RemainingTime(), true);
-                    size = Math.Min(bytesToWrite, maxSocketWrite);
-                    _socket.Send(buffer, offset, size, SocketFlags.None);
-                    bytesToWrite -= size;
-                    offset += size;
-                    timeout = timeoutHelper.RemainingTime();
-                }
-            }
-            catch (SocketException socketException)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    ConvertSendException(socketException, timeoutHelper.RemainingTime(), _socketSyncSendTimeout));
-            }
-            catch (ObjectDisposedException objectDisposedException)
-            {
-                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
-                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
-                {
-                    throw;
-                }
-                else
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
-                }
-            }
-        }
-
-        public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager)
-        {
-            try
-            {
-                Write(buffer, offset, size, immediate, timeout);
-            }
-            finally
-            {
-                bufferManager.ReturnBuffer(buffer);
-            }
-        }
-
-        public int Read(byte[] buffer, int offset, int size, TimeSpan timeout)
-        {
-            ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
-            ThrowIfNotOpen();
-            int bytesRead = ReadCore(buffer, offset, size, timeout, false);
-            if (WcfEventSource.Instance.SocketReadStopIsEnabled())
-            {
-                TraceSocketReadStop(bytesRead, false);
-            }
-
-            return bytesRead;
-        }
-
-        private int ReadCore(byte[] buffer, int offset, int size, TimeSpan timeout, bool closing)
-        {
-            int bytesRead = 0;
-            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            try
-            {
-                SetReadTimeout(timeoutHelper.RemainingTime(), true, closing);
-                bytesRead = _socket.Receive(buffer, offset, size, SocketFlags.None);
-            }
-            catch (SocketException socketException)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    ConvertReceiveException(socketException, timeoutHelper.RemainingTime(), _socketSyncReceiveTimeout));
-            }
-            catch (ObjectDisposedException objectDisposedException)
-            {
-                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
-                {
-                    throw;
-                }
-                else
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
-                }
-            }
-
-            return bytesRead;
-        }
-
-        public virtual AsyncCompletionResult BeginRead(int offset, int size, TimeSpan timeout,
-            Action<object> callback, object state)
-        {
-            ConnectionUtilities.ValidateBufferBounds(AsyncReadBufferSize, offset, size);
-            ThrowIfNotOpen();
-            var completionResult = BeginReadCore(offset, size, timeout, callback, state);
-            if (completionResult == AsyncCompletionResult.Completed && WcfEventSource.Instance.SocketReadStopIsEnabled())
-            {
-                TraceSocketReadStop(_asyncReadSize, true);
-            }
-
-            return completionResult;
-        }
-
-        private void TraceSocketReadStop(int bytesRead, bool async)
-        {
-            if (!async)
-            {
-                WcfEventSource.Instance.SocketReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, RemoteEndpointAddressString);
-            }
-            else
-            {
-                WcfEventSource.Instance.SocketAsyncReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, RemoteEndpointAddressString);
-            }
-        }
-
-        private AsyncCompletionResult BeginReadCore(int offset, int size, TimeSpan timeout,
-            Action<object> callback, object state)
-        {
-            bool abortRead = true;
-
-            lock (ThisLock)
-            {
-                ThrowIfClosed();
-                EnsureReadEventArgs();
-                _asyncReadState = state;
-                _asyncReadCallback = callback;
-                SetUserToken(_asyncReadEventArgs, this);
-                _asyncReadPending = true;
-                SetReadTimeout(timeout, false, false);
-            }
-
-            try
-            {
-                if (offset != _asyncReadEventArgs.Offset ||
-                    size != _asyncReadEventArgs.Count)
-                {
-                    _asyncReadEventArgs.SetBuffer(offset, size);
-                }
-
-                if (ReceiveAsync())
-                {
-                    abortRead = false;
-                    return AsyncCompletionResult.Queued;
-                }
-
-                HandleReceiveAsyncCompleted();
-                _asyncReadSize = _asyncReadEventArgs.BytesTransferred;
-
-                abortRead = false;
-                return AsyncCompletionResult.Completed;
-            }
-            catch (SocketException socketException)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout));
-            }
-            catch (ObjectDisposedException objectDisposedException)
-            {
-                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
-                if (ReferenceEquals(exceptionToThrow, objectDisposedException))
-                {
-                    throw;
-                }
-                else
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
-                }
-            }
-            finally
-            {
-                if (abortRead)
-                {
-                    AbortRead();
-                }
-            }
-        }
-
-        private bool ReceiveAsync()
-        {
-            return _socket.ReceiveAsync(_asyncReadEventArgs);
-        }
-
-        private void OnReceiveAsync(object sender, SocketAsyncEventArgs eventArgs)
-        {
-            Contract.Assert(eventArgs != null, "Argument 'eventArgs' cannot be NULL.");
-            CancelReceiveTimer();
-
-            try
-            {
-                HandleReceiveAsyncCompleted();
-                _asyncReadSize = eventArgs.BytesTransferred;
-            }
-            catch (SocketException socketException)
-            {
-                _asyncReadException = ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout);
-            }
-            catch (Exception exception)
-            {
-                if (Fx.IsFatal(exception))
-                {
-                    throw;
-                }
-                _asyncReadException = exception;
-            }
-
-            FinishRead();
-        }
-
-        private void HandleReceiveAsyncCompleted()
-        {
-            if (_asyncReadEventArgs.SocketError == SocketError.Success)
-            {
-                return;
-            }
-
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SocketException((int)_asyncReadEventArgs.SocketError));
-        }
-
-
-        private void FinishRead()
-        {
-            if (_asyncReadException != null && WcfEventSource.Instance.SocketReadStopIsEnabled())
-            {
-                TraceSocketReadStop(_asyncReadSize, true);
-            }
-
-            Action<object> asyncReadCallback = _asyncReadCallback;
-            object asyncReadState = _asyncReadState;
-
-            _asyncReadState = null;
-            _asyncReadCallback = null;
-
-            asyncReadCallback(asyncReadState);
-        }
-
-        // Both BeginRead/ReadAsync paths completed themselves. EndRead's only job is to deliver the result.
-        public int EndRead()
-        {
-            return EndReadCore();
-        }
-
-        // Both BeginRead/ReadAsync paths completed themselves. EndRead's only job is to deliver the result.
-        private int EndReadCore()
-        {
-            if (_asyncReadException != null)
-            {
-                AbortRead();
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(_asyncReadException);
-            }
-
-            lock (ThisLock)
-            {
-                if (!_asyncReadPending)
-                {
-                    Contract.Assert(false, "SocketConnection.EndRead called with no read pending.");
-                    throw new Exception("SocketConnection.EndRead called with no read pending.");
-                }
-
-                SetUserToken(_asyncReadEventArgs, null);
-                _asyncReadPending = false;
-
-                if (_closeState == CloseState.Closed)
-                {
-                    DisposeReadEventArgs();
-                }
-            }
-
-            return _asyncReadSize;
-        }
-
-        // This method should be called inside ThisLock
-        private void DisposeReadEventArgs()
-        {
-            if (_asyncReadEventArgs != null)
-            {
-                _asyncReadEventArgs.Completed -= s_onReceiveAsyncCompleted;
-                _asyncReadEventArgs.Dispose();
-            }
-
-            // We release the buffer only if there is no outstanding I/O
-            TryReturnReadBuffer();
-        }
-
-        // This method should be called inside ThisLock
-        private void DisposeReceiveTimer()
-        {
-            if (_receiveTimer != null)
-            {
-                _receiveTimer.Dispose();
-            }
-        }
-
         private void OnSendAsync(object sender, SocketAsyncEventArgs eventArgs)
         {
-            Contract.Assert(eventArgs != null, "Argument 'eventArgs' cannot be NULL.");
+            Fx.Assert(eventArgs != null, "Argument 'eventArgs' cannot be NULL.");
             CancelSendTimer();
 
             try
             {
                 HandleSendAsyncCompleted();
-                Contract.Assert(eventArgs.BytesTransferred == _asyncWriteEventArgs.Count, "The socket SendAsync did not send all the bytes.");
+                Fx.Assert(eventArgs.BytesTransferred == _asyncWriteEventArgs.Count, "The socket SendAsync did not send all the bytes.");
             }
             catch (SocketException socketException)
             {
@@ -1086,15 +819,6 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        // This method should be called inside ThisLock
-        private void DisposeSendTimer()
-        {
-            if (_sendTimer != null)
-            {
-                _sendTimer.Dispose();
-            }
-        }
-
         private void AbortWrite()
         {
             lock (ThisLock)
@@ -1115,23 +839,367 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        // This method should be called inside ThisLock
-        private void ReturnReadBuffer()
+        private void FinishWrite()
         {
+            Action<object> asyncWriteCallback = _asyncWriteCallback;
+            object asyncWriteState = _asyncWriteState;
+
+            _asyncWriteState = null;
+            _asyncWriteCallback = null;
+
+            asyncWriteCallback(asyncWriteState);
+        }
+
+        public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
+        {
+            // as per http://support.microsoft.com/default.aspx?scid=kb%3ben-us%3b201213
+            // we shouldn't write more than 64K synchronously to a socket
+            const int maxSocketWrite = 64 * 1024;
+
+            ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
+
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            try
+            {
+                SetImmediate(immediate);
+                int bytesToWrite = size;
+
+                while (bytesToWrite > 0)
+                {
+                    SetWriteTimeout(timeoutHelper.RemainingTime(), true);
+                    size = Math.Min(bytesToWrite, maxSocketWrite);
+                    _socket.Send(buffer, offset, size, SocketFlags.None);
+                    bytesToWrite -= size;
+                    offset += size;
+                    timeout = timeoutHelper.RemainingTime();
+                }
+            }
+            catch (SocketException socketException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    ConvertSendException(socketException, timeoutHelper.RemainingTime(), _socketSyncSendTimeout));
+            }
+            catch (ObjectDisposedException objectDisposedException)
+            {
+                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Write);
+                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                {
+                    throw;
+                }
+                else
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
+                }
+            }
+        }
+
+        private void TraceWriteStart(int size, bool async)
+        {
+            if (!async)
+            {
+                WcfEventSource.Instance.SocketWriteStart(_socket.GetHashCode(), size, RemoteEndpointAddress);
+            }
+            else
+            {
+                WcfEventSource.Instance.SocketAsyncWriteStart(_socket.GetHashCode(), size, RemoteEndpointAddress);
+            }
+        }
+
+        public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout, BufferManager bufferManager)
+        {
+            try
+            {
+                Write(buffer, offset, size, immediate, timeout);
+            }
+            finally
+            {
+                bufferManager.ReturnBuffer(buffer);
+            }
+        }
+
+        public int Read(byte[] buffer, int offset, int size, TimeSpan timeout)
+        {
+            ConnectionUtilities.ValidateBufferBounds(buffer, offset, size);
+            ThrowIfNotOpen();
+            return ReadCore(buffer, offset, size, timeout, false);
+        }
+
+        private int ReadCore(byte[] buffer, int offset, int size, TimeSpan timeout, bool closing)
+        {
+            int bytesRead = 0;
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            try
+            {
+                SetReadTimeout(timeoutHelper.RemainingTime(), true, closing);
+                bytesRead = _socket.Receive(buffer, offset, size, SocketFlags.None);
+            }
+            catch (SocketException socketException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+                    ConvertReceiveException(socketException, timeoutHelper.RemainingTime(), _socketSyncReceiveTimeout));
+            }
+            catch (ObjectDisposedException objectDisposedException)
+            {
+                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
+                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                {
+                    throw;
+                }
+                else
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
+                }
+            }
+
+            return bytesRead;
+        }
+
+        private void TraceSocketReadStop(int bytesRead, bool async)
+        {
+            if (!async)
+            {
+                WcfEventSource.Instance.SocketReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, RemoteEndpointAddress);
+            }
+            else
+            {
+                WcfEventSource.Instance.SocketAsyncReadStop((_socket != null) ? _socket.GetHashCode() : -1, bytesRead, RemoteEndpointAddress);
+            }
+        }
+
+        public virtual AsyncCompletionResult BeginRead(int offset, int size, TimeSpan timeout,
+            Action<object> callback, object state)
+        {
+            ConnectionUtilities.ValidateBufferBounds(AsyncReadBufferSize, offset, size);
+            ThrowIfNotOpen();
+            return BeginReadCore(offset, size, timeout, callback, state);
+        }
+
+        private AsyncCompletionResult BeginReadCore(int offset, int size, TimeSpan timeout,
+            Action<object> callback, object state)
+        {
+            bool abortRead = true;
+
+            lock (ThisLock)
+            {
+                ThrowIfClosed();
+                EnsureReadEventArgs();
+                _asyncReadState = state;
+                _asyncReadCallback = callback;
+                SetUserToken(_asyncReadEventArgs, this);
+                _asyncReadPending = true;
+                SetReadTimeout(timeout, false, false);
+            }
+
+            try
+            {
+                if (_socket.UseOnlyOverlappedIO)
+                {
+                    // ReceiveAsync does not respect UseOnlyOverlappedIO but BeginReceive does.
+                    IAsyncResult result = _socket.BeginReceive(AsyncReadBuffer, offset, size, SocketFlags.None, s_onReceiveCompleted, this);
+
+                    if (!result.CompletedSynchronously)
+                    {
+                        abortRead = false;
+                        return AsyncCompletionResult.Queued;
+                    }
+
+                    _asyncReadSize = _socket.EndReceive(result);
+                }
+                else
+                {
+                    if (offset != _asyncReadEventArgs.Offset ||
+                        size != _asyncReadEventArgs.Count)
+                    {
+                        _asyncReadEventArgs.SetBuffer(offset, size);
+                    }
+
+                    if (ReceiveAsync())
+                    {
+                        abortRead = false;
+                        return AsyncCompletionResult.Queued;
+                    }
+
+                    HandleReceiveAsyncCompleted();
+                    _asyncReadSize = _asyncReadEventArgs.BytesTransferred;
+                }
+
+                if (WcfEventSource.Instance.SocketReadStopIsEnabled())
+                {
+                    TraceSocketReadStop(_asyncReadSize, true);
+                }
+
+                abortRead = false;
+                return AsyncCompletionResult.Completed;
+            }
+            catch (SocketException socketException)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout));
+            }
+            catch (ObjectDisposedException objectDisposedException)
+            {
+                Exception exceptionToThrow = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
+                if (object.ReferenceEquals(exceptionToThrow, objectDisposedException))
+                {
+                    throw;
+                }
+                else
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exceptionToThrow);
+                }
+            }
+            finally
+            {
+                if (abortRead)
+                {
+                    AbortRead();
+                }
+            }
+        }
+
+        private bool ReceiveAsync()
+        {
+            return _socket.ReceiveAsync(_asyncReadEventArgs);
+        }
+
+        private void OnReceive(IAsyncResult result)
+        {
+            CancelReceiveTimer();
+            if (result.CompletedSynchronously)
+            {
+                return;
+            }
+
+            try
+            {
+                _asyncReadSize = _socket.EndReceive(result);
+
+                if (WcfEventSource.Instance.SocketReadStopIsEnabled())
+                {
+                    TraceSocketReadStop(_asyncReadSize, true);
+                }
+            }
+            catch (SocketException socketException)
+            {
+                _asyncReadException = ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout);
+            }
+            catch (ObjectDisposedException objectDisposedException)
+            {
+                _asyncReadException = ConvertObjectDisposedException(objectDisposedException, TransferOperation.Read);
+            }
+            catch (Exception exception)
+            {
+                if (Fx.IsFatal(exception))
+                {
+                    throw;
+                }
+                _asyncReadException = exception;
+            }
+
+            FinishRead();
+        }
+
+        private void OnReceiveAsync(object sender, SocketAsyncEventArgs eventArgs)
+        {
+            Fx.Assert(eventArgs != null, "Argument 'eventArgs' cannot be NULL.");
+            CancelReceiveTimer();
+
+            try
+            {
+                HandleReceiveAsyncCompleted();
+                _asyncReadSize = eventArgs.BytesTransferred;
+
+                if (WcfEventSource.Instance.SocketReadStopIsEnabled())
+                {
+                    TraceSocketReadStop(_asyncReadSize, true);
+                }
+            }
+            catch (SocketException socketException)
+            {
+                _asyncReadException = ConvertReceiveException(socketException, TimeSpan.MaxValue, _asyncReceiveTimeout);
+            }
+            catch (Exception exception)
+            {
+                if (Fx.IsFatal(exception))
+                {
+                    throw;
+                }
+                _asyncReadException = exception;
+            }
+
+            FinishRead();
+        }
+
+        private void HandleReceiveAsyncCompleted()
+        {
+            if (_asyncReadEventArgs.SocketError == SocketError.Success)
+            {
+                return;
+            }
+
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SocketException((int)_asyncReadEventArgs.SocketError));
+        }
+
+        private void FinishRead()
+        {
+            Action<object> asyncReadCallback = _asyncReadCallback;
+            object asyncReadState = _asyncReadState;
+
+            _asyncReadState = null;
+            _asyncReadCallback = null;
+
+            asyncReadCallback(asyncReadState);
+        }
+
+        // Both BeginRead/ReadAsync paths completed themselves. EndRead's only job is to deliver the result.
+        public int EndRead()
+        {
+            if (_asyncReadException != null)
+            {
+                AbortRead();
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(_asyncReadException);
+            }
+
+            lock (ThisLock)
+            {
+                if (!_asyncReadPending)
+                {
+                    throw Fx.AssertAndThrow("SocketConnection.EndRead called with no read pending.");
+                }
+
+                SetUserToken(_asyncReadEventArgs, null);
+                _asyncReadPending = false;
+
+                if (_closeState == CloseState.Closed)
+                {
+                    DisposeReadEventArgs();
+                }
+            }
+
+            return _asyncReadSize;
+        }
+
+        // This method should be called inside ThisLock
+        private void DisposeReadEventArgs()
+        {
+            if (_asyncReadEventArgs != null)
+            {
+                _asyncReadEventArgs.Completed -= s_onReceiveAsyncCompleted;
+                _asyncReadEventArgs.Dispose();
+            }
+
             // We release the buffer only if there is no outstanding I/O
             TryReturnReadBuffer();
         }
 
-        // This method should be called inside ThisLock
         private void TryReturnReadBuffer()
         {
             // The buffer must not be returned and nulled when an abort occurs. Since the buffer
             // is also accessed by higher layers, code that has not yet realized the stack is
             // aborted may be attempting to read from the buffer.
-            if (AsyncReadBuffer != null && !_aborted)
+            if (_readBuffer != null && !_aborted)
             {
-                _connectionBufferPool.Return(AsyncReadBuffer);
-                AsyncReadBuffer = null;
+                _connectionBufferPool.Return(_readBuffer);
+                _readBuffer = null;
             }
         }
 
@@ -1260,7 +1328,7 @@ namespace System.ServiceModel.Channels
                 }
 
                 _asyncReadEventArgs = new SocketAsyncEventArgs();
-                _asyncReadEventArgs.SetBuffer(AsyncReadBuffer, 0, AsyncReadBuffer.Length);
+                _asyncReadEventArgs.SetBuffer(_readBuffer, 0, _readBuffer.Length);
                 _asyncReadEventArgs.Completed += s_onReceiveAsyncCompleted;
             }
         }
@@ -1279,11 +1347,6 @@ namespace System.ServiceModel.Channels
                 _asyncWriteEventArgs = new SocketAsyncEventArgs();
                 _asyncWriteEventArgs.Completed += s_onSocketSendCompleted;
             }
-        }
-
-        public object GetCoreTransport()
-        {
-            return _socket;
         }
 
         private enum CloseState
@@ -1320,7 +1383,7 @@ namespace System.ServiceModel.Channels
                 AddressFamily addressFamily = address.AddressFamily;
                 socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
                 socket.Connect(new IPEndPoint(address, port));
-                return new SocketConnection(socket, _connectionBufferPool);
+                return new SocketConnection(socket, _connectionBufferPool, false);
             }
             catch
             {
@@ -1337,7 +1400,7 @@ namespace System.ServiceModel.Channels
                 AddressFamily addressFamily = address.AddressFamily;
                 socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
                 await socket.ConnectAsync(new IPEndPoint(address, port));
-                return new SocketConnection(socket, _connectionBufferPool);
+                return new SocketConnection(socket, _connectionBufferPool, false);
             }
             catch
             {
