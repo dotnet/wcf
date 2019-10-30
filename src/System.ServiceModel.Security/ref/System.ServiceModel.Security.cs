@@ -118,17 +118,6 @@ namespace System.ServiceModel.Security
         public abstract string DefaultAsymmetricSignatureAlgorithm { get; }
         public abstract int DefaultSignatureKeyDerivationLength { get; }
         public abstract int DefaultSymmetricKeyLength { get; }
-        //public virtual bool IsCanonicalizationAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsDigestAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsEncryptionAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsEncryptionKeyDerivationAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsSymmetricKeyWrapAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsAsymmetricKeyWrapAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsSymmetricSignatureAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsAsymmetricSignatureAlgorithmSupported(string algorithm) { return default; }
-        //public virtual bool IsSignatureKeyDerivationAlgorithmSupported(string algorithm) { return default; }
-        //public abstract bool IsSymmetricKeyLengthSupported(int length);
-        //public abstract bool IsAsymmetricKeyLengthSupported(int length);
     }
     public abstract partial class SecurityPolicyVersion
     {
@@ -171,28 +160,11 @@ namespace System.ServiceModel.Security.Tokens
     {
         protected IssuedSecurityTokenParameters(IssuedSecurityTokenParameters other) { }
         public IssuedSecurityTokenParameters() { }
-        //public IssuedSecurityTokenParameters(string tokenType) { }
-        //public IssuedSecurityTokenParameters(string tokenType, EndpointAddress issuerAddress) { }
-        //public IssuedSecurityTokenParameters(string tokenType, EndpointAddress issuerAddress, Channels.Binding issuerBinding) { }
-        //internal protected override bool HasAsymmetricKey { get { return default; } }
-        //public System.Collections.ObjectModel.Collection<System.Xml.XmlElement> AdditionalRequestParameters { get { return default; } }
         public MessageSecurityVersion DefaultMessageSecurityVersion { get { return default; } set { } }
         public EndpointAddress IssuerAddress { get { return default; } set { } }
-        //public EndpointAddress IssuerMetadataAddress { get { return default; } set { } }
         public Channels.Binding IssuerBinding { get { return default; } set { } }
         public System.IdentityModel.Tokens.SecurityKeyType KeyType { get { return default; } set { } }
-        //public int KeySize { get { return default; } set { } }
-        //public bool UseStrTransform { get { return default; } set { } }
-        //public System.Collections.ObjectModel.Collection<ClaimTypeRequirement> ClaimTypeRequirements { get { return default; } }
         public string TokenType { get { return default; } set { } }
-        //internal protected override bool SupportsClientAuthentication { get { return default; } }
-        //internal protected override bool SupportsServerAuthentication { get { return default; } }
-        //internal protected override bool SupportsClientWindowsIdentity { get { return default; } }
-        //protected override System.ServiceModel.Security.Tokens.SecurityTokenParameters CloneCore() { return default; }
-        //internal protected override System.IdentityModel.Tokens.SecurityKeyIdentifierClause CreateKeyIdentifierClause(System.IdentityModel.Tokens.SecurityToken token, SecurityTokenReferenceStyle referenceStyle) { return default; }
-        //public System.Collections.ObjectModel.Collection<System.Xml.XmlElement> CreateRequestParameters(MessageSecurityVersion messageSecurityVersion, SecurityTokenSerializer securityTokenSerializer) { return default; }
-        //public override string ToString() { return default; }
-        //protected internal override void InitializeSecurityTokenRequirement(IdentityModel.Selectors.SecurityTokenRequirement requirement) { }
     }
     public partial class SecureConversationSecurityTokenParameters : System.ServiceModel.Security.Tokens.SecurityTokenParameters
     {
@@ -210,42 +182,7 @@ namespace System.ServiceModel.Security.Tokens
     public abstract partial class ServiceModelSecurityTokenRequirement : System.IdentityModel.Selectors.SecurityTokenRequirement
     {
         protected ServiceModelSecurityTokenRequirement() { }
-        //static public string SecurityAlgorithmSuiteProperty { get { return default(string); } }
-        //static public string SecurityBindingElementProperty { get { return default(string); } }
-        //static public string IssuerAddressProperty { get { return default(string); } }
-        //static public string IssuerBindingProperty { get { return default(string); } }
-        //static public string SecureConversationSecurityBindingElementProperty { get { return default(string); } }
-        //static public string SupportSecurityContextCancellationProperty { get { return default(string); } }
-        //static public string MessageSecurityVersionProperty { get { return default(string); } }
-        //static public string IssuerBindingContextProperty { get { return default(string); } }
-        //static public string TransportSchemeProperty { get { return default(string); } }
-        //static public string IsInitiatorProperty { get { return default(string); } }
-        //static public string TargetAddressProperty { get { return default(string); } }
-        //static public string ViaProperty { get { return default(string); } }
-        //static public string ListenUriProperty { get { return default(string); } }
-        //static public string AuditLogLocationProperty { get { return default(string); } }
-        //static public string SuppressAuditFailureProperty { get { return default(string); } }
-        //static public string MessageAuthenticationAuditLevelProperty { get { return default(string); } }
-        //static public string IsOutOfBandTokenProperty { get { return default(string); } }
-        //static public string PreferSslCertificateAuthenticatorProperty { get { return default(string); } }
-        //static public string SupportingTokenAttachmentModeProperty { get { return default(string); } }
-        //static public string MessageDirectionProperty { get { return default(string); } }
-        //static public string HttpAuthenticationSchemeProperty { get { return default(string); } }
-        //static public string IssuedSecurityTokenParametersProperty { get { return default(string); } }
-        //static public string PrivacyNoticeUriProperty { get { return default(string); } }
-        //static public string PrivacyNoticeVersionProperty { get { return default(string); } }
-        //static public string DuplexClientLocalAddressProperty { get { return default(string); } }
-        //static public string EndpointFilterTableProperty { get { return default(string); } }
         static public string ChannelParametersCollectionProperty { get { return default; } }
-        //static public string ExtendedProtectionPolicy { get { return default(string); } }
-        //public bool IsInitiator { get { return default(bool); } }
-        //public System.ServiceModel.Security.SecurityAlgorithmSuite SecurityAlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
-        //public System.ServiceModel.Channels.SecurityBindingElement SecurityBindingElement { get { return default(System.ServiceModel.Channels.SecurityBindingElement); } set { } }
-        //public System.ServiceModel.EndpointAddress IssuerAddress { get { return default(System.ServiceModel.EndpointAddress); } set { } }
-        //public System.ServiceModel.Channels.Binding IssuerBinding { get { return default(System.ServiceModel.Channels.Binding); } set { } }
-        //public System.ServiceModel.Channels.SecurityBindingElement SecureConversationSecurityBindingElement { get { return default(System.ServiceModel.Channels.SecurityBindingElement); } set { } }
-        //public System.IdentityModel.Selectors.SecurityTokenVersion MessageSecurityVersion { get { return default(System.IdentityModel.Selectors.SecurityTokenVersion); } set { } }
-        //public string TransportScheme { get { return default(string); } set { } }
     }
     public partial class SupportingTokenParameters
     {
@@ -279,15 +216,6 @@ namespace System.IdentityModel.Tokens
         public override DateTime ValidFrom { get; }
         public override DateTime ValidTo { get; }
         public override System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get; }
-        // public SecurityKeyIdentifierClause InternalTokenReference { get; }
-        // public SecurityKeyIdentifierClause ExternalTokenReference { get; }
-        // public XmlElement TokenXml { get; }
-        // public SecurityToken ProofToken { get; }
-        // public ReadOnlyCollection<IAuthorizationPolicy> AuthorizationPolicies { get; }
-        // public override string ToString() {}
-        // public override bool CanCreateKeyIdentifierClause<T>() {}
-        // public override T CreateKeyIdentifierClause<T>() {}
-        // public override bool MatchesKeyIdentifierClause(.SecurityKeyIdentifierClause keyIdentifierClause) {}
     }
     public enum SecurityKeyType
     {
