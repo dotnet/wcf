@@ -8,12 +8,17 @@
 
 ## Version History
 
-### 4.6.0
+### 4.7.0-preview2
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.7.0-preview2.19522.3)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.1.0-preview2)
 
 ### 4.7.0-preview1
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.7.0-preview1.final)
 * [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.1.0-preview1)
+
+### 4.6.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.6.0)
 * [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.0.0)
