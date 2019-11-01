@@ -205,12 +205,12 @@ namespace System.IdentityModel.Tokens
 {
     public partial class GenericXmlSecurityToken : System.IdentityModel.Tokens.SecurityToken
     {
-        public GenericXmlSecurityToken(System.Xml.XmlElement tokenXml, 
-            System.IdentityModel.Tokens.SecurityToken proofToken, 
-            DateTime effectiveTime, 
-            DateTime expirationTime, 
-            SecurityKeyIdentifierClause internalTokenReference, 
-            SecurityKeyIdentifierClause externalTokenReference, 
+        public GenericXmlSecurityToken(System.Xml.XmlElement tokenXml,
+            System.IdentityModel.Tokens.SecurityToken proofToken,
+            DateTime effectiveTime,
+            DateTime expirationTime,
+            SecurityKeyIdentifierClause internalTokenReference,
+            SecurityKeyIdentifierClause externalTokenReference,
             System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> authorizationPolicies) {}
         public override string Id { get; }
         public override DateTime ValidFrom { get; }

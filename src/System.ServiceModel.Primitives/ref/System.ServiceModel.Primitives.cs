@@ -205,6 +205,7 @@ namespace System.ServiceModel
         protected override System.TimeSpan DefaultCloseTimeout { get { return default; } }
         protected override System.TimeSpan DefaultOpenTimeout { get { return default; } }
         public System.ServiceModel.Description.ServiceEndpoint Endpoint { get { return default; } }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected virtual void ApplyConfiguration(string configurationName) { }
         protected abstract System.ServiceModel.Description.ServiceEndpoint CreateDescription();
         protected virtual System.ServiceModel.Channels.IChannelFactory CreateFactory() { return default; }
@@ -212,6 +213,7 @@ namespace System.ServiceModel
         public T GetProperty<T>() where T : class { return default; }
         protected void InitializeEndpoint(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress address) { }
         protected void InitializeEndpoint(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected void InitializeEndpoint(string configurationName, System.ServiceModel.EndpointAddress address) { }
         protected override void OnAbort() { }
         protected override System.IAsyncResult OnBeginClose(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default; }
@@ -228,7 +230,9 @@ namespace System.ServiceModel
     {
         public ChannelFactory(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
         public ChannelFactory(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public ChannelFactory(string endpointConfigurationName) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public ChannelFactory(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) { }
         protected ChannelFactory(System.Type channelType) { }
         public TChannel CreateChannel() { return default; }
@@ -248,8 +252,11 @@ namespace System.ServiceModel
         protected ClientBase() { }
         protected ClientBase(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
         protected ClientBase(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName, string remoteAddress) { }
         protected TChannel Channel { get { return default; } }
         public System.ServiceModel.ChannelFactory<TChannel> ChannelFactory { get { return default; } }
@@ -320,8 +327,11 @@ namespace System.ServiceModel
             System.ServiceModel.Channels.Message System.ServiceModel.Channels.IRequestChannel.EndRequest(System.IAsyncResult result) { return default; }
             System.ServiceModel.Channels.Message System.ServiceModel.Channels.IRequestChannel.Request(System.ServiceModel.Channels.Message message) { return default; }
             System.ServiceModel.Channels.Message System.ServiceModel.Channels.IRequestChannel.Request(System.ServiceModel.Channels.Message message, System.TimeSpan timeout) { return default; }
+            [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
             System.IAsyncResult System.ServiceModel.IClientChannel.BeginDisplayInitializationUI(System.AsyncCallback callback, object state) { return default; }
+            [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
             void System.ServiceModel.IClientChannel.DisplayInitializationUI() { }
+            [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
             void System.ServiceModel.IClientChannel.EndDisplayInitializationUI(System.IAsyncResult result) { }
             void System.ServiceModel.ICommunicationObject.Abort() { }
             System.IAsyncResult System.ServiceModel.ICommunicationObject.BeginClose(System.AsyncCallback callback, object state) { return default; }
