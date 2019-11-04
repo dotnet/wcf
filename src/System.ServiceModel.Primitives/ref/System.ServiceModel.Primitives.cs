@@ -94,18 +94,7 @@ namespace System.IdentityModel.Selectors
     public partial class SecurityTokenRequirement
     {
         public SecurityTokenRequirement() { }
-        //public static string TokenTypeProperty { get { return default(string); } }
-        //public static string KeyUsageProperty { get { return default(string); } }
-        //public static string KeyTypeProperty { get { return default(string); } }
-        //public static string KeySizeProperty { get { return default(string); } }
-        //public static string RequireCryptographicTokenProperty { get { return default(string); } }
-        //public static string PeerAuthenticationMode { get { return default(string); } }
-        //public static string IsOptionalTokenProperty { get { return default(string); } }
         public string TokenType { get { return default; } set { } }
-        //public bool RequireCryptographicToken { get { return default(System.Boolean); } set { } }
-        //public SecurityKeyUsage KeyUsage { get { return default(SecurityKeyUsage); } set { } }
-        //public SecurityKeyType KeyType { get { return default(SecurityKeyType); } set { } }
-        //public System.Int32 KeySize { get { return default(System.Int32); } set { } }
         public System.Collections.Generic.IDictionary<string, object> Properties { get { return default; } }
         public TValue GetProperty<TValue>(string propertyName) { return default; }
         public bool TryGetProperty<TValue>(string propertyName, out TValue result) { result = default; return default; }
@@ -157,11 +146,6 @@ namespace System.IdentityModel.Tokens
     {
         internal SecurityKey() { }
         public abstract int KeySize { get; }
-        //public abstract byte[] DecryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
-        //public abstract byte[] EncryptKey(string algorithm, byte[] keyData) { return default(byte[]); }
-        //public abstract bool IsAsymmetricAlgorithm(string algorithm) { return default(bool); }
-        //public abstract bool IsSupportedAlgorithm(string algorithm) { return default(bool); }
-        //public abstract bool IsSymmetricAlgorithm(string algorithm) { return default(bool); }
     }
     public class SecurityKeyIdentifier : System.Collections.Generic.IEnumerable<System.IdentityModel.Tokens.SecurityKeyIdentifierClause>
     {
@@ -198,10 +182,6 @@ namespace System.IdentityModel.Tokens
         public abstract System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get; }
         public abstract DateTime ValidFrom { get; }
         public abstract DateTime ValidTo { get; }
-        //public virtual bool CanCreateKeyIdentifierClause<T>() where T : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { return default(bool); }
-        //public virtual T CreateKeyIdentifierClause<T>() where T : System.IdentityModel.Tokens.SecurityKeyIdentifierClause { return default(T); }
-        //public virtual bool MatchesKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(bool); }
-        //public virtual System.IdentityModel.Tokens.SecurityKey ResolveKeyIdentifierClause(System.IdentityModel.Tokens.SecurityKeyIdentifierClause keyIdentifierClause) { return default(System.IdentityModel.Tokens.SecurityKey); }
     }
     public abstract partial class SymmetricSecurityKey : SecurityKey
     {
@@ -225,6 +205,7 @@ namespace System.ServiceModel
         protected override System.TimeSpan DefaultCloseTimeout { get { return default; } }
         protected override System.TimeSpan DefaultOpenTimeout { get { return default; } }
         public System.ServiceModel.Description.ServiceEndpoint Endpoint { get { return default; } }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected virtual void ApplyConfiguration(string configurationName) { }
         protected abstract System.ServiceModel.Description.ServiceEndpoint CreateDescription();
         protected virtual System.ServiceModel.Channels.IChannelFactory CreateFactory() { return default; }
@@ -232,6 +213,7 @@ namespace System.ServiceModel
         public T GetProperty<T>() where T : class { return default; }
         protected void InitializeEndpoint(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress address) { }
         protected void InitializeEndpoint(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected void InitializeEndpoint(string configurationName, System.ServiceModel.EndpointAddress address) { }
         protected override void OnAbort() { }
         protected override System.IAsyncResult OnBeginClose(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default; }
@@ -248,7 +230,9 @@ namespace System.ServiceModel
     {
         public ChannelFactory(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
         public ChannelFactory(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public ChannelFactory(string endpointConfigurationName) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public ChannelFactory(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) { }
         protected ChannelFactory(System.Type channelType) { }
         public TChannel CreateChannel() { return default; }
@@ -268,8 +252,11 @@ namespace System.ServiceModel
         protected ClientBase() { }
         protected ClientBase(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) { }
         protected ClientBase(System.ServiceModel.Description.ServiceEndpoint endpoint) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName, string remoteAddress) { }
         protected TChannel Channel { get { return default; } }
         public System.ServiceModel.ChannelFactory<TChannel> ChannelFactory { get { return default; } }
@@ -340,8 +327,11 @@ namespace System.ServiceModel
             System.ServiceModel.Channels.Message System.ServiceModel.Channels.IRequestChannel.EndRequest(System.IAsyncResult result) { return default; }
             System.ServiceModel.Channels.Message System.ServiceModel.Channels.IRequestChannel.Request(System.ServiceModel.Channels.Message message) { return default; }
             System.ServiceModel.Channels.Message System.ServiceModel.Channels.IRequestChannel.Request(System.ServiceModel.Channels.Message message, System.TimeSpan timeout) { return default; }
+            [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
             System.IAsyncResult System.ServiceModel.IClientChannel.BeginDisplayInitializationUI(System.AsyncCallback callback, object state) { return default; }
+            [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
             void System.ServiceModel.IClientChannel.DisplayInitializationUI() { }
+            [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
             void System.ServiceModel.IClientChannel.EndDisplayInitializationUI(System.IAsyncResult result) { }
             void System.ServiceModel.ICommunicationObject.Abort() { }
             System.IAsyncResult System.ServiceModel.ICommunicationObject.BeginClose(System.AsyncCallback callback, object state) { return default; }

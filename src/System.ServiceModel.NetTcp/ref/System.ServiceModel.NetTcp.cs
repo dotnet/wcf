@@ -17,6 +17,7 @@ namespace System.ServiceModel
     {
         public NetTcpBinding() { }
         public NetTcpBinding(System.ServiceModel.SecurityMode securityMode) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public NetTcpBinding(string configurationName) { }
         public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default(System.ServiceModel.EnvelopeVersion); } }
         [System.ComponentModel.DefaultValueAttribute((long)524288)]

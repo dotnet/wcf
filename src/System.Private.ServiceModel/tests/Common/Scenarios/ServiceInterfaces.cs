@@ -495,6 +495,9 @@ public interface IServiceContractUniqueTypeOutSyncService
 {
     [OperationContract]
     void Request(string stringRequest, out UniqueType uniqueTypeResponse);
+
+    [OperationContract]
+    void Request2(out UniqueType uniqueTypeResponse, string stringRequest);
 }
 
 [ServiceContract]

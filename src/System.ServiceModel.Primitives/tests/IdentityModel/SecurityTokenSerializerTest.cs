@@ -22,8 +22,8 @@ public class SecurityTokenSerializerTest
         var xmlWriter = XmlWriter.Create(new MemoryStream());
         var dummyToken = new DummySecurityToken();
         var keyIdentifier = new SecurityKeyIdentifier();
-        var keyIdentifierClause = new SecurityKeyIdentifierClauseImp("DummyClause");
-        var sts = new SecurityTokenSerializerImp();
+        var keyIdentifierClause = new SecurityKeyIdentifierClauseImpl("DummyClause");
+        var sts = new SecurityTokenSerializerImpl();
 
         Assert.NotNull(sts);
         Assert.True(sts.CanReadKeyIdentifier(xmlReader));
@@ -38,7 +38,7 @@ public class SecurityTokenSerializerTest
         SecurityKeyIdentifierClause identifierClause = sts.ReadKeyIdentifierClause(xmlReader);
         Assert.IsType<DummySecurityToken>(token);
         Assert.IsType<SecurityKeyIdentifier>(identifier);
-        Assert.IsType<SecurityKeyIdentifierClauseImp>(identifierClause);
+        Assert.IsType<SecurityKeyIdentifierClauseImpl>(identifierClause);
 
         sts.WriteToken(xmlWriter, dummyToken);
         sts.WriteKeyIdentifier(xmlWriter, keyIdentifier);
@@ -51,7 +51,7 @@ public class SecurityTokenSerializerTest
     [WcfFact]
     public static void Methods_NullParam_Throws()
     {
-        var sts = new SecurityTokenSerializerImp();
+        var sts = new SecurityTokenSerializerImpl();
 
         Assert.NotNull(sts);
         Assert.Throws<ArgumentNullException>(() => sts.CanReadKeyIdentifier(null));
@@ -72,7 +72,7 @@ public class SecurityTokenSerializerTest
     }
 }
 
-public class SecurityTokenSerializerImp : SecurityTokenSerializer
+public class SecurityTokenSerializerImpl : SecurityTokenSerializer
 {
     public bool WriteTokenCoreCalled = false;
     public bool WriteKeyIdentifierCoreCalled = false;
@@ -110,7 +110,7 @@ public class SecurityTokenSerializerImp : SecurityTokenSerializer
 
     protected override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlReader reader)
     {
-        return new SecurityKeyIdentifierClauseImp("DummyClause");
+        return new SecurityKeyIdentifierClauseImpl("DummyClause");
     }
 
     protected override SecurityKeyIdentifier ReadKeyIdentifierCore(XmlReader reader)
@@ -139,13 +139,13 @@ public class SecurityTokenSerializerImp : SecurityTokenSerializer
     }
 }
 
-public class SecurityKeyIdentifierClauseImp : SecurityKeyIdentifierClause
+public class SecurityKeyIdentifierClauseImpl : SecurityKeyIdentifierClause
 {
-    public SecurityKeyIdentifierClauseImp(string clauseType) : base(clauseType)
+    public SecurityKeyIdentifierClauseImpl(string clauseType) : base(clauseType)
     {
     }
 
-    public SecurityKeyIdentifierClauseImp(string clauseType, byte[] nonce, int length) : base(clauseType, nonce, length)
+    public SecurityKeyIdentifierClauseImpl(string clauseType, byte[] nonce, int length) : base(clauseType, nonce, length)
     {
     }
 }
