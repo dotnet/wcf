@@ -307,7 +307,7 @@ public static class SessionTests
                 callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
                 callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
-            Assert.Equal(result, 3);
+            Assert.Equal(3, result);
 
             ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
         }
@@ -329,7 +329,7 @@ public static class SessionTests
             callsToNonTerminatingMethodToMakeInsideClientCallback: 2,           // + 2 * 2
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
-            Assert.Equal(result, 7);
+            Assert.Equal(7, result);
 
             ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
         }
@@ -349,7 +349,7 @@ public static class SessionTests
             callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
-            Assert.Equal(result, 3);
+            Assert.Equal(3, result);
 
             // verify that after this we can not make another call
             // note: we really expect ChannelTerminatedException but it is not exposed publically yet
@@ -377,7 +377,7 @@ public static class SessionTests
             callsToNonTerminatingMethodToMakeInsideClientCallback: 2,           // + 0 as they will fail
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
-            Assert.Equal(result, 3);
+            Assert.Equal(3, result);
 
             // verify that after this we can not make another call
             // note: we really expect ChannelTerminatedException but it is not exposed publically yet
@@ -401,7 +401,7 @@ public static class SessionTests
             callsToNonTerminatingMethodToMakeInsideClientCallback: 0,
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
-            Assert.Equal(result, 2);
+            Assert.Equal(2, result);
 
             // even though the server can't call any callbacks anymore we can still call the service
             ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
@@ -424,7 +424,7 @@ public static class SessionTests
             callsToNonTerminatingMethodToMakeInsideClientCallback: 2,           // + 2 (not 2*2)
             callsToTerminatingMethodToMakeInsideClientCallback: 0);
 
-            Assert.Equal(result, 4);
+            Assert.Equal(4, result);
 
             // even though the server can't call any callbacks anymore we can still call the server
             ResultsVerificationHelper<Exception>(canMakeServiceCall: true, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
@@ -540,7 +540,7 @@ public static class SessionTests
         if (canMakeServiceCall)
         {
             var result2 = s_channel.NonTerminatingMethod();
-            Assert.Equal(result2, 1);
+            Assert.Equal(1, result2);
         }
         else
         {

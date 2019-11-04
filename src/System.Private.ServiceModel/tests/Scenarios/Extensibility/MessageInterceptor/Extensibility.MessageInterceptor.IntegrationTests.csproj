@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <!--[todo:arcade] Re-enable these warnings and fix them.-->
     <!-- https://xunit.github.io/xunit.analyzers/rules/ -->
-    <NoWarn>$(NoWarn);xUnit2000;xUnit2009</NoWarn>
+    <NoWarn>$(NoWarn);xUnit2009</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
