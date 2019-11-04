@@ -114,6 +114,7 @@ namespace System.ServiceModel
     {
         public NetHttpBinding() { }
         public NetHttpBinding(System.ServiceModel.BasicHttpSecurityMode securityMode) { }
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public NetHttpBinding(string configurationName) { }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.NetHttpMessageEncoding)(0))]
         public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default(System.ServiceModel.NetHttpMessageEncoding); } set { } }
