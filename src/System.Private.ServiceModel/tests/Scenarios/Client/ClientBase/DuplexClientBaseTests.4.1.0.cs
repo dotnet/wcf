@@ -38,7 +38,7 @@ public class DuplexClientBaseTests : ConditionalWcfTest
             // *** VALIDATE *** \\
             // Can't compare the entire exception message - .NET Native doesn't necessarily output the entire message, just params
             // "Contract requires Duplex, but Binding 'BasicHttpBinding' doesn't support it or isn't configured properly to support it"
-            Assert.True(exception.Message.Contains("BasicHttpBinding"));
+            Assert.Contains("BasicHttpBinding", exception.Message);
 
             Assert.Throws<CommunicationObjectFaultedException>(() =>
             {
