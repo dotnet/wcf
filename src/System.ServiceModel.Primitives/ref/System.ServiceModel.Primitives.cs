@@ -515,6 +515,7 @@ namespace System.ServiceModel
     }
     public partial class FaultException<TDetail> : System.ServiceModel.FaultException
     {
+        public FaultException(TDetail detail) { }
         public FaultException(TDetail detail, System.ServiceModel.FaultReason reason) { }
         public FaultException(TDetail detail, System.ServiceModel.FaultReason reason, System.ServiceModel.FaultCode code, string action) { }
         protected FaultException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
