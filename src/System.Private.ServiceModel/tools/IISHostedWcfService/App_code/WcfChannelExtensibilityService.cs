@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Samples.MessageInterceptor;
-using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 

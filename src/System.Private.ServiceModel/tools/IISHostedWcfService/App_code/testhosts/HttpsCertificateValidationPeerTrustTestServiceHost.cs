@@ -2,24 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Security;
 
 namespace WcfService
 {
-    public class HttpsCertificateValidationPeerTrustTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            HttpsCertificateValidationPeerTrustTestServiceHost serviceHost = new HttpsCertificateValidationPeerTrustTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "HttpsCertValModePeerTrust.svc")]
     public class HttpsCertificateValidationPeerTrustTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "https-server-cert-valmode-peertrust"; } }
@@ -44,8 +34,8 @@ namespace WcfService
                                                         certThumprint);
         }
 
-        public HttpsCertificateValidationPeerTrustTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public HttpsCertificateValidationPeerTrustTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

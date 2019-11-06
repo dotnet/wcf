@@ -4,7 +4,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>SelfHostedWcfService</RootNamespace>
     <AssemblyName>SelfHostedWcfService</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <ProjectGuid>{4E7F9B04-79A4-43F5-BD3C-781AA57DDB52}</ProjectGuid>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

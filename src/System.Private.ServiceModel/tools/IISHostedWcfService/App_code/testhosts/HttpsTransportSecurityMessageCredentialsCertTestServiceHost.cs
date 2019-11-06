@@ -4,21 +4,12 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
 namespace WcfService
 {
-    public class HttpsTransportSecurityMessageCredentialsCertTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            HttpsTransportSecurityMessageCredentialsCertTestServiceHost serviceHost = new HttpsTransportSecurityMessageCredentialsCertTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
-
+    [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "HttpsTransSecMessCredsCert.svc")]
     internal class HttpsTransportSecurityMessageCredentialsCertTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "https-message-credentials-cert"; } }
@@ -38,7 +29,8 @@ namespace WcfService
             this.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new MyX509CertificateValidator("DO_NOT_TRUST_WcfBridgeRootCA");
         }
 
-        public HttpsTransportSecurityMessageCredentialsCertTestServiceHost(Type serviceType, params Uri[] baseAddresses) : base(serviceType, baseAddresses)
+        public HttpsTransportSecurityMessageCredentialsCertTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

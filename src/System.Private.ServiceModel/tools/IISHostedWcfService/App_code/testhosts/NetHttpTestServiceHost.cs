@@ -2,22 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class NetHttpTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            NetHttpTestServiceHost serviceHost = new NetHttpTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "NetHttp.svc")]
     public class NetHttpTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "NetHttp"; } }
@@ -27,21 +18,13 @@ namespace WcfService
             return new NetHttpBinding();
         }
 
-        public NetHttpTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public NetHttpTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }
 
-    public class NetHttpTestServiceHostUsingWebSocketsFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            NetHttpTestServiceHostUsingWebSockets serviceHost = new NetHttpTestServiceHostUsingWebSockets(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
-
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "NetHttpWebSockets.svc")]
     public class NetHttpTestServiceHostUsingWebSockets : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "NetHttpWebSockets"; } }
@@ -53,8 +36,8 @@ namespace WcfService
             return binding;
         }
 
-        public NetHttpTestServiceHostUsingWebSockets(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public NetHttpTestServiceHostUsingWebSockets(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

@@ -2,22 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class DuplexWebSocketTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            DuplexWebSocketTestServiceHost serviceHost = new DuplexWebSocketTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "DuplexWebSocket.svc")]
     public class DuplexWebSocketTestServiceHost : TestServiceHostBase<IWcfDuplexService>
     {
         protected override string Address { get { return "http-defaultduplexwebsockets"; } }
@@ -27,20 +18,13 @@ namespace WcfService
             return new NetHttpBinding();
         }
 
-        public DuplexWebSocketTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public DuplexWebSocketTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfWebSocketService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketTransportTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketTransportTestServiceHost serviceHost = new WebSocketTransportTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketTransport.svc")]
     public class WebSocketTransportTestServiceHost : TestServiceHostBase<IWcfDuplexService>
     {
         protected override string Address { get { return "http-requestreplywebsockets-transportusagealways"; } }
@@ -52,20 +36,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketTransportTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketTransportTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfWebSocketTransportUsageAlwaysService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpDuplexBinaryStreamedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpDuplexBinaryStreamedTestServiceHost serviceHost = new WebSocketHttpDuplexBinaryStreamedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexBinaryStreamed.svc")]
     public class WebSocketHttpDuplexBinaryStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpDuplexBinaryStreamedResource"; } }
@@ -83,20 +60,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpDuplexBinaryStreamedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpDuplexBinaryStreamedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpRequestReplyBinaryStreamedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpRequestReplyBinaryStreamedTestServiceHost serviceHost = new WebSocketHttpRequestReplyBinaryStreamedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyBinaryStreamed.svc")]
     public class WebSocketHttpRequestReplyBinaryStreamedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
         protected override string Address { get { return "WebSocketHttpRequestReplyBinaryStreamedResource"; } }
@@ -114,20 +84,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpRequestReplyBinaryStreamedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpRequestReplyBinaryStreamedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpsDuplexBinaryStreamedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpsDuplexBinaryStreamedTestServiceHost serviceHost = new WebSocketHttpsDuplexBinaryStreamedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexBinaryStreamed.svc")]
     public class WebSocketHttpsDuplexBinaryStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpsDuplexBinaryStreamedResource"; } }
@@ -146,20 +109,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpsDuplexBinaryStreamedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpsDuplexBinaryStreamedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpsDuplexTextStreamedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpsDuplexTextStreamedTestServiceHost serviceHost = new WebSocketHttpsDuplexTextStreamedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexTextStreamed.svc")]
     public class WebSocketHttpsDuplexTextStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpsDuplexTextStreamedResource"; } }
@@ -178,20 +134,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpsDuplexTextStreamedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpsDuplexTextStreamedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpRequestReplyTextStreamedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpRequestReplyTextStreamedTestServiceHost serviceHost = new WebSocketHttpRequestReplyTextStreamedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyTextStreamed.svc")]
     public class WebSocketHttpRequestReplyTextStreamedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
         protected override string Address { get { return "WebSocketHttpRequestReplyTextStreamedResource"; } }
@@ -209,20 +158,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpRequestReplyTextStreamedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpRequestReplyTextStreamedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpDuplexTextStreamedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpDuplexTextStreamedTestServiceHost serviceHost = new WebSocketHttpDuplexTextStreamedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexTextStreamed.svc")]
     public class WebSocketHttpDuplexTextStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpDuplexTextStreamedResource"; } }
@@ -240,20 +182,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpDuplexTextStreamedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpDuplexTextStreamedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpRequestReplyTextBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpRequestReplyTextBufferedTestServiceHost serviceHost = new WebSocketHttpRequestReplyTextBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyTextBuffered.svc")]
     public class WebSocketHttpRequestReplyTextBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
         protected override string Address { get { return "WebSocketHttpRequestReplyTextBufferedResource"; } }
@@ -270,20 +205,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpRequestReplyTextBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpRequestReplyTextBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpRequestReplyBinaryBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpRequestReplyBinaryBufferedTestServiceHost serviceHost = new WebSocketHttpRequestReplyBinaryBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyBinaryBuffered.svc")]
     public class WebSocketHttpRequestReplyBinaryBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
         protected override string Address { get { return "WebSocketHttpRequestReplyBinaryBufferedResource"; } }
@@ -300,21 +228,14 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpRequestReplyBinaryBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpRequestReplyBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpDuplexTextBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpDuplexTextBufferedTestServiceHost serviceHost = new WebSocketHttpDuplexTextBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexTextBuffered.svc")]
     public class WebSocketHttpDuplexTextBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpDuplexTextBufferedResource"; } }
@@ -331,21 +252,14 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpDuplexTextBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpDuplexTextBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpDuplexBinaryBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpDuplexBinaryBufferedTestServiceHost serviceHost = new WebSocketHttpDuplexBinaryBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexBinaryBuffered.svc")]
     public class WebSocketHttpDuplexBinaryBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpDuplexBinaryBufferedResource"; } }
@@ -362,20 +276,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpDuplexBinaryBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpDuplexBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpsRequestReplyBinaryBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost serviceHost = new WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsRequestReplyBinaryBuffered.svc")]
     public class WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
         protected override string Address { get { return "WebSocketHttpsRequestReplyBinaryBufferedResource"; } }
@@ -392,20 +299,13 @@ namespace WcfService
             CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
             return binding;
         }
-        public WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpsRequestReplyTextBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpsRequestReplyTextBufferedTestServiceHost serviceHost = new WebSocketHttpsRequestReplyTextBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsRequestReplyTextBuffered.svc")]
     public class WebSocketHttpsRequestReplyTextBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
         protected override string Address { get { return "WebSocketHttpsRequestReplyTextBufferedResource"; } }
@@ -423,20 +323,13 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpsRequestReplyTextBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpsRequestReplyTextBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpsDuplexBinaryBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpsDuplexBinaryBufferedTestServiceHost serviceHost = new WebSocketHttpsDuplexBinaryBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexBinaryBuffered.svc")]
     public class WebSocketHttpsDuplexBinaryBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpsDuplexBinaryBufferedResource"; } }
@@ -453,20 +346,13 @@ namespace WcfService
             CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
             return binding;
         }
-        public WebSocketHttpsDuplexBinaryBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpsDuplexBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpsDuplexTextBufferedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpsDuplexTextBufferedTestServiceHost serviceHost = new WebSocketHttpsDuplexTextBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexTextBuffered.svc")]
     public class WebSocketHttpsDuplexTextBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
         protected override string Address { get { return "WebSocketHttpsDuplexTextBufferedResource"; } }
@@ -484,21 +370,14 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpsDuplexTextBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-           : base(serviceType, baseAddresses)
+        public WebSocketHttpsDuplexTextBufferedTestServiceHost(params Uri[] baseAddresses)
+           : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    public class WebSocketHttpVerifyWebSocketsUsedTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            WebSocketHttpVerifyWebSocketsUsedTestServiceHost serviceHost = new WebSocketHttpVerifyWebSocketsUsedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpVerifyWebSocketsUsed.svc")]
     public class WebSocketHttpVerifyWebSocketsUsedTestServiceHost : TestServiceHostBase<IVerifyWebSockets>
     {
         protected override string Address { get { return "WebSocketHttpVerifyWebSocketsUsed"; } }
@@ -512,8 +391,8 @@ namespace WcfService
             return binding;
         }
 
-        public WebSocketHttpVerifyWebSocketsUsedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public WebSocketHttpVerifyWebSocketsUsedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(VerifyWebSockets), baseAddresses)
         {
         }
     }

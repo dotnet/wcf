@@ -2,24 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
 namespace WcfService
 {
-    public class HttpsClientCertificateTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            HttpsClientCertificateTestServiceHost serviceHost = new HttpsClientCertificateTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
-
+    [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "ClientCertificateAccepted/HttpsClientCertificate.svc")]
     public class HttpsClientCertificateTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "https-client-certificate"; } }
@@ -38,8 +28,8 @@ namespace WcfService
             this.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new MyX509CertificateValidator("DO_NOT_TRUST_WcfBridgeRootCA");
         }
 
-        public HttpsClientCertificateTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public HttpsClientCertificateTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

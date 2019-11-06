@@ -2,22 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class HttpsWindowsTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            HttpsWindowsTestServiceHost serviceHost = new HttpsWindowsTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "WindowAuthenticationNegotiate/HttpsWindows.svc")]
     public class HttpsWindowsTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "https-windows"; } }
@@ -29,8 +20,8 @@ namespace WcfService
             return binding;
         }
 
-        public HttpsWindowsTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public HttpsWindowsTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

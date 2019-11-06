@@ -4,20 +4,11 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class HttpsTransportSecurityMessageCredentialsUserNameTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost serviceHost = new HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
-
+    [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "HttpsTransSecMessCredsUserName.svc")]
     internal class HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "https-message-credentials-username"; } }
@@ -36,7 +27,8 @@ namespace WcfService
             AuthenticationResourceHelper.ConfigureServiceHostUserNameAuth(this);
         }
 
-        public HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(Type serviceType, params Uri[] baseAddresses) : base(serviceType, baseAddresses)
+        public HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }
