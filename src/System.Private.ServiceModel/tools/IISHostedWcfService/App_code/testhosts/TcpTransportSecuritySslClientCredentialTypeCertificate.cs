@@ -2,24 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 
 namespace WcfService
 {
-    public class TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost serviceHost = new TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "TcpTransportSecuritySslClientCredentialTypeCertificate.svc")]
     public class TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "tcp-server-ssl-security-clientcredentialtype-certificate"; } }
@@ -44,8 +35,8 @@ namespace WcfService
                                                       thumbprint);
         }
 
-        public TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

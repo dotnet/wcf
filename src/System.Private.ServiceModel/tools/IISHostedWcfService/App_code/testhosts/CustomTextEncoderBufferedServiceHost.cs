@@ -2,24 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.Text;
 
 namespace WcfService
 {
-    public class CustomTextEncoderBufferedTestServiceFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            CustomTextEncoderBufferedTestServiceHost serviceHost = new CustomTextEncoderBufferedTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
-
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "CustomTextEncoderBuffered.svc")]
     public class CustomTextEncoderBufferedTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "http-customtextencoder"; } }
@@ -33,8 +22,8 @@ namespace WcfService
             });
         }
 
-        public CustomTextEncoderBufferedTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public CustomTextEncoderBufferedTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

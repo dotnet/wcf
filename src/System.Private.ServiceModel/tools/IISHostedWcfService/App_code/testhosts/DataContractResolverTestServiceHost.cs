@@ -1,23 +1,13 @@
 using System;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.Xml;
 
 namespace WcfService
 {
-    public class DataContractResolverTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            DataContractResolverTestServiceHost serviceHost = new DataContractResolverTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "DataContractResolver.svc")]
     public class DataContractResolverTestServiceHost : TestServiceHostBase<IDataContractResolverService>
     {
         protected override string Address { get { return "DataContractResolver"; } }
@@ -42,8 +32,8 @@ namespace WcfService
                 }
             }
         }
-        public DataContractResolverTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public DataContractResolverTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(DataContractResolverService), baseAddresses)
         {
         }
     }
