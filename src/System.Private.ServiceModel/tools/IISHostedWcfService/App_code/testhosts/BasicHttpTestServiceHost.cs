@@ -4,19 +4,11 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class BasicHttpTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            BasicHttpTestServiceHost serviceHost = new BasicHttpTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(BasePath = "BasicHttp.svc", Schema = ServiceSchema.HTTP)]
     public class BasicHttpTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "Basic"; } }
@@ -26,8 +18,8 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public BasicHttpTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public BasicHttpTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

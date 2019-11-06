@@ -4,19 +4,11 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class TcpDefaultResourceServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            TcpDefaultResourceTestServiceHost serviceHost = new TcpDefaultResourceTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "TcpDefault.svc")]
     public class TcpDefaultResourceTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "tcp-default"; } }
@@ -26,8 +18,8 @@ namespace WcfService
             return new NetTcpBinding() { PortSharingEnabled = false };
         }
 
-        public TcpDefaultResourceTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public TcpDefaultResourceTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

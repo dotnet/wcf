@@ -4,20 +4,12 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class UnderstoodHeadersServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            UnderstoodHeadersServiceHost serviceHost = new UnderstoodHeadersServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "UnderstoodHeaders.svc")]
     public class UnderstoodHeadersServiceHost : TestServiceHostBase<IUnderstoodHeaders>
     {
         protected override string Address { get { return "UnderstoodHeaders"; } }
@@ -27,8 +19,8 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public UnderstoodHeadersServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public UnderstoodHeadersServiceHost(params Uri[] baseAddresses)
+            : base(typeof(UnderstoodHeaders), baseAddresses)
         {
         }
     }

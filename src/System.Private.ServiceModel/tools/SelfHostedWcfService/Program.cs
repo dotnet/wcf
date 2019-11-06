@@ -38,102 +38,7 @@ namespace SelfHostedWCFService
             string websocketsBaseAddress = string.Format(@"https://localhost:{0}", s_websocketsPort);
 
             Console.WriteLine("Starting all service hosts...");
-
-            CreateHost<BasicAuthTestServiceHost, WcfUserNameService>("BasicAuth.svc", httpsBaseAddress);
-            CreateHost<BasicHttpsTestServiceHost, WcfService.WcfService>("BasicHttps.svc", httpsBaseAddress);
-            CreateHost<BasicHttpTestServiceHost, WcfService.WcfService>("BasicHttp.svc", httpBaseAddress);
-            CreateHost<BasicHttpTestServiceHost_4_4_0, WcfService_4_4_0>("BasicHttp_4_4_0.svc", httpBaseAddress);            
-            CreateHost<BasicHttpSoapTestServiceHost, WcfSoapService>("BasicHttpSoap.svc", httpBaseAddress);
-            CreateHost<CustomTextEncoderBufferedTestServiceHost,WcfService.WcfService>("CustomTextEncoderBuffered.svc", httpBaseAddress);
-            CreateHost<CustomTextEncoderStreamedTestServiceHost, WcfService.WcfService>("CustomTextEncoderStreamed.svc", httpBaseAddress);
-            CreateHost<DefaultCustomHttpTestServiceHost, WcfService.WcfService>("DefaultCustomHttp.svc", httpBaseAddress);
-            CreateHost<DuplexTestServiceHost,WcfDuplexService>("Duplex.svc", tcpBaseAddress);
-            CreateHost<DuplexCallbackTestServiceHost, DuplexCallbackService>("DuplexCallback.svc", tcpBaseAddress);
-            CreateHost<DuplexChannelCallbackReturnTestServiceHost, DuplexChannelCallbackReturnService>("DuplexChannelCallbackReturn.svc", tcpBaseAddress);
-            CreateHost<DuplexCallbackDataContractComplexTypeTestServiceHost, WcfDuplexService>("DuplexCallbackDataContractComplexType.svc", tcpBaseAddress);
-            CreateHost<DuplexCallbackXmlComplexTypeTestServiceHost, WcfDuplexService>("DuplexCallbackXmlComplexType.svc", tcpBaseAddress);
-            CreateHost<DuplexCallbackTcpCertificateCredentialTestServiceHost, WcfDuplexService>("DuplexCallbackTcpCertificateCredential.svc", tcpBaseAddress);
-            CreateHost<HttpBinaryTestServiceHost, WcfService.WcfService>("HttpBinary.svc", httpBaseAddress);
-            CreateHost<HttpDigestNoDomainTestServiceHost, WcfService.WcfService>("HttpDigestNoDomain.svc", httpBaseAddress);
-            CreateHost<HttpsClientCertificateTestServiceHost, WcfService.WcfService>("ClientCertificateAccepted/HttpsClientCertificate.svc", httpsBaseAddress);
-            CreateHost<HttpsDigestTestServiceHost, WcfService.WcfService>("DigestAuthentication/HttpsDigest.svc", httpsBaseAddress);
-            CreateHost<HttpsNtlmTestServiceHost, WcfService.WcfService>("WindowAuthenticationNtlm/HttpsNtlm.svc", httpsBaseAddress);
-            CreateHost<HttpSoap11TestServiceHost, WcfService.WcfService>("HttpSoap11.svc", httpBaseAddress);
-            CreateHost<HttpSoap11WSA10TestServiceHost, WcfService.WcfService>("HttpSoap11WSA10.svc", httpBaseAddress);
-            CreateHost<HttpsSoap11TestServiceHost, WcfService.WcfService>("HttpsSoap11.svc", httpsBaseAddress);
-            CreateHost<HttpSoap11WSA2004TestServiceHost, WcfService.WcfService>("HttpSoap11WSA2004.svc", httpBaseAddress);
-            CreateHost<HttpsSoap12TestServiceHost, WcfService.WcfService>("HttpsSoap12.svc", httpsBaseAddress);
-            CreateHost<HttpSoap12TestServiceHost, WcfService.WcfService>("HttpSoap12.svc", httpBaseAddress);
-            CreateHost<HttpSoap12WSANoneTestServiceHost, WcfService.WcfService>("HttpSoap12WSANone.svc", httpBaseAddress);
-            CreateHost<HttpSoap12WSA2004TestServiceHost, WcfService.WcfService>("HttpSoap12WSA2004.svc", httpBaseAddress);
-            CreateHost<HttpsWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpsWindows.svc", httpsBaseAddress);
-            CreateHost<HttpWindowsTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/HttpWindows.svc", httpBaseAddress);
-            CreateHost<NetHttpTestServiceHost, WcfService.WcfService>("NetHttp.svc", httpBaseAddress);
-            CreateHost<NetHttpTestServiceHostUsingWebSockets, WcfService.WcfService>("NetHttpWebSockets.svc", httpBaseAddress);
-            CreateHost<NetHttpsTestServiceHost, WcfService.WcfService>("NetHttps.svc", httpsBaseAddress);
-            CreateHost<NetHttpsTestServiceHostUsingWebSockets, WcfService.WcfService>("NetHttpsWebSockets.svc", httpsBaseAddress);
-            CreateHost<HttpsCertificateValidationPeerTrustTestServiceHost, WcfService.WcfService>("HttpsCertValModePeerTrust.svc", httpsBaseAddress);
-            CreateHost<HttpsCertificateValidationChainTrustTestServiceHost, WcfService.WcfService>("HttpsCertValModeChainTrust.svc", httpsBaseAddress);
-            CreateHost<HttpsTransportSecurityMessageCredentialsCertTestServiceHost, WcfService.WcfService>("HttpsTransSecMessCredsCert.svc", httpsBaseAddress);
-            CreateHost<HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost, WcfService.WcfService>("HttpsTransSecMessCredsUserName.svc", httpsBaseAddress);
-            CreateHost<BasicHttpsTransportSecurityMessageCredentialsCertTestServiceHost, WcfService.WcfService>("BasicHttpsTransSecMessCredsCert.svc", httpsBaseAddress);
-            CreateHost<BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost, WcfService.WcfService>("BasicHttpsTransSecMessCredsUserName.svc", httpsBaseAddress);
-            CreateHost<ServiceContractAsyncIntOutTestServiceHost, ServiceContractIntOutService>("ServiceContractAsyncIntOut.svc", httpBaseAddress);
-            CreateHost<ServiceContractAsyncUniqueTypeOutTestServiceHost, ServiceContractUniqueTypeOutService>("ServiceContractAsyncUniqueTypeOut.svc", httpBaseAddress);
-            CreateHost<ServiceContractAsyncIntRefTestServiceHost, ServiceContractIntRefService>("ServiceContractAsyncIntRef.svc", httpBaseAddress);
-            CreateHost<ServiceContractAsyncUniqueTypeRefTestServiceHost, ServiceContractUniqueTypeRefService>("ServiceContractAsyncUniqueTypeRef.svc", httpBaseAddress);
-            CreateHost<ServiceContractSyncUniqueTypeOutTestServiceHost, ServiceContractUniqueTypeOutSyncService>("ServiceContractSyncUniqueTypeOut.svc", httpBaseAddress);
-            CreateHost<ServiceContractSyncUniqueTypeRefTestServiceHost, ServiceContractUniqueTypeRefSyncService>("ServiceContractSyncUniqueTypeRef.svc", httpBaseAddress);
-            CreateHost<TcpCertificateWithServerAltNameTestServiceHost, WcfService.WcfService>("TcpCertificateWithServerAltName.svc", tcpBaseAddress);
-            CreateHost<TcpCertificateWithSubjectCanonicalNameDomainNameTestServiceHost, WcfService.WcfService>("TcpCertificateWithSubjectCanonicalNameDomainName.svc", tcpBaseAddress);
-            CreateHost<TcpCertificateWithSubjectCanonicalNameFqdnTestServiceHost, WcfService.WcfService>("TcpCertificateWithSubjectCanonicalNameFqdn.svc", tcpBaseAddress);
-            CreateHost<TcpCertificateWithSubjectCanonicalNameLocalhostTestServiceHost, WcfService.WcfService>("TcpCertificateWithSubjectCanonicalNameLocalhost.svc", tcpBaseAddress);
-            CreateHost<TcpExpiredServerCertTestServiceHost, WcfService.WcfService>("TcpExpiredServerCert.svc", tcpBaseAddress);
-            CreateHost<TcpNoSecurityTestServiceHost, WcfService.WcfService>("TcpNoSecurity.svc", tcpBaseAddress);
-            CreateHost<TcpDefaultResourceTestServiceHost, WcfService.WcfService>("TcpDefault.svc", tcpBaseAddress);
-            CreateHost<TcpNoSecurityTextTestServiceHost, WcfService.WcfService>("TcpNoSecurityText.svc", tcpBaseAddress);
-            CreateHost<TcpInvalidEkuServerCertTestServiceHost, WcfService.WcfService>("TcpInvalidEkuServerCert.svc", tcpBaseAddress);
-            CreateHost<TcpRevokedServerCertTestServiceHost, WcfService.WcfService>("TcpRevokedServerCert.svc", tcpBaseAddress);
-            CreateHost<TcpStreamedNoSecurityTestServiceHost, WcfService.WcfService>("TcpStreamedNoSecurity.svc", tcpBaseAddress);
-            CreateHost<TcpTransportSecuritySslCustomCertValidationTestServiceHost, WcfService.WcfService>("TcpTransportSecuritySslCustomCertValidation.svc", tcpBaseAddress);
-            CreateHost<TcpTransportSecurityStreamedTestServiceHost, WcfService.WcfService>("WindowAuthenticationNegotiate/TcpTransportSecurityStreamed.svc", tcpBaseAddress);
-            CreateHost<TcpTransportSecurityWithSslTestServiceHost, WcfService.WcfService>("TcpTransportSecurityWithSsl.svc", tcpBaseAddress);
-            CreateHost<TcpTransportSecuritySslClientCredentialTypeCertificateTestServiceHost, WcfService.WcfService>("TcpTransportSecuritySslClientCredentialTypeCertificate.svc", tcpBaseAddress);
-            CreateHost<TcpVerifyDNSTestServiceHost, WcfService.WcfService>("TcpVerifyDNS.svc", tcpBaseAddress);
-            CreateHost<TcpCertificateValidationPeerTrustTestServiceHost, WcfService.WcfService>("NetTcpCertValModePeerTrust.svc", tcpBaseAddress);
-            CreateHost<TcpSessionTestServiceHost, WcfService.SessionTestsDefaultService>("SessionTestsDefaultService.svc", tcpBaseAddress);
-            CreateHost<TcpSessionShortTimeoutTestServiceHost, WcfService.SessionTestsShortTimeoutService>("SessionTestsShortTimeoutService.svc", tcpBaseAddress);
-            CreateHost<TcpSessionDuplexTestServiceHost, WcfService.SessionTestsDuplexService>("SessionTestsDuplexService.svc", tcpBaseAddress);
-            CreateHost<TcpSoap11WSA10TestServiceHost, WcfService.WcfService>("TcpSoap11WSA10.svc", tcpBaseAddress);
-            CreateHost<TcpTransportSecurityMessageCredentialsCertTestServiceHost, WcfService.WcfService>("TcpTransSecMessCredsCert.svc", tcpBaseAddress);
-            CreateHost<TcpTransportSecurityMessageCredentialsUserNameTestServiceHost, WcfService.WcfService>("TcpTransSecMessCredsUserName.svc", tcpBaseAddress);
-            CreateHost<DuplexWebSocketTestServiceHost, WcfWebSocketService>("DuplexWebSocket.svc", websocketBaseAddress);
-            CreateHost<WebSocketTransportTestServiceHost, WcfWebSocketTransportUsageAlwaysService>("WebSocketTransport.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpDuplexBinaryStreamedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexBinaryStreamed.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpRequestReplyBinaryStreamedTestServiceHost, WSRequestReplyService>("WebSocketHttpRequestReplyBinaryStreamed.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpsDuplexBinaryStreamedTestServiceHost, WSDuplexService>("WebSocketHttpsDuplexBinaryStreamed.svc", websocketsBaseAddress);
-            CreateHost<WebSocketHttpsDuplexTextStreamedTestServiceHost, WSDuplexService>("WebSocketHttpsDuplexTextStreamed.svc", websocketsBaseAddress);
-            CreateHost<WebSocketHttpRequestReplyTextStreamedTestServiceHost, WSRequestReplyService>("WebSocketHttpRequestReplyTextStreamed.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpDuplexTextStreamedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexTextStreamed.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpRequestReplyTextBufferedTestServiceHost, WSRequestReplyService>("WebSocketHttpRequestReplyTextBuffered.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpRequestReplyBinaryBufferedTestServiceHost, WSRequestReplyService>("WebSocketHttpRequestReplyBinaryBuffered.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpDuplexTextBufferedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexTextBuffered.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpDuplexBinaryBufferedTestServiceHost, WSDuplexService>("WebSocketHttpDuplexBinaryBuffered.svc", websocketBaseAddress);
-            CreateHost<WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost, WSRequestReplyService>("WebSocketHttpsRequestReplyBinaryBuffered.svc", websocketsBaseAddress);
-            CreateHost<WebSocketHttpsRequestReplyTextBufferedTestServiceHost, WSRequestReplyService>("WebSocketHttpsRequestReplyTextBuffered.svc", websocketsBaseAddress);
-            CreateHost<WebSocketHttpsDuplexBinaryBufferedTestServiceHost, WSDuplexService>("WebSocketHttpsDuplexBinaryBuffered.svc", websocketsBaseAddress);
-            CreateHost<WebSocketHttpsDuplexTextBufferedTestServiceHost, WSDuplexService>("WebSocketHttpsDuplexTextBuffered.svc", websocketsBaseAddress);
-            CreateHost<ChannelExtensibilityServiceHost, WcfChannelExtensiblityService>("ChannelExtensibility.svc", httpBaseAddress);
-            CreateHost<WebSocketHttpVerifyWebSocketsUsedTestServiceHost, VerifyWebSockets>("WebSocketHttpVerifyWebSocketsUsed.svc", websocketBaseAddress);
-            CreateHost<DataContractResolverTestServiceHost, WcfService.DataContractResolverService>("DataContractResolver.svc", httpBaseAddress);
-            CreateHost<UnderstoodHeadersServiceHost, WcfService.UnderstoodHeaders>("UnderstoodHeaders.svc", httpBaseAddress);
-            CreateHost<XmlSFAttributeTestServiceHost, WcfService.XmlSFAttribute>("XmlSFAttribute.svc", httpBaseAddress);
-            CreateHost<XmlSerializerICalculatorRpcEncServiceHost, RpcEncSingleNsService>("BasicHttpRpcEncSingleNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerICalculatorRpcLitServiceHost, RpcLitSingleNsService>("BasicHttpRpcLitSingleNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerICalculatorDocLitServiceHost, DocLitSingleNsService>("BasicHttpDocLitSingleNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerDualContractRpcEncServiceHost, RpcEncDualNsService>("BasicHttpRpcEncDualNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerDualContractRpcLitServiceHost, RpcLitDualNsService>("BasicHttpRpcLitDualNs.svc", httpBaseAddress);
-            CreateHost<XmlSerializerDualContractDocLitServiceHost, DocLitDualNsService>("BasicHttpDocLitDualNs.svc", httpBaseAddress);
+            TestDefinitionHelper.StartHosts();
 
             //Start the crlUrl service last as the client use it to ensure all services have been started
             Uri testHostUrl = new Uri(string.Format("http://localhost/TestHost.svc", s_httpPort));
@@ -154,17 +59,6 @@ namespace SelfHostedWCFService
                     return;
                 }
             } while (true);
-        }
-
-        // Instantiates and opens a ServiceHost of type 'THost' that exposes a service of type 'TService'
-        // The endpoint address is formed by combining 'baseAddress' with 'serviceAddress'.
-        private static THost CreateHost<THost, TService>(string serviceAddress, string baseAddress) where THost : ServiceHost
-        {
-            string address = String.Format("{0}/{1}", baseAddress, serviceAddress);
-            THost host = (THost)Activator.CreateInstance(typeof(THost), new object[] { typeof(TService), new Uri[] { new Uri(address) } });
-            Console.WriteLine("  {0} at {1}", typeof(THost).Name, address);
-            host.Open();
-            return host;
         }
     }
 }

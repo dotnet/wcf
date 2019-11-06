@@ -9,7 +9,7 @@
     <TargetFrameworkProfile />
     <!-- Lower the LangVersion to the same as ASP.NET uses so that any web hosted compile errors area
          made apparent when compiling the self hosted version of the test services -->
-    <LangVersion>5</LangVersion>
+    <LangVersion>5</LangVersion>  
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

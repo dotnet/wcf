@@ -2,24 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class TcpSessionTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            TcpSessionTestServiceHost serviceHost = new TcpSessionTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "SessionTestsDefaultService.svc")]
     public class TcpSessionTestServiceHost : TestServiceHostBase<ISessionTestsDefaultService>
     {
         protected override string Address { get { return "tcp-sessions"; } }
@@ -29,20 +19,13 @@ namespace WcfService
             return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
         }
 
-        public TcpSessionTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public TcpSessionTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(SessionTestsDefaultService), baseAddresses)
         {
         }
     }
 
-    public class TcpSessionShortTimeoutTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            TcpSessionShortTimeoutTestServiceHost serviceHost = new TcpSessionShortTimeoutTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "SessionTestsShortTimeoutService.svc")]
     public class TcpSessionShortTimeoutTestServiceHost : TestServiceHostBase<ISessionTestsShortTimeoutService>
     {
         protected override string Address { get { return ""; } }
@@ -51,20 +34,13 @@ namespace WcfService
             return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false, ReceiveTimeout = TimeSpan.FromSeconds(5)};
         }
 
-        public TcpSessionShortTimeoutTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public TcpSessionShortTimeoutTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(SessionTestsShortTimeoutService), baseAddresses)
         {
         }
     }
 
-    public class TcpSessionDuplexTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            TcpSessionDuplexTestServiceHost serviceHost = new TcpSessionDuplexTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "SessionTestsDuplexService.svc")]
     public class TcpSessionDuplexTestServiceHost : TestServiceHostBase<ISessionTestsDuplexService>
     {
         protected override string Address { get { return ""; } }
@@ -73,8 +49,8 @@ namespace WcfService
             return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false};
         }
 
-        public TcpSessionDuplexTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public TcpSessionDuplexTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(SessionTestsDuplexService), baseAddresses)
         {
         }
     }

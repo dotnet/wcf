@@ -5,20 +5,12 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class TcpTransportSecurityMessageCredentialsUserNameTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            TcpTransportSecurityMessageCredentialsUserNameTestServiceHost serviceHost = new TcpTransportSecurityMessageCredentialsUserNameTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "TcpTransSecMessCredsUserName.svc")]
     internal class TcpTransportSecurityMessageCredentialsUserNameTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "Tcp-message-credentials-username"; } }
@@ -43,7 +35,7 @@ namespace WcfService
                                                       thumbprint);
         }
 
-        public TcpTransportSecurityMessageCredentialsUserNameTestServiceHost(Type serviceType, params Uri[] baseAddresses) : base(serviceType, baseAddresses)
+        public TcpTransportSecurityMessageCredentialsUserNameTestServiceHost(params Uri[] baseAddresses) : base(typeof(WcfService), baseAddresses)
         {
         }
     }
