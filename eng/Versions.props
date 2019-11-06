@@ -6,8 +6,8 @@
     <ProductVersion>3.1.0</ProductVersion>
     <!-- We need to move to 4.7 as part of our versioning change when we switch to arcade to avoid downgrading versions -->
     <!-- [todo:arcade] Do not understand this. -->
-    <MajorVersion>4</MajorVersion>
-    <MinorVersion>7</MinorVersion>
+    <MajorVersion>5</MajorVersion>
+    <MinorVersion>0</MinorVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
