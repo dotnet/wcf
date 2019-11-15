@@ -37,7 +37,7 @@ public static partial class DataContractTests
             client = factory.CreateChannel();
             client.AddEmployee(new Manager() { Age = "10", Name = "jone", OfficeId = 1 });
             var results = client.GetAllEmployees();
-            Assert.Equal(1, results.Count());
+            Assert.Single(results);
             var manager = results.First();
             Assert.True(manager.GetType() == (typeof(Manager)), string.Format("Expected type: {0}, Actual type: {1}", typeof(Manager), manager.GetType()));
             Assert.True(((Manager)manager).Name == "jone", string.Format("Expected Name: {0}, Actual Name: {1}", "jone", ((Manager)manager).Name));
