@@ -31,7 +31,7 @@ public static partial class TypedProxyTests
         CustomBinding customBinding = new CustomBinding();
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
-        ServiceContract_TypedProxy_AsyncBeginEnd_Call(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call");
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_TestImpl(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call");
     }
 
     [WcfFact]
@@ -39,7 +39,7 @@ public static partial class TypedProxyTests
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call()
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
-        ServiceContract_TypedProxy_AsyncBeginEnd_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call");
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_TestImpl(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call");
     }
 
     [WcfFact]
@@ -50,7 +50,7 @@ public static partial class TypedProxyTests
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback");
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback_TestImpl(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback");
     }
 
     [WcfFact]
@@ -58,7 +58,7 @@ public static partial class TypedProxyTests
     public static void ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback()
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
-        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback");
+        ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback_TestImpl(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncBeginEnd_Call_WithNoCallback");
     }
 
     [WcfFact]
@@ -83,7 +83,7 @@ public static partial class TypedProxyTests
         customBinding.Elements.Add(new TextMessageEncodingBindingElement());
         customBinding.Elements.Add(new HttpTransportBindingElement());
 
-        ServiceContract_TypedProxy_AsyncTask_Call(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncTask_Call");
+        ServiceContract_TypedProxy_AsyncTask_Call_TestImpl(customBinding, Endpoints.DefaultCustomHttp_Address, "ServiceContract_TypedProxy_AsyncTask_Call");
     }
 
     [WcfFact]
@@ -92,7 +92,7 @@ public static partial class TypedProxyTests
     {
         NetTcpBinding netTcpBinding = new NetTcpBinding();
         netTcpBinding.Security.Mode = SecurityMode.None;
-        ServiceContract_TypedProxy_AsyncTask_Call(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call");
+        ServiceContract_TypedProxy_AsyncTask_Call_TestImpl(netTcpBinding, Endpoints.Tcp_NoSecurity_Address, "ServiceContract_TypedProxy_NetTcpBinding_AsyncTask_Call");
     }
 
     [WcfFact]
@@ -444,7 +444,7 @@ public static partial class TypedProxyTests
         void OnPingCallback(Guid guid);
     }
 
-    private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call(Binding binding, string endpoint, string testName)
+    private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_TestImpl(Binding binding, string endpoint, string testName)
     {
         // Verifies a typed proxy can call a service operation asynchronously using Begin/End
         ChannelFactory<IWcfServiceBeginEndGenerated> factory = null;
@@ -491,7 +491,7 @@ public static partial class TypedProxyTests
         }
     }
 
-    private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback(Binding binding, string endpoint, string testName)
+    private static void ServiceContract_TypedProxy_AsyncBeginEnd_Call_WithNoCallback_TestImpl(Binding binding, string endpoint, string testName)
     {
         // This test verifies a typed proxy can call a service operation asynchronously using Begin/End
         ChannelFactory<IWcfServiceBeginEndGenerated> factory = null;
@@ -532,7 +532,7 @@ public static partial class TypedProxyTests
         }
     }
 
-    private static void ServiceContract_TypedProxy_AsyncTask_Call(Binding binding, string endpoint, string testName)
+    private static void ServiceContract_TypedProxy_AsyncTask_Call_TestImpl(Binding binding, string endpoint, string testName)
     {
         // This test verifies a typed proxy can call a service operation asynchronously using Task<string>
         ChannelFactory<IWcfServiceGenerated> factory = null;
