@@ -14,7 +14,7 @@ using Xunit;
 
 public static class ClientBaseTest
 {
-    [WcfTheory]
+    [WcfFact]
     public static void ClientBaseCloseMethodClosesCorrectly()
     {
         // *** SETUP *** \\
