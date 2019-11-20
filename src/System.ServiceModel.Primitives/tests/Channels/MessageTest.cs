@@ -30,6 +30,7 @@ public static class MessageTest
         Assert.True(message.IsEmpty);
     }
 
+    [WcfFact]
     public static void CreateMessageWithSoap12WSAddressing10_WithBody()
     {
         string content = "This is what goes in the body of the message.";
@@ -41,7 +42,7 @@ public static class MessageTest
         Assert.False(message.IsEmpty);
 
         var reader = message.GetReaderAtBodyContents();
-        var messageBody = reader.ReadContentAsString();
+        var messageBody = reader.ReadElementContentAsString();
 
         Assert.Equal<string>(content, messageBody);
     }
