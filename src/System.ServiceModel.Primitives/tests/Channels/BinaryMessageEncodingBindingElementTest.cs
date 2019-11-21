@@ -59,7 +59,7 @@ public static class BinaryMessageEncodingBindingElementTest
     }
 
     [WcfTheory]
-    [MemberData("ValidBinaryMessageEncoderMessageVersions", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidBinaryMessageEncoderMessageVersions), MemberType = typeof(TestData))]
     public static void MessageVersion_Property_Sets(MessageVersion version)
     {
         BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();
@@ -68,7 +68,7 @@ public static class BinaryMessageEncodingBindingElementTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidBinaryMessageEncoderMessageVersions", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidBinaryMessageEncoderMessageVersions), MemberType = typeof(TestData))]
     public static void MessageVersion_Property_Set_Invalid_Value_Throws(MessageVersion version)
     {
         BinaryMessageEncodingBindingElement bindingElement = new BinaryMessageEncodingBindingElement();

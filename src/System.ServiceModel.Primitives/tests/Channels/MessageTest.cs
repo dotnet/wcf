@@ -14,7 +14,7 @@ public static class MessageTest
     private const string s_action = "http://tempuri.org/someserviceendpoint";
 
     [WcfTheory]
-    [MemberData("MessageVersionsWithEnvelopeAndAddressingVersions", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.MessageVersionsWithEnvelopeAndAddressingVersions), MemberType = typeof(TestData))]
     public static void MessageVersion_Verify_AddressingVersions_And_EnvelopeVersions(MessageVersion messageVersion, EnvelopeVersion envelopeVersion, AddressingVersion addressingVersion)
     {
         Assert.Equal<EnvelopeVersion>(envelopeVersion, messageVersion.Envelope);

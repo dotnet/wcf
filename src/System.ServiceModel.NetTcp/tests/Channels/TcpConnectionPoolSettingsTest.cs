@@ -33,7 +33,7 @@ public static class TcpConnectionPoolSettingsTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeOuts), MemberType = typeof(TestData))]
     public static void IdleTimeout_Property_Sets(TimeSpan timeSpan)
     {
         // TcpConnectionPoolSettings has no public constructor but we can access it from the TcpTransportBindingElement
@@ -44,7 +44,7 @@ public static class TcpConnectionPoolSettingsTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeOuts), MemberType = typeof(TestData))]
     public static void IdleTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
     {
         // TcpConnectionPoolSettings has no public constructor but we can access it from the TcpTransportBindingElement
@@ -54,7 +54,7 @@ public static class TcpConnectionPoolSettingsTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeOuts), MemberType = typeof(TestData))]
     public static void LeaseTimeout_Property_Sets(TimeSpan timeSpan)
     {
         // TcpConnectionPoolSettings has no public constructor but we can access it from the TcpTransportBindingElement
@@ -65,7 +65,7 @@ public static class TcpConnectionPoolSettingsTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeOuts), MemberType = typeof(TestData))]
     public static void LeaseTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
     {
         // TcpConnectionPoolSettings has no public constructor but we can access it from the TcpTransportBindingElement
