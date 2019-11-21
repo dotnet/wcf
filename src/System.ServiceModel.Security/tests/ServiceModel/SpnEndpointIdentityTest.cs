@@ -32,14 +32,14 @@ public static class SpnEndpointIdentityTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeSpans", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeSpans), MemberType = typeof(TestData))]
     public static void Set_SpnLookupTime_ValidTimes(TimeSpan timeSpan)
     {
         SpnEndpointIdentity.SpnLookupTime = timeSpan;
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeSpans", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeSpans), MemberType = typeof(TestData))]
     public static void Set_SpnLookupTime_InvalidTimes_Throws(TimeSpan timeSpan)
     {
         Assert.Throws<ArgumentOutOfRangeException>("value", () =>

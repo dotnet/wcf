@@ -218,7 +218,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeOuts), MemberType = typeof(TestData))]
     public static void CloseTimeout_Property_Sets(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -227,7 +227,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeOuts), MemberType = typeof(TestData))]
     public static void CloseTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -235,7 +235,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeOuts), MemberType = typeof(TestData))]
     public static void OpenTimeout_Property_Sets(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -244,7 +244,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeOuts), MemberType = typeof(TestData))]
     public static void OpenTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -252,7 +252,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeOuts), MemberType = typeof(TestData))]
     public static void SendTimeout_Property_Sets(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -261,7 +261,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeOuts), MemberType = typeof(TestData))]
     public static void SendTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -269,7 +269,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTimeOuts), MemberType = typeof(TestData))]
     public static void ReceiveTimeout_Property_Sets(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -278,7 +278,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidTimeOuts", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidTimeOuts), MemberType = typeof(TestData))]
     public static void ReceiveTimeout_Property_Set_Invalid_Value_Throws(TimeSpan timeSpan)
     {
         BasicHttpBinding binding = new BasicHttpBinding();
@@ -286,7 +286,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("ValidEncodings", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidEncodings), MemberType = typeof(TestData))]
     public static void TextEncoding_Property_Sets(Encoding encoding)
     {
         var binding = new BasicHttpBinding();
@@ -295,7 +295,7 @@ public static class BasicHttpBindingTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidEncodings), MemberType = typeof(TestData))]
     public static void TextEncoding_Property_Set_Invalid_Value_Throws(Encoding encoding)
     {
         var binding = new BasicHttpBinding();

@@ -21,7 +21,7 @@ public static class TextMessageEncodingBindingElementTest
     }
 
     [WcfTheory]
-    [MemberData("ValidEncodings", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidEncodings), MemberType = typeof(TestData))]
     public static void WriteEncoding_Property_Sets(Encoding encoding)
     {
         TextMessageEncodingBindingElement element = new TextMessageEncodingBindingElement();
@@ -30,7 +30,7 @@ public static class TextMessageEncodingBindingElementTest
     }
 
     [WcfTheory]
-    [MemberData("InvalidEncodings", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.InvalidEncodings), MemberType = typeof(TestData))]
     public static void WriteEncoding_Property_Set_Throws_For_Invalid_Encodings(Encoding encoding)
     {
         TextMessageEncodingBindingElement element = new TextMessageEncodingBindingElement();
@@ -38,7 +38,7 @@ public static class TextMessageEncodingBindingElementTest
     }
 
     [WcfTheory]
-    [MemberData("ValidTextMessageEncoderMessageVersions", MemberType = typeof(TestData))]
+    [MemberData(nameof(TestData.ValidTextMessageEncoderMessageVersions), MemberType = typeof(TestData))]
     public static void MessageVersion_Property_Sets(MessageVersion messageVersion)
     {
         TextMessageEncodingBindingElement element = new TextMessageEncodingBindingElement();
