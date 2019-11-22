@@ -50,7 +50,7 @@ public static class SpnEndpointIdentityTest
 
     private class TestData
     {
-        public static IEnumerable<object> ValidTimeSpans()
+        public static IEnumerable<object[]> ValidTimeSpans()
         {
             TimeSpan[] validTimeSpans = new TimeSpan[] { TimeSpan.Zero, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60), TimeSpan.MaxValue };
             foreach (var ts in validTimeSpans)
@@ -59,7 +59,7 @@ public static class SpnEndpointIdentityTest
             }
         }
 
-        public static IEnumerable<object> InvalidTimeSpans()
+        public static IEnumerable<object[]> InvalidTimeSpans()
         {
             TimeSpan[] validTimeSpans = new TimeSpan[] { TimeSpan.FromSeconds(-1), TimeSpan.MinValue };
             foreach (var ts in validTimeSpans)
