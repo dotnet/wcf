@@ -55,10 +55,10 @@ public class ChannelFactoryTest
             Assert.NotStrictEqual<IRequestChannel>(channel, channel2);
 
             // Validate Equals("other") negative
-            Assert.NotStrictEqual<object>(channel, "other");
+            Assert.NotStrictEqual<object>("other", channel);
 
             // Validate Equals(null) negative
-            Assert.NotStrictEqual<IRequestChannel>(channel, null);
+            Assert.NotNull(channel);
         }
         finally
         {
@@ -112,10 +112,10 @@ public class ChannelFactoryTest
             Assert.NotStrictEqual<IRequestChannel>(channel, channel2);
 
             // Validate Equals("other") negative
-            Assert.NotStrictEqual<object>(channel, "other");
+            Assert.NotStrictEqual<object>("other", channel);
 
             // Validate Equals(null) negative
-            Assert.NotStrictEqual<IRequestChannel>(channel, null);
+            Assert.NotNull(channel);
         }
         finally
         {
