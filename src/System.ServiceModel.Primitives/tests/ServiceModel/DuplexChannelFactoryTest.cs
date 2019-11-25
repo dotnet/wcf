@@ -211,10 +211,10 @@ public class DuplexChannelFactoryTest
             Assert.NotStrictEqual<IWcfDuplexService>(channel, channel2);
 
             // Validate Equals("other") negative
-            Assert.NotStrictEqual<object>(channel, "other");
+            Assert.NotStrictEqual<object>("other", channel);
 
             // Validate Equals(null) negative
-            Assert.NotStrictEqual<IWcfDuplexService>(channel, null);
+            Assert.NotNull(channel);
         }
         finally
         {

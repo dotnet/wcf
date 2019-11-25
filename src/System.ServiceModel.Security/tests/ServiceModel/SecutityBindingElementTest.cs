@@ -40,7 +40,7 @@ public static class SecutityBindingElementTest
     public static void Property_KeyEntropyMode()
     {
         TransportSecurityBindingElement securityBindingElement = new TransportSecurityBindingElement();
-        Assert.Equal(securityBindingElement.KeyEntropyMode, SecurityKeyEntropyMode.CombinedEntropy);
+        Assert.Equal(SecurityKeyEntropyMode.CombinedEntropy, securityBindingElement.KeyEntropyMode);
     }
 
     [WcfFact]
