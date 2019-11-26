@@ -116,7 +116,7 @@ public static class OperationBehaviorTest
 
             for (int i = 0; i < 2; i++)
             {
-                Assert.StrictEqual(obj.Members[i].Name, deserialized.Members[i].Name);
+                Assert.Equal(obj.Members[i].Name, deserialized.Members[i].Name);
                 Assert.StrictEqual(obj.Members[i].Index, deserialized.Members[i].Index);
             }
         }

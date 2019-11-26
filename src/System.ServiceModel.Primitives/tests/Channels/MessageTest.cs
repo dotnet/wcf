@@ -26,7 +26,7 @@ public static class MessageTest
     {
         var message = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, s_action);
         Assert.Equal<MessageVersion>(MessageVersion.Soap12WSAddressing10, message.Version);
-        Assert.Equal<string>(s_action, message.Headers.Action);
+        Assert.Equal(s_action, message.Headers.Action);
         Assert.True(message.IsEmpty);
     }
 
@@ -38,13 +38,13 @@ public static class MessageTest
         var message = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, s_action, body);
 
         Assert.Equal<MessageVersion>(MessageVersion.Soap12WSAddressing10, message.Version);
-        Assert.Equal<string>(s_action, message.Headers.Action);
+        Assert.Equal(s_action, message.Headers.Action);
         Assert.False(message.IsEmpty);
 
         var reader = message.GetReaderAtBodyContents();
         var messageBody = reader.ReadElementContentAsString();
 
-        Assert.Equal<string>(content, messageBody);
+        Assert.Equal(content, messageBody);
     }
 
     [WcfFact]
@@ -53,13 +53,13 @@ public static class MessageTest
         var message = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, s_action, new CustomBodyWriter());
 
         Assert.Equal<MessageVersion>(MessageVersion.Soap12WSAddressing10, message.Version);
-        Assert.Equal<string>(s_action, message.Headers.Action);
+        Assert.Equal(s_action, message.Headers.Action);
         Assert.False(message.IsEmpty);
 
         var reader = message.GetReaderAtBodyContents();
         var messageBody = reader.ReadContentAsString();
 
-        Assert.Equal<string>(string.Empty, messageBody);
+        Assert.Equal(string.Empty, messageBody);
     }
 
     [WcfFact]
@@ -75,6 +75,6 @@ public static class MessageTest
 
         string expected = "Soap12 (http://www.w3.org/2003/05/soap-envelope) Addressing10 (http://www.w3.org/2005/08/addressing)";
         string actual = version.ToString();
-        Assert.Equal<string>(expected, actual);
+        Assert.Equal(expected, actual);
     }
 }

@@ -46,7 +46,7 @@ public class ChannelFactoryTest
             // Validate ToString()
             string toStringResult = channel.ToString();
             string toStringExpected = "System.ServiceModel.Channels.IRequestChannel";
-            Assert.Equal<string>(toStringExpected, toStringResult);
+            Assert.Equal(toStringExpected, toStringResult);
 
             // Validate Equals()
             Assert.StrictEqual<IRequestChannel>(channel, channel);
@@ -103,7 +103,7 @@ public class ChannelFactoryTest
             // Validate ToString()
             string toStringResult = channel.ToString();
             string toStringExpected = "System.ServiceModel.Channels.IRequestChannel";
-            Assert.Equal<string>(toStringExpected, toStringResult);
+            Assert.Equal(toStringExpected, toStringResult);
 
             // Validate Equals()
             Assert.StrictEqual<IRequestChannel>(channel, channel);
@@ -156,7 +156,7 @@ public class ChannelFactoryTest
             // Validate ToString()
             string toStringResult = channel.ToString();
             string toStringExpected = "System.ServiceModel.Channels.IRequestChannel";
-            Assert.Equal<string>(toStringExpected, toStringResult);
+            Assert.Equal(toStringExpected, toStringResult);
 
             factory.Close();
             Assert.Equal(CommunicationState.Closed, factory.State);

@@ -18,11 +18,11 @@ public class BasicHttpsBindingTest : ConditionalWcfTest
     public static void Default_Ctor_Initializes_Properties()
     {
         var binding = new BasicHttpsBinding();
-        Assert.Equal<string>("BasicHttpsBinding", binding.Name);
-        Assert.Equal<string>("http://tempuri.org/", binding.Namespace);
-        Assert.Equal<string>("https", binding.Scheme);
+        Assert.Equal("BasicHttpsBinding", binding.Name);
+        Assert.Equal("http://tempuri.org/", binding.Namespace);
+        Assert.Equal("https", binding.Scheme);
         Assert.Equal<Encoding>(Encoding.GetEncoding("utf-8"), binding.TextEncoding);
-        Assert.Equal<string>(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
+        Assert.Equal(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
         Assert.False(binding.AllowCookies);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.CloseTimeout);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.OpenTimeout);
@@ -43,11 +43,11 @@ public class BasicHttpsBindingTest : ConditionalWcfTest
     {
         var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
 
-        Assert.Equal<string>("BasicHttpsBinding", binding.Name);
-        Assert.Equal<string>("http://tempuri.org/", binding.Namespace);
-        Assert.Equal<string>("https", binding.Scheme);
+        Assert.Equal("BasicHttpsBinding", binding.Name);
+        Assert.Equal("http://tempuri.org/", binding.Namespace);
+        Assert.Equal("https", binding.Scheme);
         Assert.Equal<Encoding>(Encoding.GetEncoding("utf-8"), binding.TextEncoding);
-        Assert.Equal<string>(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
+        Assert.Equal(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
         Assert.False(binding.AllowCookies);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.CloseTimeout);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.OpenTimeout);
@@ -153,7 +153,7 @@ public class BasicHttpsBindingTest : ConditionalWcfTest
     {
         var binding = new BasicHttpsBinding();
         binding.Name = value;
-        Assert.Equal<string>(value, binding.Name);
+        Assert.Equal(value, binding.Name);
     }
 
     [WcfTheory]
@@ -173,7 +173,7 @@ public class BasicHttpsBindingTest : ConditionalWcfTest
     {
         var binding = new BasicHttpsBinding();
         binding.Namespace = value;
-        Assert.Equal<string>(value, binding.Namespace);
+        Assert.Equal(value, binding.Namespace);
     }
 
     [WcfTheory]
