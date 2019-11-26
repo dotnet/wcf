@@ -22,7 +22,7 @@ public static class NetTcpBindingTest
         Assert.Equal<long>(512 * 1024, binding.MaxBufferPoolSize);
         Assert.Equal<long>(65536, binding.MaxBufferSize);
         Assert.True(TestHelpers.XmlDictionaryReaderQuotasAreEqual(binding.ReaderQuotas, new XmlDictionaryReaderQuotas()), "XmlDictionaryReaderQuotas");
-        Assert.Equal<string>("net.tcp", binding.Scheme);
+        Assert.Equal("net.tcp", binding.Scheme);
         Assert.Equal<TransferMode>(TransferMode.Buffered, binding.TransferMode);
         Assert.Equal<SecurityMode>(securityMode, binding.Security.Mode);
     }

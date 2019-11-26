@@ -44,7 +44,7 @@ public static class CustomBindingTest
         CustomBinding customBinding = new CustomBinding();
         customBinding.Name = bindingName;
         string actualBindingName = customBinding.Name;
-        Assert.Equal<string>(bindingName, actualBindingName);
+        Assert.Equal(bindingName, actualBindingName);
     }
 
     [WcfTheory]

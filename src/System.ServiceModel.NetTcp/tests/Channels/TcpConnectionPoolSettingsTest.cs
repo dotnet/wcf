@@ -20,7 +20,7 @@ public static class TcpConnectionPoolSettingsTest
         TcpTransportBindingElement element = new TcpTransportBindingElement();
         TcpConnectionPoolSettings settings = element.ConnectionPoolSettings;
         settings.GroupName = groupName;
-        Assert.Equal<string>(groupName, settings.GroupName);
+        Assert.Equal(groupName, settings.GroupName);
     }
 
     [WcfFact]

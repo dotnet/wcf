@@ -20,11 +20,11 @@ public static class BasicHttpBindingTest
     public static void Default_Ctor_Initializes_Properties()
     {
         var binding = new BasicHttpBinding();
-        Assert.Equal<string>("BasicHttpBinding", binding.Name);
-        Assert.Equal<string>("http://tempuri.org/", binding.Namespace);
-        Assert.Equal<string>("http", binding.Scheme);
+        Assert.Equal("BasicHttpBinding", binding.Name);
+        Assert.Equal("http://tempuri.org/", binding.Namespace);
+        Assert.Equal("http", binding.Scheme);
         Assert.Equal<Encoding>(Encoding.GetEncoding("utf-8"), binding.TextEncoding);
-        Assert.Equal<string>(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
+        Assert.Equal(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
         Assert.False(binding.AllowCookies);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.CloseTimeout);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.OpenTimeout);
@@ -45,11 +45,11 @@ public static class BasicHttpBindingTest
     {
         var binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
 
-        Assert.Equal<string>("BasicHttpBinding", binding.Name);
-        Assert.Equal<string>("http://tempuri.org/", binding.Namespace);
-        Assert.Equal<string>("https", binding.Scheme);
+        Assert.Equal("BasicHttpBinding", binding.Name);
+        Assert.Equal("http://tempuri.org/", binding.Namespace);
+        Assert.Equal("https", binding.Scheme);
         Assert.Equal<Encoding>(Encoding.GetEncoding("utf-8"), binding.TextEncoding);
-        Assert.Equal<string>(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
+        Assert.Equal(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
         Assert.False(binding.AllowCookies);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.CloseTimeout);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.OpenTimeout);
@@ -69,11 +69,11 @@ public static class BasicHttpBindingTest
     public static void Ctor_With_BasicHttpSecurityMode_TransportCredentialOnly_Initializes_Properties()
     {
         var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-        Assert.Equal<string>("BasicHttpBinding", binding.Name);
-        Assert.Equal<string>("http://tempuri.org/", binding.Namespace);
-        Assert.Equal<string>("http", binding.Scheme);
+        Assert.Equal("BasicHttpBinding", binding.Name);
+        Assert.Equal("http://tempuri.org/", binding.Namespace);
+        Assert.Equal("http", binding.Scheme);
         Assert.Equal<Encoding>(Encoding.GetEncoding("utf-8"), binding.TextEncoding);
-        Assert.Equal<string>(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
+        Assert.Equal(Encoding.GetEncoding("utf-8").WebName, binding.TextEncoding.WebName);
         Assert.False(binding.AllowCookies);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.CloseTimeout);
         Assert.Equal<TimeSpan>(TimeSpan.FromMinutes(1), binding.OpenTimeout);
@@ -165,7 +165,7 @@ public static class BasicHttpBindingTest
     {
         var binding = new BasicHttpBinding();
         binding.Name = value;
-        Assert.Equal<string>(value, binding.Name);
+        Assert.Equal(value, binding.Name);
     }
 
     [WcfTheory]
@@ -185,7 +185,7 @@ public static class BasicHttpBindingTest
     {
         var binding = new BasicHttpBinding();
         binding.Namespace = value;
-        Assert.Equal<string>(value, binding.Namespace);
+        Assert.Equal(value, binding.Namespace);
     }
 
     [WcfTheory]

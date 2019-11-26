@@ -202,7 +202,7 @@ public class DuplexChannelFactoryTest
             // Validate ToString()
             string toStringResult = channel.ToString();
             string toStringExpected = "IWcfDuplexService";
-            Assert.Equal<string>(toStringExpected, toStringResult);
+            Assert.Equal(toStringExpected, toStringResult);
 
             // Validate Equals()
             Assert.StrictEqual<IWcfDuplexService>(channel, channel);

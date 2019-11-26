@@ -16,8 +16,8 @@ public static class HttpRequestMessagePropertyTest
         HttpRequestMessageProperty requestMsgProperty = new HttpRequestMessageProperty();
 
         Assert.NotNull(requestMsgProperty.Headers);
-        Assert.Equal<string>("POST", requestMsgProperty.Method);
-        Assert.Equal<string>(string.Empty, requestMsgProperty.QueryString);
+        Assert.Equal("POST", requestMsgProperty.Method);
+        Assert.Equal(string.Empty, requestMsgProperty.QueryString);
         Assert.False(requestMsgProperty.SuppressEntityBody);
     }
 
@@ -38,17 +38,17 @@ public static class HttpRequestMessagePropertyTest
         Assert.IsType<HttpRequestMessageProperty>(copyMessageProperty);
         HttpRequestMessageProperty copy = (HttpRequestMessageProperty)copyMessageProperty;
 
-        Assert.Equal<string>(original.QueryString, copy.QueryString);
-        Assert.Equal<string>(original.Method, copy.Method);
+        Assert.Equal(original.QueryString, copy.QueryString);
+        Assert.Equal(original.Method, copy.Method);
         Assert.Equal<bool>(original.SuppressEntityBody, copy.SuppressEntityBody);
         Assert.Equal<int>(original.Headers.Count, copy.Headers.Count);
-        Assert.Equal<string>(original.Headers[testKeyName], copy.Headers[testKeyName]);
+        Assert.Equal(original.Headers[testKeyName], copy.Headers[testKeyName]);
     }
 
     [WcfFact]
     public static void Name_Property()
     {
-        Assert.Equal<string>("httpRequest", HttpRequestMessageProperty.Name);
+        Assert.Equal("httpRequest", HttpRequestMessageProperty.Name);
     }
 
     [WcfFact]
@@ -57,7 +57,7 @@ public static class HttpRequestMessagePropertyTest
         const string newMethod = "PUT";
         HttpRequestMessageProperty requestMsgProperty = new HttpRequestMessageProperty();
         requestMsgProperty.Method = newMethod;
-        Assert.Equal<string>(newMethod, requestMsgProperty.Method);
+        Assert.Equal(newMethod, requestMsgProperty.Method);
     }
 
     [WcfFact]
@@ -73,7 +73,7 @@ public static class HttpRequestMessagePropertyTest
         const string newQueryString = "name=Mary";
         HttpRequestMessageProperty requestMsgProperty = new HttpRequestMessageProperty();
         requestMsgProperty.QueryString = newQueryString;
-        Assert.Equal<string>(newQueryString, requestMsgProperty.QueryString);
+        Assert.Equal(newQueryString, requestMsgProperty.QueryString);
     }
 
     [WcfFact]
