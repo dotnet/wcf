@@ -31,7 +31,7 @@ public static class OperationContractAttributeTest
         {
             channelFactory.CreateChannel();
         });
-        Assert.True(exception.Message.Contains("INonInitiatingNonTerminatingService"));
+        Assert.Contains("INonInitiatingNonTerminatingService", exception.Message);
     }
 
     [WcfFact]
@@ -44,7 +44,7 @@ public static class OperationContractAttributeTest
         {
             channelFactory.CreateChannel();
         });
-        Assert.True(exception.Message.Contains("IInitiatingTerminatingService"));
+        Assert.Contains("IInitiatingTerminatingService", exception.Message);
     }
 
     static ChannelFactory<T> CreateChannelFactoryHelper<T>(string url)
