@@ -21,9 +21,9 @@ public static class SecurityNegotiationExceptionTest
         SecurityNegotiationException exception1 = new SecurityNegotiationException();
 
         SecurityNegotiationException exception2 = new SecurityNegotiationException(exceptionMessage);
-        Assert.True(String.Equals(exceptionMessage, exception2.Message));
+        Assert.Equal(exceptionMessage, exception2.Message);
 
         SecurityNegotiationException exception3 = new SecurityNegotiationException(exceptionMessage, innerException);
-        Assert.True(String.Equals(exceptionMessage, exception3.InnerException.Message));
+        Assert.Equal(exceptionMessage, exception3.InnerException.Message);
     }
 }

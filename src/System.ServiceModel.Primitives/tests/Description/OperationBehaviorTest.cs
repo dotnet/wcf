@@ -81,11 +81,11 @@ public static class OperationBehaviorTest
 
             if (String.Equals(description.Name, nameof(IXmlTestingType.XmlSerializerFormatAttribute_Set_StyleSetTo_Rpc)) || (String.Equals(description.Name, nameof(IXmlTestingType.XmlSerializerFormatAttribute_NotSet_Two))))
             {
-                Assert.True(String.Equals(serializerBehavior.XmlSerializerFormatAttribute.Style.ToString(), "Rpc"));
+                Assert.Equal("Rpc", serializerBehavior.XmlSerializerFormatAttribute.Style.ToString());
             }
             else
             {
-                Assert.True(String.Equals(serializerBehavior.XmlSerializerFormatAttribute.Style.ToString(), "Document"));
+                Assert.Equal("Document", serializerBehavior.XmlSerializerFormatAttribute.Style.ToString());
             }
         }
     }
