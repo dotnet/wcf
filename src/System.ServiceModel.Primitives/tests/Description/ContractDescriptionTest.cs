@@ -198,7 +198,7 @@ public static class ContractDescriptionTest
     {
         // Simple validation of the newly exposed "public ContractDescription GetContract(Type contractType);" method
         ContractDescription contractDescription = ContractDescription.GetContract(typeof(IDescriptionTestsService));
-        Assert.True(String.Equals(typeof(IDescriptionTestsService).Name, contractDescription.ContractType.Name));
-        Assert.True(String.Equals("http://tempuri.org/", contractDescription.Namespace));
+        Assert.Equal(typeof(IDescriptionTestsService).Name, contractDescription.ContractType.Name);
+        Assert.Equal("http://tempuri.org/", contractDescription.Namespace);
     }
 }
