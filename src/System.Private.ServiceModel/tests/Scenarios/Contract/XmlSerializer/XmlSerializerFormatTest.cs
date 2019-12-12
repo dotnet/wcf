@@ -9,6 +9,46 @@ using Xunit;
 using System;
 using System.Reflection;
 using System.Xml.Serialization;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+
+
+public class InspectorBehavior : IEndpointBehavior
+{
+    public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
+    {
+
+    }
+
+    public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+    {
+        clientRuntime.MessageInspectors.Add(new MyMessageInspector());
+    }
+
+    public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+    {
+        
+    }
+
+    public void Validate(ServiceEndpoint endpoint)
+    {
+        
+    }
+}
+public class MyMessageInspector : IClientMessageInspector
+{
+    public void AfterReceiveReply(ref Message reply, object correlationState)
+    {
+    }
+
+    public object BeforeSendRequest(ref Message request, IClientChannel channel)
+    {
+        string str = request.ToString();
+        Assert.Contains("http://schemas.xmlsoap.org/soap/encoding/", str);
+        return null;
+    }
+}
 
 public static partial class XmlSerializerFormatTests
 {
@@ -80,6 +120,38 @@ public static partial class XmlSerializerFormatTests
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSerializerFormatEncodedAttributeTest()
+    {
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<ICalculatorRpcEnc> factory1 = null;
+        ICalculatorRpcEnc serviceProxy1 = null;
+
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
+        endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncSingleNs_Address);
+        factory1 = new ChannelFactory<ICalculatorRpcEnc>(binding, endpointAddress);
+        factory1.Endpoint.EndpointBehaviors.Add(new InspectorBehavior());
+        serviceProxy1 = factory1.CreateChannel();
+
+        // *** EXECUTE Variation *** \\
+        try
+        {
+            Assert.Equal(3, serviceProxy1.Sum2(1, 2));
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, ex.Message);
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy1);
         }
     }
 
