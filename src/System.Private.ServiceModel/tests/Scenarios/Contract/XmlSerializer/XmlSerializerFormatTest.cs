@@ -23,7 +23,7 @@ public class InspectorBehavior : IEndpointBehavior
 
     public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
     {
-        clientRuntime.MessageInspectors.Add(new MyMessageInspector());
+        clientRuntime.ClientMessageInspectors.Add(new MyMessageInspector());
     }
 
     public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
