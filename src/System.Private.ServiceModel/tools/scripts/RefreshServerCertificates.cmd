@@ -38,8 +38,14 @@ TASKKILL /F /IM SelfHostedWCFService.exe                                        
 echo call %_SCRIPTSDIR%\BuildCertUtil.cmd                                               >> %_LOGFILE%
 call %_SCRIPTSDIR%\BuildCertUtil.cmd                                                    >> %_LOGFILE%
 
-echo [%~n0] cmd /c %_GITREPO%\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe       >> %_LOGFILE%
-cmd /c %_GITREPO%\bin\Wcf\tools\CertificateGenerator\CertificateGenerator.exe                   >> %_LOGFILE%
+echo [%~n0] cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe       >> %_LOGFILE%
+cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe                   >> %_LOGFILE% 2>&1
+
+if NOT "%ERRORLEVEL%"=="0" (
+    echo Warning: An error occurred when calling CertificateGenerator.exe.                               >> %_LOGFILE%
+    set _EXITCODE=1
+    goto end
+)
 
 :: Configure HTTPS ports to use new certificate
 echo [%~n0] powershell -NoProfile -ExecutionPolicy unrestricted %_SCRIPTSDIR%\ConfigHttpsPort.ps1   >> %_LOGFILE% 
