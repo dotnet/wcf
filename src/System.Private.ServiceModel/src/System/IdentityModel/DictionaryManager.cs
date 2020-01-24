@@ -25,7 +25,7 @@ namespace System.IdentityModel
             TrustFeb2005Dictionary = XD.TrustFeb2005Dictionary;
             XmlEncryptionDictionary = XD.XmlEncryptionDictionary;
 
-            // These 3 are factored into a seperate dictionary in ServiceModel under DXD. 
+            // These 3 are factored into a separate dictionary in ServiceModel under DXD. 
             SecureConversationDec2005Dictionary = XD.SecureConversationDec2005Dictionary;
             SecurityAlgorithmDec2005Dictionary = XD.SecurityAlgorithmDec2005Dictionary;
             TrustDec2005Dictionary = XD.TrustDec2005Dictionary;
@@ -45,8 +45,8 @@ namespace System.IdentityModel
             XmlEncryptionDictionary = new XmlEncryptionDictionary(parentDictionary);
             _parentDictionary = parentDictionary;
 
-            // These 3 are factored into a seperate dictionary in ServiceModel under DXD. 
-            // ServiceModel should set these seperately using the property setters.
+            // These 3 are factored into a separate dictionary in ServiceModel under DXD. 
+            // ServiceModel should set these separately using the property setters.
             SecureConversationDec2005Dictionary = XD.SecureConversationDec2005Dictionary;
             SecurityAlgorithmDec2005Dictionary = XD.SecurityAlgorithmDec2005Dictionary;
             TrustDec2005Dictionary = XD.TrustDec2005Dictionary;

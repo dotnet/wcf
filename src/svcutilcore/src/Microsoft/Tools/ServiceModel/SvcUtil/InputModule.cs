@@ -19,7 +19,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     {
         private static readonly XmlReaderSettings s_xmlReaderSettings;
         private List<Assembly> _assemblies;
-        private const long MaxRecievedMexMessageSize = (long)(64 * 1024 * 1024); //64MB
+        private const long MaxReceivedMexMessageSize = (long)(64 * 1024 * 1024); //64MB
         private const int MaxNameTableCharCount = 1024 * 1024; //1MB
 
         internal List<Assembly> Assemblies

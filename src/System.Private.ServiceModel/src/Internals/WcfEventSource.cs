@@ -2095,7 +2095,7 @@ namespace System.Runtime
             public const int IdleServicesClosed = 226;
             public const int UserDefinedErrorOccurred = 301;
             public const int UserDefinedWarningOccurred = 302;
-            public const int UserDefinedInformationEventOccured = 303;
+            public const int UserDefinedInformationEventOccurred = 303;
             public const int StopSignpostEvent = 401;
             public const int StartSignpostEvent = 402;
             public const int SuspendSignpostEvent = 403;
