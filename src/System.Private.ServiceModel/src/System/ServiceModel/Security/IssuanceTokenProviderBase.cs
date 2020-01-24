@@ -471,7 +471,7 @@ namespace System.ServiceModel.Security
                             incomingMessage = await rstChannel.RequestAsync(nextOutgoingMessage, timeLeft);
                             if (incomingMessage == null)
                             {
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SR.FailToRecieveReplyFromNegotiation));
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SR.FailToReceiveReplyFromNegotiation));
                             }
                         }
                         legs += 2;

@@ -752,7 +752,7 @@ namespace System.Runtime
             }
 
             [SuppressMessage(FxCop.Category.Performance, "CA1813:AvoidUnsealedAttributes",
-                Justification = "This is intended to be an attribute heirarchy. It does not affect product perf.")]
+                Justification = "This is intended to be an attribute hierarchy. It does not affect product perf.")]
             [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor,
                 AllowMultiple = true, Inherited = false)]
             [Conditional("CODE_ANALYSIS_CDF")]

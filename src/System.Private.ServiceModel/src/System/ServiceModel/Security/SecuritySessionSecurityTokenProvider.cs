@@ -534,7 +534,7 @@ namespace System.ServiceModel.Security
                     {
                         if (reply == null)
                         {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SR.FailToRecieveReplyFromNegotiation));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(SR.FailToReceiveReplyFromNegotiation));
                         }
 
                         TraceUtility.ProcessIncomingMessage(reply, eventTraceActivity);

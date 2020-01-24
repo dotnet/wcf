@@ -2340,7 +2340,7 @@
   <data name="ClientSecuritySessionRequestTimeout" xml:space="preserve">
     <value>Client is unable to request the security session within the configured timeout ({0}).</value>
   </data>
-  <data name="FailToRecieveReplyFromNegotiation" xml:space="preserve">
+  <data name="FailToReceiveReplyFromNegotiation" xml:space="preserve">
     <value>Security negotiation failed because the remote party did not send back a reply in a timely manner. This may be because the underlying transport connection was aborted.</value>
   </data>
   <data name="InvalidActionForNegotiationMessage" xml:space="preserve">

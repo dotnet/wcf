@@ -352,7 +352,7 @@ public static class SessionTests
             Assert.Equal(3, result);
 
             // verify that after this we can not make another call
-            // note: we really expect ChannelTerminatedException but it is not exposed publically yet
+            // note: we really expect ChannelTerminatedException but it is not exposed publicly yet
             // so we pass the base class instead
             ResultsVerificationHelper<CommunicationException>(
                 canMakeServiceCall: false,
@@ -380,7 +380,7 @@ public static class SessionTests
             Assert.Equal(3, result);
 
             // verify that after this we can not make another call
-            // note: we really expect ChannelTerminatedException but it is not exposed publically yet
+            // note: we really expect ChannelTerminatedException but it is not exposed publicly yet
             // so we pass the base class instead
             ResultsVerificationHelper<CommunicationException>(canMakeServiceCall: false, cbClosedCalled: false, cbClosingCalled: false, cbFaultedCalled: false);
         }
@@ -545,7 +545,7 @@ public static class SessionTests
         else
         {
             // This should really be Assert.Throws(Is.Typeof<ExpectedException>(), () => {
-            // but some of the exceptions that can be passed here are not exposed publically yet
+            // but some of the exceptions that can be passed here are not exposed publicly yet
             // tracked by WCF issue #1962
             try
             {
