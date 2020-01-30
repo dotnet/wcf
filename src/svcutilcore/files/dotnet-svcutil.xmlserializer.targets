@@ -9,10 +9,23 @@
     <_SerializationAssemblyDisabledWarnings>$(NoWarn);219;162;$(SerializationAssemblyDisabledWarnings)</_SerializationAssemblyDisabledWarnings>
   </PropertyGroup>
 
+  <UsingTask TaskName="Microsoft.NET.Build.Tasks.ResolvePackageAssets"
+            AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
+
   <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
+    <ResolvePackageAssets
+      ProjectAssetsFile="$(ProjectAssetsFile)"
+      ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
+      ProjectPath="$(MSBuildProjectFullPath)"
+      TargetFrameworkMoniker="$(NuGetTargetMoniker)"
+      DotNetAppHostExecutableNameWithoutExtension="$(_DotNetAppHostExecutableNameWithoutExtension)">
+      <Output
+          TaskParameter="RuntimeAssemblies"
+          ItemName="WCFRuntimeAssembly"/>
+    </ResolvePackageAssets>
+
     <ItemGroup>
-      <_ReferenceAssembly Include="@(ReferencePath)"/>
-      <_ReferenceSMAssembly Include="@(_ReferenceAssembly)" Condition="$([System.String]::new('%(_ReferenceAssembly.Identity)').EndsWith('System.ServiceModel.Primitives.dll'))" />
+      <_ReferenceSMAssembly Include="@(WCFRuntimeAssembly)" />
     </ItemGroup>
     
     <Delete Condition="Exists('$(_SerializerDllIntermediateFolder)') == 'true'" Files="$(_SerializerDllIntermediateFolder)" ContinueOnError="true" />
