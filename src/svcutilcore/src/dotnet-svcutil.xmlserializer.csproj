@@ -100,5 +100,4 @@
     <Message Importance="high" Text="The value of property 'PsCmd' is: $(PsCmd)" />
     <Exec Command="$(PsCmd) -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
   </Target>
-
 </Project>
