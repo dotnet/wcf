@@ -414,8 +414,10 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
             private void LoadSMReferenceAssembly()
             {
+                ToolConsole.WriteLine("[Logging] Getting list of referenced assemblies.");
                 string smReferenceArg = _arguments.GetArgument(Options.Cmd.SMReference);
-                IList<string> referencedAssembliesArgs = smReferenceArg.Split(':').ToList();
+                ToolConsole.WriteLine("[Logging] The string of reference assemblies before parsing: " + smReferenceArg);
+                IList<string> referencedAssembliesArgs = smReferenceArg.Split(';').ToList();
                 if (referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
                     string smassembly = "";
@@ -435,6 +437,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                     }
                     if ((string.IsNullOrEmpty(smassembly)) || (string.IsNullOrEmpty(smpassembly)))
                     {
+                        ToolConsole.WriteLine("The full path found for System.ServiceModel.Primitives.dll is: " + smassembly);
+                        ToolConsole.WriteLine("The full path found for System.Private.ServiceModel.dll is: " + smpassembly);
                         ToolConsole.WriteError("Missing one or both of the paths for System.ServiceModel.Primitives and System.Private.ServiceModel");
                         throw new ArgumentException("Invalid smreference value");
                     }

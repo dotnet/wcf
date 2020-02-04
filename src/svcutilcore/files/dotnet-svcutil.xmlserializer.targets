@@ -5,7 +5,7 @@
     <_SerializerDllIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).dll</_SerializerDllIntermediateFolder>
     <_SerializerPdbIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).pdb</_SerializerPdbIntermediateFolder>
     <_SerializerCsIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).cs</_SerializerCsIntermediateFolder>
-    <_SvcUtilWarningText>Warning : Fail to generate the serializer for $(AssemblyName)$(TargetExt).</_SvcUtilWarningText>
+    <_SvcUtilWarningText>Warning : Failed to generate the serializer for $(AssemblyName)$(TargetExt).</_SvcUtilWarningText>
     <_SerializationAssemblyDisabledWarnings>$(NoWarn);219;162;$(SerializationAssemblyDisabledWarnings)</_SerializationAssemblyDisabledWarnings>
   </PropertyGroup>
 

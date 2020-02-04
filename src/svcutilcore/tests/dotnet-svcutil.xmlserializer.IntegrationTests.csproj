@@ -85,7 +85,7 @@
     <Message Text="$(ServiceModelPrimitivesAssemblyName) exists in $(ServiceModelPrimitivesOutputPath)" Condition="Exists('$(ServiceModelPrimitivesOutputPath)$(ServiceModelPrimitivesAssemblyName)') == 'true'" Importance="high" />
     <Error Text="$(ServiceModelPrivateAssemblyName) does not exist in $(ServiceModelPrivateOutputPath)" Condition="Exists('$(ServiceModelPrivateOutputPath)$(ServiceModelPrivateAssemblyName)') != 'true'" />
     <Error Text="$(ServiceModelPrimitivesAssemblyName) does not exist in $(ServiceModelPrimitivesOutputPath)" Condition="Exists('$(ServiceModelPrimitivesOutputPath)$(ServiceModelPrimitivesAssemblyName)') != 'true'" />
-    <Exec Command="$(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:$(ServiceModelPrimitivesAssembly):$(ServiceModelPrivateAssembly) --reference=$(depRef)" />
+    <Exec Command="$(DotNetExe) $(DotnetSvcutilXmlSerializerAssembly) $(InputTestAssembly) --quiet --out:$(OutputGeneratedSource) --smreference:&quot;$(ServiceModelPrimitivesAssembly);$(ServiceModelPrivateAssembly)&quot; --reference=$(depRef)" />
     <Warning Condition="Exists('$(OutputGeneratedSource)') != 'true'" Text="Failed to generate $(OutputGeneratedSource)"/>
     <Csc Condition="Exists('$(OutputGeneratedSource)') == 'true'"
          OutputAssembly="$(CscOutputAssembly)"
