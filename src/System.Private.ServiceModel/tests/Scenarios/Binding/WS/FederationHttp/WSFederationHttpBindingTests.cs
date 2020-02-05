@@ -41,7 +41,7 @@ public class WSFederationHttpBindingTestsTests : ConditionalWcfTest
                 {
                     IssuerAddress = issuerAddress,
                     IssuerBinding = issuerBinding,
-                    KeyType = SecurityKe    yType.BearerKey,
+                    KeyType = SecurityKeyType.BearerKey,
                     Target = tokenTargetAddress,
                     TokenType = Saml2Constants.OasisWssSaml2TokenProfile11
                 });
