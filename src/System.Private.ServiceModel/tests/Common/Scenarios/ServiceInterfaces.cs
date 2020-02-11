@@ -770,6 +770,38 @@ public interface IHelloWorldDocLit
     string GetAndRemoveString(Guid guid);
 }
 
+[ServiceContract]
+public interface IEchoRpcEncWithHeadersService
+{
+    [OperationContract(Action = "http://tempuri.org/Echo", ReplyAction = "*")]
+    [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+    EchoResponse Echo(EchoRequest request);
+}
+
+[System.Xml.Serialization.SoapType(Namespace = "http://tempuri.org/")]
+public partial class StringHeader
+{
+    public string HeaderValue { get; set; }
+}
+
+[MessageContract(WrapperName = "Echo", WrapperNamespace = "http://contoso.com/", IsWrapped = true)]
+public partial class EchoRequest
+{
+    [MessageHeader]
+    public StringHeader StringHeader;
+    [MessageBodyMember(Namespace = "", Order = 0)]
+    public string message;
+}
+
+[MessageContract(WrapperName = "EchoResponse", WrapperNamespace = "http://tempuri.org/", IsWrapped = true)]
+public partial class EchoResponse
+{
+    [MessageHeader]
+    public StringHeader StringHeader;
+    [MessageBodyMember(Namespace = "", Order = 0)]
+    public string EchoResult;
+}
+
 public class IntParams
 {
     public int P1;
