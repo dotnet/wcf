@@ -639,11 +639,6 @@ namespace System.ServiceModel.Description
                         return null;
                     }
 
-                    if (IsEncoded)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxHeadersAreNotSupportedInEncoded, message.MessageName)));
-                    }
-
                     int unknownHeaderCount = 0, headerIndex = 0;
                     XmlReflectionMember[] members = new XmlReflectionMember[headerCount];
                     for (int i = 0; i < headerCount; i++)
