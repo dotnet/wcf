@@ -469,4 +469,41 @@ public static partial class XmlSerializerFormatTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy2);
         }
     }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeRpcEncMessageHeaderTest()
+    {
+        BasicHttpBinding binding = null;
+        EndpointAddress endpointAddress = null;
+        ChannelFactory<IEchoRpcEncWithHeadersService> factory1 = null;
+        IEchoRpcEncWithHeadersService serviceProxy1 = null;
+        string echoText = "Hello";
+        string headerText = "WCF is Cool!";
+        string expectedHeaderText = headerText + headerText;
+
+        // *** SETUP *** \\
+        binding = new BasicHttpBinding();
+        endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncWithHeaders_Address);
+        factory1 = new ChannelFactory<IEchoRpcEncWithHeadersService>(binding, endpointAddress);
+        serviceProxy1 = factory1.CreateChannel();
+
+        // *** EXECUTE Variation *** \\
+        try
+        {
+            var response = serviceProxy1.Echo(new EchoRequest { message = "Hello", StringHeader = new StringHeader { HeaderValue = "WCF is Cool!" } });
+
+            Assert.Equal(echoText, response.EchoResult);
+            Assert.Equal(expectedHeaderText, response.StringHeader.HeaderValue);
+        }
+        catch (Exception ex)
+        {
+            Assert.True(false, ex.Message);
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy1);
+        }
+    }
 }
