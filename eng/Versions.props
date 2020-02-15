@@ -24,11 +24,11 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetArcadeSdkPackageVersion>5.0.0-beta.20113.6</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetHelixSdkPackageVersion>5.0.0-beta.20113.6</MicrosoftDotNetHelixSdkPackageVersion>
-    <MicrosoftDotNetGenFacadesPackageVersion>5.0.0-beta.20113.6</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>5.0.0-beta.20113.6</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetSignToolVersion>5.0.0-beta.20113.6</MicrosoftDotNetSignToolVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>5.0.0-beta.20114.5</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetHelixSdkPackageVersion>5.0.0-beta.20114.5</MicrosoftDotNetHelixSdkPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>5.0.0-beta.20114.5</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>5.0.0-beta.20114.5</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetSignToolVersion>5.0.0-beta.20114.5</MicrosoftDotNetSignToolVersion>
   </PropertyGroup>
   <!-- CoreFx dependencies -->
   <PropertyGroup>
