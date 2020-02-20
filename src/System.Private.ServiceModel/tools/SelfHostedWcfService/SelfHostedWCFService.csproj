@@ -24,7 +24,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\IISHostedWcfService\**\*.cs" />
+    <Compile Include="..\IISHostedWcfService\**\*.cs">
+	  <Visible>true</Visible>
+      <Link>IIS/%(RecursiveDir)%(Filename)%(Extension)</Link>
+	</Compile>
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
