@@ -375,6 +375,22 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https2007_SecModeTransWithMessCred_ClientCredTypeCert
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsCert.svc//https2007-message-credentials-cert", protocol: "https");
+        }
+    }
+
+    public static string Https2007_SecModeTransWithMessCred_ClientCredTypeUserName
+    {
+        get
+        {
+            return GetEndpointAddress("HttpsTransSecMessCredsUserName.svc//https2007-message-credentials-username", protocol: "https");
+        }
+    }
+
     public static string BasicHttps_SecModeTransWithMessCred_ClientCredTypeCert
     {
         get

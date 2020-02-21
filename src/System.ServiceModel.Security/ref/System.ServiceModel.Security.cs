@@ -22,6 +22,7 @@ namespace System.ServiceModel
         public static System.ServiceModel.MessageSecurityVersion WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 { get { return default; } }
         public static System.ServiceModel.MessageSecurityVersion WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11 { get { return default; } }
         public static System.ServiceModel.MessageSecurityVersion WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 { get { return default; } }
+        public static System.ServiceModel.MessageSecurityVersion WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10 { get { return default; } }
     }
     public partial class SpnEndpointIdentity : System.ServiceModel.EndpointIdentity
     {
@@ -103,6 +104,7 @@ namespace System.ServiceModel.Security
         public System.Xml.XmlDictionaryString Namespace { get { return default; } }
         public System.Xml.XmlDictionaryString Prefix { get { return default; } }
         public static System.ServiceModel.Security.SecureConversationVersion WSSecureConversationFeb2005 { get { return default; } }
+        public static System.ServiceModel.Security.SecureConversationVersion WSSecureConversation13 { get { return default; } }
     }
     public abstract partial class SecurityAlgorithmSuite
     {
@@ -125,6 +127,7 @@ namespace System.ServiceModel.Security
         public string Namespace { get { return default; } }
         public string Prefix { get { return default; } }
         public static System.ServiceModel.Security.SecurityPolicyVersion WSSecurityPolicy11 { get { return default; } }
+        public static System.ServiceModel.Security.SecurityPolicyVersion WSSecurityPolicy12 { get { return default; } }
     }
     public abstract partial class SecurityVersion
     {
@@ -139,6 +142,7 @@ namespace System.ServiceModel.Security
         public System.Xml.XmlDictionaryString Namespace { get { return default; } }
         public System.Xml.XmlDictionaryString Prefix { get { return default; } }
         public static System.ServiceModel.Security.TrustVersion WSTrustFeb2005 { get { return default; } }
+        public static System.ServiceModel.Security.TrustVersion WSTrust13 { get { return default; } }
     }
 }
 namespace System.ServiceModel.Security.Tokens

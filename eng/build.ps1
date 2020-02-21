@@ -143,6 +143,7 @@ foreach ($argument in $PSBoundParameters.Keys)
     "allconfigurations"    { $arguments += " /p:BuildAllConfigurations=true" }
     "arch"                 { $arguments += " /p:ArchGroup=$($PSBoundParameters[$argument]) /p:TargetArchitecture=$($PSBoundParameters[$argument])" }
     "properties"           { $arguments += " " + $properties }
+	"testscope"            { if ($testscope -eq "outerloop" -or $testscope -eq "all") { $arguments += " /p:IntegrationTest=true" }}
     default                { $arguments += " /p:$argument=$($PSBoundParameters[$argument])" }
   }
 }

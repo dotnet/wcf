@@ -2499,4 +2499,13 @@
   <data name="BasicHttpMessageSecurityRequiresCertificate" xml:space="preserve">
     <value>BasicHttp binding requires that BasicHttpBinding.Security.Message.ClientCredentialType be equivalent to the BasicHttpMessageCredentialType.Certificate credential type for secure messages. Select Transport or TransportWithMessageCredential security for UserName credentials.</value>
   </data>
+  <data name="NoCookieInSct" xml:space="preserve">
+    <value>The SecurityContextSecurityToken does not have a cookie.</value>
+  </data>
+  <data name="NoSecurityContextIdentifier" xml:space="preserve">
+    <value>The SecurityContextSecurityToken does not have a context-id.</value>
+  </data>
+  <data name="SecurityContextNotRegistered" xml:space="preserve">
+    <value>The SecurityContextSecurityToken with context-id={0} (key generation-id={1}) is not registered.</value>
+  </data>
 </root>

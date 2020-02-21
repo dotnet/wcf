@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -12,39 +11,16 @@ using System.Xml;
 
 namespace System.ServiceModel.Security.Tokens
 {
-    public class SecurityContextSecurityToken : SecurityToken, TimeBoundedCache.IExpirableItem, IDisposable
+    internal class SecurityContextSecurityToken : SecurityToken, TimeBoundedCache.IExpirableItem, IDisposable
     {
         private UniqueId _keyGeneration = null;
         private DateTime _tokenEffectiveTime;
         private DateTime _tokenExpirationTime;
         private byte[] _key;
-        private string _keyString;
         private ReadOnlyCollection<IAuthorizationPolicy> _authorizationPolicies;
         private ReadOnlyCollection<SecurityKey> _securityKeys;
         private string _id;
         private bool _disposed = false;
-
-        public SecurityContextSecurityToken(UniqueId contextId, byte[] key, DateTime validFrom, DateTime validTo)
-            : this(contextId, SecurityUtils.GenerateId(), key, validFrom, validTo)
-        { }
-
-        public SecurityContextSecurityToken(UniqueId contextId, string id, byte[] key, DateTime validFrom, DateTime validTo)
-            : this(contextId, id, key, validFrom, validTo, null)
-        { }
-
-        public SecurityContextSecurityToken(UniqueId contextId, string id, byte[] key, DateTime validFrom, DateTime validTo, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
-            : base()
-        {
-            _id = id;
-            Initialize(contextId, key, validFrom, validTo, authorizationPolicies, false, null, validFrom, validTo);
-        }
-
-        public SecurityContextSecurityToken(UniqueId contextId, string id, byte[] key, DateTime validFrom, DateTime validTo, UniqueId keyGeneration, DateTime keyEffectiveTime, DateTime keyExpirationTime, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
-            : base()
-        {
-            _id = id;
-            Initialize(contextId, key, validFrom, validTo, authorizationPolicies, false, keyGeneration, keyEffectiveTime, keyExpirationTime);
-        }
 
         internal SecurityContextSecurityToken(SecurityContextSecurityToken sourceToken, string id)
             : this(sourceToken, id, sourceToken._key, sourceToken._keyGeneration, sourceToken.KeyEffectiveTime, sourceToken.KeyExpirationTime, sourceToken.AuthorizationPolicies)
@@ -58,29 +34,6 @@ namespace System.ServiceModel.Security.Tokens
             Initialize(sourceToken.ContextId, key, sourceToken.ValidFrom, sourceToken.ValidTo, authorizationPolicies, sourceToken.IsCookieMode, keyGeneration, keyEffectiveTime, keyExpirationTime);
             CookieBlob = sourceToken.CookieBlob;
             BootstrapMessageProperty = (sourceToken.BootstrapMessageProperty == null) ? null : (SecurityMessageProperty)sourceToken.BootstrapMessageProperty.CreateCopy();
-        }
-
-        internal SecurityContextSecurityToken(UniqueId contextId, string id, byte[] key, DateTime validFrom, DateTime validTo, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, bool isCookieMode, byte[] cookieBlob)
-            : this(contextId, id, key, validFrom, validTo, authorizationPolicies, isCookieMode, cookieBlob, null, validFrom, validTo)
-        {
-        }
-
-        internal SecurityContextSecurityToken(UniqueId contextId, string id, byte[] key, DateTime validFrom, DateTime validTo, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, bool isCookieMode, byte[] cookieBlob,
-            UniqueId keyGeneration, DateTime keyEffectiveTime, DateTime keyExpirationTime)
-            : base()
-        {
-            _id = id;
-            Initialize(contextId, key, validFrom, validTo, authorizationPolicies, isCookieMode, keyGeneration, keyEffectiveTime, keyExpirationTime);
-            CookieBlob = cookieBlob;
-        }
-
-        private SecurityContextSecurityToken(SecurityContextSecurityToken from)
-        {
-            ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies = System.IdentityModel.SecurityUtils.CloneAuthorizationPoliciesIfNecessary(from._authorizationPolicies);
-            _id = from._id;
-            Initialize(from.ContextId, from._key, from._tokenEffectiveTime, from._tokenExpirationTime, authorizationPolicies, from.IsCookieMode, from._keyGeneration, from.KeyEffectiveTime, from.KeyExpirationTime);
-            CookieBlob = from.CookieBlob;
-            BootstrapMessageProperty = (from.BootstrapMessageProperty == null) ? null : (SecurityMessageProperty)from.BootstrapMessageProperty.CreateCopy();
         }
 
         /// <summary>
@@ -168,22 +121,6 @@ namespace System.ServiceModel.Security.Tokens
             }
         }
 
-        internal string GetBase64KeyString()
-        {
-            if (_keyString == null)
-            {
-                _keyString = Convert.ToBase64String(_key);
-            }
-            return _keyString;
-        }
-
-        internal byte[] GetKeyBytes()
-        {
-            byte[] retval = new byte[_key.Length];
-            Buffer.BlockCopy(_key, 0, retval, 0, _key.Length);
-            return retval;
-        }
-
         public override string ToString()
         {
             return String.Format(CultureInfo.CurrentCulture, "SecurityContextSecurityToken(Identifier='{0}', KeyGeneration='{1}')", ContextId, _keyGeneration);
@@ -226,31 +163,6 @@ namespace System.ServiceModel.Security.Tokens
             temp.Add(new InMemorySymmetricSecurityKey(_key, false));
             _securityKeys = new ReadOnlyCollection<SecurityKey>(temp);
             IsCookieMode = isCookieMode;
-        }
-
-        public static SecurityContextSecurityToken CreateCookieSecurityContextToken(UniqueId contextId, string id, byte[] key,
-            DateTime validFrom, DateTime validTo, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, SecurityStateEncoder securityStateEncoder)
-        {
-            return CreateCookieSecurityContextToken(contextId, id, key, validFrom, validTo, null, validFrom, validTo, authorizationPolicies, securityStateEncoder);
-        }
-
-
-        public static SecurityContextSecurityToken CreateCookieSecurityContextToken(UniqueId contextId, string id, byte[] key,
-            DateTime validFrom, DateTime validTo, UniqueId keyGeneration, DateTime keyEffectiveTime,
-            DateTime keyExpirationTime, ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, SecurityStateEncoder securityStateEncoder)
-        {
-            SecurityContextCookieSerializer cookieSerializer = new SecurityContextCookieSerializer(securityStateEncoder, null);
-            byte[] cookieBlob = cookieSerializer.CreateCookieFromSecurityContext(contextId, id, key, validFrom, validTo, keyGeneration,
-                                keyEffectiveTime, keyExpirationTime, authorizationPolicies);
-
-            return new SecurityContextSecurityToken(contextId, id, key, validFrom, validTo,
-                authorizationPolicies, true, cookieBlob, keyGeneration, keyEffectiveTime, keyExpirationTime);
-        }
-
-        internal SecurityContextSecurityToken Clone()
-        {
-            ThrowIfDisposed();
-            return new SecurityContextSecurityToken(this);
         }
 
         public void Dispose()
