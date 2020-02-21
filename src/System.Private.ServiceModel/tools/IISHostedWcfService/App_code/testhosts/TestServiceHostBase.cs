@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -11,16 +13,27 @@ namespace WcfService
 {
     public abstract class TestServiceHostBase<ContractType> : ServiceHost
     {
+        private const string EmptyAddress = "___";
         protected static int SixtyFourMB = 64 * 1024 * 1024;
-        protected abstract string Address { get; }
 
-        protected abstract Binding GetBinding();
+        protected virtual string Address { get { throw new NotImplementedException("Must override Address if not overriding GetBindings"); } }
 
+        protected virtual Binding GetBinding() { throw new NotImplementedException("Must override either GetBinding or GetBindings"); }
+
+        protected virtual IList<Binding> GetBindings()
+        {
+            var singleBinding = GetBinding();
+            singleBinding.Name = string.IsNullOrEmpty(Address) ? EmptyAddress : Address;
+            return new List<Binding> { singleBinding };
+        }
 
         public TestServiceHostBase(Type serviceType, params Uri[] baseAddresses)
             : base(serviceType, baseAddresses)
         {
-            ServiceEndpoint endpoint = this.AddServiceEndpoint(typeof(ContractType), GetBinding(), Address);
+            foreach(var binding in GetBindings())
+            {
+                AddServiceEndpoint(typeof(ContractType), binding, binding.Name == EmptyAddress ? "" : binding.Name);
+            }
         }
 
         //Overriding ApplyConfiguration() allows us to 

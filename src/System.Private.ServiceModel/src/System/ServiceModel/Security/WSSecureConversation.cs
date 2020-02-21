@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Runtime;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
 using TokenEntry = System.ServiceModel.Security.WSSecurityTokenSerializer.TokenEntry;
@@ -296,6 +297,209 @@ namespace System.ServiceModel.Security
                 writer.WriteStartElement(serializerPrefix, _parent.SerializerDictionary.Nonce, _parent.SerializerDictionary.Namespace);
                 writer.WriteBase64(derivedKeyToken.Nonce, 0, derivedKeyToken.Nonce.Length);
                 writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+        }
+
+        protected abstract class SecurityContextTokenEntry : TokenEntry
+        {
+            public SecurityContextTokenEntry(WSSecureConversation parent, SecurityStateEncoder securityStateEncoder, IList<Type> knownClaimTypes)
+            {
+                Parent = parent;
+            }
+
+            protected WSSecureConversation Parent { get; }
+
+            protected override XmlDictionaryString LocalName { get { return Parent.SerializerDictionary.SecurityContextToken; } }
+            protected override XmlDictionaryString NamespaceUri { get { return Parent.SerializerDictionary.Namespace; } }
+            protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(SecurityContextSecurityToken) }; }
+            public override string TokenTypeUri { get { return Parent.SerializerDictionary.SecurityContextTokenType.Value; } }
+            protected override string ValueTypeUri { get { return null; } }
+
+            public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
+                SecurityTokenReferenceStyle tokenReferenceStyle)
+            {
+
+                TokenReferenceStyleHelper.Validate(tokenReferenceStyle);
+
+                switch (tokenReferenceStyle)
+                {
+                    case SecurityTokenReferenceStyle.Internal:
+                        return CreateDirectReference(issuedTokenXml, UtilityStrings.IdAttribute, UtilityStrings.Namespace, typeof(SecurityContextSecurityToken));
+                    case SecurityTokenReferenceStyle.External:
+                        UniqueId contextId = null;
+                        UniqueId generation = null;
+                        foreach (XmlNode node in issuedTokenXml.ChildNodes)
+                        {
+                            XmlElement element = node as XmlElement;
+                            if (element != null)
+                            {
+                                if (element.LocalName == Parent.SerializerDictionary.Identifier.Value && element.NamespaceURI == Parent.SerializerDictionary.Namespace.Value)
+                                {
+                                    contextId = XmlHelper.ReadTextElementAsUniqueId(element);
+                                }
+                                else if (CanReadGeneration(element))
+                                {
+                                    generation = ReadGeneration(element);
+                                }
+                            }
+                        }
+                        return new SecurityContextKeyIdentifierClause(contextId, generation);
+                    default:
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenReferenceStyle"));
+                }
+            }
+
+            protected abstract bool CanReadGeneration(XmlDictionaryReader reader);
+            protected abstract bool CanReadGeneration(XmlElement element);
+            protected abstract UniqueId ReadGeneration(XmlDictionaryReader reader);
+            protected abstract UniqueId ReadGeneration(XmlElement element);
+
+            SecurityContextSecurityToken TryResolveSecurityContextToken(UniqueId contextId, UniqueId generation, string id, SecurityTokenResolver tokenResolver, out ISecurityContextSecurityTokenCache sctCache)
+            {
+                SecurityContextSecurityToken cachedSct = null;
+                sctCache = null;
+                if (tokenResolver is ISecurityContextSecurityTokenCache)
+                {
+                    sctCache = ((ISecurityContextSecurityTokenCache)tokenResolver);
+                    cachedSct = sctCache.GetContext(contextId, generation);
+                }
+                else if (tokenResolver is AggregateSecurityHeaderTokenResolver)
+                {
+                    // We will see if we have a ISecurityContextSecurityTokenCache in the 
+                    // AggregateTokenResolver. We will hold the reference to the first sctCache
+                    // we find.
+                    AggregateSecurityHeaderTokenResolver aggregateTokenResolve = tokenResolver as AggregateSecurityHeaderTokenResolver;
+                    for (int i = 0; i < aggregateTokenResolve.TokenResolvers.Count; ++i)
+                    {
+                        ISecurityContextSecurityTokenCache oobTokenResolver = aggregateTokenResolve.TokenResolvers[i] as ISecurityContextSecurityTokenCache;
+                        if (oobTokenResolver == null)
+                        {
+                            continue;
+                        }
+                        if (sctCache == null)
+                        {
+                            sctCache = oobTokenResolver;
+                        }
+                        cachedSct = oobTokenResolver.GetContext(contextId, generation);
+                        if (cachedSct != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (cachedSct == null)
+                {
+                    return null;
+                }
+                else if (cachedSct.Id == id)
+                {
+                    return cachedSct;
+                }
+                else
+                {
+                    return new SecurityContextSecurityToken(cachedSct, id);
+                }
+            }
+
+            public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
+            {
+                UniqueId contextId = null;
+                byte[] encodedCookie = null;
+                UniqueId generation = null;
+                bool isCookieMode = false;
+
+                Fx.Assert(reader.NodeType == XmlNodeType.Element, "");
+
+                // check if there is an id
+                string id = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+
+                SecurityContextSecurityToken sct = null;
+
+                // There needs to be at least a contextId in here.
+                reader.ReadFullStartElement();
+                reader.MoveToStartElement(Parent.SerializerDictionary.Identifier, Parent.SerializerDictionary.Namespace);
+                contextId = reader.ReadElementContentAsUniqueId();
+                if (CanReadGeneration(reader))
+                {
+                    generation = ReadGeneration(reader);
+                }
+                if (reader.IsStartElement(Parent.SerializerDictionary.Cookie, XD.DotNetSecurityDictionary.Namespace))
+                {
+                    isCookieMode = true;
+                    ISecurityContextSecurityTokenCache sctCache;
+                    sct = TryResolveSecurityContextToken(contextId, generation, id, tokenResolver, out sctCache);
+                    if (sct == null)
+                    {
+                        encodedCookie = reader.ReadElementContentAsBase64();
+                        if (encodedCookie != null)
+                        {
+                            throw new PlatformNotSupportedException();
+                            // Ultimately depends on ProtectedData which isn't available cross platform
+                            // I believe this is server side only code but too complicated to reason about
+                            // to know for sure.
+                        }
+                    }
+                    else
+                    {
+                        reader.Skip();
+                    }
+                }
+                reader.ReadEndElement();
+
+                if (contextId == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.NoSecurityContextIdentifier));
+                }
+
+                if (sct == null && !isCookieMode)
+                {
+                    ISecurityContextSecurityTokenCache sctCache;
+                    sct = TryResolveSecurityContextToken(contextId, generation, id, tokenResolver, out sctCache);
+                }
+                if (sct == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new SecurityContextTokenValidationException(SR.Format(SR.SecurityContextNotRegistered, contextId, generation)));
+                }
+                return sct;
+            }
+
+            protected virtual void WriteGeneration(XmlDictionaryWriter writer, SecurityContextSecurityToken sct)
+            {
+            }
+
+            public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
+            {
+                SecurityContextSecurityToken sct = (token as SecurityContextSecurityToken);
+
+                // serialize the name and any wsu:Id attribute
+                writer.WriteStartElement(Parent.SerializerDictionary.Prefix.Value, Parent.SerializerDictionary.SecurityContextToken, Parent.SerializerDictionary.Namespace);
+                if (sct.Id != null)
+                {
+                    writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, sct.Id);
+                }
+
+                // serialize the context id
+                writer.WriteStartElement(Parent.SerializerDictionary.Prefix.Value, Parent.SerializerDictionary.Identifier, Parent.SerializerDictionary.Namespace);
+                XmlHelper.WriteStringAsUniqueId(writer, sct.ContextId);
+                writer.WriteEndElement();
+
+                WriteGeneration(writer, sct);
+
+                // if cookie-mode, then it must have a cookie
+                if (sct.IsCookieMode)
+                {
+                    if (sct.CookieBlob == null)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.NoCookieInSct));
+                    }
+
+                    // if the token has a cookie, write it out
+                    writer.WriteStartElement(XD.DotNetSecurityDictionary.Prefix.Value, Parent.SerializerDictionary.Cookie, XD.DotNetSecurityDictionary.Namespace);
+                    writer.WriteBase64(sct.CookieBlob, 0, sct.CookieBlob.Length);
+                    writer.WriteEndElement();
+                }
+
                 writer.WriteEndElement();
             }
         }

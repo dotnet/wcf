@@ -409,5 +409,10 @@ namespace System.ServiceModel.Security
             reader.ReadEndElement();
             return id;
         }
+
+        static public UniqueId ReadTextElementAsUniqueId(XmlElement element)
+        {
+            return new UniqueId(ReadTextElementAsTrimmedString(element));
+        }
     }
 }

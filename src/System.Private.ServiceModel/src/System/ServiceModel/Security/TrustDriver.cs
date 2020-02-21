@@ -140,8 +140,5 @@ namespace System.ServiceModel.Security
 
         // RSTR Collection method
         public abstract void WriteRequestSecurityTokenResponseCollection(RequestSecurityTokenResponseCollection rstrCollection, XmlWriter writer);
-
-        // Federation proxy creation
-        public abstract IChannelFactory<IRequestChannel> CreateFederationProxy(EndpointAddress address, Binding binding, KeyedByTypeCollection<IEndpointBehavior> channelBehaviors);
     }
 }

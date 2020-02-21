@@ -2,25 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Xml;
 
 namespace System.ServiceModel.Security
 {
-    internal class WSSecureConversationFeb2005 : WSSecureConversation
+    class WSSecureConversationDec2005 : WSSecureConversation
     {
         SecurityStateEncoder _securityStateEncoder;
         IList<Type> _knownClaimTypes;
 
-        public WSSecureConversationFeb2005(WSSecurityTokenSerializer tokenSerializer, SecurityStateEncoder securityStateEncoder, IEnumerable<Type> knownTypes,
+        public WSSecureConversationDec2005(WSSecurityTokenSerializer tokenSerializer, SecurityStateEncoder securityStateEncoder, IEnumerable<Type> knownTypes,
             int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
             : base(tokenSerializer, maxKeyDerivationOffset, maxKeyDerivationLabelLength, maxKeyDerivationNonceLength)
         {
             if (securityStateEncoder != null)
             {
                 _securityStateEncoder = securityStateEncoder;
+            }
+            else
+            {
+                //throw new PlatformNotSupportedException();
+                //this.securityStateEncoder = new DataProtectionSecurityStateEncoder();
             }
 
             _knownClaimTypes = new List<Type>();
@@ -36,31 +43,39 @@ namespace System.ServiceModel.Security
 
         public override SecureConversationDictionary SerializerDictionary
         {
-            get { return XD.SecureConversationFeb2005Dictionary; }
+            get { return DXD.SecureConversationDec2005Dictionary; }
         }
 
         public override void PopulateTokenEntries(IList<WSSecurityTokenSerializer.TokenEntry> tokenEntryList)
         {
             base.PopulateTokenEntries(tokenEntryList);
-            tokenEntryList.Add(new SecurityContextTokenEntryFeb2005(this, _securityStateEncoder, _knownClaimTypes));
+            tokenEntryList.Add(new SecurityContextTokenEntryDec2005(this, _securityStateEncoder, _knownClaimTypes));
         }
 
-        class SecurityContextTokenEntryFeb2005 : SecurityContextTokenEntry
+        public override string DerivationAlgorithm
         {
-            public SecurityContextTokenEntryFeb2005(WSSecureConversationFeb2005 parent, SecurityStateEncoder securityStateEncoder, IList<Type> knownClaimTypes)
+            get
+            {
+                return SecurityAlgorithms.Psha1KeyDerivationDec2005;
+            }
+        }
+
+        class SecurityContextTokenEntryDec2005 : SecurityContextTokenEntry
+        {
+            public SecurityContextTokenEntryDec2005(WSSecureConversationDec2005 parent, SecurityStateEncoder securityStateEncoder, IList<Type> knownClaimTypes)
                 : base(parent, securityStateEncoder, knownClaimTypes)
             {
             }
 
             protected override bool CanReadGeneration(XmlDictionaryReader reader)
             {
-                return reader.IsStartElement(DXD.SecureConversationDec2005Dictionary.Instance, XD.SecureConversationFeb2005Dictionary.Namespace);
+                return reader.IsStartElement(DXD.SecureConversationDec2005Dictionary.Instance, DXD.SecureConversationDec2005Dictionary.Namespace);
             }
 
             protected override bool CanReadGeneration(XmlElement element)
             {
                 return (element.LocalName == DXD.SecureConversationDec2005Dictionary.Instance.Value &&
-                    element.NamespaceURI == XD.SecureConversationFeb2005Dictionary.Namespace.Value);
+                    element.NamespaceURI == DXD.SecureConversationDec2005Dictionary.Namespace.Value);
             }
 
             protected override UniqueId ReadGeneration(XmlDictionaryReader reader)
@@ -78,33 +93,34 @@ namespace System.ServiceModel.Security
                 // serialize the generation
                 if (sct.KeyGeneration != null)
                 {
-                    writer.WriteStartElement(XD.SecureConversationFeb2005Dictionary.Prefix.Value, DXD.SecureConversationDec2005Dictionary.Instance,
-                        XD.SecureConversationFeb2005Dictionary.Namespace);
+                    writer.WriteStartElement(DXD.SecureConversationDec2005Dictionary.Prefix.Value,
+                        DXD.SecureConversationDec2005Dictionary.Instance,
+                        DXD.SecureConversationDec2005Dictionary.Namespace);
                     XmlHelper.WriteStringAsUniqueId(writer, sct.KeyGeneration);
                     writer.WriteEndElement();
                 }
             }
         }
 
-        public class DriverFeb2005 : Driver
+        public class DriverDec2005 : Driver
         {
-            public DriverFeb2005()
+            public DriverDec2005()
             {
             }
 
             protected override SecureConversationDictionary DriverDictionary
             {
-                get { return XD.SecureConversationFeb2005Dictionary; }
+                get { return DXD.SecureConversationDec2005Dictionary; }
             }
 
             public override XmlDictionaryString CloseAction
             {
-                get { return XD.SecureConversationFeb2005Dictionary.RequestSecurityContextClose; }
+                get { return DXD.SecureConversationDec2005Dictionary.RequestSecurityContextClose; }
             }
 
             public override XmlDictionaryString CloseResponseAction
             {
-                get { return XD.SecureConversationFeb2005Dictionary.RequestSecurityContextCloseResponse; }
+                get { return DXD.SecureConversationDec2005Dictionary.RequestSecurityContextCloseResponse; }
             }
 
             public override bool IsSessionSupported
@@ -114,22 +130,22 @@ namespace System.ServiceModel.Security
 
             public override XmlDictionaryString RenewAction
             {
-                get { return XD.SecureConversationFeb2005Dictionary.RequestSecurityContextRenew; }
+                get { return DXD.SecureConversationDec2005Dictionary.RequestSecurityContextRenew; }
             }
 
             public override XmlDictionaryString RenewResponseAction
             {
-                get { return XD.SecureConversationFeb2005Dictionary.RequestSecurityContextRenewResponse; }
+                get { return DXD.SecureConversationDec2005Dictionary.RequestSecurityContextRenewResponse; }
             }
 
             public override XmlDictionaryString Namespace
             {
-                get { return XD.SecureConversationFeb2005Dictionary.Namespace; }
+                get { return DXD.SecureConversationDec2005Dictionary.Namespace; }
             }
 
             public override string TokenTypeUri
             {
-                get { return XD.SecureConversationFeb2005Dictionary.SecurityContextTokenType.Value; }
+                get { return DXD.SecureConversationDec2005Dictionary.SecurityContextTokenType.Value; }
             }
         }
     }

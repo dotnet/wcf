@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace System.ServiceModel.Security.Tokens
 {
-    public interface ISecurityContextSecurityTokenCache
+    internal interface ISecurityContextSecurityTokenCache
     {
         void AddContext(SecurityContextSecurityToken token);
         bool TryAddContext(SecurityContextSecurityToken token);

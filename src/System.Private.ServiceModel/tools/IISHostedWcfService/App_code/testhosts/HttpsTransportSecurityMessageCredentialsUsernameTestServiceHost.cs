@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -11,7 +12,26 @@ namespace WcfService
     [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "HttpsTransSecMessCredsUserName.svc")]
     internal class HttpsTransportSecurityMessageCredentialsUserNameTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "https-message-credentials-username"; } }
+        protected override IList<Binding> GetBindings()
+        {
+            return new List<Binding> { GetWSHttpBinding(), GetWS2007HttpBinding() };
+        }
+
+        private Binding GetWSHttpBinding()
+        {
+            WSHttpBinding binding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
+            binding.Name = "https-message-credentials-username";
+            return binding;
+        }
+
+        private Binding GetWS2007HttpBinding()
+        {
+            WS2007HttpBinding binding = new WS2007HttpBinding(SecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
+            binding.Name = "https2007-message-credentials-username";
+            return binding;
+        }
 
         protected override Binding GetBinding()
         {
