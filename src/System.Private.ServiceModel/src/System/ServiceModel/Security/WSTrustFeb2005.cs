@@ -2,11 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Collections.Generic;
 using System.IdentityModel.Tokens;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
 
@@ -218,116 +214,6 @@ namespace System.ServiceModel.Security
                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.CloseTarget, DriverDictionary.Namespace);
                     StandardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rst.CloseTarget);
                     writer.WriteEndElement();
-                }
-            }
-
-            // this is now the abstract in WSTrust
-            public override IChannelFactory<IRequestChannel> CreateFederationProxy(EndpointAddress address, Binding binding, KeyedByTypeCollection<IEndpointBehavior> channelBehaviors)
-            {
-                if (channelBehaviors == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(channelBehaviors));
-                }
-
-                ChannelFactory<IWsTrustFeb2005SecurityTokenService> result = new ChannelFactory<IWsTrustFeb2005SecurityTokenService>(binding, address);
-                SetProtectionLevelForFederation(result.Endpoint.Contract.Operations);
-                // remove the default client credentials that gets added to channel factories
-                result.Endpoint.Behaviors.Remove<ClientCredentials>();
-                for (int i = 0; i < channelBehaviors.Count; ++i)
-                {
-                    result.Endpoint.Behaviors.Add(channelBehaviors[i]);
-                }
-                // add a behavior that removes the UI channel initializer added by the client credentials since there should be no UI
-                // initializer popped up as part of obtaining the federation token (the UI should already have been popped up for the main channel)
-                result.Endpoint.Behaviors.Add(new InteractiveInitializersRemovingBehavior());
-
-                return new RequestChannelFactory<IWsTrustFeb2005SecurityTokenService>(result);
-            }
-
-            [ServiceContract]
-            internal interface IWsTrustFeb2005SecurityTokenService
-            {
-                [OperationContract(IsOneWay = false,
-                                   Action = TrustFeb2005Strings.RequestSecurityTokenIssuance,
-                                   ReplyAction = TrustFeb2005Strings.RequestSecurityTokenIssuanceResponse)]
-                [FaultContract(typeof(string), Action = "*", ProtectionLevel = System.Net.Security.ProtectionLevel.Sign)]
-                Message RequestToken(Message message);
-            }
-
-            public class InteractiveInitializersRemovingBehavior : IEndpointBehavior
-            {
-                public void Validate(ServiceEndpoint serviceEndpoint) { }
-                public void AddBindingParameters(ServiceEndpoint serviceEndpoint, BindingParameterCollection bindingParameters) { }
-                public void ApplyDispatchBehavior(ServiceEndpoint serviceEndpoint, EndpointDispatcher endpointDispatcher) { }
-                public void ApplyClientBehavior(ServiceEndpoint serviceEndpoint, ClientRuntime behavior)
-                {
-                    // it is very unlikely that InteractiveChannelInitializers will be null, this is defensive in case ClientRuntime every has a 
-                    // bug.  I am OK with this as ApplyingClientBehavior is a one-time channel setup.
-                    if (behavior != null && behavior.InteractiveChannelInitializers != null)
-                    {
-                        // clear away any interactive initializer
-                        behavior.InteractiveChannelInitializers.Clear();
-                    }
-                }
-            }
-
-            public class RequestChannelFactory<TokenService> : ChannelFactoryBase, IChannelFactory<IRequestChannel>
-            {
-                private ChannelFactory<TokenService> _innerChannelFactory;
-
-                public RequestChannelFactory(ChannelFactory<TokenService> innerChannelFactory)
-                {
-                    _innerChannelFactory = innerChannelFactory;
-                }
-
-                public IRequestChannel CreateChannel(EndpointAddress address)
-                {
-                    return _innerChannelFactory.CreateChannel<IRequestChannel>(address);
-                }
-
-                public IRequestChannel CreateChannel(EndpointAddress address, Uri via)
-                {
-                    return _innerChannelFactory.CreateChannel<IRequestChannel>(address, via);
-                }
-
-                protected override void OnAbort()
-                {
-                    _innerChannelFactory.Abort();
-                }
-
-                protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
-                {
-                    return _innerChannelFactory.BeginOpen(timeout, callback, state);
-                }
-
-                protected override void OnEndOpen(IAsyncResult result)
-                {
-                    _innerChannelFactory.EndOpen(result);
-                }
-
-                protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
-                {
-                    return _innerChannelFactory.BeginClose(timeout, callback, state);
-                }
-
-                protected override void OnEndClose(IAsyncResult result)
-                {
-                    _innerChannelFactory.EndClose(result);
-                }
-
-                protected override void OnClose(TimeSpan timeout)
-                {
-                    _innerChannelFactory.Close(timeout);
-                }
-
-                protected override void OnOpen(TimeSpan timeout)
-                {
-                    _innerChannelFactory.Open(timeout);
-                }
-
-                public override T GetProperty<T>()
-                {
-                    return _innerChannelFactory.GetProperty<T>();
                 }
             }
         }

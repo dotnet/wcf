@@ -98,7 +98,7 @@ namespace System.ServiceModel.Security
             }
             else if (secureConversationVersion == SecureConversationVersion.WSSecureConversation13)
             {
-                throw new PlatformNotSupportedException(nameof(SecureConversationVersion.WSSecureConversation13));
+                _secureConversation = new WSSecureConversationDec2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
             }
             else
             {
@@ -126,7 +126,8 @@ namespace System.ServiceModel.Security
             }
             else if (trustVersion == TrustVersion.WSTrust13)
             {
-                throw ExceptionHelper.PlatformNotSupported(nameof(TrustVersion.WSTrust13));
+                _serializerEntries.Add(new WSTrustDec2005(this));
+                trustDictionary = new IdentityModel.TrustDec2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Dec2005DictionaryString));
             }
             else
             {
