@@ -173,6 +173,13 @@ namespace System.ServiceModel
         protected override System.ServiceModel.Channels.TransportBindingElement GetTransport() { return default(System.ServiceModel.Channels.TransportBindingElement); }
         protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default(System.ServiceModel.Channels.SecurityBindingElement); }
     }
+    public class WS2007HttpBinding : WSHttpBinding
+    {
+        public WS2007HttpBinding() { }
+        public WS2007HttpBinding(System.ServiceModel.SecurityMode securityMode) { }
+        public WS2007HttpBinding(System.ServiceModel.SecurityMode securityMode, bool reliableSessionEnabled) { }
+        protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default(System.ServiceModel.Channels.SecurityBindingElement); }
+    }
     public sealed partial class WSHttpSecurity
     {
         public WSHttpSecurity() { }

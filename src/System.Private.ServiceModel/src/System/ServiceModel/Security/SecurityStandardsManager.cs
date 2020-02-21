@@ -35,7 +35,7 @@ namespace System.ServiceModel.Security
             _tokenSerializer = tokenSerializer ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(tokenSerializer));
             if (messageSecurityVersion.SecureConversationVersion == SecureConversationVersion.WSSecureConversation13)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                SecureConversationDriver = new WSSecureConversationDec2005.DriverDec2005();
             }
             else
             {
@@ -55,7 +55,7 @@ namespace System.ServiceModel.Security
             TrustDriver = null;
             if (messageSecurityVersion.MessageSecurityTokenVersion.TrustVersion == TrustVersion.WSTrust13)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                TrustDriver = new WSTrustDec2005.DriverDec2005(this);
             }
             else
             {
