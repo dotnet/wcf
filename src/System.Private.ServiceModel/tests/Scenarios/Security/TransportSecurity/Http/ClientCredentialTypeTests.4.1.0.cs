@@ -17,7 +17,6 @@ public static class Http_ClientCredentialTypeTests
 {
     [WcfFact]
     [OuterLoop]
-    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/3333")]
     public static void DigestAuthentication_Echo_RoundTrips_String_No_Domain()
     {
         ChannelFactory<IWcfService> factory = null;
@@ -80,7 +79,6 @@ public static class Http_ClientCredentialTypeTests
 
     [WcfFact]
     [OuterLoop]
-    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: Expect100Continue header is not supported in UWP.")]
     public static void HttpExpect100Continue_DigestAuthentication_True()
     {
         ChannelFactory<IWcfService> factory = null;

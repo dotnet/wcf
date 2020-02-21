@@ -52,7 +52,6 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/1717")]
     [OuterLoop]
     public static void ServiceRestart_Throws_CommunicationException()
     {
