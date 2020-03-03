@@ -5,6 +5,7 @@
     <TargetFrameworks>netstandard2.0;netcoreapp2.1;net461;</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
   </PropertyGroup>

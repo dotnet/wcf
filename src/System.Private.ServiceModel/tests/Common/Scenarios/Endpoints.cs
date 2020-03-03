@@ -407,7 +407,23 @@ public static partial class Endpoints
         }
     }
 
-    #region Secure WebSocket Addresses
+    public static string WSFederationAuthorityLocalSTS
+    {
+        get
+        {
+            return GetEndpointAddress("LocalSTS.svc/transport", protocol: "https");
+        }
+    }
+
+    public static string Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2
+    {
+        get
+        {
+            return GetEndpointAddress("Saml2IssuedToken.svc/issued-token-using-tls", protocol: "https");
+        }
+    }
+
+#region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {
         get
