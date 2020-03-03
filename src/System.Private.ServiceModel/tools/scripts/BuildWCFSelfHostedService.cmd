@@ -1,29 +1,24 @@
 @echo off
 setlocal
 
-if not defined VisualStudioVersion (
-    if defined VS160COMNTOOLS (
-        call "%VS160COMNTOOLS%\VsDevCmd.bat"
-        goto :EnvSet
-    )
-
-    if defined VS140COMNTOOLS (
-        call "%VS140COMNTOOLS%\VsDevCmd.bat"
-        goto :EnvSet
-    )
-
-    if defined VS120COMNTOOLS (
-        call "%VS120COMNTOOLS%\VsDevCmd.bat"
-        goto :EnvSet
-    )
-
-    echo Error: %~nx0 requires Visual Studio 2013 or 2015.
-    echo        Please see https://github.com/dotnet/wcf/wiki/Developer-Guide for build instructions.
-    exit /b 1
+set _VSWHERE="%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+if exist %_VSWHERE% (
+  for /f "usebackq tokens=*" %%i in (`%_VSWHERE% -latest -prerelease -property installationPath`) do set _VSCOMNTOOLS=%%i\Common7\Tools
 )
+if not exist "%_VSCOMNTOOLS%" set _VSCOMNTOOLS=%VS140COMNTOOLS%
+if not exist "%_VSCOMNTOOLS%" goto :MissingVersion
+
+set VSCMD_START_DIR="%~dp0"
+call "%_VSCOMNTOOLS%\VsDevCmd.bat"
+goto :EnvSet
+
+:MissingVersion
+:: Can't find VS 2017, 2019
+echo Error: %~nx0 requires Visual Studio 2017 or 2019.
+echo        Please see https://github.com/dotnet/wcf/wiki/Developer-Guide for build instructions.
+exit /b 1
 
 :EnvSet
-
 :: Log build command line
 set _buildproj1=%~dp0..\SelfHostedWcfService\SelfHostedWCFService.sln
 set _buildlog=%~dp0..\..\..\..\msbuildSelfHostedWcfService.log

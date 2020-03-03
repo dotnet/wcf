@@ -89,6 +89,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScenarioTests.Common.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.Common", "src\System.Private.ServiceModel\tests\Common\Unit\UnitTests.Common.csproj", "{9B8D6C72-5ED1-40DD-9B75-61638909D549}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.WS.FederationHttp.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\FederationHttp\Binding.WS.FederationHttp.IntegrationTests.csproj", "{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -267,6 +269,10 @@ Global
 		{9B8D6C72-5ED1-40DD-9B75-61638909D549}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B8D6C72-5ED1-40DD-9B75-61638909D549}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B8D6C72-5ED1-40DD-9B75-61638909D549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
