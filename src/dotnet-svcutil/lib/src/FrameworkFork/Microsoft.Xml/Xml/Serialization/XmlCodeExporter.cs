@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlCodeExporter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ElenaK</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Serialization {
     
@@ -137,17 +133,17 @@ namespace Microsoft.Xml.Serialization {
                     if (!mapping.TypeDesc.IsMappedType) {
                         // Add [GeneratedCodeAttribute(Tool=.., Version=..)]
                         codeClass.CustomAttributes.Add(GeneratedCodeAttribute);
-#if disabled // Not in DNX
-                        // Add [SerializableAttribute]
-                        codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(SerializableAttribute).FullName));
-#endif
+// Not needed in dotnet-svcutil scenario. Not in DNX
+//                         // Add [SerializableAttribute]
+//                         codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(SerializableAttribute).FullName));
+
                         if (!codeClass.IsEnum) {
                             // Add [DebuggerStepThrough]
                             codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DebuggerStepThroughAttribute).FullName));
                             // Add [DesignerCategory("code")]
-#if disabled
-                            codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DesignerCategoryAttribute).FullName, new CodeAttributeArgument[] {new CodeAttributeArgument(new CodePrimitiveExpression("code"))}));
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                             codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DesignerCategoryAttribute).FullName, new CodeAttributeArgument[] {new CodeAttributeArgument(new CodePrimitiveExpression("code"))}));
+
                         }
                         AddTypeMetadata(codeClass.CustomAttributes, typeof(XmlTypeAttribute), mapping.TypeDesc.Name, Accessor.UnescapeName(mapping.TypeName), mapping.Namespace, mapping.IncludeInSchema);
                     }

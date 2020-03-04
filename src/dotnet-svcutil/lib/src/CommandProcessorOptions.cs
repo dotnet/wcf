@@ -1,6 +1,5 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections.Generic;
@@ -819,12 +818,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                         this.ReferencedAssemblies.Add(assembly);
                     }
-#if disabled // Just ignore the duplicate assembly
-                    else
-                    {
-                        throw new ToolOptionException(SR.GetString(SR.ErrDuplicateReferenceValues, Options.Switches.Reference, assembly.Location));
-                    }
-#endif
                 }
             }
         }

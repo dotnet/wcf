@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using Microsoft.Xml;
@@ -216,125 +216,125 @@ namespace System.Runtime.Serialization
                 element.AddAttribute(Globals.XmlnsPrefix, Globals.XmlnsNamespace, prefix, valueNs);
         }
     }
-#if disabled // used only in NET_NATIVE
-    internal class ClassDataNode : DataNode<object>
-    {
-        private IList<ExtensionDataMember> _members;
+// Not needed in dotnet-svcutil scenario. used only in NET_NATIVE
+//     internal class ClassDataNode : DataNode<object>
+//     {
+//         private IList<ExtensionDataMember> _members;
+// 
+//         internal ClassDataNode()
+//         {
+//             dataType = Globals.TypeOfClassDataNode;
+//         }
+// 
+//         internal IList<ExtensionDataMember> Members
+//         {
+//             get { return _members; }
+//             set { _members = value; }
+//         }
+// 
+//         public override void Clear()
+//         {
+//             base.Clear();
+//             _members = null;
+//         }
+//     }
+// 
+//     internal class CollectionDataNode : DataNode<Array>
+//     {
+//         private IList<IDataNode> _items;
+//         private string _itemName;
+//         private string _itemNamespace;
+//         private int _size = -1;
+// 
+//         internal CollectionDataNode()
+//         {
+//             dataType = Globals.TypeOfCollectionDataNode;
+//         }
+// 
+//         internal IList<IDataNode> Items
+//         {
+//             get { return _items; }
+//             set { _items = value; }
+//         }
+// 
+//         internal string ItemName
+//         {
+//             get { return _itemName; }
+//             set { _itemName = value; }
+//         }
+// 
+//         internal string ItemNamespace
+//         {
+//             get { return _itemNamespace; }
+//             set { _itemNamespace = value; }
+//         }
+// 
+//         internal int Size
+//         {
+//             get { return _size; }
+//             set { _size = value; }
+//         }
+// 
+//         public override void GetData(ElementData element)
+//         {
+//             base.GetData(element);
+// 
+//             element.AddAttribute(Globals.SerPrefix, Globals.SerializationNamespace, Globals.ArraySizeLocalName, Size.ToString(NumberFormatInfo.InvariantInfo));
+//         }
+// 
+//         public override void Clear()
+//         {
+//             base.Clear();
+//             _items = null;
+//             _size = -1;
+//         }
+//     }
+// 
+//     internal class ISerializableDataNode : DataNode<object>
+//     {
+//         private string _factoryTypeName;
+//         private string _factoryTypeNamespace;
+//         private IList<ISerializableDataMember> _members;
+// 
+//         internal ISerializableDataNode()
+//         {
+//             dataType = Globals.TypeOfISerializableDataNode;
+//         }
+// 
+//         internal string FactoryTypeName
+//         {
+//             get { return _factoryTypeName; }
+//             set { _factoryTypeName = value; }
+//         }
+// 
+//         internal string FactoryTypeNamespace
+//         {
+//             get { return _factoryTypeNamespace; }
+//             set { _factoryTypeNamespace = value; }
+//         }
+// 
+//         internal IList<ISerializableDataMember> Members
+//         {
+//             get { return _members; }
+//             set { _members = value; }
+//         }
+// 
+//         public override void GetData(ElementData element)
+//         {
+//             base.GetData(element);
+// 
+//             if (FactoryTypeName != null)
+//                 AddQualifiedNameAttribute(element, Globals.SerPrefix, Globals.ISerializableFactoryTypeLocalName, Globals.SerializationNamespace, FactoryTypeName, FactoryTypeNamespace);
+//         }
+// 
+//         public override void Clear()
+//         {
+//             base.Clear();
+//             _members = null;
+//             _factoryTypeName = _factoryTypeNamespace = null;
+//         }
+//     }
 
-        internal ClassDataNode()
-        {
-            dataType = Globals.TypeOfClassDataNode;
-        }
-
-        internal IList<ExtensionDataMember> Members
-        {
-            get { return _members; }
-            set { _members = value; }
-        }
-
-        public override void Clear()
-        {
-            base.Clear();
-            _members = null;
-        }
-    }
-
-    internal class CollectionDataNode : DataNode<Array>
-    {
-        private IList<IDataNode> _items;
-        private string _itemName;
-        private string _itemNamespace;
-        private int _size = -1;
-
-        internal CollectionDataNode()
-        {
-            dataType = Globals.TypeOfCollectionDataNode;
-        }
-
-        internal IList<IDataNode> Items
-        {
-            get { return _items; }
-            set { _items = value; }
-        }
-
-        internal string ItemName
-        {
-            get { return _itemName; }
-            set { _itemName = value; }
-        }
-
-        internal string ItemNamespace
-        {
-            get { return _itemNamespace; }
-            set { _itemNamespace = value; }
-        }
-
-        internal int Size
-        {
-            get { return _size; }
-            set { _size = value; }
-        }
-
-        public override void GetData(ElementData element)
-        {
-            base.GetData(element);
-
-            element.AddAttribute(Globals.SerPrefix, Globals.SerializationNamespace, Globals.ArraySizeLocalName, Size.ToString(NumberFormatInfo.InvariantInfo));
-        }
-
-        public override void Clear()
-        {
-            base.Clear();
-            _items = null;
-            _size = -1;
-        }
-    }
-
-    internal class ISerializableDataNode : DataNode<object>
-    {
-        private string _factoryTypeName;
-        private string _factoryTypeNamespace;
-        private IList<ISerializableDataMember> _members;
-
-        internal ISerializableDataNode()
-        {
-            dataType = Globals.TypeOfISerializableDataNode;
-        }
-
-        internal string FactoryTypeName
-        {
-            get { return _factoryTypeName; }
-            set { _factoryTypeName = value; }
-        }
-
-        internal string FactoryTypeNamespace
-        {
-            get { return _factoryTypeNamespace; }
-            set { _factoryTypeNamespace = value; }
-        }
-
-        internal IList<ISerializableDataMember> Members
-        {
-            get { return _members; }
-            set { _members = value; }
-        }
-
-        public override void GetData(ElementData element)
-        {
-            base.GetData(element);
-
-            if (FactoryTypeName != null)
-                AddQualifiedNameAttribute(element, Globals.SerPrefix, Globals.ISerializableFactoryTypeLocalName, Globals.SerializationNamespace, FactoryTypeName, FactoryTypeNamespace);
-        }
-
-        public override void Clear()
-        {
-            base.Clear();
-            _members = null;
-            _factoryTypeName = _factoryTypeNamespace = null;
-        }
-    }
-#endif
     internal class ISerializableDataMember
     {
         private string _name;

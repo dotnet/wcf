@@ -1,0 +1,22 @@
+{
+  "providerId": "TFnetcoreapp9999_JAN_9_9_9",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "$testCasesPath$/wsdl/simple.wsdl"
+    ],
+    "bootstrapPath": "$resultPath$/TestBootstrap/ParamsFiles_SDK_TFM/TFnetcoreapp9999_JAN_9_9_9",
+    "namespaceMappings": [
+      "*, TFnetcoreapp9999_JAN_9_9_9_NS"
+    ],
+    "noLogo": true,
+    "noTelemetry": true,
+    "outputDir": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/TFnetcoreapp9999_JAN_9_9_9",
+    "projectFile": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/TFnetcoreapp9999_JAN_9_9_9/TFnetcoreapp9999_JAN_9_9_9.csproj",
+    "references": [
+      "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}"
+    ],
+    "toolContext": "Global",
+    "verbosity": "Minimal"
+  }
+}

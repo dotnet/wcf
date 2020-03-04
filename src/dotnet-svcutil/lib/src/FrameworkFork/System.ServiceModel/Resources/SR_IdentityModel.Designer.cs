@@ -37,7 +37,7 @@ namespace System.IdentityModel {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Tools.ServiceModel.Svcutil.OpenSource.System.ServiceModel.Resources.SR_IdentityModel", typeof(SR_IdentityModel).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Tools.ServiceModel.Svcutil.FrameworkFork.System.ServiceModel.Resources.SR_IdentityModel", typeof(SR_IdentityModel).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

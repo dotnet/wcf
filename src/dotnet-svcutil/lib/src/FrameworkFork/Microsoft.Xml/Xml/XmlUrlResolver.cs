@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlUrlResolver.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Threading;
 // using System.Security.Permissions;
@@ -21,19 +17,19 @@ namespace Microsoft.Xml {
         private ICredentials _credentials;
         private IWebProxy _proxy;
 
-#if disabled
-        private RequestCachePolicy _cachePolicy;
+// Not needed in dotnet-svcutil scenario. 
+//         private RequestCachePolicy _cachePolicy;
+// 
+//         static XmlDownloadManager DownloadManager {
+//             get {
+//                 if ( s_DownloadManager == null ) {
+//                     object dm = new XmlDownloadManager();
+//                     Interlocked.CompareExchange<object>( ref s_DownloadManager, dm, null );
+//                 }
+//                 return (XmlDownloadManager)s_DownloadManager;
+//             }
+//         }
 
-        static XmlDownloadManager DownloadManager {
-            get {
-                if ( s_DownloadManager == null ) {
-                    object dm = new XmlDownloadManager();
-                    Interlocked.CompareExchange<object>( ref s_DownloadManager, dm, null );
-                }
-                return (XmlDownloadManager)s_DownloadManager;
-            }
-        }
-#endif 
         // Construction
 
         // Creates a new instance of the XmlUrlResolver class.
@@ -47,11 +43,11 @@ namespace Microsoft.Xml {
         public IWebProxy Proxy {
             set { _proxy = value; }
         }
-#if disabled
-        public RequestCachePolicy CachePolicy {
-            set { _cachePolicy = value; }
-        }
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//         public RequestCachePolicy CachePolicy {
+//             set { _cachePolicy = value; }
+//         }
+
         // Resource resolution
 
         // Maps a URI to an Object containing the actual resource.
@@ -59,14 +55,14 @@ namespace Microsoft.Xml {
         // [ResourceExposure(ResourceScope.Machine)]
         public override Object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn) {
             throw new NotImplementedException();
-#if disabled
-            if (ofObjectToReturn == null || ofObjectToReturn == typeof(System.IO.Stream) || ofObjectToReturn == typeof(System.Object)) {
-                return DownloadManager.GetStream(absoluteUri, _credentials, _proxy, _cachePolicy);
-            }
-            else {
-                throw new XmlException(Res.Xml_UnsupportedClass, string.Empty);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (ofObjectToReturn == null || ofObjectToReturn == typeof(System.IO.Stream) || ofObjectToReturn == typeof(System.Object)) {
+//                 return DownloadManager.GetStream(absoluteUri, _credentials, _proxy, _cachePolicy);
+//             }
+//             else {
+//                 throw new XmlException(Res.Xml_UnsupportedClass, string.Empty);
+//             }
+
         }
 
         // [PermissionSetAttribute(SecurityAction.InheritanceDemand, Name = "FullTrust")]

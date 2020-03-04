@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlSchemaValidator.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">priyal</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections;
@@ -2009,13 +2005,13 @@ namespace Microsoft.Xml.Schema {
                             break;
 
                         case CompiledIdentityConstraint.ConstraintRole.Unique:
-#if disabled
-                                if (LocalAppContextSwitches.IgnoreEmptyKeySequences) {
-                                if (!ks.IsQualified()) {
-                                    continue;
-                                }
-                            }
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//                                 if (LocalAppContextSwitches.IgnoreEmptyKeySequences) {
+//                                 if (!ks.IsQualified()) {
+//                                     continue;
+//                                 }
+//                             }
+
                             if (constraints[i].qualifiedTable.Contains (ks)) {
                                 // unique or key checking confliction
 //                                        KeySequence ks2 = (KeySequence) conuct.qualifiedTable[ks];

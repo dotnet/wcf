@@ -1,8 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// <copyright company="Microsoft">
-//   Copyright (C) Microsoft Corporation. All Rights Reserved.
-// </copyright>
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections.Generic;
@@ -32,17 +29,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     xmlTypes[type.FullName] = type;
                 }
             }
-#if disabled
-            // System.Runtime.Serialization.dll
-            var msxmlSerializationTypes = InputModule.LoadTypes(typeof(Microsoft.Xml.XmlDictionaryReader).GetTypeInfo().Assembly, Verbosity.Silent);
-            foreach (var type in msxmlSerializationTypes)
-            {
-                if (type.FullName.Contains(MicrosoftXml))
-                {
-                    xmlTypes[type.FullName] = type;
-                }
-            }
-#endif
+
             // Microsoft.CodeDom
             var mscodedomTypes = TypeLoader.LoadTypes(typeof(Microsoft.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent);
             foreach (var type in mscodedomTypes)

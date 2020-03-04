@@ -1,0 +1,48 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "1.0.4-prerelease-40343.1313",
+  "options": {
+    "inputs": [
+      "http://miguell-main/wcfforsvctuil/service1.svc",
+      "wsdl/my.wsdl"
+    ],
+    "bootstrapPath": "d:/dd/temp/hellosvctuil/bootstrap",
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.Collections.Generic.List`1"
+    ],
+    "cultureName": "en",
+    "enableDataBinding": true,
+    "enableLoggingMarkup": true,
+    "excludeTypes": [
+      "System.Array, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.DateTime"
+    ],
+    "help": true,
+    "internalTypeAccess": true,
+    "messageContract": true,
+    "namespaceMappings": [
+      "Microsoft*, MyNamespace1",
+      "System*, MyNamespace2"
+    ],
+    "noBootstrapping": true,
+    "noLogo": true,
+    "noProjectUpdates": true,
+    "noStandardLibrary": true,
+    "noTelemetry": true,
+    "outputDir": "ServiceReference1",
+    "outputFile": "Reference.cs",
+    "projectFile": "$testCaseProject$",
+    "references": [
+      "System.Collections, {Microsoft.NETCore.App, *}",
+      "System.ServiceModel, {System.ServiceModel.Primitives, 4.1.0}"
+    ],
+    "runtimeIdentifier": "ubuntu.14.04-x64",
+    "serializerMode": "XmlSerializer",
+    "targetFramework": "netcoreapp2.0",
+    "toolContext": "Project",
+    "typeReuseMode": "None",
+    "verbosity": "Minimal",
+    "wrapped": true
+  }
+}

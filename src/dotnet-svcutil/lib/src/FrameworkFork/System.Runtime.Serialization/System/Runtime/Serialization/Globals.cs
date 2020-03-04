@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.ComponentModel;
@@ -424,18 +424,18 @@ namespace System.Runtime.Serialization
             }
         }
 
-#if disabled // OptionalFieldAttribute not available in DNX
-        [SecurityCritical]
-        private static Type _typeOfOptionalFieldAttribute;
-        internal static Type TypeOfOptionalFieldAttribute {
-            [SecuritySafeCritical]
-            get {
-                if (_typeOfOptionalFieldAttribute == null)
-                    _typeOfOptionalFieldAttribute = typeof(OptionalFieldAttribute);
-                return _typeOfOptionalFieldAttribute;
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. OptionalFieldAttribute not available in DNX
+//         [SecurityCritical]
+//         private static Type _typeOfOptionalFieldAttribute;
+//         internal static Type TypeOfOptionalFieldAttribute {
+//             [SecuritySafeCritical]
+//             get {
+//                 if (_typeOfOptionalFieldAttribute == null)
+//                     _typeOfOptionalFieldAttribute = typeof(OptionalFieldAttribute);
+//                 return _typeOfOptionalFieldAttribute;
+//             }
+//         }
+
 
         [SecurityCritical]
         private static Type s_typeOfOnSerializingAttribute;
@@ -503,18 +503,18 @@ namespace System.Runtime.Serialization
             }
         }
 
-#if disabled // Not in DNX
-        [SecurityCritical]
-        private static Type typeOfSerializableAttribute;
-        internal static Type TypeOfSerializableAttribute {
-            [SecuritySafeCritical]
-            get {
-                if (typeOfSerializableAttribute == null)
-                    typeOfSerializableAttribute = typeof(SerializableAttribute);
-                return typeOfSerializableAttribute;
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. Not in DNX
+//         [SecurityCritical]
+//         private static Type typeOfSerializableAttribute;
+//         internal static Type TypeOfSerializableAttribute {
+//             [SecuritySafeCritical]
+//             get {
+//                 if (typeOfSerializableAttribute == null)
+//                     typeOfSerializableAttribute = typeof(SerializableAttribute);
+//                 return typeOfSerializableAttribute;
+//             }
+//         }
+
         [SecurityCritical]
         private static Type s_typeOfIXmlSerializable;
         internal static Type TypeOfIXmlSerializable

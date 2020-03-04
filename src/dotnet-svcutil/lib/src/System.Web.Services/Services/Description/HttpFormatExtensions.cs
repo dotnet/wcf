@@ -1,4 +1,6 @@
-﻿namespace System.Web.Services.Description
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+namespace System.Web.Services.Description
 {
     using Microsoft.Xml.Serialization;
     using System.Web.Services.Configuration;

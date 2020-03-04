@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XPathException.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-// <owner current="true" primary="true">sdub</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.XPath {
 
@@ -24,37 +20,37 @@ namespace Microsoft.Xml.XPath {
         // message != null for V1 & V2 exceptions deserialized in Whidbey
         // message == null for created V2 exceptions; the exception message is stored in Exception._message
         string   message = null;
-#if disabled
-        protected XPathException(SerializationInfo info, StreamingContext context) : base(info, context) {
-            res  = (string  ) info.GetValue("res" , typeof(string  ));
-            args = (string[]) info.GetValue("args", typeof(string[]));
+// Not needed in dotnet-svcutil scenario. 
+//         protected XPathException(SerializationInfo info, StreamingContext context) : base(info, context) {
+//             res  = (string  ) info.GetValue("res" , typeof(string  ));
+//             args = (string[]) info.GetValue("args", typeof(string[]));
+// 
+//             // deserialize optional members
+//             string version = null;
+//             foreach ( SerializationEntry e in info ) {
+//                 if ( e.Name == "version" ) {
+//                     version = (string)e.Value;
+//                 }
+//             }
+// 
+//             if (version == null) {
+//                 // deserializing V1 exception
+//                 message = CreateMessage(res, args);
+//             }
+//             else {
+//                 // deserializing V2 or higher exception -> exception message is serialized by the base class (Exception._message)
+//                 message = null;
+//             }
+//         }
+// 
+//         // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
+//         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+//             base.GetObjectData(info, context);
+//             info.AddValue("res" , res );
+//             info.AddValue("args", args);
+//             info.AddValue("version", "2.0");
+//         }
 
-            // deserialize optional members
-            string version = null;
-            foreach ( SerializationEntry e in info ) {
-                if ( e.Name == "version" ) {
-                    version = (string)e.Value;
-                }
-            }
-
-            if (version == null) {
-                // deserializing V1 exception
-                message = CreateMessage(res, args);
-            }
-            else {
-                // deserializing V2 or higher exception -> exception message is serialized by the base class (Exception._message)
-                message = null;
-            }
-        }
-
-        // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            base.GetObjectData(info, context);
-            info.AddValue("res" , res );
-            info.AddValue("args", args);
-            info.AddValue("version", "2.0");
-        }
-#endif
         public XPathException() : this (string.Empty, (Exception) null) {}
 
         public XPathException(string message) : this (message, (Exception) null) {}
@@ -109,4 +105,3 @@ namespace Microsoft.Xml.XPath {
         }
     }
 }
-

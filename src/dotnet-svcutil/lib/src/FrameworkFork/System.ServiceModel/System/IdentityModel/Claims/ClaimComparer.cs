@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -266,36 +266,36 @@ namespace System.IdentityModel.Claims
 
             int IEqualityComparer.GetHashCode(object obj)
             {
-#if disabled
-                string upn = obj as string;
-                if (upn == null)
-                    return 0;
+// Not needed in dotnet-svcutil scenario. 
+//                 string upn = obj as string;
+//                 if (upn == null)
+//                     return 0;
+// 
+//                 // Normalize to sid
+//                 SecurityIdentifier sid;
+//                 if (TryLookupSidFromName(upn, out sid))
+//                     return sid.GetHashCode();
+// 
+//                 return StringComparer.OrdinalIgnoreCase.GetHashCode(upn);
 
-                // Normalize to sid
-                SecurityIdentifier sid;
-                if (TryLookupSidFromName(upn, out sid))
-                    return sid.GetHashCode();
-
-                return StringComparer.OrdinalIgnoreCase.GetHashCode(upn);
-#endif
                 throw new NotImplementedException();
             }
 
-#if disabled
-            private bool TryLookupSidFromName(string upn, out SecurityIdentifier sid)
-            {
-                sid = null;
-                try
-                {
-                    NTAccount acct = new NTAccount(upn);
-                    sid = acct.Translate(typeof(SecurityIdentifier)) as SecurityIdentifier;
-                }
-                catch (IdentityNotMappedException)
-                {
-                }
-                return sid != null;
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             private bool TryLookupSidFromName(string upn, out SecurityIdentifier sid)
+//             {
+//                 sid = null;
+//                 try
+//                 {
+//                     NTAccount acct = new NTAccount(upn);
+//                     sid = acct.Translate(typeof(SecurityIdentifier)) as SecurityIdentifier;
+//                 }
+//                 catch (IdentityNotMappedException)
+//                 {
+//                 }
+//                 return sid != null;
+//             }
+
         }
 #endif // SUPPORTS_WINDOWSIDENTITY
     }

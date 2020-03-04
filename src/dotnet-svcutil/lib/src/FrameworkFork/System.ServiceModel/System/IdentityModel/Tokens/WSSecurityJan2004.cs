@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.IdentityModel.Tokens
 {
@@ -133,9 +132,9 @@ namespace System.IdentityModel.Tokens
 
             protected override Type[] GetTokenTypesCore()
             {
-#if disabled
-                return new Type[] { typeof(KerberosReceiverSecurityToken), typeof(KerberosRequestorSecurityToken) };
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return new Type[] { typeof(KerberosReceiverSecurityToken), typeof(KerberosRequestorSecurityToken) };
+
                 throw new NotImplementedException();
             }
         }
@@ -230,53 +229,53 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-#if disabled
-                byte[] nonce = null;
-                int length = 0;
-                if (reader.IsStartElement(XD.SecurityJan2004Dictionary.SecurityTokenReference, NamespaceUri))
-                {
-                    string nonceString = reader.GetAttribute(XD.SecureConversationFeb2005Dictionary.Nonce, XD.SecureConversationFeb2005Dictionary.Namespace);
-                    if (nonceString != null)
-                    {
-                        nonce = Convert.FromBase64String(nonceString);
-                    }
+// Not needed in dotnet-svcutil scenario. 
+//                 byte[] nonce = null;
+//                 int length = 0;
+//                 if (reader.IsStartElement(XD.SecurityJan2004Dictionary.SecurityTokenReference, NamespaceUri))
+//                 {
+//                     string nonceString = reader.GetAttribute(XD.SecureConversationFeb2005Dictionary.Nonce, XD.SecureConversationFeb2005Dictionary.Namespace);
+//                     if (nonceString != null)
+//                     {
+//                         nonce = Convert.FromBase64String(nonceString);
+//                     }
+// 
+//                     string lengthString = reader.GetAttribute(XD.SecureConversationFeb2005Dictionary.Length, XD.SecureConversationFeb2005Dictionary.Namespace);
+//                     if (lengthString != null)
+//                     {
+//                         length = Convert.ToInt32(lengthString, CultureInfo.InvariantCulture);
+//                     }
+//                     else
+//                     {
+//                         length = DefaultDerivedKeyLength;
+//                     }
+//                 }
+//                 string tokenType = ReadTokenType(reader);
+//                 string strId = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+//                 reader.ReadStartElement(XD.SecurityJan2004Dictionary.SecurityTokenReference, NamespaceUri);
+//                 SecurityKeyIdentifierClause clause = null;
+//                 for (int i = 0; i < this.strEntries.Count; ++i)
+//                 {
+//                     if (this.strEntries[i].CanReadClause(reader, tokenType))
+//                     {
+//                         clause = this.strEntries[i].ReadClause(reader, nonce, length, tokenType);
+//                         break;
+//                     }
+//                 }
+// 
+//                 if (clause == null)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
+//                 }
+// 
+//                 if (!string.IsNullOrEmpty(strId))
+//                 {
+//                     clause.Id = strId;
+//                 }
+// 
+//                 reader.ReadEndElement();
+//                 return clause;
 
-                    string lengthString = reader.GetAttribute(XD.SecureConversationFeb2005Dictionary.Length, XD.SecureConversationFeb2005Dictionary.Namespace);
-                    if (lengthString != null)
-                    {
-                        length = Convert.ToInt32(lengthString, CultureInfo.InvariantCulture);
-                    }
-                    else
-                    {
-                        length = DefaultDerivedKeyLength;
-                    }
-                }
-                string tokenType = ReadTokenType(reader);
-                string strId = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
-                reader.ReadStartElement(XD.SecurityJan2004Dictionary.SecurityTokenReference, NamespaceUri);
-                SecurityKeyIdentifierClause clause = null;
-                for (int i = 0; i < this.strEntries.Count; ++i)
-                {
-                    if (this.strEntries[i].CanReadClause(reader, tokenType))
-                    {
-                        clause = this.strEntries[i].ReadClause(reader, nonce, length, tokenType);
-                        break;
-                    }
-                }
-
-                if (clause == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
-                }
-
-                if (!string.IsNullOrEmpty(strId))
-                {
-                    clause.Id = strId;
-                }
-
-                reader.ReadEndElement();
-                return clause;
-#endif
                 throw new NotImplementedException();
             }
 
@@ -294,19 +293,19 @@ namespace System.IdentityModel.Tokens
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-#if disabled
-                for (int i = 0; i < this.strEntries.Count; ++i)
-                {
-                    if (this.strEntries[i].SupportsCore(keyIdentifierClause))
-                    {
-                        writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.SecurityTokenReference, XD.SecurityJan2004Dictionary.Namespace);
-                        this.strEntries[i].WriteContent(writer, keyIdentifierClause);
-                        writer.WriteEndElement();
-                        return;
-                    }
-                }
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 for (int i = 0; i < this.strEntries.Count; ++i)
+//                 {
+//                     if (this.strEntries[i].SupportsCore(keyIdentifierClause))
+//                     {
+//                         writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.SecurityTokenReference, XD.SecurityJan2004Dictionary.Namespace);
+//                         this.strEntries[i].WriteContent(writer, keyIdentifierClause);
+//                         writer.WriteEndElement();
+//                         return;
+//                     }
+//                 }
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
+
                 throw new NotImplementedException();
             }
         }
@@ -349,45 +348,45 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNonce, int derivationLength, string tokenType)
             {
-#if disabled
-                string encodingType = reader.GetAttribute(XD.SecurityJan2004Dictionary.EncodingType, null);
-                if (encodingType == null)
-                {
-                    encodingType = DefaultEncodingType;
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 string encodingType = reader.GetAttribute(XD.SecurityJan2004Dictionary.EncodingType, null);
+//                 if (encodingType == null)
+//                 {
+//                     encodingType = DefaultEncodingType;
+//                 }
+// 
+//                 reader.ReadStartElement();
+// 
+//                 byte[] bytes;
+//                 if (encodingType == EncodingTypeValueBase64Binary)
+//                 {
+//                     bytes = reader.ReadContentAsBase64();
+//                 }
+//                 else if (encodingType == EncodingTypeValueHexBinary)
+//                 {
+//                     bytes = HexBinary.Parse(reader.ReadContentAsString()).Value;
+//                 }
+//                 else if (encodingType == EncodingTypeValueText)
+//                 {
+//                     bytes = new UTF8Encoding().GetBytes(reader.ReadContentAsString());
+//                 }
+//                 else
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.GetString(SR.UnknownEncodingInKeyIdentifier)));
+//                 }
+// 
+//                 reader.ReadEndElement();
+// 
+//                 return CreateClause(bytes, derivationNonce, derivationLength);
 
-                reader.ReadStartElement();
-
-                byte[] bytes;
-                if (encodingType == EncodingTypeValueBase64Binary)
-                {
-                    bytes = reader.ReadContentAsBase64();
-                }
-                else if (encodingType == EncodingTypeValueHexBinary)
-                {
-                    bytes = HexBinary.Parse(reader.ReadContentAsString()).Value;
-                }
-                else if (encodingType == EncodingTypeValueText)
-                {
-                    bytes = new UTF8Encoding().GetBytes(reader.ReadContentAsString());
-                }
-                else
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.GetString(SR.UnknownEncodingInKeyIdentifier)));
-                }
-
-                reader.ReadEndElement();
-
-                return CreateClause(bytes, derivationNonce, derivationLength);
-#endif
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                return ClauseType.IsAssignableFrom(clause.GetType());
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return ClauseType.IsAssignableFrom(clause.GetType());
+
                 throw new NotImplementedException();
             }
 
@@ -423,11 +422,11 @@ namespace System.IdentityModel.Tokens
         protected class KerberosHashStrEntry : KeyIdentifierStrEntry
         {
 
-#if disabled
-            protected override Type ClauseType { get { return typeof(KerberosTicketHashKeyIdentifierClause); } }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             protected override Type ClauseType { get { return typeof(KerberosTicketHashKeyIdentifierClause); } }
+
             protected override Type ClauseType { get { throw new NotImplementedException(); } }
-#endif
+
             public override Type TokenType { get { return typeof(KerberosRequestorSecurityToken); } }
             protected override string ValueTypeUri { get { return SecurityJan2004Strings.KerberosHashValueType; } }
 
@@ -438,9 +437,9 @@ namespace System.IdentityModel.Tokens
 
             protected override SecurityKeyIdentifierClause CreateClause(byte[] bytes, byte[] derivationNonce, int derivationLength)
             {
-#if disabled
-                return new KerberosTicketHashKeyIdentifierClause(bytes, derivationNonce, derivationLength);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return new KerberosTicketHashKeyIdentifierClause(bytes, derivationNonce, derivationLength);
+
                 throw new NotImplementedException();
             }
 
@@ -450,43 +449,43 @@ namespace System.IdentityModel.Tokens
             }
             public override void WriteContent(XmlDictionaryWriter writer, SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace);
-                writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, ValueTypeUri);
-                KerberosTicketHashKeyIdentifierClause binaryClause = clause as KerberosTicketHashKeyIdentifierClause;
-                if (this.EmitBspRequiredAttributes)
-                {
-                    // Emit the encodingType attribute.
-                    writer.WriteAttributeString(XD.SecurityJan2004Dictionary.EncodingType, null, DefaultEncodingType);
-                }
-                string encoding = DefaultEncodingType;
+// Not needed in dotnet-svcutil scenario. 
+//                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace);
+//                 writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, ValueTypeUri);
+//                 KerberosTicketHashKeyIdentifierClause binaryClause = clause as KerberosTicketHashKeyIdentifierClause;
+//                 if (this.EmitBspRequiredAttributes)
+//                 {
+//                     // Emit the encodingType attribute.
+//                     writer.WriteAttributeString(XD.SecurityJan2004Dictionary.EncodingType, null, DefaultEncodingType);
+//                 }
+//                 string encoding = DefaultEncodingType;
+// 
+//                 byte[] keyIdentifier = binaryClause.GetBuffer();
+//                 if (encoding == EncodingTypeValueBase64Binary)
+//                 {
+//                     writer.WriteBase64(keyIdentifier, 0, keyIdentifier.Length);
+//                 }
+//                 else if (encoding == EncodingTypeValueHexBinary)
+//                 {
+//                     writer.WriteBinHex(keyIdentifier, 0, keyIdentifier.Length);
+//                 }
+//                 else if (encoding == EncodingTypeValueText)
+//                 {
+//                     writer.WriteString(new UTF8Encoding().GetString(keyIdentifier, 0, keyIdentifier.Length));
+//                 }
+//                 writer.WriteEndElement();
 
-                byte[] keyIdentifier = binaryClause.GetBuffer();
-                if (encoding == EncodingTypeValueBase64Binary)
-                {
-                    writer.WriteBase64(keyIdentifier, 0, keyIdentifier.Length);
-                }
-                else if (encoding == EncodingTypeValueHexBinary)
-                {
-                    writer.WriteBinHex(keyIdentifier, 0, keyIdentifier.Length);
-                }
-                else if (encoding == EncodingTypeValueText)
-                {
-                    writer.WriteString(new UTF8Encoding().GetString(keyIdentifier, 0, keyIdentifier.Length));
-                }
-                writer.WriteEndElement();
-#endif
                 throw new NotImplementedException();
             }
         }
 
         protected class X509SkiStrEntry : KeyIdentifierStrEntry
         {
-#if disabled
-            protected override Type ClauseType { get { return typeof(X509SubjectKeyIdentifierClause); } }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             protected override Type ClauseType { get { return typeof(X509SubjectKeyIdentifierClause); } }
+
             protected override Type ClauseType { get { throw new NotImplementedException(); } }
-#endif
+
             public override Type TokenType { get { return typeof(X509SecurityToken); } }
             protected override string ValueTypeUri { get { return SecurityJan2004Strings.X509SKIValueType; } }
 
@@ -497,9 +496,9 @@ namespace System.IdentityModel.Tokens
 
             protected override SecurityKeyIdentifierClause CreateClause(byte[] bytes, byte[] derivationNonce, int derivationLength)
             {
-#if disabled
-                return new X509SubjectKeyIdentifierClause(bytes);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return new X509SubjectKeyIdentifierClause(bytes);
+
                 throw new NotImplementedException();
             }
             public override string GetTokenTypeUri()
@@ -625,115 +624,115 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNone, int derivationLength, string tokenType)
             {
-#if disabled
-                bool readAuthorityBinding = false;
-                bool readKeyIdentifier = false;
-                string id = null;
-                string valueType = null;
-                string binding = null;
-                string location = null;
-                string authorityKind = null;
-                while (reader.IsStartElement())
-                {
-                    if (reader.IsStartElement(XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri))
-                    {
-                        if (readAuthorityBinding)
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.MultipleSamlAuthorityBindingsInReference)));
-                        }
-                        readAuthorityBinding = true;
-                        binding = reader.GetAttribute(XD.SamlDictionary.Binding, null);
-                        if (string.IsNullOrEmpty(binding))
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.RequiredAttributeMissing, XD.SamlDictionary.Binding.Value, XD.SamlDictionary.AuthorityBinding.Value)));
-                        }
-                        location = reader.GetAttribute(XD.SamlDictionary.Location, null);
-                        if (string.IsNullOrEmpty(location))
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.RequiredAttributeMissing, XD.SamlDictionary.Location.Value, XD.SamlDictionary.AuthorityBinding.Value)));
-                        }
-                        authorityKind = reader.GetAttribute(XD.SamlDictionary.AuthorityKind, null);
-                        if (string.IsNullOrEmpty(authorityKind))
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.RequiredAttributeMissing, XD.SamlDictionary.AuthorityKind.Value, XD.SamlDictionary.AuthorityBinding.Value)));
-                        }
-                        if (reader.IsEmptyElement)
-                        {
-                            reader.Read();
-                        }
-                        else
-                        {
-                            reader.ReadStartElement();
-                            reader.ReadEndElement();
-                        }
-                    }
-                    else if (reader.IsStartElement(XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace))
-                    {
-                        if (readKeyIdentifier)
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.MultipleKeyIdentifiersInReference)));
-                        }
-                        readKeyIdentifier = true;
-                        valueType = reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null);
-                        id = reader.ReadElementContentAsString();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                if (!readKeyIdentifier)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.DidNotFindKeyIdentifierInReference)));
-                }
-                return new SamlAssertionKeyIdentifierClause(id, derivationNone, derivationLength, valueType, tokenType, binding, location, authorityKind);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 bool readAuthorityBinding = false;
+//                 bool readKeyIdentifier = false;
+//                 string id = null;
+//                 string valueType = null;
+//                 string binding = null;
+//                 string location = null;
+//                 string authorityKind = null;
+//                 while (reader.IsStartElement())
+//                 {
+//                     if (reader.IsStartElement(XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri))
+//                     {
+//                         if (readAuthorityBinding)
+//                         {
+//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.MultipleSamlAuthorityBindingsInReference)));
+//                         }
+//                         readAuthorityBinding = true;
+//                         binding = reader.GetAttribute(XD.SamlDictionary.Binding, null);
+//                         if (string.IsNullOrEmpty(binding))
+//                         {
+//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.RequiredAttributeMissing, XD.SamlDictionary.Binding.Value, XD.SamlDictionary.AuthorityBinding.Value)));
+//                         }
+//                         location = reader.GetAttribute(XD.SamlDictionary.Location, null);
+//                         if (string.IsNullOrEmpty(location))
+//                         {
+//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.RequiredAttributeMissing, XD.SamlDictionary.Location.Value, XD.SamlDictionary.AuthorityBinding.Value)));
+//                         }
+//                         authorityKind = reader.GetAttribute(XD.SamlDictionary.AuthorityKind, null);
+//                         if (string.IsNullOrEmpty(authorityKind))
+//                         {
+//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.RequiredAttributeMissing, XD.SamlDictionary.AuthorityKind.Value, XD.SamlDictionary.AuthorityBinding.Value)));
+//                         }
+//                         if (reader.IsEmptyElement)
+//                         {
+//                             reader.Read();
+//                         }
+//                         else
+//                         {
+//                             reader.ReadStartElement();
+//                             reader.ReadEndElement();
+//                         }
+//                     }
+//                     else if (reader.IsStartElement(XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace))
+//                     {
+//                         if (readKeyIdentifier)
+//                         {
+//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.MultipleKeyIdentifiersInReference)));
+//                         }
+//                         readKeyIdentifier = true;
+//                         valueType = reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null);
+//                         id = reader.ReadElementContentAsString();
+//                     }
+//                     else
+//                     {
+//                         break;
+//                     }
+//                 }
+//                 if (!readKeyIdentifier)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.DidNotFindKeyIdentifierInReference)));
+//                 }
+//                 return new SamlAssertionKeyIdentifierClause(id, derivationNone, derivationLength, valueType, tokenType, binding, location, authorityKind);
+
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                if (typeof(SamlAssertionKeyIdentifierClause).IsAssignableFrom(clause.GetType()))
-                {
-                    SamlAssertionKeyIdentifierClause samlclause = clause as SamlAssertionKeyIdentifierClause;
-                    if ((samlclause.TokenTypeUri == null) || (samlclause.TokenTypeUri == this.GetTokenTypeUri()))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 if (typeof(SamlAssertionKeyIdentifierClause).IsAssignableFrom(clause.GetType()))
+//                 {
+//                     SamlAssertionKeyIdentifierClause samlclause = clause as SamlAssertionKeyIdentifierClause;
+//                     if ((samlclause.TokenTypeUri == null) || (samlclause.TokenTypeUri == this.GetTokenTypeUri()))
+//                     {
+//                         return true;
+//                     }
+//                 }
+//                 return false;
+
                 throw new NotImplementedException();
             }
 
             public override void WriteContent(XmlDictionaryWriter writer, SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                SamlAssertionKeyIdentifierClause samlClause = clause as SamlAssertionKeyIdentifierClause;
-                if (!string.IsNullOrEmpty(samlClause.Binding) || !string.IsNullOrEmpty(samlClause.Location) || !string.IsNullOrEmpty(samlClause.AuthorityKind))
-                {
-                    writer.WriteStartElement(XD.SamlDictionary.PreferredPrefix.Value, XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri);
-                    if (!string.IsNullOrEmpty(samlClause.Binding))
-                    {
-                        writer.WriteAttributeString(XD.SamlDictionary.Binding, null, samlClause.Binding);
-                    }
-                    if (!string.IsNullOrEmpty(samlClause.Location))
-                    {
-                        writer.WriteAttributeString(XD.SamlDictionary.Location, null, samlClause.Location);
-                    }
-                    if (!string.IsNullOrEmpty(samlClause.AuthorityKind))
-                    {
-                        writer.WriteAttributeString(XD.SamlDictionary.AuthorityKind, null, samlClause.AuthorityKind);
-                    }
-                    writer.WriteEndElement();
-                }
-                writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace);
-                string valueType = string.IsNullOrEmpty(samlClause.ValueType) ? XD.SecurityJan2004Dictionary.SamlAssertionIdValueType.Value : samlClause.ValueType;
-                writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, valueType);
-                writer.WriteString(samlClause.AssertionId);
-                writer.WriteEndElement();
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 SamlAssertionKeyIdentifierClause samlClause = clause as SamlAssertionKeyIdentifierClause;
+//                 if (!string.IsNullOrEmpty(samlClause.Binding) || !string.IsNullOrEmpty(samlClause.Location) || !string.IsNullOrEmpty(samlClause.AuthorityKind))
+//                 {
+//                     writer.WriteStartElement(XD.SamlDictionary.PreferredPrefix.Value, XD.SamlDictionary.AuthorityBinding, XD.SecurityJan2004Dictionary.SamlUri);
+//                     if (!string.IsNullOrEmpty(samlClause.Binding))
+//                     {
+//                         writer.WriteAttributeString(XD.SamlDictionary.Binding, null, samlClause.Binding);
+//                     }
+//                     if (!string.IsNullOrEmpty(samlClause.Location))
+//                     {
+//                         writer.WriteAttributeString(XD.SamlDictionary.Location, null, samlClause.Location);
+//                     }
+//                     if (!string.IsNullOrEmpty(samlClause.AuthorityKind))
+//                     {
+//                         writer.WriteAttributeString(XD.SamlDictionary.AuthorityKind, null, samlClause.AuthorityKind);
+//                     }
+//                     writer.WriteEndElement();
+//                 }
+//                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace);
+//                 string valueType = string.IsNullOrEmpty(samlClause.ValueType) ? XD.SecurityJan2004Dictionary.SamlAssertionIdValueType.Value : samlClause.ValueType;
+//                 writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, valueType);
+//                 writer.WriteString(samlClause.AssertionId);
+//                 writer.WriteEndElement();
+
                 throw new NotImplementedException();
             }
         }
@@ -775,39 +774,39 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNone, int derivationLength, string tokenType)
             {
-#if disabled
-                string assertionId = reader.GetAttribute(XD.SecurityJan2004Dictionary.URI, null);
-                if (reader.IsEmptyElement)
-                {
-                    reader.Read();
-                }
-                else
-                {
-                    reader.ReadStartElement();
-                    reader.ReadEndElement();
-                }
-                return new RelAssertionDirectKeyIdentifierClause(assertionId, derivationNone, derivationLength);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 string assertionId = reader.GetAttribute(XD.SecurityJan2004Dictionary.URI, null);
+//                 if (reader.IsEmptyElement)
+//                 {
+//                     reader.Read();
+//                 }
+//                 else
+//                 {
+//                     reader.ReadStartElement();
+//                     reader.ReadEndElement();
+//                 }
+//                 return new RelAssertionDirectKeyIdentifierClause(assertionId, derivationNone, derivationLength);
+
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                return typeof(RelAssertionDirectKeyIdentifierClause).IsAssignableFrom(clause.GetType());
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return typeof(RelAssertionDirectKeyIdentifierClause).IsAssignableFrom(clause.GetType());
+
                 throw new NotImplementedException();
             }
 
             public override void WriteContent(XmlDictionaryWriter writer, SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                RelAssertionDirectKeyIdentifierClause relClause = clause as RelAssertionDirectKeyIdentifierClause;
-                writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.Reference, XD.SecurityJan2004Dictionary.Namespace);
-                writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, SecurityJan2004Strings.RelAssertionValueType);
-                writer.WriteAttributeString(XD.SecurityJan2004Dictionary.URI, null, relClause.AssertionId);
-                writer.WriteEndElement();
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 RelAssertionDirectKeyIdentifierClause relClause = clause as RelAssertionDirectKeyIdentifierClause;
+//                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.Reference, XD.SecurityJan2004Dictionary.Namespace);
+//                 writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, SecurityJan2004Strings.RelAssertionValueType);
+//                 writer.WriteAttributeString(XD.SecurityJan2004Dictionary.URI, null, relClause.AssertionId);
+//                 writer.WriteEndElement();
+
                 throw new NotImplementedException();
             }
         }
@@ -830,42 +829,42 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNonce, int derivationLength, string tokenType)
             {
-#if disabled
-                reader.ReadStartElement(XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
-                reader.ReadStartElement(XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace);
-                reader.ReadStartElement(XD.XmlSignatureDictionary.X509IssuerName, XD.XmlSignatureDictionary.Namespace);
-                string issuerName = reader.ReadContentAsString();
-                reader.ReadEndElement();
-                reader.ReadStartElement(XD.XmlSignatureDictionary.X509SerialNumber, XD.XmlSignatureDictionary.Namespace);
-                string serialNumber = reader.ReadContentAsString();
-                reader.ReadEndElement();
-                reader.ReadEndElement();
-                reader.ReadEndElement();
+// Not needed in dotnet-svcutil scenario. 
+//                 reader.ReadStartElement(XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
+//                 reader.ReadStartElement(XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace);
+//                 reader.ReadStartElement(XD.XmlSignatureDictionary.X509IssuerName, XD.XmlSignatureDictionary.Namespace);
+//                 string issuerName = reader.ReadContentAsString();
+//                 reader.ReadEndElement();
+//                 reader.ReadStartElement(XD.XmlSignatureDictionary.X509SerialNumber, XD.XmlSignatureDictionary.Namespace);
+//                 string serialNumber = reader.ReadContentAsString();
+//                 reader.ReadEndElement();
+//                 reader.ReadEndElement();
+//                 reader.ReadEndElement();
+// 
+//                 return new X509IssuerSerialKeyIdentifierClause(issuerName, serialNumber);
 
-                return new X509IssuerSerialKeyIdentifierClause(issuerName, serialNumber);
-#endif
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                return clause is X509IssuerSerialKeyIdentifierClause;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return clause is X509IssuerSerialKeyIdentifierClause;
+
                 throw new NotImplementedException();
             }
 
             public override void WriteContent(XmlDictionaryWriter writer, SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                X509IssuerSerialKeyIdentifierClause issuerClause = clause as X509IssuerSerialKeyIdentifierClause;
-                writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
-                writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace);
-                writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509IssuerName, XD.XmlSignatureDictionary.Namespace, issuerClause.IssuerName);
-                writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509SerialNumber, XD.XmlSignatureDictionary.Namespace, issuerClause.IssuerSerialNumber);
-                writer.WriteEndElement();
-                writer.WriteEndElement();
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 X509IssuerSerialKeyIdentifierClause issuerClause = clause as X509IssuerSerialKeyIdentifierClause;
+//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
+//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace);
+//                 writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509IssuerName, XD.XmlSignatureDictionary.Namespace, issuerClause.IssuerName);
+//                 writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509SerialNumber, XD.XmlSignatureDictionary.Namespace, issuerClause.IssuerSerialNumber);
+//                 writer.WriteEndElement();
+//                 writer.WriteEndElement();
+
                 throw new NotImplementedException();
             }
         }
@@ -898,11 +897,11 @@ namespace System.IdentityModel.Tokens
             public override string ExtractId(XmlDictionaryReader reader)
             {
                 if (reader == null)
-#if disabled
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reader");
+
                     throw new ArgumentNullException("reader");
-#endif
+
                 if (reader.IsStartElement(ElementName, XD.XmlEncryptionDictionary.Namespace))
                 {
                     return reader.GetAttribute(XD.XmlEncryptionDictionary.Id, null);
@@ -916,11 +915,11 @@ namespace System.IdentityModel.Tokens
             public override void WriteIdAttribute(XmlDictionaryWriter writer, string id)
             {
                 if (writer == null)
-#if disabled
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writer");
+
                     throw new ArgumentNullException("writer");
-#endif
+
 
                 writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, id);
             }

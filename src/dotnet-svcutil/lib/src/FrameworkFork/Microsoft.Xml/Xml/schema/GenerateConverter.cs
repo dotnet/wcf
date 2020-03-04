@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="GenerateConverter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">akimball</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace MS.Internal.ValueConverter {
     using System;
@@ -369,11 +365,11 @@ namespace MS.Internal.ValueConverter {
             AnyRuleGroup,
         };
 
-#if disabled
-        public static void Main() {
-            (new Generator()).Generate();
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public static void Main() {
+//             (new Generator()).Generate();
+//         }
+
 
         public void Generate() {
             AutoGenWriter autoGenWriter;

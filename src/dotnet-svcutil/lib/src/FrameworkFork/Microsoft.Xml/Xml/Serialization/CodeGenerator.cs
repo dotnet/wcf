@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="CodeGenerator.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">YoussefM</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Serialization {
     using System;
@@ -241,10 +237,10 @@ namespace Microsoft.Xml.Serialization {
             LocalBuilder local;
             if (!TryDequeueLocal(type, name, out local)) {
                 local = ilGen.DeclareLocal(type, false);
-#if disabled
-                if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-                    local.SetLocalSymInfo(name);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 if (DiagnosticsSwitches.KeepTempFiles.Enabled)
+//                     local.SetLocalSymInfo(name);
+
             }
             currentScope[name] = local;
             return local;
@@ -1080,14 +1076,14 @@ namespace Microsoft.Xml.Serialization {
                         ConstructorInfo Decimal_ctor = typeof(Decimal).GetConstructor(
                              new Type[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Boolean), typeof(Byte) }
                             );
-#if disabled
-                        ConstructorInfo Decimal_ctor = typeof(Decimal).GetConstructor(
-                             CodeGenerator.InstanceBindingFlags,
-                             null,
-                             new Type[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Boolean), typeof(Byte) },
-                             null
-                             );
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                         ConstructorInfo Decimal_ctor = typeof(Decimal).GetConstructor(
+//                              CodeGenerator.InstanceBindingFlags,
+//                              null,
+//                              new Type[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Boolean), typeof(Byte) },
+//                              null
+//                              );
+
                         int[] bits = Decimal.GetBits((decimal)o);
                         Ldc(bits[0]); // digit
                         Ldc(bits[1]); // digit
@@ -1098,14 +1094,14 @@ namespace Microsoft.Xml.Serialization {
                         break;
                     case TypeCode.DateTime:
                         ConstructorInfo DateTime_ctor = typeof(DateTime).GetConstructor(new Type[] { typeof(Int64) });
-#if disabled
-                        ConstructorInfo DateTime_ctor = typeof(DateTime).GetConstructor(
-                            CodeGenerator.InstanceBindingFlags,
-                            null,
-                            new Type[] { typeof(Int64) },
-                            null
-                            );
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                         ConstructorInfo DateTime_ctor = typeof(DateTime).GetConstructor(
+//                             CodeGenerator.InstanceBindingFlags,
+//                             null,
+//                             new Type[] { typeof(Int64) },
+//                             null
+//                             );
+
                         Ldc(((DateTime)o).Ticks); // ticks
                         New(DateTime_ctor);
                         break;
@@ -1715,50 +1711,50 @@ namespace Microsoft.Xml.Serialization {
             return ifState;
         }
 
-#if disabled
-        static internal AssemblyBuilder CreateAssemblyBuilder(AppDomain appDomain, string name) {
-            AssemblyName assemblyName = new AssemblyName();
-            assemblyName.Name = name;
-            assemblyName.Version = new Version(1, 0, 0, 0);
-            if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-                return appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, TempFilesLocation);
-            else
-                return appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-        }
-        static string tempFilesLocation = null;
-        internal static string TempFilesLocation {
-            get {
-                if (tempFilesLocation == null) {
-                    // Return different XmlSerializerSection from legacy assembly due to its register config handlers
-                    object section = ConfigurationManager.GetSection(ConfigurationStrings.XmlSerializerSectionPath);
-                    string location = null;
-                    if (section != null) {
-                        XmlSerializerSection configSection = section as XmlSerializerSection;
-                        if (configSection != null) {
-                            location = configSection.TempFilesLocation;
-                        }
-                    }
-                    if (location != null) {
-                        tempFilesLocation = location.Trim();
-                    }
-                    else {
-                        tempFilesLocation = Path.GetTempPath();
-                    }
-                }
-                return tempFilesLocation;
-            }
-            set {
-                tempFilesLocation = value;
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         static internal AssemblyBuilder CreateAssemblyBuilder(AppDomain appDomain, string name) {
+//             AssemblyName assemblyName = new AssemblyName();
+//             assemblyName.Name = name;
+//             assemblyName.Version = new Version(1, 0, 0, 0);
+//             if (DiagnosticsSwitches.KeepTempFiles.Enabled)
+//                 return appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, TempFilesLocation);
+//             else
+//                 return appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+//         }
+//         static string tempFilesLocation = null;
+//         internal static string TempFilesLocation {
+//             get {
+//                 if (tempFilesLocation == null) {
+//                     // Return different XmlSerializerSection from legacy assembly due to its register config handlers
+//                     object section = ConfigurationManager.GetSection(ConfigurationStrings.XmlSerializerSectionPath);
+//                     string location = null;
+//                     if (section != null) {
+//                         XmlSerializerSection configSection = section as XmlSerializerSection;
+//                         if (configSection != null) {
+//                             location = configSection.TempFilesLocation;
+//                         }
+//                     }
+//                     if (location != null) {
+//                         tempFilesLocation = location.Trim();
+//                     }
+//                     else {
+//                         tempFilesLocation = Path.GetTempPath();
+//                     }
+//                 }
+//                 return tempFilesLocation;
+//             }
+//             set {
+//                 tempFilesLocation = value;
+//             }
+//         }
+
 
         static internal ModuleBuilder CreateModuleBuilder(AssemblyBuilder assemblyBuilder, string name) {
-#if disabled
-            if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-                return assemblyBuilder.DefineDynamicModule(name, name + ".dll", true);
-            else
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticsSwitches.KeepTempFiles.Enabled)
+//                 return assemblyBuilder.DefineDynamicModule(name, name + ".dll", true);
+//             else
+
                 return assemblyBuilder.DefineDynamicModule(name);
         }
         static internal TypeBuilder CreateTypeBuilder(ModuleBuilder moduleBuilder, string name, TypeAttributes attributes, Type parent, Type[] interfaces) {

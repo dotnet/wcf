@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlSerializationWriter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ElenaK</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Serialization {
 
@@ -3223,17 +3219,17 @@ namespace Microsoft.Xml.Serialization {
         static volatile Hashtable assemblyToNameMap = new Hashtable();
         static Hashtable tableIsTypeDynamic = Hashtable.Synchronized(new Hashtable());
 
-#if disabled
-        static volatile FileIOPermission fileIOPermission;
-        static FileIOPermission UnrestrictedFileIOPermission {
-            get {
-                if (fileIOPermission == null) {
-                    fileIOPermission = new FileIOPermission(PermissionState.Unrestricted);
-                }
-                return fileIOPermission;
-            }
-        }
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//         static volatile FileIOPermission fileIOPermission;
+//         static FileIOPermission UnrestrictedFileIOPermission {
+//             get {
+//                 if (fileIOPermission == null) {
+//                     fileIOPermission = new FileIOPermission(PermissionState.Unrestricted);
+//                 }
+//                 return fileIOPermission;
+//             }
+//         }
+
         // SxS: This method does not take any resource name and does not expose any resources to the caller.
         // It's OK to suppress the SxS warning.
         

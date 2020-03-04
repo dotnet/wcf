@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel
 {
     using System;
@@ -41,18 +40,18 @@ namespace System.ServiceModel
             this.ReliableSession.Enabled = reliableSessionEnabled;
         }
 
-#if disabled
-        [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]
-        public bool BypassProxyOnLocal
-        {
-            get { return httpTransport.BypassProxyOnLocal; }
-            set
-            {
-                httpTransport.BypassProxyOnLocal = value;
-                httpsTransport.BypassProxyOnLocal = value;
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]
+//         public bool BypassProxyOnLocal
+//         {
+//             get { return httpTransport.BypassProxyOnLocal; }
+//             set
+//             {
+//                 httpTransport.BypassProxyOnLocal = value;
+//                 httpsTransport.BypassProxyOnLocal = value;
+//             }
+//         }
+
         [DefaultValue(false)]
         public bool TransactionFlow
         {
@@ -106,19 +105,19 @@ namespace System.ServiceModel
             get { return messageEncoding; }
             set { messageEncoding = value; }
         }
-#if disabled
-        [DefaultValue(HttpTransportDefaults.ProxyAddress)]
-        // TODO: [TypeConverter(typeof(UriTypeConverter))]
-        public Uri ProxyAddress
-        {
-            get { return httpTransport.ProxyAddress; }
-            set
-            {
-                httpTransport.ProxyAddress = value;
-                httpsTransport.ProxyAddress = value;
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         [DefaultValue(HttpTransportDefaults.ProxyAddress)]
+//         // TODO: [TypeConverter(typeof(UriTypeConverter))]
+//         public Uri ProxyAddress
+//         {
+//             get { return httpTransport.ProxyAddress; }
+//             set
+//             {
+//                 httpTransport.ProxyAddress = value;
+//                 httpsTransport.ProxyAddress = value;
+//             }
+//         }
+
         public XmlDictionaryReaderQuotas ReaderQuotas
         {
             get { return textEncoding.ReaderQuotas; }
@@ -161,18 +160,18 @@ namespace System.ServiceModel
                 mtomEncoding.WriteEncoding = value;
             }
         }
-#if disabled
-        [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
-        public bool UseDefaultWebProxy
-        {
-            get { return httpTransport.UseDefaultWebProxy; }
-            set
-            {
-                httpTransport.UseDefaultWebProxy = value;
-                httpsTransport.UseDefaultWebProxy = value;
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
+//         public bool UseDefaultWebProxy
+//         {
+//             get { return httpTransport.UseDefaultWebProxy; }
+//             set
+//             {
+//                 httpTransport.UseDefaultWebProxy = value;
+//                 httpsTransport.UseDefaultWebProxy = value;
+//             }
+//         }
+
         bool IBindingRuntimePreferences.ReceiveSynchronously
         {
             get { return false; }
@@ -222,11 +221,11 @@ namespace System.ServiceModel
         void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, TransactionFlowBindingElement txFlow, ReliableSessionBindingElement session)
         {
             // transport
-#if disabled
-            this.BypassProxyOnLocal = transport.BypassProxyOnLocal;
-            this.ProxyAddress = transport.ProxyAddress;
-            this.UseDefaultWebProxy = transport.UseDefaultWebProxy;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.BypassProxyOnLocal = transport.BypassProxyOnLocal;
+//             this.ProxyAddress = transport.ProxyAddress;
+//             this.UseDefaultWebProxy = transport.UseDefaultWebProxy;
+
             this.HostNameComparisonMode = transport.HostNameComparisonMode;
             this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
             this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
@@ -401,26 +400,26 @@ namespace System.ServiceModel
         protected abstract TransportBindingElement GetTransport();
         protected abstract SecurityBindingElement CreateMessageSecurity();
 
-#if disabled
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeReaderQuotas()
-        {
-            return (!EncoderDefaults.IsDefaultReaderQuotas(this.ReaderQuotas));
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         [EditorBrowsable(EditorBrowsableState.Never)]
+//         public bool ShouldSerializeReaderQuotas()
+//         {
+//             return (!EncoderDefaults.IsDefaultReaderQuotas(this.ReaderQuotas));
+//         }
+// 
+//         [EditorBrowsable(EditorBrowsableState.Never)]
+//         public bool ShouldSerializeTextEncoding()
+//         {
+//             return (!this.TextEncoding.Equals(TextEncoderDefaults.Encoding));
+//         }
+// 
+//         [EditorBrowsable(EditorBrowsableState.Never)]
+//         public bool ShouldSerializeReliableSession()
+//         {
+//             return this.ReliableSession.Ordered != ReliableSessionDefaults.Ordered
+//                 || this.ReliableSession.InactivityTimeout != ReliableSessionDefaults.InactivityTimeout
+//                 || this.ReliableSession.Enabled != ReliableSessionDefaults.Enabled;
+//         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeTextEncoding()
-        {
-            return (!this.TextEncoding.Equals(TextEncoderDefaults.Encoding));
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeReliableSession()
-        {
-            return this.ReliableSession.Ordered != ReliableSessionDefaults.Ordered
-                || this.ReliableSession.InactivityTimeout != ReliableSessionDefaults.InactivityTimeout
-                || this.ReliableSession.Enabled != ReliableSessionDefaults.Enabled;
-        }
-#endif
     }
 }

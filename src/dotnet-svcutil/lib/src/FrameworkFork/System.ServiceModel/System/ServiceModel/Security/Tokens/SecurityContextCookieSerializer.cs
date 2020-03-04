@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,8 +12,6 @@ using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
 using Microsoft.Xml;
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 namespace System.ServiceModel.Security.Tokens
 {

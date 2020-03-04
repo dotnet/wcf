@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Security.Tokens
 {
@@ -39,33 +38,32 @@ namespace System.ServiceModel.Security.Tokens
 
         protected BinarySecretSecurityToken(string id, int keySizeInBits, bool allowCrypto)
         {
-#if disabled
-            if (keySizeInBits <= 0 || keySizeInBits >= 512)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("keySizeInBits", SR.Format(SR.ValueMustBeInRange, 0, 512)));
-            }
+// Not needed in dotnet-svcutil scenario. 
+//             if (keySizeInBits <= 0 || keySizeInBits >= 512)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("keySizeInBits", SR.Format(SR.ValueMustBeInRange, 0, 512)));
+//             }
+// 
+//             if ((keySizeInBits % 8) != 0)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("keySizeInBits", SR.Format(SR.KeyLengthMustBeMultipleOfEight, keySizeInBits)));
+//             }
+// 
+//             this.id = id;
+//             this.effectiveTime = DateTime.UtcNow;
+//             this.key = new byte[keySizeInBits / 8];
+//             CryptoHelper.FillRandomBytes(this.key);
+// 
+//             if (allowCrypto)
+//             {
+//                 this.securityKeys = SecurityUtils.CreateSymmetricSecurityKeys(this.key);
+//             }
+//             else
+//             {
+//                 this.securityKeys = EmptyReadOnlyCollection<SecurityKey>.Instance;
+//             }
 
-            if ((keySizeInBits % 8) != 0)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("keySizeInBits", SR.Format(SR.KeyLengthMustBeMultipleOfEight, keySizeInBits)));
-            }
-
-            this.id = id;
-            this.effectiveTime = DateTime.UtcNow;
-            this.key = new byte[keySizeInBits / 8];
-            CryptoHelper.FillRandomBytes(this.key);
-
-            if (allowCrypto)
-            {
-                this.securityKeys = SecurityUtils.CreateSymmetricSecurityKeys(this.key);
-            }
-            else
-            {
-                this.securityKeys = EmptyReadOnlyCollection<SecurityKey>.Instance;
-            }
-#else
             throw new NotImplementedException();
-#endif
         }
 
         protected BinarySecretSecurityToken(string id, byte[] key, bool allowCrypto)

@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlException.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml {
     using System;
@@ -38,48 +34,48 @@ namespace Microsoft.Xml {
         string message = null;
 
 #if !SILVERLIGHT
-#if disabled
-        protected XmlException(SerializationInfo info, StreamingContext context) : base(info, context) {
-            res                 = (string)  info.GetValue("res"  , typeof(string));
-            args                = (string[])info.GetValue("args", typeof(string[]));
-            lineNumber          = (int)     info.GetValue("lineNumber", typeof(int));
-            linePosition        = (int)     info.GetValue("linePosition", typeof(int));
+// Not needed in dotnet-svcutil scenario. 
+//         protected XmlException(SerializationInfo info, StreamingContext context) : base(info, context) {
+//             res                 = (string)  info.GetValue("res"  , typeof(string));
+//             args                = (string[])info.GetValue("args", typeof(string[]));
+//             lineNumber          = (int)     info.GetValue("lineNumber", typeof(int));
+//             linePosition        = (int)     info.GetValue("linePosition", typeof(int));
+// 
+//             // deserialize optional members
+//             sourceUri = string.Empty;
+//             string version = null;
+//             foreach ( SerializationEntry e in info ) {
+//                 switch ( e.Name ) {
+//                     case "sourceUri":
+//                         sourceUri = (string)e.Value;
+//                         break;
+//                     case "version":
+//                         version = (string)e.Value;
+//                         break;
+//                 }
+//             }
+// 
+//             if ( version == null ) {
+//                 // deserializing V1 exception
+//                 message = CreateMessage( res, args, lineNumber, linePosition );
+//             }
+//             else {
+//                 // deserializing V2 or higher exception -> exception message is serialized by the base class (Exception._message)
+//                 message = null;
+//             }
+//         }
+// 
+//        // // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
+//         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+//             base.GetObjectData(info, context);
+//             info.AddValue("res",                res);
+//             info.AddValue("args",               args);
+//             info.AddValue("lineNumber",         lineNumber);
+//             info.AddValue("linePosition",       linePosition);
+//             info.AddValue("sourceUri",          sourceUri);
+//             info.AddValue("version",            "2.0");
+//         }
 
-            // deserialize optional members
-            sourceUri = string.Empty;
-            string version = null;
-            foreach ( SerializationEntry e in info ) {
-                switch ( e.Name ) {
-                    case "sourceUri":
-                        sourceUri = (string)e.Value;
-                        break;
-                    case "version":
-                        version = (string)e.Value;
-                        break;
-                }
-            }
-
-            if ( version == null ) {
-                // deserializing V1 exception
-                message = CreateMessage( res, args, lineNumber, linePosition );
-            }
-            else {
-                // deserializing V2 or higher exception -> exception message is serialized by the base class (Exception._message)
-                message = null;
-            }
-        }
-
-       // // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            base.GetObjectData(info, context);
-            info.AddValue("res",                res);
-            info.AddValue("args",               args);
-            info.AddValue("lineNumber",         lineNumber);
-            info.AddValue("linePosition",       linePosition);
-            info.AddValue("sourceUri",          sourceUri);
-            info.AddValue("version",            "2.0");
-        }
-#endif
 #endif
 
         //provided to meet the ECMA standards
@@ -297,12 +293,12 @@ namespace Microsoft.Xml {
         internal static bool IsCatchableException(Exception e) {
             Debug.Assert(e != null, "Unexpected null exception");
             return !(
-#if disabled
-                e is StackOverflowException ||
-                e is ThreadAbortException ||
-                e is ThreadInterruptedException ||
-                e is AccessViolationException ||
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//                 e is StackOverflowException ||
+//                 e is ThreadAbortException ||
+//                 e is ThreadInterruptedException ||
+//                 e is AccessViolationException ||
+
                 e is OutOfMemoryException ||
                 e is NullReferenceException
             );

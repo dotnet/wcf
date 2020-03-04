@@ -1,6 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -324,8 +323,6 @@ namespace System.ServiceModel.Channels
         }
 
         // TODO: taken from different sources
-#if disabled
-#else
         internal const string defaultServerMaxNegotiationLifetimeString = "00:01:00";
         internal const string defaultServerIssuedTokenLifetimeString = "10:00:00";
         internal const string defaultServerIssuedTransitionTokenLifetimeString = "00:15:00";
@@ -346,26 +343,27 @@ namespace System.ServiceModel.Channels
         internal const bool defaultTolerateTransportFailures = true;
         internal const int defaultMaximumPendingSessions = 128;
         internal static readonly TimeSpan defaultInactivityTimeout = TimeSpan.Parse(defaultInactivityTimeoutString, CultureInfo.InvariantCulture);
-#endif
+
         public LocalServiceSecuritySettings()
         {
             this.DetectReplays = SecurityProtocolFactory.defaultDetectReplays;
             this.ReplayCacheSize = SecurityProtocolFactory.defaultMaxCachedNonces;
             this.ReplayWindow = SecurityProtocolFactory.defaultReplayWindow;
             this.MaxClockSkew = SecurityProtocolFactory.defaultMaxClockSkew;
-#if disabled
-            this.IssuedCookieLifetime = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerIssuedTokenLifetime;
-            this.MaxStatefulNegotiations = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxActiveNegotiations;
-            this.NegotiationTimeout = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxNegotiationLifetime;
-            this.maxPendingSessions = SecuritySessionServerSettings.defaultMaximumPendingSessions;
-            this.inactivityTimeout = SecuritySessionServerSettings.defaultInactivityTimeout;
-            this.sessionKeyRenewalInterval = SecuritySessionServerSettings.defaultKeyRenewalInterval;
-            this.sessionKeyRolloverInterval = SecuritySessionServerSettings.defaultKeyRolloverInterval;
-            this.reconnectTransportOnFailure = SecuritySessionServerSettings.defaultTolerateTransportFailures;
-            this.TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
-            this.maxCachedCookies = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxCachedTokens;
-            this.nonceCache = null;
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             this.IssuedCookieLifetime = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerIssuedTokenLifetime;
+//             this.MaxStatefulNegotiations = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxActiveNegotiations;
+//             this.NegotiationTimeout = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxNegotiationLifetime;
+//             this.maxPendingSessions = SecuritySessionServerSettings.defaultMaximumPendingSessions;
+//             this.inactivityTimeout = SecuritySessionServerSettings.defaultInactivityTimeout;
+//             this.sessionKeyRenewalInterval = SecuritySessionServerSettings.defaultKeyRenewalInterval;
+//             this.sessionKeyRolloverInterval = SecuritySessionServerSettings.defaultKeyRolloverInterval;
+//             this.reconnectTransportOnFailure = SecuritySessionServerSettings.defaultTolerateTransportFailures;
+//             this.TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
+//             this.maxCachedCookies = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxCachedTokens;
+//             this.nonceCache = null;
+
+// Replace with defaults we define that aren't in the original source.
             this.IssuedCookieLifetime = defaultServerIssuedTokenLifetime;
             this.MaxStatefulNegotiations = defaultServerMaxActiveNegotiations;
             this.NegotiationTimeout = defaultServerMaxNegotiationLifetime;
@@ -377,7 +375,6 @@ namespace System.ServiceModel.Channels
             this.TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
             this.maxCachedCookies = defaultServerMaxCachedTokens;
             this.nonceCache = null;
-#endif
         }
 
         public LocalServiceSecuritySettings Clone()

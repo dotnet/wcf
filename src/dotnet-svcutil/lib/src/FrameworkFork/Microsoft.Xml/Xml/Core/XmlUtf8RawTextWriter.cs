@@ -1,10 +1,6 @@
-﻿
-//------------------------------------------------------------------------------
-// <copyright file="XmlRawTextWriterGenerator.cxx" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 
 // WARNING: This file is generated and should not be modified directly.  Instead,
 // modify XmlTextWriterGenerator.cxx and run gen.bat in the same directory.
@@ -126,12 +122,12 @@ namespace Microsoft.Xml {
             this.stream = stream;
             this.encoding = settings.Encoding;
 
-#if disabled
-            // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
-            if (settings.Async) {
-                bufLen = ASYNCBUFSIZE;
-            }
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//             // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
+//             if (settings.Async) {
+//                 bufLen = ASYNCBUFSIZE;
+//             }
+
             bufBytes = new byte[bufLen + OVERFLOW];
 
             // Output UTF-8 byte order mark if Encoding object wants it
@@ -1743,4 +1739,3 @@ namespace Microsoft.Xml {
         }
     }
 }
-

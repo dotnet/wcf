@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.IdentityModel.Security
 {
@@ -99,18 +98,18 @@ namespace System.IdentityModel.Security
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-#if disabled
-                byte[] secret = reader.ReadElementContentAsBase64();
-                return new BinarySecretKeyIdentifierClause(secret, false);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 byte[] secret = reader.ReadElementContentAsBase64();
+//                 return new BinarySecretKeyIdentifierClause(secret, false);
+
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-#if disabled
-                return keyIdentifierClause is BinarySecretKeyIdentifierClause;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return keyIdentifierClause is BinarySecretKeyIdentifierClause;
+
                 throw new NotImplementedException();
             }
 
@@ -121,13 +120,13 @@ namespace System.IdentityModel.Security
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-#if disabled
-                BinarySecretKeyIdentifierClause skic = keyIdentifierClause as BinarySecretKeyIdentifierClause;
-                byte[] secret = skic.GetKeyBytes();
-                writer.WriteStartElement(this.parent.SerializerDictionary.Prefix.Value, this.parent.SerializerDictionary.BinarySecret, this.parent.SerializerDictionary.Namespace);
-                writer.WriteBase64(secret, 0, secret.Length);
-                writer.WriteEndElement();
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 BinarySecretKeyIdentifierClause skic = keyIdentifierClause as BinarySecretKeyIdentifierClause;
+//                 byte[] secret = skic.GetKeyBytes();
+//                 writer.WriteStartElement(this.parent.SerializerDictionary.Prefix.Value, this.parent.SerializerDictionary.BinarySecret, this.parent.SerializerDictionary.Namespace);
+//                 writer.WriteBase64(secret, 0, secret.Length);
+//                 writer.WriteEndElement();
+
                 throw new NotImplementedException();
             }
         }
@@ -163,18 +162,18 @@ namespace System.IdentityModel.Security
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-#if disabled
-                return keyIdentifierClause is GenericXmlSecurityKeyIdentifierClause;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return keyIdentifierClause is GenericXmlSecurityKeyIdentifierClause;
+
                 throw new NotImplementedException();
             }
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-#if disabled
-                GenericXmlSecurityKeyIdentifierClause genericXmlSecurityKeyIdentifierClause = keyIdentifierClause as GenericXmlSecurityKeyIdentifierClause;
-                genericXmlSecurityKeyIdentifierClause.ReferenceXml.WriteTo(writer);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 GenericXmlSecurityKeyIdentifierClause genericXmlSecurityKeyIdentifierClause = keyIdentifierClause as GenericXmlSecurityKeyIdentifierClause;
+//                 genericXmlSecurityKeyIdentifierClause.ReferenceXml.WriteTo(writer);
+
                 throw new NotImplementedException();
             }
         }

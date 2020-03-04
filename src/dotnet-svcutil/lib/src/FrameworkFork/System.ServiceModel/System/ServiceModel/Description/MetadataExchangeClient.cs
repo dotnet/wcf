@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel.Description
 {
     using System.Collections;
@@ -442,31 +441,31 @@ namespace System.ServiceModel.Description
 
         static void TraceSendRequest(int traceCode, string traceDescription, string address, string mode)
         {
-#if disabled
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-                Hashtable h = new Hashtable(2)
-                {
-                    { "Address", address },
-                    { "Mode", mode }
-                };
-                TraceUtility.TraceEvent(TraceEventType.Information, traceCode, traceDescription, new DictionaryTraceRecord(h), null, null);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticUtility.ShouldTraceInformation)
+//             {
+//                 Hashtable h = new Hashtable(2)
+//                 {
+//                     { "Address", address },
+//                     { "Mode", mode }
+//                 };
+//                 TraceUtility.TraceEvent(TraceEventType.Information, traceCode, traceDescription, new DictionaryTraceRecord(h), null, null);
+//             }
+
         }
 
         internal static void TraceReceiveReply(string sourceUrl, Type metadataType)
         {
-#if disabled
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-                Hashtable h = new Hashtable(2);
-                h.Add("SourceUrl", sourceUrl);
-                h.Add("MetadataType", metadataType.ToString());
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.MetadataExchangeClientReceiveReply, SR.TraceCodeMetadataExchangeClientReceiveReply,
-                    new DictionaryTraceRecord(h), null, null);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticUtility.ShouldTraceInformation)
+//             {
+//                 Hashtable h = new Hashtable(2);
+//                 h.Add("SourceUrl", sourceUrl);
+//                 h.Add("MetadataType", metadataType.ToString());
+//                 TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.MetadataExchangeClientReceiveReply, SR.TraceCodeMetadataExchangeClientReceiveReply,
+//                     new DictionaryTraceRecord(h), null, null);
+//             }
+
         }
 
         class ResolveCallState
@@ -645,11 +644,10 @@ namespace System.ServiceModel.Description
             {
                 try
                 {
-#if disabled
-                    using (XmlReader reader = this.DownloadMetadata(timeoutHelper))
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                     using (XmlReader reader = this.DownloadMetadata(timeoutHelper))
+
                     XmlReader reader = this.DownloadMetadata(timeoutHelper);
-#endif
                     {
                         return MetadataRetriever.CreateMetadataSection(reader, this.SourceUrl);
                     }
@@ -786,15 +784,14 @@ namespace System.ServiceModel.Description
                 }
 
                 TraceSendRequest(this.location);
-#if disabled
-                request.Timeout = TimeoutHelper.ToMilliseconds(timeoutHelper.RemainingTime());
-                response = (HttpWebResponse)request.GetResponse();
-                responseLocation = request.Address;
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                 request.Timeout = TimeoutHelper.ToMilliseconds(timeoutHelper.RemainingTime());
+//                 response = (HttpWebResponse)request.GetResponse();
+//                 responseLocation = request.Address;
+
                 Task<WebResponse> task = request.GetResponseAsync();
                 task.Wait();
                 response = task.Result as HttpWebResponse;
-#endif
                 return MetadataLocationRetriever.GetXmlReader(response, this.resolver.MaxMessageSize, this.resolver.ReaderQuotas);
             }
 
@@ -885,18 +882,18 @@ namespace System.ServiceModel.Description
                     this.readerQuotas = readerQuotas;
                     IAsyncResult result = request.BeginGetResponse(Fx.ThunkCallback(new AsyncCallback(this.GetResponseCallback)), request);
 
-#if disabled // No timeout but I don't think we are using this anyways.
-                    //Register a callback to abort the request if we hit the timeout.
-                    ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle,
-                        Fx.ThunkCallback(new WaitOrTimerCallback(RetrieveTimeout)), request,
-                        TimeoutHelper.ToMilliseconds(timeoutHelper.RemainingTime()), /* executeOnlyOnce */ true);
+// Not needed in dotnet-svcutil scenario. 
+//                     //Register a callback to abort the request if we hit the timeout.
+//                     ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle,
+//                         Fx.ThunkCallback(new WaitOrTimerCallback(RetrieveTimeout)), request,
+//                         TimeoutHelper.ToMilliseconds(timeoutHelper.RemainingTime()), /* executeOnlyOnce */ true);
+// 
+//                     if (result.CompletedSynchronously)
+//                     {
+//                         HandleResult(result);
+//                         this.Complete(true);
+//                     }
 
-                    if (result.CompletedSynchronously)
-                    {
-                        HandleResult(result);
-                        this.Complete(true);
-                    }
-#endif
                 }
 
                 static void RetrieveTimeout(object state, bool timedOut)
@@ -1315,31 +1312,30 @@ namespace System.ServiceModel.Description
 
         internal static Encoding GetRfcEncoding(string contentTypeStr)
         {
-#if disabled
-            Encoding e = null;
+// Not needed in dotnet-svcutil scenario. 
+//             Encoding e = null;
+// 
+//             try
+//             {
+//                 string charset = contentType == null ? string.Empty : contentType.CharSet;
+// 
+//                 if (charset != null && charset.Length > 0)
+//                     e = Encoding.GetEncoding(charset);
+//             }
+// #pragma warning suppress 56500 // covered by FxCOP
+//             catch (Exception ex)
+//             {
+//                 if (Fx.IsFatal(ex))
+//                     throw;
+//             }
+// 
+//             // default to ASCII encoding per RFC 2376/3023
+//             if (IsApplication(contentType))
+//                 return e == null ? new ASCIIEncoding() : e;
+//             else
+//                 return e;
 
-            try
-            {
-                string charset = contentType == null ? string.Empty : contentType.CharSet;
-
-                if (charset != null && charset.Length > 0)
-                    e = Encoding.GetEncoding(charset);
-            }
-#pragma warning suppress 56500 // covered by FxCOP
-            catch (Exception ex)
-            {
-                if (Fx.IsFatal(ex))
-                    throw;
-            }
-
-            // default to ASCII encoding per RFC 2376/3023
-            if (IsApplication(contentType))
-                return e == null ? new ASCIIEncoding() : e;
-            else
-                return e;
-#else
             return new ASCIIEncoding();
-#endif
         }
 
         internal static Encoding GetDictionaryReaderEncoding(string contentTypeStr)

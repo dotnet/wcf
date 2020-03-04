@@ -1,7 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-//------------------------------------------------------------
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.IO;
 using System.Collections;
@@ -68,15 +66,15 @@ namespace Microsoft.Xml
             _writer.Flush();
         }
 
-#if disabled
-        public override Task FlushAsync()
-        {
-            if (IsClosed)
-                ThrowClosed();
+// Not needed in dotnet-svcutil scenario. 
+//         public override Task FlushAsync()
+//         {
+//             if (IsClosed)
+//                 ThrowClosed();
+// 
+//             return _writer.FlushAsync();
+//         }
 
-            return _writer.FlushAsync();
-        }
-#endif
 
         public override void Close()
         {
@@ -360,18 +358,18 @@ namespace Microsoft.Xml
             }
         }
 
-#if disabled
-        protected override Task WriteEndAttributeAsync()
-        {
-            if (IsClosed)
-                ThrowClosed();
+// Not needed in dotnet-svcutil scenario. 
+//         protected override Task WriteEndAttributeAsync()
+//         {
+//             if (IsClosed)
+//                 ThrowClosed();
+// 
+//             if (_writeState != WriteState.Attribute)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.XmlInvalidWriteState, "WriteEndAttribute", WriteState.ToString())));
+// 
+//             return WriteEndAttributeAsyncImpl();
+//         }
 
-            if (_writeState != WriteState.Attribute)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.XmlInvalidWriteState, "WriteEndAttribute", WriteState.ToString())));
-
-            return WriteEndAttributeAsyncImpl();
-        }
-#endif
         private async Task WriteEndAttributeAsyncImpl()
         {
             await FlushBase64Async().ConfigureAwait(false);
@@ -595,13 +593,13 @@ namespace Microsoft.Xml
             _writer.WriteStartElement(prefix, localName);
         }
 
-#if disabled
-        public override Task WriteStartElementAsync(string prefix, string localName, string namespaceUri)
-        {
-            PreStartElementAsyncCheck(prefix, localName, namespaceUri, null);
-            return StartElementAndWriteStartElementAsync(prefix, localName, namespaceUri);
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public override Task WriteStartElementAsync(string prefix, string localName, string namespaceUri)
+//         {
+//             PreStartElementAsyncCheck(prefix, localName, namespaceUri, null);
+//             return StartElementAndWriteStartElementAsync(prefix, localName, namespaceUri);
+//         }
+
         public override void WriteStartElement(string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)
         {
             StartElement(ref prefix, (localName != null ? localName.Value : null), (namespaceUri != null ? namespaceUri.Value : null), namespaceUri);
@@ -635,38 +633,38 @@ namespace Microsoft.Xml
             _writeState = WriteState.Content;
         }
 
-#if disabled
-        public override Task WriteEndElementAsync()
-        {
-            if (IsClosed)
-                ThrowClosed();
+// Not needed in dotnet-svcutil scenario. 
+//         public override Task WriteEndElementAsync()
+//         {
+//             if (IsClosed)
+//                 ThrowClosed();
+// 
+//             if (_depth == 0)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.XmlInvalidDepth, "WriteEndElement", _depth.ToString(CultureInfo.InvariantCulture))));
+// 
+//             return WriteEndElementAsyncImpl();
+//         }
+//         private async Task WriteEndElementAsyncImpl()
+//         {
+//             if (_writeState == WriteState.Attribute)
+//                 await WriteEndAttributeAsync().ConfigureAwait(false);
+// 
+//             FlushBase64();
+//             if (_writeState == WriteState.Element)
+//             {
+//                 _nsMgr.DeclareNamespaces(_writer);
+//                 await _writer.WriteEndStartElementAsync(true).ConfigureAwait(false);
+//             }
+//             else
+//             {
+//                 Element element = _elements[_depth];
+//                 await _writer.WriteEndElementAsync(element.Prefix, element.LocalName).ConfigureAwait(false);
+//             }
+// 
+//             ExitScope();
+//             _writeState = WriteState.Content;
+//         }
 
-            if (_depth == 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.XmlInvalidDepth, "WriteEndElement", _depth.ToString(CultureInfo.InvariantCulture))));
-
-            return WriteEndElementAsyncImpl();
-        }
-        private async Task WriteEndElementAsyncImpl()
-        {
-            if (_writeState == WriteState.Attribute)
-                await WriteEndAttributeAsync().ConfigureAwait(false);
-
-            FlushBase64();
-            if (_writeState == WriteState.Element)
-            {
-                _nsMgr.DeclareNamespaces(_writer);
-                await _writer.WriteEndStartElementAsync(true).ConfigureAwait(false);
-            }
-            else
-            {
-                Element element = _elements[_depth];
-                await _writer.WriteEndElementAsync(element.Prefix, element.LocalName).ConfigureAwait(false);
-            }
-
-            ExitScope();
-            _writeState = WriteState.Content;
-        }
-#endif
 
         private Element EnterScope()
         {
@@ -1546,77 +1544,77 @@ namespace Microsoft.Xml
             }
         }
 
-#if disabled
-        public override Task WriteBase64Async(byte[] buffer, int offset, int count)
-        {
-            if (IsClosed)
-                ThrowClosed();
+// Not needed in dotnet-svcutil scenario. 
+//         public override Task WriteBase64Async(byte[] buffer, int offset, int count)
+//         {
+//             if (IsClosed)
+//                 ThrowClosed();
+// 
+//             if (buffer == null)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("buffer"));
+// 
+//             // Not checking upper bound because it will be caught by "count".  This is what XmlTextWriter does.
+//             if (offset < 0)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SR.Format(SR.ValueMustBeNonNegative)));
+// 
+//             if (count < 0)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SR.Format(SR.ValueMustBeNonNegative)));
+//             if (count > buffer.Length - offset)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SR.Format(SR.SizeExceedsRemainingBufferSpace, buffer.Length - offset)));
+// 
+//             return WriteBase64AsyncImpl(buffer, offset, count);
+//         }
+// 
+//         private async Task WriteBase64AsyncImpl(byte[] buffer, int offset, int count)
+//         {
+//             if (count > 0)
+//             {
+//                 if (_trailByteCount > 0)
+//                 {
+//                     while (_trailByteCount < 3 && count > 0)
+//                     {
+//                         _trailBytes[_trailByteCount++] = buffer[offset++];
+//                         count--;
+//                     }
+//                 }
+// 
+//                 int totalByteCount = _trailByteCount + count;
+//                 int actualByteCount = totalByteCount - (totalByteCount % 3);
+// 
+//                 if (_trailBytes == null)
+//                 {
+//                     _trailBytes = new byte[3];
+//                 }
+// 
+//                 if (actualByteCount >= 3)
+//                 {
+//                     if (_attributeValue != null)
+//                     {
+//                         WriteAttributeText(XmlConverter.Base64Encoding.GetString(_trailBytes, 0, _trailByteCount));
+//                         WriteAttributeText(XmlConverter.Base64Encoding.GetString(buffer, offset, actualByteCount - _trailByteCount));
+//                     }
+//                     if (!_isXmlnsAttribute)
+//                     {
+//                         await StartContentAsync().ConfigureAwait(false);
+//                         await _writer.WriteBase64TextAsync(_trailBytes, _trailByteCount, buffer, offset, actualByteCount - _trailByteCount).ConfigureAwait(false);
+//                         EndContent();
+//                     }
+//                     _trailByteCount = (totalByteCount - actualByteCount);
+//                     if (_trailByteCount > 0)
+//                     {
+//                         int trailOffset = offset + count - _trailByteCount;
+//                         for (int i = 0; i < _trailByteCount; i++)
+//                             _trailBytes[i] = buffer[trailOffset++];
+//                     }
+//                 }
+//                 else
+//                 {
+//                     Buffer.BlockCopy(buffer, offset, _trailBytes, _trailByteCount, count);
+//                     _trailByteCount += count;
+//                 }
+//             }
+//         }
 
-            if (buffer == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("buffer"));
-
-            // Not checking upper bound because it will be caught by "count".  This is what XmlTextWriter does.
-            if (offset < 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SR.Format(SR.ValueMustBeNonNegative)));
-
-            if (count < 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SR.Format(SR.ValueMustBeNonNegative)));
-            if (count > buffer.Length - offset)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SR.Format(SR.SizeExceedsRemainingBufferSpace, buffer.Length - offset)));
-
-            return WriteBase64AsyncImpl(buffer, offset, count);
-        }
-
-        private async Task WriteBase64AsyncImpl(byte[] buffer, int offset, int count)
-        {
-            if (count > 0)
-            {
-                if (_trailByteCount > 0)
-                {
-                    while (_trailByteCount < 3 && count > 0)
-                    {
-                        _trailBytes[_trailByteCount++] = buffer[offset++];
-                        count--;
-                    }
-                }
-
-                int totalByteCount = _trailByteCount + count;
-                int actualByteCount = totalByteCount - (totalByteCount % 3);
-
-                if (_trailBytes == null)
-                {
-                    _trailBytes = new byte[3];
-                }
-
-                if (actualByteCount >= 3)
-                {
-                    if (_attributeValue != null)
-                    {
-                        WriteAttributeText(XmlConverter.Base64Encoding.GetString(_trailBytes, 0, _trailByteCount));
-                        WriteAttributeText(XmlConverter.Base64Encoding.GetString(buffer, offset, actualByteCount - _trailByteCount));
-                    }
-                    if (!_isXmlnsAttribute)
-                    {
-                        await StartContentAsync().ConfigureAwait(false);
-                        await _writer.WriteBase64TextAsync(_trailBytes, _trailByteCount, buffer, offset, actualByteCount - _trailByteCount).ConfigureAwait(false);
-                        EndContent();
-                    }
-                    _trailByteCount = (totalByteCount - actualByteCount);
-                    if (_trailByteCount > 0)
-                    {
-                        int trailOffset = offset + count - _trailByteCount;
-                        for (int i = 0; i < _trailByteCount; i++)
-                            _trailBytes[i] = buffer[trailOffset++];
-                    }
-                }
-                else
-                {
-                    Buffer.BlockCopy(buffer, offset, _trailBytes, _trailByteCount, count);
-                    _trailByteCount += count;
-                }
-            }
-        }
-#endif
 
         public override bool CanCanonicalize
         {

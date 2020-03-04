@@ -1,6 +1,5 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.IdentityModel.Tokens
 {
@@ -41,9 +40,9 @@ namespace System.IdentityModel.Tokens
                 throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("assertion");
 
             this.assertion = assertion;
-#if disabled
-            this.assertion.MakeReadOnly();
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.assertion.MakeReadOnly();
+
         }
 
         public override string Id
@@ -68,16 +67,15 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-#if disabled
-                if (this.assertion.Conditions != null)
-                {
-                    return this.assertion.Conditions.NotBefore;
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 if (this.assertion.Conditions != null)
+//                 {
+//                     return this.assertion.Conditions.NotBefore;
+//                 }
+// 
+//                 return SecurityUtils.MinUtcDateTime;
 
-                return SecurityUtils.MinUtcDateTime;
-#else
                 throw new NotImplementedException();
-#endif
             }
         }
 
@@ -85,44 +83,43 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-#if disabled
-                if (this.assertion.Conditions != null)
-                {
-                    return this.assertion.Conditions.NotOnOrAfter;
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 if (this.assertion.Conditions != null)
+//                 {
+//                     return this.assertion.Conditions.NotOnOrAfter;
+//                 }
+// 
+//                 return SecurityUtils.MaxUtcDateTime;
 
-                return SecurityUtils.MaxUtcDateTime;
-#else
                 throw new NotImplementedException();
-#endif
             }
         }
 
-#if disabled
-        public override bool CanCreateKeyIdentifierClause<T>()
-        {
-            if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
-                return true;
+// Not needed in dotnet-svcutil scenario. 
+//         public override bool CanCreateKeyIdentifierClause<T>()
+//         {
+//             if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
+//                 return true;
+// 
+//             return false;
+//         }
+// 
+//         public override T CreateKeyIdentifierClause<T>()
+//         {
+//             if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
+//                 return new SamlAssertionKeyIdentifierClause(this.Id) as T;
+// 
+//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.UnableToCreateTokenReference)));
+//         }
+// 
+//         public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
+//         {
+//             SamlAssertionKeyIdentifierClause samlKeyIdentifierClause = keyIdentifierClause as SamlAssertionKeyIdentifierClause;
+//             if (samlKeyIdentifierClause != null)
+//                 return samlKeyIdentifierClause.Matches(this.Id);
+// 
+//             return false;
+//         }
 
-            return false;
-        }
-
-        public override T CreateKeyIdentifierClause<T>()
-        {
-            if (typeof(T) == typeof(SamlAssertionKeyIdentifierClause))
-                return new SamlAssertionKeyIdentifierClause(this.Id) as T;
-
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.UnableToCreateTokenReference)));
-        }
-
-        public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
-        {
-            SamlAssertionKeyIdentifierClause samlKeyIdentifierClause = keyIdentifierClause as SamlAssertionKeyIdentifierClause;
-            if (samlKeyIdentifierClause != null)
-                return samlKeyIdentifierClause.Matches(this.Id);
-
-            return false;
-        }
-#endif
     }
 }

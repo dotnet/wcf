@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.IdentityModel.Tokens
 {
@@ -67,26 +66,26 @@ namespace System.IdentityModel.Tokens
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-#if disabled
-                for (int i = 0; i < this.StrEntries.Count; ++i)
-                {
-                    if (this.StrEntries[i].SupportsCore(keyIdentifierClause))
-                    {
-                        writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.SecurityTokenReference, XD.SecurityJan2004Dictionary.Namespace);
+// Not needed in dotnet-svcutil scenario. 
+//                 for (int i = 0; i < this.StrEntries.Count; ++i)
+//                 {
+//                     if (this.StrEntries[i].SupportsCore(keyIdentifierClause))
+//                     {
+//                         writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.SecurityTokenReference, XD.SecurityJan2004Dictionary.Namespace);
+// 
+//                         string tokenTypeUri = this.GetTokenTypeUri(this.StrEntries[i], keyIdentifierClause);
+//                         if (tokenTypeUri != null)
+//                         {
+//                             writer.WriteAttributeString(XD.SecurityXXX2005Dictionary.Prefix.Value, XD.SecurityXXX2005Dictionary.TokenTypeAttribute, XD.SecurityXXX2005Dictionary.Namespace, tokenTypeUri);
+//                         }
+// 
+//                         this.StrEntries[i].WriteContent(writer, keyIdentifierClause);
+//                         writer.WriteEndElement();
+//                         return;
+//                     }
+//                 }
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
 
-                        string tokenTypeUri = this.GetTokenTypeUri(this.StrEntries[i], keyIdentifierClause);
-                        if (tokenTypeUri != null)
-                        {
-                            writer.WriteAttributeString(XD.SecurityXXX2005Dictionary.Prefix.Value, XD.SecurityXXX2005Dictionary.TokenTypeAttribute, XD.SecurityXXX2005Dictionary.Namespace, tokenTypeUri);
-                        }
-
-                        this.StrEntries[i].WriteContent(writer, keyIdentifierClause);
-                        writer.WriteEndElement();
-                        return;
-                    }
-                }
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetString(SR.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
-#endif
                 throw new NotImplementedException();
             }
 
@@ -149,11 +148,11 @@ namespace System.IdentityModel.Tokens
 
         class EncryptedKeyHashStrEntry : WSSecurityJan2004.KeyIdentifierStrEntry
         {
-#if disabled
-            protected override Type ClauseType { get { return typeof(EncryptedKeyHashIdentifierClause); } }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             protected override Type ClauseType { get { return typeof(EncryptedKeyHashIdentifierClause); } }
+
             protected override Type ClauseType { get { throw new NotImplementedException(); } }
-#endif
+
             public override Type TokenType { get { return typeof(WrappedKeySecurityToken); } }
             protected override string ValueTypeUri { get { return SecurityXXX2005Strings.EncryptedKeyHashValueType; } }
 
@@ -174,9 +173,9 @@ namespace System.IdentityModel.Tokens
 
             protected override SecurityKeyIdentifierClause CreateClause(byte[] bytes, byte[] derivationNonce, int derivationLength)
             {
-#if disabled
-                return new EncryptedKeyHashIdentifierClause(bytes, true, derivationNonce, derivationLength);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return new EncryptedKeyHashIdentifierClause(bytes, true, derivationNonce, derivationLength);
+
                 throw new NotImplementedException();
             }
 
@@ -188,11 +187,11 @@ namespace System.IdentityModel.Tokens
 
         class X509ThumbprintStrEntry : WSSecurityJan2004.KeyIdentifierStrEntry
         {
-#if disabled
-            protected override Type ClauseType { get { return typeof(X509ThumbprintKeyIdentifierClause); } }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             protected override Type ClauseType { get { return typeof(X509ThumbprintKeyIdentifierClause); } }
+
             protected override Type ClauseType { get { throw new NotImplementedException(); } }
-#endif
+
             public override Type TokenType { get { return typeof(X509SecurityToken); } }
             protected override string ValueTypeUri { get { return SecurityXXX2005Strings.ThumbprintSha1ValueType; } }
 
@@ -203,9 +202,9 @@ namespace System.IdentityModel.Tokens
 
             protected override SecurityKeyIdentifierClause CreateClause(byte[] bytes, byte[] derivationNonce, int derivationLength)
             {
-#if disabled
-                return new X509ThumbprintKeyIdentifierClause(bytes);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return new X509ThumbprintKeyIdentifierClause(bytes);
+
                 throw new NotImplementedException();
             }
             public override string GetTokenTypeUri()
@@ -237,38 +236,38 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadClause(XmlDictionaryReader reader, byte[] derivationNone, int derivationLength, string tokenType)
             {
-#if disabled
-                string samlUri = reader.GetAttribute(XD.SecurityJan2004Dictionary.URI, null);
-                if (reader.IsEmptyElement)
-                {
-                    reader.Read();
-                }
-                else
-                {
-                    reader.ReadStartElement();
-                    reader.ReadEndElement();
-                }
-                return new SamlAssertionDirectKeyIdentifierClause(samlUri, derivationNone, derivationLength);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 string samlUri = reader.GetAttribute(XD.SecurityJan2004Dictionary.URI, null);
+//                 if (reader.IsEmptyElement)
+//                 {
+//                     reader.Read();
+//                 }
+//                 else
+//                 {
+//                     reader.ReadStartElement();
+//                     reader.ReadEndElement();
+//                 }
+//                 return new SamlAssertionDirectKeyIdentifierClause(samlUri, derivationNone, derivationLength);
+
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                return typeof(SamlAssertionDirectKeyIdentifierClause).IsAssignableFrom(clause.GetType());
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 return typeof(SamlAssertionDirectKeyIdentifierClause).IsAssignableFrom(clause.GetType());
+
                 throw new NotImplementedException();
             }
 
             public override void WriteContent(XmlDictionaryWriter writer, SecurityKeyIdentifierClause clause)
             {
-#if disabled
-                SamlAssertionDirectKeyIdentifierClause samlClause = clause as SamlAssertionDirectKeyIdentifierClause;
-                writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.Reference, XD.SecurityJan2004Dictionary.Namespace);
-                writer.WriteAttributeString(XD.SecurityJan2004Dictionary.URI, null, samlClause.SamlUri);
-                writer.WriteEndElement();
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 SamlAssertionDirectKeyIdentifierClause samlClause = clause as SamlAssertionDirectKeyIdentifierClause;
+//                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.Reference, XD.SecurityJan2004Dictionary.Namespace);
+//                 writer.WriteAttributeString(XD.SecurityJan2004Dictionary.URI, null, samlClause.SamlUri);
+//                 writer.WriteEndElement();
+
                 throw new NotImplementedException();
             }
         }

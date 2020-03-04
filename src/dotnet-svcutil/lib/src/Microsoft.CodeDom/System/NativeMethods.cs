@@ -1,8 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="NativeMethods.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 #define SILVERLIGHT
 
 namespace Microsoft.Win32 {
@@ -56,7 +53,6 @@ namespace Microsoft.Win32 {
         public const int DEFAULT_GUI_FONT = 17;
         public const int SM_CYSCREEN = 1;
 
-        // TODO (Miguell)
         public const int ERROR_FILE_EXISTS = 0x50;
 
 #if !SILVERLIGHT

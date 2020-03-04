@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Globalization;
 using System.IO;
@@ -546,11 +546,10 @@ namespace System.ServiceModel.Channels
                     xmlWriter.WriteEndDocument();
                 }
 
-#if disabled
-                await xmlWriter.FlushAsync();
-#else
+// Not needed in dotnet-svcutil scenario. Just use the sync flush.
+//                 await xmlWriter.FlushAsync();
+
                 xmlWriter.Flush();
-#endif
                 ReturnStreamedWriter(xmlWriter);
 
                 if (WcfEventSource.Instance.StreamedMessageWrittenByEncoderIsEnabled())

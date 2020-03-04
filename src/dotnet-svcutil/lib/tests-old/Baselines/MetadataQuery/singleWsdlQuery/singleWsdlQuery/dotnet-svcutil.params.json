@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "http://$serviceUrl$/WcfForSvcUtil/Service1.svc?singlewsdl"
+    ],
+    "namespaceMappings": [
+      "*, singleWsdlQuery_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp1.1",
+    "typeReuseMode": "None"
+  }
+}

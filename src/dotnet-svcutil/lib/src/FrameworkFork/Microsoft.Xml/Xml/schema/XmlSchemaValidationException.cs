@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlSchemaValidationException.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright> 
-// <owner current="true" primary="true">priyal</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Schema {
 
@@ -20,17 +16,17 @@ namespace Microsoft.Xml.Schema {
         
         private Object sourceNodeObject;
 
-#if disabled
-        /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException5"]/*' />
-        protected XmlSchemaValidationException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-            
+// Not needed in dotnet-svcutil scenario. 
+//         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException5"]/*' />
+//         protected XmlSchemaValidationException(SerializationInfo info, StreamingContext context) : base(info, context) {}
+//             
+// 
+//         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.GetObjectData"]/*' />
+//         // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
+//         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
+//             base.GetObjectData(info, context);
+//         }
 
-        /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.GetObjectData"]/*' />
-        // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            base.GetObjectData(info, context);
-        }
-#endif 
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException1"]/*' />
         public XmlSchemaValidationException() : base(null) {
         }
@@ -96,5 +92,4 @@ namespace Microsoft.Xml.Schema {
 
     };
 } // namespace Microsoft.Xml.Schema
-
 

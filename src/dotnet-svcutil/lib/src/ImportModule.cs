@@ -1,6 +1,5 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using Microsoft.CodeDom;
 using Microsoft.Tools.ServiceModel.Svcutil.Metadata;
@@ -413,10 +412,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 importOptions.WebReferenceOptions.CodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
                 if (options.EnableDataBinding == true)
                     importOptions.WebReferenceOptions.CodeGenerationOptions |= CodeGenerationOptions.EnableDataBinding;
-#if disabled // TODO: System.Data API not available in PK
-                importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(TypedDataSetSchemaImporterExtensionFx35).AssemblyQualifiedName);
-                importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
-#endif
+
+                // Right now System.Data API not available in DNX. If it comes available we could consider uncommenting these.
+                // importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(TypedDataSetSchemaImporterExtensionFx35).AssemblyQualifiedName);
+                // importOptions.WebReferenceOptions.SchemaImporterExtensions.Add(typeof(DataSetSchemaImporterExtension).AssemblyQualifiedName);
+
                 importOptions.CodeProvider = options.CodeProvider;
 
                 importOptions.ClrNamespace = options.NamespaceMappings.FirstOrDefault(m => m.Key == "*").Value;

@@ -1,13 +1,9 @@
-﻿#if XMLCHARTYPE_GEN_RESOURCE
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+#if XMLCHARTYPE_GEN_RESOURCE
 #undef XMLCHARTYPE_USE_RESOURCE
 #endif
 
-//------------------------------------------------------------------------------
-// <copyright file="XmlCharType.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
 
 //#define XMLCHARTYPE_USE_RESOURCE    // load the character properties from resources (XmlCharType.bin must be linked to Microsoft.Xml.dll)
 //#define XMLCHARTYPE_GEN_RESOURCE    // generate the character properties into XmlCharType.bin

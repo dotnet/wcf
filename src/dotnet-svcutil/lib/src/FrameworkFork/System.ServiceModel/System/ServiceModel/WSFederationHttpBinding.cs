@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel
 {
     using System;
@@ -84,24 +83,24 @@ namespace System.ServiceModel
                 this.security = value;
             }
         }
-#if disabled
-        void ApplyConfiguration(string configurationName)
-        {
-            WSFederationHttpBindingCollectionElement section = WSFederationHttpBindingCollectionElement.GetBindingCollectionElement();
-            WSFederationHttpBindingElement element = section.Bindings[configurationName];
-            if (element == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-                    SR.Format(SR.ConfigInvalidBindingConfigurationName,
-                                 configurationName,
-                                 ConfigurationStrings.WSFederationHttpBindingCollectionElementName)));
-            }
-            else
-            {
-                element.ApplyConfiguration(this);
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         void ApplyConfiguration(string configurationName)
+//         {
+//             WSFederationHttpBindingCollectionElement section = WSFederationHttpBindingCollectionElement.GetBindingCollectionElement();
+//             WSFederationHttpBindingElement element = section.Bindings[configurationName];
+//             if (element == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
+//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
+//                                  configurationName,
+//                                  ConfigurationStrings.WSFederationHttpBindingCollectionElementName)));
+//             }
+//             else
+//             {
+//                 element.ApplyConfiguration(this);
+//             }
+//         }
+
         PrivacyNoticeBindingElement CreatePrivacyPolicy()
         {
             PrivacyNoticeBindingElement privacy = null;

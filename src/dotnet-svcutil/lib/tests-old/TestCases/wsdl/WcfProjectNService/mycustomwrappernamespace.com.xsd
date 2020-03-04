@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://mycustomwrappernamespace.com" elementFormDefault="qualified" targetNamespace="http://mycustomwrappernamespace.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd9" namespace="CustomNamespace" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd10" namespace="http://mycustomcustomernamespace.com" />
+  <xs:element name="CustomWrapperName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://tempuri.org/" minOccurs="0" ref="q1:Date_of_Request" />
+        <xs:element xmlns:q2="http://tempuri.org/" minOccurs="0" ref="q2:Transaction_Amount" />
+        <xs:element xmlns:q3="CustomNamespace" minOccurs="0" ref="q3:Customer_Name" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

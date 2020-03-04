@@ -1,29 +1,27 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Diagnostics;
 
 
 namespace System
 {
-#if disabled
-    internal static class Fx
-    {
-        [Conditional("DEBUG")]
-        public static void Assert(bool condition, string message)
-        {
-            System.Diagnostics.Debug.Assert(condition, message);
-        }
+// Not needed in dotnet-svcutil scenario. 
+//     internal static class Fx
+//     {
+//         [Conditional("DEBUG")]
+//         public static void Assert(bool condition, string message)
+//         {
+//             System.Diagnostics.Debug.Assert(condition, message);
+//         }
+// 
+//         [Conditional("DEBUG")]
+//         public static void Assert(string message)
+//         {
+//             Assert(false, message);
+//         }
+//     }
 
-        [Conditional("DEBUG")]
-        public static void Assert(string message)
-        {
-            Assert(false, message);
-        }
-    }
-#endif
 
     internal partial class DiagnosticUtility
     {
@@ -59,48 +57,47 @@ namespace System
             return false;
         }
 
-#if disabled
-        internal static class ExceptionUtility
-        {
-            public static Exception ThrowHelperArgumentNull(string message)
-            {
-                return new ArgumentNullException(message);
-            }
+// Not needed in dotnet-svcutil scenario. 
+//         internal static class ExceptionUtility
+//         {
+//             public static Exception ThrowHelperArgumentNull(string message)
+//             {
+//                 return new ArgumentNullException(message);
+//             }
+// 
+//             public static Exception ThrowHelperError(Exception e)
+//             {
+//                 return e;
+//             }
+// 
+//             public static Exception ThrowHelperArgument(string message)
+//             {
+//                 return new ArgumentException(message);
+//             }
+// 
+//             public static Exception ThrowHelperArgument(string paramName, string message)
+//             {
+//                 return new ArgumentException(message, paramName);
+//             }
+// 
+//             internal static Exception ThrowHelperFatal(string message, Exception innerException)
+//             {
+//                 return ThrowHelperError(new Exception(message, innerException));
+//             }
+//             internal static Exception ThrowHelperCallback(Exception e)
+//             {
+//                 return ThrowHelperError(e);
+//             }
+//         }
 
-            public static Exception ThrowHelperError(Exception e)
-            {
-                return e;
-            }
-
-            public static Exception ThrowHelperArgument(string message)
-            {
-                return new ArgumentException(message);
-            }
-
-            public static Exception ThrowHelperArgument(string paramName, string message)
-            {
-                return new ArgumentException(message, paramName);
-            }
-
-            internal static Exception ThrowHelperFatal(string message, Exception innerException)
-            {
-                return ThrowHelperError(new Exception(message, innerException));
-            }
-            internal static Exception ThrowHelperCallback(Exception e)
-            {
-                return ThrowHelperError(e);
-            }
-        }
-#endif
     }
 }
 
-#if disabled
-namespace System.ServiceModel
-{
-    internal class DiagnosticUtility : System.Runtime.Serialization.DiagnosticUtility
-    {
-    }
-}
-#endif
+// Not needed in dotnet-svcutil scenario. 
+// namespace System.ServiceModel
+// {
+//     internal class DiagnosticUtility : System.Runtime.Serialization.DiagnosticUtility
+//     {
+//     }
+// }
 

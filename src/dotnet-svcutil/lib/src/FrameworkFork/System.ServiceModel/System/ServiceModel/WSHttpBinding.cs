@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel
 {
     using System;
@@ -75,24 +74,24 @@ namespace System.ServiceModel
             }
         }
 
-#if disabled
-        void ApplyConfiguration(string configurationName)
-        {
-            WSHttpBindingCollectionElement section = WSHttpBindingCollectionElement.GetBindingCollectionElement();
-            WSHttpBindingElement element = section.Bindings[configurationName];
-            if (element == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-                    SR.Format(SR.ConfigInvalidBindingConfigurationName,
-                                 configurationName,
-                                 ConfigurationStrings.WSHttpBindingCollectionElementName)));
-            }
-            else
-            {
-                element.ApplyConfiguration(this);
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         void ApplyConfiguration(string configurationName)
+//         {
+//             WSHttpBindingCollectionElement section = WSHttpBindingCollectionElement.GetBindingCollectionElement();
+//             WSHttpBindingElement element = section.Bindings[configurationName];
+//             if (element == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
+//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
+//                                  configurationName,
+//                                  ConfigurationStrings.WSHttpBindingCollectionElementName)));
+//             }
+//             else
+//             {
+//                 element.ApplyConfiguration(this);
+//             }
+//         }
+
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingParameterCollection parameters)
         {
             if ((security.Mode == SecurityMode.Transport) &&
@@ -228,12 +227,12 @@ namespace System.ServiceModel
             return System.ServiceModel.Configuration.SecurityElement.AreBindingsMatching(security.CreateMessageSecurity(isReliableSession, WSMessageSecurityVersion), sbe);
         }
 
-#if disabled
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeSecurity()
-        {
-            return this.Security.InternalShouldSerialize();
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         [EditorBrowsable(EditorBrowsableState.Never)]
+//         public bool ShouldSerializeSecurity()
+//         {
+//             return this.Security.InternalShouldSerialize();
+//         }
+
     }
 }

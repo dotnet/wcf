@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlDocument.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ionv</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml {
     using System;
@@ -339,16 +335,16 @@ namespace Microsoft.Xml {
 
         public virtual XmlResolver XmlResolver {
             set {
-#if disabled
-                if ( value != null ) {
-                    try {
-                        new NamedPermissionSet( "FullTrust" ).Demand();
-                    }
-                    catch ( SecurityException e ) {
-                        throw new SecurityException( Res.GetString( Res.Xml_UntrustedCodeSettingResolver ), e );
-                    }
-                }   
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//                 if ( value != null ) {
+//                     try {
+//                         new NamedPermissionSet( "FullTrust" ).Demand();
+//                     }
+//                     catch ( SecurityException e ) {
+//                         throw new SecurityException( Res.GetString( Res.Xml_UntrustedCodeSettingResolver ), e );
+//                     }
+//                 }   
+
                 resolver = value;
                 if ( !bSetResolver )
                     bSetResolver = true;

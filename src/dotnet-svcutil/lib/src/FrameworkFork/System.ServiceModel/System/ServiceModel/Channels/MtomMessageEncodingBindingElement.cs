@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
@@ -166,17 +165,17 @@ namespace System.ServiceModel.Channels
             return InternalCanBuildChannelFactory<TChannel>(context);
         }
 
-#if disabled
-        public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
-        {
-            return InternalBuildChannelListener<TChannel>(context);
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
+//         {
+//             return InternalBuildChannelListener<TChannel>(context);
+//         }
+// 
+//         public override bool CanBuildChannelListener<TChannel>(BindingContext context)
+//         {
+//             return InternalCanBuildChannelListener<TChannel>(context);
+//         }
 
-        public override bool CanBuildChannelListener<TChannel>(BindingContext context)
-        {
-            return InternalCanBuildChannelListener<TChannel>(context);
-        }
-#endif
         public override BindingElement Clone()
         {
             return new MtomMessageEncodingBindingElement(this);
@@ -184,11 +183,10 @@ namespace System.ServiceModel.Channels
 
         public override MessageEncoderFactory CreateMessageEncoderFactory()
         {
-#if disabled
-            return new MtomMessageEncoderFactory(MessageVersion, WriteEncoding, this.MaxReadPoolSize, this.MaxWritePoolSize, this.MaxBufferSize, this.ReaderQuotas);
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             return new MtomMessageEncoderFactory(MessageVersion, WriteEncoding, this.MaxReadPoolSize, this.MaxWritePoolSize, this.MaxBufferSize, this.ReaderQuotas);
+
             throw new NotImplementedException();
-#endif
         }
 
         public override T GetProperty<T>(BindingContext context)

@@ -1,4 +1,6 @@
-﻿namespace Microsoft.Xml.Serialization {
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+namespace Microsoft.Xml.Serialization {
     using System.IO;
     using System.Collections;
     using System.Text;

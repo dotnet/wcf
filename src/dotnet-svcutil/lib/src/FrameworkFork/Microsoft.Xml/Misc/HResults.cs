@@ -1,8 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="HResults.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 /*
 These HRESULTs are used for mapping managed exceptions to COM error codes

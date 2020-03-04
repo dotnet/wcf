@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="CodeExporter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ElenaK</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Serialization {
     using System;
@@ -90,20 +86,19 @@ namespace Microsoft.Xml.Serialization {
             get {
                 if (generatedCodeAttribute == null) {
                     CodeAttributeDeclaration decl = new CodeAttributeDeclaration(typeof(GeneratedCodeAttribute).FullName);
-#if disabled // seems it will soon be availble 4.1.0.0
-                    Assembly a = Assembly.GetEntryAssembly();
-                    if (a == null) 
-                    {
-                        a = Assembly.GetExecutingAssembly();
-                        if (a == null)
-                        {
-                            a = typeof(CodeExporter).Assembly;
-                        }
-                    }
+// Not needed in dotnet-svcutil scenario. Not available in DNX.
+//                     Assembly a = Assembly.GetEntryAssembly();
+//                     if (a == null) 
+//                     {
+//                         a = Assembly.GetExecutingAssembly();
+//                         if (a == null)
+//                         {
+//                             a = typeof(CodeExporter).Assembly;
+//                         }
+//                     }
                     
-#else
                     Assembly a = typeof(CodeExporter).GetTypeInfo().Assembly;
-#endif
+
                     AssemblyName assemblyName = a.GetName();
                     decl.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(assemblyName.Name)));
                     string version = GetProductVersion(a);

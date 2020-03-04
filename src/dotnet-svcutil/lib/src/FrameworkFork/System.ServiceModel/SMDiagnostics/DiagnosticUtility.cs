@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 #pragma warning disable 1634, 1691
 using System.Diagnostics;
@@ -56,25 +56,25 @@ namespace System
         {
             get { return DiagnosticUtility.s_shouldUseActivity; }
         }
-#if disabled
-        [Conditional("DEBUG")]
-        internal static void DebugAssert(bool condition, string message)
-        {
-            if (!condition)
-            {
-                DebugAssert(message);
-            }
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         [Conditional("DEBUG")]
+//         internal static void DebugAssert(bool condition, string message)
+//         {
+//             if (!condition)
+//             {
+//                 DebugAssert(message);
+//             }
+//         }
+// 
+//         [MethodImpl(MethodImplOptions.NoInlining)]
+//         [Conditional("DEBUG")]
+//         internal static void DebugAssert(string message)
+//         {
+// #pragma warning disable 618
+//             Fx.Assert(message);
+// #pragma warning restore 618
+//         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        [Conditional("DEBUG")]
-        internal static void DebugAssert(string message)
-        {
-#pragma warning disable 618
-            Fx.Assert(message);
-#pragma warning restore 618
-        }
-#endif
         internal static class Utility
         {
             public static byte[] AllocateByteArray(int size)

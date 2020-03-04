@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="CompilerParameters.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom.Compiler {
     using System;
@@ -47,10 +42,10 @@ namespace Microsoft.CodeDom.Compiler {
         private bool generateExecutable = false;
         private TempFileCollection tempFiles;
 
-#if disabled
-        private SafeUserTokenHandle userToken;
-        private Evidence evidence = null;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         private SafeUserTokenHandle userToken;
+//         private Evidence evidence = null;
+
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.Compiler.CompilerParameters'/>.
@@ -296,55 +291,55 @@ namespace Microsoft.CodeDom.Compiler {
             }
         }
 
-#if disabled
-        /// <devdoc>
-        ///    <para>
-        ///       Gets or sets user token to be employed when creating the compiler process.
-        ///    </para>
-        /// </devdoc>
-        public IntPtr UserToken {
-            get {
-                if (userToken != null)
-                    return userToken.DangerousGetHandle();
-                else
-                    return IntPtr.Zero;
-            }
-            set {
-                if (userToken != null)
-                    userToken.Close();
-                
-                userToken = new SafeUserTokenHandle(value, false);
-            }
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         /// <devdoc>
+//         ///    <para>
+//         ///       Gets or sets user token to be employed when creating the compiler process.
+//         ///    </para>
+//         /// </devdoc>
+//         public IntPtr UserToken {
+//             get {
+//                 if (userToken != null)
+//                     return userToken.DangerousGetHandle();
+//                 else
+//                     return IntPtr.Zero;
+//             }
+//             set {
+//                 if (userToken != null)
+//                     userToken.Close();
+//                 
+//                 userToken = new SafeUserTokenHandle(value, false);
+//             }
+//         }
+// 
+//         internal SafeUserTokenHandle SafeUserToken {
+//             get {
+//                 return userToken;
+//             }
+//         }
+//         /// <devdoc>
+//         ///    <para>
+//         ///       Set the evidence for partially trusted scenarios.
+//         ///    </para>
+//         /// </devdoc>
+//         [Obsolete("CAS policy is obsolete and will be removed in a future release of the .NET Framework."
+//                 + " Please see http://go2.microsoft.com/fwlink/?LinkId=131738 for more information.")]
+//         public Evidence Evidence {
+//             get {
+//                 Evidence e = null;
+//                 if (evidence != null)
+//                     e = evidence.Clone();
+//                 return e;
+//             }
+// 
+//            
+//             set {
+//                 if (value != null)
+//                     evidence = value.Clone();
+//                 else
+//                     evidence = null;
+//             }
+//         }
 
-        internal SafeUserTokenHandle SafeUserToken {
-            get {
-                return userToken;
-            }
-        }
-        /// <devdoc>
-        ///    <para>
-        ///       Set the evidence for partially trusted scenarios.
-        ///    </para>
-        /// </devdoc>
-        [Obsolete("CAS policy is obsolete and will be removed in a future release of the .NET Framework."
-                + " Please see http://go2.microsoft.com/fwlink/?LinkId=131738 for more information.")]
-        public Evidence Evidence {
-            get {
-                Evidence e = null;
-                if (evidence != null)
-                    e = evidence.Clone();
-                return e;
-            }
-
-           
-            set {
-                if (value != null)
-                    evidence = value.Clone();
-                else
-                    evidence = null;
-            }
-        }
-#endif
     }
 }

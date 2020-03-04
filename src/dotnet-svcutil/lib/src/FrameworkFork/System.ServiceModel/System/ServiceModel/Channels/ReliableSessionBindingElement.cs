@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel.Channels
 {
     using System.ComponentModel;
@@ -21,9 +20,9 @@ namespace System.ServiceModel.Channels
         int maxTransferWindowSize = ReliableSessionDefaults.MaxTransferWindowSize;
         bool ordered = ReliableSessionDefaults.Ordered;
         ReliableMessagingVersion reliableMessagingVersion = ReliableMessagingVersion.Default;
-#if disabled
-        InternalDuplexBindingElement internalDuplexBindingElement;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         InternalDuplexBindingElement internalDuplexBindingElement;
+
 
         static MessagePartSpecification bodyOnly;
 
@@ -42,9 +41,9 @@ namespace System.ServiceModel.Channels
             this.MaxTransferWindowSize = elementToBeCloned.MaxTransferWindowSize;
             this.Ordered = elementToBeCloned.Ordered;
             this.ReliableMessagingVersion = elementToBeCloned.ReliableMessagingVersion;
-#if disabled
-            this.internalDuplexBindingElement = elementToBeCloned.internalDuplexBindingElement;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.internalDuplexBindingElement = elementToBeCloned.internalDuplexBindingElement;
+
         }
 
         public ReliableSessionBindingElement(bool ordered)
@@ -216,315 +215,312 @@ namespace System.ServiceModel.Channels
 
         public override T GetProperty<T>(BindingContext context)
         {
-#if disabled
-            if (context == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            }
-            if (typeof(T) == typeof(ChannelProtectionRequirements))
-            {
-                ChannelProtectionRequirements myRequirements = this.GetProtectionRequirements();
-                myRequirements.Add(context.GetInnerProperty<ChannelProtectionRequirements>() ?? new ChannelProtectionRequirements());
-                return (T)(object)myRequirements;
-            }
-            else if (typeof(T) == typeof(IBindingDeliveryCapabilities))
-            {
-                return (T)(object)new BindingDeliveryCapabilitiesHelper(this, context.GetInnerProperty<IBindingDeliveryCapabilities>());
-            }
-            else
-            {
-                return context.GetInnerProperty<T>();
-            }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             if (context == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+//             }
+//             if (typeof(T) == typeof(ChannelProtectionRequirements))
+//             {
+//                 ChannelProtectionRequirements myRequirements = this.GetProtectionRequirements();
+//                 myRequirements.Add(context.GetInnerProperty<ChannelProtectionRequirements>() ?? new ChannelProtectionRequirements());
+//                 return (T)(object)myRequirements;
+//             }
+//             else if (typeof(T) == typeof(IBindingDeliveryCapabilities))
+//             {
+//                 return (T)(object)new BindingDeliveryCapabilitiesHelper(this, context.GetInnerProperty<IBindingDeliveryCapabilities>());
+//             }
+//             else
+//             {
+//                 return context.GetInnerProperty<T>();
+//             }
+
             throw new NotImplementedException();
-#endif
         }
 
-#if disabled
-        ChannelProtectionRequirements GetProtectionRequirements()
-        {
-            // Listing headers that must be signed.
-            ChannelProtectionRequirements result = new ChannelProtectionRequirements();
-            MessagePartSpecification signedReliabilityMessageParts = WsrmIndex.GetSignedReliabilityMessageParts(
-                this.reliableMessagingVersion);
-            result.IncomingSignatureParts.AddParts(signedReliabilityMessageParts);
-            result.OutgoingSignatureParts.AddParts(signedReliabilityMessageParts);
+// Not needed in dotnet-svcutil scenario. 
+//         ChannelProtectionRequirements GetProtectionRequirements()
+//         {
+//             // Listing headers that must be signed.
+//             ChannelProtectionRequirements result = new ChannelProtectionRequirements();
+//             MessagePartSpecification signedReliabilityMessageParts = WsrmIndex.GetSignedReliabilityMessageParts(
+//                 this.reliableMessagingVersion);
+//             result.IncomingSignatureParts.AddParts(signedReliabilityMessageParts);
+//             result.OutgoingSignatureParts.AddParts(signedReliabilityMessageParts);
+// 
+//             if (this.reliableMessagingVersion == ReliableMessagingVersion.WSReliableMessagingFebruary2005)
+//             {
+//                 // Adding RM protocol message actions so that each RM protocol message's body will be 
+//                 // signed and encrypted.
+//                 // From the Client to the Service
+//                 ScopedMessagePartSpecification signaturePart = result.IncomingSignatureParts;
+//                 ScopedMessagePartSpecification encryptionPart = result.IncomingEncryptionParts;
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.AckRequestedAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.CreateSequenceAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.SequenceAcknowledgementAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.LastMessageAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.TerminateSequenceAction);
+// 
+//                 // From the Service to the Client
+//                 signaturePart = result.OutgoingSignatureParts;
+//                 encryptionPart = result.OutgoingEncryptionParts;
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.CreateSequenceResponseAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.SequenceAcknowledgementAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.LastMessageAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.TerminateSequenceAction);
+//             }
+//             else if (this.reliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
+//             {
+//                 // Adding RM protocol message actions so that each RM protocol message's body will be 
+//                 // signed and encrypted.
+//                 // From the Client to the Service
+//                 ScopedMessagePartSpecification signaturePart = result.IncomingSignatureParts;
+//                 ScopedMessagePartSpecification encryptionPart = result.IncomingEncryptionParts;
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.AckRequestedAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceResponseAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CreateSequenceAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.FaultAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.SequenceAcknowledgementAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceResponseAction);
+// 
+//                 // From the Service to the Client
+//                 signaturePart = result.OutgoingSignatureParts;
+//                 encryptionPart = result.OutgoingEncryptionParts;
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.AckRequestedAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceResponseAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CreateSequenceResponseAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.FaultAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.SequenceAcknowledgementAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceAction);
+//                 ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceResponseAction);
+//             }
+//             else
+//             {
+//                 throw Fx.AssertAndThrow("Reliable messaging version not supported.");
+//             }
+// 
+//             return result;
+//         }
 
-            if (this.reliableMessagingVersion == ReliableMessagingVersion.WSReliableMessagingFebruary2005)
-            {
-                // Adding RM protocol message actions so that each RM protocol message's body will be 
-                // signed and encrypted.
-                // From the Client to the Service
-                ScopedMessagePartSpecification signaturePart = result.IncomingSignatureParts;
-                ScopedMessagePartSpecification encryptionPart = result.IncomingEncryptionParts;
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.AckRequestedAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.CreateSequenceAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.SequenceAcknowledgementAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.LastMessageAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.TerminateSequenceAction);
-
-                // From the Service to the Client
-                signaturePart = result.OutgoingSignatureParts;
-                encryptionPart = result.OutgoingEncryptionParts;
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.CreateSequenceResponseAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.SequenceAcknowledgementAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.LastMessageAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, WsrmFeb2005Strings.TerminateSequenceAction);
-            }
-            else if (this.reliableMessagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
-            {
-                // Adding RM protocol message actions so that each RM protocol message's body will be 
-                // signed and encrypted.
-                // From the Client to the Service
-                ScopedMessagePartSpecification signaturePart = result.IncomingSignatureParts;
-                ScopedMessagePartSpecification encryptionPart = result.IncomingEncryptionParts;
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.AckRequestedAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceResponseAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CreateSequenceAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.FaultAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.SequenceAcknowledgementAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceResponseAction);
-
-                // From the Service to the Client
-                signaturePart = result.OutgoingSignatureParts;
-                encryptionPart = result.OutgoingEncryptionParts;
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.AckRequestedAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CloseSequenceResponseAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.CreateSequenceResponseAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.FaultAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.SequenceAcknowledgementAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceAction);
-                ProtectProtocolMessage(signaturePart, encryptionPart, Wsrm11Strings.TerminateSequenceResponseAction);
-            }
-            else
-            {
-                throw Fx.AssertAndThrow("Reliable messaging version not supported.");
-            }
-
-            return result;
-        }
-#endif
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
-#if disabled
-            if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// Not needed in dotnet-svcutil scenario. 
+//             if (context == null)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// 
+//             this.VerifyTransportMode(context);
+//             this.SetSecuritySettings(context);
+// 
+//             InternalDuplexBindingElement.AddDuplexFactorySupport(context, ref this.internalDuplexBindingElement);
+// 
+//             if (typeof(TChannel) == typeof(IOutputSessionChannel))
+//             {
+//                 if (context.CanBuildInnerChannelFactory<IRequestSessionChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IRequestSessionChannel>(
+//                         this, context.BuildInnerChannelFactory<IRequestSessionChannel>(), context.Binding);
+//                 }
+//                 else if (context.CanBuildInnerChannelFactory<IRequestChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IRequestChannel>(
+//                         this, context.BuildInnerChannelFactory<IRequestChannel>(), context.Binding);
+//                 }
+//                 else if (context.CanBuildInnerChannelFactory<IDuplexSessionChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IDuplexSessionChannel>(
+//                         this, context.BuildInnerChannelFactory<IDuplexSessionChannel>(), context.Binding);
+//                 }
+//                 else if (context.CanBuildInnerChannelFactory<IDuplexChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IDuplexChannel>(
+//                         this, context.BuildInnerChannelFactory<IDuplexChannel>(), context.Binding);
+//                 }
+//             }
+//             else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
+//             {
+//                 if (context.CanBuildInnerChannelFactory<IDuplexSessionChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IDuplexSessionChannel>(
+//                         this, context.BuildInnerChannelFactory<IDuplexSessionChannel>(), context.Binding);
+//                 }
+//                 else if (context.CanBuildInnerChannelFactory<IDuplexChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IDuplexChannel>(
+//                         this, context.BuildInnerChannelFactory<IDuplexChannel>(), context.Binding);
+//                 }
+//             }
+//             else if (typeof(TChannel) == typeof(IRequestSessionChannel))
+//             {
+//                 if (context.CanBuildInnerChannelFactory<IRequestSessionChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IRequestSessionChannel>(
+//                         this, context.BuildInnerChannelFactory<IRequestSessionChannel>(), context.Binding);
+//                 }
+//                 else if (context.CanBuildInnerChannelFactory<IRequestChannel>())
+//                 {
+//                     return (IChannelFactory<TChannel>)(object)
+//                         new ReliableChannelFactory<TChannel, IRequestChannel>(
+//                         this, context.BuildInnerChannelFactory<IRequestChannel>(), context.Binding);
+//                 }
+//             }
+// 
+//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)));
 
-            this.VerifyTransportMode(context);
-            this.SetSecuritySettings(context);
-
-            InternalDuplexBindingElement.AddDuplexFactorySupport(context, ref this.internalDuplexBindingElement);
-
-            if (typeof(TChannel) == typeof(IOutputSessionChannel))
-            {
-                if (context.CanBuildInnerChannelFactory<IRequestSessionChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IRequestSessionChannel>(
-                        this, context.BuildInnerChannelFactory<IRequestSessionChannel>(), context.Binding);
-                }
-                else if (context.CanBuildInnerChannelFactory<IRequestChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IRequestChannel>(
-                        this, context.BuildInnerChannelFactory<IRequestChannel>(), context.Binding);
-                }
-                else if (context.CanBuildInnerChannelFactory<IDuplexSessionChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IDuplexSessionChannel>(
-                        this, context.BuildInnerChannelFactory<IDuplexSessionChannel>(), context.Binding);
-                }
-                else if (context.CanBuildInnerChannelFactory<IDuplexChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IDuplexChannel>(
-                        this, context.BuildInnerChannelFactory<IDuplexChannel>(), context.Binding);
-                }
-            }
-            else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
-            {
-                if (context.CanBuildInnerChannelFactory<IDuplexSessionChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IDuplexSessionChannel>(
-                        this, context.BuildInnerChannelFactory<IDuplexSessionChannel>(), context.Binding);
-                }
-                else if (context.CanBuildInnerChannelFactory<IDuplexChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IDuplexChannel>(
-                        this, context.BuildInnerChannelFactory<IDuplexChannel>(), context.Binding);
-                }
-            }
-            else if (typeof(TChannel) == typeof(IRequestSessionChannel))
-            {
-                if (context.CanBuildInnerChannelFactory<IRequestSessionChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IRequestSessionChannel>(
-                        this, context.BuildInnerChannelFactory<IRequestSessionChannel>(), context.Binding);
-                }
-                else if (context.CanBuildInnerChannelFactory<IRequestChannel>())
-                {
-                    return (IChannelFactory<TChannel>)(object)
-                        new ReliableChannelFactory<TChannel, IRequestChannel>(
-                        this, context.BuildInnerChannelFactory<IRequestChannel>(), context.Binding);
-                }
-            }
-
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)));
-#else
             throw new NotImplementedException();
-#endif
         }
 
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
-#if disabled
-            if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// Not needed in dotnet-svcutil scenario. 
+//             if (context == null)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// 
+//             InternalDuplexBindingElement.AddDuplexFactorySupport(context, ref this.internalDuplexBindingElement);
+// 
+//             if (typeof(TChannel) == typeof(IOutputSessionChannel))
+//             {
+//                 return context.CanBuildInnerChannelFactory<IRequestSessionChannel>()
+//                     || context.CanBuildInnerChannelFactory<IRequestChannel>()
+//                     || context.CanBuildInnerChannelFactory<IDuplexSessionChannel>()
+//                     || context.CanBuildInnerChannelFactory<IDuplexChannel>();
+//             }
+//             else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
+//             {
+//                 return context.CanBuildInnerChannelFactory<IDuplexSessionChannel>()
+//                     || context.CanBuildInnerChannelFactory<IDuplexChannel>();
+//             }
+//             else if (typeof(TChannel) == typeof(IRequestSessionChannel))
+//             {
+//                 return context.CanBuildInnerChannelFactory<IRequestSessionChannel>()
+//                     || context.CanBuildInnerChannelFactory<IRequestChannel>();
+//             }
+// 
+//             return false;
 
-            InternalDuplexBindingElement.AddDuplexFactorySupport(context, ref this.internalDuplexBindingElement);
-
-            if (typeof(TChannel) == typeof(IOutputSessionChannel))
-            {
-                return context.CanBuildInnerChannelFactory<IRequestSessionChannel>()
-                    || context.CanBuildInnerChannelFactory<IRequestChannel>()
-                    || context.CanBuildInnerChannelFactory<IDuplexSessionChannel>()
-                    || context.CanBuildInnerChannelFactory<IDuplexChannel>();
-            }
-            else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
-            {
-                return context.CanBuildInnerChannelFactory<IDuplexSessionChannel>()
-                    || context.CanBuildInnerChannelFactory<IDuplexChannel>();
-            }
-            else if (typeof(TChannel) == typeof(IRequestSessionChannel))
-            {
-                return context.CanBuildInnerChannelFactory<IRequestSessionChannel>()
-                    || context.CanBuildInnerChannelFactory<IRequestChannel>();
-            }
-
-            return false;
-#else
-            throw new NotImplementedException();
-#endif
+             throw new NotImplementedException();
         }
 
-#if disabled
-        public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
-        {
-            if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// Not needed in dotnet-svcutil scenario. 
+//         public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
+//         {
+//             if (context == null)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// 
+//             this.VerifyTransportMode(context);
+//             this.SetSecuritySettings(context);
+// 
+// #pragma warning suppress 56506 // BindingContext guarantees BindingParameters is never null.
+//             IMessageFilterTable<EndpointAddress> table = context.BindingParameters.Find<IMessageFilterTable<EndpointAddress>>();
+// 
+//             InternalDuplexBindingElement.AddDuplexListenerSupport(context, ref this.internalDuplexBindingElement);
+// 
+//             if (typeof(TChannel) == typeof(IInputSessionChannel))
+//             {
+//                 ReliableChannelListenerBase<IInputSessionChannel> listener = null;
+// 
+//                 if (context.CanBuildInnerChannelListener<IReplySessionChannel>())
+//                 {
+//                     listener = new ReliableInputListenerOverReplySession(this, context);
+//                 }
+//                 else if (context.CanBuildInnerChannelListener<IReplyChannel>())
+//                 {
+//                     listener = new ReliableInputListenerOverReply(this, context);
+//                 }
+//                 else if (context.CanBuildInnerChannelListener<IDuplexSessionChannel>())
+//                 {
+//                     listener = new ReliableInputListenerOverDuplexSession(this, context);
+//                 }
+//                 else if (context.CanBuildInnerChannelListener<IDuplexChannel>())
+//                 {
+//                     listener = new ReliableInputListenerOverDuplex(this, context);
+//                 }
+// 
+//                 if (listener != null)
+//                 {
+//                     listener.LocalAddresses = table;
+//                     return (IChannelListener<TChannel>)(object)listener;
+//                 }
+//             }
+//             else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
+//             {
+//                 ReliableChannelListenerBase<IDuplexSessionChannel> listener = null;
+// 
+//                 if (context.CanBuildInnerChannelListener<IDuplexSessionChannel>())
+//                 {
+//                     listener = new ReliableDuplexListenerOverDuplexSession(this, context);
+//                 }
+//                 else if (context.CanBuildInnerChannelListener<IDuplexChannel>())
+//                 {
+//                     listener = new ReliableDuplexListenerOverDuplex(this, context);
+//                 }
+// 
+//                 if (listener != null)
+//                 {
+//                     listener.LocalAddresses = table;
+//                     return (IChannelListener<TChannel>)(object)listener;
+//                 }
+//             }
+//             else if (typeof(TChannel) == typeof(IReplySessionChannel))
+//             {
+//                 ReliableChannelListenerBase<IReplySessionChannel> listener = null;
+// 
+//                 if (context.CanBuildInnerChannelListener<IReplySessionChannel>())
+//                 {
+//                     listener = new ReliableReplyListenerOverReplySession(this, context);
+//                 }
+//                 else if (context.CanBuildInnerChannelListener<IReplyChannel>())
+//                 {
+//                     listener = new ReliableReplyListenerOverReply(this, context);
+//                 }
+// 
+//                 if (listener != null)
+//                 {
+//                     listener.LocalAddresses = table;
+//                     return (IChannelListener<TChannel>)(object)listener;
+//                 }
+//             }
+// 
+//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)));
+//         }
+// 
+//         public override bool CanBuildChannelListener<TChannel>(BindingContext context)
+//         {
+//             if (context == null)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+// 
+//             InternalDuplexBindingElement.AddDuplexListenerSupport(context, ref this.internalDuplexBindingElement);
+// 
+//             if (typeof(TChannel) == typeof(IInputSessionChannel))
+//             {
+//                 return context.CanBuildInnerChannelListener<IReplySessionChannel>()
+//                     || context.CanBuildInnerChannelListener<IReplyChannel>()
+//                     || context.CanBuildInnerChannelListener<IDuplexSessionChannel>()
+//                     || context.CanBuildInnerChannelListener<IDuplexChannel>();
+//             }
+//             else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
+//             {
+//                 return context.CanBuildInnerChannelListener<IDuplexSessionChannel>()
+//                     || context.CanBuildInnerChannelListener<IDuplexChannel>();
+//             }
+//             else if (typeof(TChannel) == typeof(IReplySessionChannel))
+//             {
+//                 return context.CanBuildInnerChannelListener<IReplySessionChannel>()
+//                     || context.CanBuildInnerChannelListener<IReplyChannel>();
+//             }
+// 
+//             return false;
+//         }
 
-            this.VerifyTransportMode(context);
-            this.SetSecuritySettings(context);
-
-#pragma warning suppress 56506 // BindingContext guarantees BindingParameters is never null.
-            IMessageFilterTable<EndpointAddress> table = context.BindingParameters.Find<IMessageFilterTable<EndpointAddress>>();
-
-            InternalDuplexBindingElement.AddDuplexListenerSupport(context, ref this.internalDuplexBindingElement);
-
-            if (typeof(TChannel) == typeof(IInputSessionChannel))
-            {
-                ReliableChannelListenerBase<IInputSessionChannel> listener = null;
-
-                if (context.CanBuildInnerChannelListener<IReplySessionChannel>())
-                {
-                    listener = new ReliableInputListenerOverReplySession(this, context);
-                }
-                else if (context.CanBuildInnerChannelListener<IReplyChannel>())
-                {
-                    listener = new ReliableInputListenerOverReply(this, context);
-                }
-                else if (context.CanBuildInnerChannelListener<IDuplexSessionChannel>())
-                {
-                    listener = new ReliableInputListenerOverDuplexSession(this, context);
-                }
-                else if (context.CanBuildInnerChannelListener<IDuplexChannel>())
-                {
-                    listener = new ReliableInputListenerOverDuplex(this, context);
-                }
-
-                if (listener != null)
-                {
-                    listener.LocalAddresses = table;
-                    return (IChannelListener<TChannel>)(object)listener;
-                }
-            }
-            else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
-            {
-                ReliableChannelListenerBase<IDuplexSessionChannel> listener = null;
-
-                if (context.CanBuildInnerChannelListener<IDuplexSessionChannel>())
-                {
-                    listener = new ReliableDuplexListenerOverDuplexSession(this, context);
-                }
-                else if (context.CanBuildInnerChannelListener<IDuplexChannel>())
-                {
-                    listener = new ReliableDuplexListenerOverDuplex(this, context);
-                }
-
-                if (listener != null)
-                {
-                    listener.LocalAddresses = table;
-                    return (IChannelListener<TChannel>)(object)listener;
-                }
-            }
-            else if (typeof(TChannel) == typeof(IReplySessionChannel))
-            {
-                ReliableChannelListenerBase<IReplySessionChannel> listener = null;
-
-                if (context.CanBuildInnerChannelListener<IReplySessionChannel>())
-                {
-                    listener = new ReliableReplyListenerOverReplySession(this, context);
-                }
-                else if (context.CanBuildInnerChannelListener<IReplyChannel>())
-                {
-                    listener = new ReliableReplyListenerOverReply(this, context);
-                }
-
-                if (listener != null)
-                {
-                    listener.LocalAddresses = table;
-                    return (IChannelListener<TChannel>)(object)listener;
-                }
-            }
-
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SR.Format(SR.ChannelTypeNotSupported, typeof(TChannel)));
-        }
-
-        public override bool CanBuildChannelListener<TChannel>(BindingContext context)
-        {
-            if (context == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-
-            InternalDuplexBindingElement.AddDuplexListenerSupport(context, ref this.internalDuplexBindingElement);
-
-            if (typeof(TChannel) == typeof(IInputSessionChannel))
-            {
-                return context.CanBuildInnerChannelListener<IReplySessionChannel>()
-                    || context.CanBuildInnerChannelListener<IReplyChannel>()
-                    || context.CanBuildInnerChannelListener<IDuplexSessionChannel>()
-                    || context.CanBuildInnerChannelListener<IDuplexChannel>();
-            }
-            else if (typeof(TChannel) == typeof(IDuplexSessionChannel))
-            {
-                return context.CanBuildInnerChannelListener<IDuplexSessionChannel>()
-                    || context.CanBuildInnerChannelListener<IDuplexChannel>();
-            }
-            else if (typeof(TChannel) == typeof(IReplySessionChannel))
-            {
-                return context.CanBuildInnerChannelListener<IReplySessionChannel>()
-                    || context.CanBuildInnerChannelListener<IReplyChannel>();
-            }
-
-            return false;
-        }
-#endif
         internal override bool IsMatch(BindingElement b)
         {
             if (b == null)

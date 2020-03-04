@@ -1,0 +1,18 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/Simple.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, tfmGlobalCoreapp10_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "references": [
+      "Newtonsoft.Json, {Newtonsoft.Json, *}"
+    ],
+    "targetFramework": "netcoreapp1.0",
+    "typeReuseMode": "Specified"
+  }
+}

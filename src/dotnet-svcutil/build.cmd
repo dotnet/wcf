@@ -2,7 +2,7 @@
 
 setlocal
 
-pushd %~dp0
+pushd %~dp0\src
 
 if not exist Packages call restore.cmd
 
@@ -14,7 +14,7 @@ set logParams=%logParams% /flp2:errorsonly;logfile=obj\%~n0.err
 if not exist obj\ md obj\
 
 :buildsln
-set runcmd=msbuild %logParams% Tools\build\master.msbuild /v:m %*
+set runcmd=msbuild %logParams% ..\tools\master.msbuild /v:m %*
 echo %runcmd%
 call %runcmd%
 

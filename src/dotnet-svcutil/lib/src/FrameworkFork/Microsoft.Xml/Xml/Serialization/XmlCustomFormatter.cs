@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlCustomFormatter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ElenaK</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace Microsoft.Xml.Serialization {
 
     using System;
@@ -13,34 +9,34 @@ namespace Microsoft.Xml.Serialization {
     using System.Diagnostics;
     using System.Text;
     using System.Collections;
-#if disabled
-    using System.Diagnostics.CodeAnalysis;
-    using System.Configuration;
-    using Microsoft.Xml.Serialization.Configuration;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//     using System.Diagnostics.CodeAnalysis;
+//     using System.Configuration;
+//     using Microsoft.Xml.Serialization.Configuration;
+
     /// <summary>
     ///   The <see cref="XmlCustomFormatter"/> class provides a set of static methods for converting
     ///   primitive type values to and from their XML string representations.</summary>
     internal class XmlCustomFormatter {
-#if disabled
-        private static DateTimeSerializationSection.DateTimeSerializationMode mode;
+// Not needed in dotnet-svcutil scenario. 
+//         private static DateTimeSerializationSection.DateTimeSerializationMode mode;
+// 
+//         static DateTimeSerializationSection.DateTimeSerializationMode Mode {
+//             // [SuppressMessage("Microsoft.Concurrency", "CA8001", Justification = "Reviewed for thread-safety")]
+//             get {
+//                 if (mode == DateTimeSerializationSection.DateTimeSerializationMode.Default) {
+//                     DateTimeSerializationSection section = PrivilegedConfigurationManager.GetSection(ConfigurationStrings.DateTimeSerializationSectionPath) as DateTimeSerializationSection;
+//                     if (section != null) {
+//                         mode = section.Mode;
+//                     }
+//                     else {
+//                         mode = DateTimeSerializationSection.DateTimeSerializationMode.Roundtrip;
+//                     }
+//                 }
+//                 return mode;
+//             }
+//         }
 
-        static DateTimeSerializationSection.DateTimeSerializationMode Mode {
-            // [SuppressMessage("Microsoft.Concurrency", "CA8001", Justification = "Reviewed for thread-safety")]
-            get {
-                if (mode == DateTimeSerializationSection.DateTimeSerializationMode.Default) {
-                    DateTimeSerializationSection section = PrivilegedConfigurationManager.GetSection(ConfigurationStrings.DateTimeSerializationSectionPath) as DateTimeSerializationSection;
-                    if (section != null) {
-                        mode = section.Mode;
-                    }
-                    else {
-                        mode = DateTimeSerializationSection.DateTimeSerializationMode.Roundtrip;
-                    }
-                }
-                return mode;
-            }
-        }
-#endif 
         private XmlCustomFormatter() {}
         internal static string FromDefaultValue(object value, string formatter) {
             if (value == null) return null;
@@ -82,15 +78,15 @@ namespace Microsoft.Xml.Serialization {
         }
 
         internal static string FromDateTime(DateTime value) {
-#if disabled
-            if (Mode == DateTimeSerializationSection.DateTimeSerializationMode.Local) {
-                return XmlConvert.ToString(value, "yyyy-MM-ddTHH:mm:ss.fffffffzzzzzz");
-            }
-            else {
-                // for mode DateTimeSerializationMode.Roundtrip and DateTimeSerializationMode.Default
-                return XmlConvert.ToString(value, XmlDateTimeSerializationMode.RoundtripKind);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (Mode == DateTimeSerializationSection.DateTimeSerializationMode.Local) {
+//                 return XmlConvert.ToString(value, "yyyy-MM-ddTHH:mm:ss.fffffffzzzzzz");
+//             }
+//             else {
+//                 // for mode DateTimeSerializationMode.Roundtrip and DateTimeSerializationMode.Default
+//                 return XmlConvert.ToString(value, XmlDateTimeSerializationMode.RoundtripKind);
+//             }
+
             return XmlConvert.ToString(value, XmlDateTimeSerializationMode.RoundtripKind);
         }
 
@@ -320,15 +316,15 @@ namespace Microsoft.Xml.Serialization {
         };
 
         internal static DateTime ToDateTime(string value) {
-#if disabled
-            if (Mode == DateTimeSerializationSection.DateTimeSerializationMode.Local) {
-                return ToDateTime(value, allDateTimeFormats);
-            }
-            else {
-                // for mode DateTimeSerializationMode.Roundtrip and DateTimeSerializationMode.Default
-                return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (Mode == DateTimeSerializationSection.DateTimeSerializationMode.Local) {
+//                 return ToDateTime(value, allDateTimeFormats);
+//             }
+//             else {
+//                 // for mode DateTimeSerializationMode.Roundtrip and DateTimeSerializationMode.Default
+//                 return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
+//             }
+
             return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
         }
 

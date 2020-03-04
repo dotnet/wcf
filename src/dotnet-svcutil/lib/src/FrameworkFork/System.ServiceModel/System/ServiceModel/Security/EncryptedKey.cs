@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Security
 {
@@ -38,9 +37,9 @@ namespace System.ServiceModel.Security
         {
             this.encryptionMethod.Init();
             this.state = EncryptionState.New;
-#if disabled
-            this.tokenSerializer = new KeyInfoSerializer(false);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.tokenSerializer = new KeyInfoSerializer(false);
+
         }
 
         public string Encoding
@@ -179,19 +178,19 @@ namespace System.ServiceModel.Security
             }
         }
 
-#if disabled
-        public SecurityTokenSerializer SecurityTokenSerializer
-        {
-            get
-            {
-                return this.tokenSerializer;
-            }
-            set
-            {
-                this.tokenSerializer = value ?? new KeyInfoSerializer(false);
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public SecurityTokenSerializer SecurityTokenSerializer
+//         {
+//             get
+//             {
+//                 return this.tokenSerializer;
+//             }
+//             set
+//             {
+//                 this.tokenSerializer = value ?? new KeyInfoSerializer(false);
+//             }
+//         }
+
         protected abstract void ForceEncryption();
 
         protected virtual void ReadAdditionalAttributes(XmlDictionaryReader reader)
@@ -289,35 +288,34 @@ namespace System.ServiceModel.Security
 
         private SecurityKeyIdentifier ReadGenericXmlSecurityKeyIdentifier(XmlDictionaryReader localReader, Exception previousException)
         {
-#if disabled
-            if (!localReader.IsStartElement(XD.XmlSignatureDictionary.KeyInfo, XD.XmlSignatureDictionary.Namespace))
-            {
-                return null;
-            }
+// Not needed in dotnet-svcutil scenario. 
+//             if (!localReader.IsStartElement(XD.XmlSignatureDictionary.KeyInfo, XD.XmlSignatureDictionary.Namespace))
+//             {
+//                 return null;
+//             }
+// 
+//             localReader.ReadStartElement(XD.XmlSignatureDictionary.KeyInfo, XD.XmlSignatureDictionary.Namespace);
+//             SecurityKeyIdentifier keyIdentifier = new SecurityKeyIdentifier();
+// 
+//             if (localReader.IsStartElement())
+//             {
+//                 SecurityKeyIdentifierClause clause = null;
+//                 string strId = localReader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+//                 XmlDocument doc = new XmlDocument();
+//                 XmlElement keyIdentifierReferenceXml = (doc.ReadNode(localReader) as XmlElement);
+//                 clause = new GenericXmlSecurityKeyIdentifierClause(keyIdentifierReferenceXml);
+//                 if (!string.IsNullOrEmpty(strId))
+//                     clause.Id = strId;
+//                 keyIdentifier.Add(clause);
+//             }
+// 
+//             if (keyIdentifier.Count == 0)
+//                 throw previousException;
+// 
+//             localReader.ReadEndElement();
+//             return keyIdentifier;
 
-            localReader.ReadStartElement(XD.XmlSignatureDictionary.KeyInfo, XD.XmlSignatureDictionary.Namespace);
-            SecurityKeyIdentifier keyIdentifier = new SecurityKeyIdentifier();
-
-            if (localReader.IsStartElement())
-            {
-                SecurityKeyIdentifierClause clause = null;
-                string strId = localReader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
-                XmlDocument doc = new XmlDocument();
-                XmlElement keyIdentifierReferenceXml = (doc.ReadNode(localReader) as XmlElement);
-                clause = new GenericXmlSecurityKeyIdentifierClause(keyIdentifierReferenceXml);
-                if (!string.IsNullOrEmpty(strId))
-                    clause.Id = strId;
-                keyIdentifier.Add(clause);
-            }
-
-            if (keyIdentifier.Count == 0)
-                throw previousException;
-
-            localReader.ReadEndElement();
-            return keyIdentifier;
-#else
             throw new NotImplementedException();
-#endif
         }
 
         protected virtual void WriteAdditionalAttributes(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)

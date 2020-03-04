@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel
 {
@@ -33,17 +32,16 @@ namespace System.ServiceModel
 
         WSHttpContextBinding(WSHttpBinding wsHttpBinding)
         {
-#if disabled // TODO: verify
-            WSHttpContextBindingPropertyTransferHelper helper = new WSHttpContextBindingPropertyTransferHelper();
-            helper.InitializeFrom(wsHttpBinding);
-            helper.SetBindingElementType(typeof(WSHttpContextBinding));
-            helper.ApplyConfiguration(this);
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             WSHttpContextBindingPropertyTransferHelper helper = new WSHttpContextBindingPropertyTransferHelper();
+//             helper.InitializeFrom(wsHttpBinding);
+//             helper.SetBindingElementType(typeof(WSHttpContextBinding));
+//             helper.ApplyConfiguration(this);
+
             this.CloseTimeout = wsHttpBinding.CloseTimeout;
             this.OpenTimeout = wsHttpBinding.OpenTimeout;
             this.ReceiveTimeout = wsHttpBinding.ReceiveTimeout;
             this.SendTimeout = wsHttpBinding.SendTimeout;
-#endif
         }
 
         [DefaultValue(null)]
@@ -144,30 +142,30 @@ namespace System.ServiceModel
 
             return binding != null;
         }
-#if disabled // config
-        void ApplyConfiguration(string configurationName)
-        {
-            WSHttpContextBindingCollectionElement section = WSHttpContextBindingCollectionElement.GetBindingCollectionElement();
-            WSHttpContextBindingElement element = section.Bindings[configurationName];
-            element.ApplyConfiguration(this);
-        }
-        class WSHttpContextBindingPropertyTransferHelper : WSHttpBindingElement
-        {
-            Type bindingElementType = typeof(WSHttpBinding);
+// Not needed in dotnet-svcutil scenario. Config not available on DNX
+//         void ApplyConfiguration(string configurationName)
+//         {
+//             WSHttpContextBindingCollectionElement section = WSHttpContextBindingCollectionElement.GetBindingCollectionElement();
+//             WSHttpContextBindingElement element = section.Bindings[configurationName];
+//             element.ApplyConfiguration(this);
+//         }
+//         class WSHttpContextBindingPropertyTransferHelper : WSHttpBindingElement
+//         {
+//             Type bindingElementType = typeof(WSHttpBinding);
+// 
+//             protected override Type BindingElementType
+//             {
+//                 get
+//                 {
+//                     return this.bindingElementType;
+//                 }
+//             }
+// 
+//             public void SetBindingElementType(Type bindingElementType)
+//             {
+//                 this.bindingElementType = bindingElementType;
+//             }
+//         }
 
-            protected override Type BindingElementType
-            {
-                get
-                {
-                    return this.bindingElementType;
-                }
-            }
-
-            public void SetBindingElementType(Type bindingElementType)
-            {
-                this.bindingElementType = bindingElementType;
-            }
-        }
-#endif
     }
 }

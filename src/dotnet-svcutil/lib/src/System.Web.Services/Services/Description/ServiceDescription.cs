@@ -1,8 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="ServiceDescription.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using Microsoft.Xml.Serialization;
 using Microsoft.Xml.Schema;
@@ -375,9 +372,9 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public static ServiceDescription Read(string fileName, bool validate)
         {
-#if disabled
-            StreamReader reader = new StreamReader(fileName, Encoding.Default, true);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             StreamReader reader = new StreamReader(fileName, Encoding.Default, true);
+
             StreamReader reader = new StreamReader(File.OpenRead(fileName), detectEncodingFromByteOrderMarks: true);
             try
             {
@@ -3184,11 +3181,10 @@ namespace System.Web.Services.Description
                 }
                 catch (Exception e)
                 {
-#if disabled
-                    if (e is ThreadAbortException || e is StackOverflowException || e is OutOfMemoryException)
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                     if (e is ThreadAbortException || e is StackOverflowException || e is OutOfMemoryException)
+
                     if (e is OutOfMemoryException)
-#endif
                     {
                         throw;
                     }

@@ -1,24 +1,24 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel
 {
     using System;
-#if disabled
-    using System.DirectoryServices;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//     using System.DirectoryServices;
+
     using System.IdentityModel.Claims;
     using Microsoft.Xml;
 
     public class SpnEndpointIdentity : EndpointIdentity
     {
         private static TimeSpan s_spnLookupTime = TimeSpan.FromMinutes(1);
-#if disabled
-        private SecurityIdentifier _spnSid;
+// Not needed in dotnet-svcutil scenario. 
+//         private SecurityIdentifier _spnSid;
+// 
+//         // Double-checked locking pattern requires volatile for read/write synchronization
+//         private static volatile DirectoryEntry _directoryEntry;
 
-        // Double-checked locking pattern requires volatile for read/write synchronization
-        private static volatile DirectoryEntry _directoryEntry;
-#endif
         // Double-checked locking pattern requires volatile for read/write synchronization
         private volatile bool hasSpnSidBeenComputed;
 
@@ -70,91 +70,90 @@ namespace System.ServiceModel
 
             writer.WriteElementString(XD.AddressingDictionary.Spn, XD.AddressingDictionary.IdentityExtensionNamespace, (string)this.IdentityClaim.Resource);
         }
-#if disabled
-        internal SecurityIdentifier GetSpnSid()
-        {
-            Fx.Assert(ClaimTypes.Spn.Equals(this.IdentityClaim.ClaimType) || ClaimTypes.Dns.Equals(this.IdentityClaim.ClaimType), "");
-            if (!hasSpnSidBeenComputed)
-            {
-                lock (thisLock)
-                {
-                    if (!hasSpnSidBeenComputed)
-                    {
-                        string spn = null;
-                        try
-                        {
+// Not needed in dotnet-svcutil scenario. 
+//         internal SecurityIdentifier GetSpnSid()
+//         {
+//             Fx.Assert(ClaimTypes.Spn.Equals(this.IdentityClaim.ClaimType) || ClaimTypes.Dns.Equals(this.IdentityClaim.ClaimType), "");
+//             if (!hasSpnSidBeenComputed)
+//             {
+//                 lock (thisLock)
+//                 {
+//                     if (!hasSpnSidBeenComputed)
+//                     {
+//                         string spn = null;
+//                         try
+//                         {
+// 
+//                             if (ClaimTypes.Dns.Equals(this.IdentityClaim.ClaimType))
+//                             {
+//                                 spn = "host/" + (string)this.IdentityClaim.Resource;
+//                             }
+//                             else
+//                             {
+//                                 spn = (string)this.IdentityClaim.Resource;
+//                             }
+//                             // canonicalize SPN for use in LDAP filter following RFC 1960:
+//                             if (spn != null)
+//                             {
+//                                 spn = spn.Replace("*", @"\*").Replace("(", @"\(").Replace(")", @"\)");
+//                             }
+// 
+//                             DirectoryEntry de = GetDirectoryEntry();
+//                             using (DirectorySearcher searcher = new DirectorySearcher(de))
+//                             {
+//                                 searcher.CacheResults = true;
+//                                 searcher.ClientTimeout = SpnLookupTime;
+//                                 searcher.Filter = "(&(objectCategory=Computer)(objectClass=computer)(servicePrincipalName=" + spn + "))";
+//                                 searcher.PropertiesToLoad.Add("objectSid");
+//                                 SearchResult result = searcher.FindOne();
+//                                 if (result != null)
+//                                 {
+//                                     byte[] sidBinaryForm = (byte[])result.Properties["objectSid"][0];
+//                                     this._spnSid = new SecurityIdentifier(sidBinaryForm, 0);
+//                                 }
+//                                 else
+//                                 {
+//                                     SecurityTraceRecordHelper.TraceSpnToSidMappingFailure(spn, null);
+//                                 }
+//                             }
+//                         }
+// #pragma warning suppress 56500 // covered by FxCOP
+//                         catch (Exception e)
+//                         {
+//                             // Always immediately rethrow fatal exceptions.
+//                             if (Fx.IsFatal(e)) throw;
+// 
+//                             if (e is NullReferenceException || e is SEHException)
+//                                 throw;
+// 
+//                             SecurityTraceRecordHelper.TraceSpnToSidMappingFailure(spn, e);
+//                         }
+//                         finally
+//                         {
+//                             hasSpnSidBeenComputed = true;
+//                         }
+//                     }
+//                 }
+//             }
+//             return this._spnSid;
+//         }
+// 
+//         static DirectoryEntry GetDirectoryEntry()
+//         {
+//             if (_directoryEntry == null)
+//             {
+//                 lock (typeLock)
+//                 {
+//                     if (_directoryEntry == null)
+//                     {
+//                         DirectoryEntry tmp = new DirectoryEntry(@"LDAP://" + SecurityUtils.GetPrimaryDomain());
+//                         tmp.RefreshCache(new string[] { "name" });
+//                         _directoryEntry = tmp;
+//                     }
+//                 }
+//             }
+//             return _directoryEntry;
+//         }
 
-                            if (ClaimTypes.Dns.Equals(this.IdentityClaim.ClaimType))
-                            {
-                                spn = "host/" + (string)this.IdentityClaim.Resource;
-                            }
-                            else
-                            {
-                                spn = (string)this.IdentityClaim.Resource;
-                            }
-                            // canonicalize SPN for use in LDAP filter following RFC 1960:
-                            if (spn != null)
-                            {
-                                spn = spn.Replace("*", @"\*").Replace("(", @"\(").Replace(")", @"\)");
-                            }
-
-                            DirectoryEntry de = GetDirectoryEntry();
-                            using (DirectorySearcher searcher = new DirectorySearcher(de))
-                            {
-                                searcher.CacheResults = true;
-                                searcher.ClientTimeout = SpnLookupTime;
-                                searcher.Filter = "(&(objectCategory=Computer)(objectClass=computer)(servicePrincipalName=" + spn + "))";
-                                searcher.PropertiesToLoad.Add("objectSid");
-                                SearchResult result = searcher.FindOne();
-                                if (result != null)
-                                {
-                                    byte[] sidBinaryForm = (byte[])result.Properties["objectSid"][0];
-                                    this._spnSid = new SecurityIdentifier(sidBinaryForm, 0);
-                                }
-                                else
-                                {
-                                    SecurityTraceRecordHelper.TraceSpnToSidMappingFailure(spn, null);
-                                }
-                            }
-                        }
-#pragma warning suppress 56500 // covered by FxCOP
-                        catch (Exception e)
-                        {
-                            // Always immediately rethrow fatal exceptions.
-                            if (Fx.IsFatal(e)) throw;
-
-                            if (e is NullReferenceException || e is SEHException)
-                                throw;
-
-                            SecurityTraceRecordHelper.TraceSpnToSidMappingFailure(spn, e);
-                        }
-                        finally
-                        {
-                            hasSpnSidBeenComputed = true;
-                        }
-                    }
-                }
-            }
-            return this._spnSid;
-        }
-
-        static DirectoryEntry GetDirectoryEntry()
-        {
-            if (_directoryEntry == null)
-            {
-                lock (typeLock)
-                {
-                    if (_directoryEntry == null)
-                    {
-                        DirectoryEntry tmp = new DirectoryEntry(@"LDAP://" + SecurityUtils.GetPrimaryDomain());
-                        tmp.RefreshCache(new string[] { "name" });
-                        _directoryEntry = tmp;
-                    }
-                }
-            }
-            return _directoryEntry;
-        }
-#endif
     }
 }
-

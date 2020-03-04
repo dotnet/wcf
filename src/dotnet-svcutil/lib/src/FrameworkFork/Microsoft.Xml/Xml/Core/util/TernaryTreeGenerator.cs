@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="TernaryTreeGenerator.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace TernaryTreeGenerator {
     using System;
@@ -199,12 +195,12 @@ namespace TernaryTreeGenerator {
 
             do {
 
-#if disabled
-                // Only ASCII characters are allowed
-                if (charToAdd > 'z') {
-                    Console.WriteLine("Only ASCII characters are allowed");
-                }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 // Only ASCII characters are allowed
+//                 if (charToAdd > 'z') {
+//                     Console.WriteLine("Only ASCII characters are allowed");
+//                 }
+
                 charInTheTree = nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte];
 
                 //Console.Write("charToAdd: {0},charInTheTree: {1}, nodePos: {2}, endNodePos {3}, ", Convert.ToChar(charToAdd), Convert.ToChar(charInTheTree), nodePos, endNodePos);
@@ -449,29 +445,29 @@ namespace TernaryTreeGenerator {
         }
     }
 
-#if disabled
-    /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="XsltableMain"]/*' />
-    public class XsltableMain {
-        /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="XsltableMain.Main"]/*' />
-        public static void Main() {
-            try {
-                FileStream fs = new FileStream("..\\..\\..\\HtmlTernaryTree.cs", FileMode.Create, FileAccess.Write, FileShare.Read);
-                StreamWriter streamWriter = new StreamWriter(fs);
-                TernaryTreeRW ternaryTreeRW = new TernaryTreeRW();
-                ternaryTreeRW.OutputFileHeader(streamWriter);
-                ternaryTreeRW.GenerateHtmlElementTable();
-                ternaryTreeRW.dumpTree(streamWriter, "htmlElements");
-                ternaryTreeRW = new TernaryTreeRW();
-                ternaryTreeRW.GenerateHtmlAttributeTable();
-                ternaryTreeRW.dumpTree(streamWriter, "htmlAttributes");
-                ternaryTreeRW.OutputFileFooter(streamWriter);
-                fs.Flush();
-                fs.Close();
-            } catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
+// Not needed in dotnet-svcutil scenario. 
+//     /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="XsltableMain"]/*' />
+//     public class XsltableMain {
+//         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="XsltableMain.Main"]/*' />
+//         public static void Main() {
+//             try {
+//                 FileStream fs = new FileStream("..\\..\\..\\HtmlTernaryTree.cs", FileMode.Create, FileAccess.Write, FileShare.Read);
+//                 StreamWriter streamWriter = new StreamWriter(fs);
+//                 TernaryTreeRW ternaryTreeRW = new TernaryTreeRW();
+//                 ternaryTreeRW.OutputFileHeader(streamWriter);
+//                 ternaryTreeRW.GenerateHtmlElementTable();
+//                 ternaryTreeRW.dumpTree(streamWriter, "htmlElements");
+//                 ternaryTreeRW = new TernaryTreeRW();
+//                 ternaryTreeRW.GenerateHtmlAttributeTable();
+//                 ternaryTreeRW.dumpTree(streamWriter, "htmlAttributes");
+//                 ternaryTreeRW.OutputFileFooter(streamWriter);
+//                 fs.Flush();
+//                 fs.Close();
+//             } catch (Exception ex) {
+//                 Console.WriteLine(ex.Message);
+//             }
+// 
+//         }
+//     }
 
-        }
-    }
-#endif
 }

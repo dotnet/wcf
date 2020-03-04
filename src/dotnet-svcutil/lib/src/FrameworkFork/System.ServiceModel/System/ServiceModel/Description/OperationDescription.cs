@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,11 +80,10 @@ namespace System.ServiceModel.Description
             get { return this._protectionLevel; }
             set
             {
-#if disabled
-                if (!ProtectionLevelHelper.IsDefined(value))
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                 if (!ProtectionLevelHelper.IsDefined(value))
+
                 if(!(value == ProtectionLevel.None || value == ProtectionLevel.Sign || value == ProtectionLevel.EncryptAndSign))
-#endif
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 this._protectionLevel = value;
                 this._hasProtectionLevel = true;

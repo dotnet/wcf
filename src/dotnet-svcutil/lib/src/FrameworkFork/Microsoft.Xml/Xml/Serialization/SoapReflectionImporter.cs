@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="SoapReflectionImporter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ElenaK</owner>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Serialization {
     using Microsoft.Xml.Schema;
@@ -574,11 +570,11 @@ namespace Microsoft.Xml.Serialization {
                     mappings[i] = mapping;
                 }
                 catch (Exception e) {
-#if disabled
-                    if (/*e is ThreadAbortException || e is StackOverflowException ||*/ e is OutOfMemoryException) {
-                        throw;
-                    }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                     if (/*e is ThreadAbortException || e is StackOverflowException ||*/ e is OutOfMemoryException) {
+//                         throw;
+//                     }
+
                     if (e is OutOfMemoryException) {
                         throw;
                     }

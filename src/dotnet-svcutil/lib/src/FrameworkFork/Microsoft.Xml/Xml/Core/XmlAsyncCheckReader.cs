@@ -1,4 +1,6 @@
-﻿
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -68,9 +70,9 @@ namespace Microsoft.Xml {
                 else {
                     settings = new XmlReaderSettings();
                 }
-#if disabled
-                settings.Async = true;
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//                 settings.Async = true;
+
                 settings.ReadOnly = true;
                 return settings;
             }
