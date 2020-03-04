@@ -1,8 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// <copyright company="Microsoft">
-//   Copyright (C) Microsoft Corporation. All Rights Reserved.
-// </copyright>
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Reflection;
@@ -17,10 +14,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         static Type[] attrsToRemove = new Type[]
                     {
-#if disabled
-                        typeof(DesignerCategoryAttribute),
-                        typeof(SerializableAttribute),
-#endif
                         typeof(TransactionFlowAttribute),
                     };
 

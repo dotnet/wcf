@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 // <OWNER>petes</OWNER>
 namespace Microsoft.CodeDom {
 

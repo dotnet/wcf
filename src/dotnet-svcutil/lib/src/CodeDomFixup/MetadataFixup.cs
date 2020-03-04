@@ -1,8 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// <copyright company="Microsoft">
-//   Copyright (C) Microsoft Corporation. All Rights Reserved.
-// </copyright>
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,10 +14,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             return new IFixup[]
                 {
-#if disabled
-                    new NoDatasetFixup(importer),
-                    new FaultSerializerFixup(importer)
-#endif
+                    // No PreFixups for now.
                 };
         }
         public static IFixup[] GetPostFixups(WsdlImporter importer, Collection<ServiceEndpoint> endpoints, Collection<Binding> bindings, Collection<ContractDescription> contracts)

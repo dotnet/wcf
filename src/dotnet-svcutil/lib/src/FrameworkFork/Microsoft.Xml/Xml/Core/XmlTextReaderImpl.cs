@@ -1,10 +1,6 @@
-﻿
-//------------------------------------------------------------------------------
-// <copyright file="XmlTextReaderImpl.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 
 using System;
 using System.IO;
@@ -2827,15 +2823,15 @@ namespace Microsoft.Xml {
                 ps.baseUri = tmpResolver.ResolveUri( null, url );
                 ps.baseUriStr = ps.baseUri.ToString();
             }
-#if disabled
-            try {
-                CompressedStack.Run( compressedStack, new ContextCallback( OpenUrlDelegate ), tmpResolver );
-            }
-            catch {
-                SetErrorState();
-                throw;
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             try {
+//                 CompressedStack.Run( compressedStack, new ContextCallback( OpenUrlDelegate ), tmpResolver );
+//             }
+//             catch {
+//                 SetErrorState();
+//                 throw;
+//             }
+
             if ( ps.stream == null ) {
                 ThrowWithoutLineInfo( ResXml.Xml_CannotResolveUrl, ps.baseUriStr );
             }
@@ -8688,4 +8684,3 @@ namespace Microsoft.Xml {
 
     }
 }
-

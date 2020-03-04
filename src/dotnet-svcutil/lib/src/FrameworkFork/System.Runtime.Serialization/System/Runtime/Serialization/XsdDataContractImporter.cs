@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
  
 namespace System.Runtime.Serialization
 {
@@ -231,12 +230,12 @@ namespace System.Runtime.Serialization
 
         void InternalImport(XmlSchemaSet schemas, ICollection<XmlQualifiedName> typeNames, ICollection<XmlSchemaElement> elements, XmlQualifiedName[] elementTypeNames/*filled on return*/)
         {
-#if disabled
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-                TraceUtility.Trace(TraceEventType.Information, TraceCode.XsdImportBegin, SR.Format(SR.TraceCodeXsdImportBegin));
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticUtility.ShouldTraceInformation)
+//             {
+//                 TraceUtility.Trace(TraceEventType.Information, TraceCode.XsdImportBegin, SR.Format(SR.TraceCodeXsdImportBegin));
+//             }
+
             DataContractSet oldValue = (dataContractSet == null) ? null : new DataContractSet(dataContractSet);
             try
             {
@@ -256,12 +255,12 @@ namespace System.Runtime.Serialization
                 TraceImportError(ex);
                 throw;
             }
-#if disabled
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-                TraceUtility.Trace(TraceEventType.Information, TraceCode.XsdImportEnd, SR.Format(SR.TraceCodeXsdImportEnd));
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticUtility.ShouldTraceInformation)
+//             {
+//                 TraceUtility.Trace(TraceEventType.Information, TraceCode.XsdImportEnd, SR.Format(SR.TraceCodeXsdImportEnd));
+//             }
+
         }
 
         bool ImportXmlDataType
@@ -274,12 +273,12 @@ namespace System.Runtime.Serialization
 
         void TraceImportError(Exception exception)
         {
-#if disabled
-            if (DiagnosticUtility.ShouldTraceError)
-            {
-                TraceUtility.Trace(TraceEventType.Error, TraceCode.XsdImportError, SR.Format(SR.TraceCodeXsdImportError), null, exception);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticUtility.ShouldTraceError)
+//             {
+//                 TraceUtility.Trace(TraceEventType.Error, TraceCode.XsdImportError, SR.Format(SR.TraceCodeXsdImportError), null, exception);
+//             }
+
         }
 
         bool InternalCanImport(XmlSchemaSet schemas, ICollection<XmlQualifiedName> typeNames, ICollection<XmlSchemaElement> elements, XmlQualifiedName[] elementTypeNames)

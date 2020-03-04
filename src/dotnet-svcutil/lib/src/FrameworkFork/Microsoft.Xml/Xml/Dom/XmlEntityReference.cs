@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlEntityReference.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ionv</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 // <code>EntityReference</code> objects may be inserted into the structure 
 // model when an entity reference is in the source document, or when the user 

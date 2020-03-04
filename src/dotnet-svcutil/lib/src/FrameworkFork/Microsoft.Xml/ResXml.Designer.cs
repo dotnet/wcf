@@ -43,7 +43,7 @@ namespace Microsoft.Xml {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Tools.ServiceModel.Svcutil.OpenSource.Microsoft.Xml.ResXml", typeof(ResXml).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Tools.ServiceModel.Svcutil.FrameworkFork.Microsoft.Xml.ResXml", typeof(ResXml).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

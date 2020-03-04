@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
  
 namespace System.ServiceModel.Description
 {
@@ -202,12 +201,12 @@ namespace System.ServiceModel.Description
 
         static CustomBinding CreateNamedPipeBinding()
         {
-#if disabled // TODO: should we support this?
-            CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.NamedPipeBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
-            NamedPipeTransportBindingElement pipeTransport = new NamedPipeTransportBindingElement();
-            binding.Elements.Add(pipeTransport);
-            return binding;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.NamedPipeBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
+//             NamedPipeTransportBindingElement pipeTransport = new NamedPipeTransportBindingElement();
+//             binding.Elements.Add(pipeTransport);
+//             return binding;
+
             throw new NotImplementedException();
         }
 

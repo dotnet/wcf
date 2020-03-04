@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://mycustomcustomernamespace.com" elementFormDefault="qualified" targetNamespace="http://mycustomcustomernamespace.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Customer_Name" nillable="true" type="xs:string" />
+</xs:schema>

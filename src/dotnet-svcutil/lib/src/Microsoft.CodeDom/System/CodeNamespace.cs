@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="CodeNamespace.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom {
 
@@ -91,9 +86,9 @@ namespace Microsoft.CodeDom {
             Name = name;
         }
 
-        // TODO (miguell)
-        //private CodeNamespace(SerializationInfo info, StreamingContext context) {
-        //}
+// Not needed in dotnet-svcutil scenario.         
+//         private CodeNamespace(SerializationInfo info, StreamingContext context) {
+//         }
 
         /// <devdoc>
         ///    <para>

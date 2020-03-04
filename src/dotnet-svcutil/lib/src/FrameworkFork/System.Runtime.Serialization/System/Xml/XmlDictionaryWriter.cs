@@ -1,7 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-//------------------------------------------------------------
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.IO;
@@ -593,9 +591,9 @@ namespace Microsoft.Xml
             }
         }
 
-#if disabled
-        public virtual void Close() { }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public virtual void Close() { }
+
         private class XmlWrappedWriter : XmlDictionaryWriter
         {
             private XmlWriter _writer;

@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="IndentTextWriter.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom.Compiler {
 
@@ -113,7 +108,6 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Closes the document being written to.
         ///    </para>
         /// </devdoc>
-        // TODO (miguell)
         //public override void Close() {
         //    writer.Close();
         //}

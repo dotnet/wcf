@@ -1,6 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel.Description
 {
     using System;
@@ -166,18 +165,18 @@ namespace System.ServiceModel.Description
 
         void TraceImportInformation(OperationDescription operation)
         {
-#if disabled
-            if (DiagnosticUtility.ShouldTraceInformation)
-            {
-                Dictionary<String, String> ht = new Dictionary<string, string>(2)
-                {
-                    { "Operation", operation.Name },
-                    { "Format", CurrentSchemaImporter.GetFormatName() }
-                };
-                TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.CannotBeImportedInCurrentFormat,
-                    SR.TraceCodeCannotBeImportedInCurrentFormat, new DictionaryTraceRecord(ht), null, null);
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             if (DiagnosticUtility.ShouldTraceInformation)
+//             {
+//                 Dictionary<String, String> ht = new Dictionary<string, string>(2)
+//                 {
+//                     { "Operation", operation.Name },
+//                     { "Format", CurrentSchemaImporter.GetFormatName() }
+//                 };
+//                 TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.CannotBeImportedInCurrentFormat,
+//                     SR.TraceCodeCannotBeImportedInCurrentFormat, new DictionaryTraceRecord(ht), null, null);
+//             }
+
         }
 
         void ImportMessageContract()

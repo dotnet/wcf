@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="CompilerInfo.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom.Compiler {
     using System;
@@ -20,10 +15,10 @@ namespace Microsoft.CodeDom.Compiler {
         internal String[] _compilerLanguages; // This can never by null
         internal String[] _compilerExtensions; // This can never by null
         internal IDictionary<string, string> _providerOptions;  // This can never be null
-#if disabled
-        internal String configFileName;
-        internal int configFileLineNumber;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         internal String configFileName;
+//         internal int configFileLineNumber;
+
 
         private Type type;
         
@@ -45,16 +40,16 @@ namespace Microsoft.CodeDom.Compiler {
                             type = Type.GetType(_codeDomProviderTypeName);
                             if (type == null) {
                                 throw new ConfigurationErrorsException(SRCodeDom.GetString(SRCodeDom.Unable_To_Locate_Type, _codeDomProviderTypeName));
-#if disabled
-                                if( configFileName == null) {
-                                throw new ConfigurationErrorsException(SR.GetString(SR.Unable_To_Locate_Type, 
-                                                                      _codeDomProviderTypeName, string.Empty, 0));
-                                }
-                                else {
-                                    throw new ConfigurationErrorsException(SR.GetString(SR.Unable_To_Locate_Type,
-                                                                      _codeDomProviderTypeName), configFileName, configFileLineNumber);
-                                }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                                 if( configFileName == null) {
+//                                 throw new ConfigurationErrorsException(SR.GetString(SR.Unable_To_Locate_Type, 
+//                                                                       _codeDomProviderTypeName, string.Empty, 0));
+//                                 }
+//                                 else {
+//                                     throw new ConfigurationErrorsException(SR.GetString(SR.Unable_To_Locate_Type,
+//                                                                       _codeDomProviderTypeName), configFileName, configFileLineNumber);
+//                                 }
+
                             }
                         }                                                        
                     }
@@ -176,4 +171,3 @@ namespace Microsoft.CodeDom.Compiler {
         }
     }
 }
-

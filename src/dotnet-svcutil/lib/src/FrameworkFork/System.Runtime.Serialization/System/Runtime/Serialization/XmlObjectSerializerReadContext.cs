@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.Runtime.Serialization
 {
@@ -12,11 +12,11 @@ namespace System.Runtime.Serialization
     using Microsoft.Xml.Serialization;
     using System.Security;
     using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
-#if disabled
-#if !NET_NATIVE
-    using ExtensionDataObject = System.Object;
-#endif
-#endif
+// Not needed in dotnet-svcutil scenario. 
+// #if !NET_NATIVE
+//     using ExtensionDataObject = System.Object;
+// #endif
+
 
 #if USE_REFEMIT || NET_NATIVE
     public class XmlObjectSerializerReadContext : XmlObjectSerializerContext

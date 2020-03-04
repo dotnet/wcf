@@ -1,4 +1,6 @@
-﻿using System.IO;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+using System.IO;
 using System.Reflection;
 
 namespace Microsoft.Xml {

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.IO;
 using System.Runtime;
@@ -54,15 +54,15 @@ namespace System.ServiceModel.Dispatcher
             WriteEndWrapperIfNecessary(writer);
         }
 
-#if disabled
-        internal async Task SerializeAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
-        {
-            Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue);
-            var streamProvider = new OperationStreamProvider(streamValue);
-            await StreamFormatterHelper.WriteValueAsync(writer, streamProvider);
-            await WriteEndWrapperIfNecessaryAsync(writer);
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         internal async Task SerializeAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
+//         {
+//             Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue);
+//             var streamProvider = new OperationStreamProvider(streamValue);
+//             await StreamFormatterHelper.WriteValueAsync(writer, streamProvider);
+//             await WriteEndWrapperIfNecessaryAsync(writer);
+//         }
+
 
         private Stream GetStreamAndWriteStartWrapperIfNecessary(XmlDictionaryWriter writer, object[] parameters, object returnValue)
         {
@@ -75,18 +75,18 @@ namespace System.ServiceModel.Dispatcher
             return streamValue;
         }
 
-#if disabled
-        private async Task<Stream> GetStreamAndWriteStartWrapperIfNecessaryAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
-        {
-            Stream streamValue = GetStreamValue(parameters, returnValue);
-            if (streamValue == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
-            if (WrapperName != null)
-                await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace);
-            await writer.WriteStartElementAsync(null, PartName, PartNamespace);
-            return streamValue;
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         private async Task<Stream> GetStreamAndWriteStartWrapperIfNecessaryAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
+//         {
+//             Stream streamValue = GetStreamValue(parameters, returnValue);
+//             if (streamValue == null)
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
+//             if (WrapperName != null)
+//                 await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace);
+//             await writer.WriteStartElementAsync(null, PartName, PartNamespace);
+//             return streamValue;
+//         }
+
 
         private void WriteEndWrapperIfNecessary(XmlDictionaryWriter writer)
         {

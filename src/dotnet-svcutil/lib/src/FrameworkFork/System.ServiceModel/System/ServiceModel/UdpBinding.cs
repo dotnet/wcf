@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel
 {
@@ -23,25 +22,25 @@ namespace System.ServiceModel
             this.udpTransport = new UdpTransportBindingElement();
         }
 
-#if disabled
-        public UdpBinding(string configurationName)
-            : this()
-        {
-            UdpBindingCollectionElement section = UdpBindingCollectionElement.GetBindingCollectionElement();
-            UdpBindingElement element = section.Bindings[configurationName];
-            if (element == null)
-            {
-                throw FxTrace.Exception.AsError(new ConfigurationErrorsException(
-                    SR.Format(SR.ConfigInvalidBindingConfigurationName,
-                    configurationName,
-                    UdpTransportConfigurationStrings.UdpBindingElementName)));
-            }
-            else
-            {
-                element.ApplyConfiguration(this);
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public UdpBinding(string configurationName)
+//             : this()
+//         {
+//             UdpBindingCollectionElement section = UdpBindingCollectionElement.GetBindingCollectionElement();
+//             UdpBindingElement element = section.Bindings[configurationName];
+//             if (element == null)
+//             {
+//                 throw FxTrace.Exception.AsError(new ConfigurationErrorsException(
+//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
+//                     configurationName,
+//                     UdpTransportConfigurationStrings.UdpBindingElementName)));
+//             }
+//             else
+//             {
+//                 element.ApplyConfiguration(this);
+//             }
+//         }
+
         private UdpBinding(UdpTransportBindingElement transport, TextMessageEncodingBindingElement encoding)
             : this()
         {

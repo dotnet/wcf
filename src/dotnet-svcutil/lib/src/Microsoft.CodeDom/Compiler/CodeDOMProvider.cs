@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="CodeDOMProvider.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom.Compiler {
     using System;
@@ -15,7 +10,7 @@ namespace Microsoft.CodeDom.Compiler {
     using System.Runtime.InteropServices;
     
     [ComVisible(true)]
-    public abstract class CodeDomProvider : IDisposable { //TODO (miguell): Component {
+    public abstract class CodeDomProvider : IDisposable {
 
         [ComVisible(false)]
         public static CodeDomProvider CreateProvider(String language, System.Collections.Generic.IDictionary<String, String> providerOptions) {
@@ -85,12 +80,12 @@ namespace Microsoft.CodeDom.Compiler {
         private static CodeDomCompilationConfiguration Config {
             get {
                 CodeDomCompilationConfiguration _configuration = new CodeDomCompilationConfiguration();
-#if disabled
-                CodeDomCompilationConfiguration _configuration= (CodeDomCompilationConfiguration)PrivilegedConfigurationManager.GetSection(CodeDomCompilationConfiguration.sectionName);
-                if (_configuration == null) {
-                    return CodeDomCompilationConfiguration.Default;
-                }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 CodeDomCompilationConfiguration _configuration= (CodeDomCompilationConfiguration)PrivilegedConfigurationManager.GetSection(CodeDomCompilationConfiguration.sectionName);
+//                 if (_configuration == null) {
+//                     return CodeDomCompilationConfiguration.Default;
+//                 }
+
                 return _configuration;
             }
         }

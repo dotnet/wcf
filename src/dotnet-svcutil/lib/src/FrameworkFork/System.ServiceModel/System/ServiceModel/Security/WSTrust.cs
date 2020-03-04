@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Security
 {
@@ -33,9 +32,9 @@ namespace System.ServiceModel.Security
     using KeyIdentifierClauseEntry = WSSecurityTokenSerializer.KeyIdentifierClauseEntry;
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
-#if disabled
-    using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//     using Psha1DerivedKeyGenerator = System.IdentityModel.Psha1DerivedKeyGenerator;
+
     abstract class WSTrust : WSSecurityTokenSerializer.SerializerEntries
     {
         WSSecurityTokenSerializer tokenSerializer;
@@ -158,23 +157,22 @@ namespace System.ServiceModel.Security
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-#if disabled
-                BinarySecretSecurityToken simpleToken = token as BinarySecretSecurityToken;
-                byte[] secret = simpleToken.GetKeyBytes();
-                writer.WriteStartElement(parent.SerializerDictionary.Prefix.Value, parent.SerializerDictionary.BinarySecret, parent.SerializerDictionary.Namespace);
-                if (simpleToken.Id != null)
-                {
-                    writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, simpleToken.Id);
-                }
-                if (token is NonceToken)
-                {
-                    writer.WriteAttributeString(XD.SecurityJan2004Dictionary.TypeAttribute, null, parent.SerializerDictionary.NonceBinarySecret.Value);
-                }
-                writer.WriteBase64(secret, 0, secret.Length);
-                writer.WriteEndElement();
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                 BinarySecretSecurityToken simpleToken = token as BinarySecretSecurityToken;
+//                 byte[] secret = simpleToken.GetKeyBytes();
+//                 writer.WriteStartElement(parent.SerializerDictionary.Prefix.Value, parent.SerializerDictionary.BinarySecret, parent.SerializerDictionary.Namespace);
+//                 if (simpleToken.Id != null)
+//                 {
+//                     writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, simpleToken.Id);
+//                 }
+//                 if (token is NonceToken)
+//                 {
+//                     writer.WriteAttributeString(XD.SecurityJan2004Dictionary.TypeAttribute, null, parent.SerializerDictionary.NonceBinarySecret.Value);
+//                 }
+//                 writer.WriteBase64(secret, 0, secret.Length);
+//                 writer.WriteEndElement();
+
                 throw new NotImplementedException();
-#endif
             }
         }
 
@@ -242,173 +240,171 @@ namespace System.ServiceModel.Security
 
             public override RequestSecurityToken CreateRequestSecurityToken(XmlReader xmlReader)
             {
-#if disabled
-                XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
-                reader.MoveToStartElement(DriverDictionary.RequestSecurityToken, DriverDictionary.Namespace);
-                string context = null;
-                string tokenTypeUri = null;
-                string requestType = null;
-                int keySize = 0;
-                XmlDocument doc = new XmlDocument();
-                XmlElement rstXml = (doc.ReadNode(reader) as XmlElement);
-                SecurityKeyIdentifierClause renewTarget = null;
-                SecurityKeyIdentifierClause closeTarget = null;
-                for (int i = 0; i < rstXml.Attributes.Count; ++i)
-                {
-                    XmlAttribute attr = rstXml.Attributes[i];
-                    if (attr.LocalName == DriverDictionary.Context.Value)
-                    {
-                        context = attr.Value;
-                    }
-                }
-                for (int i = 0; i < rstXml.ChildNodes.Count; ++i)
-                {
-                    XmlElement child = (rstXml.ChildNodes[i] as XmlElement);
-                    if (child != null)
-                    {
-                        if (child.LocalName == DriverDictionary.TokenType.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                            tokenTypeUri = XmlHelper.ReadTextElementAsTrimmedString(child);
-                        else if (child.LocalName == DriverDictionary.RequestType.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                            requestType = XmlHelper.ReadTextElementAsTrimmedString(child);
-                        else if (child.LocalName == DriverDictionary.KeySize.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                            keySize = Int32.Parse(XmlHelper.ReadTextElementAsTrimmedString(child), NumberFormatInfo.InvariantInfo);
-                    }
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
+//                 reader.MoveToStartElement(DriverDictionary.RequestSecurityToken, DriverDictionary.Namespace);
+//                 string context = null;
+//                 string tokenTypeUri = null;
+//                 string requestType = null;
+//                 int keySize = 0;
+//                 XmlDocument doc = new XmlDocument();
+//                 XmlElement rstXml = (doc.ReadNode(reader) as XmlElement);
+//                 SecurityKeyIdentifierClause renewTarget = null;
+//                 SecurityKeyIdentifierClause closeTarget = null;
+//                 for (int i = 0; i < rstXml.Attributes.Count; ++i)
+//                 {
+//                     XmlAttribute attr = rstXml.Attributes[i];
+//                     if (attr.LocalName == DriverDictionary.Context.Value)
+//                     {
+//                         context = attr.Value;
+//                     }
+//                 }
+//                 for (int i = 0; i < rstXml.ChildNodes.Count; ++i)
+//                 {
+//                     XmlElement child = (rstXml.ChildNodes[i] as XmlElement);
+//                     if (child != null)
+//                     {
+//                         if (child.LocalName == DriverDictionary.TokenType.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                             tokenTypeUri = XmlHelper.ReadTextElementAsTrimmedString(child);
+//                         else if (child.LocalName == DriverDictionary.RequestType.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                             requestType = XmlHelper.ReadTextElementAsTrimmedString(child);
+//                         else if (child.LocalName == DriverDictionary.KeySize.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                             keySize = Int32.Parse(XmlHelper.ReadTextElementAsTrimmedString(child), NumberFormatInfo.InvariantInfo);
+//                     }
+//                 }
+// 
+//                 ReadTargets(rstXml, out renewTarget, out closeTarget);
+// 
+//                 RequestSecurityToken rst = new RequestSecurityToken(standardsManager, rstXml, context, tokenTypeUri, requestType, keySize, renewTarget, closeTarget);
+//                 return rst;
 
-                ReadTargets(rstXml, out renewTarget, out closeTarget);
-
-                RequestSecurityToken rst = new RequestSecurityToken(standardsManager, rstXml, context, tokenTypeUri, requestType, keySize, renewTarget, closeTarget);
-                return rst;
-#else
                 throw new NotImplementedException();
-#endif
             }
-#if disabled
-            System.IdentityModel.XmlBuffer GetIssuedTokenBuffer(System.IdentityModel.XmlBuffer rstrBuffer)
-            {
-                System.IdentityModel.XmlBuffer issuedTokenBuffer = null;
-                using (XmlDictionaryReader reader = rstrBuffer.GetReader(0))
-                {
-                    reader.ReadFullStartElement();
-                    while (reader.IsStartElement())
-                    {
-                        if (reader.IsStartElement(this.DriverDictionary.RequestedSecurityToken, this.DriverDictionary.Namespace))
-                        {
-                            reader.ReadStartElement();
-                            reader.MoveToContent();
-                            issuedTokenBuffer = new System.IdentityModel.XmlBuffer(Int32.MaxValue);
-                            using (XmlDictionaryWriter writer = issuedTokenBuffer.OpenSection(reader.Quotas))
-                            {
-                                writer.WriteNode(reader, false);
-                                issuedTokenBuffer.CloseSection();
-                                issuedTokenBuffer.Close();
-                            }
-                            reader.ReadEndElement();
-                            break;
-                        }
-                        else
-                        {
-                            reader.Skip();
-                        }
-                    }
-                }
-                return issuedTokenBuffer;
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             System.IdentityModel.XmlBuffer GetIssuedTokenBuffer(System.IdentityModel.XmlBuffer rstrBuffer)
+//             {
+//                 System.IdentityModel.XmlBuffer issuedTokenBuffer = null;
+//                 using (XmlDictionaryReader reader = rstrBuffer.GetReader(0))
+//                 {
+//                     reader.ReadFullStartElement();
+//                     while (reader.IsStartElement())
+//                     {
+//                         if (reader.IsStartElement(this.DriverDictionary.RequestedSecurityToken, this.DriverDictionary.Namespace))
+//                         {
+//                             reader.ReadStartElement();
+//                             reader.MoveToContent();
+//                             issuedTokenBuffer = new System.IdentityModel.XmlBuffer(Int32.MaxValue);
+//                             using (XmlDictionaryWriter writer = issuedTokenBuffer.OpenSection(reader.Quotas))
+//                             {
+//                                 writer.WriteNode(reader, false);
+//                                 issuedTokenBuffer.CloseSection();
+//                                 issuedTokenBuffer.Close();
+//                             }
+//                             reader.ReadEndElement();
+//                             break;
+//                         }
+//                         else
+//                         {
+//                             reader.Skip();
+//                         }
+//                     }
+//                 }
+//                 return issuedTokenBuffer;
+//             }
+
             public override RequestSecurityTokenResponse CreateRequestSecurityTokenResponse(XmlReader xmlReader)
             {
-#if disabled
-                if (xmlReader == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlReader");
-                }
-                XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
-                if (reader.IsStartElement(DriverDictionary.RequestSecurityTokenResponse, DriverDictionary.Namespace) == false)
-                {
-                    XmlHelper.OnRequiredElementMissing(DriverDictionary.RequestSecurityTokenResponse.Value, DriverDictionary.Namespace.Value);
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 if (xmlReader == null)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlReader");
+//                 }
+//                 XmlDictionaryReader reader = XmlDictionaryReader.CreateDictionaryReader(xmlReader);
+//                 if (reader.IsStartElement(DriverDictionary.RequestSecurityTokenResponse, DriverDictionary.Namespace) == false)
+//                 {
+//                     XmlHelper.OnRequiredElementMissing(DriverDictionary.RequestSecurityTokenResponse.Value, DriverDictionary.Namespace.Value);
+//                 }
+// 
+//                 System.IdentityModel.XmlBuffer rstrBuffer = new System.IdentityModel.XmlBuffer(Int32.MaxValue);
+//                 using (XmlDictionaryWriter writer = rstrBuffer.OpenSection(reader.Quotas))
+//                 {
+//                     writer.WriteNode(reader, false);
+//                     rstrBuffer.CloseSection();
+//                     rstrBuffer.Close();
+//                 }
+//                 XmlDocument doc = new XmlDocument();
+//                 XmlElement rstrXml;
+//                 using (XmlReader reader2 = rstrBuffer.GetReader(0))
+//                 {
+//                     rstrXml = (doc.ReadNode(reader2) as XmlElement);
+//                 }
+// 
+//                 System.IdentityModel.XmlBuffer issuedTokenBuffer = GetIssuedTokenBuffer(rstrBuffer);
+//                 string context = null;
+//                 string tokenTypeUri = null;
+//                 int keySize = 0;
+//                 SecurityKeyIdentifierClause requestedAttachedReference = null;
+//                 SecurityKeyIdentifierClause requestedUnattachedReference = null;
+//                 bool computeKey = false;
+//                 DateTime created = DateTime.UtcNow;
+//                 DateTime expires = SecurityUtils.MaxUtcDateTime;
+//                 bool isRequestedTokenClosed = false;
+//                 for (int i = 0; i < rstrXml.Attributes.Count; ++i)
+//                 {
+//                     XmlAttribute attr = rstrXml.Attributes[i];
+//                     if (attr.LocalName == DriverDictionary.Context.Value)
+//                     {
+//                         context = attr.Value;
+//                     }
+//                 }
+// 
+//                 for (int i = 0; i < rstrXml.ChildNodes.Count; ++i)
+//                 {
+//                     XmlElement child = (rstrXml.ChildNodes[i] as XmlElement);
+//                     if (child != null)
+//                     {
+//                         if (child.LocalName == DriverDictionary.TokenType.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                             tokenTypeUri = XmlHelper.ReadTextElementAsTrimmedString(child);
+//                         else if (child.LocalName == DriverDictionary.KeySize.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                             keySize = Int32.Parse(XmlHelper.ReadTextElementAsTrimmedString(child), NumberFormatInfo.InvariantInfo);
+//                         else if (child.LocalName == DriverDictionary.RequestedProofToken.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                         {
+//                             XmlElement proofXml = XmlHelper.GetChildElement(child);
+//                             if (proofXml.LocalName == DriverDictionary.ComputedKey.Value && proofXml.NamespaceURI == DriverDictionary.Namespace.Value)
+//                             {
+//                                 string computedKeyAlgorithm = XmlHelper.ReadTextElementAsTrimmedString(proofXml);
+//                                 if (computedKeyAlgorithm != this.DriverDictionary.Psha1ComputedKeyUri.Value)
+//                                 {
+//                                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new SecurityNegotiationException(SR.Format(SR.UnknownComputedKeyAlgorithm, computedKeyAlgorithm)));
+//                                 }
+//                                 computeKey = true;
+//                             }
+//                         }
+//                         else if (child.LocalName == DriverDictionary.Lifetime.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                         {
+//                             XmlElement createdXml = XmlHelper.GetChildElement(child, UtilityStrings.CreatedElement, UtilityStrings.Namespace);
+//                             if (createdXml != null)
+//                             {
+//                                 created = DateTime.ParseExact(XmlHelper.ReadTextElementAsTrimmedString(createdXml),
+//                                     WSUtilitySpecificationVersion.AcceptedDateTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None).ToUniversalTime();
+//                             }
+//                             XmlElement expiresXml = XmlHelper.GetChildElement(child, UtilityStrings.ExpiresElement, UtilityStrings.Namespace);
+//                             if (expiresXml != null)
+//                             {
+//                                 expires = DateTime.ParseExact(XmlHelper.ReadTextElementAsTrimmedString(expiresXml),
+//                                     WSUtilitySpecificationVersion.AcceptedDateTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None).ToUniversalTime();
+//                             }
+//                         }
+//                     }
+//                 }
+// 
+//                 isRequestedTokenClosed = ReadRequestedTokenClosed(rstrXml);
+//                 ReadReferences(rstrXml, out requestedAttachedReference, out requestedUnattachedReference);
+// 
+//                 return new RequestSecurityTokenResponse(standardsManager, rstrXml, context, tokenTypeUri, keySize, requestedAttachedReference, requestedUnattachedReference,
+//                                                         computeKey, created, expires, isRequestedTokenClosed, issuedTokenBuffer);
 
-                System.IdentityModel.XmlBuffer rstrBuffer = new System.IdentityModel.XmlBuffer(Int32.MaxValue);
-                using (XmlDictionaryWriter writer = rstrBuffer.OpenSection(reader.Quotas))
-                {
-                    writer.WriteNode(reader, false);
-                    rstrBuffer.CloseSection();
-                    rstrBuffer.Close();
-                }
-                XmlDocument doc = new XmlDocument();
-                XmlElement rstrXml;
-                using (XmlReader reader2 = rstrBuffer.GetReader(0))
-                {
-                    rstrXml = (doc.ReadNode(reader2) as XmlElement);
-                }
-
-                System.IdentityModel.XmlBuffer issuedTokenBuffer = GetIssuedTokenBuffer(rstrBuffer);
-                string context = null;
-                string tokenTypeUri = null;
-                int keySize = 0;
-                SecurityKeyIdentifierClause requestedAttachedReference = null;
-                SecurityKeyIdentifierClause requestedUnattachedReference = null;
-                bool computeKey = false;
-                DateTime created = DateTime.UtcNow;
-                DateTime expires = SecurityUtils.MaxUtcDateTime;
-                bool isRequestedTokenClosed = false;
-                for (int i = 0; i < rstrXml.Attributes.Count; ++i)
-                {
-                    XmlAttribute attr = rstrXml.Attributes[i];
-                    if (attr.LocalName == DriverDictionary.Context.Value)
-                    {
-                        context = attr.Value;
-                    }
-                }
-
-                for (int i = 0; i < rstrXml.ChildNodes.Count; ++i)
-                {
-                    XmlElement child = (rstrXml.ChildNodes[i] as XmlElement);
-                    if (child != null)
-                    {
-                        if (child.LocalName == DriverDictionary.TokenType.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                            tokenTypeUri = XmlHelper.ReadTextElementAsTrimmedString(child);
-                        else if (child.LocalName == DriverDictionary.KeySize.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                            keySize = Int32.Parse(XmlHelper.ReadTextElementAsTrimmedString(child), NumberFormatInfo.InvariantInfo);
-                        else if (child.LocalName == DriverDictionary.RequestedProofToken.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                        {
-                            XmlElement proofXml = XmlHelper.GetChildElement(child);
-                            if (proofXml.LocalName == DriverDictionary.ComputedKey.Value && proofXml.NamespaceURI == DriverDictionary.Namespace.Value)
-                            {
-                                string computedKeyAlgorithm = XmlHelper.ReadTextElementAsTrimmedString(proofXml);
-                                if (computedKeyAlgorithm != this.DriverDictionary.Psha1ComputedKeyUri.Value)
-                                {
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new SecurityNegotiationException(SR.Format(SR.UnknownComputedKeyAlgorithm, computedKeyAlgorithm)));
-                                }
-                                computeKey = true;
-                            }
-                        }
-                        else if (child.LocalName == DriverDictionary.Lifetime.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                        {
-                            XmlElement createdXml = XmlHelper.GetChildElement(child, UtilityStrings.CreatedElement, UtilityStrings.Namespace);
-                            if (createdXml != null)
-                            {
-                                created = DateTime.ParseExact(XmlHelper.ReadTextElementAsTrimmedString(createdXml),
-                                    WSUtilitySpecificationVersion.AcceptedDateTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None).ToUniversalTime();
-                            }
-                            XmlElement expiresXml = XmlHelper.GetChildElement(child, UtilityStrings.ExpiresElement, UtilityStrings.Namespace);
-                            if (expiresXml != null)
-                            {
-                                expires = DateTime.ParseExact(XmlHelper.ReadTextElementAsTrimmedString(expiresXml),
-                                    WSUtilitySpecificationVersion.AcceptedDateTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None).ToUniversalTime();
-                            }
-                        }
-                    }
-                }
-
-                isRequestedTokenClosed = ReadRequestedTokenClosed(rstrXml);
-                ReadReferences(rstrXml, out requestedAttachedReference, out requestedUnattachedReference);
-
-                return new RequestSecurityTokenResponse(standardsManager, rstrXml, context, tokenTypeUri, keySize, requestedAttachedReference, requestedUnattachedReference,
-                                                        computeKey, created, expires, isRequestedTokenClosed, issuedTokenBuffer);
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             public override RequestSecurityTokenResponseCollection CreateRequestSecurityTokenResponseCollection(XmlReader xmlReader)
@@ -665,167 +661,165 @@ namespace System.ServiceModel.Security
             public override GenericXmlSecurityToken GetIssuedToken(RequestSecurityTokenResponse rstr, SecurityTokenResolver resolver, IList<SecurityTokenAuthenticator> allowedAuthenticators, SecurityKeyEntropyMode keyEntropyMode, byte[] requestorEntropy, string expectedTokenType,
                 ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, int defaultKeySize, bool isBearerKeyType)
             {
-#if disabled
-                SecurityKeyEntropyModeHelper.Validate(keyEntropyMode);
+// Not needed in dotnet-svcutil scenario. 
+//                 SecurityKeyEntropyModeHelper.Validate(keyEntropyMode);
+// 
+//                 if (defaultKeySize < 0)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("defaultKeySize", SR.ValueMustBeNonNegative));
+//                 }
+// 
+//                 if (rstr == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rstr");
+// 
+//                 string tokenType;
+//                 if (rstr.TokenType != null)
+//                 {
+//                     if (expectedTokenType != null && expectedTokenType != rstr.TokenType)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BadIssuedTokenType, rstr.TokenType, expectedTokenType)));
+//                     }
+//                     tokenType = rstr.TokenType;
+//                 }
+//                 else
+//                 {
+//                     tokenType = expectedTokenType;
+//                 }
+// 
+//                 // search the response elements for licenseXml, proofXml, and lifetime
+//                 DateTime created = rstr.ValidFrom;
+//                 DateTime expires = rstr.ValidTo;
+//                 XmlElement proofXml;
+//                 XmlElement issuedTokenXml;
+//                 GetIssuedAndProofXml(rstr, out issuedTokenXml, out proofXml);
+// 
+//                 if (issuedTokenXml == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.NoLicenseXml));
+// 
+//                 if (isBearerKeyType)
+//                 {
+//                     if (proofXml != null)
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.BearerKeyTypeCannotHaveProofKey));
+// 
+//                     return new GenericXmlSecurityToken(issuedTokenXml, null, created, expires, rstr.RequestedAttachedReference, rstr.RequestedUnattachedReference, authorizationPolicies);
+//                 }
+// 
+//                 SecurityToken proofToken;
+//                 SecurityToken entropyToken = GetEntropy(rstr, resolver);
+//                 if (keyEntropyMode == SecurityKeyEntropyMode.ClientEntropy)
+//                 {
+//                     if (requestorEntropy == null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresRequestorEntropy, keyEntropyMode)));
+//                     }
+//                     // enforce that there is no entropy or proof token in the RSTR
+//                     if (proofXml != null || entropyToken != null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveProofTokenOrIssuerEntropy, keyEntropyMode)));
+//                     }
+//                     proofToken = new BinarySecretSecurityToken(requestorEntropy);
+//                 }
+//                 else if (keyEntropyMode == SecurityKeyEntropyMode.ServerEntropy)
+//                 {
+//                     if (requestorEntropy != null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveRequestorEntropy, keyEntropyMode)));
+//                     }
+//                     if (rstr.ComputeKey || entropyToken != null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveComputedKey, keyEntropyMode)));
+//                     }
+//                     if (proofXml == null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresProofToken, keyEntropyMode)));
+//                     }
+//                     string valueTypeUri = proofXml.GetAttribute(SecurityJan2004Strings.ValueType);
+//                     if (valueTypeUri.Length == 0)
+//                         valueTypeUri = null;
+//                     proofToken = standardsManager.SecurityTokenSerializer.ReadToken(new XmlNodeReader(proofXml), resolver);
+//                 }
+//                 else
+//                 {
+//                     if (!rstr.ComputeKey)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresComputedKey, keyEntropyMode)));
+//                     }
+//                     if (entropyToken == null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresIssuerEntropy, keyEntropyMode)));
+//                     }
+//                     if (requestorEntropy == null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresRequestorEntropy, keyEntropyMode)));
+//                     }
+//                     if (rstr.KeySize == 0 && defaultKeySize == 0)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.RstrKeySizeNotProvided));
+//                     }
+//                     int issuedKeySize = (rstr.KeySize != 0) ? rstr.KeySize : defaultKeySize;
+//                     byte[] issuerEntropy;
+//                     if (entropyToken is BinarySecretSecurityToken)
+//                         issuerEntropy = ((BinarySecretSecurityToken)entropyToken).GetKeyBytes();
+//                     else if (entropyToken is WrappedKeySecurityToken)
+//                         issuerEntropy = ((WrappedKeySecurityToken)entropyToken).GetWrappedKey();
+//                     else
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.UnsupportedIssuerEntropyType));
+//                     // compute the PSHA1 derived key
+//                     byte[] issuedKey = RequestSecurityTokenResponse.ComputeCombinedKey(requestorEntropy, issuerEntropy, issuedKeySize);
+//                     proofToken = new BinarySecretSecurityToken(issuedKey);
+//                 }
+// 
+//                 SecurityKeyIdentifierClause internalReference = rstr.RequestedAttachedReference;
+//                 SecurityKeyIdentifierClause externalReference = rstr.RequestedUnattachedReference;
+// 
+//                 return new BufferedGenericXmlSecurityToken(issuedTokenXml, proofToken, created, expires, internalReference, externalReference, authorizationPolicies, rstr.IssuedTokenBuffer);
 
-                if (defaultKeySize < 0)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("defaultKeySize", SR.ValueMustBeNonNegative));
-                }
-
-                if (rstr == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rstr");
-
-                string tokenType;
-                if (rstr.TokenType != null)
-                {
-                    if (expectedTokenType != null && expectedTokenType != rstr.TokenType)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BadIssuedTokenType, rstr.TokenType, expectedTokenType)));
-                    }
-                    tokenType = rstr.TokenType;
-                }
-                else
-                {
-                    tokenType = expectedTokenType;
-                }
-
-                // search the response elements for licenseXml, proofXml, and lifetime
-                DateTime created = rstr.ValidFrom;
-                DateTime expires = rstr.ValidTo;
-                XmlElement proofXml;
-                XmlElement issuedTokenXml;
-                GetIssuedAndProofXml(rstr, out issuedTokenXml, out proofXml);
-
-                if (issuedTokenXml == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.NoLicenseXml));
-
-                if (isBearerKeyType)
-                {
-                    if (proofXml != null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.BearerKeyTypeCannotHaveProofKey));
-
-                    return new GenericXmlSecurityToken(issuedTokenXml, null, created, expires, rstr.RequestedAttachedReference, rstr.RequestedUnattachedReference, authorizationPolicies);
-                }
-
-                SecurityToken proofToken;
-                SecurityToken entropyToken = GetEntropy(rstr, resolver);
-                if (keyEntropyMode == SecurityKeyEntropyMode.ClientEntropy)
-                {
-                    if (requestorEntropy == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresRequestorEntropy, keyEntropyMode)));
-                    }
-                    // enforce that there is no entropy or proof token in the RSTR
-                    if (proofXml != null || entropyToken != null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveProofTokenOrIssuerEntropy, keyEntropyMode)));
-                    }
-                    proofToken = new BinarySecretSecurityToken(requestorEntropy);
-                }
-                else if (keyEntropyMode == SecurityKeyEntropyMode.ServerEntropy)
-                {
-                    if (requestorEntropy != null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveRequestorEntropy, keyEntropyMode)));
-                    }
-                    if (rstr.ComputeKey || entropyToken != null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveComputedKey, keyEntropyMode)));
-                    }
-                    if (proofXml == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresProofToken, keyEntropyMode)));
-                    }
-                    string valueTypeUri = proofXml.GetAttribute(SecurityJan2004Strings.ValueType);
-                    if (valueTypeUri.Length == 0)
-                        valueTypeUri = null;
-                    proofToken = standardsManager.SecurityTokenSerializer.ReadToken(new XmlNodeReader(proofXml), resolver);
-                }
-                else
-                {
-                    if (!rstr.ComputeKey)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresComputedKey, keyEntropyMode)));
-                    }
-                    if (entropyToken == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresIssuerEntropy, keyEntropyMode)));
-                    }
-                    if (requestorEntropy == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresRequestorEntropy, keyEntropyMode)));
-                    }
-                    if (rstr.KeySize == 0 && defaultKeySize == 0)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.RstrKeySizeNotProvided));
-                    }
-                    int issuedKeySize = (rstr.KeySize != 0) ? rstr.KeySize : defaultKeySize;
-                    byte[] issuerEntropy;
-                    if (entropyToken is BinarySecretSecurityToken)
-                        issuerEntropy = ((BinarySecretSecurityToken)entropyToken).GetKeyBytes();
-                    else if (entropyToken is WrappedKeySecurityToken)
-                        issuerEntropy = ((WrappedKeySecurityToken)entropyToken).GetWrappedKey();
-                    else
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.UnsupportedIssuerEntropyType));
-                    // compute the PSHA1 derived key
-                    byte[] issuedKey = RequestSecurityTokenResponse.ComputeCombinedKey(requestorEntropy, issuerEntropy, issuedKeySize);
-                    proofToken = new BinarySecretSecurityToken(issuedKey);
-                }
-
-                SecurityKeyIdentifierClause internalReference = rstr.RequestedAttachedReference;
-                SecurityKeyIdentifierClause externalReference = rstr.RequestedUnattachedReference;
-
-                return new BufferedGenericXmlSecurityToken(issuedTokenXml, proofToken, created, expires, internalReference, externalReference, authorizationPolicies, rstr.IssuedTokenBuffer);
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             public override GenericXmlSecurityToken GetIssuedToken(RequestSecurityTokenResponse rstr, string expectedTokenType,
                 ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies, RSA clientKey)
             {
-#if disabled
-                if (rstr == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("rstr"));
+// Not needed in dotnet-svcutil scenario. 
+//                 if (rstr == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("rstr"));
+// 
+//                 string tokenType;
+//                 if (rstr.TokenType != null)
+//                 {
+//                     if (expectedTokenType != null && expectedTokenType != rstr.TokenType)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BadIssuedTokenType, rstr.TokenType, expectedTokenType)));
+//                     }
+//                     tokenType = rstr.TokenType;
+//                 }
+//                 else
+//                 {
+//                     tokenType = expectedTokenType;
+//                 }
+// 
+//                 // search the response elements for licenseXml, proofXml, and lifetime
+//                 DateTime created = rstr.ValidFrom;
+//                 DateTime expires = rstr.ValidTo;
+//                 XmlElement proofXml;
+//                 XmlElement issuedTokenXml;
+//                 GetIssuedAndProofXml(rstr, out issuedTokenXml, out proofXml);
+// 
+//                 if (issuedTokenXml == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.NoLicenseXml));
+// 
+//                 // enforce that there is no proof token in the RSTR
+//                 if (proofXml != null)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ProofTokenXmlUnexpectedInRstr));
+//                 }
+//                 SecurityKeyIdentifierClause internalReference = rstr.RequestedAttachedReference;
+//                 SecurityKeyIdentifierClause externalReference = rstr.RequestedUnattachedReference;
+// 
+//                 SecurityToken proofToken = new RsaSecurityToken(clientKey);
+//                 return new BufferedGenericXmlSecurityToken(issuedTokenXml, proofToken, created, expires, internalReference, externalReference, authorizationPolicies, rstr.IssuedTokenBuffer);
 
-                string tokenType;
-                if (rstr.TokenType != null)
-                {
-                    if (expectedTokenType != null && expectedTokenType != rstr.TokenType)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.BadIssuedTokenType, rstr.TokenType, expectedTokenType)));
-                    }
-                    tokenType = rstr.TokenType;
-                }
-                else
-                {
-                    tokenType = expectedTokenType;
-                }
-
-                // search the response elements for licenseXml, proofXml, and lifetime
-                DateTime created = rstr.ValidFrom;
-                DateTime expires = rstr.ValidTo;
-                XmlElement proofXml;
-                XmlElement issuedTokenXml;
-                GetIssuedAndProofXml(rstr, out issuedTokenXml, out proofXml);
-
-                if (issuedTokenXml == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.NoLicenseXml));
-
-                // enforce that there is no proof token in the RSTR
-                if (proofXml != null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.ProofTokenXmlUnexpectedInRstr));
-                }
-                SecurityKeyIdentifierClause internalReference = rstr.RequestedAttachedReference;
-                SecurityKeyIdentifierClause externalReference = rstr.RequestedUnattachedReference;
-
-                SecurityToken proofToken = new RsaSecurityToken(clientKey);
-                return new BufferedGenericXmlSecurityToken(issuedTokenXml, proofToken, created, expires, internalReference, externalReference, authorizationPolicies, rstr.IssuedTokenBuffer);
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             public override bool IsAtRequestSecurityTokenResponse(XmlReader reader)
@@ -856,55 +850,54 @@ namespace System.ServiceModel.Security
 
             public static BinaryNegotiation ReadBinaryNegotiation(XmlElement elem)
             {
-#if disabled
-                if (elem == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elem");
+// Not needed in dotnet-svcutil scenario. 
+//                 if (elem == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("elem");
+// 
+//                 // get the encoding and valueType attributes
+//                 string encodingUri = null;
+//                 string valueTypeUri = null;
+//                 byte[] negotiationData = null;
+//                 if (elem.Attributes != null)
+//                 {
+//                     for (int i = 0; i < elem.Attributes.Count; ++i)
+//                     {
+//                         XmlAttribute attr = elem.Attributes[i];
+//                         if (attr.LocalName == SecurityJan2004Strings.EncodingType && attr.NamespaceURI.Length == 0)
+//                         {
+//                             encodingUri = attr.Value;
+//                             if (encodingUri != base64Uri && encodingUri != hexBinaryUri)
+//                             {
+//                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.UnsupportedBinaryEncoding, encodingUri)));
+//                             }
+//                         }
+//                         else if (attr.LocalName == SecurityJan2004Strings.ValueType && attr.NamespaceURI.Length == 0)
+//                         {
+//                             valueTypeUri = attr.Value;
+//                         }
+//                         // ignore all other attributes
+//                     }
+//                 }
+//                 if (encodingUri == null)
+//                 {
+//                     XmlHelper.OnRequiredAttributeMissing("EncodingType", elem.Name);
+//                 }
+//                 if (valueTypeUri == null)
+//                 {
+//                     XmlHelper.OnRequiredAttributeMissing("ValueType", elem.Name);
+//                 }
+//                 string encodedBlob = XmlHelper.ReadTextElementAsTrimmedString(elem);
+//                 if (encodingUri == base64Uri)
+//                 {
+//                     negotiationData = Convert.FromBase64String(encodedBlob);
+//                 }
+//                 else
+//                 {
+//                     negotiationData = HexBinary.Parse(encodedBlob).Value;
+//                 }
+//                 return new BinaryNegotiation(valueTypeUri, negotiationData);
 
-                // get the encoding and valueType attributes
-                string encodingUri = null;
-                string valueTypeUri = null;
-                byte[] negotiationData = null;
-                if (elem.Attributes != null)
-                {
-                    for (int i = 0; i < elem.Attributes.Count; ++i)
-                    {
-                        XmlAttribute attr = elem.Attributes[i];
-                        if (attr.LocalName == SecurityJan2004Strings.EncodingType && attr.NamespaceURI.Length == 0)
-                        {
-                            encodingUri = attr.Value;
-                            if (encodingUri != base64Uri && encodingUri != hexBinaryUri)
-                            {
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.UnsupportedBinaryEncoding, encodingUri)));
-                            }
-                        }
-                        else if (attr.LocalName == SecurityJan2004Strings.ValueType && attr.NamespaceURI.Length == 0)
-                        {
-                            valueTypeUri = attr.Value;
-                        }
-                        // ignore all other attributes
-                    }
-                }
-                if (encodingUri == null)
-                {
-                    XmlHelper.OnRequiredAttributeMissing("EncodingType", elem.Name);
-                }
-                if (valueTypeUri == null)
-                {
-                    XmlHelper.OnRequiredAttributeMissing("ValueType", elem.Name);
-                }
-                string encodedBlob = XmlHelper.ReadTextElementAsTrimmedString(elem);
-                if (encodingUri == base64Uri)
-                {
-                    negotiationData = Convert.FromBase64String(encodedBlob);
-                }
-                else
-                {
-                    negotiationData = HexBinary.Parse(encodedBlob).Value;
-                }
-                return new BinaryNegotiation(valueTypeUri, negotiationData);
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             // Note in Apr2004, internal & external references aren't supported - 
@@ -912,44 +905,43 @@ namespace System.ServiceModel.Security
             protected virtual void ReadReferences(XmlElement rstrXml, out SecurityKeyIdentifierClause requestedAttachedReference,
                     out SecurityKeyIdentifierClause requestedUnattachedReference)
             {
-#if disabled
-                XmlElement issuedTokenXml = null;
-                requestedAttachedReference = null;
-                requestedUnattachedReference = null;
-                for (int i = 0; i < rstrXml.ChildNodes.Count; ++i)
-                {
-                    XmlElement child = rstrXml.ChildNodes[i] as XmlElement;
-                    if (child != null)
-                    {
-                        if (child.LocalName == DriverDictionary.RequestedSecurityToken.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                        {
-                            issuedTokenXml = XmlHelper.GetChildElement(child);
-                        }
-                        else if (child.LocalName == DriverDictionary.RequestedTokenReference.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
-                        {
-                            requestedUnattachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
-                        }
-                    }
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 XmlElement issuedTokenXml = null;
+//                 requestedAttachedReference = null;
+//                 requestedUnattachedReference = null;
+//                 for (int i = 0; i < rstrXml.ChildNodes.Count; ++i)
+//                 {
+//                     XmlElement child = rstrXml.ChildNodes[i] as XmlElement;
+//                     if (child != null)
+//                     {
+//                         if (child.LocalName == DriverDictionary.RequestedSecurityToken.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                         {
+//                             issuedTokenXml = XmlHelper.GetChildElement(child);
+//                         }
+//                         else if (child.LocalName == DriverDictionary.RequestedTokenReference.Value && child.NamespaceURI == DriverDictionary.Namespace.Value)
+//                         {
+//                             requestedUnattachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
+//                         }
+//                     }
+//                 }
+// 
+//                 if (issuedTokenXml != null)
+//                 {
+//                     requestedAttachedReference = standardsManager.CreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal);
+//                     if (requestedUnattachedReference == null)
+//                     {
+//                         try
+//                         {
+//                             requestedUnattachedReference = standardsManager.CreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External);
+//                         }
+//                         catch (XmlException)
+//                         {
+//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences, issuedTokenXml.ToString())));
+//                         }
+//                     }
+//                 }
 
-                if (issuedTokenXml != null)
-                {
-                    requestedAttachedReference = standardsManager.CreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal);
-                    if (requestedUnattachedReference == null)
-                    {
-                        try
-                        {
-                            requestedUnattachedReference = standardsManager.CreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External);
-                        }
-                        catch (XmlException)
-                        {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences, issuedTokenXml.ToString())));
-                        }
-                    }
-                }
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             internal bool TryReadKeyIdentifierClause(XmlNodeReader reader, out SecurityKeyIdentifierClause keyIdentifierClause)
@@ -986,19 +978,18 @@ namespace System.ServiceModel.Security
 
             internal SecurityKeyIdentifierClause CreateGenericXmlSecurityKeyIdentifierClause(XmlNodeReader reader, XmlElement keyIdentifierReferenceXmlElement)
             {
-#if disabled
-                SecurityKeyIdentifierClause keyIdentifierClause = null;
-                XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-                string strId = localReader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
-                keyIdentifierClause = new GenericXmlSecurityKeyIdentifierClause(keyIdentifierReferenceXmlElement);
-                if (!String.IsNullOrEmpty(strId))
-                {
-                    keyIdentifierClause.Id = strId;
-                }
-                return keyIdentifierClause;
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                 SecurityKeyIdentifierClause keyIdentifierClause = null;
+//                 XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
+//                 string strId = localReader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
+//                 keyIdentifierClause = new GenericXmlSecurityKeyIdentifierClause(keyIdentifierReferenceXmlElement);
+//                 if (!String.IsNullOrEmpty(strId))
+//                 {
+//                     keyIdentifierClause.Id = strId;
+//                 }
+//                 return keyIdentifierClause;
+
                 throw new NotImplementedException();
-#endif
             }
 
             internal SecurityKeyIdentifierClause GetKeyIdentifierXmlReferenceClause(XmlElement keyIdentifierReferenceXmlElement)
@@ -1030,104 +1021,103 @@ namespace System.ServiceModel.Security
                     DriverDictionary.RequestSecurityTokenResponse, DriverDictionary.RequestSecurityTokenResponseCollection,
                     DriverDictionary.Namespace)));
             }
-#if disabled
-            void WriteAppliesTo(object appliesTo, Type appliesToType, XmlObjectSerializer serializer, XmlWriter xmlWriter)
-            {
-                XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
-                writer.WriteStartElement(Namespaces.WSPolicyPrefix, DriverDictionary.AppliesTo.Value, Namespaces.WSPolicy);
-                lock (serializer)
-                {
-                    serializer.WriteObject(writer, appliesTo);
-                }
-                writer.WriteEndElement();
-            }
+// Not needed in dotnet-svcutil scenario. 
+//             void WriteAppliesTo(object appliesTo, Type appliesToType, XmlObjectSerializer serializer, XmlWriter xmlWriter)
+//             {
+//                 XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
+//                 writer.WriteStartElement(Namespaces.WSPolicyPrefix, DriverDictionary.AppliesTo.Value, Namespaces.WSPolicy);
+//                 lock (serializer)
+//                 {
+//                     serializer.WriteObject(writer, appliesTo);
+//                 }
+//                 writer.WriteEndElement();
+//             }
+// 
+//             public void WriteBinaryNegotiation(BinaryNegotiation negotiation, XmlWriter xmlWriter)
+//             {
+//                 if (negotiation == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("negotiation");
+// 
+//                 XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
+//                 negotiation.WriteTo(writer, this.DriverDictionary.Prefix.Value,
+//                                             this.DriverDictionary.BinaryExchange, this.DriverDictionary.Namespace,
+//                                             XD.SecurityJan2004Dictionary.ValueType, null);
+//             }
 
-            public void WriteBinaryNegotiation(BinaryNegotiation negotiation, XmlWriter xmlWriter)
-            {
-                if (negotiation == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("negotiation");
-
-                XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
-                negotiation.WriteTo(writer, this.DriverDictionary.Prefix.Value,
-                                            this.DriverDictionary.BinaryExchange, this.DriverDictionary.Namespace,
-                                            XD.SecurityJan2004Dictionary.ValueType, null);
-            }
-#endif
             public override void WriteRequestSecurityToken(RequestSecurityToken rst, XmlWriter xmlWriter)
             {
-#if disabled
-                if (rst == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rst");
-                }
-                if (xmlWriter == null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlWriter");
-                }
-                XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
-                if (rst.IsReceiver)
-                {
-                    rst.WriteTo(writer);
-                    return;
-                }
-                writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestSecurityToken, DriverDictionary.Namespace);
-                XmlHelper.AddNamespaceDeclaration(writer, DriverDictionary.Prefix.Value, DriverDictionary.Namespace);
-                if (rst.Context != null)
-                    writer.WriteAttributeString(DriverDictionary.Context, null, rst.Context);
+// Not needed in dotnet-svcutil scenario. 
+//                 if (rst == null)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rst");
+//                 }
+//                 if (xmlWriter == null)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlWriter");
+//                 }
+//                 XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
+//                 if (rst.IsReceiver)
+//                 {
+//                     rst.WriteTo(writer);
+//                     return;
+//                 }
+//                 writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestSecurityToken, DriverDictionary.Namespace);
+//                 XmlHelper.AddNamespaceDeclaration(writer, DriverDictionary.Prefix.Value, DriverDictionary.Namespace);
+//                 if (rst.Context != null)
+//                     writer.WriteAttributeString(DriverDictionary.Context, null, rst.Context);
+// 
+//                 rst.OnWriteCustomAttributes(writer);
+//                 if (rst.TokenType != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.TokenType, DriverDictionary.Namespace);
+//                     writer.WriteString(rst.TokenType);
+//                     writer.WriteEndElement();
+//                 }
+//                 if (rst.RequestType != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestType, DriverDictionary.Namespace);
+//                     writer.WriteString(rst.RequestType);
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 if (rst.AppliesTo != null)
+//                 {
+//                     WriteAppliesTo(rst.AppliesTo, rst.AppliesToType, rst.AppliesToSerializer, writer);
+//                 }
+// 
+//                 SecurityToken entropyToken = rst.GetRequestorEntropy();
+//                 if (entropyToken != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Entropy, DriverDictionary.Namespace);
+//                     standardsManager.SecurityTokenSerializer.WriteToken(writer, entropyToken);
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 if (rst.KeySize != 0)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.KeySize, DriverDictionary.Namespace);
+//                     writer.WriteValue(rst.KeySize);
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 BinaryNegotiation negotiationData = rst.GetBinaryNegotiation();
+//                 if (negotiationData != null)
+//                     WriteBinaryNegotiation(negotiationData, writer);
+// 
+//                 WriteTargets(rst, writer);
+// 
+//                 if (rst.RequestProperties != null)
+//                 {
+//                     foreach (XmlElement property in rst.RequestProperties)
+//                     {
+//                         property.WriteTo(writer);
+//                     }
+//                 }
+// 
+//                 rst.OnWriteCustomElements(writer);
+//                 writer.WriteEndElement();
 
-                rst.OnWriteCustomAttributes(writer);
-                if (rst.TokenType != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.TokenType, DriverDictionary.Namespace);
-                    writer.WriteString(rst.TokenType);
-                    writer.WriteEndElement();
-                }
-                if (rst.RequestType != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestType, DriverDictionary.Namespace);
-                    writer.WriteString(rst.RequestType);
-                    writer.WriteEndElement();
-                }
-
-                if (rst.AppliesTo != null)
-                {
-                    WriteAppliesTo(rst.AppliesTo, rst.AppliesToType, rst.AppliesToSerializer, writer);
-                }
-
-                SecurityToken entropyToken = rst.GetRequestorEntropy();
-                if (entropyToken != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Entropy, DriverDictionary.Namespace);
-                    standardsManager.SecurityTokenSerializer.WriteToken(writer, entropyToken);
-                    writer.WriteEndElement();
-                }
-
-                if (rst.KeySize != 0)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.KeySize, DriverDictionary.Namespace);
-                    writer.WriteValue(rst.KeySize);
-                    writer.WriteEndElement();
-                }
-
-                BinaryNegotiation negotiationData = rst.GetBinaryNegotiation();
-                if (negotiationData != null)
-                    WriteBinaryNegotiation(negotiationData, writer);
-
-                WriteTargets(rst, writer);
-
-                if (rst.RequestProperties != null)
-                {
-                    foreach (XmlElement property in rst.RequestProperties)
-                    {
-                        property.WriteTo(writer);
-                    }
-                }
-
-                rst.OnWriteCustomElements(writer);
-                writer.WriteEndElement();
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             protected virtual void WriteTargets(RequestSecurityToken rst, XmlDictionaryWriter writer)
@@ -1151,126 +1141,125 @@ namespace System.ServiceModel.Security
 
             public override void WriteRequestSecurityTokenResponse(RequestSecurityTokenResponse rstr, XmlWriter xmlWriter)
             {
-#if disabled
-                if (rstr == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rstr");
-                if (xmlWriter == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlWriter");
-                XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
-                if (rstr.IsReceiver)
-                {
-                    rstr.WriteTo(writer);
-                    return;
-                }
-                writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestSecurityTokenResponse, DriverDictionary.Namespace);
-                if (rstr.Context != null)
-                {
-                    writer.WriteAttributeString(DriverDictionary.Context, null, rstr.Context);
-                }
-                // define WSUtility at the top level to avoid multiple definitions below
-                XmlHelper.AddNamespaceDeclaration(writer, UtilityStrings.Prefix, XD.UtilityDictionary.Namespace);
-                rstr.OnWriteCustomAttributes(writer);
+// Not needed in dotnet-svcutil scenario. 
+//                 if (rstr == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("rstr");
+//                 if (xmlWriter == null)
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("xmlWriter");
+//                 XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(xmlWriter);
+//                 if (rstr.IsReceiver)
+//                 {
+//                     rstr.WriteTo(writer);
+//                     return;
+//                 }
+//                 writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestSecurityTokenResponse, DriverDictionary.Namespace);
+//                 if (rstr.Context != null)
+//                 {
+//                     writer.WriteAttributeString(DriverDictionary.Context, null, rstr.Context);
+//                 }
+//                 // define WSUtility at the top level to avoid multiple definitions below
+//                 XmlHelper.AddNamespaceDeclaration(writer, UtilityStrings.Prefix, XD.UtilityDictionary.Namespace);
+//                 rstr.OnWriteCustomAttributes(writer);
+// 
+//                 if (rstr.TokenType != null)
+//                     writer.WriteElementString(DriverDictionary.Prefix.Value, DriverDictionary.TokenType, DriverDictionary.Namespace, rstr.TokenType);
+// 
+//                 if (rstr.RequestedSecurityToken != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedSecurityToken, DriverDictionary.Namespace);
+//                     standardsManager.SecurityTokenSerializer.WriteToken(writer, rstr.RequestedSecurityToken);
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 if (rstr.AppliesTo != null)
+//                 {
+//                     WriteAppliesTo(rstr.AppliesTo, rstr.AppliesToType, rstr.AppliesToSerializer, writer);
+//                 }
+// 
+//                 WriteReferences(rstr, writer);
+// 
+//                 if (rstr.ComputeKey || rstr.RequestedProofToken != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedProofToken, DriverDictionary.Namespace);
+//                     if (rstr.ComputeKey)
+//                     {
+//                         writer.WriteElementString(DriverDictionary.Prefix.Value, DriverDictionary.ComputedKey, DriverDictionary.Namespace, DriverDictionary.Psha1ComputedKeyUri.Value);
+//                     }
+//                     else
+//                     {
+//                         standardsManager.SecurityTokenSerializer.WriteToken(writer, rstr.RequestedProofToken);
+//                     }
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 SecurityToken entropyToken = rstr.GetIssuerEntropy();
+//                 if (entropyToken != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Entropy, DriverDictionary.Namespace);
+//                     standardsManager.SecurityTokenSerializer.WriteToken(writer, entropyToken);
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 // To write out the lifetime, the following algorithm is used
+//                 //   1. If the lifetime is explicitly set, write it out.
+//                 //   2. Else, if a token/tokenbuilder has been set, use the lifetime in that.
+//                 //   3. Else do not serialize lifetime
+//                 if (rstr.IsLifetimeSet || rstr.RequestedSecurityToken != null)
+//                 {
+//                     DateTime effectiveTime = SecurityUtils.MinUtcDateTime;
+//                     DateTime expirationTime = SecurityUtils.MaxUtcDateTime;
+// 
+//                     if (rstr.IsLifetimeSet)
+//                     {
+//                         effectiveTime = rstr.ValidFrom.ToUniversalTime();
+//                         expirationTime = rstr.ValidTo.ToUniversalTime();
+//                     }
+//                     else if (rstr.RequestedSecurityToken != null)
+//                     {
+//                         effectiveTime = rstr.RequestedSecurityToken.ValidFrom.ToUniversalTime();
+//                         expirationTime = rstr.RequestedSecurityToken.ValidTo.ToUniversalTime();
+//                     }
+// 
+//                     // write out the lifetime
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Lifetime, DriverDictionary.Namespace);
+//                     // write out Created
+//                     writer.WriteStartElement(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.CreatedElement, XD.UtilityDictionary.Namespace);
+//                     writer.WriteString(effectiveTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture.DateTimeFormat));
+//                     writer.WriteEndElement(); // wsu:Created
+//                     // write out Expires
+//                     writer.WriteStartElement(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.ExpiresElement, XD.UtilityDictionary.Namespace);
+//                     writer.WriteString(expirationTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture.DateTimeFormat));
+//                     writer.WriteEndElement(); // wsu:Expires
+//                     writer.WriteEndElement(); // wsse:Lifetime
+//                 }
+// 
+//                 byte[] authenticator = rstr.GetAuthenticator();
+//                 if (authenticator != null)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Authenticator, DriverDictionary.Namespace);
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.CombinedHash, DriverDictionary.Namespace);
+//                     writer.WriteBase64(authenticator, 0, authenticator.Length);
+//                     writer.WriteEndElement();
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 if (rstr.KeySize > 0)
+//                 {
+//                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.KeySize, DriverDictionary.Namespace);
+//                     writer.WriteValue(rstr.KeySize);
+//                     writer.WriteEndElement();
+//                 }
+// 
+//                 WriteRequestedTokenClosed(rstr, writer);
+// 
+//                 BinaryNegotiation negotiationData = rstr.GetBinaryNegotiation();
+//                 if (negotiationData != null)
+//                     WriteBinaryNegotiation(negotiationData, writer);
+// 
+//                 rstr.OnWriteCustomElements(writer);
+//                 writer.WriteEndElement();
 
-                if (rstr.TokenType != null)
-                    writer.WriteElementString(DriverDictionary.Prefix.Value, DriverDictionary.TokenType, DriverDictionary.Namespace, rstr.TokenType);
-
-                if (rstr.RequestedSecurityToken != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedSecurityToken, DriverDictionary.Namespace);
-                    standardsManager.SecurityTokenSerializer.WriteToken(writer, rstr.RequestedSecurityToken);
-                    writer.WriteEndElement();
-                }
-
-                if (rstr.AppliesTo != null)
-                {
-                    WriteAppliesTo(rstr.AppliesTo, rstr.AppliesToType, rstr.AppliesToSerializer, writer);
-                }
-
-                WriteReferences(rstr, writer);
-
-                if (rstr.ComputeKey || rstr.RequestedProofToken != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedProofToken, DriverDictionary.Namespace);
-                    if (rstr.ComputeKey)
-                    {
-                        writer.WriteElementString(DriverDictionary.Prefix.Value, DriverDictionary.ComputedKey, DriverDictionary.Namespace, DriverDictionary.Psha1ComputedKeyUri.Value);
-                    }
-                    else
-                    {
-                        standardsManager.SecurityTokenSerializer.WriteToken(writer, rstr.RequestedProofToken);
-                    }
-                    writer.WriteEndElement();
-                }
-
-                SecurityToken entropyToken = rstr.GetIssuerEntropy();
-                if (entropyToken != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Entropy, DriverDictionary.Namespace);
-                    standardsManager.SecurityTokenSerializer.WriteToken(writer, entropyToken);
-                    writer.WriteEndElement();
-                }
-
-                // To write out the lifetime, the following algorithm is used
-                //   1. If the lifetime is explicitly set, write it out.
-                //   2. Else, if a token/tokenbuilder has been set, use the lifetime in that.
-                //   3. Else do not serialize lifetime
-                if (rstr.IsLifetimeSet || rstr.RequestedSecurityToken != null)
-                {
-                    DateTime effectiveTime = SecurityUtils.MinUtcDateTime;
-                    DateTime expirationTime = SecurityUtils.MaxUtcDateTime;
-
-                    if (rstr.IsLifetimeSet)
-                    {
-                        effectiveTime = rstr.ValidFrom.ToUniversalTime();
-                        expirationTime = rstr.ValidTo.ToUniversalTime();
-                    }
-                    else if (rstr.RequestedSecurityToken != null)
-                    {
-                        effectiveTime = rstr.RequestedSecurityToken.ValidFrom.ToUniversalTime();
-                        expirationTime = rstr.RequestedSecurityToken.ValidTo.ToUniversalTime();
-                    }
-
-                    // write out the lifetime
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Lifetime, DriverDictionary.Namespace);
-                    // write out Created
-                    writer.WriteStartElement(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.CreatedElement, XD.UtilityDictionary.Namespace);
-                    writer.WriteString(effectiveTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture.DateTimeFormat));
-                    writer.WriteEndElement(); // wsu:Created
-                    // write out Expires
-                    writer.WriteStartElement(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.ExpiresElement, XD.UtilityDictionary.Namespace);
-                    writer.WriteString(expirationTime.ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture.DateTimeFormat));
-                    writer.WriteEndElement(); // wsu:Expires
-                    writer.WriteEndElement(); // wsse:Lifetime
-                }
-
-                byte[] authenticator = rstr.GetAuthenticator();
-                if (authenticator != null)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.Authenticator, DriverDictionary.Namespace);
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.CombinedHash, DriverDictionary.Namespace);
-                    writer.WriteBase64(authenticator, 0, authenticator.Length);
-                    writer.WriteEndElement();
-                    writer.WriteEndElement();
-                }
-
-                if (rstr.KeySize > 0)
-                {
-                    writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.KeySize, DriverDictionary.Namespace);
-                    writer.WriteValue(rstr.KeySize);
-                    writer.WriteEndElement();
-                }
-
-                WriteRequestedTokenClosed(rstr, writer);
-
-                BinaryNegotiation negotiationData = rstr.GetBinaryNegotiation();
-                if (negotiationData != null)
-                    WriteBinaryNegotiation(negotiationData, writer);
-
-                rstr.OnWriteCustomElements(writer);
-                writer.WriteEndElement();
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             public override void WriteRequestSecurityTokenResponseCollection(RequestSecurityTokenResponseCollection rstrCollection, XmlWriter xmlWriter)
@@ -1589,102 +1578,102 @@ namespace System.ServiceModel.Security
                 }
                 return result;
             }
-#if disabled
+// Not needed in dotnet-svcutil scenario. 
+// 
+//             internal static void ValidateRequestedKeySize(int keySize, SecurityAlgorithmSuite algorithmSuite)
+//             {
+//                 if ((keySize % 8 == 0) && algorithmSuite.IsSymmetricKeyLengthSupported(keySize))
+//                 {
+//                     return;
+//                 }
+//                 else
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new SecurityNegotiationException(SR.Format(SR.InvalidKeyLengthRequested, keySize)));
+//                 }
+//             }
+// 
+//             static void ValidateRequestorEntropy(SecurityToken entropy, SecurityKeyEntropyMode mode)
+//             {
+//                 if ((mode == SecurityKeyEntropyMode.ClientEntropy || mode == SecurityKeyEntropyMode.CombinedEntropy)
+//                     && (entropy == null))
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresRequestorEntropy, mode)));
+//                 }
+//                 if (mode == SecurityKeyEntropyMode.ServerEntropy && entropy != null)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveRequestorEntropy, mode)));
+//                 }
+//             }
+// 
+//             internal static void ProcessRstAndIssueKey(RequestSecurityToken requestSecurityToken, SecurityTokenResolver resolver, SecurityKeyEntropyMode keyEntropyMode, SecurityAlgorithmSuite algorithmSuite, out int issuedKeySize, out byte[] issuerEntropy, out byte[] proofKey,
+//                 out SecurityToken proofToken)
+//             {
+//                 SecurityToken requestorEntropyToken = requestSecurityToken.GetRequestorEntropy(resolver);
+//                 ValidateRequestorEntropy(requestorEntropyToken, keyEntropyMode);
+//                 byte[] requestorEntropy;
+//                 if (requestorEntropyToken != null)
+//                 {
+//                     if (requestorEntropyToken is BinarySecretSecurityToken)
+//                     {
+//                         BinarySecretSecurityToken skToken = (BinarySecretSecurityToken)requestorEntropyToken;
+//                         requestorEntropy = skToken.GetKeyBytes();
+//                     }
+//                     else if (requestorEntropyToken is WrappedKeySecurityToken)
+//                     {
+//                         requestorEntropy = ((WrappedKeySecurityToken)requestorEntropyToken).GetWrappedKey();
+//                     }
+//                     else
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.TokenCannotCreateSymmetricCrypto, requestorEntropyToken)));
+//                     }
+//                 }
+//                 else
+//                 {
+//                     requestorEntropy = null;
+//                 }
+// 
+//                 if (keyEntropyMode == SecurityKeyEntropyMode.ClientEntropy)
+//                 {
+//                     if (requestorEntropy != null)
+//                     {
+//                         // validate that the entropy length matches the algorithm suite
+//                         ValidateRequestedKeySize(requestorEntropy.Length * 8, algorithmSuite);
+//                     }
+//                     proofKey = requestorEntropy;
+//                     issuerEntropy = null;
+//                     issuedKeySize = 0;
+//                     proofToken = null;
+//                 }
+//                 else
+//                 {
+//                     if (requestSecurityToken.KeySize != 0)
+//                     {
+//                         ValidateRequestedKeySize(requestSecurityToken.KeySize, algorithmSuite);
+//                         issuedKeySize = requestSecurityToken.KeySize;
+//                     }
+//                     else
+//                     {
+//                         issuedKeySize = algorithmSuite.DefaultSymmetricKeyLength;
+//                     }
+//                     RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
+//                     if (keyEntropyMode == SecurityKeyEntropyMode.ServerEntropy)
+//                     {
+//                         proofKey = new byte[issuedKeySize / 8];
+//                         // proof key is completely issued by the server
+//                         random.GetNonZeroBytes(proofKey);
+//                         issuerEntropy = null;
+//                         proofToken = new BinarySecretSecurityToken(proofKey);
+//                     }
+//                     else
+//                     {
+//                         issuerEntropy = new byte[issuedKeySize / 8];
+//                         random.GetNonZeroBytes(issuerEntropy);
+//                         proofKey = RequestSecurityTokenResponse.ComputeCombinedKey(requestorEntropy, issuerEntropy, issuedKeySize);
+//                         proofToken = null;
+//                     }
+//                 }
+//             }
 
-            internal static void ValidateRequestedKeySize(int keySize, SecurityAlgorithmSuite algorithmSuite)
-            {
-                if ((keySize % 8 == 0) && algorithmSuite.IsSymmetricKeyLengthSupported(keySize))
-                {
-                    return;
-                }
-                else
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new SecurityNegotiationException(SR.Format(SR.InvalidKeyLengthRequested, keySize)));
-                }
-            }
-
-            static void ValidateRequestorEntropy(SecurityToken entropy, SecurityKeyEntropyMode mode)
-            {
-                if ((mode == SecurityKeyEntropyMode.ClientEntropy || mode == SecurityKeyEntropyMode.CombinedEntropy)
-                    && (entropy == null))
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.EntropyModeRequiresRequestorEntropy, mode)));
-                }
-                if (mode == SecurityKeyEntropyMode.ServerEntropy && entropy != null)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveRequestorEntropy, mode)));
-                }
-            }
-
-            internal static void ProcessRstAndIssueKey(RequestSecurityToken requestSecurityToken, SecurityTokenResolver resolver, SecurityKeyEntropyMode keyEntropyMode, SecurityAlgorithmSuite algorithmSuite, out int issuedKeySize, out byte[] issuerEntropy, out byte[] proofKey,
-                out SecurityToken proofToken)
-            {
-                SecurityToken requestorEntropyToken = requestSecurityToken.GetRequestorEntropy(resolver);
-                ValidateRequestorEntropy(requestorEntropyToken, keyEntropyMode);
-                byte[] requestorEntropy;
-                if (requestorEntropyToken != null)
-                {
-                    if (requestorEntropyToken is BinarySecretSecurityToken)
-                    {
-                        BinarySecretSecurityToken skToken = (BinarySecretSecurityToken)requestorEntropyToken;
-                        requestorEntropy = skToken.GetKeyBytes();
-                    }
-                    else if (requestorEntropyToken is WrappedKeySecurityToken)
-                    {
-                        requestorEntropy = ((WrappedKeySecurityToken)requestorEntropyToken).GetWrappedKey();
-                    }
-                    else
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.TokenCannotCreateSymmetricCrypto, requestorEntropyToken)));
-                    }
-                }
-                else
-                {
-                    requestorEntropy = null;
-                }
-
-                if (keyEntropyMode == SecurityKeyEntropyMode.ClientEntropy)
-                {
-                    if (requestorEntropy != null)
-                    {
-                        // validate that the entropy length matches the algorithm suite
-                        ValidateRequestedKeySize(requestorEntropy.Length * 8, algorithmSuite);
-                    }
-                    proofKey = requestorEntropy;
-                    issuerEntropy = null;
-                    issuedKeySize = 0;
-                    proofToken = null;
-                }
-                else
-                {
-                    if (requestSecurityToken.KeySize != 0)
-                    {
-                        ValidateRequestedKeySize(requestSecurityToken.KeySize, algorithmSuite);
-                        issuedKeySize = requestSecurityToken.KeySize;
-                    }
-                    else
-                    {
-                        issuedKeySize = algorithmSuite.DefaultSymmetricKeyLength;
-                    }
-                    RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
-                    if (keyEntropyMode == SecurityKeyEntropyMode.ServerEntropy)
-                    {
-                        proofKey = new byte[issuedKeySize / 8];
-                        // proof key is completely issued by the server
-                        random.GetNonZeroBytes(proofKey);
-                        issuerEntropy = null;
-                        proofToken = new BinarySecretSecurityToken(proofKey);
-                    }
-                    else
-                    {
-                        issuerEntropy = new byte[issuedKeySize / 8];
-                        random.GetNonZeroBytes(issuerEntropy);
-                        proofKey = RequestSecurityTokenResponse.ComputeCombinedKey(requestorEntropy, issuerEntropy, issuedKeySize);
-                        proofToken = null;
-                    }
-                }
-            }
-#endif
         }
 
         protected static bool CheckElement(XmlElement element, string name, string ns, out string value)

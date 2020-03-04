@@ -1,8 +1,10 @@
-﻿namespace Microsoft.CodeDom.Compiler
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+namespace Microsoft.CodeDom.Compiler
 {
     using System;
 
-    // TODO (Miguell): remove
+    // Not needed in dotnet-svcutil scenario. 
     internal class ConfigurationErrorsException : Exception
     {
         public ConfigurationErrorsException()

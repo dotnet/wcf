@@ -1,0 +1,13 @@
+<!--
+****************************************************************************************************
+Directory.Build.props file.
+This file is imported automatically by Microsoft.Common.props very early in the build process.
+
+This file should be placed at the repository root.
+****************************************************************************************************
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Disable importing root.props for test projects to avoid repository-wide build steps like signing, which we don't need to worry about for test projects. -->
+  <!--Import Project="root.props" Condition="Exists('root.props')" /-->
+</Project>

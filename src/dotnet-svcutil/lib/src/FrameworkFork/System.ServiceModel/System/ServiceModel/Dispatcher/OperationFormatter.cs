@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.ServiceModel.Description;
 using System.Collections.Generic;
@@ -358,11 +358,11 @@ namespace System.ServiceModel.Dispatcher
 
             if (streamFormatter != null)
             {
-#if disabled
-                await streamFormatter.SerializeAsync(writer, parameters, returnValue);
-#else
+// Not needed in dotnet-svcutil scenario. Use the sync method.
+//                 await streamFormatter.SerializeAsync(writer, parameters, returnValue);
+
                 streamFormatter.Serialize(writer, parameters, returnValue);
-#endif
+
                 return;
             }
 

@@ -9,6 +9,7 @@
     <AssemblyCompany Condition="'$(AssemblyCompany)' == ''">$(AssemblyName)</AssemblyCompany>
     <IsPackable>true</IsPackable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,18 +19,14 @@
 
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>dotnet-svcutil</ToolCommandName>
-    <PackageOutputPath>$(OutputPath)</PackageOutputPath>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!--<Import Include="..\tools\Common\Version.targets"/>-->
-    <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
-    <MajorVersion>1</MajorVersion>
-    <MinorVersion>2</MinorVersion>
+    <MajorVersion>2</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>3</PatchVersion>
      <!--To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42).--> 
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
@@ -70,14 +67,18 @@
   </Target>-->
 
   <!-- Add the dotnet-svcutil-lib nupkg to our nuget package. This is needed for the bootstrapper to function. -->
-  <!--<Target Name="AddSvcUtilLib" BeforeTargets="ResolveReferences" DependsOnTargets="GetNuGetPackageVersion">
+  <Target Name="AddSvcUtilLib" BeforeTargets="ResolveReferences">
     <ItemGroup>
-      <None Include="$(OutputPath)..\dotnet-svcutil-lib.$(NuGetPackageVersion).nupkg" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
+      <None Include="$(OutputPath)..\..\..\..\Packages\$(Configuration)\Shipping\dotnet-svcutil-lib.$(PackageVersion).nupkg" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
         <BuildAction>None</BuildAction>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-
-      --><!-- Our custom version numbers aren't adhered to when building inside VS. Instead we just include all matching nuget packages.
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
+  </ItemGroup>
+      <!-- Our custom version numbers aren't adhered to when building inside VS. Instead we just include all matching nuget packages.
            Since this is only used during development the extra size shouldn't be a problem. --><!--
       <None Include="$(OutputPath)..\dotnet-svcutil-lib.*.nupkg" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
         <BuildAction>None</BuildAction>

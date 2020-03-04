@@ -1,6 +1,5 @@
-//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections.Generic;
@@ -647,8 +646,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     UpdateSchemaSourceUri(section.Metadata as XmlNS.Schema.XmlSchema, GetSourceUrl(section));
                     continue;
                 }
-
-                // TODO: support Policy docs
             }
         }
 

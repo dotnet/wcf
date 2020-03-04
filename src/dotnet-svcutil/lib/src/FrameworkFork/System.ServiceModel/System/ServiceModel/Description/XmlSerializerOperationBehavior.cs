@@ -1,6 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections;
@@ -931,27 +930,27 @@ namespace System.ServiceModel.Description
 
 #endif
 
-#if disabled
-            return FromMappingsViaReflection(mappings, type);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             return FromMappingsViaReflection(mappings, type);
+
             return XmlSerializer.FromMappings(mappings, type);
         }
 
-#if disabled
-        private static XmlSerializer[] FromMappingsViaReflection(XmlMapping[] mappings, Type type)
-        {
-            if (mappings == null || mappings.Length == 0)
-            {
-                return new XmlSerializer[0];
-            }
+// Not needed in dotnet-svcutil scenario. 
+//         private static XmlSerializer[] FromMappingsViaReflection(XmlMapping[] mappings, Type type)
+//         {
+//             if (mappings == null || mappings.Length == 0)
+//             {
+//                 return new XmlSerializer[0];
+//             }
+// 
+//             Array mappingArray = XmlMappingTypesHelper.InitializeArray(XmlMappingTypesHelper.XmlMappingType, mappings);
+//             MethodInfo method = typeof(XmlSerializer).GetMethod("FromMappings", new Type[] { XmlMappingTypesHelper.XmlMappingType.MakeArrayType(), typeof(Type) });
+//             object result = method.Invoke(null, new object[] { mappingArray, type });
+// 
+//             return (XmlSerializer[])result;
+//         }
 
-            Array mappingArray = XmlMappingTypesHelper.InitializeArray(XmlMappingTypesHelper.XmlMappingType, mappings);
-            MethodInfo method = typeof(XmlSerializer).GetMethod("FromMappings", new Type[] { XmlMappingTypesHelper.XmlMappingType.MakeArrayType(), typeof(Type) });
-            object result = method.Invoke(null, new object[] { mappingArray, type });
-
-            return (XmlSerializer[])result;
-        }
-#endif
 
 #if FEATURE_NETNATIVE
 

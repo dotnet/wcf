@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Security
 {
@@ -101,11 +100,10 @@ namespace System.ServiceModel.Security
 
         protected override void ReadCipherData(XmlDictionaryReader reader, long maxBufferSize)
         {
-#if disabled
-            this.wrappedKey = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             this.wrappedKey = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
+
             throw new NotImplementedException();
-#endif
         }
 
         protected override void WriteAdditionalAttributes(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)

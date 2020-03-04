@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlConvert.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">priyal</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml {
 				using System;

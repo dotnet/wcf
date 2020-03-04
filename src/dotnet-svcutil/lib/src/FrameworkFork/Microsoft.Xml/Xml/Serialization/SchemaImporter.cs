@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="SchemaImporter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">ElenaK</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Serialization {
     using System;
@@ -11,11 +7,11 @@ namespace Microsoft.Xml.Serialization {
     using System.Collections;
     using System.ComponentModel;
     using System.Reflection;
-#if disabled
-    using System.Configuration;
-    using Microsoft.Xml.Serialization.Configuration;
-    using System.Security.Permissions;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//     using System.Configuration;
+//     using Microsoft.Xml.Serialization.Configuration;
+//     using System.Security.Permissions;
+
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
     using Microsoft.Xml.Serialization.Advanced;
@@ -57,12 +53,12 @@ namespace Microsoft.Xml.Serialization {
             this.context = context;
             Schemas.SetCache(Context.Cache, Context.ShareTypes);
 
-#if disabled
-            SchemaImporterExtensionsSection section = PrivilegedConfigurationManager.GetSection(ConfigurationStrings.SchemaImporterExtensionsSectionPath) as SchemaImporterExtensionsSection;
-            if (section != null)
-                extensions = section.SchemaImporterExtensionsInternal;
-            else
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             SchemaImporterExtensionsSection section = PrivilegedConfigurationManager.GetSection(ConfigurationStrings.SchemaImporterExtensionsSectionPath) as SchemaImporterExtensionsSection;
+//             if (section != null)
+//                 extensions = section.SchemaImporterExtensionsInternal;
+//             else
+
                 extensions = new SchemaImporterExtensionCollection();
         }
 

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.ComponentModel;
 using System.Runtime;
@@ -277,20 +277,20 @@ namespace System.ServiceModel
 
         internal virtual void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
         {
-#if disabled
-            this.BypassProxyOnLocal = transport.BypassProxyOnLocal;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.BypassProxyOnLocal = transport.BypassProxyOnLocal;
+
             this.HostNameComparisonMode = transport.HostNameComparisonMode;
             this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
             this.MaxBufferSize = transport.MaxBufferSize;
             this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
-#if disabled
-            this.ProxyAddress = transport.ProxyAddress;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.ProxyAddress = transport.ProxyAddress;
+
             this.TransferMode = transport.TransferMode;
-#if disabled
-            this.UseDefaultWebProxy = transport.UseDefaultWebProxy;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             this.UseDefaultWebProxy = transport.UseDefaultWebProxy;
+
             _httpTransport.WebSocketSettings = transport.WebSocketSettings;
             _httpsTransport.WebSocketSettings = transport.WebSocketSettings;
 

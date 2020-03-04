@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Collections;
@@ -1196,12 +1196,12 @@ namespace Microsoft.Xml
             return ReadArray(XmlDictionaryString.GetString(localName), XmlDictionaryString.GetString(namespaceUri), array, offset, count);
         }
 
-#if disabled
-        public virtual void Close()
-        {
-            base.Dispose();
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public virtual void Close()
+//         {
+//             base.Dispose();
+//         }
+
         private class XmlWrappedReader : XmlDictionaryReader, IXmlLineInfo
         {
             private XmlReader _reader;

@@ -37,7 +37,7 @@ namespace System {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Tools.ServiceModel.Svcutil.OpenSource.System.ServiceModel.Resources.SRServiceModel" +
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Tools.ServiceModel.Svcutil.FrameworkFork.System.ServiceModel.Resources.SRServiceModel" +
                             "", typeof(SRServiceModel).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }

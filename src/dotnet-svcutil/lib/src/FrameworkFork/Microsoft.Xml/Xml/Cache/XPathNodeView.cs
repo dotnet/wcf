@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XPathNodeView.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">derekdb</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 #if ENABLEDATABINDING
 using System;
 using Microsoft.Xml;

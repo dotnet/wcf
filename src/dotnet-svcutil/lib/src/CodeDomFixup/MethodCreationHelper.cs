@@ -1,6 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using Microsoft.CodeDom;
@@ -910,11 +909,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             CodeExpression createIdentityExpression = null;
             EndpointIdentity identity = serviceEndpoint.Address.Identity;
-#if disabled // Upn and Spn not supported in DNX
-            if(identity != null && (identity is UpnEndpointIdentity || identity is DnsEndpointIdentity || identity is SpnEndpointIdentity))
-#else
+            
             if (identity != null && (identity is DnsEndpointIdentity))
-#endif
             {
                 createIdentityExpression = new CodeObjectCreateExpression(identity.GetType(), new CodePrimitiveExpression(identity.IdentityClaim.Resource));
             }

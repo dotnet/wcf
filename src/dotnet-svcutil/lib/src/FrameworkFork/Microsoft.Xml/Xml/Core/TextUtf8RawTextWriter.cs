@@ -1,10 +1,6 @@
-﻿
-//------------------------------------------------------------------------------
-// <copyright file="TextWriterGenerator.cxx" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 
 // WARNING: This file is generated and should not be modified directly.  Instead,
 // modify TextWriterGenerator.cxx and run gen.bat in the same directory.

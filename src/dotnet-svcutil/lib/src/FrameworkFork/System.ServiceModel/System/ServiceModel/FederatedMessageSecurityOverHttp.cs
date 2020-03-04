@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel
 {
     using System.Collections.ObjectModel;
@@ -133,198 +132,198 @@ namespace System.ServiceModel
                                                                      bool isReliableSession,
                                                                      MessageSecurityVersion version)
         {
-#if disabled
-            if ((this.IssuedKeyType == SecurityKeyType.BearerKey) &&
-               (version.TrustVersion == TrustVersion.WSTrustFeb2005))
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.BearerKeyIncompatibleWithWSFederationHttpBinding));
-            }
+// Not needed in dotnet-svcutil scenario. 
+//             if ((this.IssuedKeyType == SecurityKeyType.BearerKey) &&
+//                (version.TrustVersion == TrustVersion.WSTrustFeb2005))
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.BearerKeyIncompatibleWithWSFederationHttpBinding));
+//             }
+// 
+//             if (isReliableSession && !this.EstablishSecurityContext)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SecureConversationRequiredByReliableSession));
+//             }
+// 
+//             SecurityBindingElement result;
+//             bool emitBspAttributes = true;
+//             IssuedSecurityTokenParameters issuedParameters = new IssuedSecurityTokenParameters(this.IssuedTokenType, this.IssuerAddress, this.IssuerBinding);
+//             issuedParameters.IssuerMetadataAddress = this.issuerMetadataAddress;
+//             issuedParameters.KeyType = this.IssuedKeyType;
+//             if (this.IssuedKeyType == SecurityKeyType.SymmetricKey)
+//             {
+//                 issuedParameters.KeySize = this.AlgorithmSuite.DefaultSymmetricKeyLength;
+//             }
+//             else
+//             {
+//                 issuedParameters.KeySize = 0;
+//             }
+//             foreach (ClaimTypeRequirement c in this.claimTypeRequirements)
+//             {
+//                 issuedParameters.ClaimTypeRequirements.Add(c);
+//             }
+//             foreach (XmlElement p in this.TokenRequestParameters)
+//             {
+//                 issuedParameters.AdditionalRequestParameters.Add(p);
+//             }
+//             WSSecurityTokenSerializer versionSpecificSerializer = new WSSecurityTokenSerializer(version.SecurityVersion,
+//                                                                                                 version.TrustVersion,
+//                                                                                                 version.SecureConversationVersion,
+//                                                                                                 emitBspAttributes,
+//                                                                                                 null, null, null);
+//             SecurityStandardsManager versionSpecificStandardsManager = new SecurityStandardsManager(version, versionSpecificSerializer);
+//             issuedParameters.AddAlgorithmParameters(this.AlgorithmSuite, versionSpecificStandardsManager, this.issuedKeyType);
+// 
+//             SecurityBindingElement issuedTokenSecurity;
+//             if (isSecureTransportMode)
+//             {
+//                 issuedTokenSecurity = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(issuedParameters);
+//             }
+//             else
+//             {
+//                 if (negotiateServiceCredential)
+//                 {
+//                     // We should have passed 'true' as RequireCancelation to be consistent with other standard bindings.
+//                     // However, to limit the change for Orcas, we scope down to just newer version of WSSecurityPolicy.
+//                     issuedTokenSecurity = SecurityBindingElement.CreateIssuedTokenForSslBindingElement(issuedParameters, version.SecurityPolicyVersion != SecurityPolicyVersion.WSSecurityPolicy11);
+//                 }
+//                 else
+//                 {
+//                     issuedTokenSecurity = SecurityBindingElement.CreateIssuedTokenForCertificateBindingElement(issuedParameters);
+//                 }
+//             }
+// 
+//             issuedTokenSecurity.MessageSecurityVersion = version;
+//             issuedTokenSecurity.DefaultAlgorithmSuite = this.AlgorithmSuite;
+// 
+//             if (this.EstablishSecurityContext)
+//             {
+//                 result = SecurityBindingElement.CreateSecureConversationBindingElement(issuedTokenSecurity, true);
+//             }
+//             else
+//             {
+//                 result = issuedTokenSecurity;
+//             }
+// 
+//             result.MessageSecurityVersion = version;
+//             result.DefaultAlgorithmSuite = this.AlgorithmSuite;
+//             result.IncludeTimestamp = true;
+// 
+//             if (!isReliableSession)
+//             {
+//                 result.LocalServiceSettings.ReconnectTransportOnFailure = false;
+//                 result.LocalClientSettings.ReconnectTransportOnFailure = false;
+//             }
+//             else
+//             {
+//                 result.LocalServiceSettings.ReconnectTransportOnFailure = true;
+//                 result.LocalClientSettings.ReconnectTransportOnFailure = true;
+//             }
+// 
+//             if (this.establishSecurityContext)
+//             {
+//                 // issue the transition SCT for a short duration only
+//                 issuedTokenSecurity.LocalServiceSettings.IssuedCookieLifetime = SpnegoTokenAuthenticator.defaultServerIssuedTransitionTokenLifetime;
+//             }
+// 
+//             return result;
 
-            if (isReliableSession && !this.EstablishSecurityContext)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SecureConversationRequiredByReliableSession));
-            }
-
-            SecurityBindingElement result;
-            bool emitBspAttributes = true;
-            IssuedSecurityTokenParameters issuedParameters = new IssuedSecurityTokenParameters(this.IssuedTokenType, this.IssuerAddress, this.IssuerBinding);
-            issuedParameters.IssuerMetadataAddress = this.issuerMetadataAddress;
-            issuedParameters.KeyType = this.IssuedKeyType;
-            if (this.IssuedKeyType == SecurityKeyType.SymmetricKey)
-            {
-                issuedParameters.KeySize = this.AlgorithmSuite.DefaultSymmetricKeyLength;
-            }
-            else
-            {
-                issuedParameters.KeySize = 0;
-            }
-            foreach (ClaimTypeRequirement c in this.claimTypeRequirements)
-            {
-                issuedParameters.ClaimTypeRequirements.Add(c);
-            }
-            foreach (XmlElement p in this.TokenRequestParameters)
-            {
-                issuedParameters.AdditionalRequestParameters.Add(p);
-            }
-            WSSecurityTokenSerializer versionSpecificSerializer = new WSSecurityTokenSerializer(version.SecurityVersion,
-                                                                                                version.TrustVersion,
-                                                                                                version.SecureConversationVersion,
-                                                                                                emitBspAttributes,
-                                                                                                null, null, null);
-            SecurityStandardsManager versionSpecificStandardsManager = new SecurityStandardsManager(version, versionSpecificSerializer);
-            issuedParameters.AddAlgorithmParameters(this.AlgorithmSuite, versionSpecificStandardsManager, this.issuedKeyType);
-
-            SecurityBindingElement issuedTokenSecurity;
-            if (isSecureTransportMode)
-            {
-                issuedTokenSecurity = SecurityBindingElement.CreateIssuedTokenOverTransportBindingElement(issuedParameters);
-            }
-            else
-            {
-                if (negotiateServiceCredential)
-                {
-                    // We should have passed 'true' as RequireCancelation to be consistent with other standard bindings.
-                    // However, to limit the change for Orcas, we scope down to just newer version of WSSecurityPolicy.
-                    issuedTokenSecurity = SecurityBindingElement.CreateIssuedTokenForSslBindingElement(issuedParameters, version.SecurityPolicyVersion != SecurityPolicyVersion.WSSecurityPolicy11);
-                }
-                else
-                {
-                    issuedTokenSecurity = SecurityBindingElement.CreateIssuedTokenForCertificateBindingElement(issuedParameters);
-                }
-            }
-
-            issuedTokenSecurity.MessageSecurityVersion = version;
-            issuedTokenSecurity.DefaultAlgorithmSuite = this.AlgorithmSuite;
-
-            if (this.EstablishSecurityContext)
-            {
-                result = SecurityBindingElement.CreateSecureConversationBindingElement(issuedTokenSecurity, true);
-            }
-            else
-            {
-                result = issuedTokenSecurity;
-            }
-
-            result.MessageSecurityVersion = version;
-            result.DefaultAlgorithmSuite = this.AlgorithmSuite;
-            result.IncludeTimestamp = true;
-
-            if (!isReliableSession)
-            {
-                result.LocalServiceSettings.ReconnectTransportOnFailure = false;
-                result.LocalClientSettings.ReconnectTransportOnFailure = false;
-            }
-            else
-            {
-                result.LocalServiceSettings.ReconnectTransportOnFailure = true;
-                result.LocalClientSettings.ReconnectTransportOnFailure = true;
-            }
-
-            if (this.establishSecurityContext)
-            {
-                // issue the transition SCT for a short duration only
-                issuedTokenSecurity.LocalServiceSettings.IssuedCookieLifetime = SpnegoTokenAuthenticator.defaultServerIssuedTransitionTokenLifetime;
-            }
-
-            return result;
-#else
             throw new NotImplementedException();
-#endif
+
         }
 
         internal static bool TryCreate(SecurityBindingElement sbe, bool isSecureTransportMode, bool isReliableSession, MessageSecurityVersion version, out FederatedMessageSecurityOverHttp messageSecurity)
         {
-#if disabled
-            Fx.Assert(null != sbe, string.Empty);
+// Not needed in dotnet-svcutil scenario. 
+//             Fx.Assert(null != sbe, string.Empty);
+// 
+//             messageSecurity = null;
+// 
+//             // do not check local settings: sbe.LocalServiceSettings and sbe.LocalClientSettings
+// 
+//             if (!sbe.IncludeTimestamp)
+//                 return false;
+// 
+//             if (sbe.SecurityHeaderLayout != SecurityProtocolFactory.defaultSecurityHeaderLayout)
+//                 return false;
+// 
+//             bool emitBspAttributes = true;
+// 
+//             // Do not check MessageSecurityVersion: it maybe changed by the wrapper element and gets checked later in the SecuritySection.AreBindingsMatching()
+// 
+//             SecurityBindingElement bootstrapSecurity;
+// 
+//             bool establishSecurityContext = SecurityBindingElement.IsSecureConversationBinding(sbe, true, out bootstrapSecurity);
+//             bootstrapSecurity = establishSecurityContext ? bootstrapSecurity : sbe;
+// 
+//             if (isSecureTransportMode && !(bootstrapSecurity is TransportSecurityBindingElement))
+//                 return false;
+// 
+//             bool negotiateServiceCredential = DefaultNegotiateServiceCredential;
+//             IssuedSecurityTokenParameters issuedTokenParameters;
+// 
+//             if (isSecureTransportMode)
+//             {
+//                 if (!SecurityBindingElement.IsIssuedTokenOverTransportBinding(bootstrapSecurity, out issuedTokenParameters))
+//                     return false;
+//             }
+//             else
+//             {
+//                 // We should have passed 'true' as RequireCancelation to be consistent with other standard bindings.
+//                 // However, to limit the change for Orcas, we scope down to just newer version of WSSecurityPolicy.
+//                 if (SecurityBindingElement.IsIssuedTokenForSslBinding(bootstrapSecurity, version.SecurityPolicyVersion != SecurityPolicyVersion.WSSecurityPolicy11, out issuedTokenParameters))
+//                     negotiateServiceCredential = true;
+//                 else if (SecurityBindingElement.IsIssuedTokenForCertificateBinding(bootstrapSecurity, out issuedTokenParameters))
+//                     negotiateServiceCredential = false;
+//                 else
+//                     return false;
+//             }
+// 
+//             if ((issuedTokenParameters.KeyType == SecurityKeyType.BearerKey) &&
+//                (version.TrustVersion == TrustVersion.WSTrustFeb2005))
+//             {
+//                 return false;
+//             }
+// 
+//             Collection<XmlElement> nonAlgorithmRequestParameters;
+//             WSSecurityTokenSerializer versionSpecificSerializer = new WSSecurityTokenSerializer(version.SecurityVersion,
+//                                                                                                 version.TrustVersion,
+//                                                                                                 version.SecureConversationVersion,
+//                                                                                                 emitBspAttributes,
+//                                                                                                 null, null, null);
+//             SecurityStandardsManager versionSpecificStandardsManager = new SecurityStandardsManager(version, versionSpecificSerializer);
+// 
+//             if (!issuedTokenParameters.DoAlgorithmsMatch(sbe.DefaultAlgorithmSuite,
+//                                                          versionSpecificStandardsManager,
+//                                                          out nonAlgorithmRequestParameters))
+//             {
+//                 return false;
+//             }
+//             messageSecurity = new FederatedMessageSecurityOverHttp();
+// 
+//             messageSecurity.AlgorithmSuite = sbe.DefaultAlgorithmSuite;
+//             messageSecurity.NegotiateServiceCredential = negotiateServiceCredential;
+//             messageSecurity.EstablishSecurityContext = establishSecurityContext;
+//             messageSecurity.IssuedTokenType = issuedTokenParameters.TokenType;
+//             messageSecurity.IssuerAddress = issuedTokenParameters.IssuerAddress;
+//             messageSecurity.IssuerBinding = issuedTokenParameters.IssuerBinding;
+//             messageSecurity.IssuerMetadataAddress = issuedTokenParameters.IssuerMetadataAddress;
+//             messageSecurity.IssuedKeyType = issuedTokenParameters.KeyType;
+//             foreach (ClaimTypeRequirement c in issuedTokenParameters.ClaimTypeRequirements)
+//             {
+//                 messageSecurity.ClaimTypeRequirements.Add(c);
+//             }
+//             foreach (XmlElement p in nonAlgorithmRequestParameters)
+//             {
+//                 messageSecurity.TokenRequestParameters.Add(p);
+//             }
+//             if (issuedTokenParameters.AlternativeIssuerEndpoints != null && issuedTokenParameters.AlternativeIssuerEndpoints.Count > 0)
+//             {
+//                 return false;
+//             }
+//             return true;
 
-            messageSecurity = null;
-
-            // do not check local settings: sbe.LocalServiceSettings and sbe.LocalClientSettings
-
-            if (!sbe.IncludeTimestamp)
-                return false;
-
-            if (sbe.SecurityHeaderLayout != SecurityProtocolFactory.defaultSecurityHeaderLayout)
-                return false;
-
-            bool emitBspAttributes = true;
-
-            // Do not check MessageSecurityVersion: it maybe changed by the wrapper element and gets checked later in the SecuritySection.AreBindingsMatching()
-
-            SecurityBindingElement bootstrapSecurity;
-
-            bool establishSecurityContext = SecurityBindingElement.IsSecureConversationBinding(sbe, true, out bootstrapSecurity);
-            bootstrapSecurity = establishSecurityContext ? bootstrapSecurity : sbe;
-
-            if (isSecureTransportMode && !(bootstrapSecurity is TransportSecurityBindingElement))
-                return false;
-
-            bool negotiateServiceCredential = DefaultNegotiateServiceCredential;
-            IssuedSecurityTokenParameters issuedTokenParameters;
-
-            if (isSecureTransportMode)
-            {
-                if (!SecurityBindingElement.IsIssuedTokenOverTransportBinding(bootstrapSecurity, out issuedTokenParameters))
-                    return false;
-            }
-            else
-            {
-                // We should have passed 'true' as RequireCancelation to be consistent with other standard bindings.
-                // However, to limit the change for Orcas, we scope down to just newer version of WSSecurityPolicy.
-                if (SecurityBindingElement.IsIssuedTokenForSslBinding(bootstrapSecurity, version.SecurityPolicyVersion != SecurityPolicyVersion.WSSecurityPolicy11, out issuedTokenParameters))
-                    negotiateServiceCredential = true;
-                else if (SecurityBindingElement.IsIssuedTokenForCertificateBinding(bootstrapSecurity, out issuedTokenParameters))
-                    negotiateServiceCredential = false;
-                else
-                    return false;
-            }
-
-            if ((issuedTokenParameters.KeyType == SecurityKeyType.BearerKey) &&
-               (version.TrustVersion == TrustVersion.WSTrustFeb2005))
-            {
-                return false;
-            }
-
-            Collection<XmlElement> nonAlgorithmRequestParameters;
-            WSSecurityTokenSerializer versionSpecificSerializer = new WSSecurityTokenSerializer(version.SecurityVersion,
-                                                                                                version.TrustVersion,
-                                                                                                version.SecureConversationVersion,
-                                                                                                emitBspAttributes,
-                                                                                                null, null, null);
-            SecurityStandardsManager versionSpecificStandardsManager = new SecurityStandardsManager(version, versionSpecificSerializer);
-
-            if (!issuedTokenParameters.DoAlgorithmsMatch(sbe.DefaultAlgorithmSuite,
-                                                         versionSpecificStandardsManager,
-                                                         out nonAlgorithmRequestParameters))
-            {
-                return false;
-            }
-            messageSecurity = new FederatedMessageSecurityOverHttp();
-
-            messageSecurity.AlgorithmSuite = sbe.DefaultAlgorithmSuite;
-            messageSecurity.NegotiateServiceCredential = negotiateServiceCredential;
-            messageSecurity.EstablishSecurityContext = establishSecurityContext;
-            messageSecurity.IssuedTokenType = issuedTokenParameters.TokenType;
-            messageSecurity.IssuerAddress = issuedTokenParameters.IssuerAddress;
-            messageSecurity.IssuerBinding = issuedTokenParameters.IssuerBinding;
-            messageSecurity.IssuerMetadataAddress = issuedTokenParameters.IssuerMetadataAddress;
-            messageSecurity.IssuedKeyType = issuedTokenParameters.KeyType;
-            foreach (ClaimTypeRequirement c in issuedTokenParameters.ClaimTypeRequirements)
-            {
-                messageSecurity.ClaimTypeRequirements.Add(c);
-            }
-            foreach (XmlElement p in nonAlgorithmRequestParameters)
-            {
-                messageSecurity.TokenRequestParameters.Add(p);
-            }
-            if (issuedTokenParameters.AlternativeIssuerEndpoints != null && issuedTokenParameters.AlternativeIssuerEndpoints.Count > 0)
-            {
-                return false;
-            }
-            return true;
-#else
             throw new NotImplementedException();
-#endif
+
         }
 
         internal bool InternalShouldSerialize()

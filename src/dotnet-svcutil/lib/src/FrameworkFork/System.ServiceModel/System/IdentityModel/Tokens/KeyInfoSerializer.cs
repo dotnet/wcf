@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------------------------
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.IdentityModel.Tokens
 {
@@ -131,12 +130,11 @@ namespace System.IdentityModel.Tokens
 
         protected override SecurityToken ReadTokenCore(XmlReader reader, SecurityTokenResolver tokenResolver)
         {
-#if disabled
-            XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null))));
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
+//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null))));
+
             throw new NotImplementedException();
-#endif
         }
 
         protected override bool CanWriteTokenCore(SecurityToken token)
@@ -146,11 +144,10 @@ namespace System.IdentityModel.Tokens
 
         protected override void WriteTokenCore(XmlWriter writer, SecurityToken token)
         {
-#if disabled
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
+
             throw new NotImplementedException();
-#endif
         }
 
         protected override bool CanReadKeyIdentifierCore(XmlReader reader)

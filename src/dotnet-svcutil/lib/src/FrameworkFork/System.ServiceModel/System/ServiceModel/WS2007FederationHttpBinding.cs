@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace System.ServiceModel
 {
     using System;
@@ -57,24 +56,24 @@ namespace System.ServiceModel
             this.TransactionFlowBindingElement.TransactionProtocol = WS2007TransactionProtocol;
             this.HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
         }
-#if disabled
-        void ApplyConfiguration(string configurationName)
-        {
-            WS2007FederationHttpBindingCollectionElement section = WS2007FederationHttpBindingCollectionElement.GetBindingCollectionElement();
-            WS2007FederationHttpBindingElement element = section.Bindings[configurationName];
-            if (element == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-                    SR.Format(SR.ConfigInvalidBindingConfigurationName,
-                                 configurationName,
-                                 ConfigurationStrings.WS2007FederationHttpBindingCollectionElementName)));
-            }
-            else
-            {
-                element.ApplyConfiguration(this);
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         void ApplyConfiguration(string configurationName)
+//         {
+//             WS2007FederationHttpBindingCollectionElement section = WS2007FederationHttpBindingCollectionElement.GetBindingCollectionElement();
+//             WS2007FederationHttpBindingElement element = section.Bindings[configurationName];
+//             if (element == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
+//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
+//                                  configurationName,
+//                                  ConfigurationStrings.WS2007FederationHttpBindingCollectionElementName)));
+//             }
+//             else
+//             {
+//                 element.ApplyConfiguration(this);
+//             }
+//         }
+
         protected override SecurityBindingElement CreateMessageSecurity()
         {
             return this.Security.CreateMessageSecurity(this.ReliableSession.Enabled, WS2007MessageSecurityVersion);

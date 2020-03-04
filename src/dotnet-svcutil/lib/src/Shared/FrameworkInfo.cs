@@ -1,6 +1,5 @@
-﻿//--------------------------------------------------------------------------------------------
-// Copyright(c) 2015 Microsoft Corporation
-//--------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.Linq;

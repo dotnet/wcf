@@ -1,10 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="Infer.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">priyal</owner> 
-// <owner current="false" primary="false">nithyas</owner> 
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.IO;

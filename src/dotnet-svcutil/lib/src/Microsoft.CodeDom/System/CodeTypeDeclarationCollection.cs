@@ -1,11 +1,5 @@
-// ------------------------------------------------------------------------------
-// <copyright file="CodeTypeDeclarationCollection.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright> 
-// ------------------------------------------------------------------------------
-// 
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 namespace Microsoft.CodeDom {
     using System;
     using System.Collections;

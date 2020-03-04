@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
+  <!-- $(RepositoryRoot)Directory.Build.props automatically imported by Microsoft.Common.props -->
+  <PropertyGroup>
+    <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <NoWarn>$(NoWarn)NETSDK1023</NoWarn>
+    <!--<OutputType>Exe</OutputType>-->
+    <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- disable .net core assembly info generation as we have custom versioning. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyCompany Condition="'$(AssemblyCompany)' == ''">$(AssemblyName)</AssemblyCompany>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LocalizeAssembly>false</LocalizeAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'netcoreapp1.0'">$(DefineConstants);NETCORE10</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="FxCopAnalyzers">
+    <NonShipping Label="Disable MicroBuild Compliance tasks">true</NonShipping>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Features>IOperation</Features>
+    <MicroBuild_FXCop>false</MicroBuild_FXCop>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath Condition="'$(OutputPath)' == ''">bin\Release\</OutputPath>
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath Condition="'$(OutputPath)' == ''">bin\Debug\</OutputPath>
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);TestCases\**;Baselines\**;TestResults\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\dotnet-svcutil-lib.csproj" />
+  </ItemGroup>
+</Project>

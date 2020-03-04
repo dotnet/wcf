@@ -1,8 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// <copyright company="Microsoft">
-//   Copyright (C) Microsoft Corporation. All Rights Reserved.
-// </copyright>
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.ServiceModel.Description;
 using Microsoft.CodeDom;

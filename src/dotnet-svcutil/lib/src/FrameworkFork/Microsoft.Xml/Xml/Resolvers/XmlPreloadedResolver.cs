@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlPreloadedResolver.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System;
 using System.IO;
@@ -62,10 +58,10 @@ namespace Microsoft.Xml.Resolvers {
             }
 
             internal override Stream AsStream() {
-#if disabled
-                Assembly asm = Assembly.GetExecutingAssembly();
-                return asm.GetManifestResourceStream(resourceName);
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 Assembly asm = Assembly.GetExecutingAssembly();
+//                 return asm.GetManifestResourceStream(resourceName);
+
                 throw new NotImplementedException();
             }
         }
@@ -281,36 +277,36 @@ namespace Microsoft.Xml.Resolvers {
             Add(uri, new ByteArrayChunk(value, offset, count));
         }
 
-#if disabled
-        public void Add(Uri uri, Stream value) {
-            if (uri == null) {
-                throw new ArgumentNullException("uri");
-            }
-            if (value == null) {
-                throw new ArgumentNullException("value");
-            }
-            if (value.CanSeek) {
-                // stream of known length -> allocate the byte array and read all data into it
-                int size = checked((int)value.Length);
-                byte[] bytes = new byte[size];
-                value.Read(bytes, 0, size);
-                Add(uri, new ByteArrayChunk(bytes));
-            }
-            else {
-                // stream of unknown length -> read into memory stream and then get internal the byte array
-                MemoryStream ms = new MemoryStream();
-                byte[] buffer = new byte[4096];
-                int read;
-                while ((read = value.Read(buffer, 0, buffer.Length)) > 0) {
-                    ms.Write(buffer, 0, read);
-                }
-                int size = checked((int)ms.Position);
-                byte[] bytes = new byte[size];
-                Array.Copy(ms.GetBuffer(), bytes, size);
-                Add(uri, new ByteArrayChunk(bytes));
-            }
-        }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         public void Add(Uri uri, Stream value) {
+//             if (uri == null) {
+//                 throw new ArgumentNullException("uri");
+//             }
+//             if (value == null) {
+//                 throw new ArgumentNullException("value");
+//             }
+//             if (value.CanSeek) {
+//                 // stream of known length -> allocate the byte array and read all data into it
+//                 int size = checked((int)value.Length);
+//                 byte[] bytes = new byte[size];
+//                 value.Read(bytes, 0, size);
+//                 Add(uri, new ByteArrayChunk(bytes));
+//             }
+//             else {
+//                 // stream of unknown length -> read into memory stream and then get internal the byte array
+//                 MemoryStream ms = new MemoryStream();
+//                 byte[] buffer = new byte[4096];
+//                 int read;
+//                 while ((read = value.Read(buffer, 0, buffer.Length)) > 0) {
+//                     ms.Write(buffer, 0, read);
+//                 }
+//                 int size = checked((int)ms.Position);
+//                 byte[] bytes = new byte[size];
+//                 Array.Copy(ms.GetBuffer(), bytes, size);
+//                 Add(uri, new ByteArrayChunk(bytes));
+//             }
+//         }
+
         public void Add(Uri uri, string value) {
             if (uri == null) {
                 throw new ArgumentNullException("uri");

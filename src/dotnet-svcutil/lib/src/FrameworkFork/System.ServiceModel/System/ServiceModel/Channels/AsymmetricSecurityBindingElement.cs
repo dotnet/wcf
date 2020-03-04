@@ -1,6 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
  
 using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Dispatcher;
@@ -671,17 +670,17 @@ namespace System.ServiceModel.Channels
 
                 if (sbe != null)
                 {
-#if disabled
-                    // OK to exclude, this is to validate generation of config file, when failed it means config must be done in code, here's an example:
-                    // Warning: A security policy was imported for the endpoint. The security policy contains requirements that cannot be represented in a Windows Communication Foundation configuration. Look for a comment about the SecurityBindingElement parameters that are required in the configuration file that was generated. Create the correct binding element with code. The binding configuration that is in the configuration file is not secure.
-                    SecurityElement config = new SecurityElement();
-                    config.InitializeFrom(sbe, false);
-                    if (config.HasImportFailed)
-                    {
-#pragma warning disable 56506
-                        importer.Errors.Add(new MetadataConversionError(SR.Format(SR.SecurityBindingElementCannotBeExpressedInConfig), true));
-                    }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                     // OK to exclude, this is to validate generation of config file, when failed it means config must be done in code, here's an example:
+//                     // Warning: A security policy was imported for the endpoint. The security policy contains requirements that cannot be represented in a Windows Communication Foundation configuration. Look for a comment about the SecurityBindingElement parameters that are required in the configuration file that was generated. Create the correct binding element with code. The binding configuration that is in the configuration file is not secure.
+//                     SecurityElement config = new SecurityElement();
+//                     config.InitializeFrom(sbe, false);
+//                     if (config.HasImportFailed)
+//                     {
+// #pragma warning disable 56506
+//                         importer.Errors.Add(new MetadataConversionError(SR.Format(SR.SecurityBindingElementCannotBeExpressedInConfig), true));
+//                     }
+
                 }
             }
         }

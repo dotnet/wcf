@@ -1,10 +1,6 @@
-﻿
-//------------------------------------------------------------------------------
-// <copyright file="XmlRawTextWriterGenerator.cxx" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 
 // WARNING: This file is generated and should not be modified directly.  Instead,
 // modify XmlTextWriterGenerator.cxx and run gen.bat in the same directory.
@@ -138,12 +134,12 @@ namespace Microsoft.Xml {
 
             this.writer = writer;
             this.encoding = writer.Encoding;
-#if disabled
-            // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
-            if (settings.Async) {
-                bufLen = ASYNCBUFSIZE;
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
+//             if (settings.Async) {
+//                 bufLen = ASYNCBUFSIZE;
+//             }
+
             this.bufChars = new char[bufLen + OVERFLOW];
 
             // Write the xml declaration
@@ -161,12 +157,12 @@ namespace Microsoft.Xml {
             this.stream = stream;
             this.encoding = settings.Encoding;
 
-#if disabled
-            // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
-            if (settings.Async) {
-                bufLen = ASYNCBUFSIZE;
-            }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//             // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
+//             if (settings.Async) {
+//                 bufLen = ASYNCBUFSIZE;
+//             }
+
             bufChars = new char[bufLen + OVERFLOW];
 
             bufBytes = new byte[ bufChars.Length ];
@@ -181,9 +177,9 @@ namespace Microsoft.Xml {
 
             charEntityFallback = new CharEntityEncoderFallback();
             this.encoding = (Encoding)settings.Encoding.Clone();
-#if disabled // TODO (miguell): EncoderFallback is RO
-            encoding.EncoderFallback = charEntityFallback;
-#endif 
+// Not needed in dotnet-svcutil scenario. EncoderFallback is RO in DNX
+//             encoding.EncoderFallback = charEntityFallback;
+
             encoder = encoding.GetEncoder();
 
             if ( !stream.CanSeek || stream.Position == 0 ) {
@@ -1851,4 +1847,3 @@ namespace Microsoft.Xml {
         }
     }
 }
-

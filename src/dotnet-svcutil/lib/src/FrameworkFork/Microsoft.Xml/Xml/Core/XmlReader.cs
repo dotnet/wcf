@@ -1,10 +1,6 @@
-﻿
-//------------------------------------------------------------------------------
-// <copyright file="XmlReader.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 
 using System.IO;
 using System.Text;
@@ -1694,11 +1690,11 @@ namespace Microsoft.Xml {
                 reader = settings.AddValidation( reader );
             }
 
-#if disabled
-            if (settings.Async) {
-                reader = XmlAsyncCheckReader.CreateAsyncCheckWrapper(reader);
-            }
-#endif 
+// Not needed in dotnet-svcutil scenario. 
+//             if (settings.Async) {
+//                 reader = XmlAsyncCheckReader.CreateAsyncCheckWrapper(reader);
+//             }
+
             return reader;
         }
 #endif
@@ -1767,4 +1763,3 @@ namespace Microsoft.Xml {
 
     }
 }
-

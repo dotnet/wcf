@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlQualifiedName.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">priyal</owner>
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml {
 				using System;
@@ -86,22 +82,22 @@ namespace Microsoft.Xml {
         /// </devdoc>
         public override int GetHashCode() {
             if (hash == 0) {
-#if disabled
-#if !SILVERLIGHT
-                if (hashCodeDelegate == null) {
-                    hashCodeDelegate = GetHashCodeDelegate();
-                }
+// Not needed in dotnet-svcutil scenario. 
+// #if !SILVERLIGHT
+//                 if (hashCodeDelegate == null) {
+//                     hashCodeDelegate = GetHashCodeDelegate();
+//                 }
+// 
+//                 hash = hashCodeDelegate(Name, Name.Length, 0);
+// #else
+// 
+//                 hash = Name.GetHashCode() /*+ Namespace.GetHashCode()*/; // for perf reasons we are not taking ns's hashcode.
+// #endif
+//             }
 
-                hash = hashCodeDelegate(Name, Name.Length, 0);
-#else
-
-                hash = Name.GetHashCode() /*+ Namespace.GetHashCode()*/; // for perf reasons we are not taking ns's hashcode.
-#endif
-            }
-#else
                 hash = SecureStringHasher.Instance.GetHashCode(Name);
             }
-#endif
+
             return hash;
         }
 
@@ -172,52 +168,52 @@ namespace Microsoft.Xml {
 #if !SILVERLIGHT // These methods are not used in Silverlight
         [SecuritySafeCritical]
         // [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
-#if disabled
-        private static HashCodeOfStringDelegate GetHashCodeDelegate() {
-             // If we are using randomized hashing and we find the Marving hash method, we use that
-             // Otherwise, we use the old string hashing function.
- 
-             if (!IsRandomizedHashingDisabled())
-             {
-                MethodInfo getHashCodeMethodInfo = typeof(String).GetMethod("InternalMarvin32HashString", BindingFlags.NonPublic | BindingFlags.Static);
-                 if (getHashCodeMethodInfo != null)
-                 {
-                    return (HashCodeOfStringDelegate)getHashCodeMethodInfo.CreateDelegate(typeof(HashCodeOfStringDelegate));
-                 }
-                // This will fall through and return a delegate to the old hash function
-                Debug.Assert(false, "Randomized hashing is not supported.");
-            }
-            return new HashCodeOfStringDelegate(GetHashCodeOfString);
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         private static HashCodeOfStringDelegate GetHashCodeDelegate() {
+//              // If we are using randomized hashing and we find the Marving hash method, we use that
+//              // Otherwise, we use the old string hashing function.
+//  
+//              if (!IsRandomizedHashingDisabled())
+//              {
+//                 MethodInfo getHashCodeMethodInfo = typeof(String).GetMethod("InternalMarvin32HashString", BindingFlags.NonPublic | BindingFlags.Static);
+//                  if (getHashCodeMethodInfo != null)
+//                  {
+//                     return (HashCodeOfStringDelegate)getHashCodeMethodInfo.CreateDelegate(typeof(HashCodeOfStringDelegate));
+//                  }
+//                 // This will fall through and return a delegate to the old hash function
+//                 Debug.Assert(false, "Randomized hashing is not supported.");
+//             }
+//             return new HashCodeOfStringDelegate(GetHashCodeOfString);
+//         }
+// 
+//         [SecuritySafeCritical]
+//         //[RegistryPermission(SecurityAction.Assert, Unrestricted = true)]
+//         private static bool IsRandomizedHashingDisabled() {
+//             const string regValueName = "DisableRandomizedHashingOnXmlQualifiedName";
+//             bool disableHashing = false; // default value
+//             if (!ReadBoolFromXmlRegistrySettings(Registry.CurrentUser, regValueName, ref disableHashing)) {
+//                 ReadBoolFromXmlRegistrySettings(Registry.LocalMachine, regValueName, ref disableHashing);
+//             }
+//             return disableHashing;
+//         }
+// 
+//         [SecurityCritical]
+//         private static bool ReadBoolFromXmlRegistrySettings(RegistryKey hive, string regValueName, ref bool value) {
+//             const string regValuePath = @"SOFTWARE\Microsoft\.NETFramework\XML";
+//             try {
+//                 using (RegistryKey xmlRegKey = hive.OpenSubKey(regValuePath, false)) {
+//                     if (xmlRegKey != null) {
+//                         if (xmlRegKey.GetValueKind(regValueName) == RegistryValueKind.DWord) {
+//                             value = ((int)xmlRegKey.GetValue(regValueName)) == 1;
+//                             return true;
+//                         }
+//                     }
+//                 }
+//             }
+//             catch { /* use the default if we couldn't read the key */ }
+//             return false;
+//         }
 
-        [SecuritySafeCritical]
-        //[RegistryPermission(SecurityAction.Assert, Unrestricted = true)]
-        private static bool IsRandomizedHashingDisabled() {
-            const string regValueName = "DisableRandomizedHashingOnXmlQualifiedName";
-            bool disableHashing = false; // default value
-            if (!ReadBoolFromXmlRegistrySettings(Registry.CurrentUser, regValueName, ref disableHashing)) {
-                ReadBoolFromXmlRegistrySettings(Registry.LocalMachine, regValueName, ref disableHashing);
-            }
-            return disableHashing;
-        }
-
-        [SecurityCritical]
-        private static bool ReadBoolFromXmlRegistrySettings(RegistryKey hive, string regValueName, ref bool value) {
-            const string regValuePath = @"SOFTWARE\Microsoft\.NETFramework\XML";
-            try {
-                using (RegistryKey xmlRegKey = hive.OpenSubKey(regValuePath, false)) {
-                    if (xmlRegKey != null) {
-                        if (xmlRegKey.GetValueKind(regValueName) == RegistryValueKind.DWord) {
-                            value = ((int)xmlRegKey.GetValue(regValueName)) == 1;
-                            return true;
-                        }
-                    }
-                }
-            }
-            catch { /* use the default if we couldn't read the key */ }
-            return false;
-        }
-#endif
 
         private static int GetHashCodeOfString(string s, int length, long additionalEntropy)
         {
@@ -287,4 +283,3 @@ namespace Microsoft.Xml {
 #endif
     }
 }
-

@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Channels
 {
@@ -18,9 +17,9 @@ namespace System.ServiceModel.Channels
         internal const bool DefaultContextManagementEnabled = true;
         internal const ProtectionLevel DefaultProtectionLevel = ProtectionLevel.Sign;
         ContextExchangeMechanism contextExchangeMechanism;
-#if disabled
-        ICorrelationDataSource instanceCorrelationData;
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//         ICorrelationDataSource instanceCorrelationData;
+
         bool contextManagementEnabled;
         ProtectionLevel protectionLevel;
 
@@ -122,44 +121,43 @@ namespace System.ServiceModel.Channels
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
-#if disabled
-            if (context == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            }
-            if (!this.CanBuildChannelFactory<TChannel>(context))
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SR.Format(SR.ContextBindingElementCannotProvideChannelFactory, typeof(TChannel).ToString())));
-            }
+// Not needed in dotnet-svcutil scenario. 
+//             if (context == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+//             }
+//             if (!this.CanBuildChannelFactory<TChannel>(context))
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+//                     new InvalidOperationException(SR.Format(SR.ContextBindingElementCannotProvideChannelFactory, typeof(TChannel).ToString())));
+//             }
+// 
+//             this.EnsureContextExchangeMechanismCompatibleWithScheme(context);
+//             this.EnsureContextExchangeMechanismCompatibleWithTransportCookieSetting(context);
+// 
+//             return new ContextChannelFactory<TChannel>(context, this.ContextExchangeMechanism, this.ClientCallbackAddress, this.ContextManagementEnabled);
 
-            this.EnsureContextExchangeMechanismCompatibleWithScheme(context);
-            this.EnsureContextExchangeMechanismCompatibleWithTransportCookieSetting(context);
-
-            return new ContextChannelFactory<TChannel>(context, this.ContextExchangeMechanism, this.ClientCallbackAddress, this.ContextManagementEnabled);
-#else
             throw new NotImplementedException();
-#endif
         }
 
-#if disabled
-        public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
-        {
-            if (context == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            }
-            if (!this.CanBuildChannelListener<TChannel>(context))
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SR.Format(SR.ContextBindingElementCannotProvideChannelListener, typeof(TChannel).ToString())));
-            }
+// Not needed in dotnet-svcutil scenario. 
+//         public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
+//         {
+//             if (context == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+//             }
+//             if (!this.CanBuildChannelListener<TChannel>(context))
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+//                     new InvalidOperationException(SR.Format(SR.ContextBindingElementCannotProvideChannelListener, typeof(TChannel).ToString())));
+//             }
+// 
+//             this.EnsureContextExchangeMechanismCompatibleWithScheme(context);
+// 
+//             return new ContextChannelListener<TChannel>(context, this.ContextExchangeMechanism);
+//         }
 
-            this.EnsureContextExchangeMechanismCompatibleWithScheme(context);
-
-            return new ContextChannelListener<TChannel>(context, this.ContextExchangeMechanism);
-        }
-#endif
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
             if (context == null)
@@ -175,22 +173,22 @@ namespace System.ServiceModel.Channels
                 && context.CanBuildInnerChannelFactory<TChannel>();
         }
 
-#if disabled
-        public override bool CanBuildChannelListener<TChannel>(BindingContext context)
-        {
-            if (context == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            }
+// Not needed in dotnet-svcutil scenario. 
+//         public override bool CanBuildChannelListener<TChannel>(BindingContext context)
+//         {
+//             if (context == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+//             }
+// 
+//             return ((typeof(TChannel) == typeof(IInputChannel)
+//                 || typeof(TChannel) == typeof(IInputSessionChannel)
+//                 || typeof(TChannel) == typeof(IReplyChannel)
+//                 || typeof(TChannel) == typeof(IReplySessionChannel)
+//                 || (typeof(TChannel) == typeof(IDuplexSessionChannel) && this.ContextExchangeMechanism != ContextExchangeMechanism.HttpCookie))
+//                 && context.CanBuildInnerChannelListener<TChannel>());
+//         }
 
-            return ((typeof(TChannel) == typeof(IInputChannel)
-                || typeof(TChannel) == typeof(IInputSessionChannel)
-                || typeof(TChannel) == typeof(IReplyChannel)
-                || typeof(TChannel) == typeof(IReplySessionChannel)
-                || (typeof(TChannel) == typeof(IDuplexSessionChannel) && this.ContextExchangeMechanism != ContextExchangeMechanism.HttpCookie))
-                && context.CanBuildInnerChannelListener<TChannel>());
-        }
-#endif
         public override BindingElement Clone()
         {
             return new ContextBindingElement(this);
@@ -203,61 +201,59 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
             }
 
-#if disabled
-            ContextBindingElementPolicy.ExportRequireContextAssertion(this, context.GetBindingAssertions());
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             ContextBindingElementPolicy.ExportRequireContextAssertion(this, context.GetBindingAssertions());
+
             throw new NotImplementedException();
-#endif
         }
 
         public override T GetProperty<T>(BindingContext context)
         {
-#if disabled
-            if (context == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            }
+// Not needed in dotnet-svcutil scenario. 
+//             if (context == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
+//             }
+// 
+//             if (typeof(T) == typeof(ChannelProtectionRequirements) && this.ProtectionLevel != ProtectionLevel.None)
+//             {
+//                 ChannelProtectionRequirements innerRequirements = context.GetInnerProperty<ChannelProtectionRequirements>();
+//                 if (innerRequirements == null)
+//                 {
+//                     return (T)(object)ContextMessageHeader.GetChannelProtectionRequirements(this.ProtectionLevel);
+//                 }
+//                 else
+//                 {
+//                     ChannelProtectionRequirements requirements = new ChannelProtectionRequirements(innerRequirements);
+//                     requirements.Add(ContextMessageHeader.GetChannelProtectionRequirements(this.ProtectionLevel));
+//                     return (T)(object)requirements;
+//                 }
+//             }
+//             else if (typeof(T) == typeof(IContextSessionProvider))
+//             {
+//                 return (T)(object)this;
+//             }
+//             else if (typeof(T) == typeof(IContextBindingElement))
+//             {
+//                 return (T)(object)this;
+//             }
+// 
+//             else if (typeof(T) == typeof(ICorrelationDataSource))
+//             {
+//                 ICorrelationDataSource correlationData = instanceCorrelationData;
+// 
+//                 if (correlationData == null)
+//                 {
+//                     ICorrelationDataSource innerCorrelationData = context.GetInnerProperty<ICorrelationDataSource>();
+//                     correlationData = CorrelationDataSourceHelper.Combine(innerCorrelationData, ContextExchangeCorrelationDataDescription.DataSource);
+//                     instanceCorrelationData = correlationData;
+//                 }
+//                 return (T)(object)correlationData;
+//         }
+// 
+//             return context.GetInnerProperty<T>();
 
-            if (typeof(T) == typeof(ChannelProtectionRequirements) && this.ProtectionLevel != ProtectionLevel.None)
-            {
-                ChannelProtectionRequirements innerRequirements = context.GetInnerProperty<ChannelProtectionRequirements>();
-                if (innerRequirements == null)
-                {
-                    return (T)(object)ContextMessageHeader.GetChannelProtectionRequirements(this.ProtectionLevel);
-                }
-                else
-                {
-                    ChannelProtectionRequirements requirements = new ChannelProtectionRequirements(innerRequirements);
-                    requirements.Add(ContextMessageHeader.GetChannelProtectionRequirements(this.ProtectionLevel));
-                    return (T)(object)requirements;
-                }
-            }
-            else if (typeof(T) == typeof(IContextSessionProvider))
-            {
-                return (T)(object)this;
-            }
-            else if (typeof(T) == typeof(IContextBindingElement))
-            {
-                return (T)(object)this;
-            }
-
-            else if (typeof(T) == typeof(ICorrelationDataSource))
-            {
-                ICorrelationDataSource correlationData = instanceCorrelationData;
-
-                if (correlationData == null)
-                {
-                    ICorrelationDataSource innerCorrelationData = context.GetInnerProperty<ICorrelationDataSource>();
-                    correlationData = CorrelationDataSourceHelper.Combine(innerCorrelationData, ContextExchangeCorrelationDataDescription.DataSource);
-                    instanceCorrelationData = correlationData;
-                }
-                return (T)(object)correlationData;
-        }
-
-            return context.GetInnerProperty<T>();
-#else
             throw new NotImplementedException();
-#endif
         }
 
         internal override bool IsMatch(BindingElement b)
@@ -296,134 +292,134 @@ namespace System.ServiceModel.Channels
             return true;
         }
 
-#if disabled
-        void IWmiInstanceProvider.FillInstance(IWmiInstance wmiInstance)
-        {
-            wmiInstance.SetProperty("ProtectionLevel", this.protectionLevel.ToString());
-            wmiInstance.SetProperty("ContextExchangeMechanism", this.contextExchangeMechanism.ToString());
-            wmiInstance.SetProperty("ContextManagementEnabled", this.contextManagementEnabled);
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         void IWmiInstanceProvider.FillInstance(IWmiInstance wmiInstance)
+//         {
+//             wmiInstance.SetProperty("ProtectionLevel", this.protectionLevel.ToString());
+//             wmiInstance.SetProperty("ContextExchangeMechanism", this.contextExchangeMechanism.ToString());
+//             wmiInstance.SetProperty("ContextManagementEnabled", this.contextManagementEnabled);
+//         }
+// 
+//         string IWmiInstanceProvider.GetInstanceType()
+//         {
+//             return "ContextBindingElement";
+//         }
+// 
+//         internal static void ValidateContextBindingElementOnAllEndpointsWithSessionfulContract(ServiceDescription description, IServiceBehavior callingBehavior)
+//         {
+//             if (description == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("description");
+//             }
+//             if (callingBehavior == null)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callingBehavior");
+//             }
+// 
+//             BindingParameterCollection bpc = new BindingParameterCollection();
+//             foreach (ServiceEndpoint endpoint in description.Endpoints)
+//             {
+//                 if (endpoint.Binding != null
+//                     && endpoint.Contract != null
+//                     && !endpoint.InternalIsSystemEndpoint(description)
+//                     && endpoint.Contract.SessionMode != SessionMode.NotAllowed)
+//                 {
+//                     if (endpoint.Binding.GetProperty<IContextBindingElement>(bpc) == null)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+//                             new InvalidOperationException(SR.Format(
+//                             SR.BehaviorRequiresContextProtocolSupportInBinding,
+//                             callingBehavior.GetType().Name, endpoint.Name, endpoint.ListenUri.ToString())));
+//                     }
+//                 }
+//             }
+//         }
+// 
+//         void EnsureContextExchangeMechanismCompatibleWithScheme(BindingContext context)
+//         {
+//             if (context.Binding != null
+//                 && this.contextExchangeMechanism == ContextExchangeMechanism.HttpCookie
+//                 && !"http".Equals(context.Binding.Scheme, StringComparison.OrdinalIgnoreCase)
+//                 && !"https".Equals(context.Binding.Scheme, StringComparison.OrdinalIgnoreCase))
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+//                     new InvalidOperationException(
+//                     SR.Format(
+//                     SR.HttpCookieContextExchangeMechanismNotCompatibleWithTransportType,
+//                     context.Binding.Scheme, context.Binding.Namespace, context.Binding.Name)));
+//             }
+//         }
+// 
+//         void EnsureContextExchangeMechanismCompatibleWithTransportCookieSetting(BindingContext context)
+//         {
+//             if (context.Binding != null && this.contextExchangeMechanism == ContextExchangeMechanism.HttpCookie)
+//             {
+//                 foreach (BindingElement bindingElement in context.Binding.Elements)
+//                 {
+//                     HttpTransportBindingElement http = bindingElement as HttpTransportBindingElement;
+//                     if (http != null && http.AllowCookies)
+//                     {
+//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
+//                             new InvalidOperationException(
+//                             SR.Format(
+//                             SR.HttpCookieContextExchangeMechanismNotCompatibleWithTransportCookieSetting,
+//                             context.Binding.Namespace, context.Binding.Name)));
+//                     }
+//                 }
+//             }
+//         }
+//         class ContextExchangeCorrelationDataDescription : CorrelationDataDescription
+//         {
+//             static CorrelationDataSourceHelper cachedCorrelationDataSource;
+// 
+//             ContextExchangeCorrelationDataDescription()
+//             {
+//             }
+// 
+//             public static ICorrelationDataSource DataSource
+//             {
+//                 get
+//                 {
+//                     if (cachedCorrelationDataSource == null)
+//                     {
+//                         cachedCorrelationDataSource = new CorrelationDataSourceHelper(
+//                             new CorrelationDataDescription[] { new ContextExchangeCorrelationDataDescription() });
+//                     }
+// 
+//                     return cachedCorrelationDataSource;
+//                 }
+//             }
+// 
+//             public override bool IsOptional
+//             {
+//                 get { return true; }
+//             }
+// 
+//             public override bool IsDefault
+//             {
+//                 get { return true; }
+//             }
+// 
+//             public override bool KnownBeforeSend
+//             {
+//                 get { return true; }
+//             }
+// 
+//             public override string Name
+//             {
+//                 get { return ContextExchangeCorrelationHelper.CorrelationName; }
+//             }
+// 
+//             public override bool ReceiveValue
+//             {
+//                 get { return true; }
+//             }
+// 
+//             public override bool SendValue
+//             {
+//                 get { return true; }
+//             }
+//         }
 
-        string IWmiInstanceProvider.GetInstanceType()
-        {
-            return "ContextBindingElement";
-        }
-
-        internal static void ValidateContextBindingElementOnAllEndpointsWithSessionfulContract(ServiceDescription description, IServiceBehavior callingBehavior)
-        {
-            if (description == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("description");
-            }
-            if (callingBehavior == null)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("callingBehavior");
-            }
-
-            BindingParameterCollection bpc = new BindingParameterCollection();
-            foreach (ServiceEndpoint endpoint in description.Endpoints)
-            {
-                if (endpoint.Binding != null
-                    && endpoint.Contract != null
-                    && !endpoint.InternalIsSystemEndpoint(description)
-                    && endpoint.Contract.SessionMode != SessionMode.NotAllowed)
-                {
-                    if (endpoint.Binding.GetProperty<IContextBindingElement>(bpc) == null)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                            new InvalidOperationException(SR.Format(
-                            SR.BehaviorRequiresContextProtocolSupportInBinding,
-                            callingBehavior.GetType().Name, endpoint.Name, endpoint.ListenUri.ToString())));
-                    }
-                }
-            }
-        }
-
-        void EnsureContextExchangeMechanismCompatibleWithScheme(BindingContext context)
-        {
-            if (context.Binding != null
-                && this.contextExchangeMechanism == ContextExchangeMechanism.HttpCookie
-                && !"http".Equals(context.Binding.Scheme, StringComparison.OrdinalIgnoreCase)
-                && !"https".Equals(context.Binding.Scheme, StringComparison.OrdinalIgnoreCase))
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(
-                    SR.Format(
-                    SR.HttpCookieContextExchangeMechanismNotCompatibleWithTransportType,
-                    context.Binding.Scheme, context.Binding.Namespace, context.Binding.Name)));
-            }
-        }
-
-        void EnsureContextExchangeMechanismCompatibleWithTransportCookieSetting(BindingContext context)
-        {
-            if (context.Binding != null && this.contextExchangeMechanism == ContextExchangeMechanism.HttpCookie)
-            {
-                foreach (BindingElement bindingElement in context.Binding.Elements)
-                {
-                    HttpTransportBindingElement http = bindingElement as HttpTransportBindingElement;
-                    if (http != null && http.AllowCookies)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                            new InvalidOperationException(
-                            SR.Format(
-                            SR.HttpCookieContextExchangeMechanismNotCompatibleWithTransportCookieSetting,
-                            context.Binding.Namespace, context.Binding.Name)));
-                    }
-                }
-            }
-        }
-        class ContextExchangeCorrelationDataDescription : CorrelationDataDescription
-        {
-            static CorrelationDataSourceHelper cachedCorrelationDataSource;
-
-            ContextExchangeCorrelationDataDescription()
-            {
-            }
-
-            public static ICorrelationDataSource DataSource
-            {
-                get
-                {
-                    if (cachedCorrelationDataSource == null)
-                    {
-                        cachedCorrelationDataSource = new CorrelationDataSourceHelper(
-                            new CorrelationDataDescription[] { new ContextExchangeCorrelationDataDescription() });
-                    }
-
-                    return cachedCorrelationDataSource;
-                }
-            }
-
-            public override bool IsOptional
-            {
-                get { return true; }
-            }
-
-            public override bool IsDefault
-            {
-                get { return true; }
-            }
-
-            public override bool KnownBeforeSend
-            {
-                get { return true; }
-            }
-
-            public override string Name
-            {
-                get { return ContextExchangeCorrelationHelper.CorrelationName; }
-            }
-
-            public override bool ReceiveValue
-            {
-                get { return true; }
-            }
-
-            public override bool SendValue
-            {
-                get { return true; }
-            }
-        }
-#endif
     }
 }

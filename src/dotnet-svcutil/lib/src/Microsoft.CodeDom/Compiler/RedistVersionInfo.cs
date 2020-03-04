@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="RedistVersionInfo.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom.Compiler {
     using System;
@@ -35,60 +30,60 @@ namespace Microsoft.CodeDom.Compiler {
         private const string dotNetFrameworkRegistryPath = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\MSBuild\\ToolsVersions\\";
 
         public static string GetCompilerPath(IDictionary<string, string> provOptions, string compilerExecutable) {
-#if disabled
-            // Get the location of the runtime, the usual answer
-            string compPath = Executor.GetRuntimeInstallDirectory();
+// Not needed in dotnet-svcutil scenario. 
+//             // Get the location of the runtime, the usual answer
+//             string compPath = Executor.GetRuntimeInstallDirectory();
+// 
+//             // if provOptions is provided check to see if it alters what version we should bind to.
+//             // provOptions can be null if someone does new VB/CSCodeProvider(), in which case
+//             // they get the default behavior.
+//             if (provOptions != null) {
+// 
+//                 string directoryPath;
+//                 bool directoryPathPresent = provOptions.TryGetValue(DirectoryPath, out directoryPath);
+//                 string versionVal;
+//                 bool versionValPresent = provOptions.TryGetValue(NameTag, out versionVal);
+//                 
+//                 if(directoryPathPresent && versionValPresent)
+//                 {
+//                     throw new InvalidOperationException(SR.GetString(SR.Cannot_Specify_Both_Compiler_Path_And_Version, DirectoryPath, NameTag));
+//                 }
+//                 
+//                 // If they have an explicit path, use it.  Otherwise, look it up from the registry.
+//                 if (directoryPathPresent) {
+//                     return directoryPath;
+//                 }
+//                 
+//                 // If they have specified a version number in providerOptions, use it.
+//                 if (versionValPresent) {
+//                     switch (versionVal) {
+// 
+//                         case RedistVersionInfo.InPlaceVersion:
+//                             // Use the RuntimeInstallDirectory, already obtained
+//                             break;
+// 
+//                         case RedistVersionInfo.RedistVersion:
+//                             // lock to the Orcas version, if it's not available throw (we'll throw at compile time)
+//                             compPath = GetCompilerPathFromRegistry(versionVal);
+//                             break;
+// 
+//                         case RedistVersionInfo.RedistVersion20:
+//                             //look up 2.0 compiler path from registry
+//                             compPath = GetCompilerPathFromRegistry(versionVal);
+//                             break;
+// 
+//                         default:
+//                             compPath = null;
+//                             break;
+//                     }
+//                 }
+//             }
+// 
+//             if (compPath == null)
+//                 throw new InvalidOperationException(SR.GetString(SR.CompilerNotFound, compilerExecutable));
+// 
+//             return compPath;
 
-            // if provOptions is provided check to see if it alters what version we should bind to.
-            // provOptions can be null if someone does new VB/CSCodeProvider(), in which case
-            // they get the default behavior.
-            if (provOptions != null) {
-
-                string directoryPath;
-                bool directoryPathPresent = provOptions.TryGetValue(DirectoryPath, out directoryPath);
-                string versionVal;
-                bool versionValPresent = provOptions.TryGetValue(NameTag, out versionVal);
-                
-                if(directoryPathPresent && versionValPresent)
-                {
-                    throw new InvalidOperationException(SR.GetString(SR.Cannot_Specify_Both_Compiler_Path_And_Version, DirectoryPath, NameTag));
-                }
-                
-                // If they have an explicit path, use it.  Otherwise, look it up from the registry.
-                if (directoryPathPresent) {
-                    return directoryPath;
-                }
-                
-                // If they have specified a version number in providerOptions, use it.
-                if (versionValPresent) {
-                    switch (versionVal) {
-
-                        case RedistVersionInfo.InPlaceVersion:
-                            // Use the RuntimeInstallDirectory, already obtained
-                            break;
-
-                        case RedistVersionInfo.RedistVersion:
-                            // lock to the Orcas version, if it's not available throw (we'll throw at compile time)
-                            compPath = GetCompilerPathFromRegistry(versionVal);
-                            break;
-
-                        case RedistVersionInfo.RedistVersion20:
-                            //look up 2.0 compiler path from registry
-                            compPath = GetCompilerPathFromRegistry(versionVal);
-                            break;
-
-                        default:
-                            compPath = null;
-                            break;
-                    }
-                }
-            }
-
-            if (compPath == null)
-                throw new InvalidOperationException(SR.GetString(SR.CompilerNotFound, compilerExecutable));
-
-            return compPath;
-#endif
             throw new NotImplementedException();
         }
 
@@ -111,8 +106,9 @@ namespace Microsoft.CodeDom.Compiler {
 
             String versionWithoutV = versionVal.Substring(1);
             String registryPath = dotNetFrameworkRegistryPath + versionWithoutV; 
-            // TODO (Miguell)
-            //dir = Registry.GetValue(registryPath, MSBuildToolsPath, null) as string;
+            
+// Not needed in dotnet-svcutil scenario. 
+//            dir = Registry.GetValue(registryPath, MSBuildToolsPath, null) as string;
 
             if (dir != null && Directory.Exists(dir)) {
                 return dir;
@@ -121,4 +117,3 @@ namespace Microsoft.CodeDom.Compiler {
         }
     }
 }
-

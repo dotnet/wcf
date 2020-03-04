@@ -1,6 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 
 namespace System.ServiceModel.Security.Tokens
@@ -74,71 +73,71 @@ namespace System.ServiceModel.Security.Tokens
             return new X509SecurityTokenParameters(this);
         }
 
-#if disabled
-        internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-        {
-            SecurityKeyIdentifierClause result = null;
+// Not needed in dotnet-svcutil scenario. 
+//         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+//         {
+//             SecurityKeyIdentifierClause result = null;
+// 
+//             switch (this.x509ReferenceStyle)
+//             {
+//                 default:
+//                 case X509KeyIdentifierClauseType.Any:
+//                     if (referenceStyle == SecurityTokenReferenceStyle.External)
+//                     {
+//                         X509SecurityToken x509Token = token as X509SecurityToken;
+//                         if (x509Token != null)
+//                         {
+//                             X509SubjectKeyIdentifierClause x509KeyIdentifierClause;
+//                             if (X509SubjectKeyIdentifierClause.TryCreateFrom(x509Token.Certificate, out x509KeyIdentifierClause))
+//                             {
+//                                 result = x509KeyIdentifierClause;
+//                             }
+//                         }
+//                         else
+//                         {
+//                             X509WindowsSecurityToken windowsX509Token = token as X509WindowsSecurityToken;
+//                             if (windowsX509Token != null)
+//                             {
+//                                 X509SubjectKeyIdentifierClause x509KeyIdentifierClause;
+//                                 if (X509SubjectKeyIdentifierClause.TryCreateFrom(windowsX509Token.Certificate, out x509KeyIdentifierClause))
+//                                 {
+//                                     result = x509KeyIdentifierClause;
+//                                 }
+//                             }
+//                         }
+// 
+//                         if (result == null)
+//                             result = token.CreateKeyIdentifierClause<X509IssuerSerialKeyIdentifierClause>();
+//                         if (result == null)
+//                             result = token.CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause>();
+//                     }
+//                     else
+//                         result = token.CreateKeyIdentifierClause<LocalIdKeyIdentifierClause>();
+//                     break;
+//                 case X509KeyIdentifierClauseType.Thumbprint:
+//                     result = this.CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+//                     break;
+//                 case X509KeyIdentifierClauseType.SubjectKeyIdentifier:
+//                     result = this.CreateKeyIdentifierClause<X509SubjectKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+//                     break;
+//                 case X509KeyIdentifierClauseType.IssuerSerial:
+//                     result = this.CreateKeyIdentifierClause<X509IssuerSerialKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+//                     break;
+//                 case X509KeyIdentifierClauseType.RawDataKeyIdentifier:
+//                     result = this.CreateKeyIdentifierClause<X509RawDataKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
+//                     break;
+//             }
+// 
+//             return result;
+//         }
+// 
+//         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
+//         {
+//             requirement.TokenType = SecurityTokenTypes.X509Certificate;
+//             requirement.RequireCryptographicToken = true;
+//             requirement.KeyType = SecurityKeyType.AsymmetricKey;
+//         }
 
-            switch (this.x509ReferenceStyle)
-            {
-                default:
-                case X509KeyIdentifierClauseType.Any:
-                    if (referenceStyle == SecurityTokenReferenceStyle.External)
-                    {
-                        X509SecurityToken x509Token = token as X509SecurityToken;
-                        if (x509Token != null)
-                        {
-                            X509SubjectKeyIdentifierClause x509KeyIdentifierClause;
-                            if (X509SubjectKeyIdentifierClause.TryCreateFrom(x509Token.Certificate, out x509KeyIdentifierClause))
-                            {
-                                result = x509KeyIdentifierClause;
-                            }
-                        }
-                        else
-                        {
-                            X509WindowsSecurityToken windowsX509Token = token as X509WindowsSecurityToken;
-                            if (windowsX509Token != null)
-                            {
-                                X509SubjectKeyIdentifierClause x509KeyIdentifierClause;
-                                if (X509SubjectKeyIdentifierClause.TryCreateFrom(windowsX509Token.Certificate, out x509KeyIdentifierClause))
-                                {
-                                    result = x509KeyIdentifierClause;
-                                }
-                            }
-                        }
-
-                        if (result == null)
-                            result = token.CreateKeyIdentifierClause<X509IssuerSerialKeyIdentifierClause>();
-                        if (result == null)
-                            result = token.CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause>();
-                    }
-                    else
-                        result = token.CreateKeyIdentifierClause<LocalIdKeyIdentifierClause>();
-                    break;
-                case X509KeyIdentifierClauseType.Thumbprint:
-                    result = this.CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-                    break;
-                case X509KeyIdentifierClauseType.SubjectKeyIdentifier:
-                    result = this.CreateKeyIdentifierClause<X509SubjectKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-                    break;
-                case X509KeyIdentifierClauseType.IssuerSerial:
-                    result = this.CreateKeyIdentifierClause<X509IssuerSerialKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-                    break;
-                case X509KeyIdentifierClauseType.RawDataKeyIdentifier:
-                    result = this.CreateKeyIdentifierClause<X509RawDataKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-                    break;
-            }
-
-            return result;
-        }
-
-        protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
-        {
-            requirement.TokenType = SecurityTokenTypes.X509Certificate;
-            requirement.RequireCryptographicToken = true;
-            requirement.KeyType = SecurityKeyType.AsymmetricKey;
-        }
-#endif
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

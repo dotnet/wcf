@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Security
 {
@@ -122,51 +121,50 @@ namespace System.ServiceModel.Security
             protected override void ReadReferences(XmlElement rstrXml, out SecurityKeyIdentifierClause requestedAttachedReference,
                     out SecurityKeyIdentifierClause requestedUnattachedReference)
             {
-#if disabled
-                XmlElement issuedTokenXml = null;
-                requestedAttachedReference = null;
-                requestedUnattachedReference = null;
-                for (int i = 0; i < rstrXml.ChildNodes.Count; ++i)
-                {
-                    XmlElement child = rstrXml.ChildNodes[i] as XmlElement;
-                    if (child != null)
-                    {
-                        if (child.LocalName == this.DriverDictionary.RequestedSecurityToken.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                        {
-                            issuedTokenXml = XmlHelper.GetChildElement(child);
-                        }
-                        else if (child.LocalName == this.DriverDictionary.RequestedAttachedReference.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                        {
-                            requestedAttachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
-                        }
-                        else if (child.LocalName == this.DriverDictionary.RequestedUnattachedReference.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
-                        {
-                            requestedUnattachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
-                        }
-                    }
-                }
+// Not needed in dotnet-svcutil scenario. 
+//                 XmlElement issuedTokenXml = null;
+//                 requestedAttachedReference = null;
+//                 requestedUnattachedReference = null;
+//                 for (int i = 0; i < rstrXml.ChildNodes.Count; ++i)
+//                 {
+//                     XmlElement child = rstrXml.ChildNodes[i] as XmlElement;
+//                     if (child != null)
+//                     {
+//                         if (child.LocalName == this.DriverDictionary.RequestedSecurityToken.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+//                         {
+//                             issuedTokenXml = XmlHelper.GetChildElement(child);
+//                         }
+//                         else if (child.LocalName == this.DriverDictionary.RequestedAttachedReference.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+//                         {
+//                             requestedAttachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
+//                         }
+//                         else if (child.LocalName == this.DriverDictionary.RequestedUnattachedReference.Value && child.NamespaceURI == this.DriverDictionary.Namespace.Value)
+//                         {
+//                             requestedUnattachedReference = GetKeyIdentifierXmlReferenceClause(XmlHelper.GetChildElement(child));
+//                         }
+//                     }
+//                 }
+// 
+//                 try
+//                 {
+//                     if (issuedTokenXml != null)
+//                     {
+//                         if (requestedAttachedReference == null)
+//                         {
+//                             this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
+//                         }
+//                         if (requestedUnattachedReference == null)
+//                         {
+//                             this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External, out requestedUnattachedReference);
+//                         }
+//                     }
+//                 }
+//                 catch (XmlException)
+//                 {
+//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences, issuedTokenXml.ToString())));
+//                 }
 
-                try
-                {
-                    if (issuedTokenXml != null)
-                    {
-                        if (requestedAttachedReference == null)
-                        {
-                            this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.Internal, out requestedAttachedReference);
-                        }
-                        if (requestedUnattachedReference == null)
-                        {
-                            this.StandardsManager.TryCreateKeyIdentifierClauseFromTokenXml(issuedTokenXml, SecurityTokenReferenceStyle.External, out requestedUnattachedReference);
-                        }
-                    }
-                }
-                catch (XmlException)
-                {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.TrustDriverIsUnableToCreatedNecessaryAttachedOrUnattachedReferences, issuedTokenXml.ToString())));
-                }
-#else
                 throw new NotImplementedException();
-#endif
             }
 
             protected override bool ReadRequestedTokenClosed(XmlElement rstrXml)
@@ -304,20 +302,18 @@ namespace System.ServiceModel.Security
 
                 public IRequestChannel CreateChannel(EndpointAddress address)
                 {
-#if disabled
-                    return this.innerChannelFactory.CreateChannel<IRequestChannel>(address);
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                     return this.innerChannelFactory.CreateChannel<IRequestChannel>(address);
+
                     throw new NotImplementedException();
-#endif
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address, Uri via)
                 {
-#if disabled
-                    return this.innerChannelFactory.CreateChannel<IRequestChannel>(address, via);
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                     return this.innerChannelFactory.CreateChannel<IRequestChannel>(address, via);
+
                     throw new NotImplementedException();
-#endif
                 }
 
                 protected override void OnAbort()

@@ -1,10 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="CodeCompiler.cs" company="Microsoft">
-// 
-// <OWNER>petes</OWNER>
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>                                                                
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.CodeDom.Compiler
 {
@@ -177,24 +172,24 @@ namespace Microsoft.CodeDom.Compiler
 
         internal void Compile(CompilerParameters options, string compilerDirectory, string compilerExe, string arguments, ref string outputFile, ref int nativeReturnValue, string trueArgs)
         {
-#if disabled
-            string errorFile = null;
-            outputFile = options.TempFiles.AddExtension("out");
+// Not needed in dotnet-svcutil scenario. 
+//             string errorFile = null;
+//             outputFile = options.TempFiles.AddExtension("out");
+// 
+//             // We try to execute the compiler with a full path name.
+//             string fullname = Path.Combine(compilerDirectory, compilerExe);
+//             if (File.Exists(fullname))
+//             {
+//                 string trueCmdLine = null;
+//                 if (trueArgs != null)
+//                     trueCmdLine = "\"" + fullname + "\" " + trueArgs;
+//                 nativeReturnValue = Executor.ExecWaitWithCapture("\"" + fullname + "\" " + arguments, Directory.GetCurrentDirectory(), options.TempFiles, ref outputFile, ref errorFile, trueCmdLine);
+//             }
+//             else
+//             {
+//                 throw new InvalidOperationException(SR.GetString(SR.CompilerNotFound, fullname));
+//             }
 
-            // We try to execute the compiler with a full path name.
-            string fullname = Path.Combine(compilerDirectory, compilerExe);
-            if (File.Exists(fullname))
-            {
-                string trueCmdLine = null;
-                if (trueArgs != null)
-                    trueCmdLine = "\"" + fullname + "\" " + trueArgs;
-                nativeReturnValue = Executor.ExecWaitWithCapture("\"" + fullname + "\" " + arguments, Directory.GetCurrentDirectory(), options.TempFiles, ref outputFile, ref errorFile, trueCmdLine);
-            }
-            else
-            {
-                throw new InvalidOperationException(SR.GetString(SR.CompilerNotFound, fullname));
-            }
-#endif
             throw new NotImplementedException();
         }
 
@@ -337,110 +332,109 @@ namespace Microsoft.CodeDom.Compiler
         /// </devdoc>
         protected virtual CompilerResults FromFileBatch(CompilerParameters options, string[] fileNames)
         {
-#if disabled
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
-            if (fileNames == null)
-                throw new ArgumentNullException("fileNames");
+// Not needed in dotnet-svcutil scenario. 
+//             if (options == null)
+//             {
+//                 throw new ArgumentNullException("options");
+//             }
+//             if (fileNames == null)
+//                 throw new ArgumentNullException("fileNames");
+// 
+//             string outputFile = null;
+//             int retValue = 0;
+// 
+//             CompilerResults results = new CompilerResults(options.TempFiles);
+//             bool createdEmptyAssembly = false;
+// 
+//             if (options.OutputAssembly == null || options.OutputAssembly.Length == 0)
+//             {
+//                 string extension = (options.GenerateExecutable) ? "exe" : "dll";
+//                 options.OutputAssembly = results.TempFiles.AddExtension(extension, !options.GenerateInMemory);
+// 
+//                 // Create an empty assembly.  This is so that the file will have permissions that
+//                 // we can later access with our current credential.  If we don't do this, the compiler
+//                 // could end up creating an assembly that we cannot open 
+//                 new FileStream(options.OutputAssembly, FileMode.Create, FileAccess.ReadWrite).Dispose();
+//                 createdEmptyAssembly = true;
+//             }
+// 
+// #if FEATURE_PAL
+//             results.TempFiles.AddExtension("ildb");
+// #else
+//             results.TempFiles.AddExtension("pdb");
+// #endif
+// 
+// 
+//             string args = CmdArgsFromParameters(options) + " " + JoinStringArray(fileNames, " ");
+// 
+//             // Use a response file if the compiler supports it
+//             string responseFileArgs = GetResponseFileCmdArgs(options, args);
+//             string trueArgs = null;
+//             if (responseFileArgs != null)
+//             {
+//                 trueArgs = args;
+//                 args = responseFileArgs;
+//             }
+// 
+//             Compile(options, Executor.GetRuntimeInstallDirectory(), CompilerName, args, ref outputFile, ref retValue, trueArgs);
+// 
+//             results.NativeCompilerReturnValue = retValue;
+// 
+//             // only look for errors/warnings if the compile failed or the caller set the warning level
+//             if (retValue != 0 || options.WarningLevel > 0)
+//             {
+// 
+//                 FileStream outputStream = new FileStream(outputFile, FileMode.Open,
+//                     FileAccess.Read, FileShare.ReadWrite);
+//                 try
+//                 {
+//                     if (outputStream.Length > 0)
+//                     {
+//                         // The output of the compiler is in UTF8
+//                         StreamReader sr = new StreamReader(outputStream, Encoding.UTF8);
+//                         string line;
+//                         do
+//                         {
+//                             line = sr.ReadLine();
+//                             if (line != null)
+//                             {
+//                                 results.Output.Add(line);
+// 
+//                                 ProcessCompilerOutputLine(results, line);
+//                             }
+//                         } while (line != null);
+//                     }
+//                 }
+//                 finally
+//                 {
+//                     outputStream.Dispose();
+//                 }
+// 
+//                 // Delete the empty assembly if we created one
+//                 if (retValue != 0 && createdEmptyAssembly)
+//                     File.Delete(options.OutputAssembly);
+//             }
+// 
+//             if (!results.Errors.HasErrors && options.GenerateInMemory)
+//             {
+//                 FileStream fs = new FileStream(options.OutputAssembly, FileMode.Open, FileAccess.Read, FileShare.Read);
+//                 try
+//                 {
+//                     results.CompiledAssembly = Assembly.Load(new AssemblyName(options.OutputAssembly));
+//                 }
+//                 finally
+//                 {
+//                     fs.Dispose();
+//                 }
+//             }
+//             else
+//             {
+// 
+//                 results.PathToAssembly = options.OutputAssembly;
+//             }
+// 
+//             return results;
 
-            string outputFile = null;
-            int retValue = 0;
-
-            CompilerResults results = new CompilerResults(options.TempFiles);
-            bool createdEmptyAssembly = false;
-
-            if (options.OutputAssembly == null || options.OutputAssembly.Length == 0)
-            {
-                string extension = (options.GenerateExecutable) ? "exe" : "dll";
-                options.OutputAssembly = results.TempFiles.AddExtension(extension, !options.GenerateInMemory);
-
-                // Create an empty assembly.  This is so that the file will have permissions that
-                // we can later access with our current credential.  If we don't do this, the compiler
-                // could end up creating an assembly that we cannot open 
-                new FileStream(options.OutputAssembly, FileMode.Create, FileAccess.ReadWrite).Dispose();
-                createdEmptyAssembly = true;
-            }
-
-#if FEATURE_PAL
-            results.TempFiles.AddExtension("ildb");
-#else
-            results.TempFiles.AddExtension("pdb");
-#endif
-
-
-            string args = CmdArgsFromParameters(options) + " " + JoinStringArray(fileNames, " ");
-
-            // Use a response file if the compiler supports it
-            string responseFileArgs = GetResponseFileCmdArgs(options, args);
-            string trueArgs = null;
-            if (responseFileArgs != null)
-            {
-                trueArgs = args;
-                args = responseFileArgs;
-            }
-
-            Compile(options, Executor.GetRuntimeInstallDirectory(), CompilerName, args, ref outputFile, ref retValue, trueArgs);
-
-            results.NativeCompilerReturnValue = retValue;
-
-            // only look for errors/warnings if the compile failed or the caller set the warning level
-            if (retValue != 0 || options.WarningLevel > 0)
-            {
-
-                FileStream outputStream = new FileStream(outputFile, FileMode.Open,
-                    FileAccess.Read, FileShare.ReadWrite);
-                try
-                {
-                    if (outputStream.Length > 0)
-                    {
-                        // The output of the compiler is in UTF8
-                        StreamReader sr = new StreamReader(outputStream, Encoding.UTF8);
-                        string line;
-                        do
-                        {
-                            line = sr.ReadLine();
-                            if (line != null)
-                            {
-                                results.Output.Add(line);
-
-                                ProcessCompilerOutputLine(results, line);
-                            }
-                        } while (line != null);
-                    }
-                }
-                finally
-                {
-                    outputStream.Dispose();
-                }
-
-                // Delete the empty assembly if we created one
-                if (retValue != 0 && createdEmptyAssembly)
-                    File.Delete(options.OutputAssembly);
-            }
-
-            if (!results.Errors.HasErrors && options.GenerateInMemory)
-            {
-                FileStream fs = new FileStream(options.OutputAssembly, FileMode.Open, FileAccess.Read, FileShare.Read);
-                try
-                {
-                    // TODO (miguell):
-                    results.CompiledAssembly = Assembly.Load(new AssemblyName(options.OutputAssembly));
-                }
-                finally
-                {
-                    fs.Dispose();
-                }
-            }
-            else
-            {
-
-                results.PathToAssembly = options.OutputAssembly;
-            }
-
-            return results;
-#endif
             throw new NotImplementedException();
         }
 

@@ -1,11 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XsltSettings.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">antonl</owner>
-// <spec>http://webdata/xml/specs/XslCompiledTransform.xml</spec>
-//------------------------------------------------------------------------------
-
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 using Microsoft.CodeDom.Compiler;
 
 namespace Microsoft.Xml.Xsl {

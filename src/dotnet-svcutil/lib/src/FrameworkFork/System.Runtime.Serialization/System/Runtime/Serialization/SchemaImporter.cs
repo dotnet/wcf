@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
  
 namespace System.Runtime.Serialization
 {
@@ -729,13 +728,13 @@ namespace System.Runtime.Serialization
                 xmlDataContract.IsValueType = true;
                 xmlDataContract.IsTypeDefinedOnImport = false;
                 xmlDataContract.HasRoot = true;
-#if disabled
-                if (DiagnosticUtility.ShouldTraceVerbose)
-                {
-                    TraceUtility.Trace(TraceEventType.Verbose, TraceCode.XsdImportAnnotationFailed,
-                        SR.Format(SR.TraceCodeXsdImportAnnotationFailed), new StringTraceRecord("Type", typeName.Namespace + ":" + typeName.Name));
-                }
-#endif
+// Not needed in dotnet-svcutil scenario. 
+//                 if (DiagnosticUtility.ShouldTraceVerbose)
+//                 {
+//                     TraceUtility.Trace(TraceEventType.Verbose, TraceCode.XsdImportAnnotationFailed,
+//                         SR.Format(SR.TraceCodeXsdImportAnnotationFailed), new StringTraceRecord("Type", typeName.Namespace + ":" + typeName.Name));
+//                 }
+
             }
             if (!isAnonymous)
             {

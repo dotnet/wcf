@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Security
 {
@@ -66,34 +65,32 @@ namespace System.ServiceModel.Security
 
         protected internal override byte[] DecodeSecurityState(byte[] data)
         {
-#if disabled
-            try
-            {
-                return ProtectedData.Unprotect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
-            }
-            catch (CryptographicException exception)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.GetString(SR.SecurityStateEncoderDecodingFailure), exception));
-            }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             try
+//             {
+//                 return ProtectedData.Unprotect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
+//             }
+//             catch (CryptographicException exception)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.GetString(SR.SecurityStateEncoderDecodingFailure), exception));
+//             }
+
             throw new NotImplementedException();
-#endif
         }
 
         protected internal override byte[] EncodeSecurityState(byte[] data)
         {
-#if disabled
-            try
-            {
-                return ProtectedData.Protect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
-            }
-            catch (CryptographicException exception)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.GetString(SR.SecurityStateEncoderEncodingFailure), exception));
-            }
-#else
+// Not needed in dotnet-svcutil scenario. 
+//             try
+//             {
+//                 return ProtectedData.Protect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
+//             }
+//             catch (CryptographicException exception)
+//             {
+//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.GetString(SR.SecurityStateEncoderEncodingFailure), exception));
+//             }
+
             throw new NotImplementedException();
-#endif
         }
     }
 }

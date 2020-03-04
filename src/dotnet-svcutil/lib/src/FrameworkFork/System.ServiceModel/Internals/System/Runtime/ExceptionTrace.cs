@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -210,34 +210,34 @@ namespace System.Runtime
 
         public void TraceEtwException(Exception exception, EventLevel eventLevel)
         {
-#if disabled
-            switch (eventLevel)
-            {
-                case EventLevel.Error:
-                case EventLevel.Warning:
-                    if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
-                        WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                case EventLevel.Critical:
-                    if (WcfEventSource.Instance.UnhandledExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
-                        WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                default:
-                    if (WcfEventSource.Instance.ThrowingExceptionVerboseIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
-                        WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
+// Not needed in dotnet-svcutil scenario. 
+//             switch (eventLevel)
+//             {
+//                 case EventLevel.Error:
+//                 case EventLevel.Warning:
+//                     if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
+//                     {
+//                         string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+//                         WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+//                     }
+//                     break;
+//                 case EventLevel.Critical:
+//                     if (WcfEventSource.Instance.UnhandledExceptionIsEnabled())
+//                     {
+//                         string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+//                         WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
+//                     }
+//                     break;
+//                 default:
+//                     if (WcfEventSource.Instance.ThrowingExceptionVerboseIsEnabled())
+//                     {
+//                         string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+//                         WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
+//                     }
+// 
+//                     break;
+//             }
 
-                    break;
-            }
-#endif
         }
 
         private TException TraceException<TException>(TException exception)

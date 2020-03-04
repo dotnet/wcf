@@ -1,6 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Description
 {
@@ -56,10 +55,9 @@ namespace System.ServiceModel.Description
 
         internal void AddReferencedAssembly(Assembly assembly)
         {
-            // TODO: verify
-#if disabled
-            string assemblyName = System.IO.Path.GetFileName(assembly.Location);
-#else
+// Not needed in dotnet-svcutil scenario. We have to handle referenced assemblies differently.
+//             string assemblyName = System.IO.Path.GetFileName(assembly.Location);
+
             string assemblyName = assembly.GetName().Name;
             bool alreadyExisting = false;
             foreach (string existingName in this.compileUnit.ReferencedAssemblies)
@@ -72,7 +70,6 @@ namespace System.ServiceModel.Description
             }
             if (!alreadyExisting)
                 this.compileUnit.ReferencedAssemblies.Add(assemblyName);
-#endif
 
         }
 

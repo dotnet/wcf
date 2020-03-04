@@ -1,8 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// <copyright company="Microsoft">
-//   Copyright (C) Microsoft Corporation. All Rights Reserved.
-// </copyright>
-//-----------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 using System.Collections.Generic;
 using System.ServiceModel.Description;
@@ -24,9 +21,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new MakeOldAsyncMethodsPrivate(),
                         new RemoveExtensibleDataObjectImpl(),
                         new XmlDomAttributeFixer(),
-#if disabled
-                        new ISerializableRemapper(arrayOfXElementTypeHelper),
-#endif
                         new SpecialIXmlSerializableRemapper(arrayOfXElementTypeHelper), 
                         new EnsureAdditionalAssemblyReference(),
                         new CreateCallbackImpl((generator.Options & ServiceContractGenerationOptions.TaskBasedAsynchronousMethod) == ServiceContractGenerationOptions.TaskBasedAsynchronousMethod, generator),

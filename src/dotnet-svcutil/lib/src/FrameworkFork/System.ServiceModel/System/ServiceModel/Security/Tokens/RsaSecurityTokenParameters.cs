@@ -1,11 +1,5 @@
-﻿//-----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------
-// <copyright file="UserNameSecurityTokenParameters.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//-----------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 
 namespace System.ServiceModel.Security.Tokens
@@ -40,18 +34,18 @@ namespace System.ServiceModel.Security.Tokens
             return new RsaSecurityTokenParameters(this);
         }
 
-#if disabled
-        internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-        {
-            return this.CreateKeyIdentifierClause<RsaKeyIdentifierClause, RsaKeyIdentifierClause>(token, referenceStyle);
-        }
+// Not needed in dotnet-svcutil scenario. 
+//         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+//         {
+//             return this.CreateKeyIdentifierClause<RsaKeyIdentifierClause, RsaKeyIdentifierClause>(token, referenceStyle);
+//         }
+// 
+//         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
+//         {
+//             requirement.TokenType = SecurityTokenTypes.Rsa;
+//             requirement.RequireCryptographicToken = true;
+//             requirement.KeyType = SecurityKeyType.AsymmetricKey;
+//         }
 
-        protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
-        {
-            requirement.TokenType = SecurityTokenTypes.Rsa;
-            requirement.RequireCryptographicToken = true;
-            requirement.KeyType = SecurityKeyType.AsymmetricKey;
-        }
-#endif
     }
 }

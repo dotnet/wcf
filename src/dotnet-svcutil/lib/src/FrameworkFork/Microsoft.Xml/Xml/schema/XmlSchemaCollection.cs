@@ -1,9 +1,5 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="XmlSchemaCollection.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright> 
-// <owner current="true" primary="true">priyal</owner>                                                               
-//------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace Microsoft.Xml.Schema {
 
@@ -241,11 +237,11 @@ namespace Microsoft.Xml.Schema {
             if (index < 0)
                 throw new ArgumentOutOfRangeException("index");
             for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext();) {
-#if disabled // array.IsFixedSize
-                if (index == array.Length && array.IsFixedSize) {
-                    throw new ArgumentOutOfRangeException("index");
-                }
-#endif
+// Not needed in dotnet-svcutil scenario. array.IsFixedSize is unavailable in DNX
+//                 if (index == array.Length && array.IsFixedSize) {
+//                     throw new ArgumentOutOfRangeException("index");
+//                 }
+
                 array.SetValue(e.Current, index++);
             }
         }

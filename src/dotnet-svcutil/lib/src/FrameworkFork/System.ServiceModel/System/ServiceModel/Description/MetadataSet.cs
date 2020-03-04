@@ -1,6 +1,5 @@
-﻿//------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.  All rights reserved.
-//------------------------------------------------------------
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 namespace System.ServiceModel.Description
 {
@@ -586,11 +585,10 @@ namespace System.ServiceModel.Description
                     }
                     else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id12_MetadataReference && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
-#if disabled
-                        o.@Metadata = (global::System.ServiceModel.Description.MetadataReference)ReadSerializable((Microsoft.Xml.Serialization.IXmlSerializable)System.Activator.CreateInstance(typeof(global::System.ServiceModel.Description.MetadataReference), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.CreateInstance | System.Reflection.BindingFlags.NonPublic, null, new object[0], null));
-#else
+// Not needed in dotnet-svcutil scenario. 
+//                         o.@Metadata = (global::System.ServiceModel.Description.MetadataReference)ReadSerializable((Microsoft.Xml.Serialization.IXmlSerializable)System.Activator.CreateInstance(typeof(global::System.ServiceModel.Description.MetadataReference), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.CreateInstance | System.Reflection.BindingFlags.NonPublic, null, new object[0], null));
+
                         o.@Metadata = (global::System.ServiceModel.Description.MetadataReference)ReadSerializable((Microsoft.Xml.Serialization.IXmlSerializable)System.Activator.CreateInstance(typeof(global::System.ServiceModel.Description.MetadataReference), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic, null, new object[0], null));
-#endif
                         paramsRead[3] = true;
                     }
                     else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id13_Location && (object)Reader.NamespaceURI == (object)id2_Item))
