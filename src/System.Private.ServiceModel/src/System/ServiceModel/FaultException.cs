@@ -11,6 +11,7 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     [KnownType(typeof(FaultCodeData))]
     [KnownType(typeof(FaultCodeData[]))]
     [KnownType(typeof(FaultReasonData))]
@@ -325,6 +326,7 @@ namespace System.ServiceModel
         }
     }
 
+    [Serializable]
     public class FaultException<TDetail> : FaultException
     {
         public FaultException(TDetail detail)
