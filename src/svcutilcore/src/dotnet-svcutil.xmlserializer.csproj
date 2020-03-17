@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
     <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
     <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer</RootNamespace>
     <TargetFramework>netcoreapp2.1</TargetFramework>
