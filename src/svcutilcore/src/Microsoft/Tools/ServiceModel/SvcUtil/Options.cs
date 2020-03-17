@@ -8,6 +8,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
     using System.Configuration;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
 
@@ -413,36 +414,29 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
 
             private void LoadSMReferenceAssembly()
             {
-                IList<string> referencedAssembliesArgs = _arguments.GetArguments(Options.Cmd.SMReference);
+                string smReferenceArg = _arguments.GetArgument(Options.Cmd.SMReference);
+                IList<string> referencedAssembliesArgs = smReferenceArg.Split(':').ToList();
                 if (referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
-                    string smassembly = referencedAssembliesArgs[0];
-                    // Allow the reference to be for System.Private.ServiceModel as well.
-                    if((smassembly.LastIndexOf("System.ServiceModel.Primitives", StringComparison.OrdinalIgnoreCase) == -1) && (smassembly.LastIndexOf("System.Private.ServiceModel", StringComparison.OrdinalIgnoreCase) == -1))
+                    string smassembly = "";
+                    string smpassembly = "";
+                    foreach (string path in referencedAssembliesArgs)
                     {
-                        ToolConsole.WriteError("Need to pass the right path of System.ServiceModel.Primitives for smreference parameter");
-                        throw new ArgumentException("Invalid smreference value");
+                        var file = new FileInfo(path);
+
+                        if (file.Name.Equals("System.ServiceModel.Primitives.dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            smassembly = path;
+                        }
+                        if (file.Name.Equals("System.Private.ServiceModel.dll", StringComparison.OrdinalIgnoreCase))
+                        {
+                            smpassembly = path;
+                        }
                     }
-
-                    string smpassembly = smassembly.Replace("System.ServiceModel.Primitives", "System.Private.ServiceModel");
-                    //for some lowercase path
-                    smpassembly = smpassembly.Replace("system.servicemodel.primitives", "system.private.servicemodel");
-
-                    int refplace = smassembly.LastIndexOf("ref");
-                    if(refplace > 0 )
+                    if ((string.IsNullOrEmpty(smassembly)) || (string.IsNullOrEmpty(smpassembly)))
                     {
-                        smassembly = smassembly.Remove(refplace, 3).Insert(refplace, "lib");
-                        refplace = smpassembly.LastIndexOf("ref");
-                        smpassembly = smpassembly.Remove(refplace, 3).Insert(refplace, "lib");
-                        int libplace = smpassembly.LastIndexOf("lib");
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        {
-                            smpassembly = smpassembly.Remove(libplace, 3).Insert(libplace, @"runtimes\win\lib");
-                        }
-                        else
-                        {
-                            smpassembly = smpassembly.Remove(libplace, 3).Insert(libplace, @"runtimes/unix/lib");
-                        }
+                        ToolConsole.WriteError("Missing one or both of the paths for System.ServiceModel.Primitives and System.Private.ServiceModel");
+                        throw new ArgumentException("Invalid smreference value");
                     }
 
                     try
@@ -471,8 +465,8 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
                 }
                 else
                 {
-                    ToolConsole.WriteError("Need pass the System.ServiceModel.Primitive.dll through SM parameter");
-                    throw new ArgumentException("Need pass the System.ServiceModel.Primitive.dll through SM parameter");
+                    ToolConsole.WriteError("Need to pass the System.ServiceModel.Primitives.dll and the System.Private.ServiceModel.dll paths through the 'smreference' parameter.");
+                    throw new ArgumentException("Need to pass the System.ServiceModel.Primitives.dll and the System.Private.ServiceModel.dll paths through the 'smreference' parameter.");
                 }
             }
 
