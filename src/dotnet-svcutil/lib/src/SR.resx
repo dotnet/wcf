@@ -205,7 +205,7 @@
     <value>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</value>
   </data>
   <data name="HelpDirectoryFormat" xml:space="preserve">
-    <value>Directory to create files in (default: current directory) (Short Form: -{0})</value>
+    <value>Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</value>
   </data>
   <data name="HelpOutFormat" xml:space="preserve">
     <value>The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</value>
