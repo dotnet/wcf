@@ -21,6 +21,8 @@
     <IsPackable>true</IsPackable>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>false</IncludeSource>
+    <!-- Enable localization -->
+    <EnableXlfLocalization>true</EnableXlfLocalization>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -53,6 +55,7 @@
     <PackageReference Include="NuGet.ProjectModel" Version="3.5.0" />
     <PackageReference Include="NuGet.Versioning" Version="3.5.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.0.1" />
+    <PackageReference Include="XliffTasks" Version="1.0.0-beta.19480.3" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- =============================== Custom project targest =============================== -->
