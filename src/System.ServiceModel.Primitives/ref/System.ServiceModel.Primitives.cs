@@ -499,6 +499,7 @@ namespace System.ServiceModel
         public string Name { get { return default; } set { } }
         public string Namespace { get { return default; } set { } }
     }
+    [Serializable]
     public partial class FaultException : System.ServiceModel.CommunicationException
     {
         public FaultException() { }
@@ -513,6 +514,7 @@ namespace System.ServiceModel
         public static System.ServiceModel.FaultException CreateFault(System.ServiceModel.Channels.MessageFault messageFault, params System.Type[] faultDetailTypes) { return default; }
         public virtual System.ServiceModel.Channels.MessageFault CreateMessageFault() { return default; }
     }
+    [Serializable]
     public partial class FaultException<TDetail> : System.ServiceModel.FaultException
     {
         public FaultException(TDetail detail) { }

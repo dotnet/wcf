@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
@@ -29,5 +31,20 @@ public static class FaultExceptionTest
         Assert.NotNull(exception2.Code);
         Assert.NotNull(exception2.Reason);
         Assert.Null(exception2.Detail);        
+    }
+
+    [WcfFact]
+    public static void Serializable_Default()
+    {
+        var bf = new BinaryFormatter();
+
+        using (var ms = new MemoryStream())
+        using (var sr = new StreamReader(ms))
+        {
+            bf.Serialize(ms, new FaultException());
+            ms.Position = 0;
+
+            Assert.False(string.IsNullOrEmpty(sr.ReadToEnd()));
+        }        
     }
 }
