@@ -33,6 +33,7 @@ namespace System.Runtime
         private static ExceptionTrace s_exceptionTrace;
         private static EtwDiagnosticTrace s_diagnosticTrace;
         private static bool? s_isUap;
+        private static bool? s_isWasm;
         private static ExceptionHandler s_asynchronousThreadExceptionHandler;
 
         internal static bool IsUap
@@ -45,6 +46,19 @@ namespace System.Runtime
                 }
 
                 return s_isUap.Value;
+            }
+        }
+
+        internal static bool IsWasm
+        {
+            get
+            {
+                if (!s_isWasm.HasValue)
+                {
+                    s_isWasm = RuntimeInformation.IsOSPlatform(OSPlatform.Create("WEBASSEMBLY"));
+                }
+
+                return s_isWasm.Value;
             }
         }
 
