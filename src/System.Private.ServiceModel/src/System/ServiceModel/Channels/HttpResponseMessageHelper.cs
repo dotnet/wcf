@@ -27,7 +27,9 @@ namespace System.ServiceModel.Channels
         public HttpResponseMessageHelper(HttpResponseMessage httpResponseMessage, HttpChannelFactory<IRequestChannel> factory)
         {
             Contract.Assert(httpResponseMessage != null);
-            Contract.Assert(httpResponseMessage.RequestMessage != null);
+            // httpResponseMessage.RequestMessage is null when running in browser ( WebAssembly )
+            if (!Fx.IsWasm)
+              Contract.Assert( httpResponseMessage.RequestMessage != null );
             Contract.Assert(factory != null);
             _httpResponseMessage = httpResponseMessage;
             _httpRequestMessage = httpResponseMessage.RequestMessage;
@@ -344,12 +346,12 @@ namespace System.ServiceModel.Channels
             {
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, _httpRequestMessage.RequestUri.AbsoluteUri)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new EndpointNotFoundException(SR.Format(SR.EndpointNotFound, _httpRequestMessage?.RequestUri.AbsoluteUri)));
                 }
 
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.ServiceUnavailable)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ServerTooBusyException(SR.Format(SR.HttpServerTooBusy, _httpRequestMessage.RequestUri.AbsoluteUri)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ServerTooBusyException(SR.Format(SR.HttpServerTooBusy, _httpRequestMessage?.RequestUri.AbsoluteUri)));
                 }
 
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.UnsupportedMediaType)
@@ -359,15 +361,15 @@ namespace System.ServiceModel.Channels
                     {
                         if (string.Compare(statusDescription, HttpChannelUtilities.StatusDescriptionStrings.HttpContentTypeMissing, StringComparison.OrdinalIgnoreCase) == 0)
                         {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.Format(SR.MissingContentType, _httpRequestMessage.RequestUri)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.Format(SR.MissingContentType, _httpRequestMessage?.RequestUri)));
                         }
                     }
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.Format(SR.FramingContentTypeMismatch, _httpRequestMessage.Content.Headers.ContentType.ToString(), _httpRequestMessage.RequestUri)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SR.Format(SR.FramingContentTypeMismatch, _httpRequestMessage?.Content.Headers.ContentType.ToString(), _httpRequestMessage?.RequestUri)));
                 }
 
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.GatewayTimeout)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(_httpResponseMessage.StatusCode + " " + _httpResponseMessage.ReasonPhrase));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(_httpResponseMessage.StatusCode + " " + _httpResponseMessage?.ReasonPhrase));
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(HttpChannelUtilities.CreateUnexpectedResponseException(_httpResponseMessage));
