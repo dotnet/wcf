@@ -82,7 +82,8 @@ namespace System.ServiceModel.Description
             settings.MaxItemsInObjectGraph = MaxItemsInObjectGraph;
             settings.DataContractResolver = DataContractResolver;
             DataContractSerializer dcs = new DataContractSerializer(type, settings);
-            dcs.SetSerializationSurrogateProvider(SerializationSurrogateProvider);
+             if (Runtime.Fx.IsWasm && SerializationSurrogateProvider != null)
+              dcs.SetSerializationSurrogateProvider(SerializationSurrogateProvider);
             return dcs;
         }
 
@@ -95,7 +96,8 @@ namespace System.ServiceModel.Description
             settings.MaxItemsInObjectGraph = MaxItemsInObjectGraph;
             settings.DataContractResolver = DataContractResolver;
             DataContractSerializer dcs = new DataContractSerializer(type, settings);
-            dcs.SetSerializationSurrogateProvider(SerializationSurrogateProvider);
+             if (Runtime.Fx.IsWasm && SerializationSurrogateProvider != null)
+              dcs.SetSerializationSurrogateProvider(SerializationSurrogateProvider);
             return dcs;
         }
 
