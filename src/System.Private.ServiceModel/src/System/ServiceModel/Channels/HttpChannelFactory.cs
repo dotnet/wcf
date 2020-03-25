@@ -306,32 +306,35 @@ namespace System.ServiceModel.Channels
                         clientHandler.UseProxy = true;
                     }
                 }
-
-                clientHandler.UseCookies = AllowCookies;
-                if (AllowCookies)
+                  
+                if (!Fx.IsWasm)
                 {
-                    clientHandler.CookieContainer = _httpCookieContainerManager.CookieContainer;
-                }
-
-                clientHandler.PreAuthenticate = true;
-
-                clientHandler.UseDefaultCredentials = false;
-                if (credential == CredentialCache.DefaultCredentials || credential == null)
-                {
-                    clientHandler.UseDefaultCredentials = true;
-                }
-                else
-                {
-                    if (Fx.IsUap)
+                    clientHandler.UseCookies = AllowCookies;
+                    if (AllowCookies)
                     {
-                        clientHandler.Credentials = credential;
+                        clientHandler.CookieContainer = _httpCookieContainerManager.CookieContainer;
+                    }
+
+                    clientHandler.PreAuthenticate = true;
+
+                    clientHandler.UseDefaultCredentials = false;
+                    if (credential == CredentialCache.DefaultCredentials || credential == null)
+                    {
+                        clientHandler.UseDefaultCredentials = true;
                     }
                     else
                     {
-                        CredentialCache credentials = new CredentialCache();
-                        credentials.Add(GetCredentialCacheUriPrefix(via),
-                            AuthenticationSchemesHelper.ToString(AuthenticationScheme), credential);
-                        clientHandler.Credentials = credentials;
+                        if (Fx.IsUap)
+                        {
+                            clientHandler.Credentials = credential;
+                        }
+                        else
+                        {
+                            CredentialCache credentials = new CredentialCache();
+                            credentials.Add(GetCredentialCacheUriPrefix(via),
+                                AuthenticationSchemesHelper.ToString(AuthenticationScheme), credential);
+                            clientHandler.Credentials = credentials;
+                        }
                     }
                 }
 
