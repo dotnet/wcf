@@ -28,6 +28,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicHttp.svc//Basic"); }
     }
 
+    public static string HttpBaseAddress_BasicService1
+    {
+        get { return GetEndpointAddress("BasicService1.svc//Service1"); }
+    }
+
     // Endpoint that relies on post-1.1.0 features
     public static string HttpBaseAddress_4_4_0_Basic
     {
