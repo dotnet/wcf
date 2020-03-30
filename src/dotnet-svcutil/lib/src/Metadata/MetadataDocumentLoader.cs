@@ -668,7 +668,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             }
         }
 
-        private static string GetSourceUrl(MetadataSection section)
+        protected string GetSourceUrl(MetadataSection section)
         {
             // The SourceUrl property of the MetadataSection is set by the WCF MetadataExchangeClient when downloading metadata from a web server.
             // This property is not set when the metadata comes from a WSDL file in disk as the WSDL file processing code is not in WCF.

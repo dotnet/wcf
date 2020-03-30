@@ -19,7 +19,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
     {
         public const bool DefaultUseMessageFormat = true;
 
-        private MetadataDocumentLoader metadataDocumentLoader;
+        protected MetadataDocumentLoader metadataDocumentLoader;
 
         internal ServiceDescriptor(
             string serviceUri,
@@ -280,7 +280,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             return extensions;
         }
 
-        private IEnumerable<MetadataSection> GetImportableMetadataSections()
+        protected virtual IEnumerable<MetadataSection> GetImportableMetadataSections()
         {
 #if NETCORE
             // The private Svcutil's RT code doesn't support XML serialization so the metadata cannot be cloned.

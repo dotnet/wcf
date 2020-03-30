@@ -338,10 +338,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             return authRequired;
         }
 
-#if NETCORE
-        internal
-#endif
-        protected override HttpWebRequest GetWebRequest(Uri location, string dialect, string identifier)
+        internal protected override HttpWebRequest GetWebRequest(Uri location, string dialect, string identifier)
         {
             HttpWebRequest request = base.GetWebRequest(location, dialect, identifier);
             this.currentRequest = request;
