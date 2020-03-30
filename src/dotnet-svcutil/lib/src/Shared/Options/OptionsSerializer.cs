@@ -242,7 +242,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     /// This interface allows the options serializer to notify the options container about serialization events.
     /// This is useful for options container that need to synchronize property values after serialization for instance.
     /// </summary>
-    internal interface IOptionsSerializationHandler
+    public interface IOptionsSerializationHandler
     {
         void RaiseBeforeSerializeEvent();
         void RaiseAfterSerializeEvent();

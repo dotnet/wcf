@@ -50,7 +50,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
                 else
                 {
-                    serviceDescriptor = new ServiceDescriptor(metadaDocLoader);
+                    serviceDescriptor = CreateServiceDescriptor(metadaDocLoader);
                     this.cache[key] = serviceDescriptor;
                 }
             }
@@ -58,17 +58,32 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             return serviceDescriptor;
         }
 
+        protected virtual ServiceDescriptor CreateServiceDescriptor(MetadataDocumentLoader metadaDocLoader)
+        {
+            return new ServiceDescriptor(metadaDocLoader);
+        }
+
+        protected virtual MetadataDocumentLoader CreateMetadataDocumentLoader(string uri, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider)
+        {
+            return new MetadataDocumentLoader(uri, httpCredentialsProvider, clientCertificatesProvider, serverCertificateValidationProvider);
+        }
+
+        protected virtual MetadataDocumentLoader CreateMetadataDocumentLoader(IEnumerable<string> metadataFiles, bool resolveExternalDocuments, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider)
+        {
+            return new MetadataDocumentLoader(metadataFiles, resolveExternalDocuments, httpCredentialsProvider, clientCertificatesProvider, serverCertificateValidationProvider);
+        }
+
         public ServiceDescriptor Get(string metadataUri)
         {
             // validate the uri, this would throw if invalid.
-            var metadaDocLoader = new MetadataDocumentLoader(metadataUri, this.userCredentialsProvider, this.clientCertificateProvider, this.serverCertificateValidationProvider);
+            var metadaDocLoader = CreateMetadataDocumentLoader(metadataUri, this.userCredentialsProvider, this.clientCertificateProvider, this.serverCertificateValidationProvider);
             return Get(metadaDocLoader);
         }
 
         public ServiceDescriptor Get(IEnumerable<string> metadataFiles)
         {
             // validate the uris, this would throw if invalid.
-            var metadaDocLoader = new MetadataDocumentLoader(metadataFiles, false, this.userCredentialsProvider, this.clientCertificateProvider, this.serverCertificateValidationProvider);
+            var metadaDocLoader = CreateMetadataDocumentLoader(metadataFiles, false, this.userCredentialsProvider, this.clientCertificateProvider, this.serverCertificateValidationProvider);
             return Get(metadaDocLoader);
         }
 
