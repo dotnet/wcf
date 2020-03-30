@@ -4,7 +4,7 @@
 
 
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using Infrastructure.Common;
 using Xunit;
@@ -36,15 +36,15 @@ public static class FaultExceptionTest
     [WcfFact]
     public static void Serializable_Default()
     {
-        var bf = new BinaryFormatter();
+        string netfxBsl = @"<FaultException xmlns=""http://schemas.datacontract.org/2004/07/System.ServiceModel"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:x=""http://www.w3.org/2001/XMLSchema""><ClassName i:type=""x:string"" xmlns="""">System.ServiceModel.FaultException</ClassName><Message i:type=""x:string"" xmlns="""">The creator of this fault did not specify a Reason.</Message><Data i:nil=""true"" xmlns=""""/><InnerException i:nil=""true"" xmlns=""""/><HelpURL i:nil=""true"" xmlns=""""/><StackTraceString i:nil=""true"" xmlns=""""/><RemoteStackTraceString i:nil=""true"" xmlns=""""/><RemoteStackIndex i:type=""x:int"" xmlns="""">0</RemoteStackIndex><ExceptionMethod i:nil=""true"" xmlns=""""/><HResult i:type=""x:int"" xmlns="""">-2146233088</HResult><Source i:nil=""true"" xmlns=""""/><WatsonBuckets i:nil=""true"" xmlns=""""/><code i:type=""a:ArrayOfFaultException.FaultCodeData"" xmlns="""" xmlns:a=""http://schemas.datacontract.org/2004/07/System.ServiceModel""><a:FaultException.FaultCodeData><a:name>Sender</a:name><a:ns/></a:FaultException.FaultCodeData></code><reason i:type=""a:ArrayOfFaultException.FaultReasonData"" xmlns="""" xmlns:a=""http://schemas.datacontract.org/2004/07/System.ServiceModel""><a:FaultException.FaultReasonData><a:text>The creator of this fault did not specify a Reason.</a:text><a:xmlLang>en-US</a:xmlLang></a:FaultException.FaultReasonData></reason><messageFault i:nil=""true"" xmlns=""""/><action i:nil=""true"" xmlns=""""/></FaultException>";
+        var dcs = new DataContractSerializer(typeof(FaultException));
 
         using (var ms = new MemoryStream())
         using (var sr = new StreamReader(ms))
         {
-            bf.Serialize(ms, new FaultException());
+            dcs.WriteObject(ms, new FaultException());
             ms.Position = 0;
-
-            Assert.False(string.IsNullOrEmpty(sr.ReadToEnd()));
-        }        
+            Assert.Equal(netfxBsl, sr.ReadToEnd());
+        }            
     }
 }

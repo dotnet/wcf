@@ -147,6 +147,16 @@ namespace System.ServiceModel
             get { return _fault; }
         }
 
+        internal void AddFaultCodeObjectData(SerializationInfo info, string key, FaultCode code)
+        {
+            info.AddValue(key, FaultCodeData.GetObjectData(code));
+        }
+
+        internal void AddFaultReasonObjectData(SerializationInfo info, string key, FaultReason reason)
+        {
+            info.AddValue(key, FaultReasonData.GetObjectData(reason));
+        }
+
         private static FaultCode CreateCode(string code)
         {
             return (code != null) ? new FaultCode(code) : DefaultCode;
@@ -187,6 +197,15 @@ namespace System.ServiceModel
         private static FaultReason CreateReason(string reason)
         {
             return (reason != null) ? new FaultReason(reason) : DefaultReason;
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            AddFaultCodeObjectData(info, "code", Code);
+            AddFaultReasonObjectData(info, "reason", Reason);
+            info.AddValue("messageFault", this._fault);
+            info.AddValue("action", this.Action);
         }
 
         private static FaultReason GetReason(MessageFault fault)
@@ -242,10 +261,11 @@ namespace System.ServiceModel
             return (reason != null) ? reason : DefaultReason;
         }
 
+        [Serializable]
         internal class FaultCodeData
         {
-            private string _name;
-            private string _ns;
+            private string name;
+            private string ns;
 
             internal static FaultCode Construct(FaultCodeData[] nodes)
             {
@@ -253,7 +273,7 @@ namespace System.ServiceModel
 
                 for (int i = nodes.Length - 1; i >= 0; i--)
                 {
-                    code = new FaultCode(nodes[i]._name, nodes[i]._ns, code);
+                    code = new FaultCode(nodes[i].name, nodes[i].ns, code);
                 }
 
                 return code;
@@ -266,8 +286,8 @@ namespace System.ServiceModel
                 for (int i = 0; i < array.Length; i++)
                 {
                     array[i] = new FaultCodeData();
-                    array[i]._name = code.Name;
-                    array[i]._ns = code.Namespace;
+                    array[i].name = code.Name;
+                    array[i].ns = code.Namespace;
                     code = code.SubCode;
                 }
 
@@ -292,10 +312,11 @@ namespace System.ServiceModel
             }
         }
 
+        [Serializable]
         internal class FaultReasonData
         {
-            private string _xmlLang;
-            private string _text;
+            private string xmlLang;
+            private string text;
 
             internal static FaultReason Construct(FaultReasonData[] nodes)
             {
@@ -303,7 +324,7 @@ namespace System.ServiceModel
 
                 for (int i = 0; i < nodes.Length; i++)
                 {
-                    reasons[i] = new FaultReasonText(nodes[i]._text, nodes[i]._xmlLang);
+                    reasons[i] = new FaultReasonText(nodes[i].text, nodes[i].xmlLang);
                 }
 
                 return new FaultReason(reasons);
@@ -317,8 +338,8 @@ namespace System.ServiceModel
                 for (int i = 0; i < translations.Count; i++)
                 {
                     array[i] = new FaultReasonData();
-                    array[i]._xmlLang = translations[i].XmlLang;
-                    array[i]._text = translations[i].Text;
+                    array[i].xmlLang = translations[i].XmlLang;
+                    array[i].text = translations[i].Text;
                 }
 
                 return array;
