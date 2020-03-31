@@ -415,7 +415,7 @@ namespace Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer
             private void LoadSMReferenceAssembly()
             {
                 string smReferenceArg = _arguments.GetArgument(Options.Cmd.SMReference);
-                IList<string> referencedAssembliesArgs = smReferenceArg.Split(':').ToList();
+                IList<string> referencedAssembliesArgs = smReferenceArg.Split(';').ToList();
                 if (referencedAssembliesArgs != null && referencedAssembliesArgs.Count > 0)
                 {
                     string smassembly = "";
