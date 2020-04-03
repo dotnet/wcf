@@ -32,16 +32,17 @@
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
+  </ItemGroup>
+
   <!-- Add the dotnet-svcutil-lib nupkg to our nuget package. This is needed for the bootstrapper to function. -->
   <Target Name="AddSvcUtilLib" BeforeTargets="ResolveReferences">
     <ItemGroup>
-      <None Include="$(OutputPath)..\..\..\..\Packages\$(Configuration)\Shipping\dotnet-svcutil-lib.$(PackageVersion).nupkg" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
+      <None Include="$(OutputPath)..\..\..\..\Packages\$(Configuration)\Shipping\dotnet-svcutil-lib.$(PackageVersion).nupkg">
         <BuildAction>None</BuildAction>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
   </Target>
-  <ItemGroup>
-    <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
-  </ItemGroup>
 </Project>

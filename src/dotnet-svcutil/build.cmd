@@ -2,21 +2,16 @@
 
 setlocal
 
-pushd %~dp0\src
-
-if not exist Packages call restore.cmd
-
-set logParams=
-set logParams=/flp:Summary;Verbosity=normal;logFile=obj\%~n0.log
-set logParams=%logParams% /flp1:warningsonly;logfile=obj\%~n0.wrn
-set logParams=%logParams% /flp2:errorsonly;logfile=obj\%~n0.err
-
-if not exist obj\ md obj\
+pushd %~dp0\..\..\
 
 :buildsln
-set runcmd=msbuild %logParams% ..\tools\master.msbuild /v:m %*
-echo %runcmd%
-call %runcmd%
+set buildlib=eng\common\cibuild.cmd -preparemachine -configuration Release -project src\dotnet-svcutil\lib\src\dotnet-svcutil-lib.csproj /p:Test=false /p:Sign=false
+echo %buildlib%
+call %buildlib%
+
+set buildtool=eng\common\cibuild.cmd -preparemachine -configuration Release -project src\dotnet-svcutil\src\dotnet-svcutil.csproj /p:Test=false /p:Sign=false
+echo %buildtool%
+call %buildtool%
 
 :End
 popd
