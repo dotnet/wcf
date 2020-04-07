@@ -7,10 +7,6 @@ namespace Microsoft.Xml.Serialization {
     using System.Collections;
     using System.ComponentModel;
     using System.Reflection;
-// Not needed in dotnet-svcutil scenario. 
-//     using System.Configuration;
-//     using Microsoft.Xml.Serialization.Configuration;
-//     using System.Security.Permissions;
 
     using Microsoft.CodeDom;
     using Microsoft.CodeDom.Compiler;
@@ -52,14 +48,7 @@ namespace Microsoft.Xml.Serialization {
             this.codeProvider = codeProvider;
             this.context = context;
             Schemas.SetCache(Context.Cache, Context.ShareTypes);
-
-// Not needed in dotnet-svcutil scenario. 
-//             SchemaImporterExtensionsSection section = PrivilegedConfigurationManager.GetSection(ConfigurationStrings.SchemaImporterExtensionsSectionPath) as SchemaImporterExtensionsSection;
-//             if (section != null)
-//                 extensions = section.SchemaImporterExtensionsInternal;
-//             else
-
-                extensions = new SchemaImporterExtensionCollection();
+            extensions = new SchemaImporterExtensionCollection();
         }
 
         internal ImportContext Context {

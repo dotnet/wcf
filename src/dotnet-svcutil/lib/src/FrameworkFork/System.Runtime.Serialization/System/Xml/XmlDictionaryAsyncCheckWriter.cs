@@ -86,13 +86,6 @@ namespace Microsoft.Xml
             CoreWriter.Flush();
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task FlushAsync()
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.FlushAsync());
-//         }
-
         public override string LookupPrefix(string ns)
         {
             CheckAsync();
@@ -105,25 +98,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteAttributes(reader, defattr);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteAttributesAsync(XmlReader reader, bool defattr)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteAttributesAsync(reader, defattr));
-//         }
-
         public override void WriteBase64(byte[] buffer, int index, int count)
         {
             CheckAsync();
             CoreWriter.WriteBase64(buffer, index, count);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteBase64Async(byte[] buffer, int index, int count)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteBase64Async(buffer, index, count));
-//         }
 
         public override void WriteBinHex(byte[] buffer, int index, int count)
         {
@@ -131,25 +110,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteBinHex(buffer, index, count);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteBinHexAsync(byte[] buffer, int index, int count)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteBinHexAsync(buffer, index, count));
-//         }
-
         public override void WriteCData(string text)
         {
             CheckAsync();
             CoreWriter.WriteCData(text);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteCDataAsync(string text)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteCDataAsync(text));
-//         }
 
         public override void WriteCharEntity(char ch)
         {
@@ -157,25 +122,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteCharEntity(ch);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteCharEntityAsync(char ch)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteCharEntityAsync(ch));
-//         }
-
         public override void WriteChars(char[] buffer, int index, int count)
         {
             CheckAsync();
             CoreWriter.WriteChars(buffer, index, count);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteCharsAsync(char[] buffer, int index, int count)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteCharsAsync(buffer, index, count));
-//         }
 
         public override void WriteComment(string text)
         {
@@ -183,26 +134,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteComment(text);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteCommentAsync(string text)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteCommentAsync(text));
-//         }
-
         public override void WriteDocType(string name, string pubid, string sysid, string subset)
         {
             CheckAsync();
             CoreWriter.WriteDocType(name, pubid, sysid, subset);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteDocTypeAsync(string name, string pubid, string sysid, string subset)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteDocTypeAsync(name, pubid, sysid, subset));
-//         }
-
         public override void WriteEndAttribute()
         {
             CheckAsync();
@@ -215,25 +151,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteEndDocument();
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteEndDocumentAsync()
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteEndDocumentAsync());
-//         }
-
         public override void WriteEndElement()
         {
             CheckAsync();
             CoreWriter.WriteEndElement();
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteEndElementAsync()
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteEndElementAsync());
-//         }
 
         public override void WriteEntityRef(string name)
         {
@@ -241,25 +163,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteEntityRef(name);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteEntityRefAsync(string name)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteEntityRefAsync(name));
-//         }
-
         public override void WriteFullEndElement()
         {
             CheckAsync();
             CoreWriter.WriteFullEndElement();
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteFullEndElementAsync()
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteFullEndElementAsync());
-//         }
 
         public override void WriteName(string name)
         {
@@ -267,26 +175,11 @@ namespace Microsoft.Xml
             CoreWriter.WriteName(name);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteNameAsync(string name)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteNameAsync(name));
-//         }
-
         public override void WriteNmToken(string name)
         {
             CheckAsync();
             CoreWriter.WriteNmToken(name);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteNmTokenAsync(string name)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteNmTokenAsync(name));
-//         }
-// 
 
         public override void WriteNode(XmlReader reader, bool defattr)
         {
@@ -294,38 +187,17 @@ namespace Microsoft.Xml
             CoreWriter.WriteNode(reader, defattr);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteNodeAsync(XmlReader reader, bool defattr)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteNodeAsync(reader, defattr));
-//         }
-
         public override void WriteProcessingInstruction(string name, string text)
         {
             CheckAsync();
             CoreWriter.WriteProcessingInstruction(name, text);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteProcessingInstructionAsync(string name, string text)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteProcessingInstructionAsync(name, text));
-//         }
-
         public override void WriteQualifiedName(string localName, string ns)
         {
             CheckAsync();
             CoreWriter.WriteQualifiedName(localName, ns);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteQualifiedNameAsync(string localName, string ns)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteQualifiedNameAsync(localName, ns));
-//         }
 
         public override void WriteRaw(string data)
         {
@@ -338,19 +210,6 @@ namespace Microsoft.Xml
             CheckAsync();
             CoreWriter.WriteRaw(buffer, index, count);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteRawAsync(string data)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteRawAsync(data));
-//         }
-// 
-//         public override Task WriteRawAsync(char[] buffer, int index, int count)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteRawAsync(buffer, index, count));
-//         }
 
         public override void WriteStartAttribute(string prefix, string localName, string ns)
         {
@@ -370,58 +229,22 @@ namespace Microsoft.Xml
             CoreWriter.WriteStartDocument(standalone);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteStartDocumentAsync()
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteStartDocumentAsync());
-//         }
-// 
-//         public override Task WriteStartDocumentAsync(bool standalone)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteStartDocumentAsync(standalone));
-//         }
-
         public override void WriteStartElement(string prefix, string localName, string ns)
         {
             CheckAsync();
             CoreWriter.WriteStartElement(prefix, localName, ns);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteStartElementAsync(string prefix, string localName, string ns)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteStartElementAsync(prefix, localName, ns));
-//         }
-
         public override void WriteString(string text)
         {
             CheckAsync();
             CoreWriter.WriteString(text);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteStringAsync(string text)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteStringAsync(text));
-//         }
-
         public override void WriteSurrogateCharEntity(char lowChar, char highChar)
         {
             CheckAsync();
             CoreWriter.WriteSurrogateCharEntity(lowChar, highChar);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteSurrogateCharEntityAsync(char lowChar, char highChar)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteSurrogateCharEntityAsync(lowChar, highChar));
-//         }
-
         public override void WriteValue(string value)
         {
             CheckAsync();
@@ -481,13 +304,6 @@ namespace Microsoft.Xml
             CheckAsync();
             CoreWriter.WriteWhitespace(ws);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override Task WriteWhitespaceAsync(string ws)
-//         {
-//             CheckAsync();
-//             return SetLastTask(CoreWriter.WriteWhitespaceAsync(ws));
-//         }
 
         public override void WriteStartElement(string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)
         {

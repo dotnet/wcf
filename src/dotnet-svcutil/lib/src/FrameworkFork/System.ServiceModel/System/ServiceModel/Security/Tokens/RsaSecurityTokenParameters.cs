@@ -33,19 +33,5 @@ namespace System.ServiceModel.Security.Tokens
         {
             return new RsaSecurityTokenParameters(this);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-//         {
-//             return this.CreateKeyIdentifierClause<RsaKeyIdentifierClause, RsaKeyIdentifierClause>(token, referenceStyle);
-//         }
-// 
-//         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
-//         {
-//             requirement.TokenType = SecurityTokenTypes.Rsa;
-//             requirement.RequireCryptographicToken = true;
-//             requirement.KeyType = SecurityKeyType.AsymmetricKey;
-//         }
-
     }
 }

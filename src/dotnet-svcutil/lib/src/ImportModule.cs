@@ -37,22 +37,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-#if VB_SUPPORT
-        readonly bool usingVBCodeProvider = false;
-        static CodeAttributeDeclaration outAttribute;
-        static CodeAttributeDeclaration OutAttribute
-        {
-            get
-            {
-                if (outAttribute == null)
-                {
-                    outAttribute = new CodeAttributeDeclaration(typeof(OutAttribute).FullName);
-                }
-                return outAttribute;
-            }
-        }
-#endif
-
         internal ImportModule(CommandProcessorOptions options, ServiceDescriptor serviceDescriptor, WsdlImporter importer)
         {
             this.codeCompileUnit = new CodeCompileUnit();
@@ -61,9 +45,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             this.wsdlImporter = importer;
             this.contractGenerator = InitializationHelper.CreateServiceContractGenerator(options, codeCompileUnit);
-#if VB_SUPPORT
-            this.usingVBCodeProvider = options.CodeProvider is Microsoft.VisualBasic.VBCodeProvider;
-#endif
         }
 
         internal bool ImportServiceContracts(ServiceDescriptor serviceDescriptor)
@@ -89,16 +70,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-#if VB_SUPPORT
-            if (usingVBCodeProvider)
-            {
-                // VB does not support "out" parameters: it replaces them with "ref", 
-                // we need to itterate over all genetrated method calls, and add explicit 
-                // <System.Runtime.InteropServices.OutParameter> attribute to the out parameters
-                // to make sure that client will not put them on the wire.
-                PostProcessCode(this.CodeCompileUnit);
-            }
-#endif
             try
             {
                 codegenExtension.ClientGenerated(this.contractGenerator);
@@ -121,58 +92,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return result;
         }
 
-#if VB_SUPPORT
-        static void PostProcessCode(CodeCompileUnit codeCompileUnit)
-        {
-            foreach (CodeNamespace codeNamespace in codeCompileUnit.Namespaces)
-            {
-                foreach (CodeTypeDeclaration codeClass in codeNamespace.Types)
-                {
-                    ProcessTypeDeclaration(codeClass);
-                }
-            }
-        }
-
-        static void ProcessTypeDeclaration(CodeTypeDeclaration codeClass)
-        {
-            foreach (CodeTypeMember member in codeClass.Members)
-            {
-                if (member is CodeTypeDeclaration typeDeclaration)
-                {
-                    ProcessTypeDeclaration(typeDeclaration);
-                }
-                else
-                {
-                    if (member is CodeMemberMethod memberMethod)
-                    {
-                        foreach (CodeParameterDeclarationExpression parameter in memberMethod.Parameters)
-                        {
-                            if (parameter.Direction == FieldDirection.Out)
-                            {
-                                // check for explicit <OutAttribute> declaration to avoid adding duplicate attributes.
-                                if (!IsDefined(typeof(OutAttribute), parameter.CustomAttributes))
-                                {
-                                    parameter.CustomAttributes.Add(OutAttribute);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        static bool IsDefined(Type type, CodeAttributeDeclarationCollection metadata)
-        {
-            foreach (CodeAttributeDeclaration attribute in metadata)
-            {
-                if (attribute.Name == type.FullName || attribute.Name == type.Name)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-#endif
         T FindImportExtension<T>()
         {
             return wsdlImporter.WsdlImportExtensions.Find<T>();

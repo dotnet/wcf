@@ -56,24 +56,6 @@ namespace System
         {
             get { return DiagnosticUtility.s_shouldUseActivity; }
         }
-// Not needed in dotnet-svcutil scenario. 
-//         [Conditional("DEBUG")]
-//         internal static void DebugAssert(bool condition, string message)
-//         {
-//             if (!condition)
-//             {
-//                 DebugAssert(message);
-//             }
-//         }
-// 
-//         [MethodImpl(MethodImplOptions.NoInlining)]
-//         [Conditional("DEBUG")]
-//         internal static void DebugAssert(string message)
-//         {
-// #pragma warning disable 618
-//             Fx.Assert(message);
-// #pragma warning restore 618
-//         }
 
         internal static class Utility
         {

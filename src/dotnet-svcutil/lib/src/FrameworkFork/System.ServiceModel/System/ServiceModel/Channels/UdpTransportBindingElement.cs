@@ -145,46 +145,8 @@ namespace System.ServiceModel.Channels
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (context == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("context");
-//             }
-// 
-//             if (!this.CanBuildChannelFactory<TChannel>(context))
-//             {
-//                 throw FxTrace.Exception.Argument("TChannel", SR.ChannelTypeNotSupported(typeof(TChannel)));
-//             }
-// 
-//             return (IChannelFactory<TChannel>)(object)new UdpChannelFactory<TChannel>(new UdpTransportBindingElement(this), context);
-
             throw new NotImplementedException();
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
-//         {
-//             if (context == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("context");
-//             }
-// 
-//             IChannelListener<TChannel> listener;
-//             if (typeof(TChannel) == typeof(IDuplexChannel))
-//             {
-//                 listener = (IChannelListener<TChannel>)new UdpDuplexChannelListener(new UdpTransportBindingElement(this), context);
-//             }
-//             else if (typeof(TChannel) == typeof(IReplyChannel))
-//             {
-//                 listener = (IChannelListener<TChannel>)new UdpReplyChannelListener(new UdpTransportBindingElement(this), context);
-//             }
-//             else
-//             {
-//                 throw FxTrace.Exception.Argument("TChannel", SR.ChannelTypeNotSupported(typeof(TChannel)));
-//             }
-// 
-//             return (IChannelListener<TChannel>)(object)listener;
-//         }
 
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
@@ -195,20 +157,6 @@ namespace System.ServiceModel.Channels
 
             return (typeof(TChannel) == typeof(IOutputChannel) || typeof(TChannel) == typeof(IDuplexChannel));
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override bool CanBuildChannelListener<TChannel>(BindingContext context)
-//         {
-//             if (context == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("context");
-//             }
-// 
-//             // We don't need to return IBindingMulticastCapabilities, because IBindingMulticastCapabilities assumes
-//             // that you always use multicast for both send and receive.
-// 
-//             return (typeof(TChannel) == typeof(IDuplexChannel) || typeof(TChannel) == typeof(IReplyChannel));
-//         }
 
         public override T GetProperty<T>(BindingContext context)
         {
@@ -239,55 +187,12 @@ namespace System.ServiceModel.Channels
         [SuppressMessage(FxCop.Category.Design, FxCop.Rule.InterfaceMethodsShouldBeCallableByChildTypes, Justification = "no need to call this from derrived classes")]
         void IWsdlExportExtension.ExportEndpoint(WsdlExporter exporter, WsdlEndpointConversionContext context)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (exporter == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("exporter");
-//             }
-// 
-//             if (context == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("context");
-//             }
-// 
-//             MessageVersion messageVersion = context.Endpoint.Binding.GetProperty<MessageVersion>(new BindingParameterCollection());
-// 
-//             if (messageVersion == null)
-//             {
-//                 return;
-//             }
-// 
-//             AddressingVersion addressingVersion = messageVersion.Addressing;
-//             TransportBindingElement.ExportWsdlEndpoint(exporter, context, UdpConstants.WsdlSoapUdpTransportUri, addressingVersion);
-
             throw new NotImplementedException();
         }
 
         [SuppressMessage(FxCop.Category.Design, FxCop.Rule.InterfaceMethodsShouldBeCallableByChildTypes, Justification = "no need to call this from derrived classes")]
         void IPolicyExportExtension.ExportPolicy(MetadataExporter exporter, PolicyConversionContext context)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (exporter == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("exporter");
-//             }
-// 
-//             if (context == null)
-//             {
-//                 throw FxTrace.Exception.ArgumentNull("context");
-//             }
-// 
-//             MessageEncodingBindingElement encodingBindingElement = context.BindingElements.Find<MessageEncodingBindingElement>();
-// 
-//             if (encodingBindingElement == null)
-//             {
-//                 encodingBindingElement = new TextMessageEncodingBindingElement();
-//             }
-// 
-//             WsdlExporter.WSAddressingHelper.AddWSAddressingAssertion(exporter, context, encodingBindingElement.MessageVersion.Addressing);
-// 
-//             UdpTransportBindingElementPolicy.ExportRetransmissionEnabledAssertion(this, context.GetBindingAssertions());
-
             throw new NotImplementedException();
         }
 

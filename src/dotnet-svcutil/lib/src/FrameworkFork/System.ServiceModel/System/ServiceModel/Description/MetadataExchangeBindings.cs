@@ -201,12 +201,6 @@ namespace System.ServiceModel.Description
 
         static CustomBinding CreateNamedPipeBinding()
         {
-// Not needed in dotnet-svcutil scenario. 
-//             CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.NamedPipeBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
-//             NamedPipeTransportBindingElement pipeTransport = new NamedPipeTransportBindingElement();
-//             binding.Elements.Add(pipeTransport);
-//             return binding;
-
             throw new NotImplementedException();
         }
 

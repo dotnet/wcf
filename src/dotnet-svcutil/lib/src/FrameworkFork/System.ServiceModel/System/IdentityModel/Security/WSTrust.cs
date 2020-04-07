@@ -98,18 +98,11 @@ namespace System.IdentityModel.Security
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 byte[] secret = reader.ReadElementContentAsBase64();
-//                 return new BinarySecretKeyIdentifierClause(secret, false);
-
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return keyIdentifierClause is BinarySecretKeyIdentifierClause;
-
                 throw new NotImplementedException();
             }
 
@@ -120,13 +113,6 @@ namespace System.IdentityModel.Security
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 BinarySecretKeyIdentifierClause skic = keyIdentifierClause as BinarySecretKeyIdentifierClause;
-//                 byte[] secret = skic.GetKeyBytes();
-//                 writer.WriteStartElement(this.parent.SerializerDictionary.Prefix.Value, this.parent.SerializerDictionary.BinarySecret, this.parent.SerializerDictionary.Namespace);
-//                 writer.WriteBase64(secret, 0, secret.Length);
-//                 writer.WriteEndElement();
-
                 throw new NotImplementedException();
             }
         }
@@ -162,18 +148,11 @@ namespace System.IdentityModel.Security
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return keyIdentifierClause is GenericXmlSecurityKeyIdentifierClause;
-
                 throw new NotImplementedException();
             }
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 GenericXmlSecurityKeyIdentifierClause genericXmlSecurityKeyIdentifierClause = keyIdentifierClause as GenericXmlSecurityKeyIdentifierClause;
-//                 genericXmlSecurityKeyIdentifierClause.ReferenceXml.WriteTo(writer);
-
                 throw new NotImplementedException();
             }
         }

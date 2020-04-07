@@ -570,11 +570,6 @@ namespace Microsoft.Xml.Serialization {
                     mappings[i] = mapping;
                 }
                 catch (Exception e) {
-// Not needed in dotnet-svcutil scenario. 
-//                     if (/*e is ThreadAbortException || e is StackOverflowException ||*/ e is OutOfMemoryException) {
-//                         throw;
-//                     }
-
                     if (e is OutOfMemoryException) {
                         throw;
                     }

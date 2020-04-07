@@ -70,8 +70,6 @@ namespace Microsoft.Xml {
                 else {
                     settings = new XmlReaderSettings();
                 }
-// Not needed in dotnet-svcutil scenario. 
-//                 settings.Async = true;
 
                 settings.ReadOnly = true;
                 return settings;

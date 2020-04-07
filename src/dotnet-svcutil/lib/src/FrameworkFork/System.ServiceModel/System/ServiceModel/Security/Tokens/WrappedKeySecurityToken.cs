@@ -74,24 +74,6 @@ namespace System.ServiceModel.Security.Tokens
         WrappedKeySecurityToken(string id, byte[] keyToWrap, string wrappingAlgorithm, XmlDictionaryString wrappingAlgorithmDictionaryString, SecurityToken wrappingToken, SecurityKeyIdentifier wrappingTokenReference, byte[] wrappedKey, SecurityKey wrappingSecurityKey)
             : this(id, keyToWrap, wrappingAlgorithm, wrappingAlgorithmDictionaryString)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (wrappingToken == null)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("wrappingToken");
-//             }
-//             this.wrappingToken = wrappingToken;
-//             this.wrappingTokenReference = wrappingTokenReference;
-//             if (wrappedKey == null)
-//             {
-//                 this.wrappedKey = SecurityUtils.EncryptKey(wrappingToken, wrappingAlgorithm, keyToWrap);
-//             }
-//             else
-//             {
-//                 this.wrappedKey = wrappedKey;
-//             }
-//             this.wrappingSecurityKey = wrappingSecurityKey;
-//             this.serializeCarriedKeyName = true;
-
             throw new NotImplementedException();
         }
 
@@ -171,25 +153,6 @@ namespace System.ServiceModel.Security.Tokens
             get { return this.securityKey; }
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         internal byte[] GetHash()
-//         {
-//             if (this.wrappedKeyHash == null)
-//             {
-//                 EnsureEncryptedKeySetUp();
-//                 using (HashAlgorithm hash = CryptoHelper.NewSha1HashAlgorithm())
-//                 {
-//                     this.wrappedKeyHash = hash.ComputeHash(this.encryptedKey.GetWrappedKey());
-//                 }
-//             }
-//             return wrappedKeyHash;
-//         }
-// 
-//         public byte[] GetWrappedKey()
-//         {
-//             return SecurityUtils.CloneBuffer(this.wrappedKey);
-//         }
-
         internal void EnsureEncryptedKeySetUp()
         {
             if (this.encryptedKey == null)
@@ -214,32 +177,5 @@ namespace System.ServiceModel.Security.Tokens
                 this.encryptedKey = ek;
             }
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public override bool CanCreateKeyIdentifierClause<T>()
-//         {
-//             if (typeof(T) == typeof(EncryptedKeyHashIdentifierClause))
-//                 return true;
-// 
-//             return base.CanCreateKeyIdentifierClause<T>();
-//         }
-// 
-//         public override T CreateKeyIdentifierClause<T>()
-//         {
-//             if (typeof(T) == typeof(EncryptedKeyHashIdentifierClause))
-//                 return new EncryptedKeyHashIdentifierClause(GetHash()) as T;
-// 
-//             return base.CreateKeyIdentifierClause<T>();
-//         }
-// 
-//         public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)
-//         {
-//             EncryptedKeyHashIdentifierClause encKeyIdentifierClause = keyIdentifierClause as EncryptedKeyHashIdentifierClause;
-//             if (encKeyIdentifierClause != null)
-//                 return encKeyIdentifierClause.Matches(GetHash());
-// 
-//             return base.MatchesKeyIdentifierClause(keyIdentifierClause);
-//         }
-
     }
 }

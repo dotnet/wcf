@@ -1196,12 +1196,6 @@ namespace Microsoft.Xml
             return ReadArray(XmlDictionaryString.GetString(localName), XmlDictionaryString.GetString(namespaceUri), array, offset, count);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public virtual void Close()
-//         {
-//             base.Dispose();
-//         }
-
         private class XmlWrappedReader : XmlDictionaryReader, IXmlLineInfo
         {
             private XmlReader _reader;

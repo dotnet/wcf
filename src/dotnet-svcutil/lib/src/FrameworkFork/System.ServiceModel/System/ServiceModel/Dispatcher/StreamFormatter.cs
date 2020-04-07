@@ -54,16 +54,6 @@ namespace System.ServiceModel.Dispatcher
             WriteEndWrapperIfNecessary(writer);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         internal async Task SerializeAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
-//         {
-//             Stream streamValue = await GetStreamAndWriteStartWrapperIfNecessaryAsync(writer, parameters, returnValue);
-//             var streamProvider = new OperationStreamProvider(streamValue);
-//             await StreamFormatterHelper.WriteValueAsync(writer, streamProvider);
-//             await WriteEndWrapperIfNecessaryAsync(writer);
-//         }
-
-
         private Stream GetStreamAndWriteStartWrapperIfNecessary(XmlDictionaryWriter writer, object[] parameters, object returnValue)
         {
             Stream streamValue = GetStreamValue(parameters, returnValue);
@@ -74,19 +64,6 @@ namespace System.ServiceModel.Dispatcher
             writer.WriteStartElement(PartName, PartNamespace);
             return streamValue;
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         private async Task<Stream> GetStreamAndWriteStartWrapperIfNecessaryAsync(XmlDictionaryWriter writer, object[] parameters, object returnValue)
-//         {
-//             Stream streamValue = GetStreamValue(parameters, returnValue);
-//             if (streamValue == null)
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(_partName);
-//             if (WrapperName != null)
-//                 await writer.WriteStartElementAsync(null, WrapperName, WrapperNamespace);
-//             await writer.WriteStartElementAsync(null, PartName, PartNamespace);
-//             return streamValue;
-//         }
-
 
         private void WriteEndWrapperIfNecessary(XmlDictionaryWriter writer)
         {

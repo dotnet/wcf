@@ -38,31 +38,6 @@ namespace System.ServiceModel.Security.Tokens
 
         protected BinarySecretSecurityToken(string id, int keySizeInBits, bool allowCrypto)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (keySizeInBits <= 0 || keySizeInBits >= 512)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("keySizeInBits", SR.Format(SR.ValueMustBeInRange, 0, 512)));
-//             }
-// 
-//             if ((keySizeInBits % 8) != 0)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("keySizeInBits", SR.Format(SR.KeyLengthMustBeMultipleOfEight, keySizeInBits)));
-//             }
-// 
-//             this.id = id;
-//             this.effectiveTime = DateTime.UtcNow;
-//             this.key = new byte[keySizeInBits / 8];
-//             CryptoHelper.FillRandomBytes(this.key);
-// 
-//             if (allowCrypto)
-//             {
-//                 this.securityKeys = SecurityUtils.CreateSymmetricSecurityKeys(this.key);
-//             }
-//             else
-//             {
-//                 this.securityKeys = EmptyReadOnlyCollection<SecurityKey>.Instance;
-//             }
-
             throw new NotImplementedException();
         }
 

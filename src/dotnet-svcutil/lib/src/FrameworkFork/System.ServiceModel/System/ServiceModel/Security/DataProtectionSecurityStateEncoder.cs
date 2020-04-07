@@ -65,31 +65,11 @@ namespace System.ServiceModel.Security
 
         protected internal override byte[] DecodeSecurityState(byte[] data)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             try
-//             {
-//                 return ProtectedData.Unprotect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
-//             }
-//             catch (CryptographicException exception)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.GetString(SR.SecurityStateEncoderDecodingFailure), exception));
-//             }
-
             throw new NotImplementedException();
         }
 
         protected internal override byte[] EncodeSecurityState(byte[] data)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             try
-//             {
-//                 return ProtectedData.Protect(data, this.entropy, (this.useCurrentUserProtectionScope) ? DataProtectionScope.CurrentUser : DataProtectionScope.LocalMachine);
-//             }
-//             catch (CryptographicException exception)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CryptographicException(SR.GetString(SR.SecurityStateEncoderEncodingFailure), exception));
-//             }
-
             throw new NotImplementedException();
         }
     }

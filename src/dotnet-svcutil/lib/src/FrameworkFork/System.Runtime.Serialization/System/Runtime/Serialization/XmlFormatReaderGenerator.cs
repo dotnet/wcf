@@ -9,11 +9,6 @@ using System.Reflection.Emit;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security;
-// Not needed in dotnet-svcutil scenario. 
-// #if NET_NATIVE 
-// using Internal.Runtime.Augments;
-// #endif
-
 
 namespace System.Runtime.Serialization
 {
@@ -856,13 +851,6 @@ namespace System.Runtime.Serialization
         [SecuritySafeCritical]
         static internal object UnsafeGetUninitializedObject(Type type)
         {
-// Not needed in dotnet-svcutil scenario. 
-// #if !NET_NATIVE
-//             return TryGetUninitializedObjectWithFormatterServices(type) ?? Activator.CreateInstance(type);
-// #else
-//             return RuntimeAugments.NewObject(type.TypeHandle);
-// #endif
-
             throw new NotImplementedException();
         }
 

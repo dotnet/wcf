@@ -728,13 +728,6 @@ namespace System.Runtime.Serialization
                 xmlDataContract.IsValueType = true;
                 xmlDataContract.IsTypeDefinedOnImport = false;
                 xmlDataContract.HasRoot = true;
-// Not needed in dotnet-svcutil scenario. 
-//                 if (DiagnosticUtility.ShouldTraceVerbose)
-//                 {
-//                     TraceUtility.Trace(TraceEventType.Verbose, TraceCode.XsdImportAnnotationFailed,
-//                         SR.Format(SR.TraceCodeXsdImportAnnotationFailed), new StringTraceRecord("Type", typeName.Namespace + ":" + typeName.Name));
-//                 }
-
             }
             if (!isAnonymous)
             {

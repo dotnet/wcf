@@ -424,19 +424,6 @@ namespace System.Runtime.Serialization
             }
         }
 
-// Not needed in dotnet-svcutil scenario. OptionalFieldAttribute not available in DNX
-//         [SecurityCritical]
-//         private static Type _typeOfOptionalFieldAttribute;
-//         internal static Type TypeOfOptionalFieldAttribute {
-//             [SecuritySafeCritical]
-//             get {
-//                 if (_typeOfOptionalFieldAttribute == null)
-//                     _typeOfOptionalFieldAttribute = typeof(OptionalFieldAttribute);
-//                 return _typeOfOptionalFieldAttribute;
-//             }
-//         }
-
-
         [SecurityCritical]
         private static Type s_typeOfOnSerializingAttribute;
         internal static Type TypeOfOnSerializingAttribute
@@ -502,18 +489,6 @@ namespace System.Runtime.Serialization
                 return s_typeOfFlagsAttribute;
             }
         }
-
-// Not needed in dotnet-svcutil scenario. Not in DNX
-//         [SecurityCritical]
-//         private static Type typeOfSerializableAttribute;
-//         internal static Type TypeOfSerializableAttribute {
-//             [SecuritySafeCritical]
-//             get {
-//                 if (typeOfSerializableAttribute == null)
-//                     typeOfSerializableAttribute = typeof(SerializableAttribute);
-//                 return typeOfSerializableAttribute;
-//             }
-//         }
 
         [SecurityCritical]
         private static Type s_typeOfIXmlSerializable;

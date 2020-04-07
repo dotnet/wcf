@@ -86,10 +86,6 @@ namespace Microsoft.CodeDom {
             Name = name;
         }
 
-// Not needed in dotnet-svcutil scenario.         
-//         private CodeNamespace(SerializationInfo info, StreamingContext context) {
-//         }
-
         /// <devdoc>
         ///    <para>
         ///       Gets or sets the collection of classes.

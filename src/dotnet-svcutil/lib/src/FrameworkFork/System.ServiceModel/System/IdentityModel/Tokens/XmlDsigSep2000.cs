@@ -59,28 +59,6 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifier ReadKeyIdentifierCore(XmlDictionaryReader reader)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 reader.ReadStartElement(LocalName, NamespaceUri);
-//                 SecurityKeyIdentifier keyIdentifier = new SecurityKeyIdentifier();
-//                 while (reader.IsStartElement())
-//                 {
-//                     SecurityKeyIdentifierClause clause = this.securityTokenSerializer.ReadKeyIdentifierClause(reader);
-//                     if (clause == null)
-//                     {
-//                         reader.Skip();
-//                     }
-//                     else
-//                     {
-//                         keyIdentifier.Add(clause);
-//                     }
-//                 }
-//                 if (keyIdentifier.Count == 0)
-//                 {
-//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.GetString(SR.ErrorDeserializingKeyIdentifierClause)));
-//                 }
-//                 reader.ReadEndElement();
-//                 return keyIdentifier;
-
                 throw new NotImplementedException();
             }
 
@@ -91,20 +69,6 @@ namespace System.IdentityModel.Tokens
 
             public override void WriteKeyIdentifierCore(XmlDictionaryWriter writer, SecurityKeyIdentifier keyIdentifier)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, LocalName, NamespaceUri);
-//                 bool clauseWritten = false;
-//                 foreach (SecurityKeyIdentifierClause clause in keyIdentifier)
-//                 {
-//                     this.securityTokenSerializer.InnerSecurityTokenSerializer.WriteKeyIdentifierClause(writer, clause);
-//                     clauseWritten = true;
-//                 }
-//                 writer.WriteEndElement(); // KeyInfo
-//                 if (!clauseWritten)
-//                 {
-//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.GetString(SR.NoKeyInfoClausesToWrite)));
-//                 }
-
                 throw new NotImplementedException();
             }
         }
@@ -130,31 +94,16 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 reader.ReadStartElement(XD.XmlSignatureDictionary.KeyName, NamespaceUri);
-//                 string name = reader.ReadString();
-//                 reader.ReadEndElement();
-// 
-//                 return new KeyNameIdentifierClause(name);
-
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return keyIdentifierClause is KeyNameIdentifierClause;
-
                 throw new NotImplementedException();
             }
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 KeyNameIdentifierClause nameClause = keyIdentifierClause as KeyNameIdentifierClause;
-// 
-//                 writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.KeyName, NamespaceUri, nameClause.KeyName);
-
                 throw new NotImplementedException();
             }
         }
@@ -186,55 +135,16 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 reader.ReadStartElement(XD.XmlSignatureDictionary.KeyValue, NamespaceUri);
-//                 reader.ReadStartElement(XD.XmlSignatureDictionary.RsaKeyValue, NamespaceUri);
-//                 reader.ReadStartElement(XD.XmlSignatureDictionary.Modulus, NamespaceUri);
-// 
-//                 byte[] modulus = Convert.FromBase64String(reader.ReadString());
-// 
-//                 reader.ReadEndElement();
-//                 reader.ReadStartElement(XD.XmlSignatureDictionary.Exponent, NamespaceUri);
-//                 byte[] exponent = Convert.FromBase64String(reader.ReadString());
-//                 reader.ReadEndElement();
-//                 reader.ReadEndElement();
-//                 reader.ReadEndElement();
-// 
-//                 RSA rsa = new RSACryptoServiceProvider();
-//                 RSAParameters rsaParameters = new RSAParameters();
-//                 rsaParameters.Modulus = modulus;
-//                 rsaParameters.Exponent = exponent;
-//                 rsa.ImportParameters(rsaParameters);
-// 
-//                 return new RsaKeyIdentifierClause(rsa);
-
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return keyIdentifierClause is RsaKeyIdentifierClause;
-
                 throw new NotImplementedException();
             }
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 RsaKeyIdentifierClause rsaClause = keyIdentifierClause as RsaKeyIdentifierClause;
-// 
-//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.KeyValue, NamespaceUri);
-//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.RsaKeyValue, NamespaceUri);
-//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.Modulus, NamespaceUri);
-//                 rsaClause.WriteModulusAsBase64(writer);
-//                 writer.WriteEndElement();
-//                 writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.Exponent, NamespaceUri);
-//                 rsaClause.WriteExponentAsBase64(writer);
-//                 writer.WriteEndElement();
-//                 writer.WriteEndElement();
-//                 writer.WriteEndElement();
-
                 throw new NotImplementedException();
             }
         }
@@ -266,99 +176,16 @@ namespace System.IdentityModel.Tokens
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 SecurityKeyIdentifierClause ski = null;
-//                 reader.ReadStartElement(XD.XmlSignatureDictionary.X509Data, NamespaceUri);
-//                 while (reader.IsStartElement())
-//                 {
-//                     if (ski == null && reader.IsStartElement(XD.XmlSignatureDictionary.X509Certificate, NamespaceUri))
-//                     {
-//                         X509Certificate2 certificate = null;
-//                         if (!SecurityUtils.TryCreateX509CertificateFromRawData(reader.ReadElementContentAsBase64(), out certificate))
-//                         {
-//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SR.GetString(SR.InvalidX509RawData)));
-//                         }
-//                         ski = new X509RawDataKeyIdentifierClause(certificate);
-//                     }
-//                     else if (ski == null && reader.IsStartElement(XmlSignatureStrings.X509Ski, NamespaceUri.ToString()))
-//                     {
-//                         ski = new X509SubjectKeyIdentifierClause(reader.ReadElementContentAsBase64());
-//                     }
-//                     else if ((ski == null) && reader.IsStartElement(XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace))
-//                     {
-//                         reader.ReadStartElement(XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace);
-//                         reader.ReadStartElement(XD.XmlSignatureDictionary.X509IssuerName, XD.XmlSignatureDictionary.Namespace);
-//                         string issuerName = reader.ReadContentAsString();
-//                         reader.ReadEndElement();
-//                         reader.ReadStartElement(XD.XmlSignatureDictionary.X509SerialNumber, XD.XmlSignatureDictionary.Namespace);
-//                         string serialNumber = reader.ReadContentAsString();
-//                         reader.ReadEndElement();
-//                         reader.ReadEndElement();
-// 
-//                         ski = new X509IssuerSerialKeyIdentifierClause(issuerName, serialNumber);
-//                     }
-//                     else
-//                     {
-//                         reader.Skip();
-//                     }
-//                 }
-//                 reader.ReadEndElement();
-//                 return ski;
-
                 throw new NotImplementedException();
             }
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return (keyIdentifierClause is X509RawDataKeyIdentifierClause);
-//                 // This method should not write X509IssuerSerialKeyIdentifierClause or X509SubjectKeyIdentifierClause as that should be written by the WSSecurityXXX classes with SecurityTokenReference tag. 
-//                 // The XmlDsig entries are written by the X509SecurityTokenHandler.
-
                 throw new NotImplementedException();
             }
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 X509RawDataKeyIdentifierClause x509Clause = keyIdentifierClause as X509RawDataKeyIdentifierClause;
-// 
-//                 if (x509Clause != null)
-//                 {
-//                     writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509Data, NamespaceUri);
-// 
-//                     writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509Certificate, NamespaceUri);
-//                     byte[] certBytes = x509Clause.GetX509RawData();
-//                     writer.WriteBase64(certBytes, 0, certBytes.Length);
-//                     writer.WriteEndElement();
-// 
-//                     writer.WriteEndElement();
-//                 }
-// 
-//                 X509IssuerSerialKeyIdentifierClause issuerSerialClause = keyIdentifierClause as X509IssuerSerialKeyIdentifierClause;
-//                 if (issuerSerialClause != null)
-//                 {
-//                     writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
-//                     writer.WriteStartElement(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509IssuerSerial, XD.XmlSignatureDictionary.Namespace);
-//                     writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509IssuerName, XD.XmlSignatureDictionary.Namespace, issuerSerialClause.IssuerName);
-//                     writer.WriteElementString(XD.XmlSignatureDictionary.Prefix.Value, XD.XmlSignatureDictionary.X509SerialNumber, XD.XmlSignatureDictionary.Namespace, issuerSerialClause.IssuerSerialNumber);
-//                     writer.WriteEndElement();
-//                     writer.WriteEndElement();
-//                     return;
-//                 }
-// 
-//                 X509SubjectKeyIdentifierClause skiClause = keyIdentifierClause as X509SubjectKeyIdentifierClause;
-//                 if (skiClause != null)
-//                 {
-//                     writer.WriteStartElement(XmlSignatureConstants.Prefix, XmlSignatureConstants.Elements.X509Data, XmlSignatureConstants.Namespace);
-//                     writer.WriteStartElement(XmlSignatureConstants.Prefix, XmlSignatureConstants.Elements.X509SKI, XmlSignatureConstants.Namespace);
-//                     byte[] ski = skiClause.GetX509SubjectKeyIdentifier();
-//                     writer.WriteBase64(ski, 0, ski.Length);
-//                     writer.WriteEndElement();
-//                     writer.WriteEndElement();
-//                     return;
-//                 }
-
                 throw new NotImplementedException();
             }
         }

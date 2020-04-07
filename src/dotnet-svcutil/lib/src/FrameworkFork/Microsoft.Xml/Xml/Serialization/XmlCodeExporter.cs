@@ -133,17 +133,11 @@ namespace Microsoft.Xml.Serialization {
                     if (!mapping.TypeDesc.IsMappedType) {
                         // Add [GeneratedCodeAttribute(Tool=.., Version=..)]
                         codeClass.CustomAttributes.Add(GeneratedCodeAttribute);
-// Not needed in dotnet-svcutil scenario. Not in DNX
-//                         // Add [SerializableAttribute]
-//                         codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(SerializableAttribute).FullName));
 
                         if (!codeClass.IsEnum) {
                             // Add [DebuggerStepThrough]
                             codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DebuggerStepThroughAttribute).FullName));
                             // Add [DesignerCategory("code")]
-// Not needed in dotnet-svcutil scenario. 
-//                             codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DesignerCategoryAttribute).FullName, new CodeAttributeArgument[] {new CodeAttributeArgument(new CodePrimitiveExpression("code"))}));
-
                         }
                         AddTypeMetadata(codeClass.CustomAttributes, typeof(XmlTypeAttribute), mapping.TypeDesc.Name, Accessor.UnescapeName(mapping.TypeName), mapping.Namespace, mapping.IncludeInSchema);
                     }

@@ -55,25 +55,6 @@ namespace System.ServiceModel
             this.TransactionFlowBindingElement.TransactionProtocol = WS2007TransactionProtocol;
             this.HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         void ApplyConfiguration(string configurationName)
-//         {
-//             WS2007HttpBindingCollectionElement section = WS2007HttpBindingCollectionElement.GetBindingCollectionElement();
-//             WS2007HttpBindingElement element = section.Bindings[configurationName];
-//             if (element == null)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
-//                                  configurationName,
-//                                  ConfigurationStrings.WS2007HttpBindingCollectionElementName)));
-//             }
-//             else
-//             {
-//                 element.ApplyConfiguration(this);
-//             }
-//         }
-
         protected override SecurityBindingElement CreateMessageSecurity()
         {
             return this.Security.CreateMessageSecurity(this.ReliableSession.Enabled, WS2007MessageSecurityVersion);

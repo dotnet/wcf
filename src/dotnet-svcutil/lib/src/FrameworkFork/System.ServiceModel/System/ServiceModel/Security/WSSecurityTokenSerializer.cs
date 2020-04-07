@@ -256,41 +256,6 @@ namespace System.ServiceModel.Security
 
         protected override void WriteTokenCore(XmlWriter writer, SecurityToken token)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             bool wroteToken = false;
-//             XmlDictionaryWriter localWriter = XmlDictionaryWriter.CreateDictionaryWriter(writer);
-//             if (token.GetType() == typeof(ProviderBackedSecurityToken))
-//             {
-//                 token = (token as ProviderBackedSecurityToken).Token;
-//             }
-//             for (int i = 0; i < _tokenEntries.Count; i++)
-//             {
-//                 TokenEntry tokenEntry = _tokenEntries[i];
-//                 if (tokenEntry.SupportsCore(token.GetType()))
-//                 {
-//                     try
-//                     {
-//                         tokenEntry.WriteTokenCore(localWriter, token);
-//                     }
-// #pragma warning disable 56500 // covered by FxCOP
-//                     catch (Exception e)
-//                     {
-//                         if (!ShouldWrapException(e))
-//                         {
-//                             throw;
-//                         }
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.ErrorSerializingSecurityToken), e);
-//                     }
-//                     wroteToken = true;
-//                     break;
-//                 }
-//             }
-// 
-//             if (!wroteToken)
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
-// 
-//             localWriter.Flush();
-
             throw new NotImplementedException();
         }
 
@@ -438,12 +403,6 @@ namespace System.ServiceModel.Security
             }
             catch (XmlException e)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 if (DiagnosticUtility.ShouldTraceError)
-//                 {
-//                     TraceUtility.TraceEvent(TraceEventType.Error, TraceCode.Security, SR.TraceCodeSecurity, null, e);
-//                 }
-
                 return false;
             }
 

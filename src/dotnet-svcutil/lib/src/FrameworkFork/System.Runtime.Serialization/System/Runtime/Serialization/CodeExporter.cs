@@ -229,12 +229,7 @@ namespace System.Runtime.Serialization {
                     if (!contractCodeDomInfo.IsProcessed) {
                         if (dataContract is ClassDataContract) {
                             ClassDataContract classDataContract = (ClassDataContract)dataContract;
-// Not needed in dotnet-svcutil scenario. 
-//                             if (classDataContract.IsISerializable)
-//                                 ExportISerializableDataContract(classDataContract, contractCodeDomInfo);
-//                             else
-
-                                ExportClassDataContractHierarchy(classDataContract.StableName, classDataContract, contractCodeDomInfo, new Dictionary<XmlQualifiedName, object>());
+                            ExportClassDataContractHierarchy(classDataContract.StableName, classDataContract, contractCodeDomInfo, new Dictionary<XmlQualifiedName, object>());
                         } else if (dataContract is CollectionDataContract)
                             ExportCollectionDataContract((CollectionDataContract)dataContract, contractCodeDomInfo);
                         else if (dataContract is EnumDataContract)
@@ -678,11 +673,6 @@ namespace System.Runtime.Serialization {
         }
 
         void AddSerializableAttribute(bool generateSerializable, CodeTypeDeclaration type, ContractCodeDomInfo contractCodeDomInfo) {
-// Not needed in dotnet-svcutil scenario. 
-//             if (generateSerializable) {
-//                 type.CustomAttributes.Add(SerializableAttribute);
-//                 AddImportStatement(Globals.TypeOfSerializableAttribute.Namespace, contractCodeDomInfo.CodeNamespace);
-//             }
 
         }
 
@@ -766,12 +756,6 @@ namespace System.Runtime.Serialization {
                     if (dataMember.Order != Globals.DefaultOrder)
                         dataMemberAttribute.Arguments.Add(new CodeAttributeArgument(Globals.OrderProperty, new CodePrimitiveExpression(dataMember.Order)));
                     property.CustomAttributes.Add(dataMemberAttribute);
-
-// Not needed in dotnet-svcutil scenario. OptionalFieldAttribute not available in DNX
-//                     if (GenerateSerializableTypes && !dataMember.IsRequired) {
-//                         CodeAttributeDeclaration optionalFieldAttribute = new CodeAttributeDeclaration(DataContract.GetClrTypeFullName(Globals.TypeOfOptionalFieldAttribute));
-//                         field.CustomAttributes.Add(optionalFieldAttribute);
-//                     }
 
                     type.Members.Add(field);
                     type.Members.Add(property);
@@ -886,11 +870,6 @@ namespace System.Runtime.Serialization {
                 CodeTypeDeclaration type = contractCodeDomInfo.TypeDeclaration;
                 type.BaseTypes.Add(DataContract.GetClrTypeFullName(Globals.TypeOfIExtensibleDataObject));
                 CodeMemberField extensionDataObjectField = ExtensionDataObjectField;
-// Not needed in dotnet-svcutil scenario. 
-//                 if (GenerateSerializableTypes) {
-//                     CodeAttributeDeclaration nonSerializedAttribute = new CodeAttributeDeclaration(DataContract.GetClrTypeFullName(Globals.TypeOfNonSerializedAttribute));
-//                     extensionDataObjectField.CustomAttributes.Add(nonSerializedAttribute);
-//                 }
 
                 type.Members.Add(extensionDataObjectField);
                 contractCodeDomInfo.GetMemberNames().Add(extensionDataObjectField.Name, null);
@@ -959,54 +938,6 @@ namespace System.Runtime.Serialization {
                 }
             }
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         void ExportISerializableDataContract(ClassDataContract dataContract, ContractCodeDomInfo contractCodeDomInfo) {
-//             GenerateType(dataContract, contractCodeDomInfo);
-//             if (contractCodeDomInfo.ReferencedTypeExists)
-//                 return;
-// 
-//             if (DataContract.GetDefaultStableNamespace(contractCodeDomInfo.ClrNamespace) != dataContract.StableName.Namespace)
-//                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SR.Format(SR.InvalidClrNamespaceGeneratedForISerializable, dataContract.StableName.Name, dataContract.StableName.Namespace, DataContract.GetDataContractNamespaceFromUri(dataContract.StableName.Namespace), contractCodeDomInfo.ClrNamespace)));
-//             string dataContractName = GetNameForAttribute(dataContract.StableName.Name);
-//             int nestedTypeIndex = dataContractName.LastIndexOf('.');
-//             string expectedName = (nestedTypeIndex <= 0 || nestedTypeIndex == dataContractName.Length - 1) ? dataContractName : dataContractName.Substring(nestedTypeIndex + 1);
-//             if (contractCodeDomInfo.TypeDeclaration.Name != expectedName)
-//                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SR.Format(SR.InvalidClrNameGeneratedForISerializable, dataContract.StableName.Name, dataContract.StableName.Namespace, contractCodeDomInfo.TypeDeclaration.Name)));
-// 
-//             CodeTypeDeclaration type = contractCodeDomInfo.TypeDeclaration;
-//             if (SupportsPartialTypes)
-//                 type.IsPartial = true;
-//             if (dataContract.IsValueType && SupportsDeclareValueTypes)
-//                 type.IsStruct = true;
-//             else
-//                 type.IsClass = true;
-// 
-//             AddSerializableAttribute(true /*generateSerializable*/, type, contractCodeDomInfo);
-// 
-//             AddKnownTypes(dataContract, contractCodeDomInfo);
-// 
-//             if (dataContract.BaseContract == null) {
-//                 if (!type.IsStruct)
-//                     type.BaseTypes.Add(Globals.TypeOfObject);
-//                 type.BaseTypes.Add(DataContract.GetClrTypeFullName(Globals.TypeOfISerializable));
-//                 type.Members.Add(ISerializableBaseConstructor);
-//                 type.Members.Add(SerializationInfoField);
-//                 type.Members.Add(SerializationInfoProperty);
-//                 type.Members.Add(GetObjectDataMethod);
-//                 AddPropertyChangedNotifier(contractCodeDomInfo, type.IsStruct);
-//             } else {
-//                 ContractCodeDomInfo baseContractCodeDomInfo = GetContractCodeDomInfo(dataContract.BaseContract);
-//                 GenerateType(dataContract.BaseContract, baseContractCodeDomInfo);
-//                 type.BaseTypes.Add(baseContractCodeDomInfo.TypeReference);
-//                 if (baseContractCodeDomInfo.ReferencedTypeExists) {
-//                     Type actualType = (Type)baseContractCodeDomInfo.TypeReference.UserData[codeUserDataActualTypeKey];
-//                     ThrowIfReferencedBaseTypeSealed(actualType, dataContract);
-//                 }
-//                 type.Members.Add(ISerializableDerivedConstructor);
-//             }
-//         }
-
 
         void GenerateKeyValueType(ClassDataContract keyValueContract) {
             // Add code for KeyValue item type in the case where its usage is limited to dictionary 
@@ -1399,20 +1330,6 @@ namespace System.Runtime.Serialization {
         CodePrimitiveExpression NullReference {
             get { return new CodePrimitiveExpression(null); }
         }
-
-// Not needed in dotnet-svcutil scenario. Not in DNX
-//         CodeParameterDeclarationExpression SerializationInfoParameter {
-//             get { return new CodeParameterDeclarationExpression(GetCodeTypeReference(Globals.TypeOfSerializationInfo), Globals.SerializationInfoFieldName); }
-//         }
-//         CodeParameterDeclarationExpression StreamingContextParameter {
-//             get { return new CodeParameterDeclarationExpression(GetCodeTypeReference(Globals.TypeOfStreamingContext), Globals.ContextFieldName); }
-//         }
-// 
-//         CodeAttributeDeclaration SerializableAttribute {
-//             get { return new CodeAttributeDeclaration(GetCodeTypeReference(Globals.TypeOfSerializableAttribute)); }
-//         }
-
-
         CodeMemberProperty NodeArrayProperty {
             get {
                 return CreateProperty(GetCodeTypeReference(Globals.TypeOfXmlNodeArray), Globals.NodeArrayPropertyName, Globals.NodeArrayFieldName, false/*isValueType*/);
@@ -1504,115 +1421,6 @@ namespace System.Runtime.Serialization {
                 return getSchemaStaticMethod;
             }
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         CodeConstructor ISerializableBaseConstructor {
-//             get {
-//                 CodeConstructor baseConstructor = new CodeConstructor();
-//                 baseConstructor.Attributes = MemberAttributes.Public;
-//                 baseConstructor.Parameters.Add(SerializationInfoParameter);
-//                 baseConstructor.Parameters.Add(StreamingContextParameter);
-//                 CodeAssignStatement setObjectData = new CodeAssignStatement();
-//                 setObjectData.Left = new CodePropertyReferenceExpression(ThisReference, Globals.SerializationInfoFieldName);
-//                 setObjectData.Right = new CodeArgumentReferenceExpression(Globals.SerializationInfoFieldName);
-//                 baseConstructor.Statements.Add(setObjectData);
-//                 // Special-cased check for vb here since CodeGeneratorOptions does not provide information indicating that VB cannot initialize event member
-//                 if (EnableDataBinding && SupportsDeclareEvents && String.CompareOrdinal(FileExtension, "vb") != 0) {
-//                     baseConstructor.Statements.Add(new CodeAssignStatement(new CodePropertyReferenceExpression(ThisReference, PropertyChangedEvent.Name), NullReference));
-//                 }
-//                 return baseConstructor;
-//             }
-//         }
-// 
-//         CodeConstructor ISerializableDerivedConstructor {
-//             get {
-//                 CodeConstructor derivedConstructor = new CodeConstructor();
-//                 derivedConstructor.Attributes = MemberAttributes.Public;
-//                 derivedConstructor.Parameters.Add(SerializationInfoParameter);
-//                 derivedConstructor.Parameters.Add(StreamingContextParameter);
-//                 derivedConstructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(Globals.SerializationInfoFieldName));
-//                 derivedConstructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(Globals.ContextFieldName));
-//                 return derivedConstructor;
-//             }
-//         }
-// 
-//         CodeMemberField SerializationInfoField {
-//             get {
-//                 CodeMemberField serializationInfoField = new CodeMemberField();
-//                 serializationInfoField.Type = GetCodeTypeReference(Globals.TypeOfSerializationInfo);
-//                 serializationInfoField.Name = Globals.SerializationInfoFieldName;
-//                 serializationInfoField.Attributes = MemberAttributes.Private;
-//                 return serializationInfoField;
-//             }
-//         }
-// 
-//         CodeMemberProperty SerializationInfoProperty {
-//             get {
-//                 return CreateProperty(GetCodeTypeReference(Globals.TypeOfSerializationInfo), Globals.SerializationInfoPropertyName, Globals.SerializationInfoFieldName, false/*isValueType*/);
-//             }
-//         }
-// 
-//         CodeMemberMethod GetObjectDataMethod {
-//             get {
-//                 CodeMemberMethod getObjectDataMethod = new CodeMemberMethod();
-//                 getObjectDataMethod.Name = Globals.GetObjectDataMethodName;
-//                 getObjectDataMethod.Parameters.Add(SerializationInfoParameter);
-//                 getObjectDataMethod.Parameters.Add(StreamingContextParameter);
-//                 getObjectDataMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-//                 getObjectDataMethod.ImplementationTypes.Add(Globals.TypeOfISerializable);
-// 
-//                 // Generates: if (this.SerializationInfo == null) return;
-//                 CodeConditionStatement returnIfNull = new CodeConditionStatement();
-//                 returnIfNull.Condition = new CodeBinaryOperatorExpression(
-//                     new CodePropertyReferenceExpression(ThisReference, Globals.SerializationInfoPropertyName),
-//                     CodeBinaryOperatorType.IdentityEquality,
-//                     NullReference);
-//                 returnIfNull.TrueStatements.Add(new CodeMethodReturnStatement());
-//                 // Generates: SerializationInfoEnumerator enumerator = this.SerializationInfo.GetEnumerator();
-//                 CodeVariableDeclarationStatement getEnumerator = new CodeVariableDeclarationStatement();
-//                 getEnumerator.Type = GetCodeTypeReference(Globals.TypeOfSerializationInfoEnumerator);
-//                 getEnumerator.Name = Globals.EnumeratorFieldName;
-//                 getEnumerator.InitExpression = new CodeMethodInvokeExpression(
-//                     new CodePropertyReferenceExpression(ThisReference, Globals.SerializationInfoPropertyName),
-//                     Globals.GetEnumeratorMethodName);
-// 
-//                 //Generates: SerializationEntry entry = enumerator.Current;
-//                 CodeVariableDeclarationStatement getCurrent = new CodeVariableDeclarationStatement();
-//                 getCurrent.Type = GetCodeTypeReference(Globals.TypeOfSerializationEntry);
-//                 getCurrent.Name = Globals.SerializationEntryFieldName;
-//                 getCurrent.InitExpression = new CodePropertyReferenceExpression(
-//                     new CodeVariableReferenceExpression(Globals.EnumeratorFieldName),
-//                     Globals.CurrentPropertyName);
-//                 //Generates: info.AddValue(entry.Name, entry.Value);
-//                 CodeExpressionStatement addValue = new CodeExpressionStatement();
-//                 CodePropertyReferenceExpression getCurrentName = new CodePropertyReferenceExpression(
-//                     new CodeVariableReferenceExpression(Globals.SerializationEntryFieldName),
-//                     Globals.NameProperty);
-//                 CodePropertyReferenceExpression getCurrentValue = new CodePropertyReferenceExpression(
-//                     new CodeVariableReferenceExpression(Globals.SerializationEntryFieldName),
-//                     Globals.ValueProperty);
-//                 addValue.Expression = new CodeMethodInvokeExpression(
-//                     new CodeArgumentReferenceExpression(Globals.SerializationInfoFieldName),
-//                     Globals.AddValueMethodName,
-//                     new CodeExpression[] { getCurrentName, getCurrentValue });
-// 
-//                 //Generates: for (; enumerator.MoveNext(); )
-//                 CodeIterationStatement loop = new CodeIterationStatement();
-//                 loop.TestExpression = new CodeMethodInvokeExpression(
-//                     new CodeVariableReferenceExpression(Globals.EnumeratorFieldName),
-//                     Globals.MoveNextMethodName);
-//                 loop.InitStatement = loop.IncrementStatement = new CodeSnippetStatement(String.Empty);
-//                 loop.Statements.Add(getCurrent);
-//                 loop.Statements.Add(addValue);
-// 
-//                 getObjectDataMethod.Statements.Add(returnIfNull);
-//                 getObjectDataMethod.Statements.Add(getEnumerator);
-//                 getObjectDataMethod.Statements.Add(loop);
-// 
-//                 return getObjectDataMethod;
-//             }
-//         }
-
 
         CodeMemberField ExtensionDataObjectField {
             get {

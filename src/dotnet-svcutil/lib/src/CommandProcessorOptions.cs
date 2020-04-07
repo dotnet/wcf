@@ -69,9 +69,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             public readonly CommandSwitch ExcludeType = new CommandSwitch(ExcludeTypesKey, "et", SwitchType.ValueList);
             public readonly CommandSwitch Help = new CommandSwitch(HelpKey, "h", SwitchType.Flag);
             public readonly CommandSwitch Internal = new CommandSwitch(InternalTypeAccessKey, "i", SwitchType.Flag);
-#if VB_SUPPORT
-            public readonly CommandSwitch Language = new CommandSwitch("language", "l", SwitchType.SingletonValue);
-#endif
             public readonly CommandSwitch MessageContract = new CommandSwitch(MessageContractKey, "mc", SwitchType.Flag);
             public readonly CommandSwitch Namespace = new CommandSwitch(NamespaceMappingsKey, "n", SwitchType.ValueList);
             public readonly CommandSwitch NoBootstraping = new CommandSwitch(NoBootstrappingKey, "nb", SwitchType.Flag, OperationalContext.Infrastructure);
@@ -732,12 +729,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             if (this.CodeProvider == null)
             {
-#if VB_SUPPORT
-            if (options.Language != null)
-            {
-                this.CodeProvider = CreateLanguageProvider(this.Language);
-            }
-#endif
                 this.CodeProvider = CodeDomProvider.CreateProvider("csharp");
             }
         }
@@ -953,50 +944,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-#if VB_SUPPORT
-        private static CodeDomProvider CreateLanguageProvider(string language)
-        {
-            if (CodeDomProvider.IsDefinedLanguage(language))
-            {
-                try
-                {
-                    return CodeDomProvider.CreateProvider(language);
-                }
-                catch (Exception e)
-                {
-                    if (Utils.IsFatalOrUnexpected(ex)) throw;
-                    throw new ToolArgumentException(SR.GetString(SR.ErrCouldNotCreateCodeProvider, language, Options.Switches.Language), e);
-                }
-            }
-            else
-            {
-                return CreateCustomLanguageProvider(language);
-            }
-        }
-
-        private static CodeDomProvider CreateCustomLanguageProvider(string language)
-        {
-            //try to reflect a custom code generator
-            //ignore case when reflecting; language argument must specify the namespace
-            Type t = Type.GetType(language, false, true);
-
-            if (t == null)
-                throw new ToolOptionException(SR.GetString(SR.ErrNotLanguageOrCodeDomTypeFormat, language, Options.Switches.Language));
-
-            if (!t.IsSubclassOf(typeof(CodeDomProvider)))
-                throw new ToolOptionException(SR.GetString(SR.ErrNotCodeDomType, language, Options.Switches.Language, typeof(CodeDomProvider).FullName));
-
-            try
-            {
-                return Activator.CreateInstance(t) as CodeDomProvider;
-            }
-            catch (Exception e)
-            {
-                if (Utils.IsFatalOrUnexpected(ex)) throw;
-                throw new ToolOptionException(SR.GetString(SR.ErrCouldNotCreateInstance, language, Options.Switches.Language), e);
-            }
-        }
-#endif
         private static void ProcessToolArg(Action action)
         {
             try

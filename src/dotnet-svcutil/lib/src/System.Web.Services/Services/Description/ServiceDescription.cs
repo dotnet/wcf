@@ -372,9 +372,6 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public static ServiceDescription Read(string fileName, bool validate)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             StreamReader reader = new StreamReader(fileName, Encoding.Default, true);
-
             StreamReader reader = new StreamReader(File.OpenRead(fileName), detectEncodingFromByteOrderMarks: true);
             try
             {
@@ -3181,9 +3178,6 @@ namespace System.Web.Services.Description
                 }
                 catch (Exception e)
                 {
-// Not needed in dotnet-svcutil scenario. 
-//                     if (e is ThreadAbortException || e is StackOverflowException || e is OutOfMemoryException)
-
                     if (e is OutOfMemoryException)
                     {
                         throw;

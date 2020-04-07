@@ -14,18 +14,6 @@ namespace Microsoft.Xml.Schema {
     // [Serializable],
     public class XmlSchemaInferenceException : XmlSchemaException 
     {
-
-// Not needed in dotnet-svcutil scenario. 
-//         protected XmlSchemaInferenceException(SerializationInfo info, StreamingContext context) : base(info, context){} 
-//   
-// 
-//         // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
-//         public override void GetObjectData(SerializationInfo info, StreamingContext context) 
-//         {
-//             base.GetObjectData(info, context);
-// 
-//         }
-
         public XmlSchemaInferenceException() : base(null) 
         {
         }

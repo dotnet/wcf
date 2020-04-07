@@ -181,15 +181,6 @@ namespace System.ServiceModel
             this.HostNameComparisonMode = transport.HostNameComparisonMode;
             this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
             this.MaxBufferSize = transport.MaxBufferSize;
-// Not needed in dotnet-svcutil scenario. 
-//             if (transport.IsMaxPendingConnectionsSet)
-//             {
-//                 this.MaxConnections = transport.MaxPendingConnections;
-//             }
-//             if (transport.IsListenBacklogSet)
-//             {
-//                 this.ListenBacklog = transport.ListenBacklog;
-//             }
 
             this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
             this.PortSharingEnabled = transport.PortSharingEnabled;

@@ -45,9 +45,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 },
 
                 Options = new ArgumentInfo[] {
-#if VB_SUPPORT
-                    ArgumentInfo.CreateParameterHelpInfo(Options.Switches.Language.Name,                          SR.ParametersLanguage,                           SR.GetString(SR.HelpLanguage, Options.Switches.Language.Abbreviation), true);
-#endif
                     ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.OutputDirectory.Name,   SR.ParametersDirectory,                           SR.GetString(SR.HelpDirectoryFormat, CommandProcessorOptions.Switches.OutputDirectory.Abbreviation)),
                     ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoLogo.Name,                                                              SR.GetString(SR.HelpNologoFormat, CommandProcessorOptions.Switches.NoLogo.Abbreviation)),
                     ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Verbosity.Name,         SR.ParametersVerbosity,                           SR.GetString(SR.HelpVerbosityFormat, string.Join(", ", System.Enum.GetNames(typeof(Verbosity))), CommandProcessorOptions.Switches.Verbosity.Abbreviation)),
@@ -83,9 +80,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             helpCategory.WriteHelp();
 
             WriteExample(SR.GetString(SR.HelpExamples2), SR.GetString(SR.HelpExamples3));
-#if VB_SUPPORT // language
-                WriteExample(SR.GetString(SR.HelpExamples6), SR.GetString(SR.HelpExamples7));
-#endif
             WriteExample(SR.GetString(SR.HelpExamples8), SR.GetString(SR.HelpExamples9));
         }
 

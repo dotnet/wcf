@@ -136,11 +136,7 @@ namespace System.ServiceModel
                 }
                 else if (reader.IsStartElement(XD.XmlSignatureDictionary.RsaKeyValue, XD.XmlSignatureDictionary.Namespace))
                 {
-// Not needed in dotnet-svcutil scenario. 
-//                     readIdentity = new RsaEndpointIdentity(reader);
-
                     throw new NotImplementedException();
-
                 }
                 else
                 {

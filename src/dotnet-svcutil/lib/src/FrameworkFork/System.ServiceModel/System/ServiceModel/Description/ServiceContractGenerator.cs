@@ -55,9 +55,6 @@ namespace System.ServiceModel.Description
 
         internal void AddReferencedAssembly(Assembly assembly)
         {
-// Not needed in dotnet-svcutil scenario. We have to handle referenced assemblies differently.
-//             string assemblyName = System.IO.Path.GetFileName(assembly.Location);
-
             string assemblyName = assembly.GetName().Name;
             bool alreadyExisting = false;
             foreach (string existingName in this.compileUnit.ReferencedAssemblies)

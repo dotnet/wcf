@@ -107,36 +107,6 @@ namespace System.ServiceModel.Security
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
                 SecurityTokenReferenceStyle tokenReferenceStyle)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 TokenReferenceStyleHelper.Validate(tokenReferenceStyle);
-// 
-//                 switch (tokenReferenceStyle)
-//                 {
-//                     case SecurityTokenReferenceStyle.Internal:
-//                         return CreateDirectReference(issuedTokenXml, UtilityStrings.IdAttribute, UtilityStrings.Namespace, this.TokenType);
-//                     case SecurityTokenReferenceStyle.External:
-//                         string encoding = issuedTokenXml.GetAttribute(EncodingTypeAttributeString, null);
-//                         string encodedData = issuedTokenXml.InnerText;
-// 
-//                         byte[] binaryData;
-//                         if (encoding == null || encoding == EncodingTypeValueBase64Binary)
-//                         {
-//                             binaryData = Convert.FromBase64String(encodedData);
-//                         }
-//                         else if (encoding == EncodingTypeValueHexBinary)
-//                         {
-//                             binaryData = HexBinary.Parse(encodedData).Value;
-//                         }
-//                         else
-//                         {
-//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.UnknownEncodingInBinarySecurityToken)));
-//                         }
-// 
-//                         return CreateKeyIdentifierClauseFromBinaryCore(binaryData);
-//                     default:
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenReferenceStyle"));
-//                 }
-
                 throw new NotImplementedException();
             }
 
@@ -144,27 +114,6 @@ namespace System.ServiceModel.Security
 
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 string wsuId = reader.GetAttribute(XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace);
-//                 string valueTypeUri = reader.GetAttribute(ValueTypeAttribute, null);
-//                 string encoding = reader.GetAttribute(EncodingTypeAttribute, null);
-// 
-//                 byte[] binaryData;
-//                 if (encoding == null || encoding == EncodingTypeValueBase64Binary)
-//                 {
-//                     binaryData = reader.ReadElementContentAsBase64();
-//                 }
-//                 else if (encoding == EncodingTypeValueHexBinary)
-//                 {
-//                     binaryData = HexBinary.Parse(reader.ReadElementContentAsString()).Value;
-//                 }
-//                 else
-//                 {
-//                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.UnknownEncodingInBinarySecurityToken)));
-//                 }
-// 
-//                 return ReadBinaryCore(wsuId, valueTypeUri, binaryData);
-
                 throw new NotImplementedException();
             }
 
@@ -236,21 +185,6 @@ namespace System.ServiceModel.Security
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 BufferedGenericXmlSecurityToken bufferedXmlToken = token as BufferedGenericXmlSecurityToken;
-//                 if (bufferedXmlToken != null && bufferedXmlToken.TokenXmlBuffer != null)
-//                 {
-//                     using (XmlDictionaryReader reader = bufferedXmlToken.TokenXmlBuffer.GetReader(0))
-//                     {
-//                         writer.WriteNode(reader, false);
-//                     }
-//                 }
-//                 else
-//                 {
-//                     GenericXmlSecurityToken xmlToken = (GenericXmlSecurityToken)token;
-//                     xmlToken.TokenXml.WriteTo(writer);
-//                 }
-
                 throw new NotImplementedException();
             }
         }
@@ -264,40 +198,21 @@ namespace System.ServiceModel.Security
 
             protected override Type[] GetTokenTypesCore()
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return new Type[] { typeof(KerberosReceiverSecurityToken), typeof(KerberosRequestorSecurityToken) };
-
                 throw new NotImplementedException();
             }
 
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromBinaryCore(byte[] rawData)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 byte[] tokenHash;
-//                 using (HashAlgorithm hasher = CryptoHelper.NewSha1HashAlgorithm())
-//                 {
-//                     tokenHash = hasher.ComputeHash(rawData, 0, rawData.Length);
-//                 }
-//                 return new KerberosTicketHashKeyIdentifierClause(tokenHash);
-
                 throw new NotImplementedException();
             }
 
             public override SecurityToken ReadBinaryCore(string id, string valueTypeUri, byte[] rawData)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return new KerberosReceiverSecurityToken(rawData, id, false, valueTypeUri);
-
                 throw new NotImplementedException();
             }
 
             public override void WriteBinaryCore(SecurityToken token, out string id, out byte[] rawData)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 KerberosRequestorSecurityToken kerbToken = (KerberosRequestorSecurityToken)token;
-//                 id = token.Id;
-//                 rawData = kerbToken.GetRequest();
-
                 throw new NotImplementedException();
             }
         }
@@ -325,9 +240,6 @@ namespace System.ServiceModel.Security
             protected override XmlDictionaryString NamespaceUri { get { return XD.SecurityJan2004Dictionary.SamlUri; } }
             protected override Type[] GetTokenTypesCore()
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 return new Type[] { typeof(SamlSecurityToken) };
-
                 throw new NotImplementedException();
             }
             public override string TokenTypeUri { get { return null; } }
@@ -336,38 +248,16 @@ namespace System.ServiceModel.Security
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
                 SecurityTokenReferenceStyle tokenReferenceStyle)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 TokenReferenceStyleHelper.Validate(tokenReferenceStyle);
-// 
-//                 switch (tokenReferenceStyle)
-//                 {
-//                     // SAML uses same reference for internal and external
-//                     case SecurityTokenReferenceStyle.Internal:
-//                     case SecurityTokenReferenceStyle.External:
-//                         string assertionId = issuedTokenXml.GetAttribute(samlAssertionId);
-//                         return new SamlAssertionKeyIdentifierClause(assertionId);
-//                     default:
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenReferenceStyle"));
-//                 }
-
                 throw new NotImplementedException();
             }
 
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 SamlSecurityToken samlToken = this.samlSerializer.ReadToken(reader, this.tokenSerializer, tokenResolver);
-//                 return samlToken;
-
                 throw new NotImplementedException();
             }
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 SamlSecurityToken samlToken = token as SamlSecurityToken;
-//                 this.samlSerializer.WriteToken(samlToken, writer, this.tokenSerializer);
-
                 throw new NotImplementedException();
             }
         }
@@ -565,80 +455,11 @@ namespace System.ServiceModel.Security
             WrappedKeySecurityToken CreateWrappedKeyToken(string id, string encryptionMethod, string carriedKeyName,
                 SecurityKeyIdentifier unwrappingTokenIdentifier, byte[] wrappedKey, SecurityTokenResolver tokenResolver)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 ISspiNegotiationInfo sspiResolver = tokenResolver as ISspiNegotiationInfo;
-//                 if (sspiResolver != null)
-//                 {
-//                     ISspiNegotiation unwrappingSspiContext = sspiResolver.SspiNegotiation;
-//                     // ensure that the encryption algorithm is compatible
-//                     if (encryptionMethod != unwrappingSspiContext.KeyEncryptionAlgorithm)
-//                     {
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.BadKeyEncryptionAlgorithm, encryptionMethod)));
-//                     }
-//                     byte[] unwrappedKey = unwrappingSspiContext.Decrypt(wrappedKey);
-//                     return new WrappedKeySecurityToken(id, unwrappedKey, encryptionMethod, unwrappingSspiContext, unwrappedKey);
-//                 }
-//                 else
-//                 {
-//                     if (tokenResolver == null)
-//                     {
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("tokenResolver"));
-//                     }
-//                     if (unwrappingTokenIdentifier == null || unwrappingTokenIdentifier.Count == 0)
-//                     {
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SR.Format(SR.MissingKeyInfoInEncryptedKey)));
-//                     }
-// 
-//                     SecurityToken unwrappingToken;
-//                     SecurityHeaderTokenResolver resolver = tokenResolver as SecurityHeaderTokenResolver;
-//                     if (resolver != null)
-//                     {
-//                         unwrappingToken = resolver.ExpectedWrapper;
-//                         if (unwrappingToken != null)
-//                         {
-//                             if (!resolver.CheckExternalWrapperMatch(unwrappingTokenIdentifier))
-//                             {
-//                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(
-//                                     SR.Format(SR.EncryptedKeyWasNotEncryptedWithTheRequiredEncryptingToken, unwrappingToken)));
-//                             }
-//                         }
-//                         else
-//                         {
-//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(
-//                                 SR.Format(SR.UnableToResolveKeyInfoForUnwrappingToken, unwrappingTokenIdentifier, resolver)));
-//                         }
-//                     }
-//                     else
-//                     {
-//                         try
-//                         {
-//                             unwrappingToken = tokenResolver.ResolveToken(unwrappingTokenIdentifier);
-//                         }
-//                         catch (Exception exception)
-//                         {
-//                             if (exception is MessageSecurityException)
-//                                 throw;
-// 
-//                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(
-//                                 SR.Format(SR.UnableToResolveKeyInfoForUnwrappingToken, unwrappingTokenIdentifier, tokenResolver), exception));
-//                         }
-//                     }
-//                     SecurityKey unwrappingSecurityKey;
-//                     byte[] unwrappedKey = SecurityUtils.DecryptKey(unwrappingToken, encryptionMethod, wrappedKey, out unwrappingSecurityKey);
-//                     return new WrappedKeySecurityToken(id, unwrappedKey, encryptionMethod, unwrappingToken, unwrappingTokenIdentifier, wrappedKey, unwrappingSecurityKey);
-//                 }
-
                 throw new NotImplementedException();
             }
 
             public override void WriteTokenCore(XmlDictionaryWriter writer, SecurityToken token)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 WrappedKeySecurityToken wrappedKeyToken = token as WrappedKeySecurityToken;
-//                 wrappedKeyToken.EnsureEncryptedKeySetUp();
-//                 wrappedKeyToken.EncryptedKey.SecurityTokenSerializer = this.tokenSerializer;
-//                 wrappedKeyToken.EncryptedKey.WriteTo(writer, ServiceModelDictionaryManager.Instance);
-
                 throw new NotImplementedException();
             }
         }
@@ -671,18 +492,6 @@ namespace System.ServiceModel.Security
 
             public override void WriteBinaryCore(SecurityToken token, out string id, out byte[] rawData)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 id = token.Id;
-//                 X509SecurityToken x509Token = token as X509SecurityToken;
-//                 if (x509Token != null)
-//                 {
-//                     rawData = x509Token.Certificate.GetRawCertData();
-//                 }
-//                 else
-//                 {
-//                     rawData = ((X509WindowsSecurityToken)token).Certificate.GetRawCertData();
-//                 }
-
                 throw new NotImplementedException();
             }
         }

@@ -1690,11 +1690,6 @@ namespace Microsoft.Xml {
                 reader = settings.AddValidation( reader );
             }
 
-// Not needed in dotnet-svcutil scenario. 
-//             if (settings.Async) {
-//                 reader = XmlAsyncCheckReader.CreateAsyncCheckWrapper(reader);
-//             }
-
             return reader;
         }
 #endif

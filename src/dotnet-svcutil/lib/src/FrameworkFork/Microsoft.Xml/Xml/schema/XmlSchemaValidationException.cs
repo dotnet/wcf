@@ -16,17 +16,6 @@ namespace Microsoft.Xml.Schema {
         
         private Object sourceNodeObject;
 
-// Not needed in dotnet-svcutil scenario. 
-//         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException5"]/*' />
-//         protected XmlSchemaValidationException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-//             
-// 
-//         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.GetObjectData"]/*' />
-//         // [SecurityPermission(SecurityAction.LinkDemand,SerializationFormatter=true)]
-//         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-//             base.GetObjectData(info, context);
-//         }
-
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException1"]/*' />
         public XmlSchemaValidationException() : base(null) {
         }

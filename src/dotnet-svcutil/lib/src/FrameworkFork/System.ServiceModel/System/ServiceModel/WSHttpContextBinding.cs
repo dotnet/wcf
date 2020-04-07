@@ -32,12 +32,6 @@ namespace System.ServiceModel
 
         WSHttpContextBinding(WSHttpBinding wsHttpBinding)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             WSHttpContextBindingPropertyTransferHelper helper = new WSHttpContextBindingPropertyTransferHelper();
-//             helper.InitializeFrom(wsHttpBinding);
-//             helper.SetBindingElementType(typeof(WSHttpContextBinding));
-//             helper.ApplyConfiguration(this);
-
             this.CloseTimeout = wsHttpBinding.CloseTimeout;
             this.OpenTimeout = wsHttpBinding.OpenTimeout;
             this.ReceiveTimeout = wsHttpBinding.ReceiveTimeout;
@@ -142,30 +136,5 @@ namespace System.ServiceModel
 
             return binding != null;
         }
-// Not needed in dotnet-svcutil scenario. Config not available on DNX
-//         void ApplyConfiguration(string configurationName)
-//         {
-//             WSHttpContextBindingCollectionElement section = WSHttpContextBindingCollectionElement.GetBindingCollectionElement();
-//             WSHttpContextBindingElement element = section.Bindings[configurationName];
-//             element.ApplyConfiguration(this);
-//         }
-//         class WSHttpContextBindingPropertyTransferHelper : WSHttpBindingElement
-//         {
-//             Type bindingElementType = typeof(WSHttpBinding);
-// 
-//             protected override Type BindingElementType
-//             {
-//                 get
-//                 {
-//                     return this.bindingElementType;
-//                 }
-//             }
-// 
-//             public void SetBindingElementType(Type bindingElementType)
-//             {
-//                 this.bindingElementType = bindingElementType;
-//             }
-//         }
-
     }
 }

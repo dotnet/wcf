@@ -105,42 +105,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-#if VB_SUPPORT
-        static readonly List<string> existingFileNames = new List<string>();
-
-        internal static string UniquifyFileName(string filename, string extension)
-        {
-            string fileNameWithExtension = GetFilepathWithExtension(filename, extension);
-            if(!UniquifyFileName_NameExists(fileNameWithExtension))
-            {
-                existingFileNames.Add(fileNameWithExtension);
-                return filename;
-            }
-
-            for(uint i = 1; i < uint.MaxValue; i++)
-            {
-                string uniqueFileName = filename + i.ToString(NumberFormatInfo.InvariantInfo);
-                string uniqueFileNameWithExtension = GetFilepathWithExtension(uniqueFileName, extension);
-                if(!UniquifyFileName_NameExists(uniqueFileNameWithExtension))
-                {
-                    existingFileNames.Add(uniqueFileNameWithExtension);
-                    return uniqueFileName;
-                }
-            }
-            throw new ToolRuntimeException(SR.GetString(SR.ErrUnableToUniquifyFilename, fileNameWithExtension), null);
-
-        }
-
-        static bool UniquifyFileName_NameExists(string fileName)
-        {
-            for (int i = 0; i < existingFileNames.Count; i++)
-            {
-                if (String.Compare(fileName, existingFileNames[i], StringComparison.OrdinalIgnoreCase) == 0)
-                    return true;
-            }
-            return false;
-        }
-#endif
         internal static string FilenameFromUri(string ns)
         {
             StringBuilder fileNameBuilder = new StringBuilder();

@@ -80,12 +80,6 @@ namespace Microsoft.CodeDom.Compiler {
         private static CodeDomCompilationConfiguration Config {
             get {
                 CodeDomCompilationConfiguration _configuration = new CodeDomCompilationConfiguration();
-// Not needed in dotnet-svcutil scenario. 
-//                 CodeDomCompilationConfiguration _configuration= (CodeDomCompilationConfiguration)PrivilegedConfigurationManager.GetSection(CodeDomCompilationConfiguration.sectionName);
-//                 if (_configuration == null) {
-//                     return CodeDomCompilationConfiguration.Default;
-//                 }
-
                 return _configuration;
             }
         }

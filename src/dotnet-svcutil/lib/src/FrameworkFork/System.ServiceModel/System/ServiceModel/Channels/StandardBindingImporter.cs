@@ -37,11 +37,6 @@ namespace System.ServiceModel.Channels
                     {
                         SetBinding(endpointContext.Endpoint, binding);
                     }
-// Not needed in dotnet-svcutil scenario. No support for WSDualHttpBinding
-//                     else if (WSDualHttpBinding.TryCreate(elements, out binding))
-//                     {
-//                         SetBinding(endpointContext.Endpoint, binding);
-//                     }
 
                     else if (BasicHttpBinding.TryCreate(elements, out binding))
                     {
@@ -52,22 +47,6 @@ namespace System.ServiceModel.Channels
                         SetBinding(endpointContext.Endpoint, binding);
                     }
                 }
-// Not needed in dotnet-svcutil scenario. No support for these bindings.
-//                 else if (transport is MsmqTransportBindingElement && NetMsmqBinding.TryCreate(elements, out binding))
-//                 {
-//                     SetBinding(endpointContext.Endpoint, binding);
-//                 }
-//                 else if (transport is NamedPipeTransportBindingElement && NetNamedPipeBinding.TryCreate(elements, out binding))
-//                 {
-//                     SetBinding(endpointContext.Endpoint, binding);
-//                 }
-// #pragma warning disable 0618
-//                 else if (transport is PeerTransportBindingElement && NetPeerTcpBinding.TryCreate(elements, out binding))
-//                 {
-//                     SetBinding(endpointContext.Endpoint, binding);
-//                 }
-// #pragma warning restore 0618
-
                 else if (transport is TcpTransportBindingElement && NetTcpBinding.TryCreate(elements, out binding))
                 {
                     SetBinding(endpointContext.Endpoint, binding);

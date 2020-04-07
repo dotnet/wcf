@@ -100,9 +100,6 @@ namespace System.ServiceModel.Security
 
         protected override void ReadCipherData(XmlDictionaryReader reader, long maxBufferSize)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             this.wrappedKey = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
-
             throw new NotImplementedException();
         }
 

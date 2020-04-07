@@ -441,30 +441,11 @@ namespace System.ServiceModel.Description
 
         static void TraceSendRequest(int traceCode, string traceDescription, string address, string mode)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticUtility.ShouldTraceInformation)
-//             {
-//                 Hashtable h = new Hashtable(2)
-//                 {
-//                     { "Address", address },
-//                     { "Mode", mode }
-//                 };
-//                 TraceUtility.TraceEvent(TraceEventType.Information, traceCode, traceDescription, new DictionaryTraceRecord(h), null, null);
-//             }
 
         }
 
         internal static void TraceReceiveReply(string sourceUrl, Type metadataType)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticUtility.ShouldTraceInformation)
-//             {
-//                 Hashtable h = new Hashtable(2);
-//                 h.Add("SourceUrl", sourceUrl);
-//                 h.Add("MetadataType", metadataType.ToString());
-//                 TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.MetadataExchangeClientReceiveReply, SR.TraceCodeMetadataExchangeClientReceiveReply,
-//                     new DictionaryTraceRecord(h), null, null);
-//             }
 
         }
 
@@ -644,9 +625,6 @@ namespace System.ServiceModel.Description
             {
                 try
                 {
-// Not needed in dotnet-svcutil scenario. 
-//                     using (XmlReader reader = this.DownloadMetadata(timeoutHelper))
-
                     XmlReader reader = this.DownloadMetadata(timeoutHelper);
                     {
                         return MetadataRetriever.CreateMetadataSection(reader, this.SourceUrl);
@@ -784,10 +762,6 @@ namespace System.ServiceModel.Description
                 }
 
                 TraceSendRequest(this.location);
-// Not needed in dotnet-svcutil scenario. 
-//                 request.Timeout = TimeoutHelper.ToMilliseconds(timeoutHelper.RemainingTime());
-//                 response = (HttpWebResponse)request.GetResponse();
-//                 responseLocation = request.Address;
 
                 Task<WebResponse> task = request.GetResponseAsync();
                 task.Wait();
@@ -881,19 +855,6 @@ namespace System.ServiceModel.Description
                     this.maxMessageSize = maxMessageSize;
                     this.readerQuotas = readerQuotas;
                     IAsyncResult result = request.BeginGetResponse(Fx.ThunkCallback(new AsyncCallback(this.GetResponseCallback)), request);
-
-// Not needed in dotnet-svcutil scenario. 
-//                     //Register a callback to abort the request if we hit the timeout.
-//                     ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle,
-//                         Fx.ThunkCallback(new WaitOrTimerCallback(RetrieveTimeout)), request,
-//                         TimeoutHelper.ToMilliseconds(timeoutHelper.RemainingTime()), /* executeOnlyOnce */ true);
-// 
-//                     if (result.CompletedSynchronously)
-//                     {
-//                         HandleResult(result);
-//                         this.Complete(true);
-//                     }
-
                 }
 
                 static void RetrieveTimeout(object state, bool timedOut)
@@ -1312,29 +1273,6 @@ namespace System.ServiceModel.Description
 
         internal static Encoding GetRfcEncoding(string contentTypeStr)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             Encoding e = null;
-// 
-//             try
-//             {
-//                 string charset = contentType == null ? string.Empty : contentType.CharSet;
-// 
-//                 if (charset != null && charset.Length > 0)
-//                     e = Encoding.GetEncoding(charset);
-//             }
-// #pragma warning suppress 56500 // covered by FxCOP
-//             catch (Exception ex)
-//             {
-//                 if (Fx.IsFatal(ex))
-//                     throw;
-//             }
-// 
-//             // default to ASCII encoding per RFC 2376/3023
-//             if (IsApplication(contentType))
-//                 return e == null ? new ASCIIEncoding() : e;
-//             else
-//                 return e;
-
             return new ASCIIEncoding();
         }
 

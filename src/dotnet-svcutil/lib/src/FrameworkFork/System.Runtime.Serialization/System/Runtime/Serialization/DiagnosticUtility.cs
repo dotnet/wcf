@@ -6,23 +6,6 @@ using System.Diagnostics;
 
 namespace System
 {
-// Not needed in dotnet-svcutil scenario. 
-//     internal static class Fx
-//     {
-//         [Conditional("DEBUG")]
-//         public static void Assert(bool condition, string message)
-//         {
-//             System.Diagnostics.Debug.Assert(condition, message);
-//         }
-// 
-//         [Conditional("DEBUG")]
-//         public static void Assert(string message)
-//         {
-//             Assert(false, message);
-//         }
-//     }
-
-
     internal partial class DiagnosticUtility
     {
         [Conditional("DEBUG")]
@@ -56,48 +39,6 @@ namespace System
 
             return false;
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         internal static class ExceptionUtility
-//         {
-//             public static Exception ThrowHelperArgumentNull(string message)
-//             {
-//                 return new ArgumentNullException(message);
-//             }
-// 
-//             public static Exception ThrowHelperError(Exception e)
-//             {
-//                 return e;
-//             }
-// 
-//             public static Exception ThrowHelperArgument(string message)
-//             {
-//                 return new ArgumentException(message);
-//             }
-// 
-//             public static Exception ThrowHelperArgument(string paramName, string message)
-//             {
-//                 return new ArgumentException(message, paramName);
-//             }
-// 
-//             internal static Exception ThrowHelperFatal(string message, Exception innerException)
-//             {
-//                 return ThrowHelperError(new Exception(message, innerException));
-//             }
-//             internal static Exception ThrowHelperCallback(Exception e)
-//             {
-//                 return ThrowHelperError(e);
-//             }
-//         }
-
     }
 }
-
-// Not needed in dotnet-svcutil scenario. 
-// namespace System.ServiceModel
-// {
-//     internal class DiagnosticUtility : System.Runtime.Serialization.DiagnosticUtility
-//     {
-//     }
-// }
 

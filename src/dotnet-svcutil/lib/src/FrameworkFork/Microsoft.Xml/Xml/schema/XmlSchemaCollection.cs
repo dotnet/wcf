@@ -237,11 +237,6 @@ namespace Microsoft.Xml.Schema {
             if (index < 0)
                 throw new ArgumentOutOfRangeException("index");
             for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext();) {
-// Not needed in dotnet-svcutil scenario. array.IsFixedSize is unavailable in DNX
-//                 if (index == array.Length && array.IsFixedSize) {
-//                     throw new ArgumentOutOfRangeException("index");
-//                 }
-
                 array.SetValue(e.Current, index++);
             }
         }

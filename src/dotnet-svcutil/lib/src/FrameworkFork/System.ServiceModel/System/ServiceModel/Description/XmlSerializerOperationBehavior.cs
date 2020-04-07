@@ -929,28 +929,8 @@ namespace System.ServiceModel.Description
             }
 
 #endif
-
-// Not needed in dotnet-svcutil scenario. 
-//             return FromMappingsViaReflection(mappings, type);
-
             return XmlSerializer.FromMappings(mappings, type);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         private static XmlSerializer[] FromMappingsViaReflection(XmlMapping[] mappings, Type type)
-//         {
-//             if (mappings == null || mappings.Length == 0)
-//             {
-//                 return new XmlSerializer[0];
-//             }
-// 
-//             Array mappingArray = XmlMappingTypesHelper.InitializeArray(XmlMappingTypesHelper.XmlMappingType, mappings);
-//             MethodInfo method = typeof(XmlSerializer).GetMethod("FromMappings", new Type[] { XmlMappingTypesHelper.XmlMappingType.MakeArrayType(), typeof(Type) });
-//             object result = method.Invoke(null, new object[] { mappingArray, type });
-// 
-//             return (XmlSerializer[])result;
-//         }
-
 
 #if FEATURE_NETNATIVE
 

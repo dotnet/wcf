@@ -2005,12 +2005,6 @@ namespace Microsoft.Xml.Schema {
                             break;
 
                         case CompiledIdentityConstraint.ConstraintRole.Unique:
-// Not needed in dotnet-svcutil scenario. 
-//                                 if (LocalAppContextSwitches.IgnoreEmptyKeySequences) {
-//                                 if (!ks.IsQualified()) {
-//                                     continue;
-//                                 }
-//                             }
 
                             if (constraints[i].qualifiedTable.Contains (ks)) {
                                 // unique or key checking confliction

@@ -111,34 +111,5 @@ namespace Microsoft.Xml.Serialization {
         public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace, string location) {
             throw new NotImplementedException();
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         /// <include file='doc\XmlSerializerFactory.uex' path='docs/doc[@for="XmlSerializerFactory.CreateSerializer7"]/*' />
-//         /// <devdoc>
-//         ///    <para>[To be supplied.]</para>
-//         /// </devdoc>
-//         [Obsolete("This method is obsolete and will be removed in a future release of the .NET Framework. Please use an overload of CreateSerializer which does not take an Evidence parameter. See http://go2.microsoft.com/fwlink/?LinkId=131738 for more information.")]
-//         public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace, string location, Evidence evidence) {
-//             if (type == null) {
-//                 throw new ArgumentNullException("type");
-//             }
-// 
-//             if (location != null || evidence != null) {
-//                 DemandForUserLocationOrEvidence();
-//             }
-// 
-//             XmlReflectionImporter importer = new XmlReflectionImporter(overrides, defaultNamespace);
-//             for (int i = 0; i < extraTypes.Length; i++)
-//                 importer.IncludeType(extraTypes[i]);
-//             XmlTypeMapping mapping = importer.ImportTypeMapping(type, root, defaultNamespace);
-//             TempAssembly tempAssembly = XmlSerializer.GenerateTempAssembly(mapping, type, defaultNamespace, location, evidence);
-//             return (XmlSerializer)tempAssembly.Contract.TypedSerializers[mapping.Key];
-//         }
-// 
-//         // [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-//         void DemandForUserLocationOrEvidence() {
-//             // Ensure full trust before asserting full file access to the user-provided location or evidence
-//         }
-
     }
 }

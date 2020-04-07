@@ -130,10 +130,6 @@ namespace System.IdentityModel.Tokens
 
         protected override SecurityToken ReadTokenCore(XmlReader reader, SecurityTokenResolver tokenResolver)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SR.Format(SR.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null))));
-
             throw new NotImplementedException();
         }
 
@@ -144,9 +140,6 @@ namespace System.IdentityModel.Tokens
 
         protected override void WriteTokenCore(XmlWriter writer, SecurityToken token)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.StandardsManagerCannotWriteObject, token.GetType())));
-
             throw new NotImplementedException();
         }
 

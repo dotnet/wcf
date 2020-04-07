@@ -222,13 +222,6 @@ namespace Microsoft.Xml.Serialization {
             if (writeXsiType) {
                 argTypes.Add(typeof(XmlQualifiedName));
                 ConstructorInfo XmlQualifiedName_ctor = typeof(XmlQualifiedName).GetConstructor(new Type[] { typeof(String), typeof(String) });
-// Not needed in dotnet-svcutil scenario. 
-//                 ConstructorInfo XmlQualifiedName_ctor = typeof(XmlQualifiedName).GetConstructor(
-//                     CodeGenerator.InstanceBindingFlags,
-//                     null,
-//                     new Type[] { typeof(String), typeof(String) },
-//                     null
-//                     );
 
                 ilg.Ldstr(mapping.TypeName);
                 ilg.Ldstr(mapping.Namespace);
@@ -1146,13 +1139,6 @@ namespace Microsoft.Xml.Serialization {
                     else {
                         LocalBuilder sbLoc = ilg.DeclareOrGetLocal(typeof(StringBuilder), "sb");
                         ConstructorInfo StringBuilder_ctor = typeof(StringBuilder).GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//                         ConstructorInfo StringBuilder_ctor = typeof(StringBuilder).GetConstructor(
-//                             CodeGenerator.InstanceBindingFlags,
-//                             null,
-//                             CodeGenerator.EmptyTypeArray,
-//                             null
-//                             );
 
                         ilg.New(StringBuilder_ctor);
                         ilg.Stloc(sbLoc);
@@ -2291,13 +2277,6 @@ namespace Microsoft.Xml.Serialization {
         internal void ILGenForCreateInstance(CodeGenerator ilg, Type type, bool ctorInaccessible, bool cast) {
             if (!ctorInaccessible) {
                 ConstructorInfo ctor = type.GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//                 ConstructorInfo ctor = type.GetConstructor(
-//                        CodeGenerator.InstanceBindingFlags,
-//                        null,
-//                        CodeGenerator.EmptyTypeArray,
-//                        null
-//                        );
 
                 if (ctor != null)
                     ilg.New(ctor);
@@ -2334,13 +2313,6 @@ namespace Microsoft.Xml.Serialization {
                         null
                         );
                     ConstructorInfo XElement_ctor = type.GetConstructor(new Type[] { xName });
-// Not needed in dotnet-svcutil scenario. 
-//                     ConstructorInfo XElement_ctor = type.GetConstructor(
-//                         CodeGenerator.InstanceBindingFlags,
-//                         null,
-//                         new Type[] { xName },
-//                         null
-//                         );
 
                     if (XName_op_Implicit != null && XElement_ctor != null) {
                         ilg.Ldstr("default");

@@ -15,9 +15,6 @@ namespace Microsoft.CodeDom.Compiler {
         internal String[] _compilerLanguages; // This can never by null
         internal String[] _compilerExtensions; // This can never by null
         internal IDictionary<string, string> _providerOptions;  // This can never be null
-// Not needed in dotnet-svcutil scenario. 
-//         internal String configFileName;
-//         internal int configFileLineNumber;
 
 
         private Type type;
@@ -40,16 +37,6 @@ namespace Microsoft.CodeDom.Compiler {
                             type = Type.GetType(_codeDomProviderTypeName);
                             if (type == null) {
                                 throw new ConfigurationErrorsException(SRCodeDom.GetString(SRCodeDom.Unable_To_Locate_Type, _codeDomProviderTypeName));
-// Not needed in dotnet-svcutil scenario. 
-//                                 if( configFileName == null) {
-//                                 throw new ConfigurationErrorsException(SR.GetString(SR.Unable_To_Locate_Type, 
-//                                                                       _codeDomProviderTypeName, string.Empty, 0));
-//                                 }
-//                                 else {
-//                                     throw new ConfigurationErrorsException(SR.GetString(SR.Unable_To_Locate_Type,
-//                                                                       _codeDomProviderTypeName), configFileName, configFileLineNumber);
-//                                 }
-
                             }
                         }                                                        
                     }

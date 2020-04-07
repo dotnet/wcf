@@ -74,24 +74,6 @@ namespace System.ServiceModel
             }
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         void ApplyConfiguration(string configurationName)
-//         {
-//             WSHttpBindingCollectionElement section = WSHttpBindingCollectionElement.GetBindingCollectionElement();
-//             WSHttpBindingElement element = section.Bindings[configurationName];
-//             if (element == null)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
-//                                  configurationName,
-//                                  ConfigurationStrings.WSHttpBindingCollectionElementName)));
-//             }
-//             else
-//             {
-//                 element.ApplyConfiguration(this);
-//             }
-//         }
-
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingParameterCollection parameters)
         {
             if ((security.Mode == SecurityMode.Transport) &&
@@ -226,13 +208,5 @@ namespace System.ServiceModel
             // the last check: make sure that security binding element match the incoming security
             return System.ServiceModel.Configuration.SecurityElement.AreBindingsMatching(security.CreateMessageSecurity(isReliableSession, WSMessageSecurityVersion), sbe);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         [EditorBrowsable(EditorBrowsableState.Never)]
-//         public bool ShouldSerializeSecurity()
-//         {
-//             return this.Security.InternalShouldSerialize();
-//         }
-
     }
 }

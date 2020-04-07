@@ -36,15 +36,7 @@ namespace System.IdentityModel.Tokens
         internal X509WindowsSecurityToken(X509Certificate2 certificate, WindowsIdentity windowsIdentity, string authenticationType, string id, bool clone)
             : base(certificate, id, clone)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (windowsIdentity == null)
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("windowsIdentity");
-// 
-//             this.authenticationType = authenticationType;
-//             this.windowsIdentity = clone ? SecurityUtils.CloneWindowsIdentityIfNecessary(windowsIdentity, authenticationType) : windowsIdentity;
-
             throw new NotImplementedException();
-
         }
 
 
@@ -72,9 +64,6 @@ namespace System.IdentityModel.Tokens
                 if (!this.disposed)
                 {
                     this.disposed = true;
-// Not needed in dotnet-svcutil scenario. 
-//                     this.windowsIdentity.Dispose();
-
                     this.windowsIdentity = null;
                 }
             }

@@ -40,18 +40,6 @@ namespace System.ServiceModel
             this.ReliableSession.Enabled = reliableSessionEnabled;
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]
-//         public bool BypassProxyOnLocal
-//         {
-//             get { return httpTransport.BypassProxyOnLocal; }
-//             set
-//             {
-//                 httpTransport.BypassProxyOnLocal = value;
-//                 httpsTransport.BypassProxyOnLocal = value;
-//             }
-//         }
-
         [DefaultValue(false)]
         public bool TransactionFlow
         {
@@ -105,18 +93,6 @@ namespace System.ServiceModel
             get { return messageEncoding; }
             set { messageEncoding = value; }
         }
-// Not needed in dotnet-svcutil scenario. 
-//         [DefaultValue(HttpTransportDefaults.ProxyAddress)]
-//         // TODO: [TypeConverter(typeof(UriTypeConverter))]
-//         public Uri ProxyAddress
-//         {
-//             get { return httpTransport.ProxyAddress; }
-//             set
-//             {
-//                 httpTransport.ProxyAddress = value;
-//                 httpsTransport.ProxyAddress = value;
-//             }
-//         }
 
         public XmlDictionaryReaderQuotas ReaderQuotas
         {
@@ -160,18 +136,6 @@ namespace System.ServiceModel
                 mtomEncoding.WriteEncoding = value;
             }
         }
-// Not needed in dotnet-svcutil scenario. 
-//         [DefaultValue(HttpTransportDefaults.UseDefaultWebProxy)]
-//         public bool UseDefaultWebProxy
-//         {
-//             get { return httpTransport.UseDefaultWebProxy; }
-//             set
-//             {
-//                 httpTransport.UseDefaultWebProxy = value;
-//                 httpsTransport.UseDefaultWebProxy = value;
-//             }
-//         }
-
         bool IBindingRuntimePreferences.ReceiveSynchronously
         {
             get { return false; }
@@ -220,12 +184,6 @@ namespace System.ServiceModel
 
         void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, TransactionFlowBindingElement txFlow, ReliableSessionBindingElement session)
         {
-            // transport
-// Not needed in dotnet-svcutil scenario. 
-//             this.BypassProxyOnLocal = transport.BypassProxyOnLocal;
-//             this.ProxyAddress = transport.ProxyAddress;
-//             this.UseDefaultWebProxy = transport.UseDefaultWebProxy;
-
             this.HostNameComparisonMode = transport.HostNameComparisonMode;
             this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
             this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
@@ -399,27 +357,5 @@ namespace System.ServiceModel
 
         protected abstract TransportBindingElement GetTransport();
         protected abstract SecurityBindingElement CreateMessageSecurity();
-
-// Not needed in dotnet-svcutil scenario. 
-//         [EditorBrowsable(EditorBrowsableState.Never)]
-//         public bool ShouldSerializeReaderQuotas()
-//         {
-//             return (!EncoderDefaults.IsDefaultReaderQuotas(this.ReaderQuotas));
-//         }
-// 
-//         [EditorBrowsable(EditorBrowsableState.Never)]
-//         public bool ShouldSerializeTextEncoding()
-//         {
-//             return (!this.TextEncoding.Equals(TextEncoderDefaults.Encoding));
-//         }
-// 
-//         [EditorBrowsable(EditorBrowsableState.Never)]
-//         public bool ShouldSerializeReliableSession()
-//         {
-//             return this.ReliableSession.Ordered != ReliableSessionDefaults.Ordered
-//                 || this.ReliableSession.InactivityTimeout != ReliableSessionDefaults.InactivityTimeout
-//                 || this.ReliableSession.Enabled != ReliableSessionDefaults.Enabled;
-//         }
-
     }
 }

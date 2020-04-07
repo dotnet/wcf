@@ -237,10 +237,6 @@ namespace Microsoft.Xml.Serialization {
             LocalBuilder local;
             if (!TryDequeueLocal(type, name, out local)) {
                 local = ilGen.DeclareLocal(type, false);
-// Not needed in dotnet-svcutil scenario. 
-//                 if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-//                     local.SetLocalSymInfo(name);
-
             }
             currentScope[name] = local;
             return local;
@@ -982,7 +978,7 @@ namespace Microsoft.Xml.Serialization {
         }
 
         internal void Ldobj(Type type) {
-            OpCode opCode = GetLdindOpCode(type.GetTypeCode());
+            OpCode opCode = GetLdindOpCode(Type.GetTypeCode(type));
             if (!opCode.Equals(OpCodes.Nop)) {
                 ilGen.Emit(opCode);
             }
@@ -1038,7 +1034,7 @@ namespace Microsoft.Xml.Serialization {
                 Ldc(((IConvertible)o).ToType(Enum.GetUnderlyingType(valueType), null));
             }
             else {
-                switch (valueType.GetTypeCode()) {
+                switch (Type.GetTypeCode(valueType)) {
                     case TypeCode.Boolean:
                         Ldc((bool)o);
                         break;
@@ -1076,13 +1072,6 @@ namespace Microsoft.Xml.Serialization {
                         ConstructorInfo Decimal_ctor = typeof(Decimal).GetConstructor(
                              new Type[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Boolean), typeof(Byte) }
                             );
-// Not needed in dotnet-svcutil scenario. 
-//                         ConstructorInfo Decimal_ctor = typeof(Decimal).GetConstructor(
-//                              CodeGenerator.InstanceBindingFlags,
-//                              null,
-//                              new Type[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Boolean), typeof(Byte) },
-//                              null
-//                              );
 
                         int[] bits = Decimal.GetBits((decimal)o);
                         Ldc(bits[0]); // digit
@@ -1094,14 +1083,6 @@ namespace Microsoft.Xml.Serialization {
                         break;
                     case TypeCode.DateTime:
                         ConstructorInfo DateTime_ctor = typeof(DateTime).GetConstructor(new Type[] { typeof(Int64) });
-// Not needed in dotnet-svcutil scenario. 
-//                         ConstructorInfo DateTime_ctor = typeof(DateTime).GetConstructor(
-//                             CodeGenerator.InstanceBindingFlags,
-//                             null,
-//                             new Type[] { typeof(Int64) },
-//                             null
-//                             );
-
                         Ldc(((DateTime)o).Ticks); // ticks
                         New(DateTime_ctor);
                         break;
@@ -1416,7 +1397,7 @@ namespace Microsoft.Xml.Serialization {
                 Ldelem(Enum.GetUnderlyingType(arrayElementType));
             }
             else {
-                OpCode opCode = GetLdelemOpCode(arrayElementType.GetTypeCode());
+                OpCode opCode = GetLdelemOpCode(Type.GetTypeCode(arrayElementType));
                 Debug.Assert(!opCode.Equals(OpCodes.Nop));
                 if (opCode.Equals(OpCodes.Nop))
                     throw new InvalidOperationException("ArrayTypeIsNotSupported"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.ArrayTypeIsNotSupported, DataContract.GetClrTypeFullName(arrayElementType))));
@@ -1492,7 +1473,7 @@ namespace Microsoft.Xml.Serialization {
             if (arrayElementType.GetTypeInfo().IsEnum)
                 Stelem(Enum.GetUnderlyingType(arrayElementType));
             else {
-                OpCode opCode = GetStelemOpCode(arrayElementType.GetTypeCode());
+                OpCode opCode = GetStelemOpCode(Type.GetTypeCode(arrayElementType));
                 if (opCode.Equals(OpCodes.Nop))
                     throw new InvalidOperationException("ArrayTypeIsNotSupported"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.ArrayTypeIsNotSupported, DataContract.GetClrTypeFullName(arrayElementType))));
                 ilGen.Emit(opCode);
@@ -1665,7 +1646,7 @@ namespace Microsoft.Xml.Serialization {
             TypeInfo sourceInfo = source.GetTypeInfo();
             if (targetInfo.IsValueType) {
                 if (sourceInfo.IsValueType) {
-                    OpCode opCode = GetConvOpCode(target.GetTypeCode());
+                    OpCode opCode = GetConvOpCode(Type.GetTypeCode(target));
                     if (opCode.Equals(OpCodes.Nop)) {
                         //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.NoConversionPossibleTo, DataContract.GetClrTypeFullName(target))));
                         throw new CodeGeneratorConversionException(source, target, isAddress,"NoConversionPossibleTo");
@@ -1711,50 +1692,7 @@ namespace Microsoft.Xml.Serialization {
             return ifState;
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         static internal AssemblyBuilder CreateAssemblyBuilder(AppDomain appDomain, string name) {
-//             AssemblyName assemblyName = new AssemblyName();
-//             assemblyName.Name = name;
-//             assemblyName.Version = new Version(1, 0, 0, 0);
-//             if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-//                 return appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave, TempFilesLocation);
-//             else
-//                 return appDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
-//         }
-//         static string tempFilesLocation = null;
-//         internal static string TempFilesLocation {
-//             get {
-//                 if (tempFilesLocation == null) {
-//                     // Return different XmlSerializerSection from legacy assembly due to its register config handlers
-//                     object section = ConfigurationManager.GetSection(ConfigurationStrings.XmlSerializerSectionPath);
-//                     string location = null;
-//                     if (section != null) {
-//                         XmlSerializerSection configSection = section as XmlSerializerSection;
-//                         if (configSection != null) {
-//                             location = configSection.TempFilesLocation;
-//                         }
-//                     }
-//                     if (location != null) {
-//                         tempFilesLocation = location.Trim();
-//                     }
-//                     else {
-//                         tempFilesLocation = Path.GetTempPath();
-//                     }
-//                 }
-//                 return tempFilesLocation;
-//             }
-//             set {
-//                 tempFilesLocation = value;
-//             }
-//         }
-
-
         static internal ModuleBuilder CreateModuleBuilder(AssemblyBuilder assemblyBuilder, string name) {
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticsSwitches.KeepTempFiles.Enabled)
-//                 return assemblyBuilder.DefineDynamicModule(name, name + ".dll", true);
-//             else
-
                 return assemblyBuilder.DefineDynamicModule(name);
         }
         static internal TypeBuilder CreateTypeBuilder(ModuleBuilder moduleBuilder, string name, TypeAttributes attributes, Type parent, Type[] interfaces) {

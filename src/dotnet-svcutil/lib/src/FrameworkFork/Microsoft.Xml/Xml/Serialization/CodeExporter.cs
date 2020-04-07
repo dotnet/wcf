@@ -86,16 +86,6 @@ namespace Microsoft.Xml.Serialization {
             get {
                 if (generatedCodeAttribute == null) {
                     CodeAttributeDeclaration decl = new CodeAttributeDeclaration(typeof(GeneratedCodeAttribute).FullName);
-// Not needed in dotnet-svcutil scenario. Not available in DNX.
-//                     Assembly a = Assembly.GetEntryAssembly();
-//                     if (a == null) 
-//                     {
-//                         a = Assembly.GetExecutingAssembly();
-//                         if (a == null)
-//                         {
-//                             a = typeof(CodeExporter).Assembly;
-//                         }
-//                     }
                     
                     Assembly a = typeof(CodeExporter).GetTypeInfo().Assembly;
 

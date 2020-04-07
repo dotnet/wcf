@@ -277,20 +277,11 @@ namespace System.ServiceModel
 
         internal virtual void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             this.BypassProxyOnLocal = transport.BypassProxyOnLocal;
-
             this.HostNameComparisonMode = transport.HostNameComparisonMode;
             this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
             this.MaxBufferSize = transport.MaxBufferSize;
             this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
-// Not needed in dotnet-svcutil scenario. 
-//             this.ProxyAddress = transport.ProxyAddress;
-
             this.TransferMode = transport.TransferMode;
-// Not needed in dotnet-svcutil scenario. 
-//             this.UseDefaultWebProxy = transport.UseDefaultWebProxy;
-
             _httpTransport.WebSocketSettings = transport.WebSocketSettings;
             _httpsTransport.WebSocketSettings = transport.WebSocketSettings;
 

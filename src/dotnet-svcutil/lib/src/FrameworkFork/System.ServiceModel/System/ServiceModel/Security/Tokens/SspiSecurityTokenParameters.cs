@@ -81,29 +81,6 @@ namespace System.ServiceModel.Security.Tokens
         {
             return new SspiSecurityTokenParameters(this);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-//         {
-//             if (token is GenericXmlSecurityToken)
-//                 return base.CreateGenericXmlTokenKeyIdentifierClause(token, referenceStyle);
-//             else
-//                 return this.CreateKeyIdentifierClause<SecurityContextKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-//         }
-// 
-//         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
-//         {
-//             requirement.TokenType = ServiceModelSecurityTokenTypes.Spnego;
-//             requirement.RequireCryptographicToken = true;
-//             requirement.KeyType = SecurityKeyType.SymmetricKey;
-//             requirement.Properties[ServiceModelSecurityTokenRequirement.SupportSecurityContextCancellationProperty] = this.RequireCancellation;
-//             if (this.IssuerBindingContext != null)
-//             {
-//                 requirement.Properties[ServiceModelSecurityTokenRequirement.IssuerBindingContextProperty] = this.IssuerBindingContext.Clone();
-//             }
-//             requirement.Properties[ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty] = this.Clone();
-//         }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

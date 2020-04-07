@@ -134,11 +134,6 @@ namespace Microsoft.Xml {
 
             this.writer = writer;
             this.encoding = writer.Encoding;
-// Not needed in dotnet-svcutil scenario. 
-//             // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
-//             if (settings.Async) {
-//                 bufLen = ASYNCBUFSIZE;
-//             }
 
             this.bufChars = new char[bufLen + OVERFLOW];
 
@@ -157,12 +152,6 @@ namespace Microsoft.Xml {
             this.stream = stream;
             this.encoding = settings.Encoding;
 
-// Not needed in dotnet-svcutil scenario. 
-//             // the buffer is allocated will OVERFLOW in order to reduce checks when writing out constant size markup
-//             if (settings.Async) {
-//                 bufLen = ASYNCBUFSIZE;
-//             }
-
             bufChars = new char[bufLen + OVERFLOW];
 
             bufBytes = new byte[ bufChars.Length ];
@@ -177,8 +166,6 @@ namespace Microsoft.Xml {
 
             charEntityFallback = new CharEntityEncoderFallback();
             this.encoding = (Encoding)settings.Encoding.Clone();
-// Not needed in dotnet-svcutil scenario. EncoderFallback is RO in DNX
-//             encoding.EncoderFallback = charEntityFallback;
 
             encoder = encoding.GetEncoder();
 

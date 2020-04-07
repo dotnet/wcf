@@ -165,17 +165,6 @@ namespace System.ServiceModel.Channels
             return InternalCanBuildChannelFactory<TChannel>(context);
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public override IChannelListener<TChannel> BuildChannelListener<TChannel>(BindingContext context)
-//         {
-//             return InternalBuildChannelListener<TChannel>(context);
-//         }
-// 
-//         public override bool CanBuildChannelListener<TChannel>(BindingContext context)
-//         {
-//             return InternalCanBuildChannelListener<TChannel>(context);
-//         }
-
         public override BindingElement Clone()
         {
             return new MtomMessageEncodingBindingElement(this);
@@ -183,9 +172,6 @@ namespace System.ServiceModel.Channels
 
         public override MessageEncoderFactory CreateMessageEncoderFactory()
         {
-// Not needed in dotnet-svcutil scenario. 
-//             return new MtomMessageEncoderFactory(MessageVersion, WriteEncoding, this.MaxReadPoolSize, this.MaxWritePoolSize, this.MaxBufferSize, this.ReaderQuotas);
-
             throw new NotImplementedException();
         }
 

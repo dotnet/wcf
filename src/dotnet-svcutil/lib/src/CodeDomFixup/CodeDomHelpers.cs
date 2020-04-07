@@ -10,9 +10,6 @@ using System.Threading.Tasks;
 using Microsoft.CSharp;
 using System.IO;
 using System.Linq;
-#if VB_SUPPORT
-    using Microsoft.VisualBasic;
-#endif
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -118,17 +115,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                    MatchType<IAsyncResult>(method.Parameters[0].Type));
         }
 
-        internal static bool IsOnewayMethod(CodeMemberMethod method)
-        {
-            CodeAttributeDeclaration operationContract = FindAttribute<OperationContractAttribute>(method.CustomAttributes);
-            foreach (CodeAttributeArgument arg in operationContract.Arguments)
-            {
-                if (arg.Name.Equals("IsOneWay"))
-                    return true;
-            }
-            return false;
-        }
-
         internal static bool MatchType<T>(CodeTypeReference typeRef)
         {
             return MatchType(typeRef, typeof(T));
@@ -229,12 +215,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         // we are not sure if this is vb or csharp project. So escape both.
         internal static string EscapeName(string identifierName)
         {
-#if VB_SUPPORT
-            using (VBCodeProvider vbCodeProvider = new VBCodeProvider())
-            {
-                identifierName = vbCodeProvider.CreateEscapedIdentifier(identifierName);
-            }
-#endif
             using (CSharpCodeProvider cSharpCodeProvider = new CSharpCodeProvider())
             {
                 identifierName = cSharpCodeProvider.CreateEscapedIdentifier(identifierName);

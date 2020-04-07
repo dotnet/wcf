@@ -149,13 +149,6 @@ namespace Microsoft.Xml.Serialization {
             ilg.If(Cmp.EqualTo);
 
             ConstructorInfo Hashtable_ctor = typeof(Hashtable).GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//             ConstructorInfo Hashtable_ctor = typeof(Hashtable).GetConstructor(
-//                 CodeGenerator.InstanceBindingFlags,
-//                 null,
-//                 CodeGenerator.EmptyTypeArray,
-//                 null
-//                 );
 
             LocalBuilder _tmpLoc = ilg.DeclareLocal(typeof(Hashtable), "_tmp");
             ilg.New(Hashtable_ctor);
@@ -255,13 +248,6 @@ namespace Microsoft.Xml.Serialization {
                 CodeGenerator.EmptyTypeArray);
 
             ConstructorInfo readerCtor = CreatedTypes[readerClass].GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//             ConstructorInfo readerCtor = CreatedTypes[readerClass].GetConstructor(
-//                CodeGenerator.InstanceBindingFlags,
-//                null,
-//                CodeGenerator.EmptyTypeArray,
-//                null
-//                );
 
             ilg = new CodeGenerator(baseSerializerTypeBuilder);
             ilg.BeginMethod(typeof(XmlSerializationReader),
@@ -273,13 +259,6 @@ namespace Microsoft.Xml.Serialization {
             ilg.EndMethod();
 
             ConstructorInfo writerCtor = CreatedTypes[writerClass].GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//             ConstructorInfo writerCtor = CreatedTypes[writerClass].GetConstructor(
-//                CodeGenerator.InstanceBindingFlags,
-//                null,
-//                CodeGenerator.EmptyTypeArray,
-//                null
-//                );
 
             ilg.BeginMethod(typeof(XmlSerializationWriter),
                 "CreateWriter",
@@ -406,13 +385,6 @@ namespace Microsoft.Xml.Serialization {
 
             foreach (string key in serializers.Keys) {
                 ConstructorInfo ctor = CreatedTypes[(string)serializers[key]].GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//                 ConstructorInfo ctor = CreatedTypes[(string)serializers[key]].GetConstructor(
-//                     CodeGenerator.InstanceBindingFlags,
-//                     null,
-//                     CodeGenerator.EmptyTypeArray,
-//                     null
-//                     );
 
                 ilg.Ldloc(typeof(Hashtable), "_tmp");
                 ilg.Ldstr(key);
@@ -449,13 +421,6 @@ namespace Microsoft.Xml.Serialization {
                     ilg.If(Cmp.EqualTo);
                     {
                         ConstructorInfo ctor = CreatedTypes[(string)serializers[xmlMappings[i].Key]].GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//                         ConstructorInfo ctor = CreatedTypes[(string)serializers[xmlMappings[i].Key]].GetConstructor(
-//                             CodeGenerator.InstanceBindingFlags,
-//                             null,
-//                             CodeGenerator.EmptyTypeArray,
-//                             null
-//                             );
 
                         ilg.New(ctor);
                         ilg.Stloc(ilg.ReturnLocal);
@@ -496,13 +461,6 @@ namespace Microsoft.Xml.Serialization {
                 CodeGenerator.PublicOverrideMethodAttributes | MethodAttributes.SpecialName);
             propertyBuilder.SetGetMethod(ilg.MethodBuilder);
             ConstructorInfo ctor = CreatedTypes[readerType].GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//             ConstructorInfo ctor = CreatedTypes[readerType].GetConstructor(
-//                 CodeGenerator.InstanceBindingFlags,
-//                 null,
-//                 CodeGenerator.EmptyTypeArray,
-//                 null
-//                 );
 
             ilg.New(ctor);
             ilg.EndMethod();
@@ -522,13 +480,6 @@ namespace Microsoft.Xml.Serialization {
                 CodeGenerator.PublicOverrideMethodAttributes | MethodAttributes.SpecialName);
             propertyBuilder.SetGetMethod(ilg.MethodBuilder);
             ctor = CreatedTypes[writerType].GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//             ctor = CreatedTypes[writerType].GetConstructor(
-//                 CodeGenerator.InstanceBindingFlags,
-//                 null,
-//                 CodeGenerator.EmptyTypeArray,
-//                 null
-//                 );
 
             ilg.New(ctor);
             ilg.EndMethod();
@@ -541,13 +492,6 @@ namespace Microsoft.Xml.Serialization {
 
             // Default ctor
             ConstructorInfo baseCtor = typeof(XmlSerializerImplementation).GetConstructor(CodeGenerator.EmptyTypeArray);
-// Not needed in dotnet-svcutil scenario. 
-//             ConstructorInfo baseCtor = typeof(XmlSerializerImplementation).GetConstructor(
-//                 CodeGenerator.InstanceBindingFlags,
-//                 null,
-//                 CodeGenerator.EmptyTypeArray,
-//                 null
-//                 );
 
             ilg = new CodeGenerator(serializerContractTypeBuilder);
             ilg.BeginMethod(

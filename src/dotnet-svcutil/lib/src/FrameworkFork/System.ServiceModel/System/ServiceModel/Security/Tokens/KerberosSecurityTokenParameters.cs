@@ -32,19 +32,5 @@ namespace System.ServiceModel.Security.Tokens
         {
             return new KerberosSecurityTokenParameters(this);
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         internal protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause(SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
-//         {
-//             return base.CreateKeyIdentifierClause<KerberosTicketHashKeyIdentifierClause, LocalIdKeyIdentifierClause>(token, referenceStyle);
-//         }
-// 
-//         protected internal override void InitializeSecurityTokenRequirement(SecurityTokenRequirement requirement)
-//         {
-//             requirement.TokenType = SecurityTokenTypes.Kerberos;
-//             requirement.KeyType = SecurityKeyType.SymmetricKey;
-//             requirement.RequireCryptographicToken = true;
-//         }
-
     }
 }

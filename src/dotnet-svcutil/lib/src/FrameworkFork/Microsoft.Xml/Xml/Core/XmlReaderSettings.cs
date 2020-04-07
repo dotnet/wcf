@@ -141,11 +141,6 @@ namespace Microsoft.Xml {
         //Check if the config set to prohibit default resovler
         //notice we must keep GetXmlResolver() to avoid dead lock when init System.Config.ConfigurationManager
         internal XmlResolver GetXmlResolver_CheckConfig() {
-// Not needed in dotnet-svcutil scenario. 
-//             if (Microsoft.Xml.XmlConfiguration.XmlReaderSection.ProhibitDefaultUrlResolver && !IsXmlResolverSet)
-//                 return null;
-//             else
-
                 return xmlResolver;
         }
 #endif
@@ -713,64 +708,11 @@ namespace Microsoft.Xml {
             }
         }
 
-#if !SILVERLIGHT
         private static bool? s_enableLegacyXmlSettings = null;
 
         static internal bool EnableLegacyXmlSettings()
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (s_enableLegacyXmlSettings.HasValue)
-//             {
-//                 return s_enableLegacyXmlSettings.Value;
-//             }
-//             if (!Microsoft.Xml.BinaryCompatibility.TargetsAtLeast_Desktop_V4_5_2)
-//             {
-//                 s_enableLegacyXmlSettings = true;
-//                 return s_enableLegacyXmlSettings.Value;
-//             }
-// 
-//             bool enableSettings = false; // default value
-//             if (!ReadSettingsFromRegistry(Registry.LocalMachine, ref enableSettings))
-//             {
-//                 // still ok if this call return false too as we'll use the default value which is false
-//                 ReadSettingsFromRegistry(Registry.CurrentUser, ref enableSettings);
-//             }
-// 
-//             s_enableLegacyXmlSettings = enableSettings;
-//             return s_enableLegacyXmlSettings.Value;
-
             return false;
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         // [RegistryPermission(SecurityAction.Assert, Unrestricted = true)]
-//         [SecuritySafeCritical]
-//         private static bool ReadSettingsFromRegistry(RegistryKey hive, ref bool value)
-//         {
-//             const string regValueName = "EnableLegacyXmlSettings";
-//             const string regValuePath = @"SOFTWARE\Microsoft\.NETFramework\XML";
-// 
-//             try
-//             {                                                                     
-//                 using (RegistryKey xmlRegKey = hive.OpenSubKey(regValuePath, false))
-//                 {
-//                     if (xmlRegKey != null)
-//                     {
-//                         if (xmlRegKey.GetValueKind(regValueName) == RegistryValueKind.DWord)
-//                         {
-//                             value = ((int)xmlRegKey.GetValue(regValueName)) == 1;
-//                             return true;
-//                         }
-//                     }
-//                 }
-//             }
-//             catch { /* use the default if we couldn't read the key */ }
-// 
-//             return false;
-//         }
-
-
-#endif // SILVERLIGHT
-
     }
 }

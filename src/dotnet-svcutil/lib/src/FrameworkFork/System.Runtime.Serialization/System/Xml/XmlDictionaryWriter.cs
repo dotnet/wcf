@@ -590,10 +590,6 @@ namespace Microsoft.Xml
                 Close();
             }
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public virtual void Close() { }
-
         private class XmlWrappedWriter : XmlDictionaryWriter
         {
             private XmlWriter _writer;

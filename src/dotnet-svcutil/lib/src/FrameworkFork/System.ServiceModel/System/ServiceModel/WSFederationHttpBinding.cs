@@ -83,23 +83,6 @@ namespace System.ServiceModel
                 this.security = value;
             }
         }
-// Not needed in dotnet-svcutil scenario. 
-//         void ApplyConfiguration(string configurationName)
-//         {
-//             WSFederationHttpBindingCollectionElement section = WSFederationHttpBindingCollectionElement.GetBindingCollectionElement();
-//             WSFederationHttpBindingElement element = section.Bindings[configurationName];
-//             if (element == null)
-//             {
-//                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ConfigurationErrorsException(
-//                     SR.Format(SR.ConfigInvalidBindingConfigurationName,
-//                                  configurationName,
-//                                  ConfigurationStrings.WSFederationHttpBindingCollectionElementName)));
-//             }
-//             else
-//             {
-//                 element.ApplyConfiguration(this);
-//             }
-//         }
 
         PrivacyNoticeBindingElement CreatePrivacyPolicy()
         {

@@ -350,18 +350,6 @@ namespace System.ServiceModel.Channels
             this.ReplayCacheSize = SecurityProtocolFactory.defaultMaxCachedNonces;
             this.ReplayWindow = SecurityProtocolFactory.defaultReplayWindow;
             this.MaxClockSkew = SecurityProtocolFactory.defaultMaxClockSkew;
-// Not needed in dotnet-svcutil scenario. 
-//             this.IssuedCookieLifetime = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerIssuedTokenLifetime;
-//             this.MaxStatefulNegotiations = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxActiveNegotiations;
-//             this.NegotiationTimeout = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxNegotiationLifetime;
-//             this.maxPendingSessions = SecuritySessionServerSettings.defaultMaximumPendingSessions;
-//             this.inactivityTimeout = SecuritySessionServerSettings.defaultInactivityTimeout;
-//             this.sessionKeyRenewalInterval = SecuritySessionServerSettings.defaultKeyRenewalInterval;
-//             this.sessionKeyRolloverInterval = SecuritySessionServerSettings.defaultKeyRolloverInterval;
-//             this.reconnectTransportOnFailure = SecuritySessionServerSettings.defaultTolerateTransportFailures;
-//             this.TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
-//             this.maxCachedCookies = NegotiationTokenAuthenticator<NegotiationTokenAuthenticatorState>.defaultServerMaxCachedTokens;
-//             this.nonceCache = null;
 
 // Replace with defaults we define that aren't in the original source.
             this.IssuedCookieLifetime = defaultServerIssuedTokenLifetime;

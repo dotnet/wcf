@@ -37,11 +37,6 @@ namespace System.ServiceModel.Security
 
         protected override void ForceEncryption()
         {
-// Not needed in dotnet-svcutil scenario. 
-//             CryptoHelper.GenerateIVAndEncrypt(this.algorithm, this.buffer, out this.iv, out this.cipherText);
-//             this.State = EncryptionState.Encrypted;
-//             this.buffer = new ArraySegment<byte>(CryptoHelper.EmptyBuffer);
-
             throw new NotImplementedException();
         }
         public byte[] GetDecryptedBuffer()
@@ -62,10 +57,6 @@ namespace System.ServiceModel.Security
 
         void SetPlainText()
         {
-// Not needed in dotnet-svcutil scenario. 
-//             this.decryptedBuffer = CryptoHelper.ExtractIVAndDecrypt(this.algorithm, this.cipherText, 0, this.cipherText.Length);
-//             this.State = EncryptionState.Decrypted;
-
             throw new NotImplementedException();
         }
 

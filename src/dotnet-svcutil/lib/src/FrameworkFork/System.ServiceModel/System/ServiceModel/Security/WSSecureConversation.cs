@@ -220,18 +220,6 @@ namespace System.ServiceModel.Security
 
             public virtual SecurityToken CreateDerivedKeyToken(string id, string derivationAlgorithm, string label, int length, byte[] nonce, int offset, int generation, SecurityKeyIdentifierClause tokenToDeriveIdentifier, SecurityToken tokenToDerive)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 if (tokenToDerive == null)
-//                 {
-//                     return new DerivedKeySecurityTokenStub(generation, offset, length,
-//                         label, nonce, tokenToDeriveIdentifier, derivationAlgorithm, id);
-//                 }
-//                 else
-//                 {
-//                     return new DerivedKeySecurityToken(generation, offset, length,
-//                         label, nonce, tokenToDerive, tokenToDeriveIdentifier, derivationAlgorithm, id);
-//                 }
-
                 throw new NotImplementedException();
             }
 
@@ -338,36 +326,6 @@ namespace System.ServiceModel.Security
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
                 SecurityTokenReferenceStyle tokenReferenceStyle)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 TokenReferenceStyleHelper.Validate(tokenReferenceStyle);
-// 
-//                 switch (tokenReferenceStyle)
-//                 {
-//                     case SecurityTokenReferenceStyle.Internal:
-//                         return CreateDirectReference(issuedTokenXml, UtilityStrings.IdAttribute, UtilityStrings.Namespace, typeof(SecurityContextSecurityToken));
-//                     case SecurityTokenReferenceStyle.External:
-//                         UniqueId contextId = null;
-//                         UniqueId generation = null;
-//                         foreach (XmlNode node in issuedTokenXml.ChildNodes)
-//                         {
-//                             XmlElement element = node as XmlElement;
-//                             if (element != null)
-//                             {
-//                                 if (element.LocalName == parent.SerializerDictionary.Identifier.Value && element.NamespaceURI == parent.SerializerDictionary.Namespace.Value)
-//                                 {
-//                                     contextId = XmlHelper.ReadTextElementAsUniqueId(element);
-//                                 }
-//                                 else if (CanReadGeneration(element))
-//                                 {
-//                                     generation = ReadGeneration(element);
-//                                 }
-//                             }
-//                         }
-//                         return new SecurityContextKeyIdentifierClause(contextId, generation);
-//                     default:
-//                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenReferenceStyle"));
-//                 }
-
                 throw new NotImplementedException();
             }
 
@@ -378,51 +336,6 @@ namespace System.ServiceModel.Security
 
             SecurityContextSecurityToken TryResolveSecurityContextToken(UniqueId contextId, UniqueId generation, string id, SecurityTokenResolver tokenResolver, out ISecurityContextSecurityTokenCache sctCache)
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 SecurityContextSecurityToken cachedSct = null;
-//                 sctCache = null;
-//                 if (tokenResolver is ISecurityContextSecurityTokenCache)
-//                 {
-//                     sctCache = ((ISecurityContextSecurityTokenCache)tokenResolver);
-//                     cachedSct = sctCache.GetContext(contextId, generation);
-//                 }
-//                 else if (tokenResolver is AggregateSecurityHeaderTokenResolver)
-//                 {
-//                     // We will see if we have a ISecurityContextSecurityTokenCache in the 
-//                     // AggregateTokenResolver. We will hold the reference to the first sctCache
-//                     // we find.
-//                     AggregateSecurityHeaderTokenResolver aggregateTokenResolve = tokenResolver as AggregateSecurityHeaderTokenResolver;
-//                     for (int i = 0; i < aggregateTokenResolve.TokenResolvers.Count; ++i)
-//                     {
-//                         ISecurityContextSecurityTokenCache oobTokenResolver = aggregateTokenResolve.TokenResolvers[i] as ISecurityContextSecurityTokenCache;
-//                         if (oobTokenResolver == null)
-//                         {
-//                             continue;
-//                         }
-//                         if (sctCache == null)
-//                         {
-//                             sctCache = oobTokenResolver;
-//                         }
-//                         cachedSct = oobTokenResolver.GetContext(contextId, generation);
-//                         if (cachedSct != null)
-//                         {
-//                             break;
-//                         }
-//                     }
-//                 }
-//                 if (cachedSct == null)
-//                 {
-//                     return null;
-//                 }
-//                 else if (cachedSct.Id == id)
-//                 {
-//                     return cachedSct;
-//                 }
-//                 else
-//                 {
-//                     return new SecurityContextSecurityToken(cachedSct, id);
-//                 }
-
                 throw new NotImplementedException();
             }
 

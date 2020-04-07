@@ -365,12 +365,6 @@ namespace MS.Internal.ValueConverter {
             AnyRuleGroup,
         };
 
-// Not needed in dotnet-svcutil scenario. 
-//         public static void Main() {
-//             (new Generator()).Generate();
-//         }
-
-
         public void Generate() {
             AutoGenWriter autoGenWriter;
 

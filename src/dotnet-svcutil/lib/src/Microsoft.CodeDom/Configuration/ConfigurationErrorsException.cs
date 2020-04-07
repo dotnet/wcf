@@ -4,7 +4,6 @@ namespace Microsoft.CodeDom.Compiler
 {
     using System;
 
-    // Not needed in dotnet-svcutil scenario. 
     internal class ConfigurationErrorsException : Exception
     {
         public ConfigurationErrorsException()

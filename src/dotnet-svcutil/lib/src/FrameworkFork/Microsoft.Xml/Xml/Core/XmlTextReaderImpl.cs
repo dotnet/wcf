@@ -2823,14 +2823,6 @@ namespace Microsoft.Xml {
                 ps.baseUri = tmpResolver.ResolveUri( null, url );
                 ps.baseUriStr = ps.baseUri.ToString();
             }
-// Not needed in dotnet-svcutil scenario. 
-//             try {
-//                 CompressedStack.Run( compressedStack, new ContextCallback( OpenUrlDelegate ), tmpResolver );
-//             }
-//             catch {
-//                 SetErrorState();
-//                 throw;
-//             }
 
             if ( ps.stream == null ) {
                 ThrowWithoutLineInfo( ResXml.Xml_CannotResolveUrl, ps.baseUriStr );

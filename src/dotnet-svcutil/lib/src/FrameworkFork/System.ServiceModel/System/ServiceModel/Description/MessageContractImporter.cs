@@ -165,17 +165,6 @@ namespace System.ServiceModel.Description
 
         void TraceImportInformation(OperationDescription operation)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticUtility.ShouldTraceInformation)
-//             {
-//                 Dictionary<String, String> ht = new Dictionary<string, string>(2)
-//                 {
-//                     { "Operation", operation.Name },
-//                     { "Format", CurrentSchemaImporter.GetFormatName() }
-//                 };
-//                 TraceUtility.TraceEvent(TraceEventType.Information, TraceCode.CannotBeImportedInCurrentFormat,
-//                     SR.TraceCodeCannotBeImportedInCurrentFormat, new DictionaryTraceRecord(ht), null, null);
-//             }
 
         }
 

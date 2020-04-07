@@ -230,12 +230,6 @@ namespace System.Runtime.Serialization
 
         void InternalImport(XmlSchemaSet schemas, ICollection<XmlQualifiedName> typeNames, ICollection<XmlSchemaElement> elements, XmlQualifiedName[] elementTypeNames/*filled on return*/)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticUtility.ShouldTraceInformation)
-//             {
-//                 TraceUtility.Trace(TraceEventType.Information, TraceCode.XsdImportBegin, SR.Format(SR.TraceCodeXsdImportBegin));
-//             }
-
             DataContractSet oldValue = (dataContractSet == null) ? null : new DataContractSet(dataContractSet);
             try
             {
@@ -255,12 +249,6 @@ namespace System.Runtime.Serialization
                 TraceImportError(ex);
                 throw;
             }
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticUtility.ShouldTraceInformation)
-//             {
-//                 TraceUtility.Trace(TraceEventType.Information, TraceCode.XsdImportEnd, SR.Format(SR.TraceCodeXsdImportEnd));
-//             }
-
         }
 
         bool ImportXmlDataType
@@ -273,11 +261,6 @@ namespace System.Runtime.Serialization
 
         void TraceImportError(Exception exception)
         {
-// Not needed in dotnet-svcutil scenario. 
-//             if (DiagnosticUtility.ShouldTraceError)
-//             {
-//                 TraceUtility.Trace(TraceEventType.Error, TraceCode.XsdImportError, SR.Format(SR.TraceCodeXsdImportError), null, exception);
-//             }
 
         }
 

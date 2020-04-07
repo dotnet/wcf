@@ -80,9 +80,6 @@ namespace System.ServiceModel.Description
             get { return this._protectionLevel; }
             set
             {
-// Not needed in dotnet-svcutil scenario. 
-//                 if (!ProtectionLevelHelper.IsDefined(value))
-
                 if(!(value == ProtectionLevel.None || value == ProtectionLevel.Sign || value == ProtectionLevel.EncryptAndSign))
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 this._protectionLevel = value;

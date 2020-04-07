@@ -132,28 +132,6 @@ namespace System.Runtime
             _currentChunkSize = 0;
         }
 
-// Not needed in dotnet-svcutil scenario. 
-//         public virtual IAsyncResult BeginRead(byte[] buffer, int offset, int size, AsyncCallback callback, object state)
-//         {
-//             throw Fx.Exception.AsError(new NotSupportedException(InternalSR.ReadNotSupported));
-//         }
-// 
-//         public virtual int EndRead(IAsyncResult result)
-//         {
-//             throw Fx.Exception.AsError(new NotSupportedException(InternalSR.ReadNotSupported));
-//         }
-// 
-//         public virtual IAsyncResult BeginWrite(byte[] buffer, int offset, int size, AsyncCallback callback, object state)
-//         {
-//             Write(buffer, offset, size);
-//             return new CompletedAsyncResult(callback, state);
-//         }
-// 
-//         public virtual void EndWrite(IAsyncResult result)
-//         {
-//             CompletedAsyncResult.End(result);
-//         }
-
         public void Clear()
         {
             if (!_callerReturnsBuffer)
@@ -171,11 +149,6 @@ namespace System.Runtime
             _chunkCount = 0;
             _currentChunk = null;
         }
-
-// Not needed in dotnet-svcutil scenario. 
-//         public virtual void Close()
-//         {
-//         }
 
         public override void Flush()
         {

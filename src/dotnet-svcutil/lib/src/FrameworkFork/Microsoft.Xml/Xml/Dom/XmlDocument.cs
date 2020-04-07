@@ -335,16 +335,6 @@ namespace Microsoft.Xml {
 
         public virtual XmlResolver XmlResolver {
             set {
-// Not needed in dotnet-svcutil scenario. 
-//                 if ( value != null ) {
-//                     try {
-//                         new NamedPermissionSet( "FullTrust" ).Demand();
-//                     }
-//                     catch ( SecurityException e ) {
-//                         throw new SecurityException( Res.GetString( Res.Xml_UntrustedCodeSettingResolver ), e );
-//                     }
-//                 }   
-
                 resolver = value;
                 if ( !bSetResolver )
                     bSetResolver = true;

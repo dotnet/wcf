@@ -358,9 +358,6 @@ namespace System.ServiceModel.Dispatcher
 
             if (streamFormatter != null)
             {
-// Not needed in dotnet-svcutil scenario. Use the sync method.
-//                 await streamFormatter.SerializeAsync(writer, parameters, returnValue);
-
                 streamFormatter.Serialize(writer, parameters, returnValue);
 
                 return;

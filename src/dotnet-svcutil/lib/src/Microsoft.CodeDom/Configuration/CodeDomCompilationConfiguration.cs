@@ -28,8 +28,6 @@ namespace Microsoft.CodeDom.Compiler
             // C#
             compilerParameters = new CompilerParameters();
             compilerParameters.WarningLevel = 4;
-// Not needed in dotnet-svcutil scenario. 
-//             typeName = "Microsoft.CSharp.CSharpCodeProvider, System";
 
             typeName = "Microsoft.CSharp.CSharpCodeProvider";
             compilerInfo = new CompilerInfo(compilerParameters, typeName);
@@ -38,39 +36,6 @@ namespace Microsoft.CodeDom.Compiler
             compilerInfo._providerOptions = new Dictionary<string, string>();
             compilerInfo._providerOptions[RedistVersionInfo.NameTag] = RedistVersionInfo.DefaultVersion;
             AddCompilerInfo(compilerInfo);
-
-// Not needed in dotnet-svcutil scenario. 
-//             // VB
-//             compilerParameters = new CompilerParameters();
-//             compilerParameters.WarningLevel = 4;
-//             typeName = "Microsoft.VisualBasic.VBCodeProvider, System";
-//             compilerInfo = new CompilerInfo(compilerParameters, typeName);
-//             compilerInfo._compilerLanguages = new string[] { "vb", "vbs", "visualbasic", "vbscript" };
-//             compilerInfo._compilerExtensions = new string[] { ".vb", "vb" };
-//             compilerInfo._providerOptions = new Dictionary<string, string>();
-//             compilerInfo._providerOptions[RedistVersionInfo.NameTag] = RedistVersionInfo.DefaultVersion;
-//             AddCompilerInfo(compilerInfo);
-// 
-//             // JScript
-//             compilerParameters = new CompilerParameters();
-//             compilerParameters.WarningLevel = 4;
-//             typeName = "Microsoft.JScript.JScriptCodeProvider, MicrosoftJScript";
-//             compilerInfo = new CompilerInfo(compilerParameters, typeName);
-//             compilerInfo._compilerLanguages = new string[] { "js", "jscript", "javascript" };
-//             compilerInfo._compilerExtensions = new string[] { ".js", "js" };
-//             compilerInfo._providerOptions = new Dictionary<string, string>();
-//             AddCompilerInfo(compilerInfo);
-// 
-//             // C++
-//             compilerParameters = new CompilerParameters();
-//             compilerParameters.WarningLevel = 4;
-//             typeName = "Microsoft.VisualC.CppCodeProvider, MicrosoftVisualCCppCodeProvider";
-//             compilerInfo = new CompilerInfo(compilerParameters, typeName);
-//             compilerInfo._compilerLanguages = new string[] { "c++", "mc", "cpp" };
-//             compilerInfo._compilerExtensions = new string[] { ".h", "h" };
-//             compilerInfo._providerOptions = new Dictionary<string, string>();
-//             AddCompilerInfo(compilerInfo);
-
         }
 
         private void AddCompilerInfo(CompilerInfo compilerInfo)

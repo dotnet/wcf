@@ -12,11 +12,6 @@ namespace System.Runtime.Serialization
     using Microsoft.Xml.Serialization;
     using System.Security;
     using DataContractDictionary = System.Collections.Generic.Dictionary<Microsoft.Xml.XmlQualifiedName, DataContract>;
-// Not needed in dotnet-svcutil scenario. 
-// #if !NET_NATIVE
-//     using ExtensionDataObject = System.Object;
-// #endif
-
 
 #if USE_REFEMIT || NET_NATIVE
     public class XmlObjectSerializerReadContext : XmlObjectSerializerContext

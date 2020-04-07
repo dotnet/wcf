@@ -546,9 +546,6 @@ namespace System.ServiceModel.Channels
                     xmlWriter.WriteEndDocument();
                 }
 
-// Not needed in dotnet-svcutil scenario. Just use the sync flush.
-//                 await xmlWriter.FlushAsync();
-
                 xmlWriter.Flush();
                 ReturnStreamedWriter(xmlWriter);
 
