@@ -1,41 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-
-// WARNING: This file is generated and should not be modified directly.  Instead,
-// modify XmlTextWriterGenerator.cxx and run gen.bat in the same directory.
-// This batch file will execute the following commands:
-//
-//   cl.exe /C /EP /D _XML_UTF8_TEXT_WRITER HtmlTextWriterGenerator.cxx > HtmlUtf8TextWriter.cs
-//   cl.exe /C /EP /D _XML_ENCODED_TEXT_WRITER HtmlTextWriterGenerator.cxx > HtmlEncodedTextWriter.cs
-//
-// Because these two implementations of XmlTextWriter are so similar, the C++ preprocessor
-// is used to generate each implementation from one template file, using macros and ifdefs.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 using System;
 using System.IO;
 using System.Text;

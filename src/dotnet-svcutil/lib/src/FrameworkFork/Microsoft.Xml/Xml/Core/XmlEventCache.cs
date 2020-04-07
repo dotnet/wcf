@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.Xml.Schema;
-using Microsoft.Xml.Xsl.Runtime;
 
 namespace Microsoft.Xml {
 				using System;
@@ -19,7 +18,7 @@ namespace Microsoft.Xml {
         private XmlEvent[] pageCurr;        // Page that is currently being built
         private int pageSize;               // Number of events in pageCurr
         private bool hasRootNode;           // True if the cached document has a root node, false if it's a fragment
-        private StringConcat singleText;    // If document consists of a single text node, cache it here rather than creating pages
+        private StringBuilder singleText;    // If document consists of a single text node, cache it here rather than creating pages
         private string baseUri;             // Base Uri of document
 
         private enum XmlEventType {
@@ -63,7 +62,7 @@ namespace Microsoft.Xml {
         }
 
         public void EndEvents() {
-            if (this.singleText.Count == 0)
+            if (this.singleText.Length == 0)
                 AddEvent(XmlEventType.Unknown);
         }
 
@@ -97,8 +96,8 @@ namespace Microsoft.Xml {
             XmlRawWriter rawWriter;
 
             // Special-case single text node at the top-level
-            if (this.singleText.Count != 0) {
-                writer.WriteString(this.singleText.GetResult());
+            if (this.singleText.Length != 0) {
+                writer.WriteString(this.singleText.ToString());
                 return;
             }
 
@@ -252,8 +251,8 @@ namespace Microsoft.Xml {
             bool inAttr;
 
             // Special-case single text node at the top-level
-            if (this.singleText.Count != 0)
-                return this.singleText.GetResult();
+            if (this.singleText.Length != 0)
+                return this.singleText.ToString();
 
             bldr = new StringBuilder();
 
@@ -340,7 +339,7 @@ namespace Microsoft.Xml {
         public override void WriteString(string text) {
             // Special-case single text node at the top level
             if (this.pages == null) {
-                this.singleText.ConcatNoDelimiter(text);
+                this.singleText.Append(text);
             }
             else {
                 AddEvent(XmlEventType.String, text);
@@ -486,9 +485,9 @@ namespace Microsoft.Xml {
                 this.pageCurr = new XmlEvent[InitialPageSize];
                 this.pages.Add(this.pageCurr);
 
-                if (this.singleText.Count != 0) {
+                if (this.singleText.Length != 0) {
                     // Review: There is no need to concatenate the strings here
-                    this.pageCurr[0].InitEvent(XmlEventType.String, this.singleText.GetResult());
+                    this.pageCurr[0].InitEvent(XmlEventType.String, this.singleText.ToString());
                     this.pageSize++;
                     this.singleText.Clear();
                 }

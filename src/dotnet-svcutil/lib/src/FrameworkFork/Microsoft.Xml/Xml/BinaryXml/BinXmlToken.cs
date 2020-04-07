@@ -9,8 +9,6 @@ using System.Diagnostics;
 using System.Globalization;
 
 namespace Microsoft.Xml {
-				using System;
-				
     /* These are the tokens used by the Yukon BinaryXml protocol */
     internal enum BinXmlToken {
         Error = 0,

@@ -18,11 +18,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class CodeSerializer
     {
-        static readonly string DefaultFileName = "ServiceReferences";
-        static readonly Encoding ouputEncoding = new System.Text.UTF8Encoding(true);
+        private static readonly string DefaultFileName = "ServiceReferences";
+        private static readonly Encoding ouputEncoding = new System.Text.UTF8Encoding(true);
 
-        readonly CodeDomProvider codeProvider;
-        readonly string outputFilePath;
+        private readonly CodeDomProvider codeProvider;
+        private readonly string outputFilePath;
 
         internal CodeSerializer(CommandProcessorOptions options, IEnumerable<MetadataSection> inputMetadata)
         {
@@ -92,7 +92,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return filePath;
         }
 
-        StreamWriter CreateOutputFile()
+        private StreamWriter CreateOutputFile()
         {
             OutputPathHelper.CreateDirectoryIfNeeded(this.outputFilePath);
 
@@ -107,7 +107,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static bool CompileUnitHasTypes(CodeCompileUnit codeCompileUnit)
+        private static bool CompileUnitHasTypes(CodeCompileUnit codeCompileUnit)
         {
             foreach (CodeNamespace ns in codeCompileUnit.Namespaces)
             {

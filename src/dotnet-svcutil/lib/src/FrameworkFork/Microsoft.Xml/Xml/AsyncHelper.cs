@@ -37,16 +37,12 @@ namespace Microsoft.Xml {
             func();
         }
 
-        public static Task<bool> ReturnTaskBoolWhenFinish(this Task task, bool ret) {
-            if (task.IsSuccess()) {
-                if (ret)
-                    return DoneTaskTrue;
-                else
-                    return DoneTaskFalse;
+        public static async Task<bool> ReturnTaskBoolWhenFinish(this Task task, bool ret) {
+            if (!task.IsSuccess()) {
+                await task.ConfigureAwait(false);               
             }
-            else {
-                return _ReturnTaskBoolWhenFinish(task, ret);
-            }
+            
+            return ret;
         }
 
         public static async Task<bool> _ReturnTaskBoolWhenFinish(this Task task, bool ret) {

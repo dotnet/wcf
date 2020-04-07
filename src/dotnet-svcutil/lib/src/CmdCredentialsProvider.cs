@@ -267,7 +267,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static string ReadUserInput(string prompt, bool isPassword = false)
         {
             ConsoleKeyInfo keyInfo;
-            var userInput = string.Empty;
+            StringBuilder userInput = new StringBuilder();
 
             Console.Write(prompt);
 
@@ -279,16 +279,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     Console.WriteLine();
                     throw new OperationCanceledException();
                 }
-
-                if (!Char.IsControl(keyInfo.KeyChar))
+                else if (keyInfo.Key == ConsoleKey.Backspace && userInput.Length > 0)
                 {
-                    userInput += keyInfo.KeyChar;
+                    Console.Write("\b \b");
+                    userInput = userInput.Remove(userInput.Length - 1, 1);
+                }
+                else if (!Char.IsControl(keyInfo.KeyChar))
+                {
+                    userInput.Append(keyInfo.KeyChar);
                     System.Console.Write(isPassword ? '*' : keyInfo.KeyChar);
                 }
             }
             while (keyInfo.Key != ConsoleKey.Enter);
 
-            return userInput;
+            return userInput.ToString();
         }
 
 

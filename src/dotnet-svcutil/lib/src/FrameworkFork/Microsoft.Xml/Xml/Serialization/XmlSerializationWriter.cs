@@ -173,7 +173,7 @@ namespace Microsoft.Xml.Serialization {
             string typeName;
             string typeNs = XmlSchema.Namespace;
             
-            switch (type.GetTypeCode()) {
+            switch (Type.GetTypeCode(type)) {
             case TypeCode.String: typeName = "string"; break;
             case TypeCode.Int32: typeName = "int"; break;
             case TypeCode.Boolean: typeName = "boolean"; break;
@@ -219,7 +219,7 @@ namespace Microsoft.Xml.Serialization {
             Type t = o.GetType();
             bool wroteStartElement = false;
 
-            switch (t.GetTypeCode()) {
+            switch (Type.GetTypeCode(t)) {
             case TypeCode.String:
                 value = (string)o;
                 type = "string";
@@ -3049,7 +3049,7 @@ namespace Microsoft.Xml.Serialization {
             else {
                 Type type = value.GetType();
 
-                switch (type.GetTypeCode()) {
+                switch (Type.GetTypeCode(type)) {
                 case TypeCode.String:
                     {
                         string s = (string)value;
@@ -3219,28 +3219,12 @@ namespace Microsoft.Xml.Serialization {
         static volatile Hashtable assemblyToNameMap = new Hashtable();
         static Hashtable tableIsTypeDynamic = Hashtable.Synchronized(new Hashtable());
 
-// Not needed in dotnet-svcutil scenario. 
-//         static volatile FileIOPermission fileIOPermission;
-//         static FileIOPermission UnrestrictedFileIOPermission {
-//             get {
-//                 if (fileIOPermission == null) {
-//                     fileIOPermission = new FileIOPermission(PermissionState.Unrestricted);
-//                 }
-//                 return fileIOPermission;
-//             }
-//         }
-
-        // SxS: This method does not take any resource name and does not expose any resources to the caller.
-        // It's OK to suppress the SxS warning.
-        
-        
         internal static bool IsTypeDynamic(Type type) {
             object oIsTypeDynamic = tableIsTypeDynamic[type];
             if (oIsTypeDynamic == null) {
                 TypeInfo info = type.GetTypeInfo();
-                //UnrestrictedFileIOPermission.Assert();
                 Assembly assembly = info.Assembly;
-                bool isTypeDynamic = assembly.IsDynamic; // || string.IsNullOrEmpty(assembly.Location);
+                bool isTypeDynamic = assembly.IsDynamic;
                 if (!isTypeDynamic)
                 {
                     if (type.IsArray)

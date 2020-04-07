@@ -498,7 +498,7 @@ namespace Microsoft.Xml.Serialization {
                 return true;
             if (type.GetTypeInfo().IsEnum)
                 return false;
-            switch (type.GetTypeCode()) {
+            switch (Type.GetTypeCode(type)) {
                 case TypeCode.String: return true;
                 case TypeCode.Int32: return true;
                 case TypeCode.Boolean: return true;

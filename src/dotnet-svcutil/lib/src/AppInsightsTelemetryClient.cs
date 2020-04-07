@@ -187,6 +187,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return "Unknown";
             }
         }
+        
         public void TrackEvent(string eventName)
         {
             if (IsUserOptedIn)

@@ -145,14 +145,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
         private static readonly string ProgramClass =
-            "using System; " + Environment.NewLine +
-            "namespace SvcutilBootstrap {" + Environment.NewLine +
-            "    public class Program {" + Environment.NewLine +
-            "        public static int Main(string[] args) {" + Environment.NewLine +
-            "            return Microsoft.Tools.ServiceModel.Svcutil.Tool.Main(args);" + Environment.NewLine +
-            "        }" + Environment.NewLine +
-            "    }" + Environment.NewLine +
-            "}" + Environment.NewLine;
+        @"using System
+namespace SvcutilBootstrap {
+    public class Program {
+        public static int Main(string[] args) {
+            return Microsoft.Tools.ServiceModel.Svcutil.Tool.Main(args);
+        }
+    }
+}";
 
         private async Task GenerateProgramFileAsync(ILogger logger, CancellationToken cancellationToken)
         {

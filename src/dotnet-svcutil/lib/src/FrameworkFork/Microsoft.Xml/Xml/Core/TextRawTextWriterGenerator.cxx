@@ -1,19 +1,5 @@
-//------------------------------------------------------------------------------
-// <copyright file="TextWriterGenerator.cxx" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// <owner current="true" primary="true">helenak</owner>
-//------------------------------------------------------------------------------
-
-// WARNING: This file is generated and should not be modified directly.  Instead,
-// modify TextWriterGenerator.cxx and run gen.bat in the same directory.
-// This batch file will execute the following commands:
-//
-//   cl.exe /C /EP /D _UTF8_TEXT_WRITER TextWriterGenerator.cxx > Utf8TextWriter.cs
-//   cl.exe /C /EP /D _ENCODED_TEXT_WRITER TextWriterGenerator.cxx > EncodedTextWriter.cs
-//
-// Because these two implementations of TextWriter are so similar, the C++ preprocessor
-// is used to generate each implementation from one template file, using macros and ifdefs.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 
 #ifdef _UTF8_TEXT_WRITER
 #define _CLASS_NAME TextUtf8RawTextWriter
