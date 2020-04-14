@@ -68,6 +68,7 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(SSL_Available))]
     [Issue(1945, OS = OSID.AnyOSX)] // OSX doesn't support the TrustedPeople certificate store
     [OuterLoop]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: https://github.com/dotnet/wcf/issues/3112")]
     // Asking for PeerTrust alone should throw SecurityNegotiationException
     // if the certificate is not in the TrustedPeople store.  For this test
     // we use a valid chain-trusted certificate that we know is not in the
