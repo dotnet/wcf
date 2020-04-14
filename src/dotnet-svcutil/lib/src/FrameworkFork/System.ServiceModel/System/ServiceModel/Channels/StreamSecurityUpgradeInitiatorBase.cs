@@ -84,7 +84,7 @@ namespace System.ServiceModel.Channels
 
             if (!_isOpen)
             {
-                 Open(TimeSpan.Zero);
+                Open(TimeSpan.Zero);
             }
 
             var remoteSecurityWrapper = new OutWrapper<SecurityMessageProperty>();

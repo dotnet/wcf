@@ -3,7 +3,6 @@
 
 namespace System.Web.Services.Configuration
 {
-
     using System;
 
     /// <include file='doc\XmlFormatExtensionAttribute.uex' path='docs/doc[@for="XmlFormatExtensionAttribute"]/*' />
@@ -13,9 +12,9 @@ namespace System.Web.Services.Configuration
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class XmlFormatExtensionAttribute : Attribute
     {
-        Type[] types;
-        string name;
-        string ns;
+        private Type[] _types;
+        private string _name;
+        private string _ns;
 
         /// <include file='doc\XmlFormatExtensionAttribute.uex' path='docs/doc[@for="XmlFormatExtensionAttribute.XmlFormatExtensionAttribute"]/*' />
         /// <devdoc>
@@ -48,9 +47,9 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public XmlFormatExtensionAttribute(string elementName, string ns, Type[] extensionPoints)
         {
-            this.name = elementName;
-            this.ns = ns;
-            this.types = extensionPoints;
+            _name = elementName;
+            _ns = ns;
+            _types = extensionPoints;
         }
 
         /// <include file='doc\XmlFormatExtensionAttribute.uex' path='docs/doc[@for="XmlFormatExtensionAttribute.ExtensionPoints"]/*' />
@@ -59,8 +58,8 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public Type[] ExtensionPoints
         {
-            get { return types == null ? new Type[0] : types; }
-            set { types = value; }
+            get { return _types == null ? new Type[0] : _types; }
+            set { _types = value; }
         }
 
         /// <include file='doc\XmlFormatExtensionAttribute.uex' path='docs/doc[@for="XmlFormatExtensionAttribute.Namespace"]/*' />
@@ -69,8 +68,8 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\XmlFormatExtensionAttribute.uex' path='docs/doc[@for="XmlFormatExtensionAttribute.ElementName"]/*' />
@@ -79,10 +78,9 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public string ElementName
         {
-            get { return name == null ? string.Empty : name; }
-            set { name = value; }
+            get { return _name == null ? string.Empty : _name; }
+            set { _name = value; }
         }
     }
-
 }
 

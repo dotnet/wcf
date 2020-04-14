@@ -1,22 +1,23 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     public sealed class MetadataImporterQuotas
     {
-        const int DefaultMaxPolicyConversionContexts = 32;
-        const int DefaultMaxPolicyNodes = 4096;
-        const int DefaultMaxPolicyAssertions = 1024;
-        const int DefaultMaxYields = 1024;
+        private const int DefaultMaxPolicyConversionContexts = 32;
+        private const int DefaultMaxPolicyNodes = 4096;
+        private const int DefaultMaxPolicyAssertions = 1024;
+        private const int DefaultMaxYields = 1024;
 
-        int maxPolicyConversionContexts;
-        int maxPolicyNodes;
-        int maxPolicyAssertions;
-        int maxYields;
+        private int _maxPolicyConversionContexts;
+        private int _maxPolicyNodes;
+        private int _maxPolicyAssertions;
+        private int _maxYields;
 
         public MetadataImporterQuotas()
         {
-            this.maxYields = DefaultMaxYields;
+            _maxYields = DefaultMaxYields;
         }
 
         public static MetadataImporterQuotas Defaults
@@ -36,41 +37,41 @@ namespace System.ServiceModel.Description
 
         internal int MaxPolicyConversionContexts
         {
-            get { return this.maxPolicyConversionContexts; }
-            set { this.maxPolicyConversionContexts = value; }
+            get { return _maxPolicyConversionContexts; }
+            set { _maxPolicyConversionContexts = value; }
         }
         internal int MaxPolicyNodes
         {
-            get { return this.maxPolicyNodes; }
-            set { this.maxPolicyNodes = value; }
+            get { return _maxPolicyNodes; }
+            set { _maxPolicyNodes = value; }
         }
         internal int MaxPolicyAssertions
         {
-            get { return this.maxPolicyAssertions; }
-            set { this.maxPolicyAssertions = value; }
+            get { return _maxPolicyAssertions; }
+            set { _maxPolicyAssertions = value; }
         }
 
         internal int MaxYields
         {
-            get { return this.maxYields; }
-            set { this.maxYields = value; }
+            get { return _maxYields; }
+            set { _maxYields = value; }
         }
 
-        static MetadataImporterQuotas CreateDefaultSettings()
+        private static MetadataImporterQuotas CreateDefaultSettings()
         {
             MetadataImporterQuotas settings = new MetadataImporterQuotas();
-            settings.maxPolicyConversionContexts = DefaultMaxPolicyConversionContexts;
-            settings.maxPolicyNodes = DefaultMaxPolicyNodes;
-            settings.maxPolicyAssertions = DefaultMaxPolicyAssertions;
+            settings._maxPolicyConversionContexts = DefaultMaxPolicyConversionContexts;
+            settings._maxPolicyNodes = DefaultMaxPolicyNodes;
+            settings._maxPolicyAssertions = DefaultMaxPolicyAssertions;
 
             return settings;
         }
-        static MetadataImporterQuotas CreateMaxSettings()
+        private static MetadataImporterQuotas CreateMaxSettings()
         {
             MetadataImporterQuotas settings = new MetadataImporterQuotas();
-            settings.maxPolicyConversionContexts = DefaultMaxPolicyConversionContexts;
-            settings.maxPolicyNodes = int.MaxValue;
-            settings.maxPolicyAssertions = int.MaxValue;
+            settings._maxPolicyConversionContexts = DefaultMaxPolicyConversionContexts;
+            settings._maxPolicyNodes = int.MaxValue;
+            settings._maxPolicyAssertions = int.MaxValue;
 
             return settings;
         }

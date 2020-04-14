@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using Microsoft.Xml;
@@ -54,7 +55,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        void SetBinding(ServiceEndpoint endpoint, Binding binding)
+        private void SetBinding(ServiceEndpoint endpoint, Binding binding)
         {
             binding.Name = endpoint.Binding.Name;
             binding.Namespace = endpoint.Binding.Namespace;

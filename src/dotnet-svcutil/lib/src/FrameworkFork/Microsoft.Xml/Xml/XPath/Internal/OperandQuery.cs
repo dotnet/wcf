@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -9,20 +10,24 @@ namespace MS.Internal.Xml.XPath {
     using System.Globalization;
     using System.Collections;
 
-    internal sealed class OperandQuery : ValueQuery {
+    internal sealed class OperandQuery : ValueQuery
+    {
         internal object val;
 
-        public OperandQuery(object val) {
+        public OperandQuery(object val)
+        {
             this.val = val;
         }
 
-        public override object Evaluate(XPathNodeIterator nodeIterator) {
+        public override object Evaluate(XPathNodeIterator nodeIterator)
+        {
             return val;
         }
         public override XPathResultType StaticType { get { return GetXPathType(val); } }
         public override XPathNodeIterator Clone() { return this; }
 
-        public override void PrintQuery(XmlWriter w) {
+        public override void PrintQuery(XmlWriter w)
+        {
             w.WriteStartElement(this.GetType().Name);
             w.WriteAttributeString("value", Convert.ToString(val, CultureInfo.InvariantCulture));
             w.WriteEndElement();

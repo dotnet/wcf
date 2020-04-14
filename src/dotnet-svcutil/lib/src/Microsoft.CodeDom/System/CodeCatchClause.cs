@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,71 +13,83 @@ namespace Microsoft.CodeDom {
     ///    <para>Represents a catch exception block.</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeCatchClause {
-        private CodeStatementCollection statements;
-        private CodeTypeReference catchExceptionType;
-        private string localName;
+    public class CodeCatchClause
+    {
+        private CodeStatementCollection _statements;
+        private CodeTypeReference _catchExceptionType;
+        private string _localName;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes an instance of <see cref='Microsoft.CodeDom.CodeCatchClause'/>.
         ///    </para>
         /// </devdoc>
-        public CodeCatchClause() {
+        public CodeCatchClause()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeCatchClause(string localName) {
-            this.localName = localName;
+        public CodeCatchClause(string localName)
+        {
+            _localName = localName;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeCatchClause(string localName, CodeTypeReference catchExceptionType) {
-            this.localName = localName;
-            this.catchExceptionType = catchExceptionType;
+        public CodeCatchClause(string localName, CodeTypeReference catchExceptionType)
+        {
+            _localName = localName;
+            _catchExceptionType = catchExceptionType;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeCatchClause(string localName, CodeTypeReference catchExceptionType, params CodeStatement[] statements) {
-            this.localName = localName;
-            this.catchExceptionType = catchExceptionType;
+        public CodeCatchClause(string localName, CodeTypeReference catchExceptionType, params CodeStatement[] statements)
+        {
+            _localName = localName;
+            _catchExceptionType = catchExceptionType;
             Statements.AddRange(statements);
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string LocalName {
-            get {
-                return (localName == null) ? string.Empty: localName;
+        public string LocalName
+        {
+            get
+            {
+                return (_localName == null) ? string.Empty : _localName;
             }
-            set {
-                localName = value;
+            set
+            {
+                _localName = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReference CatchExceptionType {
-            get {
-                if (catchExceptionType == null) {
-                    catchExceptionType = new CodeTypeReference(typeof(System.Exception));
+        public CodeTypeReference CatchExceptionType
+        {
+            get
+            {
+                if (_catchExceptionType == null)
+                {
+                    _catchExceptionType = new CodeTypeReference(typeof(System.Exception));
                 }
-                return catchExceptionType;
+                return _catchExceptionType;
             }
-            set {
-                catchExceptionType = value;
+            set
+            {
+                _catchExceptionType = value;
             }
         }
 
@@ -86,12 +98,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the statements within the clause.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection Statements {
-            get {
-                if (statements == null) {
-                    statements = new CodeStatementCollection();
+        public CodeStatementCollection Statements
+        {
+            get
+            {
+                if (_statements == null)
+                {
+                    _statements = new CodeStatementCollection();
                 }
-                return statements;
+                return _statements;
             }
         }
     }

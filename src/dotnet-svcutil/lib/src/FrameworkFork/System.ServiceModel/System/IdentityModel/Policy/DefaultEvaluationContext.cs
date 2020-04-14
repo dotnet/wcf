@@ -16,7 +16,7 @@ namespace System.IdentityModel.Policy
         private DateTime _expirationTime = SecurityUtils.MaxUtcDateTime;
         private int _generation;
 
-        ReadOnlyCollection<ClaimSet> readOnlyClaimSets;
+        private ReadOnlyCollection<ClaimSet> _readOnlyClaimSets;
 
         public DefaultEvaluationContext()
         {
@@ -31,15 +31,15 @@ namespace System.IdentityModel.Policy
 
         public override ReadOnlyCollection<ClaimSet> ClaimSets
         {
-            get 
+            get
             {
                 if (_claimSets == null)
                     return EmptyReadOnlyCollection<ClaimSet>.Instance;
 
-                if (readOnlyClaimSets == null)
-                    readOnlyClaimSets = new ReadOnlyCollection<ClaimSet>(_claimSets);
+                if (_readOnlyClaimSets == null)
+                    _readOnlyClaimSets = new ReadOnlyCollection<ClaimSet>(_claimSets);
 
-                return readOnlyClaimSets; 
+                return _readOnlyClaimSets;
             }
         }
 

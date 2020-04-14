@@ -28,7 +28,7 @@ namespace System.ServiceModel.Security
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
 
-    class WSSecurityXXX2005 : WSSecurityJan2004
+    internal class WSSecurityXXX2005 : WSSecurityJan2004
     {
         public WSSecurityXXX2005(WSSecurityTokenSerializer tokenSerializer, SamlSerializer samlSerializer)
             : base(tokenSerializer, samlSerializer)
@@ -42,7 +42,7 @@ namespace System.ServiceModel.Security
             tokenEntryList.Add(new WSSecurityXXX2005.SamlTokenEntry(this.WSSecurityTokenSerializer, this.SamlSerializer));
         }
 
-        new class SamlTokenEntry : WSSecurityJan2004.SamlTokenEntry
+        private new class SamlTokenEntry : WSSecurityJan2004.SamlTokenEntry
         {
             public SamlTokenEntry(WSSecurityTokenSerializer tokenSerializer, SamlSerializer samlSerializer)
                 : base(tokenSerializer, samlSerializer)
@@ -52,7 +52,7 @@ namespace System.ServiceModel.Security
             public override string TokenTypeUri { get { return SecurityXXX2005Strings.SamlTokenType; } }
         }
 
-        new class WrappedKeyTokenEntry : WSSecurityJan2004.WrappedKeyTokenEntry
+        private new class WrappedKeyTokenEntry : WSSecurityJan2004.WrappedKeyTokenEntry
         {
             public WrappedKeyTokenEntry(WSSecurityTokenSerializer tokenSerializer)
                 : base(tokenSerializer)
@@ -61,6 +61,5 @@ namespace System.ServiceModel.Security
 
             public override string TokenTypeUri { get { return SecurityXXX2005Strings.EncryptedKeyTokenType; } }
         }
-
     }
 }

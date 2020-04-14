@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,22 +16,24 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeMethodReferenceExpression : CodeExpression {
-        private CodeExpression targetObject;
-        private string methodName;
+    public class CodeMethodReferenceExpression : CodeExpression
+    {
+        private CodeExpression _targetObject;
+        private string _methodName;
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeTypeReferenceCollection typeArguments;
+        private CodeTypeReferenceCollection _typeArguments;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeMethodReferenceExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeMethodReferenceExpression() {
+        public CodeMethodReferenceExpression()
+        {
         }
 
         /// <devdoc>
@@ -40,15 +42,18 @@ namespace Microsoft.CodeDom {
         ///       target object and method name.
         ///    </para>
         /// </devdoc>
-        public CodeMethodReferenceExpression(CodeExpression targetObject, string methodName) {
+        public CodeMethodReferenceExpression(CodeExpression targetObject, string methodName)
+        {
             TargetObject = targetObject;
             MethodName = methodName;
         }
 
-        public CodeMethodReferenceExpression(CodeExpression targetObject, string methodName, params CodeTypeReference[] typeParameters) {
+        public CodeMethodReferenceExpression(CodeExpression targetObject, string methodName, params CodeTypeReference[] typeParameters)
+        {
             TargetObject = targetObject;
             MethodName = methodName;
-            if( typeParameters != null && typeParameters.Length > 0) {
+            if (typeParameters != null && typeParameters.Length > 0)
+            {
                 TypeArguments.AddRange(typeParameters);
             }
         }
@@ -58,12 +63,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the target object.
         ///    </para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                this.targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
@@ -72,22 +80,28 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the name of the method to invoke.
         ///    </para>
         /// </devdoc>
-        public string MethodName {
-            get {
-                return (methodName == null) ? string.Empty : methodName;
+        public string MethodName
+        {
+            get
+            {
+                return (_methodName == null) ? string.Empty : _methodName;
             }
-            set {
-                methodName = value;
+            set
+            {
+                _methodName = value;
             }
         }
 
         [System.Runtime.InteropServices.ComVisible(false)]
-        public CodeTypeReferenceCollection TypeArguments{ 
-            get {
-                if( typeArguments == null) {
-                    typeArguments = new CodeTypeReferenceCollection();
+        public CodeTypeReferenceCollection TypeArguments
+        {
+            get
+            {
+                if (_typeArguments == null)
+                {
+                    _typeArguments = new CodeTypeReferenceCollection();
                 }
-                return typeArguments;
+                return _typeArguments;
             }
         }
     }

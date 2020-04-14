@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    class ToolInputException : ToolArgumentException
+    internal class ToolInputException : ToolArgumentException
     {
         internal const int COR_E_ASSEMBLYEXPECTED = -2147024885;
 

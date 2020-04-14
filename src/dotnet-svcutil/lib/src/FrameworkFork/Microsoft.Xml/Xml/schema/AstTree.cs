@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
@@ -19,46 +20,54 @@ namespace Microsoft.Xml.Schema {
 
     // stack element class
     // this one needn't change, even the parameter in methods
-    internal class AxisElement {
+    internal class AxisElement
+    {
         internal DoubleLinkAxis curNode;                // current under-checking node during navigating
         internal int rootDepth;                         // root depth -- contextDepth + 1 if ! isDss; context + {1...} if isDss
         internal int curDepth;                          // current depth
         internal bool isMatch;                          // current is already matching or waiting for matching
 
-        internal DoubleLinkAxis CurNode {
+        internal DoubleLinkAxis CurNode
+        {
             get { return this.curNode; }
         }
-            
+
         // constructor
-        internal AxisElement (DoubleLinkAxis node, int depth) {
+        internal AxisElement(DoubleLinkAxis node, int depth)
+        {
             this.curNode = node;
             this.rootDepth = this.curDepth = depth;
             this.isMatch = false;
         }
 
-        internal void SetDepth (int depth) {
+        internal void SetDepth(int depth)
+        {
             this.rootDepth = this.curDepth = depth;
             return;
         }
 
         // "a/b/c"     pointer from b move to a
         // needn't change even tree structure changes
-        internal void MoveToParent(int depth, ForwardAxis parent) {
+        internal void MoveToParent(int depth, ForwardAxis parent)
+        {
             // "a/b/c", trying to match b (current node), but meet the end of a, so move pointer to a
-            if ( depth == this.curDepth - 1 ) {
+            if (depth == this.curDepth - 1)
+            {
                 // really need to move the current node pointer to parent
                 // what i did here is for seperating the case of IsDss or only IsChild
                 // bcoz in the first case i need to expect "a" from random depth
                 // -1 means it doesn't expect some specific depth (referecing the dealing to -1 in movetochild method
                 // while in the second case i can't change the root depth which is 1.
-                if ((this.curNode.Input == parent.RootNode ) && (parent.IsDss)) {
+                if ((this.curNode.Input == parent.RootNode) && (parent.IsDss))
+                {
                     this.curNode = parent.RootNode;
                     this.rootDepth = this.curDepth = -1;
                     return;
                 }
-                else if (this.curNode.Input != null) {      // else cur-depth --, cur-node change
-                    this.curNode = (DoubleLinkAxis) (this.curNode.Input);
-                    this.curDepth --;
+                else if (this.curNode.Input != null)
+                {      // else cur-depth --, cur-node change
+                    this.curNode = (DoubleLinkAxis)(this.curNode.Input);
+                    this.curDepth--;
                     return;
                 }
                 else return;
@@ -67,9 +76,11 @@ namespace Microsoft.Xml.Schema {
             // or maybe i matched, now move out the current node
             // or move out after failing to match attribute
             // the node i m next expecting is still the current node
-            else if (depth == this.curDepth) {              // after matched or [2] failed in matching attribute
-                if (this.isMatch) {
-                    this.isMatch = false;   
+            else if (depth == this.curDepth)
+            {              // after matched or [2] failed in matching attribute
+                if (this.isMatch)
+                {
+                    this.isMatch = false;
                 }
             }
             return;                                         // this node is still what i am expecting
@@ -79,129 +90,156 @@ namespace Microsoft.Xml.Schema {
         // equal & ! attribute then move
         // "a/b/c"     pointer from a move to b
         // return true if reach c and c is an element and c is the axis
-        internal bool MoveToChild(string name, string URN, int depth, ForwardAxis parent) { 
+        internal bool MoveToChild(string name, string URN, int depth, ForwardAxis parent)
+        {
             // an attribute can never be the same as an element
-            if (Asttree.IsAttribute(this.curNode)) {
-                return false; 
+            if (Asttree.IsAttribute(this.curNode))
+            {
+                return false;
             }
 
             // either moveToParent or moveToChild status will have to be changed into unmatch...
-            if (this.isMatch) {
-                this.isMatch = false;    
+            if (this.isMatch)
+            {
+                this.isMatch = false;
             }
-            if (! AxisStack.Equal (this.curNode.Name, this.curNode.Urn, name, URN)) {
-                return false; 
+            if (!AxisStack.Equal(this.curNode.Name, this.curNode.Urn, name, URN))
+            {
+                return false;
             }
-            if (this.curDepth == -1) {
-                SetDepth (depth); 
+            if (this.curDepth == -1)
+            {
+                SetDepth(depth);
             }
-            else if (depth > this.curDepth) {
-                return false; 
+            else if (depth > this.curDepth)
+            {
+                return false;
             }
             // matched ...  
-            if (this.curNode == parent.TopNode) {
+            if (this.curNode == parent.TopNode)
+            {
                 this.isMatch = true;
-                return true;                
+                return true;
             }
             // move down this.curNode
-            DoubleLinkAxis nowNode = (DoubleLinkAxis) (this.curNode.Next);
-            if (Asttree.IsAttribute (nowNode)) {
+            DoubleLinkAxis nowNode = (DoubleLinkAxis)(this.curNode.Next);
+            if (Asttree.IsAttribute(nowNode))
+            {
                 this.isMatch = true;                    // for attribute 
                 return false;
             }
             this.curNode = nowNode;
-            this.curDepth ++;
+            this.curDepth++;
             return false;
         }
-
     }
 
-    internal class AxisStack {
+    internal class AxisStack
+    {
         // property
-        private ArrayList stack;                            // of AxisElement
-        private ForwardAxis subtree;                        // reference to the corresponding subtree
-        private ActiveAxis parent;
+        private ArrayList _stack;                            // of AxisElement
+        private ForwardAxis _subtree;                        // reference to the corresponding subtree
+        private ActiveAxis _parent;
 
-        internal ForwardAxis Subtree {
-            get { return this.subtree; }
+        internal ForwardAxis Subtree
+        {
+            get { return _subtree; }
         }
 
-        internal int Length {                               // stack length
-            get {return this.stack.Count; }
+        internal int Length
+        {                               // stack length
+            get { return _stack.Count; }
         }
-    
+
         // instructor
-        public AxisStack (ForwardAxis faxis, ActiveAxis parent) {
-            this.subtree = faxis;
-            this.stack = new ArrayList();
-            this.parent = parent;       // need to use its contextdepth each time....
+        public AxisStack(ForwardAxis faxis, ActiveAxis parent)
+        {
+            _subtree = faxis;
+            _stack = new ArrayList();
+            _parent = parent;       // need to use its contextdepth each time....
 
             // improvement:
             // if ! isDss, there has nothing to do with Push/Pop, only one copy each time will be kept
             // if isDss, push and pop each time....
-            if (! faxis.IsDss) {                // keep an instance
-                this.Push (1);              // context depth + 1
+            if (!faxis.IsDss)
+            {                // keep an instance
+                this.Push(1);              // context depth + 1
             }
             // else just keep stack empty
         }
 
         // method
-        internal void Push (int depth) {
-            AxisElement eaxis = new AxisElement (this.subtree.RootNode, depth);
-            this.stack.Add (eaxis);
+        internal void Push(int depth)
+        {
+            AxisElement eaxis = new AxisElement(_subtree.RootNode, depth);
+            _stack.Add(eaxis);
         }
 
-        internal void Pop () {
-            this.stack.RemoveAt (Length - 1);
+        internal void Pop()
+        {
+            _stack.RemoveAt(Length - 1);
         }
 
         // used in the beginning of .//  and MoveToChild
         // didn't consider Self, only consider name
-        internal static bool Equal (string thisname, string thisURN, string name, string URN) {
+        internal static bool Equal(string thisname, string thisURN, string name, string URN)
+        {
             // which means "b" in xpath, no namespace should be specified
-            if (thisURN == null) {
-                if ( !((URN == null) || (URN.Length == 0))) {
+            if (thisURN == null)
+            {
+                if (!((URN == null) || (URN.Length == 0)))
+                {
                     return false;
                 }
             }
             // != "*"
-            else if ((thisURN.Length != 0) && (thisURN != URN)) {
-                return false; 
+            else if ((thisURN.Length != 0) && (thisURN != URN))
+            {
+                return false;
             }
             // != "a:*" || "*"
-            if ((thisname.Length != 0) && (thisname != name)) {
-                return false; 
+            if ((thisname.Length != 0) && (thisname != name))
+            {
+                return false;
             }
             return true;
         }
 
         // "a/b/c"     pointer from b move to a
         // needn't change even tree structure changes
-        internal void MoveToParent(string name, string URN, int depth) {
-            if (this.subtree.IsSelfAxis) {
-                return; 
+        internal void MoveToParent(string name, string URN, int depth)
+        {
+            if (_subtree.IsSelfAxis)
+            {
+                return;
             }
 
-            for (int i = 0; i < this.stack.Count; ++i) {
-                ((AxisElement)stack[i]).MoveToParent (depth, this.subtree);
+            for (int i = 0; i < _stack.Count; ++i)
+            {
+                ((AxisElement)_stack[i]).MoveToParent(depth, _subtree);
             }
 
             // in ".//"'s case, since each time you push one new element while match, why not pop one too while match?
-            if ( this.subtree.IsDss && Equal (this.subtree.RootNode.Name, this.subtree.RootNode.Urn, name, URN)) {
-                Pop();  
+            if (_subtree.IsDss && Equal(_subtree.RootNode.Name, _subtree.RootNode.Urn, name, URN))
+            {
+                Pop();
             }   // only the last one
         }
 
         // "a/b/c"     pointer from a move to b
         // return true if reach c
-        internal bool MoveToChild(string name, string URN, int depth) {
+        internal bool MoveToChild(string name, string URN, int depth)
+        {
             bool result = false;
             // push first
-            if ( this.subtree.IsDss && Equal (this.subtree.RootNode.Name, this.subtree.RootNode.Urn, name, URN)) {      
-                Push(-1); 
+            if (_subtree.IsDss && Equal(_subtree.RootNode.Name, _subtree.RootNode.Urn, name, URN))
+            {
+                Push(-1);
             }
-            for (int i = 0; i < this.stack.Count; ++i) {
-                if (((AxisElement)stack[i]).MoveToChild(name, URN, depth, this.subtree)) {
+            for (int i = 0; i < _stack.Count; ++i)
+            {
+                if (((AxisElement)_stack[i]).MoveToChild(name, URN, depth, _subtree))
+                {
                     result = true;
                 }
             }
@@ -211,80 +249,94 @@ namespace Microsoft.Xml.Schema {
         // attribute can only at the topaxis part
         // dealing with attribute only here, didn't go into stack element at all
         // stack element only deal with moving the pointer around elements
-        internal bool MoveToAttribute(string name, string URN, int depth) {
-            if (! this.subtree.IsAttribute) {
+        internal bool MoveToAttribute(string name, string URN, int depth)
+        {
+            if (!_subtree.IsAttribute)
+            {
                 return false;
             }
-            if (! Equal (this.subtree.TopNode.Name, this.subtree.TopNode.Urn, name, URN) ) {
+            if (!Equal(_subtree.TopNode.Name, _subtree.TopNode.Urn, name, URN))
+            {
                 return false;
             }
 
             bool result = false;
 
             // no stack element for single attribute, so dealing with it seperately
-            if (this.subtree.TopNode.Input == null) {
-                return (this.subtree.IsDss || (depth == 1));
+            if (_subtree.TopNode.Input == null)
+            {
+                return (_subtree.IsDss || (depth == 1));
             }
 
-            for (int i = 0; i < this.stack.Count; ++i) {
-                AxisElement eaxis = (AxisElement)this.stack[i];
-                if ((eaxis.isMatch) && (eaxis.CurNode == this.subtree.TopNode.Input)) {
+            for (int i = 0; i < _stack.Count; ++i)
+            {
+                AxisElement eaxis = (AxisElement)_stack[i];
+                if ((eaxis.isMatch) && (eaxis.CurNode == _subtree.TopNode.Input))
+                {
                     result = true;
                 }
             }
             return result;
         }
-
     }
 
     // whenever an element is under identity-constraint, an instance of this class will be called
     // only care about property at this time
-    internal class ActiveAxis {
+    internal class ActiveAxis
+    {
         // consider about reactivating....  the stack should be clear right??
         // just reset contextDepth & isActive....
-        private int currentDepth;                       // current depth, trace the depth by myself... movetochild, movetoparent, movetoattribute
-        private bool isActive;                          // not active any more after moving out context node
-        private Asttree axisTree;                       // reference to the whole tree
+        private int _currentDepth;                       // current depth, trace the depth by myself... movetochild, movetoparent, movetoattribute
+        private bool _isActive;                          // not active any more after moving out context node
+        private Asttree _axisTree;                       // reference to the whole tree
         // for each subtree i need to keep a stack...
-        private ArrayList axisStack;                    // of AxisStack
+        private ArrayList _axisStack;                    // of AxisStack
 
-        public int CurrentDepth {
-            get { return this.currentDepth; }
+        public int CurrentDepth
+        {
+            get { return _currentDepth; }
         }
 
         // if an instance is !IsActive, then it can be reactive and reuse
         // still need thinking.....
-        internal void Reactivate () {
-            this.isActive = true; 
-            this.currentDepth = -1;
+        internal void Reactivate()
+        {
+            _isActive = true;
+            _currentDepth = -1;
         }
 
-        internal ActiveAxis (Asttree axisTree) {
-            this.axisTree = axisTree;                                               // only a pointer.  do i need it?
-            this.currentDepth = -1;                                                 // context depth is 0 -- enforce moveToChild for the context node
-                                                                                    // otherwise can't deal with "." node
-            this.axisStack = new ArrayList(axisTree.SubtreeArray.Count);            // defined length
+        internal ActiveAxis(Asttree axisTree)
+        {
+            _axisTree = axisTree;                                               // only a pointer.  do i need it?
+            _currentDepth = -1;                                                 // context depth is 0 -- enforce moveToChild for the context node
+                                                                                // otherwise can't deal with "." node
+            _axisStack = new ArrayList(axisTree.SubtreeArray.Count);            // defined length
             // new one stack element for each one
-            for (int i = 0; i < axisTree.SubtreeArray.Count; ++i) {
-                AxisStack stack = new AxisStack ((ForwardAxis)axisTree.SubtreeArray[i], this);
-                axisStack.Add (stack);
+            for (int i = 0; i < axisTree.SubtreeArray.Count; ++i)
+            {
+                AxisStack stack = new AxisStack((ForwardAxis)axisTree.SubtreeArray[i], this);
+                _axisStack.Add(stack);
             }
-            this.isActive = true;
+            _isActive = true;
         }
 
-        public bool MoveToStartElement (string localname, string URN) {
-            if (!isActive) {
+        public bool MoveToStartElement(string localname, string URN)
+        {
+            if (!_isActive)
+            {
                 return false;
             }
 
             // for each:
-            this.currentDepth ++;
+            _currentDepth++;
             bool result = false;
-            for (int i = 0; i < this.axisStack.Count; ++i) {
-                AxisStack stack = (AxisStack)this.axisStack[i];
+            for (int i = 0; i < _axisStack.Count; ++i)
+            {
+                AxisStack stack = (AxisStack)_axisStack[i];
                 // special case for self tree   "." | ".//."
-                if (stack.Subtree.IsSelfAxis) {
-                    if ( stack.Subtree.IsDss || (this.CurrentDepth == 0))
+                if (stack.Subtree.IsSelfAxis)
+                {
+                    if (stack.Subtree.IsDss || (this.CurrentDepth == 0))
                         result = true;
                     continue;
                 }
@@ -292,7 +344,8 @@ namespace Microsoft.Xml.Schema {
                 // otherwise if it's context node then return false
                 if (this.CurrentDepth == 0) continue;
 
-                if (stack.MoveToChild (localname, URN, this.currentDepth)) {
+                if (stack.MoveToChild(localname, URN, _currentDepth))
+                {
                     result = true;
                     // even already know the last result is true, still need to continue...
                     // run everyone once
@@ -300,32 +353,40 @@ namespace Microsoft.Xml.Schema {
             }
             return result;
         }
-            
+
         // return result doesn't have any meaning until in SelectorActiveAxis
-        public virtual bool EndElement (string localname, string URN) {
+        public virtual bool EndElement(string localname, string URN)
+        {
             // need to think if the early quitting will affect reactivating....
-            if (this.currentDepth ==  0) {          // leave context node
-                this.isActive = false;
-                this.currentDepth --;
+            if (_currentDepth == 0)
+            {          // leave context node
+                _isActive = false;
+                _currentDepth--;
             }
-            if (! this.isActive) {
+            if (!_isActive)
+            {
                 return false;
             }
-            for (int i = 0; i < this.axisStack.Count; ++i) {
-                ((AxisStack)axisStack[i]).MoveToParent (localname, URN, this.currentDepth);
+            for (int i = 0; i < _axisStack.Count; ++i)
+            {
+                ((AxisStack)_axisStack[i]).MoveToParent(localname, URN, _currentDepth);
             }
-            this.currentDepth -- ;
+            _currentDepth--;
             return false;
         }
 
         // Secondly field interface 
-        public bool MoveToAttribute (string localname, string URN) {
-            if (! this.isActive) {
+        public bool MoveToAttribute(string localname, string URN)
+        {
+            if (!_isActive)
+            {
                 return false;
             }
             bool result = false;
-            for (int i = 0; i < this.axisStack.Count; ++i) {
-                if (((AxisStack)axisStack[i]).MoveToAttribute(localname, URN, this.currentDepth + 1)) {  // don't change depth for attribute, but depth is add 1 
+            for (int i = 0; i < _axisStack.Count; ++i)
+            {
+                if (((AxisStack)_axisStack[i]).MoveToAttribute(localname, URN, _currentDepth + 1))
+                {  // don't change depth for attribute, but depth is add 1 
                     result = true;
                 }
             }
@@ -338,31 +399,37 @@ namespace Microsoft.Xml.Schema {
      * ---------------------------------------------------------------------------------------------- */
 
     // each node in the xpath tree
-    internal class DoubleLinkAxis : Axis {
+    internal class DoubleLinkAxis : Axis
+    {
         internal Axis next;
 
-        internal Axis Next {
+        internal Axis Next
+        {
             get { return this.next; }
             set { this.next = value; }
         }
 
         //constructor
         internal DoubleLinkAxis(Axis axis, DoubleLinkAxis inputaxis)
-            : base(axis.TypeOfAxis, inputaxis, axis.Prefix, axis.Name, axis.NodeType) {            
+            : base(axis.TypeOfAxis, inputaxis, axis.Prefix, axis.Name, axis.NodeType)
+        {
             this.next = null;
             this.Urn = axis.Urn;
             this.abbrAxis = axis.AbbrAxis;
-            if (inputaxis != null) {
+            if (inputaxis != null)
+            {
                 inputaxis.Next = this;
             }
         }
 
         // recursive here
-        internal static DoubleLinkAxis ConvertTree (Axis axis) {
-            if (axis == null) {
+        internal static DoubleLinkAxis ConvertTree(Axis axis)
+        {
+            if (axis == null)
+            {
                 return null;
             }
-            return ( new DoubleLinkAxis (axis, ConvertTree ((Axis) (axis.Input))));
+            return (new DoubleLinkAxis(axis, ConvertTree((Axis)(axis.Input))));
         }
     }
 
@@ -370,69 +437,80 @@ namespace Microsoft.Xml.Schema {
 
     // only keep axis, rootNode, isAttribute, isDss inside
     // act as an element tree for the Asttree
-    internal class ForwardAxis {
+    internal class ForwardAxis
+    {
         // Axis tree
-        private DoubleLinkAxis topNode;
-        private DoubleLinkAxis rootNode;                // the root for reverse Axis
+        private DoubleLinkAxis _topNode;
+        private DoubleLinkAxis _rootNode;                // the root for reverse Axis
 
         // Axis tree property
-        private bool isAttribute;                       // element or attribute?      "@"?
-        private bool isDss;                             // has ".//" in front of it?
-        private bool isSelfAxis;                        // only one node in the tree, and it's "." (self) node
+        private bool _isAttribute;                       // element or attribute?      "@"?
+        private bool _isDss;                             // has ".//" in front of it?
+        private bool _isSelfAxis;                        // only one node in the tree, and it's "." (self) node
 
-        internal DoubleLinkAxis RootNode { 
-            get { return this.rootNode; }
+        internal DoubleLinkAxis RootNode
+        {
+            get { return _rootNode; }
         }
 
-        internal DoubleLinkAxis TopNode {
-            get { return this.topNode; }
+        internal DoubleLinkAxis TopNode
+        {
+            get { return _topNode; }
         }
 
-        internal bool IsAttribute {
-            get { return this.isAttribute; }
+        internal bool IsAttribute
+        {
+            get { return _isAttribute; }
         }
 
         // has ".//" in front of it?
-        internal bool IsDss {
-            get { return this.isDss; }
+        internal bool IsDss
+        {
+            get { return _isDss; }
         }
 
-        internal bool IsSelfAxis {
-            get { return this.isSelfAxis; }
+        internal bool IsSelfAxis
+        {
+            get { return _isSelfAxis; }
         }
 
-        public ForwardAxis (DoubleLinkAxis axis, bool isdesorself) {
-            this.isDss = isdesorself;
-            this.isAttribute = Asttree.IsAttribute (axis);
-            this.topNode = axis;
-            this.rootNode = axis;
-            while ( this.rootNode.Input != null ) {
-                this.rootNode = (DoubleLinkAxis)(this.rootNode.Input);
+        public ForwardAxis(DoubleLinkAxis axis, bool isdesorself)
+        {
+            _isDss = isdesorself;
+            _isAttribute = Asttree.IsAttribute(axis);
+            _topNode = axis;
+            _rootNode = axis;
+            while (_rootNode.Input != null)
+            {
+                _rootNode = (DoubleLinkAxis)(_rootNode.Input);
             }
             // better to calculate it out, since it's used so often, and if the top is self then the whole tree is self
-            this.isSelfAxis = Asttree.IsSelf (this.topNode);
+            _isSelfAxis = Asttree.IsSelf(_topNode);
         }
     }
 
     // static, including an array of ForwardAxis  (this is the whole picture)
-    internal class Asttree {
+    internal class Asttree
+    {
         // set private then give out only get access, to keep it intact all along
-        private ArrayList fAxisArray;           
-        private string xpathexpr;
-        private bool isField;                                   // field or selector
-        private XmlNamespaceManager nsmgr;
+        private ArrayList _fAxisArray;
+        private string _xpathexpr;
+        private bool _isField;                                   // field or selector
+        private XmlNamespaceManager _nsmgr;
 
-        internal ArrayList SubtreeArray {
-            get { return fAxisArray; }
+        internal ArrayList SubtreeArray
+        {
+            get { return _fAxisArray; }
         }
 
         // when making a new instance for Asttree, we do the compiling, and create the static tree instance
-        public Asttree (string xPath, bool isField, XmlNamespaceManager nsmgr) {
-            this.xpathexpr = xPath;
-            this.isField = isField;
-            this.nsmgr = nsmgr;
+        public Asttree(string xPath, bool isField, XmlNamespaceManager nsmgr)
+        {
+            _xpathexpr = xPath;
+            _isField = isField;
+            _nsmgr = nsmgr;
             // checking grammar... and build fAxisArray
-            this.CompileXPath (xPath, isField, nsmgr);          // might throw exception in the middle
+            this.CompileXPath(xPath, isField, nsmgr);          // might throw exception in the middle
         }
 
         // only for debug
@@ -458,28 +536,34 @@ namespace Microsoft.Xml.Schema {
 #endif
 
         // this part is for parsing restricted xpath from grammar
-        private static bool IsNameTest(Axis ast) {
+        private static bool IsNameTest(Axis ast)
+        {
             // Type = Element, abbrAxis = false
             // all are the same, has child:: or not
             return ((ast.TypeOfAxis == Axis.AxisType.Child) && (ast.NodeType == XPathNodeType.Element));
         }
 
-        internal static bool IsAttribute(Axis ast) {
+        internal static bool IsAttribute(Axis ast)
+        {
             return ((ast.TypeOfAxis == Axis.AxisType.Attribute) && (ast.NodeType == XPathNodeType.Attribute));
         }
 
-        private static bool IsDescendantOrSelf(Axis ast) {
+        private static bool IsDescendantOrSelf(Axis ast)
+        {
             return ((ast.TypeOfAxis == Axis.AxisType.DescendantOrSelf) && (ast.NodeType == XPathNodeType.All) && (ast.AbbrAxis));
         }
 
-        internal static bool IsSelf(Axis ast) {
+        internal static bool IsSelf(Axis ast)
+        {
             return ((ast.TypeOfAxis == Axis.AxisType.Self) && (ast.NodeType == XPathNodeType.All) && (ast.AbbrAxis));
         }
 
         // don't return true or false, if it's invalid path, just throw exception during the process
         // for whitespace thing, i will directly trim the tree built here...
-        public void CompileXPath (string xPath, bool isField, XmlNamespaceManager nsmgr) {
-            if ((xPath == null) || (xPath.Length == 0)) {
+        public void CompileXPath(string xPath, bool isField, XmlNamespaceManager nsmgr)
+        {
+            if ((xPath == null) || (xPath.Length == 0))
+            {
                 throw new XmlSchemaException(ResXml.Sch_EmptyXPath, string.Empty);
             }
 
@@ -487,29 +571,34 @@ namespace Microsoft.Xml.Schema {
             // can't new ForwardAxis right away
             string[] xpath = xPath.Split('|');
             ArrayList AstArray = new ArrayList(xpath.Length);
-            this.fAxisArray = new ArrayList(xpath.Length);
+            _fAxisArray = new ArrayList(xpath.Length);
 
             // throw compile exceptions
             // can i only new one builder here then run compile several times??
-            try {
-                for (int i = 0; i < xpath.Length; ++i) {
+            try
+            {
+                for (int i = 0; i < xpath.Length; ++i)
+                {
                     // default ! isdesorself (no .//)
-                    Axis ast = (Axis) (XPathParser.ParseXPathExpresion(xpath[i]));
-                    AstArray.Add (ast);
+                    Axis ast = (Axis)(XPathParser.ParseXPathExpresion(xpath[i]));
+                    AstArray.Add(ast);
                 }
-            }   
-            catch {
-                throw  new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
+            }
+            catch
+            {
+                throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
             }
 
             Axis stepAst;
-            for (int i = 0; i < AstArray.Count; ++i) {
-                Axis ast = (Axis) AstArray[i];
+            for (int i = 0; i < AstArray.Count; ++i)
+            {
+                Axis ast = (Axis)AstArray[i];
                 // Restricted form
                 // field can have an attribute:
 
                 // throw exceptions during casting
-                if ((stepAst = ast) == null) {
+                if ((stepAst = ast) == null)
+                {
                     throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
                 }
 
@@ -517,38 +606,49 @@ namespace Microsoft.Xml.Schema {
 
                 // attribute will have namespace too
                 // field can have top attribute
-                if (IsAttribute (stepAst)) {
-                    if (! isField) {
+                if (IsAttribute(stepAst))
+                {
+                    if (!isField)
+                    {
                         throw new XmlSchemaException(ResXml.Sch_SelectorAttr, xPath);
                     }
-                    else {
-                        SetURN (stepAst, nsmgr);
-                        try {
-                            stepAst = (Axis) (stepAst.Input);
+                    else
+                    {
+                        SetURN(stepAst, nsmgr);
+                        try
+                        {
+                            stepAst = (Axis)(stepAst.Input);
                         }
-                        catch {
+                        catch
+                        {
                             throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
                         }
                     }
                 }
 
                 // field or selector
-                while ((stepAst != null) && (IsNameTest (stepAst) || IsSelf (stepAst))) {
+                while ((stepAst != null) && (IsNameTest(stepAst) || IsSelf(stepAst)))
+                {
                     // trim tree "." node, if it's not the top one
-                    if (IsSelf (stepAst) && (ast != stepAst)) {
+                    if (IsSelf(stepAst) && (ast != stepAst))
+                    {
                         top.Input = stepAst.Input;
                     }
-                    else {
+                    else
+                    {
                         top = stepAst;
                         // set the URN
-                        if (IsNameTest(stepAst)) {
-                            SetURN (stepAst, nsmgr);
+                        if (IsNameTest(stepAst))
+                        {
+                            SetURN(stepAst, nsmgr);
                         }
                     }
-                    try {
-                        stepAst = (Axis) (stepAst.Input);
+                    try
+                    {
+                        stepAst = (Axis)(stepAst.Input);
                     }
-                    catch {
+                    catch
+                    {
                         throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
                     }
                 }
@@ -556,34 +656,43 @@ namespace Microsoft.Xml.Schema {
                 // the rest part can only be .// or null
                 // trim the rest part, but need compile the rest part first
                 top.Input = null;
-                if (stepAst == null) {      // top "." and has other element beneath, trim this "." node too
-                    if (IsSelf(ast) && (ast.Input != null)) {
-                        this.fAxisArray.Add ( new ForwardAxis ( DoubleLinkAxis.ConvertTree ((Axis) (ast.Input)), false));
+                if (stepAst == null)
+                {      // top "." and has other element beneath, trim this "." node too
+                    if (IsSelf(ast) && (ast.Input != null))
+                    {
+                        _fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree((Axis)(ast.Input)), false));
                     }
-                    else {
-                        this.fAxisArray.Add ( new ForwardAxis ( DoubleLinkAxis.ConvertTree (ast), false));
+                    else
+                    {
+                        _fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree(ast), false));
                     }
                     continue;
                 }
-                if (! IsDescendantOrSelf (stepAst)) {
+                if (!IsDescendantOrSelf(stepAst))
+                {
                     throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
                 }
-                try {
-                    stepAst = (Axis) (stepAst.Input);
+                try
+                {
+                    stepAst = (Axis)(stepAst.Input);
                 }
-                catch {
+                catch
+                {
                     throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
                 }
-                if ((stepAst == null) || (! IsSelf (stepAst)) || (stepAst.Input != null)) {
+                if ((stepAst == null) || (!IsSelf(stepAst)) || (stepAst.Input != null))
+                {
                     throw new XmlSchemaException(ResXml.Sch_ICXpathError, xPath);
                 }
 
                 // trim top "." if it's not the only node
-                if (IsSelf(ast) && (ast.Input != null)) {
-                    this.fAxisArray.Add ( new ForwardAxis ( DoubleLinkAxis.ConvertTree ((Axis) (ast.Input)), true));
+                if (IsSelf(ast) && (ast.Input != null))
+                {
+                    _fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree((Axis)(ast.Input)), true));
                 }
-                else {
-                    this.fAxisArray.Add ( new ForwardAxis ( DoubleLinkAxis.ConvertTree (ast), true));
+                else
+                {
+                    _fAxisArray.Add(new ForwardAxis(DoubleLinkAxis.ConvertTree(ast), true));
                 }
             }
         }
@@ -596,16 +705,23 @@ namespace Microsoft.Xml.Schema {
         // for (1) & (4) i will have URN set properly
         // for (2) the URN is null
         // for (3) the URN is empty
-        private void SetURN (Axis axis, XmlNamespaceManager nsmgr) {
-            if (axis.Prefix.Length != 0) {      // (1) (4)
+        private void SetURN(Axis axis, XmlNamespaceManager nsmgr)
+        {
+            if (axis.Prefix.Length != 0)
+            {      // (1) (4)
                 axis.Urn = nsmgr.LookupNamespace(axis.Prefix);
 
-                if (axis.Urn == null) {
+                if (axis.Urn == null)
+                {
                     throw new XmlSchemaException(ResXml.Sch_UnresolvedPrefix, axis.Prefix);
                 }
-            } else if (axis.Name.Length != 0) { // (2)
+            }
+            else if (axis.Name.Length != 0)
+            { // (2)
                 axis.Urn = null;
-            } else {                            // (3)
+            }
+            else
+            {                            // (3)
                 axis.Urn = "";
             }
         }

@@ -164,7 +164,7 @@ namespace System.Runtime
                     }
                     else
                     {
-                        this._callback(this);
+                        _callback(this);
                     }
                 }
 #pragma warning disable 1634
@@ -255,7 +255,7 @@ namespace System.Runtime
         {
             if (_beforePrepareAsyncCompletionAction != null)
             {
-                this._beforePrepareAsyncCompletionAction();
+                _beforePrepareAsyncCompletionAction();
             }
 
             _nextAsyncCompletion = callback;
@@ -295,7 +295,7 @@ namespace System.Runtime
             callback = null;
             if (_checkSyncValidationFunc != null)
             {
-                if (!this._checkSyncValidationFunc(result))
+                if (!_checkSyncValidationFunc(result))
                 {
                     return false;
                 }

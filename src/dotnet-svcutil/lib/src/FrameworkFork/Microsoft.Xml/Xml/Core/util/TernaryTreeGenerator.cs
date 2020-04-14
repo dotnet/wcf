@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace TernaryTreeGenerator {
+namespace TernaryTreeGenerator
+{
     using System;
     using System.IO;
     using System.Text;
@@ -12,15 +13,17 @@ namespace TernaryTreeGenerator {
     // HTML Element/Attribute name <-> XSL output property mapping
     //
     /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="HtmlProps"]/*' />
-    public class HtmlProps {
+    public class HtmlProps
+    {
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="HtmlProps.nameHTML;"]/*' />
-        public String  nameHTML;
+        public String nameHTML;
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="HtmlProps.properties;"]/*' />
-        public byte    properties;
+        public byte properties;
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="HtmlProps.visited;"]/*' />
-        public bool    visited;
+        public bool visited;
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="HtmlProps.HtmlProps"]/*' />
-        public HtmlProps(String nameHTML, byte properties) {
+        public HtmlProps(String nameHTML, byte properties)
+        {
             this.nameHTML = nameHTML;
             this.properties = properties;
         }
@@ -34,18 +37,19 @@ namespace TernaryTreeGenerator {
     //       later with TernaryTreeRO.  It should not be used in production code.
     //
     /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW"]/*' />
-    public class TernaryTreeRW {
+    public class TernaryTreeRW
+    {
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.MAX_NODES"]/*' />
         public const int MAX_NODES = 2000;
         // Since _lt and _gt are just offsets in the node buffer, the node buffer size is limited
-        byte [,] nodeBuffer;
+        private byte[,] _nodeBuffer;
         //node indexer;
-        int endNodePos;
+        private int _endNodePos;
 
-        int numHtmlElements;
-        int numHtmlAttributes;
+        private int _numHtmlElements;
+        private int _numHtmlAttributes;
 
-        static HtmlProps [] htmlElements = {
+        private static HtmlProps[] s_htmlElements = {
             new HtmlProps("a",              (byte)(ElementProperties.URI_PARENT)),
             new HtmlProps("address",        (byte)(ElementProperties.BLOCK_WS)),
             new HtmlProps("applet",         (byte)(ElementProperties.BLOCK_WS)),
@@ -119,7 +123,7 @@ namespace TernaryTreeGenerator {
             new HtmlProps("xmp",            (byte)(ElementProperties.BLOCK_WS)),
         };
 
-        static HtmlProps [] htmlAttributes = {
+        private static HtmlProps[] s_htmlAttributes = {
             new HtmlProps("action",         (byte)AttributeProperties.URI),
             new HtmlProps("checked",        (byte)AttributeProperties.BOOLEAN),
             new HtmlProps("cite",           (byte)AttributeProperties.URI),
@@ -149,22 +153,24 @@ namespace TernaryTreeGenerator {
         };
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.TernaryTreeRW"]/*' />
-        public  TernaryTreeRW() {
-
+        public TernaryTreeRW()
+        {
             //create the two dimentional byte array
-            nodeBuffer        = new byte[MAX_NODES, 4];
-            numHtmlElements   = htmlElements.Length;
-            numHtmlAttributes = htmlAttributes.Length;
-            endNodePos        = 1;
+            _nodeBuffer = new byte[MAX_NODES, 4];
+            _numHtmlElements = s_htmlElements.Length;
+            _numHtmlAttributes = s_htmlAttributes.Length;
+            _endNodePos = 1;
         }
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.lengthNodes"]/*' />
-        public int lengthNodes() {
-            return endNodePos;
+        public int lengthNodes()
+        {
+            return _endNodePos;
         }
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.lengthBytes"]/*' />
-        public int lengthBytes() {
-            return endNodePos;
+        public int lengthBytes()
+        {
+            return _endNodePos;
         }
 
 
@@ -175,79 +181,92 @@ namespace TernaryTreeGenerator {
         //    or if the path offset variables (_lt, _gt) are overflowed.
         //
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.AddCaseInsensitiveString"]/*' />
-        public void AddCaseInsensitiveString(String stringToAdd, byte data) {
-
-
+        public void AddCaseInsensitiveString(String stringToAdd, byte data)
+        {
             int charToAdd;
             int charInTheTree;
             int stringPos = 0;
             int nodePos = 0;
 
-            if (stringToAdd.Length == 0) {
+            if (stringToAdd.Length == 0)
+            {
                 charToAdd = 0;
             }
-            else {
+            else
+            {
                 charToAdd = stringToAdd[0];
 
                 // Normalize to upper case
                 if (charToAdd >= 'a' && charToAdd <= 'z') charToAdd -= ('a' - 'A');
             }
 
-            do {
-                charInTheTree = nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte];
+            do
+            {
+                charInTheTree = _nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte];
 
                 //Console.Write("charToAdd: {0},charInTheTree: {1}, nodePos: {2}, endNodePos {3}, ", Convert.ToChar(charToAdd), Convert.ToChar(charInTheTree), nodePos, endNodePos);
                 //Console.WriteLine("Left :{0}, Right:{0}", nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree], nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree]);
 
 
-                if (charToAdd == charInTheTree) {
+                if (charToAdd == charInTheTree)
+                {
                     // This character already appears in the tree; take the equals path
                     nodePos++;
                     stringPos++;
 
-                    if (stringPos == stringToAdd.Length) {
+                    if (stringPos == stringToAdd.Length)
+                    {
                         charToAdd = 0;
                     }
-                    else {
+                    else
+                    {
                         charToAdd = stringToAdd[stringPos];
 
                         // Normalize to upper case
                         if (charToAdd >= 'a' && charToAdd <= 'z') charToAdd -= ('a' - 'A');
-
                     }
-                } else {
-
-                    if (charToAdd < charInTheTree) {
-
-                        if (nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree] == 0x0) {
-
+                }
+                else
+                {
+                    if (charToAdd < charInTheTree)
+                    {
+                        if (_nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree] == 0x0)
+                        {
                             // Create a new path less than the current character
-                            if (endNodePos - nodePos > 255) {
+                            if (_endNodePos - nodePos > 255)
+                            {
                                 throw new Exception("Too many characters have been added");
-                            } else {
-                                nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree] = (byte)(endNodePos - nodePos);
                             }
-                        } else {
-
+                            else
+                            {
+                                _nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree] = (byte)(_endNodePos - nodePos);
+                            }
+                        }
+                        else
+                        {
                             // Take the existing less than path
-                            nodePos = nodePos + nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree];
+                            nodePos = nodePos + _nodeBuffer[nodePos, (int)TernaryTreeByte.leftTree];
                             continue;
                         }
-
-                    } else {
-
-                        if (nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree] == 0x0) {
+                    }
+                    else
+                    {
+                        if (_nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree] == 0x0)
+                        {
                             // Create a new path greater than the current character
-                            if (endNodePos - nodePos > 255) {
+                            if (_endNodePos - nodePos > 255)
+                            {
                                 throw new Exception("Too many characters have been added");
-                            } else {
-                                nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree] = (byte)(endNodePos - nodePos);
                             }
-
-
-                        } else {
+                            else
+                            {
+                                _nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree] = (byte)(_endNodePos - nodePos);
+                            }
+                        }
+                        else
+                        {
                             // Take the existing greater than path
-                            nodePos = nodePos + nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree] ;
+                            nodePos = nodePos + _nodeBuffer[nodePos, (int)TernaryTreeByte.rightTree];
                             continue;
                         }
                     }
@@ -255,64 +274,63 @@ namespace TernaryTreeGenerator {
 
                     // Add new nodes to hold rest of string
 
-                    for (int i = stringPos; i <stringToAdd.Length; ++ i) {
-
+                    for (int i = stringPos; i < stringToAdd.Length; ++i)
+                    {
                         charToAdd = stringToAdd[i];
                         // Normalize to upper case
                         if (charToAdd >= 'a' && charToAdd <= 'z') charToAdd -= ('a' - 'A');
 
-                        nodePos = endNodePos++;
-                        nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte] = (byte) charToAdd;
-
+                        nodePos = _endNodePos++;
+                        _nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte] = (byte)charToAdd;
                     }
 
                     // Store terminating null to indicate that this is the end of the string
-                    nodePos = endNodePos ++;
-                    nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte] = 0;
-                    nodeBuffer[nodePos, (int)TernaryTreeByte.data] = data;
+                    nodePos = _endNodePos++;
+                    _nodeBuffer[nodePos, (int)TernaryTreeByte.characterByte] = 0;
+                    _nodeBuffer[nodePos, (int)TernaryTreeByte.data] = data;
                     break;
                 }
-
             } while (true);
-
         }
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.GenerateHtmlElementTable"]/*' />
-        public void GenerateHtmlElementTable() {
-
+        public void GenerateHtmlElementTable()
+        {
             // Verify that the element and attribute tables are sorted correctly
-            htmlElements[0].visited = false;
+            s_htmlElements[0].visited = false;
 
-            for (int i = 1; i < numHtmlElements; i++) {
-                htmlElements[i].visited = false;
-                if (htmlElements[i - 1].nameHTML.CompareTo(htmlElements[i].nameHTML) > 0) {
+            for (int i = 1; i < _numHtmlElements; i++)
+            {
+                s_htmlElements[i].visited = false;
+                if (s_htmlElements[i - 1].nameHTML.CompareTo(s_htmlElements[i].nameHTML) > 0)
+                {
                     throw new Exception("String table not correctly sorted");
                 }
             }
 
             // Add strings from the tables to the ternary trees
-            AddMidHtmlElement(0, numHtmlElements - 1);
-
+            AddMidHtmlElement(0, _numHtmlElements - 1);
         }
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.GenerateHtmlAttributeTable"]/*' />
-        public void GenerateHtmlAttributeTable() {
-
+        public void GenerateHtmlAttributeTable()
+        {
             // Verify that the element and attribute tables are sorted correctly
 
-            htmlAttributes[0].visited = false;
+            s_htmlAttributes[0].visited = false;
 
-            for (int i = 1; i < numHtmlAttributes; i++) {
-                htmlAttributes[i].visited = false;
+            for (int i = 1; i < _numHtmlAttributes; i++)
+            {
+                s_htmlAttributes[i].visited = false;
 
-                if (htmlAttributes[i - 1].nameHTML.CompareTo(htmlAttributes[i].nameHTML) > 0) {
+                if (s_htmlAttributes[i - 1].nameHTML.CompareTo(s_htmlAttributes[i].nameHTML) > 0)
+                {
                     throw new Exception("String table not correctly sorted");
                 }
             }
 
             // Add strings from the tables to the ternary trees
-            AddMidHtmlAttribute(0, numHtmlAttributes - 1);
-
+            AddMidHtmlAttribute(0, _numHtmlAttributes - 1);
         }
 
 
@@ -324,8 +342,8 @@ namespace TernaryTreeGenerator {
         //    ternary tree and partitions the remaining halves, which are then recursively
         //    sent to this procedure.
         //
-        void AddMidHtmlElement(int startPos, int endPos) {
-
+        private void AddMidHtmlElement(int startPos, int endPos)
+        {
             int midPos;
 
             if (startPos > endPos)
@@ -333,7 +351,7 @@ namespace TernaryTreeGenerator {
 
             midPos = (startPos + endPos) / 2;
 
-            AddCaseInsensitiveString(htmlElements[midPos].nameHTML, htmlElements[midPos].properties);
+            AddCaseInsensitiveString(s_htmlElements[midPos].nameHTML, s_htmlElements[midPos].properties);
 
             AddMidHtmlElement(startPos, midPos - 1);
             AddMidHtmlElement(midPos + 1, endPos);
@@ -346,13 +364,14 @@ namespace TernaryTreeGenerator {
         //    ternary tree and partitions the remaining halves, which are then recursively
         //    sent to this procedure.
         //
-        void AddMidHtmlAttribute(int startPos, int endPos) {
+        private void AddMidHtmlAttribute(int startPos, int endPos)
+        {
             int midPos;
             if (startPos > endPos)
                 return;
 
             midPos = (startPos + endPos) / 2;
-            AddCaseInsensitiveString(htmlAttributes[midPos].nameHTML, htmlAttributes[midPos].properties);
+            AddCaseInsensitiveString(s_htmlAttributes[midPos].nameHTML, s_htmlAttributes[midPos].properties);
 
 
             AddMidHtmlAttribute(startPos, midPos - 1);
@@ -364,7 +383,8 @@ namespace TernaryTreeGenerator {
         //
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.OutputFileHeader"]/*' />
-        public void OutputFileHeader(StreamWriter streamWriter) {
+        public void OutputFileHeader(StreamWriter streamWriter)
+        {
             string indent1 = "    ";
 
             streamWriter.WriteLine("//------------------------------------------------------------------------------");
@@ -394,7 +414,8 @@ namespace TernaryTreeGenerator {
         //
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.OutputFileFooter"]/*' />
-        public void OutputFileFooter(StreamWriter streamWriter) {
+        public void OutputFileFooter(StreamWriter streamWriter)
+        {
             streamWriter.WriteLine("    }");
             streamWriter.WriteLine("}");
             streamWriter.Flush();
@@ -409,7 +430,8 @@ namespace TernaryTreeGenerator {
         //
 
         /// <include file='doc\TernaryTreeGenerator.uex' path='docs/doc[@for="TernaryTreeRW.dumpTree"]/*' />
-        public void dumpTree(StreamWriter streamWriter, String wszName) {
+        public void dumpTree(StreamWriter streamWriter, String wszName)
+        {
             int n = 0;
             string indent3 = "           ";
             string indent2 = "        ";
@@ -418,22 +440,26 @@ namespace TernaryTreeGenerator {
             streamWriter.WriteLine("{0}internal static byte [] {1} = {{", indent2, wszName);
             streamWriter.Write(indent3);
 
-            for (int pos = 1; pos < endNodePos; pos ++ ) {
-                streamWriter.Write( "{0},{1},{2},{3},", nodeBuffer[pos, (int)TernaryTreeByte.characterByte],
-                                      nodeBuffer[pos, (int)TernaryTreeByte.leftTree],
-                                      nodeBuffer[pos, (int)TernaryTreeByte.rightTree],
-                                      nodeBuffer[pos, (int)TernaryTreeByte.data]);
+            for (int pos = 1; pos < _endNodePos; pos++)
+            {
+                streamWriter.Write("{0},{1},{2},{3},", _nodeBuffer[pos, (int)TernaryTreeByte.characterByte],
+                                      _nodeBuffer[pos, (int)TernaryTreeByte.leftTree],
+                                      _nodeBuffer[pos, (int)TernaryTreeByte.rightTree],
+                                      _nodeBuffer[pos, (int)TernaryTreeByte.data]);
                 n++;
 
-                if (n % 7 == 0 ){
+                if (n % 7 == 0)
+                {
                     streamWriter.WriteLine();
                     streamWriter.Write(indent3);
-                } else {
+                }
+                else
+                {
                     streamWriter.Write(" ");
                 }
             }
             streamWriter.WriteLine();
-            streamWriter.WriteLine("{0}}};",indent2);
+            streamWriter.WriteLine("{0}}};", indent2);
             streamWriter.Flush();
         }
     }

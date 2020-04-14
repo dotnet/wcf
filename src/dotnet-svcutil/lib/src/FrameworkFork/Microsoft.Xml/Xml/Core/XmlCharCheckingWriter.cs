@@ -36,57 +36,62 @@ using System.Diagnostics;
 
 
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     //
     // XmlCharCheckingWriter
     //
-    internal partial class XmlCharCheckingWriter : XmlWrappingWriter {
+    internal partial class XmlCharCheckingWriter : XmlWrappingWriter
+    {
+        //
+        // Fields
+        //
+        private bool _checkValues;
+        private bool _checkNames;
+        private bool _replaceNewLines;
+        private string _newLineChars;
 
+        private XmlCharType _xmlCharType;
+        // 
+        // Constructor
+        //
+        internal XmlCharCheckingWriter(XmlWriter baseWriter, bool checkValues, bool checkNames, bool replaceNewLines, string newLineChars)
+            : base(baseWriter)
+        {
+            Debug.Assert(checkValues || replaceNewLines);
+            _checkValues = checkValues;
+            _checkNames = checkNames;
+            _replaceNewLines = replaceNewLines;
+            _newLineChars = newLineChars;
 
-//
-// Fields
-//
-        bool checkValues;
-        bool checkNames;
-        bool replaceNewLines;
-        string newLineChars;
-
-        XmlCharType xmlCharType;
-// 
-// Constructor
-//
-        internal XmlCharCheckingWriter( XmlWriter baseWriter, bool checkValues, bool checkNames, bool replaceNewLines, string newLineChars ) 
-            : base( baseWriter ) {
-
-            Debug.Assert( checkValues || replaceNewLines );
-            this.checkValues = checkValues;
-            this.checkNames = checkNames;
-            this.replaceNewLines = replaceNewLines;
-            this.newLineChars = newLineChars;
-
-            if ( checkValues ) {
-                xmlCharType = XmlCharType.Instance;
+            if (checkValues)
+            {
+                _xmlCharType = XmlCharType.Instance;
             }
         }
-        
-//
-// XmlWriter implementation
-//
 
-        public override XmlWriterSettings Settings { 
-            get {
+        //
+        // XmlWriter implementation
+        //
+
+        public override XmlWriterSettings Settings
+        {
+            get
+            {
                 XmlWriterSettings s = base.writer.Settings;
-                s = ( s != null) ? (XmlWriterSettings)s.Clone() : new XmlWriterSettings();
+                s = (s != null) ? (XmlWriterSettings)s.Clone() : new XmlWriterSettings();
 
-                if ( checkValues ) {
+                if (_checkValues)
+                {
                     s.CheckCharacters = true;
                 }
-                if ( replaceNewLines ) {
+                if (_replaceNewLines)
+                {
                     s.NewLineHandling = NewLineHandling.Replace;
-                    s.NewLineChars = newLineChars;
+                    s.NewLineChars = _newLineChars;
                 }
                 s.ReadOnly = true;
                 return s;
@@ -94,293 +99,377 @@ namespace Microsoft.Xml {
         }
 
 
-        public override void WriteDocType( string name, string pubid, string sysid, string subset ) { 
-            if ( checkNames ) {
-                ValidateQName( name );
+        public override void WriteDocType(string name, string pubid, string sysid, string subset)
+        {
+            if (_checkNames)
+            {
+                ValidateQName(name);
             }
-            if ( checkValues ) {
-                if ( pubid != null ) {
+            if (_checkValues)
+            {
+                if (pubid != null)
+                {
                     int i;
-                    if ( ( i = xmlCharType.IsPublicId( pubid ) ) >= 0 ) {
-                        throw XmlConvert.CreateInvalidCharException( pubid, i );
+                    if ((i = _xmlCharType.IsPublicId(pubid)) >= 0)
+                    {
+                        throw XmlConvert.CreateInvalidCharException(pubid, i);
                     }
                 }
-                if ( sysid != null ) {
-                    CheckCharacters( sysid );
+                if (sysid != null)
+                {
+                    CheckCharacters(sysid);
                 }
-                if ( subset != null ) {
-                    CheckCharacters( subset );
+                if (subset != null)
+                {
+                    CheckCharacters(subset);
                 }
             }
-            if ( replaceNewLines ) {
-                sysid = ReplaceNewLines( sysid );
-                pubid = ReplaceNewLines( pubid );
-                subset = ReplaceNewLines( subset );
+            if (_replaceNewLines)
+            {
+                sysid = ReplaceNewLines(sysid);
+                pubid = ReplaceNewLines(pubid);
+                subset = ReplaceNewLines(subset);
             }
-            writer.WriteDocType( name, pubid, sysid, subset );
+            writer.WriteDocType(name, pubid, sysid, subset);
         }
 
-        public override void WriteStartElement( string prefix, string localName, string ns ) {
-            if ( checkNames ) {
-                if ( localName == null || localName.Length == 0 ) {
-                    throw new ArgumentException( ResXml.GetString( ResXml.Xml_EmptyLocalName ) );
+        public override void WriteStartElement(string prefix, string localName, string ns)
+        {
+            if (_checkNames)
+            {
+                if (localName == null || localName.Length == 0)
+                {
+                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
                 }
-                ValidateNCName( localName );
+                ValidateNCName(localName);
 
-                if ( prefix != null && prefix.Length > 0 ) {
-                    ValidateNCName( prefix );
+                if (prefix != null && prefix.Length > 0)
+                {
+                    ValidateNCName(prefix);
                 }
             }
-            writer.WriteStartElement( prefix, localName, ns );
+            writer.WriteStartElement(prefix, localName, ns);
         }
 
-        public override void WriteStartAttribute( string prefix, string localName, string ns ) {
-            if ( checkNames ) {
-                if ( localName == null || localName.Length == 0 ) {
-                    throw new ArgumentException( ResXml.GetString( ResXml.Xml_EmptyLocalName ) );
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
+        {
+            if (_checkNames)
+            {
+                if (localName == null || localName.Length == 0)
+                {
+                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
                 }
-                ValidateNCName( localName );
+                ValidateNCName(localName);
 
-                if ( prefix != null && prefix.Length > 0 ) {
-                    ValidateNCName( prefix );
+                if (prefix != null && prefix.Length > 0)
+                {
+                    ValidateNCName(prefix);
                 }
             }
-            writer.WriteStartAttribute( prefix, localName, ns );
+            writer.WriteStartAttribute(prefix, localName, ns);
         }
 
-        public override void WriteCData( string text ) {
-            if ( text != null ) {
-                if ( checkValues ) {
-                    CheckCharacters( text );
+        public override void WriteCData(string text)
+        {
+            if (text != null)
+            {
+                if (_checkValues)
+                {
+                    CheckCharacters(text);
                 }
-                if ( replaceNewLines ) {
-                    text = ReplaceNewLines( text );
+                if (_replaceNewLines)
+                {
+                    text = ReplaceNewLines(text);
                 }
                 int i;
-                while ( ( i = text.IndexOf( "]]>", StringComparison.Ordinal ) ) >= 0 ) {
-                    writer.WriteCData( text.Substring( 0, i + 2 ) );
-                    text = text.Substring( i + 2 );
+                while ((i = text.IndexOf("]]>", StringComparison.Ordinal)) >= 0)
+                {
+                    writer.WriteCData(text.Substring(0, i + 2));
+                    text = text.Substring(i + 2);
                 }
             }
-            writer.WriteCData( text );
+            writer.WriteCData(text);
         }
 
-        public override void WriteComment( string text ) {
-            if ( text != null ) {
-                if ( checkValues ) {
-                    CheckCharacters( text );
-                    text = InterleaveInvalidChars( text, '-', '-' );
+        public override void WriteComment(string text)
+        {
+            if (text != null)
+            {
+                if (_checkValues)
+                {
+                    CheckCharacters(text);
+                    text = InterleaveInvalidChars(text, '-', '-');
                 }
-                if ( replaceNewLines ) {
-                    text = ReplaceNewLines( text );
+                if (_replaceNewLines)
+                {
+                    text = ReplaceNewLines(text);
                 }
             }
-            writer.WriteComment( text );
+            writer.WriteComment(text);
         }
 
-        public override void WriteProcessingInstruction( string name, string text ) {
-            if ( checkNames ) {
-                ValidateNCName( name );
+        public override void WriteProcessingInstruction(string name, string text)
+        {
+            if (_checkNames)
+            {
+                ValidateNCName(name);
             }
-            if ( text != null ) {
-                if ( checkValues ) {
-                    CheckCharacters( text );
-                    text = InterleaveInvalidChars( text, '?', '>' );
+            if (text != null)
+            {
+                if (_checkValues)
+                {
+                    CheckCharacters(text);
+                    text = InterleaveInvalidChars(text, '?', '>');
                 }
-                if ( replaceNewLines ) {
-                    text = ReplaceNewLines( text );
+                if (_replaceNewLines)
+                {
+                    text = ReplaceNewLines(text);
                 }
             }
-            writer.WriteProcessingInstruction( name, text );
+            writer.WriteProcessingInstruction(name, text);
         }
 
-        public override void WriteEntityRef( string name ) {
-            if ( checkNames ) {
-                ValidateQName( name );
+        public override void WriteEntityRef(string name)
+        {
+            if (_checkNames)
+            {
+                ValidateQName(name);
             }
-            writer.WriteEntityRef( name );
+            writer.WriteEntityRef(name);
         }
 
-        public override void WriteWhitespace( string ws ) {
-            if ( ws == null ) {
+        public override void WriteWhitespace(string ws)
+        {
+            if (ws == null)
+            {
                 ws = string.Empty;
             }
             // "checkNames" is intentional here; if false, the whitespaces are checked in XmlWellformedWriter
-            if ( checkNames ) {
+            if (_checkNames)
+            {
                 int i;
-                if ( ( i = xmlCharType.IsOnlyWhitespaceWithPos( ws ) ) != -1 ) {
-                    throw new ArgumentException( ResXml.GetString( ResXml.Xml_InvalidWhitespaceCharacter, XmlException.BuildCharExceptionArgs( ws, i ) ) );
+                if ((i = _xmlCharType.IsOnlyWhitespaceWithPos(ws)) != -1)
+                {
+                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidWhitespaceCharacter, XmlException.BuildCharExceptionArgs(ws, i)));
                 }
             }
-            if ( replaceNewLines ) {
-                ws = ReplaceNewLines( ws );
+            if (_replaceNewLines)
+            {
+                ws = ReplaceNewLines(ws);
             }
-            writer.WriteWhitespace( ws );
+            writer.WriteWhitespace(ws);
         }
 
-        public override void WriteString( string text ) {
-            if ( text != null ) {
-                if ( checkValues ) {
-                    CheckCharacters( text );
+        public override void WriteString(string text)
+        {
+            if (text != null)
+            {
+                if (_checkValues)
+                {
+                    CheckCharacters(text);
                 }
-                if ( replaceNewLines && WriteState != WriteState.Attribute ) {
-                    text = ReplaceNewLines( text );
+                if (_replaceNewLines && WriteState != WriteState.Attribute)
+                {
+                    text = ReplaceNewLines(text);
                 }
             }
-            writer.WriteString( text );
+            writer.WriteString(text);
         }
 
-        public override void WriteSurrogateCharEntity( char lowChar, char highChar ) {
-            writer.WriteSurrogateCharEntity( lowChar, highChar );
+        public override void WriteSurrogateCharEntity(char lowChar, char highChar)
+        {
+            writer.WriteSurrogateCharEntity(lowChar, highChar);
         }
 
-        public override void WriteChars( char[] buffer, int index, int count ) {
-            if (buffer == null) {
+        public override void WriteChars(char[] buffer, int index, int count)
+        {
+            if (buffer == null)
+            {
                 throw new ArgumentNullException("buffer");
             }
-            if (index < 0) {
+            if (index < 0)
+            {
                 throw new ArgumentOutOfRangeException("index");
             }
-            if (count < 0) {
+            if (count < 0)
+            {
                 throw new ArgumentOutOfRangeException("count");
             }
-            if (count > buffer.Length - index) {
+            if (count > buffer.Length - index)
+            {
                 throw new ArgumentOutOfRangeException("count");
             }
 
-            if (checkValues) {
-                CheckCharacters( buffer, index, count );
+            if (_checkValues)
+            {
+                CheckCharacters(buffer, index, count);
             }
-            if ( replaceNewLines && WriteState != WriteState.Attribute ) {
-                string text = ReplaceNewLines( buffer, index, count );
-                if ( text != null ) {
-                    WriteString( text );
+            if (_replaceNewLines && WriteState != WriteState.Attribute)
+            {
+                string text = ReplaceNewLines(buffer, index, count);
+                if (text != null)
+                {
+                    WriteString(text);
                     return;
                 }
             }
-            writer.WriteChars( buffer, index, count );
+            writer.WriteChars(buffer, index, count);
         }
 
-        public override void WriteNmToken( string name ) { 
-            if ( checkNames ) {
-                if ( name == null || name.Length == 0 ) {
-                    throw new ArgumentException( ResXml.GetString( ResXml.Xml_EmptyName ) );
+        public override void WriteNmToken(string name)
+        {
+            if (_checkNames)
+            {
+                if (name == null || name.Length == 0)
+                {
+                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
                 }
-                XmlConvert.VerifyNMTOKEN( name );
+                XmlConvert.VerifyNMTOKEN(name);
             }
-            writer.WriteNmToken( name );
+            writer.WriteNmToken(name);
         }
 
-        public override void WriteName( string name ) {
-            if ( checkNames ) {
-                XmlConvert.VerifyQName( name, ExceptionType.XmlException );
+        public override void WriteName(string name)
+        {
+            if (_checkNames)
+            {
+                XmlConvert.VerifyQName(name, ExceptionType.XmlException);
             }
-            writer.WriteName( name );
+            writer.WriteName(name);
         }
 
-        public override void WriteQualifiedName( string localName, string ns ) {
-            if ( checkNames ) {
-                ValidateNCName( localName );
+        public override void WriteQualifiedName(string localName, string ns)
+        {
+            if (_checkNames)
+            {
+                ValidateNCName(localName);
             }
-            writer.WriteQualifiedName( localName, ns );
+            writer.WriteQualifiedName(localName, ns);
         }
 
 
-//
-//  Private methods
-//
-        private void CheckCharacters( string str ) {
-            XmlConvert.VerifyCharData( str, ExceptionType.ArgumentException );
+        //
+        //  Private methods
+        //
+        private void CheckCharacters(string str)
+        {
+            XmlConvert.VerifyCharData(str, ExceptionType.ArgumentException);
         }
 
-        private void CheckCharacters( char[] data, int offset, int len ) {
-            XmlConvert.VerifyCharData( data, offset, len, ExceptionType.ArgumentException );
+        private void CheckCharacters(char[] data, int offset, int len)
+        {
+            XmlConvert.VerifyCharData(data, offset, len, ExceptionType.ArgumentException);
         }
 
-        private void ValidateNCName( string ncname ) {
-            if ( ncname.Length == 0 ) {
-                throw new ArgumentException( ResXml.GetString( ResXml.Xml_EmptyName ) );
+        private void ValidateNCName(string ncname)
+        {
+            if (ncname.Length == 0)
+            {
+                throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
             }
-            int len = ValidateNames.ParseNCName( ncname, 0 );
-            if ( len != ncname.Length ) {
+            int len = ValidateNames.ParseNCName(ncname, 0);
+            if (len != ncname.Length)
+            {
                 throw new ArgumentException(ResXml.GetString(len == 0 ? ResXml.Xml_BadStartNameChar : ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(ncname, len)));
             }
         }
 
-        private void ValidateQName( string name ) {
-            if ( name.Length == 0 ) {
-                throw new ArgumentException( ResXml.GetString( ResXml.Xml_EmptyName ) );
+        private void ValidateQName(string name)
+        {
+            if (name.Length == 0)
+            {
+                throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
             }
             int colonPos;
-            int len = ValidateNames.ParseQName( name, 0, out colonPos );
-            if ( len != name.Length ) {
-                string res = ( len == 0 || ( colonPos > -1 && len == colonPos + 1 ) ) ? ResXml.Xml_BadStartNameChar : ResXml.Xml_BadNameChar;
-                throw new ArgumentException( ResXml.GetString( res, XmlException.BuildCharExceptionArgs( name, len ) ) );
+            int len = ValidateNames.ParseQName(name, 0, out colonPos);
+            if (len != name.Length)
+            {
+                string res = (len == 0 || (colonPos > -1 && len == colonPos + 1)) ? ResXml.Xml_BadStartNameChar : ResXml.Xml_BadNameChar;
+                throw new ArgumentException(ResXml.GetString(res, XmlException.BuildCharExceptionArgs(name, len)));
             }
         }
 
-        private string ReplaceNewLines( string str ) {
-            if ( str == null ) {
+        private string ReplaceNewLines(string str)
+        {
+            if (str == null)
+            {
                 return null;
             }
 
             StringBuilder sb = null;
             int start = 0;
             int i;
-            for ( i = 0; i < str.Length; i++ ) {
+            for (i = 0; i < str.Length; i++)
+            {
                 char ch;
-                if ( ( ch = str[i] ) >= 0x20 ) {
+                if ((ch = str[i]) >= 0x20)
+                {
                     continue;
                 }
-                if ( ch == '\n' ) {
-                    if ( newLineChars == "\n" ) {
+                if (ch == '\n')
+                {
+                    if (_newLineChars == "\n")
+                    {
                         continue;
                     }
-                    if ( sb == null ) {
-                        sb = new StringBuilder( str.Length + 5 );
+                    if (sb == null)
+                    {
+                        sb = new StringBuilder(str.Length + 5);
                     }
-                    sb.Append( str, start, i - start );
+                    sb.Append(str, start, i - start);
                 }
-                else if ( ch == '\r' ) {
-                    if ( i + 1 < str.Length && str[i+1] == '\n' ) {
-                        if ( newLineChars == "\r\n" ) {
+                else if (ch == '\r')
+                {
+                    if (i + 1 < str.Length && str[i + 1] == '\n')
+                    {
+                        if (_newLineChars == "\r\n")
+                        {
                             i++;
                             continue;
                         }
-                        if ( sb == null ) {
-                            sb = new StringBuilder( str.Length  + 5 );
+                        if (sb == null)
+                        {
+                            sb = new StringBuilder(str.Length + 5);
                         }
-                        sb.Append( str, start, i - start );
+                        sb.Append(str, start, i - start);
                         i++;
                     }
-                    else {
-                        if ( newLineChars == "\r" ) {
+                    else
+                    {
+                        if (_newLineChars == "\r")
+                        {
                             continue;
                         }
-                        if ( sb == null ) {
-                            sb = new StringBuilder( str.Length + 5 );
+                        if (sb == null)
+                        {
+                            sb = new StringBuilder(str.Length + 5);
                         }
-                        sb.Append( str, start, i - start );
+                        sb.Append(str, start, i - start);
                     }
                 }
-                else {
-                    continue; 
+                else
+                {
+                    continue;
                 }
-                sb.Append( newLineChars );
+                sb.Append(_newLineChars);
                 start = i + 1;
             }
 
-            if ( sb == null ) {
+            if (sb == null)
+            {
                 return str;
             }
-            else {
-                sb.Append( str, start, i - start );
+            else
+            {
+                sb.Append(str, start, i - start);
                 return sb.ToString();
             }
         }
 
-        private string ReplaceNewLines( char[] data, int offset, int len ) {
-            if ( data == null ) {
+        private string ReplaceNewLines(char[] data, int offset, int len)
+        {
+            if (data == null)
+            {
                 return null;
             }
 
@@ -388,54 +477,69 @@ namespace Microsoft.Xml {
             int start = offset;
             int endPos = offset + len;
             int i;
-            for ( i = offset; i < endPos; i++ ) {
+            for (i = offset; i < endPos; i++)
+            {
                 char ch;
-                if ( ( ch = data[i] ) >= 0x20 ) {
+                if ((ch = data[i]) >= 0x20)
+                {
                     continue;
                 }
-                if ( ch == '\n' ) {
-                    if ( newLineChars == "\n" ) {
+                if (ch == '\n')
+                {
+                    if (_newLineChars == "\n")
+                    {
                         continue;
                     }
-                    if ( sb == null ) {
-                        sb = new StringBuilder( len + 5 );
+                    if (sb == null)
+                    {
+                        sb = new StringBuilder(len + 5);
                     }
-                    sb.Append( data, start, i - start );
+                    sb.Append(data, start, i - start);
                 }
-                else if ( ch == '\r' ) {
-                    if ( i + 1 < endPos && data[i+1] == '\n' ) {
-                        if ( newLineChars == "\r\n" ) {
+                else if (ch == '\r')
+                {
+                    if (i + 1 < endPos && data[i + 1] == '\n')
+                    {
+                        if (_newLineChars == "\r\n")
+                        {
                             i++;
                             continue;
                         }
-                        if ( sb == null ) {
-                            sb = new StringBuilder( len + 5 );
+                        if (sb == null)
+                        {
+                            sb = new StringBuilder(len + 5);
                         }
-                        sb.Append( data, start, i - start );
+                        sb.Append(data, start, i - start);
                         i++;
                     }
-                    else {
-                        if ( newLineChars == "\r" ) {
+                    else
+                    {
+                        if (_newLineChars == "\r")
+                        {
                             continue;
                         }
-                        if ( sb == null ) {
-                            sb = new StringBuilder( len + 5 );
+                        if (sb == null)
+                        {
+                            sb = new StringBuilder(len + 5);
                         }
-                        sb.Append( data, start, i - start );
+                        sb.Append(data, start, i - start);
                     }
                 }
-                else {
-                    continue; 
+                else
+                {
+                    continue;
                 }
-                sb.Append( newLineChars );
+                sb.Append(_newLineChars);
                 start = i + 1;
             }
 
-            if ( sb == null ) {
+            if (sb == null)
+            {
                 return null;
             }
-            else {
-                sb.Append( data, start, i - start );
+            else
+            {
+                sb.Append(data, start, i - start);
                 return sb.ToString();
             }
         }
@@ -444,37 +548,44 @@ namespace Microsoft.Xml {
         // Any "--" in comment must be replaced with "- -" and any "-" at the end must be appended with " ".
         // Any "?>" in PI value must be replaced with "? >". 
         // This code has a bug SQL BU Defect Tracking #480848, which was triaged as Won't Fix because it is a breaking change
-        private string InterleaveInvalidChars( string text, char invChar1, char invChar2 ) {
+        private string InterleaveInvalidChars(string text, char invChar1, char invChar2)
+        {
             StringBuilder sb = null;
             int start = 0;
             int i;
-            for ( i = 0; i < text.Length; i++ ) {
-                if ( text[i] != invChar2 ) {
+            for (i = 0; i < text.Length; i++)
+            {
+                if (text[i] != invChar2)
+                {
                     continue;
                 }
-                if ( i > 0 && text[i-1] == invChar1 ) {
-                    if ( sb == null ) {
-                        sb = new StringBuilder( text.Length + 5 );
+                if (i > 0 && text[i - 1] == invChar1)
+                {
+                    if (sb == null)
+                    {
+                        sb = new StringBuilder(text.Length + 5);
                     }
-                    sb.Append( text, start, i - start );
-                    sb.Append( ' ' );
+                    sb.Append(text, start, i - start);
+                    sb.Append(' ');
                     start = i;
                 }
             }
 
             // check last char & return
-            if ( sb == null ) {
+            if (sb == null)
+            {
                 return (i == 0 || text[i - 1] != invChar1) ? text : (text + ' ');
             }
-            else {
-                sb.Append( text, start, i - start );
-                if (i > 0 && text[i - 1] == invChar1) {
+            else
+            {
+                sb.Append(text, start, i - start);
+                if (i > 0 && text[i - 1] == invChar1)
+                {
                     sb.Append(' ');
                 }
                 return sb.ToString();
             }
         }
-
     }
 }
 

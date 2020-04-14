@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using System.Reflection;
     using System.Collections;
@@ -12,29 +13,35 @@ namespace Microsoft.Xml.Serialization {
     // by looking for a particular set of custom attributes specific to the serialization format
     // and building an appropriate set of accessors/mappings.
 
-    internal class ModelScope {
-        TypeScope typeScope;
-        Hashtable models = new Hashtable();
-        Hashtable arrayModels = new Hashtable();
+    internal class ModelScope
+    {
+        private TypeScope _typeScope;
+        private Hashtable _models = new Hashtable();
+        private Hashtable _arrayModels = new Hashtable();
 
-        internal ModelScope(TypeScope typeScope) {
-            this.typeScope = typeScope;
+        internal ModelScope(TypeScope typeScope)
+        {
+            _typeScope = typeScope;
         }
 
-        internal TypeScope TypeScope {
-            get { return typeScope; }
+        internal TypeScope TypeScope
+        {
+            get { return _typeScope; }
         }
 
-        internal TypeModel GetTypeModel(Type type) {
+        internal TypeModel GetTypeModel(Type type)
+        {
             return GetTypeModel(type, true);
         }
 
-        internal TypeModel GetTypeModel(Type type, bool directReference) {
-            TypeModel model = (TypeModel)models[type];
+        internal TypeModel GetTypeModel(Type type, bool directReference)
+        {
+            TypeModel model = (TypeModel)_models[type];
             if (model != null) return model;
-            TypeDesc typeDesc = typeScope.GetTypeDesc(type, null, directReference);
+            TypeDesc typeDesc = _typeScope.GetTypeDesc(type, null, directReference);
 
-            switch (typeDesc.Kind) {
+            switch (typeDesc.Kind)
+            {
                 case TypeKind.Enum:
                     model = new EnumModel(type, typeDesc, this);
                     break;
@@ -57,69 +64,82 @@ namespace Microsoft.Xml.Serialization {
                     break;
             }
 
-            models.Add(type, model);
+            _models.Add(type, model);
             return model;
         }
 
-        internal ArrayModel GetArrayModel(Type type) {
-            TypeModel model = (TypeModel)arrayModels[type];
-            if (model == null) {
+        internal ArrayModel GetArrayModel(Type type)
+        {
+            TypeModel model = (TypeModel)_arrayModels[type];
+            if (model == null)
+            {
                 model = GetTypeModel(type);
-                if (!(model is ArrayModel)) {
-                    TypeDesc typeDesc = typeScope.GetArrayTypeDesc(type);
+                if (!(model is ArrayModel))
+                {
+                    TypeDesc typeDesc = _typeScope.GetArrayTypeDesc(type);
                     model = new ArrayModel(type, typeDesc, this);
                 }
-                arrayModels.Add(type, model);
+                _arrayModels.Add(type, model);
             }
             return (ArrayModel)model;
         }
     }
 
-    internal abstract class TypeModel {
-        TypeDesc typeDesc;
-        Type type;
-        ModelScope scope;
+    internal abstract class TypeModel
+    {
+        private TypeDesc _typeDesc;
+        private Type _type;
+        private ModelScope _scope;
 
-        protected TypeModel(Type type, TypeDesc typeDesc, ModelScope scope) {
-            this.scope = scope;
-            this.type = type;
-            this.typeDesc = typeDesc;
+        protected TypeModel(Type type, TypeDesc typeDesc, ModelScope scope)
+        {
+            _scope = scope;
+            _type = type;
+            _typeDesc = typeDesc;
         }
 
-        internal Type Type {
-            get { return type; }
+        internal Type Type
+        {
+            get { return _type; }
         }
 
-        internal ModelScope ModelScope {
-            get { return scope; }
+        internal ModelScope ModelScope
+        {
+            get { return _scope; }
         }
 
-        internal TypeDesc TypeDesc {
-            get { return typeDesc; }
+        internal TypeDesc TypeDesc
+        {
+            get { return _typeDesc; }
         }
     }
 
-    internal class ArrayModel : TypeModel {
+    internal class ArrayModel : TypeModel
+    {
         internal ArrayModel(Type type, TypeDesc typeDesc, ModelScope scope) : base(type, typeDesc, scope) { }
 
-        internal TypeModel Element {
+        internal TypeModel Element
+        {
             get { return ModelScope.GetTypeModel(TypeScope.GetArrayElementType(Type, null)); }
         }
     }
 
-    internal class PrimitiveModel : TypeModel {
+    internal class PrimitiveModel : TypeModel
+    {
         internal PrimitiveModel(Type type, TypeDesc typeDesc, ModelScope scope) : base(type, typeDesc, scope) { }
     }
 
-    internal class SpecialModel : TypeModel {
+    internal class SpecialModel : TypeModel
+    {
         internal SpecialModel(Type type, TypeDesc typeDesc, ModelScope scope) : base(type, typeDesc, scope) { }
     }
 
-    internal class StructModel : TypeModel {
-
+    internal class StructModel : TypeModel
+    {
         internal StructModel(Type type, TypeDesc typeDesc, ModelScope scope) : base(type, typeDesc, scope) { }
 
-        internal MemberInfo[] GetMemberInfos() {
+        internal MemberInfo[] GetMemberInfos()
+        {
             // we use to return Type.GetMembers() here, the members were returned in a different order: fields first, properties last
             // Current System.Reflection code returns members in oposite order: properties first, then fields.
             // This code make sure that returns members in the Everett order.
@@ -128,48 +148,57 @@ namespace Microsoft.Xml.Serialization {
 
             int cMember = 0;
             // first copy all non-property members over
-            for (int i = 0; i < members.Length; i++) {
-                if (!(members[i] is PropertyInfo)) {
+            for (int i = 0; i < members.Length; i++)
+            {
+                if (!(members[i] is PropertyInfo))
+                {
                     fieldsAndProps[cMember++] = members[i];
                 }
             }
             // now copy all property members over
-            for (int i = 0; i < members.Length; i++) {
-                if (members[i] is PropertyInfo) {
+            for (int i = 0; i < members.Length; i++)
+            {
+                if (members[i] is PropertyInfo)
+                {
                     fieldsAndProps[cMember++] = members[i];
                 }
             }
             return fieldsAndProps;
         }
 
-        internal FieldModel GetFieldModel(MemberInfo memberInfo) {
+        internal FieldModel GetFieldModel(MemberInfo memberInfo)
+        {
             FieldModel model = null;
             if (memberInfo is FieldInfo)
                 model = GetFieldModel((FieldInfo)memberInfo);
             else if (memberInfo is PropertyInfo)
                 model = GetPropertyModel((PropertyInfo)memberInfo);
-            if (model != null) {
+            if (model != null)
+            {
                 if (model.ReadOnly && model.FieldTypeDesc.Kind != TypeKind.Collection && model.FieldTypeDesc.Kind != TypeKind.Enumerable)
                     return null;
             }
             return model;
         }
 
-        void CheckSupportedMember(TypeDesc typeDesc, MemberInfo member, Type type) {
+        private void CheckSupportedMember(TypeDesc typeDesc, MemberInfo member, Type type)
+        {
             if (typeDesc == null)
                 return;
-            if (typeDesc.IsUnsupported) {
-                if (typeDesc.Exception == null) {
+            if (typeDesc.IsUnsupported)
+            {
+                if (typeDesc.Exception == null)
+                {
                     typeDesc.Exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, typeDesc.FullName));
                 }
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializerUnsupportedMember, member.DeclaringType.FullName + "." + member.Name, type.FullName), typeDesc.Exception);
-
             }
             CheckSupportedMember(typeDesc.BaseTypeDesc, member, type);
             CheckSupportedMember(typeDesc.ArrayElementTypeDesc, member, type);
         }
 
-        FieldModel GetFieldModel(FieldInfo fieldInfo) {
+        private FieldModel GetFieldModel(FieldInfo fieldInfo)
+        {
             if (fieldInfo.IsStatic) return null;
             if (fieldInfo.DeclaringType != Type) return null;
 
@@ -181,9 +210,11 @@ namespace Microsoft.Xml.Serialization {
             return new FieldModel(fieldInfo, fieldInfo.FieldType, typeDesc);
         }
 
-        FieldModel GetPropertyModel(PropertyInfo propertyInfo) {
+        private FieldModel GetPropertyModel(PropertyInfo propertyInfo)
+        {
             if (propertyInfo.DeclaringType != Type) return null;
-            if (CheckPropertyRead(propertyInfo)) {
+            if (CheckPropertyRead(propertyInfo))
+            {
                 TypeDesc typeDesc = ModelScope.TypeScope.GetTypeDesc(propertyInfo.PropertyType, propertyInfo, true, false);
                 // Fix for CSDMain 100492, please contact arssrvlt if you need to change this line
                 if (!propertyInfo.CanWrite && typeDesc.Kind != TypeKind.Collection && typeDesc.Kind != TypeKind.Enumerable)
@@ -195,7 +226,8 @@ namespace Microsoft.Xml.Serialization {
         }
 
         //CheckProperty
-        internal static bool CheckPropertyRead(PropertyInfo propertyInfo) {
+        internal static bool CheckPropertyRead(PropertyInfo propertyInfo)
+        {
             if (!propertyInfo.CanRead) return false;
 
             MethodInfo getMethod = propertyInfo.GetGetMethod();
@@ -206,157 +238,190 @@ namespace Microsoft.Xml.Serialization {
         }
     }
 
-    internal enum SpecifiedAccessor {
+    internal enum SpecifiedAccessor
+    {
         None,
         ReadOnly,
         ReadWrite,
     }
 
-    internal class FieldModel {
-        SpecifiedAccessor checkSpecified = SpecifiedAccessor.None;
-        MemberInfo memberInfo;
-        MemberInfo checkSpecifiedMemberInfo;
-        MethodInfo checkShouldPersistMethodInfo;
-        bool checkShouldPersist;
-        bool readOnly = false;
-        bool isProperty = false;
-        Type fieldType;
-        string name;
-        TypeDesc fieldTypeDesc;
+    internal class FieldModel
+    {
+        private SpecifiedAccessor _checkSpecified = SpecifiedAccessor.None;
+        private MemberInfo _memberInfo;
+        private MemberInfo _checkSpecifiedMemberInfo;
+        private MethodInfo _checkShouldPersistMethodInfo;
+        private bool _checkShouldPersist;
+        private bool _readOnly = false;
+        private bool _isProperty = false;
+        private Type _fieldType;
+        private string _name;
+        private TypeDesc _fieldTypeDesc;
 
         internal FieldModel(string name, Type fieldType, TypeDesc fieldTypeDesc, bool checkSpecified, bool checkShouldPersist) :
-            this(name, fieldType, fieldTypeDesc, checkSpecified, checkShouldPersist, false) {
+            this(name, fieldType, fieldTypeDesc, checkSpecified, checkShouldPersist, false)
+        {
         }
-        internal FieldModel(string name, Type fieldType, TypeDesc fieldTypeDesc, bool checkSpecified, bool checkShouldPersist, bool readOnly) {
-            this.fieldTypeDesc = fieldTypeDesc;
-            this.name = name;
-            this.fieldType = fieldType;
-            this.checkSpecified = checkSpecified ? SpecifiedAccessor.ReadWrite : SpecifiedAccessor.None;
-            this.checkShouldPersist = checkShouldPersist;
-            this.readOnly = readOnly;
+        internal FieldModel(string name, Type fieldType, TypeDesc fieldTypeDesc, bool checkSpecified, bool checkShouldPersist, bool readOnly)
+        {
+            _fieldTypeDesc = fieldTypeDesc;
+            _name = name;
+            _fieldType = fieldType;
+            _checkSpecified = checkSpecified ? SpecifiedAccessor.ReadWrite : SpecifiedAccessor.None;
+            _checkShouldPersist = checkShouldPersist;
+            _readOnly = readOnly;
         }
 
-        internal FieldModel(MemberInfo memberInfo, Type fieldType, TypeDesc fieldTypeDesc) {
-            this.name = memberInfo.Name;
-            this.fieldType = fieldType;
-            this.fieldTypeDesc = fieldTypeDesc;
-            this.memberInfo = memberInfo;
-            this.checkShouldPersistMethodInfo = memberInfo.DeclaringType.GetMethod("ShouldSerialize" + memberInfo.Name, new Type[0]);
-            this.checkShouldPersist = this.checkShouldPersistMethodInfo != null;
+        internal FieldModel(MemberInfo memberInfo, Type fieldType, TypeDesc fieldTypeDesc)
+        {
+            _name = memberInfo.Name;
+            _fieldType = fieldType;
+            _fieldTypeDesc = fieldTypeDesc;
+            _memberInfo = memberInfo;
+            _checkShouldPersistMethodInfo = memberInfo.DeclaringType.GetMethod("ShouldSerialize" + memberInfo.Name, new Type[0]);
+            _checkShouldPersist = _checkShouldPersistMethodInfo != null;
 
             FieldInfo specifiedField = memberInfo.DeclaringType.GetField(memberInfo.Name + "Specified");
-            if (specifiedField != null) {
-                if (specifiedField.FieldType != typeof(bool)) {
+            if (specifiedField != null)
+            {
+                if (specifiedField.FieldType != typeof(bool))
+                {
                     throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidSpecifiedType, specifiedField.Name, specifiedField.FieldType.FullName, typeof(bool).FullName));
                 }
-                this.checkSpecified = specifiedField.IsInitOnly ? SpecifiedAccessor.ReadOnly : SpecifiedAccessor.ReadWrite;
-                this.checkSpecifiedMemberInfo = specifiedField;
+                _checkSpecified = specifiedField.IsInitOnly ? SpecifiedAccessor.ReadOnly : SpecifiedAccessor.ReadWrite;
+                _checkSpecifiedMemberInfo = specifiedField;
             }
-            else {
+            else
+            {
                 PropertyInfo specifiedProperty = memberInfo.DeclaringType.GetProperty(memberInfo.Name + "Specified");
-                if (specifiedProperty != null) {
-                    if (StructModel.CheckPropertyRead(specifiedProperty)) {
-                        this.checkSpecified = specifiedProperty.CanWrite ? SpecifiedAccessor.ReadWrite : SpecifiedAccessor.ReadOnly;
-                        this.checkSpecifiedMemberInfo = specifiedProperty;
+                if (specifiedProperty != null)
+                {
+                    if (StructModel.CheckPropertyRead(specifiedProperty))
+                    {
+                        _checkSpecified = specifiedProperty.CanWrite ? SpecifiedAccessor.ReadWrite : SpecifiedAccessor.ReadOnly;
+                        _checkSpecifiedMemberInfo = specifiedProperty;
                     }
-                    if (this.checkSpecified != SpecifiedAccessor.None && specifiedProperty.PropertyType != typeof(bool)) {
+                    if (_checkSpecified != SpecifiedAccessor.None && specifiedProperty.PropertyType != typeof(bool))
+                    {
                         throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidSpecifiedType, specifiedProperty.Name, specifiedProperty.PropertyType.FullName, typeof(bool).FullName));
                     }
                 }
             }
-            if (memberInfo is PropertyInfo) {
-                readOnly = !((PropertyInfo)memberInfo).CanWrite;
-                isProperty = true;
+            if (memberInfo is PropertyInfo)
+            {
+                _readOnly = !((PropertyInfo)memberInfo).CanWrite;
+                _isProperty = true;
             }
-            else if (memberInfo is FieldInfo) {
-                readOnly = ((FieldInfo)memberInfo).IsInitOnly;
+            else if (memberInfo is FieldInfo)
+            {
+                _readOnly = ((FieldInfo)memberInfo).IsInitOnly;
             }
         }
 
-        internal string Name {
-            get { return name; }
+        internal string Name
+        {
+            get { return _name; }
         }
 
-        internal Type FieldType {
-            get { return fieldType; }
+        internal Type FieldType
+        {
+            get { return _fieldType; }
         }
 
-        internal TypeDesc FieldTypeDesc {
-            get { return fieldTypeDesc; }
+        internal TypeDesc FieldTypeDesc
+        {
+            get { return _fieldTypeDesc; }
         }
 
-        internal bool CheckShouldPersist {
-            get { return checkShouldPersist; }
+        internal bool CheckShouldPersist
+        {
+            get { return _checkShouldPersist; }
         }
 
-        internal SpecifiedAccessor CheckSpecified {
-            get { return checkSpecified; }
+        internal SpecifiedAccessor CheckSpecified
+        {
+            get { return _checkSpecified; }
         }
 
-        internal MemberInfo MemberInfo {
-            get { return memberInfo; }
+        internal MemberInfo MemberInfo
+        {
+            get { return _memberInfo; }
         }
-        internal MemberInfo CheckSpecifiedMemberInfo {
-            get { return checkSpecifiedMemberInfo; }
+        internal MemberInfo CheckSpecifiedMemberInfo
+        {
+            get { return _checkSpecifiedMemberInfo; }
         }
-        internal MethodInfo CheckShouldPersistMethodInfo {
-            get { return checkShouldPersistMethodInfo; }
+        internal MethodInfo CheckShouldPersistMethodInfo
+        {
+            get { return _checkShouldPersistMethodInfo; }
         }
 
-        internal bool ReadOnly {
-            get { return readOnly; }
+        internal bool ReadOnly
+        {
+            get { return _readOnly; }
         }
 
-        internal bool IsProperty {
-            get { return isProperty; }
+        internal bool IsProperty
+        {
+            get { return _isProperty; }
         }
     }
 
-    internal class ConstantModel {
-        FieldInfo fieldInfo;
-        long value;
+    internal class ConstantModel
+    {
+        private FieldInfo _fieldInfo;
+        private long _value;
 
-        internal ConstantModel(FieldInfo fieldInfo, long value) {
-            this.fieldInfo = fieldInfo;
-            this.value = value;
+        internal ConstantModel(FieldInfo fieldInfo, long value)
+        {
+            _fieldInfo = fieldInfo;
+            _value = value;
         }
 
-        internal string Name {
-            get { return fieldInfo.Name; }
+        internal string Name
+        {
+            get { return _fieldInfo.Name; }
         }
 
-        internal long Value {
-            get { return value; }
+        internal long Value
+        {
+            get { return _value; }
         }
 
-        internal FieldInfo FieldInfo {
-            get { return fieldInfo; }
+        internal FieldInfo FieldInfo
+        {
+            get { return _fieldInfo; }
         }
     }
 
-    internal class EnumModel : TypeModel {
-        ConstantModel[] constants;
+    internal class EnumModel : TypeModel
+    {
+        private ConstantModel[] _constants;
 
         internal EnumModel(Type type, TypeDesc typeDesc, ModelScope scope) : base(type, typeDesc, scope) { }
 
-        internal ConstantModel[] Constants {
-            get {
-                if (constants == null) {
+        internal ConstantModel[] Constants
+        {
+            get
+            {
+                if (_constants == null)
+                {
                     ArrayList list = new ArrayList();
                     FieldInfo[] fields = Type.GetFields();
-                    for (int i = 0; i < fields.Length; i++) {
+                    for (int i = 0; i < fields.Length; i++)
+                    {
                         FieldInfo field = fields[i];
                         ConstantModel constant = GetConstantModel(field);
                         if (constant != null) list.Add(constant);
                     }
-                    constants = (ConstantModel[])list.ToArray(typeof(ConstantModel));
+                    _constants = (ConstantModel[])list.ToArray(typeof(ConstantModel));
                 }
-                return constants;
+                return _constants;
             }
-
         }
 
-        ConstantModel GetConstantModel(FieldInfo fieldInfo) {
+        private ConstantModel GetConstantModel(FieldInfo fieldInfo)
+        {
             if (fieldInfo.IsSpecialName) return null;
             return new ConstantModel(fieldInfo, ((IConvertible)fieldInfo.GetValue(null)).ToInt64(null));
         }

@@ -35,87 +35,103 @@
 // user can use the standard methods from the <code>Node</code>  interface, 
 // such as <code>insertBefore()</code> and  <code>appendChild()</code>.  
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     using System.Diagnostics;
     using Microsoft.Xml.XPath;
 
     // Represents a lightweight object that is useful for tree insert
     // operations.
-    public class XmlDocumentFragment : XmlNode {
-        XmlLinkedNode lastChild;
+    public class XmlDocumentFragment : XmlNode
+    {
+        private XmlLinkedNode _lastChild;
 
-        protected internal XmlDocumentFragment( XmlDocument ownerDocument ): base( ) {
-            if ( ownerDocument == null )
+        protected internal XmlDocumentFragment(XmlDocument ownerDocument) : base()
+        {
+            if (ownerDocument == null)
                 throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Node_Null_Doc));
-            parentNode= ownerDocument;
+            parentNode = ownerDocument;
         }
 
         // Gets the name of the node.
-        public override String Name { 
-            get { return OwnerDocument.strDocumentFragmentName;}
+        public override String Name
+        {
+            get { return OwnerDocument.strDocumentFragmentName; }
         }
 
         // Gets the name of the current node without the namespace prefix.
-        public override String LocalName { 
-            get { return OwnerDocument.strDocumentFragmentName;}
+        public override String LocalName
+        {
+            get { return OwnerDocument.strDocumentFragmentName; }
         }
 
         // Gets the type of the current node.
-        public override XmlNodeType NodeType {
-            get { return XmlNodeType.DocumentFragment;}
+        public override XmlNodeType NodeType
+        {
+            get { return XmlNodeType.DocumentFragment; }
         }
 
         // Gets the parent of this node (for nodes that can have parents).
-        public override XmlNode ParentNode {
-            get { return null;}
+        public override XmlNode ParentNode
+        {
+            get { return null; }
         }
 
         // Gets the XmlDocument that contains this node.
-        public override XmlDocument OwnerDocument {
-            get { 
+        public override XmlDocument OwnerDocument
+        {
+            get
+            {
                 return (XmlDocument)parentNode;
             }
-
         }
 
         // Gets or sets the markup representing just
         // the children of this node.
-        public override string InnerXml {
-            get {
+        public override string InnerXml
+        {
+            get
+            {
                 return base.InnerXml;
             }
-            set {
+            set
+            {
                 RemoveAll();
                 XmlLoader loader = new XmlLoader();
                 //Hack that the content is the same element
-                loader.ParsePartialContent( this, value, XmlNodeType.Element );
+                loader.ParsePartialContent(this, value, XmlNodeType.Element);
             }
         }
-        
+
         // Creates a duplicate of this node.
-        public override XmlNode CloneNode(bool deep) {
-            Debug.Assert( OwnerDocument != null );
+        public override XmlNode CloneNode(bool deep)
+        {
+            Debug.Assert(OwnerDocument != null);
             XmlDocument doc = OwnerDocument;
             XmlDocumentFragment clone = doc.CreateDocumentFragment();
             if (deep)
-                clone.CopyChildren( doc, this, deep );
-            return clone;                
+                clone.CopyChildren(doc, this, deep);
+            return clone;
         }
 
-        internal override bool IsContainer {
-            get { return true;}
+        internal override bool IsContainer
+        {
+            get { return true; }
         }
 
-        internal override XmlLinkedNode LastNode {
-            get { return lastChild;}
-            set { lastChild = value;}
+        internal override XmlLinkedNode LastNode
+        {
+            get { return _lastChild; }
+            set { _lastChild = value; }
         }
 
-        internal override bool IsValidChildType( XmlNodeType type ) {
-            switch (type) {
+        internal override bool IsValidChildType(XmlNodeType type)
+        {
+            switch (type)
+            {
                 case XmlNodeType.Element:
                 case XmlNodeType.Text:
                 case XmlNodeType.EntityReference:
@@ -137,35 +153,44 @@ namespace Microsoft.Xml {
                     return false;
             }
         }
-        internal override bool CanInsertAfter( XmlNode newChild, XmlNode refChild ) {
+        internal override bool CanInsertAfter(XmlNode newChild, XmlNode refChild)
+        {
             Debug.Assert(newChild != null); //should be checked that newChild is not null before this function call
-            if (newChild.NodeType == XmlNodeType.XmlDeclaration) {
-                if (refChild == null) {
+            if (newChild.NodeType == XmlNodeType.XmlDeclaration)
+            {
+                if (refChild == null)
+                {
                     //append at the end
                     return (LastNode == null);
-                } else
+                }
+                else
                     return false;
-            } 
+            }
             return true;
         }
 
-        internal override bool CanInsertBefore( XmlNode newChild, XmlNode refChild ) {
+        internal override bool CanInsertBefore(XmlNode newChild, XmlNode refChild)
+        {
             Debug.Assert(newChild != null); //should be checked that newChild is not null before this function call
-            if (newChild.NodeType == XmlNodeType.XmlDeclaration) {
-                return (refChild==null || refChild==FirstChild);
+            if (newChild.NodeType == XmlNodeType.XmlDeclaration)
+            {
+                return (refChild == null || refChild == FirstChild);
             }
             return true;
         }
 
         // Saves the node to the specified XmlWriter.
-        public override void WriteTo(XmlWriter w) {
-            WriteContentTo( w );
+        public override void WriteTo(XmlWriter w)
+        {
+            WriteContentTo(w);
         }
 
         // Saves all the children of the node to the specified XmlWriter.
-        public override void WriteContentTo(XmlWriter w) {
-            foreach( XmlNode n in this ) {
-                n.WriteTo( w );
+        public override void WriteContentTo(XmlWriter w)
+        {
+            foreach (XmlNode n in this)
+            {
+                n.WriteTo(w);
             }
         }
 

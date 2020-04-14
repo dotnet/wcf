@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -14,9 +15,9 @@ namespace System.ServiceModel.Channels
 
     public sealed class TransactionFlowBindingElement : BindingElement
     {
-        bool transactions;
-        TransactionFlowOption issuedTokens;
-        TransactionProtocol transactionProtocol;
+        private bool _transactions;
+        private TransactionFlowOption _issuedTokens;
+        private TransactionProtocol _transactionProtocol;
 
         public TransactionFlowBindingElement()
             : this(true, TransactionFlowDefaults.TransactionProtocol)
@@ -35,29 +36,29 @@ namespace System.ServiceModel.Channels
 
         internal TransactionFlowBindingElement(bool transactions, TransactionProtocol transactionProtocol)
         {
-            this.transactions = transactions;
-            this.issuedTokens = transactions ? TransactionFlowOption.Allowed : TransactionFlowOption.NotAllowed;
+            _transactions = transactions;
+            _issuedTokens = transactions ? TransactionFlowOption.Allowed : TransactionFlowOption.NotAllowed;
 
             if (!TransactionProtocol.IsDefined(transactionProtocol))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, transactionProtocol.ToString()));
             }
 
-            this.transactionProtocol = transactionProtocol;
+            _transactionProtocol = transactionProtocol;
         }
 
-        TransactionFlowBindingElement(TransactionFlowBindingElement elementToBeCloned)
+        private TransactionFlowBindingElement(TransactionFlowBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.transactions = elementToBeCloned.transactions;
-            this.issuedTokens = elementToBeCloned.issuedTokens;
+            _transactions = elementToBeCloned._transactions;
+            _issuedTokens = elementToBeCloned._issuedTokens;
 
-            if (!TransactionProtocol.IsDefined(elementToBeCloned.transactionProtocol))
+            if (!TransactionProtocol.IsDefined(elementToBeCloned._transactionProtocol))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, elementToBeCloned.transactionProtocol.ToString()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, elementToBeCloned._transactionProtocol.ToString()));
             }
 
-            this.transactionProtocol = elementToBeCloned.transactionProtocol;
+            _transactionProtocol = elementToBeCloned._transactionProtocol;
             this.AllowWildcardAction = elementToBeCloned.AllowWildcardAction;
         }
 
@@ -65,12 +66,12 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.transactions;
+                return _transactions;
             }
             set
             {
-                this.transactions = value;
-                this.issuedTokens = value ? TransactionFlowOption.Allowed : TransactionFlowOption.NotAllowed;
+                _transactions = value;
+                _issuedTokens = value ? TransactionFlowOption.Allowed : TransactionFlowOption.NotAllowed;
             }
         }
 
@@ -78,12 +79,12 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.issuedTokens;
+                return _issuedTokens;
             }
             set
             {
                 ValidateOption(value);
-                this.issuedTokens = value;
+                _issuedTokens = value;
             }
         }
 
@@ -92,14 +93,14 @@ namespace System.ServiceModel.Channels
             return new TransactionFlowBindingElement(this);
         }
 
-        bool IsFlowEnabled(Dictionary<DirectionalAction, TransactionFlowOption> dictionary)
+        private bool IsFlowEnabled(Dictionary<DirectionalAction, TransactionFlowOption> dictionary)
         {
-            if (this.issuedTokens != TransactionFlowOption.NotAllowed)
+            if (_issuedTokens != TransactionFlowOption.NotAllowed)
             {
                 return true;
             }
 
-            if (!this.transactions)
+            if (!_transactions)
             {
                 return false;
             }
@@ -117,12 +118,12 @@ namespace System.ServiceModel.Channels
 
         internal bool IsFlowEnabled(ContractDescription contract)
         {
-            if (this.issuedTokens != TransactionFlowOption.NotAllowed)
+            if (_issuedTokens != TransactionFlowOption.NotAllowed)
             {
                 return true;
             }
 
-            if (!this.transactions)
+            if (!_transactions)
             {
                 return false;
             }
@@ -146,13 +147,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.transactionProtocol;
+                return _transactionProtocol;
             }
             set
             {
                 if (!TransactionProtocol.IsDefined(value))
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
-                this.transactionProtocol = value;
+                _transactionProtocol = value;
             }
         }
 
@@ -195,7 +196,7 @@ namespace System.ServiceModel.Channels
             return false;
         }
 
-        Dictionary<DirectionalAction, TransactionFlowOption> GetDictionary(BindingContext context)
+        private Dictionary<DirectionalAction, TransactionFlowOption> GetDictionary(BindingContext context)
         {
             Dictionary<DirectionalAction, TransactionFlowOption> dictionary =
                 context.BindingParameters.Find<Dictionary<DirectionalAction, TransactionFlowOption>>();
@@ -239,7 +240,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        ChannelProtectionRequirements GetProtectionRequirements()
+        private ChannelProtectionRequirements GetProtectionRequirements()
         {
             if (this.Transactions || (this.IssuedTokens != TransactionFlowOption.NotAllowed))
             {
@@ -278,7 +279,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        XmlElement GetAssertion(XmlDocument doc, TransactionFlowOption option, string prefix, string name, string ns, string policyNs)
+        private XmlElement GetAssertion(XmlDocument doc, TransactionFlowOption option, string prefix, string name, string ns, string policyNs)
         {
             if (doc == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("doc");
@@ -300,8 +301,8 @@ namespace System.ServiceModel.Channels
                     result.Attributes.Append(attr);
 
                     // For legacy protocols, also insert the legacy attribute for backward compat
-                    if (this.transactionProtocol == TransactionProtocol.OleTransactions ||
-                        this.transactionProtocol == TransactionProtocol.WSAtomicTransactionOctober2004)
+                    if (_transactionProtocol == TransactionProtocol.OleTransactions ||
+                        _transactionProtocol == TransactionProtocol.WSAtomicTransactionOctober2004)
                     {
                         XmlAttribute attrLegacy = doc.CreateAttribute(TransactionPolicyStrings.OptionalPrefix10,
                             TransactionPolicyStrings.OptionalLocal, TransactionPolicyStrings.OptionalNamespaceLegacy);
@@ -324,11 +325,11 @@ namespace System.ServiceModel.Channels
             TransactionFlowBindingElement txFlow = b as TransactionFlowBindingElement;
             if (txFlow == null)
                 return false;
-            if (this.transactions != txFlow.transactions)
+            if (_transactions != txFlow._transactions)
                 return false;
-            if (this.issuedTokens != txFlow.issuedTokens)
+            if (_issuedTokens != txFlow._issuedTokens)
                 return false;
-            if (this.transactionProtocol != txFlow.transactionProtocol)
+            if (_transactionProtocol != txFlow._transactionProtocol)
                 return false;
 
             return true;

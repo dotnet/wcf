@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -19,24 +20,24 @@ namespace System.ServiceModel.Channels
     {
         internal const bool defaultAllowSerializedSigningTokenOnReply = false;
 
-        bool allowSerializedSigningTokenOnReply;
-        SecurityTokenParameters initiatorTokenParameters;
-        MessageProtectionOrder messageProtectionOrder;
-        SecurityTokenParameters recipientTokenParameters;
-        bool requireSignatureConfirmation;
-        bool isCertificateSignatureBinding;
+        private bool _allowSerializedSigningTokenOnReply;
+        private SecurityTokenParameters _initiatorTokenParameters;
+        private MessageProtectionOrder _messageProtectionOrder;
+        private SecurityTokenParameters _recipientTokenParameters;
+        private bool _requireSignatureConfirmation;
+        private bool _isCertificateSignatureBinding;
 
-        AsymmetricSecurityBindingElement(AsymmetricSecurityBindingElement elementToBeCloned)
+        private AsymmetricSecurityBindingElement(AsymmetricSecurityBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            if (elementToBeCloned.initiatorTokenParameters != null)
-                this.initiatorTokenParameters = (SecurityTokenParameters)elementToBeCloned.initiatorTokenParameters.Clone();
-            this.messageProtectionOrder = elementToBeCloned.messageProtectionOrder;
-            if (elementToBeCloned.recipientTokenParameters != null)
-                this.recipientTokenParameters = (SecurityTokenParameters)elementToBeCloned.recipientTokenParameters.Clone();
-            this.requireSignatureConfirmation = elementToBeCloned.requireSignatureConfirmation;
-            this.allowSerializedSigningTokenOnReply = elementToBeCloned.allowSerializedSigningTokenOnReply;
-            this.isCertificateSignatureBinding = elementToBeCloned.isCertificateSignatureBinding;
+            if (elementToBeCloned._initiatorTokenParameters != null)
+                _initiatorTokenParameters = (SecurityTokenParameters)elementToBeCloned._initiatorTokenParameters.Clone();
+            _messageProtectionOrder = elementToBeCloned._messageProtectionOrder;
+            if (elementToBeCloned._recipientTokenParameters != null)
+                _recipientTokenParameters = (SecurityTokenParameters)elementToBeCloned._recipientTokenParameters.Clone();
+            _requireSignatureConfirmation = elementToBeCloned._requireSignatureConfirmation;
+            _allowSerializedSigningTokenOnReply = elementToBeCloned._allowSerializedSigningTokenOnReply;
+            _isCertificateSignatureBinding = elementToBeCloned._isCertificateSignatureBinding;
         }
 
         public AsymmetricSecurityBindingElement()
@@ -63,23 +64,23 @@ namespace System.ServiceModel.Channels
             bool allowSerializedSigningTokenOnReply)
             : base()
         {
-            this.messageProtectionOrder = SecurityBindingElement.defaultMessageProtectionOrder;
-            this.requireSignatureConfirmation = SecurityBindingElement.defaultRequireSignatureConfirmation;
-            this.initiatorTokenParameters = initiatorTokenParameters;
-            this.recipientTokenParameters = recipientTokenParameters;
-            this.allowSerializedSigningTokenOnReply = allowSerializedSigningTokenOnReply;
-            this.isCertificateSignatureBinding = false;
+            _messageProtectionOrder = SecurityBindingElement.defaultMessageProtectionOrder;
+            _requireSignatureConfirmation = SecurityBindingElement.defaultRequireSignatureConfirmation;
+            _initiatorTokenParameters = initiatorTokenParameters;
+            _recipientTokenParameters = recipientTokenParameters;
+            _allowSerializedSigningTokenOnReply = allowSerializedSigningTokenOnReply;
+            _isCertificateSignatureBinding = false;
         }
 
         public bool AllowSerializedSigningTokenOnReply
         {
             get
             {
-                return this.allowSerializedSigningTokenOnReply;
+                return _allowSerializedSigningTokenOnReply;
             }
             set
             {
-                this.allowSerializedSigningTokenOnReply = value;
+                _allowSerializedSigningTokenOnReply = value;
             }
         }
 
@@ -87,11 +88,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.initiatorTokenParameters;
+                return _initiatorTokenParameters;
             }
             set
             {
-                this.initiatorTokenParameters = value;
+                _initiatorTokenParameters = value;
             }
         }
 
@@ -99,13 +100,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.messageProtectionOrder;
+                return _messageProtectionOrder;
             }
             set
             {
                 if (!MessageProtectionOrderHelper.IsDefined(value))
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
-                this.messageProtectionOrder = value;
+                _messageProtectionOrder = value;
             }
         }
 
@@ -113,11 +114,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.recipientTokenParameters;
+                return _recipientTokenParameters;
             }
             set
             {
-                this.recipientTokenParameters = value;
+                _recipientTokenParameters = value;
             }
         }
 
@@ -125,11 +126,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.requireSignatureConfirmation;
+                return _requireSignatureConfirmation;
             }
             set
             {
-                this.requireSignatureConfirmation = value;
+                _requireSignatureConfirmation = value;
             }
         }
 
@@ -164,44 +165,44 @@ namespace System.ServiceModel.Channels
 
         internal override bool SupportsDuplex
         {
-            get { return !this.isCertificateSignatureBinding; }
+            get { return !_isCertificateSignatureBinding; }
         }
 
         internal override bool SupportsRequestReply
         {
             get
             {
-                return !this.isCertificateSignatureBinding;
+                return !_isCertificateSignatureBinding;
             }
         }
 
         internal bool IsCertificateSignatureBinding
         {
-            get { return this.isCertificateSignatureBinding; }
-            set { this.isCertificateSignatureBinding = value; }
+            get { return _isCertificateSignatureBinding; }
+            set { _isCertificateSignatureBinding = value; }
         }
 
         public override void SetKeyDerivation(bool requireDerivedKeys)
         {
             base.SetKeyDerivation(requireDerivedKeys);
-            if (this.initiatorTokenParameters != null)
-                this.initiatorTokenParameters.RequireDerivedKeys = requireDerivedKeys;
-            if (this.recipientTokenParameters != null)
-                this.recipientTokenParameters.RequireDerivedKeys = requireDerivedKeys;
+            if (_initiatorTokenParameters != null)
+                _initiatorTokenParameters.RequireDerivedKeys = requireDerivedKeys;
+            if (_recipientTokenParameters != null)
+                _recipientTokenParameters.RequireDerivedKeys = requireDerivedKeys;
         }
 
         internal override bool IsSetKeyDerivation(bool requireDerivedKeys)
         {
             if (!base.IsSetKeyDerivation(requireDerivedKeys))
                 return false;
-            if (this.initiatorTokenParameters != null && this.initiatorTokenParameters.RequireDerivedKeys != requireDerivedKeys)
+            if (_initiatorTokenParameters != null && _initiatorTokenParameters.RequireDerivedKeys != requireDerivedKeys)
                 return false;
-            if (this.recipientTokenParameters != null && this.recipientTokenParameters.RequireDerivedKeys != requireDerivedKeys)
+            if (_recipientTokenParameters != null && _recipientTokenParameters.RequireDerivedKeys != requireDerivedKeys)
                 return false;
             return true;
         }
 
-        bool HasProtectionRequirements(ScopedMessagePartSpecification scopedParts)
+        private bool HasProtectionRequirements(ScopedMessagePartSpecification scopedParts)
         {
             foreach (string action in scopedParts.Actions)
             {
@@ -232,16 +233,16 @@ namespace System.ServiceModel.Channels
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "MessageProtectionOrder: {0}", this.messageProtectionOrder.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "RequireSignatureConfirmation: {0}", this.requireSignatureConfirmation.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "MessageProtectionOrder: {0}", _messageProtectionOrder.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "RequireSignatureConfirmation: {0}", _requireSignatureConfirmation.ToString()));
             sb.Append("InitiatorTokenParameters: ");
-            if (this.initiatorTokenParameters != null)
-                sb.AppendLine(this.initiatorTokenParameters.ToString().Trim().Replace("\n", "\n  "));
+            if (_initiatorTokenParameters != null)
+                sb.AppendLine(_initiatorTokenParameters.ToString().Trim().Replace("\n", "\n  "));
             else
                 sb.AppendLine("null");
             sb.Append("RecipientTokenParameters: ");
-            if (this.recipientTokenParameters != null)
-                sb.AppendLine(this.recipientTokenParameters.ToString().Trim().Replace("\n", "\n  "));
+            if (_recipientTokenParameters != null)
+                sb.AppendLine(_recipientTokenParameters.ToString().Trim().Replace("\n", "\n  "));
             else
                 sb.AppendLine("null");
 

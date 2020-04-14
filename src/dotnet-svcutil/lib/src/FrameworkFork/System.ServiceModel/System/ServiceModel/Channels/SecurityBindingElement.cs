@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -582,7 +583,6 @@ namespace System.ServiceModel.Channels
 
         internal static bool IsMutualCertificateDuplexBinding(SecurityBindingElement sbe)
         {
-
             // Do not check MessageSecurityVersion: it maybe changed by the wrapper element and gets checked later in the SecuritySection.AreBindingsMatching()
 
             AsymmetricSecurityBindingElement asbe = sbe as AsymmetricSecurityBindingElement;
@@ -610,7 +610,6 @@ namespace System.ServiceModel.Channels
         // this method reverses CreateMutualCertificateBindingElement() logic
         internal static bool IsMutualCertificateBinding(SecurityBindingElement sbe, bool allowSerializedSigningTokenOnReply)
         {
-
             // Do not check MessageSecurityVersion: it maybe changed by the wrapper element and gets checked later in the SecuritySection.AreBindingsMatching()
 
             AsymmetricSecurityBindingElement asbe = sbe as AsymmetricSecurityBindingElement;
@@ -647,7 +646,6 @@ namespace System.ServiceModel.Channels
 
                 if (!ssbe.RequireSignatureConfirmation)
                     return false;
-
             }
             return true;
         }
@@ -862,7 +860,6 @@ namespace System.ServiceModel.Channels
                 return false;
 
             return sslParameters.RequireClientCertificate == requireClientCertificate && sslParameters.RequireCancellation == requireCancellation;
-
         }
         static public SymmetricSecurityBindingElement CreateIssuedTokenBindingElement(IssuedSecurityTokenParameters issuedTokenParameters)
         {
@@ -1401,7 +1398,6 @@ namespace System.ServiceModel.Channels
                     return false;
 
                 bootstrapSecurity = scParameters.BootstrapSecurityBindingElement;
-
             }
 
             if (bootstrapSecurity != null && bootstrapSecurity.SecurityHeaderLayout != SecurityProtocolFactory.defaultSecurityHeaderLayout)
@@ -1553,7 +1549,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void AddAssertionIfNotNull(PolicyConversionContext policyContext, OperationDescription operation, Collection<XmlElement> assertions)
+        private static void AddAssertionIfNotNull(PolicyConversionContext policyContext, OperationDescription operation, Collection<XmlElement> assertions)
         {
             if (policyContext != null && assertions != null)
             {

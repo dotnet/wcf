@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeIndexerExpression : CodeExpression {
-        private CodeExpression targetObject;
-        private CodeExpressionCollection indices;
+    public class CodeIndexerExpression : CodeExpression
+    {
+        private CodeExpression _targetObject;
+        private CodeExpressionCollection _indices;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeIndexerExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeIndexerExpression() {
+        public CodeIndexerExpression()
+        {
         }
 
         /// <devdoc>
@@ -37,10 +39,11 @@ namespace Microsoft.CodeDom {
         ///       object and index.
         ///    </para>
         /// </devdoc>
-        public CodeIndexerExpression(CodeExpression targetObject, params CodeExpression[] indices) {
-            this.targetObject = targetObject;
-            this.indices = new CodeExpressionCollection();
-            this.indices.AddRange(indices);
+        public CodeIndexerExpression(CodeExpression targetObject, params CodeExpression[] indices)
+        {
+            _targetObject = targetObject;
+            _indices = new CodeExpressionCollection();
+            _indices.AddRange(indices);
         }
 
         /// <devdoc>
@@ -49,12 +52,15 @@ namespace Microsoft.CodeDom {
         ///       the target object.
         ///    </para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
@@ -64,12 +70,15 @@ namespace Microsoft.CodeDom {
         ///       the index.
         ///    </para>
         /// </devdoc>
-        public CodeExpressionCollection Indices {
-            get {
-                if (indices == null) {
-                    indices = new CodeExpressionCollection();
+        public CodeExpressionCollection Indices
+        {
+            get
+            {
+                if (_indices == null)
+                {
+                    _indices = new CodeExpressionCollection();
                 }
-                return indices;
+                return _indices;
             }
         }
     }

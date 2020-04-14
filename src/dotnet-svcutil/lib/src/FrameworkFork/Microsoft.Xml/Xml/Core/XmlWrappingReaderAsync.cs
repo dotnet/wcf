@@ -9,24 +9,27 @@ using System.Collections;
 
 using System.Threading.Tasks;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal partial class XmlWrappingReader : XmlReader, IXmlLineInfo {
 
-        public override Task<string> GetValueAsync() {
+    internal partial class XmlWrappingReader : XmlReader, IXmlLineInfo
+    {
+        public override Task<string> GetValueAsync()
+        {
             return reader.GetValueAsync();
         }
 
-        public override Task< bool > ReadAsync() {
+        public override Task<bool> ReadAsync()
+        {
             return reader.ReadAsync();
         }
 
-        public override Task SkipAsync() {
+        public override Task SkipAsync()
+        {
             return reader.SkipAsync();
         }
-
     }
 }
-    
+

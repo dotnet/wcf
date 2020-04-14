@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System.ServiceModel;
@@ -57,7 +58,7 @@ namespace System.ServiceModel.Description
             return Find(localName, namespaceUri, true);
         }
 
-        XmlElement Find(string localName, string namespaceUri, bool remove)
+        private XmlElement Find(string localName, string namespaceUri, bool remove)
         {
             if (localName == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("localName");
@@ -89,7 +90,7 @@ namespace System.ServiceModel.Description
             return FindAll(localName, namespaceUri, true);
         }
 
-        Collection<XmlElement> FindAll(string localName, string namespaceUri, bool remove)
+        private Collection<XmlElement> FindAll(string localName, string namespaceUri, bool remove)
         {
             if (localName == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("localName");
@@ -132,5 +133,4 @@ namespace System.ServiceModel.Description
             base.SetItem(index, item);
         }
     }
-
 }

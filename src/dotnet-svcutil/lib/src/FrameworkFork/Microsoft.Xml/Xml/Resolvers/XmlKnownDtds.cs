@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Resolvers {
+namespace Microsoft.Xml.Resolvers
+{
     using System;
 
     // 
@@ -10,10 +11,11 @@ namespace Microsoft.Xml.Resolvers {
     // Custom mappings of URIs to data can be added with the Add method.
     //
     [Flags]
-    public enum XmlKnownDtds {
-        None        = 0x00,
-        Xhtml10     = 0x01,
-        Rss091      = 0x02,
-        All         = 0xFFFF,
+    public enum XmlKnownDtds
+    {
+        None = 0x00,
+        Xhtml10 = 0x01,
+        Rss091 = 0x02,
+        All = 0xFFFF,
     }
 }

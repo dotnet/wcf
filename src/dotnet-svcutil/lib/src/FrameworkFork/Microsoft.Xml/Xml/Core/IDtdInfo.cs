@@ -5,9 +5,10 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     //
     // IDtdInfo interface
@@ -18,8 +19,8 @@ namespace Microsoft.Xml {
     /// to expand entities, add default attributes and correctly normalize attribute values 
     /// according to their data types.
     /// </summary>
-    internal interface IDtdInfo {
-
+    internal interface IDtdInfo
+    {
         /// <summary>
         /// DOCTYPE name
         /// </summary>
@@ -70,7 +71,8 @@ namespace Microsoft.Xml {
     /// that XmlReader need in order to be able to add default attributes 
     /// and correctly normalize attribute values according to their data types.
     /// </summary>
-    internal interface IDtdAttributeListInfo {
+    internal interface IDtdAttributeListInfo
+    {
         /// <summary>
         /// Prefix of an element this attribute list belongs to.
         /// </summary>
@@ -78,7 +80,7 @@ namespace Microsoft.Xml {
         /// <summary>
         /// Local name of an element this attribute list belongs to.
         /// </summary>
-        string LocalName { get;}
+        string LocalName { get; }
         /// <summary>
         /// Returns true if the attribute list has some declared attributes with
         /// type other than CDATA.
@@ -112,7 +114,8 @@ namespace Microsoft.Xml {
     /// that XmlReader need in order to be able to correctly normalize 
     /// the attribute value according to its data types.
     /// </summary>
-    internal interface IDtdAttributeInfo {
+    internal interface IDtdAttributeInfo
+    {
         /// <summary>
         /// The prefix of the attribute
         /// </summary>
@@ -120,7 +123,7 @@ namespace Microsoft.Xml {
         /// <summary>
         /// The local name of the attribute
         /// </summary>
-        string LocalName { get;}
+        string LocalName { get; }
         /// <summary>
         /// The line number of the DTD attribute definition
         /// </summary>
@@ -152,7 +155,8 @@ namespace Microsoft.Xml {
     /// this attribute to the XML document (it is not present already) 
     /// or correctly normalize the attribute value according to its data types.
     /// </summary>
-    internal interface IDtdDefaultAttributeInfo : IDtdAttributeInfo {
+    internal interface IDtdDefaultAttributeInfo : IDtdAttributeInfo
+    {
         /// <summary>
         /// The expanded default value of the attribute
         /// the consumer assumes that all entity references
@@ -164,8 +168,8 @@ namespace Microsoft.Xml {
         /// The typed default value of the attribute.
         /// </summary>
         object DefaultValueTyped { get; }        /// <summary>
-        /// The line number of the default value (in the DTD)
-        /// </summary>
+                                                 /// The line number of the default value (in the DTD)
+                                                 /// </summary>
         int ValueLineNumber { get; }
         /// <summary>
         /// The line position of the default value (in the DTD)
@@ -181,7 +185,8 @@ namespace Microsoft.Xml {
     /// declared in a DTD that XmlReader need in order to be able
     /// to expand the entity.
     /// </summary>
-    internal interface IDtdEntityInfo {
+    internal interface IDtdEntityInfo
+    {
         /// <summary>
         /// The name of the entity
         /// </summary>

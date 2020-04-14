@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System.Collections.Generic;
@@ -8,22 +9,22 @@ namespace System.ServiceModel.Description
     using Microsoft.Xml;
     using WsdlNS = System.Web.Services.Description;
 
-    static class SoapHelper
+    internal static class SoapHelper
     {
-        static object SoapVersionStateKey = new object();
-        static XmlDocument xmlDocument;
+        private static object s_soapVersionStateKey = new object();
+        private static XmlDocument s_xmlDocument;
 
-        static XmlDocument Document
+        private static XmlDocument Document
         {
             get
             {
-                if (xmlDocument == null)
-                    xmlDocument = new XmlDocument();
-                return xmlDocument;
+                if (s_xmlDocument == null)
+                    s_xmlDocument = new XmlDocument();
+                return s_xmlDocument;
             }
         }
 
-        static XmlAttribute CreateLocalAttribute(string name, string value)
+        private static XmlAttribute CreateLocalAttribute(string name, string value)
         {
             XmlAttribute attribute = Document.CreateAttribute(name);
             attribute.Value = value;
@@ -142,7 +143,6 @@ namespace System.ServiceModel.Description
                         SoapConverter.ConvertExtensions(faultBinding.Extensions, version, SoapConverter.ConvertSoapMessageBinding);
                 }
             }
-
         }
 
         internal static EnvelopeVersion GetSoapVersion(WsdlNS.Binding wsdlBinding)
@@ -159,10 +159,10 @@ namespace System.ServiceModel.Description
         {
             object versions = null;
 
-            if (!exporter.State.TryGetValue(SoapVersionStateKey, out versions))
+            if (!exporter.State.TryGetValue(s_soapVersionStateKey, out versions))
             {
                 versions = new Dictionary<WsdlNS.Binding, EnvelopeVersion>();
-                exporter.State[SoapVersionStateKey] = versions;
+                exporter.State[s_soapVersionStateKey] = versions;
             }
 
             ((Dictionary<WsdlNS.Binding, EnvelopeVersion>)versions)[wsdlBinding] = version;
@@ -172,7 +172,7 @@ namespace System.ServiceModel.Description
         {
             object versions = null;
 
-            if (exporter.State.TryGetValue(SoapVersionStateKey, out versions))
+            if (exporter.State.TryGetValue(s_soapVersionStateKey, out versions))
             {
                 if (versions != null && ((Dictionary<WsdlNS.Binding, EnvelopeVersion>)versions).ContainsKey(wsdlBinding))
                 {
@@ -182,9 +182,8 @@ namespace System.ServiceModel.Description
             return null;
         }
 
-        static class SoapConverter
+        private static class SoapConverter
         {
-
             // hsomu, this could be simplified if we used generics.
             internal static void ConvertExtensions(WsdlNS.ServiceDescriptionFormatExtensionCollection extensions, EnvelopeVersion version, ConvertExtension conversionMethod)
             {
@@ -209,7 +208,6 @@ namespace System.ServiceModel.Description
                     if (o != null)
                         extensions.Add(o);
                 }
-
             }
 
             // This is the delegate implemented by the 4 methods below. It is expected to:
@@ -343,7 +341,7 @@ namespace System.ServiceModel.Description
                 return src == null; // "match" only if nothing passed in
             }
 
-            static WsdlNS.SoapBodyBinding ConvertSoapBodyBinding(WsdlNS.SoapBodyBinding src, EnvelopeVersion version)
+            private static WsdlNS.SoapBodyBinding ConvertSoapBodyBinding(WsdlNS.SoapBodyBinding src, EnvelopeVersion version)
             {
                 if (version == EnvelopeVersion.None)
                     return null;
@@ -367,7 +365,7 @@ namespace System.ServiceModel.Description
                 return dest;
             }
 
-            static XmlElement ConvertSoapFaultBinding(XmlElement src, EnvelopeVersion version)
+            private static XmlElement ConvertSoapFaultBinding(XmlElement src, EnvelopeVersion version)
             {
                 if (src == null)
                     return null;
@@ -398,7 +396,7 @@ namespace System.ServiceModel.Description
                 return dest;
             }
 
-            static WsdlNS.SoapFaultBinding ConvertSoapFaultBinding(WsdlNS.SoapFaultBinding src, EnvelopeVersion version)
+            private static WsdlNS.SoapFaultBinding ConvertSoapFaultBinding(WsdlNS.SoapFaultBinding src, EnvelopeVersion version)
             {
                 if (version == EnvelopeVersion.None)
                     return null;
@@ -418,7 +416,7 @@ namespace System.ServiceModel.Description
                 return dest;
             }
 
-            static WsdlNS.SoapHeaderBinding ConvertSoapHeaderBinding(WsdlNS.SoapHeaderBinding src, EnvelopeVersion version)
+            private static WsdlNS.SoapHeaderBinding ConvertSoapHeaderBinding(WsdlNS.SoapHeaderBinding src, EnvelopeVersion version)
             {
                 if (version == EnvelopeVersion.None)
                     return null;
@@ -445,10 +443,9 @@ namespace System.ServiceModel.Description
             {
                 return src is T12 ? EnvelopeVersion.Soap12 : EnvelopeVersion.Soap11;
             }
-
         }
 
-        static WsdlNS.SoapAddressBinding CreateSoapAddressBinding(EnvelopeVersion version, WsdlNS.Port wsdlPort)
+        private static WsdlNS.SoapAddressBinding CreateSoapAddressBinding(EnvelopeVersion version, WsdlNS.Port wsdlPort)
         {
             WsdlNS.SoapAddressBinding soapAddressBinding = null;
 
@@ -467,7 +464,7 @@ namespace System.ServiceModel.Description
         }
 
         // REVIEW, alexdej: it's confusing that these methods add the binding to the target object. i'd prefer it if the caller did the adding or if you called them AddFoo
-        static WsdlNS.SoapBinding CreateSoapBinding(EnvelopeVersion version, WsdlNS.Binding wsdlBinding)
+        private static WsdlNS.SoapBinding CreateSoapBinding(EnvelopeVersion version, WsdlNS.Binding wsdlBinding)
         {
             WsdlNS.SoapBinding soapBinding = null;
 
@@ -485,7 +482,7 @@ namespace System.ServiceModel.Description
             return soapBinding;
         }
 
-        static WsdlNS.SoapOperationBinding CreateSoapOperationBinding(EnvelopeVersion version, WsdlNS.OperationBinding wsdlOperationBinding)
+        private static WsdlNS.SoapOperationBinding CreateSoapOperationBinding(EnvelopeVersion version, WsdlNS.OperationBinding wsdlOperationBinding)
         {
             WsdlNS.SoapOperationBinding soapOperationBinding = null;
 
@@ -503,7 +500,7 @@ namespace System.ServiceModel.Description
             return soapOperationBinding;
         }
 
-        static WsdlNS.SoapBodyBinding CreateSoapBodyBinding(EnvelopeVersion version, WsdlNS.MessageBinding wsdlMessageBinding)
+        private static WsdlNS.SoapBodyBinding CreateSoapBodyBinding(EnvelopeVersion version, WsdlNS.MessageBinding wsdlMessageBinding)
         {
             WsdlNS.SoapBodyBinding soapBodyBinding = null;
 
@@ -521,7 +518,7 @@ namespace System.ServiceModel.Description
             return soapBodyBinding;
         }
 
-        static WsdlNS.SoapHeaderBinding CreateSoapHeaderBinding(EnvelopeVersion version, WsdlNS.MessageBinding wsdlMessageBinding)
+        private static WsdlNS.SoapHeaderBinding CreateSoapHeaderBinding(EnvelopeVersion version, WsdlNS.MessageBinding wsdlMessageBinding)
         {
             WsdlNS.SoapHeaderBinding soapHeaderBinding = null;
 
@@ -539,7 +536,7 @@ namespace System.ServiceModel.Description
             return soapHeaderBinding;
         }
 
-        static XmlElement CreateSoapFaultBinding(EnvelopeVersion version)
+        private static XmlElement CreateSoapFaultBinding(EnvelopeVersion version)
         {
             string prefix = null;
             string ns = null;
@@ -567,7 +564,7 @@ namespace System.ServiceModel.Description
             }
             return null;
         }
-        static WsdlNS.SoapBinding GetSoapBinding(WsdlEndpointConversionContext endpointContext)
+        private static WsdlNS.SoapBinding GetSoapBinding(WsdlEndpointConversionContext endpointContext)
         {
             foreach (object o in endpointContext.WsdlBinding.Extensions)
             {
@@ -577,7 +574,7 @@ namespace System.ServiceModel.Description
             return null;
         }
 
-        static WsdlNS.SoapOperationBinding GetSoapOperationBinding(WsdlEndpointConversionContext endpointContext, OperationDescription operation)
+        private static WsdlNS.SoapOperationBinding GetSoapOperationBinding(WsdlEndpointConversionContext endpointContext, OperationDescription operation)
         {
             WsdlNS.OperationBinding wsdlOperationBinding = endpointContext.GetOperationBinding(operation);
 
@@ -589,7 +586,7 @@ namespace System.ServiceModel.Description
             return null;
         }
 
-        static WsdlNS.SoapBodyBinding GetSoapBodyBinding(WsdlEndpointConversionContext endpointContext, WsdlNS.MessageBinding wsdlMessageBinding)
+        private static WsdlNS.SoapBodyBinding GetSoapBodyBinding(WsdlEndpointConversionContext endpointContext, WsdlNS.MessageBinding wsdlMessageBinding)
         {
             foreach (object o in wsdlMessageBinding.Extensions)
             {

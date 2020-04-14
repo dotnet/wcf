@@ -10,18 +10,18 @@ namespace System.ServiceModel.Description
     using System.Runtime;
     using System.Text;
 
-    class UniqueCodeIdentifierScope
+    internal class UniqueCodeIdentifierScope
     {
-        const int MaxIdentifierLength = 511;
-        SortedList<string, string> names;
+        private const int MaxIdentifierLength = 511;
+        private SortedList<string, string> _names;
 
         // assumes identifier is valid
         protected virtual void AddIdentifier(string identifier)
         {
-            if (names == null)
-                names = new SortedList<string, string>(StringComparer.Ordinal);
+            if (_names == null)
+                _names = new SortedList<string, string>(StringComparer.Ordinal);
 
-            names.Add(identifier, identifier);
+            _names.Add(identifier, identifier);
         }
 
         // assumes identifier is valid
@@ -53,15 +53,15 @@ namespace System.ServiceModel.Description
         // assumes identifier is valid
         public virtual bool IsUnique(string identifier)
         {
-            return names == null || !names.ContainsKey(identifier);
+            return _names == null || !_names.ContainsKey(identifier);
         }
 
-        static bool IsValidStart(char c)
+        private static bool IsValidStart(char c)
         {
             return (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.DecimalDigitNumber);
         }
 
-        static bool IsValid(char c)
+        private static bool IsValid(char c)
         {
             UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(c);
 
@@ -114,19 +114,19 @@ namespace System.ServiceModel.Description
         }
     }
 
-    class UniqueCodeNamespaceScope : UniqueCodeIdentifierScope
+    internal class UniqueCodeNamespaceScope : UniqueCodeIdentifierScope
     {
-        CodeNamespace codeNamespace;
+        private CodeNamespace _codeNamespace;
 
         // possible direction: add an option to cache for multi-use cases
         public UniqueCodeNamespaceScope(CodeNamespace codeNamespace)
         {
-            this.codeNamespace = codeNamespace;
+            _codeNamespace = codeNamespace;
         }
 
         public CodeNamespace CodeNamespace
         {
-            get { return this.codeNamespace; }
+            get { return _codeNamespace; }
         }
 
         protected override void AddIdentifier(string identifier)
@@ -136,8 +136,8 @@ namespace System.ServiceModel.Description
         public CodeTypeReference AddUnique(CodeTypeDeclaration codeType, string name, string defaultName)
         {
             codeType.Name = base.AddUnique(name, defaultName);
-            codeNamespace.Types.Add(codeType);
-            return ServiceContractGenerator.NamespaceHelper.GetCodeTypeReference(this.codeNamespace, codeType);
+            _codeNamespace.Types.Add(codeType);
+            return ServiceContractGenerator.NamespaceHelper.GetCodeTypeReference(_codeNamespace, codeType);
         }
 
         public override bool IsUnique(string identifier)
@@ -145,9 +145,9 @@ namespace System.ServiceModel.Description
             return !NamespaceContainsType(identifier);
         }
 
-        bool NamespaceContainsType(string typeName)
+        private bool NamespaceContainsType(string typeName)
         {
-            foreach (CodeTypeDeclaration codeType in codeNamespace.Types)
+            foreach (CodeTypeDeclaration codeType in _codeNamespace.Types)
             {
                 if (String.Compare(codeType.Name, typeName, StringComparison.OrdinalIgnoreCase) == 0)
                 {

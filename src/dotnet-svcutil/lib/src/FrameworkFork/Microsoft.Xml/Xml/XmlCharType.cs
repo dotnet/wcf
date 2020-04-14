@@ -15,9 +15,10 @@ using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     /// <include file='doc\XmlCharType.uex' path='docs/doc[@for="XmlCharType"]/*' />
     /// <internalonly/>
@@ -25,7 +26,7 @@ namespace Microsoft.Xml {
     ///  The XmlCharType class is used for quick character type recognition
     ///  which is optimized for the first 127 ascii characters.
     /// </devdoc>
-#if SILVERLIGHT    
+#if SILVERLIGHT
 #if !SILVERLIGHT_XPATH
     [System.Runtime.CompilerServices.FriendAccessAllowed] // Used by System.ServiceModel.dll and System.Runtime.Serialization.dll
 #endif
@@ -33,7 +34,8 @@ namespace Microsoft.Xml {
 #if XMLCHARTYPE_USE_RESOURCE
     unsafe internal struct XmlCharType {
 #else
-    internal struct XmlCharType {
+    internal struct XmlCharType
+    {
 #endif
         // Surrogate constants
         internal const int SurHighStart = 0xd800;    // 1101 10xx
@@ -98,7 +100,7 @@ namespace Microsoft.Xml {
 #if !XMLCHARTYPE_USE_RESOURCE || XMLCHARTYPE_GEN_RESOURCE
         internal const string s_Whitespace =
             "\u0009\u000a\u000d\u000d\u0020\u0020";
-        
+
 #if XML10_FIFTH_EDITION
         // StartNameChar without ':' -- see Section 2.3 production [4]
         const string s_NCStartName =
@@ -115,7 +117,7 @@ namespace Microsoft.Xml {
             "\u2070\u218f\u2c00\u2fef\u3001\ud7ff\uf900\ufdcf" +
             "\ufdf0\ufffd";
 #else
-        const string s_NCStartName =
+        private const string s_NCStartName =
             "\u0041\u005a\u005f\u005f\u0061\u007a" +
             "\u00c0\u00d6\u00d8\u00f6\u00f8\u0131\u0134\u013e" +
             "\u0141\u0148\u014a\u017e\u0180\u01c3\u01cd\u01f0" +
@@ -169,7 +171,7 @@ namespace Microsoft.Xml {
             "\u3021\u3029\u3041\u3094\u30a1\u30fa\u3105\u312c" +
             "\u4e00\u9fa5\uac00\ud7a3";
 
-        const string s_NCName =
+        private const string s_NCName =
             "\u002d\u002e\u0030\u0039\u0041\u005a\u005f\u005f" +
             "\u0061\u007a\u00b7\u00b7\u00c0\u00d6\u00d8\u00f6" +
             "\u00f8\u0131\u0134\u013e\u0141\u0148\u014a\u017e" +
@@ -178,8 +180,8 @@ namespace Microsoft.Xml {
             "\u0360\u0361\u0386\u038a\u038c\u038c\u038e\u03a1" +
             "\u03a3\u03ce\u03d0\u03d6\u03da\u03da\u03dc\u03dc" +
             "\u03de\u03de\u03e0\u03e0\u03e2\u03f3\u0401\u040c" +
-            "\u040e\u044f\u0451\u045c\u045e\u0481\u0483\u0486" +   
-            "\u0490\u04c4\u04c7\u04c8\u04cb\u04cc\u04d0\u04eb" +  
+            "\u040e\u044f\u0451\u045c\u045e\u0481\u0483\u0486" +
+            "\u0490\u04c4\u04c7\u04c8\u04cb\u04cc\u04d0\u04eb" +
             "\u04ee\u04f5\u04f8\u04f9\u0531\u0556\u0559\u0559" +
             "\u0561\u0586\u0591\u05a1\u05a3\u05b9\u05bb\u05bd" +
             "\u05bf\u05bf\u05c1\u05c2\u05c4\u05c4\u05d0\u05ea" +
@@ -244,24 +246,24 @@ namespace Microsoft.Xml {
             "\u3105\u312c\u4e00\u9fa5\uac00\ud7a3";
 #endif
 
-        const string s_CharData =
+        private const string s_CharData =
             "\u0009\u000a\u000d\u000d\u0020\ud7ff\ue000\ufffd";
 
-        const string s_PublicID =
+        private const string s_PublicID =
             "\u000a\u000a\u000d\u000d\u0020\u0021\u0023\u0025" +
             "\u0027\u003b\u003d\u003d\u003f\u005a\u005f\u005f" +
             "\u0061\u007a";
 
-        const string s_Text = // TextChar = CharData - { 0xA | 0xD | '<' | '&' | 0x9 | ']' | 0xDC00 - 0xDFFF }
+        private const string s_Text = // TextChar = CharData - { 0xA | 0xD | '<' | '&' | 0x9 | ']' | 0xDC00 - 0xDFFF }
             "\u0020\u0025\u0027\u003b\u003d\u005c\u005e\ud7ff\ue000\ufffd";
 
-        const string s_AttrValue = // AttrValueChar = CharData - { 0xA | 0xD | 0x9 | '<' | '>' | '&' | '\'' | '"' | 0xDC00 - 0xDFFF }
+        private const string s_AttrValue = // AttrValueChar = CharData - { 0xA | 0xD | 0x9 | '<' | '>' | '&' | '\'' | '"' | 0xDC00 - 0xDFFF }
             "\u0020\u0021\u0023\u0025\u0028\u003b\u003d\u003d\u003f\ud7ff\ue000\ufffd";
 
         //
         // XML 1.0 Fourth Edition definitions for name characters 
         //
-        const string s_LetterXml4e =
+        private const string s_LetterXml4e =
             "\u0041\u005a\u0061\u007a\u00c0\u00d6\u00d8\u00f6" +
             "\u00f8\u0131\u0134\u013e\u0141\u0148\u014a\u017e" +
             "\u0180\u01c3\u01cd\u01f0\u01f4\u01f5\u01fa\u0217" +
@@ -314,7 +316,7 @@ namespace Microsoft.Xml {
             "\u2180\u2182\u3007\u3007\u3021\u3029\u3041\u3094" +
             "\u30a1\u30fa\u3105\u312c\u4e00\u9fa5\uac00\ud7a3";
 
-        const string s_NCNameXml4e =
+        private const string s_NCNameXml4e =
             "\u002d\u002e\u0030\u0039\u0041\u005a\u005f\u005f" +
             "\u0061\u007a\u00b7\u00b7\u00c0\u00d6\u00d8\u00f6" +
             "\u00f8\u0131\u0134\u013e\u0141\u0148\u014a\u017e" +
@@ -323,8 +325,8 @@ namespace Microsoft.Xml {
             "\u0360\u0361\u0386\u038a\u038c\u038c\u038e\u03a1" +
             "\u03a3\u03ce\u03d0\u03d6\u03da\u03da\u03dc\u03dc" +
             "\u03de\u03de\u03e0\u03e0\u03e2\u03f3\u0401\u040c" +
-            "\u040e\u044f\u0451\u045c\u045e\u0481\u0483\u0486" +   
-            "\u0490\u04c4\u04c7\u04c8\u04cb\u04cc\u04d0\u04eb" +  
+            "\u040e\u044f\u0451\u045c\u045e\u0481\u0483\u0486" +
+            "\u0490\u04c4\u04c7\u04c8\u04cb\u04cc\u04d0\u04eb" +
             "\u04ee\u04f5\u04f8\u04f9\u0531\u0556\u0559\u0559" +
             "\u0561\u0586\u0591\u05a1\u05a3\u05b9\u05bb\u05bd" +
             "\u05bf\u05bf\u05c1\u05c2\u05c4\u05c4\u05d0\u05ea" +
@@ -392,11 +394,14 @@ namespace Microsoft.Xml {
         // static lock for XmlCharType class
         private static object s_Lock;
 
-        private static object StaticLock {
-            get {
-                if ( s_Lock == null ) {
+        private static object StaticLock
+        {
+            get
+            {
+                if (s_Lock == null)
+                {
                     object o = new object();
-                    Interlocked.CompareExchange<object>( ref s_Lock, o, null );
+                    Interlocked.CompareExchange<object>(ref s_Lock, o, null);
                 }
                 return s_Lock;
             }
@@ -433,32 +438,38 @@ namespace Microsoft.Xml {
         }
 
 #else // !XMLCHARTYPE_USE_RESOURCE
-        private static volatile byte [] s_CharProperties;
-        internal byte []                charProperties;
+        private static volatile byte[] s_CharProperties;
+        internal byte[] charProperties;
 
-        static void InitInstance() {
-            lock ( StaticLock ) {
-                if ( s_CharProperties != null ) {
+        private static void InitInstance()
+        {
+            lock (StaticLock)
+            {
+                if (s_CharProperties != null)
+                {
                     return;
                 }
 
                 byte[] chProps = new byte[CharPropertiesSize];
                 s_CharProperties = chProps;
 
-                SetProperties( s_Whitespace,  fWhitespace );
-                SetProperties( s_LetterXml4e, fLetter );
-                SetProperties( s_NCStartName, fNCStartNameSC );
-                SetProperties( s_NCName,      fNCNameSC );
-                SetProperties( s_CharData,    fCharData );
-                SetProperties( s_NCNameXml4e, fNCNameXml4e );
-                SetProperties( s_Text,        fText );
-                SetProperties( s_AttrValue,   fAttrValue );
+                SetProperties(s_Whitespace, fWhitespace);
+                SetProperties(s_LetterXml4e, fLetter);
+                SetProperties(s_NCStartName, fNCStartNameSC);
+                SetProperties(s_NCName, fNCNameSC);
+                SetProperties(s_CharData, fCharData);
+                SetProperties(s_NCNameXml4e, fNCNameXml4e);
+                SetProperties(s_Text, fText);
+                SetProperties(s_AttrValue, fAttrValue);
             }
         }
 
-        private static void SetProperties( string ranges, byte value ) {
-            for ( int p = 0; p < ranges.Length; p += 2 ) {
-                for ( int i = ranges[p], last = ranges[p + 1]; i <= last; i++ ) {
+        private static void SetProperties(string ranges, byte value)
+        {
+            for (int p = 0; p < ranges.Length; p += 2)
+            {
+                for (int i = ranges[p], last = ranges[p + 1]; i <= last; i++)
+                {
                     s_CharProperties[i] |= value;
                 }
             }
@@ -471,21 +482,25 @@ namespace Microsoft.Xml {
 #endif
         private XmlCharType( byte* charProperties ) {
 #else
-        private XmlCharType( byte[] charProperties ) {
+        private XmlCharType(byte[] charProperties)
+        {
 #endif
-            Debug.Assert( s_CharProperties != null );
+            Debug.Assert(s_CharProperties != null);
             this.charProperties = charProperties;
         }
 
-        public static XmlCharType Instance {
+        public static XmlCharType Instance
+        {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
             [System.Security.SecuritySafeCritical]
 #endif
-            get {
-                if ( s_CharProperties == null ) {
+            get
+            {
+                if (s_CharProperties == null)
+                {
                     InitInstance();
                 }
-                return new XmlCharType( s_CharProperties );
+                return new XmlCharType(s_CharProperties);
             }
         }
 
@@ -493,13 +508,15 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsWhiteSpace( char ch ) {
-            return ( charProperties[ch] & fWhitespace ) != 0;
+        public bool IsWhiteSpace(char ch)
+        {
+            return (charProperties[ch] & fWhitespace) != 0;
         }
 
 #if !SILVERLIGHT
-        public bool IsExtender( char ch ) {
-            return ( ch == 0xb7 );
+        public bool IsExtender(char ch)
+        {
+            return (ch == 0xb7);
         }
 #endif
 
@@ -507,8 +524,9 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsNCNameSingleChar(char ch) {
-            return ( charProperties[ch] & fNCNameSC ) != 0;
+        public bool IsNCNameSingleChar(char ch)
+        {
+            return (charProperties[ch] & fNCNameSC) != 0;
         }
 
 #if XML10_FIFTH_EDITION
@@ -540,8 +558,9 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsStartNCNameSingleChar(char ch) {
-            return ( charProperties[ch] & fNCStartNameSC ) != 0;
+        public bool IsStartNCNameSingleChar(char ch)
+        {
+            return (charProperties[ch] & fNCStartNameSC) != 0;
         }
 
 #if XML10_FIFTH_EDITION
@@ -549,7 +568,8 @@ namespace Microsoft.Xml {
         // Surrogate ranges for start name charaters are the same as for name characters.
 #endif
 
-        public bool IsNameSingleChar(char ch) {
+        public bool IsNameSingleChar(char ch)
+        {
             return IsNCNameSingleChar(ch) || ch == ':';
         }
 
@@ -559,7 +579,8 @@ namespace Microsoft.Xml {
         }
 #endif
 
-        public bool IsStartNameSingleChar(char ch) {
+        public bool IsStartNameSingleChar(char ch)
+        {
             return IsStartNCNameSingleChar(ch) || ch == ':';
         }
 
@@ -567,17 +588,20 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsCharData( char ch ) {
-            return ( charProperties[ch] & fCharData ) != 0;
+        public bool IsCharData(char ch)
+        {
+            return (charProperties[ch] & fCharData) != 0;
         }
 
         // [13] PubidChar ::=  #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%] Section 2.3 of spec
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsPubidChar( char ch ) {
-            if ( ch < (char)0x80 ) {
-                return ( s_PublicIdBitmap[ch >> 4] & ( 1 << ( ch & 0xF ) ) ) != 0;
+        public bool IsPubidChar(char ch)
+        {
+            if (ch < (char)0x80)
+            {
+                return (s_PublicIdBitmap[ch >> 4] & (1 << (ch & 0xF))) != 0;
             }
             return false;
         }
@@ -587,8 +611,9 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        internal bool IsTextChar( char ch ) {
-            return ( charProperties[ch] & fText ) != 0;
+        internal bool IsTextChar(char ch)
+        {
+            return (charProperties[ch] & fText) != 0;
         }
 
         // AttrValueChar = CharData - { 0xA, 0xD, 0x9, '<', '>', '&', '\'', '"' }
@@ -596,8 +621,9 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        internal bool IsAttributeValueChar( char ch ) {
-            return ( charProperties[ch] & fAttrValue ) != 0;
+        internal bool IsAttributeValueChar(char ch)
+        {
+            return (charProperties[ch] & fAttrValue) != 0;
         }
 
         // XML 1.0 Fourth Edition definitions
@@ -606,8 +632,9 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsLetter( char ch ) {
-            return ( charProperties[ch] & fLetter ) != 0;
+        public bool IsLetter(char ch)
+        {
+            return (charProperties[ch] & fLetter) != 0;
         }
 
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
@@ -615,71 +642,87 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        public bool IsNCNameCharXml4e( char ch ) {
-            return ( charProperties[ch] & fNCNameXml4e  ) != 0;
+        public bool IsNCNameCharXml4e(char ch)
+        {
+            return (charProperties[ch] & fNCNameXml4e) != 0;
         }
 
         // This method uses the XML 4th edition name character ranges
-        public bool IsStartNCNameCharXml4e( char ch ) {
-            return IsLetter( ch ) || ch == '_';
+        public bool IsStartNCNameCharXml4e(char ch)
+        {
+            return IsLetter(ch) || ch == '_';
         }
 
         // This method uses the XML 4th edition name character ranges
-        public bool IsNameCharXml4e( char ch ) {
-            return IsNCNameCharXml4e( ch ) || ch == ':';
+        public bool IsNameCharXml4e(char ch)
+        {
+            return IsNCNameCharXml4e(ch) || ch == ':';
         }
 
         // This method uses the XML 4th edition name character ranges
-        public bool IsStartNameCharXml4e( char ch ) {
-            return IsStartNCNameCharXml4e( ch ) || ch == ':';
+        public bool IsStartNameCharXml4e(char ch)
+        {
+            return IsStartNCNameCharXml4e(ch) || ch == ':';
         }
 
         // Digit methods
-        public static bool IsDigit( char ch ) {
-            return InRange( ch, 0x30, 0x39 );
+        public static bool IsDigit(char ch)
+        {
+            return InRange(ch, 0x30, 0x39);
         }
 
 #if !SILVERLIGHT
-        public static bool IsHexDigit(char ch) {
-            return InRange( ch, 0x30, 0x39 ) || InRange( ch, 'a', 'f' ) || InRange( ch, 'A', 'F' );
+        public static bool IsHexDigit(char ch)
+        {
+            return InRange(ch, 0x30, 0x39) || InRange(ch, 'a', 'f') || InRange(ch, 'A', 'F');
         }
 #endif
 
         // Surrogate methods
-        internal static bool IsHighSurrogate( int ch ) {
-            return InRange( ch, SurHighStart, SurHighEnd );
+        internal static bool IsHighSurrogate(int ch)
+        {
+            return InRange(ch, SurHighStart, SurHighEnd);
         }
 
-        internal static bool IsLowSurrogate( int ch ) {
-            return InRange( ch, SurLowStart, SurLowEnd );
+        internal static bool IsLowSurrogate(int ch)
+        {
+            return InRange(ch, SurLowStart, SurLowEnd);
         }
 
-        internal static bool IsSurrogate( int ch ) {
-            return InRange( ch, SurHighStart, SurLowEnd );
+        internal static bool IsSurrogate(int ch)
+        {
+            return InRange(ch, SurHighStart, SurLowEnd);
         }
 
-        internal static int CombineSurrogateChar( int lowChar, int highChar ) {
-            return ( lowChar - SurLowStart ) | ( ( highChar - SurHighStart ) << 10 ) + 0x10000;
+        internal static int CombineSurrogateChar(int lowChar, int highChar)
+        {
+            return (lowChar - SurLowStart) | ((highChar - SurHighStart) << 10) + 0x10000;
         }
 
-        internal static void SplitSurrogateChar( int combinedChar, out char lowChar, out char highChar ) {
+        internal static void SplitSurrogateChar(int combinedChar, out char lowChar, out char highChar)
+        {
             int v = combinedChar - 0x10000;
-            lowChar = (char)( SurLowStart + v % 1024 );
-            highChar = (char)( SurHighStart + v / 1024 );
+            lowChar = (char)(SurLowStart + v % 1024);
+            highChar = (char)(SurHighStart + v / 1024);
         }
 
-        internal bool IsOnlyWhitespace( string str ) {
-            return IsOnlyWhitespaceWithPos( str ) == -1;
+        internal bool IsOnlyWhitespace(string str)
+        {
+            return IsOnlyWhitespaceWithPos(str) == -1;
         }
 
         // Character checking on strings
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        internal int IsOnlyWhitespaceWithPos( string str ) {
-            if ( str != null ) {
-                for ( int i = 0; i < str.Length; i++ ) {
-                    if ( ( charProperties[str[i]] & fWhitespace ) == 0 ) {
+        internal int IsOnlyWhitespaceWithPos(string str)
+        {
+            if (str != null)
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if ((charProperties[str[i]] & fWhitespace) == 0)
+                    {
                         return i;
                     }
                 }
@@ -690,14 +733,20 @@ namespace Microsoft.Xml {
 #if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
         [System.Security.SecuritySafeCritical]
 #endif
-        internal int IsOnlyCharData( string str ) {
-            if ( str != null ) {
-                for ( int i = 0; i < str.Length; i++ ) {
-                    if ( ( charProperties[str[i]] & fCharData ) == 0 ) {
-                        if ( i + 1 >= str.Length || !(XmlCharType.IsHighSurrogate(str[i]) && XmlCharType.IsLowSurrogate(str[i+1]))) {
+        internal int IsOnlyCharData(string str)
+        {
+            if (str != null)
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if ((charProperties[str[i]] & fCharData) == 0)
+                    {
+                        if (i + 1 >= str.Length || !(XmlCharType.IsHighSurrogate(str[i]) && XmlCharType.IsLowSurrogate(str[i + 1])))
+                        {
                             return i;
                         }
-                        else {
+                        else
+                        {
                             i++;
                         }
                     }
@@ -706,36 +755,46 @@ namespace Microsoft.Xml {
             return -1;
         }
 
-        static internal bool IsOnlyDigits(string str, int startPos, int len) {
+        static internal bool IsOnlyDigits(string str, int startPos, int len)
+        {
             Debug.Assert(str != null);
             Debug.Assert(startPos + len <= str.Length);
             Debug.Assert(startPos <= str.Length);
 
-            for (int i = startPos; i < startPos + len; i++) {
-                if (!IsDigit(str[i])) {
+            for (int i = startPos; i < startPos + len; i++)
+            {
+                if (!IsDigit(str[i]))
+                {
                     return false;
                 }
             }
             return true;
         }
 
-        static internal bool IsOnlyDigits( char[] chars, int startPos, int len ) {
-            Debug.Assert( chars != null );
-            Debug.Assert( startPos + len <= chars.Length );
-            Debug.Assert( startPos <= chars.Length );
-                
-            for ( int i = startPos; i < startPos + len; i++ ) {
-                if ( !IsDigit( chars[i] ) ) {
+        static internal bool IsOnlyDigits(char[] chars, int startPos, int len)
+        {
+            Debug.Assert(chars != null);
+            Debug.Assert(startPos + len <= chars.Length);
+            Debug.Assert(startPos <= chars.Length);
+
+            for (int i = startPos; i < startPos + len; i++)
+            {
+                if (!IsDigit(chars[i]))
+                {
                     return false;
                 }
             }
             return true;
         }
 
-        internal int IsPublicId( string str ) {
-            if ( str != null ) {
-                for ( int i = 0; i < str.Length; i++ ) {
-                    if ( !IsPubidChar(str[i]) ) {
+        internal int IsPublicId(string str)
+        {
+            if (str != null)
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (!IsPubidChar(str[i]))
+                    {
                         return i;
                     }
                 }
@@ -744,7 +803,8 @@ namespace Microsoft.Xml {
         }
 
         // This method tests whether a value is in a given range with just one test; start and end should be constants
-        private static bool InRange(int value, int start, int end) {
+        private static bool InRange(int value, int start, int end)
+        {
             Debug.Assert(start <= end);
             return (uint)(value - start) <= (uint)(end - start);
         }

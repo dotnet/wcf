@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,36 +16,37 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeNamespace: CodeObject {
-        private string name;
-        private CodeNamespaceImportCollection imports = new CodeNamespaceImportCollection();
-        private CodeCommentStatementCollection comments = new CodeCommentStatementCollection();
-        private CodeTypeDeclarationCollection classes = new CodeTypeDeclarationCollection();
-        private CodeNamespaceCollection namespaces = new CodeNamespaceCollection();
-        
-        private int  populated = 0x0;
+    public class CodeNamespace : CodeObject
+    {
+        private string _name;
+        private CodeNamespaceImportCollection _imports = new CodeNamespaceImportCollection();
+        private CodeCommentStatementCollection _comments = new CodeCommentStatementCollection();
+        private CodeTypeDeclarationCollection _classes = new CodeTypeDeclarationCollection();
+        private CodeNamespaceCollection _namespaces = new CodeNamespaceCollection();
+
+        private int _populated = 0x0;
         private const int ImportsCollection = 0x1;
         private const int CommentsCollection = 0x2;
         private const int TypesCollection = 0x4;
-        
+
 #if CODEDOM_NESTED_NAMESPACES
         private const int NamespacesCollection = 0x8;
 #endif
-        
-        
-       
+
+
+
         /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the Comments Collection is accessed.  
         ///    </para>
         /// </devdoc>
         public event EventHandler PopulateComments;
-        
-         /// <devdoc>
+
+        /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the Imports Collection is accessed.  
         ///    </para>
@@ -60,8 +61,8 @@ namespace Microsoft.CodeDom {
         /// </devdoc>
         public event EventHandler PopulateNamespaces;
 #endif
-        
-        
+
+
         /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the Types Collection is accessed.  
@@ -74,7 +75,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeNamespace'/>.
         ///    </para>
         /// </devdoc>
-        public CodeNamespace() {
+        public CodeNamespace()
+        {
         }
 
         /// <devdoc>
@@ -82,7 +84,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeNamespace'/> using the specified name.
         ///    </para>
         /// </devdoc>
-        public CodeNamespace(string name) {
+        public CodeNamespace(string name)
+        {
             Name = name;
         }
 
@@ -91,13 +94,16 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the collection of classes.
         ///    </para>
         /// </devdoc>
-        public CodeTypeDeclarationCollection Types {
-            get {
-                if (0 == (populated & TypesCollection)) {
-                    populated |= TypesCollection;
+        public CodeTypeDeclarationCollection Types
+        {
+            get
+            {
+                if (0 == (_populated & TypesCollection))
+                {
+                    _populated |= TypesCollection;
                     if (PopulateTypes != null) PopulateTypes(this, EventArgs.Empty);
                 }
-                return classes;
+                return _classes;
             }
         }
 
@@ -107,13 +113,16 @@ namespace Microsoft.CodeDom {
         ///       namespace.
         ///    </para>
         /// </devdoc>
-        public CodeNamespaceImportCollection Imports {
-            get {
-                if (0 == (populated & ImportsCollection)) {
-                    populated |= ImportsCollection;
+        public CodeNamespaceImportCollection Imports
+        {
+            get
+            {
+                if (0 == (_populated & ImportsCollection))
+                {
+                    _populated |= ImportsCollection;
                     if (PopulateImports != null) PopulateImports(this, EventArgs.Empty);
                 }
-                return imports;
+                return _imports;
             }
         }
 
@@ -122,16 +131,19 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the name of the namespace.
         ///    </para>
         /// </devdoc>
-        public string Name {
-            get {
-                return (name == null) ? string.Empty : name;
+        public string Name
+        {
+            get
+            {
+                return (_name == null) ? string.Empty : _name;
             }
-            set {
-                name = value;
+            set
+            {
+                _name = value;
             }
         }
-        
-        
+
+
 #if CODEDOM_NESTED_NAMESPACES
         
         /// <devdoc>
@@ -156,13 +168,16 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the member comment collection members.
         ///    </para>
         /// </devdoc>
-        public CodeCommentStatementCollection Comments {
-            get {
-                if (0 == (populated & CommentsCollection)) {
-                    populated |= CommentsCollection;
+        public CodeCommentStatementCollection Comments
+        {
+            get
+            {
+                if (0 == (_populated & CommentsCollection))
+                {
+                    _populated |= CommentsCollection;
                     if (PopulateComments != null) PopulateComments(this, EventArgs.Empty);
                 }
-                return comments;
+                return _comments;
             }
         }
     }

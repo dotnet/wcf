@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System;
@@ -17,9 +18,8 @@ namespace System.ServiceModel.Description
     using Microsoft.Xml.Serialization;
     using WsdlNS = System.Web.Services.Description;
 
-    static class StockSchemas
+    internal static class StockSchemas
     {
-
         internal static XmlSchema CreateWsdl()
         {
             return XmlSchema.Read(new StringReader(wsdl), null);
@@ -58,7 +58,7 @@ namespace System.ServiceModel.Description
         internal const string SoapNamespace = "http://schemas.xmlsoap.org/wsdl/soap/";
         internal const string SoapEncodingNamespace = "http://schemas.xmlsoap.org/soap/encoding/";
 
-        const string wsdl = @"<?xml version='1.0' encoding='UTF-8' ?> 
+        private const string wsdl = @"<?xml version='1.0' encoding='UTF-8' ?> 
 <xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'
            xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
            targetNamespace='http://schemas.xmlsoap.org/wsdl/'
@@ -370,7 +370,7 @@ namespace System.ServiceModel.Description
 
 </xs:schema>";
 
-        const string soap = @"<?xml version='1.0' encoding='UTF-8' ?> 
+        private const string soap = @"<?xml version='1.0' encoding='UTF-8' ?> 
 <xs:schema xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/' targetNamespace='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:xs='http://www.w3.org/2001/XMLSchema'>
   <xs:import namespace='http://schemas.xmlsoap.org/wsdl/' />
   <xs:simpleType name='encodingStyle'>
@@ -473,7 +473,7 @@ namespace System.ServiceModel.Description
     </xs:complexContent>
   </xs:complexType>
 </xs:schema>";
-        const string soapEncoding = @"<?xml version='1.0' encoding='UTF-8' ?>
+        private const string soapEncoding = @"<?xml version='1.0' encoding='UTF-8' ?>
 <xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'
            xmlns:tns='http://schemas.xmlsoap.org/soap/encoding/'
            targetNamespace='http://schemas.xmlsoap.org/soap/encoding/' >
@@ -941,14 +941,14 @@ namespace System.ServiceModel.Description
   <xs:element name='anyType' />
 </xs:schema>";
 
-        const string fakeXsd = @"<?xml version='1.0' encoding='UTF-8' ?> 
+        private const string fakeXsd = @"<?xml version='1.0' encoding='UTF-8' ?> 
 <xsd:schema targetNamespace=""http://www.w3.org/2001/XMLSchema"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
     <xsd:element name=""schema"">
     <xsd:complexType />
     </xsd:element>
 </xsd:schema>";
 
-        const string fakeXmlSchema = @"<xs:schema targetNamespace='http://www.w3.org/XML/1998/namespace' xmlns:xs='http://www.w3.org/2001/XMLSchema' xml:lang='en'>
+        private const string fakeXmlSchema = @"<xs:schema targetNamespace='http://www.w3.org/XML/1998/namespace' xmlns:xs='http://www.w3.org/2001/XMLSchema' xml:lang='en'>
  <xs:attribute name='lang' type='xs:language'/>
  <xs:attribute name='space'>
   <xs:simpleType>
@@ -968,7 +968,7 @@ namespace System.ServiceModel.Description
 </xs:schema>";
 
 
-        const string fakeSoapEncoding = @"<?xml version='1.0' encoding='UTF-8' ?>
+        private const string fakeSoapEncoding = @"<?xml version='1.0' encoding='UTF-8' ?>
 <xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'
            xmlns:tns='http://schemas.xmlsoap.org/soap/encoding/'
            targetNamespace='http://schemas.xmlsoap.org/soap/encoding/' >
@@ -1004,7 +1004,5 @@ namespace System.ServiceModel.Description
     <xs:attributeGroup ref='tns:commonAttributes' />
   </xs:complexType> 
 </xs:schema>";
-
-
     }
 }

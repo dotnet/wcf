@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
-
+namespace Microsoft.CodeDom.Compiler
+{
     using System.Diagnostics;
     using System.IO;
-    
+
 
     /// <devdoc>
     ///    <para>
@@ -14,15 +14,15 @@ namespace Microsoft.CodeDom.Compiler {
     ///       interface.
     ///    </para>
     /// </devdoc>
-    public interface ICodeCompiler {
-
+    public interface ICodeCompiler
+    {
         /// <devdoc>
         ///    <para>
         ///       Creates an assembly based on options, with the information from the compile units
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         CompilerResults CompileAssemblyFromDom(CompilerParameters options, CodeCompileUnit compilationUnit);
 
         /// <devdoc>
@@ -31,8 +31,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       fileName.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         CompilerResults CompileAssemblyFromFile(CompilerParameters options, string fileName);
 
         /// <devdoc>
@@ -41,8 +41,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       source.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         CompilerResults CompileAssemblyFromSource(CompilerParameters options, string source);
 
         /// <devdoc>
@@ -51,8 +51,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       information.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         CompilerResults CompileAssemblyFromDomBatch(CompilerParameters options, CodeCompileUnit[] compilationUnits);
 
         /// <devdoc>
@@ -63,8 +63,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       filenames.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         CompilerResults CompileAssemblyFromFileBatch(CompilerParameters options, string[] fileNames);
 
         /// <devdoc>
@@ -73,9 +73,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       sources.
         ///    </para>
         /// </devdoc>
-        
-        
-        CompilerResults CompileAssemblyFromSourceBatch(CompilerParameters options, string[] sources);
 
+
+        CompilerResults CompileAssemblyFromSourceBatch(CompilerParameters options, string[] sources);
     }
 }

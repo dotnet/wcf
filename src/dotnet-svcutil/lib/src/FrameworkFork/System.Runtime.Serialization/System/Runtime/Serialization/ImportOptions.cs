@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.Runtime.Serialization
 {
     using System;
@@ -9,49 +9,49 @@ namespace System.Runtime.Serialization
 
     public class ImportOptions
     {
-        bool generateSerializable;
-        bool generateInternal;
-        bool enableDataBinding;
-        CodeDomProvider codeProvider;
-        ICollection<Type> referencedTypes;
-        ICollection<Type> referencedCollectionTypes;
-        IDictionary<string, string> namespaces;
-        bool importXmlType;
-        IDataContractSurrogate dataContractSurrogate;
+        private bool _generateSerializable;
+        private bool _generateInternal;
+        private bool _enableDataBinding;
+        private CodeDomProvider _codeProvider;
+        private ICollection<Type> _referencedTypes;
+        private ICollection<Type> _referencedCollectionTypes;
+        private IDictionary<string, string> _namespaces;
+        private bool _importXmlType;
+        private IDataContractSurrogate _dataContractSurrogate;
 
         public bool GenerateSerializable
         {
-            get { return generateSerializable; }
-            set { generateSerializable = value; }
+            get { return _generateSerializable; }
+            set { _generateSerializable = value; }
         }
 
         public bool GenerateInternal
         {
-            get { return generateInternal; }
-            set { generateInternal = value; }
+            get { return _generateInternal; }
+            set { _generateInternal = value; }
         }
 
         public bool EnableDataBinding
         {
-            get { return enableDataBinding; }
-            set { enableDataBinding = value; }
+            get { return _enableDataBinding; }
+            set { _enableDataBinding = value; }
         }
 
         public CodeDomProvider CodeProvider
         {
-            get { return codeProvider; }
-            set { codeProvider = value; }
+            get { return _codeProvider; }
+            set { _codeProvider = value; }
         }
 
         public ICollection<Type> ReferencedTypes
         {
             get
             {
-                if (referencedTypes == null)
+                if (_referencedTypes == null)
                 {
-                    referencedTypes = new List<Type>();
+                    _referencedTypes = new List<Type>();
                 }
-                return referencedTypes;
+                return _referencedTypes;
             }
         }
 
@@ -59,11 +59,11 @@ namespace System.Runtime.Serialization
         {
             get
             {
-                if (referencedCollectionTypes == null)
+                if (_referencedCollectionTypes == null)
                 {
-                    referencedCollectionTypes = new List<Type>();
+                    _referencedCollectionTypes = new List<Type>();
                 }
-                return referencedCollectionTypes;
+                return _referencedCollectionTypes;
             }
         }
 
@@ -71,24 +71,24 @@ namespace System.Runtime.Serialization
         {
             get
             {
-                if (namespaces == null)
+                if (_namespaces == null)
                 {
-                    namespaces = new Dictionary<string, string>();
+                    _namespaces = new Dictionary<string, string>();
                 }
-                return namespaces;
+                return _namespaces;
             }
         }
 
         public bool ImportXmlType
         {
-            get { return importXmlType; }
-            set { importXmlType = value; }
+            get { return _importXmlType; }
+            set { _importXmlType = value; }
         }
 
         public IDataContractSurrogate DataContractSurrogate
         {
-            get { return dataContractSurrogate; }
-            set { dataContractSurrogate = value; }
+            get { return _dataContractSurrogate; }
+            set { _dataContractSurrogate = value; }
         }
     }
 }

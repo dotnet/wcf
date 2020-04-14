@@ -5,7 +5,7 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Dispatcher
 {
-    abstract class InstanceContextProviderBase : IInstanceContextProvider
+    internal abstract class InstanceContextProviderBase : IInstanceContextProvider
     {
         private readonly DispatchRuntime _dispatchRuntime;
 
@@ -26,7 +26,6 @@ namespace System.ServiceModel.Dispatcher
 
         internal static IInstanceContextProvider GetProviderForMode(InstanceContextMode instanceMode, DispatchRuntime runtime)
         {
-
             switch (instanceMode)
             {
                 case InstanceContextMode.PerSession:

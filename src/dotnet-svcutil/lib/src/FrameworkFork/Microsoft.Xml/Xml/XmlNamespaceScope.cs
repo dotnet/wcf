@@ -1,15 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     /// <include file='doc\XmlNamespaceScope.uex' path='docs/doc[@for="XmlNamespaceScope"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public enum XmlNamespaceScope {
+    public enum XmlNamespaceScope
+    {
         /// <include file='doc\XmlNamespaceScope.uex' path='docs/doc[@for="XmlNamespaceScope.All"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>

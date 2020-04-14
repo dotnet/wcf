@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     /// <include file='doc\IXmlLineInfo.uex' path='docs/doc[@for="IXmlLineInfo"]/*' />
-    public interface IXmlLineInfo {
+    public interface IXmlLineInfo
+    {
         /// <include file='doc\IXmlLineInfo.uex' path='docs/doc[@for="IXmlLineInfo.HasLineInfo"]/*' />
         bool HasLineInfo();
         /// <include file='doc\IXmlLineInfo.uex' path='docs/doc[@for="IXmlLineInfo.LineNumber"]/*' />
@@ -15,43 +17,54 @@ namespace Microsoft.Xml {
     }
 
 #if !SILVERLIGHT
-    internal class PositionInfo : IXmlLineInfo {
+    internal class PositionInfo : IXmlLineInfo
+    {
         public virtual bool HasLineInfo() { return false; }
-        public virtual int LineNumber { get { return 0;} }
-        public virtual int LinePosition { get { return 0;} }
+        public virtual int LineNumber { get { return 0; } }
+        public virtual int LinePosition { get { return 0; } }
 
-        public static PositionInfo GetPositionInfo(Object o) {
+        public static PositionInfo GetPositionInfo(Object o)
+        {
             IXmlLineInfo li = o as IXmlLineInfo;
-            if (li != null) {
+            if (li != null)
+            {
                 return new ReaderPositionInfo(li);
             }
-            else {
+            else
+            {
                 return new PositionInfo();
             }
         }
     }
 
-    internal class ReaderPositionInfo: PositionInfo {
-        private IXmlLineInfo lineInfo;
+    internal class ReaderPositionInfo : PositionInfo
+    {
+        private IXmlLineInfo _lineInfo;
 
-        public ReaderPositionInfo(IXmlLineInfo lineInfo) {
-            this.lineInfo = lineInfo;
+        public ReaderPositionInfo(IXmlLineInfo lineInfo)
+        {
+            _lineInfo = lineInfo;
         }
 
-        public override bool HasLineInfo() { 
-            return lineInfo.HasLineInfo(); 
+        public override bool HasLineInfo()
+        {
+            return _lineInfo.HasLineInfo();
         }
 
-        public override int LineNumber { 
-            get { 
-                return lineInfo.LineNumber;
-            } 
+        public override int LineNumber
+        {
+            get
+            {
+                return _lineInfo.LineNumber;
+            }
         }
 
-        public override int LinePosition { 
-            get { 
-                return lineInfo.LinePosition;
-            } 
+        public override int LinePosition
+        {
+            get
+            {
+                return _lineInfo.LinePosition;
+            }
         }
     }
 #endif

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Description
 {
     using System.Collections;
@@ -26,13 +26,13 @@ namespace System.ServiceModel.Description
 
         internal sealed class ImportedPolicyConversionContext : PolicyConversionContext
         {
-            BindingElementCollection bindingElements = new BindingElementCollection();
-            readonly PolicyAssertionCollection endpointAssertions;
-            readonly Dictionary<OperationDescription, PolicyAssertionCollection> operationBindingAssertions = new Dictionary<OperationDescription, PolicyAssertionCollection>();
-            readonly Dictionary<MessageDescription, PolicyAssertionCollection> messageBindingAssertions = new Dictionary<MessageDescription, PolicyAssertionCollection>();
-            readonly Dictionary<FaultDescription, PolicyAssertionCollection> faultBindingAssertions = new Dictionary<FaultDescription, PolicyAssertionCollection>();
+            private BindingElementCollection _bindingElements = new BindingElementCollection();
+            private readonly PolicyAssertionCollection _endpointAssertions;
+            private readonly Dictionary<OperationDescription, PolicyAssertionCollection> _operationBindingAssertions = new Dictionary<OperationDescription, PolicyAssertionCollection>();
+            private readonly Dictionary<MessageDescription, PolicyAssertionCollection> _messageBindingAssertions = new Dictionary<MessageDescription, PolicyAssertionCollection>();
+            private readonly Dictionary<FaultDescription, PolicyAssertionCollection> _faultBindingAssertions = new Dictionary<FaultDescription, PolicyAssertionCollection>();
 
-            ImportedPolicyConversionContext(ServiceEndpoint endpoint, IEnumerable<XmlElement> endpointAssertions,
+            private ImportedPolicyConversionContext(ServiceEndpoint endpoint, IEnumerable<XmlElement> endpointAssertions,
                     Dictionary<OperationDescription, IEnumerable<XmlElement>> operationBindingAssertions,
                     Dictionary<MessageDescription, IEnumerable<XmlElement>> messageBindingAssertions,
                     Dictionary<FaultDescription, IEnumerable<XmlElement>> faultBindingAssertions,
@@ -41,42 +41,42 @@ namespace System.ServiceModel.Description
             {
                 int remainingAssertionsAllowed = quotas.MaxPolicyAssertions;
 
-                this.endpointAssertions = new PolicyAssertionCollection(new MaxItemsEnumerable<XmlElement>(endpointAssertions, remainingAssertionsAllowed));
+                _endpointAssertions = new PolicyAssertionCollection(new MaxItemsEnumerable<XmlElement>(endpointAssertions, remainingAssertionsAllowed));
 
-                remainingAssertionsAllowed -= this.endpointAssertions.Count;
+                remainingAssertionsAllowed -= _endpointAssertions.Count;
 
                 foreach (OperationDescription operationDescription in endpoint.Contract.Operations)
                 {
-                    this.operationBindingAssertions.Add(operationDescription, new PolicyAssertionCollection());
+                    _operationBindingAssertions.Add(operationDescription, new PolicyAssertionCollection());
 
                     foreach (MessageDescription messageDescription in operationDescription.Messages)
                     {
-                        this.messageBindingAssertions.Add(messageDescription, new PolicyAssertionCollection());
+                        _messageBindingAssertions.Add(messageDescription, new PolicyAssertionCollection());
                     }
 
                     foreach (FaultDescription faultDescription in operationDescription.Faults)
                     {
-                        this.faultBindingAssertions.Add(faultDescription, new PolicyAssertionCollection());
+                        _faultBindingAssertions.Add(faultDescription, new PolicyAssertionCollection());
                     }
                 }
 
 
                 foreach (KeyValuePair<OperationDescription, IEnumerable<XmlElement>> entry in operationBindingAssertions)
                 {
-                    this.operationBindingAssertions[entry.Key].AddRange(new MaxItemsEnumerable<XmlElement>(entry.Value, remainingAssertionsAllowed));
-                    remainingAssertionsAllowed -= this.operationBindingAssertions[entry.Key].Count;
+                    _operationBindingAssertions[entry.Key].AddRange(new MaxItemsEnumerable<XmlElement>(entry.Value, remainingAssertionsAllowed));
+                    remainingAssertionsAllowed -= _operationBindingAssertions[entry.Key].Count;
                 }
 
                 foreach (KeyValuePair<MessageDescription, IEnumerable<XmlElement>> entry in messageBindingAssertions)
                 {
-                    this.messageBindingAssertions[entry.Key].AddRange(new MaxItemsEnumerable<XmlElement>(entry.Value, remainingAssertionsAllowed));
-                    remainingAssertionsAllowed -= this.messageBindingAssertions[entry.Key].Count;
+                    _messageBindingAssertions[entry.Key].AddRange(new MaxItemsEnumerable<XmlElement>(entry.Value, remainingAssertionsAllowed));
+                    remainingAssertionsAllowed -= _messageBindingAssertions[entry.Key].Count;
                 }
 
                 foreach (KeyValuePair<FaultDescription, IEnumerable<XmlElement>> entry in faultBindingAssertions)
                 {
-                    this.faultBindingAssertions[entry.Key].AddRange(new MaxItemsEnumerable<XmlElement>(entry.Value, remainingAssertionsAllowed));
-                    remainingAssertionsAllowed -= this.faultBindingAssertions[entry.Key].Count;
+                    _faultBindingAssertions[entry.Key].AddRange(new MaxItemsEnumerable<XmlElement>(entry.Value, remainingAssertionsAllowed));
+                    remainingAssertionsAllowed -= _faultBindingAssertions[entry.Key].Count;
                 }
             }
 
@@ -84,26 +84,26 @@ namespace System.ServiceModel.Description
             // PolicyConversionContext implementation
             //
 
-            public override BindingElementCollection BindingElements { get { return this.bindingElements; } }
+            public override BindingElementCollection BindingElements { get { return _bindingElements; } }
 
             public override PolicyAssertionCollection GetBindingAssertions()
             {
-                return this.endpointAssertions;
+                return _endpointAssertions;
             }
 
             public override PolicyAssertionCollection GetOperationBindingAssertions(OperationDescription operation)
             {
-                return this.operationBindingAssertions[operation];
+                return _operationBindingAssertions[operation];
             }
 
             public override PolicyAssertionCollection GetMessageBindingAssertions(MessageDescription message)
             {
-                return this.messageBindingAssertions[message];
+                return _messageBindingAssertions[message];
             }
 
             public override PolicyAssertionCollection GetFaultBindingAssertions(FaultDescription message)
             {
-                return this.faultBindingAssertions[message];
+                return _faultBindingAssertions[message];
             }
 
             //
@@ -142,23 +142,22 @@ namespace System.ServiceModel.Description
                         }
                     }
                 }
-
             }
 
             internal class MaxItemsEnumerable<T> : IEnumerable<T>
             {
-                IEnumerable<T> inner;
-                int maxItems;
+                private IEnumerable<T> _inner;
+                private int _maxItems;
 
                 public MaxItemsEnumerable(IEnumerable<T> inner, int maxItems)
                 {
-                    this.inner = inner;
-                    this.maxItems = maxItems;
+                    _inner = inner;
+                    _maxItems = maxItems;
                 }
 
                 public IEnumerator<T> GetEnumerator()
                 {
-                    return new MaxItemsEnumerator<T>(inner.GetEnumerator(), maxItems);
+                    return new MaxItemsEnumerator<T>(_inner.GetEnumerator(), _maxItems);
                 }
 
                 IEnumerator IEnumerable.GetEnumerator()
@@ -169,36 +168,36 @@ namespace System.ServiceModel.Description
 
             internal class MaxItemsEnumerator<T> : IEnumerator<T>
             {
-                int maxItems;
-                int currentItem;
-                IEnumerator<T> inner;
+                private int _maxItems;
+                private int _currentItem;
+                private IEnumerator<T> _inner;
 
                 public MaxItemsEnumerator(IEnumerator<T> inner, int maxItems)
                 {
-                    this.maxItems = maxItems;
-                    this.currentItem = 0;
-                    this.inner = inner;
+                    _maxItems = maxItems;
+                    _currentItem = 0;
+                    _inner = inner;
                 }
 
                 public T Current
                 {
-                    get { return inner.Current; }
+                    get { return _inner.Current; }
                 }
 
                 public void Dispose()
                 {
-                    inner.Dispose();
+                    _inner.Dispose();
                 }
 
                 object IEnumerator.Current
                 {
-                    get { return ((IEnumerator)inner).Current; }
+                    get { return ((IEnumerator)_inner).Current; }
                 }
 
                 public bool MoveNext()
                 {
-                    bool moveNext = inner.MoveNext();
-                    if (++currentItem > maxItems)
+                    bool moveNext = _inner.MoveNext();
+                    if (++_currentItem > _maxItems)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MaxItemsEnumeratorExceededMaxItemsException());
                     }
@@ -207,14 +206,14 @@ namespace System.ServiceModel.Description
 
                 public void Reset()
                 {
-                    currentItem = 0;
-                    inner.Reset();
+                    _currentItem = 0;
+                    _inner.Reset();
                 }
             }
 
             internal class MaxItemsEnumeratorExceededMaxItemsException : Exception { }
 
-            static class PolicyIterationHelper
+            private static class PolicyIterationHelper
             {
                 // This method returns an iterator over the cartesian product of a colleciton of sets.
                 //  e.g. If the following 3 sets are provided:
@@ -248,10 +247,9 @@ namespace System.ServiceModel.Description
                     {
                         yield return (Dictionary<K, V>)counterValue;
                     } while (IncrementCounter<K, V>(digits, sets, counterValue));
-
                 }
 
-                static KeyValuePair<K, IEnumerator<V>>[] InitializeCounter<K, V>(Dictionary<K, IEnumerable<V>> sets, Dictionary<K, V> counterValue)
+                private static KeyValuePair<K, IEnumerator<V>>[] InitializeCounter<K, V>(Dictionary<K, IEnumerable<V>> sets, Dictionary<K, V> counterValue)
                 {
                     KeyValuePair<K, IEnumerator<V>>[] digits = new KeyValuePair<K, IEnumerator<V>>[sets.Count];
 
@@ -272,9 +270,8 @@ namespace System.ServiceModel.Description
                     return digits;
                 }
 
-                static bool IncrementCounter<K, V>(KeyValuePair<K, IEnumerator<V>>[] digits, Dictionary<K, IEnumerable<V>> sets, Dictionary<K, V> counterValue)
+                private static bool IncrementCounter<K, V>(KeyValuePair<K, IEnumerator<V>>[] digits, Dictionary<K, IEnumerable<V>> sets, Dictionary<K, V> counterValue)
                 {
-
                     //
                     // Do rollover and carryying for digits.
                     //  - starting at least significant digit, move digits to  next value.
@@ -304,7 +301,6 @@ namespace System.ServiceModel.Description
                     return true;
                 }
             }
-
         }
 
         internal class PolicyAlternatives
@@ -314,6 +310,5 @@ namespace System.ServiceModel.Description
             public Dictionary<MessageDescription, IEnumerable<IEnumerable<XmlElement>>> MessageBindingAlternatives;
             public Dictionary<FaultDescription, IEnumerable<IEnumerable<XmlElement>>> FaultBindingAlternatives;
         }
-
     }
 }

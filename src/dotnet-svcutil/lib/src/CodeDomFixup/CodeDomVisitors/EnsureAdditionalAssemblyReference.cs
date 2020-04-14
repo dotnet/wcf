@@ -9,38 +9,38 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class EnsureAdditionalAssemblyReference : CodeDomVisitor
     {
-        CodeCompileUnit compileUnit;
-        Dictionary<string, string> namespacesToMatch = new Dictionary<string, string>() { { "System.ServiceModel.XmlSerializerFormatAttribute", "System.Xml.Serialization" }, { "System.Xml.Linq", "System.Xml.Linq" }, { "System.ServiceModel.Duplex", "System.ServiceModel.Extensions" } };
+        private CodeCompileUnit _compileUnit;
+        private Dictionary<string, string> _namespacesToMatch = new Dictionary<string, string>() { { "System.ServiceModel.XmlSerializerFormatAttribute", "System.Xml.Serialization" }, { "System.Xml.Linq", "System.Xml.Linq" }, { "System.ServiceModel.Duplex", "System.ServiceModel.Extensions" } };
 
-        List<string> alreadyAdded = new List<string>();
+        private List<string> _alreadyAdded = new List<string>();
 
         protected override void Visit(CodeCompileUnit cu)
         {
             base.Visit(cu);
-            this.compileUnit = cu;
+            _compileUnit = cu;
         }
         protected override void Visit(CodeTypeReference typeref)
         {
             base.Visit(typeref);
-            foreach (string ns in namespacesToMatch.Keys)
+            foreach (string ns in _namespacesToMatch.Keys)
             {
-                if (!alreadyAdded.Contains(namespacesToMatch[ns]) && typeref.BaseType.StartsWith(ns, StringComparison.Ordinal))
+                if (!_alreadyAdded.Contains(_namespacesToMatch[ns]) && typeref.BaseType.StartsWith(ns, StringComparison.Ordinal))
                 {
-                    EnsureAssemblyReference(namespacesToMatch[ns]);
+                    EnsureAssemblyReference(_namespacesToMatch[ns]);
                 }
             }
         }
 
-        void EnsureAssemblyReference(string ns)
+        private void EnsureAssemblyReference(string ns)
         {
-            if (!alreadyAdded.Contains(ns) && this.compileUnit != null)
+            if (!_alreadyAdded.Contains(ns) && _compileUnit != null)
             {
-                if (!this.compileUnit.ReferencedAssemblies.Contains(ns + ".dll"))
+                if (!_compileUnit.ReferencedAssemblies.Contains(ns + ".dll"))
                 {
-                    this.compileUnit.ReferencedAssemblies.Add(ns + ".dll");
+                    _compileUnit.ReferencedAssemblies.Add(ns + ".dll");
                 }
 
-                alreadyAdded.Add(ns);
+                _alreadyAdded.Add(ns);
             }
         }
         protected override void FinishVisit(CodeCompileUnit cu)

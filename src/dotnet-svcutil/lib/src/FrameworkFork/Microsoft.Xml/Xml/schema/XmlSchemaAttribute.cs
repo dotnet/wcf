@@ -5,41 +5,44 @@ using System.Collections;
 using System.ComponentModel;
 using Microsoft.Xml.Serialization;
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaAttribute : XmlSchemaAnnotated {
-        string defaultValue;
-        string fixedValue;
-        string name;
+    public class XmlSchemaAttribute : XmlSchemaAnnotated
+    {
+        private string _defaultValue;
+        private string _fixedValue;
+        private string _name;
 
-        XmlSchemaForm form = XmlSchemaForm.None;
-        XmlSchemaUse use = XmlSchemaUse.None;
+        private XmlSchemaForm _form = XmlSchemaForm.None;
+        private XmlSchemaUse _use = XmlSchemaUse.None;
 
-        XmlQualifiedName refName = XmlQualifiedName.Empty; 
-        XmlQualifiedName typeName = XmlQualifiedName.Empty;
-        XmlQualifiedName qualifiedName = XmlQualifiedName.Empty;
+        private XmlQualifiedName _refName = XmlQualifiedName.Empty;
+        private XmlQualifiedName _typeName = XmlQualifiedName.Empty;
+        private XmlQualifiedName _qualifiedName = XmlQualifiedName.Empty;
 
-        XmlSchemaSimpleType type;
-        XmlSchemaSimpleType attributeType;
+        private XmlSchemaSimpleType _type;
+        private XmlSchemaSimpleType _attributeType;
 
-        SchemaAttDef attDef;
-        
+        private SchemaAttDef _attDef;
+
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.DefaultValue"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("default")]
         [DefaultValue(null)]
-        public string DefaultValue { 
-            get { return defaultValue; }
-            set { defaultValue = value; }
+        public string DefaultValue
+        {
+            get { return _defaultValue; }
+            set { _defaultValue = value; }
         }
 
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.FixedValue"]/*' />
@@ -48,9 +51,10 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlAttribute("fixed")]
         [DefaultValue(null)]
-        public string FixedValue { 
-            get { return fixedValue; }
-            set { fixedValue = value; }
+        public string FixedValue
+        {
+            get { return _fixedValue; }
+            set { _fixedValue = value; }
         }
 
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.Form"]/*' />
@@ -58,9 +62,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("form"), DefaultValue(XmlSchemaForm.None)]
-        public XmlSchemaForm Form { 
-            get { return form; }
-            set { form = value; }
+        public XmlSchemaForm Form
+        {
+            get { return _form; }
+            set { _form = value; }
         }
 
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.Name"]/*' />
@@ -68,39 +73,43 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("name")]
-        public string Name { 
-            get { return name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
-        
+
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.RefName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("ref")]
-        public XmlQualifiedName RefName { 
-            get { return refName; }
-            set { refName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName RefName
+        {
+            get { return _refName; }
+            set { _refName = (value == null ? XmlQualifiedName.Empty : value); }
         }
-        
+
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.SchemaTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("type")]
-        public XmlQualifiedName SchemaTypeName { 
-            get { return typeName; }
-            set { typeName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName SchemaTypeName
+        {
+            get { return _typeName; }
+            set { _typeName = (value == null ? XmlQualifiedName.Empty : value); }
         }
-        
+
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.SchemaType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("simpleType")]
-        public XmlSchemaSimpleType SchemaType {
-            get { return type; }
-            set { type = value; }
+        public XmlSchemaSimpleType SchemaType
+        {
+            get { return _type; }
+            set { _type = value; }
         }
 
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.Use"]/*' />
@@ -108,9 +117,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("use"), DefaultValue(XmlSchemaUse.None)]
-        public XmlSchemaUse Use {
-            get { return use; }
-            set { use = value; }
+        public XmlSchemaUse Use
+        {
+            get { return _use; }
+            set { _use = value; }
         }
 
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.QualifiedName"]/*' />
@@ -118,8 +128,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlQualifiedName QualifiedName { 
-            get { return qualifiedName; }
+        public XmlQualifiedName QualifiedName
+        {
+            get { return _qualifiedName; }
         }
 
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.AttributeType"]/*' />
@@ -128,78 +139,93 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlIgnore]
         [Obsolete("This property has been deprecated. Please use AttributeSchemaType property that returns a strongly typed attribute type. http://go.microsoft.com/fwlink/?linkid=14202")]
-        public object AttributeType {
-            get {
-                if (attributeType == null)
+        public object AttributeType
+        {
+            get
+            {
+                if (_attributeType == null)
                     return null;
 
-                if (attributeType.QualifiedName.Namespace == XmlReservedNs.NsXs) {
-                    return attributeType.Datatype;
-                } 
-                return attributeType;
+                if (_attributeType.QualifiedName.Namespace == XmlReservedNs.NsXs)
+                {
+                    return _attributeType.Datatype;
+                }
+                return _attributeType;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaAttribute.uex' path='docs/doc[@for="XmlSchemaAttribute.AttributeSchemaType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaSimpleType AttributeSchemaType {
-            get { return attributeType; }
+        public XmlSchemaSimpleType AttributeSchemaType
+        {
+            get { return _attributeType; }
         }
 
-        internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler) {
-            if (schemaSet != null) {
+        internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler)
+        {
+            if (schemaSet != null)
+            {
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.ValidationType = ValidationType.Schema;
                 readerSettings.Schemas = schemaSet;
-                readerSettings.ValidationEventHandler += valEventHandler;                
+                readerSettings.ValidationEventHandler += valEventHandler;
                 return new XsdValidatingReader(reader, resolver, readerSettings, this);
             }
             return null;
         }
 
         [XmlIgnore]
-        internal XmlSchemaDatatype Datatype {
-            get { 
-                if (attributeType != null) {
-                    return attributeType.Datatype; 
+        internal XmlSchemaDatatype Datatype
+        {
+            get
+            {
+                if (_attributeType != null)
+                {
+                    return _attributeType.Datatype;
                 }
                 return null;
             }
         }
 
-        internal void  SetQualifiedName(XmlQualifiedName value) { 
-            qualifiedName = value;
+        internal void SetQualifiedName(XmlQualifiedName value)
+        {
+            _qualifiedName = value;
         }
 
-        internal void SetAttributeType(XmlSchemaSimpleType value) { 
-            attributeType = value;
+        internal void SetAttributeType(XmlSchemaSimpleType value)
+        {
+            _attributeType = value;
         }
 
-        internal SchemaAttDef AttDef {
-            get { return attDef; }
-            set { attDef = value; }
+        internal SchemaAttDef AttDef
+        {
+            get { return _attDef; }
+            set { _attDef = value; }
         }
 
-        internal bool HasDefault {
-            get { return defaultValue != null; }
+        internal bool HasDefault
+        {
+            get { return _defaultValue != null; }
         }
 
         [XmlIgnore]
-        internal override string NameAttribute {
+        internal override string NameAttribute
+        {
             get { return Name; }
             set { Name = value; }
         }
 
-         internal override XmlSchemaObject Clone() {
+        internal override XmlSchemaObject Clone()
+        {
             XmlSchemaAttribute newAtt = (XmlSchemaAttribute)MemberwiseClone();
 
             //Deep clone the QNames as these will be updated on chameleon includes
-            newAtt.refName = this.refName.Clone();
-            newAtt.typeName = this.typeName.Clone();
-            newAtt.qualifiedName = this.qualifiedName.Clone();
+            newAtt._refName = _refName.Clone();
+            newAtt._typeName = _typeName.Clone();
+            newAtt._qualifiedName = _qualifiedName.Clone();
             return newAtt;
         }
     }

@@ -2,76 +2,91 @@
 // Licensed under the MIT license.
 
 
-namespace Microsoft.Xml {
-				using System;
-				
-    internal static partial class BinHexEncoder {
+namespace Microsoft.Xml
+{
+    using System;
 
+    internal static partial class BinHexEncoder
+    {
         private const string s_hexDigits = "0123456789ABCDEF";
         private const int CharsChunkSize = 128;
 
-        internal static void Encode( byte[] buffer, int index, int count, XmlWriter writer ) {
-            if ( buffer == null ) {
-                throw new ArgumentNullException( "buffer" );
+        internal static void Encode(byte[] buffer, int index, int count, XmlWriter writer)
+        {
+            if (buffer == null)
+            {
+                throw new ArgumentNullException("buffer");
             }
-            if ( index < 0 ) {
-                throw new ArgumentOutOfRangeException( "index" );
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException("index");
             }
-            if ( count < 0 ) {
-                throw new ArgumentOutOfRangeException( "count" );
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException("count");
             }
-            if ( count > buffer.Length - index ) {
-                throw new ArgumentOutOfRangeException( "count" );
+            if (count > buffer.Length - index)
+            {
+                throw new ArgumentOutOfRangeException("count");
             }
 
-            char[] chars = new char[ ( count * 2 ) < CharsChunkSize ? ( count * 2 ) : CharsChunkSize ];
+            char[] chars = new char[(count * 2) < CharsChunkSize ? (count * 2) : CharsChunkSize];
             int endIndex = index + count;
-            while ( index < endIndex ) {
-                int cnt = ( count < CharsChunkSize/2 ) ? count : CharsChunkSize/2;
-                int charCount = Encode( buffer, index, cnt, chars );
-                writer.WriteRaw( chars, 0, charCount );
+            while (index < endIndex)
+            {
+                int cnt = (count < CharsChunkSize / 2) ? count : CharsChunkSize / 2;
+                int charCount = Encode(buffer, index, cnt, chars);
+                writer.WriteRaw(chars, 0, charCount);
                 index += cnt;
                 count -= cnt;
             }
         }
 
-        internal static string Encode(byte[] inArray, int offsetIn, int count) {
-            if (null == inArray) {
+        internal static string Encode(byte[] inArray, int offsetIn, int count)
+        {
+            if (null == inArray)
+            {
                 throw new ArgumentNullException("inArray");
             }
-            if (0 > offsetIn) {
+            if (0 > offsetIn)
+            {
                 throw new ArgumentOutOfRangeException("offsetIn");
             }
-            if (0 > count) {
+            if (0 > count)
+            {
                 throw new ArgumentOutOfRangeException("count");
             }
-            if (count > inArray.Length - offsetIn) {
+            if (count > inArray.Length - offsetIn)
+            {
                 throw new ArgumentOutOfRangeException("count");
             }
 
             char[] outArray = new char[2 * count];
-            int lenOut =  Encode(inArray, offsetIn, count, outArray);
+            int lenOut = Encode(inArray, offsetIn, count, outArray);
             return new String(outArray, 0, lenOut);
         }
 
-        private static int Encode(byte[] inArray, int offsetIn, int count, char[] outArray) {
-            int curOffsetOut =0, offsetOut = 0;
+        private static int Encode(byte[] inArray, int offsetIn, int count, char[] outArray)
+        {
+            int curOffsetOut = 0, offsetOut = 0;
             byte b;
             int lengthOut = outArray.Length;
 
-            for (int j=0; j<count; j++) {
-                b = inArray[offsetIn ++];
-                outArray[curOffsetOut ++] = s_hexDigits[b >> 4];
-                if (curOffsetOut == lengthOut) {
+            for (int j = 0; j < count; j++)
+            {
+                b = inArray[offsetIn++];
+                outArray[curOffsetOut++] = s_hexDigits[b >> 4];
+                if (curOffsetOut == lengthOut)
+                {
                     break;
                 }
-                outArray[curOffsetOut ++] = s_hexDigits[b & 0xF];
-                if (curOffsetOut == lengthOut) {
+                outArray[curOffsetOut++] = s_hexDigits[b & 0xF];
+                if (curOffsetOut == lengthOut)
+                {
                     break;
                 }
             }
             return curOffsetOut - offsetOut;
         } // function
-
     } // class
 } // namespace

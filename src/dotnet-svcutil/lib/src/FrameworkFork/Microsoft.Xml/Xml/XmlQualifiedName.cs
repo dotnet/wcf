@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     using System.Collections;
     using System.Diagnostics;
 #if !SILVERLIGHT
@@ -20,18 +21,19 @@ namespace Microsoft.Xml {
 #if !SILVERLIGHT
     // [Serializable],
 #endif
-    public class XmlQualifiedName {
+    public class XmlQualifiedName
+    {
 #if !SILVERLIGHT
-        delegate int HashCodeOfStringDelegate(string s, int sLen, long additionalEntropy);
-        static HashCodeOfStringDelegate hashCodeDelegate = null;
+        private delegate int HashCodeOfStringDelegate(string s, int sLen, long additionalEntropy);
+        private static HashCodeOfStringDelegate s_hashCodeDelegate = null;
 #endif
-        string name;
-        string ns;
+        private string _name;
+        private string _ns;
 
 #if !SILVERLIGHT
         [NonSerialized]
 #endif
-        Int32  hash;
+        private Int32 _hash;
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.Empty"]/*' />
         /// <devdoc>
@@ -43,56 +45,62 @@ namespace Microsoft.Xml {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlQualifiedName() : this(string.Empty, string.Empty) {}
+        public XmlQualifiedName() : this(string.Empty, string.Empty) { }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.XmlQualifiedName1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlQualifiedName(string name) : this(name, string.Empty) {}
+        public XmlQualifiedName(string name) : this(name, string.Empty) { }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.XmlQualifiedName2"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlQualifiedName(string name, string ns) {
-            this.ns   = ns   == null ? string.Empty : ns;
-            this.name = name == null ? string.Empty : name;
+        public XmlQualifiedName(string name, string ns)
+        {
+            _ns = ns == null ? string.Empty : ns;
+            _name = name == null ? string.Empty : name;
         }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.Namespace"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Namespace {
-            get { return ns; }
+        public string Namespace
+        {
+            get { return _ns; }
         }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.Name"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Name {
-            get { return name; }
+        public string Name
+        {
+            get { return _name; }
         }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.GetHashCode"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override int GetHashCode() {
-            if (hash == 0) {
-                hash = SecureStringHasher.Instance.GetHashCode(Name);
+        public override int GetHashCode()
+        {
+            if (_hash == 0)
+            {
+                _hash = SecureStringHasher.Instance.GetHashCode(Name);
             }
 
-            return hash;
+            return _hash;
         }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.IsEmpty"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool IsEmpty {
+        public bool IsEmpty
+        {
             get { return Name.Length == 0 && Namespace.Length == 0; }
         }
 
@@ -100,23 +108,27 @@ namespace Microsoft.Xml {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override string ToString() {
-            return Namespace.Length == 0 ? Name : string.Concat(Namespace, ":" , Name);
+        public override string ToString()
+        {
+            return Namespace.Length == 0 ? Name : string.Concat(Namespace, ":", Name);
         }
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.Equals"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override bool Equals(object other) {
+        public override bool Equals(object other)
+        {
             XmlQualifiedName qname;
 
-            if ((object) this == other) {
+            if ((object)this == other)
+            {
                 return true;
             }
 
             qname = other as XmlQualifiedName;
-            if (qname != null) {
+            if (qname != null)
+            {
                 return (Name == qname.Name && Namespace == qname.Namespace);
             }
             return false;
@@ -126,11 +138,12 @@ namespace Microsoft.Xml {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static bool operator ==(XmlQualifiedName a, XmlQualifiedName b) {
-            if ((object) a == (object) b)
+        public static bool operator ==(XmlQualifiedName a, XmlQualifiedName b)
+        {
+            if ((object)a == (object)b)
                 return true;
 
-            if ((object) a == null || (object) b == null)
+            if ((object)a == null || (object)b == null)
                 return false;
 
             return (a.Name == b.Name && a.Namespace == b.Namespace);
@@ -140,7 +153,8 @@ namespace Microsoft.Xml {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static bool operator !=(XmlQualifiedName a, XmlQualifiedName b) {
+        public static bool operator !=(XmlQualifiedName a, XmlQualifiedName b)
+        {
             return !(a == b);
         }
 
@@ -148,7 +162,8 @@ namespace Microsoft.Xml {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static string ToString(string name, string ns) {
+        public static string ToString(string name, string ns)
+        {
             return ns == null || ns.Length == 0 ? name : ns + ":" + name;
         }
 
@@ -161,62 +176,76 @@ namespace Microsoft.Xml {
             // This is the fallback method for calling the regular hashcode method
             return s.GetHashCode();
         }
-		
+
         // --------- Some useful internal stuff -----------------
-        internal void Init(string name, string ns) {
+        internal void Init(string name, string ns)
+        {
             Debug.Assert(name != null && ns != null);
-            this.name = name;
-            this.ns = ns;
-            this.hash = 0;
-        }
-        
-        internal void SetNamespace(string ns) {
-            Debug.Assert(ns != null);
-            this.ns = ns; //Not changing hash since ns is not used to compute hashcode
+            _name = name;
+            _ns = ns;
+            _hash = 0;
         }
 
-        internal void Verify() {
-            XmlConvert.VerifyNCName(name);
-            if (ns.Length != 0) {
-                XmlConvert.ToUri(ns);
+        internal void SetNamespace(string ns)
+        {
+            Debug.Assert(ns != null);
+            _ns = ns; //Not changing hash since ns is not used to compute hashcode
+        }
+
+        internal void Verify()
+        {
+            XmlConvert.VerifyNCName(_name);
+            if (_ns.Length != 0)
+            {
+                XmlConvert.ToUri(_ns);
             }
         }
 
-        internal void Atomize(XmlNameTable nameTable) {
-            Debug.Assert(name != null);
-            name = nameTable.Add(name);
-            ns = nameTable.Add(ns);
+        internal void Atomize(XmlNameTable nameTable)
+        {
+            Debug.Assert(_name != null);
+            _name = nameTable.Add(_name);
+            _ns = nameTable.Add(_ns);
         }
 
-        internal static XmlQualifiedName Parse(string s, IXmlNamespaceResolver nsmgr, out string prefix) {
+        internal static XmlQualifiedName Parse(string s, IXmlNamespaceResolver nsmgr, out string prefix)
+        {
             string localName;
             ValidateNames.ParseQNameThrow(s, out prefix, out localName);
 
             string uri = nsmgr.LookupNamespace(prefix);
-            if (uri == null) {
-                if (prefix.Length != 0) {
+            if (uri == null)
+            {
+                if (prefix.Length != 0)
+                {
                     throw new XmlException(ResXml.Xml_UnknownNs, prefix);
                 }
-                else { //Re-map namespace of empty prefix to string.Empty when there is no default namespace declared
+                else
+                { //Re-map namespace of empty prefix to string.Empty when there is no default namespace declared
                     uri = string.Empty;
                 }
             }
             return new XmlQualifiedName(localName, uri);
         }
 
-        internal XmlQualifiedName Clone() {
+        internal XmlQualifiedName Clone()
+        {
             return (XmlQualifiedName)MemberwiseClone();
         }
 
-        internal static int Compare(XmlQualifiedName a, XmlQualifiedName b) {
-            if (null == a) {
+        internal static int Compare(XmlQualifiedName a, XmlQualifiedName b)
+        {
+            if (null == a)
+            {
                 return (null == b) ? 0 : -1;
-            }   
-            if (null == b) {
+            }
+            if (null == b)
+            {
                 return 1;
             }
             int i = String.CompareOrdinal(a.Namespace, b.Namespace);
-            if (i == 0) {
+            if (i == 0)
+            {
                 i = String.CompareOrdinal(a.Name, b.Name);
             }
             return i;

@@ -6,22 +6,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     using System;
     using System.Runtime.Serialization;
 
-    class ToolMexException : ToolInputException
+    internal class ToolMexException : ToolInputException
     {
-        ToolInputException wsMexException;
-        Uri serviceUri;
+        private ToolInputException _wsMexException;
+        private Uri _serviceUri;
 
-        internal ToolInputException WSMexException { get { return wsMexException; } }
-        internal Uri ServiceUri { get { return serviceUri; } }
+        internal ToolInputException WSMexException { get { return _wsMexException; } }
+        internal Uri ServiceUri { get { return _serviceUri; } }
 
         internal ToolMexException(ToolInputException wsMexException, Uri serviceUri)
             : base(SR.GetString(SR.ErrUnableToRetrieveMetadataFromUriFormat, serviceUri.AbsoluteUri, SR.EnableMetadataHelpMessage))
         {
-
-            this.wsMexException = wsMexException;
-            this.serviceUri = serviceUri;
+            _wsMexException = wsMexException;
+            _serviceUri = serviceUri;
         }
     }
-
 }
 

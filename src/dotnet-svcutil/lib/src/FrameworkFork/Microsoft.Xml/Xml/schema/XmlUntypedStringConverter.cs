@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using Microsoft.Xml;
 using System.Text;

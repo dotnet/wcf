@@ -95,7 +95,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_faultFormatter == null)
                 {
-                   _faultFormatter = new DataContractSerializerFaultFormatter(_faultContractInfos);
+                    _faultFormatter = new DataContractSerializerFaultFormatter(_faultContractInfos);
                 }
                 return _faultFormatter;
             }

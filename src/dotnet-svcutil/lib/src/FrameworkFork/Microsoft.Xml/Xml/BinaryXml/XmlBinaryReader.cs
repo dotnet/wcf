@@ -10,17 +10,19 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.Xml.Schema;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal sealed partial class XmlSqlBinaryReader : XmlReader, IXmlNamespaceResolver {
+
+    internal sealed partial class XmlSqlBinaryReader : XmlReader, IXmlNamespaceResolver
+    {
         internal static readonly Type TypeOfObject = typeof(System.Object);
         internal static readonly Type TypeOfString = typeof(System.String);
 
-        static volatile Type[] TokenTypeMap = null;
+        private static volatile Type[] s_tokenTypeMap = null;
 
-        static byte[] XsdKatmaiTimeScaleToValueLengthMap = new byte[8] {
+        private static byte[] s_xsdKatmaiTimeScaleToValueLengthMap = new byte[8] {
         // length scale
             3, // 0
             3, // 1
@@ -32,7 +34,8 @@ namespace Microsoft.Xml {
             5, // 7
         };
 
-        enum ScanState {
+        private enum ScanState
+        {
             Doc = 0,
             XmlText = 1,
             Attr = 2,
@@ -44,7 +47,7 @@ namespace Microsoft.Xml {
             Closed = 8
         }
 
-        static ReadState[] ScanState2ReadState = {
+        private static ReadState[] s_scanState2ReadState = {
             ReadState.Interactive,
             ReadState.Interactive,
             ReadState.Interactive,
@@ -57,104 +60,124 @@ namespace Microsoft.Xml {
         };
 
         // Note: also used by XmlBinaryWriter
-        internal struct QName {
+        internal struct QName
+        {
             public string prefix;
             public string localname;
             public string namespaceUri;
 
-            public QName(string prefix, string lname, string nsUri) {
+            public QName(string prefix, string lname, string nsUri)
+            {
                 this.prefix = prefix; this.localname = lname; this.namespaceUri = nsUri;
             }
-            public void Set(string prefix, string lname, string nsUri) {
+            public void Set(string prefix, string lname, string nsUri)
+            {
                 this.prefix = prefix; this.localname = lname; this.namespaceUri = nsUri;
             }
 
-            public void Clear() {
+            public void Clear()
+            {
                 this.prefix = this.localname = this.namespaceUri = String.Empty;
             }
 
-            public bool MatchNs(string lname, string nsUri) {
+            public bool MatchNs(string lname, string nsUri)
+            {
                 return lname == this.localname && nsUri == this.namespaceUri;
             }
-            public bool MatchPrefix(string prefix, string lname) {
+            public bool MatchPrefix(string prefix, string lname)
+            {
                 return lname == this.localname && prefix == this.prefix;
             }
 
-            public void CheckPrefixNS(string prefix, string namespaceUri) {
+            public void CheckPrefixNS(string prefix, string namespaceUri)
+            {
                 if (this.prefix == prefix && this.namespaceUri != namespaceUri)
                     throw new XmlException(ResXml.XmlBinary_NoRemapPrefix, new String[] { prefix, this.namespaceUri, namespaceUri });
             }
 
-            public override int GetHashCode() {
+            public override int GetHashCode()
+            {
                 return this.prefix.GetHashCode() ^ this.localname.GetHashCode();
             }
 
-            public int GetNSHashCode(SecureStringHasher hasher) {
+            public int GetNSHashCode(SecureStringHasher hasher)
+            {
                 return hasher.GetHashCode(this.namespaceUri) ^ hasher.GetHashCode(this.localname);
             }
 
 
-            public override bool Equals(object other) {
-                if (other is QName) {
+            public override bool Equals(object other)
+            {
+                if (other is QName)
+                {
                     QName that = (QName)other;
                     return this == that;
                 }
                 return false;
             }
 
-            public override string ToString() {
+            public override string ToString()
+            {
                 if (prefix.Length == 0)
                     return this.localname;
                 else
                     return this.prefix + ":" + this.localname;
             }
 
-            public static bool operator ==(QName a, QName b) {
+            public static bool operator ==(QName a, QName b)
+            {
                 return ((a.prefix == b.prefix)
                     && (a.localname == b.localname)
                     && (a.namespaceUri == b.namespaceUri));
             }
 
-            public static bool operator !=(QName a, QName b) {
+            public static bool operator !=(QName a, QName b)
+            {
                 return !(a == b);
             }
         };
 
-        struct ElemInfo {
+        private struct ElemInfo
+        {
             public QName name;
             public string xmlLang;
             public XmlSpace xmlSpace;
             public bool xmlspacePreserve;
             public NamespaceDecl nsdecls;
 
-            public void Set(QName name, bool xmlspacePreserve) {
+            public void Set(QName name, bool xmlspacePreserve)
+            {
                 this.name = name;
                 this.xmlLang = null;
                 this.xmlSpace = XmlSpace.None;
                 this.xmlspacePreserve = xmlspacePreserve;
             }
-            public NamespaceDecl Clear() {
+            public NamespaceDecl Clear()
+            {
                 NamespaceDecl nsdecls = this.nsdecls;
                 this.nsdecls = null;
                 return nsdecls;
             }
         };
 
-        struct AttrInfo {
+        private struct AttrInfo
+        {
             public QName name;
             public string val;
             public int contentPos;
             public int hashCode;
             public int prevHash;
 
-            public void Set(QName n, string v) {
+            public void Set(QName n, string v)
+            {
                 this.name = n;
                 this.val = v;
                 this.contentPos = 0;
                 this.hashCode = 0;
                 this.prevHash = 0;
             }
-            public void Set(QName n, int pos) {
+            public void Set(QName n, int pos)
+            {
                 this.name = n;
                 this.val = null;
                 this.contentPos = pos;
@@ -162,32 +185,38 @@ namespace Microsoft.Xml {
                 this.prevHash = 0;
             }
 
-            public void GetLocalnameAndNamespaceUri(out string localname, out string namespaceUri) {
+            public void GetLocalnameAndNamespaceUri(out string localname, out string namespaceUri)
+            {
                 localname = this.name.localname;
                 namespaceUri = this.name.namespaceUri;
             }
 
-            public int GetLocalnameAndNamespaceUriAndHash(SecureStringHasher hasher, out string localname, out string namespaceUri) {
+            public int GetLocalnameAndNamespaceUriAndHash(SecureStringHasher hasher, out string localname, out string namespaceUri)
+            {
                 localname = this.name.localname;
                 namespaceUri = this.name.namespaceUri;
                 return this.hashCode = this.name.GetNSHashCode(hasher);
             }
 
-            public bool MatchNS(string localname, string namespaceUri) {
+            public bool MatchNS(string localname, string namespaceUri)
+            {
                 return this.name.MatchNs(localname, namespaceUri);
             }
 
-            public bool MatchHashNS(int hash, string localname, string namespaceUri) {
+            public bool MatchHashNS(int hash, string localname, string namespaceUri)
+            {
                 return this.hashCode == hash && this.name.MatchNs(localname, namespaceUri);
             }
 
-            public void AdjustPosition(int adj) {
+            public void AdjustPosition(int adj)
+            {
                 if (this.contentPos != 0)
                     this.contentPos += adj;
             }
         }
 
-        class NamespaceDecl {
+        private class NamespaceDecl
+        {
             public string prefix;
             public string uri;
             public NamespaceDecl scopeLink;
@@ -197,7 +226,8 @@ namespace Microsoft.Xml {
 
             public NamespaceDecl(string prefix, string nsuri,
                                 NamespaceDecl nextInScope, NamespaceDecl prevDecl,
-                                int scope, bool implied) {
+                                int scope, bool implied)
+            {
                 this.prefix = prefix;
                 this.uri = nsuri;
                 this.scopeLink = nextInScope;
@@ -208,12 +238,14 @@ namespace Microsoft.Xml {
         }
 
         // symbol and qname tables
-        struct SymbolTables {
+        private struct SymbolTables
+        {
             public string[] symtable;
             public int symCount;
             public QName[] qnametable;
             public int qnameCount;
-            public void Init() {
+            public void Init()
+            {
                 this.symtable = new string[64];
                 this.qnametable = new QName[16];
                 this.symtable[0] = String.Empty;
@@ -221,11 +253,13 @@ namespace Microsoft.Xml {
                 this.qnameCount = 1;
             }
         }
-        class NestedBinXml {
+        private class NestedBinXml
+        {
             public SymbolTables symbolTables;
             public int docState;
             public NestedBinXml next;
-            public NestedBinXml(SymbolTables symbolTables, int docState, NestedBinXml next) {
+            public NestedBinXml(SymbolTables symbolTables, int docState, NestedBinXml next)
+            {
                 this.symbolTables = symbolTables;
                 this.docState = docState;
                 this.next = next;
@@ -233,162 +267,172 @@ namespace Microsoft.Xml {
         }
 
         // input data
-        Stream inStrm;
-        byte[] data;
-        int pos;
-        int mark;
-        int end;
-        long offset; // how much read and shift out of buffer
-        bool eof;
-        bool sniffed;
-        bool isEmpty; // short-tag element start tag
+        private Stream _inStrm;
+        private byte[] _data;
+        private int _pos;
+        private int _mark;
+        private int _end;
+        private long _offset; // how much read and shift out of buffer
+        private bool _eof;
+        private bool _sniffed;
+        private bool _isEmpty; // short-tag element start tag
 
-        int docState; // 0=>auto, 1=>doc/pre-dtd, 2=>doc/pre-elem, 3=>doc/instance -1=>doc/post-elem, 9=>frag
+        private int _docState; // 0=>auto, 1=>doc/pre-dtd, 2=>doc/pre-elem, 3=>doc/instance -1=>doc/post-elem, 9=>frag
 
         // symbol and qname tables
-        SymbolTables symbolTables;
+        private SymbolTables _symbolTables;
 
-        XmlNameTable xnt;
-        bool xntFromSettings;
-        string xml;
-        string xmlns;
-        string nsxmlns;
+        private XmlNameTable _xnt;
+        private bool _xntFromSettings;
+        private string _xml;
+        private string _xmlns;
+        private string _nsxmlns;
 
         // base uri...
-        string baseUri;
+        private string _baseUri;
 
         // current parse state
-        ScanState state;
-        XmlNodeType nodetype;
-        BinXmlToken token;
+        private ScanState _state;
+        private XmlNodeType _nodetype;
+        private BinXmlToken _token;
         // current attribute
-        int attrIndex;
+        private int _attrIndex;
         // index of current qname
-        QName qnameOther;
+        private QName _qnameOther;
         // saved qname of element (for MoveToElement)
-        QName qnameElement;
-        XmlNodeType parentNodeType; // use for MoveToElement()
+        private QName _qnameElement;
+        private XmlNodeType _parentNodeType; // use for MoveToElement()
         // stack of current open element tags
-        ElemInfo[] elementStack;
-        int elemDepth;
+        private ElemInfo[] _elementStack;
+        private int _elemDepth;
         // current attributes
-        AttrInfo[] attributes;
-        int[] attrHashTbl;
-        int attrCount;
-        int posAfterAttrs;
+        private AttrInfo[] _attributes;
+        private int[] _attrHashTbl;
+        private int _attrCount;
+        private int _posAfterAttrs;
         // xml:space
-        bool xmlspacePreserve;
+        private bool _xmlspacePreserve;
         // position/parse info for current typed token
-        int tokLen;
-        int tokDataPos;
-        bool hasTypedValue;
-        System.Type valueType;
+        private int _tokLen;
+        private int _tokDataPos;
+        private bool _hasTypedValue;
+        private System.Type _valueType;
         // if it is a simple string value, we cache it
-        string stringValue;
+        private string _stringValue;
         // hashtable of current namespaces
-        Dictionary<String, NamespaceDecl> namespaces;
+        private Dictionary<String, NamespaceDecl> _namespaces;
         //Hashtable namespaces;
         // linked list of pushed nametables (to support nested binary-xml documents)
-        NestedBinXml prevNameInfo;
+        private NestedBinXml _prevNameInfo;
         // XmlTextReader to handle embeded text blocks
-        XmlReader textXmlReader;
+        private XmlReader _textXmlReader;
         // close input flag
-        bool closeInput;
+        private bool _closeInput;
 
-        bool checkCharacters;
-        bool ignoreWhitespace;
-        bool ignorePIs;
-        bool ignoreComments;
-        DtdProcessing dtdProcessing;
+        private bool _checkCharacters;
+        private bool _ignoreWhitespace;
+        private bool _ignorePIs;
+        private bool _ignoreComments;
+        private DtdProcessing _dtdProcessing;
 
-        SecureStringHasher hasher;
-        XmlCharType xmlCharType;
-        Encoding unicode;
+        private SecureStringHasher _hasher;
+        private XmlCharType _xmlCharType;
+        private Encoding _unicode;
 
         // current version of the protocol
-        byte version;
+        private byte _version;
 
-        public XmlSqlBinaryReader(System.IO.Stream stream, byte[] data, int len, string baseUri, bool closeInput, XmlReaderSettings settings) {
-            unicode = System.Text.Encoding.Unicode;
-            xmlCharType = XmlCharType.Instance;
+        public XmlSqlBinaryReader(System.IO.Stream stream, byte[] data, int len, string baseUri, bool closeInput, XmlReaderSettings settings)
+        {
+            _unicode = System.Text.Encoding.Unicode;
+            _xmlCharType = XmlCharType.Instance;
 
-            this.xnt = settings.NameTable;
-            if (this.xnt == null) {
-                this.xnt = new NameTable();
-                this.xntFromSettings = false;
+            _xnt = settings.NameTable;
+            if (_xnt == null)
+            {
+                _xnt = new NameTable();
+                _xntFromSettings = false;
             }
-            else {
-                this.xntFromSettings = true;
+            else
+            {
+                _xntFromSettings = true;
             }
-            this.xml = this.xnt.Add("xml");
-            this.xmlns = this.xnt.Add("xmlns");
-            this.nsxmlns = this.xnt.Add(XmlReservedNs.NsXmlNs);
-            this.baseUri = baseUri;
-            this.state = ScanState.Init;
-            this.nodetype = XmlNodeType.None;
-            this.token = BinXmlToken.Error;
-            this.elementStack = new ElemInfo[16];
+            _xml = _xnt.Add("xml");
+            _xmlns = _xnt.Add("xmlns");
+            _nsxmlns = _xnt.Add(XmlReservedNs.NsXmlNs);
+            _baseUri = baseUri;
+            _state = ScanState.Init;
+            _nodetype = XmlNodeType.None;
+            _token = BinXmlToken.Error;
+            _elementStack = new ElemInfo[16];
             //this.elemDepth = 0;
-            this.attributes = new AttrInfo[8];
-            this.attrHashTbl = new int[8];
+            _attributes = new AttrInfo[8];
+            _attrHashTbl = new int[8];
             //this.attrCount = 0;
             //this.attrIndex = 0;
-            this.symbolTables.Init();
-            this.qnameOther.Clear();
-            this.qnameElement.Clear();
-            this.xmlspacePreserve = false;
-            this.hasher = new SecureStringHasher();
-            this.namespaces = new Dictionary<String, NamespaceDecl>(hasher);
+            _symbolTables.Init();
+            _qnameOther.Clear();
+            _qnameElement.Clear();
+            _xmlspacePreserve = false;
+            _hasher = new SecureStringHasher();
+            _namespaces = new Dictionary<String, NamespaceDecl>(_hasher);
             AddInitNamespace(String.Empty, String.Empty);
-            AddInitNamespace(this.xml, this.xnt.Add(XmlReservedNs.NsXml));
-            AddInitNamespace(this.xmlns, this.nsxmlns);
-            this.valueType = TypeOfString;
+            AddInitNamespace(_xml, _xnt.Add(XmlReservedNs.NsXml));
+            AddInitNamespace(_xmlns, _nsxmlns);
+            _valueType = TypeOfString;
             // init buffer position, etc
-            this.inStrm = stream;
-            if (data != null) {
+            _inStrm = stream;
+            if (data != null)
+            {
                 Debug.Assert(len >= 2 && (data[0] == 0xdf && data[1] == 0xff));
-                this.data = data;
-                this.end = len;
-                this.pos = 2;
-                this.sniffed = true;
+                _data = data;
+                _end = len;
+                _pos = 2;
+                _sniffed = true;
             }
-            else {
-                this.data = new byte[XmlReader.DefaultBufferSize];
-                this.end = stream.Read(this.data, 0, XmlReader.DefaultBufferSize);
-                this.pos = 0;
-                this.sniffed = false;
+            else
+            {
+                _data = new byte[XmlReader.DefaultBufferSize];
+                _end = stream.Read(_data, 0, XmlReader.DefaultBufferSize);
+                _pos = 0;
+                _sniffed = false;
             }
 
-            this.mark = -1;
-            this.eof = (0 == this.end);
-            this.offset = 0;
-            this.closeInput = closeInput;
-            switch (settings.ConformanceLevel) {
+            _mark = -1;
+            _eof = (0 == _end);
+            _offset = 0;
+            _closeInput = closeInput;
+            switch (settings.ConformanceLevel)
+            {
                 case ConformanceLevel.Auto:
-                    this.docState = 0; break;
+                    _docState = 0; break;
                 case ConformanceLevel.Fragment:
-                    this.docState = 9; break;
+                    _docState = 9; break;
                 case ConformanceLevel.Document:
-                    this.docState = 1; break;
+                    _docState = 1; break;
             }
-            this.checkCharacters = settings.CheckCharacters;
-            this.dtdProcessing = settings.DtdProcessing;
-            this.ignoreWhitespace = settings.IgnoreWhitespace;
-            this.ignorePIs = settings.IgnoreProcessingInstructions;
-            this.ignoreComments = settings.IgnoreComments;
+            _checkCharacters = settings.CheckCharacters;
+            _dtdProcessing = settings.DtdProcessing;
+            _ignoreWhitespace = settings.IgnoreWhitespace;
+            _ignorePIs = settings.IgnoreProcessingInstructions;
+            _ignoreComments = settings.IgnoreComments;
 
-            if (TokenTypeMap == null)
+            if (s_tokenTypeMap == null)
                 GenerateTokenTypeMap();
         }
 
-        public override XmlReaderSettings Settings { 
-            get {
+        public override XmlReaderSettings Settings
+        {
+            get
+            {
                 XmlReaderSettings settings = new XmlReaderSettings();
-                if (xntFromSettings) {
-                    settings.NameTable = xnt;
+                if (_xntFromSettings)
+                {
+                    settings.NameTable = _xnt;
                 }
                 // 0=>auto, 1=>doc/pre-dtd, 2=>doc/pre-elem, 3=>doc/instance -1=>doc/post-elem, 9=>frag
-                switch (this.docState) {
+                switch (_docState)
+                {
                     case 0:
                         settings.ConformanceLevel = ConformanceLevel.Auto; break;
                     case 9:
@@ -396,180 +440,217 @@ namespace Microsoft.Xml {
                     default:
                         settings.ConformanceLevel = ConformanceLevel.Document; break;
                 }
-                settings.CheckCharacters = this.checkCharacters;
-                settings.IgnoreWhitespace = this.ignoreWhitespace;
-                settings.IgnoreProcessingInstructions = this.ignorePIs;
-                settings.IgnoreComments = this.ignoreComments;
-                settings.DtdProcessing = this.dtdProcessing;
-                settings.CloseInput = this.closeInput;
+                settings.CheckCharacters = _checkCharacters;
+                settings.IgnoreWhitespace = _ignoreWhitespace;
+                settings.IgnoreProcessingInstructions = _ignorePIs;
+                settings.IgnoreComments = _ignoreComments;
+                settings.DtdProcessing = _dtdProcessing;
+                settings.CloseInput = _closeInput;
 
                 settings.ReadOnly = true;
                 return settings;
             }
         }
 
-        public override XmlNodeType NodeType {
-            get {
-                return this.nodetype;
+        public override XmlNodeType NodeType
+        {
+            get
+            {
+                return _nodetype;
             }
         }
 
-        public override string LocalName {
-            get {
-                return this.qnameOther.localname;
+        public override string LocalName
+        {
+            get
+            {
+                return _qnameOther.localname;
             }
         }
 
-        public override string NamespaceURI {
-            get {
-                return this.qnameOther.namespaceUri;
+        public override string NamespaceURI
+        {
+            get
+            {
+                return _qnameOther.namespaceUri;
             }
         }
 
-        public override string Prefix {
-            get {
-                return this.qnameOther.prefix;
+        public override string Prefix
+        {
+            get
+            {
+                return _qnameOther.prefix;
             }
         }
 
-        public override bool HasValue {
-            get {
-                if (ScanState.XmlText == this.state)
-                    return this.textXmlReader.HasValue;
+        public override bool HasValue
+        {
+            get
+            {
+                if (ScanState.XmlText == _state)
+                    return _textXmlReader.HasValue;
                 else
-                    return XmlReader.HasValueInternal(this.nodetype);
+                    return XmlReader.HasValueInternal(_nodetype);
             }
         }
 
-        public override string Value {
-            get {
-                if (null != this.stringValue)
-                    return stringValue;
-                switch (this.state) {
+        public override string Value
+        {
+            get
+            {
+                if (null != _stringValue)
+                    return _stringValue;
+                switch (_state)
+                {
                     case ScanState.Doc:
-                        switch (this.nodetype) {
+                        switch (_nodetype)
+                        {
                             case XmlNodeType.DocumentType:
                             case XmlNodeType.ProcessingInstruction:
                             case XmlNodeType.Comment:
-                                return this.stringValue = GetString(this.tokDataPos, this.tokLen);
+                                return _stringValue = GetString(_tokDataPos, _tokLen);
 
                             case XmlNodeType.CDATA:
-                                return this.stringValue = CDATAValue();
+                                return _stringValue = CDATAValue();
 
                             case XmlNodeType.XmlDeclaration:
-                                return this.stringValue = XmlDeclValue();
+                                return _stringValue = XmlDeclValue();
 
                             case XmlNodeType.Text:
                             case XmlNodeType.Whitespace:
                             case XmlNodeType.SignificantWhitespace:
-                                return this.stringValue = ValueAsString(this.token);
+                                return _stringValue = ValueAsString(_token);
                         }
                         break;
 
                     case ScanState.XmlText:
-                        return this.textXmlReader.Value;
+                        return _textXmlReader.Value;
 
                     case ScanState.Attr:
                     case ScanState.AttrValPseudoValue:
-                        return this.stringValue = GetAttributeText(this.attrIndex - 1);
+                        return _stringValue = GetAttributeText(_attrIndex - 1);
 
                     case ScanState.AttrVal:
-                        return this.stringValue = ValueAsString(this.token);
+                        return _stringValue = ValueAsString(_token);
                 }
                 return String.Empty;
             }
         }
 
-        public override int Depth {
-            get {
+        public override int Depth
+        {
+            get
+            {
                 int adj = 0;
-                switch (this.state) {
+                switch (_state)
+                {
                     case ScanState.Doc:
-                        if (this.nodetype == XmlNodeType.Element
-                            || this.nodetype == XmlNodeType.EndElement)
+                        if (_nodetype == XmlNodeType.Element
+                            || _nodetype == XmlNodeType.EndElement)
                             adj = -1;
                         break;
 
                     case ScanState.XmlText:
-                        adj = this.textXmlReader.Depth;
+                        adj = _textXmlReader.Depth;
                         break;
 
                     case ScanState.Attr:
-                        if (this.parentNodeType != XmlNodeType.Element)
+                        if (_parentNodeType != XmlNodeType.Element)
                             adj = 1;
                         break;
                     case ScanState.AttrVal:
                     case ScanState.AttrValPseudoValue:
-                        if (this.parentNodeType != XmlNodeType.Element)
+                        if (_parentNodeType != XmlNodeType.Element)
                             adj = 1;
                         adj += 1;
                         break;
                     default:
                         return 0;
                 }
-                return this.elemDepth + adj;
+                return _elemDepth + adj;
             }
         }
 
-        public override string BaseURI {
-            get {
-                return this.baseUri;
+        public override string BaseURI
+        {
+            get
+            {
+                return _baseUri;
             }
         }
 
-        public override bool IsEmptyElement {
-            get {
-                switch (this.state) {
+        public override bool IsEmptyElement
+        {
+            get
+            {
+                switch (_state)
+                {
                     case ScanState.Doc:
                     case ScanState.XmlText:
-                        return this.isEmpty;
+                        return _isEmpty;
                     default:
                         return false;
                 }
             }
         }
 
-        public override XmlSpace XmlSpace {
-            get {
-                if (ScanState.XmlText != this.state) {
-                    for (int i = this.elemDepth; i >= 0; i--) {
-                        XmlSpace xs = this.elementStack[i].xmlSpace;
+        public override XmlSpace XmlSpace
+        {
+            get
+            {
+                if (ScanState.XmlText != _state)
+                {
+                    for (int i = _elemDepth; i >= 0; i--)
+                    {
+                        XmlSpace xs = _elementStack[i].xmlSpace;
                         if (xs != XmlSpace.None)
                             return xs;
                     }
                     return XmlSpace.None;
                 }
-                else {
-                    return this.textXmlReader.XmlSpace;
+                else
+                {
+                    return _textXmlReader.XmlSpace;
                 }
             }
         }
 
-        public override string XmlLang {
-            get {
-                if (ScanState.XmlText != this.state) {
-                    for (int i = this.elemDepth; i >= 0; i--) {
-                        string xl = this.elementStack[i].xmlLang;
+        public override string XmlLang
+        {
+            get
+            {
+                if (ScanState.XmlText != _state)
+                {
+                    for (int i = _elemDepth; i >= 0; i--)
+                    {
+                        string xl = _elementStack[i].xmlLang;
                         if (null != xl)
                             return xl;
                     }
                     return string.Empty;
                 }
-                else {
-                    return this.textXmlReader.XmlLang;
+                else
+                {
+                    return _textXmlReader.XmlLang;
                 }
             }
         }
 
-        public override System.Type ValueType {
-            get {
-                return this.valueType;
+        public override System.Type ValueType
+        {
+            get
+            {
+                return _valueType;
             }
         }
 
-        public override int AttributeCount {
-            get {
-                switch (this.state) {
+        public override int AttributeCount
+        {
+            get
+            {
+                switch (_state)
+                {
                     case ScanState.Doc:
                     // for compatibility with XmlTextReader
                     //  we return the attribute count for the element
@@ -578,20 +659,23 @@ namespace Microsoft.Xml {
                     case ScanState.Attr:
                     case ScanState.AttrVal:
                     case ScanState.AttrValPseudoValue:
-                        return this.attrCount;
+                        return _attrCount;
                     case ScanState.XmlText:
-                        return this.textXmlReader.AttributeCount;
+                        return _textXmlReader.AttributeCount;
                     default:
                         return 0;
                 }
             }
         }
 
-        public override string GetAttribute(string name, string ns) {
-            if (ScanState.XmlText == this.state) {
-                return this.textXmlReader.GetAttribute(name, ns);
+        public override string GetAttribute(string name, string ns)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                return _textXmlReader.GetAttribute(name, ns);
             }
-            else {
+            else
+            {
                 if (null == name)
                     throw new ArgumentNullException("name");
                 if (null == ns)
@@ -603,11 +687,14 @@ namespace Microsoft.Xml {
             }
         }
 
-        public override string GetAttribute(string name) {
-            if (ScanState.XmlText == this.state) {
-                return this.textXmlReader.GetAttribute(name);
+        public override string GetAttribute(string name)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                return _textXmlReader.GetAttribute(name);
             }
-            else {
+            else
+            {
                 int index = LocateAttribute(name);
                 if (-1 == index)
                     return null;
@@ -615,28 +702,35 @@ namespace Microsoft.Xml {
             }
         }
 
-        public override string GetAttribute(int i) {
-            if (ScanState.XmlText == this.state) {
-                return this.textXmlReader.GetAttribute(i);
+        public override string GetAttribute(int i)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                return _textXmlReader.GetAttribute(i);
             }
-            else {
-                if (i < 0 || i >= this.attrCount)
+            else
+            {
+                if (i < 0 || i >= _attrCount)
                     throw new ArgumentOutOfRangeException("i");
                 return GetAttributeText(i);
             }
         }
 
-        public override bool MoveToAttribute(string name, string ns) {
-            if (ScanState.XmlText == this.state) {
-                return UpdateFromTextReader(this.textXmlReader.MoveToAttribute(name, ns));
+        public override bool MoveToAttribute(string name, string ns)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                return UpdateFromTextReader(_textXmlReader.MoveToAttribute(name, ns));
             }
-            else {
+            else
+            {
                 if (null == name)
                     throw new ArgumentNullException("name");
                 if (null == ns)
                     ns = String.Empty;
                 int index = LocateAttribute(name, ns);
-                if ((-1 != index) && (this.state < ScanState.Init)) {
+                if ((-1 != index) && (_state < ScanState.Init))
+                {
                     PositionOnAttribute(index + 1);
                     return true;
                 }
@@ -644,13 +738,17 @@ namespace Microsoft.Xml {
             }
         }
 
-        public override bool MoveToAttribute(string name) {
-            if (ScanState.XmlText == this.state) {
-                return UpdateFromTextReader(this.textXmlReader.MoveToAttribute(name));
+        public override bool MoveToAttribute(string name)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                return UpdateFromTextReader(_textXmlReader.MoveToAttribute(name));
             }
-            else {
+            else
+            {
                 int index = LocateAttribute(name);
-                if ((-1 != index) && (this.state < ScanState.Init)) {
+                if ((-1 != index) && (_state < ScanState.Init))
+                {
                     PositionOnAttribute(index + 1);
                     return true;
                 }
@@ -658,25 +756,32 @@ namespace Microsoft.Xml {
             }
         }
 
-        public override void MoveToAttribute(int i) {
-            if (ScanState.XmlText == this.state) {
-                this.textXmlReader.MoveToAttribute(i);
+        public override void MoveToAttribute(int i)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                _textXmlReader.MoveToAttribute(i);
                 UpdateFromTextReader(true);
             }
-            else {
-                if (i < 0 || i >= this.attrCount) {
+            else
+            {
+                if (i < 0 || i >= _attrCount)
+                {
                     throw new ArgumentOutOfRangeException("i");
                 }
                 PositionOnAttribute(i + 1);
             }
         }
 
-        public override bool MoveToFirstAttribute() {
-            if (ScanState.XmlText == this.state) {
-                return UpdateFromTextReader(this.textXmlReader.MoveToFirstAttribute());
+        public override bool MoveToFirstAttribute()
+        {
+            if (ScanState.XmlText == _state)
+            {
+                return UpdateFromTextReader(_textXmlReader.MoveToFirstAttribute());
             }
-            else {
-                if (this.attrCount == 0)
+            else
+            {
+                if (_attrCount == 0)
                     return false;
                 // set up for walking attributes
                 PositionOnAttribute(1);
@@ -684,140 +789,163 @@ namespace Microsoft.Xml {
             }
         }
 
-        public override bool MoveToNextAttribute() {
-            switch (this.state) {
+        public override bool MoveToNextAttribute()
+        {
+            switch (_state)
+            {
                 case ScanState.Doc:
                 case ScanState.Attr:
                 case ScanState.AttrVal:
                 case ScanState.AttrValPseudoValue:
-                    if (this.attrIndex >= this.attrCount)
+                    if (_attrIndex >= _attrCount)
                         return false;
-                    PositionOnAttribute(++this.attrIndex);
+                    PositionOnAttribute(++_attrIndex);
                     return true;
 
                 case ScanState.XmlText:
-                    return UpdateFromTextReader(this.textXmlReader.MoveToNextAttribute());
+                    return UpdateFromTextReader(_textXmlReader.MoveToNextAttribute());
 
                 default:
                     return false;
             }
         }
 
-        public override bool MoveToElement() {
-            switch (this.state) {
+        public override bool MoveToElement()
+        {
+            switch (_state)
+            {
                 case ScanState.Attr:
                 case ScanState.AttrVal:
                 case ScanState.AttrValPseudoValue:
-                    this.attrIndex = 0;
-                    this.qnameOther = this.qnameElement;
-                    if (XmlNodeType.Element == this.parentNodeType)
-                        this.token = BinXmlToken.Element;
-                    else if (XmlNodeType.XmlDeclaration == this.parentNodeType)
-                        this.token = BinXmlToken.XmlDecl;
-                    else if (XmlNodeType.DocumentType == this.parentNodeType)
-                        this.token = BinXmlToken.DocType;
+                    _attrIndex = 0;
+                    _qnameOther = _qnameElement;
+                    if (XmlNodeType.Element == _parentNodeType)
+                        _token = BinXmlToken.Element;
+                    else if (XmlNodeType.XmlDeclaration == _parentNodeType)
+                        _token = BinXmlToken.XmlDecl;
+                    else if (XmlNodeType.DocumentType == _parentNodeType)
+                        _token = BinXmlToken.DocType;
                     else
                         Debug.Fail("Unexpected parent NodeType");
-                    this.nodetype = this.parentNodeType;
-                    this.state = ScanState.Doc;
-                    this.pos = this.posAfterAttrs;
-                    this.stringValue = null;
+                    _nodetype = _parentNodeType;
+                    _state = ScanState.Doc;
+                    _pos = _posAfterAttrs;
+                    _stringValue = null;
                     return true;
 
                 case ScanState.XmlText:
-                    return UpdateFromTextReader(this.textXmlReader.MoveToElement());
+                    return UpdateFromTextReader(_textXmlReader.MoveToElement());
 
                 default:
                     return false;
             }
         }
 
-        public override bool EOF {
-            get {
-                return this.state == ScanState.EOF;
+        public override bool EOF
+        {
+            get
+            {
+                return _state == ScanState.EOF;
             }
         }
 
-        public override bool ReadAttributeValue() {
-            this.stringValue = null;
-            switch (this.state) {
+        public override bool ReadAttributeValue()
+        {
+            _stringValue = null;
+            switch (_state)
+            {
                 case ScanState.Attr:
-                    if (null == this.attributes[this.attrIndex - 1].val) {
-                        this.pos = this.attributes[this.attrIndex - 1].contentPos;
+                    if (null == _attributes[_attrIndex - 1].val)
+                    {
+                        _pos = _attributes[_attrIndex - 1].contentPos;
                         BinXmlToken tok = RescanNextToken();
-                        if (BinXmlToken.Attr == tok || BinXmlToken.EndAttrs == tok) {
+                        if (BinXmlToken.Attr == tok || BinXmlToken.EndAttrs == tok)
+                        {
                             return false;
                         }
-                        this.token = tok;
+                        _token = tok;
                         ReScanOverValue(tok);
-                        this.valueType = GetValueType(tok);
-                        this.state = ScanState.AttrVal;
+                        _valueType = GetValueType(tok);
+                        _state = ScanState.AttrVal;
                     }
-                    else {
-                        this.token = BinXmlToken.Error;
-                        this.valueType = TypeOfString;
-                        this.state = ScanState.AttrValPseudoValue;
+                    else
+                    {
+                        _token = BinXmlToken.Error;
+                        _valueType = TypeOfString;
+                        _state = ScanState.AttrValPseudoValue;
                     }
-                    this.qnameOther.Clear();
-                    this.nodetype = XmlNodeType.Text;
+                    _qnameOther.Clear();
+                    _nodetype = XmlNodeType.Text;
                     return true;
 
                 case ScanState.AttrVal:
                     return false;
 
                 case ScanState.XmlText:
-                    return UpdateFromTextReader(this.textXmlReader.ReadAttributeValue());
+                    return UpdateFromTextReader(_textXmlReader.ReadAttributeValue());
 
                 default:
                     return false;
             }
         }
 
-        public override void Close() {
-            this.state = ScanState.Closed;
-            this.nodetype = XmlNodeType.None;
-            this.token = BinXmlToken.Error;
-            this.stringValue = null;
-            if (null != this.textXmlReader) {
-                this.textXmlReader.Close();
-                this.textXmlReader = null;
+        public override void Close()
+        {
+            _state = ScanState.Closed;
+            _nodetype = XmlNodeType.None;
+            _token = BinXmlToken.Error;
+            _stringValue = null;
+            if (null != _textXmlReader)
+            {
+                _textXmlReader.Close();
+                _textXmlReader = null;
             }
-            if (null != this.inStrm && closeInput)
-                this.inStrm.Close();
-            this.inStrm = null;
-            this.pos = this.end = 0;
+            if (null != _inStrm && _closeInput)
+                _inStrm.Close();
+            _inStrm = null;
+            _pos = _end = 0;
         }
 
-        public override XmlNameTable NameTable {
-            get {
-                return this.xnt;
+        public override XmlNameTable NameTable
+        {
+            get
+            {
+                return _xnt;
             }
         }
 
-        public override string LookupNamespace(string prefix) {
-            if (ScanState.XmlText == this.state)
-                return this.textXmlReader.LookupNamespace(prefix);
+        public override string LookupNamespace(string prefix)
+        {
+            if (ScanState.XmlText == _state)
+                return _textXmlReader.LookupNamespace(prefix);
             NamespaceDecl decl;
-            if (prefix != null && this.namespaces.TryGetValue(prefix, out decl)) {
+            if (prefix != null && _namespaces.TryGetValue(prefix, out decl))
+            {
                 Debug.Assert(decl != null);
                 return decl.uri;
             }
             return null;
         }
 
-        public override void ResolveEntity() {
+        public override void ResolveEntity()
+        {
             throw new NotSupportedException();
         }
 
-        public override ReadState ReadState {
-            get {
-                return ScanState2ReadState[(int)this.state];
+        public override ReadState ReadState
+        {
+            get
+            {
+                return s_scanState2ReadState[(int)_state];
             }
         }
 
-        public override bool Read() {
-            try {
-                switch (this.state) {
+        public override bool Read()
+        {
+            try
+            {
+                switch (_state)
+                {
                     case ScanState.Init:
                         return ReadInit(false);
 
@@ -825,12 +953,13 @@ namespace Microsoft.Xml {
                         return ReadDoc();
 
                     case ScanState.XmlText:
-                        if (this.textXmlReader.Read()) {
+                        if (_textXmlReader.Read())
+                        {
                             return UpdateFromTextReader(true);
                         }
-                        this.state = ScanState.Doc;
-                        this.nodetype = XmlNodeType.None;
-                        this.isEmpty = false;
+                        _state = ScanState.Doc;
+                        _nodetype = XmlNodeType.None;
+                        _isEmpty = false;
                         goto case ScanState.Doc;
 
                     case ScanState.Attr:
@@ -844,12 +973,14 @@ namespace Microsoft.Xml {
                         return false;
                 }
             }
-            catch (OverflowException e) {
-                this.state = ScanState.Error;
+            catch (OverflowException e)
+            {
+                _state = ScanState.Error;
                 throw new XmlException(e.Message, e);
             }
-            catch {
-                this.state = ScanState.Error;
+            catch
+            {
+                _state = ScanState.Error;
                 throw;
             }
         }
@@ -864,30 +995,35 @@ namespace Microsoft.Xml {
         // If ready for a typed value read, returns true, otherwise returns
         //  false to indicate caller should ball back to XmlReader.ReadContentAsXXX
         // Special-Case: returns true and positioned on Element or EndElem to force parse of empty-string
-        private bool SetupContentAsXXX(string name) {
-            if (!CanReadContentAs(this.NodeType)) {
+        private bool SetupContentAsXXX(string name)
+        {
+            if (!CanReadContentAs(this.NodeType))
+            {
                 throw CreateReadContentAsException(name);
             }
-            switch (this.state) {
+            switch (_state)
+            {
                 case ScanState.Doc:
                     if (this.NodeType == XmlNodeType.EndElement)
                         return true;
-                    if (this.NodeType == XmlNodeType.ProcessingInstruction || this.NodeType == XmlNodeType.Comment) {
+                    if (this.NodeType == XmlNodeType.ProcessingInstruction || this.NodeType == XmlNodeType.Comment)
+                    {
                         while (Read() && (this.NodeType == XmlNodeType.ProcessingInstruction || this.NodeType == XmlNodeType.Comment))
                             ;
                         if (this.NodeType == XmlNodeType.EndElement)
                             return true;
                     }
-                    if (this.hasTypedValue) {
+                    if (_hasTypedValue)
+                    {
                         return true;
                     }
                     break;
                 case ScanState.Attr:
-                    this.pos = this.attributes[this.attrIndex - 1].contentPos;
+                    _pos = _attributes[_attrIndex - 1].contentPos;
                     BinXmlToken token = RescanNextToken();
                     if (BinXmlToken.Attr == token || BinXmlToken.EndAttrs == token)
                         break;
-                    this.token = token;
+                    _token = token;
                     ReScanOverValue(token);
                     return true;
                 case ScanState.AttrVal:
@@ -898,14 +1034,19 @@ namespace Microsoft.Xml {
             return false;
         }
 
-        private int FinishContentAsXXX(int origPos) {
-            if (this.state == ScanState.Doc) {
+        private int FinishContentAsXXX(int origPos)
+        {
+            if (_state == ScanState.Doc)
+            {
                 // if we are already on a tag, then don't move
-                if (this.NodeType != XmlNodeType.Element && this.NodeType != XmlNodeType.EndElement) {
+                if (this.NodeType != XmlNodeType.Element && this.NodeType != XmlNodeType.EndElement)
+                {
                 // advance over PIs and Comments
                 Loop:
-                    if (Read()) {
-                        switch (this.NodeType) {
+                    if (Read())
+                    {
+                        switch (this.NodeType)
+                        {
                             case XmlNodeType.ProcessingInstruction:
                             case XmlNodeType.Comment:
                                 goto Loop;
@@ -919,20 +1060,25 @@ namespace Microsoft.Xml {
                         }
                     }
                 }
-                return this.pos;
+                return _pos;
             }
             return origPos;
         }
 
-        public override bool ReadContentAsBoolean() {
-            int origPos = this.pos;
+        public override bool ReadContentAsBoolean()
+        {
+            int origPos = _pos;
             bool value = false;
-            try {
-                if (SetupContentAsXXX("ReadContentAsBoolean")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsBoolean"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.XSD_BOOLEAN:
-                                value = 0 != this.data[this.tokDataPos];
+                                value = 0 != _data[_tokDataPos];
                                 break;
 
                             case BinXmlToken.SQL_BIT:
@@ -970,7 +1116,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "Boolean"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Boolean"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -989,30 +1135,38 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Boolean", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Boolean", e, null);
                     }
                     origPos = FinishContentAsXXX(origPos);
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsBoolean();
         }
 
-        public override DateTime ReadContentAsDateTime() {
-            int origPos = this.pos;
+        public override DateTime ReadContentAsDateTime()
+        {
+            int origPos = _pos;
             DateTime value;
-            try {
-                if (SetupContentAsXXX("ReadContentAsDateTime")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsDateTime"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.SQL_DATETIME:
                             case BinXmlToken.SQL_SMALLDATETIME:
                             case BinXmlToken.XSD_TIME:
@@ -1052,7 +1206,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "DateTime"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "DateTime"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1071,13 +1225,16 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "DateTime", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "DateTime", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "DateTime", e, null);
                     }
 
@@ -1085,20 +1242,26 @@ namespace Microsoft.Xml {
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsDateTime();
         }
 
-        public override Double ReadContentAsDouble() {
-            int origPos = this.pos;
+        public override Double ReadContentAsDouble()
+        {
+            int origPos = _pos;
             Double value;
-            try {
-                if (SetupContentAsXXX("ReadContentAsDouble")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsDouble"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.SQL_REAL:
                             case BinXmlToken.SQL_FLOAT:
                                 value = ValueAsDouble();
@@ -1138,7 +1301,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "Double"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Double"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1157,13 +1320,16 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Double", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Double", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Double", e, null);
                     }
 
@@ -1171,23 +1337,29 @@ namespace Microsoft.Xml {
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsDouble();
         }
 
-        public override float ReadContentAsFloat() {
-            int origPos = this.pos;
+        public override float ReadContentAsFloat()
+        {
+            int origPos = _pos;
             float value;
-            try {
-                if (SetupContentAsXXX("ReadContentAsFloat")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsFloat"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.SQL_REAL:
                             case BinXmlToken.SQL_FLOAT:
-                                value = checked (((float)ValueAsDouble()));
+                                value = checked(((float)ValueAsDouble()));
                                 break;
 
                             case BinXmlToken.SQL_BIT:
@@ -1224,7 +1396,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "Float"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Float"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1243,13 +1415,16 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Float", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Float", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Float", e, null);
                     }
 
@@ -1257,20 +1432,26 @@ namespace Microsoft.Xml {
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsFloat();
         }
 
-        public override decimal ReadContentAsDecimal() {
-            int origPos = this.pos;
+        public override decimal ReadContentAsDecimal()
+        {
+            int origPos = _pos;
             decimal value;
-            try {
-                if (SetupContentAsXXX("ReadContentAsDecimal")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsDecimal"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.SQL_BIT:
                             case BinXmlToken.SQL_TINYINT:
                             case BinXmlToken.SQL_SMALLINT:
@@ -1310,7 +1491,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_DATETIME:
                             case BinXmlToken.XSD_DATE:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "Decimal"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Decimal"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1329,13 +1510,16 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Decimal", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Decimal", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Decimal", e, null);
                     }
 
@@ -1343,20 +1527,26 @@ namespace Microsoft.Xml {
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsDecimal();
         }
 
-        public override int ReadContentAsInt() {
-            int origPos = this.pos;
+        public override int ReadContentAsInt()
+        {
+            int origPos = _pos;
             int value;
-            try {
-                if (SetupContentAsXXX("ReadContentAsInt")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsInt"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.SQL_BIT:
                             case BinXmlToken.SQL_TINYINT:
                             case BinXmlToken.SQL_SMALLINT:
@@ -1396,7 +1586,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_DATETIME:
                             case BinXmlToken.XSD_DATE:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "Int32"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Int32"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1415,13 +1605,16 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Int32", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Int32", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Int32", e, null);
                     }
 
@@ -1429,20 +1622,26 @@ namespace Microsoft.Xml {
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsInt();
         }
 
-        public override long ReadContentAsLong() {
-            int origPos = this.pos;
+        public override long ReadContentAsLong()
+        {
+            int origPos = _pos;
             long value;
-            try {
-                if (SetupContentAsXXX("ReadContentAsLong")) {
-                    try {
-                        switch (this.token) {
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsLong"))
+                {
+                    try
+                    {
+                        switch (_token)
+                        {
                             case BinXmlToken.SQL_BIT:
                             case BinXmlToken.SQL_TINYINT:
                             case BinXmlToken.SQL_SMALLINT:
@@ -1482,7 +1681,7 @@ namespace Microsoft.Xml {
                             case BinXmlToken.XSD_DATETIME:
                             case BinXmlToken.XSD_DATE:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, this.token, "Int64"));
+                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Int64"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1501,13 +1700,16 @@ namespace Microsoft.Xml {
                                 goto Fallback;
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Int64", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Int64", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Int64", e, null);
                     }
 
@@ -1515,75 +1717,95 @@ namespace Microsoft.Xml {
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
         Fallback:
             return base.ReadContentAsLong();
         }
 
-        public override object ReadContentAsObject() {
-            int origPos = this.pos;
-            try {
-                if (SetupContentAsXXX("ReadContentAsObject")) {
+        public override object ReadContentAsObject()
+        {
+            int origPos = _pos;
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAsObject"))
+                {
                     object value;
-                    try {
+                    try
+                    {
                         if (this.NodeType == XmlNodeType.Element || this.NodeType == XmlNodeType.EndElement)
                             value = String.Empty;
                         else
-                            value = this.ValueAsObject(this.token, false);
+                            value = this.ValueAsObject(_token, false);
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Object", e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Object", e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, "Object", e, null);
                     }
                     origPos = FinishContentAsXXX(origPos);
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
             //Fallback:
             return base.ReadContentAsObject();
         }
 
-        public override object ReadContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver) {
-            int origPos = this.pos;
-            try {
-                if (SetupContentAsXXX("ReadContentAs")) {
+        public override object ReadContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
+        {
+            int origPos = _pos;
+            try
+            {
+                if (SetupContentAsXXX("ReadContentAs"))
+                {
                     object value;
-                    try {
-                        if (this.NodeType == XmlNodeType.Element || this.NodeType == XmlNodeType.EndElement) {
+                    try
+                    {
+                        if (this.NodeType == XmlNodeType.Element || this.NodeType == XmlNodeType.EndElement)
+                        {
                             value = String.Empty;
                         }
-                        else if (returnType == this.ValueType || returnType == typeof(object)) {
-                            value = this.ValueAsObject(this.token, false);
+                        else if (returnType == this.ValueType || returnType == typeof(object))
+                        {
+                            value = this.ValueAsObject(_token, false);
                         }
-                        else {
-                            value = this.ValueAs(this.token, returnType, namespaceResolver);
+                        else
+                        {
+                            value = this.ValueAs(_token, returnType, namespaceResolver);
                         }
                     }
-                    catch (InvalidCastException e) {
+                    catch (InvalidCastException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, returnType.ToString(), e, null);
                     }
-                    catch (FormatException e) {
+                    catch (FormatException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, returnType.ToString(), e, null);
                     }
-                    catch (OverflowException e) {
+                    catch (OverflowException e)
+                    {
                         throw new XmlException(ResXml.Xml_ReadContentAsFormatException, returnType.ToString(), e, null);
                     }
                     origPos = FinishContentAsXXX(origPos);
                     return value;
                 }
             }
-            finally {
-                this.pos = origPos;
+            finally
+            {
+                _pos = origPos;
             }
             return base.ReadContentAs(returnType, namespaceResolver);
         }
@@ -1591,27 +1813,36 @@ namespace Microsoft.Xml {
         //////////
         // IXmlNamespaceResolver
 
-        System.Collections.Generic.IDictionary<string, string> IXmlNamespaceResolver.GetNamespacesInScope(XmlNamespaceScope scope) {
-            if (ScanState.XmlText == this.state) {
-                IXmlNamespaceResolver resolver = (IXmlNamespaceResolver)this.textXmlReader;
+        System.Collections.Generic.IDictionary<string, string> IXmlNamespaceResolver.GetNamespacesInScope(XmlNamespaceScope scope)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                IXmlNamespaceResolver resolver = (IXmlNamespaceResolver)_textXmlReader;
                 return resolver.GetNamespacesInScope(scope);
             }
-            else {
+            else
+            {
                 Dictionary<String, String> nstable = new Dictionary<String, String>();
-                if (XmlNamespaceScope.Local == scope) {
+                if (XmlNamespaceScope.Local == scope)
+                {
                     // are we even inside an element? (depth==0 is where we have xml, and xmlns declared...)
-                    if (this.elemDepth > 0) {
-                        NamespaceDecl nsdecl = this.elementStack[this.elemDepth].nsdecls;
-                        while (null != nsdecl) {
+                    if (_elemDepth > 0)
+                    {
+                        NamespaceDecl nsdecl = _elementStack[_elemDepth].nsdecls;
+                        while (null != nsdecl)
+                        {
                             nstable.Add(nsdecl.prefix, nsdecl.uri);
                             nsdecl = nsdecl.scopeLink;
                         }
                     }
                 }
-                else {
-                    foreach (NamespaceDecl nsdecl in this.namespaces.Values) {
+                else
+                {
+                    foreach (NamespaceDecl nsdecl in _namespaces.Values)
+                    {
                         // don't add predefined decls unless scope == all, then only add 'xml'                       
-                        if (nsdecl.scope != -1 || (XmlNamespaceScope.All == scope && "xml" == nsdecl.prefix)) {
+                        if (nsdecl.scope != -1 || (XmlNamespaceScope.All == scope && "xml" == nsdecl.prefix))
+                        {
                             // xmlns="" only ever reported via scope==local
                             if (nsdecl.prefix.Length > 0 || nsdecl.uri.Length > 0)
                                 nstable.Add(nsdecl.prefix, nsdecl.uri);
@@ -1622,22 +1853,27 @@ namespace Microsoft.Xml {
             }
         }
 
-        string IXmlNamespaceResolver.LookupPrefix(string namespaceName) {
-            if (ScanState.XmlText == this.state) {
-                IXmlNamespaceResolver resolver = (IXmlNamespaceResolver)this.textXmlReader;
+        string IXmlNamespaceResolver.LookupPrefix(string namespaceName)
+        {
+            if (ScanState.XmlText == _state)
+            {
+                IXmlNamespaceResolver resolver = (IXmlNamespaceResolver)_textXmlReader;
                 return resolver.LookupPrefix(namespaceName);
             }
-            else {
+            else
+            {
                 if (null == namespaceName)
                     return null;
 
-                namespaceName = this.xnt.Get(namespaceName);
+                namespaceName = _xnt.Get(namespaceName);
                 if (null == namespaceName)
                     return null;
 
-                for (int i = this.elemDepth; i >= 0; i--) {
-                    NamespaceDecl nsdecl = this.elementStack[i].nsdecls;
-                    while (null != nsdecl) {
+                for (int i = _elemDepth; i >= 0; i--)
+                {
+                    NamespaceDecl nsdecl = _elementStack[i].nsdecls;
+                    while (null != nsdecl)
+                    {
                         if ((object)nsdecl.uri == (object)namespaceName)
                             return nsdecl.prefix;
                         nsdecl = nsdecl.scopeLink;
@@ -1650,66 +1886,77 @@ namespace Microsoft.Xml {
         //////////
         // Internal implementation methods
 
-        void VerifyVersion(int requiredVersion, BinXmlToken token) {
-            if (version < requiredVersion) {
+        private void VerifyVersion(int requiredVersion, BinXmlToken token)
+        {
+            if (_version < requiredVersion)
+            {
                 throw ThrowUnexpectedToken(token);
             }
         }
 
-        void AddInitNamespace(string prefix, string uri) {
-            NamespaceDecl nsdecl = new NamespaceDecl(prefix, uri, this.elementStack[0].nsdecls, null, -1, true);
-            this.elementStack[0].nsdecls = nsdecl;
-            this.namespaces.Add(prefix, nsdecl);
+        private void AddInitNamespace(string prefix, string uri)
+        {
+            NamespaceDecl nsdecl = new NamespaceDecl(prefix, uri, _elementStack[0].nsdecls, null, -1, true);
+            _elementStack[0].nsdecls = nsdecl;
+            _namespaces.Add(prefix, nsdecl);
         }
 
-        void AddName() {
+        private void AddName()
+        {
             string txt = ParseText();
-            int symNum = this.symbolTables.symCount++;
-            string[] symtable = this.symbolTables.symtable;
-            if (symNum == symtable.Length) {
+            int symNum = _symbolTables.symCount++;
+            string[] symtable = _symbolTables.symtable;
+            if (symNum == symtable.Length)
+            {
                 string[] n = new string[checked(symNum * 2)];
                 System.Array.Copy(symtable, 0, n, 0, symNum);
-                this.symbolTables.symtable = symtable = n;
+                _symbolTables.symtable = symtable = n;
             }
-            symtable[symNum] = xnt.Add(txt);
+            symtable[symNum] = _xnt.Add(txt);
         }
 
-        void AddQName() {
+        private void AddQName()
+        {
             int nsUri = ReadNameRef();
             int prefix = ReadNameRef();
             int lname = ReadNameRef();
-            int qnameNum = this.symbolTables.qnameCount++;
-            QName[] qnametable = this.symbolTables.qnametable;
-            if (qnameNum == qnametable.Length) {
+            int qnameNum = _symbolTables.qnameCount++;
+            QName[] qnametable = _symbolTables.qnametable;
+            if (qnameNum == qnametable.Length)
+            {
                 QName[] n = new QName[checked(qnameNum * 2)];
                 System.Array.Copy(qnametable, 0, n, 0, qnameNum);
-                this.symbolTables.qnametable = qnametable = n;
+                _symbolTables.qnametable = qnametable = n;
             }
-            string[] symtable = this.symbolTables.symtable;
+            string[] symtable = _symbolTables.symtable;
             string prefixStr = symtable[prefix];
             string lnameStr;
             string nsUriStr;
             // xmlns attributes are encodes differently...
-            if (lname == 0) { // xmlns attribute
+            if (lname == 0)
+            { // xmlns attribute
                 // for some reason, sqlserver sometimes generates these...
                 if (prefix == 0 && nsUri == 0)
                     return;
                 // it is a real namespace decl, make sure it looks valid
                 if (!prefixStr.StartsWith("xmlns", StringComparison.Ordinal))
                     goto BadDecl;
-                if (5 < prefixStr.Length) {
+                if (5 < prefixStr.Length)
+                {
                     if (6 == prefixStr.Length || ':' != prefixStr[5])
                         goto BadDecl;
-                    lnameStr = this.xnt.Add(prefixStr.Substring(6));
-                    prefixStr = this.xmlns;
+                    lnameStr = _xnt.Add(prefixStr.Substring(6));
+                    prefixStr = _xmlns;
                 }
-                else {
+                else
+                {
                     lnameStr = prefixStr;
                     prefixStr = String.Empty;
                 }
-                nsUriStr = this.nsxmlns;
+                nsUriStr = _nsxmlns;
             }
-            else {
+            else
+            {
                 lnameStr = symtable[lname];
                 nsUriStr = symtable[nsUri];
             }
@@ -1719,134 +1966,154 @@ namespace Microsoft.Xml {
             throw new XmlException(ResXml.Xml_BadNamespaceDecl, (string[])null);
         }
 
-        private void NameFlush() {
-            this.symbolTables.symCount = this.symbolTables.qnameCount = 1;
-            Array.Clear(this.symbolTables.symtable, 1, this.symbolTables.symtable.Length - 1);
-            Array.Clear(this.symbolTables.qnametable, 0, this.symbolTables.qnametable.Length);
+        private void NameFlush()
+        {
+            _symbolTables.symCount = _symbolTables.qnameCount = 1;
+            Array.Clear(_symbolTables.symtable, 1, _symbolTables.symtable.Length - 1);
+            Array.Clear(_symbolTables.qnametable, 0, _symbolTables.qnametable.Length);
         }
 
-        private void SkipExtn() {
+        private void SkipExtn()
+        {
             int cb = ParseMB32();
-            checked{this.pos += cb;} 
+            checked { _pos += cb; }
             Fill(-1);
         }
 
-        private int ReadQNameRef() {
+        private int ReadQNameRef()
+        {
             int nameNum = ParseMB32();
-            if (nameNum < 0 || nameNum >= this.symbolTables.qnameCount)
+            if (nameNum < 0 || nameNum >= _symbolTables.qnameCount)
                 throw new XmlException(ResXml.XmlBin_InvalidQNameID, String.Empty);
             return nameNum;
         }
 
-        private int ReadNameRef() {
+        private int ReadNameRef()
+        {
             int nameNum = ParseMB32();
-            if (nameNum < 0 || nameNum >= this.symbolTables.symCount)
+            if (nameNum < 0 || nameNum >= _symbolTables.symCount)
                 throw new XmlException(ResXml.XmlBin_InvalidQNameID, String.Empty);
             return nameNum;
         }
 
         // pull more data from input stream
-        private bool FillAllowEOF() {
-            if (this.eof)
+        private bool FillAllowEOF()
+        {
+            if (_eof)
                 return false;
-            byte[] data = this.data;
-            int pos = this.pos;
-            int mark = this.mark;
-            int end = this.end;
-            if (mark == -1) {
+            byte[] data = _data;
+            int pos = _pos;
+            int mark = _mark;
+            int end = _end;
+            if (mark == -1)
+            {
                 mark = pos;
             }
-            if (mark >= 0 && mark < end) {
-                Debug.Assert(this.mark <= this.end, "Mark should never be past End");
-                Debug.Assert(this.mark <= this.pos, "Mark should never be after Pos");
+            if (mark >= 0 && mark < end)
+            {
+                Debug.Assert(_mark <= _end, "Mark should never be past End");
+                Debug.Assert(_mark <= _pos, "Mark should never be after Pos");
                 int cbKeep = end - mark;
-                if (cbKeep > 7 * (data.Length / 8)) {
+                if (cbKeep > 7 * (data.Length / 8))
+                {
                     // grow buffer
                     byte[] newdata = new byte[checked(data.Length * 2)];
                     System.Array.Copy(data, mark, newdata, 0, cbKeep);
-                    this.data = data = newdata;
+                    _data = data = newdata;
                 }
-                else {
+                else
+                {
                     System.Array.Copy(data, mark, data, 0, cbKeep);
                 }
                 pos -= mark;
                 end -= mark;
-                this.tokDataPos -= mark;
-                for (int i = 0; i < this.attrCount; i++) {
-                    this.attributes[i].AdjustPosition(-mark);
+                _tokDataPos -= mark;
+                for (int i = 0; i < _attrCount; i++)
+                {
+                    _attributes[i].AdjustPosition(-mark);
                     // make sure it is still a valid range
-                    Debug.Assert((this.attributes[i].contentPos >= 0) && (this.attributes[i].contentPos <= (end)));
+                    Debug.Assert((_attributes[i].contentPos >= 0) && (_attributes[i].contentPos <= (end)));
                 }
-                this.pos = pos;
-                this.mark = 0;
-                this.offset += mark;
+                _pos = pos;
+                _mark = 0;
+                _offset += mark;
             }
-            else {
-                Debug.Assert(this.attrCount == 0);
-                this.pos -= end;
-                this.mark -= end;
-                this.offset += end;
-                this.tokDataPos -= end;
+            else
+            {
+                Debug.Assert(_attrCount == 0);
+                _pos -= end;
+                _mark -= end;
+                _offset += end;
+                _tokDataPos -= end;
                 end = 0;
             }
             int cbFill = data.Length - end;
-            int cbRead = this.inStrm.Read(data, end, cbFill);
-            this.end = end + cbRead;
-            this.eof = !(cbRead > 0);
+            int cbRead = _inStrm.Read(data, end, cbFill);
+            _end = end + cbRead;
+            _eof = !(cbRead > 0);
             return (cbRead > 0);
         }
 
         // require must be < 1/8 buffer, or else Fill might not actually 
         // grab that much data
-        void Fill_(int require) {
-            Debug.Assert((this.pos + require) >= this.end);
-            while (FillAllowEOF() && ((this.pos + require) >= this.end))
+        private void Fill_(int require)
+        {
+            Debug.Assert((_pos + require) >= _end);
+            while (FillAllowEOF() && ((_pos + require) >= _end))
                 ;
-            if ((this.pos + require) >= this.end)
+            if ((_pos + require) >= _end)
                 throw ThrowXmlException(ResXml.Xml_UnexpectedEOF1);
         }
 
         // inline the common case
-        void Fill(int require) {
-            if ((this.pos + require) >= this.end)
+        private void Fill(int require)
+        {
+            if ((_pos + require) >= _end)
                 Fill_(require);
         }
 
-        byte ReadByte() {
+        private byte ReadByte()
+        {
             Fill(0);
-            return this.data[this.pos++];
+            return _data[_pos++];
         }
-        ushort ReadUShort() {
+        private ushort ReadUShort()
+        {
             Fill(1);
-            int pos = this.pos; byte[] data = this.data;
+            int pos = _pos; byte[] data = _data;
             ushort val = (ushort)(data[pos] + (data[pos + 1] << 8));
-            this.pos += 2;
+            _pos += 2;
             return val;
         }
 
-        int ParseMB32() {
+        private int ParseMB32()
+        {
             byte b = ReadByte();
             if (b > 127)
                 return ParseMB32_(b);
             return b;
         }
 
-        int ParseMB32_(byte b) {
+        private int ParseMB32_(byte b)
+        {
             uint u, t;
             u = (uint)b & (uint)0x7F;
             Debug.Assert(0 != (b & 0x80));
             b = ReadByte();
             t = (uint)b & (uint)0x7F;
             u = u + (t << 7);
-            if (b > 127) {
+            if (b > 127)
+            {
                 b = ReadByte();
                 t = (uint)b & (uint)0x7F;
                 u = u + (t << 14);
-                if (b > 127) {
+                if (b > 127)
+                {
                     b = ReadByte();
                     t = (uint)b & (uint)0x7F;
                     u = u + (t << 21);
-                    if (b > 127) {
+                    if (b > 127)
+                    {
                         b = ReadByte();
                         // bottom 4 bits are all that are needed, 
                         // but we are mapping to 'int', which only
@@ -1863,24 +2130,29 @@ namespace Microsoft.Xml {
 
         // this assumes that we have already ensured that all
         // necessary bytes are loaded in to the buffer
-        int ParseMB32(int pos) {
+        private int ParseMB32(int pos)
+        {
             uint u, t;
-            byte[] data = this.data;
+            byte[] data = _data;
             byte b = data[pos++];
             u = (uint)b & (uint)0x7F;
-            if (b > 127) {
+            if (b > 127)
+            {
                 b = data[pos++];
                 t = (uint)b & (uint)0x7F;
                 u = u + (t << 7);
-                if (b > 127) {
+                if (b > 127)
+                {
                     b = data[pos++];
                     t = (uint)b & (uint)0x7F;
                     u = u + (t << 14);
-                    if (b > 127) {
+                    if (b > 127)
+                    {
                         b = data[pos++];
                         t = (uint)b & (uint)0x7F;
                         u = u + (t << 21);
-                        if (b > 127) {
+                        if (b > 127)
+                        {
                             b = data[pos++];
                             // last byte only has 4 significant digits
                             t = (uint)b & (uint)0x07;
@@ -1896,32 +2168,38 @@ namespace Microsoft.Xml {
 
         // we don't actually support MB64, since we use int for 
         // all our math anyway...
-        int ParseMB64() {
+        private int ParseMB64()
+        {
             byte b = ReadByte();
             if (b > 127)
                 return ParseMB32_(b);
             return b;
         }
 
-        BinXmlToken PeekToken() {
-            while ((this.pos >= this.end) && FillAllowEOF())
+        private BinXmlToken PeekToken()
+        {
+            while ((_pos >= _end) && FillAllowEOF())
                 ;
-            if (this.pos >= this.end)
+            if (_pos >= _end)
                 return BinXmlToken.EOF;
-            return (BinXmlToken)this.data[this.pos];
+            return (BinXmlToken)_data[_pos];
         }
 
-        BinXmlToken ReadToken() {
-            while ((this.pos >= this.end) && FillAllowEOF())
+        private BinXmlToken ReadToken()
+        {
+            while ((_pos >= _end) && FillAllowEOF())
                 ;
-            if (this.pos >= this.end)
+            if (_pos >= _end)
                 return BinXmlToken.EOF;
-            return (BinXmlToken)this.data[this.pos++];
+            return (BinXmlToken)_data[_pos++];
         }
 
-        BinXmlToken NextToken2(BinXmlToken token) {
-            while (true) {
-                switch (token) {
+        private BinXmlToken NextToken2(BinXmlToken token)
+        {
+            while (true)
+            {
+                switch (token)
+                {
                     case BinXmlToken.Name:
                         AddName();
                         break;
@@ -1941,14 +2219,16 @@ namespace Microsoft.Xml {
             }
         }
 
-        BinXmlToken NextToken1() {
+        private BinXmlToken NextToken1()
+        {
             BinXmlToken token;
-            int pos = this.pos;
-            if (pos >= this.end)
+            int pos = _pos;
+            if (pos >= _end)
                 token = ReadToken();
-            else {
-                token = (BinXmlToken)this.data[pos];
-                this.pos = pos + 1;
+            else
+            {
+                token = (BinXmlToken)_data[pos];
+                _pos = pos + 1;
             }
             // BinXmlToken.Name = 0xF0
             // BinXmlToken.QName = 0xEF
@@ -1960,12 +2240,15 @@ namespace Microsoft.Xml {
             return token;
         }
 
-        BinXmlToken NextToken() {
-            int pos = this.pos;
-            if (pos < this.end) {
-                BinXmlToken t = (BinXmlToken)this.data[pos];
-                if (!(t >= BinXmlToken.NmFlush && t <= BinXmlToken.Name)) {
-                    this.pos = pos + 1;
+        private BinXmlToken NextToken()
+        {
+            int pos = _pos;
+            if (pos < _end)
+            {
+                BinXmlToken t = (BinXmlToken)_data[pos];
+                if (!(t >= BinXmlToken.NmFlush && t <= BinXmlToken.Name))
+                {
+                    _pos = pos + 1;
                     return t;
                 }
             }
@@ -1973,22 +2256,27 @@ namespace Microsoft.Xml {
         }
 
         // peek next non-meta token
-        BinXmlToken PeekNextToken() {
+        private BinXmlToken PeekNextToken()
+        {
             BinXmlToken token = NextToken();
             if (BinXmlToken.EOF != token)
-                this.pos--;
+                _pos--;
             return token;
         }
 
         // like NextToken() but meta-tokens are skipped (not reinterpreted)
-        BinXmlToken RescanNextToken() {
+        private BinXmlToken RescanNextToken()
+        {
             BinXmlToken token;
-            while (true) {
+            while (true)
+            {
                 token = ReadToken();
-                switch (token) {
-                    case BinXmlToken.Name: {
+                switch (token)
+                {
+                    case BinXmlToken.Name:
+                        {
                             int cb = ParseMB32();
-                            checked{this.pos += 2 * cb;}
+                            checked { _pos += 2 * cb; }
                             break;
                         }
                     case BinXmlToken.QName:
@@ -1996,9 +2284,10 @@ namespace Microsoft.Xml {
                         ParseMB32();
                         ParseMB32();
                         break;
-                    case BinXmlToken.Extn: {
+                    case BinXmlToken.Extn:
+                        {
                             int cb = ParseMB32();
-                            checked{this.pos += cb;}
+                            checked { _pos += cb; }
                             break;
                         }
                     case BinXmlToken.NmFlush:
@@ -2009,36 +2298,41 @@ namespace Microsoft.Xml {
             }
         }
 
-        string ParseText() {
-            int oldmark = this.mark;
-            try {
+        private string ParseText()
+        {
+            int oldmark = _mark;
+            try
+            {
                 if (oldmark < 0)
-                    this.mark = this.pos;
+                    _mark = _pos;
                 int cch, pos;
                 cch = ScanText(out pos);
                 return GetString(pos, cch);
             }
-            finally {
+            finally
+            {
                 if (oldmark < 0)
-                    this.mark = -1;
+                    _mark = -1;
             }
         }
 
-        int ScanText(out int start) {
+        private int ScanText(out int start)
+        {
             int cch = ParseMB32();
-            int oldmark = this.mark;
-            int begin = this.pos;
-            checked{this.pos += cch * 2;} // cch = num utf-16 chars
-            if (this.pos > this.end)
+            int oldmark = _mark;
+            int begin = _pos;
+            checked { _pos += cch * 2; } // cch = num utf-16 chars
+            if (_pos > _end)
                 Fill(-1);
             // Fill call might have moved buffer
-            start = begin - (oldmark - this.mark);
+            start = begin - (oldmark - _mark);
             return cch;
         }
 
-        string GetString(int pos, int cch) {
+        private string GetString(int pos, int cch)
+        {
             Debug.Assert(pos >= 0 && cch >= 0);
-            if (checked(pos + (cch * 2)) > this.end)
+            if (checked(pos + (cch * 2)) > _end)
                 throw new XmlException(ResXml.Xml_UnexpectedEOF1, (string[])null);
             if (cch == 0)
                 return String.Empty;
@@ -2047,138 +2341,162 @@ namespace Microsoft.Xml {
             // the address is not aligned properly.  Since the byte[] will be aligned,
             // we can detect address alignment my just looking at the offset
             if ((pos & 1) == 0)
-                return GetStringAligned(this.data, pos, cch);
+                return GetStringAligned(_data, pos, cch);
             else
-                return unicode.GetString(this.data, pos, checked(cch * 2));
+                return _unicode.GetString(_data, pos, checked(cch * 2));
         }
 
-        unsafe String GetStringAligned(byte[] data, int offset, int cch) {
+        private unsafe String GetStringAligned(byte[] data, int offset, int cch)
+        {
             Debug.Assert((offset & 1) == 0);
-            fixed (byte* pb = data) {
+            fixed (byte* pb = data)
+            {
                 char* p = (char*)(pb + offset);
                 return new String(p, 0, cch);
             }
         }
 
-        private string GetAttributeText(int i) {
-            string val = this.attributes[i].val;
+        private string GetAttributeText(int i)
+        {
+            string val = _attributes[i].val;
 
             if (null != val)
                 return val;
-            else {
-                int origPos = this.pos;
-                try {
-                    this.pos = this.attributes[i].contentPos;
+            else
+            {
+                int origPos = _pos;
+                try
+                {
+                    _pos = _attributes[i].contentPos;
                     BinXmlToken token = RescanNextToken();
-                    if (BinXmlToken.Attr == token || BinXmlToken.EndAttrs == token) {
+                    if (BinXmlToken.Attr == token || BinXmlToken.EndAttrs == token)
+                    {
                         return "";
                     }
-                    this.token = token;
+                    _token = token;
                     ReScanOverValue(token);
                     return ValueAsString(token);
                 }
-                finally {
-                    this.pos = origPos;
+                finally
+                {
+                    _pos = origPos;
                 }
             }
         }
 
-        private int LocateAttribute(string name, string ns) {
-            for (int i = 0; i < this.attrCount; i++) {
-                if (this.attributes[i].name.MatchNs(name, ns))
+        private int LocateAttribute(string name, string ns)
+        {
+            for (int i = 0; i < _attrCount; i++)
+            {
+                if (_attributes[i].name.MatchNs(name, ns))
                     return i;
             }
 
             return -1;
         }
 
-        private int LocateAttribute(string name) {
+        private int LocateAttribute(string name)
+        {
             string prefix, lname;
             ValidateNames.SplitQName(name, out prefix, out lname);
 
-            for (int i = 0; i < this.attrCount; i++) {
-                if (this.attributes[i].name.MatchPrefix(prefix, lname))
+            for (int i = 0; i < _attrCount; i++)
+            {
+                if (_attributes[i].name.MatchPrefix(prefix, lname))
                     return i;
             }
 
             return -1;
         }
 
-        private void PositionOnAttribute(int i) {
+        private void PositionOnAttribute(int i)
+        {
             // save element's qname
-            this.attrIndex = i;
-            this.qnameOther = this.attributes[i - 1].name;
-            if (this.state == ScanState.Doc) {
-                this.parentNodeType = this.nodetype;
+            _attrIndex = i;
+            _qnameOther = _attributes[i - 1].name;
+            if (_state == ScanState.Doc)
+            {
+                _parentNodeType = _nodetype;
             }
-            this.token = BinXmlToken.Attr;
-            this.nodetype = XmlNodeType.Attribute;
-            this.state = ScanState.Attr;
-            this.valueType = TypeOfObject;
-            this.stringValue = null;
+            _token = BinXmlToken.Attr;
+            _nodetype = XmlNodeType.Attribute;
+            _state = ScanState.Attr;
+            _valueType = TypeOfObject;
+            _stringValue = null;
         }
 
-        void GrowElements() {
-            int newcount = this.elementStack.Length * 2;
+        private void GrowElements()
+        {
+            int newcount = _elementStack.Length * 2;
             ElemInfo[] n = new ElemInfo[newcount];
 
-            System.Array.Copy(this.elementStack, 0, n, 0, this.elementStack.Length);
-            this.elementStack = n;
+            System.Array.Copy(_elementStack, 0, n, 0, _elementStack.Length);
+            _elementStack = n;
         }
 
-        void GrowAttributes() {
-            int newcount = this.attributes.Length * 2;
+        private void GrowAttributes()
+        {
+            int newcount = _attributes.Length * 2;
             AttrInfo[] n = new AttrInfo[newcount];
 
-            System.Array.Copy(this.attributes, 0, n, 0, this.attrCount);
-            this.attributes = n;
+            System.Array.Copy(_attributes, 0, n, 0, _attrCount);
+            _attributes = n;
         }
 
-        void ClearAttributes() {
-            if (this.attrCount != 0)
-                this.attrCount = 0;
+        private void ClearAttributes()
+        {
+            if (_attrCount != 0)
+                _attrCount = 0;
         }
 
-        void PushNamespace(string prefix, string ns, bool implied) {
+        private void PushNamespace(string prefix, string ns, bool implied)
+        {
             if (prefix == "xml")
                 return;
-            int elemDepth = this.elemDepth;
+            int elemDepth = _elemDepth;
             NamespaceDecl curDecl;
-            this.namespaces.TryGetValue(prefix, out curDecl);
-            if (null != curDecl) {
-                if (curDecl.uri == ns) {
+            _namespaces.TryGetValue(prefix, out curDecl);
+            if (null != curDecl)
+            {
+                if (curDecl.uri == ns)
+                {
                     // if we see the nsdecl after we saw the first reference in this scope
                     // fix up 'implied' flag
                     if (!implied && curDecl.implied
-                        && (curDecl.scope == elemDepth)) {
+                        && (curDecl.scope == elemDepth))
+                    {
                         curDecl.implied = false;
                     }
                     return;
                 }
                 // check that this doesn't conflict
-                this.qnameElement.CheckPrefixNS(prefix, ns);
-                if (prefix.Length != 0) {
-                    for (int i = 0; i < this.attrCount; i++) {
-                        if (this.attributes[i].name.prefix.Length != 0)
-                            this.attributes[i].name.CheckPrefixNS(prefix, ns);
+                _qnameElement.CheckPrefixNS(prefix, ns);
+                if (prefix.Length != 0)
+                {
+                    for (int i = 0; i < _attrCount; i++)
+                    {
+                        if (_attributes[i].name.prefix.Length != 0)
+                            _attributes[i].name.CheckPrefixNS(prefix, ns);
                     }
                 }
             }
             // actually add ns decl
             NamespaceDecl decl = new NamespaceDecl(prefix, ns,
-                this.elementStack[elemDepth].nsdecls,
+                _elementStack[elemDepth].nsdecls,
                 curDecl, elemDepth, implied);
-            this.elementStack[elemDepth].nsdecls = decl;
-            this.namespaces[prefix] = decl;
+            _elementStack[elemDepth].nsdecls = decl;
+            _namespaces[prefix] = decl;
         }
 
-        void PopNamespaces(NamespaceDecl firstInScopeChain) {
+        private void PopNamespaces(NamespaceDecl firstInScopeChain)
+        {
             NamespaceDecl decl = firstInScopeChain;
-            while (null != decl) {
+            while (null != decl)
+            {
                 if (null == decl.prevLink)
-                    this.namespaces.Remove(decl.prefix);
+                    _namespaces.Remove(decl.prefix);
                 else
-                    this.namespaces[decl.prefix] = decl.prevLink;
+                    _namespaces[decl.prefix] = decl.prevLink;
                 NamespaceDecl next = decl.scopeLink;
                 // unlink chains for better gc behaviour 
                 decl.prevLink = null;
@@ -2187,77 +2505,89 @@ namespace Microsoft.Xml {
             }
         }
 
-        void GenerateImpliedXmlnsAttrs() {
+        private void GenerateImpliedXmlnsAttrs()
+        {
             QName name;
-            NamespaceDecl decl = this.elementStack[this.elemDepth].nsdecls;
-            while (null != decl) {
-                if (decl.implied) {
-                    if (this.attrCount == this.attributes.Length)
+            NamespaceDecl decl = _elementStack[_elemDepth].nsdecls;
+            while (null != decl)
+            {
+                if (decl.implied)
+                {
+                    if (_attrCount == _attributes.Length)
                         GrowAttributes();
                     if (decl.prefix.Length == 0)
-                        name = new QName(string.Empty, this.xmlns, this.nsxmlns);
+                        name = new QName(string.Empty, _xmlns, _nsxmlns);
                     else
-                        name = new QName(this.xmlns, xnt.Add(decl.prefix), this.nsxmlns);
-                    this.attributes[this.attrCount].Set(name, decl.uri);
-                    this.attrCount++;
+                        name = new QName(_xmlns, _xnt.Add(decl.prefix), _nsxmlns);
+                    _attributes[_attrCount].Set(name, decl.uri);
+                    _attrCount++;
                 }
                 decl = decl.scopeLink;
             }
         }
 
-        bool ReadInit(bool skipXmlDecl) {
+        private bool ReadInit(bool skipXmlDecl)
+        {
             string err = null;
-            if (!sniffed) {
+            if (!_sniffed)
+            {
                 // check magic header
                 ushort magic = ReadUShort();
-                if (magic != 0xFFDF) {
+                if (magic != 0xFFDF)
+                {
                     err = ResXml.XmlBinary_InvalidSignature;
                     goto Error;
                 }
             }
 
             // check protocol version
-            this.version = ReadByte();
-            if (version != 0x1 && version != 0x2) {
+            _version = ReadByte();
+            if (_version != 0x1 && _version != 0x2)
+            {
                 err = ResXml.XmlBinary_InvalidProtocolVersion;
                 goto Error;
             }
 
             // check encoding marker, 1200 == utf16
-            if (1200 != ReadUShort()) {
+            if (1200 != ReadUShort())
+            {
                 err = ResXml.XmlBinary_UnsupportedCodePage;
                 goto Error;
             }
 
-            this.state = ScanState.Doc;
-            if (BinXmlToken.XmlDecl == PeekToken()) {
-                this.pos++;
-                this.attributes[0].Set(new QName(string.Empty, this.xnt.Add("version"), string.Empty), ParseText());
-                this.attrCount = 1;
-                if (BinXmlToken.Encoding == PeekToken()) {
-                    this.pos++;
-                    this.attributes[1].Set(new QName(string.Empty, this.xnt.Add("encoding"), string.Empty), ParseText());
-                    this.attrCount++;
+            _state = ScanState.Doc;
+            if (BinXmlToken.XmlDecl == PeekToken())
+            {
+                _pos++;
+                _attributes[0].Set(new QName(string.Empty, _xnt.Add("version"), string.Empty), ParseText());
+                _attrCount = 1;
+                if (BinXmlToken.Encoding == PeekToken())
+                {
+                    _pos++;
+                    _attributes[1].Set(new QName(string.Empty, _xnt.Add("encoding"), string.Empty), ParseText());
+                    _attrCount++;
                 }
 
                 byte standalone = ReadByte();
-                switch (standalone) {
+                switch (standalone)
+                {
                     case 0:
                         break;
                     case 1:
                     case 2:
-                        this.attributes[this.attrCount].Set(new QName(string.Empty, this.xnt.Add("standalone"), string.Empty), (standalone == 1) ? "yes" : "no");
-                        this.attrCount++;
+                        _attributes[_attrCount].Set(new QName(string.Empty, _xnt.Add("standalone"), string.Empty), (standalone == 1) ? "yes" : "no");
+                        _attrCount++;
                         break;
                     default:
                         err = ResXml.XmlBinary_InvalidStandalone;
                         goto Error;
                 }
-                if (!skipXmlDecl) {
-                    QName xmlDeclQName = new QName(String.Empty, this.xnt.Add("xml"), String.Empty);
-                    this.qnameOther = this.qnameElement = xmlDeclQName;
-                    this.nodetype = XmlNodeType.XmlDeclaration;
-                    this.posAfterAttrs = this.pos;
+                if (!skipXmlDecl)
+                {
+                    QName xmlDeclQName = new QName(String.Empty, _xnt.Add("xml"), String.Empty);
+                    _qnameOther = _qnameElement = xmlDeclQName;
+                    _nodetype = XmlNodeType.XmlDeclaration;
+                    _posAfterAttrs = _pos;
                     return true;
                 }
                 // else ReadDoc will clear the attributes for us
@@ -2265,77 +2595,91 @@ namespace Microsoft.Xml {
             return ReadDoc();
 
         Error:
-            this.state = ScanState.Error;
+            _state = ScanState.Error;
             throw new XmlException(err, (string[])null);
         }
 
-        void ScanAttributes() {
+        private void ScanAttributes()
+        {
             BinXmlToken token;
             int xmlspace = -1;
             int xmllang = -1;
 
-            this.mark = this.pos;
+            _mark = _pos;
             string curDeclPrefix = null;
             bool lastWasValue = false;
 
-            while (BinXmlToken.EndAttrs != (token = NextToken())) {
-                if (BinXmlToken.Attr == token) {
+            while (BinXmlToken.EndAttrs != (token = NextToken()))
+            {
+                if (BinXmlToken.Attr == token)
+                {
                     // watch out for nsdecl with no actual content
-                    if (null != curDeclPrefix) {
+                    if (null != curDeclPrefix)
+                    {
                         PushNamespace(curDeclPrefix, string.Empty, false);
                         curDeclPrefix = null;
                     }
                     // do we need to grow the array?
-                    if (this.attrCount == this.attributes.Length)
+                    if (_attrCount == _attributes.Length)
                         GrowAttributes();
                     // note: ParseMB32 _must_ happen _before_ we grab this.pos...
-                    QName n = this.symbolTables.qnametable[ReadQNameRef()];
-                    this.attributes[this.attrCount].Set(n, (int)this.pos);
-                    if (n.prefix == "xml") {
-                        if (n.localname == "lang") {
-                            xmllang = this.attrCount;
+                    QName n = _symbolTables.qnametable[ReadQNameRef()];
+                    _attributes[_attrCount].Set(n, (int)_pos);
+                    if (n.prefix == "xml")
+                    {
+                        if (n.localname == "lang")
+                        {
+                            xmllang = _attrCount;
                         }
-                        else if (n.localname == "space") {
-                            xmlspace = this.attrCount;
+                        else if (n.localname == "space")
+                        {
+                            xmlspace = _attrCount;
                         }
                     }
-                    else if (Ref.Equal(n.namespaceUri, this.nsxmlns)) {
+                    else if (Ref.Equal(n.namespaceUri, _nsxmlns))
+                    {
                         // push namespace when we get the value
                         curDeclPrefix = n.localname;
                         if (curDeclPrefix == "xmlns")
                             curDeclPrefix = string.Empty;
                     }
-                    else if (n.prefix.Length != 0) {
+                    else if (n.prefix.Length != 0)
+                    {
                         if (n.namespaceUri.Length == 0)
                             throw new XmlException(ResXml.Xml_PrefixForEmptyNs, String.Empty);
                         this.PushNamespace(n.prefix, n.namespaceUri, true);
                     }
-                    else if (n.namespaceUri.Length != 0) {
+                    else if (n.namespaceUri.Length != 0)
+                    {
                         throw ThrowXmlException(ResXml.XmlBinary_AttrWithNsNoPrefix, n.localname, n.namespaceUri);
                     }
-                    this.attrCount++;
+                    _attrCount++;
                     lastWasValue = false;
                 }
-                else {
+                else
+                {
                     // first scan over token to make sure it is a value token
                     ScanOverValue(token, true, true);
                     // don't allow lists of values
-                    if (lastWasValue) {
+                    if (lastWasValue)
+                    {
                         throw ThrowNotSupported(ResXml.XmlBinary_ListsOfValuesNotSupported);
                     }
 
                     // if char checking is on, we need to scan text values to
                     // validate that they don't use invalid CharData, so we
                     // might as well store the saved string for quick attr value access
-                    string val = this.stringValue;
-                    if (null != val) {
-                        this.attributes[this.attrCount - 1].val = val;
-                        this.stringValue = null;
+                    string val = _stringValue;
+                    if (null != val)
+                    {
+                        _attributes[_attrCount - 1].val = val;
+                        _stringValue = null;
                     }
                     // namespace decls can only have text values, and should only
                     // have a single value, so we just grab it here...
-                    if (null != curDeclPrefix) {
-                        string nsuri = this.xnt.Add(ValueAsString(token));
+                    if (null != curDeclPrefix)
+                    {
+                        string nsuri = _xnt.Add(ValueAsString(token));
                         PushNamespace(curDeclPrefix, nsuri, false);
                         curDeclPrefix = null;
                     }
@@ -2343,82 +2687,96 @@ namespace Microsoft.Xml {
                 }
             }
 
-            if (xmlspace != -1) {
+            if (xmlspace != -1)
+            {
                 string val = GetAttributeText(xmlspace);
                 XmlSpace xs = XmlSpace.None;
                 if (val == "preserve")
                     xs = XmlSpace.Preserve;
                 else if (val == "default")
                     xs = XmlSpace.Default;
-                this.elementStack[this.elemDepth].xmlSpace = xs;
-                this.xmlspacePreserve = (XmlSpace.Preserve == xs);
+                _elementStack[_elemDepth].xmlSpace = xs;
+                _xmlspacePreserve = (XmlSpace.Preserve == xs);
             }
-            if (xmllang != -1) {
-                this.elementStack[this.elemDepth].xmlLang = GetAttributeText(xmllang);
+            if (xmllang != -1)
+            {
+                _elementStack[_elemDepth].xmlLang = GetAttributeText(xmllang);
             }
 
-            if (this.attrCount < 200)
+            if (_attrCount < 200)
                 SimpleCheckForDuplicateAttributes();
             else
                 HashCheckForDuplicateAttributes();
         }
 
-        void SimpleCheckForDuplicateAttributes() {
-            for (int i = 0; i < this.attrCount; i++) {
+        private void SimpleCheckForDuplicateAttributes()
+        {
+            for (int i = 0; i < _attrCount; i++)
+            {
                 string localname, namespaceUri;
-                this.attributes[i].GetLocalnameAndNamespaceUri(out localname, out namespaceUri);
-                for (int j = i + 1; j < this.attrCount; j++) {
-                    if (this.attributes[j].MatchNS(localname, namespaceUri))
-                        throw new XmlException(ResXml.Xml_DupAttributeName, this.attributes[i].name.ToString());
+                _attributes[i].GetLocalnameAndNamespaceUri(out localname, out namespaceUri);
+                for (int j = i + 1; j < _attrCount; j++)
+                {
+                    if (_attributes[j].MatchNS(localname, namespaceUri))
+                        throw new XmlException(ResXml.Xml_DupAttributeName, _attributes[i].name.ToString());
                 }
             }
         }
 
-        void HashCheckForDuplicateAttributes() {
+        private void HashCheckForDuplicateAttributes()
+        {
             int tblSize = 256;
-            while (tblSize < this.attrCount)
+            while (tblSize < _attrCount)
                 tblSize = checked(tblSize * 2);
-            if (this.attrHashTbl.Length < tblSize)
-                this.attrHashTbl = new int[tblSize];
-            for (int i = 0; i < this.attrCount; i++) {
+            if (_attrHashTbl.Length < tblSize)
+                _attrHashTbl = new int[tblSize];
+            for (int i = 0; i < _attrCount; i++)
+            {
                 string localname, namespaceUri;
-                int hash = this.attributes[i].GetLocalnameAndNamespaceUriAndHash(hasher, out localname, out namespaceUri);
+                int hash = _attributes[i].GetLocalnameAndNamespaceUriAndHash(_hasher, out localname, out namespaceUri);
                 int index = hash & (tblSize - 1);
-                int next = this.attrHashTbl[index];
-                this.attrHashTbl[index] = i + 1;
-                this.attributes[i].prevHash = next;
-                while (next != 0) {
+                int next = _attrHashTbl[index];
+                _attrHashTbl[index] = i + 1;
+                _attributes[i].prevHash = next;
+                while (next != 0)
+                {
                     next--;
-                    if (this.attributes[next].MatchHashNS(hash, localname, namespaceUri)) {
-                        throw new XmlException(ResXml.Xml_DupAttributeName, this.attributes[i].name.ToString());
+                    if (_attributes[next].MatchHashNS(hash, localname, namespaceUri))
+                    {
+                        throw new XmlException(ResXml.Xml_DupAttributeName, _attributes[i].name.ToString());
                     }
-                    next = this.attributes[next].prevHash;
+                    next = _attributes[next].prevHash;
                 }
             }
-            Array.Clear(this.attrHashTbl, 0, tblSize);
+            Array.Clear(_attrHashTbl, 0, tblSize);
         }
 
-        string XmlDeclValue() {
+        private string XmlDeclValue()
+        {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < this.attrCount; i++) {
+            for (int i = 0; i < _attrCount; i++)
+            {
                 if (i > 0)
                     sb.Append(' ');
-                sb.Append(this.attributes[i].name.localname);
+                sb.Append(_attributes[i].name.localname);
                 sb.Append("=\"");
-                sb.Append(this.attributes[i].val);
+                sb.Append(_attributes[i].val);
                 sb.Append('"');
             }
             return sb.ToString();
         }
 
-        string CDATAValue() {
-            Debug.Assert(this.stringValue == null, "this.stringValue == null");
-            Debug.Assert(this.token == BinXmlToken.CData, "this.token == BinXmlToken.CData");
-            String value = GetString(this.tokDataPos, this.tokLen);
+        private string CDATAValue()
+        {
+            Debug.Assert(_stringValue == null, "this.stringValue == null");
+            Debug.Assert(_token == BinXmlToken.CData, "this.token == BinXmlToken.CData");
+            String value = GetString(_tokDataPos, _tokLen);
             StringBuilder sb = null;
-            while (PeekToken() == BinXmlToken.CData) {
-                this.pos++; // skip over token byte
-                if (sb == null) {
+            while (PeekToken() == BinXmlToken.CData)
+            {
+                _pos++; // skip over token byte
+                if (sb == null)
+                {
                     sb = new StringBuilder(value.Length + value.Length / 2);
                     sb.Append(value);
                 }
@@ -2426,23 +2784,26 @@ namespace Microsoft.Xml {
             }
             if (sb != null)
                 value = sb.ToString();
-            this.stringValue = value;
+            _stringValue = value;
             return value;
         }
 
-        void FinishCDATA() {
-            for (; ; ) {
-                switch (PeekToken()) {
+        private void FinishCDATA()
+        {
+            for (; ; )
+            {
+                switch (PeekToken())
+                {
                     case BinXmlToken.CData:
                         // skip
-                        this.pos++;
+                        _pos++;
                         int pos;
                         ScanText(out pos);
                         // try again
                         break;
                     case BinXmlToken.EndCData:
                         // done... on to next token...
-                        this.pos++;
+                        _pos++;
                         return;
                     default:
                         throw new XmlException(ResXml.XmlBin_MissingEndCDATA);
@@ -2450,14 +2811,17 @@ namespace Microsoft.Xml {
             }
         }
 
-        void FinishEndElement() {
-            NamespaceDecl nsdecls = this.elementStack[this.elemDepth].Clear();
+        private void FinishEndElement()
+        {
+            NamespaceDecl nsdecls = _elementStack[_elemDepth].Clear();
             this.PopNamespaces(nsdecls);
-            this.elemDepth--;
+            _elemDepth--;
         }
 
-        bool ReadDoc() {
-            switch (this.nodetype) {
+        private bool ReadDoc()
+        {
+            switch (_nodetype)
+            {
                 case XmlNodeType.CDATA:
                     FinishCDATA();
                     break;
@@ -2465,32 +2829,34 @@ namespace Microsoft.Xml {
                     FinishEndElement();
                     break;
                 case XmlNodeType.Element:
-                    if (this.isEmpty) {
+                    if (_isEmpty)
+                    {
                         FinishEndElement();
-                        this.isEmpty = false;
+                        _isEmpty = false;
                     }
                     break;
             }
 
         Read:
             // clear existing state
-            this.nodetype = XmlNodeType.None;
-            this.mark = -1;
-            if (this.qnameOther.localname.Length != 0)
-                this.qnameOther.Clear();
+            _nodetype = XmlNodeType.None;
+            _mark = -1;
+            if (_qnameOther.localname.Length != 0)
+                _qnameOther.Clear();
 
             ClearAttributes();
-            this.attrCount = 0;
-            this.valueType = TypeOfString;
-            this.stringValue = null;
-            this.hasTypedValue = false;
+            _attrCount = 0;
+            _valueType = TypeOfString;
+            _stringValue = null;
+            _hasTypedValue = false;
 
-            this.token = NextToken();
-            switch (this.token) {
+            _token = NextToken();
+            switch (_token)
+            {
                 case BinXmlToken.EOF:
-                    if (this.elemDepth > 0)
+                    if (_elemDepth > 0)
                         throw new XmlException(ResXml.Xml_UnexpectedEOF1, (string[])null);
-                    this.state = ScanState.EOF;
+                    _state = ScanState.EOF;
                     return false;
 
                 case BinXmlToken.Element:
@@ -2503,22 +2869,22 @@ namespace Microsoft.Xml {
 
                 case BinXmlToken.DocType:
                     ImplReadDoctype();
-                    if (this.dtdProcessing == DtdProcessing.Ignore)
+                    if (_dtdProcessing == DtdProcessing.Ignore)
                         goto Read;
                     // nested, don't report doctype
-                    if (prevNameInfo != null)
+                    if (_prevNameInfo != null)
                         goto Read;
                     break;
 
                 case BinXmlToken.PI:
                     ImplReadPI();
-                    if (this.ignorePIs)
+                    if (_ignorePIs)
                         goto Read;
                     break;
 
                 case BinXmlToken.Comment:
                     ImplReadComment();
-                    if (this.ignoreComments)
+                    if (_ignoreComments)
                         goto Read;
                     break;
 
@@ -2529,11 +2895,11 @@ namespace Microsoft.Xml {
                 case BinXmlToken.Nest:
                     ImplReadNest();
                     // parse first token in nested document
-                    sniffed = false;
+                    _sniffed = false;
                     return ReadInit(true);
 
                 case BinXmlToken.EndNest:
-                    if (null == this.prevNameInfo)
+                    if (null == _prevNameInfo)
                         goto default;
                     ImplReadEndNest();
                     return ReadDoc();
@@ -2585,45 +2951,48 @@ namespace Microsoft.Xml {
                 case BinXmlToken.XSD_UNSIGNEDINT:
                 case BinXmlToken.XSD_UNSIGNEDLONG:
                 case BinXmlToken.XSD_QNAME:
-                    ImplReadData(this.token);
-                    if (XmlNodeType.Text == this.nodetype)
+                    ImplReadData(_token);
+                    if (XmlNodeType.Text == _nodetype)
                         CheckAllowContent();
-                    else if (this.ignoreWhitespace && !this.xmlspacePreserve)
+                    else if (_ignoreWhitespace && !_xmlspacePreserve)
                         goto Read; // skip to next token
                     return true;
 
                 default:
-                    throw ThrowUnexpectedToken(token);
+                    throw ThrowUnexpectedToken(_token);
             }
 
             return true;
         }
 
-        void ImplReadData(BinXmlToken tokenType) {
-            Debug.Assert(this.mark < 0);
-            this.mark = this.pos;
+        private void ImplReadData(BinXmlToken tokenType)
+        {
+            Debug.Assert(_mark < 0);
+            _mark = _pos;
 
-            switch (tokenType) {
+            switch (tokenType)
+            {
                 case BinXmlToken.SQL_CHAR:
                 case BinXmlToken.SQL_VARCHAR:
                 case BinXmlToken.SQL_TEXT:
                 case BinXmlToken.SQL_NCHAR:
                 case BinXmlToken.SQL_NVARCHAR:
                 case BinXmlToken.SQL_NTEXT:
-                    this.valueType = TypeOfString;
-                    this.hasTypedValue = false;
+                    _valueType = TypeOfString;
+                    _hasTypedValue = false;
                     break;
                 default:
-                    this.valueType = GetValueType(this.token);
-                    this.hasTypedValue = true;
+                    _valueType = GetValueType(_token);
+                    _hasTypedValue = true;
                     break;
             }
 
-            this.nodetype = ScanOverValue(this.token, false, true);
+            _nodetype = ScanOverValue(_token, false, true);
 
             // we don't support lists of values
             BinXmlToken tNext = PeekNextToken();
-            switch (tNext) {
+            switch (tNext)
+            {
                 case BinXmlToken.SQL_BIT:
                 case BinXmlToken.SQL_TINYINT:
                 case BinXmlToken.SQL_SMALLINT:
@@ -2672,83 +3041,96 @@ namespace Microsoft.Xml {
             }
         }
 
-        void ImplReadElement() {
-            if (3 != this.docState || 9 != this.docState) {
-                switch (this.docState) {
+        private void ImplReadElement()
+        {
+            if (3 != _docState || 9 != _docState)
+            {
+                switch (_docState)
+                {
                     case 0:
-                        this.docState = 9;
+                        _docState = 9;
                         break;
                     case 1:
                     case 2:
-                        this.docState = 3;
+                        _docState = 3;
                         break;
                     case -1:
-                        throw ThrowUnexpectedToken(this.token);
+                        throw ThrowUnexpectedToken(_token);
                     default:
                         break;
                 }
             }
-            this.elemDepth++;
-            if (this.elemDepth == this.elementStack.Length)
+            _elemDepth++;
+            if (_elemDepth == _elementStack.Length)
                 GrowElements();
-            QName qname = this.symbolTables.qnametable[ReadQNameRef()];
-            this.qnameOther = this.qnameElement = qname;
-            this.elementStack[this.elemDepth].Set(qname, this.xmlspacePreserve);
+            QName qname = _symbolTables.qnametable[ReadQNameRef()];
+            _qnameOther = _qnameElement = qname;
+            _elementStack[_elemDepth].Set(qname, _xmlspacePreserve);
             this.PushNamespace(qname.prefix, qname.namespaceUri, true);
             BinXmlToken t = PeekNextToken();
-            if (BinXmlToken.Attr == t) {
+            if (BinXmlToken.Attr == t)
+            {
                 ScanAttributes();
                 t = PeekNextToken();
             }
             GenerateImpliedXmlnsAttrs();
-            if (BinXmlToken.EndElem == t) {
+            if (BinXmlToken.EndElem == t)
+            {
                 NextToken(); // move over token...
-                this.isEmpty = true;
+                _isEmpty = true;
             }
-            else if (BinXmlToken.SQL_NVARCHAR == t) {
-                if (this.mark < 0)
-                    this.mark = this.pos;
+            else if (BinXmlToken.SQL_NVARCHAR == t)
+            {
+                if (_mark < 0)
+                    _mark = _pos;
                 // skip over token byte
-                this.pos++;
+                _pos++;
                 // is this a zero-length string?  if yes, skip it.  
                 // (It just indicates that this is _not_ an empty element)
                 // Also make sure that the following token is an EndElem
-                if (0 == ReadByte()) {
-                    if (BinXmlToken.EndElem != (BinXmlToken)ReadByte()) {
-                        Debug.Assert(this.pos >= 3);
-                        this.pos -= 3; // jump back to start of NVarChar token
+                if (0 == ReadByte())
+                {
+                    if (BinXmlToken.EndElem != (BinXmlToken)ReadByte())
+                    {
+                        Debug.Assert(_pos >= 3);
+                        _pos -= 3; // jump back to start of NVarChar token
                     }
-                    else {
-                        Debug.Assert(this.pos >= 1);
-                        this.pos -= 1; // jump back to EndElem token
+                    else
+                    {
+                        Debug.Assert(_pos >= 1);
+                        _pos -= 1; // jump back to EndElem token
                     }
                 }
-                else {
-                    Debug.Assert(this.pos >= 2);
-                    this.pos -= 2; // jump back to start of NVarChar token
+                else
+                {
+                    Debug.Assert(_pos >= 2);
+                    _pos -= 2; // jump back to start of NVarChar token
                 }
             }
-            this.nodetype = XmlNodeType.Element;
-            this.valueType = TypeOfObject;
-            this.posAfterAttrs = this.pos;
+            _nodetype = XmlNodeType.Element;
+            _valueType = TypeOfObject;
+            _posAfterAttrs = _pos;
         }
 
-        void ImplReadEndElement() {
-            if (this.elemDepth == 0)
+        private void ImplReadEndElement()
+        {
+            if (_elemDepth == 0)
                 throw ThrowXmlException(ResXml.Xml_UnexpectedEndTag);
-            int index = this.elemDepth;
-            if (1 == index && 3 == this.docState)
-                this.docState = -1;
-            this.qnameOther = this.elementStack[index].name;
-            this.xmlspacePreserve = this.elementStack[index].xmlspacePreserve;
-            this.nodetype = XmlNodeType.EndElement;
+            int index = _elemDepth;
+            if (1 == index && 3 == _docState)
+                _docState = -1;
+            _qnameOther = _elementStack[index].name;
+            _xmlspacePreserve = _elementStack[index].xmlspacePreserve;
+            _nodetype = XmlNodeType.EndElement;
         }
 
-        void ImplReadDoctype() {
-            if (this.dtdProcessing == DtdProcessing.Prohibit)
+        private void ImplReadDoctype()
+        {
+            if (_dtdProcessing == DtdProcessing.Prohibit)
                 throw ThrowXmlException(ResXml.Xml_DtdIsProhibited);
             // 0=>auto, 1=>doc/pre-dtd, 2=>doc/pre-elem, 3=>doc/instance -1=>doc/post-elem, 9=>frag
-            switch (this.docState) {
+            switch (_docState)
+            {
                 case 0: // 0=>auto
                 case 1: // 1=>doc/pre-dtd
                     break;
@@ -2757,69 +3139,81 @@ namespace Microsoft.Xml {
                 default: // 2=>doc/pre-elem, 3=>doc/instance -1=>doc/post-elem
                     throw ThrowXmlException(ResXml.Xml_BadDTDLocation);
             }
-            this.docState = 2;
-            this.qnameOther.localname = ParseText();
-            if (BinXmlToken.System == PeekToken()) {
-                this.pos++;
-                this.attributes[this.attrCount++].Set(new QName(string.Empty, this.xnt.Add("SYSTEM"), string.Empty), ParseText());
+            _docState = 2;
+            _qnameOther.localname = ParseText();
+            if (BinXmlToken.System == PeekToken())
+            {
+                _pos++;
+                _attributes[_attrCount++].Set(new QName(string.Empty, _xnt.Add("SYSTEM"), string.Empty), ParseText());
             }
-            if (BinXmlToken.Public == PeekToken()) {
-                this.pos++;
-                this.attributes[this.attrCount++].Set(new QName(string.Empty, this.xnt.Add("PUBLIC"), string.Empty), ParseText());
+            if (BinXmlToken.Public == PeekToken())
+            {
+                _pos++;
+                _attributes[_attrCount++].Set(new QName(string.Empty, _xnt.Add("PUBLIC"), string.Empty), ParseText());
             }
-            if (BinXmlToken.Subset == PeekToken()) {
-                this.pos++;
-                this.mark = this.pos;
-                this.tokLen = ScanText(out this.tokDataPos);
+            if (BinXmlToken.Subset == PeekToken())
+            {
+                _pos++;
+                _mark = _pos;
+                _tokLen = ScanText(out _tokDataPos);
             }
-            else {
-                this.tokLen = this.tokDataPos = 0;
+            else
+            {
+                _tokLen = _tokDataPos = 0;
             }
-            this.nodetype = XmlNodeType.DocumentType;
-            this.posAfterAttrs = this.pos;
+            _nodetype = XmlNodeType.DocumentType;
+            _posAfterAttrs = _pos;
         }
 
-        void ImplReadPI() {
-            this.qnameOther.localname = this.symbolTables.symtable[ReadNameRef()];
-            this.mark = this.pos;
-            this.tokLen = ScanText(out this.tokDataPos);
-            this.nodetype = XmlNodeType.ProcessingInstruction;
+        private void ImplReadPI()
+        {
+            _qnameOther.localname = _symbolTables.symtable[ReadNameRef()];
+            _mark = _pos;
+            _tokLen = ScanText(out _tokDataPos);
+            _nodetype = XmlNodeType.ProcessingInstruction;
         }
 
-        void ImplReadComment() {
-            this.nodetype = XmlNodeType.Comment;
-            this.mark = this.pos;
-            this.tokLen = ScanText(out this.tokDataPos);
+        private void ImplReadComment()
+        {
+            _nodetype = XmlNodeType.Comment;
+            _mark = _pos;
+            _tokLen = ScanText(out _tokDataPos);
         }
 
-        void ImplReadCDATA() {
+        private void ImplReadCDATA()
+        {
             CheckAllowContent();
-            this.nodetype = XmlNodeType.CDATA;
-            this.mark = this.pos;
-            this.tokLen = ScanText(out this.tokDataPos);
+            _nodetype = XmlNodeType.CDATA;
+            _mark = _pos;
+            _tokLen = ScanText(out _tokDataPos);
         }
 
-        void ImplReadNest() {
+        private void ImplReadNest()
+        {
             CheckAllowContent();
             // push current nametables
-            this.prevNameInfo = new NestedBinXml(this.symbolTables, this.docState, this.prevNameInfo);
-            this.symbolTables.Init();
-            this.docState = 0; // auto
+            _prevNameInfo = new NestedBinXml(_symbolTables, _docState, _prevNameInfo);
+            _symbolTables.Init();
+            _docState = 0; // auto
         }
 
-        void ImplReadEndNest() {
-            NestedBinXml nested = this.prevNameInfo;
-            this.symbolTables = nested.symbolTables;
-            this.docState = nested.docState;
-            this.prevNameInfo = nested.next;
+        private void ImplReadEndNest()
+        {
+            NestedBinXml nested = _prevNameInfo;
+            _symbolTables = nested.symbolTables;
+            _docState = nested.docState;
+            _prevNameInfo = nested.next;
         }
 
-        void ImplReadXmlText() {
+        private void ImplReadXmlText()
+        {
             CheckAllowContent();
             string xmltext = ParseText();
-            XmlNamespaceManager xnm = new XmlNamespaceManager(this.xnt);
-            foreach (NamespaceDecl decl in this.namespaces.Values) {
-                if (decl.scope > 0) {
+            XmlNamespaceManager xnm = new XmlNamespaceManager(_xnt);
+            foreach (NamespaceDecl decl in _namespaces.Values)
+            {
+                if (decl.scope > 0)
+                {
 #if DEBUG
                     if ((object)decl.prefix != (object)this.xnt.Get(decl.prefix))
                         throw new Exception("Prefix not interned: \'" + decl.prefix + "\'");
@@ -2831,46 +3225,53 @@ namespace Microsoft.Xml {
             }
             XmlReaderSettings settings = this.Settings;
             settings.ReadOnly = false;
-            settings.NameTable = this.xnt;
+            settings.NameTable = _xnt;
             settings.DtdProcessing = DtdProcessing.Prohibit;
-            if (0 != this.elemDepth) {
+            if (0 != _elemDepth)
+            {
                 settings.ConformanceLevel = ConformanceLevel.Fragment;
             }
             settings.ReadOnly = true;
-            XmlParserContext xpc = new XmlParserContext(this.xnt, xnm, this.XmlLang, this.XmlSpace);
-            this.textXmlReader = new XmlTextReaderImpl(xmltext, xpc, settings);
-            if (!this.textXmlReader.Read()
-                || ((this.textXmlReader.NodeType == XmlNodeType.XmlDeclaration)
-                    && !this.textXmlReader.Read())) {
-                this.state = ScanState.Doc;
+            XmlParserContext xpc = new XmlParserContext(_xnt, xnm, this.XmlLang, this.XmlSpace);
+            _textXmlReader = new XmlTextReaderImpl(xmltext, xpc, settings);
+            if (!_textXmlReader.Read()
+                || ((_textXmlReader.NodeType == XmlNodeType.XmlDeclaration)
+                    && !_textXmlReader.Read()))
+            {
+                _state = ScanState.Doc;
                 ReadDoc();
             }
-            else {
-                this.state = ScanState.XmlText;
+            else
+            {
+                _state = ScanState.XmlText;
                 UpdateFromTextReader();
             }
         }
 
-        void UpdateFromTextReader() {
-            XmlReader r = this.textXmlReader;
-            this.nodetype = r.NodeType;
-            this.qnameOther.prefix = r.Prefix;
-            this.qnameOther.localname = r.LocalName;
-            this.qnameOther.namespaceUri = r.NamespaceURI;
-            this.valueType = r.ValueType;
-            this.isEmpty = r.IsEmptyElement;
+        private void UpdateFromTextReader()
+        {
+            XmlReader r = _textXmlReader;
+            _nodetype = r.NodeType;
+            _qnameOther.prefix = r.Prefix;
+            _qnameOther.localname = r.LocalName;
+            _qnameOther.namespaceUri = r.NamespaceURI;
+            _valueType = r.ValueType;
+            _isEmpty = r.IsEmptyElement;
         }
 
-        bool UpdateFromTextReader(bool needUpdate) {
+        private bool UpdateFromTextReader(bool needUpdate)
+        {
             if (needUpdate)
                 UpdateFromTextReader();
             return needUpdate;
         }
 
-        void CheckAllowContent() {
-            switch (this.docState) {
+        private void CheckAllowContent()
+        {
+            switch (_docState)
+            {
                 case 0: // auto
-                    this.docState = 9;
+                    _docState = 9;
                     break;
                 case 9: // conformance = fragment
                 case 3:
@@ -2880,7 +3281,8 @@ namespace Microsoft.Xml {
             }
         }
 
-        private void GenerateTokenTypeMap() {
+        private void GenerateTokenTypeMap()
+        {
             Type[] map = new Type[256];
             map[(int)BinXmlToken.XSD_BOOLEAN] = typeof(System.Boolean);
             map[(int)BinXmlToken.SQL_TINYINT] = typeof(System.Byte);
@@ -2911,11 +3313,11 @@ namespace Microsoft.Xml {
             map[(int)BinXmlToken.XSD_KATMAI_DATE] = TypeOfDateTime;
             map[(int)BinXmlToken.XSD_KATMAI_DATETIME] = TypeOfDateTime;
             map[(int)BinXmlToken.XSD_KATMAI_TIME] = TypeOfDateTime;
-            Type TypeOfDateTimeOffset = typeof( System.DateTimeOffset );
+            Type TypeOfDateTimeOffset = typeof(System.DateTimeOffset);
             map[(int)BinXmlToken.XSD_KATMAI_DATEOFFSET] = TypeOfDateTimeOffset;
             map[(int)BinXmlToken.XSD_KATMAI_DATETIMEOFFSET] = TypeOfDateTimeOffset;
             map[(int)BinXmlToken.XSD_KATMAI_TIMEOFFSET] = TypeOfDateTimeOffset;
-            Type TypeOfByteArray = typeof( System.Byte[] );
+            Type TypeOfByteArray = typeof(System.Byte[]);
             map[(int)BinXmlToken.SQL_VARBINARY] = TypeOfByteArray;
             map[(int)BinXmlToken.SQL_BINARY] = TypeOfByteArray;
             map[(int)BinXmlToken.SQL_IMAGE] = TypeOfByteArray;
@@ -2929,67 +3331,78 @@ namespace Microsoft.Xml {
             map[(int)BinXmlToken.SQL_NVARCHAR] = TypeOfString;
             map[(int)BinXmlToken.SQL_NTEXT] = TypeOfString;
             map[(int)BinXmlToken.SQL_UUID] = TypeOfString;
-            if (TokenTypeMap == null)
-                TokenTypeMap = map;
+            if (s_tokenTypeMap == null)
+                s_tokenTypeMap = map;
         }
 
-        System.Type GetValueType(BinXmlToken token) {
-            Type t = TokenTypeMap[(int)token];
+        private System.Type GetValueType(BinXmlToken token)
+        {
+            Type t = s_tokenTypeMap[(int)token];
             if (t == null)
                 throw ThrowUnexpectedToken(token);
             return t;
         }
 
         // helper method...
-        void ReScanOverValue(BinXmlToken token) {
+        private void ReScanOverValue(BinXmlToken token)
+        {
             ScanOverValue(token, true, false);
         }
 
-        XmlNodeType ScanOverValue(BinXmlToken token, bool attr, bool checkChars) {
-            if (token == BinXmlToken.SQL_NVARCHAR) {
-                if (this.mark < 0)
-                    this.mark = this.pos;
-                this.tokLen = ParseMB32();
-                this.tokDataPos = this.pos;
-                checked{this.pos += this.tokLen * 2;}
+        private XmlNodeType ScanOverValue(BinXmlToken token, bool attr, bool checkChars)
+        {
+            if (token == BinXmlToken.SQL_NVARCHAR)
+            {
+                if (_mark < 0)
+                    _mark = _pos;
+                _tokLen = ParseMB32();
+                _tokDataPos = _pos;
+                checked { _pos += _tokLen * 2; }
                 Fill(-1);
                 // check chars (if this is the first pass and settings.CheckCharacters was set)
-                if (checkChars && this.checkCharacters) {
+                if (checkChars && _checkCharacters)
+                {
                     // check for invalid chardata
                     return CheckText(attr);
                 }
-                else if (!attr) { // attribute values are always reported as Text
+                else if (!attr)
+                { // attribute values are always reported as Text
                     // check for whitespace-only text
                     return CheckTextIsWS();
                 }
-                else {
+                else
+                {
                     return XmlNodeType.Text;
                 }
             }
-            else {
+            else
+            {
                 return ScanOverAnyValue(token, attr, checkChars);
             }
         }
 
-        XmlNodeType ScanOverAnyValue(BinXmlToken token, bool attr, bool checkChars) {
-            if (this.mark < 0)
-                this.mark = this.pos;
-            checked {
-                switch (token) {
+        private XmlNodeType ScanOverAnyValue(BinXmlToken token, bool attr, bool checkChars)
+        {
+            if (_mark < 0)
+                _mark = _pos;
+            checked
+            {
+                switch (token)
+                {
                     case BinXmlToken.SQL_BIT:
                     case BinXmlToken.SQL_TINYINT:
                     case BinXmlToken.XSD_BOOLEAN:
                     case BinXmlToken.XSD_BYTE:
-                        this.tokDataPos = this.pos;
-                        this.tokLen = 1;
-                        this.pos += 1;
+                        _tokDataPos = _pos;
+                        _tokLen = 1;
+                        _pos += 1;
                         break;
 
                     case BinXmlToken.SQL_SMALLINT:
                     case BinXmlToken.XSD_UNSIGNEDSHORT:
-                        this.tokDataPos = this.pos;
-                        this.tokLen = 2;
-                        this.pos += 2;
+                        _tokDataPos = _pos;
+                        _tokLen = 2;
+                        _pos += 2;
                         break;
 
                     case BinXmlToken.SQL_INT:
@@ -2997,9 +3410,9 @@ namespace Microsoft.Xml {
                     case BinXmlToken.SQL_REAL:
                     case BinXmlToken.SQL_SMALLMONEY:
                     case BinXmlToken.SQL_SMALLDATETIME:
-                        this.tokDataPos = this.pos;
-                        this.tokLen = 4;
-                        this.pos += 4;
+                        _tokDataPos = _pos;
+                        _tokLen = 4;
+                        _pos += 4;
                         break;
 
                     case BinXmlToken.SQL_BIGINT:
@@ -3010,23 +3423,23 @@ namespace Microsoft.Xml {
                     case BinXmlToken.XSD_TIME:
                     case BinXmlToken.XSD_DATETIME:
                     case BinXmlToken.XSD_DATE:
-                        this.tokDataPos = this.pos;
-                        this.tokLen = 8;
-                        this.pos += 8;
+                        _tokDataPos = _pos;
+                        _tokLen = 8;
+                        _pos += 8;
                         break;
 
                     case BinXmlToken.SQL_UUID:
-                        this.tokDataPos = this.pos;
-                        this.tokLen = 16;
-                        this.pos += 16;
+                        _tokDataPos = _pos;
+                        _tokLen = 16;
+                        _pos += 16;
                         break;
 
                     case BinXmlToken.SQL_DECIMAL:
                     case BinXmlToken.SQL_NUMERIC:
                     case BinXmlToken.XSD_DECIMAL:
-                        this.tokDataPos = this.pos;
-                        this.tokLen = ParseMB64();
-                        this.pos += this.tokLen;
+                        _tokDataPos = _pos;
+                        _tokLen = ParseMB64();
+                        _pos += _tokLen;
                         break;
 
                     case BinXmlToken.SQL_VARBINARY:
@@ -3035,23 +3448,24 @@ namespace Microsoft.Xml {
                     case BinXmlToken.SQL_UDT:
                     case BinXmlToken.XSD_BINHEX:
                     case BinXmlToken.XSD_BASE64:
-                        this.tokLen = ParseMB64();
-                        this.tokDataPos = this.pos;
-                        this.pos += this.tokLen;
+                        _tokLen = ParseMB64();
+                        _tokDataPos = _pos;
+                        _pos += _tokLen;
                         break;
 
                     case BinXmlToken.SQL_CHAR:
                     case BinXmlToken.SQL_VARCHAR:
                     case BinXmlToken.SQL_TEXT:
-                        this.tokLen = ParseMB64();
-                        this.tokDataPos = this.pos;
-                        this.pos += this.tokLen;
-                        if (checkChars && this.checkCharacters) {
+                        _tokLen = ParseMB64();
+                        _tokDataPos = _pos;
+                        _pos += _tokLen;
+                        if (checkChars && _checkCharacters)
+                        {
                             // check for invalid chardata
                             Fill(-1);
                             string val = ValueAsString(token);
                             XmlConvert.VerifyCharData(val, ExceptionType.ArgumentException, ExceptionType.XmlException);
-                            this.stringValue = val;
+                            _stringValue = val;
                         }
                         break;
 
@@ -3061,7 +3475,7 @@ namespace Microsoft.Xml {
                         return ScanOverValue(BinXmlToken.SQL_NVARCHAR, attr, checkChars);
 
                     case BinXmlToken.XSD_QNAME:
-                        this.tokDataPos = this.pos;
+                        _tokDataPos = _pos;
                         ParseMB32();
                         break;
 
@@ -3072,9 +3486,9 @@ namespace Microsoft.Xml {
                     case BinXmlToken.XSD_KATMAI_DATETIMEOFFSET:
                     case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
                         VerifyVersion(2, token);
-                        this.tokDataPos = this.pos;
-                        this.tokLen = GetXsdKatmaiTokenLength(token);
-                        this.pos += tokLen;
+                        _tokDataPos = _pos;
+                        _tokLen = GetXsdKatmaiTokenLength(token);
+                        _pos += _tokLen;
                         break;
 
                     default:
@@ -3085,32 +3499,38 @@ namespace Microsoft.Xml {
             return XmlNodeType.Text;
         }
 
-        unsafe XmlNodeType CheckText(bool attr) {
-            Debug.Assert(this.checkCharacters, "this.checkCharacters");
+        private unsafe XmlNodeType CheckText(bool attr)
+        {
+            Debug.Assert(_checkCharacters, "this.checkCharacters");
             // assert that size is an even number
-            Debug.Assert(0 == ((this.pos - this.tokDataPos) & 1), "Data size should not be odd");
+            Debug.Assert(0 == ((_pos - _tokDataPos) & 1), "Data size should not be odd");
             // grab local copy (perf)
-            XmlCharType xmlCharType = this.xmlCharType;
+            XmlCharType xmlCharType = _xmlCharType;
 
-            fixed (byte* pb = this.data) {
-                int end = this.pos;
-                int pos = this.tokDataPos;
+            fixed (byte* pb = _data)
+            {
+                int end = _pos;
+                int pos = _tokDataPos;
 
-                if (!attr) {
+                if (!attr)
+                {
                     // scan if this is whitespace
-                    for (; ; ) {
+                    for (; ; )
+                    {
                         int posNext = pos + 2;
                         if (posNext > end)
-                            return this.xmlspacePreserve ? XmlNodeType.SignificantWhitespace : XmlNodeType.Whitespace;
+                            return _xmlspacePreserve ? XmlNodeType.SignificantWhitespace : XmlNodeType.Whitespace;
                         if (pb[pos + 1] != 0 || (xmlCharType.charProperties[pb[pos]] & XmlCharType.fWhitespace) == 0)
                             break;
                         pos = posNext;
                     }
                 }
 
-                for (; ; ) {
+                for (; ; )
+                {
                     char ch;
-                    for (; ; ) {
+                    for (; ; )
+                    {
                         int posNext = pos + 2;
                         if (posNext > end)
                             return XmlNodeType.Text;
@@ -3120,15 +3540,19 @@ namespace Microsoft.Xml {
                         pos = posNext;
                     }
 
-                    if (!XmlCharType.IsHighSurrogate(ch)) {
+                    if (!XmlCharType.IsHighSurrogate(ch))
+                    {
                         throw XmlConvert.CreateInvalidCharException(ch, '\0', ExceptionType.XmlException);
                     }
-                    else {
-                        if ((pos + 4) > end) {
+                    else
+                    {
+                        if ((pos + 4) > end)
+                        {
                             throw ThrowXmlException(ResXml.Xml_InvalidSurrogateMissingLowChar);
                         }
                         char chNext = (char)(pb[pos + 2] | ((int)(pb[pos + 3]) << 8));
-                        if (!XmlCharType.IsLowSurrogate(chNext)) {
+                        if (!XmlCharType.IsLowSurrogate(chNext))
+                        {
                             throw XmlConvert.CreateInvalidSurrogatePairException(ch, chNext);
                         }
                     }
@@ -3137,15 +3561,18 @@ namespace Microsoft.Xml {
             }
         }
 
-        XmlNodeType CheckTextIsWS() {
-            Debug.Assert(!this.checkCharacters, "!this.checkCharacters");
-            byte[] data = this.data;
+        private XmlNodeType CheckTextIsWS()
+        {
+            Debug.Assert(!_checkCharacters, "!this.checkCharacters");
+            byte[] data = _data;
             // assert that size is an even number
-            Debug.Assert(0 == ((this.pos - this.tokDataPos) & 1), "Data size should not be odd");
-            for (int pos = this.tokDataPos; pos < this.pos; pos += 2) {
+            Debug.Assert(0 == ((_pos - _tokDataPos) & 1), "Data size should not be odd");
+            for (int pos = _tokDataPos; pos < _pos; pos += 2)
+            {
                 if (0 != data[pos + 1])
                     goto NonWSText;
-                switch (data[pos]) {
+                switch (data[pos])
+                {
                     case 0x09: // tab
                     case 0x0A: // nl
                     case 0x0D: // cr
@@ -3155,85 +3582,96 @@ namespace Microsoft.Xml {
                         goto NonWSText;
                 }
             }
-            if (this.xmlspacePreserve)
+            if (_xmlspacePreserve)
                 return XmlNodeType.SignificantWhitespace;
             return XmlNodeType.Whitespace;
         NonWSText:
             return XmlNodeType.Text;
         }
 
-        void CheckValueTokenBounds() {
-            if ((this.end - this.tokDataPos) < this.tokLen)
+        private void CheckValueTokenBounds()
+        {
+            if ((_end - _tokDataPos) < _tokLen)
                 throw ThrowXmlException(ResXml.Xml_UnexpectedEOF1);
         }
 
-        int GetXsdKatmaiTokenLength(BinXmlToken token) {
+        private int GetXsdKatmaiTokenLength(BinXmlToken token)
+        {
             byte scale;
-            switch (token) {
+            switch (token)
+            {
                 case BinXmlToken.XSD_KATMAI_DATE:
                     // SQL Katmai type DATE = date(3b)
-                    return 3;                                           
+                    return 3;
                 case BinXmlToken.XSD_KATMAI_TIME:
                 case BinXmlToken.XSD_KATMAI_DATETIME:
                     // SQL Katmai type DATETIME2 = scale(1b) + time(3-5b) + date(3b)
                     Fill(0);
-                    scale = this.data[this.pos];
-                    return 4 + XsdKatmaiTimeScaleToValueLength(scale);  
+                    scale = _data[_pos];
+                    return 4 + XsdKatmaiTimeScaleToValueLength(scale);
                 case BinXmlToken.XSD_KATMAI_DATEOFFSET:
                 case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
                 case BinXmlToken.XSD_KATMAI_DATETIMEOFFSET:
                     // SQL Katmai type DATETIMEOFFSET = scale(1b) + time(3-5b) + date(3b) + zone(2b)
                     Fill(0);
-                    scale = this.data[this.pos];
+                    scale = _data[_pos];
                     return 6 + XsdKatmaiTimeScaleToValueLength(scale);
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        int XsdKatmaiTimeScaleToValueLength(byte scale) {
-            if (scale > 7) {
+        private int XsdKatmaiTimeScaleToValueLength(byte scale)
+        {
+            if (scale > 7)
+            {
                 throw new XmlException(ResXml.SqlTypes_ArithOverflow, (string)null);
             }
-            return XsdKatmaiTimeScaleToValueLengthMap[scale];
+            return s_xsdKatmaiTimeScaleToValueLengthMap[scale];
         }
 
-        long ValueAsLong() {
+        private long ValueAsLong()
+        {
             CheckValueTokenBounds();
-            switch (this.token) {
+            switch (_token)
+            {
                 case BinXmlToken.SQL_BIT:
-                case BinXmlToken.SQL_TINYINT: {
-                        byte v = this.data[this.tokDataPos];
+                case BinXmlToken.SQL_TINYINT:
+                    {
+                        byte v = _data[_tokDataPos];
                         return v;
                     }
 
-                case BinXmlToken.XSD_BYTE: {
-                        sbyte v = unchecked((sbyte)this.data[this.tokDataPos]);
+                case BinXmlToken.XSD_BYTE:
+                    {
+                        sbyte v = unchecked((sbyte)_data[_tokDataPos]);
                         return v;
                     }
 
                 case BinXmlToken.SQL_SMALLINT:
-                    return GetInt16(this.tokDataPos);
+                    return GetInt16(_tokDataPos);
 
                 case BinXmlToken.SQL_INT:
-                    return GetInt32(this.tokDataPos);
+                    return GetInt32(_tokDataPos);
 
                 case BinXmlToken.SQL_BIGINT:
-                    return GetInt64(this.tokDataPos);
+                    return GetInt64(_tokDataPos);
 
                 case BinXmlToken.XSD_UNSIGNEDSHORT:
-                    return GetUInt16(this.tokDataPos);
+                    return GetUInt16(_tokDataPos);
 
                 case BinXmlToken.XSD_UNSIGNEDINT:
-                    return GetUInt32(this.tokDataPos);
+                    return GetUInt32(_tokDataPos);
 
-                case BinXmlToken.XSD_UNSIGNEDLONG: {
-                        ulong v = GetUInt64(this.tokDataPos);
+                case BinXmlToken.XSD_UNSIGNEDLONG:
+                    {
+                        ulong v = GetUInt64(_tokDataPos);
                         return checked((long)v);
                     }
 
                 case BinXmlToken.SQL_REAL:
-                case BinXmlToken.SQL_FLOAT: {
+                case BinXmlToken.SQL_FLOAT:
+                    {
                         double v = ValueAsDouble();
                         return (long)v;
                     }
@@ -3242,29 +3680,35 @@ namespace Microsoft.Xml {
                 case BinXmlToken.SQL_SMALLMONEY:
                 case BinXmlToken.SQL_DECIMAL:
                 case BinXmlToken.SQL_NUMERIC:
-                case BinXmlToken.XSD_DECIMAL: {
+                case BinXmlToken.XSD_DECIMAL:
+                    {
                         Decimal v = ValueAsDecimal();
                         return (long)v;
                     }
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        ulong ValueAsULong() {
-            if (BinXmlToken.XSD_UNSIGNEDLONG == this.token) {
+        private ulong ValueAsULong()
+        {
+            if (BinXmlToken.XSD_UNSIGNEDLONG == _token)
+            {
                 CheckValueTokenBounds();
-                return GetUInt64(this.tokDataPos);
+                return GetUInt64(_tokDataPos);
             }
-            else {
-                throw ThrowUnexpectedToken(this.token);
+            else
+            {
+                throw ThrowUnexpectedToken(_token);
             }
         }
 
-        Decimal ValueAsDecimal() {
+        private Decimal ValueAsDecimal()
+        {
             CheckValueTokenBounds();
-            switch (token) {
+            switch (_token)
+            {
                 case BinXmlToken.SQL_BIT:
                 case BinXmlToken.SQL_TINYINT:
                 case BinXmlToken.SQL_SMALLINT:
@@ -3279,35 +3723,40 @@ namespace Microsoft.Xml {
                     return new Decimal(ValueAsULong());
 
                 case BinXmlToken.SQL_REAL:
-                    return new Decimal(GetSingle(this.tokDataPos));
+                    return new Decimal(GetSingle(_tokDataPos));
 
                 case BinXmlToken.SQL_FLOAT:
-                    return new Decimal(GetDouble(this.tokDataPos));
+                    return new Decimal(GetDouble(_tokDataPos));
 
-                case BinXmlToken.SQL_SMALLMONEY: {
-                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt32(this.tokDataPos));
+                case BinXmlToken.SQL_SMALLMONEY:
+                    {
+                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt32(_tokDataPos));
                         return v.ToDecimal();
                     }
-                case BinXmlToken.SQL_MONEY: {
-                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt64(this.tokDataPos));
+                case BinXmlToken.SQL_MONEY:
+                    {
+                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt64(_tokDataPos));
                         return v.ToDecimal();
                     }
 
                 case BinXmlToken.XSD_DECIMAL:
                 case BinXmlToken.SQL_DECIMAL:
-                case BinXmlToken.SQL_NUMERIC: {
-                        BinXmlSqlDecimal v = new BinXmlSqlDecimal(this.data, this.tokDataPos, token == BinXmlToken.XSD_DECIMAL);
+                case BinXmlToken.SQL_NUMERIC:
+                    {
+                        BinXmlSqlDecimal v = new BinXmlSqlDecimal(_data, _tokDataPos, _token == BinXmlToken.XSD_DECIMAL);
                         return v.ToDecimal();
                     }
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        double ValueAsDouble() {
+        private double ValueAsDouble()
+        {
             CheckValueTokenBounds();
-            switch (token) {
+            switch (_token)
+            {
                 case BinXmlToken.SQL_BIT:
                 case BinXmlToken.SQL_TINYINT:
                 case BinXmlToken.SQL_SMALLINT:
@@ -3322,10 +3771,10 @@ namespace Microsoft.Xml {
                     return (double)ValueAsULong();
 
                 case BinXmlToken.SQL_REAL:
-                    return GetSingle(this.tokDataPos);
+                    return GetSingle(_tokDataPos);
 
                 case BinXmlToken.SQL_FLOAT:
-                    return GetDouble(this.tokDataPos);
+                    return GetDouble(_tokDataPos);
 
                 case BinXmlToken.SQL_SMALLMONEY:
                 case BinXmlToken.SQL_MONEY:
@@ -3335,153 +3784,173 @@ namespace Microsoft.Xml {
                     return (double)ValueAsDecimal();
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        DateTime ValueAsDateTime() {
+        private DateTime ValueAsDateTime()
+        {
             CheckValueTokenBounds();
-            switch (token) {
-                case BinXmlToken.SQL_DATETIME: {
-                        int pos = this.tokDataPos;
+            switch (_token)
+            {
+                case BinXmlToken.SQL_DATETIME:
+                    {
+                        int pos = _tokDataPos;
                         int dateticks; uint timeticks;
                         dateticks = GetInt32(pos);
                         timeticks = GetUInt32(pos + 4);
                         return BinXmlDateTime.SqlDateTimeToDateTime(dateticks, timeticks);
                     }
 
-                case BinXmlToken.SQL_SMALLDATETIME: {
-                        int pos = this.tokDataPos;
+                case BinXmlToken.SQL_SMALLDATETIME:
+                    {
+                        int pos = _tokDataPos;
                         short dateticks; ushort timeticks;
                         dateticks = GetInt16(pos);
                         timeticks = GetUInt16(pos + 2);
                         return BinXmlDateTime.SqlSmallDateTimeToDateTime(dateticks, timeticks);
                     }
 
-                case BinXmlToken.XSD_TIME: {
-                        long time = GetInt64(this.tokDataPos);
+                case BinXmlToken.XSD_TIME:
+                    {
+                        long time = GetInt64(_tokDataPos);
                         return BinXmlDateTime.XsdTimeToDateTime(time);
                     }
 
-                case BinXmlToken.XSD_DATE: {
-                        long time = GetInt64(this.tokDataPos);
+                case BinXmlToken.XSD_DATE:
+                    {
+                        long time = GetInt64(_tokDataPos);
                         return BinXmlDateTime.XsdDateToDateTime(time);
                     }
 
-                case BinXmlToken.XSD_DATETIME: {
-                        long time = GetInt64(this.tokDataPos);
+                case BinXmlToken.XSD_DATETIME:
+                    {
+                        long time = GetInt64(_tokDataPos);
                         return BinXmlDateTime.XsdDateTimeToDateTime(time);
                     }
 
                 case BinXmlToken.XSD_KATMAI_DATE:
-                    return BinXmlDateTime.XsdKatmaiDateToDateTime(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateToDateTime(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATETIME:
-                    return BinXmlDateTime.XsdKatmaiDateTimeToDateTime(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateTimeToDateTime(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_TIME:
-                    return BinXmlDateTime.XsdKatmaiTimeToDateTime(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiTimeToDateTime(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiDateOffsetToDateTime(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateOffsetToDateTime(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATETIMEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiDateTimeOffsetToDateTime(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateTimeOffsetToDateTime(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiTimeOffsetToDateTime(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiTimeOffsetToDateTime(_data, _tokDataPos);
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        DateTimeOffset ValueAsDateTimeOffset() {
+        private DateTimeOffset ValueAsDateTimeOffset()
+        {
             CheckValueTokenBounds();
-            switch (token) {
+            switch (_token)
+            {
                 case BinXmlToken.XSD_KATMAI_DATEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiDateOffsetToDateTimeOffset(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateOffsetToDateTimeOffset(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATETIMEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiDateTimeOffsetToDateTimeOffset(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateTimeOffsetToDateTimeOffset(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiTimeOffsetToDateTimeOffset(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiTimeOffsetToDateTimeOffset(_data, _tokDataPos);
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
 
-        string ValueAsDateTimeString() {
+        private string ValueAsDateTimeString()
+        {
             CheckValueTokenBounds();
-            switch (token) {
-                case BinXmlToken.SQL_DATETIME: {
-                        int pos = this.tokDataPos;
+            switch (_token)
+            {
+                case BinXmlToken.SQL_DATETIME:
+                    {
+                        int pos = _tokDataPos;
                         int dateticks; uint timeticks;
                         dateticks = GetInt32(pos);
                         timeticks = GetUInt32(pos + 4);
                         return BinXmlDateTime.SqlDateTimeToString(dateticks, timeticks);
                     }
 
-                case BinXmlToken.SQL_SMALLDATETIME: {
-                        int pos = this.tokDataPos;
+                case BinXmlToken.SQL_SMALLDATETIME:
+                    {
+                        int pos = _tokDataPos;
                         short dateticks; ushort timeticks;
                         dateticks = GetInt16(pos);
                         timeticks = GetUInt16(pos + 2);
                         return BinXmlDateTime.SqlSmallDateTimeToString(dateticks, timeticks);
                     }
 
-                case BinXmlToken.XSD_TIME: {
-                        long time = GetInt64(this.tokDataPos);
+                case BinXmlToken.XSD_TIME:
+                    {
+                        long time = GetInt64(_tokDataPos);
                         return BinXmlDateTime.XsdTimeToString(time);
                     }
 
-                case BinXmlToken.XSD_DATE: {
-                        long time = GetInt64(this.tokDataPos);
+                case BinXmlToken.XSD_DATE:
+                    {
+                        long time = GetInt64(_tokDataPos);
                         return BinXmlDateTime.XsdDateToString(time);
                     }
 
-                case BinXmlToken.XSD_DATETIME: {
-                        long time = GetInt64(this.tokDataPos);
+                case BinXmlToken.XSD_DATETIME:
+                    {
+                        long time = GetInt64(_tokDataPos);
                         return BinXmlDateTime.XsdDateTimeToString(time);
                     }
 
                 case BinXmlToken.XSD_KATMAI_DATE:
-                    return BinXmlDateTime.XsdKatmaiDateToString(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateToString(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATETIME:
-                    return BinXmlDateTime.XsdKatmaiDateTimeToString(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateTimeToString(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_TIME:
-                    return BinXmlDateTime.XsdKatmaiTimeToString(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiTimeToString(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiDateOffsetToString(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateOffsetToString(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_DATETIMEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiDateTimeOffsetToString(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiDateTimeOffsetToString(_data, _tokDataPos);
 
                 case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
-                    return BinXmlDateTime.XsdKatmaiTimeOffsetToString(this.data, this.tokDataPos);
+                    return BinXmlDateTime.XsdKatmaiTimeOffsetToString(_data, _tokDataPos);
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        string ValueAsString(BinXmlToken token) {
-            try {
+        private string ValueAsString(BinXmlToken token)
+        {
+            try
+            {
                 CheckValueTokenBounds();
-                switch ( token ) {
+                switch (token)
+                {
                     case BinXmlToken.SQL_NCHAR:
                     case BinXmlToken.SQL_NVARCHAR:
                     case BinXmlToken.SQL_NTEXT:
-                        return GetString( this.tokDataPos, this.tokLen );
+                        return GetString(_tokDataPos, _tokLen);
 
-                    case BinXmlToken.XSD_BOOLEAN: {
-                            if ( 0 == this.data[this.tokDataPos] )
+                    case BinXmlToken.XSD_BOOLEAN:
+                        {
+                            if (0 == _data[_tokDataPos])
                                 return "false";
                             else
                                 return "true";
@@ -3495,62 +3964,68 @@ namespace Microsoft.Xml {
                     case BinXmlToken.XSD_BYTE:
                     case BinXmlToken.XSD_UNSIGNEDSHORT:
                     case BinXmlToken.XSD_UNSIGNEDINT:
-                        return ValueAsLong().ToString( CultureInfo.InvariantCulture );
+                        return ValueAsLong().ToString(CultureInfo.InvariantCulture);
 
                     case BinXmlToken.XSD_UNSIGNEDLONG:
-                        return ValueAsULong().ToString( CultureInfo.InvariantCulture );
+                        return ValueAsULong().ToString(CultureInfo.InvariantCulture);
 
                     case BinXmlToken.SQL_REAL:
-                        return XmlConvert.ToString( GetSingle( this.tokDataPos ) );
+                        return XmlConvert.ToString(GetSingle(_tokDataPos));
 
                     case BinXmlToken.SQL_FLOAT:
-                        return XmlConvert.ToString( GetDouble( this.tokDataPos ) );
+                        return XmlConvert.ToString(GetDouble(_tokDataPos));
 
-                    case BinXmlToken.SQL_UUID: {
+                    case BinXmlToken.SQL_UUID:
+                        {
                             int a; short b, c;
-                            int pos = this.tokDataPos;
-                            a = GetInt32( pos );
-                            b = GetInt16( pos + 4 );
-                            c = GetInt16( pos + 6 );
-                            Guid v = new Guid( a, b, c, data[pos + 8], data[pos + 9], data[pos + 10], data[pos + 11], data[pos + 12], data[pos + 13], data[pos + 14], data[pos + 15] );
+                            int pos = _tokDataPos;
+                            a = GetInt32(pos);
+                            b = GetInt16(pos + 4);
+                            c = GetInt16(pos + 6);
+                            Guid v = new Guid(a, b, c, _data[pos + 8], _data[pos + 9], _data[pos + 10], _data[pos + 11], _data[pos + 12], _data[pos + 13], _data[pos + 14], _data[pos + 15]);
                             return v.ToString();
                         }
 
-                    case BinXmlToken.SQL_SMALLMONEY: {
-                            BinXmlSqlMoney v = new BinXmlSqlMoney( GetInt32( this.tokDataPos ) );
+                    case BinXmlToken.SQL_SMALLMONEY:
+                        {
+                            BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt32(_tokDataPos));
                             return v.ToString();
                         }
-                    case BinXmlToken.SQL_MONEY: {
-                            BinXmlSqlMoney v = new BinXmlSqlMoney( GetInt64( this.tokDataPos ) );
+                    case BinXmlToken.SQL_MONEY:
+                        {
+                            BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt64(_tokDataPos));
                             return v.ToString();
                         }
 
                     case BinXmlToken.XSD_DECIMAL:
                     case BinXmlToken.SQL_DECIMAL:
-                    case BinXmlToken.SQL_NUMERIC: {
-                            BinXmlSqlDecimal v = new BinXmlSqlDecimal( this.data, this.tokDataPos, token == BinXmlToken.XSD_DECIMAL );
+                    case BinXmlToken.SQL_NUMERIC:
+                        {
+                            BinXmlSqlDecimal v = new BinXmlSqlDecimal(_data, _tokDataPos, token == BinXmlToken.XSD_DECIMAL);
                             return v.ToString();
                         }
 
                     case BinXmlToken.SQL_CHAR:
                     case BinXmlToken.SQL_VARCHAR:
-                    case BinXmlToken.SQL_TEXT: {
-                            int pos = this.tokDataPos;
-                            int codepage = GetInt32( pos );
-                            Encoding enc = System.Text.Encoding.GetEncoding( codepage );
-                            return enc.GetString( this.data, pos + 4, this.tokLen - 4 );
+                    case BinXmlToken.SQL_TEXT:
+                        {
+                            int pos = _tokDataPos;
+                            int codepage = GetInt32(pos);
+                            Encoding enc = System.Text.Encoding.GetEncoding(codepage);
+                            return enc.GetString(_data, pos + 4, _tokLen - 4);
                         }
 
                     case BinXmlToken.SQL_VARBINARY:
                     case BinXmlToken.SQL_BINARY:
                     case BinXmlToken.SQL_IMAGE:
                     case BinXmlToken.SQL_UDT:
-                    case BinXmlToken.XSD_BASE64: {
-                            return Convert.ToBase64String( this.data, this.tokDataPos, this.tokLen );
+                    case BinXmlToken.XSD_BASE64:
+                        {
+                            return Convert.ToBase64String(_data, _tokDataPos, _tokLen);
                         }
 
                     case BinXmlToken.XSD_BINHEX:
-                        return BinHexEncoder.Encode( this.data, this.tokDataPos, this.tokLen );
+                        return BinHexEncoder.Encode(_data, _tokDataPos, _tokLen);
 
                     case BinXmlToken.SQL_DATETIME:
                     case BinXmlToken.SQL_SMALLDATETIME:
@@ -3565,93 +4040,101 @@ namespace Microsoft.Xml {
                     case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
                         return ValueAsDateTimeString();
 
-                    case BinXmlToken.XSD_QNAME: {
-                            int nameNum = ParseMB32( this.tokDataPos );
-                            if ( nameNum < 0 || nameNum >= this.symbolTables.qnameCount )
-                                throw new XmlException( ResXml.XmlBin_InvalidQNameID, String.Empty );
-                            QName qname = this.symbolTables.qnametable[nameNum];
-                            if ( qname.prefix.Length == 0 )
+                    case BinXmlToken.XSD_QNAME:
+                        {
+                            int nameNum = ParseMB32(_tokDataPos);
+                            if (nameNum < 0 || nameNum >= _symbolTables.qnameCount)
+                                throw new XmlException(ResXml.XmlBin_InvalidQNameID, String.Empty);
+                            QName qname = _symbolTables.qnametable[nameNum];
+                            if (qname.prefix.Length == 0)
                                 return qname.localname;
                             else
-                                return String.Concat( qname.prefix, ":", qname.localname );
+                                return String.Concat(qname.prefix, ":", qname.localname);
                         }
 
                     default:
-                        throw ThrowUnexpectedToken( this.token );
+                        throw ThrowUnexpectedToken(_token);
                 }
             }
-            catch {
-                this.state = ScanState.Error;
+            catch
+            {
+                _state = ScanState.Error;
                 throw;
             }
         }
 
-        object ValueAsObject(BinXmlToken token, bool returnInternalTypes) {
+        private object ValueAsObject(BinXmlToken token, bool returnInternalTypes)
+        {
             CheckValueTokenBounds();
-            switch (token) {
+            switch (token)
+            {
                 case BinXmlToken.SQL_NCHAR:
                 case BinXmlToken.SQL_NVARCHAR:
                 case BinXmlToken.SQL_NTEXT:
-                    return GetString(this.tokDataPos, this.tokLen);
+                    return GetString(_tokDataPos, _tokLen);
 
                 case BinXmlToken.XSD_BOOLEAN:
-                    return (0 != this.data[this.tokDataPos]);
+                    return (0 != _data[_tokDataPos]);
 
                 case BinXmlToken.SQL_BIT:
-                    return (Int32)this.data[this.tokDataPos];
+                    return (Int32)_data[_tokDataPos];
 
                 case BinXmlToken.SQL_TINYINT:
-                    return this.data[this.tokDataPos];
+                    return _data[_tokDataPos];
 
                 case BinXmlToken.SQL_SMALLINT:
-                    return GetInt16(this.tokDataPos);
+                    return GetInt16(_tokDataPos);
 
                 case BinXmlToken.SQL_INT:
-                    return GetInt32(this.tokDataPos);
+                    return GetInt32(_tokDataPos);
 
                 case BinXmlToken.SQL_BIGINT:
-                    return GetInt64(this.tokDataPos);
+                    return GetInt64(_tokDataPos);
 
-                case BinXmlToken.XSD_BYTE: {
-                        sbyte v = unchecked((sbyte)this.data[this.tokDataPos]);
+                case BinXmlToken.XSD_BYTE:
+                    {
+                        sbyte v = unchecked((sbyte)_data[_tokDataPos]);
                         return v;
                     }
 
                 case BinXmlToken.XSD_UNSIGNEDSHORT:
-                    return GetUInt16(this.tokDataPos);
+                    return GetUInt16(_tokDataPos);
 
                 case BinXmlToken.XSD_UNSIGNEDINT:
-                    return GetUInt32(this.tokDataPos);
+                    return GetUInt32(_tokDataPos);
 
                 case BinXmlToken.XSD_UNSIGNEDLONG:
-                    return GetUInt64(this.tokDataPos);
+                    return GetUInt64(_tokDataPos);
 
                 case BinXmlToken.SQL_REAL:
-                    return GetSingle(this.tokDataPos);
+                    return GetSingle(_tokDataPos);
 
                 case BinXmlToken.SQL_FLOAT:
-                    return GetDouble(this.tokDataPos);
+                    return GetDouble(_tokDataPos);
 
-                case BinXmlToken.SQL_UUID: {
+                case BinXmlToken.SQL_UUID:
+                    {
                         int a; short b, c;
-                        int pos = this.tokDataPos;
+                        int pos = _tokDataPos;
                         a = GetInt32(pos);
                         b = GetInt16(pos + 4);
                         c = GetInt16(pos + 6);
-                        Guid v = new Guid(a, b, c, data[pos + 8], data[pos + 9], data[pos + 10], data[pos + 11], data[pos + 12], data[pos + 13], data[pos + 14], data[pos + 15]);
+                        Guid v = new Guid(a, b, c, _data[pos + 8], _data[pos + 9], _data[pos + 10], _data[pos + 11], _data[pos + 12], _data[pos + 13], _data[pos + 14], _data[pos + 15]);
                         return v.ToString();
                     }
 
-                case BinXmlToken.SQL_SMALLMONEY: {
-                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt32(this.tokDataPos));
+                case BinXmlToken.SQL_SMALLMONEY:
+                    {
+                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt32(_tokDataPos));
                         if (returnInternalTypes)
                             return v;
                         else
                             return v.ToDecimal();
                     }
 
-                case BinXmlToken.SQL_MONEY: {
-                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt64(this.tokDataPos));
+                case BinXmlToken.SQL_MONEY:
+                    {
+                        BinXmlSqlMoney v = new BinXmlSqlMoney(GetInt64(_tokDataPos));
                         if (returnInternalTypes)
                             return v;
                         else
@@ -3660,8 +4143,9 @@ namespace Microsoft.Xml {
 
                 case BinXmlToken.XSD_DECIMAL:
                 case BinXmlToken.SQL_DECIMAL:
-                case BinXmlToken.SQL_NUMERIC: {
-                        BinXmlSqlDecimal v = new BinXmlSqlDecimal(this.data, this.tokDataPos, token == BinXmlToken.XSD_DECIMAL);
+                case BinXmlToken.SQL_NUMERIC:
+                    {
+                        BinXmlSqlDecimal v = new BinXmlSqlDecimal(_data, _tokDataPos, token == BinXmlToken.XSD_DECIMAL);
                         if (returnInternalTypes)
                             return v;
                         else
@@ -3670,11 +4154,12 @@ namespace Microsoft.Xml {
 
                 case BinXmlToken.SQL_CHAR:
                 case BinXmlToken.SQL_VARCHAR:
-                case BinXmlToken.SQL_TEXT: {
-                        int pos = this.tokDataPos;
+                case BinXmlToken.SQL_TEXT:
+                    {
+                        int pos = _tokDataPos;
                         int codepage = GetInt32(pos);
                         Encoding enc = System.Text.Encoding.GetEncoding(codepage);
-                        return enc.GetString(this.data, pos + 4, this.tokLen - 4);
+                        return enc.GetString(_data, pos + 4, _tokLen - 4);
                     }
 
                 case BinXmlToken.SQL_VARBINARY:
@@ -3682,9 +4167,10 @@ namespace Microsoft.Xml {
                 case BinXmlToken.SQL_IMAGE:
                 case BinXmlToken.SQL_UDT:
                 case BinXmlToken.XSD_BASE64:
-                case BinXmlToken.XSD_BINHEX: {
-                        byte[] data = new byte[this.tokLen];
-                        Array.Copy(this.data, this.tokDataPos, data, 0, this.tokLen);
+                case BinXmlToken.XSD_BINHEX:
+                    {
+                        byte[] data = new byte[_tokLen];
+                        Array.Copy(_data, _tokDataPos, data, 0, _tokLen);
                         return data;
                     }
 
@@ -3703,104 +4189,117 @@ namespace Microsoft.Xml {
                 case BinXmlToken.XSD_KATMAI_TIMEOFFSET:
                     return ValueAsDateTimeOffset();
 
-                case BinXmlToken.XSD_QNAME: {
-                        int nameNum = ParseMB32(this.tokDataPos);
-                        if (nameNum < 0 || nameNum >= this.symbolTables.qnameCount)
+                case BinXmlToken.XSD_QNAME:
+                    {
+                        int nameNum = ParseMB32(_tokDataPos);
+                        if (nameNum < 0 || nameNum >= _symbolTables.qnameCount)
                             throw new XmlException(ResXml.XmlBin_InvalidQNameID, String.Empty);
-                        QName qname = this.symbolTables.qnametable[nameNum];
+                        QName qname = _symbolTables.qnametable[nameNum];
                         return new XmlQualifiedName(qname.localname, qname.namespaceUri);
                     }
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
         }
 
-        XmlValueConverter GetValueConverter(XmlTypeCode typeCode) {
+        private XmlValueConverter GetValueConverter(XmlTypeCode typeCode)
+        {
             XmlSchemaSimpleType xsst = DatatypeImplementation.GetSimpleTypeFromTypeCode(typeCode);
             return xsst.ValueConverter;
         }
 
-        object ValueAs(BinXmlToken token, Type returnType, IXmlNamespaceResolver namespaceResolver) {
+        private object ValueAs(BinXmlToken token, Type returnType, IXmlNamespaceResolver namespaceResolver)
+        {
             object value;
             CheckValueTokenBounds();
-            switch (token) {
+            switch (token)
+            {
                 case BinXmlToken.SQL_NCHAR:
                 case BinXmlToken.SQL_NVARCHAR:
                 case BinXmlToken.SQL_NTEXT:
                     value = GetValueConverter(XmlTypeCode.UntypedAtomic).ChangeType(
-                        GetString(this.tokDataPos, this.tokLen),
+                        GetString(_tokDataPos, _tokLen),
                         returnType, namespaceResolver);
                     break;
 
                 case BinXmlToken.XSD_BOOLEAN:
                     value = GetValueConverter(XmlTypeCode.Boolean).ChangeType(
-                        (0 != this.data[this.tokDataPos]),
+                        (0 != _data[_tokDataPos]),
                         returnType, namespaceResolver);
                     break;
 
                 case BinXmlToken.SQL_BIT:
                     value = GetValueConverter(XmlTypeCode.NonNegativeInteger).ChangeType(
-                        (Int32)this.data[this.tokDataPos],
+                        (Int32)_data[_tokDataPos],
                         returnType, namespaceResolver);
                     break;
 
                 case BinXmlToken.SQL_TINYINT:
                     value = GetValueConverter(XmlTypeCode.UnsignedByte).ChangeType(
-                        this.data[this.tokDataPos],
+                        _data[_tokDataPos],
                         returnType, namespaceResolver);
                     break;
 
-                case BinXmlToken.SQL_SMALLINT: {
-                        int v = GetInt16(this.tokDataPos);
+                case BinXmlToken.SQL_SMALLINT:
+                    {
+                        int v = GetInt16(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.Short).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.SQL_INT: {
-                        int v = GetInt32(this.tokDataPos);
+                case BinXmlToken.SQL_INT:
+                    {
+                        int v = GetInt32(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.Int).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.SQL_BIGINT: {
-                        long v = GetInt64(this.tokDataPos);
+                case BinXmlToken.SQL_BIGINT:
+                    {
+                        long v = GetInt64(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.Long).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.XSD_BYTE: {
+                case BinXmlToken.XSD_BYTE:
+                    {
                         value = GetValueConverter(XmlTypeCode.Byte).ChangeType(
-                            (int)unchecked((sbyte)this.data[this.tokDataPos]),
+                            (int)unchecked((sbyte)_data[_tokDataPos]),
                             returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.XSD_UNSIGNEDSHORT: {
-                        int v = GetUInt16(this.tokDataPos);
+                case BinXmlToken.XSD_UNSIGNEDSHORT:
+                    {
+                        int v = GetUInt16(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.UnsignedShort).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.XSD_UNSIGNEDINT: {
-                        long v = GetUInt32(this.tokDataPos);
+                case BinXmlToken.XSD_UNSIGNEDINT:
+                    {
+                        long v = GetUInt32(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.UnsignedInt).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.XSD_UNSIGNEDLONG: {
-                        Decimal v = (Decimal)GetUInt64(this.tokDataPos);
+                case BinXmlToken.XSD_UNSIGNEDLONG:
+                    {
+                        Decimal v = (Decimal)GetUInt64(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.UnsignedLong).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.SQL_REAL: {
-                        Single v = GetSingle(this.tokDataPos);
+                case BinXmlToken.SQL_REAL:
+                    {
+                        Single v = GetSingle(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.Float).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
                     }
-                case BinXmlToken.SQL_FLOAT: {
-                        Double v = GetDouble(this.tokDataPos);
+                case BinXmlToken.SQL_FLOAT:
+                    {
+                        Double v = GetDouble(_tokDataPos);
                         value = GetValueConverter(XmlTypeCode.Double).ChangeType(
                             v, returnType, namespaceResolver);
                         break;
@@ -3812,13 +4311,13 @@ namespace Microsoft.Xml {
 
                 case BinXmlToken.SQL_SMALLMONEY:
                     value = GetValueConverter(XmlTypeCode.Decimal).ChangeType(
-                        (new BinXmlSqlMoney(GetInt32(this.tokDataPos))).ToDecimal(),
+                        (new BinXmlSqlMoney(GetInt32(_tokDataPos))).ToDecimal(),
                         returnType, namespaceResolver);
                     break;
 
                 case BinXmlToken.SQL_MONEY:
                     value = GetValueConverter(XmlTypeCode.Decimal).ChangeType(
-                        (new BinXmlSqlMoney(GetInt64(this.tokDataPos))).ToDecimal(),
+                        (new BinXmlSqlMoney(GetInt64(_tokDataPos))).ToDecimal(),
                         returnType, namespaceResolver);
                     break;
 
@@ -3826,18 +4325,19 @@ namespace Microsoft.Xml {
                 case BinXmlToken.SQL_DECIMAL:
                 case BinXmlToken.SQL_NUMERIC:
                     value = GetValueConverter(XmlTypeCode.Decimal).ChangeType(
-                        (new BinXmlSqlDecimal(this.data, this.tokDataPos, token == BinXmlToken.XSD_DECIMAL)).ToDecimal(),
+                        (new BinXmlSqlDecimal(_data, _tokDataPos, token == BinXmlToken.XSD_DECIMAL)).ToDecimal(),
                         returnType, namespaceResolver);
                     break;
 
                 case BinXmlToken.SQL_CHAR:
                 case BinXmlToken.SQL_VARCHAR:
-                case BinXmlToken.SQL_TEXT: {
-                        int pos = this.tokDataPos;
+                case BinXmlToken.SQL_TEXT:
+                    {
+                        int pos = _tokDataPos;
                         int codepage = GetInt32(pos);
                         Encoding enc = System.Text.Encoding.GetEncoding(codepage);
                         value = GetValueConverter(XmlTypeCode.UntypedAtomic).ChangeType(
-                            enc.GetString(this.data, pos + 4, this.tokLen - 4),
+                            enc.GetString(_data, pos + 4, _tokLen - 4),
                             returnType, namespaceResolver);
                         break;
                     }
@@ -3847,9 +4347,10 @@ namespace Microsoft.Xml {
                 case BinXmlToken.SQL_IMAGE:
                 case BinXmlToken.SQL_UDT:
                 case BinXmlToken.XSD_BASE64:
-                case BinXmlToken.XSD_BINHEX: {
-                        byte[] data = new byte[this.tokLen];
-                        Array.Copy(this.data, this.tokDataPos, data, 0, this.tokLen);
+                case BinXmlToken.XSD_BINHEX:
+                    {
+                        byte[] data = new byte[_tokLen];
+                        Array.Copy(_data, _tokDataPos, data, 0, _tokLen);
                         value = GetValueConverter(token == BinXmlToken.XSD_BINHEX ? XmlTypeCode.HexBinary : XmlTypeCode.Base64Binary).ChangeType(
                             data, returnType, namespaceResolver);
                         break;
@@ -3886,11 +4387,12 @@ namespace Microsoft.Xml {
                         returnType, namespaceResolver);
                     break;
 
-                case BinXmlToken.XSD_QNAME: {
-                        int nameNum = ParseMB32(this.tokDataPos);
-                        if (nameNum < 0 || nameNum >= this.symbolTables.qnameCount)
+                case BinXmlToken.XSD_QNAME:
+                    {
+                        int nameNum = ParseMB32(_tokDataPos);
+                        if (nameNum < 0 || nameNum >= _symbolTables.qnameCount)
                             throw new XmlException(ResXml.XmlBin_InvalidQNameID, String.Empty);
-                        QName qname = this.symbolTables.qnametable[nameNum];
+                        QName qname = _symbolTables.qnametable[nameNum];
                         value = GetValueConverter(XmlTypeCode.QName).ChangeType(
                             new XmlQualifiedName(qname.localname, qname.namespaceUri),
                             returnType, namespaceResolver);
@@ -3898,78 +4400,90 @@ namespace Microsoft.Xml {
                     }
 
                 default:
-                    throw ThrowUnexpectedToken(this.token);
+                    throw ThrowUnexpectedToken(_token);
             }
             return value;
         }
 
-        Int16 GetInt16(int pos) {
-            byte[] data = this.data;
+        private Int16 GetInt16(int pos)
+        {
+            byte[] data = _data;
             return (Int16)(data[pos] | data[pos + 1] << 8);
         }
 
-        UInt16 GetUInt16(int pos) {
-            byte[] data = this.data;
+        private UInt16 GetUInt16(int pos)
+        {
+            byte[] data = _data;
             return (UInt16)(data[pos] | data[pos + 1] << 8);
         }
 
-        Int32 GetInt32(int pos) {
-            byte[] data = this.data;
+        private Int32 GetInt32(int pos)
+        {
+            byte[] data = _data;
             return (Int32)(data[pos] | data[pos + 1] << 8 | data[pos + 2] << 16 | data[pos + 3] << 24);
         }
 
-        UInt32 GetUInt32(int pos) {
-            byte[] data = this.data;
+        private UInt32 GetUInt32(int pos)
+        {
+            byte[] data = _data;
             return (UInt32)(data[pos] | data[pos + 1] << 8 | data[pos + 2] << 16 | data[pos + 3] << 24);
         }
 
-        Int64 GetInt64(int pos) {
-            byte[] data = this.data;
+        private Int64 GetInt64(int pos)
+        {
+            byte[] data = _data;
             uint lo = (uint)(data[pos] | data[pos + 1] << 8 | data[pos + 2] << 16 | data[pos + 3] << 24);
             uint hi = (uint)(data[pos + 4] | data[pos + 5] << 8 | data[pos + 6] << 16 | data[pos + 7] << 24);
             return (Int64)((ulong)hi) << 32 | lo;
         }
 
-        UInt64 GetUInt64(int pos) {
-            byte[] data = this.data;
+        private UInt64 GetUInt64(int pos)
+        {
+            byte[] data = _data;
             uint lo = (uint)(data[pos] | data[pos + 1] << 8 | data[pos + 2] << 16 | data[pos + 3] << 24);
             uint hi = (uint)(data[pos + 4] | data[pos + 5] << 8 | data[pos + 6] << 16 | data[pos + 7] << 24);
             return (UInt64)((ulong)hi) << 32 | lo;
         }
 
-        Single GetSingle(int offset) {
-            byte[] data = this.data;
+        private Single GetSingle(int offset)
+        {
+            byte[] data = _data;
             uint tmp = (uint)(data[offset]
                             | data[offset + 1] << 8
                             | data[offset + 2] << 16
                             | data[offset + 3] << 24);
-            unsafe {
+            unsafe
+            {
                 return *((float*)&tmp);
             }
         }
 
-        Double GetDouble(int offset) {
-            uint lo = (uint)(data[offset + 0]
-                            | data[offset + 1] << 8
-                            | data[offset + 2] << 16
-                            | data[offset + 3] << 24);
-            uint hi = (uint)(data[offset + 4]
-                            | data[offset + 5] << 8
-                            | data[offset + 6] << 16
-                            | data[offset + 7] << 24);
+        private Double GetDouble(int offset)
+        {
+            uint lo = (uint)(_data[offset + 0]
+                            | _data[offset + 1] << 8
+                            | _data[offset + 2] << 16
+                            | _data[offset + 3] << 24);
+            uint hi = (uint)(_data[offset + 4]
+                            | _data[offset + 5] << 8
+                            | _data[offset + 6] << 16
+                            | _data[offset + 7] << 24);
             ulong tmp = ((ulong)hi) << 32 | lo;
-            unsafe {
+            unsafe
+            {
                 return *((double*)&tmp);
             }
         }
 
-        Exception ThrowUnexpectedToken(BinXmlToken token) {
+        private Exception ThrowUnexpectedToken(BinXmlToken token)
+        {
             System.Diagnostics.Debug.WriteLine("Unhandled token: " + token.ToString());
             return ThrowXmlException(ResXml.XmlBinary_UnexpectedToken);
         }
 
-        Exception ThrowXmlException(string res) {
-            this.state = ScanState.Error;
+        private Exception ThrowXmlException(string res)
+        {
+            _state = ScanState.Error;
             return new XmlException(res, (string[])null);
         }
 
@@ -3979,13 +4493,15 @@ namespace Microsoft.Xml {
         //    return new XmlException(res, new string[] {arg1} );
         //}
 
-        Exception ThrowXmlException(string res, string arg1, string arg2) {
-            this.state = ScanState.Error;
+        private Exception ThrowXmlException(string res, string arg1, string arg2)
+        {
+            _state = ScanState.Error;
             return new XmlException(res, new string[] { arg1, arg2 });
         }
 
-        Exception ThrowNotSupported(string res) {
-            this.state = ScanState.Error;
+        private Exception ThrowNotSupported(string res)
+        {
+            _state = ScanState.Error;
             return new NotSupportedException(ResXml.GetString(res));
         }
     }

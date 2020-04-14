@@ -15,8 +15,8 @@ namespace System.IdentityModel.Tokens
     {
         private string _id;
         private readonly string _servicePrincipalName;
-        DateTime _effectiveTime;
-        DateTime _expirationTime;
+        private DateTime _effectiveTime;
+        private DateTime _expirationTime;
 
         internal KerberosRequestorSecurityToken(string servicePrincipalName, TokenImpersonationLevel tokenImpersonationLevel, NetworkCredential networkCredential, string id)
         {

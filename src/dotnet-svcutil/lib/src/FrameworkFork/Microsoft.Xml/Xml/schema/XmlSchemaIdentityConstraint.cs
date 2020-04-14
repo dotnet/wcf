@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -14,21 +15,23 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaIdentityConstraint : XmlSchemaAnnotated {
-        string name;        
-        XmlSchemaXPath selector;
-        XmlSchemaObjectCollection fields = new XmlSchemaObjectCollection();
-		XmlQualifiedName qualifiedName = XmlQualifiedName.Empty;
-		CompiledIdentityConstraint compiledConstraint = null;
+    public class XmlSchemaIdentityConstraint : XmlSchemaAnnotated
+    {
+        private string _name;
+        private XmlSchemaXPath _selector;
+        private XmlSchemaObjectCollection _fields = new XmlSchemaObjectCollection();
+        private XmlQualifiedName _qualifiedName = XmlQualifiedName.Empty;
+        private CompiledIdentityConstraint _compiledConstraint = null;
 
         /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaIdentityConstraint.Name"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("name")]
-        public string Name { 
-            get { return name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaIdentityConstraint.Selector"]/*' />
@@ -36,9 +39,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("selector", typeof(XmlSchemaXPath))]
-        public XmlSchemaXPath Selector {
-            get { return selector; }
-            set { selector = value; }
+        public XmlSchemaXPath Selector
+        {
+            get { return _selector; }
+            set { _selector = value; }
         }
 
         /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaIdentityConstraint.Fields"]/*' />
@@ -46,31 +50,36 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("field", typeof(XmlSchemaXPath))]
-        public XmlSchemaObjectCollection Fields {
-            get { return fields; }
+        public XmlSchemaObjectCollection Fields
+        {
+            get { return _fields; }
         }
-		
+
         /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaIdentityConstraint.QualifiedName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-		[XmlIgnore]
-		public XmlQualifiedName QualifiedName { 
-			get { return qualifiedName; }
-		}
+        [XmlIgnore]
+        public XmlQualifiedName QualifiedName
+        {
+            get { return _qualifiedName; }
+        }
 
-		internal void  SetQualifiedName(XmlQualifiedName value) { 
-			qualifiedName = value;
-		}
-
-		[XmlIgnore]
-		internal CompiledIdentityConstraint CompiledConstraint {
-			get { return compiledConstraint; }
-			set { compiledConstraint = value; }
-		}
+        internal void SetQualifiedName(XmlQualifiedName value)
+        {
+            _qualifiedName = value;
+        }
 
         [XmlIgnore]
-        internal override string NameAttribute {
+        internal CompiledIdentityConstraint CompiledConstraint
+        {
+            get { return _compiledConstraint; }
+            set { _compiledConstraint = value; }
+        }
+
+        [XmlIgnore]
+        internal override string NameAttribute
+        {
             get { return Name; }
             set { Name = value; }
         }
@@ -80,16 +89,18 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaXPath : XmlSchemaAnnotated {
-        string xpath;
+    public class XmlSchemaXPath : XmlSchemaAnnotated
+    {
+        private string _xpath;
         /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaXPath.XPath"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("xpath"), DefaultValue("")]
-        public string XPath {
-            get { return xpath; }
-            set { xpath = value; }
+        public string XPath
+        {
+            get { return _xpath; }
+            set { _xpath = value; }
         }
     }
 
@@ -97,31 +108,35 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaUnique : XmlSchemaIdentityConstraint {
+    public class XmlSchemaUnique : XmlSchemaIdentityConstraint
+    {
     }
 
     /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaKey"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaKey : XmlSchemaIdentityConstraint {
+    public class XmlSchemaKey : XmlSchemaIdentityConstraint
+    {
     }
 
     /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaKeyref"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaKeyref : XmlSchemaIdentityConstraint {
-        XmlQualifiedName refer = XmlQualifiedName.Empty; 
+    public class XmlSchemaKeyref : XmlSchemaIdentityConstraint
+    {
+        private XmlQualifiedName _refer = XmlQualifiedName.Empty;
 
         /// <include file='doc\XmlSchemaIdentityConstraint.uex' path='docs/doc[@for="XmlSchemaKeyref.Refer"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("refer")]
-        public XmlQualifiedName Refer { 
-            get { return refer; }
-            set { refer = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName Refer
+        {
+            get { return _refer; }
+            set { _refer = (value == null ? XmlQualifiedName.Empty : value); }
         }
     }
 }

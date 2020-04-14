@@ -180,7 +180,7 @@ namespace System.ServiceModel.Description
         // RC0 workaround to freeze credentials when the channel factory is opened
         internal void MakeReadOnly()
         {
-            _isReadOnly = true; 
+            _isReadOnly = true;
 
             if (_clientCertificate != null)
                 _clientCertificate.MakeReadOnly();

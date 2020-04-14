@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -20,62 +21,77 @@ namespace MS.Internal.Xml.XPath {
     // the 'preceding' axis and must be ignored.
     // Last node in ancestorStk is a centinel node; when we pop it from ancestorStk, we should stop iterations.
 
-    internal sealed class PrecedingQuery : BaseAxisQuery {
-        private XPathNodeIterator workIterator;
-        private StackNav ancestorStk;
+    internal sealed class PrecedingQuery : BaseAxisQuery
+    {
+        private XPathNodeIterator _workIterator;
+        private StackNav _ancestorStk;
 
-        public PrecedingQuery(Query qyInput, string name, string prefix, XPathNodeType typeTest) : base(qyInput, name, prefix, typeTest) {
-            ancestorStk = new StackNav();
+        public PrecedingQuery(Query qyInput, string name, string prefix, XPathNodeType typeTest) : base(qyInput, name, prefix, typeTest)
+        {
+            _ancestorStk = new StackNav();
         }
-        private PrecedingQuery(PrecedingQuery other) : base(other) {
-            this.workIterator = Clone(other.workIterator);
-            this.ancestorStk = other.ancestorStk.Clone();
+        private PrecedingQuery(PrecedingQuery other) : base(other)
+        {
+            _workIterator = Clone(other._workIterator);
+            _ancestorStk = other._ancestorStk.Clone();
         }
 
-        public override void Reset() {
-            workIterator = null;
-            ancestorStk.Clear();
+        public override void Reset()
+        {
+            _workIterator = null;
+            _ancestorStk.Clear();
             base.Reset();
         }
-        
-        public override XPathNavigator Advance() {
-            if (workIterator == null) {
-                XPathNavigator last; {
+
+        public override XPathNavigator Advance()
+        {
+            if (_workIterator == null)
+            {
+                XPathNavigator last;
+                {
                     XPathNavigator input = qyInput.Advance();
-                    if (input == null) {
+                    if (input == null)
+                    {
                         return null;
                     }
                     last = input.Clone();
-                    do {
+                    do
+                    {
                         last.MoveTo(input);
                     } while ((input = qyInput.Advance()) != null);
 
-                    if (last.NodeType == XPathNodeType.Attribute || last.NodeType == XPathNodeType.Namespace) {
+                    if (last.NodeType == XPathNodeType.Attribute || last.NodeType == XPathNodeType.Namespace)
+                    {
                         last.MoveToParent();
                     }
                 }
                 // Fill ancestorStk :
-                do {
-                    ancestorStk.Push(last.Clone());
+                do
+                {
+                    _ancestorStk.Push(last.Clone());
                 } while (last.MoveToParent());
                 // Create workIterator :
                 // last.MoveToRoot(); We are on root already
-                workIterator = last.SelectDescendants(XPathNodeType.All, true);
-            } 
-            
-            while (workIterator.MoveNext()) {
-                currentNode = workIterator.Current;
-                if (currentNode.IsSamePosition(ancestorStk.Peek())) {
-                    ancestorStk.Pop();
-                    if (ancestorStk.Count == 0) {
+                _workIterator = last.SelectDescendants(XPathNodeType.All, true);
+            }
+
+            while (_workIterator.MoveNext())
+            {
+                currentNode = _workIterator.Current;
+                if (currentNode.IsSamePosition(_ancestorStk.Peek()))
+                {
+                    _ancestorStk.Pop();
+                    if (_ancestorStk.Count == 0)
+                    {
                         currentNode = null;
-                        workIterator = null;
+                        _workIterator = null;
                         Debug.Assert(qyInput.Advance() == null, "we read all qyInput.Advance() already");
                         return null;
                     }
                     continue;
                 }
-                if (matches(currentNode)) {
+                if (matches(currentNode))
+                {
                     position++;
                     return currentNode;
                 }

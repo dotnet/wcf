@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,32 +13,38 @@ namespace Microsoft.CodeDom {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeGotoStatement : CodeStatement {
-        private string label;
+    public class CodeGotoStatement : CodeStatement
+    {
+        private string _label;
 
-        public CodeGotoStatement() {
+        public CodeGotoStatement()
+        {
         }
-        
-        public CodeGotoStatement(string label) {
+
+        public CodeGotoStatement(string label)
+        {
             Label = label;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Label {
-            get {
-                return label;
+        public string Label
+        {
+            get
+            {
+                return _label;
             }
-            set {
+            set
+            {
                 if (String.IsNullOrEmpty(value))
                     throw new ArgumentNullException("value");
-                    
-                this.label = value;
+
+                _label = value;
             }
         }
     }

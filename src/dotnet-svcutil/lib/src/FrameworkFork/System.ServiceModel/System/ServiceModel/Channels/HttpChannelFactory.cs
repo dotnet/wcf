@@ -290,7 +290,7 @@ namespace System.ServiceModel.Channels
                     }
 
                     httpClient = new HttpClient(clientHandler);
-                    
+
                     _httpClientCache.Add(connectionGroupName, httpClient);
                 }
             }
@@ -408,7 +408,7 @@ namespace System.ServiceModel.Channels
 
         protected override TChannel OnCreateChannel(EndpointAddress remoteAddress, Uri via)
         {
-            if (typeof (TChannel) != typeof (IRequestChannel))
+            if (typeof(TChannel) != typeof(IRequestChannel))
             {
                 remoteAddress = remoteAddress != null && !WebSocketHelper.IsWebSocketUri(remoteAddress.Uri) ?
                     new EndpointAddress(WebSocketHelper.NormalizeHttpSchemeWithWsScheme(remoteAddress.Uri), remoteAddress) :
@@ -445,7 +445,6 @@ namespace System.ServiceModel.Channels
                             WebSocketTransportSettings.TransportUsageMethodName,
                             typeof(WebSocketTransportSettings).Name,
                             WebSocketSettings.TransportUsage)));
-
             }
 
             if (channelType == typeof(IDuplexSessionChannel))

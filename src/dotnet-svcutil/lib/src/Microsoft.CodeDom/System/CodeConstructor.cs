@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeConstructor : CodeMemberMethod {
-        private CodeExpressionCollection baseConstructorArgs = new CodeExpressionCollection();
-        private CodeExpressionCollection chainedConstructorArgs = new CodeExpressionCollection();
+    public class CodeConstructor : CodeMemberMethod
+    {
+        private CodeExpressionCollection _baseConstructorArgs = new CodeExpressionCollection();
+        private CodeExpressionCollection _chainedConstructorArgs = new CodeExpressionCollection();
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeConstructor'/>.
         ///    </para>
         /// </devdoc>
-        public CodeConstructor() {
+        public CodeConstructor()
+        {
             Name = ".ctor";
         }
 
@@ -37,9 +39,11 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the base constructor arguments.
         ///    </para>
         /// </devdoc>
-        public CodeExpressionCollection BaseConstructorArgs {
-            get {
-                return baseConstructorArgs;
+        public CodeExpressionCollection BaseConstructorArgs
+        {
+            get
+            {
+                return _baseConstructorArgs;
             }
         }
 
@@ -48,9 +52,11 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the chained constructor arguments.
         ///    </para>
         /// </devdoc>
-        public CodeExpressionCollection ChainedConstructorArgs {
-            get {
-                return chainedConstructorArgs;
+        public CodeExpressionCollection ChainedConstructorArgs
+        {
+            get
+            {
+                return _chainedConstructorArgs;
             }
         }
     }

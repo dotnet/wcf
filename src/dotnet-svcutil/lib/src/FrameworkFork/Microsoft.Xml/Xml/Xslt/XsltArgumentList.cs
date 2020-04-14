@@ -4,80 +4,95 @@
 using System.Collections;
 // using System.Security.Permissions;
 
-namespace Microsoft.Xml.Xsl {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Xsl
+{
+    using System;
+    using Microsoft.Xml;
 
 
-    public abstract class XsltMessageEncounteredEventArgs : EventArgs {
+    public abstract class XsltMessageEncounteredEventArgs : EventArgs
+    {
         public abstract string Message { get; }
     }
 
     public delegate void XsltMessageEncounteredEventHandler(object sender, XsltMessageEncounteredEventArgs e);
 
-    public class XsltArgumentList {
-        private Hashtable parameters = new Hashtable();
-        private Hashtable extensions = new Hashtable();
+    public class XsltArgumentList
+    {
+        private Hashtable _parameters = new Hashtable();
+        private Hashtable _extensions = new Hashtable();
 
         // Used for reporting xsl:message's during execution
         internal XsltMessageEncounteredEventHandler xsltMessageEncountered = null;
 
-        public XsltArgumentList() {}
+        public XsltArgumentList() { }
 
-        public object GetParam(string name, string namespaceUri) {
-            return this.parameters[new XmlQualifiedName(name, namespaceUri)];
+        public object GetParam(string name, string namespaceUri)
+        {
+            return _parameters[new XmlQualifiedName(name, namespaceUri)];
         }
 
-        public object GetExtensionObject(string namespaceUri) {
-            return this.extensions[namespaceUri];
+        public object GetExtensionObject(string namespaceUri)
+        {
+            return _extensions[namespaceUri];
         }
 
-        public void AddParam(string name, string namespaceUri, object parameter) {
-            CheckArgumentNull(name        , "name"        );
+        public void AddParam(string name, string namespaceUri, object parameter)
+        {
+            CheckArgumentNull(name, "name");
             CheckArgumentNull(namespaceUri, "namespaceUri");
-            CheckArgumentNull(parameter   , "parameter"   );
+            CheckArgumentNull(parameter, "parameter");
 
             XmlQualifiedName qname = new XmlQualifiedName(name, namespaceUri);
             qname.Verify();
-            this.parameters.Add(qname, parameter);
+            _parameters.Add(qname, parameter);
         }
 
-        public void AddExtensionObject(string namespaceUri, object extension) {
+        public void AddExtensionObject(string namespaceUri, object extension)
+        {
             CheckArgumentNull(namespaceUri, "namespaceUri");
-            CheckArgumentNull(extension   , "extension"   );
-            this.extensions.Add(namespaceUri, extension);
+            CheckArgumentNull(extension, "extension");
+            _extensions.Add(namespaceUri, extension);
         }
 
-        public object RemoveParam(string name, string namespaceUri) {
+        public object RemoveParam(string name, string namespaceUri)
+        {
             XmlQualifiedName qname = new XmlQualifiedName(name, namespaceUri);
-            object parameter = this.parameters[qname];
-            this.parameters.Remove(qname);
+            object parameter = _parameters[qname];
+            _parameters.Remove(qname);
             return parameter;
         }
 
-        public object RemoveExtensionObject(string namespaceUri) {
-            object extension = this.extensions[namespaceUri];
-            this.extensions.Remove(namespaceUri);
+        public object RemoveExtensionObject(string namespaceUri)
+        {
+            object extension = _extensions[namespaceUri];
+            _extensions.Remove(namespaceUri);
             return extension;
         }
 
-        public event XsltMessageEncounteredEventHandler XsltMessageEncountered {
-            add {
+        public event XsltMessageEncounteredEventHandler XsltMessageEncountered
+        {
+            add
+            {
                 xsltMessageEncountered += value;
             }
-            remove {
+            remove
+            {
                 xsltMessageEncountered -= value;
             }
         }
 
-        public void Clear() {
-            this.parameters.Clear();
-            this.extensions.Clear();
+        public void Clear()
+        {
+            _parameters.Clear();
+            _extensions.Clear();
             xsltMessageEncountered = null;
         }
 
-        private static void CheckArgumentNull(object param, string paramName) {
-            if (param == null) {
+        private static void CheckArgumentNull(object param, string paramName)
+        {
+            if (param == null)
+            {
                 throw new ArgumentNullException(paramName);
             }
         }

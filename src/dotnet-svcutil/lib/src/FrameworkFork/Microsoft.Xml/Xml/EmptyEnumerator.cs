@@ -4,22 +4,27 @@
 using System;
 using System.Collections;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal sealed class EmptyEnumerator : IEnumerator {
 
-        bool IEnumerator.MoveNext() {
+    internal sealed class EmptyEnumerator : IEnumerator
+    {
+        bool IEnumerator.MoveNext()
+        {
             return false;
         }
 
-        void IEnumerator.Reset() {
+        void IEnumerator.Reset()
+        {
         }
 
-        object IEnumerator.Current {
-            get {
-                throw new InvalidOperationException( ResXml.GetString( ResXml.Xml_InvalidOperation ) );
+        object IEnumerator.Current
+        {
+            get
+            {
+                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
             }
         }
     }

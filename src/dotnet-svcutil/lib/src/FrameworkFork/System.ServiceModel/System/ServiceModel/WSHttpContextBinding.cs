@@ -12,8 +12,8 @@ namespace System.ServiceModel
 
     public class WSHttpContextBinding : WSHttpBinding
     {
-        ProtectionLevel contextProtectionLevel = ContextBindingElement.DefaultProtectionLevel;
-        bool contextManagementEnabled = ContextBindingElement.DefaultContextManagementEnabled;
+        private ProtectionLevel _contextProtectionLevel = ContextBindingElement.DefaultProtectionLevel;
+        private bool _contextManagementEnabled = ContextBindingElement.DefaultContextManagementEnabled;
 
         public WSHttpContextBinding()
             : base()
@@ -30,7 +30,7 @@ namespace System.ServiceModel
         {
         }
 
-        WSHttpContextBinding(WSHttpBinding wsHttpBinding)
+        private WSHttpContextBinding(WSHttpBinding wsHttpBinding)
         {
             this.CloseTimeout = wsHttpBinding.CloseTimeout;
             this.OpenTimeout = wsHttpBinding.OpenTimeout;
@@ -50,11 +50,11 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.contextManagementEnabled;
+                return _contextManagementEnabled;
             }
             set
             {
-                this.contextManagementEnabled = value;
+                _contextManagementEnabled = value;
             }
         }
 
@@ -63,7 +63,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.contextProtectionLevel;
+                return _contextProtectionLevel;
             }
             set
             {
@@ -71,7 +71,7 @@ namespace System.ServiceModel
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.contextProtectionLevel = value;
+                _contextProtectionLevel = value;
             }
         }
 

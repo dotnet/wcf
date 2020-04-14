@@ -7,7 +7,7 @@ namespace System.ServiceModel
 {
     public class BasicHttpsBinding : HttpBindingBase
     {
-        WSMessageEncoding _messageEncoding = BasicHttpBindingDefaults.MessageEncoding;
+        private WSMessageEncoding _messageEncoding = BasicHttpBindingDefaults.MessageEncoding;
         private BasicHttpsSecurity _basicHttpsSecurity;
 
         public BasicHttpsBinding() : this(BasicHttpsSecurity.DefaultMode) { }

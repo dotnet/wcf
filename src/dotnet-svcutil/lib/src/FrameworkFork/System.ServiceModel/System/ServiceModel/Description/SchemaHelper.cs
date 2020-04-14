@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System.Collections;
@@ -9,7 +10,7 @@ namespace System.ServiceModel.Description
     using Microsoft.Xml;
     using Microsoft.Xml.Schema;
 
-    static class SchemaHelper
+    internal static class SchemaHelper
     {
         static internal void AddElementForm(XmlSchemaElement element, XmlSchema schema)
         {
@@ -88,7 +89,7 @@ namespace System.ServiceModel.Description
             return schema;
         }
 
-        static string GetTypeName(XmlSchemaElement element)
+        private static string GetTypeName(XmlSchemaElement element)
         {
             if (element.SchemaType != null)
                 return "anonymous";
@@ -154,24 +155,24 @@ namespace System.ServiceModel.Description
                 errors.Add(warning);
         }
 
-        static IList<string> xsdValueTypePrimitives = new string[]
+        private static IList<string> s_xsdValueTypePrimitives = new string[]
         {
             "boolean", "float", "double", "decimal", "long", "unsignedLong", "int", "unsignedInt", "short", "unsignedShort", "byte", "unsignedByte",
             "duration", "dateTime", "integer", "positiveInteger", "negativeInteger", "nonPositiveInteger"
         };
 
-        static IList<string> dataContractPrimitives = new string[]
+        private static IList<string> s_dataContractPrimitives = new string[]
         {
             "char", "guid"
         };
 
-        static IList<string> xmlSerializerPrimitives = new string[]
+        private static IList<string> s_xmlSerializerPrimitives = new string[]
         {
             "char", "guid"
         };
 
-        static string dataContractSerializerNamespace = "http://schemas.microsoft.com/2003/10/Serialization/";
-        static string xmlSerializerNamespace = "http://microsoft.com/wsdl/types/";
+        private static string s_dataContractSerializerNamespace = "http://schemas.microsoft.com/2003/10/Serialization/";
+        private static string s_xmlSerializerNamespace = "http://microsoft.com/wsdl/types/";
 
         internal static bool IsElementValueType(XmlSchemaElement element)
         {
@@ -179,11 +180,11 @@ namespace System.ServiceModel.Description
             if (typeName == null || typeName.IsEmpty)
                 return false;
             if (typeName.Namespace == XmlSchema.Namespace)
-                return xsdValueTypePrimitives.Contains(typeName.Name);
-            if (typeName.Namespace == dataContractSerializerNamespace)
-                return dataContractPrimitives.Contains(typeName.Name);
-            if (typeName.Namespace == xmlSerializerNamespace)
-                return dataContractPrimitives.Contains(typeName.Name);
+                return s_xsdValueTypePrimitives.Contains(typeName.Name);
+            if (typeName.Namespace == s_dataContractSerializerNamespace)
+                return s_dataContractPrimitives.Contains(typeName.Name);
+            if (typeName.Namespace == s_xmlSerializerNamespace)
+                return s_dataContractPrimitives.Contains(typeName.Name);
             return false;
         }
     }

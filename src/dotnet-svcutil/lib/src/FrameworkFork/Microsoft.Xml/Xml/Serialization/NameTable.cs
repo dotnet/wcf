@@ -1,78 +1,98 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Serialization
+{
+    using System;
+    using Microsoft.Xml;
 
     using System.Collections;
 
-    internal class NameKey {
-        string ns;
-        string name;
+    internal class NameKey
+    {
+        private string _ns;
+        private string _name;
 
-        internal NameKey(string name, string ns) {
-            this.name = name;
-            this.ns = ns;
+        internal NameKey(string name, string ns)
+        {
+            _name = name;
+            _ns = ns;
         }
 
-        public override bool Equals(object other) {
+        public override bool Equals(object other)
+        {
             if (!(other is NameKey)) return false;
             NameKey key = (NameKey)other;
-            return name == key.name && ns == key.ns;
+            return _name == key._name && _ns == key._ns;
         }
 
-        public override int GetHashCode() {
-            return (ns == null ? "<null>".GetHashCode() : ns.GetHashCode()) ^ (name == null ? 0 : name.GetHashCode());
+        public override int GetHashCode()
+        {
+            return (_ns == null ? "<null>".GetHashCode() : _ns.GetHashCode()) ^ (_name == null ? 0 : _name.GetHashCode());
         }
     }
-    internal interface INameScope {
-        object this[string name, string ns] {get; set;}
+    internal interface INameScope
+    {
+        object this[string name, string ns] { get; set; }
     }
-    internal class NameTable : INameScope {
-        Hashtable table = new Hashtable();
+    internal class NameTable : INameScope
+    {
+        private Hashtable _table = new Hashtable();
 
-        internal void Add(XmlQualifiedName qname, object value) {
+        internal void Add(XmlQualifiedName qname, object value)
+        {
             Add(qname.Name, qname.Namespace, value);
         }
 
-        internal void Add(string name, string ns, object value) {
+        internal void Add(string name, string ns, object value)
+        {
             NameKey key = new NameKey(name, ns);
-            table.Add(key, value);
+            _table.Add(key, value);
         }
 
-        internal object this[XmlQualifiedName qname] {
-            get {
-                return table[new NameKey(qname.Name, qname.Namespace)];
+        internal object this[XmlQualifiedName qname]
+        {
+            get
+            {
+                return _table[new NameKey(qname.Name, qname.Namespace)];
             }
-            set {
-                table[new NameKey(qname.Name, qname.Namespace)] = value;
-            }
-        }
-        internal object this[string name, string ns] {
-            get {
-                return table[new NameKey(name, ns)];
-            }
-            set {
-                table[new NameKey(name, ns)] = value;
+            set
+            {
+                _table[new NameKey(qname.Name, qname.Namespace)] = value;
             }
         }
-        object INameScope.this[string name, string ns] {
-            get {
-                return table[new NameKey(name, ns)];
+        internal object this[string name, string ns]
+        {
+            get
+            {
+                return _table[new NameKey(name, ns)];
             }
-            set {
-                table[new NameKey(name, ns)] = value;
+            set
+            {
+                _table[new NameKey(name, ns)] = value;
+            }
+        }
+        object INameScope.this[string name, string ns]
+        {
+            get
+            {
+                return _table[new NameKey(name, ns)];
+            }
+            set
+            {
+                _table[new NameKey(name, ns)] = value;
             }
         }
 
-        internal ICollection Values {
-            get { return table.Values; }
+        internal ICollection Values
+        {
+            get { return _table.Values; }
         }
 
-        internal Array ToArray(Type type) {
-            Array a = Array.CreateInstance(type, table.Count);
-            table.Values.CopyTo(a, 0);
+        internal Array ToArray(Type type)
+        {
+            Array a = Array.CreateInstance(type, _table.Count);
+            _table.Values.CopyTo(a, 0);
             return a;
         }
     }

@@ -13,17 +13,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public ConstructorFixer()
         {
         }
-        static Type[][] validCtors = new Type[][]
+        private static Type[][] s_validCtors = new Type[][]
                     {
                         Array.Empty<Type>(),
-                        new Type[] { typeof(string), }, 
+                        new Type[] { typeof(string), },
                         new Type[] { typeof(InstanceContext), },
                         new Type[] { typeof(string), typeof(string), },
                         new Type[] { typeof(string), typeof(EndpointAddress), },
                         new Type[] { typeof(InstanceContext), typeof(string), },
                         new Type[] { typeof(InstanceContext), typeof(string), typeof(string), },
                         new Type[] { typeof(InstanceContext), typeof(string), typeof(EndpointAddress), },
-                        new Type[] { typeof(Binding), typeof(EndpointAddress), },                        
+                        new Type[] { typeof(Binding), typeof(EndpointAddress), },
                         new Type[] { typeof(InstanceContext), typeof(Binding), typeof(EndpointAddress), },
                     };
 
@@ -32,12 +32,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             base.VisitClientClass(type);
 
             CollectionHelpers.Filter<CodeConstructor> ctorFilter;
-            ctorFilter = delegate(CodeConstructor ctor)
-            { return IsValidConstructor(ctor, validCtors); };
+            ctorFilter = delegate (CodeConstructor ctor)
+            { return IsValidConstructor(ctor, s_validCtors); };
             CollectionHelpers.MapList<CodeConstructor>(type.Members, ctorFilter, null);
         }
 
-        static bool IsValidConstructor(CodeConstructor ctor, Type[][] validCtors)
+        private static bool IsValidConstructor(CodeConstructor ctor, Type[][] validCtors)
         {
             for (int i = 0; i < validCtors.Length; i++)
             {

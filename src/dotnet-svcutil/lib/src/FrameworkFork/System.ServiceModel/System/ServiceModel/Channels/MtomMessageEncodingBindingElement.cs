@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace System.ServiceModel.Channels
 
     public sealed class MtomMessageEncodingBindingElement : MessageEncodingBindingElement, IWsdlExportExtension, IPolicyExportExtension
     {
-        int maxReadPoolSize;
-        int maxWritePoolSize;
-        XmlDictionaryReaderQuotas readerQuotas;
-        int maxBufferSize;
-        Encoding writeEncoding;
-        MessageVersion messageVersion;
+        private int _maxReadPoolSize;
+        private int _maxWritePoolSize;
+        private XmlDictionaryReaderQuotas _readerQuotas;
+        private int _maxBufferSize;
+        private Encoding _writeEncoding;
+        private MessageVersion _messageVersion;
 
         public MtomMessageEncodingBindingElement()
             : this(MessageVersion.Default, TextEncoderDefaults.Encoding)
@@ -37,25 +38,25 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("writeEncoding");
 
             TextEncoderDefaults.ValidateEncoding(writeEncoding);
-            this.maxReadPoolSize = EncoderDefaults.MaxReadPoolSize;
-            this.maxWritePoolSize = EncoderDefaults.MaxWritePoolSize;
-            this.readerQuotas = new XmlDictionaryReaderQuotas();
-            EncoderDefaults.ReaderQuotas.CopyTo(this.readerQuotas);
-            this.maxBufferSize = MtomEncoderDefaults.MaxBufferSize;
-            this.messageVersion = messageVersion;
-            this.writeEncoding = writeEncoding;
+            _maxReadPoolSize = EncoderDefaults.MaxReadPoolSize;
+            _maxWritePoolSize = EncoderDefaults.MaxWritePoolSize;
+            _readerQuotas = new XmlDictionaryReaderQuotas();
+            EncoderDefaults.ReaderQuotas.CopyTo(_readerQuotas);
+            _maxBufferSize = MtomEncoderDefaults.MaxBufferSize;
+            _messageVersion = messageVersion;
+            _writeEncoding = writeEncoding;
         }
 
-        MtomMessageEncodingBindingElement(MtomMessageEncodingBindingElement elementToBeCloned)
+        private MtomMessageEncodingBindingElement(MtomMessageEncodingBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.maxReadPoolSize = elementToBeCloned.maxReadPoolSize;
-            this.maxWritePoolSize = elementToBeCloned.maxWritePoolSize;
-            this.readerQuotas = new XmlDictionaryReaderQuotas();
-            elementToBeCloned.readerQuotas.CopyTo(this.readerQuotas);
-            this.maxBufferSize = elementToBeCloned.maxBufferSize;
-            this.writeEncoding = elementToBeCloned.writeEncoding;
-            this.messageVersion = elementToBeCloned.messageVersion;
+            _maxReadPoolSize = elementToBeCloned._maxReadPoolSize;
+            _maxWritePoolSize = elementToBeCloned._maxWritePoolSize;
+            _readerQuotas = new XmlDictionaryReaderQuotas();
+            elementToBeCloned._readerQuotas.CopyTo(_readerQuotas);
+            _maxBufferSize = elementToBeCloned._maxBufferSize;
+            _writeEncoding = elementToBeCloned._writeEncoding;
+            _messageVersion = elementToBeCloned._messageVersion;
         }
 
         [DefaultValue(EncoderDefaults.MaxReadPoolSize)]
@@ -63,7 +64,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxReadPoolSize;
+                return _maxReadPoolSize;
             }
             set
             {
@@ -71,7 +72,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBePositive));
                 }
-                this.maxReadPoolSize = value;
+                _maxReadPoolSize = value;
             }
         }
 
@@ -80,7 +81,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxWritePoolSize;
+                return _maxWritePoolSize;
             }
             set
             {
@@ -88,7 +89,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBePositive));
                 }
-                this.maxWritePoolSize = value;
+                _maxWritePoolSize = value;
             }
         }
 
@@ -96,7 +97,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.readerQuotas;
+                return _readerQuotas;
             }
         }
 
@@ -105,7 +106,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxBufferSize;
+                return _maxBufferSize;
             }
             set
             {
@@ -113,7 +114,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBePositive));
                 }
-                this.maxBufferSize = value;
+                _maxBufferSize = value;
             }
         }
 
@@ -122,7 +123,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.writeEncoding;
+                return _writeEncoding;
             }
             set
             {
@@ -130,7 +131,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
 
                 TextEncoderDefaults.ValidateEncoding(value);
-                this.writeEncoding = value;
+                _writeEncoding = value;
             }
         }
 
@@ -138,7 +139,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.messageVersion;
+                return _messageVersion;
             }
             set
             {
@@ -151,7 +152,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MtomEncoderBadMessageVersion, value.ToString()), "value"));
                 }
 
-                this.messageVersion = value;
+                _messageVersion = value;
             }
         }
 
@@ -183,7 +184,7 @@ namespace System.ServiceModel.Channels
             }
             if (typeof(T) == typeof(XmlDictionaryReaderQuotas))
             {
-                return (T)(object)this.readerQuotas;
+                return (T)(object)_readerQuotas;
             }
             else
             {
@@ -213,12 +214,12 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
             }
 
-            SoapHelper.SetSoapVersion(context, exporter, this.messageVersion.Envelope);
+            SoapHelper.SetSoapVersion(context, exporter, _messageVersion.Envelope);
         }
 
         internal override bool CheckEncodingVersion(EnvelopeVersion version)
         {
-            return messageVersion.Envelope == version;
+            return _messageVersion.Envelope == version;
         }
 
         internal override bool IsMatch(BindingElement b)
@@ -228,24 +229,24 @@ namespace System.ServiceModel.Channels
             MtomMessageEncodingBindingElement mtom = b as MtomMessageEncodingBindingElement;
             if (mtom == null)
                 return false;
-            if (this.maxReadPoolSize != mtom.MaxReadPoolSize)
+            if (_maxReadPoolSize != mtom.MaxReadPoolSize)
                 return false;
-            if (this.maxWritePoolSize != mtom.MaxWritePoolSize)
+            if (_maxWritePoolSize != mtom.MaxWritePoolSize)
                 return false;
 
             // compare XmlDictionaryReaderQuotas
-            if (this.readerQuotas.MaxStringContentLength != mtom.ReaderQuotas.MaxStringContentLength)
+            if (_readerQuotas.MaxStringContentLength != mtom.ReaderQuotas.MaxStringContentLength)
                 return false;
-            if (this.readerQuotas.MaxArrayLength != mtom.ReaderQuotas.MaxArrayLength)
+            if (_readerQuotas.MaxArrayLength != mtom.ReaderQuotas.MaxArrayLength)
                 return false;
-            if (this.readerQuotas.MaxBytesPerRead != mtom.ReaderQuotas.MaxBytesPerRead)
+            if (_readerQuotas.MaxBytesPerRead != mtom.ReaderQuotas.MaxBytesPerRead)
                 return false;
-            if (this.readerQuotas.MaxDepth != mtom.ReaderQuotas.MaxDepth)
+            if (_readerQuotas.MaxDepth != mtom.ReaderQuotas.MaxDepth)
                 return false;
-            if (this.readerQuotas.MaxNameTableCharCount != mtom.ReaderQuotas.MaxNameTableCharCount)
+            if (_readerQuotas.MaxNameTableCharCount != mtom.ReaderQuotas.MaxNameTableCharCount)
                 return false;
 
-            if (this.maxBufferSize != mtom.MaxBufferSize)
+            if (_maxBufferSize != mtom.MaxBufferSize)
                 return false;
 
             if (this.WriteEncoding.EncodingName != mtom.WriteEncoding.EncodingName)
@@ -259,7 +260,7 @@ namespace System.ServiceModel.Channels
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeMessageVersion()
         {
-            return (!this.messageVersion.IsMatch(MessageVersion.Default));
+            return (!_messageVersion.IsMatch(MessageVersion.Default));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

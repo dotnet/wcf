@@ -12,42 +12,50 @@ using System.Collections;
 
 using System.Threading.Tasks;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal partial class XsdCachingReader : XmlReader, IXmlLineInfo {
 
+    internal partial class XsdCachingReader : XmlReader, IXmlLineInfo
+    {
         // Gets the text value of the current node.
-        public override Task<string> GetValueAsync() {
-            if (returnOriginalStringValues) {
-                return Task.FromResult(cachedNode.OriginalStringValue);
+        public override Task<string> GetValueAsync()
+        {
+            if (_returnOriginalStringValues)
+            {
+                return Task.FromResult(_cachedNode.OriginalStringValue);
             }
-            else {
-                return Task.FromResult(cachedNode.RawValue);
+            else
+            {
+                return Task.FromResult(_cachedNode.RawValue);
             }
         }
-    
+
         // Reads the next node from the stream/TextReader.
-        public override async Task< bool > ReadAsync() {
-            switch (cacheState) {
+        public override async Task<bool> ReadAsync()
+        {
+            switch (_cacheState)
+            {
                 case CachingReaderState.Init:
-                    cacheState = CachingReaderState.Record;
+                    _cacheState = CachingReaderState.Record;
                     goto case CachingReaderState.Record;
 
-                case CachingReaderState.Record: 
+                case CachingReaderState.Record:
                     ValidatingReaderNodeData recordedNode = null;
-                    if (await coreReader.ReadAsync().ConfigureAwait(false)) {
-                        switch(coreReader.NodeType) {
+                    if (await _coreReader.ReadAsync().ConfigureAwait(false))
+                    {
+                        switch (_coreReader.NodeType)
+                        {
                             case XmlNodeType.Element:
                                 //Dont record element within the content of a union type since the main reader will break on this and the underlying coreReader will be positioned on this node
-                                cacheState = CachingReaderState.ReaderClosed;
+                                _cacheState = CachingReaderState.ReaderClosed;
                                 return false;
 
                             case XmlNodeType.EndElement:
-                                recordedNode = AddContent(coreReader.NodeType);
-                                recordedNode.SetItemData(coreReader.LocalName, coreReader.Prefix, coreReader.NamespaceURI, coreReader.Depth);  //Only created for element node type
-                                recordedNode.SetLineInfo(lineInfo);
+                                recordedNode = AddContent(_coreReader.NodeType);
+                                recordedNode.SetItemData(_coreReader.LocalName, _coreReader.Prefix, _coreReader.NamespaceURI, _coreReader.Depth);  //Only created for element node type
+                                recordedNode.SetLineInfo(_lineInfo);
                                 break;
 
                             case XmlNodeType.Comment:
@@ -56,37 +64,41 @@ namespace Microsoft.Xml {
                             case XmlNodeType.CDATA:
                             case XmlNodeType.Whitespace:
                             case XmlNodeType.SignificantWhitespace:
-                                recordedNode = AddContent(coreReader.NodeType);
-                                recordedNode.SetItemData(await coreReader.GetValueAsync().ConfigureAwait(false));
-                                recordedNode.SetLineInfo(lineInfo);
-                                recordedNode.Depth = coreReader.Depth;
+                                recordedNode = AddContent(_coreReader.NodeType);
+                                recordedNode.SetItemData(await _coreReader.GetValueAsync().ConfigureAwait(false));
+                                recordedNode.SetLineInfo(_lineInfo);
+                                recordedNode.Depth = _coreReader.Depth;
                                 break;
 
                             default:
-                                break;       
+                                break;
                         }
-                        cachedNode = recordedNode;
-                        return true;    
+                        _cachedNode = recordedNode;
+                        return true;
                     }
-                    else {
-                        cacheState = CachingReaderState.ReaderClosed;
+                    else
+                    {
+                        _cacheState = CachingReaderState.ReaderClosed;
                         return false;
-                    }    
+                    }
 
                 case CachingReaderState.Replay:
-                    if (currentContentIndex >= contentIndex) { //When positioned on the last cached node, switch back as the underlying coreReader is still positioned on this node
-                        cacheState = CachingReaderState.ReaderClosed;
-                        cacheHandler(this);
-                        if (coreReader.NodeType != XmlNodeType.Element || readAhead) { //Only when coreReader not positioned on Element node, read ahead, otherwise it is on the next element node already, since this was not cached
-                            return await coreReader.ReadAsync().ConfigureAwait(false);
+                    if (_currentContentIndex >= _contentIndex)
+                    { //When positioned on the last cached node, switch back as the underlying coreReader is still positioned on this node
+                        _cacheState = CachingReaderState.ReaderClosed;
+                        _cacheHandler(this);
+                        if (_coreReader.NodeType != XmlNodeType.Element || _readAhead)
+                        { //Only when coreReader not positioned on Element node, read ahead, otherwise it is on the next element node already, since this was not cached
+                            return await _coreReader.ReadAsync().ConfigureAwait(false);
                         }
-                        return true;                        
+                        return true;
                     }
-                    cachedNode = contentEvents[currentContentIndex];
-                    if (currentContentIndex > 0) {
+                    _cachedNode = _contentEvents[_currentContentIndex];
+                    if (_currentContentIndex > 0)
+                    {
                         ClearAttributesInfo();
                     }
-                    currentContentIndex++;
+                    _currentContentIndex++;
                     return true;
 
                 default:
@@ -95,38 +107,41 @@ namespace Microsoft.Xml {
         }
 
         // Skips to the end tag of the current element.
-        public override async Task SkipAsync() {
+        public override async Task SkipAsync()
+        {
             //Skip on caching reader should move to the end of the subtree, past all cached events
-            switch (cachedNode.NodeType) {
+            switch (_cachedNode.NodeType)
+            {
                 case XmlNodeType.Element:
-                    if (coreReader.NodeType != XmlNodeType.EndElement && !readAhead) { //will be true for IsDefault cases where we peek only one node ahead
-                        int startDepth = coreReader.Depth - 1;
-                        while (await coreReader.ReadAsync().ConfigureAwait(false) && coreReader.Depth > startDepth) 
-                        ;
+                    if (_coreReader.NodeType != XmlNodeType.EndElement && !_readAhead)
+                    { //will be true for IsDefault cases where we peek only one node ahead
+                        int startDepth = _coreReader.Depth - 1;
+                        while (await _coreReader.ReadAsync().ConfigureAwait(false) && _coreReader.Depth > startDepth)
+                            ;
                     }
-                    await coreReader.ReadAsync().ConfigureAwait(false);
-                    cacheState = CachingReaderState.ReaderClosed;
-                    cacheHandler(this);
+                    await _coreReader.ReadAsync().ConfigureAwait(false);
+                    _cacheState = CachingReaderState.ReaderClosed;
+                    _cacheHandler(this);
                     break;
-    
+
                 case XmlNodeType.Attribute:
                     MoveToElement();
                     goto case XmlNodeType.Element;
 
                 default:
-                    Debug.Assert(cacheState == CachingReaderState.Replay);
+                    Debug.Assert(_cacheState == CachingReaderState.Replay);
                     await ReadAsync().ConfigureAwait(false);
                     break;
             }
         }
 
-//Private methods
-        internal Task SetToReplayModeAsync() {
-            cacheState = CachingReaderState.Replay;
-            currentContentIndex = 0;
-            currentAttrIndex = -1;
+        //Private methods
+        internal Task SetToReplayModeAsync()
+        {
+            _cacheState = CachingReaderState.Replay;
+            _currentContentIndex = 0;
+            _currentAttrIndex = -1;
             return ReadAsync(); //Position on first node recorded to begin replaying
         }
-
     }
 }

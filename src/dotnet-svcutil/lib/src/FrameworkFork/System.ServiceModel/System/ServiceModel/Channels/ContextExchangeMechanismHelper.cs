@@ -5,7 +5,7 @@ namespace System.ServiceModel.Channels
 {
     using System;
 
-    static class ContextExchangeMechanismHelper
+    internal static class ContextExchangeMechanismHelper
     {
         public static bool IsDefined(ContextExchangeMechanism value)
         {

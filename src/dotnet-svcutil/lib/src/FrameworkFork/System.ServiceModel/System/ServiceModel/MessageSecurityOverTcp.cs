@@ -42,6 +42,6 @@ namespace System.ServiceModel
         internal static bool TryCreate(SecurityBindingElement sbe, bool isReliableSession, BindingElement transportBindingElement, out MessageSecurityOverTcp messageSecurity)
         {
             throw new NotImplementedException();
-        } 
+        }
     }
 }

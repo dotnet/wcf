@@ -5,9 +5,10 @@ using System.ComponentModel;
 using Microsoft.Xml.Serialization;
 using System.Diagnostics;
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
 
@@ -15,31 +16,32 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaElement : XmlSchemaParticle {
-        bool isAbstract;
-        bool hasAbstractAttribute;
-        bool isNillable;
-        bool hasNillableAttribute;
-        bool isLocalTypeDerivationChecked;
+    public class XmlSchemaElement : XmlSchemaParticle
+    {
+        private bool _isAbstract;
+        private bool _hasAbstractAttribute;
+        private bool _isNillable;
+        private bool _hasNillableAttribute;
+        private bool _isLocalTypeDerivationChecked;
 
-        XmlSchemaDerivationMethod block = XmlSchemaDerivationMethod.None;
-        XmlSchemaDerivationMethod final = XmlSchemaDerivationMethod.None;
-        XmlSchemaForm form = XmlSchemaForm.None;
-        string defaultValue;
-        string fixedValue;
-        string name;        
-        
-        XmlQualifiedName refName = XmlQualifiedName.Empty;
-        XmlQualifiedName substitutionGroup = XmlQualifiedName.Empty;
-        XmlQualifiedName typeName = XmlQualifiedName.Empty;
-        XmlSchemaType type = null;
+        private XmlSchemaDerivationMethod _block = XmlSchemaDerivationMethod.None;
+        private XmlSchemaDerivationMethod _final = XmlSchemaDerivationMethod.None;
+        private XmlSchemaForm _form = XmlSchemaForm.None;
+        private string _defaultValue;
+        private string _fixedValue;
+        private string _name;
 
-        XmlQualifiedName qualifiedName = XmlQualifiedName.Empty;
-        XmlSchemaType elementType;
-        XmlSchemaDerivationMethod blockResolved;
-        XmlSchemaDerivationMethod finalResolved;
-        XmlSchemaObjectCollection constraints;
-        SchemaElementDecl elementDecl;
+        private XmlQualifiedName _refName = XmlQualifiedName.Empty;
+        private XmlQualifiedName _substitutionGroup = XmlQualifiedName.Empty;
+        private XmlQualifiedName _typeName = XmlQualifiedName.Empty;
+        private XmlSchemaType _type = null;
+
+        private XmlQualifiedName _qualifiedName = XmlQualifiedName.Empty;
+        private XmlSchemaType _elementType;
+        private XmlSchemaDerivationMethod _blockResolved;
+        private XmlSchemaDerivationMethod _finalResolved;
+        private XmlSchemaObjectCollection _constraints;
+        private SchemaElementDecl _elementDecl;
 
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.IsAbstract"]/*' />
@@ -47,11 +49,13 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("abstract"), DefaultValue(false)]
-        public bool IsAbstract {
-            get { return isAbstract; }
-            set { 
-                isAbstract = value; 
-                hasAbstractAttribute = true;
+        public bool IsAbstract
+        {
+            get { return _isAbstract; }
+            set
+            {
+                _isAbstract = value;
+                _hasAbstractAttribute = true;
             }
         }
 
@@ -60,9 +64,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("block"), DefaultValue(XmlSchemaDerivationMethod.None)]
-        public XmlSchemaDerivationMethod Block {
-             get { return block; }
-             set { block = value; }
+        public XmlSchemaDerivationMethod Block
+        {
+            get { return _block; }
+            set { _block = value; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.DefaultValue"]/*' />
@@ -71,9 +76,10 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlAttribute("default")]
         [DefaultValue(null)]
-        public string DefaultValue { 
-            get { return defaultValue; }
-            set { defaultValue = value; }
+        public string DefaultValue
+        {
+            get { return _defaultValue; }
+            set { _defaultValue = value; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.Final"]/*' />
@@ -81,9 +87,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("final"), DefaultValue(XmlSchemaDerivationMethod.None)]
-        public XmlSchemaDerivationMethod Final {
-             get { return final; }
-             set { final = value; }
+        public XmlSchemaDerivationMethod Final
+        {
+            get { return _final; }
+            set { _final = value; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.FixedValue"]/*' />
@@ -92,9 +99,10 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlAttribute("fixed")]
         [DefaultValue(null)]
-        public string FixedValue { 
-            get { return fixedValue; }
-            set { fixedValue = value; }
+        public string FixedValue
+        {
+            get { return _fixedValue; }
+            set { _fixedValue = value; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.Form"]/*' />
@@ -102,9 +110,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("form"), DefaultValue(XmlSchemaForm.None)]
-        public XmlSchemaForm Form {
-             get { return form; }
-             set { form = value; }
+        public XmlSchemaForm Form
+        {
+            get { return _form; }
+            set { _form = value; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.Name"]/*' />
@@ -112,71 +121,79 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("name"), DefaultValue("")]
-        public string Name { 
-            get { return name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
-        
+
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.IsNillable"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("nillable"), DefaultValue(false)]
-        public bool IsNillable {
-            get { return isNillable; }
-            set { isNillable = value; hasNillableAttribute = true; }
+        public bool IsNillable
+        {
+            get { return _isNillable; }
+            set { _isNillable = value; _hasNillableAttribute = true; }
         }
 
         [XmlIgnore]
-        internal bool HasNillableAttribute {
-            get { return hasNillableAttribute; } 
-        } 
-        
+        internal bool HasNillableAttribute
+        {
+            get { return _hasNillableAttribute; }
+        }
+
         [XmlIgnore]
-        internal bool HasAbstractAttribute {
-            get { return hasAbstractAttribute; } 
-        } 
+        internal bool HasAbstractAttribute
+        {
+            get { return _hasAbstractAttribute; }
+        }
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.RefName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("ref")]
-        public XmlQualifiedName RefName { 
-            get { return refName; }
-            set { refName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName RefName
+        {
+            get { return _refName; }
+            set { _refName = (value == null ? XmlQualifiedName.Empty : value); }
         }
-        
+
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.SubstitutionGroup"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("substitutionGroup")]
-        public XmlQualifiedName SubstitutionGroup {
-            get { return substitutionGroup; }
-            set { substitutionGroup = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName SubstitutionGroup
+        {
+            get { return _substitutionGroup; }
+            set { _substitutionGroup = (value == null ? XmlQualifiedName.Empty : value); }
         }
-    
+
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.SchemaTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("type")]
-        public XmlQualifiedName SchemaTypeName { 
-            get { return typeName; }
-            set { typeName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName SchemaTypeName
+        {
+            get { return _typeName; }
+            set { _typeName = (value == null ? XmlQualifiedName.Empty : value); }
         }
-        
+
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.SchemaType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("complexType", typeof(XmlSchemaComplexType)),
          XmlElement("simpleType", typeof(XmlSchemaSimpleType))]
-        public XmlSchemaType SchemaType {
-            get { return type; }
-            set { type = value; }
+        public XmlSchemaType SchemaType
+        {
+            get { return _type; }
+            set { _type = value; }
         }
-        
+
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.Constraints"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -184,12 +201,15 @@ namespace Microsoft.Xml.Schema {
         [XmlElement("key", typeof(XmlSchemaKey)),
          XmlElement("keyref", typeof(XmlSchemaKeyref)),
          XmlElement("unique", typeof(XmlSchemaUnique))]
-        public XmlSchemaObjectCollection Constraints {
-            get {
-                if (constraints == null) {
-                    constraints = new XmlSchemaObjectCollection();
+        public XmlSchemaObjectCollection Constraints
+        {
+            get
+            {
+                if (_constraints == null)
+                {
+                    _constraints = new XmlSchemaObjectCollection();
                 }
-                return constraints;
+                return _constraints;
             }
         }
 
@@ -198,8 +218,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlQualifiedName QualifiedName { 
-            get { return qualifiedName; }
+        public XmlQualifiedName QualifiedName
+        {
+            get { return _qualifiedName; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.ElementType"]/*' />
@@ -208,25 +229,29 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlIgnore]
         [Obsolete("This property has been deprecated. Please use ElementSchemaType property that returns a strongly typed element type. http://go.microsoft.com/fwlink/?linkid=14202")]
-        public object ElementType {
-            get {
-                if (elementType == null)
+        public object ElementType
+        {
+            get
+            {
+                if (_elementType == null)
                     return null;
 
-                if (elementType.QualifiedName.Namespace == XmlReservedNs.NsXs) {
-                    return elementType.Datatype; //returns XmlSchemaDatatype;
+                if (_elementType.QualifiedName.Namespace == XmlReservedNs.NsXs)
+                {
+                    return _elementType.Datatype; //returns XmlSchemaDatatype;
                 }
-                return elementType; 
+                return _elementType;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.ElementType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaType ElementSchemaType {
-            get { return elementType; }
+        public XmlSchemaType ElementSchemaType
+        {
+            get { return _elementType; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.BlockResolved"]/*' />
@@ -234,8 +259,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaDerivationMethod BlockResolved {
-             get { return blockResolved; }
+        public XmlSchemaDerivationMethod BlockResolved
+        {
+            get { return _blockResolved; }
         }
 
         /// <include file='doc\XmlSchemaElement.uex' path='docs/doc[@for="XmlSchemaElement.FinalResolved"]/*' />
@@ -243,96 +269,115 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaDerivationMethod FinalResolved {
-             get { return finalResolved; }
+        public XmlSchemaDerivationMethod FinalResolved
+        {
+            get { return _finalResolved; }
         }
 
-        internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet , ValidationEventHandler valEventHandler) {
-            if (schemaSet != null) {
+        internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler)
+        {
+            if (schemaSet != null)
+            {
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.ValidationType = ValidationType.Schema;
                 readerSettings.Schemas = schemaSet;
-                readerSettings.ValidationEventHandler += valEventHandler;                
+                readerSettings.ValidationEventHandler += valEventHandler;
                 return new XsdValidatingReader(reader, resolver, readerSettings, this);
             }
             return null;
         }
 
-        internal void SetQualifiedName(XmlQualifiedName value) { 
-            qualifiedName = value;
+        internal void SetQualifiedName(XmlQualifiedName value)
+        {
+            _qualifiedName = value;
         }
 
-        internal void SetElementType(XmlSchemaType value) { 
-            elementType = value;
+        internal void SetElementType(XmlSchemaType value)
+        {
+            _elementType = value;
         }
 
-        internal void SetBlockResolved(XmlSchemaDerivationMethod value) {
-             blockResolved = value; 
+        internal void SetBlockResolved(XmlSchemaDerivationMethod value)
+        {
+            _blockResolved = value;
         }
 
-        internal void SetFinalResolved(XmlSchemaDerivationMethod value) {
-             finalResolved = value; 
-        }
-
-        [XmlIgnore]
-        internal bool HasDefault {
-            get { return defaultValue != null && defaultValue.Length > 0; }
-        }
-
-        internal bool HasConstraints {
-            get { return constraints != null && constraints.Count > 0; }
-        }
-
-        internal bool IsLocalTypeDerivationChecked {
-            get {
-                return isLocalTypeDerivationChecked;
-            }
-            set {
-                isLocalTypeDerivationChecked = value;
-            }
-        }
-
-        internal SchemaElementDecl ElementDecl {
-            get { return elementDecl; }
-            set { elementDecl = value; }
+        internal void SetFinalResolved(XmlSchemaDerivationMethod value)
+        {
+            _finalResolved = value;
         }
 
         [XmlIgnore]
-        internal override string NameAttribute {
+        internal bool HasDefault
+        {
+            get { return _defaultValue != null && _defaultValue.Length > 0; }
+        }
+
+        internal bool HasConstraints
+        {
+            get { return _constraints != null && _constraints.Count > 0; }
+        }
+
+        internal bool IsLocalTypeDerivationChecked
+        {
+            get
+            {
+                return _isLocalTypeDerivationChecked;
+            }
+            set
+            {
+                _isLocalTypeDerivationChecked = value;
+            }
+        }
+
+        internal SchemaElementDecl ElementDecl
+        {
+            get { return _elementDecl; }
+            set { _elementDecl = value; }
+        }
+
+        [XmlIgnore]
+        internal override string NameAttribute
+        {
             get { return Name; }
             set { Name = value; }
         }
 
         [XmlIgnore]
-        internal override string NameString {
-            get {
-                return qualifiedName.ToString();
+        internal override string NameString
+        {
+            get
+            {
+                return _qualifiedName.ToString();
             }
         }
 
-        internal override XmlSchemaObject Clone() {
+        internal override XmlSchemaObject Clone()
+        {
             System.Diagnostics.Debug.Assert(false, "Should never call Clone() on XmlSchemaElement. Call Clone(XmlSchema) instead.");
             return Clone(null);
-        } 
+        }
 
-        internal XmlSchemaObject Clone(XmlSchema parentSchema) {
+        internal XmlSchemaObject Clone(XmlSchema parentSchema)
+        {
             XmlSchemaElement newElem = (XmlSchemaElement)MemberwiseClone();
 
             //Deep clone the QNames as these will be updated on chameleon includes
-            newElem.refName = this.refName.Clone();
-            newElem.substitutionGroup = this.substitutionGroup.Clone(); 
-            newElem.typeName = this.typeName.Clone();
-            newElem.qualifiedName = this.qualifiedName.Clone();
+            newElem._refName = _refName.Clone();
+            newElem._substitutionGroup = _substitutionGroup.Clone();
+            newElem._typeName = _typeName.Clone();
+            newElem._qualifiedName = _qualifiedName.Clone();
             // If this element has a complex type which is anonymous (declared in place with the element)
             //  it needs to be cloned as well, since it may contain named elements and such. And these names
             //  will need to be cloned since they may change their namespace on chameleon includes
-            XmlSchemaComplexType complexType = this.type as XmlSchemaComplexType;
-            if (complexType != null && complexType.QualifiedName.IsEmpty) {
-                newElem.type = (XmlSchemaType)complexType.Clone(parentSchema);
+            XmlSchemaComplexType complexType = _type as XmlSchemaComplexType;
+            if (complexType != null && complexType.QualifiedName.IsEmpty)
+            {
+                newElem._type = (XmlSchemaType)complexType.Clone(parentSchema);
             }
 
             //Clear compiled tables
-            newElem.constraints = null;
+            newElem._constraints = null;
             return newElem;
         }
     }

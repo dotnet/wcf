@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -20,11 +21,11 @@ namespace System.ServiceModel.Channels
 
     public class XmlSerializerImportOptions
     {
-        CodeCompileUnit codeCompileUnit;
-        CodeDomProvider codeProvider;
-        string clrNamespace;
-        WsdlNS.WebReferenceOptions webReferenceOptions;
-        static CodeGenerationOptions defaultCodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
+        private CodeCompileUnit _codeCompileUnit;
+        private CodeDomProvider _codeProvider;
+        private string _clrNamespace;
+        private WsdlNS.WebReferenceOptions _webReferenceOptions;
+        private static CodeGenerationOptions s_defaultCodeGenerationOptions = CodeGenerationOptions.GenerateProperties | CodeGenerationOptions.GenerateOrder;
 
         public XmlSerializerImportOptions()
             : this(new CodeCompileUnit())
@@ -33,16 +34,16 @@ namespace System.ServiceModel.Channels
 
         public XmlSerializerImportOptions(CodeCompileUnit codeCompileUnit)
         {
-            this.codeCompileUnit = codeCompileUnit;
+            _codeCompileUnit = codeCompileUnit;
         }
 
         public CodeCompileUnit CodeCompileUnit
         {
             get
             {
-                if (codeCompileUnit == null)
-                    codeCompileUnit = new CodeCompileUnit();
-                return codeCompileUnit;
+                if (_codeCompileUnit == null)
+                    _codeCompileUnit = new CodeCompileUnit();
+                return _codeCompileUnit;
             }
         }
 
@@ -50,31 +51,31 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (codeProvider == null)
-                    codeProvider = CodeDomProvider.CreateProvider("C#");
-                return codeProvider;
+                if (_codeProvider == null)
+                    _codeProvider = CodeDomProvider.CreateProvider("C#");
+                return _codeProvider;
             }
-            set { codeProvider = value; }
+            set { _codeProvider = value; }
         }
 
         public string ClrNamespace
         {
-            get { return clrNamespace; }
-            set { clrNamespace = value; }
+            get { return _clrNamespace; }
+            set { _clrNamespace = value; }
         }
 
         public WsdlNS.WebReferenceOptions WebReferenceOptions
         {
             get
             {
-                if (webReferenceOptions == null)
+                if (_webReferenceOptions == null)
                 {
-                    webReferenceOptions = new WsdlNS.WebReferenceOptions();
-                    webReferenceOptions.CodeGenerationOptions = defaultCodeGenerationOptions;
+                    _webReferenceOptions = new WsdlNS.WebReferenceOptions();
+                    _webReferenceOptions.CodeGenerationOptions = s_defaultCodeGenerationOptions;
                 }
-                return webReferenceOptions;
+                return _webReferenceOptions;
             }
-            set { webReferenceOptions = value; }
+            set { _webReferenceOptions = value; }
         }
     }
 }

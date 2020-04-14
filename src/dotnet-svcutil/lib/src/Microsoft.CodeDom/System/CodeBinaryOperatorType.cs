@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,9 +16,10 @@ namespace Microsoft.CodeDom {
     /// </devdoc>
     [
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public enum CodeBinaryOperatorType {
+    public enum CodeBinaryOperatorType
+    {
         /// <devdoc>
         ///    <para>
         ///       Addition operator.

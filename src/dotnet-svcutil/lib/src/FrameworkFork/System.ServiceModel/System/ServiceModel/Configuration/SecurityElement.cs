@@ -17,6 +17,5 @@ namespace System.ServiceModel.Configuration
 
     public sealed partial class SecurityElement : SecurityElementBase
     {
-
     }
 }

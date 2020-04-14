@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -9,7 +10,6 @@ namespace System.Runtime.Serialization
 {
     internal class BitFlagsGenerator
     {
-
         private int _bitCount;
         private CodeGenerator _ilg;
         private LocalBuilder[] _locals;

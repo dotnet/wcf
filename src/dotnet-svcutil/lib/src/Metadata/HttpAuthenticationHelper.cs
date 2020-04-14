@@ -62,10 +62,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             return null;
         }
 
-    /// <summary>
-    /// Get authentication information from the web reponse.
-    /// </summary>
-    public static void GetAuthenticationInformation(HttpWebResponse httpResponse, out string[] authenticationSchemes, out string realm)
+        /// <summary>
+        /// Get authentication information from the web reponse.
+        /// </summary>
+        public static void GetAuthenticationInformation(HttpWebResponse httpResponse, out string[] authenticationSchemes, out string realm)
         {
             if (httpResponse == null)
             {

@@ -12,35 +12,35 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class ArrayOfXElementTypeHelper
     {
-        const string ArrayOfXElementTypeName = "ArrayOfXElement";
+        private const string ArrayOfXElementTypeName = "ArrayOfXElement";
 
-        static CodeTypeDeclaration arrayOfXElements = null;
-        static CodeTypeReference arrayOfXElementRef = null;
+        private static CodeTypeDeclaration s_arrayOfXElements = null;
+        private static CodeTypeReference s_arrayOfXElementRef = null;
 
-        List<string> addedToCodeCompileUnit = new List<string>();
-        List<string> needToAdd = new List<string>();
+        private List<string> _addedToCodeCompileUnit = new List<string>();
+        private List<string> _needToAdd = new List<string>();
 
-        const string xelementType = "System.Xml.Linq.XElement";
+        private const string xelementType = "System.Xml.Linq.XElement";
         internal string SpecialNamespace = "";
 
-        static bool IsInternal = false;
+        private static bool s_isInternal = false;
 
         internal ArrayOfXElementTypeHelper(bool isInternal, CodeCompileUnit cu)
         {
-            ArrayOfXElementTypeHelper.IsInternal = isInternal;
+            ArrayOfXElementTypeHelper.s_isInternal = isInternal;
 
             //ArrayOfXElement will be in the global namespace
             CodeNamespace targetNamespace = cu.Namespaces.Count > 0 ? cu.Namespaces[0] : new CodeNamespace();
             SpecialNamespace = targetNamespace.Name;
-            arrayOfXElements = CreateArrayOfXmlElementClass(targetNamespace);
-            arrayOfXElementRef = new CodeTypeReference(GetUniqueClassName(targetNamespace));
+            s_arrayOfXElements = CreateArrayOfXmlElementClass(targetNamespace);
+            s_arrayOfXElementRef = new CodeTypeReference(GetUniqueClassName(targetNamespace));
         }
 
         internal static CodeTypeDeclaration ArrayOfXElements
         {
             get
             {
-                return arrayOfXElements;
+                return s_arrayOfXElements;
             }
         }
 
@@ -48,15 +48,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             get
             {
-                return arrayOfXElementRef;
+                return s_arrayOfXElementRef;
             }
         }
 
         internal void CheckToAdd(string namespaceToAdd)
         {
-            if (!needToAdd.Contains(namespaceToAdd))
+            if (!_needToAdd.Contains(namespaceToAdd))
             {
-                needToAdd.Add(namespaceToAdd);
+                _needToAdd.Add(namespaceToAdd);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return uniqueName;
         }
 
-        static void AddGeneratedCodeAttribute(CodeTypeDeclaration codeType)
+        private static void AddGeneratedCodeAttribute(CodeTypeDeclaration codeType)
         {
             CodeAttributeDeclaration generatedCodeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(GeneratedCodeAttribute)));
 
@@ -94,14 +94,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         internal void AddToCompileUnit(CodeCompileUnit codeCompileUnit, string namespaceToAdd)
         {
-            if (!addedToCodeCompileUnit.Contains(namespaceToAdd) && needToAdd.Contains(namespaceToAdd))
+            if (!_addedToCodeCompileUnit.Contains(namespaceToAdd) && _needToAdd.Contains(namespaceToAdd))
             {
                 //if it is special namespace and there is only one namespace, add the special type to the first ns because that's when -n is used
                 if (codeCompileUnit.Namespaces.Count > 0 && namespaceToAdd.Equals(SpecialNamespace))
                 {
-                    needToAdd.Remove(namespaceToAdd);
+                    _needToAdd.Remove(namespaceToAdd);
                     namespaceToAdd = codeCompileUnit.Namespaces[0].Name;
-                    needToAdd.Add(namespaceToAdd);
+                    _needToAdd.Add(namespaceToAdd);
                 }
 
                 foreach (CodeNamespace ns in codeCompileUnit.Namespaces)
@@ -109,7 +109,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (namespaceToAdd.Equals(ns.Name))
                     {
                         ns.Types.Add(ArrayOfXElements);
-                        addedToCodeCompileUnit.Add(namespaceToAdd);
+                        _addedToCodeCompileUnit.Add(namespaceToAdd);
                         break;
                     }
                 }
@@ -126,12 +126,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return new CodeTypeReference(typeName, typeRefArgs);
         }
 
-        static CodeTypeDeclaration CreateArrayOfXmlElementClass(CodeNamespace ns)
+        private static CodeTypeDeclaration CreateArrayOfXmlElementClass(CodeNamespace ns)
         {
             CodeTypeDeclaration classToGen = new CodeTypeDeclaration(GetUniqueClassName(ns));
             classToGen.IsClass = true;
             classToGen.IsPartial = true;
-            classToGen.TypeAttributes = IsInternal ? TypeAttributes.NotPublic : TypeAttributes.Public;
+            classToGen.TypeAttributes = s_isInternal ? TypeAttributes.NotPublic : TypeAttributes.Public;
 
             CodeAttributeDeclaration xmlSchemaProviderAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Xml.Serialization.XmlSchemaProviderAttribute)),
                 new CodeAttributeArgument(new CodePrimitiveExpression(null)),
@@ -183,7 +183,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new CodeThisReferenceExpression(), "nodesList")));
 
             classToGen.Members.Add(nodesProperty);
-
         }
         private static void AddGetSchemaMethod(CodeTypeDeclaration classToGen)
         {

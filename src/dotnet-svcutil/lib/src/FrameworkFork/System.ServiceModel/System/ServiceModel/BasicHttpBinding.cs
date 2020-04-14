@@ -25,7 +25,7 @@ namespace System.ServiceModel
             _basicHttpSecurity.Mode = securityMode;
         }
 
-        BasicHttpBinding(BasicHttpSecurity security)
+        private BasicHttpBinding(BasicHttpSecurity security)
             : base()
         {
             this.Initialize();
@@ -68,7 +68,7 @@ namespace System.ServiceModel
         // check that properties of the HttpTransportBindingElement and 
         // MessageEncodingBindingElement not exposed as properties on BasicHttpBinding 
         // match default values of the binding elements
-        bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
+        private bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding)
         {
             if (this.MessageEncoding == WSMessageEncoding.Text)
             {

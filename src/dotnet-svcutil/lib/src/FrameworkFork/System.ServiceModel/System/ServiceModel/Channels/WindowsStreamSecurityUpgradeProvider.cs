@@ -20,17 +20,17 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    class WindowsStreamSecurityUpgradeProvider : StreamSecurityUpgradeProvider
+    internal class WindowsStreamSecurityUpgradeProvider : StreamSecurityUpgradeProvider
     {
-        bool _extractGroupsForWindowsAccounts;
-        EndpointIdentity _identity;
-        IdentityVerifier _identityVerifier;
-        ProtectionLevel _protectionLevel;
-        SecurityTokenManager _securityTokenManager;
-        NetworkCredential _serverCredential;
-        string _scheme;
-        bool _isClient;
-        Uri _listenUri;
+        private bool _extractGroupsForWindowsAccounts;
+        private EndpointIdentity _identity;
+        private IdentityVerifier _identityVerifier;
+        private ProtectionLevel _protectionLevel;
+        private SecurityTokenManager _securityTokenManager;
+        private NetworkCredential _serverCredential;
+        private string _scheme;
+        private bool _isClient;
+        private Uri _listenUri;
 
         public WindowsStreamSecurityUpgradeProvider(WindowsStreamSecurityBindingElement bindingElement,
             BindingContext context, bool isClient)
@@ -104,7 +104,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        NetworkCredential ServerCredential
+        private NetworkCredential ServerCredential
         {
             get
             {
@@ -222,13 +222,13 @@ namespace System.ServiceModel.Channels
                 remoteSecurity = CreateClientSecurity(negotiateStream, _parent.ExtractGroupsForWindowsAccounts);
                 return negotiateStream;
 #else
-                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
+                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
 #endif // SUPPORTS_WINDOWSIDENTITY
             }
 
             protected override IAsyncResult OnBeginAcceptUpgrade(Stream stream, AsyncCallback callback, object state)
             {
-                throw ExceptionHelper.PlatformNotSupported(); 
+                throw ExceptionHelper.PlatformNotSupported();
             }
 
             protected override Stream OnEndAcceptUpgrade(IAsyncResult result,
@@ -268,7 +268,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        class WindowsStreamSecurityUpgradeInitiator : StreamSecurityUpgradeInitiatorBase
+        private class WindowsStreamSecurityUpgradeInitiator : StreamSecurityUpgradeInitiatorBase
         {
             private WindowsStreamSecurityUpgradeProvider _parent;
             private IdentityVerifier _identityVerifier;
@@ -292,8 +292,8 @@ namespace System.ServiceModel.Channels
                 base.Open(timeoutHelper.RemainingTime());
 
                 OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper = new OutWrapper<TokenImpersonationLevel>();
-                OutWrapper<bool> allowNtlmWrapper = new OutWrapper<bool>(); 
-                
+                OutWrapper<bool> allowNtlmWrapper = new OutWrapper<bool>();
+
                 SecurityUtils.OpenTokenProviderIfRequired(_clientTokenProvider, timeoutHelper.RemainingTime());
                 _credential = await TransportSecurityHelpers.GetSspiCredentialAsync(
                     _clientTokenProvider,
@@ -302,16 +302,16 @@ namespace System.ServiceModel.Channels
                     timeoutHelper.GetCancellationToken());
 
                 _impersonationLevel = impersonationLevelWrapper.Value;
-                _allowNtlm = allowNtlmWrapper; 
+                _allowNtlm = allowNtlmWrapper;
 
-                return; 
+                return;
             }
 
             internal override void Open(TimeSpan timeout)
             {
                 OpenAsync(timeout).GetAwaiter();
             }
-            
+
             internal override void Close(TimeSpan timeout)
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
@@ -341,8 +341,8 @@ namespace System.ServiceModel.Channels
 
             protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
             {
-                OutWrapper<SecurityMessageProperty> remoteSecurityOut = new OutWrapper<SecurityMessageProperty>(); 
-                
+                OutWrapper<SecurityMessageProperty> remoteSecurityOut = new OutWrapper<SecurityMessageProperty>();
+
                 var retVal = OnInitiateUpgradeAsync(stream, remoteSecurityOut).GetAwaiter().GetResult();
                 remoteSecurity = remoteSecurityOut.Value;
 
@@ -389,7 +389,7 @@ namespace System.ServiceModel.Channels
 #else
             protected override Task<Stream> OnInitiateUpgradeAsync(Stream stream, OutWrapper<SecurityMessageProperty> remoteSecurity)
             {
-                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported); 
+                throw ExceptionHelper.PlatformNotSupported(ExceptionHelper.WinsdowsStreamSecurityNotSupported);
             }
 #endif // SUPPORTS_WINDOWSIDENTITY 
 

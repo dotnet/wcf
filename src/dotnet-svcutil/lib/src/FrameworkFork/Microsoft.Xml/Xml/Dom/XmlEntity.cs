@@ -1,35 +1,38 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     using System.Diagnostics;
 
     // Represents a parsed or unparsed entity in the XML document.
-    public class XmlEntity : XmlNode {
-        string publicId;
-        string systemId;
-        String notationName;
-        String name;
-        String unparsedReplacementStr;
-        String baseURI;
-        XmlLinkedNode lastChild;
-        private bool childrenFoliating;
+    public class XmlEntity : XmlNode
+    {
+        private string _publicId;
+        private string _systemId;
+        private String _notationName;
+        private String _name;
+        private String _unparsedReplacementStr;
+        private String _baseURI;
+        private XmlLinkedNode _lastChild;
+        private bool _childrenFoliating;
 
-        internal XmlEntity( String name, String strdata, string publicId, string systemId, String notationName, XmlDocument doc ) : base( doc ) {
-            this.name = doc.NameTable.Add(name);
-            this.publicId = publicId;
-            this.systemId = systemId;
-            this.notationName = notationName;
-            this.unparsedReplacementStr = strdata;
-            this.childrenFoliating = false;
+        internal XmlEntity(String name, String strdata, string publicId, string systemId, String notationName, XmlDocument doc) : base(doc)
+        {
+            _name = doc.NameTable.Add(name);
+            _publicId = publicId;
+            _systemId = systemId;
+            _notationName = notationName;
+            _unparsedReplacementStr = strdata;
+            _childrenFoliating = false;
         }
 
         // Throws an excption since an entity can not be cloned.
-        public override XmlNode CloneNode(bool deep) {
-
-              throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_Node_Cloning));
+        public override XmlNode CloneNode(bool deep)
+        {
+            throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_Node_Cloning));
         }
 
         //
@@ -37,52 +40,62 @@ namespace Microsoft.Xml {
         //
 
         // Gets a value indicating whether the node is read-only.
-        public override bool IsReadOnly {
-            get {
+        public override bool IsReadOnly
+        {
+            get
+            {
                 return true;        // Make entities readonly
             }
         }
 
 
         // Gets the name of the node.
-        public override string Name {
-            get { return name;}
+        public override string Name
+        {
+            get { return _name; }
         }
 
         // Gets the name of the node without the namespace prefix.
-        public override string LocalName {
-            get { return name;}
+        public override string LocalName
+        {
+            get { return _name; }
         }
 
         // Gets the concatenated values of the entity node and all its children.
         // The property is read-only and when tried to be set, exception will be thrown.
-        public override string InnerText {
+        public override string InnerText
+        {
             get { return base.InnerText; }
-            set {
+            set
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_Ent_Innertext));
             }
         }
 
-        internal override bool IsContainer {
-            get { return true;}
+        internal override bool IsContainer
+        {
+            get { return true; }
         }
 
-        internal override XmlLinkedNode LastNode {
-            get {
-                if (lastChild == null && !childrenFoliating)
+        internal override XmlLinkedNode LastNode
+        {
+            get
+            {
+                if (_lastChild == null && !_childrenFoliating)
                 { //expand the unparsedreplacementstring
-                    childrenFoliating = true;
+                    _childrenFoliating = true;
                     //wrap the replacement string with an element
                     XmlLoader loader = new XmlLoader();
                     loader.ExpandEntity(this);
                 }
-                return lastChild;
+                return _lastChild;
             }
-            set { lastChild = value;}
+            set { _lastChild = value; }
         }
 
-        internal override bool IsValidChildType( XmlNodeType type ) {
-            return(type == XmlNodeType.Text ||
+        internal override bool IsValidChildType(XmlNodeType type)
+        {
+            return (type == XmlNodeType.Text ||
                    type == XmlNodeType.Element ||
                    type == XmlNodeType.ProcessingInstruction ||
                    type == XmlNodeType.Comment ||
@@ -93,50 +106,60 @@ namespace Microsoft.Xml {
         }
 
         // Gets the type of the node.
-        public override XmlNodeType NodeType {
-            get { return XmlNodeType.Entity;}
+        public override XmlNodeType NodeType
+        {
+            get { return XmlNodeType.Entity; }
         }
 
         // Gets the value of the public identifier on the entity declaration.
-        public String PublicId {
-            get { return publicId;}
+        public String PublicId
+        {
+            get { return _publicId; }
         }
 
         // Gets the value of the system identifier on the entity declaration.
-        public String SystemId {
-            get { return systemId;}
+        public String SystemId
+        {
+            get { return _systemId; }
         }
 
         // Gets the name of the optional NDATA attribute on the
         // entity declaration.
-        public String NotationName {
-            get { return notationName;}
+        public String NotationName
+        {
+            get { return _notationName; }
         }
 
         //Without override these two functions, we can't guarantee that WriteTo()/WriteContent() functions will never be called
-        public override String OuterXml {
+        public override String OuterXml
+        {
             get { return String.Empty; }
         }
 
-        public override String InnerXml {
+        public override String InnerXml
+        {
             get { return String.Empty; }
-            set { throw new InvalidOperationException( ResXml.GetString(ResXml.Xdom_Set_InnerXml ) ); }
+            set { throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_Set_InnerXml)); }
         }
 
         // Saves the node to the specified XmlWriter.
-        public override void WriteTo(XmlWriter w) {
+        public override void WriteTo(XmlWriter w)
+        {
         }
 
         // Saves all the children of the node to the specified XmlWriter.
-        public override void WriteContentTo(XmlWriter w) {
+        public override void WriteContentTo(XmlWriter w)
+        {
         }
 
-        public override String BaseURI {
-            get { return baseURI; }
+        public override String BaseURI
+        {
+            get { return _baseURI; }
         }
 
-        internal void SetBaseURI( String inBaseURI ) {
-            baseURI = inBaseURI;
+        internal void SetBaseURI(String inBaseURI)
+        {
+            _baseURI = inBaseURI;
         }
     }
 }

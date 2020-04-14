@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 
 namespace System.ServiceModel
@@ -7,12 +8,12 @@ namespace System.ServiceModel
     public class FaultImportOptions
     {
         /* use the current message formatter for faults.*/
-        bool useMessageFormat = false;
+        private bool _useMessageFormat = false;
 
         public bool UseMessageFormat
         {
-            get { return useMessageFormat; }
-            set { useMessageFormat = value; }
+            get { return _useMessageFormat; }
+            set { _useMessageFormat = value; }
         }
     }
 }

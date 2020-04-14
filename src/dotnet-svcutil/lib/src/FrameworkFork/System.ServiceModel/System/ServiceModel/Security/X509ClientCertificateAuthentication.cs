@@ -6,26 +6,25 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace System.ServiceModel.Security
 {
- 
     public class X509ClientCertificateAuthentication
     {
         internal const X509CertificateValidationMode DefaultCertificateValidationMode = X509CertificateValidationMode.ChainTrust;
         internal const X509RevocationMode DefaultRevocationMode = X509RevocationMode.Online;
         internal const StoreLocation DefaultTrustedStoreLocation = StoreLocation.LocalMachine;
-        static X509CertificateValidator defaultCertificateValidator;
-        
+        private static X509CertificateValidator s_defaultCertificateValidator;
+
         internal static X509CertificateValidator DefaultCertificateValidator
         {
             get
             {
-                if (defaultCertificateValidator == null)
+                if (s_defaultCertificateValidator == null)
                 {
                     bool useMachineContext = DefaultTrustedStoreLocation == StoreLocation.LocalMachine;
                     X509ChainPolicy chainPolicy = new X509ChainPolicy();
                     chainPolicy.RevocationMode = DefaultRevocationMode;
-                    defaultCertificateValidator = X509CertificateValidator.CreateChainTrustValidator(useMachineContext, chainPolicy);
+                    s_defaultCertificateValidator = X509CertificateValidator.CreateChainTrustValidator(useMachineContext, chainPolicy);
                 }
-                return defaultCertificateValidator;
+                return s_defaultCertificateValidator;
             }
         }
     }

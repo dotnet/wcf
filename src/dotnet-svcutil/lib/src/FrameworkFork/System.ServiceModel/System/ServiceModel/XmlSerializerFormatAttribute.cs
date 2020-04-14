@@ -8,10 +8,10 @@ namespace System.ServiceModel
     [AttributeUsage(ServiceModelAttributeTargets.ServiceContract | ServiceModelAttributeTargets.OperationContract, Inherited = false, AllowMultiple = false)]
     public sealed class XmlSerializerFormatAttribute : Attribute
     {
-        bool _supportFaults = false;
-        OperationFormatStyle _style;
-        bool _isStyleSet;
-        OperationFormatUse _use;
+        private bool _supportFaults = false;
+        private OperationFormatStyle _style;
+        private bool _isStyleSet;
+        private OperationFormatUse _use;
 
         public bool SupportFaults
         {

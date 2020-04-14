@@ -17,15 +17,15 @@ namespace System.IdentityModel.Tokens
 
     public class GenericXmlSecurityToken : SecurityToken
     {
-        const int SupportedPersistanceVersion = 1;
-        string id;
-        SecurityToken proofToken;
-        SecurityKeyIdentifierClause internalTokenReference;
-        SecurityKeyIdentifierClause externalTokenReference;
-        XmlElement tokenXml;
-        ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies;
-        DateTime effectiveTime;
-        DateTime expirationTime;
+        private const int SupportedPersistanceVersion = 1;
+        private string _id;
+        private SecurityToken _proofToken;
+        private SecurityKeyIdentifierClause _internalTokenReference;
+        private SecurityKeyIdentifierClause _externalTokenReference;
+        private XmlElement _tokenXml;
+        private ReadOnlyCollection<IAuthorizationPolicy> _authorizationPolicies;
+        private DateTime _effectiveTime;
+        private DateTime _expirationTime;
 
         public GenericXmlSecurityToken(
             XmlElement tokenXml,
@@ -42,63 +42,63 @@ namespace System.IdentityModel.Tokens
                 throw new ArgumentNullException("tokenXml"); // TODO: DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("tokenXml");
             }
 
-            this.id = GetId(tokenXml);
-            this.tokenXml = tokenXml;
-            this.proofToken = proofToken;
-            this.effectiveTime = effectiveTime.ToUniversalTime();
-            this.expirationTime = expirationTime.ToUniversalTime();
+            _id = GetId(tokenXml);
+            _tokenXml = tokenXml;
+            _proofToken = proofToken;
+            _effectiveTime = effectiveTime.ToUniversalTime();
+            _expirationTime = expirationTime.ToUniversalTime();
 
-            this.internalTokenReference = internalTokenReference;
-            this.externalTokenReference = externalTokenReference;
-            this.authorizationPolicies = authorizationPolicies ?? EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance;
+            _internalTokenReference = internalTokenReference;
+            _externalTokenReference = externalTokenReference;
+            _authorizationPolicies = authorizationPolicies ?? EmptyReadOnlyCollection<IAuthorizationPolicy>.Instance;
         }
 
         public override string Id
         {
-            get { return this.id; }
+            get { return _id; }
         }
 
         public override DateTime ValidFrom
         {
-            get { return this.effectiveTime; }
+            get { return _effectiveTime; }
         }
 
         public override DateTime ValidTo
         {
-            get { return this.expirationTime; }
+            get { return _expirationTime; }
         }
 
         public SecurityKeyIdentifierClause InternalTokenReference
         {
-            get { return this.internalTokenReference; }
+            get { return _internalTokenReference; }
         }
 
         public SecurityKeyIdentifierClause ExternalTokenReference
         {
-            get { return this.externalTokenReference; }
+            get { return _externalTokenReference; }
         }
 
         public XmlElement TokenXml
         {
-            get { return this.tokenXml; }
+            get { return _tokenXml; }
         }
 
         public SecurityToken ProofToken
         {
-            get { return this.proofToken; }
+            get { return _proofToken; }
         }
 
         public ReadOnlyCollection<IAuthorizationPolicy> AuthorizationPolicies
         {
-            get { return this.authorizationPolicies; }
+            get { return _authorizationPolicies; }
         }
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {
             get
             {
-                if (this.proofToken != null)
-                    return this.proofToken.SecurityKeys;
+                if (_proofToken != null)
+                    return _proofToken.SecurityKeys;
                 else
                     return EmptyReadOnlyCollection<SecurityKey>.Instance;
             }
@@ -110,15 +110,15 @@ namespace System.IdentityModel.Tokens
             writer.WriteLine("Generic XML token:");
             writer.WriteLine("   validFrom: {0}", this.ValidFrom);
             writer.WriteLine("   validTo: {0}", this.ValidTo);
-            if (this.internalTokenReference != null)
-                writer.WriteLine("   InternalTokenReference: {0}", this.internalTokenReference);
-            if (this.externalTokenReference != null)
-                writer.WriteLine("   ExternalTokenReference: {0}", this.externalTokenReference);
-            writer.WriteLine("   Token Element: ({0}, {1})", this.tokenXml.LocalName, this.tokenXml.NamespaceURI);
+            if (_internalTokenReference != null)
+                writer.WriteLine("   InternalTokenReference: {0}", _internalTokenReference);
+            if (_externalTokenReference != null)
+                writer.WriteLine("   ExternalTokenReference: {0}", _externalTokenReference);
+            writer.WriteLine("   Token Element: ({0}, {1})", _tokenXml.LocalName, _tokenXml.NamespaceURI);
             return writer.ToString();
         }
 
-        static string GetId(XmlElement tokenXml)
+        private static string GetId(XmlElement tokenXml)
         {
             if (tokenXml != null)
             {

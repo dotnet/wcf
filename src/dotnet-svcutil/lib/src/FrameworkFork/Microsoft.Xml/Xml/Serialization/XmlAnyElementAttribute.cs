@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using Microsoft.Xml.Schema;
 
@@ -9,56 +10,63 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue, AllowMultiple=true)]
-    public class XmlAnyElementAttribute : System.Attribute {
-        string name;
-        string ns;
-        int order = -1;
-        bool nsSpecified = false;
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue, AllowMultiple = true)]
+    public class XmlAnyElementAttribute : System.Attribute
+    {
+        private string _name;
+        private string _ns;
+        private int _order = -1;
+        private bool _nsSpecified = false;
 
         /// <include file='doc\XmlAnyElementAttribute.uex' path='docs/doc[@for="XmlAnyElementAttribute.XmlAnyElementAttribute"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAnyElementAttribute() {
+        public XmlAnyElementAttribute()
+        {
         }
-        
+
         /// <include file='doc\XmlAnyElementAttribute.uex' path='docs/doc[@for="XmlAnyElementAttribute.XmlAnyElementAttribute1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAnyElementAttribute(string name) {
-            this.name = name;
+        public XmlAnyElementAttribute(string name)
+        {
+            _name = name;
         }
 
         /// <include file='doc\XmlAnyElementAttribute.uex' path='docs/doc[@for="XmlAnyElementAttribute.XmlAnyElementAttribute2"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAnyElementAttribute(string name, string ns) {
-            this.name = name;
-            this.ns = ns;
-            nsSpecified = true;
+        public XmlAnyElementAttribute(string name, string ns)
+        {
+            _name = name;
+            _ns = ns;
+            _nsSpecified = true;
         }
-        
+
         /// <include file='doc\XmlAnyElementAttribute.uex' path='docs/doc[@for="XmlAnyElementAttribute.Name"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Name {
-            get { return name == null ? string.Empty : name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name == null ? string.Empty : _name; }
+            set { _name = value; }
         }
-        
+
         /// <include file='doc\XmlAnyElementAttribute.uex' path='docs/doc[@for="XmlAnyElementAttribute.Namespace"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Namespace {
-            get { return ns; }
-            set { 
-                ns = value; 
-                nsSpecified = true;
+        public string Namespace
+        {
+            get { return _ns; }
+            set
+            {
+                _ns = value;
+                _nsSpecified = true;
             }
         }
 
@@ -66,17 +74,20 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public int Order {
-            get { return order; }
-            set {
+        public int Order
+        {
+            get { return _order; }
+            set
+            {
                 if (value < 0)
                     throw new ArgumentException(ResXml.GetString(ResXml.XmlDisallowNegativeValues), "Order");
-                order = value;
+                _order = value;
             }
         }
 
-        internal bool NamespaceSpecified {
-            get { return nsSpecified; }
+        internal bool NamespaceSpecified
+        {
+            get { return _nsSpecified; }
         }
     }
 }

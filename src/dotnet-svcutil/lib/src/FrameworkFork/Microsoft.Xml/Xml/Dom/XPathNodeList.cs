@@ -1,102 +1,127 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Collections;
     using System.Collections.Generic;
 
-    internal class XPathNodeList: XmlNodeList {
-        List<XmlNode> list;
-        XPathNodeIterator nodeIterator;
-        bool done;
+    internal class XPathNodeList : XmlNodeList
+    {
+        private List<XmlNode> _list;
+        private XPathNodeIterator _nodeIterator;
+        private bool _done;
 
-        public XPathNodeList(XPathNodeIterator nodeIterator) {
-            this.nodeIterator = nodeIterator;
-            this.list = new List<XmlNode>();
-            this.done = false;
+        public XPathNodeList(XPathNodeIterator nodeIterator)
+        {
+            _nodeIterator = nodeIterator;
+            _list = new List<XmlNode>();
+            _done = false;
         }
 
-        public override int Count {
-            get {
-                if (! done) {
+        public override int Count
+        {
+            get
+            {
+                if (!_done)
+                {
                     ReadUntil(Int32.MaxValue);
                 }
-                return list.Count;
+                return _list.Count;
             }
         }
 
-        private static readonly object[] nullparams = {};
+        private static readonly object[] s_nullparams = { };
 
-        private XmlNode GetNode(XPathNavigator n) {
-            IHasXmlNode iHasNode = (IHasXmlNode) n;
+        private XmlNode GetNode(XPathNavigator n)
+        {
+            IHasXmlNode iHasNode = (IHasXmlNode)n;
             return iHasNode.GetNode();
         }
 
-        internal int ReadUntil(int index) {
-            int count = list.Count;
-            while (! done && count <= index) {
-                if (nodeIterator.MoveNext()) {
-                    XmlNode n = GetNode(nodeIterator.Current);
-                    if (n != null) {
-                        list.Add(n);
+        internal int ReadUntil(int index)
+        {
+            int count = _list.Count;
+            while (!_done && count <= index)
+            {
+                if (_nodeIterator.MoveNext())
+                {
+                    XmlNode n = GetNode(_nodeIterator.Current);
+                    if (n != null)
+                    {
+                        _list.Add(n);
                         count++;
                     }
-                } else {
-                    done = true;
+                }
+                else
+                {
+                    _done = true;
                     break;
                 }
             }
             return count;
         }
 
-        public override XmlNode Item(int index) {
-            if (list.Count <= index) {
+        public override XmlNode Item(int index)
+        {
+            if (_list.Count <= index)
+            {
                 ReadUntil(index);
             }
-            if (index < 0 || list.Count <= index) {
+            if (index < 0 || _list.Count <= index)
+            {
                 return null;
             }
-            return list[index];
+            return _list[index];
         }
 
-        public override IEnumerator GetEnumerator() {
+        public override IEnumerator GetEnumerator()
+        {
             return new XmlNodeListEnumerator(this);
         }
     }
 
-    internal class XmlNodeListEnumerator : IEnumerator {
-        XPathNodeList list;
-        int index;
-        bool valid;
+    internal class XmlNodeListEnumerator : IEnumerator
+    {
+        private XPathNodeList _list;
+        private int _index;
+        private bool _valid;
 
-        public XmlNodeListEnumerator(XPathNodeList list) {
-            this.list = list;
-            this.index = -1;
-            this.valid = false;
+        public XmlNodeListEnumerator(XPathNodeList list)
+        {
+            _list = list;
+            _index = -1;
+            _valid = false;
         }
 
-        public void Reset() {
-            index = -1;
+        public void Reset()
+        {
+            _index = -1;
         }
 
-        public bool MoveNext() {
-            index++;
-            int count = list.ReadUntil(index + 1);   // read past for delete-node case
-            if (count - 1 < index) {
+        public bool MoveNext()
+        {
+            _index++;
+            int count = _list.ReadUntil(_index + 1);   // read past for delete-node case
+            if (count - 1 < _index)
+            {
                 return false;
             }
-            valid = (list[index] != null);
-            return valid;
+            _valid = (_list[_index] != null);
+            return _valid;
         }
 
-       public object Current {
-            get {
-                if (valid) {
-                    return list[index];
+        public object Current
+        {
+            get
+            {
+                if (_valid)
+                {
+                    return _list[_index];
                 }
                 return null;
             }

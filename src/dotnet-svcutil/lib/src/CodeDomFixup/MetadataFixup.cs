@@ -19,7 +19,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
         public static IFixup[] GetPostFixups(WsdlImporter importer, Collection<ServiceEndpoint> endpoints, Collection<Binding> bindings, Collection<ContractDescription> contracts)
         {
-            return new IFixup[] 
+            return new IFixup[]
                 {
                     new EndpointSelector(importer, endpoints, bindings, contracts),
                     new NoSoapEncodingFixup(importer, endpoints, bindings, contracts),

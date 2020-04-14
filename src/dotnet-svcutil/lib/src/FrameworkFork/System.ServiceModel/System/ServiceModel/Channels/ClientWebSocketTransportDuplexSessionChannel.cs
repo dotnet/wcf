@@ -16,14 +16,14 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    class ClientWebSocketTransportDuplexSessionChannel : WebSocketTransportDuplexSessionChannel
+    internal class ClientWebSocketTransportDuplexSessionChannel : WebSocketTransportDuplexSessionChannel
     {
-        readonly ClientWebSocketFactory _connectionFactory;
-        HttpChannelFactory<IDuplexSessionChannel> _channelFactory;
-        SecurityTokenProviderContainer _webRequestTokenProvider;
-        SecurityTokenProviderContainer _webRequestProxyTokenProvider;
-        volatile bool _cleanupStarted;
-        volatile bool _cleanupIdentity;
+        private readonly ClientWebSocketFactory _connectionFactory;
+        private HttpChannelFactory<IDuplexSessionChannel> _channelFactory;
+        private SecurityTokenProviderContainer _webRequestTokenProvider;
+        private SecurityTokenProviderContainer _webRequestProxyTokenProvider;
+        private volatile bool _cleanupStarted;
+        private volatile bool _cleanupIdentity;
 
         public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddresss, Uri via)
             : base(channelFactory, remoteAddresss, via)
@@ -145,7 +145,7 @@ namespace System.ServiceModel.Channels
             base.OnCleanup();
         }
 
-        static void TryConvertAndThrow(WebSocketException ex)
+        private static void TryConvertAndThrow(WebSocketException ex)
         {
             switch (ex.WebSocketErrorCode)
             {
@@ -166,12 +166,12 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        void CleanupOnError()
+        private void CleanupOnError()
         {
             Cleanup();
         }
 
-        void CleanupTokenProviders()
+        private void CleanupTokenProviders()
         {
             if (_webRequestTokenProvider != null)
             {

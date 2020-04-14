@@ -13,7 +13,7 @@ namespace System.ServiceModel.Security.Tokens
         internal const bool defaultCanRenewSession = true;
 
         private SecurityBindingElement _bootstrapSecurityBindingElement;
-        ChannelProtectionRequirements _bootstrapProtectionRequirements;
+        private ChannelProtectionRequirements _bootstrapProtectionRequirements;
         private bool _requireCancellation;
         private bool _canRenewSession = defaultCanRenewSession;
         private BindingContext _issuerBindingContext;

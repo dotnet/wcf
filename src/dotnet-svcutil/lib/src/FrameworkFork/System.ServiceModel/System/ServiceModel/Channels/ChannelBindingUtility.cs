@@ -10,14 +10,14 @@ namespace System.ServiceModel.Channels
 {
     internal static class ChannelBindingUtility
     {
-        static ExtendedProtectionPolicy disabledPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
-        static ExtendedProtectionPolicy defaultPolicy = disabledPolicy;
+        private static ExtendedProtectionPolicy s_disabledPolicy = new ExtendedProtectionPolicy(PolicyEnforcement.Never);
+        private static ExtendedProtectionPolicy s_defaultPolicy = s_disabledPolicy;
 
         public static ExtendedProtectionPolicy DisabledPolicy
         {
             get
             {
-                return disabledPolicy;
+                return s_disabledPolicy;
             }
         }
 
@@ -25,7 +25,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return defaultPolicy;
+                return s_defaultPolicy;
             }
         }
 

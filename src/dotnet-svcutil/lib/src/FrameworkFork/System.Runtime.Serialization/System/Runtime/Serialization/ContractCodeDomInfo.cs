@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.Runtime.Serialization
 {
     using System;
@@ -15,18 +15,18 @@ namespace System.Runtime.Serialization
         internal CodeNamespace CodeNamespace;
         internal bool ReferencedTypeExists;
         internal bool UsesWildcardNamespace;
-        string clrNamespace;
-        Dictionary<string, object> memberNames;
+        private string _clrNamespace;
+        private Dictionary<string, object> _memberNames;
 
         internal string ClrNamespace
         {
-            get { return (ReferencedTypeExists ? null : clrNamespace); }
+            get { return (ReferencedTypeExists ? null : _clrNamespace); }
             set
             {
                 if (ReferencedTypeExists)
                     throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.CannotSetNamespaceForReferencedType, TypeReference.BaseType)));
                 else
-                    clrNamespace = value;
+                    _clrNamespace = value;
             }
         }
 
@@ -36,11 +36,11 @@ namespace System.Runtime.Serialization
                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.CannotSetMembersForReferencedType, TypeReference.BaseType)));
             else
             {
-                if (memberNames == null)
+                if (_memberNames == null)
                 {
-                    memberNames = new Dictionary<string, object>(StringComparer.Ordinal);
+                    _memberNames = new Dictionary<string, object>(StringComparer.Ordinal);
                 }
-                return memberNames;
+                return _memberNames;
             }
         }
     }

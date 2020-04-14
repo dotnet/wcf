@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace Microsoft.CodeDom.Compiler
 {
     using System;
@@ -40,7 +41,6 @@ namespace Microsoft.CodeDom.Compiler
 
         private void AddCompilerInfo(CompilerInfo compilerInfo)
         {
-
             foreach (string language in compilerInfo._compilerLanguages)
             {
                 _compilerLanguages[language] = compilerInfo;
@@ -53,6 +53,5 @@ namespace Microsoft.CodeDom.Compiler
 
             _allCompilerInfo.Add(compilerInfo);
         }
-
     }
 }

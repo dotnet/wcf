@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.XPath {
-
+namespace Microsoft.Xml.XPath
+{
     using System;
 
-    public enum XPathNodeType {
+    public enum XPathNodeType
+    {
         Root,
         Element,
         Attribute,

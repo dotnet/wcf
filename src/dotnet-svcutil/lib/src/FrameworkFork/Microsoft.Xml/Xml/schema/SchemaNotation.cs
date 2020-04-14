@@ -1,36 +1,40 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
+namespace Microsoft.Xml.Schema
+{
     using System;
     using System.Diagnostics;
 
-    internal sealed class SchemaNotation {
-        internal const int   SYSTEM = 0;
-        internal const int   PUBLIC = 1;
+    internal sealed class SchemaNotation
+    {
+        internal const int SYSTEM = 0;
+        internal const int PUBLIC = 1;
 
-        private XmlQualifiedName  name;
-        private String systemLiteral;   // System literal
-        private String pubid;    // pubid literal
+        private XmlQualifiedName _name;
+        private String _systemLiteral;   // System literal
+        private String _pubid;    // pubid literal
 
-        internal SchemaNotation(XmlQualifiedName name) {
-            this.name = name;
+        internal SchemaNotation(XmlQualifiedName name)
+        {
+            _name = name;
         }
 
-        internal XmlQualifiedName Name {
-            get { return name;}
+        internal XmlQualifiedName Name
+        {
+            get { return _name; }
         }
 
-        internal String SystemLiteral {
-            get { return systemLiteral;}
-            set { systemLiteral = value;}
+        internal String SystemLiteral
+        {
+            get { return _systemLiteral; }
+            set { _systemLiteral = value; }
         }
 
-        internal String Pubid {
-            get { return pubid;}
-            set { pubid = value;}
+        internal String Pubid
+        {
+            get { return _pubid; }
+            set { _pubid = value; }
         }
-
     };
-
 }

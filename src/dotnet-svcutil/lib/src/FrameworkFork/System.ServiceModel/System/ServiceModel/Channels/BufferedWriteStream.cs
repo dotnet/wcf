@@ -39,11 +39,11 @@ namespace System.ServiceModel.Channels
         private int _writePos; // Write pointer within buffer.
         private readonly SemaphoreSlim _sem = new SemaphoreSlim(1, 1);
 
-        public BufferedWriteStream(Stream stream) : this(stream, DefaultBufferSize) {}
+        public BufferedWriteStream(Stream stream) : this(stream, DefaultBufferSize) { }
 
         public BufferedWriteStream(Stream stream, int bufferSize)
         {
-            Contract.Assert(stream!=Null, "stream!=Null");
+            Contract.Assert(stream != Null, "stream!=Null");
             Contract.Assert(bufferSize > 0, "bufferSize>0");
             Contract.Assert(stream.CanWrite);
             _stream = stream;
@@ -189,7 +189,7 @@ namespace System.ServiceModel.Channels
 
                 // There was nothing in the buffer:
                 Contract.Assert(_writePos == 0);
-                }
+            }
             finally
             {
                 _sem.Release();

@@ -9,9 +9,9 @@ namespace System.IdentityModel.Tokens
 
     public class X509WindowsSecurityToken : X509SecurityToken
     {
-        WindowsIdentity windowsIdentity;
-        bool disposed = false;
-        string authenticationType;
+        private WindowsIdentity _windowsIdentity;
+        private bool _disposed = false;
+        private string _authenticationType;
 
         public X509WindowsSecurityToken(X509Certificate2 certificate, WindowsIdentity windowsIdentity)
             : this(certificate, windowsIdentity, null, true)
@@ -45,7 +45,7 @@ namespace System.IdentityModel.Tokens
             get
             {
                 ThrowIfDisposed();
-                return this.windowsIdentity;
+                return _windowsIdentity;
             }
         }
 
@@ -53,7 +53,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                return this.authenticationType;
+                return _authenticationType;
             }
         }
 
@@ -61,10 +61,10 @@ namespace System.IdentityModel.Tokens
         {
             try
             {
-                if (!this.disposed)
+                if (!_disposed)
                 {
-                    this.disposed = true;
-                    this.windowsIdentity = null;
+                    _disposed = true;
+                    _windowsIdentity = null;
                 }
             }
             finally

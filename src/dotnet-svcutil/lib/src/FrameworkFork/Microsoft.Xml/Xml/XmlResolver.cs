@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
+namespace Microsoft.Xml
+{
     using System;
     using System.IO;
     using System.Text;
@@ -12,14 +13,15 @@ namespace Microsoft.Xml {
     using System.Threading.Tasks;
 #endif
     using System.Runtime.Versioning;
-    
+
     /// <include file='doc\XmlResolver.uex' path='docs/doc[@for="XmlResolver"]/*' />
     /// <devdoc>
     ///    <para>Resolves external XML resources named by a Uniform
     ///       Resource Identifier (URI). This class is <see langword='abstract'/>
     ///       .</para>
     /// </devdoc>
-    public abstract partial class XmlResolver {
+    public abstract partial class XmlResolver
+    {
         /// <include file='doc\XmlResolver.uex' path='docs/doc[@for="XmlResolver.GetEntity1"]/*' />
         /// <devdoc>
         ///    <para>Maps a
@@ -30,7 +32,7 @@ namespace Microsoft.Xml {
                                          string role,
                                          Type ofObjectToReturn);
 
-        
+
 
         /// <include file='doc\XmlResolver.uex' path='docs/doc[@for="XmlResolver.ResolveUri"]/*' />
         /// <devdoc>
@@ -40,22 +42,28 @@ namespace Microsoft.Xml {
         // [ResourceExposure(ResourceScope.Machine)]
         // [ResourceConsumption(ResourceScope.Machine)]
 #endif
-        public virtual Uri ResolveUri(Uri baseUri, string relativeUri) {
-            if ( baseUri == null || ( !baseUri.IsAbsoluteUri && baseUri.OriginalString.Length == 0 ) ) {
-                Uri uri = new Uri( relativeUri, UriKind.RelativeOrAbsolute );
+        public virtual Uri ResolveUri(Uri baseUri, string relativeUri)
+        {
+            if (baseUri == null || (!baseUri.IsAbsoluteUri && baseUri.OriginalString.Length == 0))
+            {
+                Uri uri = new Uri(relativeUri, UriKind.RelativeOrAbsolute);
 #if !SILVERLIGHT // Path.GetFullPath is SecurityCritical
-                if ( !uri.IsAbsoluteUri && uri.OriginalString.Length > 0 ) {
-                    uri = new Uri( Path.GetFullPath( relativeUri ) );
+                if (!uri.IsAbsoluteUri && uri.OriginalString.Length > 0)
+                {
+                    uri = new Uri(Path.GetFullPath(relativeUri));
                 }
 #endif
                 return uri;
             }
-            else {
-                if (relativeUri == null || relativeUri.Length == 0) {
+            else
+            {
+                if (relativeUri == null || relativeUri.Length == 0)
+                {
                     return baseUri;
                 }
                 // relative base Uri
-                if ( !baseUri.IsAbsoluteUri ) {
+                if (!baseUri.IsAbsoluteUri)
+                {
 #if SILVERLIGHT
                     // create temporary base for the relative URIs
                     Uri tmpBaseUri = new Uri("tmp:///");
@@ -74,7 +82,7 @@ namespace Microsoft.Xml {
                     throw new NotSupportedException(ResXml.GetString(ResXml.Xml_RelativeUriNotSupported));
 #endif
                 }
-                return new Uri( baseUri, relativeUri );
+                return new Uri(baseUri, relativeUri);
             }
         }
 
@@ -84,16 +92,20 @@ namespace Microsoft.Xml {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public virtual ICredentials Credentials {
+        public virtual ICredentials Credentials
+        {
             set { }
         }
 #endif
 
-        public virtual bool SupportsType(Uri absoluteUri, Type type) {
-            if (absoluteUri == null) {
+        public virtual bool SupportsType(Uri absoluteUri, Type type)
+        {
+            if (absoluteUri == null)
+            {
                 throw new ArgumentNullException("absoluteUri");
             }
-            if (type == null || type == typeof(Stream)) {
+            if (type == null || type == typeof(Stream))
+            {
                 return true;
             }
             return false;

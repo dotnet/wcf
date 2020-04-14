@@ -6,7 +6,7 @@ namespace System.ServiceModel.Channels
     using System;
     using System.Globalization;
 
-    static class UdpConstants
+    internal static class UdpConstants
     {
         // max is 64K - 20 (IP header) - 8(UDP header) - 1 (wraparound)
         public const int MaxMessageSizeOverIPv4 = 64 * 1024 - 20 - 8 - 1;

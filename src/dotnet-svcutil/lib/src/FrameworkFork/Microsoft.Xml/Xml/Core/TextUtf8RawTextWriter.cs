@@ -9,125 +9,149 @@ using Microsoft.Xml.Schema;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     // Concrete implementation of XmlRawWriter interface that serializes text events as encoded
     // text.  All other non-text events are ignored.  The general-purpose TextEncodedRawTextWriter uses the
     // Encoder class to output to any encoding.  The TextUtf8RawTextWriter class combined the encoding
     // operation with serialization in order to achieve better performance.
     // </summary>
-    internal class TextUtf8RawTextWriter : XmlUtf8RawTextWriter {
-
-
-
-
-
-
-
+    internal class TextUtf8RawTextWriter : XmlUtf8RawTextWriter
+    {
         // Construct an instance of this class that serializes to a Stream interface.
-        public TextUtf8RawTextWriter( Stream stream, XmlWriterSettings settings ) : base( stream, settings ) {
+        public TextUtf8RawTextWriter(Stream stream, XmlWriterSettings settings) : base(stream, settings)
+        {
         }
 
 
-//
-// XmlRawWriter
-//
+        //
+        // XmlRawWriter
+        //
         // Ignore Xml declaration
-        internal override void WriteXmlDeclaration( XmlStandalone standalone ) {
+        internal override void WriteXmlDeclaration(XmlStandalone standalone)
+        {
         }
-        internal override void WriteXmlDeclaration( string xmldecl ) {
+        internal override void WriteXmlDeclaration(string xmldecl)
+        {
         }
 
         // Ignore DTD
-        public override void WriteDocType( string name, string pubid, string sysid, string subset ) {
+        public override void WriteDocType(string name, string pubid, string sysid, string subset)
+        {
         }
 
         // Ignore Elements
-        public override void WriteStartElement( string prefix, string localName, string ns ) {
+        public override void WriteStartElement(string prefix, string localName, string ns)
+        {
         }
 
-        internal override void WriteEndElement( string prefix, string localName, string ns ) {
+        internal override void WriteEndElement(string prefix, string localName, string ns)
+        {
         }
 
-        internal override void WriteFullEndElement( string prefix, string localName, string ns ) {
+        internal override void WriteFullEndElement(string prefix, string localName, string ns)
+        {
         }
 
-        internal override void StartElementContent() {
+        internal override void StartElementContent()
+        {
         }
 
         // Ignore attributes
-        public override void WriteStartAttribute( string prefix, string localName, string ns ) {
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
+        {
             base.inAttributeValue = true;
         }
 
-        public override void WriteEndAttribute() {
+        public override void WriteEndAttribute()
+        {
             base.inAttributeValue = false;
         }
 
         // Ignore namespace declarations
-        internal override void WriteNamespaceDeclaration( string prefix, string ns ) {
+        internal override void WriteNamespaceDeclaration(string prefix, string ns)
+        {
         }
 
-        internal override bool SupportsNamespaceDeclarationInChunks {
-            get {
+        internal override bool SupportsNamespaceDeclarationInChunks
+        {
+            get
+            {
                 return false;
             }
         }
 
         // Output content of CDATA sections as plain text without escaping
-        public override void WriteCData( string text ) {
-            base.WriteRaw( text );
+        public override void WriteCData(string text)
+        {
+            base.WriteRaw(text);
         }
 
         // Ignore comments
-        public override void WriteComment( string text ) {
+        public override void WriteComment(string text)
+        {
         }
 
         // Ignore processing instructions
-        public override void WriteProcessingInstruction( string name, string text ) {
+        public override void WriteProcessingInstruction(string name, string text)
+        {
         }
 
         // Ignore entities
-        public override void WriteEntityRef( string name ) {
+        public override void WriteEntityRef(string name)
+        {
         }
-        public override void WriteCharEntity( char ch ) {
+        public override void WriteCharEntity(char ch)
+        {
         }
-        public override void WriteSurrogateCharEntity( char lowChar, char highChar ) {
+        public override void WriteSurrogateCharEntity(char lowChar, char highChar)
+        {
         }
 
         // Output text content without any escaping; ignore attribute values
-        public override void WriteWhitespace( string ws ) {
-            if ( !base.inAttributeValue ) {
-                base.WriteRaw( ws  );
+        public override void WriteWhitespace(string ws)
+        {
+            if (!base.inAttributeValue)
+            {
+                base.WriteRaw(ws);
             }
         }
 
         // Output text content without any escaping; ignore attribute values
-        public override void WriteString( string textBlock ) {
-            if ( !base.inAttributeValue ) {
-                base.WriteRaw( textBlock );
+        public override void WriteString(string textBlock)
+        {
+            if (!base.inAttributeValue)
+            {
+                base.WriteRaw(textBlock);
             }
         }
 
         // Output text content without any escaping; ignore attribute values
-        public override void WriteChars( char[] buffer, int index, int count ) {
-            if ( !base.inAttributeValue ) {
-                base.WriteRaw( buffer, index, count );
+        public override void WriteChars(char[] buffer, int index, int count)
+        {
+            if (!base.inAttributeValue)
+            {
+                base.WriteRaw(buffer, index, count);
             }
         }
 
         // Output text content without any escaping; ignore attribute values
-        public override void WriteRaw( char[] buffer, int index, int count ) {
-            if ( !base.inAttributeValue ) {
-                base.WriteRaw( buffer, index, count );
+        public override void WriteRaw(char[] buffer, int index, int count)
+        {
+            if (!base.inAttributeValue)
+            {
+                base.WriteRaw(buffer, index, count);
             }
         }
 
         // Output text content without any escaping; ignore attribute values
-        public override void WriteRaw( string data ) {
-            if ( !base.inAttributeValue ) {
-                base.WriteRaw( data );
+        public override void WriteRaw(string data)
+        {
+            if (!base.inAttributeValue)
+            {
+                base.WriteRaw(data);
             }
         }
     }

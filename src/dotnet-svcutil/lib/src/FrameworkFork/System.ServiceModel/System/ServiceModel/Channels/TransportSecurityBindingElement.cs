@@ -57,7 +57,7 @@ namespace System.ServiceModel.Channels
         {
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            
+
             if (typeof(T) == typeof(ChannelProtectionRequirements))
             {
                 throw ExceptionHelper.PlatformNotSupported("TransportSecurityBindingElement doesn't support ChannelProtectionRequirements yet.");

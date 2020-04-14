@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeAttributeArgument {
-        private string name;
-        private CodeExpression value;
+    public class CodeAttributeArgument
+    {
+        private string _name;
+        private CodeExpression _value;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeAttributeArgument'/>.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeArgument() {
+        public CodeAttributeArgument()
+        {
         }
 
         /// <devdoc>
@@ -36,7 +38,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeAttributeArgument'/> using the specified value.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeArgument(CodeExpression value) {
+        public CodeAttributeArgument(CodeExpression value)
+        {
             Value = value;
         }
 
@@ -46,7 +49,8 @@ namespace Microsoft.CodeDom {
         ///       value.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeArgument(string name, CodeExpression value) {
+        public CodeAttributeArgument(string name, CodeExpression value)
+        {
             Name = name;
             Value = value;
         }
@@ -56,12 +60,15 @@ namespace Microsoft.CodeDom {
         ///       The name of the attribute.
         ///    </para>
         /// </devdoc>
-        public string Name {
-            get {
-                return (name == null) ? string.Empty : name;
+        public string Name
+        {
+            get
+            {
+                return (_name == null) ? string.Empty : _name;
             }
-            set {
-                name = value;
+            set
+            {
+                _name = value;
             }
         }
 
@@ -70,12 +77,15 @@ namespace Microsoft.CodeDom {
         ///       The argument for the attribute.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Value {
-            get {
-                return value;
+        public CodeExpression Value
+        {
+            get
+            {
+                return _value;
             }
-            set {
-                this.value = value;
+            set
+            {
+                _value = value;
             }
         }
     }

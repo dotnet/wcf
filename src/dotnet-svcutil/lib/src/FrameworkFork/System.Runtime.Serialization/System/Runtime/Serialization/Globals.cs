@@ -362,13 +362,15 @@ namespace System.Runtime.Serialization
         }
 
         [SecurityCritical]
-        private static Type _typeOfContractNamespaceAttribute;
-        internal static Type TypeOfContractNamespaceAttribute {
+        private static Type s_typeOfContractNamespaceAttribute;
+        internal static Type TypeOfContractNamespaceAttribute
+        {
             [SecuritySafeCritical]
-            get {
-                if (_typeOfContractNamespaceAttribute == null)
-                    _typeOfContractNamespaceAttribute = typeof(ContractNamespaceAttribute);
-                return _typeOfContractNamespaceAttribute;
+            get
+            {
+                if (s_typeOfContractNamespaceAttribute == null)
+                    s_typeOfContractNamespaceAttribute = typeof(ContractNamespaceAttribute);
+                return s_typeOfContractNamespaceAttribute;
             }
         }
 
@@ -600,35 +602,41 @@ namespace System.Runtime.Serialization
         }
 #endif
         [SecurityCritical]
-        private static Type _typeOfIPropertyChange;
-        internal static Type TypeOfIPropertyChange {
+        private static Type s_typeOfIPropertyChange;
+        internal static Type TypeOfIPropertyChange
+        {
             [SecuritySafeCritical]
-            get {
-                if (_typeOfIPropertyChange == null)
-                    _typeOfIPropertyChange = typeof(INotifyPropertyChanged);
-                return _typeOfIPropertyChange;
+            get
+            {
+                if (s_typeOfIPropertyChange == null)
+                    s_typeOfIPropertyChange = typeof(INotifyPropertyChanged);
+                return s_typeOfIPropertyChange;
             }
         }
 
         [SecurityCritical]
-        private static Type _typeOfIExtensibleDataObject;
-        internal static Type TypeOfIExtensibleDataObject {
+        private static Type s_typeOfIExtensibleDataObject;
+        internal static Type TypeOfIExtensibleDataObject
+        {
             [SecuritySafeCritical]
-            get {
-                if (_typeOfIExtensibleDataObject == null)
-                    _typeOfIExtensibleDataObject = typeof(IExtensibleDataObject);
-                return _typeOfIExtensibleDataObject;
+            get
+            {
+                if (s_typeOfIExtensibleDataObject == null)
+                    s_typeOfIExtensibleDataObject = typeof(IExtensibleDataObject);
+                return s_typeOfIExtensibleDataObject;
             }
         }
 
         [SecurityCritical]
-        private static Type _typeOfExtensionDataObject;
-        internal static Type TypeOfExtensionDataObject {
+        private static Type s_typeOfExtensionDataObject;
+        internal static Type TypeOfExtensionDataObject
+        {
             [SecuritySafeCritical]
-            get {
-                if (_typeOfExtensionDataObject == null)
-                    _typeOfExtensionDataObject = typeof(ExtensionDataObject);
-                return _typeOfExtensionDataObject;
+            get
+            {
+                if (s_typeOfExtensionDataObject == null)
+                    s_typeOfExtensionDataObject = typeof(ExtensionDataObject);
+                return s_typeOfExtensionDataObject;
             }
         }
 
@@ -906,13 +914,15 @@ namespace System.Runtime.Serialization
         }
 
         [SecurityCritical]
-        static Type _typeOfXmlSerializableServices;
-        internal static Type TypeOfXmlSerializableServices {
+        private static Type s_typeOfXmlSerializableServices;
+        internal static Type TypeOfXmlSerializableServices
+        {
             [SecuritySafeCritical]
-            get {
-                if (_typeOfXmlSerializableServices == null)
-                    _typeOfXmlSerializableServices = typeof(XmlSerializableServices);
-                return _typeOfXmlSerializableServices;
+            get
+            {
+                if (s_typeOfXmlSerializableServices == null)
+                    s_typeOfXmlSerializableServices = typeof(XmlSerializableServices);
+                return s_typeOfXmlSerializableServices;
             }
         }
 
@@ -930,13 +940,15 @@ namespace System.Runtime.Serialization
         }
 
         [SecurityCritical]
-        private static Type typeOfXmlSchemaSet;
-        internal static Type TypeOfXmlSchemaSet {
+        private static Type s_typeOfXmlSchemaSet;
+        internal static Type TypeOfXmlSchemaSet
+        {
             [SecuritySafeCritical]
-            get {
-                if (typeOfXmlSchemaSet == null)
-                    typeOfXmlSchemaSet = typeof(XmlSchemaSet);
-                return typeOfXmlSchemaSet;
+            get
+            {
+                if (s_typeOfXmlSchemaSet == null)
+                    s_typeOfXmlSchemaSet = typeof(XmlSchemaSet);
+                return s_typeOfXmlSchemaSet;
             }
         }
 
@@ -989,7 +1001,7 @@ namespace System.Runtime.Serialization
             }
         }
 
-#region Contract compliance for System.Type
+        #region Contract compliance for System.Type
 
         private static bool TypeSequenceEqual(Type[] seq1, Type[] seq2)
         {
@@ -1027,7 +1039,7 @@ namespace System.Runtime.Serialization
             return methodInfo != null ? (MethodInfo)methodInfo : null;
         }
 
-#endregion
+        #endregion
 
         private static Type s_typeOfScriptObject;
         private static Func<object, string> s_serializeFunc;
@@ -1213,6 +1225,5 @@ namespace System.Runtime.Serialization
   <xs:attribute name='Ref' type='xs:IDREF' />
 </xs:schema>
 ";
-
     }
 }

@@ -1,30 +1,37 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Globalization;
 
-    internal class XPathAncestorIterator: XPathAxisIterator {
-        public XPathAncestorIterator(XPathNavigator nav, XPathNodeType type, bool matchSelf) : base(nav, type, matchSelf) {}
-        public XPathAncestorIterator(XPathNavigator nav, string name, string namespaceURI, bool matchSelf) : base(nav, name, namespaceURI, matchSelf) {}
+    internal class XPathAncestorIterator : XPathAxisIterator
+    {
+        public XPathAncestorIterator(XPathNavigator nav, XPathNodeType type, bool matchSelf) : base(nav, type, matchSelf) { }
+        public XPathAncestorIterator(XPathNavigator nav, string name, string namespaceURI, bool matchSelf) : base(nav, name, namespaceURI, matchSelf) { }
         public XPathAncestorIterator(XPathAncestorIterator other) : base(other) { }
 
-        public override bool MoveNext() {
-            if (first) {
+        public override bool MoveNext()
+        {
+            if (first)
+            {
                 first = false;
-                if(matchSelf && Matches) {
+                if (matchSelf && Matches)
+                {
                     position = 1;
                     return true;
                 }
             }
 
-            while (nav.MoveToParent()) {
-                if (Matches) {
-                    position ++;
+            while (nav.MoveToParent())
+            {
+                if (Matches)
+                {
+                    position++;
                     return true;
                 }
             }
@@ -32,6 +39,6 @@ namespace MS.Internal.Xml.XPath {
         }
 
         public override XPathNodeIterator Clone() { return new XPathAncestorIterator(this); }
-    }    
+    }
 }
 

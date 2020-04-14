@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System.Collections;
@@ -16,7 +17,7 @@ namespace System.ServiceModel.Description
     {
         internal MetadataImporterQuotas Quotas;
 
-        PolicyReader policyNormalizer = null;
+        private PolicyReader _policyNormalizer = null;
 
         internal delegate void PolicyWarningHandler(XmlElement contextAssertion, string warningMessage);
 
@@ -25,30 +26,30 @@ namespace System.ServiceModel.Description
 
         internal IEnumerable<IEnumerable<XmlElement>> NormalizePolicy(IEnumerable<XmlElement> policyAssertions)
         {
-            if (this.policyNormalizer == null)
+            if (_policyNormalizer == null)
             {
-                this.policyNormalizer = new PolicyReader(this);
+                _policyNormalizer = new PolicyReader(this);
             }
 
-            return this.policyNormalizer.NormalizePolicy(policyAssertions);
+            return _policyNormalizer.NormalizePolicy(policyAssertions);
         }
 
         //DevNote: The error handling goal for this class is to NEVER throw an exception.
         //  * Any Ignored Policy should generate a warning
         //  * All policy parsing errors should be logged as warnings in the WSDLImporter.Errors collection.
-        sealed class PolicyReader
+        private sealed class PolicyReader
         {
-            int nodesRead = 0;
+            private int _nodesRead = 0;
 
-            readonly MetadataImporter metadataImporter;
+            private readonly MetadataImporter _metadataImporter;
 
             internal PolicyReader(MetadataImporter metadataImporter)
             {
-                this.metadataImporter = metadataImporter;
+                _metadataImporter = metadataImporter;
             }
 
-            static IEnumerable<XmlElement> Empty = new PolicyHelper.EmptyEnumerable<XmlElement>();
-            static IEnumerable<IEnumerable<XmlElement>> EmptyEmpty = new PolicyHelper.SingleEnumerable<IEnumerable<XmlElement>>(new PolicyHelper.EmptyEnumerable<XmlElement>());
+            private static IEnumerable<XmlElement> s_empty = new PolicyHelper.EmptyEnumerable<XmlElement>();
+            private static IEnumerable<IEnumerable<XmlElement>> s_emptyEmpty = new PolicyHelper.SingleEnumerable<IEnumerable<XmlElement>>(new PolicyHelper.EmptyEnumerable<XmlElement>());
 
             //
             // the core policy reading logic
@@ -57,21 +58,21 @@ namespace System.ServiceModel.Description
             // the outer list represents the choice between alternatives
             //
 
-            IEnumerable<IEnumerable<XmlElement>> ReadNode(XmlNode node, XmlElement contextAssertion, YieldLimiter yieldLimiter)
+            private IEnumerable<IEnumerable<XmlElement>> ReadNode(XmlNode node, XmlElement contextAssertion, YieldLimiter yieldLimiter)
             {
-                if (nodesRead >= this.metadataImporter.Quotas.MaxPolicyNodes)
+                if (_nodesRead >= _metadataImporter.Quotas.MaxPolicyNodes)
                 {
-                    if (nodesRead == this.metadataImporter.Quotas.MaxPolicyNodes)
+                    if (_nodesRead == _metadataImporter.Quotas.MaxPolicyNodes)
                     {
                         // add wirning once
                         string warningMsg = SRServiceModel.Format(SRServiceModel.ExceededMaxPolicyComplexity, node.Name, PolicyHelper.GetFragmentIdentifier((XmlElement)node));
-                        metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
-                        nodesRead++;
+                        _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
+                        _nodesRead++;
                     }
-                    return EmptyEmpty;
+                    return s_emptyEmpty;
                 }
-                nodesRead++;
-                IEnumerable<IEnumerable<XmlElement>> nodes = EmptyEmpty;
+                _nodesRead++;
+                IEnumerable<IEnumerable<XmlElement>> nodes = s_emptyEmpty;
                 switch (PolicyHelper.GetNodeType(node))
                 {
                     case PolicyHelper.NodeType.Policy:
@@ -89,53 +90,52 @@ namespace System.ServiceModel.Description
                         break;
                     case PolicyHelper.NodeType.UnrecognizedWSPolicy:
                         string warningMsg = SRServiceModel.Format(SRServiceModel.UnrecognizedPolicyElementInNamespace, node.Name, node.NamespaceURI);
-                        metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
+                        _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
                         break;
                         //consider hsomu, add more error handling here. default?
                 }
                 return nodes;
             }
 
-            IEnumerable<IEnumerable<XmlElement>> ReadNode_PolicyReference(XmlElement element, XmlElement contextAssertion, YieldLimiter yieldLimiter)
+            private IEnumerable<IEnumerable<XmlElement>> ReadNode_PolicyReference(XmlElement element, XmlElement contextAssertion, YieldLimiter yieldLimiter)
             {
                 string idRef = element.GetAttribute(MetadataStrings.WSPolicy.Attributes.URI);
                 if (idRef == null)
                 {
                     string warningMsg = SRServiceModel.Format(SRServiceModel.PolicyReferenceMissingURI, MetadataStrings.WSPolicy.Attributes.URI);
-                    metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
-                    return EmptyEmpty;
+                    _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
+                    return s_emptyEmpty;
                 }
                 else if (idRef == string.Empty)
                 {
                     string warningMsg = SRServiceModel.PolicyReferenceInvalidId;
-                    metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
-                    return EmptyEmpty;
+                    _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
+                    return s_emptyEmpty;
                 }
 
-                XmlElement policy = metadataImporter.ResolvePolicyReference(idRef, contextAssertion);
+                XmlElement policy = _metadataImporter.ResolvePolicyReference(idRef, contextAssertion);
                 if (policy == null)
                 {
                     string warningMsg = SRServiceModel.Format(SRServiceModel.UnableToFindPolicyWithId, idRef);
-                    metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
-                    return EmptyEmpty;
+                    _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
+                    return s_emptyEmpty;
                 }
 
                 //
                 // Since we looked up a reference, the context assertion changes.
                 //
                 return ReadNode_PolicyOrAll(policy, policy, yieldLimiter);
-
             }
 
-            IEnumerable<IEnumerable<XmlElement>> ReadNode_Assertion(XmlElement element, YieldLimiter yieldLimiter)
+            private IEnumerable<IEnumerable<XmlElement>> ReadNode_Assertion(XmlElement element, YieldLimiter yieldLimiter)
             {
                 if (yieldLimiter.IncrementAndLogIfExceededLimit())
-                    yield return Empty;
+                    yield return s_empty;
                 else
                     yield return new PolicyHelper.SingleEnumerable<XmlElement>(element);
             }
 
-            IEnumerable<IEnumerable<XmlElement>> ReadNode_ExactlyOne(XmlElement element, XmlElement contextAssertion, YieldLimiter yieldLimiter)
+            private IEnumerable<IEnumerable<XmlElement>> ReadNode_ExactlyOne(XmlElement element, XmlElement contextAssertion, YieldLimiter yieldLimiter)
             {
                 foreach (XmlNode child in element.ChildNodes)
                 {
@@ -156,9 +156,9 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            IEnumerable<IEnumerable<XmlElement>> ReadNode_PolicyOrAll(XmlElement element, XmlElement contextAssertion, YieldLimiter yieldLimiter)
+            private IEnumerable<IEnumerable<XmlElement>> ReadNode_PolicyOrAll(XmlElement element, XmlElement contextAssertion, YieldLimiter yieldLimiter)
             {
-                IEnumerable<IEnumerable<XmlElement>> target = EmptyEmpty;
+                IEnumerable<IEnumerable<XmlElement>> target = s_emptyEmpty;
 
                 foreach (XmlNode child in element.ChildNodes)
                 {
@@ -173,8 +173,8 @@ namespace System.ServiceModel.Description
 
             internal IEnumerable<IEnumerable<XmlElement>> NormalizePolicy(IEnumerable<XmlElement> policyAssertions)
             {
-                IEnumerable<IEnumerable<XmlElement>> target = EmptyEmpty;
-                YieldLimiter yieldLimiter = new YieldLimiter(this.metadataImporter.Quotas.MaxYields, this.metadataImporter);
+                IEnumerable<IEnumerable<XmlElement>> target = s_emptyEmpty;
+                YieldLimiter yieldLimiter = new YieldLimiter(_metadataImporter.Quotas.MaxYields, _metadataImporter);
                 foreach (XmlElement child in policyAssertions)
                 {
                     IEnumerable<IEnumerable<XmlElement>> childPolicy = ReadNode(child, child, yieldLimiter);
@@ -187,23 +187,23 @@ namespace System.ServiceModel.Description
 
         internal class YieldLimiter
         {
-            int maxYields;
-            int yieldsHit;
-            readonly MetadataImporter metadataImporter;
+            private int _maxYields;
+            private int _yieldsHit;
+            private readonly MetadataImporter _metadataImporter;
 
             internal YieldLimiter(int maxYields, MetadataImporter metadataImporter)
             {
-                this.metadataImporter = metadataImporter;
-                this.yieldsHit = 0;
-                this.maxYields = maxYields;
+                _metadataImporter = metadataImporter;
+                _yieldsHit = 0;
+                _maxYields = maxYields;
             }
 
             internal bool IncrementAndLogIfExceededLimit()
             {
-                if (++yieldsHit > maxYields)
+                if (++_yieldsHit > _maxYields)
                 {
                     string warningMsg = SRServiceModel.ExceededMaxPolicySize;
-                    metadataImporter.PolicyWarningOccured.Invoke(null, warningMsg);
+                    _metadataImporter.PolicyWarningOccured.Invoke(null, warningMsg);
                     return true;
                 }
                 else
@@ -215,8 +215,6 @@ namespace System.ServiceModel.Description
 
         internal static class PolicyHelper
         {
-
-
             internal static string GetFragmentIdentifier(XmlElement element)
             {
                 string id = element.GetAttribute(MetadataStrings.Wsu.Attributes.Id, MetadataStrings.Wsu.NamespaceUri);
@@ -283,7 +281,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static IEnumerable<IEnumerable<T>> AtLeastOne<T>(IEnumerable<IEnumerable<T>> xs, YieldLimiter yieldLimiter)
+            private static IEnumerable<IEnumerable<T>> AtLeastOne<T>(IEnumerable<IEnumerable<T>> xs, YieldLimiter yieldLimiter)
             {
                 bool gotOne = false;
                 foreach (IEnumerable<T> x in xs)
@@ -312,7 +310,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static IEnumerable<T> Merge<T>(IEnumerable<T> e1, IEnumerable<T> e2, YieldLimiter yieldLimiter)
+            private static IEnumerable<T> Merge<T>(IEnumerable<T> e1, IEnumerable<T> e2, YieldLimiter yieldLimiter)
             {
                 foreach (T t1 in e1)
                 {
@@ -324,7 +322,6 @@ namespace System.ServiceModel.Description
                     {
                         yield return t1;
                     }
-
                 }
                 foreach (T t2 in e2)
                 {
@@ -385,11 +382,11 @@ namespace System.ServiceModel.Description
 
             internal class SingleEnumerable<T> : IEnumerable<T>
             {
-                T value;
+                private T _value;
 
                 internal SingleEnumerable(T value)
                 {
-                    this.value = value;
+                    _value = value;
                 }
 
                 IEnumerator IEnumerable.GetEnumerator()
@@ -399,7 +396,7 @@ namespace System.ServiceModel.Description
 
                 public IEnumerator<T> GetEnumerator()
                 {
-                    yield return this.value;
+                    yield return _value;
                 }
             }
 
@@ -416,9 +413,6 @@ namespace System.ServiceModel.Description
                 PolicyReference,
                 UnrecognizedWSPolicy,
             }
-
-
         }
-
     }
 }

@@ -1,26 +1,29 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-
+namespace Microsoft.Xml
+{
     using System;
     using System.IO;
     using System.Collections;
     using System.Diagnostics;
     using System.Collections.Generic;
 
-    public class XmlNamespaceManager : IXmlNamespaceResolver, IEnumerable {
+    public class XmlNamespaceManager : IXmlNamespaceResolver, IEnumerable
+    {
 #if !SILVERLIGHT // EmptyResolver is not used in Silverlight
-        static volatile IXmlNamespaceResolver s_EmptyResolver;
+        private static volatile IXmlNamespaceResolver s_EmptyResolver;
 #endif
 
-        struct NamespaceDeclaration {
+        private struct NamespaceDeclaration
+        {
             public string prefix;
             public string uri;
-            public int    scopeId;
-            public int    previousNsIndex;
+            public int scopeId;
+            public int previousNsIndex;
 
-            public void Set( string prefix, string uri, int scopeId, int previousNsIndex ) {
+            public void Set(string prefix, string uri, int scopeId, int previousNsIndex)
+            {
                 this.prefix = prefix;
                 this.uri = uri;
                 this.scopeId = scopeId;
@@ -29,34 +32,37 @@ namespace Microsoft.Xml {
         }
 
         // array with namespace declarations
-        NamespaceDeclaration[] nsdecls;
+        private NamespaceDeclaration[] _nsdecls;
 
         // index of last declaration
-        int lastDecl = 0;
+        private int _lastDecl = 0;
 
         // name table
-        XmlNameTable nameTable;
+        private XmlNameTable _nameTable;
 
         // ID (depth) of the current scope
-        int scopeId;
+        private int _scopeId;
 
         // hash table for faster lookup when there is lots of namespaces
-        Dictionary<string,int> hashTable;
-        bool useHashtable;
+        private Dictionary<string, int> _hashTable;
+        private bool _useHashtable;
 
         // atomized prefixes for "xml" and "xmlns"
-        string xml;
-        string xmlNs;
+        private string _xml;
+        private string _xmlNs;
 
         // Constants
-        const int MinDeclsCountForHashtable = 16;
+        private const int MinDeclsCountForHashtable = 16;
 
 #if !SILVERLIGHT // EmptyResolver is not used in Silverlight
-        internal static IXmlNamespaceResolver EmptyResolver {
-            get {
-                if ( s_EmptyResolver == null ) {
+        internal static IXmlNamespaceResolver EmptyResolver
+        {
+            get
+            {
+                if (s_EmptyResolver == null)
+                {
                     // no locking; the empty resolver is immutable so it's not a problem that it may get initialized more than once
-                    s_EmptyResolver = new XmlNamespaceManager( new NameTable() );
+                    s_EmptyResolver = new XmlNamespaceManager(new NameTable());
                 }
                 return s_EmptyResolver;
             }
@@ -64,147 +70,178 @@ namespace Microsoft.Xml {
 #endif
 
 #if !SILVERLIGHT // This constructor is not used in Silverlight
-        internal XmlNamespaceManager() {
+        internal XmlNamespaceManager()
+        {
         }
 #endif
 
-        public XmlNamespaceManager( XmlNameTable nameTable ) {
-            this.nameTable = nameTable;
-            xml = nameTable.Add("xml");
-            xmlNs = nameTable.Add("xmlns");
+        public XmlNamespaceManager(XmlNameTable nameTable)
+        {
+            _nameTable = nameTable;
+            _xml = nameTable.Add("xml");
+            _xmlNs = nameTable.Add("xmlns");
 
-            nsdecls = new NamespaceDeclaration[8];
-            string emptyStr = nameTable.Add( string.Empty );
-            nsdecls[0].Set( emptyStr, emptyStr, -1, -1 );
-            nsdecls[1].Set( xmlNs, nameTable.Add( XmlReservedNs.NsXmlNs ), -1, -1 );
-            nsdecls[2].Set( xml, nameTable.Add( XmlReservedNs.NsXml ), 0, -1 );
-            lastDecl = 2;
-            scopeId = 1;
+            _nsdecls = new NamespaceDeclaration[8];
+            string emptyStr = nameTable.Add(string.Empty);
+            _nsdecls[0].Set(emptyStr, emptyStr, -1, -1);
+            _nsdecls[1].Set(_xmlNs, nameTable.Add(XmlReservedNs.NsXmlNs), -1, -1);
+            _nsdecls[2].Set(_xml, nameTable.Add(XmlReservedNs.NsXml), 0, -1);
+            _lastDecl = 2;
+            _scopeId = 1;
         }
 
-        public virtual XmlNameTable NameTable { 
-            get { 
-                return nameTable; 
+        public virtual XmlNameTable NameTable
+        {
+            get
+            {
+                return _nameTable;
             }
         }
 
-        public virtual string DefaultNamespace {
-            get { 
-                string defaultNs = LookupNamespace( string.Empty );
-                return ( defaultNs == null ) ? string.Empty : defaultNs;
+        public virtual string DefaultNamespace
+        {
+            get
+            {
+                string defaultNs = LookupNamespace(string.Empty);
+                return (defaultNs == null) ? string.Empty : defaultNs;
             }
         }
 
-        public virtual void PushScope() {
-            scopeId++;
+        public virtual void PushScope()
+        {
+            _scopeId++;
         }
 
-        public virtual bool PopScope() {
-            int decl = lastDecl;
-            if ( scopeId == 1 ) {
+        public virtual bool PopScope()
+        {
+            int decl = _lastDecl;
+            if (_scopeId == 1)
+            {
                 return false;
             }
-            while( nsdecls[decl].scopeId == scopeId ) {
-                if ( useHashtable ) {
-                    hashTable[nsdecls[decl].prefix] = nsdecls[decl].previousNsIndex;
+            while (_nsdecls[decl].scopeId == _scopeId)
+            {
+                if (_useHashtable)
+                {
+                    _hashTable[_nsdecls[decl].prefix] = _nsdecls[decl].previousNsIndex;
                 }
                 decl--;
-                Debug.Assert( decl >= 2 );
+                Debug.Assert(decl >= 2);
             }
-            lastDecl = decl;
-            scopeId--;
+            _lastDecl = decl;
+            _scopeId--;
             return true;
         }
 
-        public virtual void AddNamespace( string prefix, string uri ) {
-            if ( uri == null )
-                throw new ArgumentNullException( "uri" );
+        public virtual void AddNamespace(string prefix, string uri)
+        {
+            if (uri == null)
+                throw new ArgumentNullException("uri");
 
-            if ( prefix == null )
-                throw new ArgumentNullException( "prefix" );
+            if (prefix == null)
+                throw new ArgumentNullException("prefix");
 
-            prefix = nameTable.Add( prefix );
-            uri = nameTable.Add( uri );
-            
-            if ( ( Ref.Equal( xml, prefix ) && !uri.Equals( XmlReservedNs.NsXml ) ) ) {
-                throw new ArgumentException( ResXml.GetString( ResXml.Xml_XmlPrefix ) );
+            prefix = _nameTable.Add(prefix);
+            uri = _nameTable.Add(uri);
+
+            if ((Ref.Equal(_xml, prefix) && !uri.Equals(XmlReservedNs.NsXml)))
+            {
+                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlPrefix));
             }
-            if ( Ref.Equal( xmlNs, prefix ) ) {
-                throw new ArgumentException( ResXml.GetString( ResXml.Xml_XmlnsPrefix ) );
+            if (Ref.Equal(_xmlNs, prefix))
+            {
+                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlnsPrefix));
             }
-            
-            int declIndex = LookupNamespaceDecl( prefix );
+
+            int declIndex = LookupNamespaceDecl(prefix);
             int previousDeclIndex = -1;
-            if ( declIndex != -1 ) {
-                if ( nsdecls[declIndex].scopeId == scopeId ) {
+            if (declIndex != -1)
+            {
+                if (_nsdecls[declIndex].scopeId == _scopeId)
+                {
                     // redefine if in the same scope
-                    nsdecls[declIndex].uri = uri;
+                    _nsdecls[declIndex].uri = uri;
                     return;
                 }
-                else {
+                else
+                {
                     // othewise link
                     previousDeclIndex = declIndex;
                 }
             }
 
             // set new namespace declaration
-            if ( lastDecl == nsdecls.Length - 1 ) {
-                NamespaceDeclaration[] newNsdecls = new NamespaceDeclaration[nsdecls.Length * 2];
-                Array.Copy( nsdecls, 0, newNsdecls, 0, nsdecls.Length );
-                nsdecls = newNsdecls;
+            if (_lastDecl == _nsdecls.Length - 1)
+            {
+                NamespaceDeclaration[] newNsdecls = new NamespaceDeclaration[_nsdecls.Length * 2];
+                Array.Copy(_nsdecls, 0, newNsdecls, 0, _nsdecls.Length);
+                _nsdecls = newNsdecls;
             }
-            
-            nsdecls[++lastDecl].Set( prefix, uri, scopeId, previousDeclIndex );
+
+            _nsdecls[++_lastDecl].Set(prefix, uri, _scopeId, previousDeclIndex);
 
             // add to hashTable
-            if ( useHashtable ) {
-                hashTable[prefix] = lastDecl;
+            if (_useHashtable)
+            {
+                _hashTable[prefix] = _lastDecl;
             }
             // or create a new hashTable if the threashold has been reached
-            else if ( lastDecl >= MinDeclsCountForHashtable ) {
+            else if (_lastDecl >= MinDeclsCountForHashtable)
+            {
                 // add all to hash table
-                Debug.Assert( hashTable == null );
-                hashTable = new Dictionary<string,int>( lastDecl );
-                for ( int i = 0; i <= lastDecl; i++ ) {
-                    hashTable[nsdecls[i].prefix] = i;
+                Debug.Assert(_hashTable == null);
+                _hashTable = new Dictionary<string, int>(_lastDecl);
+                for (int i = 0; i <= _lastDecl; i++)
+                {
+                    _hashTable[_nsdecls[i].prefix] = i;
                 }
-                useHashtable = true;
+                _useHashtable = true;
             }
         }
 
-        public virtual void RemoveNamespace( string prefix, string uri ) {
-            if ( uri == null ) {
-                throw new ArgumentNullException( "uri" );
+        public virtual void RemoveNamespace(string prefix, string uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
             }
-            if ( prefix == null ) {
-                throw new ArgumentNullException( "prefix" );
+            if (prefix == null)
+            {
+                throw new ArgumentNullException("prefix");
             }
 
-            int declIndex = LookupNamespaceDecl( prefix );
-            while ( declIndex != -1 ) {
-                if ( String.Equals( nsdecls[declIndex].uri, uri ) && nsdecls[declIndex].scopeId == scopeId ) {
-                    nsdecls[declIndex].uri = null;
+            int declIndex = LookupNamespaceDecl(prefix);
+            while (declIndex != -1)
+            {
+                if (String.Equals(_nsdecls[declIndex].uri, uri) && _nsdecls[declIndex].scopeId == _scopeId)
+                {
+                    _nsdecls[declIndex].uri = null;
                 }
-                declIndex = nsdecls[declIndex].previousNsIndex;
+                declIndex = _nsdecls[declIndex].previousNsIndex;
             }
         }
 
-        public virtual IEnumerator GetEnumerator() {
-            Dictionary<string, string> prefixes = new Dictionary<string, string>(lastDecl + 1);
-            for( int thisDecl = 0; thisDecl <= lastDecl; thisDecl ++ ) {
-                if ( nsdecls[thisDecl].uri != null ) {
-                    prefixes[nsdecls[thisDecl].prefix] = nsdecls[thisDecl].prefix;
+        public virtual IEnumerator GetEnumerator()
+        {
+            Dictionary<string, string> prefixes = new Dictionary<string, string>(_lastDecl + 1);
+            for (int thisDecl = 0; thisDecl <= _lastDecl; thisDecl++)
+            {
+                if (_nsdecls[thisDecl].uri != null)
+                {
+                    prefixes[_nsdecls[thisDecl].prefix] = _nsdecls[thisDecl].prefix;
                 }
             }
             return prefixes.Keys.GetEnumerator();
         }
 
-// This pragma disables a warning that the return type is not CLS-compliant, but generics are part of CLS in Whidbey. 
+        // This pragma disables a warning that the return type is not CLS-compliant, but generics are part of CLS in Whidbey. 
 #pragma warning disable 3002
-        public virtual IDictionary<string,string> GetNamespacesInScope( XmlNamespaceScope scope ) {
+        public virtual IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope)
+        {
 #pragma warning restore 3002
             int i = 0;
-            switch ( scope ) {
+            switch (scope)
+            {
                 case XmlNamespaceScope.All:
                     i = 2;
                     break;
@@ -212,61 +249,76 @@ namespace Microsoft.Xml {
                     i = 3;
                     break;
                 case XmlNamespaceScope.Local:
-                    i = lastDecl;
-                    while ( nsdecls[i].scopeId == scopeId ) {
+                    i = _lastDecl;
+                    while (_nsdecls[i].scopeId == _scopeId)
+                    {
                         i--;
-                        Debug.Assert( i >= 2 );
+                        Debug.Assert(i >= 2);
                     }
                     i++;
                     break;
             }
 
-            Dictionary<string,string> dict = new Dictionary<string, string>( lastDecl - i + 1 );
-            for( ; i <= lastDecl; i++ ) {
-                string prefix = nsdecls[i].prefix;
-                string uri = nsdecls[i].uri;
-                Debug.Assert( prefix != null );
+            Dictionary<string, string> dict = new Dictionary<string, string>(_lastDecl - i + 1);
+            for (; i <= _lastDecl; i++)
+            {
+                string prefix = _nsdecls[i].prefix;
+                string uri = _nsdecls[i].uri;
+                Debug.Assert(prefix != null);
 
-                if ( uri != null ) {
-                    if ( uri.Length > 0 || prefix.Length > 0 || scope == XmlNamespaceScope.Local ) {
+                if (uri != null)
+                {
+                    if (uri.Length > 0 || prefix.Length > 0 || scope == XmlNamespaceScope.Local)
+                    {
                         dict[prefix] = uri;
                     }
-                    else {
+                    else
+                    {
                         // default namespace redeclared to "" -> remove from list for all scopes other than local
-                        dict.Remove( prefix );
+                        dict.Remove(prefix);
                     }
                 }
             }
             return dict;
         }
 
-        public virtual string LookupNamespace( string prefix ) {
-            int declIndex = LookupNamespaceDecl( prefix );
-            return ( declIndex == -1  ) ? null : nsdecls[declIndex].uri;
+        public virtual string LookupNamespace(string prefix)
+        {
+            int declIndex = LookupNamespaceDecl(prefix);
+            return (declIndex == -1) ? null : _nsdecls[declIndex].uri;
         }
 
-        private int LookupNamespaceDecl( string prefix ) {
-            if ( useHashtable ) {
+        private int LookupNamespaceDecl(string prefix)
+        {
+            if (_useHashtable)
+            {
                 int declIndex;
-                if ( hashTable.TryGetValue( prefix, out declIndex ) ) {
-                    while ( declIndex != -1 && nsdecls[declIndex].uri == null ) {
-                        declIndex = nsdecls[declIndex].previousNsIndex;
+                if (_hashTable.TryGetValue(prefix, out declIndex))
+                {
+                    while (declIndex != -1 && _nsdecls[declIndex].uri == null)
+                    {
+                        declIndex = _nsdecls[declIndex].previousNsIndex;
                     }
                     return declIndex;
                 }
                 return -1;
             }
-            else {
+            else
+            {
                 // First assume that prefix is atomized
-                for( int thisDecl = lastDecl; thisDecl >= 0; thisDecl -- ) {
-                    if ( (object)nsdecls[thisDecl].prefix == (object)prefix && nsdecls[thisDecl].uri != null ) {
+                for (int thisDecl = _lastDecl; thisDecl >= 0; thisDecl--)
+                {
+                    if ((object)_nsdecls[thisDecl].prefix == (object)prefix && _nsdecls[thisDecl].uri != null)
+                    {
                         return thisDecl;
                     }
                 }
 
                 // Non-atomized lookup
-                for( int thisDecl = lastDecl; thisDecl >= 0; thisDecl -- ) {
-                    if ( String.Equals( nsdecls[thisDecl].prefix, prefix ) && nsdecls[thisDecl].uri != null ) {
+                for (int thisDecl = _lastDecl; thisDecl >= 0; thisDecl--)
+                {
+                    if (String.Equals(_nsdecls[thisDecl].prefix, prefix) && _nsdecls[thisDecl].uri != null)
+                    {
                         return thisDecl;
                     }
                 }
@@ -274,12 +326,16 @@ namespace Microsoft.Xml {
             return -1;
         }
 
-        public virtual string LookupPrefix( string uri ) {
+        public virtual string LookupPrefix(string uri)
+        {
             // Don't assume that prefix is atomized
-            for( int thisDecl = lastDecl; thisDecl >= 0; thisDecl -- ) {
-                if ( String.Equals( nsdecls[thisDecl].uri, uri ) ) {
-                    string prefix = nsdecls[thisDecl].prefix;
-                    if ( String.Equals( LookupNamespace( prefix ), uri ) ) {
+            for (int thisDecl = _lastDecl; thisDecl >= 0; thisDecl--)
+            {
+                if (String.Equals(_nsdecls[thisDecl].uri, uri))
+                {
+                    string prefix = _nsdecls[thisDecl].prefix;
+                    if (String.Equals(LookupNamespace(prefix), uri))
+                    {
                         return prefix;
                     }
                 }
@@ -287,11 +343,15 @@ namespace Microsoft.Xml {
             return null;
         }
 
-        public virtual bool HasNamespace( string prefix ) {
+        public virtual bool HasNamespace(string prefix)
+        {
             // Don't assume that prefix is atomized
-            for( int thisDecl = lastDecl; nsdecls[thisDecl].scopeId == scopeId; thisDecl-- ) {
-                if ( String.Equals( nsdecls[thisDecl].prefix, prefix ) && nsdecls[thisDecl].uri != null ) {
-                    if ( prefix.Length > 0 || nsdecls[thisDecl].uri.Length > 0 ) {
+            for (int thisDecl = _lastDecl; _nsdecls[thisDecl].scopeId == _scopeId; thisDecl--)
+            {
+                if (String.Equals(_nsdecls[thisDecl].prefix, prefix) && _nsdecls[thisDecl].uri != null)
+                {
+                    if (prefix.Length > 0 || _nsdecls[thisDecl].uri.Length > 0)
+                    {
                         return true;
                     }
                     return false;
@@ -301,18 +361,20 @@ namespace Microsoft.Xml {
         }
 
 #if !SILVERLIGHT // This method is not used in Silverlight
-        internal bool GetNamespaceDeclaration( int idx, out string prefix, out string uri ) {
-            idx = lastDecl - idx;
-            if ( idx < 0 ) {
+        internal bool GetNamespaceDeclaration(int idx, out string prefix, out string uri)
+        {
+            idx = _lastDecl - idx;
+            if (idx < 0)
+            {
                 prefix = uri = null;
                 return false;
             }
 
-            prefix = nsdecls[idx].prefix;
-            uri = nsdecls[idx].uri;
+            prefix = _nsdecls[idx].prefix;
+            uri = _nsdecls[idx].uri;
 
             return true;
         }
 #endif
-   } //XmlNamespaceManager
+    } //XmlNamespaceManager
 }

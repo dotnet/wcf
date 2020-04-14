@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -14,93 +15,112 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaAnyAttribute : XmlSchemaAnnotated {
-        string ns;
-        XmlSchemaContentProcessing processContents = XmlSchemaContentProcessing.None;
-        NamespaceList namespaceList;
-        
+    public class XmlSchemaAnyAttribute : XmlSchemaAnnotated
+    {
+        private string _ns;
+        private XmlSchemaContentProcessing _processContents = XmlSchemaContentProcessing.None;
+        private NamespaceList _namespaceList;
+
         /// <include file='doc\XmlSchemaAnyAttribute.uex' path='docs/doc[@for="XmlSchemaAnyAttribute.Namespaces"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("namespace")]
-        public string Namespace {
-            get { return ns; }
-            set { ns = value; }
+        public string Namespace
+        {
+            get { return _ns; }
+            set { _ns = value; }
         }
-        
+
         /// <include file='doc\XmlSchemaAnyAttribute.uex' path='docs/doc[@for="XmlSchemaAnyAttribute.ProcessContents"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("processContents"), DefaultValue(XmlSchemaContentProcessing.None)]
-        public XmlSchemaContentProcessing ProcessContents {
-            get { return processContents; }
-            set { processContents = value; }
+        public XmlSchemaContentProcessing ProcessContents
+        {
+            get { return _processContents; }
+            set { _processContents = value; }
         }
 
 
         [XmlIgnore]
-        internal NamespaceList NamespaceList {
-            get { return namespaceList; }
+        internal NamespaceList NamespaceList
+        {
+            get { return _namespaceList; }
         }
 
         [XmlIgnore]
-        internal XmlSchemaContentProcessing ProcessContentsCorrect {
-            get { return processContents == XmlSchemaContentProcessing.None ? XmlSchemaContentProcessing.Strict : processContents; }
+        internal XmlSchemaContentProcessing ProcessContentsCorrect
+        {
+            get { return _processContents == XmlSchemaContentProcessing.None ? XmlSchemaContentProcessing.Strict : _processContents; }
         }
 
-        internal void BuildNamespaceList(string targetNamespace) {
-            if (ns != null) {
-                namespaceList = new NamespaceList(ns, targetNamespace);
+        internal void BuildNamespaceList(string targetNamespace)
+        {
+            if (_ns != null)
+            {
+                _namespaceList = new NamespaceList(_ns, targetNamespace);
             }
-            else {
-                namespaceList = new NamespaceList();
-            }
-        }
-
-        internal void BuildNamespaceListV1Compat(string targetNamespace) {
-            if (ns != null) {
-                namespaceList = new NamespaceListV1Compat(ns, targetNamespace);
-            }
-            else {
-                namespaceList = new NamespaceList(); //This is only ##any, hence base class is sufficient
+            else
+            {
+                _namespaceList = new NamespaceList();
             }
         }
 
-        internal bool Allows(XmlQualifiedName qname) {
-            return namespaceList.Allows(qname.Namespace);
+        internal void BuildNamespaceListV1Compat(string targetNamespace)
+        {
+            if (_ns != null)
+            {
+                _namespaceList = new NamespaceListV1Compat(_ns, targetNamespace);
+            }
+            else
+            {
+                _namespaceList = new NamespaceList(); //This is only ##any, hence base class is sufficient
+            }
         }
 
-        internal static bool IsSubset(XmlSchemaAnyAttribute sub, XmlSchemaAnyAttribute super) {
+        internal bool Allows(XmlQualifiedName qname)
+        {
+            return _namespaceList.Allows(qname.Namespace);
+        }
+
+        internal static bool IsSubset(XmlSchemaAnyAttribute sub, XmlSchemaAnyAttribute super)
+        {
             return NamespaceList.IsSubset(sub.NamespaceList, super.NamespaceList);
         }
 
-        internal static XmlSchemaAnyAttribute Intersection(XmlSchemaAnyAttribute o1, XmlSchemaAnyAttribute o2, bool v1Compat) {
+        internal static XmlSchemaAnyAttribute Intersection(XmlSchemaAnyAttribute o1, XmlSchemaAnyAttribute o2, bool v1Compat)
+        {
             NamespaceList nsl = NamespaceList.Intersection(o1.NamespaceList, o2.NamespaceList, v1Compat);
-            if (nsl != null) {
+            if (nsl != null)
+            {
                 XmlSchemaAnyAttribute anyAttribute = new XmlSchemaAnyAttribute();
-                anyAttribute.namespaceList = nsl;
+                anyAttribute._namespaceList = nsl;
                 anyAttribute.ProcessContents = o1.ProcessContents;
                 anyAttribute.Annotation = o1.Annotation;
                 return anyAttribute;
             }
-            else {
+            else
+            {
                 // not expressible
                 return null;
             }
         }
 
-        internal static XmlSchemaAnyAttribute Union(XmlSchemaAnyAttribute o1, XmlSchemaAnyAttribute o2, bool v1Compat) {
+        internal static XmlSchemaAnyAttribute Union(XmlSchemaAnyAttribute o1, XmlSchemaAnyAttribute o2, bool v1Compat)
+        {
             NamespaceList nsl = NamespaceList.Union(o1.NamespaceList, o2.NamespaceList, v1Compat);
-            if (nsl != null) {
+            if (nsl != null)
+            {
                 XmlSchemaAnyAttribute anyAttribute = new XmlSchemaAnyAttribute();
-                anyAttribute.namespaceList = nsl;
-                anyAttribute.processContents = o1.processContents;
+                anyAttribute._namespaceList = nsl;
+                anyAttribute._processContents = o1._processContents;
                 anyAttribute.Annotation = o1.Annotation;
                 return anyAttribute;
             }
-            else {
+            else
+            {
                 // not expressible
                 return null;
             }

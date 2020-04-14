@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.Runtime;
@@ -14,54 +15,54 @@ namespace System.ServiceModel
         internal const MessageCredentialType DefaultClientCredentialType = MessageCredentialType.Windows;
         internal const bool DefaultNegotiateServiceCredential = true;
 
-        MessageCredentialType clientCredentialType;
-        bool negotiateServiceCredential;
-        SecurityAlgorithmSuite algorithmSuite;
-        bool wasAlgorithmSuiteSet;
+        private MessageCredentialType _clientCredentialType;
+        private bool _negotiateServiceCredential;
+        private SecurityAlgorithmSuite _algorithmSuite;
+        private bool _wasAlgorithmSuiteSet;
 
         public MessageSecurityOverHttp()
         {
-            clientCredentialType = DefaultClientCredentialType;
-            negotiateServiceCredential = DefaultNegotiateServiceCredential;
-            algorithmSuite = SecurityAlgorithmSuite.Default;
+            _clientCredentialType = DefaultClientCredentialType;
+            _negotiateServiceCredential = DefaultNegotiateServiceCredential;
+            _algorithmSuite = SecurityAlgorithmSuite.Default;
         }
 
         public MessageCredentialType ClientCredentialType
         {
-            get { return this.clientCredentialType; }
+            get { return _clientCredentialType; }
             set
             {
                 if (!MessageCredentialTypeHelper.IsDefined(value))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.clientCredentialType = value;
+                _clientCredentialType = value;
             }
         }
 
         public bool NegotiateServiceCredential
         {
-            get { return this.negotiateServiceCredential; }
-            set { this.negotiateServiceCredential = value; }
+            get { return _negotiateServiceCredential; }
+            set { _negotiateServiceCredential = value; }
         }
 
         public SecurityAlgorithmSuite AlgorithmSuite
         {
-            get { return this.algorithmSuite; }
+            get { return _algorithmSuite; }
             set
             {
                 if (value == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
                 }
-                this.algorithmSuite = value;
-                wasAlgorithmSuiteSet = true;
+                _algorithmSuite = value;
+                _wasAlgorithmSuiteSet = true;
             }
         }
 
         internal bool WasAlgorithmSuiteSet
         {
-            get { return this.wasAlgorithmSuiteSet; }
+            get { return _wasAlgorithmSuiteSet; }
         }
 
         protected virtual bool IsSecureConversationEnabled()
@@ -84,7 +85,7 @@ namespace System.ServiceModel
             bool emitBspAttributes = true;
             if (isSecureTransportMode)
             {
-                switch (this.clientCredentialType)
+                switch (_clientCredentialType)
                 {
                     case MessageCredentialType.None:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.ClientCredentialTypeMustBeSpecifiedForMixedMode));
@@ -116,9 +117,9 @@ namespace System.ServiceModel
             }
             else
             {
-                if (negotiateServiceCredential)
+                if (_negotiateServiceCredential)
                 {
-                    switch (this.clientCredentialType)
+                    switch (_clientCredentialType)
                     {
                         case MessageCredentialType.None:
                             oneShotSecurity = SecurityBindingElement.CreateSslNegotiationBindingElement(false, true);
@@ -133,7 +134,7 @@ namespace System.ServiceModel
                             oneShotSecurity = SecurityBindingElement.CreateSspiNegotiationBindingElement(true);
                             break;
                         case MessageCredentialType.IssuedToken:
-                            oneShotSecurity = SecurityBindingElement.CreateIssuedTokenForSslBindingElement(null, false); 
+                            oneShotSecurity = SecurityBindingElement.CreateIssuedTokenForSslBindingElement(null, false);
                             // TODO: IssuedSecurityTokenParameters.CreateInfoCardParameters(new SecurityStandardsManager(new WSSecurityTokenSerializer(emitBspAttributes)), this.algorithmSuite), true);
                             break;
                         default:
@@ -143,7 +144,7 @@ namespace System.ServiceModel
                 }
                 else
                 {
-                    switch (this.clientCredentialType)
+                    switch (_clientCredentialType)
                     {
                         case MessageCredentialType.None:
                             oneShotSecurity = SecurityBindingElement.CreateAnonymousForCertificateBindingElement();
@@ -159,7 +160,7 @@ namespace System.ServiceModel
                             isKerberosSelected = true;
                             break;
                         case MessageCredentialType.IssuedToken:
-                            oneShotSecurity = SecurityBindingElement.CreateIssuedTokenForCertificateBindingElement(null); 
+                            oneShotSecurity = SecurityBindingElement.CreateIssuedTokenForCertificateBindingElement(null);
                             // TODO: IssuedSecurityTokenParameters.CreateInfoCardParameters(new SecurityStandardsManager(new WSSecurityTokenSerializer(emitBspAttributes)), this.algorithmSuite));
                             break;
                         default:
@@ -178,7 +179,7 @@ namespace System.ServiceModel
             }
 
             // set the algorithm suite and issued token params if required
-            if (wasAlgorithmSuiteSet || (!isKerberosSelected))
+            if (_wasAlgorithmSuiteSet || (!isKerberosSelected))
             {
                 result.DefaultAlgorithmSuite = oneShotSecurity.DefaultAlgorithmSuite = this.AlgorithmSuite;
             }
@@ -204,7 +205,7 @@ namespace System.ServiceModel
             if (this.IsSecureConversationEnabled())
             {
                 // issue the transition SCT for a short duration only
-                oneShotSecurity.LocalServiceSettings.IssuedCookieLifetime = TimeSpan.Parse("00:15:00", System.Globalization.CultureInfo.InvariantCulture); ; 
+                oneShotSecurity.LocalServiceSettings.IssuedCookieLifetime = TimeSpan.Parse("00:15:00", System.Globalization.CultureInfo.InvariantCulture); ;
                 // TODO: SpnegoTokenAuthenticator.defaultServerIssuedTransitionTokenLifetime;
             }
 

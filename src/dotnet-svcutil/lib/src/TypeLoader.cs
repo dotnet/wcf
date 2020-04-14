@@ -9,7 +9,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal static class TypeLoader
     {
-        static List<string> LoadTypesWarnings = new List<string>();
+        private static List<string> s_loadTypesWarnings = new List<string>();
 
         static public Assembly LoadAssembly(string path)
         {
@@ -49,9 +49,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     foreach (var ex in rtle.LoaderExceptions)
                     {
                         warning = ex.Message;
-                        if (!LoadTypesWarnings.Contains(warning))
+                        if (!s_loadTypesWarnings.Contains(warning))
                         {
-                            LoadTypesWarnings.Add(warning);
+                            s_loadTypesWarnings.Add(warning);
                             ToolConsole.WriteWarning(warning);
                         }
                     }
@@ -59,9 +59,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     if (types.Length == 0)
                     {
                         warning = SR.GetString(SR.ErrCouldNotLoadTypesFromAssemblyAtFormat, assembly.Location);
-                        if (!LoadTypesWarnings.Contains(warning))
+                        if (!s_loadTypesWarnings.Contains(warning))
                         {
-                            LoadTypesWarnings.Add(warning);
+                            s_loadTypesWarnings.Add(warning);
                             ToolConsole.WriteWarning(warning);
                         }
                     }
@@ -69,9 +69,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                         warning = SR.GetString(SR.WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat, assembly.Location);
 
-                        if (!LoadTypesWarnings.Contains(warning))
+                        if (!s_loadTypesWarnings.Contains(warning))
                         {
-                            LoadTypesWarnings.Add(warning);
+                            s_loadTypesWarnings.Add(warning);
                             ToolConsole.WriteWarning(warning);
                         }
                     }

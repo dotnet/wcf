@@ -23,7 +23,7 @@ namespace System.IdentityModel.Tokens
 
     public class SamlSecurityToken : SecurityToken
     {
-        SamlAssertion assertion;
+        private SamlAssertion _assertion;
 
         protected SamlSecurityToken()
         {
@@ -39,25 +39,25 @@ namespace System.IdentityModel.Tokens
             if (assertion == null)
                 throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("assertion");
 
-            this.assertion = assertion;
+            _assertion = assertion;
         }
 
         public override string Id
         {
-            get { return this.assertion.AssertionId; }
+            get { return _assertion.AssertionId; }
         }
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {
             get
             {
-                return this.assertion.SecurityKeys;
+                return _assertion.SecurityKeys;
             }
         }
 
         public SamlAssertion Assertion
         {
-            get { return this.assertion; }
+            get { return _assertion; }
         }
 
         public override DateTime ValidFrom

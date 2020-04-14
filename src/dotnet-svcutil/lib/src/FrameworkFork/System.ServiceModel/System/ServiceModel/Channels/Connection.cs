@@ -607,7 +607,7 @@ namespace System.ServiceModel.Channels
         {
             Contract.Requires(_writeResult == null, "StreamConnection: OnWrite called twice.");
             _writeResult = antecedant;
-            this._writeCallback(state);
+            _writeCallback(state);
         }
 
         public void Write(byte[] buffer, int offset, int size, bool immediate, TimeSpan timeout)
@@ -714,7 +714,7 @@ namespace System.ServiceModel.Channels
         {
             Contract.Requires(_readResult == null, "StreamConnection: OnRead called twice.");
             _readResult = antecedant;
-            this._readCallback(state);
+            _readCallback(state);
         }
     }
 

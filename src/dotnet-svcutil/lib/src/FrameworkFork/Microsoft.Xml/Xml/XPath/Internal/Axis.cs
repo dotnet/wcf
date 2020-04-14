@@ -1,22 +1,25 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Globalization;
 
-    internal class Axis : AstNode {
-        private AxisType axisType;
-        private AstNode  input;
-        private string   prefix;
-        private string   name;
-        private XPathNodeType nodeType;
-        protected bool   abbrAxis;
+    internal class Axis : AstNode
+    {
+        private AxisType _axisType;
+        private AstNode _input;
+        private string _prefix;
+        private string _name;
+        private XPathNodeType _nodeType;
+        protected bool abbrAxis;
 
-        public enum AxisType {
+        public enum AxisType
+        {
             Ancestor,
             AncestorOrSelf,
             Attribute,
@@ -34,43 +37,46 @@ namespace MS.Internal.Xml.XPath {
         };
 
         // constructor
-        public Axis(AxisType axisType, AstNode input, string prefix, string name, XPathNodeType nodetype) {
+        public Axis(AxisType axisType, AstNode input, string prefix, string name, XPathNodeType nodetype)
+        {
             Debug.Assert(prefix != null);
-            Debug.Assert(name   != null);
-            this.axisType = axisType;
-            this.input    = input;
-            this.prefix   = prefix;
-            this.name     = name;
-            this.nodeType = nodetype;
+            Debug.Assert(name != null);
+            _axisType = axisType;
+            _input = input;
+            _prefix = prefix;
+            _name = name;
+            _nodeType = nodetype;
         }
 
         // constructor
         public Axis(AxisType axisType, AstNode input)
-            : this(axisType, input, string.Empty, string.Empty, XPathNodeType.All) 
+            : this(axisType, input, string.Empty, string.Empty, XPathNodeType.All)
         {
             this.abbrAxis = true;
         }
 
-        public override AstType Type { get {return AstType.Axis;} }
+        public override AstType Type { get { return AstType.Axis; } }
 
-        public override XPathResultType ReturnType { get {return XPathResultType.NodeSet;} }
+        public override XPathResultType ReturnType { get { return XPathResultType.NodeSet; } }
 
-        public AstNode Input {
-            get {return input;}
-            set {input = value;}
+        public AstNode Input
+        {
+            get { return _input; }
+            set { _input = value; }
         }
 
-        public string Prefix          { get { return prefix;   } }
-        public string Name            { get { return name;     } }
-        public XPathNodeType NodeType { get { return nodeType; } }
-        public AxisType TypeOfAxis    { get { return axisType; } }
-        public bool   AbbrAxis        { get { return abbrAxis; } }
+        public string Prefix { get { return _prefix; } }
+        public string Name { get { return _name; } }
+        public XPathNodeType NodeType { get { return _nodeType; } }
+        public AxisType TypeOfAxis { get { return _axisType; } }
+        public bool AbbrAxis { get { return abbrAxis; } }
 
         // Used by AstTree in Schema
-        private string urn = string.Empty;
-        public string Urn {
-            get { return urn; }
-            set { urn = value; }
+        private string _urn = string.Empty;
+        public string Urn
+        {
+            get { return _urn; }
+            set { _urn = value; }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace System.ServiceModel.Security
     using System.ServiceModel.Security.Tokens;
     using Microsoft.Xml;
 
-    abstract class WSSecurityPolicy
+    internal abstract class WSSecurityPolicy
     {
         public static ContractDescription NullContract = new ContractDescription("null");
         public static ServiceEndpoint NullServiceEndpoint = new ServiceEndpoint(NullContract);
@@ -114,10 +114,10 @@ namespace System.ServiceModel.Security
         public const string HttpBasicAuthenticationName = "HttpBasicAuthentication";
         public const string HttpDigestAuthenticationName = "HttpDigestAuthentication";
 
-        bool _mustSupportRefKeyIdentifierName = false;
-        bool _mustSupportRefIssuerSerialName = false;
-        bool _mustSupportRefThumbprintName = false;
-        bool _protectionTokenHasAsymmetricKey = false;
+        private bool _mustSupportRefKeyIdentifierName = false;
+        private bool _mustSupportRefIssuerSerialName = false;
+        private bool _mustSupportRefThumbprintName = false;
+        private bool _protectionTokenHasAsymmetricKey = false;
 
         public virtual XmlElement CreateWsspAssertion(string name)
         {
@@ -1321,7 +1321,7 @@ namespace System.ServiceModel.Security
         // 1) (Optional)EndpointSupporting.
         // 2) (Optional)OperationSupporting.
         // 3) In/Out/Fault Message ProtectionLevel for each Operation.
-        bool ContainsEncryptionParts(PolicyConversionContext policyContext, SecurityBindingElement security)
+        private bool ContainsEncryptionParts(PolicyConversionContext policyContext, SecurityBindingElement security)
         {
             // special case for RST/RSTR since we hard coded the security for them
             if (policyContext.Contract == NullContract)
@@ -2298,7 +2298,7 @@ namespace System.ServiceModel.Security
                         addressToSerialize.Identity,
                         addressToSerialize.Headers,
                         XmlDictionaryReader.CreateDictionaryReader(XmlReader.Create(stream)),
-                        addressToSerialize.GetReaderAtExtensions(), 
+                        addressToSerialize.GetReaderAtExtensions(),
                         null);
                 }
 
@@ -2824,16 +2824,16 @@ namespace System.ServiceModel.Security
             return parameters != null;
         }
 
-        class TokenIssuerPolicyResolver
+        private class TokenIssuerPolicyResolver
         {
-            const string WSIdentityNamespace = @"http://schemas.xmlsoap.org/ws/2005/05/identity";
-            static readonly Uri SelfIssuerUri = new Uri(WSIdentityNamespace + "/issuer/self");
+            private const string WSIdentityNamespace = @"http://schemas.xmlsoap.org/ws/2005/05/identity";
+            private static readonly Uri s_selfIssuerUri = new Uri(WSIdentityNamespace + "/issuer/self");
 
-            TrustDriver trustDriver;
+            private TrustDriver _trustDriver;
 
             public TokenIssuerPolicyResolver(TrustDriver driver)
             {
-                this.trustDriver = driver;
+                _trustDriver = driver;
             }
 
             public void ResolveTokenIssuerPolicy(MetadataImporter importer, PolicyConversionContext policyContext, IssuedSecurityTokenParameters parameters)
@@ -2848,7 +2848,7 @@ namespace System.ServiceModel.Security
                 }
 
                 EndpointAddress mexAddress = (parameters.IssuerMetadataAddress != null) ? parameters.IssuerMetadataAddress : parameters.IssuerAddress;
-                if (mexAddress == null || mexAddress.IsAnonymous || mexAddress.Uri.Equals(SelfIssuerUri))
+                if (mexAddress == null || mexAddress.IsAnonymous || mexAddress.Uri.Equals(s_selfIssuerUri))
                 {
                     return;
                 }
@@ -2964,7 +2964,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            static string InsertEllipsisIfTooLong(string message)
+            private static string InsertEllipsisIfTooLong(string message)
             {
                 const int MaxLength = 1024;
                 const string Ellipsis = "....";
@@ -2979,7 +2979,7 @@ namespace System.ServiceModel.Security
                 return message;
             }
 
-            void AddCompatibleFederationEndpoints(ServiceEndpointCollection serviceEndpoints, IssuedSecurityTokenParameters parameters)
+            private void AddCompatibleFederationEndpoints(ServiceEndpointCollection serviceEndpoints, IssuedSecurityTokenParameters parameters)
             {
                 // check if an explicit issuer address has been specified. If so,add the endpoint corresponding to that address only. If not add all acceptable endpoints.
 
@@ -2991,7 +2991,7 @@ namespace System.ServiceModel.Security
                     {
                         // if endpoint does not have trustDriver, assume
                         // parent trustDriver.
-                        trustDriver = this.trustDriver;
+                        trustDriver = _trustDriver;
                     }
                     bool isFederationContract = false;
                     ContractDescription contract = endpoint.Contract;
@@ -3044,7 +3044,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            bool TryGetTrustDriver(ServiceEndpoint endpoint, out TrustDriver trustDriver)
+            private bool TryGetTrustDriver(ServiceEndpoint endpoint, out TrustDriver trustDriver)
             {
                 SecurityBindingElement sbe = endpoint.Binding.CreateBindingElements().Find<SecurityBindingElement>();
                 trustDriver = null;
@@ -3073,31 +3073,31 @@ namespace System.ServiceModel.Security
             SecurityPolicyManager policyManager = new SecurityPolicyManager();
             return policyManager.GetSecurityPolicyDriver(version);
         }
-        class SecurityPolicyManager
+        private class SecurityPolicyManager
         {
-            List<WSSecurityPolicy> drivers;
+            private List<WSSecurityPolicy> _drivers;
 
             public SecurityPolicyManager()
             {
-                this.drivers = new List<WSSecurityPolicy>();
+                _drivers = new List<WSSecurityPolicy>();
                 Initialize();
             }
 
             public void Initialize()
             {
-                this.drivers.Add(new WSSecurityPolicy11());
-                this.drivers.Add(new WSSecurityPolicy12());
+                _drivers.Add(new WSSecurityPolicy11());
+                _drivers.Add(new WSSecurityPolicy12());
             }
 
             public bool TryGetSecurityPolicyDriver(ICollection<XmlElement> assertions, out WSSecurityPolicy securityPolicy)
             {
                 securityPolicy = null;
 
-                for (int i = 0; i < this.drivers.Count; ++i)
+                for (int i = 0; i < _drivers.Count; ++i)
                 {
-                    if (this.drivers[i].CanImportAssertion(assertions))
+                    if (_drivers[i].CanImportAssertion(assertions))
                     {
-                        securityPolicy = this.drivers[i];
+                        securityPolicy = _drivers[i];
                         return true;
                     }
                 }
@@ -3107,23 +3107,21 @@ namespace System.ServiceModel.Security
 
             public WSSecurityPolicy GetSecurityPolicyDriver(MessageSecurityVersion version)
             {
-                for (int i = 0; i < this.drivers.Count; ++i)
+                for (int i = 0; i < _drivers.Count; ++i)
                 {
-                    if (this.drivers[i].IsSecurityVersionSupported(version))
+                    if (_drivers[i].IsSecurityVersionSupported(version))
                     {
-                        return this.drivers[i];
+                        return _drivers[i];
                     }
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException());
             }
-
         }
     }
 
-    static class SecurityPolicyStrings
+    internal static class SecurityPolicyStrings
     {
         public const string SecureConversationBootstrapBindingElementsBelowSecurityKey = "SecureConversationBootstrapBindingElementsBelowSecurityKey";
     }
-
 }

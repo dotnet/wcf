@@ -3,7 +3,6 @@
 
 namespace System.Web.Services.Configuration
 {
-
     using System;
 
     /// <include file='doc\XmlFormatExtensionPrefixAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPrefixAttribute"]/*' />
@@ -13,8 +12,8 @@ namespace System.Web.Services.Configuration
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class XmlFormatExtensionPrefixAttribute : Attribute
     {
-        string prefix;
-        string ns;
+        private string _prefix;
+        private string _ns;
 
         /// <include file='doc\XmlFormatExtensionPrefixAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPrefixAttribute.XmlFormatExtensionPrefixAttribute"]/*' />
         /// <devdoc>
@@ -30,8 +29,8 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public XmlFormatExtensionPrefixAttribute(string prefix, string ns)
         {
-            this.prefix = prefix;
-            this.ns = ns;
+            _prefix = prefix;
+            _ns = ns;
         }
 
         /// <include file='doc\XmlFormatExtensionPrefixAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPrefixAttribute.Prefix"]/*' />
@@ -40,8 +39,8 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public string Prefix
         {
-            get { return prefix == null ? string.Empty : prefix; }
-            set { prefix = value; }
+            get { return _prefix == null ? string.Empty : _prefix; }
+            set { _prefix = value; }
         }
 
         /// <include file='doc\XmlFormatExtensionPrefixAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPrefixAttribute.Namespace"]/*' />
@@ -50,8 +49,8 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
     }
 }

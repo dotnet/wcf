@@ -1,23 +1,24 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
-
+namespace Microsoft.CodeDom.Compiler
+{
     using System.Diagnostics;
     using System;
     using System.IO;
     using System.Text;
-    
+
     using System.Globalization;
 
     /// <devdoc>
     ///    <para>Provides a text writer that can indent new lines by a tabString token.</para>
     /// </devdoc>
-    public class IndentedTextWriter : TextWriter {
-        private TextWriter writer;
-        private int indentLevel;
-        private bool tabsPending;
-        private string tabString;
+    public class IndentedTextWriter : TextWriter
+    {
+        private TextWriter _writer;
+        private int _indentLevel;
+        private bool _tabsPending;
+        private string _tabString;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -30,7 +31,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       text writer and default tab string.
         ///    </para>
         /// </devdoc>
-        public IndentedTextWriter(TextWriter writer) : this(writer, DefaultTabString) {
+        public IndentedTextWriter(TextWriter writer) : this(writer, DefaultTabString)
+        {
         }
 
         /// <devdoc>
@@ -39,34 +41,40 @@ namespace Microsoft.CodeDom.Compiler {
         ///       text writer and tab string.
         ///    </para>
         /// </devdoc>
-        public IndentedTextWriter(TextWriter writer, string tabString): base(CultureInfo.InvariantCulture) {
-            this.writer = writer;
-            this.tabString = tabString;
-            indentLevel = 0;
-            tabsPending = false;
+        public IndentedTextWriter(TextWriter writer, string tabString) : base(CultureInfo.InvariantCulture)
+        {
+            _writer = writer;
+            _tabString = tabString;
+            _indentLevel = 0;
+            _tabsPending = false;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override Encoding Encoding {
-            get {
-                return writer.Encoding;
+        public override Encoding Encoding
+        {
+            get
+            {
+                return _writer.Encoding;
             }
         }
-                                                
+
         /// <devdoc>
         ///    <para>
         ///       Gets or sets the new line character to use.
         ///    </para>
         /// </devdoc>
-        public override string NewLine {
-            get {
-                return writer.NewLine;
+        public override string NewLine
+        {
+            get
+            {
+                return _writer.NewLine;
             }
 
-            set {
-                writer.NewLine = value;
+            set
+            {
+                _writer.NewLine = value;
             }
         }
 
@@ -75,16 +83,20 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the number of spaces to indent.
         ///    </para>
         /// </devdoc>
-        public int Indent {
-            get {
-                return indentLevel;
+        public int Indent
+        {
+            get
+            {
+                return _indentLevel;
             }
-            set {
+            set
+            {
                 Debug.Assert(value >= 0, "Bogus Indent... probably caused by mismatched Indent++ and Indent--");
-                if (value < 0) {
+                if (value < 0)
+                {
                     value = 0;
                 }
-                indentLevel = value;
+                _indentLevel = value;
             }
         }
 
@@ -93,14 +105,17 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the TextWriter to use.
         ///    </para>
         /// </devdoc>
-        public TextWriter InnerWriter {
-            get {
-                return writer;
+        public TextWriter InnerWriter
+        {
+            get
+            {
+                return _writer;
             }
         }
 
-        internal string TabString {
-            get { return tabString; }
+        internal string TabString
+        {
+            get { return _tabString; }
         }
 
         /// <devdoc>
@@ -115,19 +130,23 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void Flush() {
-            writer.Flush();
+        public override void Flush()
+        {
+            _writer.Flush();
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void OutputTabs() {
-            if (tabsPending) {
-                for (int i=0; i < indentLevel; i++) {
-                    writer.Write(tabString);
+        protected virtual void OutputTabs()
+        {
+            if (_tabsPending)
+            {
+                for (int i = 0; i < _indentLevel; i++)
+                {
+                    _writer.Write(_tabString);
                 }
-                tabsPending = false;
+                _tabsPending = false;
             }
         }
 
@@ -137,9 +156,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(string s) {
+        public override void Write(string s)
+        {
             OutputTabs();
-            writer.Write(s);
+            _writer.Write(s);
         }
 
         /// <devdoc>
@@ -147,9 +167,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes the text representation of a Boolean value to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(bool value) {
+        public override void Write(bool value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -157,9 +178,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes a character to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(char value) {
+        public override void Write(char value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -168,9 +190,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       character array to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(char[] buffer) {
+        public override void Write(char[] buffer)
+        {
             OutputTabs();
-            writer.Write(buffer);
+            _writer.Write(buffer);
         }
 
         /// <devdoc>
@@ -179,9 +202,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       of characters to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(char[] buffer, int index, int count) {
+        public override void Write(char[] buffer, int index, int count)
+        {
             OutputTabs();
-            writer.Write(buffer, index, count);
+            _writer.Write(buffer, index, count);
         }
 
         /// <devdoc>
@@ -189,9 +213,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes the text representation of a Double to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(double value) {
+        public override void Write(double value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -201,9 +226,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(float value) {
+        public override void Write(float value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -211,9 +237,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes the text representation of an integer to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(int value) {
+        public override void Write(int value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -221,9 +248,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes the text representation of an 8-byte integer to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(long value) {
+        public override void Write(long value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -232,9 +260,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void Write(object value) {
+        public override void Write(object value)
+        {
             OutputTabs();
-            writer.Write(value);
+            _writer.Write(value);
         }
 
         /// <devdoc>
@@ -242,9 +271,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes out a formatted string, using the same semantics as specified.
         ///    </para>
         /// </devdoc>
-        public override void Write(string format, object arg0) {
+        public override void Write(string format, object arg0)
+        {
             OutputTabs();
-            writer.Write(format, arg0);
+            _writer.Write(format, arg0);
         }
 
         /// <devdoc>
@@ -253,9 +283,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       using the same semantics as specified.
         ///    </para>
         /// </devdoc>
-        public override void Write(string format, object arg0, object arg1) {
+        public override void Write(string format, object arg0, object arg1)
+        {
             OutputTabs();
-            writer.Write(format, arg0, arg1);
+            _writer.Write(format, arg0, arg1);
         }
 
         /// <devdoc>
@@ -264,9 +295,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       using the same semantics as specified.
         ///    </para>
         /// </devdoc>
-        public override void Write(string format, params object[] arg) {
+        public override void Write(string format, params object[] arg)
+        {
             OutputTabs();
-            writer.Write(format, arg);
+            _writer.Write(format, arg);
         }
 
         /// <devdoc>
@@ -275,8 +307,9 @@ namespace Microsoft.CodeDom.Compiler {
         ///       string to a line without tabs.
         ///    </para>
         /// </devdoc>
-        public void WriteLineNoTabs(string s) {
-            writer.WriteLine(s);
+        public void WriteLineNoTabs(string s)
+        {
+            _writer.WriteLine(s);
         }
 
         /// <devdoc>
@@ -285,10 +318,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       a line terminator to the text stream.
         ///    </para>
         /// </devdoc>
-        public override void WriteLine(string s) {
+        public override void WriteLine(string s)
+        {
             OutputTabs();
-            writer.WriteLine(s);
-            tabsPending = true;
+            _writer.WriteLine(s);
+            _tabsPending = true;
         }
 
         /// <devdoc>
@@ -296,10 +330,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Writes a line terminator.
         ///    </para>
         /// </devdoc>
-        public override void WriteLine() {
+        public override void WriteLine()
+        {
             OutputTabs();
-            writer.WriteLine();
-            tabsPending = true;
+            _writer.WriteLine();
+            _tabsPending = true;
         }
 
         /// <devdoc>
@@ -308,151 +343,172 @@ namespace Microsoft.CodeDom.Compiler {
         ///       the text stream.
         ///    </para>
         /// </devdoc>
-        public override void WriteLine(bool value) {
+        public override void WriteLine(bool value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(char value) {
+        public override void WriteLine(char value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(char[] buffer) {
+        public override void WriteLine(char[] buffer)
+        {
             OutputTabs();
-            writer.WriteLine(buffer);
-            tabsPending = true;
+            _writer.WriteLine(buffer);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(char[] buffer, int index, int count) {
+        public override void WriteLine(char[] buffer, int index, int count)
+        {
             OutputTabs();
-            writer.WriteLine(buffer, index, count);
-            tabsPending = true;
+            _writer.WriteLine(buffer, index, count);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(double value) {
+        public override void WriteLine(double value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(float value) {
+        public override void WriteLine(float value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(int value) {
+        public override void WriteLine(int value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(long value) {
+        public override void WriteLine(long value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(object value) {
+        public override void WriteLine(object value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(string format, object arg0) {
+        public override void WriteLine(string format, object arg0)
+        {
             OutputTabs();
-            writer.WriteLine(format, arg0);
-            tabsPending = true;
+            _writer.WriteLine(format, arg0);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(string format, object arg0, object arg1) {
+        public override void WriteLine(string format, object arg0, object arg1)
+        {
             OutputTabs();
-            writer.WriteLine(format, arg0, arg1);
-            tabsPending = true;
+            _writer.WriteLine(format, arg0, arg1);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public override void WriteLine(string format, params object[] arg) {
+        public override void WriteLine(string format, params object[] arg)
+        {
             OutputTabs();
-            writer.WriteLine(format, arg);
-            tabsPending = true;
+            _writer.WriteLine(format, arg);
+            _tabsPending = true;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         //// [CLSCompliant(false)]
-        public override void WriteLine(UInt32 value) {
+        public override void WriteLine(UInt32 value)
+        {
             OutputTabs();
-            writer.WriteLine(value);
-            tabsPending = true;
+            _writer.WriteLine(value);
+            _tabsPending = true;
         }
 
-        internal void InternalOutputTabs() {
-            for (int i=0; i < indentLevel; i++) {
-                writer.Write(tabString);               
+        internal void InternalOutputTabs()
+        {
+            for (int i = 0; i < _indentLevel; i++)
+            {
+                _writer.Write(_tabString);
             }
         }
     }
 
-    internal class Indentation {
-        private IndentedTextWriter writer;
-        private int indent;
-        private string s;
+    internal class Indentation
+    {
+        private IndentedTextWriter _writer;
+        private int _indent;
+        private string _s;
 
-        internal Indentation(IndentedTextWriter writer, int indent) {
-            this.writer = writer;
-            this.indent = indent;
-            s = null;
+        internal Indentation(IndentedTextWriter writer, int indent)
+        {
+            _writer = writer;
+            _indent = indent;
+            _s = null;
         }
 
-        internal string IndentationString {
-            get {
-                if ( s == null) {
-                    string tabString = writer.TabString;
-                    StringBuilder sb = new StringBuilder(indent * tabString.Length);
-                    for( int i = 0; i < indent; i++) {
+        internal string IndentationString
+        {
+            get
+            {
+                if (_s == null)
+                {
+                    string tabString = _writer.TabString;
+                    StringBuilder sb = new StringBuilder(_indent * tabString.Length);
+                    for (int i = 0; i < _indent; i++)
+                    {
                         sb.Append(tabString);
                     }
-                    s = sb.ToString();
+                    _s = sb.ToString();
                 }
-                return s;
+                return _s;
             }
-        }        
+        }
     }
 }

@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
-    
+
     /// <devdoc>
     ///    <para>
     ///       Specifies member attributes used for class members.
@@ -14,41 +14,42 @@ namespace Microsoft.CodeDom {
     /// </devdoc>
     [
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public enum MemberAttributes {
+    public enum MemberAttributes
+    {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Abstract        = 0x0001,
+        Abstract = 0x0001,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Final           = 0x0002,
+        Final = 0x0002,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Static          = 0x0003,
+        Static = 0x0003,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Override        = 0x0004,
+        Override = 0x0004,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Const           = 0x0005,
+        Const = 0x0005,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        New             = 0x0010,
+        New = 0x0010,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Overloaded      = 0x0100,
+        Overloaded = 0x0100,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Assembly        = 0x1000,
+        Assembly = 0x1000,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
@@ -56,31 +57,31 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Family            = 0x3000,
+        Family = 0x3000,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        FamilyOrAssembly  = 0x4000,
+        FamilyOrAssembly = 0x4000,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Private         = 0x5000,
+        Private = 0x5000,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        Public          = 0x6000,
+        Public = 0x6000,
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        AccessMask      = 0xF000,
+        AccessMask = 0xF000,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        ScopeMask       = 0x000F,
+        ScopeMask = 0x000F,
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        VTableMask      = 0x00F0,
+        VTableMask = 0x00F0,
     }
 }

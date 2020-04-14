@@ -451,7 +451,7 @@ namespace System.ServiceModel.Channels
                 return base.ToString();
             }
 
-            
+
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
 
@@ -1917,7 +1917,7 @@ namespace System.ServiceModel.Channels
             if (_headerInfos != null)
             {
                 int i = _index;
-                for (; ;)
+                for (; ; )
                 {
                     HeaderInfo headerInfo = _headerInfos[i];
                     if (headerInfo != null)
@@ -1950,7 +1950,7 @@ namespace System.ServiceModel.Channels
                     _headerInfos = new HeaderInfo[maxHeaderInfos];
                 }
                 int i = _index;
-                for (; ;)
+                for (; ; )
                 {
                     if (_headerInfos[i] == null)
                     {

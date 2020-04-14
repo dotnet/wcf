@@ -353,7 +353,6 @@ namespace System.ServiceModel.Channels
             {
                 sslStream.AuthenticateAsServerAsync(_parent.ServerCertificate, _parent.RequireClientCertificate,
                     _parent.SslProtocols, false).GetAwaiter().GetResult();
-
             }
             catch (AuthenticationException exception)
             {
@@ -565,11 +564,11 @@ namespace System.ServiceModel.Channels
 
         protected override Stream OnInitiateUpgrade(Stream stream, out SecurityMessageProperty remoteSecurity)
         {
-            OutWrapper<SecurityMessageProperty> remoteSecurityWrapper = new OutWrapper<SecurityMessageProperty>(); 
+            OutWrapper<SecurityMessageProperty> remoteSecurityWrapper = new OutWrapper<SecurityMessageProperty>();
             Stream retVal = this.OnInitiateUpgradeAsync(stream, remoteSecurityWrapper).GetAwaiter().GetResult();
-            remoteSecurity = remoteSecurityWrapper.Value; 
+            remoteSecurity = remoteSecurityWrapper.Value;
 
-            return retVal; 
+            return retVal;
         }
 
 #if FEATURE_NETNATIVE

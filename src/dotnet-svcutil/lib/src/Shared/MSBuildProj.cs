@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,14 +16,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class MSBuildProj : IDisposable
     {
-        private bool isSaved;
-        private bool ownsDirectory;
-        private readonly ProjectPropertyResolver propertyResolver;
-        private XNamespace msbuildNS;
+        private bool _isSaved;
+        private bool _ownsDirectory;
+        private readonly ProjectPropertyResolver _propertyResolver;
+        private XNamespace _msbuildNS;
 
         private MSBuildProj()
         {
-            propertyResolver = new ProjectPropertyResolver();
+            _propertyResolver = new ProjectPropertyResolver();
         }
 
         #region Properties
@@ -35,22 +36,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private string _targetFramework;
         public string TargetFramework
         {
-            get { return this._targetFramework; }
+            get { return _targetFramework; }
             set { UpdateTargetFramework(value); }
         }
 
         private List<string> _targetFrameworks = new List<string>();
-        public IEnumerable<string> TargetFrameworks { get { return this._targetFrameworks; } }
+        public IEnumerable<string> TargetFrameworks { get { return _targetFrameworks; } }
 
         private string _runtimeIdentifier;
         public string RuntimeIdentifier
         {
-            get { return this._runtimeIdentifier; }
+            get { return _runtimeIdentifier; }
             set { SetRuntimeIdentifier(value); }
         }
 
         private SortedSet<ProjectDependency> _dependencies = new SortedSet<ProjectDependency>();
-        public IEnumerable<ProjectDependency> Dependencies { get { return this._dependencies; } }
+        public IEnumerable<ProjectDependency> Dependencies { get { return _dependencies; } }
 
         public SortedDictionary<string, string> _resolvedProperties = new SortedDictionary<string, string>();
         public IEnumerable<KeyValuePair<string, string>> ResolvedProperties { get { return this._resolvedProperties; } }
@@ -65,49 +66,49 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private XElement ProjectNode { get; set; }
 
-        private XElement projectReferenceGroup;
+        private XElement _projectReferenceGroup;
         private XElement ProjectReferceGroup
         {
             get
             {
-                if (projectReferenceGroup == null)
+                if (_projectReferenceGroup == null)
                 {
                     IEnumerable<XElement> refItems = this.ProjectNode.Elements("ProjectReference");
                     if (refItems == null || refItems.Count() == 0)
                     {
                         // add ref subgroup
-                        projectReferenceGroup = new XElement("ItemGroup");
-                        this.ProjectNode.Add(projectReferenceGroup);
+                        _projectReferenceGroup = new XElement("ItemGroup");
+                        this.ProjectNode.Add(_projectReferenceGroup);
                     }
                     else
                     {
-                        projectReferenceGroup = refItems.FirstOrDefault().Parent;
+                        _projectReferenceGroup = refItems.FirstOrDefault().Parent;
                     }
                 }
-                return projectReferenceGroup;
+                return _projectReferenceGroup;
             }
         }
 
-        private XElement referenceGroup;
+        private XElement _referenceGroup;
         private XElement ReferenceGroup
         {
             get
             {
-                if (referenceGroup == null)
+                if (_referenceGroup == null)
                 {
                     IEnumerable<XElement> refItems = this.ProjectNode.Elements("Reference");
                     if (refItems == null || refItems.Count() == 0)
                     {
                         // add ref subgroup
-                        referenceGroup = new XElement("ItemGroup");
-                        this.ProjectNode.Add(referenceGroup);
+                        _referenceGroup = new XElement("ItemGroup");
+                        this.ProjectNode.Add(_referenceGroup);
                     }
                     else
                     {
-                        referenceGroup = refItems.FirstOrDefault().Parent;
+                        _referenceGroup = refItems.FirstOrDefault().Parent;
                     }
                 }
-                return referenceGroup;
+                return _referenceGroup;
             }
         }
         #endregion
@@ -116,7 +117,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static async Task<MSBuildProj> FromPathAsync(string filePath, ILogger logger, CancellationToken cancellationToken)
         {
             var project = await ParseAsync(File.ReadAllText(filePath), filePath, logger, cancellationToken).ConfigureAwait(false);
-            project.isSaved = true;
+            project._isSaved = true;
             return project;
         }
 
@@ -140,7 +141,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     msbuildNS = projDefinition.Root.Name.Namespace;
                 }
 
-                msbuildProj.msbuildNS = msbuildNS;
+                msbuildProj._msbuildNS = msbuildNS;
                 msbuildProj.ProjectNode = projDefinition.Element(msbuildNS + "Project");
                 if (msbuildProj.ProjectNode == null)
                 {
@@ -188,7 +189,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     msbuildProj.RuntimeIdentifier = runtimeIdentifierElements.Last().Value.Trim();
                 }
-                
+
                 IEnumerable<XElement> packageReferenceElements = GetSubGroupValues(msbuildProj.ProjectNode, msbuildNS, "ItemGroup", "PackageReference");
                 foreach (XElement reference in packageReferenceElements)
                 {
@@ -288,7 +289,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (!Directory.Exists(msbuildProj.DirectoryPath))
                 {
                     Directory.CreateDirectory(msbuildProj.DirectoryPath);
-                    msbuildProj.ownsDirectory = true;
+                    msbuildProj._ownsDirectory = true;
                 }
 
                 var sdkVersion = await ProjectPropertyResolver.GetSdkVersionAsync(msbuildProj.DirectoryPath, logger, cancellationToken).ConfigureAwait(false);
@@ -337,10 +338,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             await ProcessRunner.RunAsync("dotnet", dotnetNewParams, projectDir, logger, cancellationToken).ConfigureAwait(false);
 
             project = await ParseAsync(File.ReadAllText(fullPath), fullPath, logger, cancellationToken).ConfigureAwait(false);
-            project.ownsDirectory = ownsDir;
+            project._ownsDirectory = ownsDir;
 
             project.SdkVersion = sdkVersion ?? string.Empty;
-            project.isSaved = true;
+            project._isSaved = true;
 
             return project;
         }
@@ -406,7 +407,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public bool AddDependency(ProjectDependency dependency)
         {
             // a nuget package can contain multiple assemblies, we need to filter package references so we don't add dups.
-            bool addDependency = !this._dependencies.Any(d =>
+            bool addDependency = !_dependencies.Any(d =>
             {
                 switch (d.DependencyType)
                 {
@@ -440,8 +441,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         break;
                 }
 
-                this._dependencies.Add(dependency);
-                this.isSaved = false;
+                _dependencies.Add(dependency);
+                _isSaved = false;
             }
 
             return addDependency;
@@ -452,7 +453,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             XElement element = new XElement(propertyName, null);
 
-            IEnumerable<XElement> existingElements = GetSubGroupValues(this.ProjectNode, this.msbuildNS, "PropertyGroup", propertyName);
+            IEnumerable<XElement> existingElements = GetSubGroupValues(this.ProjectNode, _msbuildNS, "PropertyGroup", propertyName);
             if (existingElements.Count() > 0)
             {
                 element = existingElements.Last();
@@ -479,8 +480,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (SetPropertyValue("RuntimeIdentifier", runtimeIdentifier))
                 {
-                    this._runtimeIdentifier = runtimeIdentifier;
-                    this.isSaved = false;
+                    _runtimeIdentifier = runtimeIdentifier;
+                    _isSaved = false;
                 }
             }
         }
@@ -493,23 +494,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void UpdateTargetFramework(string targetFramework)
         {
-            if (this._targetFramework != targetFramework && !string.IsNullOrWhiteSpace(targetFramework))
+            if (_targetFramework != targetFramework && !string.IsNullOrWhiteSpace(targetFramework))
             {
                 // validate framework
                 TargetFrameworkHelper.GetValidFrameworkInfo(targetFramework);
 
-                if (!this._targetFrameworks.Contains(targetFramework))
+                if (!_targetFrameworks.Contains(targetFramework))
                 {
                     // replace values (if existing).
-                    if (this._targetFramework != null && this._targetFrameworks.Contains(this._targetFramework))
+                    if (_targetFramework != null && _targetFrameworks.Contains(_targetFramework))
                     {
-                        this._targetFrameworks.Remove(this._targetFramework);
+                        _targetFrameworks.Remove(_targetFramework);
                     }
 
-                    this._targetFrameworks.Add(targetFramework);
+                    _targetFrameworks.Add(targetFramework);
                 }
 
-                IEnumerable<XElement> targetFrameworkElements = GetSubGroupValues(this.ProjectNode, this.msbuildNS, "PropertyGroup", "TargetFramework");
+                IEnumerable<XElement> targetFrameworkElements = GetSubGroupValues(this.ProjectNode, _msbuildNS, "PropertyGroup", "TargetFramework");
                 if (targetFrameworkElements.Count() > 0)
                 {
                     var targetFrameworkNode = targetFrameworkElements.Last();
@@ -517,15 +518,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
 
                 // TargetFramework was not provided, check TargetFrameworks property.
-                IEnumerable<XElement> targetFrameworksElements = GetSubGroupValues(this.ProjectNode, this.msbuildNS, "PropertyGroup", "TargetFrameworks");
+                IEnumerable<XElement> targetFrameworksElements = GetSubGroupValues(this.ProjectNode, _msbuildNS, "PropertyGroup", "TargetFrameworks");
                 if (targetFrameworksElements.Count() > 0)
                 {
                     var targetFrameworksNode = targetFrameworksElements.Last();
-                    targetFrameworksNode.SetValue(this._targetFrameworks.Aggregate((tfs, tf) => $"{tfs};{tf}"));
+                    targetFrameworksNode.SetValue(_targetFrameworks.Aggregate((tfs, tf) => $"{tfs};{tf}"));
                 }
 
-                this._targetFramework = targetFramework;
-                this.isSaved = false;
+                _targetFramework = targetFramework;
+                _isSaved = false;
             }
         }
         #endregion
@@ -533,7 +534,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         #region Operation Methods
         public async Task SaveAsync(bool force, ILogger logger, CancellationToken cancellationToken)
         {
-            this.isSaved &= !force;
+            _isSaved &= !force;
             await SaveAsync(logger, cancellationToken).ConfigureAwait(false);
         }
 
@@ -543,14 +544,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!this.isSaved)
+            if (!_isSaved)
             {
                 using (await SafeLogger.WriteStartOperationAsync(logger, $"Saving project file: \"{this.FullPath}\"").ConfigureAwait(false))
                 {
                     if (!Directory.Exists(this.DirectoryPath))
                     {
                         Directory.CreateDirectory(this.DirectoryPath);
-                        this.ownsDirectory = true;
+                        _ownsDirectory = true;
                     }
 
                     using (StreamWriter writer = File.CreateText(this.FullPath))
@@ -558,7 +559,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         await AsyncHelper.RunAsync(() => ProjectNode.Save(writer), cancellationToken).ConfigureAwait(false);
                     }
 
-                    this.isSaved = true;
+                    _isSaved = true;
                 }
             }
         }
@@ -567,7 +568,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             ThrowOnDisposed();
 
-            if (!this.isSaved)
+            if (!_isSaved)
             {
                 await this.SaveAsync(logger, cancellationToken).ConfigureAwait(false);
             }
@@ -615,7 +616,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Resolving project references ...").ConfigureAwait(false))
             {
-                if (this._targetFrameworks.Count == 1 && TargetFrameworkHelper.IsSupportedFramework(this.TargetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
+                if (_targetFrameworks.Count == 1 && TargetFrameworkHelper.IsSupportedFramework(this.TargetFramework, out var frameworkInfo) && frameworkInfo.IsDnx)
                 {
                     await this.RestoreAsync(logger, cancellationToken).ConfigureAwait(false);
 
@@ -773,8 +774,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                             }
                                         }
                                         break;
-                                //case "package":
-                                default:
+                                    //case "package":
+                                    default:
                                         break;
                                 }
                             }
@@ -826,7 +827,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (propertyTable.Count() != propertyNames.Count())
                 {
-                    propertyTable = await this.propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFramework, propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
+                    propertyTable = await _propertyResolver.EvaluateProjectPropertiesAsync(this.FullPath, this.TargetFramework, propertyNames, this.GlobalProperties, logger, cancellationToken).ConfigureAwait(false);
 
                     foreach (var entry in propertyTable)
                     {
@@ -875,7 +876,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void ThrowOnDisposed()
         {
-            if (this._disposed)
+            if (_disposed)
             {
                 throw new ObjectDisposedException(nameof(MSBuildProj));
             }
@@ -902,7 +903,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     try
                     {
-                        if (this.ownsDirectory && Directory.Exists(this.DirectoryPath) && !DebugUtils.KeepTemporaryDirs)
+                        if (_ownsDirectory && Directory.Exists(this.DirectoryPath) && !DebugUtils.KeepTemporaryDirs)
                         {
                             try { Directory.Delete(this.DirectoryPath, recursive: true); } catch { }
                         }

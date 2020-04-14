@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -13,18 +14,19 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaAttributeGroupRef : XmlSchemaAnnotated {
-        XmlQualifiedName refName = XmlQualifiedName.Empty; 
+    public class XmlSchemaAttributeGroupRef : XmlSchemaAnnotated
+    {
+        private XmlQualifiedName _refName = XmlQualifiedName.Empty;
 
         /// <include file='doc\XmlSchemaAttributeGroupRef.uex' path='docs/doc[@for="XmlSchemaAttributeGroupRef.RefName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("ref")]
-        public XmlQualifiedName RefName { 
-            get { return refName; }
-            set { refName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName RefName
+        {
+            get { return _refName; }
+            set { _refName = (value == null ? XmlQualifiedName.Empty : value); }
         }
     }
-
 }

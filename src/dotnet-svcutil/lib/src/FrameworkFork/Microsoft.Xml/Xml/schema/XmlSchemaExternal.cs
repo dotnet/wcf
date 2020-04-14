@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -11,64 +12,75 @@ namespace Microsoft.Xml.Schema {
     using Microsoft.Xml.Serialization;
 
     /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal"]/*' />
-    public abstract class XmlSchemaExternal : XmlSchemaObject {
-        string location;
-        Uri    baseUri;
-        XmlSchema schema; 
-        string id;
-        XmlAttribute[] moreAttributes;
-        Compositor compositor;
+    public abstract class XmlSchemaExternal : XmlSchemaObject
+    {
+        private string _location;
+        private Uri _baseUri;
+        private XmlSchema _schema;
+        private string _id;
+        private XmlAttribute[] _moreAttributes;
+        private Compositor _compositor;
 
         /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.SchemaLocation"]/*' />
-        [XmlAttribute("schemaLocation", DataType="anyURI")]
-        public string SchemaLocation {
-            get { return location; }
-            set { location = value; }
+        [XmlAttribute("schemaLocation", DataType = "anyURI")]
+        public string SchemaLocation
+        {
+            get { return _location; }
+            set { _location = value; }
         }
 
         /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.Schema"]/*' />
         [XmlIgnore]
-        public XmlSchema Schema {
-            get { return schema; }
-            set { schema = value; }
+        public XmlSchema Schema
+        {
+            get { return _schema; }
+            set { _schema = value; }
         }
 
         /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.Id"]/*' />
-        [XmlAttribute("id", DataType="ID")]
-        public string Id {
-            get { return id; }
-            set { id = value; }
+        [XmlAttribute("id", DataType = "ID")]
+        public string Id
+        {
+            get { return _id; }
+            set { _id = value; }
         }
 
         /// <include file='doc\XmlSchemaExternal.uex' path='docs/doc[@for="XmlSchemaExternal.UnhandledAttributes"]/*' />
         [XmlAnyAttribute]
-        public XmlAttribute[] UnhandledAttributes {
-            get { return moreAttributes; }
-            set { moreAttributes = value; }
+        public XmlAttribute[] UnhandledAttributes
+        {
+            get { return _moreAttributes; }
+            set { _moreAttributes = value; }
         }
 
         [XmlIgnore]
-        internal Uri BaseUri {
-            get { return baseUri; }
-            set { baseUri = value; }
+        internal Uri BaseUri
+        {
+            get { return _baseUri; }
+            set { _baseUri = value; }
         }
 
         [XmlIgnore]
-        internal override string IdAttribute {
+        internal override string IdAttribute
+        {
             get { return Id; }
             set { Id = value; }
         }
 
-        internal override void SetUnhandledAttributes(XmlAttribute[] moreAttributes) {
-            this.moreAttributes = moreAttributes;
+        internal override void SetUnhandledAttributes(XmlAttribute[] moreAttributes)
+        {
+            _moreAttributes = moreAttributes;
         }
 
-        internal Compositor Compositor {
-            get {
-                return compositor;
+        internal Compositor Compositor
+        {
+            get
+            {
+                return _compositor;
             }
-            set {
-                compositor = value;
+            set
+            {
+                _compositor = value;
             }
         }
     }

@@ -33,18 +33,18 @@ namespace System.ServiceModel.Security
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
 
-    abstract class WSTrust : WSSecurityTokenSerializer.SerializerEntries
+    internal abstract class WSTrust : WSSecurityTokenSerializer.SerializerEntries
     {
-        WSSecurityTokenSerializer tokenSerializer;
+        private WSSecurityTokenSerializer _tokenSerializer;
 
         public WSTrust(WSSecurityTokenSerializer tokenSerializer)
         {
-            this.tokenSerializer = tokenSerializer;
+            _tokenSerializer = tokenSerializer;
         }
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
-            get { return this.tokenSerializer; }
+            get { return _tokenSerializer; }
         }
 
         public abstract TrustDictionary SerializerDictionary
@@ -57,33 +57,33 @@ namespace System.ServiceModel.Security
             tokenEntryList.Add(new BinarySecretTokenEntry(this));
         }
 
-        class BinarySecretTokenEntry : TokenEntry
+        private class BinarySecretTokenEntry : TokenEntry
         {
-            WSTrust parent;
-            TrustDictionary otherDictionary;
+            private WSTrust _parent;
+            private TrustDictionary _otherDictionary;
 
             public BinarySecretTokenEntry(WSTrust parent)
             {
-                this.parent = parent;
-                this.otherDictionary = null;
+                _parent = parent;
+                _otherDictionary = null;
 
                 if (parent.SerializerDictionary is TrustDec2005Dictionary)
                 {
-                    this.otherDictionary = XD.TrustFeb2005Dictionary;
+                    _otherDictionary = XD.TrustFeb2005Dictionary;
                 }
 
                 if (parent.SerializerDictionary is TrustFeb2005Dictionary)
                 {
-                    this.otherDictionary = DXD.TrustDec2005Dictionary;
+                    _otherDictionary = DXD.TrustDec2005Dictionary;
                 }
 
                 // always set it, so we don't have to worry about null
-                if (this.otherDictionary == null)
-                    this.otherDictionary = this.parent.SerializerDictionary;
+                if (_otherDictionary == null)
+                    _otherDictionary = _parent.SerializerDictionary;
             }
 
-            protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.BinarySecret; } }
-            protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+            protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.BinarySecret; } }
+            protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(BinarySecretSecurityToken) }; }
             public override string TokenTypeUri { get { return null; } }
             protected override string ValueTypeUri { get { return null; } }
@@ -97,12 +97,12 @@ namespace System.ServiceModel.Security
                     valueTypeUri = element.GetAttribute(SecurityJan2004Strings.ValueType, null);
                 }
 
-                return element.LocalName == LocalName.Value && (element.NamespaceURI == NamespaceUri.Value || element.NamespaceURI == this.otherDictionary.Namespace.Value) && valueTypeUri == this.ValueTypeUri;
+                return element.LocalName == LocalName.Value && (element.NamespaceURI == NamespaceUri.Value || element.NamespaceURI == _otherDictionary.Namespace.Value) && valueTypeUri == this.ValueTypeUri;
             }
 
             public override bool CanReadTokenCore(XmlDictionaryReader reader)
             {
-                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, this.otherDictionary.Namespace)) &&
+                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, _otherDictionary.Namespace)) &&
                        reader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null) == this.ValueTypeUri;
             }
 
@@ -132,13 +132,13 @@ namespace System.ServiceModel.Security
 
                 if (secretType != null && secretType.Length > 0)
                 {
-                    if (secretType == parent.SerializerDictionary.NonceBinarySecret.Value || secretType == otherDictionary.NonceBinarySecret.Value)
+                    if (secretType == _parent.SerializerDictionary.NonceBinarySecret.Value || secretType == _otherDictionary.NonceBinarySecret.Value)
                     {
                         isNonce = true;
                     }
-                    else if (secretType != parent.SerializerDictionary.SymmetricKeyBinarySecret.Value && secretType != otherDictionary.SymmetricKeyBinarySecret.Value)
+                    else if (secretType != _parent.SerializerDictionary.SymmetricKeyBinarySecret.Value && secretType != _otherDictionary.SymmetricKeyBinarySecret.Value)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.UnexpectedBinarySecretType, parent.SerializerDictionary.SymmetricKeyBinarySecret.Value, secretType)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.UnexpectedBinarySecretType, _parent.SerializerDictionary.SymmetricKeyBinarySecret.Value, secretType)));
                     }
                 }
 
@@ -161,17 +161,17 @@ namespace System.ServiceModel.Security
 
         public abstract class Driver : TrustDriver
         {
-            static readonly string base64Uri = SecurityJan2004Strings.EncodingTypeValueBase64Binary;
-            static readonly string hexBinaryUri = SecurityJan2004Strings.EncodingTypeValueHexBinary;
+            private static readonly string s_base64Uri = SecurityJan2004Strings.EncodingTypeValueBase64Binary;
+            private static readonly string s_hexBinaryUri = SecurityJan2004Strings.EncodingTypeValueHexBinary;
 
 
-            SecurityStandardsManager standardsManager;
-            List<SecurityTokenAuthenticator> entropyAuthenticators;
+            private SecurityStandardsManager _standardsManager;
+            private List<SecurityTokenAuthenticator> _entropyAuthenticators;
 
             public Driver(SecurityStandardsManager standardsManager)
             {
-                this.standardsManager = standardsManager;
-                this.entropyAuthenticators = new List<SecurityTokenAuthenticator>(2);
+                _standardsManager = standardsManager;
+                _entropyAuthenticators = new List<SecurityTokenAuthenticator>(2);
             }
 
             public abstract TrustDictionary DriverDictionary
@@ -212,7 +212,7 @@ namespace System.ServiceModel.Security
             {
                 get
                 {
-                    return this.standardsManager;
+                    return _standardsManager;
                 }
             }
 
@@ -248,7 +248,7 @@ namespace System.ServiceModel.Security
                 return new RequestSecurityTokenResponseCollection(rstrCollection.AsReadOnly(), this.StandardsManager);
             }
 
-            XmlElement GetAppliesToElement(XmlElement rootElement)
+            private XmlElement GetAppliesToElement(XmlElement rootElement)
             {
                 if (rootElement == null)
                 {
@@ -268,7 +268,7 @@ namespace System.ServiceModel.Security
                 return null;
             }
 
-            T GetAppliesTo<T>(XmlElement rootXml, XmlObjectSerializer serializer)
+            private T GetAppliesTo<T>(XmlElement rootXml, XmlObjectSerializer serializer)
             {
                 XmlElement appliesToElement = GetAppliesToElement(rootXml);
                 if (appliesToElement != null)
@@ -309,7 +309,7 @@ namespace System.ServiceModel.Security
                 return (localName == DriverDictionary.AppliesTo.Value && namespaceUri == Namespaces.WSPolicy);
             }
 
-            void GetAppliesToQName(XmlElement rootElement, out string localName, out string namespaceUri)
+            private void GetAppliesToQName(XmlElement rootElement, out string localName, out string namespaceUri)
             {
                 localName = namespaceUri = null;
                 XmlElement appliesToElement = GetAppliesToElement(rootElement);
@@ -381,7 +381,7 @@ namespace System.ServiceModel.Security
                 return GetBinaryNegotiation(rst.RequestSecurityTokenXml);
             }
 
-            BinaryNegotiation GetBinaryNegotiation(XmlElement rootElement)
+            private BinaryNegotiation GetBinaryNegotiation(XmlElement rootElement)
             {
                 if (rootElement == null)
                 {
@@ -417,7 +417,7 @@ namespace System.ServiceModel.Security
                 return GetEntropy(rstr.RequestSecurityTokenResponseXml, resolver);
             }
 
-            SecurityToken GetEntropy(XmlElement rootElement, SecurityTokenResolver resolver)
+            private SecurityToken GetEntropy(XmlElement rootElement, SecurityTokenResolver resolver)
             {
                 if (rootElement == null || rootElement.ChildNodes == null)
                 {
@@ -434,14 +434,14 @@ namespace System.ServiceModel.Security
                             string valueTypeUri = element.GetAttribute(SecurityJan2004Strings.ValueType);
                             if (valueTypeUri.Length == 0)
                                 valueTypeUri = null;
-                            return standardsManager.SecurityTokenSerializer.ReadToken(new XmlNodeReader(tokenXml), resolver);
+                            return _standardsManager.SecurityTokenSerializer.ReadToken(new XmlNodeReader(tokenXml), resolver);
                         }
                     }
                 }
                 return null;
             }
 
-            void GetIssuedAndProofXml(RequestSecurityTokenResponse rstr, out XmlElement issuedTokenXml, out XmlElement proofTokenXml)
+            private void GetIssuedAndProofXml(RequestSecurityTokenResponse rstr, out XmlElement issuedTokenXml, out XmlElement proofTokenXml)
             {
                 issuedTokenXml = null;
                 proofTokenXml = null;
@@ -539,7 +539,7 @@ namespace System.ServiceModel.Security
 
                 try
                 {
-                    keyIdentifierClause = standardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(reader);
+                    keyIdentifierClause = _standardsManager.SecurityTokenSerializer.ReadKeyIdentifierClause(reader);
                 }
                 catch (XmlException e)
                 {
@@ -615,7 +615,7 @@ namespace System.ServiceModel.Security
                 if (rstr.RequestedUnattachedReference != null)
                 {
                     writer.WriteStartElement(DriverDictionary.Prefix.Value, DriverDictionary.RequestedTokenReference, DriverDictionary.Namespace);
-                    standardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
+                    _standardsManager.SecurityTokenSerializer.WriteKeyIdentifierClause(writer, rstr.RequestedUnattachedReference);
                     writer.WriteEndElement();
                 }
             }
@@ -721,7 +721,6 @@ namespace System.ServiceModel.Security
 
                 keyType = SecurityKeyType.SymmetricKey;
                 return false;
-
             }
 
             public bool TryParseSymmetricKeyElement(XmlElement element)
@@ -734,7 +733,7 @@ namespace System.ServiceModel.Security
                     && element.InnerText == this.DriverDictionary.SymmetricKeyType.Value;
             }
 
-            XmlElement CreateSymmetricKeyTypeElement()
+            private XmlElement CreateSymmetricKeyTypeElement()
             {
                 XmlDocument doc = new XmlDocument();
                 XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.KeyType.Value,
@@ -743,7 +742,7 @@ namespace System.ServiceModel.Security
                 return result;
             }
 
-            bool TryParsePublicKeyElement(XmlElement element)
+            private bool TryParsePublicKeyElement(XmlElement element)
             {
                 if (element == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("element");
@@ -753,7 +752,7 @@ namespace System.ServiceModel.Security
                     && element.InnerText == this.DriverDictionary.PublicKeyType.Value;
             }
 
-            XmlElement CreatePublicKeyTypeElement()
+            private XmlElement CreatePublicKeyTypeElement()
             {
                 XmlDocument doc = new XmlDocument();
                 XmlElement result = doc.CreateElement(this.DriverDictionary.Prefix.Value, this.DriverDictionary.KeyType.Value,

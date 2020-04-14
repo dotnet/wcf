@@ -6,9 +6,10 @@ using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     /// <summary>
     /// This writer wraps an XmlWriter that was not build using the XmlRawWriter architecture (such as XmlTextWriter or a custom XmlWriter) 
@@ -22,64 +23,75 @@ namespace Microsoft.Xml {
     /// It also calls WriteStateDocument if standalone="yes" and/or a DocType declaration is written out in order to enforce document conformance
     /// checking.
     /// </summary>
-    internal class QueryOutputWriterV1 : XmlWriter {
-        private XmlWriter wrapped;
-        private bool inCDataSection;
-        private Dictionary<XmlQualifiedName, XmlQualifiedName> lookupCDataElems;
-        private BitStack bitsCData;
-        private XmlQualifiedName qnameCData;
-        private bool outputDocType, inAttr;
-        private string systemId, publicId;
-        private XmlStandalone standalone;
+    internal class QueryOutputWriterV1 : XmlWriter
+    {
+        private XmlWriter _wrapped;
+        private bool _inCDataSection;
+        private Dictionary<XmlQualifiedName, XmlQualifiedName> _lookupCDataElems;
+        private BitStack _bitsCData;
+        private XmlQualifiedName _qnameCData;
+        private bool _outputDocType,_inAttr;
+        private string _systemId,_publicId;
+        private XmlStandalone _standalone;
 
-        public QueryOutputWriterV1(XmlWriter writer, XmlWriterSettings settings) {
-            this.wrapped = writer;
+        public QueryOutputWriterV1(XmlWriter writer, XmlWriterSettings settings)
+        {
+            _wrapped = writer;
 
-            this.systemId = settings.DocTypeSystem;
-            this.publicId = settings.DocTypePublic;
+            _systemId = settings.DocTypeSystem;
+            _publicId = settings.DocTypePublic;
 
-            if (settings.OutputMethod == XmlOutputMethod.Xml) {
+            if (settings.OutputMethod == XmlOutputMethod.Xml)
+            {
                 bool documentConformance = false;
 
                 // Xml output method shouldn't output doc-type-decl if system ID is not defined (even if public ID is)
                 // Only check for well-formed document if output method is xml
-                if (this.systemId != null) {
+                if (_systemId != null)
+                {
                     documentConformance = true;
-                    this.outputDocType = true;
+                    _outputDocType = true;
                 }
 
                 // Check for well-formed document if standalone="yes" in an auto-generated xml declaration
-                if (settings.Standalone == XmlStandalone.Yes) {
+                if (settings.Standalone == XmlStandalone.Yes)
+                {
                     documentConformance = true;
-                    this.standalone = settings.Standalone;
+                    _standalone = settings.Standalone;
                 }
 
-                if (documentConformance) {
-                    if (settings.Standalone == XmlStandalone.Yes) {
-                        this.wrapped.WriteStartDocument(true);
+                if (documentConformance)
+                {
+                    if (settings.Standalone == XmlStandalone.Yes)
+                    {
+                        _wrapped.WriteStartDocument(true);
                     }
-                    else {
-                        this.wrapped.WriteStartDocument();
+                    else
+                    {
+                        _wrapped.WriteStartDocument();
                     }
                 }
 
-                if (settings.CDataSectionElements != null && settings.CDataSectionElements.Count > 0) {
-                    this.bitsCData = new BitStack();
-                    this.lookupCDataElems = new Dictionary<XmlQualifiedName, XmlQualifiedName>();
-                    this.qnameCData = new XmlQualifiedName();
+                if (settings.CDataSectionElements != null && settings.CDataSectionElements.Count > 0)
+                {
+                    _bitsCData = new BitStack();
+                    _lookupCDataElems = new Dictionary<XmlQualifiedName, XmlQualifiedName>();
+                    _qnameCData = new XmlQualifiedName();
 
                     // Add each element name to the lookup table
-                    foreach (XmlQualifiedName name in settings.CDataSectionElements) {
-                        this.lookupCDataElems[name] = null;
+                    foreach (XmlQualifiedName name in settings.CDataSectionElements)
+                    {
+                        _lookupCDataElems[name] = null;
                     }
 
-                    this.bitsCData.PushBit(false);
+                    _bitsCData.PushBit(false);
                 }
             }
-            else if (settings.OutputMethod == XmlOutputMethod.Html) {
+            else if (settings.OutputMethod == XmlOutputMethod.Html)
+            {
                 // Html output method should output doc-type-decl if system ID or public ID is defined
-                if (this.systemId != null || this.publicId != null)
-                    this.outputDocType = true;
+                if (_systemId != null || _publicId != null)
+                    _outputDocType = true;
             }
         }
 
@@ -88,31 +100,38 @@ namespace Microsoft.Xml {
         // XmlWriter interface
         //-----------------------------------------------
 
-        public override WriteState WriteState {
-            get {
-                return this.wrapped.WriteState;
+        public override WriteState WriteState
+        {
+            get
+            {
+                return _wrapped.WriteState;
             }
         }
 
-        public override void WriteStartDocument() {
-            this.wrapped.WriteStartDocument();
+        public override void WriteStartDocument()
+        {
+            _wrapped.WriteStartDocument();
         }
 
-        public override void WriteStartDocument(bool standalone) {
-            this.wrapped.WriteStartDocument(standalone);
+        public override void WriteStartDocument(bool standalone)
+        {
+            _wrapped.WriteStartDocument(standalone);
         }
 
-        public override void WriteEndDocument() {
-            this.wrapped.WriteEndDocument();
+        public override void WriteEndDocument()
+        {
+            _wrapped.WriteEndDocument();
         }
 
         /// <summary>
         /// Suppress this explicit call to WriteDocType if information was provided by XmlWriterSettings.
         /// </summary>
-        public override void WriteDocType(string name, string pubid, string sysid, string subset) {
-            if (this.publicId == null && this.systemId == null) {
-                Debug.Assert(!this.outputDocType);
-                this.wrapped.WriteDocType(name, pubid, sysid, subset);
+        public override void WriteDocType(string name, string pubid, string sysid, string subset)
+        {
+            if (_publicId == null && _systemId == null)
+            {
+                Debug.Assert(!_outputDocType);
+                _wrapped.WriteDocType(name, pubid, sysid, subset);
             }
         }
 
@@ -120,140 +139,163 @@ namespace Microsoft.Xml {
         /// Output doc-type-decl on the first element, and determine whether this element is a
         /// CData section element.
         /// </summary>
-        public override void WriteStartElement(string prefix, string localName, string ns) {
+        public override void WriteStartElement(string prefix, string localName, string ns)
+        {
             EndCDataSection();
 
             // Output doc-type declaration immediately before first element is output
-            if (this.outputDocType) {
-                WriteState ws = this.wrapped.WriteState;
-                if (ws == WriteState.Start || ws == WriteState.Prolog) {
-                    this.wrapped.WriteDocType(
+            if (_outputDocType)
+            {
+                WriteState ws = _wrapped.WriteState;
+                if (ws == WriteState.Start || ws == WriteState.Prolog)
+                {
+                    _wrapped.WriteDocType(
                             prefix.Length != 0 ? prefix + ":" + localName : localName,
-                            this.publicId,
-                            this.systemId,
-                            null );
+                            _publicId,
+                            _systemId,
+                            null);
                 }
-                this.outputDocType = false;
+                _outputDocType = false;
             }
 
-            this.wrapped.WriteStartElement(prefix, localName, ns);
+            _wrapped.WriteStartElement(prefix, localName, ns);
 
-            if (this.lookupCDataElems != null) {
+            if (_lookupCDataElems != null)
+            {
                 // Determine whether this element is a CData section element
-                this.qnameCData.Init(localName, ns);
-                this.bitsCData.PushBit(this.lookupCDataElems.ContainsKey(this.qnameCData));
+                _qnameCData.Init(localName, ns);
+                _bitsCData.PushBit(_lookupCDataElems.ContainsKey(_qnameCData));
             }
         }
 
-        public override void WriteEndElement() {
+        public override void WriteEndElement()
+        {
             EndCDataSection();
 
-            this.wrapped.WriteEndElement();
+            _wrapped.WriteEndElement();
 
-            if (this.lookupCDataElems != null)
-                this.bitsCData.PopBit();
+            if (_lookupCDataElems != null)
+                _bitsCData.PopBit();
         }
 
-        public override void WriteFullEndElement() {
+        public override void WriteFullEndElement()
+        {
             EndCDataSection();
 
-            this.wrapped.WriteFullEndElement();
+            _wrapped.WriteFullEndElement();
 
-            if (this.lookupCDataElems != null)
-                this.bitsCData.PopBit();
+            if (_lookupCDataElems != null)
+                _bitsCData.PopBit();
         }
 
-        public override void WriteStartAttribute(string prefix, string localName, string ns) {
-            this.inAttr = true;
-            this.wrapped.WriteStartAttribute(prefix, localName, ns);
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
+        {
+            _inAttr = true;
+            _wrapped.WriteStartAttribute(prefix, localName, ns);
         }
 
-        public override void WriteEndAttribute() {
-            this.inAttr = false;
-            this.wrapped.WriteEndAttribute();
+        public override void WriteEndAttribute()
+        {
+            _inAttr = false;
+            _wrapped.WriteEndAttribute();
         }
 
-        public override void WriteCData(string text) {
-            this.wrapped.WriteCData(text);
+        public override void WriteCData(string text)
+        {
+            _wrapped.WriteCData(text);
         }
 
-        public override void WriteComment(string text) {
+        public override void WriteComment(string text)
+        {
             EndCDataSection();
-            this.wrapped.WriteComment(text);
+            _wrapped.WriteComment(text);
         }
 
-        public override void WriteProcessingInstruction(string name, string text) {
+        public override void WriteProcessingInstruction(string name, string text)
+        {
             EndCDataSection();
-            this.wrapped.WriteProcessingInstruction(name, text);
+            _wrapped.WriteProcessingInstruction(name, text);
         }
 
-        public override void WriteWhitespace(string ws) {
-            if (!this.inAttr && (this.inCDataSection || StartCDataSection()))
-                this.wrapped.WriteCData(ws);
+        public override void WriteWhitespace(string ws)
+        {
+            if (!_inAttr && (_inCDataSection || StartCDataSection()))
+                _wrapped.WriteCData(ws);
             else
-                this.wrapped.WriteWhitespace(ws);
+                _wrapped.WriteWhitespace(ws);
         }
 
-        public override void WriteString(string text) {
-            if (!this.inAttr && (this.inCDataSection || StartCDataSection()))
-                this.wrapped.WriteCData(text);
+        public override void WriteString(string text)
+        {
+            if (!_inAttr && (_inCDataSection || StartCDataSection()))
+                _wrapped.WriteCData(text);
             else
-                this.wrapped.WriteString(text);
+                _wrapped.WriteString(text);
         }
 
-        public override void WriteChars(char[] buffer, int index, int count) {
-            if (!this.inAttr && (this.inCDataSection || StartCDataSection()))
-                this.wrapped.WriteCData(new string(buffer, index, count));
+        public override void WriteChars(char[] buffer, int index, int count)
+        {
+            if (!_inAttr && (_inCDataSection || StartCDataSection()))
+                _wrapped.WriteCData(new string(buffer, index, count));
             else
-                this.wrapped.WriteChars(buffer, index, count);
+                _wrapped.WriteChars(buffer, index, count);
         }
 
-        public override void WriteBase64(byte[] buffer, int index, int count) {
-            if (!this.inAttr && (this.inCDataSection || StartCDataSection()))
-                this.wrapped.WriteBase64(buffer, index, count);
+        public override void WriteBase64(byte[] buffer, int index, int count)
+        {
+            if (!_inAttr && (_inCDataSection || StartCDataSection()))
+                _wrapped.WriteBase64(buffer, index, count);
             else
-                this.wrapped.WriteBase64(buffer, index, count);
+                _wrapped.WriteBase64(buffer, index, count);
         }
 
-        public override void WriteEntityRef(string name) {
+        public override void WriteEntityRef(string name)
+        {
             EndCDataSection();
-            this.wrapped.WriteEntityRef(name);
+            _wrapped.WriteEntityRef(name);
         }
 
-        public override void WriteCharEntity(char ch) {
+        public override void WriteCharEntity(char ch)
+        {
             EndCDataSection();
-            this.wrapped.WriteCharEntity(ch);
+            _wrapped.WriteCharEntity(ch);
         }
 
-        public override void WriteSurrogateCharEntity(char lowChar, char highChar) {
+        public override void WriteSurrogateCharEntity(char lowChar, char highChar)
+        {
             EndCDataSection();
-            this.wrapped.WriteSurrogateCharEntity(lowChar, highChar);
+            _wrapped.WriteSurrogateCharEntity(lowChar, highChar);
         }
 
-        public override void WriteRaw(char[] buffer, int index, int count) {
-            if (!this.inAttr && (this.inCDataSection || StartCDataSection()))
-                this.wrapped.WriteCData(new string(buffer, index, count));
+        public override void WriteRaw(char[] buffer, int index, int count)
+        {
+            if (!_inAttr && (_inCDataSection || StartCDataSection()))
+                _wrapped.WriteCData(new string(buffer, index, count));
             else
-                this.wrapped.WriteRaw(buffer, index, count);
+                _wrapped.WriteRaw(buffer, index, count);
         }
 
-        public override void WriteRaw(string data) {
-            if (!this.inAttr && (this.inCDataSection || StartCDataSection()))
-                this.wrapped.WriteCData(data);
+        public override void WriteRaw(string data)
+        {
+            if (!_inAttr && (_inCDataSection || StartCDataSection()))
+                _wrapped.WriteCData(data);
             else
-                this.wrapped.WriteRaw(data);
+                _wrapped.WriteRaw(data);
         }
 
-        public override void Close() {
-            this.wrapped.Close();
+        public override void Close()
+        {
+            _wrapped.Close();
         }
 
-        public override void Flush() {
-            this.wrapped.Flush();
+        public override void Flush()
+        {
+            _wrapped.Flush();
         }
 
-        public override string LookupPrefix(string ns) {
-            return this.wrapped.LookupPrefix(ns);
+        public override string LookupPrefix(string ns)
+        {
+            return _wrapped.LookupPrefix(ns);
         }
 
 
@@ -265,10 +307,12 @@ namespace Microsoft.Xml {
         /// Write CData text if element is a CData element.  Return true if text should be written
         /// within a CData section.
         /// </summary>
-        private bool StartCDataSection() {
-            Debug.Assert(!this.inCDataSection);
-            if (this.lookupCDataElems != null && this.bitsCData.PeekBit()) {
-                this.inCDataSection = true;
+        private bool StartCDataSection()
+        {
+            Debug.Assert(!_inCDataSection);
+            if (_lookupCDataElems != null && _bitsCData.PeekBit())
+            {
+                _inCDataSection = true;
                 return true;
             }
             return false;
@@ -277,8 +321,9 @@ namespace Microsoft.Xml {
         /// <summary>
         /// No longer write CData text.
         /// </summary>
-        private void EndCDataSection() {
-            this.inCDataSection = false;
+        private void EndCDataSection()
+        {
+            _inCDataSection = false;
         }
     }
 }

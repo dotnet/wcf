@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.Runtime;
@@ -11,38 +12,38 @@ namespace System.ServiceModel
     {
         internal const BasicHttpMessageCredentialType DefaultClientCredentialType = BasicHttpMessageCredentialType.UserName;
 
-        BasicHttpMessageCredentialType clientCredentialType;
-        SecurityAlgorithmSuite algorithmSuite;
+        private BasicHttpMessageCredentialType _clientCredentialType;
+        private SecurityAlgorithmSuite _algorithmSuite;
 
         public BasicHttpMessageSecurity()
         {
-            clientCredentialType = DefaultClientCredentialType;
-            algorithmSuite = SecurityAlgorithmSuite.Default;
+            _clientCredentialType = DefaultClientCredentialType;
+            _algorithmSuite = SecurityAlgorithmSuite.Default;
         }
 
         public BasicHttpMessageCredentialType ClientCredentialType
         {
-            get { return this.clientCredentialType; }
+            get { return _clientCredentialType; }
             set
             {
                 if (!BasicHttpMessageCredentialTypeHelper.IsDefined(value))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.clientCredentialType = value;
+                _clientCredentialType = value;
             }
         }
 
         public SecurityAlgorithmSuite AlgorithmSuite
         {
-            get { return this.algorithmSuite; }
+            get { return _algorithmSuite; }
             set
             {
                 if (value == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
                 }
-                this.algorithmSuite = value;
+                _algorithmSuite = value;
             }
         }
 
@@ -54,7 +55,7 @@ namespace System.ServiceModel
             if (isSecureTransportMode)
             {
                 MessageSecurityVersion version = MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
-                switch (this.clientCredentialType)
+                switch (_clientCredentialType)
                 {
                     case BasicHttpMessageCredentialType.Certificate:
                         result = SecurityBindingElement.CreateCertificateOverTransportBindingElement(version);
@@ -70,7 +71,7 @@ namespace System.ServiceModel
             }
             else
             {
-                if (this.clientCredentialType != BasicHttpMessageCredentialType.Certificate)
+                if (_clientCredentialType != BasicHttpMessageCredentialType.Certificate)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.BasicHttpMessageSecurityRequiresCertificate));
                 }
@@ -137,13 +138,13 @@ namespace System.ServiceModel
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeAlgorithmSuite()
         {
-            return this.algorithmSuite.GetType() != SecurityAlgorithmSuite.Default.GetType();
+            return _algorithmSuite.GetType() != SecurityAlgorithmSuite.Default.GetType();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeClientCredentialType()
         {
-            return this.clientCredentialType != DefaultClientCredentialType;
+            return _clientCredentialType != DefaultClientCredentialType;
         }
     }
 }

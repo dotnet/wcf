@@ -179,7 +179,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        ActionHeader GetReplyActionHeader(AddressingVersion addressing)
+        private ActionHeader GetReplyActionHeader(AddressingVersion addressing)
         {
             if (_replyAction == null)
             {
@@ -449,7 +449,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void DeserializeRequest(XmlDictionaryReader reader, object[] parameters)
+        private void DeserializeRequest(XmlDictionaryReader reader, object[] parameters)
         {
             if (_requestWrapperName != null)
             {

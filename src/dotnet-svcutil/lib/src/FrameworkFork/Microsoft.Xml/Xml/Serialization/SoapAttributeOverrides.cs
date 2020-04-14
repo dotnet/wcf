@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
+namespace Microsoft.Xml.Serialization
+{
     using System.Reflection;
     using System.Collections;
     using System.IO;
@@ -13,14 +14,16 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class SoapAttributeOverrides {
-        Hashtable types = new Hashtable();
+    public class SoapAttributeOverrides
+    {
+        private Hashtable _types = new Hashtable();
 
         /// <include file='doc\SoapAttributeOverrides.uex' path='docs/doc[@for="SoapAttributeOverrides.Add"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void Add(Type type, SoapAttributes attributes) {
+        public void Add(Type type, SoapAttributes attributes)
+        {
             Add(type, string.Empty, attributes);
         }
 
@@ -28,13 +31,16 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void Add(Type type, string member, SoapAttributes attributes) {
-            Hashtable members = (Hashtable)types[type];
-            if (members == null) {
+        public void Add(Type type, string member, SoapAttributes attributes)
+        {
+            Hashtable members = (Hashtable)_types[type];
+            if (members == null)
+            {
                 members = new Hashtable();
-                types.Add(type, members);
+                _types.Add(type, members);
             }
-            else if (members[member] != null) {
+            else if (members[member] != null)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMultipleAttributeOverrides, type.FullName, member));
             }
             members.Add(member, attributes);
@@ -44,8 +50,10 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapAttributes this[Type type] {
-            get {
+        public SoapAttributes this[Type type]
+        {
+            get
+            {
                 return this[type, string.Empty];
             }
         }
@@ -54,9 +62,11 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapAttributes this[Type type, string member] {
-            get {
-                Hashtable members = (Hashtable)types[type];
+        public SoapAttributes this[Type type, string member]
+        {
+            get
+            {
+                Hashtable members = (Hashtable)_types[type];
                 if (members == null) return null;
                 return (SoapAttributes)members[member];
             }

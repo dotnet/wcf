@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeRemoveEventStatement : CodeStatement {
-        private CodeEventReferenceExpression eventRef;
-        private CodeExpression listener;
+    public class CodeRemoveEventStatement : CodeStatement
+    {
+        private CodeEventReferenceExpression _eventRef;
+        private CodeExpression _listener;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeRemoveEventStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeRemoveEventStatement() {
+        public CodeRemoveEventStatement()
+        {
         }
 
         /// <devdoc>
@@ -36,45 +38,54 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of the <see cref='Microsoft.CodeDom.CodeRemoveEventStatement'/> class using the specified arguments.
         ///    </para>
         /// </devdoc>
-        public CodeRemoveEventStatement(CodeEventReferenceExpression eventRef, CodeExpression listener) {
-            this.eventRef = eventRef;
-            this.listener = listener;
+        public CodeRemoveEventStatement(CodeEventReferenceExpression eventRef, CodeExpression listener)
+        {
+            _eventRef = eventRef;
+            _listener = listener;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeRemoveEventStatement(CodeExpression targetObject, string eventName, CodeExpression listener) {
-            this.eventRef = new CodeEventReferenceExpression(targetObject, eventName);
-            this.listener = listener;
+        public CodeRemoveEventStatement(CodeExpression targetObject, string eventName, CodeExpression listener)
+        {
+            _eventRef = new CodeEventReferenceExpression(targetObject, eventName);
+            _listener = listener;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeEventReferenceExpression Event{
-            get {
-                if (eventRef == null) {
-                    eventRef = new CodeEventReferenceExpression();
+        public CodeEventReferenceExpression Event
+        {
+            get
+            {
+                if (_eventRef == null)
+                {
+                    _eventRef = new CodeEventReferenceExpression();
                 }
-                return eventRef;
+                return _eventRef;
             }
-            set {
-                eventRef = value;
+            set
+            {
+                _eventRef = value;
             }
         }
 
-       /// <devdoc>
+        /// <devdoc>
         ///    <para>
         ///       The listener.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Listener {
-            get {
-                return listener;
+        public CodeExpression Listener
+        {
+            get
+            {
+                return _listener;
             }
-            set {
-                listener = value;
+            set
+            {
+                _listener = value;
             }
         }
     }

@@ -1,14 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Globalization;
-    internal class Operator : AstNode {
-        public enum Op { // order is alligned with XPathOperator
+    internal class Operator : AstNode
+    {
+        public enum Op
+        { // order is alligned with XPathOperator
             INVALID,
             /*Logical   */
             OR,
@@ -31,7 +34,7 @@ namespace MS.Internal.Xml.XPath {
             UNION,
         };
 
-        static Op[] invertOp = {
+        private static Op[] s_invertOp = {
             /*INVALID*/ Op.INVALID,
             /*OR     */ Op.INVALID,
             /*END    */ Op.INVALID,
@@ -43,36 +46,42 @@ namespace MS.Internal.Xml.XPath {
             /*GE     */ Op.LE,
         };
 
-        static public Operator.Op InvertOperator(Operator.Op op) {
+        static public Operator.Op InvertOperator(Operator.Op op)
+        {
             Debug.Assert(Op.EQ <= op && op <= Op.GE);
-            return invertOp[(int)op];
-        }
-        
-        private Op opType;
-        private AstNode opnd1;
-        private AstNode opnd2;
-
-        public Operator(Op op, AstNode opnd1, AstNode opnd2) {
-            this.opType = op;
-            this.opnd1 = opnd1;
-            this.opnd2 = opnd2;
+            return s_invertOp[(int)op];
         }
 
-        public override AstType Type { get {return  AstType.Operator;} }
-        public override XPathResultType ReturnType {
-            get {
-                if (opType <= Op.GE) {
+        private Op _opType;
+        private AstNode _opnd1;
+        private AstNode _opnd2;
+
+        public Operator(Op op, AstNode opnd1, AstNode opnd2)
+        {
+            _opType = op;
+            _opnd1 = opnd1;
+            _opnd2 = opnd2;
+        }
+
+        public override AstType Type { get { return AstType.Operator; } }
+        public override XPathResultType ReturnType
+        {
+            get
+            {
+                if (_opType <= Op.GE)
+                {
                     return XPathResultType.Boolean;
                 }
-                if (opType <= Op.MOD) {
+                if (_opType <= Op.MOD)
+                {
                     return XPathResultType.Number;
                 }
                 return XPathResultType.NodeSet;
             }
         }
 
-        public Op      OperatorType { get { return opType; } }
-        public AstNode Operand1     { get { return opnd1;  } }
-        public AstNode Operand2     { get { return opnd2;  } }
+        public Op OperatorType { get { return _opType; } }
+        public AstNode Operand1 { get { return _opnd1; } }
+        public AstNode Operand2 { get { return _opnd2; } }
     }
 }

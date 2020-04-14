@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System;
     using System.Collections;
     using System.Collections.Specialized;
@@ -14,28 +14,33 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeObject {
-        private IDictionary userData = null;
+    public class CodeObject
+    {
+        private IDictionary _userData = null;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeObject() {
+        public CodeObject()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public IDictionary UserData {
-            get {
-                if (userData == null) {
-                    userData = new ListDictionary();
+        public IDictionary UserData
+        {
+            get
+            {
+                if (_userData == null)
+                {
+                    _userData = new ListDictionary();
                 }
-                return userData;
+                return _userData;
             }
         }
     }

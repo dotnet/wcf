@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,19 +15,21 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeVariableReferenceExpression : CodeExpression {
-        private string variableName;
+    public class CodeVariableReferenceExpression : CodeExpression
+    {
+        private string _variableName;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeVariableReferenceExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeVariableReferenceExpression() {
+        public CodeVariableReferenceExpression()
+        {
         }
 
         /// <devdoc>
@@ -35,20 +37,24 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeArgumentReferenceExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeVariableReferenceExpression(string variableName) {
-            this.variableName = variableName;
+        public CodeVariableReferenceExpression(string variableName)
+        {
+            _variableName = variableName;
         }
 
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string VariableName {
-            get {
-                return (variableName == null) ? string.Empty : variableName;
+        public string VariableName
+        {
+            get
+            {
+                return (_variableName == null) ? string.Empty : _variableName;
             }
-            set {
-                variableName = value;
+            set
+            {
+                _variableName = value;
             }
         }
     }

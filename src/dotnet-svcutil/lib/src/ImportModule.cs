@@ -18,33 +18,34 @@ using System.ServiceModel.Description;
 
 using DcNS = System.Runtime.Serialization;
 using WsdlNS = System.Web.Services.Description;
+
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    partial class ImportModule
+    internal partial class ImportModule
     {
-        readonly CodeCompileUnit codeCompileUnit;
-        readonly WsdlImporter wsdlImporter;
-        readonly ServiceContractGenerator contractGenerator;
-        readonly WcfCodeGenerationExtension codegenExtension;
+        private readonly CodeCompileUnit _codeCompileUnit;
+        private readonly WsdlImporter _wsdlImporter;
+        private readonly ServiceContractGenerator _contractGenerator;
+        private readonly WcfCodeGenerationExtension _codegenExtension;
 
-        CommandProcessorOptions options;
+        private CommandProcessorOptions _options;
 
         internal CodeCompileUnit CodeCompileUnit
         {
             get
             {
-                return codeCompileUnit;
+                return _codeCompileUnit;
             }
         }
 
         internal ImportModule(CommandProcessorOptions options, ServiceDescriptor serviceDescriptor, WsdlImporter importer)
         {
-            this.codeCompileUnit = new CodeCompileUnit();
-            this.options = options;
-            this.codegenExtension = new WcfCodeGenerationExtension(options);
+            _codeCompileUnit = new CodeCompileUnit();
+            _options = options;
+            _codegenExtension = new WcfCodeGenerationExtension(options);
 
-            this.wsdlImporter = importer;
-            this.contractGenerator = InitializationHelper.CreateServiceContractGenerator(options, codeCompileUnit);
+            _wsdlImporter = importer;
+            _contractGenerator = InitializationHelper.CreateServiceContractGenerator(options, _codeCompileUnit);
         }
 
         internal bool ImportServiceContracts(ServiceDescriptor serviceDescriptor)
@@ -53,7 +54,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             try
             {
-                codegenExtension.ClientGenerating(this.contractGenerator);
+                _codegenExtension.ClientGenerating(_contractGenerator);
             }
             catch (Exception e)
             {
@@ -66,19 +67,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (!httpBindingTracker.IsHttpBindingContract(contractDescription) || serviceDescriptor.Endpoints.Any(endpoint => endpoint.Contract == contractDescription))
                 {
-                    this.contractGenerator.GenerateServiceContractType(contractDescription);
+                    _contractGenerator.GenerateServiceContractType(contractDescription);
                 }
             }
 
             try
             {
-                codegenExtension.ClientGenerated(this.contractGenerator);
-                if (codegenExtension.ErrorDetected)
+                _codegenExtension.ClientGenerated(_contractGenerator);
+                if (_codegenExtension.ErrorDetected)
                 {
                     ToolConsole.ExitCode = ToolExitCode.ValidationError;
                 }
 
-                result = !codegenExtension.ErrorDetected;
+                result = !_codegenExtension.ErrorDetected;
             }
             catch (NotSupportedException)
             {
@@ -92,25 +93,25 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return result;
         }
 
-        T FindImportExtension<T>()
+        private T FindImportExtension<T>()
         {
-            return wsdlImporter.WsdlImportExtensions.Find<T>();
+            return _wsdlImporter.WsdlImportExtensions.Find<T>();
         }
 
-        int nonWsdlImportErrors;
+        private int _nonWsdlImportErrors;
         public void BeforeImportMetadata(ServiceDescriptor serviceDescriptor)
         {
-            nonWsdlImportErrors = this.wsdlImporter.Errors.Count;
+            _nonWsdlImportErrors = _wsdlImporter.Errors.Count;
 
-            this.wsdlImporter.WsdlImportExtensions.Add(new BindingImportTracker());
-            this.wsdlImporter.WsdlImportExtensions.Add(new HttpBindingTracker());
+            _wsdlImporter.WsdlImportExtensions.Add(new BindingImportTracker());
+            _wsdlImporter.WsdlImportExtensions.Add(new HttpBindingTracker());
 
-            InitializationHelper.RemoveUnneededSerializers(options, serviceDescriptor, this.wsdlImporter.WsdlImportExtensions);
-            InitializationHelper.ConfigureSerializers(options, codeCompileUnit, this.wsdlImporter);
+            InitializationHelper.RemoveUnneededSerializers(_options, serviceDescriptor, _wsdlImporter.WsdlImportExtensions);
+            InitializationHelper.ConfigureSerializers(_options, _codeCompileUnit, _wsdlImporter);
 
             try
             {
-                codegenExtension.WsdlImporting(this.wsdlImporter);
+                _codegenExtension.WsdlImporting(_wsdlImporter);
             }
             catch (Exception e)
             {
@@ -118,21 +119,21 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        bool validateMetadataImport = true;
+        private bool _validateMetadataImport = true;
         public bool AfterImportMetadata(ServiceDescriptor serviceDescriptor)
         {
             try
             {
                 // Convert errors to warnings to workaround the issue that many validation errors from XSD compiler
                 // can be ignored.
-                for (int idx = this.wsdlImporter.Errors.Count - 1; idx >= nonWsdlImportErrors; idx--)
+                for (int idx = _wsdlImporter.Errors.Count - 1; idx >= _nonWsdlImportErrors; idx--)
                 {
-                    var error = this.wsdlImporter.Errors[idx];
+                    var error = _wsdlImporter.Errors[idx];
                     if (!error.IsWarning)
                     {
                         ToolConsole.ExitCode = ToolExitCode.ValidationErrorTurnedWarning;
                         var warning = new MetadataConversionError(error.Message, isWarning: true);
-                        this.wsdlImporter.Errors[idx] = warning;
+                        _wsdlImporter.Errors[idx] = warning;
                     }
                 }
 
@@ -142,24 +143,24 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 Collection<Binding> bindings = new Collection<Binding>(serviceDescriptor.Bindings.ToList());
                 Collection<ContractDescription> contracts = new Collection<ContractDescription>(serviceDescriptor.Contracts.ToList());
 
-                codegenExtension.WsdlImported(this.wsdlImporter, endpoints, bindings, contracts);
+                _codegenExtension.WsdlImported(_wsdlImporter, endpoints, bindings, contracts);
             }
             catch (Exception e)
             {
                 ToolConsole.WriteError(e);
             }
 
-            ToolConsole.WriteConversionErrors(this.wsdlImporter.Errors);
+            ToolConsole.WriteConversionErrors(_wsdlImporter.Errors);
 
             ImportServiceContracts(serviceDescriptor);
 
-            ToolConsole.WriteConversionErrors(this.contractGenerator.Errors);
+            ToolConsole.WriteConversionErrors(_contractGenerator.Errors);
 
             var contractsResolved = true;
 
-            if (this.validateMetadataImport)
+            if (_validateMetadataImport)
             {
-                this.validateMetadataImport = false;
+                _validateMetadataImport = false;
                 contractsResolved = ContractsResolved(serviceDescriptor, this.CodeCompileUnit);
 
                 if (!contractsResolved)
@@ -201,7 +202,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return true;
         }
 
-        static class InitializationHelper
+        private static class InitializationHelper
         {
             internal static ServiceContractGenerator CreateServiceContractGenerator(CommandProcessorOptions options, CodeCompileUnit codeCompileUnit)
             {
@@ -223,7 +224,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return contractGenerator;
             }
 
-            static void SetContractGeneratorOptions(CommandProcessorOptions options, ServiceContractGenerator contractGenerator)
+            private static void SetContractGeneratorOptions(CommandProcessorOptions options, ServiceContractGenerator contractGenerator)
             {
                 contractGenerator.Options |= ServiceContractGenerationOptions.AsynchronousMethods;
                 contractGenerator.Options |= ServiceContractGenerationOptions.TaskBasedAsynchronousMethod;
@@ -302,7 +303,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return importer;
             }
 
-            static DcNS.ImportOptions CreateDCImportOptions(CommandProcessorOptions options)
+            private static DcNS.ImportOptions CreateDCImportOptions(CommandProcessorOptions options)
             {
                 DcNS.ImportOptions dcOptions = new DcNS.ImportOptions
                 {
@@ -322,7 +323,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return dcOptions;
             }
 
-            static void AddStateForXmlSerializerImport(CommandProcessorOptions options, WsdlImporter importer, CodeCompileUnit codeCompileUnit)
+            private static void AddStateForXmlSerializerImport(CommandProcessorOptions options, WsdlImporter importer, CodeCompileUnit codeCompileUnit)
             {
                 XmlSerializerImportOptions importOptions = new XmlSerializerImportOptions(codeCompileUnit)
                 {
@@ -343,19 +344,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 importer.State.Add(typeof(XmlSerializerImportOptions), importOptions);
 
                 if (!importer.State.ContainsKey(typeof(WrappedOptions)))
-                    importer.State.Add(typeof(WrappedOptions), new WrappedOptions { WrappedFlag = options.Wrapped == true});
-
+                    importer.State.Add(typeof(WrappedOptions), new WrappedOptions { WrappedFlag = options.Wrapped == true });
             }
 
-            static void AddStateForDataContractSerializerImport(CommandProcessorOptions options, WsdlImporter importer, CodeCompileUnit codeCompileUnit)
+            private static void AddStateForDataContractSerializerImport(CommandProcessorOptions options, WsdlImporter importer, CodeCompileUnit codeCompileUnit)
             {
                 DcNS.XsdDataContractImporter xsdDataContractImporter = CreateDCImporter(options, codeCompileUnit);
                 importer.State.Add(typeof(DcNS.XsdDataContractImporter), xsdDataContractImporter);
                 if (!importer.State.ContainsKey(typeof(WrappedOptions)))
-                    importer.State.Add(typeof(WrappedOptions), new WrappedOptions { WrappedFlag = options.Wrapped == true});
+                    importer.State.Add(typeof(WrappedOptions), new WrappedOptions { WrappedFlag = options.Wrapped == true });
             }
 
-            static void RemoveExtension(Type extensionType, Collection<IWsdlImportExtension> wsdlImportExtensions)
+            private static void RemoveExtension(Type extensionType, Collection<IWsdlImportExtension> wsdlImportExtensions)
             {
                 for (int i = 0; i < wsdlImportExtensions.Count; i++)
                 {
@@ -365,11 +365,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        class BindingImportTracker : IWsdlImportExtension
+        private class BindingImportTracker : IWsdlImportExtension
         {
-            readonly Dictionary<Binding, ContractDescription> bindingContractMapping = new Dictionary<Binding, ContractDescription>();
-            readonly Dictionary<Binding, XmlQualifiedName> bindingWsdlMapping = new Dictionary<Binding, XmlQualifiedName>();
-            readonly Dictionary<XmlQualifiedName, WsdlNS.Port> bindingPortMapping = new Dictionary<XmlQualifiedName, WsdlNS.Port>();
+            private readonly Dictionary<Binding, ContractDescription> _bindingContractMapping = new Dictionary<Binding, ContractDescription>();
+            private readonly Dictionary<Binding, XmlQualifiedName> _bindingWsdlMapping = new Dictionary<Binding, XmlQualifiedName>();
+            private readonly Dictionary<XmlQualifiedName, WsdlNS.Port> _bindingPortMapping = new Dictionary<XmlQualifiedName, WsdlNS.Port>();
 
             void IWsdlImportExtension.BeforeImport(WsdlNS.ServiceDescriptionCollection wsdlDocuments, XmlSchemaSet xmlSchemas, ICollection<XmlElement> policy) { }
 
@@ -379,27 +379,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (context != null && context.Endpoint != null && context.Endpoint.Binding != null)
                 {
-                    if (!bindingContractMapping.ContainsKey(context.Endpoint.Binding))
+                    if (!_bindingContractMapping.ContainsKey(context.Endpoint.Binding))
                     {
-                        bindingContractMapping.Add(context.Endpoint.Binding, context.Endpoint.Contract);
+                        _bindingContractMapping.Add(context.Endpoint.Binding, context.Endpoint.Contract);
                     }
 
                     XmlQualifiedName wsdlBindingQName = new XmlQualifiedName(context.WsdlBinding.Name, context.WsdlBinding.ServiceDescription.TargetNamespace);
-                    bindingWsdlMapping[context.Endpoint.Binding] = wsdlBindingQName;
+                    _bindingWsdlMapping[context.Endpoint.Binding] = wsdlBindingQName;
 
                     if (context.WsdlPort != null)
                     {
-                        bindingPortMapping[wsdlBindingQName] = context.WsdlPort;
+                        _bindingPortMapping[wsdlBindingQName] = context.WsdlPort;
                     }
                 }
             }
         }
 
-        class HttpBindingTracker : IWsdlImportExtension
+        private class HttpBindingTracker : IWsdlImportExtension
         {
-            readonly HashSet<ContractDescription> httpBindingContracts = new HashSet<ContractDescription>();
+            private readonly HashSet<ContractDescription> _httpBindingContracts = new HashSet<ContractDescription>();
 
-            static bool ContainsHttpBindingExtension(WsdlNS.Binding wsdlBinding)
+            private static bool ContainsHttpBindingExtension(WsdlNS.Binding wsdlBinding)
             {
                 //avoiding using wsdlBinding.Extensions.Find(typeof(WsdlNS.HttpBinding)) so the extension won't be marked as handled
                 foreach (object extension in wsdlBinding.Extensions)
@@ -418,7 +418,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             public bool IsHttpBindingContract(ContractDescription contract)
             {
-                return httpBindingContracts.Contains(contract);
+                return _httpBindingContracts.Contains(contract);
             }
 
             public void BeforeImport(WsdlNS.ServiceDescriptionCollection wsdlDocuments, XmlSchemaSet xmlSchemas, ICollection<XmlElement> policy) { }
@@ -427,7 +427,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (context != null && ContainsHttpBindingExtension(context.WsdlBinding))
                 {
-                    httpBindingContracts.Add(context.ContractConversionContext.Contract);
+                    _httpBindingContracts.Add(context.ContractConversionContext.Contract);
                 }
             }
         }

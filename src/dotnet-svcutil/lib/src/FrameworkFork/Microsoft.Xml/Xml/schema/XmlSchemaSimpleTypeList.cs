@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using Microsoft.Xml.Serialization;
@@ -12,19 +13,21 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaSimpleTypeList : XmlSchemaSimpleTypeContent {
-        XmlQualifiedName itemTypeName = XmlQualifiedName.Empty; 
-        XmlSchemaSimpleType itemType;
-        XmlSchemaSimpleType baseItemType; //Compiled
-        
+    public class XmlSchemaSimpleTypeList : XmlSchemaSimpleTypeContent
+    {
+        private XmlQualifiedName _itemTypeName = XmlQualifiedName.Empty;
+        private XmlSchemaSimpleType _itemType;
+        private XmlSchemaSimpleType _baseItemType; //Compiled
+
         /// <include file='doc\XmlSchemaSimpleTypeList.uex' path='docs/doc[@for="XmlSchemaSimpleTypeList.ItemTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("itemType")]
-        public XmlQualifiedName ItemTypeName { 
-            get { return itemTypeName; }
-            set { itemTypeName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName ItemTypeName
+        {
+            get { return _itemTypeName; }
+            set { _itemTypeName = (value == null ? XmlQualifiedName.Empty : value); }
         }
 
         /// <include file='doc\XmlSchemaSimpleTypeList.uex' path='docs/doc[@for="XmlSchemaSimpleTypeList.BaseType"]/*' />
@@ -32,24 +35,26 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("simpleType", typeof(XmlSchemaSimpleType))]
-        public XmlSchemaSimpleType ItemType {
-            get { return itemType; }
-            set { itemType = value; }
+        public XmlSchemaSimpleType ItemType
+        {
+            get { return _itemType; }
+            set { _itemType = value; }
         }
-        
+
         //Compiled
         /// <include file='doc\XmlSchemaSimpleTypeList.uex' path='docs/doc[@for="XmlSchemaSimpleTypeList.BaseItemType"]/*' />
         [XmlIgnore]
-        public XmlSchemaSimpleType BaseItemType {
-            get { return baseItemType; }
-            set { baseItemType = value; }
+        public XmlSchemaSimpleType BaseItemType
+        {
+            get { return _baseItemType; }
+            set { _baseItemType = value; }
         }
 
-        internal override XmlSchemaObject Clone() {
+        internal override XmlSchemaObject Clone()
+        {
             XmlSchemaSimpleTypeList newList = (XmlSchemaSimpleTypeList)MemberwiseClone();
-            newList.ItemTypeName = itemTypeName.Clone();
+            newList.ItemTypeName = _itemTypeName.Clone();
             return newList;
         }
     }
-
 }

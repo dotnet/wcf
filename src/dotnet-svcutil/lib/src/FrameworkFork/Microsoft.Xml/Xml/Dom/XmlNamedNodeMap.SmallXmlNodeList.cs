@@ -1,29 +1,32 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     using System.Collections;
 
-    partial class XmlNamedNodeMap {
-
+    public partial class XmlNamedNodeMap
+    {
         // Optimized to minimize space in the zero or one element cases.
-        internal struct SmallXmlNodeList {
-
+        internal struct SmallXmlNodeList
+        {
             // If field is null, that represents an empty list.
             // If field is non-null, but not an ArrayList, then the 'list' contains a single
             // object.
             // Otherwise, field is an ArrayList. Once the field upgrades to an ArrayList, it
             // never degrades back, even if all elements are removed.
-            private object field;
+            private object _field;
 
-            public int Count {
-                get {
-                    if (field == null)
+            public int Count
+            {
+                get
+                {
+                    if (_field == null)
                         return 0;
 
-                    ArrayList list = field as ArrayList;
+                    ArrayList list = _field as ArrayList;
                     if (list != null)
                         return list.Count;
 
@@ -31,55 +34,64 @@ namespace Microsoft.Xml {
                 }
             }
 
-            public object this[int index] {
-                get {
-                    if (field == null)
+            public object this[int index]
+            {
+                get
+                {
+                    if (_field == null)
                         throw new ArgumentOutOfRangeException("index");
 
-                    ArrayList list = field as ArrayList;
+                    ArrayList list = _field as ArrayList;
                     if (list != null)
                         return list[index];
 
                     if (index != 0)
                         throw new ArgumentOutOfRangeException("index");
 
-                    return field;
+                    return _field;
                 }
             }
 
-            public void Add(object value) {
-                if (field == null) {
-                    if (value == null) {
+            public void Add(object value)
+            {
+                if (_field == null)
+                {
+                    if (value == null)
+                    {
                         // If a single null value needs to be stored, then
                         // upgrade to an ArrayList
                         ArrayList temp = new ArrayList();
                         temp.Add(null);
-                        field = temp;
+                        _field = temp;
                     }
                     else
-                        field = value;
+                        _field = value;
 
                     return;
                 }
 
-                ArrayList list = field as ArrayList;
-                if (list != null) {
+                ArrayList list = _field as ArrayList;
+                if (list != null)
+                {
                     list.Add(value);
                 }
-                else {
+                else
+                {
                     list = new ArrayList();
-                    list.Add(field);
+                    list.Add(_field);
                     list.Add(value);
-                    field = list;
+                    _field = list;
                 }
             }
 
-            public void RemoveAt(int index) {
-                if (field == null)
+            public void RemoveAt(int index)
+            {
+                if (_field == null)
                     throw new ArgumentOutOfRangeException("index");
 
-                ArrayList list = field as ArrayList;
-                if (list != null) {
+                ArrayList list = _field as ArrayList;
+                if (list != null)
+                {
                     list.RemoveAt(index);
                     return;
                 }
@@ -87,82 +99,99 @@ namespace Microsoft.Xml {
                 if (index != 0)
                     throw new ArgumentOutOfRangeException("index");
 
-                field = null;
+                _field = null;
             }
 
-            public void Insert(int index, object value) {
-                if (field == null) {
+            public void Insert(int index, object value)
+            {
+                if (_field == null)
+                {
                     if (index != 0)
                         throw new ArgumentOutOfRangeException("index");
                     Add(value);
                     return;
                 }
 
-                ArrayList list = field as ArrayList;
-                if (list != null) {
+                ArrayList list = _field as ArrayList;
+                if (list != null)
+                {
                     list.Insert(index, value);
                     return;
                 }
 
-                if (index == 0) {
+                if (index == 0)
+                {
                     list = new ArrayList();
                     list.Add(value);
-                    list.Add(field);
-                    field = list;
+                    list.Add(_field);
+                    _field = list;
                 }
-                else if (index == 1) {
+                else if (index == 1)
+                {
                     list = new ArrayList();
-                    list.Add(field);
+                    list.Add(_field);
                     list.Add(value);
-                    field = list;
+                    _field = list;
                 }
-                else {
+                else
+                {
                     throw new ArgumentOutOfRangeException("index");
                 }
             }
 
-            class SingleObjectEnumerator : IEnumerator {
-                object loneValue;
-                int position = -1;
+            private class SingleObjectEnumerator : IEnumerator
+            {
+                private object _loneValue;
+                private int _position = -1;
 
-                public SingleObjectEnumerator(object value) {
-                    loneValue = value;
+                public SingleObjectEnumerator(object value)
+                {
+                    _loneValue = value;
                 }
 
-                public object Current {
-                    get {
-                        if (position != 0) {
+                public object Current
+                {
+                    get
+                    {
+                        if (_position != 0)
+                        {
                             throw new InvalidOperationException();
                         }
-                        return this.loneValue;
+                        return _loneValue;
                     }
                 }
 
-                public bool MoveNext() {
-                    if (position < 0) {
-                        position = 0;
+                public bool MoveNext()
+                {
+                    if (_position < 0)
+                    {
+                        _position = 0;
                         return true;
                     }
-                    position = 1;
+                    _position = 1;
                     return false;
                 }
 
-                public void Reset() {
-                    position = -1;
+                public void Reset()
+                {
+                    _position = -1;
                 }
             }
 
-            public IEnumerator GetEnumerator() {
-                if (field == null) {
+            public IEnumerator GetEnumerator()
+            {
+                if (_field == null)
+                {
                     return XmlDocument.EmptyEnumerator;
                 }
 
-                ArrayList list = field as ArrayList;
-                if (list != null) {
+                ArrayList list = _field as ArrayList;
+                if (list != null)
+                {
                     return list.GetEnumerator();
                 }
 
-                return new SingleObjectEnumerator(field);
+                return new SingleObjectEnumerator(_field);
             }
         }
     }

@@ -17,7 +17,7 @@ namespace System.IdentityModel.Tokens
 
     public class SamlSerializer
     {
-        DictionaryManager dictionaryManager;
+        private DictionaryManager _dictionaryManager;
 
         public SamlSerializer()
         {
@@ -31,17 +31,17 @@ namespace System.IdentityModel.Tokens
             if (dictionary == null)
                 throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("dictionary");
 
-            this.dictionaryManager = new DictionaryManager(dictionary);
+            _dictionaryManager = new DictionaryManager(dictionary);
         }
 
         internal DictionaryManager DictionaryManager
         {
             get
             {
-                if (this.dictionaryManager == null)
-                    this.dictionaryManager = new DictionaryManager();
+                if (_dictionaryManager == null)
+                    _dictionaryManager = new DictionaryManager();
 
-                return this.dictionaryManager;
+                return _dictionaryManager;
             }
         }
     }

@@ -26,8 +26,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
 #if !NETCORE10
-        private static readonly StringComparison ignoreCaseComparison = StringComparison.InvariantCultureIgnoreCase;
-        private static readonly StringComparison caseSensitiveComparison = StringComparison.InvariantCulture;
+        private static readonly StringComparison s_ignoreCaseComparison = StringComparison.InvariantCultureIgnoreCase;
+        private static readonly StringComparison s_caseSensitiveComparison = StringComparison.InvariantCulture;
 #endif
         public static StringComparison FileStringComparison
         {
@@ -36,7 +36,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 #if NETCORE10
                 return IsWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 #else
-                return IsWindows ? ignoreCaseComparison : caseSensitiveComparison;
+                return IsWindows ? s_ignoreCaseComparison : s_caseSensitiveComparison;
 #endif
             }
         }

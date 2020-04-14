@@ -1,19 +1,22 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
     using System.Diagnostics;
 
-    internal sealed class SchemaNames {
-        XmlNameTable nameTable;
+    internal sealed class SchemaNames
+    {
+        private XmlNameTable _nameTable;
 
-        public XmlNameTable NameTable {
-            get { return nameTable; }
+        public XmlNameTable NameTable
+        {
+            get { return _nameTable; }
         }
 
         public string NsDataType;
@@ -125,7 +128,7 @@ namespace Microsoft.Xml.Schema {
         public XmlQualifiedName QnXsdGroup;
         public XmlQualifiedName QnXsdAll;
         public XmlQualifiedName QnXsdChoice;
-        public XmlQualifiedName QnXsdSequence ;
+        public XmlQualifiedName QnXsdSequence;
         public XmlQualifiedName QnXsdAny;
         public XmlQualifiedName QnXsdNotation;
         public XmlQualifiedName QnXsdSimpleType;
@@ -158,16 +161,17 @@ namespace Microsoft.Xml.Schema {
         public XmlQualifiedName QnXsdWhiteSpace;
         public XmlQualifiedName QnXsdRedefine;
         public XmlQualifiedName QnXsdAnyType;
-        
+
         internal XmlQualifiedName[] TokenToQName = new XmlQualifiedName[(int)Token.XmlLang + 1];
 
-        public SchemaNames( XmlNameTable nameTable ) {
-            this.nameTable = nameTable;
+        public SchemaNames(XmlNameTable nameTable)
+        {
+            _nameTable = nameTable;
             NsDataType = nameTable.Add(XmlReservedNs.NsDataType);
             NsDataTypeAlias = nameTable.Add(XmlReservedNs.NsDataTypeAlias);
             NsDataTypeOld = nameTable.Add(XmlReservedNs.NsDataTypeOld);
             NsXml = nameTable.Add(XmlReservedNs.NsXml);
-            NsXmlNs = nameTable.Add(XmlReservedNs.NsXmlNs);       
+            NsXmlNs = nameTable.Add(XmlReservedNs.NsXmlNs);
             NsXdr = nameTable.Add(XmlReservedNs.NsXdr);
             NsXdrAlias = nameTable.Add(XmlReservedNs.NsXdrAlias);
             NsXs = nameTable.Add(XmlReservedNs.NsXs);
@@ -180,148 +184,149 @@ namespace Microsoft.Xml.Schema {
             XdrSchema = nameTable.Add("Schema");
 
 
-            QnPCData = new XmlQualifiedName( nameTable.Add("#PCDATA") );
-            QnXml = new XmlQualifiedName( nameTable.Add("xml") );
-            QnXmlNs = new XmlQualifiedName( nameTable.Add("xmlns"), NsXmlNs );
-            QnDtDt = new XmlQualifiedName( nameTable.Add("dt"), NsDataType );
-            QnXmlLang= new XmlQualifiedName( nameTable.Add("lang"), NsXml);            
-            
+            QnPCData = new XmlQualifiedName(nameTable.Add("#PCDATA"));
+            QnXml = new XmlQualifiedName(nameTable.Add("xml"));
+            QnXmlNs = new XmlQualifiedName(nameTable.Add("xmlns"), NsXmlNs);
+            QnDtDt = new XmlQualifiedName(nameTable.Add("dt"), NsDataType);
+            QnXmlLang = new XmlQualifiedName(nameTable.Add("lang"), NsXml);
+
             // Empty namespace
-            QnName = new XmlQualifiedName( nameTable.Add("name") );
-            QnType = new XmlQualifiedName( nameTable.Add("type") );
-            QnMaxOccurs = new XmlQualifiedName( nameTable.Add("maxOccurs") );
-            QnMinOccurs = new XmlQualifiedName( nameTable.Add("minOccurs") );
-            QnInfinite = new XmlQualifiedName( nameTable.Add("*") );
-            QnModel = new XmlQualifiedName( nameTable.Add("model") );
-            QnOpen = new XmlQualifiedName( nameTable.Add("open") );
-            QnClosed = new XmlQualifiedName( nameTable.Add("closed") );
-            QnContent = new XmlQualifiedName( nameTable.Add("content") );
-            QnMixed = new XmlQualifiedName( nameTable.Add("mixed") );
-            QnEmpty = new XmlQualifiedName( nameTable.Add("empty") );
-            QnEltOnly = new XmlQualifiedName( nameTable.Add("eltOnly") );
-            QnTextOnly = new XmlQualifiedName( nameTable.Add("textOnly") );
-            QnOrder = new XmlQualifiedName( nameTable.Add("order") );
-            QnSeq = new XmlQualifiedName( nameTable.Add("seq") );
-            QnOne = new XmlQualifiedName( nameTable.Add("one") );
-            QnMany = new XmlQualifiedName( nameTable.Add("many") );
-            QnRequired = new XmlQualifiedName( nameTable.Add("required") );
-            QnYes = new XmlQualifiedName( nameTable.Add("yes") );
-            QnNo = new XmlQualifiedName( nameTable.Add("no") );
-            QnString = new XmlQualifiedName( nameTable.Add("string") );
-            QnID = new XmlQualifiedName( nameTable.Add("id") );
-            QnIDRef = new XmlQualifiedName( nameTable.Add("idref") );
-            QnIDRefs = new XmlQualifiedName( nameTable.Add("idrefs") );
-            QnEntity = new XmlQualifiedName( nameTable.Add("entity") );
-            QnEntities = new XmlQualifiedName( nameTable.Add("entities") );
-            QnNmToken = new XmlQualifiedName( nameTable.Add("nmtoken") );
-            QnNmTokens = new XmlQualifiedName( nameTable.Add("nmtokens") );
-            QnEnumeration = new XmlQualifiedName( nameTable.Add("enumeration") );
-            QnDefault = new XmlQualifiedName( nameTable.Add("default") );
+            QnName = new XmlQualifiedName(nameTable.Add("name"));
+            QnType = new XmlQualifiedName(nameTable.Add("type"));
+            QnMaxOccurs = new XmlQualifiedName(nameTable.Add("maxOccurs"));
+            QnMinOccurs = new XmlQualifiedName(nameTable.Add("minOccurs"));
+            QnInfinite = new XmlQualifiedName(nameTable.Add("*"));
+            QnModel = new XmlQualifiedName(nameTable.Add("model"));
+            QnOpen = new XmlQualifiedName(nameTable.Add("open"));
+            QnClosed = new XmlQualifiedName(nameTable.Add("closed"));
+            QnContent = new XmlQualifiedName(nameTable.Add("content"));
+            QnMixed = new XmlQualifiedName(nameTable.Add("mixed"));
+            QnEmpty = new XmlQualifiedName(nameTable.Add("empty"));
+            QnEltOnly = new XmlQualifiedName(nameTable.Add("eltOnly"));
+            QnTextOnly = new XmlQualifiedName(nameTable.Add("textOnly"));
+            QnOrder = new XmlQualifiedName(nameTable.Add("order"));
+            QnSeq = new XmlQualifiedName(nameTable.Add("seq"));
+            QnOne = new XmlQualifiedName(nameTable.Add("one"));
+            QnMany = new XmlQualifiedName(nameTable.Add("many"));
+            QnRequired = new XmlQualifiedName(nameTable.Add("required"));
+            QnYes = new XmlQualifiedName(nameTable.Add("yes"));
+            QnNo = new XmlQualifiedName(nameTable.Add("no"));
+            QnString = new XmlQualifiedName(nameTable.Add("string"));
+            QnID = new XmlQualifiedName(nameTable.Add("id"));
+            QnIDRef = new XmlQualifiedName(nameTable.Add("idref"));
+            QnIDRefs = new XmlQualifiedName(nameTable.Add("idrefs"));
+            QnEntity = new XmlQualifiedName(nameTable.Add("entity"));
+            QnEntities = new XmlQualifiedName(nameTable.Add("entities"));
+            QnNmToken = new XmlQualifiedName(nameTable.Add("nmtoken"));
+            QnNmTokens = new XmlQualifiedName(nameTable.Add("nmtokens"));
+            QnEnumeration = new XmlQualifiedName(nameTable.Add("enumeration"));
+            QnDefault = new XmlQualifiedName(nameTable.Add("default"));
 
             //For XSD Schema
-            QnTargetNamespace = new XmlQualifiedName( nameTable.Add("targetNamespace") );
-            QnVersion = new XmlQualifiedName( nameTable.Add("version") );
-            QnFinalDefault = new XmlQualifiedName( nameTable.Add("finalDefault") );
-            QnBlockDefault = new XmlQualifiedName( nameTable.Add("blockDefault") );
-            QnFixed = new XmlQualifiedName( nameTable.Add("fixed") );
-            QnAbstract = new XmlQualifiedName( nameTable.Add("abstract") );
-            QnBlock = new XmlQualifiedName( nameTable.Add("block") );
-            QnSubstitutionGroup = new XmlQualifiedName( nameTable.Add("substitutionGroup") );
-            QnFinal = new XmlQualifiedName( nameTable.Add("final") );
-            QnNillable = new XmlQualifiedName( nameTable.Add("nillable") );
-            QnRef = new XmlQualifiedName( nameTable.Add("ref") );
-            QnBase = new XmlQualifiedName( nameTable.Add("base") );
-            QnDerivedBy = new XmlQualifiedName( nameTable.Add("derivedBy") );
-            QnNamespace = new XmlQualifiedName( nameTable.Add("namespace") );
-            QnProcessContents = new XmlQualifiedName( nameTable.Add("processContents") );
-            QnRefer = new XmlQualifiedName( nameTable.Add("refer") );
-            QnPublic = new XmlQualifiedName( nameTable.Add("public") );
-            QnSystem = new XmlQualifiedName( nameTable.Add("system") );
-            QnSchemaLocation = new XmlQualifiedName( nameTable.Add("schemaLocation") );
-            QnValue = new XmlQualifiedName( nameTable.Add("value") );
-            QnUse = new XmlQualifiedName( nameTable.Add("use") );
-            QnForm = new XmlQualifiedName( nameTable.Add("form") );
-            QnAttributeFormDefault = new XmlQualifiedName( nameTable.Add("attributeFormDefault") );
-            QnElementFormDefault = new XmlQualifiedName( nameTable.Add("elementFormDefault") );
-            QnSource = new XmlQualifiedName( nameTable.Add("source") );
-            QnMemberTypes = new XmlQualifiedName( nameTable.Add("memberTypes"));
-            QnItemType = new XmlQualifiedName( nameTable.Add("itemType"));
-            QnXPath = new XmlQualifiedName( nameTable.Add("xpath"));
+            QnTargetNamespace = new XmlQualifiedName(nameTable.Add("targetNamespace"));
+            QnVersion = new XmlQualifiedName(nameTable.Add("version"));
+            QnFinalDefault = new XmlQualifiedName(nameTable.Add("finalDefault"));
+            QnBlockDefault = new XmlQualifiedName(nameTable.Add("blockDefault"));
+            QnFixed = new XmlQualifiedName(nameTable.Add("fixed"));
+            QnAbstract = new XmlQualifiedName(nameTable.Add("abstract"));
+            QnBlock = new XmlQualifiedName(nameTable.Add("block"));
+            QnSubstitutionGroup = new XmlQualifiedName(nameTable.Add("substitutionGroup"));
+            QnFinal = new XmlQualifiedName(nameTable.Add("final"));
+            QnNillable = new XmlQualifiedName(nameTable.Add("nillable"));
+            QnRef = new XmlQualifiedName(nameTable.Add("ref"));
+            QnBase = new XmlQualifiedName(nameTable.Add("base"));
+            QnDerivedBy = new XmlQualifiedName(nameTable.Add("derivedBy"));
+            QnNamespace = new XmlQualifiedName(nameTable.Add("namespace"));
+            QnProcessContents = new XmlQualifiedName(nameTable.Add("processContents"));
+            QnRefer = new XmlQualifiedName(nameTable.Add("refer"));
+            QnPublic = new XmlQualifiedName(nameTable.Add("public"));
+            QnSystem = new XmlQualifiedName(nameTable.Add("system"));
+            QnSchemaLocation = new XmlQualifiedName(nameTable.Add("schemaLocation"));
+            QnValue = new XmlQualifiedName(nameTable.Add("value"));
+            QnUse = new XmlQualifiedName(nameTable.Add("use"));
+            QnForm = new XmlQualifiedName(nameTable.Add("form"));
+            QnAttributeFormDefault = new XmlQualifiedName(nameTable.Add("attributeFormDefault"));
+            QnElementFormDefault = new XmlQualifiedName(nameTable.Add("elementFormDefault"));
+            QnSource = new XmlQualifiedName(nameTable.Add("source"));
+            QnMemberTypes = new XmlQualifiedName(nameTable.Add("memberTypes"));
+            QnItemType = new XmlQualifiedName(nameTable.Add("itemType"));
+            QnXPath = new XmlQualifiedName(nameTable.Add("xpath"));
 
             // XDR namespace 
-            QnXdrSchema = new XmlQualifiedName( XdrSchema, NsXdr );
-            QnXdrElementType = new XmlQualifiedName( nameTable.Add("ElementType"), NsXdr );
-            QnXdrElement = new XmlQualifiedName( nameTable.Add("element"), NsXdr );
-            QnXdrGroup = new XmlQualifiedName( nameTable.Add("group"), NsXdr );
-            QnXdrAttributeType = new XmlQualifiedName( nameTable.Add("AttributeType"), NsXdr );
-            QnXdrAttribute = new XmlQualifiedName( nameTable.Add("attribute"), NsXdr );
-            QnXdrDataType = new XmlQualifiedName( nameTable.Add("datatype"), NsXdr );
-            QnXdrDescription = new XmlQualifiedName( nameTable.Add("description"), NsXdr );
-            QnXdrExtends = new XmlQualifiedName( nameTable.Add("extends"), NsXdr );
+            QnXdrSchema = new XmlQualifiedName(XdrSchema, NsXdr);
+            QnXdrElementType = new XmlQualifiedName(nameTable.Add("ElementType"), NsXdr);
+            QnXdrElement = new XmlQualifiedName(nameTable.Add("element"), NsXdr);
+            QnXdrGroup = new XmlQualifiedName(nameTable.Add("group"), NsXdr);
+            QnXdrAttributeType = new XmlQualifiedName(nameTable.Add("AttributeType"), NsXdr);
+            QnXdrAttribute = new XmlQualifiedName(nameTable.Add("attribute"), NsXdr);
+            QnXdrDataType = new XmlQualifiedName(nameTable.Add("datatype"), NsXdr);
+            QnXdrDescription = new XmlQualifiedName(nameTable.Add("description"), NsXdr);
+            QnXdrExtends = new XmlQualifiedName(nameTable.Add("extends"), NsXdr);
 
             // XDR alias namespace
-            QnXdrAliasSchema = new XmlQualifiedName( nameTable.Add("Schema"), NsDataTypeAlias );
+            QnXdrAliasSchema = new XmlQualifiedName(nameTable.Add("Schema"), NsDataTypeAlias);
 
             // DataType namespace
-            QnDtType = new XmlQualifiedName( nameTable.Add("type"), NsDataType );
-            QnDtValues = new XmlQualifiedName( nameTable.Add("values"), NsDataType );
-            QnDtMaxLength = new XmlQualifiedName( nameTable.Add("maxLength"), NsDataType );
-            QnDtMinLength = new XmlQualifiedName( nameTable.Add("minLength"), NsDataType );
-            QnDtMax = new XmlQualifiedName( nameTable.Add("max"), NsDataType );
-            QnDtMin = new XmlQualifiedName( nameTable.Add("min"), NsDataType );
-            QnDtMinExclusive = new XmlQualifiedName( nameTable.Add("minExclusive"), NsDataType );
-            QnDtMaxExclusive = new XmlQualifiedName( nameTable.Add("maxExclusive"), NsDataType );
+            QnDtType = new XmlQualifiedName(nameTable.Add("type"), NsDataType);
+            QnDtValues = new XmlQualifiedName(nameTable.Add("values"), NsDataType);
+            QnDtMaxLength = new XmlQualifiedName(nameTable.Add("maxLength"), NsDataType);
+            QnDtMinLength = new XmlQualifiedName(nameTable.Add("minLength"), NsDataType);
+            QnDtMax = new XmlQualifiedName(nameTable.Add("max"), NsDataType);
+            QnDtMin = new XmlQualifiedName(nameTable.Add("min"), NsDataType);
+            QnDtMinExclusive = new XmlQualifiedName(nameTable.Add("minExclusive"), NsDataType);
+            QnDtMaxExclusive = new XmlQualifiedName(nameTable.Add("maxExclusive"), NsDataType);
 
             // XSD namespace
-            QnXsdSchema = new XmlQualifiedName( XsdSchema, NsXs );
-            QnXsdAnnotation= new XmlQualifiedName( nameTable.Add("annotation"), NsXs );
-            QnXsdInclude= new XmlQualifiedName( nameTable.Add("include"), NsXs );
-            QnXsdImport= new XmlQualifiedName( nameTable.Add("import"), NsXs );
-            QnXsdElement = new XmlQualifiedName( nameTable.Add("element"), NsXs );
-            QnXsdAttribute = new XmlQualifiedName( nameTable.Add("attribute"), NsXs );
-            QnXsdAttributeGroup = new XmlQualifiedName( nameTable.Add("attributeGroup"), NsXs );
-            QnXsdAnyAttribute = new XmlQualifiedName( nameTable.Add("anyAttribute"), NsXs );
-            QnXsdGroup = new XmlQualifiedName( nameTable.Add("group"), NsXs );
-            QnXsdAll = new XmlQualifiedName( nameTable.Add("all"), NsXs );
-            QnXsdChoice = new XmlQualifiedName( nameTable.Add("choice"), NsXs );
-            QnXsdSequence = new XmlQualifiedName( nameTable.Add("sequence"), NsXs );
-            QnXsdAny = new XmlQualifiedName( nameTable.Add("any"), NsXs );
-            QnXsdNotation = new XmlQualifiedName( nameTable.Add("notation"), NsXs );
-            QnXsdSimpleType = new XmlQualifiedName( nameTable.Add("simpleType"), NsXs );
-            QnXsdComplexType = new XmlQualifiedName( nameTable.Add("complexType"), NsXs );
-            QnXsdUnique = new XmlQualifiedName( nameTable.Add("unique"), NsXs );
-            QnXsdKey = new XmlQualifiedName( nameTable.Add("key"), NsXs );
-            QnXsdKeyRef = new XmlQualifiedName( nameTable.Add("keyref"), NsXs );
-            QnXsdSelector= new XmlQualifiedName( nameTable.Add("selector"), NsXs );
-            QnXsdField= new XmlQualifiedName( nameTable.Add("field"), NsXs );
-            QnXsdMinExclusive= new XmlQualifiedName( nameTable.Add("minExclusive"), NsXs );
-            QnXsdMinInclusive= new XmlQualifiedName( nameTable.Add("minInclusive"), NsXs );
-            QnXsdMaxInclusive= new XmlQualifiedName( nameTable.Add("maxInclusive"), NsXs );
-            QnXsdMaxExclusive= new XmlQualifiedName( nameTable.Add("maxExclusive"), NsXs );
-            QnXsdTotalDigits= new XmlQualifiedName( nameTable.Add("totalDigits"), NsXs );
-            QnXsdFractionDigits= new XmlQualifiedName( nameTable.Add("fractionDigits"), NsXs );
-            QnXsdLength= new XmlQualifiedName( nameTable.Add("length"), NsXs );
-            QnXsdMinLength= new XmlQualifiedName( nameTable.Add("minLength"), NsXs );
-            QnXsdMaxLength= new XmlQualifiedName( nameTable.Add("maxLength"), NsXs );
-            QnXsdEnumeration= new XmlQualifiedName( nameTable.Add("enumeration"), NsXs );
-            QnXsdPattern= new XmlQualifiedName( nameTable.Add("pattern"), NsXs );
-            QnXsdDocumentation= new XmlQualifiedName( nameTable.Add("documentation"), NsXs );
-            QnXsdAppinfo= new XmlQualifiedName( nameTable.Add("appinfo"), NsXs );
-            QnXsdComplexContent= new XmlQualifiedName( nameTable.Add("complexContent"), NsXs );
-            QnXsdSimpleContent= new XmlQualifiedName( nameTable.Add("simpleContent"), NsXs );
-            QnXsdRestriction= new XmlQualifiedName( nameTable.Add("restriction"), NsXs );
-            QnXsdExtension= new XmlQualifiedName( nameTable.Add("extension"), NsXs );
-            QnXsdUnion= new XmlQualifiedName( nameTable.Add("union"), NsXs );
-            QnXsdList= new XmlQualifiedName( nameTable.Add("list"), NsXs );
-            QnXsdWhiteSpace= new XmlQualifiedName( nameTable.Add("whiteSpace"), NsXs );
-            QnXsdRedefine= new XmlQualifiedName( nameTable.Add("redefine"), NsXs );
-            QnXsdAnyType= new XmlQualifiedName( nameTable.Add("anyType"), NsXs );
+            QnXsdSchema = new XmlQualifiedName(XsdSchema, NsXs);
+            QnXsdAnnotation = new XmlQualifiedName(nameTable.Add("annotation"), NsXs);
+            QnXsdInclude = new XmlQualifiedName(nameTable.Add("include"), NsXs);
+            QnXsdImport = new XmlQualifiedName(nameTable.Add("import"), NsXs);
+            QnXsdElement = new XmlQualifiedName(nameTable.Add("element"), NsXs);
+            QnXsdAttribute = new XmlQualifiedName(nameTable.Add("attribute"), NsXs);
+            QnXsdAttributeGroup = new XmlQualifiedName(nameTable.Add("attributeGroup"), NsXs);
+            QnXsdAnyAttribute = new XmlQualifiedName(nameTable.Add("anyAttribute"), NsXs);
+            QnXsdGroup = new XmlQualifiedName(nameTable.Add("group"), NsXs);
+            QnXsdAll = new XmlQualifiedName(nameTable.Add("all"), NsXs);
+            QnXsdChoice = new XmlQualifiedName(nameTable.Add("choice"), NsXs);
+            QnXsdSequence = new XmlQualifiedName(nameTable.Add("sequence"), NsXs);
+            QnXsdAny = new XmlQualifiedName(nameTable.Add("any"), NsXs);
+            QnXsdNotation = new XmlQualifiedName(nameTable.Add("notation"), NsXs);
+            QnXsdSimpleType = new XmlQualifiedName(nameTable.Add("simpleType"), NsXs);
+            QnXsdComplexType = new XmlQualifiedName(nameTable.Add("complexType"), NsXs);
+            QnXsdUnique = new XmlQualifiedName(nameTable.Add("unique"), NsXs);
+            QnXsdKey = new XmlQualifiedName(nameTable.Add("key"), NsXs);
+            QnXsdKeyRef = new XmlQualifiedName(nameTable.Add("keyref"), NsXs);
+            QnXsdSelector = new XmlQualifiedName(nameTable.Add("selector"), NsXs);
+            QnXsdField = new XmlQualifiedName(nameTable.Add("field"), NsXs);
+            QnXsdMinExclusive = new XmlQualifiedName(nameTable.Add("minExclusive"), NsXs);
+            QnXsdMinInclusive = new XmlQualifiedName(nameTable.Add("minInclusive"), NsXs);
+            QnXsdMaxInclusive = new XmlQualifiedName(nameTable.Add("maxInclusive"), NsXs);
+            QnXsdMaxExclusive = new XmlQualifiedName(nameTable.Add("maxExclusive"), NsXs);
+            QnXsdTotalDigits = new XmlQualifiedName(nameTable.Add("totalDigits"), NsXs);
+            QnXsdFractionDigits = new XmlQualifiedName(nameTable.Add("fractionDigits"), NsXs);
+            QnXsdLength = new XmlQualifiedName(nameTable.Add("length"), NsXs);
+            QnXsdMinLength = new XmlQualifiedName(nameTable.Add("minLength"), NsXs);
+            QnXsdMaxLength = new XmlQualifiedName(nameTable.Add("maxLength"), NsXs);
+            QnXsdEnumeration = new XmlQualifiedName(nameTable.Add("enumeration"), NsXs);
+            QnXsdPattern = new XmlQualifiedName(nameTable.Add("pattern"), NsXs);
+            QnXsdDocumentation = new XmlQualifiedName(nameTable.Add("documentation"), NsXs);
+            QnXsdAppinfo = new XmlQualifiedName(nameTable.Add("appinfo"), NsXs);
+            QnXsdComplexContent = new XmlQualifiedName(nameTable.Add("complexContent"), NsXs);
+            QnXsdSimpleContent = new XmlQualifiedName(nameTable.Add("simpleContent"), NsXs);
+            QnXsdRestriction = new XmlQualifiedName(nameTable.Add("restriction"), NsXs);
+            QnXsdExtension = new XmlQualifiedName(nameTable.Add("extension"), NsXs);
+            QnXsdUnion = new XmlQualifiedName(nameTable.Add("union"), NsXs);
+            QnXsdList = new XmlQualifiedName(nameTable.Add("list"), NsXs);
+            QnXsdWhiteSpace = new XmlQualifiedName(nameTable.Add("whiteSpace"), NsXs);
+            QnXsdRedefine = new XmlQualifiedName(nameTable.Add("redefine"), NsXs);
+            QnXsdAnyType = new XmlQualifiedName(nameTable.Add("anyType"), NsXs);
 
             //Create token to Qname table
             CreateTokenToQNameTable();
         }
-        
-        public void CreateTokenToQNameTable() {
+
+        public void CreateTokenToQNameTable()
+        {
             TokenToQName[(int)Token.SchemaName] = QnName;
             TokenToQName[(int)Token.SchemaType] = QnType;
             TokenToQName[(int)Token.SchemaMaxOccurs] = QnMaxOccurs;
@@ -333,7 +338,7 @@ namespace Microsoft.Xml.Schema {
             TokenToQName[(int)Token.SchemaContent] = QnContent;
             TokenToQName[(int)Token.SchemaMixed] = QnMixed;
             TokenToQName[(int)Token.SchemaEmpty] = QnEmpty;
-            TokenToQName[(int)Token.SchemaElementOnly] =  QnEltOnly;
+            TokenToQName[(int)Token.SchemaElementOnly] = QnEltOnly;
             TokenToQName[(int)Token.SchemaTextOnly] = QnTextOnly;
             TokenToQName[(int)Token.SchemaOrder] = QnOrder;
             TokenToQName[(int)Token.SchemaSeq] = QnSeq;
@@ -362,7 +367,7 @@ namespace Microsoft.Xml.Schema {
             TokenToQName[(int)Token.XdrDescription] = QnXdrDescription;
             TokenToQName[(int)Token.XdrExtends] = QnXdrExtends;
             TokenToQName[(int)Token.SchemaXdrRootAlias] = QnXdrAliasSchema;
-            TokenToQName[(int)Token.SchemaDtType] = QnDtType; 
+            TokenToQName[(int)Token.SchemaDtType] = QnDtType;
             TokenToQName[(int)Token.SchemaDtValues] = QnDtValues;
             TokenToQName[(int)Token.SchemaDtMaxLength] = QnDtMaxLength;
             TokenToQName[(int)Token.SchemaDtMinLength] = QnDtMinLength;
@@ -398,7 +403,7 @@ namespace Microsoft.Xml.Schema {
             TokenToQName[(int)Token.XsdInclude] = QnXsdInclude;
             TokenToQName[(int)Token.XsdImport] = QnXsdImport;
             TokenToQName[(int)Token.XsdElement] = QnXsdElement;
-            TokenToQName[(int)Token.XsdAttribute] = QnXsdAttribute; 
+            TokenToQName[(int)Token.XsdAttribute] = QnXsdAttribute;
             TokenToQName[(int)Token.xsdAttributeGroup] = QnXsdAttributeGroup;
             TokenToQName[(int)Token.XsdAnyAttribute] = QnXsdAnyAttribute;
             TokenToQName[(int)Token.XsdGroup] = QnXsdGroup;
@@ -407,12 +412,12 @@ namespace Microsoft.Xml.Schema {
             TokenToQName[(int)Token.XsdSequence] = QnXsdSequence;
             TokenToQName[(int)Token.XsdAny] = QnXsdAny;
             TokenToQName[(int)Token.XsdNotation] = QnXsdNotation;
-            TokenToQName[(int)Token.XsdSimpleType] = QnXsdSimpleType; 
+            TokenToQName[(int)Token.XsdSimpleType] = QnXsdSimpleType;
             TokenToQName[(int)Token.XsdComplexType] = QnXsdComplexType;
-            TokenToQName[(int)Token.XsdUnique] = QnXsdUnique; 
+            TokenToQName[(int)Token.XsdUnique] = QnXsdUnique;
             TokenToQName[(int)Token.XsdKey] = QnXsdKey;
             TokenToQName[(int)Token.XsdKeyref] = QnXsdKeyRef;
-            TokenToQName[(int)Token.XsdSelector] = QnXsdSelector; 
+            TokenToQName[(int)Token.XsdSelector] = QnXsdSelector;
             TokenToQName[(int)Token.XsdField] = QnXsdField;
             TokenToQName[(int)Token.XsdMinExclusive] = QnXsdMinExclusive;
             TokenToQName[(int)Token.XsdMinInclusive] = QnXsdMinInclusive;
@@ -420,13 +425,13 @@ namespace Microsoft.Xml.Schema {
             TokenToQName[(int)Token.XsdMaxInclusive] = QnXsdMaxInclusive;
             TokenToQName[(int)Token.XsdTotalDigits] = QnXsdTotalDigits;
             TokenToQName[(int)Token.XsdFractionDigits] = QnXsdFractionDigits;
-            TokenToQName[(int)Token.XsdLength] = QnXsdLength; 
+            TokenToQName[(int)Token.XsdLength] = QnXsdLength;
             TokenToQName[(int)Token.XsdMinLength] = QnXsdMinLength;
             TokenToQName[(int)Token.XsdMaxLength] = QnXsdMaxLength;
             TokenToQName[(int)Token.XsdEnumeration] = QnXsdEnumeration;
             TokenToQName[(int)Token.XsdPattern] = QnXsdPattern;
             TokenToQName[(int)Token.XsdWhitespace] = QnXsdWhiteSpace;
-            TokenToQName[(int)Token.XsdDocumentation] = QnXsdDocumentation; 
+            TokenToQName[(int)Token.XsdDocumentation] = QnXsdDocumentation;
             TokenToQName[(int)Token.XsdAppInfo] = QnXsdAppinfo;
             TokenToQName[(int)Token.XsdComplexContent] = QnXsdComplexContent;
             TokenToQName[(int)Token.XsdComplexContentRestriction] = QnXsdRestriction;
@@ -447,31 +452,39 @@ namespace Microsoft.Xml.Schema {
             TokenToQName[(int)Token.Empty] = XmlQualifiedName.Empty;
         }
 
-        public SchemaType SchemaTypeFromRoot(string localName, string ns) {
-            if (IsXSDRoot(localName, ns)) {
+        public SchemaType SchemaTypeFromRoot(string localName, string ns)
+        {
+            if (IsXSDRoot(localName, ns))
+            {
                 return SchemaType.XSD;
             }
-            else if (IsXDRRoot(localName, XmlSchemaDatatype.XdrCanonizeUri(ns, nameTable, this))) {
+            else if (IsXDRRoot(localName, XmlSchemaDatatype.XdrCanonizeUri(ns, _nameTable, this)))
+            {
                 return SchemaType.XDR;
             }
-            else {
+            else
+            {
                 return SchemaType.None;
             }
         }
 
-        public bool IsXSDRoot(string localName, string ns) {
+        public bool IsXSDRoot(string localName, string ns)
+        {
             return Ref.Equal(ns, NsXs) && Ref.Equal(localName, XsdSchema);
         }
 
-        public bool IsXDRRoot(string localName, string ns) {
+        public bool IsXDRRoot(string localName, string ns)
+        {
             return Ref.Equal(ns, NsXdr) && Ref.Equal(localName, XdrSchema);
         }
 
-        public XmlQualifiedName GetName(SchemaNames.Token token) {
+        public XmlQualifiedName GetName(SchemaNames.Token token)
+        {
             return TokenToQName[(int)token];
         }
 
-        public enum Token {
+        public enum Token
+        {
             Empty,
             SchemaName,
             SchemaType,
@@ -597,5 +610,4 @@ namespace Microsoft.Xml.Schema {
             XmlLang
         };
     };
-
 }

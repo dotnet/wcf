@@ -211,16 +211,16 @@ namespace System.Runtime.Serialization
         /// Critical - holds all state used for for (de)serializing XML types.
         ///            since the data is cached statically, we lock down access to it.
         /// </SecurityNote>
-         [SecurityCritical]
+        [SecurityCritical]
         private class XmlDataContractCriticalHelper : DataContract.DataContractCriticalHelper
         {
             private DataContractDictionary _knownDataContracts;
             private bool _isKnownTypeAttributeChecked;
             private XmlDictionaryString _topLevelElementName;
             private XmlDictionaryString _topLevelElementNamespace;
-            bool _isTopLevelElementNullable;
-            bool isTypeDefinedOnImport;
-            XmlSchemaType _xsdType;
+            private bool _isTopLevelElementNullable;
+            private bool _isTypeDefinedOnImport;
+            private XmlSchemaType _xsdType;
             private bool _hasRoot;
             private CreateXmlSerializableDelegate _createXmlSerializable;
 
@@ -340,8 +340,8 @@ namespace System.Runtime.Serialization
 
             internal bool IsTypeDefinedOnImport
             {
-                get { return isTypeDefinedOnImport; }
-                set { isTypeDefinedOnImport = value; }
+                get { return _isTypeDefinedOnImport; }
+                set { _isTypeDefinedOnImport = value; }
             }
 
             internal CreateXmlSerializableDelegate CreateXmlSerializableDelegate

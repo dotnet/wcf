@@ -13,7 +13,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     internal class ConfigToCode
     {
         public bool IsVB { get; set; }
-        
+
         public void MoveBindingsToCode(CodeCompileUnit codeCompileUnit, Collection<ServiceEndpoint> endpoints)
         {
             foreach (CodeNamespace namespaceDecl in codeCompileUnit.Namespaces)
@@ -84,7 +84,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new CodePropertyReferenceExpression(new CodeThisReferenceExpression(), ConfigToCodeConstants.EndpointPropertyName),
                         ConfigToCodeConstants.EndpointNamePropertyName),
                     new CodeMethodInvokeExpression(
-                        new CodeVariableReferenceExpression(ConfigToCodeConstants.EndpointConfigurationParameter), 
+                        new CodeVariableReferenceExpression(ConfigToCodeConstants.EndpointConfigurationParameter),
                         ConfigToCodeConstants.ToStringMethod)));
             }
 
@@ -163,7 +163,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         }
                     }
                 }
-
             }
 
             if (toRemoves.Count > 0)
@@ -261,7 +260,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         {
                             toRemoves.Add(ctor);
                         }
-
                     }
                     else if (ctor.Parameters.Count == 2 && string.Equals(ctor.Parameters[0].Type.BaseType, typeof(string).FullName, StringComparison.Ordinal) &&
                         string.Equals(ctor.Parameters[1].Type.BaseType, typeof(EndpointAddress).FullName, StringComparison.Ordinal))
@@ -427,7 +425,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            foreach(var extendedClientType in FindExtendedClientTypes(clientType.Name, namespaceDecl))
+            foreach (var extendedClientType in FindExtendedClientTypes(clientType.Name, namespaceDecl))
             {
                 FixupConstructorsEventBasedDuplex(extendedClientType, shouldRemoveDefault, endpointConfigurationExists);
             }
@@ -458,7 +456,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (type.BaseTypes.Count > 0 && string.Equals(clientTypeName, type.BaseTypes[0].BaseType, StringComparison.Ordinal))
                 {
                     yield return type;
-                }  
+                }
             }
         }
 
@@ -474,9 +472,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         yield return codeDecl;
                     }
                 }
-
             }
         }
-
     }
 }

@@ -13,24 +13,27 @@ using Microsoft.Xml.XPath;
 using System.Threading;
 using System.Runtime.Versioning;
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     public delegate object XmlValueGetter();
 
     [Flags]
-    public enum XmlSchemaValidationFlags {
-        None                         = 0x0000,
-        ProcessInlineSchema          = 0x0001,
-        ProcessSchemaLocation        = 0x0002,
-        ReportValidationWarnings     = 0x0004,
-        ProcessIdentityConstraints   = 0x0008,
-        AllowXmlAttributes           = 0x0010,
+    public enum XmlSchemaValidationFlags
+    {
+        None = 0x0000,
+        ProcessInlineSchema = 0x0001,
+        ProcessSchemaLocation = 0x0002,
+        ReportValidationWarnings = 0x0004,
+        ProcessIdentityConstraints = 0x0008,
+        AllowXmlAttributes = 0x0010,
     }
 
-    internal enum ValidatorState {
+    internal enum ValidatorState
+    {
         None,
         Start,
         TopLevelAttribute,
@@ -44,13 +47,15 @@ namespace Microsoft.Xml.Schema {
         SkipToEndElement,
         Finish,
     }
-    internal class IdRefNode {
+    internal class IdRefNode
+    {
         internal string Id;
         internal int LineNo;
         internal int LinePos;
         internal IdRefNode Next;
 
-        internal IdRefNode(IdRefNode next, string id, int lineNo, int linePos) {
+        internal IdRefNode(IdRefNode next, string id, int lineNo, int linePos)
+        {
             this.Id = id;
             this.LineNo = lineNo;
             this.LinePos = linePos;
@@ -58,95 +63,95 @@ namespace Microsoft.Xml.Schema {
         }
     }
 
-    public sealed class XmlSchemaValidator {
-
+    public sealed class XmlSchemaValidator
+    {
         //Schema Set
-        private XmlSchemaSet        schemaSet;
+        private XmlSchemaSet _schemaSet;
 
         //Validation Settings
-        private XmlSchemaValidationFlags validationFlags;
+        private XmlSchemaValidationFlags _validationFlags;
 
         //Validation
-        private int                 startIDConstraint = -1;
-        private const int           STACK_INCREMENT = 10;
-        private bool                isRoot;
-        private bool                rootHasSchema;
+        private int _startIDConstraint = -1;
+        private const int STACK_INCREMENT = 10;
+        private bool _isRoot;
+        private bool _rootHasSchema;
 
         //PSVI
-        private bool attrValid;
-        private bool checkEntity;
+        private bool _attrValid;
+        private bool _checkEntity;
 
-        private SchemaInfo          compiledSchemaInfo;
-        private IDtdInfo            dtdSchemaInfo;
-        private Hashtable           validatedNamespaces;
+        private SchemaInfo _compiledSchemaInfo;
+        private IDtdInfo _dtdSchemaInfo;
+        private Hashtable _validatedNamespaces;
 
-        private HWStack             validationStack;  // validaton contexts
-        private ValidationState     context;          // current context
-        private ValidatorState      currentState;
+        private HWStack _validationStack;  // validaton contexts
+        private ValidationState _context;          // current context
+        private ValidatorState _currentState;
 
         //Attributes & IDS
-        private Hashtable           attPresence;         //(AttName Vs AttIndex)
-        private SchemaAttDef        wildID;
+        private Hashtable _attPresence;         //(AttName Vs AttIndex)
+        private SchemaAttDef _wildID;
 
-        private Hashtable           IDs;
-        private IdRefNode           idRefListHead;
+        private Hashtable _IDs;
+        private IdRefNode _idRefListHead;
 
         //Parsing
-        XmlQualifiedName            contextQName;
+        private XmlQualifiedName _contextQName;
 
         //Avoid SchemaNames creation
-        private string              NsXs;
-        private string              NsXsi;
-        private string              NsXmlNs;
-        private string              NsXml;
+        private string _nsXs;
+        private string _nsXsi;
+        private string _nsXmlNs;
+        private string _nsXml;
 
         //PartialValidation
-        private XmlSchemaObject     partialValidationType;
+        private XmlSchemaObject _partialValidationType;
 
         //text to typedValue
-        private StringBuilder       textValue;
+        private StringBuilder _textValue;
 
         //Other state
-        private ValidationEventHandler eventHandler;
-        private object validationEventSender;
-        private XmlNameTable nameTable;
-        private IXmlLineInfo positionInfo;
-        private IXmlLineInfo dummyPositionInfo;
+        private ValidationEventHandler _eventHandler;
+        private object _validationEventSender;
+        private XmlNameTable _nameTable;
+        private IXmlLineInfo _positionInfo;
+        private IXmlLineInfo _dummyPositionInfo;
 
-        private XmlResolver xmlResolver;
-        private Uri sourceUri;
-        private string sourceUriString;
-        private IXmlNamespaceResolver nsResolver;
+        private XmlResolver _xmlResolver;
+        private Uri _sourceUri;
+        private string _sourceUriString;
+        private IXmlNamespaceResolver _nsResolver;
 
-        private XmlSchemaContentProcessing processContents = XmlSchemaContentProcessing.Strict;
+        private XmlSchemaContentProcessing _processContents = XmlSchemaContentProcessing.Strict;
 
-        private static XmlSchemaAttribute xsiTypeSO;
-        private static XmlSchemaAttribute xsiNilSO;
-        private static XmlSchemaAttribute xsiSLSO;
-        private static XmlSchemaAttribute xsiNoNsSLSO;
+        private static XmlSchemaAttribute s_xsiTypeSO;
+        private static XmlSchemaAttribute s_xsiNilSO;
+        private static XmlSchemaAttribute s_xsiSLSO;
+        private static XmlSchemaAttribute s_xsiNoNsSLSO;
 
         //Xsi Attributes that are atomized
-        private string xsiTypeString;
-        private string xsiNilString;
-        private string xsiSchemaLocationString;
-        private string xsiNoNamespaceSchemaLocationString;
+        private string _xsiTypeString;
+        private string _xsiNilString;
+        private string _xsiSchemaLocationString;
+        private string _xsiNoNamespaceSchemaLocationString;
 
         //Xsi Attributes parsing
-        private static readonly XmlSchemaDatatype dtQName = XmlSchemaDatatype.FromXmlTokenizedTypeXsd(XmlTokenizedType.QName);
-        private static readonly XmlSchemaDatatype dtCDATA = XmlSchemaDatatype.FromXmlTokenizedType(XmlTokenizedType.CDATA);
-        private static readonly XmlSchemaDatatype dtStringArray = dtCDATA.DeriveByList(null);
+        private static readonly XmlSchemaDatatype s_dtQName = XmlSchemaDatatype.FromXmlTokenizedTypeXsd(XmlTokenizedType.QName);
+        private static readonly XmlSchemaDatatype s_dtCDATA = XmlSchemaDatatype.FromXmlTokenizedType(XmlTokenizedType.CDATA);
+        private static readonly XmlSchemaDatatype s_dtStringArray = s_dtCDATA.DeriveByList(null);
 
         //Error message constants
         private const string Quote = "'";
 
         //Empty arrays
-        private static XmlSchemaParticle[] EmptyParticleArray = new XmlSchemaParticle[0];
-        private static XmlSchemaAttribute[] EmptyAttributeArray = new XmlSchemaAttribute[0];
+        private static XmlSchemaParticle[] s_emptyParticleArray = new XmlSchemaParticle[0];
+        private static XmlSchemaAttribute[] s_emptyAttributeArray = new XmlSchemaAttribute[0];
 
         //Whitespace check for text nodes
-        XmlCharType xmlCharType = XmlCharType.Instance;
+        private XmlCharType _xmlCharType = XmlCharType.Instance;
 
-        internal static bool[,] ValidStates = new bool[12,12] {
+        internal static bool[,] ValidStates = new bool[12, 12] {
                                                /*ValidatorState.None*/      /*ValidatorState.Start  /*ValidatorState.TopLevelAttribute*/     /*ValidatorState.TopLevelTOrWS*/ /*ValidatorState.Element*/      /*ValidatorState.Attribute*/    /*ValidatorState.EndAttributes*/    /*ValidatorState.Text/      /*ValidatorState.WS/*       /*ValidatorState.EndElement*/   /*ValidatorState.SkipToEndElement*/         /*ValidatorState.Finish*/
         /*ValidatorState.None*/             {  true,                        true,                     false,                                 false,                           false,                          false,                          false,                              false,                      false,                      false,                          false,                                      false},
         /*ValidatorState.Start*/            {  false,                       true,                     true,                                  true,                            true,                           false,                          false,                              false,                      false,                      false,                          false,                                      true },
@@ -162,222 +167,270 @@ namespace Microsoft.Xml.Schema {
         /*ValidatorState.Finish*/           {  false,                       true,                     false,                                 false,                           false,                          false,                          false,                              false,                      false,                      false,                          false,                                      false},
         };
 
-        private static string[] MethodNames = new string[12] {"None", "Initialize", "top-level ValidateAttribute", "top-level ValidateText or ValidateWhitespace", "ValidateElement", "ValidateAttribute", "ValidateEndOfAttributes", "ValidateText", "ValidateWhitespace", "ValidateEndElement", "SkipToEndElement", "EndValidation" };
+        private static string[] s_methodNames = new string[12] { "None", "Initialize", "top-level ValidateAttribute", "top-level ValidateText or ValidateWhitespace", "ValidateElement", "ValidateAttribute", "ValidateEndOfAttributes", "ValidateText", "ValidateWhitespace", "ValidateEndElement", "SkipToEndElement", "EndValidation" };
 
-        public XmlSchemaValidator(XmlNameTable nameTable, XmlSchemaSet schemas, IXmlNamespaceResolver namespaceResolver, XmlSchemaValidationFlags validationFlags) {
-            if (nameTable == null) {
+        public XmlSchemaValidator(XmlNameTable nameTable, XmlSchemaSet schemas, IXmlNamespaceResolver namespaceResolver, XmlSchemaValidationFlags validationFlags)
+        {
+            if (nameTable == null)
+            {
                 throw new ArgumentNullException("nameTable");
             }
-            if (schemas == null) {
+            if (schemas == null)
+            {
                 throw new ArgumentNullException("schemas");
             }
-            if (namespaceResolver == null) {
+            if (namespaceResolver == null)
+            {
                 throw new ArgumentNullException("namespaceResolver");
             }
-            this.nameTable = nameTable;
-            this.nsResolver = namespaceResolver;
-            this.validationFlags = validationFlags;
+            _nameTable = nameTable;
+            _nsResolver = namespaceResolver;
+            _validationFlags = validationFlags;
 
 
-            if ( ((validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0) || ((validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0) ) { //Process schema hints in xml document, hence user's set might change
-                this.schemaSet = new XmlSchemaSet(nameTable);
-                this.schemaSet.ValidationEventHandler += schemas.GetEventHandler();
-                this.schemaSet.CompilationSettings = schemas.CompilationSettings;
-                this.schemaSet.XmlResolver = schemas.GetResolver();
-                this.schemaSet.Add(schemas);
-                validatedNamespaces = new Hashtable();
+            if (((validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0) || ((validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0))
+            { //Process schema hints in xml document, hence user's set might change
+                _schemaSet = new XmlSchemaSet(nameTable);
+                _schemaSet.ValidationEventHandler += schemas.GetEventHandler();
+                _schemaSet.CompilationSettings = schemas.CompilationSettings;
+                _schemaSet.XmlResolver = schemas.GetResolver();
+                _schemaSet.Add(schemas);
+                _validatedNamespaces = new Hashtable();
             }
-            else { //Use the same set from the user
-                this.schemaSet = schemas;
+            else
+            { //Use the same set from the user
+                _schemaSet = schemas;
             }
             Init();
         }
 
-        private void Init() {
-            validationStack = new HWStack(STACK_INCREMENT);
-            attPresence = new Hashtable();
+        private void Init()
+        {
+            _validationStack = new HWStack(STACK_INCREMENT);
+            _attPresence = new Hashtable();
             Push(XmlQualifiedName.Empty);
 
-            dummyPositionInfo = new PositionInfo(); //Dummy position info, will return (0,0) if user does not set the LineInfoProvider property
-            positionInfo = dummyPositionInfo;
-            validationEventSender = this;
-            currentState = ValidatorState.None;
-            textValue = new StringBuilder(100);
-            xmlResolver = Microsoft.Xml.XmlConfiguration.XmlReaderSection.CreateDefaultResolver();
-            contextQName = new XmlQualifiedName(); //Re-use qname
+            _dummyPositionInfo = new PositionInfo(); //Dummy position info, will return (0,0) if user does not set the LineInfoProvider property
+            _positionInfo = _dummyPositionInfo;
+            _validationEventSender = this;
+            _currentState = ValidatorState.None;
+            _textValue = new StringBuilder(100);
+            _xmlResolver = Microsoft.Xml.XmlConfiguration.XmlReaderSection.CreateDefaultResolver();
+            _contextQName = new XmlQualifiedName(); //Re-use qname
             Reset();
 
             RecompileSchemaSet(); //Gets compiled info from set as well
             //Get already Atomized strings
-            NsXs = nameTable.Add(XmlReservedNs.NsXs);
-            NsXsi = nameTable.Add(XmlReservedNs.NsXsi);
-            NsXmlNs = nameTable.Add(XmlReservedNs.NsXmlNs);
-            NsXml = nameTable.Add(XmlReservedNs.NsXml);
-            xsiTypeString = nameTable.Add("type");
-            xsiNilString = nameTable.Add("nil");
-            xsiSchemaLocationString = nameTable.Add("schemaLocation");
-            xsiNoNamespaceSchemaLocationString = nameTable.Add("noNamespaceSchemaLocation");
+            _nsXs = _nameTable.Add(XmlReservedNs.NsXs);
+            _nsXsi = _nameTable.Add(XmlReservedNs.NsXsi);
+            _nsXmlNs = _nameTable.Add(XmlReservedNs.NsXmlNs);
+            _nsXml = _nameTable.Add(XmlReservedNs.NsXml);
+            _xsiTypeString = _nameTable.Add("type");
+            _xsiNilString = _nameTable.Add("nil");
+            _xsiSchemaLocationString = _nameTable.Add("schemaLocation");
+            _xsiNoNamespaceSchemaLocationString = _nameTable.Add("noNamespaceSchemaLocation");
         }
 
-        private void Reset() {
-            isRoot = true;
-            rootHasSchema = true;
-            while(validationStack.Length > 1) { //Clear all other context from stack
-                validationStack.Pop();
+        private void Reset()
+        {
+            _isRoot = true;
+            _rootHasSchema = true;
+            while (_validationStack.Length > 1)
+            { //Clear all other context from stack
+                _validationStack.Pop();
             }
-            startIDConstraint = -1;
-            partialValidationType = null;
+            _startIDConstraint = -1;
+            _partialValidationType = null;
 
             //Clear previous tables
-            if (IDs != null) {
-                IDs.Clear();
+            if (_IDs != null)
+            {
+                _IDs.Clear();
             }
-            if (ProcessSchemaHints) {
-                validatedNamespaces.Clear();
-            }
-        }
-
-//Properties
-        public XmlResolver XmlResolver {
-            set {
-                xmlResolver = value;
+            if (ProcessSchemaHints)
+            {
+                _validatedNamespaces.Clear();
             }
         }
 
-        public IXmlLineInfo LineInfoProvider {
-            get {
-                return positionInfo;
+        //Properties
+        public XmlResolver XmlResolver
+        {
+            set
+            {
+                _xmlResolver = value;
             }
-            set {
-                if (value == null) { //If value is null, retain the default dummy line info
-                    this.positionInfo = dummyPositionInfo;
+        }
+
+        public IXmlLineInfo LineInfoProvider
+        {
+            get
+            {
+                return _positionInfo;
+            }
+            set
+            {
+                if (value == null)
+                { //If value is null, retain the default dummy line info
+                    _positionInfo = _dummyPositionInfo;
                 }
-                else {
-                    this.positionInfo = value;
+                else
+                {
+                    _positionInfo = value;
                 }
             }
         }
 
-        public Uri SourceUri {
-            get {
-                return sourceUri;
+        public Uri SourceUri
+        {
+            get
+            {
+                return _sourceUri;
             }
-            set {
-                sourceUri = value;
-                sourceUriString = sourceUri.ToString();
-            }
-        }
-
-        public object ValidationEventSender {
-            get {
-                return validationEventSender;
-            }
-            set {
-                validationEventSender = value;
+            set
+            {
+                _sourceUri = value;
+                _sourceUriString = _sourceUri.ToString();
             }
         }
 
-        public event ValidationEventHandler ValidationEventHandler {
-            add {
-                eventHandler += value;
+        public object ValidationEventSender
+        {
+            get
+            {
+                return _validationEventSender;
             }
-            remove {
-                eventHandler -= value;
+            set
+            {
+                _validationEventSender = value;
             }
         }
 
-//Methods
+        public event ValidationEventHandler ValidationEventHandler
+        {
+            add
+            {
+                _eventHandler += value;
+            }
+            remove
+            {
+                _eventHandler -= value;
+            }
+        }
 
-        public void AddSchema(XmlSchema schema) {
-            if (schema == null) {
+        //Methods
+
+        public void AddSchema(XmlSchema schema)
+        {
+            if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
             }
-            if ((validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) == 0) { //Do not process schema if processInlineSchema is not set
+            if ((_validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) == 0)
+            { //Do not process schema if processInlineSchema is not set
                 return;
             }
             string tns = schema.TargetNamespace;
-            if (tns == null) {
+            if (tns == null)
+            {
                 tns = string.Empty;
             }
             //Store the previous locations
-            Hashtable schemaLocations = schemaSet.SchemaLocations;
+            Hashtable schemaLocations = _schemaSet.SchemaLocations;
             DictionaryEntry[] oldLocations = new DictionaryEntry[schemaLocations.Count];
             schemaLocations.CopyTo(oldLocations, 0);
 
             //TODO should i not error if SOM reference same as one in the set or should i assume that inline schema will always be a new SOM ref
-            Debug.Assert(validatedNamespaces != null);
-            if (validatedNamespaces[tns] != null && schemaSet.FindSchemaByNSAndUrl(schema.BaseUri, tns, oldLocations) == null) {
+            Debug.Assert(_validatedNamespaces != null);
+            if (_validatedNamespaces[tns] != null && _schemaSet.FindSchemaByNSAndUrl(schema.BaseUri, tns, oldLocations) == null)
+            {
                 SendValidationEvent(ResXml.Sch_ComponentAlreadySeenForNS, tns, XmlSeverityType.Error);
             }
-            if (schema.ErrorCount == 0) {
-                try {
-                    schemaSet.Add(schema);
+            if (schema.ErrorCount == 0)
+            {
+                try
+                {
+                    _schemaSet.Add(schema);
                     RecompileSchemaSet();
                 }
-                catch(XmlSchemaException e) {
-                    SendValidationEvent(ResXml.Sch_CannotLoadSchema, new string[] {schema.BaseUri.ToString(), e.Message},e);
+                catch (XmlSchemaException e)
+                {
+                    SendValidationEvent(ResXml.Sch_CannotLoadSchema, new string[] { schema.BaseUri.ToString(), e.Message }, e);
                 }
-                for (int i = 0; i < schema.ImportedSchemas.Count; ++i) {     //Check for its imports
+                for (int i = 0; i < schema.ImportedSchemas.Count; ++i)
+                {     //Check for its imports
                     XmlSchema impSchema = (XmlSchema)schema.ImportedSchemas[i];
                     tns = impSchema.TargetNamespace;
-                    if (tns == null) {
+                    if (tns == null)
+                    {
                         tns = string.Empty;
                     }
-                    if (validatedNamespaces[tns] != null && schemaSet.FindSchemaByNSAndUrl(impSchema.BaseUri, tns, oldLocations) == null) {
+                    if (_validatedNamespaces[tns] != null && _schemaSet.FindSchemaByNSAndUrl(impSchema.BaseUri, tns, oldLocations) == null)
+                    {
                         SendValidationEvent(ResXml.Sch_ComponentAlreadySeenForNS, tns, XmlSeverityType.Error);
-                        schemaSet.RemoveRecursive(schema);
+                        _schemaSet.RemoveRecursive(schema);
                         break;
                     }
                 }
             }
         }
 
-        public void Initialize() {
-            if (currentState != ValidatorState.None && currentState != ValidatorState.Finish) {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { MethodNames[(int)currentState], MethodNames[(int)ValidatorState.Start] }));
+        public void Initialize()
+        {
+            if (_currentState != ValidatorState.None && _currentState != ValidatorState.Finish)
+            {
+                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], s_methodNames[(int)ValidatorState.Start] }));
             }
-            currentState = ValidatorState.Start;
+            _currentState = ValidatorState.Start;
             Reset();
         }
 
-        public void Initialize(XmlSchemaObject partialValidationType) {
-            if (currentState != ValidatorState.None && currentState != ValidatorState.Finish) {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { MethodNames[(int)currentState], MethodNames[(int)ValidatorState.Start] }));
+        public void Initialize(XmlSchemaObject partialValidationType)
+        {
+            if (_currentState != ValidatorState.None && _currentState != ValidatorState.Finish)
+            {
+                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], s_methodNames[(int)ValidatorState.Start] }));
             }
-            if (partialValidationType == null) {
+            if (partialValidationType == null)
+            {
                 throw new ArgumentNullException("partialValidationType");
             }
-            if (!(partialValidationType is XmlSchemaElement || partialValidationType is XmlSchemaAttribute || partialValidationType is XmlSchemaType)) {
+            if (!(partialValidationType is XmlSchemaElement || partialValidationType is XmlSchemaAttribute || partialValidationType is XmlSchemaType))
+            {
                 throw new ArgumentException(ResXml.GetString(ResXml.Sch_InvalidPartialValidationType));
             }
-            currentState = ValidatorState.Start;
+            _currentState = ValidatorState.Start;
             Reset();
-            this.partialValidationType = partialValidationType;
+            _partialValidationType = partialValidationType;
         }
 
         // SxS: This method passes null as resource names and does not expose any resources to the caller.
         // It's OK to disable the SxS warning.
-        
-        
-        public void ValidateElement(string localName, string namespaceUri, XmlSchemaInfo schemaInfo)  {
+
+
+        public void ValidateElement(string localName, string namespaceUri, XmlSchemaInfo schemaInfo)
+        {
             ValidateElement(localName, namespaceUri, schemaInfo, null, null, null, null);
         }
 
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
-        public void ValidateElement(string localName, string namespaceUri, XmlSchemaInfo schemaInfo, string xsiType, string xsiNil, string xsiSchemaLocation, string xsiNoNamespaceSchemaLocation)  {
-            if (localName == null) {
+        public void ValidateElement(string localName, string namespaceUri, XmlSchemaInfo schemaInfo, string xsiType, string xsiNil, string xsiSchemaLocation, string xsiNoNamespaceSchemaLocation)
+        {
+            if (localName == null)
+            {
                 throw new ArgumentNullException("localName");
             }
-            if (namespaceUri == null) {
+            if (namespaceUri == null)
+            {
                 throw new ArgumentNullException("namespaceUri");
             }
 
-            CheckStateTransition(ValidatorState.Element, MethodNames[(int)ValidatorState.Element]);
+            CheckStateTransition(ValidatorState.Element, s_methodNames[(int)ValidatorState.Element]);
 
             ClearPSVI();
-            contextQName.Init(localName, namespaceUri);
-            XmlQualifiedName elementName = contextQName;
+            _contextQName.Init(localName, namespaceUri);
+            XmlQualifiedName elementName = _contextQName;
 
             bool invalidElementInContext;
             object particle = ValidateElementContext(elementName, out invalidElementInContext); //Check element name is allowed in current position
@@ -387,180 +440,214 @@ namespace Microsoft.Xml.Schema {
             Push(elementName);
 
             //Change current context's error state depending on whether this element was validated in its context correctly
-            if (invalidElementInContext) {
-                context.Validity = XmlSchemaValidity.Invalid;
+            if (invalidElementInContext)
+            {
+                _context.Validity = XmlSchemaValidity.Invalid;
             }
 
             //Check if there are Xsi attributes
-            if ((validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0 && xmlResolver != null) { //we should process schema location
+            if ((_validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0 && _xmlResolver != null)
+            { //we should process schema location
                 ProcessSchemaLocations(xsiSchemaLocation, xsiNoNamespaceSchemaLocation);
             }
 
-            if (processContents != XmlSchemaContentProcessing.Skip) {
-                if (elementDecl == null && partialValidationType == null) { //Since new schemaLocations might have been added, try for decl from the set again only if no PVType is set
-                    elementDecl = compiledSchemaInfo.GetElementDecl(elementName);
+            if (_processContents != XmlSchemaContentProcessing.Skip)
+            {
+                if (elementDecl == null && _partialValidationType == null)
+                { //Since new schemaLocations might have been added, try for decl from the set again only if no PVType is set
+                    elementDecl = _compiledSchemaInfo.GetElementDecl(elementName);
                 }
                 bool declFound = elementDecl != null;
-                if (xsiType != null || xsiNil != null) {
+                if (xsiType != null || xsiNil != null)
+                {
                     elementDecl = CheckXsiTypeAndNil(elementDecl, xsiType, xsiNil, ref declFound);
                 }
-                if (elementDecl == null) {
+                if (elementDecl == null)
+                {
                     ThrowDeclNotFoundWarningOrError(declFound); //This updates processContents
                 }
             }
 
-            context.ElementDecl = elementDecl;
+            _context.ElementDecl = elementDecl;
             XmlSchemaElement localSchemaElement = null;
             XmlSchemaType localSchemaType = null;
-            if (elementDecl != null) {
+            if (elementDecl != null)
+            {
                 CheckElementProperties();
-                attPresence.Clear(); //Clear attributes hashtable for every element
-                context.NeedValidateChildren = processContents != XmlSchemaContentProcessing.Skip;
+                _attPresence.Clear(); //Clear attributes hashtable for every element
+                _context.NeedValidateChildren = _processContents != XmlSchemaContentProcessing.Skip;
                 ValidateStartElementIdentityConstraints();  //Need attr collection validated here
-                elementDecl.ContentValidator.InitValidation(context);
+                elementDecl.ContentValidator.InitValidation(_context);
 
                 localSchemaType = elementDecl.SchemaType;
                 localSchemaElement = GetSchemaElement();
             }
 
-            if (schemaInfo != null) {
+            if (schemaInfo != null)
+            {
                 schemaInfo.SchemaType = localSchemaType;
                 schemaInfo.SchemaElement = localSchemaElement;
-                schemaInfo.IsNil = context.IsNill;
-                schemaInfo.Validity = context.Validity;
+                schemaInfo.IsNil = _context.IsNill;
+                schemaInfo.Validity = _context.Validity;
             }
-            if (ProcessSchemaHints) {
-                if (validatedNamespaces[namespaceUri] == null) {
-                    validatedNamespaces.Add(namespaceUri, namespaceUri);
+            if (ProcessSchemaHints)
+            {
+                if (_validatedNamespaces[namespaceUri] == null)
+                {
+                    _validatedNamespaces.Add(namespaceUri, namespaceUri);
                 }
             }
 
-            if (isRoot) {
-                isRoot = false;
+            if (_isRoot)
+            {
+                _isRoot = false;
             }
         }
 
-        public object ValidateAttribute(string localName, string namespaceUri, string attributeValue, XmlSchemaInfo schemaInfo) {
-            if (attributeValue == null) {
+        public object ValidateAttribute(string localName, string namespaceUri, string attributeValue, XmlSchemaInfo schemaInfo)
+        {
+            if (attributeValue == null)
+            {
                 throw new ArgumentNullException("attributeValue");
             }
             return ValidateAttribute(localName, namespaceUri, null, attributeValue, schemaInfo);
         }
 
-        public object ValidateAttribute(string localName, string namespaceUri, XmlValueGetter attributeValue, XmlSchemaInfo schemaInfo) {
-            if (attributeValue == null) {
+        public object ValidateAttribute(string localName, string namespaceUri, XmlValueGetter attributeValue, XmlSchemaInfo schemaInfo)
+        {
+            if (attributeValue == null)
+            {
                 throw new ArgumentNullException("attributeValue");
             }
             return ValidateAttribute(localName, namespaceUri, attributeValue, null, schemaInfo);
         }
 
-        private object ValidateAttribute(string lName, string ns, XmlValueGetter attributeValueGetter, string attributeStringValue, XmlSchemaInfo schemaInfo) {
-            if (lName == null) {
+        private object ValidateAttribute(string lName, string ns, XmlValueGetter attributeValueGetter, string attributeStringValue, XmlSchemaInfo schemaInfo)
+        {
+            if (lName == null)
+            {
                 throw new ArgumentNullException("localName");
             }
-            if (ns == null) {
+            if (ns == null)
+            {
                 throw new ArgumentNullException("namespaceUri");
             }
 
-            ValidatorState toState = validationStack.Length > 1 ? ValidatorState.Attribute : ValidatorState.TopLevelAttribute;
-            CheckStateTransition(toState, MethodNames[(int)toState]);
+            ValidatorState toState = _validationStack.Length > 1 ? ValidatorState.Attribute : ValidatorState.TopLevelAttribute;
+            CheckStateTransition(toState, s_methodNames[(int)toState]);
 
             object typedVal = null;
-            attrValid = true;
+            _attrValid = true;
             XmlSchemaValidity localValidity = XmlSchemaValidity.NotKnown;
             XmlSchemaAttribute localAttribute = null;
             XmlSchemaSimpleType localMemberType = null;
 
-            ns = nameTable.Add(ns);
-            if(Ref.Equal(ns,NsXmlNs)) {
+            ns = _nameTable.Add(ns);
+            if (Ref.Equal(ns, _nsXmlNs))
+            {
                 return null;
             }
 
             SchemaAttDef attributeDef = null;
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
             XmlQualifiedName attQName = new XmlQualifiedName(lName, ns);
-            if (attPresence[attQName] != null) { //this attribute already checked as it is duplicate;
+            if (_attPresence[attQName] != null)
+            { //this attribute already checked as it is duplicate;
                 SendValidationEvent(ResXml.Sch_DuplicateAttribute, attQName.ToString());
-                if (schemaInfo != null) {
+                if (schemaInfo != null)
+                {
                     schemaInfo.Clear();
                 }
                 return null;
             }
 
-            if (!Ref.Equal(ns,NsXsi)) { //TODO add xmlns check here
-                XmlSchemaObject pvtAttribute = currentState == ValidatorState.TopLevelAttribute ? partialValidationType : null;
+            if (!Ref.Equal(ns, _nsXsi))
+            { //TODO add xmlns check here
+                XmlSchemaObject pvtAttribute = _currentState == ValidatorState.TopLevelAttribute ? _partialValidationType : null;
                 AttributeMatchState attributeMatchState;
-                attributeDef = compiledSchemaInfo.GetAttributeXsd(currentElementDecl, attQName, pvtAttribute, out attributeMatchState);
+                attributeDef = _compiledSchemaInfo.GetAttributeXsd(currentElementDecl, attQName, pvtAttribute, out attributeMatchState);
 
-                switch (attributeMatchState) {
+                switch (attributeMatchState)
+                {
                     case AttributeMatchState.UndeclaredElementAndAttribute:
-                        if((attributeDef = CheckIsXmlAttribute(attQName)) != null) { //Try for xml attribute
+                        if ((attributeDef = CheckIsXmlAttribute(attQName)) != null)
+                        { //Try for xml attribute
                             goto case AttributeMatchState.AttributeFound;
                         }
                         if (currentElementDecl == null
-                            && processContents == XmlSchemaContentProcessing.Strict
+                            && _processContents == XmlSchemaContentProcessing.Strict
                             && attQName.Namespace.Length != 0
-                            && compiledSchemaInfo.Contains(attQName.Namespace)
-                        ) {
-                            attrValid = false;
+                            && _compiledSchemaInfo.Contains(attQName.Namespace)
+                        )
+                        {
+                            _attrValid = false;
                             SendValidationEvent(ResXml.Sch_UndeclaredAttribute, attQName.ToString());
                         }
-                        else if (processContents != XmlSchemaContentProcessing.Skip) {
+                        else if (_processContents != XmlSchemaContentProcessing.Skip)
+                        {
                             SendValidationEvent(ResXml.Sch_NoAttributeSchemaFound, attQName.ToString(), XmlSeverityType.Warning);
                         }
                         break;
 
                     case AttributeMatchState.UndeclaredAttribute:
-                        if((attributeDef = CheckIsXmlAttribute(attQName)) != null) {
+                        if ((attributeDef = CheckIsXmlAttribute(attQName)) != null)
+                        {
                             goto case AttributeMatchState.AttributeFound;
                         }
-                        else {
-                            attrValid = false;
+                        else
+                        {
+                            _attrValid = false;
                             SendValidationEvent(ResXml.Sch_UndeclaredAttribute, attQName.ToString());
                         }
                         break;
 
                     case AttributeMatchState.ProhibitedAnyAttribute:
-                        if((attributeDef = CheckIsXmlAttribute(attQName)) != null) {
+                        if ((attributeDef = CheckIsXmlAttribute(attQName)) != null)
+                        {
                             goto case AttributeMatchState.AttributeFound;
                         }
-                        else {
-                            attrValid = false;
+                        else
+                        {
+                            _attrValid = false;
                             SendValidationEvent(ResXml.Sch_ProhibitedAttribute, attQName.ToString());
                         }
                         break;
 
                     case AttributeMatchState.ProhibitedAttribute:
-                        attrValid = false;
+                        _attrValid = false;
                         SendValidationEvent(ResXml.Sch_ProhibitedAttribute, attQName.ToString());
                         break;
 
                     case AttributeMatchState.AttributeNameMismatch:
-                        attrValid = false;
-                        SendValidationEvent(ResXml.Sch_SchemaAttributeNameMismatch, new string[] { attQName.ToString(), ((XmlSchemaAttribute)pvtAttribute).QualifiedName.ToString()});
+                        _attrValid = false;
+                        SendValidationEvent(ResXml.Sch_SchemaAttributeNameMismatch, new string[] { attQName.ToString(), ((XmlSchemaAttribute)pvtAttribute).QualifiedName.ToString() });
                         break;
 
                     case AttributeMatchState.ValidateAttributeInvalidCall:
-                        Debug.Assert(currentState == ValidatorState.TopLevelAttribute); //Re-set state back to start on error with partial validation type
-                        currentState = ValidatorState.Start;
-                        attrValid = false;
+                        Debug.Assert(_currentState == ValidatorState.TopLevelAttribute); //Re-set state back to start on error with partial validation type
+                        _currentState = ValidatorState.Start;
+                        _attrValid = false;
                         SendValidationEvent(ResXml.Sch_ValidateAttributeInvalidCall, string.Empty);
                         break;
 
                     case AttributeMatchState.AnyIdAttributeFound:
-                        if (wildID == null) {
-                            wildID = attributeDef;
+                        if (_wildID == null)
+                        {
+                            _wildID = attributeDef;
                             Debug.Assert(currentElementDecl != null);
                             XmlSchemaComplexType ct = currentElementDecl.SchemaType as XmlSchemaComplexType;
                             Debug.Assert(ct != null);
-                            if (ct.ContainsIdAttribute(false)) {
+                            if (ct.ContainsIdAttribute(false))
+                            {
                                 SendValidationEvent(ResXml.Sch_AttrUseAndWildId, string.Empty);
                             }
-                            else {
+                            else
+                            {
                                 goto case AttributeMatchState.AttributeFound;
                             }
                         }
-                        else { //More than one attribute per element cannot match wildcard if both their types are derived from ID
+                        else
+                        { //More than one attribute per element cannot match wildcard if both their types are derived from ID
                             SendValidationEvent(ResXml.Sch_MoreThanOneWildId, string.Empty);
                         }
                         break;
@@ -568,19 +655,23 @@ namespace Microsoft.Xml.Schema {
                     case AttributeMatchState.AttributeFound:
                         Debug.Assert(attributeDef != null);
                         localAttribute = attributeDef.SchemaAttribute;
-                        if (currentElementDecl != null) { //Have to add to hashtable to check whether to add default attributes
-                            attPresence.Add(attQName, attributeDef);
+                        if (currentElementDecl != null)
+                        { //Have to add to hashtable to check whether to add default attributes
+                            _attPresence.Add(attQName, attributeDef);
                         }
                         object attValue;
-                        if (attributeValueGetter != null) {
+                        if (attributeValueGetter != null)
+                        {
                             attValue = attributeValueGetter();
                         }
-                        else {
+                        else
+                        {
                             attValue = attributeStringValue;
                         }
                         typedVal = CheckAttributeValue(attValue, attributeDef);
                         XmlSchemaDatatype datatype = attributeDef.Datatype;
-                        if (datatype.Variety == XmlSchemaDatatypeVariety.Union && typedVal != null) { //Unpack the union
+                        if (datatype.Variety == XmlSchemaDatatypeVariety.Union && typedVal != null)
+                        { //Unpack the union
                             XsdSimpleValue simpleValue = typedVal as XsdSimpleValue;
                             Debug.Assert(simpleValue != null);
 
@@ -589,7 +680,8 @@ namespace Microsoft.Xml.Schema {
                             typedVal = simpleValue.TypedValue;
                         }
                         CheckTokenizedTypes(datatype, typedVal, true);
-                        if (HasIdentityConstraints) {
+                        if (HasIdentityConstraints)
+                        {
                             AttributeIdentityConstraints(attQName.Name, attQName.Namespace, typedVal, attValue.ToString(), datatype);
                         }
                         break;
@@ -605,118 +697,147 @@ namespace Microsoft.Xml.Schema {
                         break;
                 }
             }
-            else { //Attribute from xsi namespace
-                lName = nameTable.Add(lName);
-                if (Ref.Equal(lName, xsiTypeString) || Ref.Equal(lName, xsiNilString) || Ref.Equal(lName, xsiSchemaLocationString) || Ref.Equal(lName, xsiNoNamespaceSchemaLocationString)) {
-                    attPresence.Add(attQName, SchemaAttDef.Empty);
+            else
+            { //Attribute from xsi namespace
+                lName = _nameTable.Add(lName);
+                if (Ref.Equal(lName, _xsiTypeString) || Ref.Equal(lName, _xsiNilString) || Ref.Equal(lName, _xsiSchemaLocationString) || Ref.Equal(lName, _xsiNoNamespaceSchemaLocationString))
+                {
+                    _attPresence.Add(attQName, SchemaAttDef.Empty);
                 }
-                else {
-                    attrValid = false;
+                else
+                {
+                    _attrValid = false;
                     SendValidationEvent(ResXml.Sch_NotXsiAttribute, attQName.ToString());
                 }
             }
 
-            if (!attrValid) {
+            if (!_attrValid)
+            {
                 localValidity = XmlSchemaValidity.Invalid;
             }
-            else if (attributeDef != null) {
+            else if (attributeDef != null)
+            {
                 localValidity = XmlSchemaValidity.Valid;
             }
-            if (schemaInfo != null) {
+            if (schemaInfo != null)
+            {
                 schemaInfo.SchemaAttribute = localAttribute;
                 schemaInfo.SchemaType = localAttribute == null ? null : localAttribute.AttributeSchemaType;
                 schemaInfo.MemberType = localMemberType;
                 schemaInfo.IsDefault = false;
                 schemaInfo.Validity = localValidity;
             }
-            if (ProcessSchemaHints) {
-                if (validatedNamespaces[ns] == null) {
-                    validatedNamespaces.Add(ns, ns);
+            if (ProcessSchemaHints)
+            {
+                if (_validatedNamespaces[ns] == null)
+                {
+                    _validatedNamespaces.Add(ns, ns);
                 }
             }
             return typedVal;
         }
 
-        public void GetUnspecifiedDefaultAttributes(ArrayList defaultAttributes) {
-            if (defaultAttributes == null)  {
+        public void GetUnspecifiedDefaultAttributes(ArrayList defaultAttributes)
+        {
+            if (defaultAttributes == null)
+            {
                 throw new ArgumentNullException("defaultAttributes");
             }
             CheckStateTransition(ValidatorState.Attribute, "GetUnspecifiedDefaultAttributes");
             GetUnspecifiedDefaultAttributes(defaultAttributes, false);
         }
 
-        public void ValidateEndOfAttributes(XmlSchemaInfo schemaInfo) {
-            CheckStateTransition(ValidatorState.EndOfAttributes, MethodNames[(int)ValidatorState.EndOfAttributes]);
+        public void ValidateEndOfAttributes(XmlSchemaInfo schemaInfo)
+        {
+            CheckStateTransition(ValidatorState.EndOfAttributes, s_methodNames[(int)ValidatorState.EndOfAttributes]);
             //Check required attributes
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
-            if (currentElementDecl != null && currentElementDecl.HasRequiredAttribute) {
-                context.CheckRequiredAttribute = false;
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
+            if (currentElementDecl != null && currentElementDecl.HasRequiredAttribute)
+            {
+                _context.CheckRequiredAttribute = false;
                 CheckRequiredAttributes(currentElementDecl);
             }
-            if (schemaInfo != null) { //set validity depending on whether all required attributes were validated successfully
-                schemaInfo.Validity = context.Validity;
+            if (schemaInfo != null)
+            { //set validity depending on whether all required attributes were validated successfully
+                schemaInfo.Validity = _context.Validity;
             }
         }
 
-        public void ValidateText(string elementValue) {
-            if (elementValue == null) {
+        public void ValidateText(string elementValue)
+        {
+            if (elementValue == null)
+            {
                 throw new ArgumentNullException("elementValue");
             }
             ValidateText(elementValue, null);
         }
 
-        public void ValidateText(XmlValueGetter elementValue) {
-            if (elementValue == null) {
+        public void ValidateText(XmlValueGetter elementValue)
+        {
+            if (elementValue == null)
+            {
                 throw new ArgumentNullException("elementValue");
             }
             ValidateText(null, elementValue);
         }
 
-        private void ValidateText(string elementStringValue, XmlValueGetter elementValueGetter) {
-            ValidatorState toState = validationStack.Length > 1 ? ValidatorState.Text : ValidatorState.TopLevelTextOrWS;
-            CheckStateTransition(toState, MethodNames[(int)toState]);
+        private void ValidateText(string elementStringValue, XmlValueGetter elementValueGetter)
+        {
+            ValidatorState toState = _validationStack.Length > 1 ? ValidatorState.Text : ValidatorState.TopLevelTextOrWS;
+            CheckStateTransition(toState, s_methodNames[(int)toState]);
 
-            if (context.NeedValidateChildren) {
-                if (context.IsNill) {
-                    SendValidationEvent(ResXml.Sch_ContentInNill, QNameString(context.LocalName, context.Namespace));
+            if (_context.NeedValidateChildren)
+            {
+                if (_context.IsNill)
+                {
+                    SendValidationEvent(ResXml.Sch_ContentInNill, QNameString(_context.LocalName, _context.Namespace));
                     return;
                 }
-                XmlSchemaContentType contentType = context.ElementDecl.ContentValidator.ContentType;
-                switch(contentType) {
+                XmlSchemaContentType contentType = _context.ElementDecl.ContentValidator.ContentType;
+                switch (contentType)
+                {
                     case XmlSchemaContentType.Empty:
                         SendValidationEvent(ResXml.Sch_InvalidTextInEmpty, string.Empty);
                         break;
 
                     case XmlSchemaContentType.TextOnly:
-                        if (elementValueGetter != null) {
+                        if (elementValueGetter != null)
+                        {
                             SaveTextValue(elementValueGetter());
                         }
-                        else {
+                        else
+                        {
                             SaveTextValue(elementStringValue);
                         }
                         break;
 
                     case XmlSchemaContentType.ElementOnly:
                         string textValue = elementValueGetter != null ? elementValueGetter().ToString() : elementStringValue;
-                        if(xmlCharType.IsOnlyWhitespace(textValue)) {
+                        if (_xmlCharType.IsOnlyWhitespace(textValue))
+                        {
                             break;
                         }
-                        ArrayList names = context.ElementDecl.ContentValidator.ExpectedParticles(context, false, schemaSet);
-                        if (names == null ||  names.Count == 0) {
-                            SendValidationEvent(ResXml.Sch_InvalidTextInElement, BuildElementName(context.LocalName, context.Namespace));
+                        ArrayList names = _context.ElementDecl.ContentValidator.ExpectedParticles(_context, false, _schemaSet);
+                        if (names == null || names.Count == 0)
+                        {
+                            SendValidationEvent(ResXml.Sch_InvalidTextInElement, BuildElementName(_context.LocalName, _context.Namespace));
                         }
-                        else {
+                        else
+                        {
                             Debug.Assert(names.Count > 0);
-                            SendValidationEvent(ResXml.Sch_InvalidTextInElementExpecting, new string[] { BuildElementName(context.LocalName, context.Namespace), PrintExpectedElements(names, true) });
+                            SendValidationEvent(ResXml.Sch_InvalidTextInElementExpecting, new string[] { BuildElementName(_context.LocalName, _context.Namespace), PrintExpectedElements(names, true) });
                         }
                         break;
 
                     case XmlSchemaContentType.Mixed:
-                        if (context.ElementDecl.DefaultValueTyped != null) {
-                            if (elementValueGetter != null) {
+                        if (_context.ElementDecl.DefaultValueTyped != null)
+                        {
+                            if (elementValueGetter != null)
+                            {
                                 SaveTextValue(elementValueGetter());
                             }
-                            else {
+                            else
+                            {
                                 SaveTextValue(elementStringValue);
                             }
                         }
@@ -725,49 +846,62 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        public void ValidateWhitespace(string elementValue) {
-            if (elementValue == null) {
+        public void ValidateWhitespace(string elementValue)
+        {
+            if (elementValue == null)
+            {
                 throw new ArgumentNullException("elementValue");
             }
             ValidateWhitespace(elementValue, null);
         }
 
-        public void ValidateWhitespace(XmlValueGetter elementValue) {
-            if (elementValue == null) {
+        public void ValidateWhitespace(XmlValueGetter elementValue)
+        {
+            if (elementValue == null)
+            {
                 throw new ArgumentNullException("elementValue");
             }
             ValidateWhitespace(null, elementValue);
         }
 
-        private void ValidateWhitespace(string elementStringValue, XmlValueGetter elementValueGetter) {
-            ValidatorState toState = validationStack.Length > 1 ? ValidatorState.Whitespace : ValidatorState.TopLevelTextOrWS;
-            CheckStateTransition(toState, MethodNames[(int)toState]);
+        private void ValidateWhitespace(string elementStringValue, XmlValueGetter elementValueGetter)
+        {
+            ValidatorState toState = _validationStack.Length > 1 ? ValidatorState.Whitespace : ValidatorState.TopLevelTextOrWS;
+            CheckStateTransition(toState, s_methodNames[(int)toState]);
 
-            if (context.NeedValidateChildren) {
-                if (context.IsNill) {
-                    SendValidationEvent(ResXml.Sch_ContentInNill, QNameString(context.LocalName, context.Namespace));
+            if (_context.NeedValidateChildren)
+            {
+                if (_context.IsNill)
+                {
+                    SendValidationEvent(ResXml.Sch_ContentInNill, QNameString(_context.LocalName, _context.Namespace));
                 }
-                XmlSchemaContentType contentType = context.ElementDecl.ContentValidator.ContentType;
-                switch (contentType) {
+                XmlSchemaContentType contentType = _context.ElementDecl.ContentValidator.ContentType;
+                switch (contentType)
+                {
                     case XmlSchemaContentType.Empty:
                         SendValidationEvent(ResXml.Sch_InvalidWhitespaceInEmpty, string.Empty);
                         break;
 
                     case XmlSchemaContentType.TextOnly:
-                        if (elementValueGetter != null) {
+                        if (elementValueGetter != null)
+                        {
                             SaveTextValue(elementValueGetter());
                         }
-                        else {
+                        else
+                        {
                             SaveTextValue(elementStringValue);
                         }
                         break;
 
                     case XmlSchemaContentType.Mixed:
-                        if (context.ElementDecl.DefaultValueTyped != null) {
-                            if (elementValueGetter != null) {
+                        if (_context.ElementDecl.DefaultValueTyped != null)
+                        {
+                            if (elementValueGetter != null)
+                            {
                                 SaveTextValue(elementValueGetter());
                             }
-                            else {
+                            else
+                            {
                                 SaveTextValue(elementStringValue);
                             }
                         }
@@ -780,150 +914,188 @@ namespace Microsoft.Xml.Schema {
         }
 
 
-        public object ValidateEndElement(XmlSchemaInfo schemaInfo) {
+        public object ValidateEndElement(XmlSchemaInfo schemaInfo)
+        {
             return InternalValidateEndElement(schemaInfo, null);
         }
 
-        public object ValidateEndElement(XmlSchemaInfo schemaInfo, object typedValue) {
-            if (typedValue == null) {
+        public object ValidateEndElement(XmlSchemaInfo schemaInfo, object typedValue)
+        {
+            if (typedValue == null)
+            {
                 throw new ArgumentNullException("typedValue");
             }
-            if (textValue.Length > 0) {
+            if (_textValue.Length > 0)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementCall));
             }
             return InternalValidateEndElement(schemaInfo, typedValue);
         }
 
-        public void SkipToEndElement(XmlSchemaInfo schemaInfo) {
-            if (validationStack.Length <= 1) {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementMultiple, MethodNames[(int)ValidatorState.SkipToEndElement]));
+        public void SkipToEndElement(XmlSchemaInfo schemaInfo)
+        {
+            if (_validationStack.Length <= 1)
+            {
+                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementMultiple, s_methodNames[(int)ValidatorState.SkipToEndElement]));
             }
-            CheckStateTransition(ValidatorState.SkipToEndElement, MethodNames[(int)ValidatorState.SkipToEndElement]);
+            CheckStateTransition(ValidatorState.SkipToEndElement, s_methodNames[(int)ValidatorState.SkipToEndElement]);
 
-            if (schemaInfo != null) {
-                SchemaElementDecl currentElementDecl = context.ElementDecl;
-                if (currentElementDecl != null) {
+            if (schemaInfo != null)
+            {
+                SchemaElementDecl currentElementDecl = _context.ElementDecl;
+                if (currentElementDecl != null)
+                {
                     schemaInfo.SchemaType = currentElementDecl.SchemaType;
                     schemaInfo.SchemaElement = GetSchemaElement();
                 }
-                else {
+                else
+                {
                     schemaInfo.SchemaType = null;
                     schemaInfo.SchemaElement = null;
                 }
                 schemaInfo.MemberType = null;
-                schemaInfo.IsNil = context.IsNill;
-                schemaInfo.IsDefault = context.IsDefault;
-                Debug.Assert(context.Validity != XmlSchemaValidity.Valid);
-                schemaInfo.Validity = context.Validity;
+                schemaInfo.IsNil = _context.IsNill;
+                schemaInfo.IsDefault = _context.IsDefault;
+                Debug.Assert(_context.Validity != XmlSchemaValidity.Valid);
+                schemaInfo.Validity = _context.Validity;
             }
-            context.ValidationSkipped = true;
-            currentState = ValidatorState.SkipToEndElement;
+            _context.ValidationSkipped = true;
+            _currentState = ValidatorState.SkipToEndElement;
             Pop();
         }
 
-        public void EndValidation() {
-            if (validationStack.Length > 1) { //We have pending elements in the stack to call ValidateEndElement
+        public void EndValidation()
+        {
+            if (_validationStack.Length > 1)
+            { //We have pending elements in the stack to call ValidateEndElement
                 throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndValidation));
             }
-            CheckStateTransition(ValidatorState.Finish, MethodNames[(int)ValidatorState.Finish]);
+            CheckStateTransition(ValidatorState.Finish, s_methodNames[(int)ValidatorState.Finish]);
             CheckForwardRefs();
         }
 
-        public XmlSchemaParticle[] GetExpectedParticles() {
-            if (currentState == ValidatorState.Start || currentState == ValidatorState.TopLevelTextOrWS) { //Right after initialize
-                if (partialValidationType != null) {
-                    XmlSchemaElement element = partialValidationType as XmlSchemaElement;
-                    if (element != null) {
-                        return new XmlSchemaParticle[1] {element};
+        public XmlSchemaParticle[] GetExpectedParticles()
+        {
+            if (_currentState == ValidatorState.Start || _currentState == ValidatorState.TopLevelTextOrWS)
+            { //Right after initialize
+                if (_partialValidationType != null)
+                {
+                    XmlSchemaElement element = _partialValidationType as XmlSchemaElement;
+                    if (element != null)
+                    {
+                        return new XmlSchemaParticle[1] { element };
                     }
-                    return EmptyParticleArray;
+                    return s_emptyParticleArray;
                 }
-                else { //Should return all global elements
-                    ICollection elements = schemaSet.GlobalElements.Values;
+                else
+                { //Should return all global elements
+                    ICollection elements = _schemaSet.GlobalElements.Values;
                     ArrayList expected = new ArrayList(elements.Count);
-                    foreach(XmlSchemaElement element in elements) { //Check for substitutions
-                        ContentValidator.AddParticleToExpected(element, schemaSet, expected, true);
+                    foreach (XmlSchemaElement element in elements)
+                    { //Check for substitutions
+                        ContentValidator.AddParticleToExpected(element, _schemaSet, expected, true);
                     }
                     return expected.ToArray(typeof(XmlSchemaParticle)) as XmlSchemaParticle[];
                 }
             }
-            if (context.ElementDecl != null) {
-                ArrayList expected = context.ElementDecl.ContentValidator.ExpectedParticles(context, false, schemaSet);
-                if (expected != null) {
+            if (_context.ElementDecl != null)
+            {
+                ArrayList expected = _context.ElementDecl.ContentValidator.ExpectedParticles(_context, false, _schemaSet);
+                if (expected != null)
+                {
                     return expected.ToArray(typeof(XmlSchemaParticle)) as XmlSchemaParticle[];
                 }
             }
-            return EmptyParticleArray;
+            return s_emptyParticleArray;
         }
 
-        public XmlSchemaAttribute[] GetExpectedAttributes() {
-            if (currentState == ValidatorState.Element || currentState == ValidatorState.Attribute) {
-                SchemaElementDecl elementDecl = context.ElementDecl;
+        public XmlSchemaAttribute[] GetExpectedAttributes()
+        {
+            if (_currentState == ValidatorState.Element || _currentState == ValidatorState.Attribute)
+            {
+                SchemaElementDecl elementDecl = _context.ElementDecl;
                 ArrayList attList = new ArrayList();
-                if (elementDecl != null) {
-                    foreach(SchemaAttDef attDef in elementDecl.AttDefs.Values) {
-                        if (attPresence[attDef.Name] == null) {
+                if (elementDecl != null)
+                {
+                    foreach (SchemaAttDef attDef in elementDecl.AttDefs.Values)
+                    {
+                        if (_attPresence[attDef.Name] == null)
+                        {
                             attList.Add(attDef.SchemaAttribute);
                         }
                     }
                 }
-                if (nsResolver.LookupPrefix(NsXsi) != null) { //Xsi namespace defined
+                if (_nsResolver.LookupPrefix(_nsXsi) != null)
+                { //Xsi namespace defined
                     AddXsiAttributes(attList);
                 }
                 return attList.ToArray(typeof(XmlSchemaAttribute)) as XmlSchemaAttribute[];
             }
-            else if (currentState == ValidatorState.Start) {
-                if (partialValidationType != null) {
-                    XmlSchemaAttribute attribute = partialValidationType as XmlSchemaAttribute;
-                    if (attribute != null) {
-                        return new XmlSchemaAttribute[1] {attribute};
+            else if (_currentState == ValidatorState.Start)
+            {
+                if (_partialValidationType != null)
+                {
+                    XmlSchemaAttribute attribute = _partialValidationType as XmlSchemaAttribute;
+                    if (attribute != null)
+                    {
+                        return new XmlSchemaAttribute[1] { attribute };
                     }
                 }
             }
-            return EmptyAttributeArray;
+            return s_emptyAttributeArray;
         }
 
-        internal void GetUnspecifiedDefaultAttributes(ArrayList defaultAttributes, bool createNodeData) {
-            currentState = ValidatorState.Attribute;
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
+        internal void GetUnspecifiedDefaultAttributes(ArrayList defaultAttributes, bool createNodeData)
+        {
+            _currentState = ValidatorState.Attribute;
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
 
-            if (currentElementDecl != null && currentElementDecl.HasDefaultAttribute) {
-                for (int i = 0; i < currentElementDecl.DefaultAttDefs.Count; ++i) {
+            if (currentElementDecl != null && currentElementDecl.HasDefaultAttribute)
+            {
+                for (int i = 0; i < currentElementDecl.DefaultAttDefs.Count; ++i)
+                {
                     SchemaAttDef attdef = (SchemaAttDef)currentElementDecl.DefaultAttDefs[i];
-                    if (!attPresence.Contains(attdef.Name)) {
-                        if (attdef.DefaultValueTyped == null) { //Invalid attribute default in the schema
+                    if (!_attPresence.Contains(attdef.Name))
+                    {
+                        if (attdef.DefaultValueTyped == null)
+                        { //Invalid attribute default in the schema
                             continue;
                         }
 
                         //Check to see default attributes WILL be qualified if attributeFormDefault = qualified in schema
-                        string attributeNS = nameTable.Add(attdef.Name.Namespace);
+                        string attributeNS = _nameTable.Add(attdef.Name.Namespace);
                         string defaultPrefix = string.Empty;
-                        if (attributeNS.Length > 0) {
+                        if (attributeNS.Length > 0)
+                        {
                             defaultPrefix = GetDefaultAttributePrefix(attributeNS);
-                            if (defaultPrefix == null || defaultPrefix.Length == 0) {
-                                SendValidationEvent(ResXml.Sch_DefaultAttributeNotApplied, new string[2] { attdef.Name.ToString(), QNameString(context.LocalName, context.Namespace)});
+                            if (defaultPrefix == null || defaultPrefix.Length == 0)
+                            {
+                                SendValidationEvent(ResXml.Sch_DefaultAttributeNotApplied, new string[2] { attdef.Name.ToString(), QNameString(_context.LocalName, _context.Namespace) });
                                 continue;
                             }
                         }
                         XmlSchemaDatatype datatype = attdef.Datatype;
-                        if (createNodeData) {
+                        if (createNodeData)
+                        {
                             ValidatingReaderNodeData attrData = new ValidatingReaderNodeData();
-                            attrData.LocalName = nameTable.Add(attdef.Name.Name);
+                            attrData.LocalName = _nameTable.Add(attdef.Name.Name);
                             attrData.Namespace = attributeNS;
-                            attrData.Prefix = nameTable.Add(defaultPrefix);
+                            attrData.Prefix = _nameTable.Add(defaultPrefix);
                             attrData.NodeType = XmlNodeType.Attribute;
 
                             //set PSVI properties
                             AttributePSVIInfo attrValidInfo = new AttributePSVIInfo();
                             XmlSchemaInfo attSchemaInfo = attrValidInfo.attributeSchemaInfo;
                             Debug.Assert(attSchemaInfo != null);
-                            if (attdef.Datatype.Variety == XmlSchemaDatatypeVariety.Union) {
+                            if (attdef.Datatype.Variety == XmlSchemaDatatypeVariety.Union)
+                            {
                                 XsdSimpleValue simpleValue = attdef.DefaultValueTyped as XsdSimpleValue;
                                 attSchemaInfo.MemberType = simpleValue.XmlType;
                                 datatype = simpleValue.XmlType.Datatype;
                                 attrValidInfo.typedAttributeValue = simpleValue.TypedValue;
                             }
-                            else {
+                            else
+                            {
                                 attrValidInfo.typedAttributeValue = attdef.DefaultValueTyped;
                             }
                             attSchemaInfo.IsDefault = true;
@@ -935,11 +1107,13 @@ namespace Microsoft.Xml.Schema {
                             attrData.AttInfo = attrValidInfo;
                             defaultAttributes.Add(attrData);
                         }
-                        else {
+                        else
+                        {
                             defaultAttributes.Add(attdef.SchemaAttribute);
                         }
                         CheckTokenizedTypes(datatype, attdef.DefaultValueTyped, true);
-                        if (HasIdentityConstraints) {
+                        if (HasIdentityConstraints)
+                        {
                             AttributeIdentityConstraints(attdef.Name.Name, attdef.Name.Namespace, attdef.DefaultValueTyped, attdef.DefaultValueRaw, datatype);
                         }
                     }
@@ -948,102 +1122,131 @@ namespace Microsoft.Xml.Schema {
             return;
         }
 
-        internal XmlSchemaSet SchemaSet {
-            get {
-                return schemaSet;
+        internal XmlSchemaSet SchemaSet
+        {
+            get
+            {
+                return _schemaSet;
             }
         }
 
-        internal XmlSchemaValidationFlags ValidationFlags {
-            get {
-                return validationFlags;
+        internal XmlSchemaValidationFlags ValidationFlags
+        {
+            get
+            {
+                return _validationFlags;
             }
         }
 
-        internal XmlSchemaContentType CurrentContentType {
-            get {
-                if (context.ElementDecl == null) {
+        internal XmlSchemaContentType CurrentContentType
+        {
+            get
+            {
+                if (_context.ElementDecl == null)
+                {
                     return XmlSchemaContentType.Empty;
                 }
-                return context.ElementDecl.ContentValidator.ContentType;
+                return _context.ElementDecl.ContentValidator.ContentType;
             }
         }
 
-        internal XmlSchemaContentProcessing CurrentProcessContents {
-            get {
-                return processContents;
+        internal XmlSchemaContentProcessing CurrentProcessContents
+        {
+            get
+            {
+                return _processContents;
             }
         }
 
-        internal void SetDtdSchemaInfo(IDtdInfo dtdSchemaInfo) {
-            this.dtdSchemaInfo = dtdSchemaInfo;
-            this.checkEntity = true;
+        internal void SetDtdSchemaInfo(IDtdInfo dtdSchemaInfo)
+        {
+            _dtdSchemaInfo = dtdSchemaInfo;
+            _checkEntity = true;
         }
 
-        private bool StrictlyAssessed {
-            get {
-                return (processContents == XmlSchemaContentProcessing.Strict || processContents == XmlSchemaContentProcessing.Lax) && context.ElementDecl != null && !context.ValidationSkipped;
+        private bool StrictlyAssessed
+        {
+            get
+            {
+                return (_processContents == XmlSchemaContentProcessing.Strict || _processContents == XmlSchemaContentProcessing.Lax) && _context.ElementDecl != null && !_context.ValidationSkipped;
             }
         }
 
-        private bool HasSchema {
-            get {
-                if (isRoot) {
-                    isRoot = false;
-                    if (!compiledSchemaInfo.Contains(context.Namespace)) {
-                        rootHasSchema = false;
+        private bool HasSchema
+        {
+            get
+            {
+                if (_isRoot)
+                {
+                    _isRoot = false;
+                    if (!_compiledSchemaInfo.Contains(_context.Namespace))
+                    {
+                        _rootHasSchema = false;
                     }
                 }
-                return rootHasSchema;
+                return _rootHasSchema;
             }
         }
 
-        internal string GetConcatenatedValue() {
-            return textValue.ToString();
+        internal string GetConcatenatedValue()
+        {
+            return _textValue.ToString();
         }
 
-        private object InternalValidateEndElement(XmlSchemaInfo schemaInfo, object typedValue) {
-            if (validationStack.Length <= 1) {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementMultiple, MethodNames[(int)ValidatorState.EndElement]));
+        private object InternalValidateEndElement(XmlSchemaInfo schemaInfo, object typedValue)
+        {
+            if (_validationStack.Length <= 1)
+            {
+                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementMultiple, s_methodNames[(int)ValidatorState.EndElement]));
             }
-            CheckStateTransition(ValidatorState.EndElement, MethodNames[(int)ValidatorState.EndElement]);
+            CheckStateTransition(ValidatorState.EndElement, s_methodNames[(int)ValidatorState.EndElement]);
 
-            SchemaElementDecl contextElementDecl = context.ElementDecl;
+            SchemaElementDecl contextElementDecl = _context.ElementDecl;
             XmlSchemaSimpleType memberType = null;
             XmlSchemaType localSchemaType = null;
             XmlSchemaElement localSchemaElement = null;
 
             string stringValue = string.Empty;
 
-            if (contextElementDecl != null) {
-                if (context.CheckRequiredAttribute && contextElementDecl.HasRequiredAttribute) {
+            if (contextElementDecl != null)
+            {
+                if (_context.CheckRequiredAttribute && contextElementDecl.HasRequiredAttribute)
+                {
                     CheckRequiredAttributes(contextElementDecl);
                 }
-                if (!context.IsNill) {
-                    if (context.NeedValidateChildren) {
+                if (!_context.IsNill)
+                {
+                    if (_context.NeedValidateChildren)
+                    {
                         XmlSchemaContentType contentType = contextElementDecl.ContentValidator.ContentType;
-                        switch (contentType) {
+                        switch (contentType)
+                        {
                             case XmlSchemaContentType.TextOnly:
-                                if (typedValue == null) {
-                                    stringValue = textValue.ToString();
+                                if (typedValue == null)
+                                {
+                                    stringValue = _textValue.ToString();
                                     typedValue = ValidateAtomicValue(stringValue, out memberType);
                                 }
-                                else { //Parsed object passed in, need to verify only facets
+                                else
+                                { //Parsed object passed in, need to verify only facets
                                     typedValue = ValidateAtomicValue(typedValue, out memberType);
                                 }
                                 break;
 
                             case XmlSchemaContentType.Mixed:
-                                if (contextElementDecl.DefaultValueTyped != null) {
-                                    if (typedValue == null) {
-                                        stringValue = textValue.ToString();
+                                if (contextElementDecl.DefaultValueTyped != null)
+                                {
+                                    if (typedValue == null)
+                                    {
+                                        stringValue = _textValue.ToString();
                                         typedValue = CheckMixedValueConstraint(stringValue);
                                     }
                                 }
                                 break;
 
                             case XmlSchemaContentType.ElementOnly:
-                                if (typedValue != null) { //Cannot pass in typedValue for complex content
+                                if (typedValue != null)
+                                { //Cannot pass in typedValue for complex content
                                     throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementCallTyped));
                                 }
                                 break;
@@ -1051,30 +1254,34 @@ namespace Microsoft.Xml.Schema {
                             default:
                                 break;
                         }
-                        if(!contextElementDecl.ContentValidator.CompleteValidation(context)) {
-                            CompleteValidationError(context, eventHandler, nsResolver, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition, schemaSet);
-                            context.Validity = XmlSchemaValidity.Invalid;
+                        if (!contextElementDecl.ContentValidator.CompleteValidation(_context))
+                        {
+                            CompleteValidationError(_context, _eventHandler, _nsResolver, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition, _schemaSet);
+                            _context.Validity = XmlSchemaValidity.Invalid;
                         }
                     }
                 }
                 // for each level in the stack, endchildren and fill value from element
-                if (HasIdentityConstraints) {
+                if (HasIdentityConstraints)
+                {
                     XmlSchemaType xmlType = memberType == null ? contextElementDecl.SchemaType : memberType;
                     EndElementIdentityConstraints(typedValue, stringValue, xmlType.Datatype);
                 }
                 localSchemaType = contextElementDecl.SchemaType;
                 localSchemaElement = GetSchemaElement();
             }
-            if (schemaInfo != null) { //SET SchemaInfo
+            if (schemaInfo != null)
+            { //SET SchemaInfo
                 schemaInfo.SchemaType = localSchemaType;
                 schemaInfo.SchemaElement = localSchemaElement;
                 schemaInfo.MemberType = memberType;
-                schemaInfo.IsNil = context.IsNill;
-                schemaInfo.IsDefault = context.IsDefault;
-                if (context.Validity == XmlSchemaValidity.NotKnown && StrictlyAssessed) {
-                    context.Validity = XmlSchemaValidity.Valid;
+                schemaInfo.IsNil = _context.IsNill;
+                schemaInfo.IsDefault = _context.IsDefault;
+                if (_context.Validity == XmlSchemaValidity.NotKnown && StrictlyAssessed)
+                {
+                    _context.Validity = XmlSchemaValidity.Valid;
                 }
-                schemaInfo.Validity = context.Validity;
+                schemaInfo.Validity = _context.Validity;
             }
             Pop();
             return typedValue;
@@ -1082,119 +1289,146 @@ namespace Microsoft.Xml.Schema {
 
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
-        private void ProcessSchemaLocations(string xsiSchemaLocation, string xsiNoNamespaceSchemaLocation) {
+        private void ProcessSchemaLocations(string xsiSchemaLocation, string xsiNoNamespaceSchemaLocation)
+        {
             bool compile = false;
-            if (xsiNoNamespaceSchemaLocation != null) {
+            if (xsiNoNamespaceSchemaLocation != null)
+            {
                 compile = true;
                 LoadSchema(string.Empty, xsiNoNamespaceSchemaLocation);
             }
-            if (xsiSchemaLocation != null) {
-
+            if (xsiSchemaLocation != null)
+            {
                 object typedValue;
-                Exception exception = dtStringArray.TryParseValue(xsiSchemaLocation, nameTable, nsResolver, out typedValue);
-                if (exception != null) {
-                    SendValidationEvent(ResXml.Sch_InvalidValueDetailedAttribute, new string[] { "schemaLocation", xsiSchemaLocation, dtStringArray.TypeCodeString, exception.Message }, exception);
+                Exception exception = s_dtStringArray.TryParseValue(xsiSchemaLocation, _nameTable, _nsResolver, out typedValue);
+                if (exception != null)
+                {
+                    SendValidationEvent(ResXml.Sch_InvalidValueDetailedAttribute, new string[] { "schemaLocation", xsiSchemaLocation, s_dtStringArray.TypeCodeString, exception.Message }, exception);
                     return;
                 }
                 string[] locations = (string[])typedValue;
                 compile = true;
-                try {
-                    for (int j = 0; j < locations.Length - 1; j += 2) {
+                try
+                {
+                    for (int j = 0; j < locations.Length - 1; j += 2)
+                    {
                         LoadSchema((string)locations[j], (string)locations[j + 1]);
                     }
                 }
-                catch (XmlSchemaException schemaException) {
+                catch (XmlSchemaException schemaException)
+                {
                     SendValidationEvent(schemaException);
                 }
             }
-            if (compile) {
+            if (compile)
+            {
                 RecompileSchemaSet();
             }
         }
 
 
-        private object ValidateElementContext(XmlQualifiedName elementName, out bool invalidElementInContext) {
+        private object ValidateElementContext(XmlQualifiedName elementName, out bool invalidElementInContext)
+        {
             object particle = null;
             int errorCode = 0;
             XmlQualifiedName head;
             XmlSchemaElement headElement = null;
             invalidElementInContext = false;
 
-            if (context.NeedValidateChildren) {
-                if (context.IsNill) {
-                    SendValidationEvent(ResXml.Sch_ContentInNill, QNameString(context.LocalName, context.Namespace));
+            if (_context.NeedValidateChildren)
+            {
+                if (_context.IsNill)
+                {
+                    SendValidationEvent(ResXml.Sch_ContentInNill, QNameString(_context.LocalName, _context.Namespace));
                     return null;
                 }
-                ContentValidator contentValidator = context.ElementDecl.ContentValidator;
-                if (contentValidator.ContentType == XmlSchemaContentType.Mixed && context.ElementDecl.Presence == SchemaDeclBase.Use.Fixed) { //Mixed with default or fixed
-                    SendValidationEvent(ResXml.Sch_ElementInMixedWithFixed, QNameString(context.LocalName, context.Namespace));
+                ContentValidator contentValidator = _context.ElementDecl.ContentValidator;
+                if (contentValidator.ContentType == XmlSchemaContentType.Mixed && _context.ElementDecl.Presence == SchemaDeclBase.Use.Fixed)
+                { //Mixed with default or fixed
+                    SendValidationEvent(ResXml.Sch_ElementInMixedWithFixed, QNameString(_context.LocalName, _context.Namespace));
                     return null;
                 }
 
                 head = elementName;
                 bool substitution = false;
 
-                while (true) {
-                    particle = context.ElementDecl.ContentValidator.ValidateElement(head, context, out errorCode);
-                    if (particle != null) { //Match found
+                while (true)
+                {
+                    particle = _context.ElementDecl.ContentValidator.ValidateElement(head, _context, out errorCode);
+                    if (particle != null)
+                    { //Match found
                         break;
                     }
-                    if (errorCode == -2) { //ContentModel all group error
+                    if (errorCode == -2)
+                    { //ContentModel all group error
                         SendValidationEvent(ResXml.Sch_AllElement, elementName.ToString());
                         invalidElementInContext = true;
-                        processContents = context.ProcessContents = XmlSchemaContentProcessing.Skip;
+                        _processContents = _context.ProcessContents = XmlSchemaContentProcessing.Skip;
                         return null;
                     }
                     //Match not found; check for substitutionGroup
                     substitution = true;
                     headElement = GetSubstitutionGroupHead(head);
-                    if (headElement == null) {
+                    if (headElement == null)
+                    {
                         break;
                     }
-                    else {
+                    else
+                    {
                         head = headElement.QualifiedName;
                     }
                 }
 
-                if (substitution) {
+                if (substitution)
+                {
                     XmlSchemaElement matchedElem = particle as XmlSchemaElement;
-                    if (matchedElem == null) { //It matched an xs:any in that position
+                    if (matchedElem == null)
+                    { //It matched an xs:any in that position
                         particle = null;
                     }
-                    else if (matchedElem.RefName.IsEmpty) { //It is not element ref but a local element
+                    else if (matchedElem.RefName.IsEmpty)
+                    { //It is not element ref but a local element
                         //If the head and matched particle are not hte same, then this is not substitutable, duped by a localElement with same QName
                         SendValidationEvent(ResXml.Sch_InvalidElementSubstitution, BuildElementName(elementName), BuildElementName(matchedElem.QualifiedName));
                         invalidElementInContext = true;
-                        processContents = context.ProcessContents = XmlSchemaContentProcessing.Skip;
+                        _processContents = _context.ProcessContents = XmlSchemaContentProcessing.Skip;
                     }
-                    else { //Correct substitution head found
-                        particle = compiledSchemaInfo.GetElement(elementName); //Re-assign correct particle
-                        context.NeedValidateChildren = true; //This will be reset to false once member match is not found
+                    else
+                    { //Correct substitution head found
+                        particle = _compiledSchemaInfo.GetElement(elementName); //Re-assign correct particle
+                        _context.NeedValidateChildren = true; //This will be reset to false once member match is not found
                     }
                 }
-                if (particle == null) {
-                    ElementValidationError(elementName, context, eventHandler, nsResolver, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition, schemaSet);
+                if (particle == null)
+                {
+                    ElementValidationError(elementName, _context, _eventHandler, _nsResolver, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition, _schemaSet);
                     invalidElementInContext = true;
-                    processContents = context.ProcessContents = XmlSchemaContentProcessing.Skip;
+                    _processContents = _context.ProcessContents = XmlSchemaContentProcessing.Skip;
                 }
             }
             return particle;
         }
 
 
-        private XmlSchemaElement GetSubstitutionGroupHead(XmlQualifiedName member) {
-            XmlSchemaElement memberElem = compiledSchemaInfo.GetElement(member);
-            if (memberElem != null) {
+        private XmlSchemaElement GetSubstitutionGroupHead(XmlQualifiedName member)
+        {
+            XmlSchemaElement memberElem = _compiledSchemaInfo.GetElement(member);
+            if (memberElem != null)
+            {
                 XmlQualifiedName head = memberElem.SubstitutionGroup;
-                if(!head.IsEmpty) {
-                    XmlSchemaElement headElem = compiledSchemaInfo.GetElement(head);
-                    if (headElem != null) {
-                        if ((headElem.BlockResolved & XmlSchemaDerivationMethod.Substitution) != 0) {
-                            SendValidationEvent(ResXml.Sch_SubstitutionNotAllowed, new string[] {member.ToString(), head.ToString()});
+                if (!head.IsEmpty)
+                {
+                    XmlSchemaElement headElem = _compiledSchemaInfo.GetElement(head);
+                    if (headElem != null)
+                    {
+                        if ((headElem.BlockResolved & XmlSchemaDerivationMethod.Substitution) != 0)
+                        {
+                            SendValidationEvent(ResXml.Sch_SubstitutionNotAllowed, new string[] { member.ToString(), head.ToString() });
                             return null;
                         }
-                        if (!XmlSchemaType.IsDerivedFrom(memberElem.ElementSchemaType, headElem.ElementSchemaType, headElem.BlockResolved)) {
-                            SendValidationEvent(ResXml.Sch_SubstitutionBlocked, new string[] {member.ToString(), head.ToString()});
+                        if (!XmlSchemaType.IsDerivedFrom(memberElem.ElementSchemaType, headElem.ElementSchemaType, headElem.BlockResolved))
+                        {
+                            SendValidationEvent(ResXml.Sch_SubstitutionBlocked, new string[] { member.ToString(), head.ToString() });
                             return null;
                         }
                         return headElem;
@@ -1204,34 +1438,43 @@ namespace Microsoft.Xml.Schema {
             return null;
         }
 
-        private object ValidateAtomicValue(string stringValue, out XmlSchemaSimpleType memberType) {
+        private object ValidateAtomicValue(string stringValue, out XmlSchemaSimpleType memberType)
+        {
             object typedVal = null;
             memberType = null;
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
-            if (!context.IsNill) {
-                if (stringValue.Length == 0 && currentElementDecl.DefaultValueTyped != null) { //default value maybe present
-                    SchemaElementDecl declBeforeXsi = context.ElementDeclBeforeXsi;
-                    if (declBeforeXsi != null && declBeforeXsi != currentElementDecl) { //There was xsi:type
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
+            if (!_context.IsNill)
+            {
+                if (stringValue.Length == 0 && currentElementDecl.DefaultValueTyped != null)
+                { //default value maybe present
+                    SchemaElementDecl declBeforeXsi = _context.ElementDeclBeforeXsi;
+                    if (declBeforeXsi != null && declBeforeXsi != currentElementDecl)
+                    { //There was xsi:type
                         Debug.Assert(currentElementDecl.Datatype != null);
-                        Exception exception = currentElementDecl.Datatype.TryParseValue(currentElementDecl.DefaultValueRaw, nameTable, nsResolver, out typedVal);
-                        if (exception != null) {
-                            SendValidationEvent(ResXml.Sch_InvalidElementDefaultValue, new string[] { currentElementDecl.DefaultValueRaw, QNameString(context.LocalName, context.Namespace) });
+                        Exception exception = currentElementDecl.Datatype.TryParseValue(currentElementDecl.DefaultValueRaw, _nameTable, _nsResolver, out typedVal);
+                        if (exception != null)
+                        {
+                            SendValidationEvent(ResXml.Sch_InvalidElementDefaultValue, new string[] { currentElementDecl.DefaultValueRaw, QNameString(_context.LocalName, _context.Namespace) });
                         }
-                        else {
-                            context.IsDefault = true;
+                        else
+                        {
+                            _context.IsDefault = true;
                         }
                     }
-                    else {
-                        context.IsDefault = true;
+                    else
+                    {
+                        _context.IsDefault = true;
                         typedVal = currentElementDecl.DefaultValueTyped;
                     }
                 }
-                else {
+                else
+                {
                     typedVal = CheckElementValue(stringValue);
                 }
                 XsdSimpleValue simpleValue = typedVal as XsdSimpleValue;
                 XmlSchemaDatatype dtype = currentElementDecl.Datatype;
-                if (simpleValue != null) {
+                if (simpleValue != null)
+                {
                     memberType = simpleValue.XmlType;
                     typedVal = simpleValue.TypedValue;
                     dtype = memberType.Datatype;
@@ -1241,26 +1484,32 @@ namespace Microsoft.Xml.Schema {
             return typedVal;
         }
 
-        private object ValidateAtomicValue(object parsedValue, out XmlSchemaSimpleType memberType) {
+        private object ValidateAtomicValue(object parsedValue, out XmlSchemaSimpleType memberType)
+        {
             memberType = null;
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
             object typedValue = null;
-            if (!context.IsNill) {
+            if (!_context.IsNill)
+            {
                 SchemaDeclBase decl = currentElementDecl as SchemaDeclBase;
                 XmlSchemaDatatype dtype = currentElementDecl.Datatype;
-                Exception exception = dtype.TryParseValue(parsedValue, nameTable, nsResolver, out typedValue);
-                if (exception != null) {
+                Exception exception = dtype.TryParseValue(parsedValue, _nameTable, _nsResolver, out typedValue);
+                if (exception != null)
+                {
                     string stringValue = parsedValue as string;
-                    if (stringValue == null) {
+                    if (stringValue == null)
+                    {
                         stringValue = XmlSchemaDatatype.ConcatenatedToString(parsedValue);
                     }
-                    SendValidationEvent(ResXml.Sch_ElementValueDataTypeDetailed, new string[] { QNameString(context.LocalName, context.Namespace), stringValue, GetTypeName(decl), exception.Message }, exception);
+                    SendValidationEvent(ResXml.Sch_ElementValueDataTypeDetailed, new string[] { QNameString(_context.LocalName, _context.Namespace), stringValue, GetTypeName(decl), exception.Message }, exception);
                     return null;
                 }
-                if (!decl.CheckValue(typedValue)) {
-                    SendValidationEvent(ResXml.Sch_FixedElementValue, QNameString(context.LocalName, context.Namespace));
+                if (!decl.CheckValue(typedValue))
+                {
+                    SendValidationEvent(ResXml.Sch_FixedElementValue, QNameString(_context.LocalName, _context.Namespace));
                 }
-                if (dtype.Variety == XmlSchemaDatatypeVariety.Union) {
+                if (dtype.Variety == XmlSchemaDatatypeVariety.Union)
+                {
                     XsdSimpleValue simpleValue = typedValue as XsdSimpleValue;
                     Debug.Assert(simpleValue != null);
                     memberType = simpleValue.XmlType;
@@ -1272,184 +1521,231 @@ namespace Microsoft.Xml.Schema {
             return typedValue;
         }
 
-        private string GetTypeName(SchemaDeclBase decl) {
+        private string GetTypeName(SchemaDeclBase decl)
+        {
             Debug.Assert(decl != null && decl.SchemaType != null);
             string typeName = decl.SchemaType.QualifiedName.ToString();
-            if (typeName.Length == 0) {
+            if (typeName.Length == 0)
+            {
                 typeName = decl.Datatype.TypeCodeString;
             }
             return typeName;
         }
 
-        private void SaveTextValue(object value) {
+        private void SaveTextValue(object value)
+        {
             string s = value.ToString(); //For strings, which will mostly be the case, ToString() will return this. For other typedValues, need to go through value converter (eg: TimeSpan, DateTime etc)
-            textValue.Append(s);
+            _textValue.Append(s);
         }
 
-        private void Push(XmlQualifiedName elementName) {
-            context = (ValidationState)validationStack.Push();
-            if (context == null) {
-                context = new ValidationState();
-                validationStack.AddToTop(context);
+        private void Push(XmlQualifiedName elementName)
+        {
+            _context = (ValidationState)_validationStack.Push();
+            if (_context == null)
+            {
+                _context = new ValidationState();
+                _validationStack.AddToTop(_context);
             }
-            context.LocalName = elementName.Name;
-            context.Namespace = elementName.Namespace;
-            context.HasMatched = false;
-            context.IsNill = false;
-            context.IsDefault = false;
-            context.CheckRequiredAttribute = true;
-            context.ValidationSkipped = false;
-            context.Validity = XmlSchemaValidity.NotKnown;
-            context.NeedValidateChildren = false;
-            context.ProcessContents = processContents;
-            context.ElementDeclBeforeXsi = null;
-            context.Constr = null; //resetting the constraints to be null incase context != null
+            _context.LocalName = elementName.Name;
+            _context.Namespace = elementName.Namespace;
+            _context.HasMatched = false;
+            _context.IsNill = false;
+            _context.IsDefault = false;
+            _context.CheckRequiredAttribute = true;
+            _context.ValidationSkipped = false;
+            _context.Validity = XmlSchemaValidity.NotKnown;
+            _context.NeedValidateChildren = false;
+            _context.ProcessContents = _processContents;
+            _context.ElementDeclBeforeXsi = null;
+            _context.Constr = null; //resetting the constraints to be null incase context != null
                                    // when pushing onto stack;
         }
 
-        private    void Pop() {
-            Debug.Assert(validationStack.Length > 1);
-            ValidationState previousContext = (ValidationState)validationStack.Pop();
+        private void Pop()
+        {
+            Debug.Assert(_validationStack.Length > 1);
+            ValidationState previousContext = (ValidationState)_validationStack.Pop();
 
-            if (startIDConstraint == validationStack.Length) {
-                startIDConstraint = -1;
+            if (_startIDConstraint == _validationStack.Length)
+            {
+                _startIDConstraint = -1;
             }
-            context = (ValidationState)validationStack.Peek();
-            if (previousContext.Validity == XmlSchemaValidity.Invalid) { //Should set current context's validity to that of what was popped now in case of Invalid
-                context.Validity = XmlSchemaValidity.Invalid;
+            _context = (ValidationState)_validationStack.Peek();
+            if (previousContext.Validity == XmlSchemaValidity.Invalid)
+            { //Should set current context's validity to that of what was popped now in case of Invalid
+                _context.Validity = XmlSchemaValidity.Invalid;
             }
-            if (previousContext.ValidationSkipped) {
-                context.ValidationSkipped = true;
+            if (previousContext.ValidationSkipped)
+            {
+                _context.ValidationSkipped = true;
             }
-            processContents = context.ProcessContents;
+            _processContents = _context.ProcessContents;
         }
 
-        private void AddXsiAttributes(ArrayList attList) {
+        private void AddXsiAttributes(ArrayList attList)
+        {
             BuildXsiAttributes();
-            if (attPresence[xsiTypeSO.QualifiedName] == null) {
-                attList.Add(xsiTypeSO);
+            if (_attPresence[s_xsiTypeSO.QualifiedName] == null)
+            {
+                attList.Add(s_xsiTypeSO);
             }
-            if (attPresence[xsiNilSO.QualifiedName] == null) {
-                attList.Add(xsiNilSO);
+            if (_attPresence[s_xsiNilSO.QualifiedName] == null)
+            {
+                attList.Add(s_xsiNilSO);
             }
-            if (attPresence[xsiSLSO.QualifiedName] == null) {
-                attList.Add(xsiSLSO);
+            if (_attPresence[s_xsiSLSO.QualifiedName] == null)
+            {
+                attList.Add(s_xsiSLSO);
             }
-            if (attPresence[xsiNoNsSLSO.QualifiedName] == null) {
-                attList.Add(xsiNoNsSLSO);
+            if (_attPresence[s_xsiNoNsSLSO.QualifiedName] == null)
+            {
+                attList.Add(s_xsiNoNsSLSO);
             }
         }
 
-        private SchemaElementDecl FastGetElementDecl(XmlQualifiedName elementName, object particle) {
+        private SchemaElementDecl FastGetElementDecl(XmlQualifiedName elementName, object particle)
+        {
             SchemaElementDecl elementDecl = null;
-            if (particle != null) {
+            if (particle != null)
+            {
                 XmlSchemaElement element = particle as XmlSchemaElement;
-                if (element != null) {
+                if (element != null)
+                {
                     elementDecl = element.ElementDecl;
                 }
-                else {
+                else
+                {
                     XmlSchemaAny any = (XmlSchemaAny)particle;
-                    processContents = any.ProcessContentsCorrect;
+                    _processContents = any.ProcessContentsCorrect;
                 }
             }
-            if (elementDecl == null && processContents != XmlSchemaContentProcessing.Skip) {
-                if (isRoot && partialValidationType != null) {
-                    if (partialValidationType is XmlSchemaElement) {
-                        XmlSchemaElement element = (XmlSchemaElement)partialValidationType;
-                        if (elementName.Equals(element.QualifiedName)) {
+            if (elementDecl == null && _processContents != XmlSchemaContentProcessing.Skip)
+            {
+                if (_isRoot && _partialValidationType != null)
+                {
+                    if (_partialValidationType is XmlSchemaElement)
+                    {
+                        XmlSchemaElement element = (XmlSchemaElement)_partialValidationType;
+                        if (elementName.Equals(element.QualifiedName))
+                        {
                             elementDecl = element.ElementDecl;
                         }
-                        else {
+                        else
+                        {
                             SendValidationEvent(ResXml.Sch_SchemaElementNameMismatch, elementName.ToString(), element.QualifiedName.ToString());
                         }
                     }
-                    else if (partialValidationType is XmlSchemaType) { //Element name is wildcard
-                        XmlSchemaType type = (XmlSchemaType)partialValidationType;
+                    else if (_partialValidationType is XmlSchemaType)
+                    { //Element name is wildcard
+                        XmlSchemaType type = (XmlSchemaType)_partialValidationType;
                         elementDecl = type.ElementDecl;
                     }
-                    else { //its XmlSchemaAttribute
-                        Debug.Assert(partialValidationType is XmlSchemaAttribute);
+                    else
+                    { //its XmlSchemaAttribute
+                        Debug.Assert(_partialValidationType is XmlSchemaAttribute);
                         SendValidationEvent(ResXml.Sch_ValidateElementInvalidCall, string.Empty);
                     }
                 }
-                else {
-                    elementDecl = compiledSchemaInfo.GetElementDecl(elementName);
+                else
+                {
+                    elementDecl = _compiledSchemaInfo.GetElementDecl(elementName);
                 }
             }
             return elementDecl;
         }
 
-        private SchemaElementDecl CheckXsiTypeAndNil(SchemaElementDecl elementDecl, string xsiType, string xsiNil, ref bool declFound) {
+        private SchemaElementDecl CheckXsiTypeAndNil(SchemaElementDecl elementDecl, string xsiType, string xsiNil, ref bool declFound)
+        {
             XmlQualifiedName xsiTypeName = XmlQualifiedName.Empty;
-            if (xsiType != null) {
+            if (xsiType != null)
+            {
                 object typedVal = null;
-                Exception exception = dtQName.TryParseValue(xsiType, nameTable, nsResolver, out typedVal);
-                if (exception != null) {
-                    SendValidationEvent(ResXml.Sch_InvalidValueDetailedAttribute, new string[] { "type", xsiType, dtQName.TypeCodeString, exception.Message }, exception);
+                Exception exception = s_dtQName.TryParseValue(xsiType, _nameTable, _nsResolver, out typedVal);
+                if (exception != null)
+                {
+                    SendValidationEvent(ResXml.Sch_InvalidValueDetailedAttribute, new string[] { "type", xsiType, s_dtQName.TypeCodeString, exception.Message }, exception);
                 }
-                else {
+                else
+                {
                     xsiTypeName = typedVal as XmlQualifiedName;
                 }
             }
-            if (elementDecl != null) { //nillable is not dependent on xsi:type.
-                if (elementDecl.IsNillable) {
-                    if (xsiNil != null) {
-                        context.IsNill = XmlConvert.ToBoolean(xsiNil);
-                        if (context.IsNill && elementDecl.Presence == SchemaDeclBase.Use.Fixed) {
-                            Debug.Assert(elementDecl.DefaultValueTyped != null);				
+            if (elementDecl != null)
+            { //nillable is not dependent on xsi:type.
+                if (elementDecl.IsNillable)
+                {
+                    if (xsiNil != null)
+                    {
+                        _context.IsNill = XmlConvert.ToBoolean(xsiNil);
+                        if (_context.IsNill && elementDecl.Presence == SchemaDeclBase.Use.Fixed)
+                        {
+                            Debug.Assert(elementDecl.DefaultValueTyped != null);
                             SendValidationEvent(ResXml.Sch_XsiNilAndFixed);
                         }
                     }
                 }
-                else if (xsiNil != null) {
+                else if (xsiNil != null)
+                {
                     SendValidationEvent(ResXml.Sch_InvalidXsiNill);
                 }
             }
-            if (xsiTypeName.IsEmpty) {
-                if (elementDecl != null && elementDecl.IsAbstract) {
-                    SendValidationEvent(ResXml.Sch_AbstractElement, QNameString(context.LocalName, context.Namespace));
+            if (xsiTypeName.IsEmpty)
+            {
+                if (elementDecl != null && elementDecl.IsAbstract)
+                {
+                    SendValidationEvent(ResXml.Sch_AbstractElement, QNameString(_context.LocalName, _context.Namespace));
                     elementDecl = null;
                 }
             }
-            else {
-                SchemaElementDecl elementDeclXsi = compiledSchemaInfo.GetTypeDecl(xsiTypeName);
+            else
+            {
+                SchemaElementDecl elementDeclXsi = _compiledSchemaInfo.GetTypeDecl(xsiTypeName);
                 XmlSeverityType severity = XmlSeverityType.Warning;
-                if (HasSchema && processContents == XmlSchemaContentProcessing.Strict) {
+                if (HasSchema && _processContents == XmlSchemaContentProcessing.Strict)
+                {
                     severity = XmlSeverityType.Error;
                 }
-                if (elementDeclXsi == null && xsiTypeName.Namespace == NsXs) {
+                if (elementDeclXsi == null && xsiTypeName.Namespace == _nsXs)
+                {
                     XmlSchemaType schemaType = DatatypeImplementation.GetSimpleTypeFromXsdType(xsiTypeName);
-                    if (schemaType == null) { //try getting complexType - xs:anyType
+                    if (schemaType == null)
+                    { //try getting complexType - xs:anyType
                         schemaType = XmlSchemaType.GetBuiltInComplexType(xsiTypeName);
                     }
-                    if (schemaType != null) {
+                    if (schemaType != null)
+                    {
                         elementDeclXsi = schemaType.ElementDecl;
                     }
-
                 }
-                if (elementDeclXsi == null) {
+                if (elementDeclXsi == null)
+                {
                     SendValidationEvent(ResXml.Sch_XsiTypeNotFound, xsiTypeName.ToString(), severity);
                     elementDecl = null;
                 }
-                else {
+                else
+                {
                     declFound = true;
-                    if (elementDeclXsi.IsAbstract) {
+                    if (elementDeclXsi.IsAbstract)
+                    {
                         SendValidationEvent(ResXml.Sch_XsiTypeAbstract, xsiTypeName.ToString(), severity);
                         elementDecl = null;
                     }
-                    else if (elementDecl != null && !XmlSchemaType.IsDerivedFrom(elementDeclXsi.SchemaType,elementDecl.SchemaType,elementDecl.Block)) {
-                        SendValidationEvent(ResXml.Sch_XsiTypeBlockedEx, new string[] { xsiTypeName.ToString(), QNameString(context.LocalName, context.Namespace) });
+                    else if (elementDecl != null && !XmlSchemaType.IsDerivedFrom(elementDeclXsi.SchemaType, elementDecl.SchemaType, elementDecl.Block))
+                    {
+                        SendValidationEvent(ResXml.Sch_XsiTypeBlockedEx, new string[] { xsiTypeName.ToString(), QNameString(_context.LocalName, _context.Namespace) });
                         elementDecl = null;
                     }
-                    else {
-                        if (elementDecl != null) { //Get all element decl properties before assigning xsi:type decl; nillable already checked
+                    else
+                    {
+                        if (elementDecl != null)
+                        { //Get all element decl properties before assigning xsi:type decl; nillable already checked
                             elementDeclXsi = elementDeclXsi.Clone(); //Before updating properties onto xsi:type decl, clone it
                             elementDeclXsi.Constraints = elementDecl.Constraints;
                             elementDeclXsi.DefaultValueRaw = elementDecl.DefaultValueRaw;
                             elementDeclXsi.DefaultValueTyped = elementDecl.DefaultValueTyped;
                             elementDeclXsi.Block = elementDecl.Block;
                         }
-                        context.ElementDeclBeforeXsi = elementDecl;
+                        _context.ElementDeclBeforeXsi = elementDecl;
                         elementDecl = elementDeclXsi;
                     }
                 }
@@ -1457,42 +1753,54 @@ namespace Microsoft.Xml.Schema {
             return elementDecl;
         }
 
-        private void ThrowDeclNotFoundWarningOrError(bool declFound) {
-            if (declFound) { //But invalid, so discontinue processing of children
-                processContents = context.ProcessContents = XmlSchemaContentProcessing.Skip;
-                context.NeedValidateChildren = false;
+        private void ThrowDeclNotFoundWarningOrError(bool declFound)
+        {
+            if (declFound)
+            { //But invalid, so discontinue processing of children
+                _processContents = _context.ProcessContents = XmlSchemaContentProcessing.Skip;
+                _context.NeedValidateChildren = false;
             }
-            else if (HasSchema && processContents == XmlSchemaContentProcessing.Strict) { //Error and skip validation for children
-                processContents = context.ProcessContents = XmlSchemaContentProcessing.Skip;
-                context.NeedValidateChildren = false;
-                SendValidationEvent(ResXml.Sch_UndeclaredElement, QNameString(context.LocalName, context.Namespace));
+            else if (HasSchema && _processContents == XmlSchemaContentProcessing.Strict)
+            { //Error and skip validation for children
+                _processContents = _context.ProcessContents = XmlSchemaContentProcessing.Skip;
+                _context.NeedValidateChildren = false;
+                SendValidationEvent(ResXml.Sch_UndeclaredElement, QNameString(_context.LocalName, _context.Namespace));
             }
-            else {
-                SendValidationEvent(ResXml.Sch_NoElementSchemaFound, QNameString(context.LocalName, context.Namespace), XmlSeverityType.Warning);
+            else
+            {
+                SendValidationEvent(ResXml.Sch_NoElementSchemaFound, QNameString(_context.LocalName, _context.Namespace), XmlSeverityType.Warning);
             }
         }
 
-        private void CheckElementProperties () {
-          if (context.ElementDecl.IsAbstract) {
-              SendValidationEvent(ResXml.Sch_AbstractElement, QNameString(context.LocalName, context.Namespace));
-          }
+        private void CheckElementProperties()
+        {
+            if (_context.ElementDecl.IsAbstract)
+            {
+                SendValidationEvent(ResXml.Sch_AbstractElement, QNameString(_context.LocalName, _context.Namespace));
+            }
         }
 
-        private void ValidateStartElementIdentityConstraints() {
+        private void ValidateStartElementIdentityConstraints()
+        {
             // added on June 15, set the context here, so the stack can have them
-            if (ProcessIdentityConstraints && context.ElementDecl.Constraints != null) {
+            if (ProcessIdentityConstraints && _context.ElementDecl.Constraints != null)
+            {
                 AddIdentityConstraints();
             }
             //foreach constraint in stack (including the current one)
-            if (HasIdentityConstraints) {
+            if (HasIdentityConstraints)
+            {
                 ElementIdentityConstraints();
             }
         }
 
-        private SchemaAttDef CheckIsXmlAttribute(XmlQualifiedName attQName) {
+        private SchemaAttDef CheckIsXmlAttribute(XmlQualifiedName attQName)
+        {
             SchemaAttDef attdef = null;
-            if (Ref.Equal(attQName.Namespace, NsXml) && (validationFlags & XmlSchemaValidationFlags.AllowXmlAttributes) != 0) {  //Need to check if this attribute is an xml attribute
-                if (!compiledSchemaInfo.Contains(NsXml)) { //We dont have a schema for xml namespace
+            if (Ref.Equal(attQName.Namespace, _nsXml) && (_validationFlags & XmlSchemaValidationFlags.AllowXmlAttributes) != 0)
+            {  //Need to check if this attribute is an xml attribute
+                if (!_compiledSchemaInfo.Contains(_nsXml))
+                { //We dont have a schema for xml namespace
                     // It can happen that the schemaSet already contains the schema for xml namespace
                     //   and we just have a stale compiled schema info (for example if the same schema set is used
                     //   by two validators at the same time and the one before us added the xml namespace schema
@@ -1508,33 +1816,39 @@ namespace Microsoft.Xml.Schema {
                     //   for bunch of other reasons, so trying to add our built-in schema won't make it worse.
                     AddXmlNamespaceSchema();
                 }
-                compiledSchemaInfo.AttributeDecls.TryGetValue(attQName, out attdef); //the xml attributes are all global attributes
+                _compiledSchemaInfo.AttributeDecls.TryGetValue(attQName, out attdef); //the xml attributes are all global attributes
             }
             return attdef;
         }
 
-        private void AddXmlNamespaceSchema() {
+        private void AddXmlNamespaceSchema()
+        {
             XmlSchemaSet localSet = new XmlSchemaSet(); //Avoiding cost of incremental compilation checks by compiling schema in a seperate set and adding compiled set
             localSet.Add(Preprocessor.GetBuildInSchema());
             localSet.Compile();
-            schemaSet.Add(localSet);
+            _schemaSet.Add(localSet);
             RecompileSchemaSet();
         }
 
-        internal object CheckMixedValueConstraint(string elementValue) {
-            SchemaElementDecl elementDecl = context.ElementDecl;
+        internal object CheckMixedValueConstraint(string elementValue)
+        {
+            SchemaElementDecl elementDecl = _context.ElementDecl;
             Debug.Assert(elementDecl.ContentValidator.ContentType == XmlSchemaContentType.Mixed && elementDecl.DefaultValueTyped != null);
-            if (context.IsNill) { //Nil and fixed is error; Nil and default is compile time error
+            if (_context.IsNill)
+            { //Nil and fixed is error; Nil and default is compile time error
                 return null;
             }
-            if (elementValue.Length == 0) {
-                context.IsDefault = true;
+            if (elementValue.Length == 0)
+            {
+                _context.IsDefault = true;
                 return elementDecl.DefaultValueTyped;
             }
-            else {
+            else
+            {
                 SchemaDeclBase decl = elementDecl as SchemaDeclBase;
                 Debug.Assert(decl != null);
-                if (decl.Presence == SchemaDeclBase.Use.Fixed && !elementValue.Equals(elementDecl.DefaultValueRaw)) { //check string equality for mixed as it is untyped.
+                if (decl.Presence == SchemaDeclBase.Use.Fixed && !elementValue.Equals(elementDecl.DefaultValueRaw))
+                { //check string equality for mixed as it is untyped.
                     SendValidationEvent(ResXml.Sch_FixedElementValue, elementDecl.Name.ToString());
                 }
                 return elementValue;
@@ -1543,68 +1857,87 @@ namespace Microsoft.Xml.Schema {
 
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
-        private void LoadSchema(string uri, string url) {
-            Debug.Assert(xmlResolver != null);
+        private void LoadSchema(string uri, string url)
+        {
+            Debug.Assert(_xmlResolver != null);
             XmlReader Reader = null;
-            try {
-                Uri ruri = xmlResolver.ResolveUri(sourceUri, url);
-                Stream stm = (Stream)xmlResolver.GetEntity(ruri,null,null);
-                XmlReaderSettings readerSettings = schemaSet.ReaderSettings;
+            try
+            {
+                Uri ruri = _xmlResolver.ResolveUri(_sourceUri, url);
+                Stream stm = (Stream)_xmlResolver.GetEntity(ruri, null, null);
+                XmlReaderSettings readerSettings = _schemaSet.ReaderSettings;
                 readerSettings.CloseInput = true;
-                readerSettings.XmlResolver = xmlResolver;
+                readerSettings.XmlResolver = _xmlResolver;
                 Reader = XmlReader.Create(stm, readerSettings, ruri.ToString());
-                schemaSet.Add(uri, Reader, validatedNamespaces);
-                while(Reader.Read());// wellformness check
+                _schemaSet.Add(uri, Reader, _validatedNamespaces);
+                while (Reader.Read()) ;// wellformness check
             }
-            catch(XmlSchemaException e) {
-                SendValidationEvent(ResXml.Sch_CannotLoadSchema, new string[] {uri, e.Message}, e);
+            catch (XmlSchemaException e)
+            {
+                SendValidationEvent(ResXml.Sch_CannotLoadSchema, new string[] { uri, e.Message }, e);
             }
-            catch(Exception e) {
-                SendValidationEvent(ResXml.Sch_CannotLoadSchema, new string[] {uri, e.Message}, e, XmlSeverityType.Warning);
+            catch (Exception e)
+            {
+                SendValidationEvent(ResXml.Sch_CannotLoadSchema, new string[] { uri, e.Message }, e, XmlSeverityType.Warning);
             }
-            finally {
-                if (Reader != null) {
+            finally
+            {
+                if (Reader != null)
+                {
                     Reader.Close();
                 }
             }
         }
 
 
-        internal void RecompileSchemaSet() {
-            if (!schemaSet.IsCompiled) {
-                try {
-                    schemaSet.Compile();
+        internal void RecompileSchemaSet()
+        {
+            if (!_schemaSet.IsCompiled)
+            {
+                try
+                {
+                    _schemaSet.Compile();
                 }
-                catch(XmlSchemaException e) {
+                catch (XmlSchemaException e)
+                {
                     SendValidationEvent(e);
                 }
             }
-            compiledSchemaInfo = schemaSet.CompiledInfo; //Fetch compiled info from set
+            _compiledSchemaInfo = _schemaSet.CompiledInfo; //Fetch compiled info from set
         }
 
-        private void ProcessTokenizedType(XmlTokenizedType ttype, string name, bool attrValue) {
-            switch(ttype) {
+        private void ProcessTokenizedType(XmlTokenizedType ttype, string name, bool attrValue)
+        {
+            switch (ttype)
+            {
                 case XmlTokenizedType.ID:
-                    if (ProcessIdentityConstraints) {
-                        if (FindId(name) != null) {
-                            if (attrValue) {
-                                attrValid = false;
+                    if (ProcessIdentityConstraints)
+                    {
+                        if (FindId(name) != null)
+                        {
+                            if (attrValue)
+                            {
+                                _attrValid = false;
                             }
                             SendValidationEvent(ResXml.Sch_DupId, name);
                         }
-                        else {
-                            if (IDs == null) { //ADD ID
-                                IDs = new Hashtable();
+                        else
+                        {
+                            if (_IDs == null)
+                            { //ADD ID
+                                _IDs = new Hashtable();
                             }
-                            IDs.Add(name, context.LocalName);
+                            _IDs.Add(name, _context.LocalName);
                         }
                     }
                     break;
                 case XmlTokenizedType.IDREF:
-                    if (ProcessIdentityConstraints) {
+                    if (ProcessIdentityConstraints)
+                    {
                         object p = FindId(name);
-                        if (p == null) { // add it to linked list to check it later
-                            idRefListHead = new IdRefNode(idRefListHead, name, positionInfo.LineNumber, positionInfo.LinePosition);
+                        if (p == null)
+                        { // add it to linked list to check it later
+                            _idRefListHead = new IdRefNode(_idRefListHead, name, _positionInfo.LineNumber, _positionInfo.LinePosition);
                         }
                     }
                     break;
@@ -1616,7 +1949,8 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        private object CheckAttributeValue(object value, SchemaAttDef attdef) {
+        private object CheckAttributeValue(object value, SchemaAttDef attdef)
+        {
             object typedValue = null;
             SchemaDeclBase decl = attdef as SchemaDeclBase;
 
@@ -1625,156 +1959,196 @@ namespace Microsoft.Xml.Schema {
             string stringValue = value as string;
             Exception exception = null;
 
-            if (stringValue != null) { //TODO: Combine both ParseValue with same signature in XmlSchemaDatatype
-                exception = dtype.TryParseValue(stringValue, nameTable, nsResolver, out typedValue);
+            if (stringValue != null)
+            { //TODO: Combine both ParseValue with same signature in XmlSchemaDatatype
+                exception = dtype.TryParseValue(stringValue, _nameTable, _nsResolver, out typedValue);
                 if (exception != null) goto Error;
             }
-            else { //Calling object ParseValue for checking facets
-                exception = dtype.TryParseValue(value, nameTable, nsResolver, out typedValue);
+            else
+            { //Calling object ParseValue for checking facets
+                exception = dtype.TryParseValue(value, _nameTable, _nsResolver, out typedValue);
                 if (exception != null) goto Error;
             }
-            if (!decl.CheckValue(typedValue)) {
-                attrValid = false;
+            if (!decl.CheckValue(typedValue))
+            {
+                _attrValid = false;
                 SendValidationEvent(ResXml.Sch_FixedAttributeValue, attdef.Name.ToString());
             }
             return typedValue;
 
         Error:
-            attrValid = false;
-            if (stringValue == null) {
+            _attrValid = false;
+            if (stringValue == null)
+            {
                 stringValue = XmlSchemaDatatype.ConcatenatedToString(value);
             }
             SendValidationEvent(ResXml.Sch_AttributeValueDataTypeDetailed, new string[] { attdef.Name.ToString(), stringValue, GetTypeName(decl), exception.Message }, exception);
             return null;
         }
 
-        private object CheckElementValue(string stringValue) {
+        private object CheckElementValue(string stringValue)
+        {
             object typedValue = null;
-            SchemaDeclBase decl = context.ElementDecl as SchemaDeclBase;
+            SchemaDeclBase decl = _context.ElementDecl as SchemaDeclBase;
 
             XmlSchemaDatatype dtype = decl.Datatype;
             Debug.Assert(dtype != null);
 
-            Exception exception = dtype.TryParseValue(stringValue, nameTable, nsResolver, out typedValue);
-            if (exception != null) {
-                SendValidationEvent(ResXml.Sch_ElementValueDataTypeDetailed, new string[] { QNameString(context.LocalName, context.Namespace), stringValue, GetTypeName(decl), exception.Message }, exception);
+            Exception exception = dtype.TryParseValue(stringValue, _nameTable, _nsResolver, out typedValue);
+            if (exception != null)
+            {
+                SendValidationEvent(ResXml.Sch_ElementValueDataTypeDetailed, new string[] { QNameString(_context.LocalName, _context.Namespace), stringValue, GetTypeName(decl), exception.Message }, exception);
                 return null;
             }
-            if (!decl.CheckValue(typedValue)) {
-                SendValidationEvent(ResXml.Sch_FixedElementValue, QNameString(context.LocalName, context.Namespace));
+            if (!decl.CheckValue(typedValue))
+            {
+                SendValidationEvent(ResXml.Sch_FixedElementValue, QNameString(_context.LocalName, _context.Namespace));
             }
             return typedValue;
         }
 
-        private void CheckTokenizedTypes(XmlSchemaDatatype dtype, object typedValue, bool attrValue) {
+        private void CheckTokenizedTypes(XmlSchemaDatatype dtype, object typedValue, bool attrValue)
+        {
             // Check special types
-            if (typedValue == null) {
+            if (typedValue == null)
+            {
                 return;
             }
             XmlTokenizedType ttype = dtype.TokenizedType;
-            if (ttype == XmlTokenizedType.ENTITY || ttype == XmlTokenizedType.ID || ttype == XmlTokenizedType.IDREF) {
-                if (dtype.Variety == XmlSchemaDatatypeVariety.List) {
+            if (ttype == XmlTokenizedType.ENTITY || ttype == XmlTokenizedType.ID || ttype == XmlTokenizedType.IDREF)
+            {
+                if (dtype.Variety == XmlSchemaDatatypeVariety.List)
+                {
                     string[] ss = (string[])typedValue;
-                    for (int i = 0; i < ss.Length; ++i) {
+                    for (int i = 0; i < ss.Length; ++i)
+                    {
                         ProcessTokenizedType(dtype.TokenizedType, ss[i], attrValue);
                     }
                 }
-                else {
+                else
+                {
                     ProcessTokenizedType(dtype.TokenizedType, (string)typedValue, attrValue);
                 }
             }
         }
 
-        private object  FindId(string name) {
-            return IDs == null ? null : IDs[name];
+        private object FindId(string name)
+        {
+            return _IDs == null ? null : _IDs[name];
         }
 
-        private void CheckForwardRefs() {
-            IdRefNode next = idRefListHead;
-            while (next != null) {
-                if(FindId(next.Id) == null) {
-                    SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_UndeclaredId, next.Id, this.sourceUriString, next.LineNo, next.LinePos), XmlSeverityType.Error);
+        private void CheckForwardRefs()
+        {
+            IdRefNode next = _idRefListHead;
+            while (next != null)
+            {
+                if (FindId(next.Id) == null)
+                {
+                    SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_UndeclaredId, next.Id, _sourceUriString, next.LineNo, next.LinePos), XmlSeverityType.Error);
                 }
                 IdRefNode ptr = next.Next;
                 next.Next = null; // unhook each object so it is cleaned up by Garbage Collector
                 next = ptr;
             }
             // not needed any more.
-            idRefListHead = null;
+            _idRefListHead = null;
         }
 
 
-        private bool HasIdentityConstraints {
-            get { return ProcessIdentityConstraints && startIDConstraint != -1; }
+        private bool HasIdentityConstraints
+        {
+            get { return ProcessIdentityConstraints && _startIDConstraint != -1; }
         }
 
-        internal bool ProcessIdentityConstraints {
-            get {
-                return (validationFlags & XmlSchemaValidationFlags.ProcessIdentityConstraints) != 0;
+        internal bool ProcessIdentityConstraints
+        {
+            get
+            {
+                return (_validationFlags & XmlSchemaValidationFlags.ProcessIdentityConstraints) != 0;
             }
         }
 
-        internal bool ReportValidationWarnings {
-            get {
-                return (validationFlags & XmlSchemaValidationFlags.ReportValidationWarnings) != 0;
+        internal bool ReportValidationWarnings
+        {
+            get
+            {
+                return (_validationFlags & XmlSchemaValidationFlags.ReportValidationWarnings) != 0;
             }
         }
 
-        internal bool ProcessInlineSchema {
-            get {
-                return (validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0;
+        internal bool ProcessInlineSchema
+        {
+            get
+            {
+                return (_validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0;
             }
         }
 
-        internal bool ProcessSchemaLocation {
-            get {
-                return (validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0;
+        internal bool ProcessSchemaLocation
+        {
+            get
+            {
+                return (_validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0;
             }
         }
 
-        internal bool ProcessSchemaHints {
-            get {
-                return (validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0 ||
-                       (validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0;
+        internal bool ProcessSchemaHints
+        {
+            get
+            {
+                return (_validationFlags & XmlSchemaValidationFlags.ProcessInlineSchema) != 0 ||
+                       (_validationFlags & XmlSchemaValidationFlags.ProcessSchemaLocation) != 0;
             }
         }
 
-        private void CheckStateTransition(ValidatorState toState, string methodName) {
-            if (!ValidStates[(int)currentState,(int)toState]) {
-                if (currentState == ValidatorState.None) {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStartTransition, new string[] { methodName, MethodNames[(int)ValidatorState.Start] }));
+        private void CheckStateTransition(ValidatorState toState, string methodName)
+        {
+            if (!ValidStates[(int)_currentState, (int)toState])
+            {
+                if (_currentState == ValidatorState.None)
+                {
+                    throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStartTransition, new string[] { methodName, s_methodNames[(int)ValidatorState.Start] }));
                 }
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { MethodNames[(int)currentState], methodName }));
+                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], methodName }));
             }
-            currentState = toState;
+            _currentState = toState;
         }
 
-        private void ClearPSVI() {
-            if (textValue != null) {
-                textValue.Length = 0;
+        private void ClearPSVI()
+        {
+            if (_textValue != null)
+            {
+                _textValue.Length = 0;
             }
-            attPresence.Clear(); //Clear attributes hashtable for every element
-            wildID = null; //clear it for every element
+            _attPresence.Clear(); //Clear attributes hashtable for every element
+            _wildID = null; //clear it for every element
         }
 
-        private void CheckRequiredAttributes(SchemaElementDecl currentElementDecl) {
+        private void CheckRequiredAttributes(SchemaElementDecl currentElementDecl)
+        {
             Debug.Assert(currentElementDecl != null);
             Dictionary<XmlQualifiedName, SchemaAttDef> attributeDefs = currentElementDecl.AttDefs;
-            foreach(SchemaAttDef attdef in attributeDefs.Values) {
-                if (attPresence[attdef.Name] == null) {
-                    if (attdef.Presence == SchemaDeclBase.Use.Required || attdef.Presence == SchemaDeclBase.Use.RequiredFixed) {
+            foreach (SchemaAttDef attdef in attributeDefs.Values)
+            {
+                if (_attPresence[attdef.Name] == null)
+                {
+                    if (attdef.Presence == SchemaDeclBase.Use.Required || attdef.Presence == SchemaDeclBase.Use.RequiredFixed)
+                    {
                         SendValidationEvent(ResXml.Sch_MissRequiredAttribute, attdef.Name.ToString());
                     }
                 }
             }
         }
 
-        private XmlSchemaElement GetSchemaElement() {
-            SchemaElementDecl beforeXsiDecl = context.ElementDeclBeforeXsi;
-            SchemaElementDecl currentDecl = context.ElementDecl;
+        private XmlSchemaElement GetSchemaElement()
+        {
+            SchemaElementDecl beforeXsiDecl = _context.ElementDeclBeforeXsi;
+            SchemaElementDecl currentDecl = _context.ElementDecl;
 
-            if (beforeXsiDecl != null) { //Have a xsi:type
-                if (beforeXsiDecl.SchemaElement != null) {
+            if (beforeXsiDecl != null)
+            { //Have a xsi:type
+                if (beforeXsiDecl.SchemaElement != null)
+                {
                     XmlSchemaElement xsiElement = (XmlSchemaElement)beforeXsiDecl.SchemaElement.Clone(null);
                     xsiElement.SchemaTypeName = XmlQualifiedName.Empty; //Reset typeName on element as this might be different
                     xsiElement.SchemaType = currentDecl.SchemaType;
@@ -1786,16 +2160,20 @@ namespace Microsoft.Xml.Schema {
             return currentDecl.SchemaElement;
         }
 
-        internal string GetDefaultAttributePrefix(string attributeNS) {
-            IDictionary<string,string> namespaceDecls = nsResolver.GetNamespacesInScope(XmlNamespaceScope.All);
+        internal string GetDefaultAttributePrefix(string attributeNS)
+        {
+            IDictionary<string, string> namespaceDecls = _nsResolver.GetNamespacesInScope(XmlNamespaceScope.All);
             string defaultPrefix = null;
             string defaultNS;
 
-            foreach (KeyValuePair<string,string> pair in namespaceDecls) {
-                defaultNS = nameTable.Add(pair.Value);
-                if (Ref.Equal(defaultNS, attributeNS)) {
+            foreach (KeyValuePair<string, string> pair in namespaceDecls)
+            {
+                defaultNS = _nameTable.Add(pair.Value);
+                if (Ref.Equal(defaultNS, attributeNS))
+                {
                     defaultPrefix = pair.Key;
-                    if (defaultPrefix.Length != 0) { //Locate first non-empty prefix
+                    if (defaultPrefix.Length != 0)
+                    { //Locate first non-empty prefix
                         return defaultPrefix;
                     }
                 }
@@ -1803,94 +2181,114 @@ namespace Microsoft.Xml.Schema {
             return defaultPrefix;
         }
 
-        private void AddIdentityConstraints() {
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
-            context.Constr = new ConstraintStruct[currentElementDecl.Constraints.Length];
+        private void AddIdentityConstraints()
+        {
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
+            _context.Constr = new ConstraintStruct[currentElementDecl.Constraints.Length];
             int id = 0;
             for (int i = 0; i < currentElementDecl.Constraints.Length; ++i)
             {
-                context.Constr[id++] = new ConstraintStruct(currentElementDecl.Constraints[i]);
+                _context.Constr[id++] = new ConstraintStruct(currentElementDecl.Constraints[i]);
             } // foreach constraint /constraintstruct
 
             // added on June 19, make connections between new keyref tables with key/unique tables in stack
             // i can't put it in the above loop, coz there will be key on the same level
-            for (int i = 0; i < context.Constr.Length; ++i) {
-                if ( context.Constr[i].constraint.Role == CompiledIdentityConstraint.ConstraintRole.Keyref ) {
+            for (int i = 0; i < _context.Constr.Length; ++i)
+            {
+                if (_context.Constr[i].constraint.Role == CompiledIdentityConstraint.ConstraintRole.Keyref)
+                {
                     bool find = false;
                     // go upwards checking or only in this level
-                    for (int level = this.validationStack.Length - 1; level >= ((this.startIDConstraint >= 0) ? this.startIDConstraint : this.validationStack.Length - 1); level --) {
+                    for (int level = _validationStack.Length - 1; level >= ((_startIDConstraint >= 0) ? _startIDConstraint : _validationStack.Length - 1); level--)
+                    {
                         // no constraint for this level
-                        if (((ValidationState)(this.validationStack[level])).Constr == null) {
+                        if (((ValidationState)(_validationStack[level])).Constr == null)
+                        {
                             continue;
                         }
                         // else
-                        ConstraintStruct[] constraintStructures = ((ValidationState)this.validationStack[level]).Constr;
-                        for (int j = 0; j < constraintStructures.Length; ++j) {
-                            if (constraintStructures[j].constraint.name == context.Constr[i].constraint.refer) {
+                        ConstraintStruct[] constraintStructures = ((ValidationState)_validationStack[level]).Constr;
+                        for (int j = 0; j < constraintStructures.Length; ++j)
+                        {
+                            if (constraintStructures[j].constraint.name == _context.Constr[i].constraint.refer)
+                            {
                                 find = true;
-                                if (constraintStructures[j].keyrefTable == null) {
+                                if (constraintStructures[j].keyrefTable == null)
+                                {
                                     constraintStructures[j].keyrefTable = new Hashtable();
                                 }
-                                context.Constr[i].qualifiedTable = constraintStructures[j].keyrefTable;
+                                _context.Constr[i].qualifiedTable = constraintStructures[j].keyrefTable;
                                 break;
                             }
                         }
 
-                        if (find) {
+                        if (find)
+                        {
                             break;
                         }
                     }
-                    if (!find) {
+                    if (!find)
+                    {
                         // didn't find connections, throw exceptions
-                        SendValidationEvent(ResXml.Sch_RefNotInScope, QNameString(context.LocalName, context.Namespace));
+                        SendValidationEvent(ResXml.Sch_RefNotInScope, QNameString(_context.LocalName, _context.Namespace));
                     }
                 } // finished dealing with keyref
-
             }  // end foreach
 
             // initial set
-            if (this.startIDConstraint == -1) {
-                this.startIDConstraint = this.validationStack.Length - 1;
+            if (_startIDConstraint == -1)
+            {
+                _startIDConstraint = _validationStack.Length - 1;
             }
         }
 
-        private void ElementIdentityConstraints () {
-            SchemaElementDecl currentElementDecl = context.ElementDecl;
-            string localName = context.LocalName;
-            string namespaceUri = context.Namespace;
+        private void ElementIdentityConstraints()
+        {
+            SchemaElementDecl currentElementDecl = _context.ElementDecl;
+            string localName = _context.LocalName;
+            string namespaceUri = _context.Namespace;
 
-            for (int i = this.startIDConstraint; i < this.validationStack.Length; i ++) {
+            for (int i = _startIDConstraint; i < _validationStack.Length; i++)
+            {
                 // no constraint for this level
-                if (((ValidationState)(this.validationStack[i])).Constr == null) {
+                if (((ValidationState)(_validationStack[i])).Constr == null)
+                {
                     continue;
                 }
 
                 // else
-                ConstraintStruct[] constraintStructures = ((ValidationState)this.validationStack[i]).Constr;
-                for (int j = 0; j < constraintStructures.Length; ++j) {
+                ConstraintStruct[] constraintStructures = ((ValidationState)_validationStack[i]).Constr;
+                for (int j = 0; j < constraintStructures.Length; ++j)
+                {
                     // check selector from here
-                    if (constraintStructures[j].axisSelector.MoveToStartElement(localName, namespaceUri)) {
+                    if (constraintStructures[j].axisSelector.MoveToStartElement(localName, namespaceUri))
+                    {
                         // selector selects new node, activate a new set of fields
                         Debug.WriteLine("Selector Match!");
                         Debug.WriteLine("Name: " + localName + "\t|\tURI: " + namespaceUri + "\n");
 
                         // in which axisFields got updated
-                        constraintStructures[j].axisSelector.PushKS(positionInfo.LineNumber, positionInfo.LinePosition);
+                        constraintStructures[j].axisSelector.PushKS(_positionInfo.LineNumber, _positionInfo.LinePosition);
                     }
 
                     // axisFields is not null, but may be empty
-                    for (int k = 0; k < constraintStructures[j].axisFields.Count; ++k) {
+                    for (int k = 0; k < constraintStructures[j].axisFields.Count; ++k)
+                    {
                         LocatedActiveAxis laxis = (LocatedActiveAxis)constraintStructures[j].axisFields[k];
 
                         // check field from here
-                        if (laxis.MoveToStartElement(localName, namespaceUri)) {
+                        if (laxis.MoveToStartElement(localName, namespaceUri))
+                        {
                             Debug.WriteLine("Element Field Match!");
                             // checking simpleType / simpleContent
-                            if (currentElementDecl != null) {      // nextElement can be null when xml/xsd are not valid
-                                if (currentElementDecl.Datatype == null || currentElementDecl.ContentValidator.ContentType == XmlSchemaContentType.Mixed) {
+                            if (currentElementDecl != null)
+                            {      // nextElement can be null when xml/xsd are not valid
+                                if (currentElementDecl.Datatype == null || currentElementDecl.ContentValidator.ContentType == XmlSchemaContentType.Mixed)
+                                {
                                     SendValidationEvent(ResXml.Sch_FieldSimpleTypeExpected, localName);
                                 }
-                                else {
+                                else
+                                {
                                     // can't fill value here, wait till later....
                                     // fill type : xsdType
                                     laxis.isMatched = true;
@@ -1903,35 +2301,43 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        private void AttributeIdentityConstraints(string name, string ns, object obj, string sobj, XmlSchemaDatatype datatype) {
-            for (int ci = this.startIDConstraint; ci < this.validationStack.Length; ci ++) {
+        private void AttributeIdentityConstraints(string name, string ns, object obj, string sobj, XmlSchemaDatatype datatype)
+        {
+            for (int ci = _startIDConstraint; ci < _validationStack.Length; ci++)
+            {
                 // no constraint for this level
-                if (((ValidationState)(this.validationStack[ci])).Constr == null) {
+                if (((ValidationState)(_validationStack[ci])).Constr == null)
+                {
                     continue;
                 }
 
                 // else
-                ConstraintStruct[] constraintStructures = ((ValidationState)this.validationStack[ci]).Constr;
-                for (int i = 0; i < constraintStructures.Length; ++i) {
+                ConstraintStruct[] constraintStructures = ((ValidationState)_validationStack[ci]).Constr;
+                for (int i = 0; i < constraintStructures.Length; ++i)
+                {
                     // axisFields is not null, but may be empty
-                    for (int j = 0; j < constraintStructures[i].axisFields.Count; ++j) {
+                    for (int j = 0; j < constraintStructures[i].axisFields.Count; ++j)
+                    {
                         LocatedActiveAxis laxis = (LocatedActiveAxis)constraintStructures[i].axisFields[j];
 
                         // check field from here
-                        if (laxis.MoveToAttribute(name, ns)) {
+                        if (laxis.MoveToAttribute(name, ns))
+                        {
                             Debug.WriteLine("Attribute Field Match!");
                             //attribute is only simpletype, so needn't checking...
                             // can fill value here, yeah!!
                             Debug.WriteLine("Attribute Field Filling Value!");
                             Debug.WriteLine("Name: " + name + "\t|\tURI: " + ns + "\t|\tValue: " + obj + "\n");
-                            if (laxis.Ks[laxis.Column] != null) {
+                            if (laxis.Ks[laxis.Column] != null)
+                            {
                                 // should be evaluated to either an empty node-set or a node-set with exactly one member
                                 // two matches...
-                                SendValidationEvent (ResXml.Sch_FieldSingleValueExpected, name);
+                                SendValidationEvent(ResXml.Sch_FieldSingleValueExpected, name);
                             }
-                            else {
+                            else
+                            {
                                 Debug.Assert(datatype != null);
-                                laxis.Ks[laxis.Column] = new TypedObject (obj, sobj, datatype);
+                                laxis.Ks[laxis.Column] = new TypedObject(obj, sobj, datatype);
                             }
                         }
                     }
@@ -1939,38 +2345,47 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        private void EndElementIdentityConstraints(object typedValue, string stringValue, XmlSchemaDatatype datatype) {
-            string localName = context.LocalName;
-            string namespaceUri = context.Namespace;
-            for (int ci = this.validationStack.Length - 1; ci >= this.startIDConstraint; ci --) {
+        private void EndElementIdentityConstraints(object typedValue, string stringValue, XmlSchemaDatatype datatype)
+        {
+            string localName = _context.LocalName;
+            string namespaceUri = _context.Namespace;
+            for (int ci = _validationStack.Length - 1; ci >= _startIDConstraint; ci--)
+            {
                 // no constraint for this level
-                if (((ValidationState)(this.validationStack[ci])).Constr == null) {
+                if (((ValidationState)(_validationStack[ci])).Constr == null)
+                {
                     continue;
                 }
 
                 // else
-                ConstraintStruct[] constraints = ((ValidationState)this.validationStack[ci]).Constr;
-                for (int i = 0; i < constraints.Length; ++i) {
+                ConstraintStruct[] constraints = ((ValidationState)_validationStack[ci]).Constr;
+                for (int i = 0; i < constraints.Length; ++i)
+                {
                     // EndChildren
                     // axisFields is not null, but may be empty
-                    for (int j = 0; j < constraints[i].axisFields.Count; ++j) {
+                    for (int j = 0; j < constraints[i].axisFields.Count; ++j)
+                    {
                         LocatedActiveAxis laxis = (LocatedActiveAxis)constraints[i].axisFields[j];
 
                         // check field from here
                         // isMatched is false when nextElement is null. so needn't change this part.
-                        if (laxis.isMatched) {
+                        if (laxis.isMatched)
+                        {
                             Debug.WriteLine("Element Field Filling Value!");
                             Debug.WriteLine("Name: " + localName + "\t|\tURI: " + namespaceUri + "\t|\tValue: " + typedValue + "\n");
                             // fill value
                             laxis.isMatched = false;
-                            if (laxis.Ks[laxis.Column] != null) {
+                            if (laxis.Ks[laxis.Column] != null)
+                            {
                                 // [field...] should be evaluated to either an empty node-set or a node-set with exactly one member
                                 // two matches... already existing field value in the table.
-                                SendValidationEvent (ResXml.Sch_FieldSingleValueExpected, localName);
+                                SendValidationEvent(ResXml.Sch_FieldSingleValueExpected, localName);
                             }
-                            else {
+                            else
+                            {
                                 // for element, Reader.Value = "";
-                                if(typedValue != null && stringValue.Length != 0) {
+                                if (typedValue != null && stringValue.Length != 0)
+                                {
                                     laxis.Ks[laxis.Column] = new TypedObject(typedValue, stringValue, datatype);
                                 }
                             }
@@ -1979,55 +2394,64 @@ namespace Microsoft.Xml.Schema {
                         laxis.EndElement(localName, namespaceUri);
                     }
 
-                    if (constraints[i].axisSelector.EndElement(localName, namespaceUri)) {
+                    if (constraints[i].axisSelector.EndElement(localName, namespaceUri))
+                    {
                         // insert key sequence into hash (+ located active axis tuple leave for later)
                         KeySequence ks = constraints[i].axisSelector.PopKS();
                         // unqualified keysequence are not allowed
-                        switch (constraints[i].constraint.Role) {
-                        case CompiledIdentityConstraint.ConstraintRole.Key:
-                            if (! ks.IsQualified()) {
-                                //Key's fields can't be null...  if we can return context node's line info maybe it will be better
-                                //only keymissing & keyduplicate reporting cases are necessary to be dealt with... 3 places...
-                                SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_MissingKey, constraints[i].constraint.name.ToString(), sourceUriString, ks.PosLine, ks.PosCol));
-                            }
-                            else if (constraints[i].qualifiedTable.Contains (ks)) {
-                                // unique or key checking value confliction
-                                // for redundant key, reporting both occurings
-                                // doesn't work... how can i retrieve value out??
-//                                        KeySequence ks2 = (KeySequence) conuct.qualifiedTable[ks];
-                                SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_DuplicateKey,
-                                    new string[2] {ks.ToString(), constraints[i].constraint.name.ToString()},
-                                    sourceUriString, ks.PosLine, ks.PosCol));
-                            }
-                            else {
-                                constraints[i].qualifiedTable.Add (ks, ks);
-                            }
-                            break;
-
-                        case CompiledIdentityConstraint.ConstraintRole.Unique:
-
-                            if (constraints[i].qualifiedTable.Contains (ks)) {
-                                // unique or key checking confliction
-//                                        KeySequence ks2 = (KeySequence) conuct.qualifiedTable[ks];
-                                SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_DuplicateKey,
-                                    new string[2] {ks.ToString(), constraints[i].constraint.name.ToString()},
-                                    sourceUriString, ks.PosLine, ks.PosCol));
-                            }
-                            else {
-                                constraints[i].qualifiedTable.Add (ks, ks);
-                            }
-                            break;
-                        case CompiledIdentityConstraint.ConstraintRole.Keyref:
-                            // is there any possibility:
-                            // 2 keyrefs: value is equal, type is not
-                            // both put in the hashtable, 1 reference, 1 not
-                            if (constraints[i].qualifiedTable != null) { //Will be null in cases when the keyref is outside the scope of the key, that is not allowed by our impl
-                                if (! ks.IsQualified() || constraints[i].qualifiedTable.Contains (ks)) {
-                                    continue;
+                        switch (constraints[i].constraint.Role)
+                        {
+                            case CompiledIdentityConstraint.ConstraintRole.Key:
+                                if (!ks.IsQualified())
+                                {
+                                    //Key's fields can't be null...  if we can return context node's line info maybe it will be better
+                                    //only keymissing & keyduplicate reporting cases are necessary to be dealt with... 3 places...
+                                    SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_MissingKey, constraints[i].constraint.name.ToString(), _sourceUriString, ks.PosLine, ks.PosCol));
                                 }
-                                constraints[i].qualifiedTable.Add (ks, ks);
-                            }
-                        break;
+                                else if (constraints[i].qualifiedTable.Contains(ks))
+                                {
+                                    // unique or key checking value confliction
+                                    // for redundant key, reporting both occurings
+                                    // doesn't work... how can i retrieve value out??
+                                    //                                        KeySequence ks2 = (KeySequence) conuct.qualifiedTable[ks];
+                                    SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_DuplicateKey,
+                                        new string[2] { ks.ToString(), constraints[i].constraint.name.ToString() },
+                                        _sourceUriString, ks.PosLine, ks.PosCol));
+                                }
+                                else
+                                {
+                                    constraints[i].qualifiedTable.Add(ks, ks);
+                                }
+                                break;
+
+                            case CompiledIdentityConstraint.ConstraintRole.Unique:
+
+                                if (constraints[i].qualifiedTable.Contains(ks))
+                                {
+                                    // unique or key checking confliction
+                                    //                                        KeySequence ks2 = (KeySequence) conuct.qualifiedTable[ks];
+                                    SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_DuplicateKey,
+                                        new string[2] { ks.ToString(), constraints[i].constraint.name.ToString() },
+                                        _sourceUriString, ks.PosLine, ks.PosCol));
+                                }
+                                else
+                                {
+                                    constraints[i].qualifiedTable.Add(ks, ks);
+                                }
+                                break;
+                            case CompiledIdentityConstraint.ConstraintRole.Keyref:
+                                // is there any possibility:
+                                // 2 keyrefs: value is equal, type is not
+                                // both put in the hashtable, 1 reference, 1 not
+                                if (constraints[i].qualifiedTable != null)
+                                { //Will be null in cases when the keyref is outside the scope of the key, that is not allowed by our impl
+                                    if (!ks.IsQualified() || constraints[i].qualifiedTable.Contains(ks))
+                                    {
+                                        continue;
+                                    }
+                                    constraints[i].qualifiedTable.Add(ks, ks);
+                                }
+                                break;
                         }
                     }
                 }
@@ -2035,97 +2459,120 @@ namespace Microsoft.Xml.Schema {
 
 
             // current level's constraint struct
-            ConstraintStruct[] vcs = ((ValidationState)(this.validationStack[this.validationStack.Length - 1])).Constr;
-            if ( vcs != null) {
+            ConstraintStruct[] vcs = ((ValidationState)(_validationStack[_validationStack.Length - 1])).Constr;
+            if (vcs != null)
+            {
                 // validating all referencing tables...
 
-                for (int i = 0; i < vcs.Length; ++i) {
-                    if (( vcs[i].constraint.Role == CompiledIdentityConstraint.ConstraintRole.Keyref)
-                        || (vcs[i].keyrefTable == null)) {
+                for (int i = 0; i < vcs.Length; ++i)
+                {
+                    if ((vcs[i].constraint.Role == CompiledIdentityConstraint.ConstraintRole.Keyref)
+                        || (vcs[i].keyrefTable == null))
+                    {
                         continue;
                     }
-                    foreach (KeySequence ks in vcs[i].keyrefTable.Keys) {
-                        if (!vcs[i].qualifiedTable.Contains(ks)) {
+                    foreach (KeySequence ks in vcs[i].keyrefTable.Keys)
+                    {
+                        if (!vcs[i].qualifiedTable.Contains(ks))
+                        {
                             SendValidationEvent(new XmlSchemaValidationException(ResXml.Sch_UnresolvedKeyref, new string[2] { ks.ToString(), vcs[i].constraint.name.ToString() },
-                                sourceUriString, ks.PosLine, ks.PosCol));
+                                _sourceUriString, ks.PosLine, ks.PosCol));
                         }
                     }
                 }
             }
+        } //End of method
 
-          } //End of method
-
-        private static void BuildXsiAttributes() {
-            if (xsiTypeSO == null) { //xsi:type attribute
+        private static void BuildXsiAttributes()
+        {
+            if (s_xsiTypeSO == null)
+            { //xsi:type attribute
                 XmlSchemaAttribute tempXsiTypeSO = new XmlSchemaAttribute();
                 tempXsiTypeSO.Name = "type";
                 tempXsiTypeSO.SetQualifiedName(new XmlQualifiedName("type", XmlReservedNs.NsXsi));
                 tempXsiTypeSO.SetAttributeType(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.QName));
-                Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiTypeSO, tempXsiTypeSO, null);
+                Interlocked.CompareExchange<XmlSchemaAttribute>(ref s_xsiTypeSO, tempXsiTypeSO, null);
             }
-            if (xsiNilSO == null) { //xsi:nil
+            if (s_xsiNilSO == null)
+            { //xsi:nil
                 XmlSchemaAttribute tempxsiNilSO = new XmlSchemaAttribute();
                 tempxsiNilSO.Name = "nil";
                 tempxsiNilSO.SetQualifiedName(new XmlQualifiedName("nil", XmlReservedNs.NsXsi));
                 tempxsiNilSO.SetAttributeType(XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.Boolean));
-                Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiNilSO, tempxsiNilSO, null);
+                Interlocked.CompareExchange<XmlSchemaAttribute>(ref s_xsiNilSO, tempxsiNilSO, null);
             }
-            if (xsiSLSO == null) { //xsi:schemaLocation
+            if (s_xsiSLSO == null)
+            { //xsi:schemaLocation
                 XmlSchemaSimpleType stringType = XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
                 XmlSchemaAttribute tempxsiSLSO = new XmlSchemaAttribute();
                 tempxsiSLSO.Name = "schemaLocation";
                 tempxsiSLSO.SetQualifiedName(new XmlQualifiedName("schemaLocation", XmlReservedNs.NsXsi));
                 tempxsiSLSO.SetAttributeType(stringType);
-                Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiSLSO, tempxsiSLSO, null);
+                Interlocked.CompareExchange<XmlSchemaAttribute>(ref s_xsiSLSO, tempxsiSLSO, null);
             }
-            if (xsiNoNsSLSO == null) {
+            if (s_xsiNoNsSLSO == null)
+            {
                 XmlSchemaSimpleType stringType = XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
                 XmlSchemaAttribute tempxsiNoNsSLSO = new XmlSchemaAttribute();
                 tempxsiNoNsSLSO.Name = "noNamespaceSchemaLocation";
                 tempxsiNoNsSLSO.SetQualifiedName(new XmlQualifiedName("noNamespaceSchemaLocation", XmlReservedNs.NsXsi));
                 tempxsiNoNsSLSO.SetAttributeType(stringType);
-                Interlocked.CompareExchange<XmlSchemaAttribute>(ref xsiNoNsSLSO, tempxsiNoNsSLSO, null);
+                Interlocked.CompareExchange<XmlSchemaAttribute>(ref s_xsiNoNsSLSO, tempxsiNoNsSLSO, null);
             }
         }
 
-        internal static void ElementValidationError(XmlQualifiedName name, ValidationState context, ValidationEventHandler eventHandler, object sender, string sourceUri, int lineNo, int linePos, XmlSchemaSet schemaSet) {
+        internal static void ElementValidationError(XmlQualifiedName name, ValidationState context, ValidationEventHandler eventHandler, object sender, string sourceUri, int lineNo, int linePos, XmlSchemaSet schemaSet)
+        {
             ArrayList names = null;
-            if (context.ElementDecl != null) {
+            if (context.ElementDecl != null)
+            {
                 ContentValidator contentValidator = context.ElementDecl.ContentValidator;
                 XmlSchemaContentType contentType = contentValidator.ContentType;
-                if (contentType == XmlSchemaContentType.ElementOnly || (contentType == XmlSchemaContentType.Mixed && contentValidator != ContentValidator.Mixed && contentValidator != ContentValidator.Any)) {
+                if (contentType == XmlSchemaContentType.ElementOnly || (contentType == XmlSchemaContentType.Mixed && contentValidator != ContentValidator.Mixed && contentValidator != ContentValidator.Any))
+                {
                     Debug.Assert(contentValidator is DfaContentValidator || contentValidator is NfaContentValidator || contentValidator is RangeContentValidator || contentValidator is AllElementsContentValidator);
                     bool getParticles = schemaSet != null;
-                    if (getParticles) {
+                    if (getParticles)
+                    {
                         names = contentValidator.ExpectedParticles(context, false, schemaSet);
                     }
-                    else {
+                    else
+                    {
                         names = contentValidator.ExpectedElements(context, false);
                     }
 
-                    if (names == null || names.Count == 0) {
-                        if (context.TooComplex) {
+                    if (names == null || names.Count == 0)
+                    {
+                        if (context.TooComplex)
+                        {
                             SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                         }
-                        else {
+                        else
+                        {
                             SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContent, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                         }
                     }
-                    else {
+                    else
+                    {
                         Debug.Assert(names.Count > 0);
-                        if (context.TooComplex) {
+                        if (context.TooComplex)
+                        {
                             SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), PrintExpectedElements(names, getParticles), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                         }
-                        else {
+                        else
+                        {
                             SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentExpecting, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), PrintExpectedElements(names, getParticles) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                         }
                     }
                 }
-                else { //Base ContentValidator: Empty || TextOnly || Mixed || Any
-                    if (contentType == XmlSchemaContentType.Empty) {
+                else
+                { //Base ContentValidator: Empty || TextOnly || Mixed || Any
+                    if (contentType == XmlSchemaContentType.Empty)
+                    {
                         SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementInEmptyEx, new string[] { QNameString(context.LocalName, context.Namespace), name.ToString() }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                     }
-                    else if (!contentValidator.IsOpen) {
+                    else if (!contentValidator.IsOpen)
+                    {
                         SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementInTextOnlyEx, new string[] { QNameString(context.LocalName, context.Namespace), name.ToString() }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                     }
                 }
@@ -2136,56 +2583,71 @@ namespace Microsoft.Xml.Schema {
         {
             ArrayList names = null;
             bool getParticles = schemaSet != null;
-            if (context.ElementDecl != null) {
-                if (getParticles) {
+            if (context.ElementDecl != null)
+            {
+                if (getParticles)
+                {
                     names = context.ElementDecl.ContentValidator.ExpectedParticles(context, true, schemaSet);
                 }
-                else {
+                else
+                {
                     names = context.ElementDecl.ContentValidator.ExpectedElements(context, true);
                 }
             }
-            if (names == null || names.Count == 0) {
-                if (context.TooComplex) {
+            if (names == null || names.Count == 0)
+            {
+                if (context.TooComplex)
+                {
                     SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                 }
                 SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContent, BuildElementName(context.LocalName, context.Namespace), sourceUri, lineNo, linePos), XmlSeverityType.Error);
             }
-            else {
+            else
+            {
                 Debug.Assert(names.Count > 0);
-                if (context.TooComplex) {
+                if (context.TooComplex)
+                {
                     SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), PrintExpectedElements(names, getParticles), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                 }
-                else {
+                else
+                {
                     SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentExpecting, new string[] { BuildElementName(context.LocalName, context.Namespace), PrintExpectedElements(names, getParticles) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                 }
             }
         }
 
-        internal static string PrintExpectedElements(ArrayList expected, bool getParticles) {
-            if (getParticles) {
-                string ContinuationString = ResXml.GetString(ResXml.Sch_ContinuationString, new string[] {" "});
+        internal static string PrintExpectedElements(ArrayList expected, bool getParticles)
+        {
+            if (getParticles)
+            {
+                string ContinuationString = ResXml.GetString(ResXml.Sch_ContinuationString, new string[] { " " });
                 XmlSchemaParticle currentParticle = null;
                 XmlSchemaParticle nextParticle = null;
                 XmlQualifiedName currentQName;
                 ArrayList expectedNames = new ArrayList();
                 StringBuilder builder = new StringBuilder();
 
-                if (expected.Count == 1) {
+                if (expected.Count == 1)
+                {
                     nextParticle = expected[0] as XmlSchemaParticle;
                 }
-                else {
-                    for (int i=1; i < expected.Count; i++) {
-                        currentParticle = expected[i-1] as XmlSchemaParticle;
+                else
+                {
+                    for (int i = 1; i < expected.Count; i++)
+                    {
+                        currentParticle = expected[i - 1] as XmlSchemaParticle;
                         nextParticle = expected[i] as XmlSchemaParticle;
                         currentQName = currentParticle.GetQualifiedName();
-                        if (currentQName.Namespace != nextParticle.GetQualifiedName().Namespace) {
+                        if (currentQName.Namespace != nextParticle.GetQualifiedName().Namespace)
+                        {
                             expectedNames.Add(currentQName);
                             PrintNamesWithNS(expectedNames, builder);
                             expectedNames.Clear();
                             Debug.Assert(builder.Length != 0);
                             builder.Append(ContinuationString);
                         }
-                        else {
+                        else
+                        {
                             expectedNames.Add(currentQName);
                         }
                     }
@@ -2196,16 +2658,19 @@ namespace Microsoft.Xml.Schema {
 
                 return builder.ToString();
             }
-            else {
+            else
+            {
                 return PrintNames(expected);
             }
         }
 
-        private static string PrintNames(ArrayList expected) {
+        private static string PrintNames(ArrayList expected)
+        {
             StringBuilder builder = new StringBuilder();
             builder.Append(Quote);
             builder.Append(expected[0].ToString());
-            for (int i = 1; i < expected.Count; ++i) {
+            for (int i = 1; i < expected.Count; ++i)
+            {
                 builder.Append(" ");
                 builder.Append(expected[i].ToString());
             }
@@ -2213,65 +2678,84 @@ namespace Microsoft.Xml.Schema {
             return builder.ToString();
         }
 
-        private static void PrintNamesWithNS(ArrayList expected, StringBuilder builder) {
+        private static void PrintNamesWithNS(ArrayList expected, StringBuilder builder)
+        {
             XmlQualifiedName name = null;
             name = expected[0] as XmlQualifiedName;
-            if (expected.Count == 1) { //In case of one element in a namespace or any
-                if (name.Name == "*") { //Any
+            if (expected.Count == 1)
+            { //In case of one element in a namespace or any
+                if (name.Name == "*")
+                { //Any
                     EnumerateAny(builder, name.Namespace);
                 }
-                else {
-                    if (name.Namespace.Length != 0) {
+                else
+                {
+                    if (name.Namespace.Length != 0)
+                    {
                         builder.Append(ResXml.GetString(ResXml.Sch_ElementNameAndNamespace, name.Name, name.Namespace));
                     }
-                    else {
+                    else
+                    {
                         builder.Append(ResXml.GetString(ResXml.Sch_ElementName, name.Name));
                     }
                 }
             }
-            else {
+            else
+            {
                 bool foundAny = false;
                 bool first = true;
                 StringBuilder subBuilder = new StringBuilder();
-                for (int i = 0; i < expected.Count; i++) {
+                for (int i = 0; i < expected.Count; i++)
+                {
                     name = expected[i] as XmlQualifiedName;
-                    if (name.Name == "*") { //rare case where ns of element and that of Any match
+                    if (name.Name == "*")
+                    { //rare case where ns of element and that of Any match
                         foundAny = true;
                         continue;
                     }
-                    if (first) {
+                    if (first)
+                    {
                         first = false;
                     }
-                    else {
+                    else
+                    {
                         subBuilder.Append(", ");
                     }
                     subBuilder.Append(name.Name);
                 }
-                if (foundAny) {
+                if (foundAny)
+                {
                     subBuilder.Append(", ");
                     subBuilder.Append(ResXml.GetString(ResXml.Sch_AnyElement));
                 }
-                else {
-                    if (name.Namespace.Length != 0) {
+                else
+                {
+                    if (name.Namespace.Length != 0)
+                    {
                         builder.Append(ResXml.GetString(ResXml.Sch_ElementNameAndNamespace, subBuilder.ToString(), name.Namespace));
                     }
-                    else {
+                    else
+                    {
                         builder.Append(ResXml.GetString(ResXml.Sch_ElementName, subBuilder.ToString()));
                     }
                 }
             }
         }
 
-        private static void EnumerateAny(StringBuilder builder, string namespaces) {
+        private static void EnumerateAny(StringBuilder builder, string namespaces)
+        {
             StringBuilder subBuilder = new StringBuilder();
-            if (namespaces == "##any" || namespaces == "##other") {
+            if (namespaces == "##any" || namespaces == "##other")
+            {
                 subBuilder.Append(namespaces);
             }
-            else {
+            else
+            {
                 string[] nsList = XmlConvert.SplitString(namespaces);
                 Debug.Assert(nsList.Length > 0);
                 subBuilder.Append(nsList[0]);
-                for (int i = 1; i < nsList.Length; i++) {
+                for (int i = 1; i < nsList.Length; i++)
+                {
                     subBuilder.Append(", ");
                     subBuilder.Append(nsList[i]);
                 }
@@ -2279,108 +2763,137 @@ namespace Microsoft.Xml.Schema {
             builder.Append(ResXml.GetString(ResXml.Sch_AnyElementNS, subBuilder.ToString()));
         }
 
-        internal static string QNameString(string localName, string ns) {
+        internal static string QNameString(string localName, string ns)
+        {
             return (ns.Length != 0) ? string.Concat(ns, ":", localName) : localName;
         }
 
-        internal static string BuildElementName(XmlQualifiedName qname) {
+        internal static string BuildElementName(XmlQualifiedName qname)
+        {
             return BuildElementName(qname.Name, qname.Namespace);
         }
 
-        internal static string BuildElementName(string localName, string ns) {
-            if (ns.Length != 0) {
+        internal static string BuildElementName(string localName, string ns)
+        {
+            if (ns.Length != 0)
+            {
                 return ResXml.GetString(ResXml.Sch_ElementNameAndNamespace, localName, ns);
             }
-            else {
+            else
+            {
                 return ResXml.GetString(ResXml.Sch_ElementName, localName);
             }
         }
 
-        private void ProcessEntity(string name) {
-            if (!this.checkEntity) {
+        private void ProcessEntity(string name)
+        {
+            if (!_checkEntity)
+            {
                 return;
             }
             IDtdEntityInfo entityInfo = null;
-            if (dtdSchemaInfo != null) {
-                entityInfo = dtdSchemaInfo.LookupEntity(name);
+            if (_dtdSchemaInfo != null)
+            {
+                entityInfo = _dtdSchemaInfo.LookupEntity(name);
             }
-            if (entityInfo == null) {
+            if (entityInfo == null)
+            {
                 // validation error, see xml spec [68]
                 SendValidationEvent(ResXml.Sch_UndeclaredEntity, name);
             }
-            else if (entityInfo.IsUnparsedEntity) {
+            else if (entityInfo.IsUnparsedEntity)
+            {
                 // validation error, see xml spec [68]
                 SendValidationEvent(ResXml.Sch_UnparsedEntityRef, name);
             }
         }
 
-        private void SendValidationEvent(string code) {
+        private void SendValidationEvent(string code)
+        {
             SendValidationEvent(code, string.Empty);
         }
 
-        private void SendValidationEvent(string code, string[] args) {
-            SendValidationEvent(new XmlSchemaValidationException(code, args, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition));
+        private void SendValidationEvent(string code, string[] args)
+        {
+            SendValidationEvent(new XmlSchemaValidationException(code, args, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition));
         }
 
-        private void SendValidationEvent(string code, string arg) {
-            SendValidationEvent(new XmlSchemaValidationException(code, arg, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition));
+        private void SendValidationEvent(string code, string arg)
+        {
+            SendValidationEvent(new XmlSchemaValidationException(code, arg, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition));
         }
 
-        private void SendValidationEvent(string code, string arg1, string arg2) {
-            SendValidationEvent(new XmlSchemaValidationException(code, new string[] { arg1, arg2 }, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition));
+        private void SendValidationEvent(string code, string arg1, string arg2)
+        {
+            SendValidationEvent(new XmlSchemaValidationException(code, new string[] { arg1, arg2 }, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition));
         }
 
-        private void SendValidationEvent(string code, string[] args, Exception innerException, XmlSeverityType severity) {
-            if (severity != XmlSeverityType.Warning || ReportValidationWarnings) {
-                SendValidationEvent(new XmlSchemaValidationException(code, args, innerException, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition), severity);
+        private void SendValidationEvent(string code, string[] args, Exception innerException, XmlSeverityType severity)
+        {
+            if (severity != XmlSeverityType.Warning || ReportValidationWarnings)
+            {
+                SendValidationEvent(new XmlSchemaValidationException(code, args, innerException, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition), severity);
             }
         }
 
-        private void SendValidationEvent(string code, string[] args, Exception innerException) {
-            SendValidationEvent(new XmlSchemaValidationException(code, args, innerException, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition), XmlSeverityType.Error);
+        private void SendValidationEvent(string code, string[] args, Exception innerException)
+        {
+            SendValidationEvent(new XmlSchemaValidationException(code, args, innerException, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition), XmlSeverityType.Error);
         }
 
-        private void SendValidationEvent(XmlSchemaValidationException e) {
+        private void SendValidationEvent(XmlSchemaValidationException e)
+        {
             SendValidationEvent(e, XmlSeverityType.Error);
         }
 
-        private void SendValidationEvent(XmlSchemaException e) {
-            SendValidationEvent(new XmlSchemaValidationException(e.GetRes,e.Args,e.SourceUri,e.LineNumber,e.LinePosition), XmlSeverityType.Error);
+        private void SendValidationEvent(XmlSchemaException e)
+        {
+            SendValidationEvent(new XmlSchemaValidationException(e.GetRes, e.Args, e.SourceUri, e.LineNumber, e.LinePosition), XmlSeverityType.Error);
         }
 
-        private void SendValidationEvent(string code, string msg, XmlSeverityType severity) {
-            if (severity != XmlSeverityType.Warning || ReportValidationWarnings) {
-                SendValidationEvent(new XmlSchemaValidationException(code, msg, sourceUriString, positionInfo.LineNumber, positionInfo.LinePosition), severity);
+        private void SendValidationEvent(string code, string msg, XmlSeverityType severity)
+        {
+            if (severity != XmlSeverityType.Warning || ReportValidationWarnings)
+            {
+                SendValidationEvent(new XmlSchemaValidationException(code, msg, _sourceUriString, _positionInfo.LineNumber, _positionInfo.LinePosition), severity);
             }
         }
 
-        private void SendValidationEvent(XmlSchemaValidationException e, XmlSeverityType severity) {
+        private void SendValidationEvent(XmlSchemaValidationException e, XmlSeverityType severity)
+        {
             bool errorSeverity = false;
-            if (severity == XmlSeverityType.Error) {
+            if (severity == XmlSeverityType.Error)
+            {
                 errorSeverity = true;
-                context.Validity = XmlSchemaValidity.Invalid;
+                _context.Validity = XmlSchemaValidity.Invalid;
             }
-            if (errorSeverity) {
-                if (eventHandler != null) {
-                    eventHandler(validationEventSender, new ValidationEventArgs(e, severity));
+            if (errorSeverity)
+            {
+                if (_eventHandler != null)
+                {
+                    _eventHandler(_validationEventSender, new ValidationEventArgs(e, severity));
                 }
-                else {
+                else
+                {
                     throw e;
                 }
             }
-            else if (ReportValidationWarnings && eventHandler != null) {
-                eventHandler(validationEventSender, new ValidationEventArgs(e, severity));
+            else if (ReportValidationWarnings && _eventHandler != null)
+            {
+                _eventHandler(_validationEventSender, new ValidationEventArgs(e, severity));
             }
         }
 
-        internal static void SendValidationEvent(ValidationEventHandler eventHandler, object sender, XmlSchemaValidationException e, XmlSeverityType severity) {
-            if (eventHandler != null) {
+        internal static void SendValidationEvent(ValidationEventHandler eventHandler, object sender, XmlSchemaValidationException e, XmlSeverityType severity)
+        {
+            if (eventHandler != null)
+            {
                 eventHandler(sender, new ValidationEventArgs(e, severity));
             }
-            else if (severity == XmlSeverityType.Error) {
+            else if (severity == XmlSeverityType.Error)
+            {
                 throw e;
             }
         }
-     } //End of class
-
+    } //End of class
 } //End of namespace

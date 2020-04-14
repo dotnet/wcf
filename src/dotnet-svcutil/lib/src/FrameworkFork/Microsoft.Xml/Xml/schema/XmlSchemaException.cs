@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-
+namespace Microsoft.Xml.Schema
+{
     using System;
     using System.IO;
-    using System.Text;  
+    using System.Text;
     using System.Resources;
     using System.Globalization;
     using System.Diagnostics;
@@ -13,144 +13,174 @@ namespace Microsoft.Xml.Schema {
 
     /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException"]/*' />
     // [Serializable],
-    public class XmlSchemaException : System.Exception {
-        string res;
-        string[] args;
-        string sourceUri;
-        int lineNumber;
-        int linePosition;
+    public class XmlSchemaException : System.Exception
+    {
+        private string _res;
+        private string[] _args;
+        private string _sourceUri;
+        private int _lineNumber;
+        private int _linePosition;
 
         [NonSerialized]
-        XmlSchemaObject sourceSchemaObject;
+        private XmlSchemaObject _sourceSchemaObject;
 
         // message != null for V1 exceptions deserialized in Whidbey
         // message == null for V2 or higher exceptions; the exception message is stored on the base class (Exception._message)
-        string message = null;
+        private string _message = null;
 
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException1"]/*' />
-        public XmlSchemaException() : this(null) {
+        public XmlSchemaException() : this(null)
+        {
         }
 
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException2"]/*' />
-        public XmlSchemaException(String message) : this (message, ((Exception)null), 0, 0) {
+        public XmlSchemaException(String message) : this(message, ((Exception)null), 0, 0)
+        {
 #if DEBUG
             Debug.Assert(message == null || !message.StartsWith("Sch_", StringComparison.Ordinal), "Do not pass a resource here!");
 #endif
         }
-        
+
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException0"]/*' />
-        public XmlSchemaException(String message, Exception innerException) : this (message, innerException, 0, 0) {
-        } 
+        public XmlSchemaException(String message, Exception innerException) : this(message, innerException, 0, 0)
+        {
+        }
 
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.XmlSchemaException3"]/*' />
         public XmlSchemaException(String message, Exception innerException, int lineNumber, int linePosition) :
-            this((message == null ? ResXml.Sch_DefaultException : ResXml.Xml_UserException), new string[] { message }, innerException, null, lineNumber, linePosition, null ) {
-	    }
+            this((message == null ? ResXml.Sch_DefaultException : ResXml.Xml_UserException), new string[] { message }, innerException, null, lineNumber, linePosition, null)
+        {
+        }
 
         internal XmlSchemaException(string res, string[] args) :
-            this(res, args, null, null, 0, 0, null) {}
-        
+            this(res, args, null, null, 0, 0, null)
+        { }
+
         internal XmlSchemaException(string res, string arg) :
-            this(res, new string[] { arg }, null, null, 0, 0, null) {}
+            this(res, new string[] { arg }, null, null, 0, 0, null)
+        { }
 
         internal XmlSchemaException(string res, string arg, string sourceUri, int lineNumber, int linePosition) :
-            this(res, new string[] { arg }, null, sourceUri, lineNumber, linePosition, null) {}
+            this(res, new string[] { arg }, null, sourceUri, lineNumber, linePosition, null)
+        { }
 
         internal XmlSchemaException(string res, string sourceUri, int lineNumber, int linePosition) :
-            this(res, (string[])null, null, sourceUri, lineNumber, linePosition, null) {}
+            this(res, (string[])null, null, sourceUri, lineNumber, linePosition, null)
+        { }
 
         internal XmlSchemaException(string res, string[] args, string sourceUri, int lineNumber, int linePosition) :
-            this(res, args, null, sourceUri, lineNumber, linePosition, null) {}
+            this(res, args, null, sourceUri, lineNumber, linePosition, null)
+        { }
 
         internal XmlSchemaException(string res, XmlSchemaObject source) :
-            this(res, (string[])null, source) {}
+            this(res, (string[])null, source)
+        { }
 
         internal XmlSchemaException(string res, string arg, XmlSchemaObject source) :
-            this(res, new string[] { arg }, source) {}
+            this(res, new string[] { arg }, source)
+        { }
 
         internal XmlSchemaException(string res, string[] args, XmlSchemaObject source) :
-            this(res, args, null, source.SourceUri,  source.LineNumber, source.LinePosition, source) {}
+            this(res, args, null, source.SourceUri, source.LineNumber, source.LinePosition, source)
+        { }
 
         internal XmlSchemaException(string res, string[] args, Exception innerException, string sourceUri, int lineNumber, int linePosition, XmlSchemaObject source) :
-            base (CreateMessage(res, args), innerException) {
-
+            base(CreateMessage(res, args), innerException)
+        {
             HResult = HResults.XmlSchema;
-            this.res = res;
-            this.args = args;
-            this.sourceUri = sourceUri;
-            this.lineNumber = lineNumber;
-            this.linePosition = linePosition;
-            this.sourceSchemaObject = source;
+            _res = res;
+            _args = args;
+            _sourceUri = sourceUri;
+            _lineNumber = lineNumber;
+            _linePosition = linePosition;
+            _sourceSchemaObject = source;
         }
 
-        internal static string CreateMessage(string res, string[] args) {
-            try {
+        internal static string CreateMessage(string res, string[] args)
+        {
+            try
+            {
                 return ResXml.GetString(res, args);
             }
-            catch ( MissingManifestResourceException ) {
-                return "UNKNOWN("+res+")";
-            }
-        }
-        
-        internal string GetRes {
-            get {
-	            return res;
+            catch (MissingManifestResourceException)
+            {
+                return "UNKNOWN(" + res + ")";
             }
         }
 
-        internal string[] Args {
-            get {
-	            return args; 
+        internal string GetRes
+        {
+            get
+            {
+                return _res;
+            }
+        }
+
+        internal string[] Args
+        {
+            get
+            {
+                return _args;
             }
         }
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.SourceUri"]/*' />
-        public string SourceUri {
-            get { return this.sourceUri; }
+        public string SourceUri
+        {
+            get { return _sourceUri; }
         }
 
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.LineNumber"]/*' />
-        public int LineNumber {
-            get { return this.lineNumber; }
+        public int LineNumber
+        {
+            get { return _lineNumber; }
         }
 
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.LinePosition"]/*' />
-        public int LinePosition {
-            get { return this.linePosition; }
+        public int LinePosition
+        {
+            get { return _linePosition; }
         }
-        
+
         /// <include file='doc\XmlSchemaException.uex' path='docs/doc[@for="XmlSchemaException.SourceObject"]/*' />
-        public XmlSchemaObject SourceSchemaObject {
-            get { return this.sourceSchemaObject; }
+        public XmlSchemaObject SourceSchemaObject
+        {
+            get { return _sourceSchemaObject; }
         }
-        
+
         /*internal static XmlSchemaException Create(string res) { //Since internal overload with res string will clash with public constructor that takes in a message
             return new XmlSchemaException(res, (string[])null, null, null, 0, 0, null);
         }*/
 
-        internal void SetSource(string sourceUri, int lineNumber, int linePosition) {
-            this.sourceUri = sourceUri;
-            this.lineNumber = lineNumber;
-            this.linePosition = linePosition;
+        internal void SetSource(string sourceUri, int lineNumber, int linePosition)
+        {
+            _sourceUri = sourceUri;
+            _lineNumber = lineNumber;
+            _linePosition = linePosition;
         }
 
-        internal void SetSchemaObject(XmlSchemaObject source) {
-            this.sourceSchemaObject = source;
+        internal void SetSchemaObject(XmlSchemaObject source)
+        {
+            _sourceSchemaObject = source;
         }
 
-        internal void SetSource(XmlSchemaObject source) {
-            this.sourceSchemaObject = source;
-            this.sourceUri = source.SourceUri;
-            this.lineNumber = source.LineNumber;
-            this.linePosition = source.LinePosition;
+        internal void SetSource(XmlSchemaObject source)
+        {
+            _sourceSchemaObject = source;
+            _sourceUri = source.SourceUri;
+            _lineNumber = source.LineNumber;
+            _linePosition = source.LinePosition;
         }
 
-        internal void SetResourceId(string resourceId) {
-            this.res = resourceId;
+        internal void SetResourceId(string resourceId)
+        {
+            _res = resourceId;
         }
 
-        public override string Message {
-            get {
-                return (message == null) ? base.Message : message;
+        public override string Message
+        {
+            get
+            {
+                return (_message == null) ? base.Message : _message;
             }
         }
     };

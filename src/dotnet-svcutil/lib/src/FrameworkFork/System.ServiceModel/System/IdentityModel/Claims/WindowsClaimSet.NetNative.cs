@@ -17,13 +17,13 @@ namespace System.IdentityModel.Claims
     public class WindowsClaimSet : ClaimSet, IIdentityInfo, IDisposable
     {
         internal const bool DefaultIncludeWindowsGroups = true;
-        private const string WindowsStreamSecurityNotSupportedUWP = "Windows Stream Security not yet supported on UWP"; 
+        private const string WindowsStreamSecurityNotSupportedUWP = "Windows Stream Security not yet supported on UWP";
 
         public override Claim this[int index]
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
             }
         }
 
@@ -31,7 +31,7 @@ namespace System.IdentityModel.Claims
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
             }
         }
 
@@ -39,7 +39,7 @@ namespace System.IdentityModel.Claims
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
             }
         }
 
@@ -47,23 +47,23 @@ namespace System.IdentityModel.Claims
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+                throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
             }
         }
 
         public void Dispose()
         {
-            throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+            throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
         }
 
         public override IEnumerable<Claim> FindClaims(string claimType, string right)
         {
-            throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+            throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
         }
 
         public override IEnumerator<Claim> GetEnumerator()
         {
-            throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP); 
+            throw ExceptionHelper.PlatformNotSupported(WindowsStreamSecurityNotSupportedUWP);
         }
     }
 }

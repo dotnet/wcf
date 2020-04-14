@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
-
+namespace Microsoft.CodeDom.Compiler
+{
     using System;
 
     /// <devdoc>
@@ -10,9 +10,10 @@ namespace Microsoft.CodeDom.Compiler {
     /// </devdoc>
     [
         Flags,
-        // Serializable,
+    // Serializable,
     ]
-    public enum LanguageOptions {
+    public enum LanguageOptions
+    {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>

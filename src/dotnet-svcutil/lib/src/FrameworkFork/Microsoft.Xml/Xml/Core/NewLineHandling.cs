@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     // NewLineHandling speficies what will XmlWriter do with new line characters. The options are:
     //  Replace  = Replaces all new line characters with XmlWriterSettings.NewLineChars so all new lines are the same; by default NewLineChars are "\r\n"
     //  Entitize = Replaces all new line characters that would be normalized away by a normalizing XmlReader with character entities
@@ -20,7 +21,8 @@ namespace Microsoft.Xml {
     // ------------------------------------------------------------------------------------------------------------
 
     // Specifies how end of line is handled in XmlWriter.
-    public enum NewLineHandling {
+    public enum NewLineHandling
+    {
         Replace = 0,
         Entitize = 1,
         None = 2

@@ -81,7 +81,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 #else
                     // don't use GlobalProjectCollection as once a project is loaded into memory changes to the project file won't take effect until the solution is reloaded.
                     var projCollection = new Microsoft.Build.Evaluation.ProjectCollection(globalProperties);
-                    var project = projCollection.LoadProject(projectPath); 
+                    var project = projCollection.LoadProject(projectPath);
 
                     foreach (var propertyName in propertyNames)
                     {
@@ -112,10 +112,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return propertyTable;
         }
 
-        private static string _sdkVersion;
+        private static string s_sdkVersion;
         public static async Task<string> GetSdkVersionAsync(string workingDirectory, ILogger logger, CancellationToken cancellationToken)
         {
-            if (_sdkVersion == null)
+            if (s_sdkVersion == null)
             {
                 using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Resolving dotnet sdk version ...").ConfigureAwait(false))
                 {
@@ -123,19 +123,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     if (procResult.ExitCode == 0)
                     {
-                        _sdkVersion = procResult.OutputText.Trim();
+                        s_sdkVersion = procResult.OutputText.Trim();
                     }
 
-                    await safeLogger.WriteMessageAsync($"dotnet sdk version:{_sdkVersion}", logToUI: false).ConfigureAwait(false);
+                    await safeLogger.WriteMessageAsync($"dotnet sdk version:{s_sdkVersion}", logToUI: false).ConfigureAwait(false);
                 }
             }
-            return _sdkVersion;
+            return s_sdkVersion;
         }
 
-        private static string _sdkPath;
+        private static string s_sdkPath;
         public static async Task<string> GetSdkPathAsync(string workingDirectory, ILogger logger, CancellationToken cancellationToken)
         {
-            if (_sdkPath == null)
+            if (s_sdkPath == null)
             {
                 using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Resolving .NETCore SDK path ...").ConfigureAwait(false))
                 {
@@ -155,15 +155,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         var sdkVersion = await GetSdkVersionAsync(workingDirectory, logger, cancellationToken).ConfigureAwait(false);
                         if (!string.IsNullOrEmpty(sdkVersion))
                         {
-                            _sdkPath = Path.Combine(dotnetDir, "sdk", sdkVersion);
+                            s_sdkPath = Path.Combine(dotnetDir, "sdk", sdkVersion);
                         }
                     }
 
-                    await safeLogger.WriteMessageAsync($"SDK path: \"{_sdkPath}\"", logToUI: false).ConfigureAwait(false);
+                    await safeLogger.WriteMessageAsync($"SDK path: \"{s_sdkPath}\"", logToUI: false).ConfigureAwait(false);
                 }
             }
 
-            return _sdkPath;
+            return s_sdkPath;
         }
 
 #if NETCORE

@@ -8,7 +8,7 @@ namespace System.ServiceModel.Channels
 
     public class NamedPipeTransportBindingElement : ConnectionOrientedTransportBindingElement
     {
-        NamedPipeSettings settings = new NamedPipeSettings();
+        private NamedPipeSettings _settings = new NamedPipeSettings();
 
         public NamedPipeTransportBindingElement()
             : base()
@@ -18,12 +18,12 @@ namespace System.ServiceModel.Channels
         protected NamedPipeTransportBindingElement(NamedPipeTransportBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.settings = elementToBeCloned.settings.Clone();
+            _settings = elementToBeCloned._settings.Clone();
         }
 
         public NamedPipeSettings PipeSettings
         {
-            get { return this.settings; }
+            get { return _settings; }
         }
 
         public override string Scheme
@@ -66,7 +66,7 @@ namespace System.ServiceModel.Channels
             throw new NotImplementedException();
         }
 
-        class BindingDeliveryCapabilitiesHelper : IBindingDeliveryCapabilities
+        private class BindingDeliveryCapabilitiesHelper : IBindingDeliveryCapabilities
         {
             internal BindingDeliveryCapabilitiesHelper()
             {

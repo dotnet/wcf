@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal static class XmlStrings
@@ -98,6 +99,5 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 public const string Policy = "Policy";
             }
         }
-
     }
 }

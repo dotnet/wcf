@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using Microsoft.CodeDom;
     using Microsoft.Xml;
 
-    static class SecurityAttributeGenerationHelper
+    internal static class SecurityAttributeGenerationHelper
     {
         public static CodeAttributeDeclaration FindOrCreateAttributeDeclaration<T>(CodeAttributeDeclarationCollection attributes)
             where T : Attribute

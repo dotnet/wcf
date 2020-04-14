@@ -4,147 +4,188 @@
 using Microsoft.Xml;
 using System.Collections;
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     /// <include file='doc\IXmlSchemaInfo.uex' path='docs/doc[@for="IXmlSchemaInfo"]/*' />
-    public class XmlSchemaInfo : IXmlSchemaInfo {
-        bool isDefault;
-        bool isNil;
-        XmlSchemaElement schemaElement;
-        XmlSchemaAttribute schemaAttribute;
-        XmlSchemaType schemaType;
-        XmlSchemaSimpleType memberType;
-        XmlSchemaValidity validity;
-        XmlSchemaContentType contentType;
-    
-        public XmlSchemaInfo() {
+    public class XmlSchemaInfo : IXmlSchemaInfo
+    {
+        private bool _isDefault;
+        private bool _isNil;
+        private XmlSchemaElement _schemaElement;
+        private XmlSchemaAttribute _schemaAttribute;
+        private XmlSchemaType _schemaType;
+        private XmlSchemaSimpleType _memberType;
+        private XmlSchemaValidity _validity;
+        private XmlSchemaContentType _contentType;
+
+        public XmlSchemaInfo()
+        {
             Clear();
         }
 
-        internal XmlSchemaInfo(XmlSchemaValidity validity) : this() {
-            this.validity = validity;
+        internal XmlSchemaInfo(XmlSchemaValidity validity) : this()
+        {
+            _validity = validity;
         }
 
-        public XmlSchemaValidity Validity {
-            get {
-                return validity;                
+        public XmlSchemaValidity Validity
+        {
+            get
+            {
+                return _validity;
             }
-            set {
-                validity = value;
-            }
-        }
-
-        public bool IsDefault { 
-            get {
-                return isDefault;
-            }
-            set {
-                isDefault = value;
-            }
-        }
-        
-        public bool IsNil { 
-            get {
-                return isNil;
-            }
-            set {
-                isNil = value;
+            set
+            {
+                _validity = value;
             }
         }
 
-        public XmlSchemaSimpleType MemberType { 
-            get {
-                return memberType;
+        public bool IsDefault
+        {
+            get
+            {
+                return _isDefault;
             }
-            set {
-                memberType = value;
+            set
+            {
+                _isDefault = value;
             }
         }
 
-        public XmlSchemaType SchemaType {
-            get {
-                return schemaType;
+        public bool IsNil
+        {
+            get
+            {
+                return _isNil;
             }
-            set {
-                schemaType = value;
-                if (schemaType != null) { //Member type will not change its content type
-                    contentType = schemaType.SchemaContentType;
+            set
+            {
+                _isNil = value;
+            }
+        }
+
+        public XmlSchemaSimpleType MemberType
+        {
+            get
+            {
+                return _memberType;
+            }
+            set
+            {
+                _memberType = value;
+            }
+        }
+
+        public XmlSchemaType SchemaType
+        {
+            get
+            {
+                return _schemaType;
+            }
+            set
+            {
+                _schemaType = value;
+                if (_schemaType != null)
+                { //Member type will not change its content type
+                    _contentType = _schemaType.SchemaContentType;
                 }
-                else {
-                    contentType = XmlSchemaContentType.Empty;
+                else
+                {
+                    _contentType = XmlSchemaContentType.Empty;
                 }
             }
         }
 
-        public XmlSchemaElement SchemaElement {
-            get {
-                return schemaElement;
+        public XmlSchemaElement SchemaElement
+        {
+            get
+            {
+                return _schemaElement;
             }
-            set {
-                schemaElement = value;
-                if (value != null) { //Setting non-null SchemaElement means SchemaAttribute should be null
-                    schemaAttribute = null;
+            set
+            {
+                _schemaElement = value;
+                if (value != null)
+                { //Setting non-null SchemaElement means SchemaAttribute should be null
+                    _schemaAttribute = null;
                 }
-            }       
+            }
         }
 
-        public XmlSchemaAttribute SchemaAttribute {
-            get {
-                return schemaAttribute;
+        public XmlSchemaAttribute SchemaAttribute
+        {
+            get
+            {
+                return _schemaAttribute;
             }
-            set {
-                schemaAttribute = value;
-                if (value != null) { //Setting non-null SchemaAttribute means SchemaElement should be null
-                    schemaElement = null;
+            set
+            {
+                _schemaAttribute = value;
+                if (value != null)
+                { //Setting non-null SchemaAttribute means SchemaElement should be null
+                    _schemaElement = null;
                 }
-            }   
-        }
-
-        public XmlSchemaContentType ContentType {
-            get {
-                return contentType;
-            }
-            set {
-                contentType = value;
             }
         }
 
-        internal XmlSchemaType XmlType {
-            get {
-                if (memberType != null) {
-                    return memberType;
+        public XmlSchemaContentType ContentType
+        {
+            get
+            {
+                return _contentType;
+            }
+            set
+            {
+                _contentType = value;
+            }
+        }
+
+        internal XmlSchemaType XmlType
+        {
+            get
+            {
+                if (_memberType != null)
+                {
+                    return _memberType;
                 }
-                return schemaType;
+                return _schemaType;
             }
         }
 
-        internal bool HasDefaultValue {
-            get {
-                return schemaElement != null && schemaElement.ElementDecl.DefaultValueTyped != null;
+        internal bool HasDefaultValue
+        {
+            get
+            {
+                return _schemaElement != null && _schemaElement.ElementDecl.DefaultValueTyped != null;
             }
         }
 
-        internal bool IsUnionType {
-            get {
-                if (schemaType == null || schemaType.Datatype == null) {
+        internal bool IsUnionType
+        {
+            get
+            {
+                if (_schemaType == null || _schemaType.Datatype == null)
+                {
                     return false;
                 }
-                return schemaType.Datatype.Variety == XmlSchemaDatatypeVariety.Union;
+                return _schemaType.Datatype.Variety == XmlSchemaDatatypeVariety.Union;
             }
         }
 
-        internal void Clear() {
-            isNil = false;
-            isDefault = false;
-            schemaType = null;
-            schemaElement = null;
-            schemaAttribute = null;
-            memberType = null;
-            validity = XmlSchemaValidity.NotKnown;
-            contentType = XmlSchemaContentType.Empty;
+        internal void Clear()
+        {
+            _isNil = false;
+            _isDefault = false;
+            _schemaType = null;
+            _schemaElement = null;
+            _schemaAttribute = null;
+            _memberType = null;
+            _validity = XmlSchemaValidity.NotKnown;
+            _contentType = XmlSchemaContentType.Empty;
         }
     }
 }

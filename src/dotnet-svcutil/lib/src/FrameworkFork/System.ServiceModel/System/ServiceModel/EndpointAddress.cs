@@ -1258,18 +1258,18 @@ namespace System.ServiceModel
 
     public class EndpointAddressBuilder
     {
-        Uri uri;
-        EndpointIdentity identity;
-        Collection<AddressHeader> headers;
-        XmlBuffer extensionBuffer;  // this buffer is wrapped just like in EndpointAddress
-        XmlBuffer metadataBuffer;   // this buffer is wrapped just like in EndpointAddress
-        bool hasExtension;
-        bool hasMetadata;
-        EndpointAddress epr;
+        private Uri _uri;
+        private EndpointIdentity _identity;
+        private Collection<AddressHeader> _headers;
+        private XmlBuffer _extensionBuffer;  // this buffer is wrapped just like in EndpointAddress
+        private XmlBuffer _metadataBuffer;   // this buffer is wrapped just like in EndpointAddress
+        private bool _hasExtension;
+        private bool _hasMetadata;
+        private EndpointAddress _epr;
 
         public EndpointAddressBuilder()
         {
-            this.headers = new Collection<AddressHeader>();
+            _headers = new Collection<AddressHeader>();
         }
 
         public EndpointAddressBuilder(EndpointAddress address)
@@ -1279,47 +1279,47 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("address");
             }
 
-            this.epr = address;
-            this.uri = address.Uri;
-            this.identity = address.Identity;
-            this.headers = new Collection<AddressHeader>();
+            _epr = address;
+            _uri = address.Uri;
+            _identity = address.Identity;
+            _headers = new Collection<AddressHeader>();
 #pragma warning disable 56506
             for (int i = 0; i < address.Headers.Count; i++)
             {
-                this.headers.Add(address.Headers[i]);
+                _headers.Add(address.Headers[i]);
             }
         }
 
         public Uri Uri
         {
-            get { return this.uri; }
-            set { this.uri = value; }
+            get { return _uri; }
+            set { _uri = value; }
         }
 
         public EndpointIdentity Identity
         {
-            get { return this.identity; }
-            set { this.identity = value; }
+            get { return _identity; }
+            set { _identity = value; }
         }
 
         public Collection<AddressHeader> Headers
         {
-            get { return this.headers; }
+            get { return _headers; }
         }
 
         public XmlDictionaryReader GetReaderAtMetadata()
         {
-            if (!this.hasMetadata)
+            if (!_hasMetadata)
             {
-                return epr == null ? null : epr.GetReaderAtMetadata();
+                return _epr == null ? null : _epr.GetReaderAtMetadata();
             }
 
-            if (this.metadataBuffer == null)
+            if (_metadataBuffer == null)
             {
                 return null;
             }
 
-            XmlDictionaryReader reader = this.metadataBuffer.GetReader(0);
+            XmlDictionaryReader reader = _metadataBuffer.GetReader(0);
             reader.MoveToContent();
             Fx.Assert(reader.Name == EndpointAddress.DummyName, "EndpointAddressBuilder: Expected dummy element not found");
             reader.Read(); // consume the wrapper element
@@ -1328,32 +1328,32 @@ namespace System.ServiceModel
 
         public void SetMetadataReader(XmlDictionaryReader reader)
         {
-            hasMetadata = true;
-            metadataBuffer = null;
+            _hasMetadata = true;
+            _metadataBuffer = null;
             if (reader != null)
             {
-                metadataBuffer = new XmlBuffer(short.MaxValue);
-                XmlDictionaryWriter writer = metadataBuffer.OpenSection(reader.Quotas);
+                _metadataBuffer = new XmlBuffer(short.MaxValue);
+                XmlDictionaryWriter writer = _metadataBuffer.OpenSection(reader.Quotas);
                 writer.WriteStartElement(EndpointAddress.DummyName, EndpointAddress.DummyNamespace);
                 EndpointAddress.Copy(writer, reader);
-                metadataBuffer.CloseSection();
-                metadataBuffer.Close();
+                _metadataBuffer.CloseSection();
+                _metadataBuffer.Close();
             }
         }
 
         public XmlDictionaryReader GetReaderAtExtensions()
         {
-            if (!this.hasExtension)
+            if (!_hasExtension)
             {
-                return epr == null ? null : epr.GetReaderAtExtensions();
+                return _epr == null ? null : _epr.GetReaderAtExtensions();
             }
 
-            if (this.extensionBuffer == null)
+            if (_extensionBuffer == null)
             {
                 return null;
             }
 
-            XmlDictionaryReader reader = this.extensionBuffer.GetReader(0);
+            XmlDictionaryReader reader = _extensionBuffer.GetReader(0);
             reader.MoveToContent();
             Fx.Assert(reader.Name == EndpointAddress.DummyName, "EndpointAddressBuilder: Expected dummy element not found");
             reader.Read(); // consume the wrapper element
@@ -1362,29 +1362,29 @@ namespace System.ServiceModel
 
         public void SetExtensionReader(XmlDictionaryReader reader)
         {
-            hasExtension = true;
+            _hasExtension = true;
             EndpointIdentity identity;
             int tmp;
-            this.extensionBuffer = EndpointAddress.ReadExtensions(reader, null, null, out identity, out tmp);
-            if (this.extensionBuffer != null)
+            _extensionBuffer = EndpointAddress.ReadExtensions(reader, null, null, out identity, out tmp);
+            if (_extensionBuffer != null)
             {
-                this.extensionBuffer.Close();
+                _extensionBuffer.Close();
             }
             if (identity != null)
             {
-                this.identity = identity;
+                _identity = identity;
             }
         }
 
         public EndpointAddress ToEndpointAddress()
         {
             return new EndpointAddress(
-                this.uri,
-                this.identity,
-                new AddressHeaderCollection(this.headers),
+                _uri,
+                _identity,
+                new AddressHeaderCollection(_headers),
                 this.GetReaderAtMetadata(),
                 this.GetReaderAtExtensions(),
-                epr == null ? null : epr.GetReaderAtPsp());
+                _epr == null ? null : _epr.GetReaderAtPsp());
         }
     }
 }

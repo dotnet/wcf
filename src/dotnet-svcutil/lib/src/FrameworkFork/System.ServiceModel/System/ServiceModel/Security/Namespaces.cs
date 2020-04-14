@@ -3,7 +3,7 @@
 
 namespace System.ServiceModel.Security
 {
-    static class Namespaces
+    internal static class Namespaces
     {
         internal const string WSPolicy = System.ServiceModel.Description.MetadataStrings.WSPolicy.NamespaceUri;
         internal const string WSPolicyPrefix = System.ServiceModel.Description.MetadataStrings.WSPolicy.Prefix;

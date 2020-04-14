@@ -25,8 +25,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public const string NetCoreAppPackageID = "Microsoft.NETCore.App";
         public const string NetStandardLibraryPackageID = "NETStandard.Library";
 
-        private static readonly IReadOnlyList<string> BinaryExtensions = new List<string> { ".exe", ".dll" }.AsReadOnly();
-        private static readonly IReadOnlyList<string> ProjectExtensions = new List<string> { ".csproj" }.AsReadOnly();
+        private static readonly IReadOnlyList<string> s_binaryExtensions = new List<string> { ".exe", ".dll" }.AsReadOnly();
+        private static readonly IReadOnlyList<string> s_projectExtensions = new List<string> { ".csproj" }.AsReadOnly();
 
         /// <summary>
         /// The dependency name.  This can be a package or assembly name.
@@ -103,17 +103,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
 
                 // filePath cannot be a project.
-                if (ProjectExtensions.Any((ext) => String.Compare(Path.GetExtension(AssemblyName), ext, StringComparison.OrdinalIgnoreCase) == 0))
+                if (s_projectExtensions.Any((ext) => String.Compare(Path.GetExtension(AssemblyName), ext, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Shared.Resources.ErrorInvalidDependencyValue, packageName, nameof(packageName)));
                 }
 
                 // even when it is a Pacakge type, it may contain a valid binary, let's check.
                 fileHasKnownExtension = string.IsNullOrWhiteSpace(filePath) ? false :
-                     (BinaryExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0));
+                     (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0));
 
                 // check that package name is not confused with assembly name.
-                if (BinaryExtensions.Any((ext) => String.Compare(Path.GetExtension(packageName), ext, StringComparison.OrdinalIgnoreCase) == 0))
+                if (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(packageName), ext, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Shared.Resources.ErrorInvalidDependencyValue, packageName, nameof(packageName)));
                 }
@@ -128,11 +128,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (dependencyType == ProjectDependencyType.Binary)
                 {
                     // Can be a full path to an assembly or just the assembly name (with or w/o extension).
-                    fileHasKnownExtension = BinaryExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0);
+                    fileHasKnownExtension = s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0);
                 }
                 else if (dependencyType == ProjectDependencyType.Project)
                 {
-                    fileHasKnownExtension = ProjectExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0);
+                    fileHasKnownExtension = s_projectExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0);
                     if (!fileHasKnownExtension)
                     {
                         throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Shared.Resources.ErrorInvalidDependencyValue, filePath, nameof(filePath)));
@@ -305,12 +305,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             ProjectDependencyType dependencyType;
 
-            if (ProjectExtensions.Any((ext) => String.Compare(Path.GetExtension(path), ext, StringComparison.OrdinalIgnoreCase) == 0))
+            if (s_projectExtensions.Any((ext) => String.Compare(Path.GetExtension(path), ext, StringComparison.OrdinalIgnoreCase) == 0))
             {
                 // project dependency: <projectpath>,<version> : C:\Source\MyProject\project.csproj
                 dependencyType = ProjectDependencyType.Project;
             }
-            else if (BinaryExtensions.Any((ext) => String.Compare(Path.GetExtension(path), ext, StringComparison.OrdinalIgnoreCase) == 0))
+            else if (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(path), ext, StringComparison.OrdinalIgnoreCase) == 0))
             {
                 // assembly dependency: <assemblypath> : C:\assemblies\assemblyX.dll
                 dependencyType = ProjectDependencyType.Binary;

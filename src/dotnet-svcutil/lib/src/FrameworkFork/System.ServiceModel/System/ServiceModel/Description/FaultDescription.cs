@@ -13,7 +13,7 @@ namespace System.ServiceModel.Description
     {
         private string _action;
         private Type _detailType;
-        CodeTypeReference _detailTypeReference;
+        private CodeTypeReference _detailTypeReference;
         private XmlName _elementName;
         private XmlName _name;
         private string _ns;

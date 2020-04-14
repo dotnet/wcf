@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeNamespaceImport : CodeObject {
-        private string nameSpace;
-        private CodeLinePragma linePragma;
+    public class CodeNamespaceImport : CodeObject
+    {
+        private string _nameSpace;
+        private CodeLinePragma _linePragma;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeNamespaceImport'/>.
         ///    </para>
         /// </devdoc>
-        public CodeNamespaceImport() {
+        public CodeNamespaceImport()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       to import.
         ///    </para>
         /// </devdoc>
-        public CodeNamespaceImport(string nameSpace) {
+        public CodeNamespaceImport(string nameSpace)
+        {
             Namespace = nameSpace;
         }
 
@@ -46,12 +49,15 @@ namespace Microsoft.CodeDom {
         ///       The line the statement occurs on.
         ///    </para>
         /// </devdoc>
-        public CodeLinePragma LinePragma {
-            get {
-                return linePragma;
+        public CodeLinePragma LinePragma
+        {
+            get
+            {
+                return _linePragma;
             }
-            set {
-                linePragma = value;
+            set
+            {
+                _linePragma = value;
             }
         }
 
@@ -61,12 +67,15 @@ namespace Microsoft.CodeDom {
         ///       the namespace to import.
         ///    </para>
         /// </devdoc>
-        public string Namespace {
-            get {
-                return (nameSpace == null) ? string.Empty : nameSpace;
+        public string Namespace
+        {
+            get
+            {
+                return (_nameSpace == null) ? string.Empty : _nameSpace;
             }
-            set {
-                nameSpace = value;
+            set
+            {
+                _nameSpace = value;
             }
         }
     }

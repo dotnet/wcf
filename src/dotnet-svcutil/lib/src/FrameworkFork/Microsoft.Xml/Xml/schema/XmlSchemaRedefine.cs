@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using Microsoft.Xml.Serialization;
@@ -12,18 +13,20 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaRedefine : XmlSchemaExternal {
-        XmlSchemaObjectCollection items = new XmlSchemaObjectCollection();
-        XmlSchemaObjectTable attributeGroups = new XmlSchemaObjectTable();
-        XmlSchemaObjectTable types = new XmlSchemaObjectTable();
-        XmlSchemaObjectTable groups = new XmlSchemaObjectTable();
+    public class XmlSchemaRedefine : XmlSchemaExternal
+    {
+        private XmlSchemaObjectCollection _items = new XmlSchemaObjectCollection();
+        private XmlSchemaObjectTable _attributeGroups = new XmlSchemaObjectTable();
+        private XmlSchemaObjectTable _types = new XmlSchemaObjectTable();
+        private XmlSchemaObjectTable _groups = new XmlSchemaObjectTable();
 
-        
-		/// <include file='doc\XmlSchemaRedefine.uex' path='docs/doc[@for="XmlSchemaRedefine.XmlSchemaRedefine"]/*' />
-		/// <devdoc>
-		///    <para>[To be supplied.]</para>
-		/// </devdoc>
-        public XmlSchemaRedefine() {
+
+        /// <include file='doc\XmlSchemaRedefine.uex' path='docs/doc[@for="XmlSchemaRedefine.XmlSchemaRedefine"]/*' />
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public XmlSchemaRedefine()
+        {
             Compositor = Compositor.Redefine;
         }
 
@@ -36,8 +39,9 @@ namespace Microsoft.Xml.Schema {
          XmlElement("complexType", typeof(XmlSchemaComplexType)),
          XmlElement("group", typeof(XmlSchemaGroup)),
          XmlElement("simpleType", typeof(XmlSchemaSimpleType))]
-        public XmlSchemaObjectCollection Items {
-            get { return items; }
+        public XmlSchemaObjectCollection Items
+        {
+            get { return _items; }
         }
 
         /// <include file='doc\XmlSchemaRedefine.uex' path='docs/doc[@for="XmlSchemaRedefine.AttributeGroups"]/*' />
@@ -45,8 +49,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaObjectTable AttributeGroups {
-            get { return attributeGroups; }
+        public XmlSchemaObjectTable AttributeGroups
+        {
+            get { return _attributeGroups; }
         }
 
         /// <include file='doc\XmlSchemaRedefine.uex' path='docs/doc[@for="XmlSchemaRedefine.SchemaTypes"]/*' />
@@ -54,8 +59,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaObjectTable SchemaTypes {
-            get { return types; }
+        public XmlSchemaObjectTable SchemaTypes
+        {
+            get { return _types; }
         }
 
         /// <include file='doc\XmlSchemaRedefine.uex' path='docs/doc[@for="XmlSchemaRedefine.Groups"]/*' />
@@ -63,12 +69,14 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaObjectTable Groups {
-            get { return groups; }
+        public XmlSchemaObjectTable Groups
+        {
+            get { return _groups; }
         }
 
-        internal override void AddAnnotation(XmlSchemaAnnotation annotation) {
-            items.Add(annotation);
+        internal override void AddAnnotation(XmlSchemaAnnotation annotation)
+        {
+            _items.Add(annotation);
         }
     }
 }

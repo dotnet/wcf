@@ -17,7 +17,7 @@ namespace System.Web.Services.Description
             Write124_ServiceDescription(@"definitions", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.ServiceDescription)o), true, false);
         }
 
-        void Write124_ServiceDescription(string n, string ns, global::System.Web.Services.Description.ServiceDescription o, bool isNullable, bool needType)
+        private void Write124_ServiceDescription(string n, string ns, global::System.Web.Services.Description.ServiceDescription o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -30,7 +30,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.ServiceDescription))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -53,7 +54,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -66,7 +68,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -126,7 +129,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write123_Service(string n, string ns, global::System.Web.Services.Description.Service o, bool isNullable, bool needType)
+        private void Write123_Service(string n, string ns, global::System.Web.Services.Description.Service o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -139,7 +142,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Service))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -161,7 +165,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -174,7 +179,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -193,7 +199,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write122_Port(string n, string ns, global::System.Web.Services.Description.Port o, bool isNullable, bool needType)
+        private void Write122_Port(string n, string ns, global::System.Web.Services.Description.Port o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -206,7 +212,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Port))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -229,7 +236,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -259,11 +267,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -276,7 +286,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write119_SoapAddressBinding(string n, string ns, global::System.Web.Services.Description.SoapAddressBinding o, bool isNullable, bool needType)
+        private void Write119_SoapAddressBinding(string n, string ns, global::System.Web.Services.Description.SoapAddressBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -289,7 +299,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapAddressBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -303,7 +314,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write118_HttpAddressBinding(string n, string ns, global::System.Web.Services.Description.HttpAddressBinding o, bool isNullable, bool needType)
+        private void Write118_HttpAddressBinding(string n, string ns, global::System.Web.Services.Description.HttpAddressBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -316,7 +327,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.HttpAddressBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -330,7 +342,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write121_Soap12AddressBinding(string n, string ns, global::System.Web.Services.Description.Soap12AddressBinding o, bool isNullable, bool needType)
+        private void Write121_Soap12AddressBinding(string n, string ns, global::System.Web.Services.Description.Soap12AddressBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -343,7 +355,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Soap12AddressBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -357,7 +370,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write117_Binding(string n, string ns, global::System.Web.Services.Description.Binding o, bool isNullable, bool needType)
+        private void Write117_Binding(string n, string ns, global::System.Web.Services.Description.Binding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -370,7 +383,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Binding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -393,7 +407,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -423,11 +438,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -450,7 +467,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write116_OperationBinding(string n, string ns, global::System.Web.Services.Description.OperationBinding o, bool isNullable, bool needType)
+        private void Write116_OperationBinding(string n, string ns, global::System.Web.Services.Description.OperationBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -463,7 +480,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.OperationBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -485,7 +503,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -515,11 +534,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -544,7 +565,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write115_FaultBinding(string n, string ns, global::System.Web.Services.Description.FaultBinding o, bool isNullable, bool needType)
+        private void Write115_FaultBinding(string n, string ns, global::System.Web.Services.Description.FaultBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -557,7 +578,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.FaultBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -579,7 +601,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -605,11 +628,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -622,7 +647,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write112_SoapFaultBinding(string n, string ns, global::System.Web.Services.Description.SoapFaultBinding o, bool isNullable, bool needType)
+        private void Write112_SoapFaultBinding(string n, string ns, global::System.Web.Services.Description.SoapFaultBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -635,7 +660,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapFaultBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -658,7 +684,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write98_SoapBindingUse(global::System.Web.Services.Description.SoapBindingUse v)
+        private string Write98_SoapBindingUse(global::System.Web.Services.Description.SoapBindingUse v)
         {
             string s = null;
             switch (v)
@@ -670,7 +696,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write114_Soap12FaultBinding(string n, string ns, global::System.Web.Services.Description.Soap12FaultBinding o, bool isNullable, bool needType)
+        private void Write114_Soap12FaultBinding(string n, string ns, global::System.Web.Services.Description.Soap12FaultBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -683,7 +709,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Soap12FaultBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -706,7 +733,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write100_SoapBindingUse(global::System.Web.Services.Description.SoapBindingUse v)
+        private string Write100_SoapBindingUse(global::System.Web.Services.Description.SoapBindingUse v)
         {
             string s = null;
             switch (v)
@@ -718,7 +745,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write111_OutputBinding(string n, string ns, global::System.Web.Services.Description.OutputBinding o, bool isNullable, bool needType)
+        private void Write111_OutputBinding(string n, string ns, global::System.Web.Services.Description.OutputBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -731,7 +758,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.OutputBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -753,7 +781,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -803,11 +832,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -820,7 +851,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write104_MimeMultipartRelatedBinding(string n, string ns, global::System.Web.Services.Description.MimeMultipartRelatedBinding o, bool isNullable, bool needType)
+        private void Write104_MimeMultipartRelatedBinding(string n, string ns, global::System.Web.Services.Description.MimeMultipartRelatedBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -833,7 +864,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MimeMultipartRelatedBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -856,7 +888,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write103_MimePart(string n, string ns, global::System.Web.Services.Description.MimePart o, bool isNullable, bool needType)
+        private void Write103_MimePart(string n, string ns, global::System.Web.Services.Description.MimePart o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -869,7 +901,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MimePart))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -914,11 +947,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -931,7 +966,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write97_MimeTextBinding(string n, string ns, global::System.Web.Services.Description.MimeTextBinding o, bool isNullable, bool needType)
+        private void Write97_MimeTextBinding(string n, string ns, global::System.Web.Services.Description.MimeTextBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -944,7 +979,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MimeTextBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -967,7 +1003,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write96_MimeTextMatch(string n, string ns, global::System.Web.Services.Description.MimeTextMatch o, bool isNullable, bool needType)
+        private void Write96_MimeTextMatch(string n, string ns, global::System.Web.Services.Description.MimeTextMatch o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -980,7 +1016,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MimeTextMatch))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1015,7 +1052,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write94_MimeXmlBinding(string n, string ns, global::System.Web.Services.Description.MimeXmlBinding o, bool isNullable, bool needType)
+        private void Write94_MimeXmlBinding(string n, string ns, global::System.Web.Services.Description.MimeXmlBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1028,7 +1065,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MimeXmlBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1042,7 +1080,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write93_MimeContentBinding(string n, string ns, global::System.Web.Services.Description.MimeContentBinding o, bool isNullable, bool needType)
+        private void Write93_MimeContentBinding(string n, string ns, global::System.Web.Services.Description.MimeContentBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1055,7 +1093,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MimeContentBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1070,7 +1109,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write99_SoapBodyBinding(string n, string ns, global::System.Web.Services.Description.SoapBodyBinding o, bool isNullable, bool needType)
+        private void Write99_SoapBodyBinding(string n, string ns, global::System.Web.Services.Description.SoapBodyBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1083,7 +1122,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapBodyBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1109,7 +1149,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write102_Soap12BodyBinding(string n, string ns, global::System.Web.Services.Description.Soap12BodyBinding o, bool isNullable, bool needType)
+        private void Write102_Soap12BodyBinding(string n, string ns, global::System.Web.Services.Description.Soap12BodyBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1122,7 +1162,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Soap12BodyBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1148,7 +1189,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write106_SoapHeaderBinding(string n, string ns, global::System.Web.Services.Description.SoapHeaderBinding o, bool isNullable, bool needType)
+        private void Write106_SoapHeaderBinding(string n, string ns, global::System.Web.Services.Description.SoapHeaderBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1161,7 +1202,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapHeaderBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1189,7 +1231,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write105_SoapHeaderFaultBinding(string n, string ns, global::System.Web.Services.Description.SoapHeaderFaultBinding o, bool isNullable, bool needType)
+        private void Write105_SoapHeaderFaultBinding(string n, string ns, global::System.Web.Services.Description.SoapHeaderFaultBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1202,7 +1244,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapHeaderFaultBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1229,7 +1272,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write109_Soap12HeaderBinding(string n, string ns, global::System.Web.Services.Description.Soap12HeaderBinding o, bool isNullable, bool needType)
+        private void Write109_Soap12HeaderBinding(string n, string ns, global::System.Web.Services.Description.Soap12HeaderBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1242,7 +1285,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Soap12HeaderBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1270,7 +1314,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write107_SoapHeaderFaultBinding(string n, string ns, global::System.Web.Services.Description.SoapHeaderFaultBinding o, bool isNullable, bool needType)
+        private void Write107_SoapHeaderFaultBinding(string n, string ns, global::System.Web.Services.Description.SoapHeaderFaultBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1283,7 +1327,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapHeaderFaultBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1310,7 +1355,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write110_InputBinding(string n, string ns, global::System.Web.Services.Description.InputBinding o, bool isNullable, bool needType)
+        private void Write110_InputBinding(string n, string ns, global::System.Web.Services.Description.InputBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1323,7 +1368,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.InputBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1345,7 +1391,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -1403,11 +1450,13 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -1420,7 +1469,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write90_HttpUrlEncodedBinding(string n, string ns, global::System.Web.Services.Description.HttpUrlEncodedBinding o, bool isNullable, bool needType)
+        private void Write90_HttpUrlEncodedBinding(string n, string ns, global::System.Web.Services.Description.HttpUrlEncodedBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1433,7 +1482,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.HttpUrlEncodedBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1446,7 +1496,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write91_HttpUrlReplacementBinding(string n, string ns, global::System.Web.Services.Description.HttpUrlReplacementBinding o, bool isNullable, bool needType)
+        private void Write91_HttpUrlReplacementBinding(string n, string ns, global::System.Web.Services.Description.HttpUrlReplacementBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1459,7 +1509,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.HttpUrlReplacementBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1472,7 +1523,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write86_SoapOperationBinding(string n, string ns, global::System.Web.Services.Description.SoapOperationBinding o, bool isNullable, bool needType)
+        private void Write86_SoapOperationBinding(string n, string ns, global::System.Web.Services.Description.SoapOperationBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1485,7 +1536,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapOperationBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1503,7 +1555,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write79_SoapBindingStyle(global::System.Web.Services.Description.SoapBindingStyle v)
+        private string Write79_SoapBindingStyle(global::System.Web.Services.Description.SoapBindingStyle v)
         {
             string s = null;
             switch (v)
@@ -1515,7 +1567,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write85_HttpOperationBinding(string n, string ns, global::System.Web.Services.Description.HttpOperationBinding o, bool isNullable, bool needType)
+        private void Write85_HttpOperationBinding(string n, string ns, global::System.Web.Services.Description.HttpOperationBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1528,7 +1580,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.HttpOperationBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1542,7 +1595,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write88_Soap12OperationBinding(string n, string ns, global::System.Web.Services.Description.Soap12OperationBinding o, bool isNullable, bool needType)
+        private void Write88_Soap12OperationBinding(string n, string ns, global::System.Web.Services.Description.Soap12OperationBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1555,7 +1608,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Soap12OperationBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1577,7 +1631,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write82_SoapBindingStyle(global::System.Web.Services.Description.SoapBindingStyle v)
+        private string Write82_SoapBindingStyle(global::System.Web.Services.Description.SoapBindingStyle v)
         {
             string s = null;
             switch (v)
@@ -1589,7 +1643,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write80_SoapBinding(string n, string ns, global::System.Web.Services.Description.SoapBinding o, bool isNullable, bool needType)
+        private void Write80_SoapBinding(string n, string ns, global::System.Web.Services.Description.SoapBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1602,7 +1656,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.SoapBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1620,7 +1675,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write77_HttpBinding(string n, string ns, global::System.Web.Services.Description.HttpBinding o, bool isNullable, bool needType)
+        private void Write77_HttpBinding(string n, string ns, global::System.Web.Services.Description.HttpBinding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1633,7 +1688,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.HttpBinding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1647,7 +1703,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write84_Soap12Binding(string n, string ns, global::System.Web.Services.Description.Soap12Binding o, bool isNullable, bool needType)
+        private void Write84_Soap12Binding(string n, string ns, global::System.Web.Services.Description.Soap12Binding o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1660,7 +1716,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Soap12Binding))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1678,7 +1735,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write75_PortType(string n, string ns, global::System.Web.Services.Description.PortType o, bool isNullable, bool needType)
+        private void Write75_PortType(string n, string ns, global::System.Web.Services.Description.PortType o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1691,7 +1748,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.PortType))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1713,7 +1771,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -1726,7 +1785,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -1745,7 +1805,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write74_Operation(string n, string ns, global::System.Web.Services.Description.Operation o, bool isNullable, bool needType)
+        private void Write74_Operation(string n, string ns, global::System.Web.Services.Description.Operation o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1758,7 +1818,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Operation))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1784,7 +1845,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -1797,7 +1859,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -1819,7 +1882,8 @@ namespace System.Web.Services.Description
                             {
                                 Write71_OperationInput(@"input", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.OperationInput)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -1842,7 +1906,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write73_OperationFault(string n, string ns, global::System.Web.Services.Description.OperationFault o, bool isNullable, bool needType)
+        private void Write73_OperationFault(string n, string ns, global::System.Web.Services.Description.OperationFault o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1855,7 +1919,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.OperationFault))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1878,7 +1943,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -1891,7 +1957,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -1900,7 +1967,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write71_OperationInput(string n, string ns, global::System.Web.Services.Description.OperationInput o, bool isNullable, bool needType)
+        private void Write71_OperationInput(string n, string ns, global::System.Web.Services.Description.OperationInput o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1913,7 +1980,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.OperationInput))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1936,7 +2004,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -1949,7 +2018,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -1958,7 +2028,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write72_OperationOutput(string n, string ns, global::System.Web.Services.Description.OperationOutput o, bool isNullable, bool needType)
+        private void Write72_OperationOutput(string n, string ns, global::System.Web.Services.Description.OperationOutput o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -1971,7 +2041,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.OperationOutput))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -1994,7 +2065,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -2007,7 +2079,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -2016,7 +2089,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write69_Message(string n, string ns, global::System.Web.Services.Description.Message o, bool isNullable, bool needType)
+        private void Write69_Message(string n, string ns, global::System.Web.Services.Description.Message o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2029,7 +2102,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Message))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2051,7 +2125,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -2064,7 +2139,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -2083,7 +2159,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write68_MessagePart(string n, string ns, global::System.Web.Services.Description.MessagePart o, bool isNullable, bool needType)
+        private void Write68_MessagePart(string n, string ns, global::System.Web.Services.Description.MessagePart o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2096,7 +2172,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.MessagePart))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2120,7 +2197,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -2133,7 +2211,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -2142,7 +2221,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write67_Types(string n, string ns, global::System.Web.Services.Description.Types o, bool isNullable, bool needType)
+        private void Write67_Types(string n, string ns, global::System.Web.Services.Description.Types o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2155,7 +2234,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Types))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2176,7 +2256,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -2189,7 +2270,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -2208,7 +2290,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write66_XmlSchema(string n, string ns, Microsoft.Xml.Schema.XmlSchema o, bool isNullable, bool needType)
+        private void Write66_XmlSchema(string n, string ns, Microsoft.Xml.Schema.XmlSchema o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2221,7 +2303,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchema))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2278,7 +2361,8 @@ namespace System.Web.Services.Description
                             {
                                 Write12_XmlSchemaInclude(@"include", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaInclude)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2328,7 +2412,8 @@ namespace System.Web.Services.Description
                             {
                                 Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAnnotation)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2341,7 +2426,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write11_XmlSchemaAnnotation(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAnnotation o, bool isNullable, bool needType)
+        private void Write11_XmlSchemaAnnotation(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAnnotation o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2354,7 +2439,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAnnotation))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2389,7 +2475,8 @@ namespace System.Web.Services.Description
                             {
                                 Write9_XmlSchemaDocumentation(@"documentation", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaDocumentation)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2402,7 +2489,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write9_XmlSchemaDocumentation(string n, string ns, Microsoft.Xml.Schema.XmlSchemaDocumentation o, bool isNullable, bool needType)
+        private void Write9_XmlSchemaDocumentation(string n, string ns, Microsoft.Xml.Schema.XmlSchemaDocumentation o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2415,7 +2502,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaDocumentation))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2439,7 +2527,8 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
@@ -2447,7 +2536,8 @@ namespace System.Web.Services.Description
                             {
                                 ((Microsoft.Xml.XmlNode)ai).WriteTo(Writer);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2460,7 +2550,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write10_XmlSchemaAppInfo(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAppInfo o, bool isNullable, bool needType)
+        private void Write10_XmlSchemaAppInfo(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAppInfo o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2473,7 +2563,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAppInfo))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2496,7 +2587,8 @@ namespace System.Web.Services.Description
                                 {
                                     WriteElementLiteral((Microsoft.Xml.XmlNode)elem, @"", null, false, true);
                                 }
-                                else {
+                                else
+                                {
                                     throw CreateInvalidAnyTypeException(elem);
                                 }
                             }
@@ -2504,7 +2596,8 @@ namespace System.Web.Services.Description
                             {
                                 ((Microsoft.Xml.XmlNode)ai).WriteTo(Writer);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2517,7 +2610,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write63_XmlSchemaGroup(string n, string ns, Microsoft.Xml.Schema.XmlSchemaGroup o, bool isNullable, bool needType)
+        private void Write63_XmlSchemaGroup(string n, string ns, Microsoft.Xml.Schema.XmlSchemaGroup o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2530,7 +2623,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaGroup))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2564,7 +2658,8 @@ namespace System.Web.Services.Description
                 {
                     Write53_XmlSchemaSequence(@"sequence", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaSequence)o.@Particle), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Particle != null)
                     {
                         throw CreateUnknownTypeException(o.@Particle);
@@ -2574,7 +2669,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write53_XmlSchemaSequence(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSequence o, bool isNullable, bool needType)
+        private void Write53_XmlSchemaSequence(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSequence o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2587,7 +2682,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSequence))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2637,7 +2733,8 @@ namespace System.Web.Services.Description
                             {
                                 Write46_XmlSchemaAny(@"any", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAny)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2650,7 +2747,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write46_XmlSchemaAny(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAny o, bool isNullable, bool needType)
+        private void Write46_XmlSchemaAny(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAny o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2663,7 +2760,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAny))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2693,7 +2791,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write38_XmlSchemaContentProcessing(Microsoft.Xml.Schema.XmlSchemaContentProcessing v)
+        private string Write38_XmlSchemaContentProcessing(Microsoft.Xml.Schema.XmlSchemaContentProcessing v)
         {
             string s = null;
             switch (v)
@@ -2706,7 +2804,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write52_XmlSchemaElement(string n, string ns, Microsoft.Xml.Schema.XmlSchemaElement o, bool isNullable, bool needType)
+        private void Write52_XmlSchemaElement(string n, string ns, Microsoft.Xml.Schema.XmlSchemaElement o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2719,7 +2817,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaElement))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2779,7 +2878,8 @@ namespace System.Web.Services.Description
                 {
                     Write34_XmlSchemaSimpleType(@"simpleType", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaSimpleType)o.@SchemaType), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@SchemaType != null)
                     {
                         throw CreateUnknownTypeException(o.@SchemaType);
@@ -2806,7 +2906,8 @@ namespace System.Web.Services.Description
                             {
                                 Write49_XmlSchemaKey(@"key", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaKey)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -2819,7 +2920,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write49_XmlSchemaKey(string n, string ns, Microsoft.Xml.Schema.XmlSchemaKey o, bool isNullable, bool needType)
+        private void Write49_XmlSchemaKey(string n, string ns, Microsoft.Xml.Schema.XmlSchemaKey o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2832,7 +2933,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaKey))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2867,7 +2969,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write47_XmlSchemaXPath(string n, string ns, Microsoft.Xml.Schema.XmlSchemaXPath o, bool isNullable, bool needType)
+        private void Write47_XmlSchemaXPath(string n, string ns, Microsoft.Xml.Schema.XmlSchemaXPath o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2880,7 +2982,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaXPath))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2907,7 +3010,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write50_XmlSchemaUnique(string n, string ns, Microsoft.Xml.Schema.XmlSchemaUnique o, bool isNullable, bool needType)
+        private void Write50_XmlSchemaUnique(string n, string ns, Microsoft.Xml.Schema.XmlSchemaUnique o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2920,7 +3023,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaUnique))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -2955,7 +3059,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write51_XmlSchemaKeyref(string n, string ns, Microsoft.Xml.Schema.XmlSchemaKeyref o, bool isNullable, bool needType)
+        private void Write51_XmlSchemaKeyref(string n, string ns, Microsoft.Xml.Schema.XmlSchemaKeyref o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -2968,7 +3072,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaKeyref))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3004,7 +3109,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write34_XmlSchemaSimpleType(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleType o, bool isNullable, bool needType)
+        private void Write34_XmlSchemaSimpleType(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleType o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3017,7 +3122,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleType))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3055,7 +3161,8 @@ namespace System.Web.Services.Description
                 {
                     Write17_XmlSchemaSimpleTypeList(@"list", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaSimpleTypeList)o.@Content), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Content != null)
                     {
                         throw CreateUnknownTypeException(o.@Content);
@@ -3065,7 +3172,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write17_XmlSchemaSimpleTypeList(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleTypeList o, bool isNullable, bool needType)
+        private void Write17_XmlSchemaSimpleTypeList(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleTypeList o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3078,7 +3185,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleTypeList))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3103,7 +3211,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write32_XmlSchemaSimpleTypeRestriction(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleTypeRestriction o, bool isNullable, bool needType)
+        private void Write32_XmlSchemaSimpleTypeRestriction(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleTypeRestriction o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3116,7 +3224,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleTypeRestriction))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3194,7 +3303,8 @@ namespace System.Web.Services.Description
                             {
                                 Write26_XmlSchemaEnumerationFacet(@"enumeration", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaEnumerationFacet)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -3207,7 +3317,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write26_XmlSchemaEnumerationFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaEnumerationFacet o, bool isNullable, bool needType)
+        private void Write26_XmlSchemaEnumerationFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaEnumerationFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3220,7 +3330,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaEnumerationFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3248,7 +3359,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write27_XmlSchemaMaxInclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMaxInclusiveFacet o, bool isNullable, bool needType)
+        private void Write27_XmlSchemaMaxInclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMaxInclusiveFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3261,7 +3372,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaMaxInclusiveFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3289,7 +3401,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write21_XmlSchemaMinInclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMinInclusiveFacet o, bool isNullable, bool needType)
+        private void Write21_XmlSchemaMinInclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMinInclusiveFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3302,7 +3414,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaMinInclusiveFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3330,7 +3443,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write25_XmlSchemaPatternFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaPatternFacet o, bool isNullable, bool needType)
+        private void Write25_XmlSchemaPatternFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaPatternFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3343,7 +3456,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaPatternFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3371,7 +3485,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write30_XmlSchemaMinExclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMinExclusiveFacet o, bool isNullable, bool needType)
+        private void Write30_XmlSchemaMinExclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMinExclusiveFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3384,7 +3498,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaMinExclusiveFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3412,7 +3527,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write29_XmlSchemaWhiteSpaceFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaWhiteSpaceFacet o, bool isNullable, bool needType)
+        private void Write29_XmlSchemaWhiteSpaceFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaWhiteSpaceFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3425,7 +3540,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaWhiteSpaceFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3453,7 +3569,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write28_XmlSchemaMaxExclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMaxExclusiveFacet o, bool isNullable, bool needType)
+        private void Write28_XmlSchemaMaxExclusiveFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMaxExclusiveFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3466,7 +3582,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaMaxExclusiveFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3494,7 +3611,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write31_XmlSchemaMinLengthFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMinLengthFacet o, bool isNullable, bool needType)
+        private void Write31_XmlSchemaMinLengthFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMinLengthFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3507,7 +3624,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaMinLengthFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3535,7 +3653,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write20_XmlSchemaFractionDigitsFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaFractionDigitsFacet o, bool isNullable, bool needType)
+        private void Write20_XmlSchemaFractionDigitsFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaFractionDigitsFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3548,7 +3666,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaFractionDigitsFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3576,7 +3695,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write22_XmlSchemaMaxLengthFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMaxLengthFacet o, bool isNullable, bool needType)
+        private void Write22_XmlSchemaMaxLengthFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaMaxLengthFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3589,7 +3708,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaMaxLengthFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3617,7 +3737,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write24_XmlSchemaTotalDigitsFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaTotalDigitsFacet o, bool isNullable, bool needType)
+        private void Write24_XmlSchemaTotalDigitsFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaTotalDigitsFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3630,7 +3750,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaTotalDigitsFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3658,7 +3779,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write23_XmlSchemaLengthFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaLengthFacet o, bool isNullable, bool needType)
+        private void Write23_XmlSchemaLengthFacet(string n, string ns, Microsoft.Xml.Schema.XmlSchemaLengthFacet o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3671,7 +3792,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaLengthFacet))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3699,7 +3821,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write33_XmlSchemaSimpleTypeUnion(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleTypeUnion o, bool isNullable, bool needType)
+        private void Write33_XmlSchemaSimpleTypeUnion(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleTypeUnion o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3712,7 +3834,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleTypeUnion))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3762,7 +3885,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write7_XmlSchemaDerivationMethod(Microsoft.Xml.Schema.XmlSchemaDerivationMethod v)
+        private string Write7_XmlSchemaDerivationMethod(Microsoft.Xml.Schema.XmlSchemaDerivationMethod v)
         {
             string s = null;
             switch (v)
@@ -3792,7 +3915,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write62_XmlSchemaComplexType(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexType o, bool isNullable, bool needType)
+        private void Write62_XmlSchemaComplexType(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexType o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3805,7 +3928,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaComplexType))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3851,7 +3975,8 @@ namespace System.Web.Services.Description
                 {
                     Write58_XmlSchemaComplexContent(@"complexContent", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaComplexContent)o.@ContentModel), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@ContentModel != null)
                     {
                         throw CreateUnknownTypeException(o.@ContentModel);
@@ -3875,7 +4000,8 @@ namespace System.Web.Services.Description
                 {
                     Write44_XmlSchemaGroupRef(@"group", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaGroupRef)o.@Particle), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Particle != null)
                     {
                         throw CreateUnknownTypeException(o.@Particle);
@@ -3898,7 +4024,8 @@ namespace System.Web.Services.Description
                             {
                                 Write36_XmlSchemaAttribute(@"attribute", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAttribute)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -3912,7 +4039,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write39_XmlSchemaAnyAttribute(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAnyAttribute o, bool isNullable, bool needType)
+        private void Write39_XmlSchemaAnyAttribute(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAnyAttribute o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3925,7 +4052,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAnyAttribute))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -3953,7 +4081,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write36_XmlSchemaAttribute(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAttribute o, bool isNullable, bool needType)
+        private void Write36_XmlSchemaAttribute(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAttribute o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -3966,7 +4094,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAttribute))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4003,7 +4132,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        string Write35_XmlSchemaUse(Microsoft.Xml.Schema.XmlSchemaUse v)
+        private string Write35_XmlSchemaUse(Microsoft.Xml.Schema.XmlSchemaUse v)
         {
             string s = null;
             switch (v)
@@ -4016,7 +4145,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        string Write6_XmlSchemaForm(Microsoft.Xml.Schema.XmlSchemaForm v)
+        private string Write6_XmlSchemaForm(Microsoft.Xml.Schema.XmlSchemaForm v)
         {
             string s = null;
             switch (v)
@@ -4028,7 +4157,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write37_XmlSchemaAttributeGroupRef(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef o, bool isNullable, bool needType)
+        private void Write37_XmlSchemaAttributeGroupRef(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4041,7 +4170,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4065,7 +4195,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write44_XmlSchemaGroupRef(string n, string ns, Microsoft.Xml.Schema.XmlSchemaGroupRef o, bool isNullable, bool needType)
+        private void Write44_XmlSchemaGroupRef(string n, string ns, Microsoft.Xml.Schema.XmlSchemaGroupRef o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4078,7 +4208,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaGroupRef))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4104,7 +4235,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write55_XmlSchemaAll(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAll o, bool isNullable, bool needType)
+        private void Write55_XmlSchemaAll(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAll o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4117,7 +4248,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAll))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4152,7 +4284,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write54_XmlSchemaChoice(string n, string ns, Microsoft.Xml.Schema.XmlSchemaChoice o, bool isNullable, bool needType)
+        private void Write54_XmlSchemaChoice(string n, string ns, Microsoft.Xml.Schema.XmlSchemaChoice o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4165,7 +4297,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaChoice))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4215,7 +4348,8 @@ namespace System.Web.Services.Description
                             {
                                 Write46_XmlSchemaAny(@"any", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAny)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4228,7 +4362,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write58_XmlSchemaComplexContent(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexContent o, bool isNullable, bool needType)
+        private void Write58_XmlSchemaComplexContent(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexContent o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4241,7 +4375,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaComplexContent))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4271,7 +4406,8 @@ namespace System.Web.Services.Description
                 {
                     Write56_Item(@"extension", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaComplexContentExtension)o.@Content), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Content != null)
                     {
                         throw CreateUnknownTypeException(o.@Content);
@@ -4281,7 +4417,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write56_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexContentExtension o, bool isNullable, bool needType)
+        private void Write56_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexContentExtension o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4294,7 +4430,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaComplexContentExtension))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4332,7 +4469,8 @@ namespace System.Web.Services.Description
                 {
                     Write44_XmlSchemaGroupRef(@"group", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaGroupRef)o.@Particle), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Particle != null)
                     {
                         throw CreateUnknownTypeException(o.@Particle);
@@ -4355,7 +4493,8 @@ namespace System.Web.Services.Description
                             {
                                 Write37_XmlSchemaAttributeGroupRef(@"attributeGroup", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4369,7 +4508,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write57_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexContentRestriction o, bool isNullable, bool needType)
+        private void Write57_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaComplexContentRestriction o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4382,7 +4521,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaComplexContentRestriction))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4420,7 +4560,8 @@ namespace System.Web.Services.Description
                 {
                     Write44_XmlSchemaGroupRef(@"group", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaGroupRef)o.@Particle), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Particle != null)
                     {
                         throw CreateUnknownTypeException(o.@Particle);
@@ -4443,7 +4584,8 @@ namespace System.Web.Services.Description
                             {
                                 Write37_XmlSchemaAttributeGroupRef(@"attributeGroup", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4457,7 +4599,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write61_XmlSchemaSimpleContent(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleContent o, bool isNullable, bool needType)
+        private void Write61_XmlSchemaSimpleContent(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleContent o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4470,7 +4612,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleContent))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4499,7 +4642,8 @@ namespace System.Web.Services.Description
                 {
                     Write59_Item(@"restriction", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaSimpleContentRestriction)o.@Content), false, false);
                 }
-                else {
+                else
+                {
                     if (o.@Content != null)
                     {
                         throw CreateUnknownTypeException(o.@Content);
@@ -4509,7 +4653,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write59_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleContentRestriction o, bool isNullable, bool needType)
+        private void Write59_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleContentRestriction o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4522,7 +4666,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleContentRestriction))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4600,7 +4745,8 @@ namespace System.Web.Services.Description
                             {
                                 Write25_XmlSchemaPatternFacet(@"pattern", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaPatternFacet)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4626,7 +4772,8 @@ namespace System.Web.Services.Description
                             {
                                 Write37_XmlSchemaAttributeGroupRef(@"attributeGroup", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4640,7 +4787,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write60_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleContentExtension o, bool isNullable, bool needType)
+        private void Write60_Item(string n, string ns, Microsoft.Xml.Schema.XmlSchemaSimpleContentExtension o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4653,7 +4800,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaSimpleContentExtension))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4690,7 +4838,8 @@ namespace System.Web.Services.Description
                             {
                                 Write37_XmlSchemaAttributeGroupRef(@"attributeGroup", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4704,7 +4853,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write65_XmlSchemaNotation(string n, string ns, Microsoft.Xml.Schema.XmlSchemaNotation o, bool isNullable, bool needType)
+        private void Write65_XmlSchemaNotation(string n, string ns, Microsoft.Xml.Schema.XmlSchemaNotation o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4717,7 +4866,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaNotation))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4743,7 +4893,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write40_XmlSchemaAttributeGroup(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAttributeGroup o, bool isNullable, bool needType)
+        private void Write40_XmlSchemaAttributeGroup(string n, string ns, Microsoft.Xml.Schema.XmlSchemaAttributeGroup o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4756,7 +4906,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaAttributeGroup))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4793,7 +4944,8 @@ namespace System.Web.Services.Description
                             {
                                 Write36_XmlSchemaAttribute(@"attribute", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAttribute)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4807,7 +4959,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write12_XmlSchemaInclude(string n, string ns, Microsoft.Xml.Schema.XmlSchemaInclude o, bool isNullable, bool needType)
+        private void Write12_XmlSchemaInclude(string n, string ns, Microsoft.Xml.Schema.XmlSchemaInclude o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4820,7 +4972,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaInclude))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4844,7 +4997,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write13_XmlSchemaImport(string n, string ns, Microsoft.Xml.Schema.XmlSchemaImport o, bool isNullable, bool needType)
+        private void Write13_XmlSchemaImport(string n, string ns, Microsoft.Xml.Schema.XmlSchemaImport o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4857,7 +5010,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaImport))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4882,7 +5036,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write64_XmlSchemaRedefine(string n, string ns, Microsoft.Xml.Schema.XmlSchemaRedefine o, bool isNullable, bool needType)
+        private void Write64_XmlSchemaRedefine(string n, string ns, Microsoft.Xml.Schema.XmlSchemaRedefine o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4895,7 +5049,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(Microsoft.Xml.Schema.XmlSchemaRedefine))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4943,7 +5098,8 @@ namespace System.Web.Services.Description
                             {
                                 Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((Microsoft.Xml.Schema.XmlSchemaAnnotation)ai), false, false);
                             }
-                            else {
+                            else
+                            {
                                 if (ai != null)
                                 {
                                     throw CreateUnknownTypeException(ai);
@@ -4956,7 +5112,7 @@ namespace System.Web.Services.Description
             WriteEndElement(o);
         }
 
-        void Write4_Import(string n, string ns, global::System.Web.Services.Description.Import o, bool isNullable, bool needType)
+        private void Write4_Import(string n, string ns, global::System.Web.Services.Description.Import o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -4969,7 +5125,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(global::System.Web.Services.Description.Import))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -4992,7 +5149,8 @@ namespace System.Web.Services.Description
             {
                 WriteElementLiteral((Microsoft.Xml.XmlNode)o.@DocumentationElement, @"documentation", @"http://schemas.xmlsoap.org/wsdl/", false, true);
             }
-            else {
+            else
+            {
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
@@ -5005,7 +5163,8 @@ namespace System.Web.Services.Description
                         {
                             WriteElementLiteral((Microsoft.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
-                        else {
+                        else
+                        {
                             throw CreateInvalidAnyTypeException(a[ia]);
                         }
                     }
@@ -5020,36 +5179,36 @@ namespace System.Web.Services.Description
     }
     internal class ServiceDescriptionSerializationReader : Microsoft.Xml.Serialization.XmlSerializationReader
     {
-
-
         public object Read125_definitions()
         {
             object o = null;
             Reader.MoveToContent();
             if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
             {
-                if (((object)Reader.LocalName == (object)id1_definitions && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (((object)Reader.LocalName == (object)_id1_definitions && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o = Read124_ServiceDescription(true, true);
                 }
-                else {
+                else
+                {
                     throw CreateUnknownNodeException();
                 }
             }
-            else {
+            else
+            {
                 UnknownNode(null, @"http://schemas.xmlsoap.org/wsdl/:definitions");
             }
             return (object)o;
         }
 
-        global::System.Web.Services.Description.ServiceDescription Read124_ServiceDescription(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.ServiceDescription Read124_ServiceDescription(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id3_ServiceDescription && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id3_ServiceDescription && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5069,12 +5228,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[12];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[11] && ((object)Reader.LocalName == (object)id6_targetNamespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[11] && ((object)Reader.LocalName == (object)_id6_targetNamespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@TargetNamespace = Reader.Value;
                     paramsRead[11] = true;
@@ -5084,7 +5243,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -5106,41 +5266,43 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id8_import && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id8_import && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read4_Import(false, true));
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id9_types && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id9_types && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@Types = Read67_Types(false, true);
                         paramsRead[6] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read69_Message(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id11_portType && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id11_portType && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read75_PortType(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id12_binding && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id12_binding && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_9) == null) Reader.Skip(); else a_9.Add(Read117_Binding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id13_service && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id13_service && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_10) == null) Reader.Skip(); else a_10.Add(Read123_Service(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/:import, http://schemas.xmlsoap.org/wsdl/:types, http://schemas.xmlsoap.org/wsdl/:message, http://schemas.xmlsoap.org/wsdl/:portType, http://schemas.xmlsoap.org/wsdl/:binding, http://schemas.xmlsoap.org/wsdl/:service");
                 }
                 Reader.MoveToContent();
@@ -5151,14 +5313,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Service Read123_Service(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Service Read123_Service(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id14_Service && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id14_Service && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5174,7 +5336,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -5184,7 +5346,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -5206,20 +5369,22 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id15_port && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id15_port && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read122_Port(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/:port");
                 }
                 Reader.MoveToContent();
@@ -5230,14 +5395,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Port Read122_Port(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Port Read122_Port(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id16_Port && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id16_Port && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5252,12 +5417,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id12_binding && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id12_binding && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Binding = ToXmlQualifiedName(Reader.Value);
                     paramsRead[5] = true;
@@ -5267,7 +5432,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -5289,28 +5455,30 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id17_address && (object)Reader.NamespaceURI == (object)id18_Item))
+                    else if (((object)Reader.LocalName == (object)_id17_address && (object)Reader.NamespaceURI == (object)_id18_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read118_HttpAddressBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id17_address && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id17_address && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read119_SoapAddressBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id17_address && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id17_address && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read121_Soap12AddressBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/http/:address, http://schemas.xmlsoap.org/wsdl/soap/:address, http://schemas.xmlsoap.org/wsdl/soap12/:address");
                 }
                 Reader.MoveToContent();
@@ -5321,14 +5489,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Soap12AddressBinding Read121_Soap12AddressBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Soap12AddressBinding Read121_Soap12AddressBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id21_Soap12AddressBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id21_Soap12AddressBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -5340,12 +5508,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_location && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id23_location && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Location = Reader.Value;
                     paramsRead[1] = true;
@@ -5371,7 +5539,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -5381,14 +5550,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapAddressBinding Read119_SoapAddressBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapAddressBinding Read119_SoapAddressBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id24_SoapAddressBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id24_SoapAddressBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -5400,12 +5569,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_location && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id23_location && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Location = Reader.Value;
                     paramsRead[1] = true;
@@ -5431,7 +5600,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -5441,14 +5611,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.HttpAddressBinding Read118_HttpAddressBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.HttpAddressBinding Read118_HttpAddressBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id25_HttpAddressBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id25_HttpAddressBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id18_Item))
                 {
                 }
                 else
@@ -5460,12 +5630,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_location && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id23_location && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Location = Reader.Value;
                     paramsRead[1] = true;
@@ -5491,7 +5661,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -5501,14 +5672,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Binding Read117_Binding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Binding Read117_Binding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id26_Binding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id26_Binding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5524,12 +5695,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id27_type && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id27_type && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Type = ToXmlQualifiedName(Reader.Value);
                     paramsRead[6] = true;
@@ -5539,7 +5710,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -5561,32 +5733,34 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id12_binding && (object)Reader.NamespaceURI == (object)id18_Item))
+                    else if (((object)Reader.LocalName == (object)_id12_binding && (object)Reader.NamespaceURI == (object)_id18_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read77_HttpBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id12_binding && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id12_binding && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read80_SoapBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id12_binding && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id12_binding && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read84_Soap12Binding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id28_operation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id28_operation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read116_OperationBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/http/:binding, http://schemas.xmlsoap.org/wsdl/soap/:binding, http://schemas.xmlsoap.org/wsdl/soap12/:binding, http://schemas.xmlsoap.org/wsdl/:operation");
                 }
                 Reader.MoveToContent();
@@ -5597,14 +5771,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.OperationBinding Read116_OperationBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.OperationBinding Read116_OperationBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id29_OperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id29_OperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5620,7 +5794,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -5630,7 +5804,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -5652,42 +5827,44 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id28_operation && (object)Reader.NamespaceURI == (object)id18_Item))
+                    else if (((object)Reader.LocalName == (object)_id28_operation && (object)Reader.NamespaceURI == (object)_id18_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read85_HttpOperationBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id28_operation && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id28_operation && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read86_SoapOperationBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id28_operation && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id28_operation && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read88_Soap12OperationBinding(false, true));
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id30_input && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id30_input && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@Input = Read110_InputBinding(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id31_output && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id31_output && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@Output = Read111_OutputBinding(false, true);
                         paramsRead[6] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id32_fault && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id32_fault && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read115_FaultBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/http/:operation, http://schemas.xmlsoap.org/wsdl/soap/:operation, http://schemas.xmlsoap.org/wsdl/soap12/:operation, http://schemas.xmlsoap.org/wsdl/:input, http://schemas.xmlsoap.org/wsdl/:output, http://schemas.xmlsoap.org/wsdl/:fault");
                 }
                 Reader.MoveToContent();
@@ -5698,14 +5875,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.FaultBinding Read115_FaultBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.FaultBinding Read115_FaultBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id33_FaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id33_FaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5720,7 +5897,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -5730,7 +5907,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -5752,24 +5930,26 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id32_fault && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id32_fault && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read112_SoapFaultBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id32_fault && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id32_fault && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read114_Soap12FaultBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/soap/:fault, http://schemas.xmlsoap.org/wsdl/soap12/:fault");
                 }
                 Reader.MoveToContent();
@@ -5780,14 +5960,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Soap12FaultBinding Read114_Soap12FaultBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Soap12FaultBinding Read114_Soap12FaultBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id34_Soap12FaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id34_Soap12FaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -5799,27 +5979,27 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read100_SoapBindingUse(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[4] = true;
@@ -5845,7 +6025,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -5855,7 +6036,7 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapBindingUse Read100_SoapBindingUse(string s)
+        private global::System.Web.Services.Description.SoapBindingUse Read100_SoapBindingUse(string s)
         {
             switch (s)
             {
@@ -5865,14 +6046,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        global::System.Web.Services.Description.SoapFaultBinding Read112_SoapFaultBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapFaultBinding Read112_SoapFaultBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id38_SoapFaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id38_SoapFaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -5884,27 +6065,27 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read98_SoapBindingUse(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[4] = true;
@@ -5930,7 +6111,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -5940,7 +6122,7 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapBindingUse Read98_SoapBindingUse(string s)
+        private global::System.Web.Services.Description.SoapBindingUse Read98_SoapBindingUse(string s)
         {
             switch (s)
             {
@@ -5950,14 +6132,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        global::System.Web.Services.Description.OutputBinding Read111_OutputBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.OutputBinding Read111_OutputBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id39_OutputBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id39_OutputBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -5972,7 +6154,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -5982,7 +6164,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -6004,48 +6187,50 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id40_content && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id40_content && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read93_MimeContentBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id42_mimeXml && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id42_mimeXml && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read94_MimeXmlBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id43_multipartRelated && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id43_multipartRelated && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read104_MimeMultipartRelatedBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id44_text && (object)Reader.NamespaceURI == (object)id45_Item))
+                    else if (((object)Reader.LocalName == (object)_id44_text && (object)Reader.NamespaceURI == (object)_id45_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read97_MimeTextBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id46_body && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id46_body && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read99_SoapBodyBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id47_header && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id47_header && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read106_SoapHeaderBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id46_body && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id46_body && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read102_Soap12BodyBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id47_header && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id47_header && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read109_Soap12HeaderBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/mime/:content, http://schemas.xmlsoap.org/wsdl/mime/:mimeXml, http://schemas.xmlsoap.org/wsdl/mime/:multipartRelated, http://microsoft.com/wsdl/mime/textMatching/:text, http://schemas.xmlsoap.org/wsdl/soap/:body, http://schemas.xmlsoap.org/wsdl/soap/:header, http://schemas.xmlsoap.org/wsdl/soap12/:body, http://schemas.xmlsoap.org/wsdl/soap12/:header");
                 }
                 Reader.MoveToContent();
@@ -6056,14 +6241,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Soap12HeaderBinding Read109_Soap12HeaderBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Soap12HeaderBinding Read109_Soap12HeaderBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id48_Soap12HeaderBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id48_Soap12HeaderBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -6075,32 +6260,32 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Part = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read100_SoapBindingUse(Reader.Value);
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[5] = true;
@@ -6124,16 +6309,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[6] && ((object)Reader.LocalName == (object)id50_headerfault && (object)Reader.NamespaceURI == (object)id20_Item))
+                    if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id50_headerfault && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         o.@Fault = Read107_SoapHeaderFaultBinding(false, true);
                         paramsRead[6] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/soap12/:headerfault");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/soap12/:headerfault");
                 }
                 Reader.MoveToContent();
@@ -6143,14 +6330,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapHeaderFaultBinding Read107_SoapHeaderFaultBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapHeaderFaultBinding Read107_SoapHeaderFaultBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id51_SoapHeaderFaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id51_SoapHeaderFaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -6162,32 +6349,32 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Part = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read100_SoapBindingUse(Reader.Value);
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[5] = true;
@@ -6213,7 +6400,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -6223,14 +6411,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Soap12BodyBinding Read102_Soap12BodyBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Soap12BodyBinding Read102_Soap12BodyBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id52_Soap12BodyBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id52_Soap12BodyBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -6242,27 +6430,27 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read100_SoapBindingUse(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id53_parts && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id53_parts && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@PartsString = Reader.Value;
                     paramsRead[4] = true;
@@ -6288,7 +6476,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -6298,14 +6487,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapHeaderBinding Read106_SoapHeaderBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapHeaderBinding Read106_SoapHeaderBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id54_SoapHeaderBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id54_SoapHeaderBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -6317,32 +6506,32 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Part = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read98_SoapBindingUse(Reader.Value);
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[5] = true;
@@ -6366,16 +6555,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[6] && ((object)Reader.LocalName == (object)id50_headerfault && (object)Reader.NamespaceURI == (object)id19_Item))
+                    if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id50_headerfault && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         o.@Fault = Read105_SoapHeaderFaultBinding(false, true);
                         paramsRead[6] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/soap/:headerfault");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/soap/:headerfault");
                 }
                 Reader.MoveToContent();
@@ -6385,14 +6576,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapHeaderFaultBinding Read105_SoapHeaderFaultBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapHeaderFaultBinding Read105_SoapHeaderFaultBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id51_SoapHeaderFaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id51_SoapHeaderFaultBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -6404,32 +6595,32 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Part = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read98_SoapBindingUse(Reader.Value);
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[5] = true;
@@ -6455,7 +6646,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -6465,14 +6657,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapBodyBinding Read99_SoapBodyBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapBodyBinding Read99_SoapBodyBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id55_SoapBodyBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id55_SoapBodyBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -6484,27 +6676,27 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read98_SoapBindingUse(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id37_encodingStyle && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id37_encodingStyle && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Encoding = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id53_parts && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id53_parts && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@PartsString = Reader.Value;
                     paramsRead[4] = true;
@@ -6530,7 +6722,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -6540,14 +6733,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MimeTextBinding Read97_MimeTextBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MimeTextBinding Read97_MimeTextBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id56_MimeTextBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id45_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id56_MimeTextBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id45_Item))
                 {
                 }
                 else
@@ -6560,7 +6753,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
@@ -6584,15 +6777,17 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id57_match && (object)Reader.NamespaceURI == (object)id45_Item))
+                    if (((object)Reader.LocalName == (object)_id57_match && (object)Reader.NamespaceURI == (object)_id45_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read96_MimeTextMatch(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://microsoft.com/wsdl/mime/textMatching/:match");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://microsoft.com/wsdl/mime/textMatching/:match");
                 }
                 Reader.MoveToContent();
@@ -6602,14 +6797,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MimeTextMatch Read96_MimeTextMatch(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MimeTextMatch Read96_MimeTextMatch(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id58_MimeTextMatch && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id45_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id58_MimeTextMatch && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id45_Item))
                 {
                 }
                 else
@@ -6622,37 +6817,37 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id27_type && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id27_type && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Type = Reader.Value;
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Group = Microsoft.Xml.XmlConvert.ToInt32(Reader.Value);
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id60_capture && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id60_capture && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Capture = Microsoft.Xml.XmlConvert.ToInt32(Reader.Value);
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id61_repeats && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id61_repeats && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@RepeatsString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id62_pattern && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id62_pattern && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Pattern = Reader.Value;
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id63_ignoreCase && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id63_ignoreCase && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IgnoreCase = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[6] = true;
@@ -6676,15 +6871,17 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id57_match && (object)Reader.NamespaceURI == (object)id45_Item))
+                    if (((object)Reader.LocalName == (object)_id57_match && (object)Reader.NamespaceURI == (object)_id45_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read96_MimeTextMatch(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://microsoft.com/wsdl/mime/textMatching/:match");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://microsoft.com/wsdl/mime/textMatching/:match");
                 }
                 Reader.MoveToContent();
@@ -6694,14 +6891,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MimeMultipartRelatedBinding Read104_MimeMultipartRelatedBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MimeMultipartRelatedBinding Read104_MimeMultipartRelatedBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id64_MimeMultipartRelatedBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id64_MimeMultipartRelatedBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id41_Item))
                 {
                 }
                 else
@@ -6714,7 +6911,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
@@ -6738,15 +6935,17 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id41_Item))
+                    if (((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read103_MimePart(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/mime/:part");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/mime/:part");
                 }
                 Reader.MoveToContent();
@@ -6756,14 +6955,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MimePart Read103_MimePart(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MimePart Read103_MimePart(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id65_MimePart && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id65_MimePart && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id41_Item))
                 {
                 }
                 else
@@ -6776,7 +6975,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
@@ -6800,31 +6999,33 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id40_content && (object)Reader.NamespaceURI == (object)id41_Item))
+                    if (((object)Reader.LocalName == (object)_id40_content && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read93_MimeContentBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id42_mimeXml && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id42_mimeXml && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read94_MimeXmlBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id44_text && (object)Reader.NamespaceURI == (object)id45_Item))
+                    else if (((object)Reader.LocalName == (object)_id44_text && (object)Reader.NamespaceURI == (object)_id45_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read97_MimeTextBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id46_body && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id46_body && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read99_SoapBodyBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id46_body && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id46_body && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_1) == null) Reader.Skip(); else a_1.Add(Read102_Soap12BodyBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_1.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/mime/:content, http://schemas.xmlsoap.org/wsdl/mime/:mimeXml, http://microsoft.com/wsdl/mime/textMatching/:text, http://schemas.xmlsoap.org/wsdl/soap/:body, http://schemas.xmlsoap.org/wsdl/soap12/:body");
                 }
                 Reader.MoveToContent();
@@ -6834,14 +7035,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MimeXmlBinding Read94_MimeXmlBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MimeXmlBinding Read94_MimeXmlBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id66_MimeXmlBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id66_MimeXmlBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id41_Item))
                 {
                 }
                 else
@@ -6853,12 +7054,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Part = Reader.Value;
                     paramsRead[1] = true;
@@ -6884,7 +7085,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -6894,14 +7096,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MimeContentBinding Read93_MimeContentBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MimeContentBinding Read93_MimeContentBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id67_MimeContentBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id67_MimeContentBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id41_Item))
                 {
                 }
                 else
@@ -6913,17 +7115,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Part = Reader.Value;
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id27_type && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id27_type && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Type = Reader.Value;
                     paramsRead[2] = true;
@@ -6949,7 +7151,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -6959,14 +7162,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.InputBinding Read110_InputBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.InputBinding Read110_InputBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id68_InputBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id68_InputBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -6981,7 +7184,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -6991,7 +7194,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -7013,56 +7217,58 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id69_urlEncoded && (object)Reader.NamespaceURI == (object)id18_Item))
+                    else if (((object)Reader.LocalName == (object)_id69_urlEncoded && (object)Reader.NamespaceURI == (object)_id18_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read90_HttpUrlEncodedBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id70_urlReplacement && (object)Reader.NamespaceURI == (object)id18_Item))
+                    else if (((object)Reader.LocalName == (object)_id70_urlReplacement && (object)Reader.NamespaceURI == (object)_id18_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read91_HttpUrlReplacementBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id40_content && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id40_content && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read93_MimeContentBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id42_mimeXml && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id42_mimeXml && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read94_MimeXmlBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id43_multipartRelated && (object)Reader.NamespaceURI == (object)id41_Item))
+                    else if (((object)Reader.LocalName == (object)_id43_multipartRelated && (object)Reader.NamespaceURI == (object)_id41_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read104_MimeMultipartRelatedBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id44_text && (object)Reader.NamespaceURI == (object)id45_Item))
+                    else if (((object)Reader.LocalName == (object)_id44_text && (object)Reader.NamespaceURI == (object)_id45_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read97_MimeTextBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id46_body && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id46_body && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read99_SoapBodyBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id47_header && (object)Reader.NamespaceURI == (object)id19_Item))
+                    else if (((object)Reader.LocalName == (object)_id47_header && (object)Reader.NamespaceURI == (object)_id19_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read106_SoapHeaderBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id46_body && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id46_body && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read102_Soap12BodyBinding(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id47_header && (object)Reader.NamespaceURI == (object)id20_Item))
+                    else if (((object)Reader.LocalName == (object)_id47_header && (object)Reader.NamespaceURI == (object)_id20_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read109_Soap12HeaderBinding(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/http/:urlEncoded, http://schemas.xmlsoap.org/wsdl/http/:urlReplacement, http://schemas.xmlsoap.org/wsdl/mime/:content, http://schemas.xmlsoap.org/wsdl/mime/:mimeXml, http://schemas.xmlsoap.org/wsdl/mime/:multipartRelated, http://microsoft.com/wsdl/mime/textMatching/:text, http://schemas.xmlsoap.org/wsdl/soap/:body, http://schemas.xmlsoap.org/wsdl/soap/:header, http://schemas.xmlsoap.org/wsdl/soap12/:body, http://schemas.xmlsoap.org/wsdl/soap12/:header");
                 }
                 Reader.MoveToContent();
@@ -7073,14 +7279,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.HttpUrlReplacementBinding Read91_HttpUrlReplacementBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.HttpUrlReplacementBinding Read91_HttpUrlReplacementBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id71_HttpUrlReplacementBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id71_HttpUrlReplacementBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id18_Item))
                 {
                 }
                 else
@@ -7092,7 +7298,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[1];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
@@ -7118,7 +7324,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7128,14 +7335,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.HttpUrlEncodedBinding Read90_HttpUrlEncodedBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.HttpUrlEncodedBinding Read90_HttpUrlEncodedBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id72_HttpUrlEncodedBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id72_HttpUrlEncodedBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id18_Item))
                 {
                 }
                 else
@@ -7147,7 +7354,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[1];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
@@ -7173,7 +7380,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7183,14 +7391,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Soap12OperationBinding Read88_Soap12OperationBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Soap12OperationBinding Read88_Soap12OperationBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id73_Soap12OperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id73_Soap12OperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -7202,22 +7410,22 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[4];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id74_soapAction && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id74_soapAction && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SoapAction = Reader.Value;
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id75_style && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id75_style && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Style = Read82_SoapBindingStyle(Reader.Value);
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id76_soapActionRequired && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id76_soapActionRequired && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SoapActionRequired = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[3] = true;
@@ -7243,7 +7451,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7253,7 +7462,7 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapBindingStyle Read82_SoapBindingStyle(string s)
+        private global::System.Web.Services.Description.SoapBindingStyle Read82_SoapBindingStyle(string s)
         {
             switch (s)
             {
@@ -7263,14 +7472,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        global::System.Web.Services.Description.SoapOperationBinding Read86_SoapOperationBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapOperationBinding Read86_SoapOperationBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id77_SoapOperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id77_SoapOperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -7282,17 +7491,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id74_soapAction && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id74_soapAction && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SoapAction = Reader.Value;
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id75_style && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id75_style && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Style = Read79_SoapBindingStyle(Reader.Value);
                     paramsRead[2] = true;
@@ -7318,7 +7527,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7328,7 +7538,7 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapBindingStyle Read79_SoapBindingStyle(string s)
+        private global::System.Web.Services.Description.SoapBindingStyle Read79_SoapBindingStyle(string s)
         {
             switch (s)
             {
@@ -7338,14 +7548,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        global::System.Web.Services.Description.HttpOperationBinding Read85_HttpOperationBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.HttpOperationBinding Read85_HttpOperationBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id78_HttpOperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id78_HttpOperationBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id18_Item))
                 {
                 }
                 else
@@ -7357,12 +7567,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_location && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id23_location && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Location = Reader.Value;
                     paramsRead[1] = true;
@@ -7388,7 +7598,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7398,14 +7609,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Soap12Binding Read84_Soap12Binding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Soap12Binding Read84_Soap12Binding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id79_Soap12Binding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id79_Soap12Binding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id20_Item))
                 {
                 }
                 else
@@ -7417,17 +7628,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id80_transport && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id80_transport && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Transport = Reader.Value;
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id75_style && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id75_style && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Style = Read82_SoapBindingStyle(Reader.Value);
                     paramsRead[2] = true;
@@ -7453,7 +7664,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7463,14 +7675,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.SoapBinding Read80_SoapBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.SoapBinding Read80_SoapBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id81_SoapBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id81_SoapBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id19_Item))
                 {
                 }
                 else
@@ -7482,17 +7694,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id80_transport && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id80_transport && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Transport = Reader.Value;
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id75_style && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id75_style && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Style = Read79_SoapBindingStyle(Reader.Value);
                     paramsRead[2] = true;
@@ -7518,7 +7730,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7528,14 +7741,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.HttpBinding Read77_HttpBinding(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.HttpBinding Read77_HttpBinding(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id82_HttpBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id82_HttpBinding && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id18_Item))
                 {
                 }
                 else
@@ -7547,12 +7760,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_required && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id22_required && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o.@Required = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[0] = true;
                 }
-                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id83_verb && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id83_verb && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Verb = Reader.Value;
                     paramsRead[1] = true;
@@ -7578,7 +7791,8 @@ namespace System.Web.Services.Description
                 {
                     UnknownNode((object)o, @"");
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -7588,14 +7802,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.PortType Read75_PortType(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.PortType Read75_PortType(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id84_PortType && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id84_PortType && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -7611,7 +7825,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -7621,7 +7835,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -7643,20 +7858,22 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id28_operation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id28_operation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read74_Operation(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/:operation");
                 }
                 Reader.MoveToContent();
@@ -7667,14 +7884,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Operation Read74_Operation(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Operation Read74_Operation(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id85_Operation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id85_Operation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -7691,12 +7908,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id86_parameterOrder && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id86_parameterOrder && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@ParameterOrderString = Reader.Value;
                     paramsRead[5] = true;
@@ -7706,7 +7923,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -7728,28 +7946,30 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id30_input && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id30_input && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read71_OperationInput(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id31_output && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id31_output && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read72_OperationOutput(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id32_fault && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id32_fault && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read73_OperationFault(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/:input, http://schemas.xmlsoap.org/wsdl/:output, http://schemas.xmlsoap.org/wsdl/:fault");
                 }
                 Reader.MoveToContent();
@@ -7760,14 +7980,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.OperationFault Read73_OperationFault(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.OperationFault Read73_OperationFault(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id87_OperationFault && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id87_OperationFault && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -7782,12 +8002,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -7797,7 +8017,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -7819,16 +8040,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else {
+                    else
+                    {
                         a_5.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation");
                 }
                 Reader.MoveToContent();
@@ -7839,14 +8062,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.OperationOutput Read72_OperationOutput(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.OperationOutput Read72_OperationOutput(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id88_OperationOutput && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id88_OperationOutput && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -7861,12 +8084,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -7876,7 +8099,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -7898,16 +8122,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else {
+                    else
+                    {
                         a_5.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation");
                 }
                 Reader.MoveToContent();
@@ -7918,14 +8144,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.OperationInput Read71_OperationInput(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.OperationInput Read71_OperationInput(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id89_OperationInput && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id89_OperationInput && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -7940,12 +8166,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id10_message && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id10_message && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Message = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -7955,7 +8181,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -7977,16 +8204,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else {
+                    else
+                    {
                         a_5.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation");
                 }
                 Reader.MoveToContent();
@@ -7997,14 +8226,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Message Read69_Message(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Message Read69_Message(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id90_Message && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id90_Message && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -8020,7 +8249,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
@@ -8030,7 +8259,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -8052,20 +8282,22 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id49_part && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id49_part && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read68_MessagePart(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://schemas.xmlsoap.org/wsdl/:part");
                 }
                 Reader.MoveToContent();
@@ -8076,14 +8308,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.MessagePart Read68_MessagePart(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.MessagePart Read68_MessagePart(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id91_MessagePart && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id91_MessagePart && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -8098,17 +8330,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[3] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id92_element && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id92_element && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Element = ToXmlQualifiedName(Reader.Value);
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id27_type && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id27_type && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Type = ToXmlQualifiedName(Reader.Value);
                     paramsRead[6] = true;
@@ -8118,7 +8350,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -8140,16 +8373,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else {
+                    else
+                    {
                         a_4.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation");
                 }
                 Reader.MoveToContent();
@@ -8160,14 +8395,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Types Read67_Types(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Types Read67_Types(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id93_Types && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id93_Types && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -8188,7 +8423,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -8210,20 +8446,22 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id94_schema && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id94_schema && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read66_XmlSchema(false, true));
                     }
-                    else {
+                    else
+                    {
                         a_3.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation, http://www.w3.org/2001/XMLSchema:schema");
                 }
                 Reader.MoveToContent();
@@ -8234,14 +8472,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchema Read66_XmlSchema(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchema Read66_XmlSchema(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id96_XmlSchema && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id96_XmlSchema && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8258,37 +8496,37 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[11];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id97_attributeFormDefault && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id97_attributeFormDefault && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@AttributeFormDefault = Read6_XmlSchemaForm(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id98_blockDefault && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id98_blockDefault && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@BlockDefault = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id99_finalDefault && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id99_finalDefault && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@FinalDefault = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[3] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id100_elementFormDefault && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id100_elementFormDefault && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@ElementFormDefault = Read6_XmlSchemaForm(Reader.Value);
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id6_targetNamespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id6_targetNamespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@TargetNamespace = CollapseWhitespace(Reader.Value);
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id101_version && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id101_version && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Version = CollapseWhitespace(Reader.Value);
                     paramsRead[6] = true;
                 }
-                else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[9] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[9] = true;
@@ -8298,7 +8536,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_10 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_10, ca_10, typeof(Microsoft.Xml.XmlAttribute)); a_10[ca_10++] = attr;
@@ -8320,55 +8559,57 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id103_include && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (((object)Reader.LocalName == (object)_id103_include && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read12_XmlSchemaInclude(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id8_import && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id8_import && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read13_XmlSchemaImport(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id104_redefine && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id104_redefine && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read64_XmlSchemaRedefine(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read34_XmlSchemaSimpleType(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id106_complexType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id106_complexType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read62_XmlSchemaComplexType(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read11_XmlSchemaAnnotation(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id108_notation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id108_notation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read65_XmlSchemaNotation(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read63_XmlSchemaGroup(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id92_element && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id92_element && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read52_XmlSchemaElement(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_8) == null) Reader.Skip(); else a_8.Add(Read40_XmlSchemaAttributeGroup(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:include, http://www.w3.org/2001/XMLSchema:import, http://www.w3.org/2001/XMLSchema:redefine, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:complexType, http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:notation, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:element, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:attributeGroup");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:include, http://www.w3.org/2001/XMLSchema:import, http://www.w3.org/2001/XMLSchema:redefine, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:complexType, http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:notation, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:element, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:attributeGroup");
                 }
                 Reader.MoveToContent();
@@ -8379,14 +8620,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAttributeGroup Read40_XmlSchemaAttributeGroup(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAttributeGroup Read40_XmlSchemaAttributeGroup(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id111_XmlSchemaAttributeGroup && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id111_XmlSchemaAttributeGroup && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8402,12 +8643,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
@@ -8417,7 +8658,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -8439,29 +8681,31 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read37_XmlSchemaAttributeGroupRef(false, true));
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id112_anyAttribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id112_anyAttribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@AnyAttribute = Read39_XmlSchemaAnyAttribute(false, true);
                         paramsRead[6] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:anyAttribute");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:anyAttribute");
                 }
                 Reader.MoveToContent();
@@ -8472,14 +8716,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAnyAttribute Read39_XmlSchemaAnyAttribute(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAnyAttribute Read39_XmlSchemaAnyAttribute(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id113_XmlSchemaAnyAttribute && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id113_XmlSchemaAnyAttribute && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8494,17 +8738,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id114_processContents && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id114_processContents && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@ProcessContents = Read38_XmlSchemaContentProcessing(Reader.Value);
                     paramsRead[5] = true;
@@ -8514,7 +8758,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -8536,16 +8781,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -8556,14 +8803,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAnnotation Read11_XmlSchemaAnnotation(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAnnotation Read11_XmlSchemaAnnotation(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id115_XmlSchemaAnnotation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id115_XmlSchemaAnnotation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8579,7 +8826,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[4];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
@@ -8589,7 +8836,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -8611,19 +8859,21 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_2) == null) Reader.Skip(); else a_2.Add(Read9_XmlSchemaDocumentation(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id116_appinfo && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id116_appinfo && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_2) == null) Reader.Skip(); else a_2.Add(Read10_XmlSchemaAppInfo(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:documentation, http://www.w3.org/2001/XMLSchema:appinfo");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:documentation, http://www.w3.org/2001/XMLSchema:appinfo");
                 }
                 Reader.MoveToContent();
@@ -8634,14 +8884,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAppInfo Read10_XmlSchemaAppInfo(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAppInfo Read10_XmlSchemaAppInfo(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id117_XmlSchemaAppInfo && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id117_XmlSchemaAppInfo && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8656,7 +8906,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id118_source && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id118_source && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Source = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
@@ -8666,7 +8916,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @":source");
                 }
             }
@@ -8694,7 +8945,8 @@ namespace System.Web.Services.Description
                 {
                     a_2 = (Microsoft.Xml.XmlNode[])EnsureArrayIndex(a_2, ca_2, typeof(Microsoft.Xml.XmlNode)); a_2[ca_2++] = (Microsoft.Xml.XmlNode)Document.CreateTextNode(Reader.ReadString());
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -8705,14 +8957,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaDocumentation Read9_XmlSchemaDocumentation(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaDocumentation Read9_XmlSchemaDocumentation(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id119_XmlSchemaDocumentation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id119_XmlSchemaDocumentation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8727,12 +8979,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[4];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id118_source && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id118_source && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Source = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id120_lang && (object)Reader.NamespaceURI == (object)id121_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id120_lang && (object)Reader.NamespaceURI == (object)_id121_Item))
                 {
                     o.@Language = Reader.Value;
                     paramsRead[2] = true;
@@ -8742,7 +8994,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @":source, http://www.w3.org/XML/1998/namespace");
                 }
             }
@@ -8770,7 +9023,8 @@ namespace System.Web.Services.Description
                 {
                     a_3 = (Microsoft.Xml.XmlNode[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlNode)); a_3[ca_3++] = (Microsoft.Xml.XmlNode)Document.CreateTextNode(Reader.ReadString());
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"");
                 }
                 Reader.MoveToContent();
@@ -8781,7 +9035,7 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaContentProcessing Read38_XmlSchemaContentProcessing(string s)
+        private Microsoft.Xml.Schema.XmlSchemaContentProcessing Read38_XmlSchemaContentProcessing(string s)
         {
             switch (s)
             {
@@ -8792,14 +9046,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef Read37_XmlSchemaAttributeGroupRef(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAttributeGroupRef Read37_XmlSchemaAttributeGroupRef(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id122_XmlSchemaAttributeGroupRef && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id122_XmlSchemaAttributeGroupRef && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8814,12 +9068,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id123_ref && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id123_ref && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@RefName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -8829,7 +9083,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -8851,16 +9106,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -8871,14 +9128,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAttribute Read36_XmlSchemaAttribute(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAttribute Read36_XmlSchemaAttribute(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id124_XmlSchemaAttribute && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id124_XmlSchemaAttribute && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -8893,42 +9150,42 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[12];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id125_default && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id125_default && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@DefaultValue = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@FixedValue = Reader.Value;
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id127_form && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id127_form && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Form = Read6_XmlSchemaForm(Reader.Value);
                     paramsRead[6] = true;
                 }
-                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[7] = true;
                 }
-                else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id123_ref && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[8] && ((object)Reader.LocalName == (object)_id123_ref && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@RefName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[8] = true;
                 }
-                else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id27_type && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[9] && ((object)Reader.LocalName == (object)_id27_type && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SchemaTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[9] = true;
                 }
-                else if (!paramsRead[11] && ((object)Reader.LocalName == (object)id35_use && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[11] && ((object)Reader.LocalName == (object)_id35_use && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Use = Read35_XmlSchemaUse(Reader.Value);
                     paramsRead[11] = true;
@@ -8938,7 +9195,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -8960,21 +9218,23 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@SchemaType = Read34_XmlSchemaSimpleType(false, true);
                         paramsRead[10] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType");
                 }
                 Reader.MoveToContent();
@@ -8985,14 +9245,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleType Read34_XmlSchemaSimpleType(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleType Read34_XmlSchemaSimpleType(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id128_XmlSchemaSimpleType && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id128_XmlSchemaSimpleType && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9007,17 +9267,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id129_final && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id129_final && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Final = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[5] = true;
@@ -9027,7 +9287,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9049,31 +9310,33 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id130_list && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id130_list && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read17_XmlSchemaSimpleTypeList(false, true);
                         paramsRead[6] = true;
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id131_restriction && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id131_restriction && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read32_XmlSchemaSimpleTypeRestriction(false, true);
                         paramsRead[6] = true;
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id132_union && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id132_union && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read33_XmlSchemaSimpleTypeUnion(false, true);
                         paramsRead[6] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:list, http://www.w3.org/2001/XMLSchema:restriction, http://www.w3.org/2001/XMLSchema:union");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:list, http://www.w3.org/2001/XMLSchema:restriction, http://www.w3.org/2001/XMLSchema:union");
                 }
                 Reader.MoveToContent();
@@ -9084,14 +9347,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleTypeUnion Read33_XmlSchemaSimpleTypeUnion(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleTypeUnion Read33_XmlSchemaSimpleTypeUnion(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id133_XmlSchemaSimpleTypeUnion && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id133_XmlSchemaSimpleTypeUnion && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9109,12 +9372,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (((object)Reader.LocalName == (object)id134_memberTypes && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (((object)Reader.LocalName == (object)_id134_memberTypes && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     string listValues = Reader.Value;
                     string[] vals = listValues.Split(null);
@@ -9128,7 +9391,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9152,20 +9416,22 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read34_XmlSchemaSimpleType(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType");
                 }
                 Reader.MoveToContent();
@@ -9177,14 +9443,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleTypeRestriction Read32_XmlSchemaSimpleTypeRestriction(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleTypeRestriction Read32_XmlSchemaSimpleTypeRestriction(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id135_XmlSchemaSimpleTypeRestriction && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id135_XmlSchemaSimpleTypeRestriction && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9200,12 +9466,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id136_base && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id136_base && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@BaseTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -9215,7 +9481,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9237,69 +9504,71 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@BaseType = Read34_XmlSchemaSimpleType(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id137_fractionDigits && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id137_fractionDigits && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read20_XmlSchemaFractionDigitsFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id138_minInclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id138_minInclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read21_XmlSchemaMinInclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id139_maxLength && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id139_maxLength && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read22_XmlSchemaMaxLengthFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id140_length && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id140_length && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read23_XmlSchemaLengthFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id141_totalDigits && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id141_totalDigits && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read24_XmlSchemaTotalDigitsFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id62_pattern && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id62_pattern && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read25_XmlSchemaPatternFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id142_enumeration && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id142_enumeration && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read26_XmlSchemaEnumerationFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id143_maxInclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id143_maxInclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read27_XmlSchemaMaxInclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id144_maxExclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id144_maxExclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read28_XmlSchemaMaxExclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id145_whiteSpace && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id145_whiteSpace && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read29_XmlSchemaWhiteSpaceFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id146_minExclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id146_minExclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read30_XmlSchemaMinExclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id147_minLength && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id147_minLength && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read31_XmlSchemaMinLengthFacet(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:fractionDigits, http://www.w3.org/2001/XMLSchema:minInclusive, http://www.w3.org/2001/XMLSchema:maxLength, http://www.w3.org/2001/XMLSchema:length, http://www.w3.org/2001/XMLSchema:totalDigits, http://www.w3.org/2001/XMLSchema:pattern, http://www.w3.org/2001/XMLSchema:enumeration, http://www.w3.org/2001/XMLSchema:maxInclusive, http://www.w3.org/2001/XMLSchema:maxExclusive, http://www.w3.org/2001/XMLSchema:whiteSpace, http://www.w3.org/2001/XMLSchema:minExclusive, http://www.w3.org/2001/XMLSchema:minLength");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:fractionDigits, http://www.w3.org/2001/XMLSchema:minInclusive, http://www.w3.org/2001/XMLSchema:maxLength, http://www.w3.org/2001/XMLSchema:length, http://www.w3.org/2001/XMLSchema:totalDigits, http://www.w3.org/2001/XMLSchema:pattern, http://www.w3.org/2001/XMLSchema:enumeration, http://www.w3.org/2001/XMLSchema:maxInclusive, http://www.w3.org/2001/XMLSchema:maxExclusive, http://www.w3.org/2001/XMLSchema:whiteSpace, http://www.w3.org/2001/XMLSchema:minExclusive, http://www.w3.org/2001/XMLSchema:minLength");
                 }
                 Reader.MoveToContent();
@@ -9310,14 +9579,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaMinLengthFacet Read31_XmlSchemaMinLengthFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaMinLengthFacet Read31_XmlSchemaMinLengthFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id148_XmlSchemaMinLengthFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id148_XmlSchemaMinLengthFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9332,17 +9601,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9352,7 +9621,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9374,16 +9644,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9394,14 +9666,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaMinExclusiveFacet Read30_XmlSchemaMinExclusiveFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaMinExclusiveFacet Read30_XmlSchemaMinExclusiveFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id150_XmlSchemaMinExclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id150_XmlSchemaMinExclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9416,17 +9688,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9436,7 +9708,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9458,16 +9731,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9478,14 +9753,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaWhiteSpaceFacet Read29_XmlSchemaWhiteSpaceFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaWhiteSpaceFacet Read29_XmlSchemaWhiteSpaceFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id151_XmlSchemaWhiteSpaceFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id151_XmlSchemaWhiteSpaceFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9500,17 +9775,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9520,7 +9795,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9542,16 +9818,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9562,14 +9840,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaMaxExclusiveFacet Read28_XmlSchemaMaxExclusiveFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaMaxExclusiveFacet Read28_XmlSchemaMaxExclusiveFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id152_XmlSchemaMaxExclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id152_XmlSchemaMaxExclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9584,17 +9862,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9604,7 +9882,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9626,16 +9905,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9646,14 +9927,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaMaxInclusiveFacet Read27_XmlSchemaMaxInclusiveFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaMaxInclusiveFacet Read27_XmlSchemaMaxInclusiveFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id153_XmlSchemaMaxInclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id153_XmlSchemaMaxInclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9668,17 +9949,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9688,7 +9969,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9710,16 +9992,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9730,14 +10014,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaEnumerationFacet Read26_XmlSchemaEnumerationFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaEnumerationFacet Read26_XmlSchemaEnumerationFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id154_XmlSchemaEnumerationFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id154_XmlSchemaEnumerationFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9752,17 +10036,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9772,7 +10056,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9794,16 +10079,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9814,14 +10101,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaPatternFacet Read25_XmlSchemaPatternFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaPatternFacet Read25_XmlSchemaPatternFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id155_XmlSchemaPatternFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id155_XmlSchemaPatternFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9836,17 +10123,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9856,7 +10143,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9878,16 +10166,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9898,14 +10188,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaTotalDigitsFacet Read24_XmlSchemaTotalDigitsFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaTotalDigitsFacet Read24_XmlSchemaTotalDigitsFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id156_XmlSchemaTotalDigitsFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id156_XmlSchemaTotalDigitsFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -9920,17 +10210,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -9940,7 +10230,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -9962,16 +10253,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -9982,14 +10275,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaLengthFacet Read23_XmlSchemaLengthFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaLengthFacet Read23_XmlSchemaLengthFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id157_XmlSchemaLengthFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id157_XmlSchemaLengthFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10004,17 +10297,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -10024,7 +10317,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10046,16 +10340,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -10066,14 +10362,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaMaxLengthFacet Read22_XmlSchemaMaxLengthFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaMaxLengthFacet Read22_XmlSchemaMaxLengthFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id158_XmlSchemaMaxLengthFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id158_XmlSchemaMaxLengthFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10088,17 +10384,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -10108,7 +10404,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10130,16 +10427,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -10150,14 +10449,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaMinInclusiveFacet Read21_XmlSchemaMinInclusiveFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaMinInclusiveFacet Read21_XmlSchemaMinInclusiveFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id159_XmlSchemaMinInclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id159_XmlSchemaMinInclusiveFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10172,17 +10471,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -10192,7 +10491,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10214,16 +10514,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -10234,14 +10536,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaFractionDigitsFacet Read20_XmlSchemaFractionDigitsFacet(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaFractionDigitsFacet Read20_XmlSchemaFractionDigitsFacet(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id160_XmlSchemaFractionDigitsFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id160_XmlSchemaFractionDigitsFacet && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10256,17 +10558,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id149_value && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id149_value && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Value = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsFixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[5] = true;
@@ -10276,7 +10578,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10298,16 +10601,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -10318,14 +10623,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleTypeList Read17_XmlSchemaSimpleTypeList(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleTypeList Read17_XmlSchemaSimpleTypeList(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id161_XmlSchemaSimpleTypeList && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id161_XmlSchemaSimpleTypeList && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10340,12 +10645,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id162_itemType && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id162_itemType && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@ItemTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -10355,7 +10660,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10377,21 +10683,23 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@ItemType = Read34_XmlSchemaSimpleType(false, true);
                         paramsRead[5] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType");
                 }
                 Reader.MoveToContent();
@@ -10402,7 +10710,7 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        System.Collections.Hashtable _XmlSchemaDerivationMethodValues;
+        private System.Collections.Hashtable _XmlSchemaDerivationMethodValues;
 
         internal System.Collections.Hashtable XmlSchemaDerivationMethodValues
         {
@@ -10424,12 +10732,12 @@ namespace System.Web.Services.Description
             }
         }
 
-        Microsoft.Xml.Schema.XmlSchemaDerivationMethod Read7_XmlSchemaDerivationMethod(string s)
+        private Microsoft.Xml.Schema.XmlSchemaDerivationMethod Read7_XmlSchemaDerivationMethod(string s)
         {
             return (Microsoft.Xml.Schema.XmlSchemaDerivationMethod)ToEnum(s, XmlSchemaDerivationMethodValues, @"System.Xml.Schema.XmlSchemaDerivationMethod");
         }
 
-        Microsoft.Xml.Schema.XmlSchemaUse Read35_XmlSchemaUse(string s)
+        private Microsoft.Xml.Schema.XmlSchemaUse Read35_XmlSchemaUse(string s)
         {
             switch (s)
             {
@@ -10440,7 +10748,7 @@ namespace System.Web.Services.Description
             }
         }
 
-        Microsoft.Xml.Schema.XmlSchemaForm Read6_XmlSchemaForm(string s)
+        private Microsoft.Xml.Schema.XmlSchemaForm Read6_XmlSchemaForm(string s)
         {
             switch (s)
             {
@@ -10450,14 +10758,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        Microsoft.Xml.Schema.XmlSchemaElement Read52_XmlSchemaElement(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaElement Read52_XmlSchemaElement(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id163_XmlSchemaElement && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id163_XmlSchemaElement && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10473,72 +10781,72 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[19];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id164_minOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id164_minOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MinOccursString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id165_maxOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id165_maxOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MaxOccursString = Reader.Value;
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id166_abstract && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id166_abstract && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsAbstract = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[6] = true;
                 }
-                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id167_block && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id167_block && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Block = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[7] = true;
                 }
-                else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id125_default && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[8] && ((object)Reader.LocalName == (object)_id125_default && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@DefaultValue = Reader.Value;
                     paramsRead[8] = true;
                 }
-                else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id129_final && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[9] && ((object)Reader.LocalName == (object)_id129_final && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Final = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[9] = true;
                 }
-                else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id126_fixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[10] && ((object)Reader.LocalName == (object)_id126_fixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@FixedValue = Reader.Value;
                     paramsRead[10] = true;
                 }
-                else if (!paramsRead[11] && ((object)Reader.LocalName == (object)id127_form && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[11] && ((object)Reader.LocalName == (object)_id127_form && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Form = Read6_XmlSchemaForm(Reader.Value);
                     paramsRead[11] = true;
                 }
-                else if (!paramsRead[12] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[12] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[12] = true;
                 }
-                else if (!paramsRead[13] && ((object)Reader.LocalName == (object)id168_nillable && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[13] && ((object)Reader.LocalName == (object)_id168_nillable && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsNillable = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[13] = true;
                 }
-                else if (!paramsRead[14] && ((object)Reader.LocalName == (object)id123_ref && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[14] && ((object)Reader.LocalName == (object)_id123_ref && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@RefName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[14] = true;
                 }
-                else if (!paramsRead[15] && ((object)Reader.LocalName == (object)id169_substitutionGroup && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[15] && ((object)Reader.LocalName == (object)_id169_substitutionGroup && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SubstitutionGroup = ToXmlQualifiedName(Reader.Value);
                     paramsRead[15] = true;
                 }
-                else if (!paramsRead[16] && ((object)Reader.LocalName == (object)id27_type && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[16] && ((object)Reader.LocalName == (object)_id27_type && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SchemaTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[16] = true;
@@ -10548,7 +10856,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10570,38 +10879,40 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[17] && ((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[17] && ((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@SchemaType = Read34_XmlSchemaSimpleType(false, true);
                         paramsRead[17] = true;
                     }
-                    else if (!paramsRead[17] && ((object)Reader.LocalName == (object)id106_complexType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[17] && ((object)Reader.LocalName == (object)_id106_complexType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@SchemaType = Read62_XmlSchemaComplexType(false, true);
                         paramsRead[17] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id170_key && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id170_key && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_18) == null) Reader.Skip(); else a_18.Add(Read49_XmlSchemaKey(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id171_unique && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id171_unique && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_18) == null) Reader.Skip(); else a_18.Add(Read50_XmlSchemaUnique(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id172_keyref && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id172_keyref && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_18) == null) Reader.Skip(); else a_18.Add(Read51_XmlSchemaKeyref(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:complexType, http://www.w3.org/2001/XMLSchema:key, http://www.w3.org/2001/XMLSchema:unique, http://www.w3.org/2001/XMLSchema:keyref");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:complexType, http://www.w3.org/2001/XMLSchema:key, http://www.w3.org/2001/XMLSchema:unique, http://www.w3.org/2001/XMLSchema:keyref");
                 }
                 Reader.MoveToContent();
@@ -10612,14 +10923,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaKeyref Read51_XmlSchemaKeyref(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaKeyref Read51_XmlSchemaKeyref(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id173_XmlSchemaKeyref && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id173_XmlSchemaKeyref && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10635,17 +10946,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id174_refer && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id174_refer && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Refer = ToXmlQualifiedName(Reader.Value);
                     paramsRead[7] = true;
@@ -10655,7 +10966,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10677,25 +10989,27 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id175_selector && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id175_selector && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Selector = Read47_XmlSchemaXPath(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id176_field && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id176_field && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read47_XmlSchemaXPath(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:selector, http://www.w3.org/2001/XMLSchema:field");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:selector, http://www.w3.org/2001/XMLSchema:field");
                 }
                 Reader.MoveToContent();
@@ -10706,14 +11020,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaXPath Read47_XmlSchemaXPath(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaXPath Read47_XmlSchemaXPath(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id177_XmlSchemaXPath && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id177_XmlSchemaXPath && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10728,12 +11042,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id178_xpath && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id178_xpath && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@XPath = Reader.Value;
                     paramsRead[4] = true;
@@ -10743,7 +11057,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10765,16 +11080,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -10785,14 +11102,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaUnique Read50_XmlSchemaUnique(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaUnique Read50_XmlSchemaUnique(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id179_XmlSchemaUnique && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id179_XmlSchemaUnique && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10808,12 +11125,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
@@ -10823,7 +11140,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10845,25 +11163,27 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id175_selector && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id175_selector && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Selector = Read47_XmlSchemaXPath(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id176_field && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id176_field && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read47_XmlSchemaXPath(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:selector, http://www.w3.org/2001/XMLSchema:field");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:selector, http://www.w3.org/2001/XMLSchema:field");
                 }
                 Reader.MoveToContent();
@@ -10874,14 +11194,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaKey Read49_XmlSchemaKey(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaKey Read49_XmlSchemaKey(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id180_XmlSchemaKey && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id180_XmlSchemaKey && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10897,12 +11217,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
@@ -10912,7 +11232,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -10934,25 +11255,27 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id175_selector && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id175_selector && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Selector = Read47_XmlSchemaXPath(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id176_field && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id176_field && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read47_XmlSchemaXPath(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:selector, http://www.w3.org/2001/XMLSchema:field");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:selector, http://www.w3.org/2001/XMLSchema:field");
                 }
                 Reader.MoveToContent();
@@ -10963,14 +11286,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaComplexType Read62_XmlSchemaComplexType(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaComplexType Read62_XmlSchemaComplexType(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id181_XmlSchemaComplexType && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id181_XmlSchemaComplexType && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -10986,32 +11309,32 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[13];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id129_final && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id129_final && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Final = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id166_abstract && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id166_abstract && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsAbstract = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[6] = true;
                 }
-                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id167_block && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id167_block && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Block = Read7_XmlSchemaDerivationMethod(Reader.Value);
                     paramsRead[7] = true;
                 }
-                else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id182_mixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[8] && ((object)Reader.LocalName == (object)_id182_mixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsMixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[8] = true;
@@ -11021,7 +11344,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11043,59 +11367,61 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id183_complexContent && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[9] && ((object)Reader.LocalName == (object)_id183_complexContent && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@ContentModel = Read58_XmlSchemaComplexContent(false, true);
                         paramsRead[9] = true;
                     }
-                    else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id184_simpleContent && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[9] && ((object)Reader.LocalName == (object)_id184_simpleContent && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@ContentModel = Read61_XmlSchemaSimpleContent(false, true);
                         paramsRead[9] = true;
                     }
-                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read44_XmlSchemaGroupRef(false, true);
                         paramsRead[10] = true;
                     }
-                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id185_sequence && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)_id185_sequence && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read53_XmlSchemaSequence(false, true);
                         paramsRead[10] = true;
                     }
-                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id186_choice && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)_id186_choice && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read54_XmlSchemaChoice(false, true);
                         paramsRead[10] = true;
                     }
-                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id187_all && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)_id187_all && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read55_XmlSchemaAll(false, true);
                         paramsRead[10] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_11) == null) Reader.Skip(); else a_11.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_11) == null) Reader.Skip(); else a_11.Add(Read37_XmlSchemaAttributeGroupRef(false, true));
                     }
-                    else if (!paramsRead[12] && ((object)Reader.LocalName == (object)id112_anyAttribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[12] && ((object)Reader.LocalName == (object)_id112_anyAttribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@AnyAttribute = Read39_XmlSchemaAnyAttribute(false, true);
                         paramsRead[12] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:complexContent, http://www.w3.org/2001/XMLSchema:simpleContent, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:all, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:anyAttribute");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:complexContent, http://www.w3.org/2001/XMLSchema:simpleContent, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:all, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:anyAttribute");
                 }
                 Reader.MoveToContent();
@@ -11106,14 +11432,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAll Read55_XmlSchemaAll(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAll Read55_XmlSchemaAll(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id188_XmlSchemaAll && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id188_XmlSchemaAll && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11129,17 +11455,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id164_minOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id164_minOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MinOccursString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id165_maxOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id165_maxOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MaxOccursString = Reader.Value;
                     paramsRead[5] = true;
@@ -11149,7 +11475,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11171,20 +11498,22 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id92_element && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id92_element && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read52_XmlSchemaElement(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:element");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:element");
                 }
                 Reader.MoveToContent();
@@ -11195,14 +11524,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaChoice Read54_XmlSchemaChoice(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaChoice Read54_XmlSchemaChoice(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id189_XmlSchemaChoice && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id189_XmlSchemaChoice && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11218,17 +11547,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id164_minOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id164_minOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MinOccursString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id165_maxOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id165_maxOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MaxOccursString = Reader.Value;
                     paramsRead[5] = true;
@@ -11238,7 +11567,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11260,36 +11590,38 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id190_any && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id190_any && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read46_XmlSchemaAny(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id186_choice && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id186_choice && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read54_XmlSchemaChoice(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id185_sequence && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id185_sequence && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read53_XmlSchemaSequence(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id92_element && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id92_element && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read52_XmlSchemaElement(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read44_XmlSchemaGroupRef(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:any, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:element, http://www.w3.org/2001/XMLSchema:group");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:any, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:element, http://www.w3.org/2001/XMLSchema:group");
                 }
                 Reader.MoveToContent();
@@ -11300,14 +11632,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaGroupRef Read44_XmlSchemaGroupRef(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaGroupRef Read44_XmlSchemaGroupRef(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id191_XmlSchemaGroupRef && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id191_XmlSchemaGroupRef && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11322,22 +11654,22 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id164_minOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id164_minOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MinOccursString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id165_maxOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id165_maxOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MaxOccursString = Reader.Value;
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id123_ref && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id123_ref && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@RefName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[6] = true;
@@ -11347,7 +11679,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11369,16 +11702,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -11389,14 +11724,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSequence Read53_XmlSchemaSequence(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSequence Read53_XmlSchemaSequence(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id192_XmlSchemaSequence && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id192_XmlSchemaSequence && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11412,17 +11747,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id164_minOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id164_minOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MinOccursString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id165_maxOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id165_maxOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MaxOccursString = Reader.Value;
                     paramsRead[5] = true;
@@ -11432,7 +11767,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11454,36 +11790,38 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id92_element && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id92_element && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read52_XmlSchemaElement(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id185_sequence && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id185_sequence && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read53_XmlSchemaSequence(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id190_any && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id190_any && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read46_XmlSchemaAny(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id186_choice && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id186_choice && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read54_XmlSchemaChoice(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read44_XmlSchemaGroupRef(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:element, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:any, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:group");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:element, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:any, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:group");
                 }
                 Reader.MoveToContent();
@@ -11494,14 +11832,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaAny Read46_XmlSchemaAny(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaAny Read46_XmlSchemaAny(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id193_XmlSchemaAny && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id193_XmlSchemaAny && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11516,27 +11854,27 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id164_minOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id164_minOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MinOccursString = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id165_maxOccurs && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id165_maxOccurs && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@MaxOccursString = Reader.Value;
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[6] = true;
                 }
-                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id114_processContents && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id114_processContents && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@ProcessContents = Read38_XmlSchemaContentProcessing(Reader.Value);
                     paramsRead[7] = true;
@@ -11546,7 +11884,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11568,16 +11907,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -11588,14 +11929,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleContent Read61_XmlSchemaSimpleContent(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleContent Read61_XmlSchemaSimpleContent(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id194_XmlSchemaSimpleContent && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id194_XmlSchemaSimpleContent && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11610,7 +11951,7 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
@@ -11620,7 +11961,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11642,26 +11984,28 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id131_restriction && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id131_restriction && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read59_Item(false, true);
                         paramsRead[4] = true;
                     }
-                    else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id195_extension && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id195_extension && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read60_Item(false, true);
                         paramsRead[4] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:restriction, http://www.w3.org/2001/XMLSchema:extension");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:restriction, http://www.w3.org/2001/XMLSchema:extension");
                 }
                 Reader.MoveToContent();
@@ -11672,14 +12016,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleContentExtension Read60_Item(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleContentExtension Read60_Item(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id196_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id196_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11695,12 +12039,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id136_base && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id136_base && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@BaseTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -11710,7 +12054,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11732,29 +12077,31 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read37_XmlSchemaAttributeGroupRef(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_5) == null) Reader.Skip(); else a_5.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id112_anyAttribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id112_anyAttribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@AnyAttribute = Read39_XmlSchemaAnyAttribute(false, true);
                         paramsRead[6] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                 }
                 Reader.MoveToContent();
@@ -11765,14 +12112,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaSimpleContentRestriction Read59_Item(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaSimpleContentRestriction Read59_Item(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id197_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id197_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11789,12 +12136,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[9];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id136_base && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id136_base && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@BaseTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -11804,7 +12151,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11826,82 +12174,84 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@BaseType = Read34_XmlSchemaSimpleType(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id138_minInclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id138_minInclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read21_XmlSchemaMinInclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id144_maxExclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id144_maxExclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read28_XmlSchemaMaxExclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id145_whiteSpace && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id145_whiteSpace && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read29_XmlSchemaWhiteSpaceFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id147_minLength && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id147_minLength && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read31_XmlSchemaMinLengthFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id62_pattern && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id62_pattern && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read25_XmlSchemaPatternFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id142_enumeration && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id142_enumeration && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read26_XmlSchemaEnumerationFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id143_maxInclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id143_maxInclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read27_XmlSchemaMaxInclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id140_length && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id140_length && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read23_XmlSchemaLengthFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id139_maxLength && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id139_maxLength && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read22_XmlSchemaMaxLengthFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id146_minExclusive && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id146_minExclusive && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read30_XmlSchemaMinExclusiveFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id141_totalDigits && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id141_totalDigits && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read24_XmlSchemaTotalDigitsFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id137_fractionDigits && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id137_fractionDigits && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read20_XmlSchemaFractionDigitsFacet(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read37_XmlSchemaAttributeGroupRef(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_7) == null) Reader.Skip(); else a_7.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id112_anyAttribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[8] && ((object)Reader.LocalName == (object)_id112_anyAttribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@AnyAttribute = Read39_XmlSchemaAnyAttribute(false, true);
                         paramsRead[8] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:minInclusive, http://www.w3.org/2001/XMLSchema:maxExclusive, http://www.w3.org/2001/XMLSchema:whiteSpace, http://www.w3.org/2001/XMLSchema:minLength, http://www.w3.org/2001/XMLSchema:pattern, http://www.w3.org/2001/XMLSchema:enumeration, http://www.w3.org/2001/XMLSchema:maxInclusive, http://www.w3.org/2001/XMLSchema:length, http://www.w3.org/2001/XMLSchema:maxLength, http://www.w3.org/2001/XMLSchema:minExclusive, http://www.w3.org/2001/XMLSchema:totalDigits, http://www.w3.org/2001/XMLSchema:fractionDigits, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:minInclusive, http://www.w3.org/2001/XMLSchema:maxExclusive, http://www.w3.org/2001/XMLSchema:whiteSpace, http://www.w3.org/2001/XMLSchema:minLength, http://www.w3.org/2001/XMLSchema:pattern, http://www.w3.org/2001/XMLSchema:enumeration, http://www.w3.org/2001/XMLSchema:maxInclusive, http://www.w3.org/2001/XMLSchema:length, http://www.w3.org/2001/XMLSchema:maxLength, http://www.w3.org/2001/XMLSchema:minExclusive, http://www.w3.org/2001/XMLSchema:totalDigits, http://www.w3.org/2001/XMLSchema:fractionDigits, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                 }
                 Reader.MoveToContent();
@@ -11912,14 +12262,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaComplexContent Read58_XmlSchemaComplexContent(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaComplexContent Read58_XmlSchemaComplexContent(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id198_XmlSchemaComplexContent && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id198_XmlSchemaComplexContent && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -11934,12 +12284,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id182_mixed && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id182_mixed && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@IsMixed = Microsoft.Xml.XmlConvert.ToBoolean(Reader.Value);
                     paramsRead[4] = true;
@@ -11949,7 +12299,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -11971,26 +12322,28 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id195_extension && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id195_extension && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read56_Item(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id131_restriction && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id131_restriction && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Content = Read57_Item(false, true);
                         paramsRead[5] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:extension, http://www.w3.org/2001/XMLSchema:restriction");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:extension, http://www.w3.org/2001/XMLSchema:restriction");
                 }
                 Reader.MoveToContent();
@@ -12001,14 +12354,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaComplexContentRestriction Read57_Item(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaComplexContentRestriction Read57_Item(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id199_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id199_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12024,12 +12377,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id136_base && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id136_base && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@BaseTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -12039,7 +12392,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12061,49 +12415,51 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id186_choice && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id186_choice && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read54_XmlSchemaChoice(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read44_XmlSchemaGroupRef(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id187_all && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id187_all && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read55_XmlSchemaAll(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id185_sequence && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id185_sequence && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read53_XmlSchemaSequence(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read37_XmlSchemaAttributeGroupRef(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id112_anyAttribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id112_anyAttribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@AnyAttribute = Read39_XmlSchemaAnyAttribute(false, true);
                         paramsRead[7] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:all, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:all, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                 }
                 Reader.MoveToContent();
@@ -12114,14 +12470,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaComplexContentExtension Read56_Item(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaComplexContentExtension Read56_Item(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id200_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id200_Item && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12137,12 +12493,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id136_base && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id136_base && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@BaseTypeName = ToXmlQualifiedName(Reader.Value);
                     paramsRead[4] = true;
@@ -12152,7 +12508,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12174,49 +12531,51 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read44_XmlSchemaGroupRef(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id186_choice && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id186_choice && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read54_XmlSchemaChoice(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id187_all && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id187_all && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read55_XmlSchemaAll(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id185_sequence && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id185_sequence && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read53_XmlSchemaSequence(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read37_XmlSchemaAttributeGroupRef(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id109_attribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id109_attribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_6) == null) Reader.Skip(); else a_6.Add(Read36_XmlSchemaAttribute(false, true));
                     }
-                    else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id112_anyAttribute && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[7] && ((object)Reader.LocalName == (object)_id112_anyAttribute && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@AnyAttribute = Read39_XmlSchemaAnyAttribute(false, true);
                         paramsRead[7] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:all, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:group, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:all, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:attribute, http://www.w3.org/2001/XMLSchema:anyAttribute");
                 }
                 Reader.MoveToContent();
@@ -12227,14 +12586,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaGroup Read63_XmlSchemaGroup(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaGroup Read63_XmlSchemaGroup(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id201_XmlSchemaGroup && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id201_XmlSchemaGroup && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12249,12 +12608,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
@@ -12264,7 +12623,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12286,31 +12646,33 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id185_sequence && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id185_sequence && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read53_XmlSchemaSequence(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id186_choice && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id186_choice && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read54_XmlSchemaChoice(false, true);
                         paramsRead[5] = true;
                     }
-                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id187_all && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id187_all && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Particle = Read55_XmlSchemaAll(false, true);
                         paramsRead[5] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:all");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:sequence, http://www.w3.org/2001/XMLSchema:choice, http://www.w3.org/2001/XMLSchema:all");
                 }
                 Reader.MoveToContent();
@@ -12321,14 +12683,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaNotation Read65_XmlSchemaNotation(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaNotation Read65_XmlSchemaNotation(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id202_XmlSchemaNotation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id202_XmlSchemaNotation && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12343,22 +12705,22 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id4_name && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id4_name && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Name = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id203_public && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id203_public && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Public = Reader.Value;
                     paramsRead[5] = true;
                 }
-                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id204_system && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[6] && ((object)Reader.LocalName == (object)_id204_system && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@System = Reader.Value;
                     paramsRead[6] = true;
@@ -12368,7 +12730,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12390,16 +12753,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[2] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -12410,14 +12775,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaRedefine Read64_XmlSchemaRedefine(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaRedefine Read64_XmlSchemaRedefine(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id205_XmlSchemaRedefine && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id205_XmlSchemaRedefine && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12433,12 +12798,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id206_schemaLocation && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id206_schemaLocation && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SchemaLocation = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[2] = true;
@@ -12448,7 +12813,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12470,31 +12836,33 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (((object)Reader.LocalName == (object)id110_attributeGroup && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (((object)Reader.LocalName == (object)_id110_attributeGroup && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read40_XmlSchemaAttributeGroup(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id106_complexType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id106_complexType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read62_XmlSchemaComplexType(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id105_simpleType && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id105_simpleType && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read34_XmlSchemaSimpleType(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read11_XmlSchemaAnnotation(false, true));
                     }
-                    else if (((object)Reader.LocalName == (object)id59_group && (object)Reader.NamespaceURI == (object)id95_Item))
+                    else if (((object)Reader.LocalName == (object)_id59_group && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         if ((object)(a_4) == null) Reader.Skip(); else a_4.Add(Read63_XmlSchemaGroup(false, true));
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:complexType, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:group");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:attributeGroup, http://www.w3.org/2001/XMLSchema:complexType, http://www.w3.org/2001/XMLSchema:simpleType, http://www.w3.org/2001/XMLSchema:annotation, http://www.w3.org/2001/XMLSchema:group");
                 }
                 Reader.MoveToContent();
@@ -12505,14 +12873,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaImport Read13_XmlSchemaImport(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaImport Read13_XmlSchemaImport(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id207_XmlSchemaImport && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id207_XmlSchemaImport && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12527,17 +12895,17 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id206_schemaLocation && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id206_schemaLocation && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SchemaLocation = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[2] = true;
                 }
-                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = CollapseWhitespace(Reader.Value);
                     paramsRead[4] = true;
@@ -12547,7 +12915,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12569,16 +12938,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[5] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[5] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -12589,14 +12960,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        Microsoft.Xml.Schema.XmlSchemaInclude Read12_XmlSchemaInclude(bool isNullable, bool checkType)
+        private Microsoft.Xml.Schema.XmlSchemaInclude Read12_XmlSchemaInclude(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id208_XmlSchemaInclude && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id208_XmlSchemaInclude && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id95_Item))
                 {
                 }
                 else
@@ -12611,12 +12982,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[1] && ((object)Reader.LocalName == (object)id206_schemaLocation && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[1] && ((object)Reader.LocalName == (object)_id206_schemaLocation && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@SchemaLocation = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
-                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id102_id && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id102_id && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[2] = true;
@@ -12626,7 +12997,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_3 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_3, ca_3, typeof(Microsoft.Xml.XmlAttribute)); a_3[ca_3++] = attr;
@@ -12648,16 +13020,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[4] && ((object)Reader.LocalName == (object)id107_annotation && (object)Reader.NamespaceURI == (object)id95_Item))
+                    if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id107_annotation && (object)Reader.NamespaceURI == (object)_id95_Item))
                     {
                         o.@Annotation = Read11_XmlSchemaAnnotation(false, true);
                         paramsRead[4] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://www.w3.org/2001/XMLSchema:annotation");
                 }
                 Reader.MoveToContent();
@@ -12668,14 +13042,14 @@ namespace System.Web.Services.Description
             return o;
         }
 
-        global::System.Web.Services.Description.Import Read4_Import(bool isNullable, bool checkType)
+        private global::System.Web.Services.Description.Import Read4_Import(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id209_Import && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id209_Import && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -12690,12 +13064,12 @@ namespace System.Web.Services.Description
             bool[] paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute())
             {
-                if (!paramsRead[4] && ((object)Reader.LocalName == (object)id36_namespace && (object)Reader.NamespaceURI == (object)id5_Item))
+                if (!paramsRead[4] && ((object)Reader.LocalName == (object)_id36_namespace && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Namespace = Reader.Value;
                     paramsRead[4] = true;
                 }
-                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id23_location && (object)Reader.NamespaceURI == (object)id5_Item))
+                else if (!paramsRead[5] && ((object)Reader.LocalName == (object)_id23_location && (object)Reader.NamespaceURI == (object)_id5_Item))
                 {
                     o.@Location = Reader.Value;
                     paramsRead[5] = true;
@@ -12705,7 +13079,8 @@ namespace System.Web.Services.Description
                     if (o.@Namespaces == null) o.@Namespaces = new Microsoft.Xml.Serialization.XmlSerializerNamespaces();
                     ((Microsoft.Xml.Serialization.XmlSerializerNamespaces)o.@Namespaces).Add(Reader.Name.Length == 5 ? "" : Reader.LocalName, Reader.Value);
                 }
-                else {
+                else
+                {
                     Microsoft.Xml.XmlAttribute attr = (Microsoft.Xml.XmlAttribute)Document.ReadNode(Reader);
                     ParseWsdlArrayType(attr);
                     a_1 = (Microsoft.Xml.XmlAttribute[])EnsureArrayIndex(a_1, ca_1, typeof(Microsoft.Xml.XmlAttribute)); a_1[ca_1++] = attr;
@@ -12727,16 +13102,18 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id7_documentation && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id7_documentation && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         o.@DocumentationElement = (Microsoft.Xml.XmlElement)ReadXmlNode(false);
                         paramsRead[0] = true;
                     }
-                    else {
+                    else
+                    {
                         a_3.Add((Microsoft.Xml.XmlElement)ReadXmlNode(false));
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://schemas.xmlsoap.org/wsdl/:documentation");
                 }
                 Reader.MoveToContent();
@@ -12751,427 +13128,427 @@ namespace System.Web.Services.Description
         {
         }
 
-        string id133_XmlSchemaSimpleTypeUnion;
-        string id143_maxInclusive;
-        string id46_body;
-        string id190_any;
-        string id88_OperationOutput;
-        string id6_targetNamespace;
-        string id158_XmlSchemaMaxLengthFacet;
-        string id11_portType;
-        string id182_mixed;
-        string id172_keyref;
-        string id187_all;
-        string id162_itemType;
-        string id68_InputBinding;
-        string id25_HttpAddressBinding;
-        string id82_HttpBinding;
-        string id17_address;
-        string id3_ServiceDescription;
-        string id38_SoapFaultBinding;
-        string id123_ref;
-        string id198_XmlSchemaComplexContent;
-        string id53_parts;
-        string id35_use;
-        string id157_XmlSchemaLengthFacet;
-        string id207_XmlSchemaImport;
-        string id44_text;
-        string id117_XmlSchemaAppInfo;
-        string id203_public;
-        string id69_urlEncoded;
-        string id7_documentation;
-        string id19_Item;
-        string id129_final;
-        string id163_XmlSchemaElement;
-        string id60_capture;
-        string id37_encodingStyle;
-        string id185_sequence;
-        string id166_abstract;
-        string id23_location;
-        string id111_XmlSchemaAttributeGroup;
-        string id192_XmlSchemaSequence;
-        string id33_FaultBinding;
-        string id153_XmlSchemaMaxInclusiveFacet;
-        string id201_XmlSchemaGroup;
-        string id43_multipartRelated;
-        string id168_nillable;
-        string id149_value;
-        string id64_MimeMultipartRelatedBinding;
-        string id193_XmlSchemaAny;
-        string id191_XmlSchemaGroupRef;
-        string id74_soapAction;
-        string id63_ignoreCase;
-        string id101_version;
-        string id47_header;
-        string id195_extension;
-        string id48_Soap12HeaderBinding;
-        string id134_memberTypes;
-        string id121_Item;
-        string id146_minExclusive;
-        string id84_PortType;
-        string id42_mimeXml;
-        string id138_minInclusive;
-        string id118_source;
-        string id73_Soap12OperationBinding;
-        string id131_restriction;
-        string id152_XmlSchemaMaxExclusiveFacet;
-        string id135_XmlSchemaSimpleTypeRestriction;
-        string id188_XmlSchemaAll;
-        string id116_appinfo;
-        string id86_parameterOrder;
-        string id147_minLength;
-        string id78_HttpOperationBinding;
-        string id161_XmlSchemaSimpleTypeList;
-        string id205_XmlSchemaRedefine;
-        string id194_XmlSchemaSimpleContent;
-        string id91_MessagePart;
-        string id92_element;
-        string id114_processContents;
-        string id18_Item;
-        string id50_headerfault;
-        string id154_XmlSchemaEnumerationFacet;
-        string id96_XmlSchema;
-        string id127_form;
-        string id176_field;
-        string id49_part;
-        string id5_Item;
-        string id57_match;
-        string id52_Soap12BodyBinding;
-        string id104_redefine;
-        string id20_Item;
-        string id21_Soap12AddressBinding;
-        string id142_enumeration;
-        string id24_SoapAddressBinding;
-        string id103_include;
-        string id139_maxLength;
-        string id165_maxOccurs;
-        string id65_MimePart;
-        string id102_id;
-        string id196_Item;
-        string id140_length;
-        string id27_type;
-        string id106_complexType;
-        string id31_output;
-        string id1_definitions;
-        string id4_name;
-        string id132_union;
-        string id29_OperationBinding;
-        string id170_key;
-        string id45_Item;
-        string id95_Item;
-        string id169_substitutionGroup;
-        string id178_xpath;
-        string id9_types;
-        string id97_attributeFormDefault;
-        string id62_pattern;
-        string id58_MimeTextMatch;
-        string id180_XmlSchemaKey;
-        string id10_message;
-        string id8_import;
-        string id148_XmlSchemaMinLengthFacet;
-        string id105_simpleType;
-        string id181_XmlSchemaComplexType;
-        string id164_minOccurs;
-        string id144_maxExclusive;
-        string id160_XmlSchemaFractionDigitsFacet;
-        string id124_XmlSchemaAttribute;
-        string id209_Import;
-        string id206_schemaLocation;
-        string id179_XmlSchemaUnique;
-        string id75_style;
-        string id119_XmlSchemaDocumentation;
-        string id136_base;
-        string id66_MimeXmlBinding;
-        string id30_input;
-        string id40_content;
-        string id93_Types;
-        string id94_schema;
-        string id200_Item;
-        string id67_MimeContentBinding;
-        string id59_group;
-        string id32_fault;
-        string id80_transport;
-        string id98_blockDefault;
-        string id13_service;
-        string id54_SoapHeaderBinding;
-        string id204_system;
-        string id16_Port;
-        string id108_notation;
-        string id186_choice;
-        string id110_attributeGroup;
-        string id79_Soap12Binding;
-        string id77_SoapOperationBinding;
-        string id115_XmlSchemaAnnotation;
-        string id83_verb;
-        string id72_HttpUrlEncodedBinding;
-        string id39_OutputBinding;
-        string id183_complexContent;
-        string id202_XmlSchemaNotation;
-        string id81_SoapBinding;
-        string id199_Item;
-        string id28_operation;
-        string id122_XmlSchemaAttributeGroupRef;
-        string id155_XmlSchemaPatternFacet;
-        string id76_soapActionRequired;
-        string id90_Message;
-        string id159_XmlSchemaMinInclusiveFacet;
-        string id208_XmlSchemaInclude;
-        string id85_Operation;
-        string id130_list;
-        string id14_Service;
-        string id22_required;
-        string id174_refer;
-        string id71_HttpUrlReplacementBinding;
-        string id56_MimeTextBinding;
-        string id87_OperationFault;
-        string id125_default;
-        string id15_port;
-        string id51_SoapHeaderFaultBinding;
-        string id128_XmlSchemaSimpleType;
-        string id36_namespace;
-        string id175_selector;
-        string id150_XmlSchemaMinExclusiveFacet;
-        string id100_elementFormDefault;
-        string id26_Binding;
-        string id197_Item;
-        string id126_fixed;
-        string id107_annotation;
-        string id99_finalDefault;
-        string id137_fractionDigits;
-        string id70_urlReplacement;
-        string id189_XmlSchemaChoice;
-        string id2_Item;
-        string id112_anyAttribute;
-        string id89_OperationInput;
-        string id141_totalDigits;
-        string id61_repeats;
-        string id184_simpleContent;
-        string id55_SoapBodyBinding;
-        string id145_whiteSpace;
-        string id167_block;
-        string id151_XmlSchemaWhiteSpaceFacet;
-        string id12_binding;
-        string id109_attribute;
-        string id171_unique;
-        string id120_lang;
-        string id173_XmlSchemaKeyref;
-        string id177_XmlSchemaXPath;
-        string id34_Soap12FaultBinding;
-        string id41_Item;
-        string id156_XmlSchemaTotalDigitsFacet;
-        string id113_XmlSchemaAnyAttribute;
+        private string _id133_XmlSchemaSimpleTypeUnion;
+        private string _id143_maxInclusive;
+        private string _id46_body;
+        private string _id190_any;
+        private string _id88_OperationOutput;
+        private string _id6_targetNamespace;
+        private string _id158_XmlSchemaMaxLengthFacet;
+        private string _id11_portType;
+        private string _id182_mixed;
+        private string _id172_keyref;
+        private string _id187_all;
+        private string _id162_itemType;
+        private string _id68_InputBinding;
+        private string _id25_HttpAddressBinding;
+        private string _id82_HttpBinding;
+        private string _id17_address;
+        private string _id3_ServiceDescription;
+        private string _id38_SoapFaultBinding;
+        private string _id123_ref;
+        private string _id198_XmlSchemaComplexContent;
+        private string _id53_parts;
+        private string _id35_use;
+        private string _id157_XmlSchemaLengthFacet;
+        private string _id207_XmlSchemaImport;
+        private string _id44_text;
+        private string _id117_XmlSchemaAppInfo;
+        private string _id203_public;
+        private string _id69_urlEncoded;
+        private string _id7_documentation;
+        private string _id19_Item;
+        private string _id129_final;
+        private string _id163_XmlSchemaElement;
+        private string _id60_capture;
+        private string _id37_encodingStyle;
+        private string _id185_sequence;
+        private string _id166_abstract;
+        private string _id23_location;
+        private string _id111_XmlSchemaAttributeGroup;
+        private string _id192_XmlSchemaSequence;
+        private string _id33_FaultBinding;
+        private string _id153_XmlSchemaMaxInclusiveFacet;
+        private string _id201_XmlSchemaGroup;
+        private string _id43_multipartRelated;
+        private string _id168_nillable;
+        private string _id149_value;
+        private string _id64_MimeMultipartRelatedBinding;
+        private string _id193_XmlSchemaAny;
+        private string _id191_XmlSchemaGroupRef;
+        private string _id74_soapAction;
+        private string _id63_ignoreCase;
+        private string _id101_version;
+        private string _id47_header;
+        private string _id195_extension;
+        private string _id48_Soap12HeaderBinding;
+        private string _id134_memberTypes;
+        private string _id121_Item;
+        private string _id146_minExclusive;
+        private string _id84_PortType;
+        private string _id42_mimeXml;
+        private string _id138_minInclusive;
+        private string _id118_source;
+        private string _id73_Soap12OperationBinding;
+        private string _id131_restriction;
+        private string _id152_XmlSchemaMaxExclusiveFacet;
+        private string _id135_XmlSchemaSimpleTypeRestriction;
+        private string _id188_XmlSchemaAll;
+        private string _id116_appinfo;
+        private string _id86_parameterOrder;
+        private string _id147_minLength;
+        private string _id78_HttpOperationBinding;
+        private string _id161_XmlSchemaSimpleTypeList;
+        private string _id205_XmlSchemaRedefine;
+        private string _id194_XmlSchemaSimpleContent;
+        private string _id91_MessagePart;
+        private string _id92_element;
+        private string _id114_processContents;
+        private string _id18_Item;
+        private string _id50_headerfault;
+        private string _id154_XmlSchemaEnumerationFacet;
+        private string _id96_XmlSchema;
+        private string _id127_form;
+        private string _id176_field;
+        private string _id49_part;
+        private string _id5_Item;
+        private string _id57_match;
+        private string _id52_Soap12BodyBinding;
+        private string _id104_redefine;
+        private string _id20_Item;
+        private string _id21_Soap12AddressBinding;
+        private string _id142_enumeration;
+        private string _id24_SoapAddressBinding;
+        private string _id103_include;
+        private string _id139_maxLength;
+        private string _id165_maxOccurs;
+        private string _id65_MimePart;
+        private string _id102_id;
+        private string _id196_Item;
+        private string _id140_length;
+        private string _id27_type;
+        private string _id106_complexType;
+        private string _id31_output;
+        private string _id1_definitions;
+        private string _id4_name;
+        private string _id132_union;
+        private string _id29_OperationBinding;
+        private string _id170_key;
+        private string _id45_Item;
+        private string _id95_Item;
+        private string _id169_substitutionGroup;
+        private string _id178_xpath;
+        private string _id9_types;
+        private string _id97_attributeFormDefault;
+        private string _id62_pattern;
+        private string _id58_MimeTextMatch;
+        private string _id180_XmlSchemaKey;
+        private string _id10_message;
+        private string _id8_import;
+        private string _id148_XmlSchemaMinLengthFacet;
+        private string _id105_simpleType;
+        private string _id181_XmlSchemaComplexType;
+        private string _id164_minOccurs;
+        private string _id144_maxExclusive;
+        private string _id160_XmlSchemaFractionDigitsFacet;
+        private string _id124_XmlSchemaAttribute;
+        private string _id209_Import;
+        private string _id206_schemaLocation;
+        private string _id179_XmlSchemaUnique;
+        private string _id75_style;
+        private string _id119_XmlSchemaDocumentation;
+        private string _id136_base;
+        private string _id66_MimeXmlBinding;
+        private string _id30_input;
+        private string _id40_content;
+        private string _id93_Types;
+        private string _id94_schema;
+        private string _id200_Item;
+        private string _id67_MimeContentBinding;
+        private string _id59_group;
+        private string _id32_fault;
+        private string _id80_transport;
+        private string _id98_blockDefault;
+        private string _id13_service;
+        private string _id54_SoapHeaderBinding;
+        private string _id204_system;
+        private string _id16_Port;
+        private string _id108_notation;
+        private string _id186_choice;
+        private string _id110_attributeGroup;
+        private string _id79_Soap12Binding;
+        private string _id77_SoapOperationBinding;
+        private string _id115_XmlSchemaAnnotation;
+        private string _id83_verb;
+        private string _id72_HttpUrlEncodedBinding;
+        private string _id39_OutputBinding;
+        private string _id183_complexContent;
+        private string _id202_XmlSchemaNotation;
+        private string _id81_SoapBinding;
+        private string _id199_Item;
+        private string _id28_operation;
+        private string _id122_XmlSchemaAttributeGroupRef;
+        private string _id155_XmlSchemaPatternFacet;
+        private string _id76_soapActionRequired;
+        private string _id90_Message;
+        private string _id159_XmlSchemaMinInclusiveFacet;
+        private string _id208_XmlSchemaInclude;
+        private string _id85_Operation;
+        private string _id130_list;
+        private string _id14_Service;
+        private string _id22_required;
+        private string _id174_refer;
+        private string _id71_HttpUrlReplacementBinding;
+        private string _id56_MimeTextBinding;
+        private string _id87_OperationFault;
+        private string _id125_default;
+        private string _id15_port;
+        private string _id51_SoapHeaderFaultBinding;
+        private string _id128_XmlSchemaSimpleType;
+        private string _id36_namespace;
+        private string _id175_selector;
+        private string _id150_XmlSchemaMinExclusiveFacet;
+        private string _id100_elementFormDefault;
+        private string _id26_Binding;
+        private string _id197_Item;
+        private string _id126_fixed;
+        private string _id107_annotation;
+        private string _id99_finalDefault;
+        private string _id137_fractionDigits;
+        private string _id70_urlReplacement;
+        private string _id189_XmlSchemaChoice;
+        private string _id2_Item;
+        private string _id112_anyAttribute;
+        private string _id89_OperationInput;
+        private string _id141_totalDigits;
+        private string _id61_repeats;
+        private string _id184_simpleContent;
+        private string _id55_SoapBodyBinding;
+        private string _id145_whiteSpace;
+        private string _id167_block;
+        private string _id151_XmlSchemaWhiteSpaceFacet;
+        private string _id12_binding;
+        private string _id109_attribute;
+        private string _id171_unique;
+        private string _id120_lang;
+        private string _id173_XmlSchemaKeyref;
+        private string _id177_XmlSchemaXPath;
+        private string _id34_Soap12FaultBinding;
+        private string _id41_Item;
+        private string _id156_XmlSchemaTotalDigitsFacet;
+        private string _id113_XmlSchemaAnyAttribute;
 
         protected override void InitIDs()
         {
-            id133_XmlSchemaSimpleTypeUnion = Reader.NameTable.Add(@"XmlSchemaSimpleTypeUnion");
-            id143_maxInclusive = Reader.NameTable.Add(@"maxInclusive");
-            id46_body = Reader.NameTable.Add(@"body");
-            id190_any = Reader.NameTable.Add(@"any");
-            id88_OperationOutput = Reader.NameTable.Add(@"OperationOutput");
-            id6_targetNamespace = Reader.NameTable.Add(@"targetNamespace");
-            id158_XmlSchemaMaxLengthFacet = Reader.NameTable.Add(@"XmlSchemaMaxLengthFacet");
-            id11_portType = Reader.NameTable.Add(@"portType");
-            id182_mixed = Reader.NameTable.Add(@"mixed");
-            id172_keyref = Reader.NameTable.Add(@"keyref");
-            id187_all = Reader.NameTable.Add(@"all");
-            id162_itemType = Reader.NameTable.Add(@"itemType");
-            id68_InputBinding = Reader.NameTable.Add(@"InputBinding");
-            id25_HttpAddressBinding = Reader.NameTable.Add(@"HttpAddressBinding");
-            id82_HttpBinding = Reader.NameTable.Add(@"HttpBinding");
-            id17_address = Reader.NameTable.Add(@"address");
-            id3_ServiceDescription = Reader.NameTable.Add(@"ServiceDescription");
-            id38_SoapFaultBinding = Reader.NameTable.Add(@"SoapFaultBinding");
-            id123_ref = Reader.NameTable.Add(@"ref");
-            id198_XmlSchemaComplexContent = Reader.NameTable.Add(@"XmlSchemaComplexContent");
-            id53_parts = Reader.NameTable.Add(@"parts");
-            id35_use = Reader.NameTable.Add(@"use");
-            id157_XmlSchemaLengthFacet = Reader.NameTable.Add(@"XmlSchemaLengthFacet");
-            id207_XmlSchemaImport = Reader.NameTable.Add(@"XmlSchemaImport");
-            id44_text = Reader.NameTable.Add(@"text");
-            id117_XmlSchemaAppInfo = Reader.NameTable.Add(@"XmlSchemaAppInfo");
-            id203_public = Reader.NameTable.Add(@"public");
-            id69_urlEncoded = Reader.NameTable.Add(@"urlEncoded");
-            id7_documentation = Reader.NameTable.Add(@"documentation");
-            id19_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/soap/");
-            id129_final = Reader.NameTable.Add(@"final");
-            id163_XmlSchemaElement = Reader.NameTable.Add(@"XmlSchemaElement");
-            id60_capture = Reader.NameTable.Add(@"capture");
-            id37_encodingStyle = Reader.NameTable.Add(@"encodingStyle");
-            id185_sequence = Reader.NameTable.Add(@"sequence");
-            id166_abstract = Reader.NameTable.Add(@"abstract");
-            id23_location = Reader.NameTable.Add(@"location");
-            id111_XmlSchemaAttributeGroup = Reader.NameTable.Add(@"XmlSchemaAttributeGroup");
-            id192_XmlSchemaSequence = Reader.NameTable.Add(@"XmlSchemaSequence");
-            id33_FaultBinding = Reader.NameTable.Add(@"FaultBinding");
-            id153_XmlSchemaMaxInclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMaxInclusiveFacet");
-            id201_XmlSchemaGroup = Reader.NameTable.Add(@"XmlSchemaGroup");
-            id43_multipartRelated = Reader.NameTable.Add(@"multipartRelated");
-            id168_nillable = Reader.NameTable.Add(@"nillable");
-            id149_value = Reader.NameTable.Add(@"value");
-            id64_MimeMultipartRelatedBinding = Reader.NameTable.Add(@"MimeMultipartRelatedBinding");
-            id193_XmlSchemaAny = Reader.NameTable.Add(@"XmlSchemaAny");
-            id191_XmlSchemaGroupRef = Reader.NameTable.Add(@"XmlSchemaGroupRef");
-            id74_soapAction = Reader.NameTable.Add(@"soapAction");
-            id63_ignoreCase = Reader.NameTable.Add(@"ignoreCase");
-            id101_version = Reader.NameTable.Add(@"version");
-            id47_header = Reader.NameTable.Add(@"header");
-            id195_extension = Reader.NameTable.Add(@"extension");
-            id48_Soap12HeaderBinding = Reader.NameTable.Add(@"Soap12HeaderBinding");
-            id134_memberTypes = Reader.NameTable.Add(@"memberTypes");
-            id121_Item = Reader.NameTable.Add(@"http://www.w3.org/XML/1998/namespace");
-            id146_minExclusive = Reader.NameTable.Add(@"minExclusive");
-            id84_PortType = Reader.NameTable.Add(@"PortType");
-            id42_mimeXml = Reader.NameTable.Add(@"mimeXml");
-            id138_minInclusive = Reader.NameTable.Add(@"minInclusive");
-            id118_source = Reader.NameTable.Add(@"source");
-            id73_Soap12OperationBinding = Reader.NameTable.Add(@"Soap12OperationBinding");
-            id131_restriction = Reader.NameTable.Add(@"restriction");
-            id152_XmlSchemaMaxExclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMaxExclusiveFacet");
-            id135_XmlSchemaSimpleTypeRestriction = Reader.NameTable.Add(@"XmlSchemaSimpleTypeRestriction");
-            id188_XmlSchemaAll = Reader.NameTable.Add(@"XmlSchemaAll");
-            id116_appinfo = Reader.NameTable.Add(@"appinfo");
-            id86_parameterOrder = Reader.NameTable.Add(@"parameterOrder");
-            id147_minLength = Reader.NameTable.Add(@"minLength");
-            id78_HttpOperationBinding = Reader.NameTable.Add(@"HttpOperationBinding");
-            id161_XmlSchemaSimpleTypeList = Reader.NameTable.Add(@"XmlSchemaSimpleTypeList");
-            id205_XmlSchemaRedefine = Reader.NameTable.Add(@"XmlSchemaRedefine");
-            id194_XmlSchemaSimpleContent = Reader.NameTable.Add(@"XmlSchemaSimpleContent");
-            id91_MessagePart = Reader.NameTable.Add(@"MessagePart");
-            id92_element = Reader.NameTable.Add(@"element");
-            id114_processContents = Reader.NameTable.Add(@"processContents");
-            id18_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/http/");
-            id50_headerfault = Reader.NameTable.Add(@"headerfault");
-            id154_XmlSchemaEnumerationFacet = Reader.NameTable.Add(@"XmlSchemaEnumerationFacet");
-            id96_XmlSchema = Reader.NameTable.Add(@"XmlSchema");
-            id127_form = Reader.NameTable.Add(@"form");
-            id176_field = Reader.NameTable.Add(@"field");
-            id49_part = Reader.NameTable.Add(@"part");
-            id5_Item = Reader.NameTable.Add(@"");
-            id57_match = Reader.NameTable.Add(@"match");
-            id52_Soap12BodyBinding = Reader.NameTable.Add(@"Soap12BodyBinding");
-            id104_redefine = Reader.NameTable.Add(@"redefine");
-            id20_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/soap12/");
-            id21_Soap12AddressBinding = Reader.NameTable.Add(@"Soap12AddressBinding");
-            id142_enumeration = Reader.NameTable.Add(@"enumeration");
-            id24_SoapAddressBinding = Reader.NameTable.Add(@"SoapAddressBinding");
-            id103_include = Reader.NameTable.Add(@"include");
-            id139_maxLength = Reader.NameTable.Add(@"maxLength");
-            id165_maxOccurs = Reader.NameTable.Add(@"maxOccurs");
-            id65_MimePart = Reader.NameTable.Add(@"MimePart");
-            id102_id = Reader.NameTable.Add(@"id");
-            id196_Item = Reader.NameTable.Add(@"XmlSchemaSimpleContentExtension");
-            id140_length = Reader.NameTable.Add(@"length");
-            id27_type = Reader.NameTable.Add(@"type");
-            id106_complexType = Reader.NameTable.Add(@"complexType");
-            id31_output = Reader.NameTable.Add(@"output");
-            id1_definitions = Reader.NameTable.Add(@"definitions");
-            id4_name = Reader.NameTable.Add(@"name");
-            id132_union = Reader.NameTable.Add(@"union");
-            id29_OperationBinding = Reader.NameTable.Add(@"OperationBinding");
-            id170_key = Reader.NameTable.Add(@"key");
-            id45_Item = Reader.NameTable.Add(@"http://microsoft.com/wsdl/mime/textMatching/");
-            id95_Item = Reader.NameTable.Add(@"http://www.w3.org/2001/XMLSchema");
-            id169_substitutionGroup = Reader.NameTable.Add(@"substitutionGroup");
-            id178_xpath = Reader.NameTable.Add(@"xpath");
-            id9_types = Reader.NameTable.Add(@"types");
-            id97_attributeFormDefault = Reader.NameTable.Add(@"attributeFormDefault");
-            id62_pattern = Reader.NameTable.Add(@"pattern");
-            id58_MimeTextMatch = Reader.NameTable.Add(@"MimeTextMatch");
-            id180_XmlSchemaKey = Reader.NameTable.Add(@"XmlSchemaKey");
-            id10_message = Reader.NameTable.Add(@"message");
-            id8_import = Reader.NameTable.Add(@"import");
-            id148_XmlSchemaMinLengthFacet = Reader.NameTable.Add(@"XmlSchemaMinLengthFacet");
-            id105_simpleType = Reader.NameTable.Add(@"simpleType");
-            id181_XmlSchemaComplexType = Reader.NameTable.Add(@"XmlSchemaComplexType");
-            id164_minOccurs = Reader.NameTable.Add(@"minOccurs");
-            id144_maxExclusive = Reader.NameTable.Add(@"maxExclusive");
-            id160_XmlSchemaFractionDigitsFacet = Reader.NameTable.Add(@"XmlSchemaFractionDigitsFacet");
-            id124_XmlSchemaAttribute = Reader.NameTable.Add(@"XmlSchemaAttribute");
-            id209_Import = Reader.NameTable.Add(@"Import");
-            id206_schemaLocation = Reader.NameTable.Add(@"schemaLocation");
-            id179_XmlSchemaUnique = Reader.NameTable.Add(@"XmlSchemaUnique");
-            id75_style = Reader.NameTable.Add(@"style");
-            id119_XmlSchemaDocumentation = Reader.NameTable.Add(@"XmlSchemaDocumentation");
-            id136_base = Reader.NameTable.Add(@"base");
-            id66_MimeXmlBinding = Reader.NameTable.Add(@"MimeXmlBinding");
-            id30_input = Reader.NameTable.Add(@"input");
-            id40_content = Reader.NameTable.Add(@"content");
-            id93_Types = Reader.NameTable.Add(@"Types");
-            id94_schema = Reader.NameTable.Add(@"schema");
-            id200_Item = Reader.NameTable.Add(@"XmlSchemaComplexContentExtension");
-            id67_MimeContentBinding = Reader.NameTable.Add(@"MimeContentBinding");
-            id59_group = Reader.NameTable.Add(@"group");
-            id32_fault = Reader.NameTable.Add(@"fault");
-            id80_transport = Reader.NameTable.Add(@"transport");
-            id98_blockDefault = Reader.NameTable.Add(@"blockDefault");
-            id13_service = Reader.NameTable.Add(@"service");
-            id54_SoapHeaderBinding = Reader.NameTable.Add(@"SoapHeaderBinding");
-            id204_system = Reader.NameTable.Add(@"system");
-            id16_Port = Reader.NameTable.Add(@"Port");
-            id108_notation = Reader.NameTable.Add(@"notation");
-            id186_choice = Reader.NameTable.Add(@"choice");
-            id110_attributeGroup = Reader.NameTable.Add(@"attributeGroup");
-            id79_Soap12Binding = Reader.NameTable.Add(@"Soap12Binding");
-            id77_SoapOperationBinding = Reader.NameTable.Add(@"SoapOperationBinding");
-            id115_XmlSchemaAnnotation = Reader.NameTable.Add(@"XmlSchemaAnnotation");
-            id83_verb = Reader.NameTable.Add(@"verb");
-            id72_HttpUrlEncodedBinding = Reader.NameTable.Add(@"HttpUrlEncodedBinding");
-            id39_OutputBinding = Reader.NameTable.Add(@"OutputBinding");
-            id183_complexContent = Reader.NameTable.Add(@"complexContent");
-            id202_XmlSchemaNotation = Reader.NameTable.Add(@"XmlSchemaNotation");
-            id81_SoapBinding = Reader.NameTable.Add(@"SoapBinding");
-            id199_Item = Reader.NameTable.Add(@"XmlSchemaComplexContentRestriction");
-            id28_operation = Reader.NameTable.Add(@"operation");
-            id122_XmlSchemaAttributeGroupRef = Reader.NameTable.Add(@"XmlSchemaAttributeGroupRef");
-            id155_XmlSchemaPatternFacet = Reader.NameTable.Add(@"XmlSchemaPatternFacet");
-            id76_soapActionRequired = Reader.NameTable.Add(@"soapActionRequired");
-            id90_Message = Reader.NameTable.Add(@"Message");
-            id159_XmlSchemaMinInclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMinInclusiveFacet");
-            id208_XmlSchemaInclude = Reader.NameTable.Add(@"XmlSchemaInclude");
-            id85_Operation = Reader.NameTable.Add(@"Operation");
-            id130_list = Reader.NameTable.Add(@"list");
-            id14_Service = Reader.NameTable.Add(@"Service");
-            id22_required = Reader.NameTable.Add(@"required");
-            id174_refer = Reader.NameTable.Add(@"refer");
-            id71_HttpUrlReplacementBinding = Reader.NameTable.Add(@"HttpUrlReplacementBinding");
-            id56_MimeTextBinding = Reader.NameTable.Add(@"MimeTextBinding");
-            id87_OperationFault = Reader.NameTable.Add(@"OperationFault");
-            id125_default = Reader.NameTable.Add(@"default");
-            id15_port = Reader.NameTable.Add(@"port");
-            id51_SoapHeaderFaultBinding = Reader.NameTable.Add(@"SoapHeaderFaultBinding");
-            id128_XmlSchemaSimpleType = Reader.NameTable.Add(@"XmlSchemaSimpleType");
-            id36_namespace = Reader.NameTable.Add(@"namespace");
-            id175_selector = Reader.NameTable.Add(@"selector");
-            id150_XmlSchemaMinExclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMinExclusiveFacet");
-            id100_elementFormDefault = Reader.NameTable.Add(@"elementFormDefault");
-            id26_Binding = Reader.NameTable.Add(@"Binding");
-            id197_Item = Reader.NameTable.Add(@"XmlSchemaSimpleContentRestriction");
-            id126_fixed = Reader.NameTable.Add(@"fixed");
-            id107_annotation = Reader.NameTable.Add(@"annotation");
-            id99_finalDefault = Reader.NameTable.Add(@"finalDefault");
-            id137_fractionDigits = Reader.NameTable.Add(@"fractionDigits");
-            id70_urlReplacement = Reader.NameTable.Add(@"urlReplacement");
-            id189_XmlSchemaChoice = Reader.NameTable.Add(@"XmlSchemaChoice");
-            id2_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/");
-            id112_anyAttribute = Reader.NameTable.Add(@"anyAttribute");
-            id89_OperationInput = Reader.NameTable.Add(@"OperationInput");
-            id141_totalDigits = Reader.NameTable.Add(@"totalDigits");
-            id61_repeats = Reader.NameTable.Add(@"repeats");
-            id184_simpleContent = Reader.NameTable.Add(@"simpleContent");
-            id55_SoapBodyBinding = Reader.NameTable.Add(@"SoapBodyBinding");
-            id145_whiteSpace = Reader.NameTable.Add(@"whiteSpace");
-            id167_block = Reader.NameTable.Add(@"block");
-            id151_XmlSchemaWhiteSpaceFacet = Reader.NameTable.Add(@"XmlSchemaWhiteSpaceFacet");
-            id12_binding = Reader.NameTable.Add(@"binding");
-            id109_attribute = Reader.NameTable.Add(@"attribute");
-            id171_unique = Reader.NameTable.Add(@"unique");
-            id120_lang = Reader.NameTable.Add(@"lang");
-            id173_XmlSchemaKeyref = Reader.NameTable.Add(@"XmlSchemaKeyref");
-            id177_XmlSchemaXPath = Reader.NameTable.Add(@"XmlSchemaXPath");
-            id34_Soap12FaultBinding = Reader.NameTable.Add(@"Soap12FaultBinding");
-            id41_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/mime/");
-            id156_XmlSchemaTotalDigitsFacet = Reader.NameTable.Add(@"XmlSchemaTotalDigitsFacet");
-            id113_XmlSchemaAnyAttribute = Reader.NameTable.Add(@"XmlSchemaAnyAttribute");
+            _id133_XmlSchemaSimpleTypeUnion = Reader.NameTable.Add(@"XmlSchemaSimpleTypeUnion");
+            _id143_maxInclusive = Reader.NameTable.Add(@"maxInclusive");
+            _id46_body = Reader.NameTable.Add(@"body");
+            _id190_any = Reader.NameTable.Add(@"any");
+            _id88_OperationOutput = Reader.NameTable.Add(@"OperationOutput");
+            _id6_targetNamespace = Reader.NameTable.Add(@"targetNamespace");
+            _id158_XmlSchemaMaxLengthFacet = Reader.NameTable.Add(@"XmlSchemaMaxLengthFacet");
+            _id11_portType = Reader.NameTable.Add(@"portType");
+            _id182_mixed = Reader.NameTable.Add(@"mixed");
+            _id172_keyref = Reader.NameTable.Add(@"keyref");
+            _id187_all = Reader.NameTable.Add(@"all");
+            _id162_itemType = Reader.NameTable.Add(@"itemType");
+            _id68_InputBinding = Reader.NameTable.Add(@"InputBinding");
+            _id25_HttpAddressBinding = Reader.NameTable.Add(@"HttpAddressBinding");
+            _id82_HttpBinding = Reader.NameTable.Add(@"HttpBinding");
+            _id17_address = Reader.NameTable.Add(@"address");
+            _id3_ServiceDescription = Reader.NameTable.Add(@"ServiceDescription");
+            _id38_SoapFaultBinding = Reader.NameTable.Add(@"SoapFaultBinding");
+            _id123_ref = Reader.NameTable.Add(@"ref");
+            _id198_XmlSchemaComplexContent = Reader.NameTable.Add(@"XmlSchemaComplexContent");
+            _id53_parts = Reader.NameTable.Add(@"parts");
+            _id35_use = Reader.NameTable.Add(@"use");
+            _id157_XmlSchemaLengthFacet = Reader.NameTable.Add(@"XmlSchemaLengthFacet");
+            _id207_XmlSchemaImport = Reader.NameTable.Add(@"XmlSchemaImport");
+            _id44_text = Reader.NameTable.Add(@"text");
+            _id117_XmlSchemaAppInfo = Reader.NameTable.Add(@"XmlSchemaAppInfo");
+            _id203_public = Reader.NameTable.Add(@"public");
+            _id69_urlEncoded = Reader.NameTable.Add(@"urlEncoded");
+            _id7_documentation = Reader.NameTable.Add(@"documentation");
+            _id19_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/soap/");
+            _id129_final = Reader.NameTable.Add(@"final");
+            _id163_XmlSchemaElement = Reader.NameTable.Add(@"XmlSchemaElement");
+            _id60_capture = Reader.NameTable.Add(@"capture");
+            _id37_encodingStyle = Reader.NameTable.Add(@"encodingStyle");
+            _id185_sequence = Reader.NameTable.Add(@"sequence");
+            _id166_abstract = Reader.NameTable.Add(@"abstract");
+            _id23_location = Reader.NameTable.Add(@"location");
+            _id111_XmlSchemaAttributeGroup = Reader.NameTable.Add(@"XmlSchemaAttributeGroup");
+            _id192_XmlSchemaSequence = Reader.NameTable.Add(@"XmlSchemaSequence");
+            _id33_FaultBinding = Reader.NameTable.Add(@"FaultBinding");
+            _id153_XmlSchemaMaxInclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMaxInclusiveFacet");
+            _id201_XmlSchemaGroup = Reader.NameTable.Add(@"XmlSchemaGroup");
+            _id43_multipartRelated = Reader.NameTable.Add(@"multipartRelated");
+            _id168_nillable = Reader.NameTable.Add(@"nillable");
+            _id149_value = Reader.NameTable.Add(@"value");
+            _id64_MimeMultipartRelatedBinding = Reader.NameTable.Add(@"MimeMultipartRelatedBinding");
+            _id193_XmlSchemaAny = Reader.NameTable.Add(@"XmlSchemaAny");
+            _id191_XmlSchemaGroupRef = Reader.NameTable.Add(@"XmlSchemaGroupRef");
+            _id74_soapAction = Reader.NameTable.Add(@"soapAction");
+            _id63_ignoreCase = Reader.NameTable.Add(@"ignoreCase");
+            _id101_version = Reader.NameTable.Add(@"version");
+            _id47_header = Reader.NameTable.Add(@"header");
+            _id195_extension = Reader.NameTable.Add(@"extension");
+            _id48_Soap12HeaderBinding = Reader.NameTable.Add(@"Soap12HeaderBinding");
+            _id134_memberTypes = Reader.NameTable.Add(@"memberTypes");
+            _id121_Item = Reader.NameTable.Add(@"http://www.w3.org/XML/1998/namespace");
+            _id146_minExclusive = Reader.NameTable.Add(@"minExclusive");
+            _id84_PortType = Reader.NameTable.Add(@"PortType");
+            _id42_mimeXml = Reader.NameTable.Add(@"mimeXml");
+            _id138_minInclusive = Reader.NameTable.Add(@"minInclusive");
+            _id118_source = Reader.NameTable.Add(@"source");
+            _id73_Soap12OperationBinding = Reader.NameTable.Add(@"Soap12OperationBinding");
+            _id131_restriction = Reader.NameTable.Add(@"restriction");
+            _id152_XmlSchemaMaxExclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMaxExclusiveFacet");
+            _id135_XmlSchemaSimpleTypeRestriction = Reader.NameTable.Add(@"XmlSchemaSimpleTypeRestriction");
+            _id188_XmlSchemaAll = Reader.NameTable.Add(@"XmlSchemaAll");
+            _id116_appinfo = Reader.NameTable.Add(@"appinfo");
+            _id86_parameterOrder = Reader.NameTable.Add(@"parameterOrder");
+            _id147_minLength = Reader.NameTable.Add(@"minLength");
+            _id78_HttpOperationBinding = Reader.NameTable.Add(@"HttpOperationBinding");
+            _id161_XmlSchemaSimpleTypeList = Reader.NameTable.Add(@"XmlSchemaSimpleTypeList");
+            _id205_XmlSchemaRedefine = Reader.NameTable.Add(@"XmlSchemaRedefine");
+            _id194_XmlSchemaSimpleContent = Reader.NameTable.Add(@"XmlSchemaSimpleContent");
+            _id91_MessagePart = Reader.NameTable.Add(@"MessagePart");
+            _id92_element = Reader.NameTable.Add(@"element");
+            _id114_processContents = Reader.NameTable.Add(@"processContents");
+            _id18_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/http/");
+            _id50_headerfault = Reader.NameTable.Add(@"headerfault");
+            _id154_XmlSchemaEnumerationFacet = Reader.NameTable.Add(@"XmlSchemaEnumerationFacet");
+            _id96_XmlSchema = Reader.NameTable.Add(@"XmlSchema");
+            _id127_form = Reader.NameTable.Add(@"form");
+            _id176_field = Reader.NameTable.Add(@"field");
+            _id49_part = Reader.NameTable.Add(@"part");
+            _id5_Item = Reader.NameTable.Add(@"");
+            _id57_match = Reader.NameTable.Add(@"match");
+            _id52_Soap12BodyBinding = Reader.NameTable.Add(@"Soap12BodyBinding");
+            _id104_redefine = Reader.NameTable.Add(@"redefine");
+            _id20_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/soap12/");
+            _id21_Soap12AddressBinding = Reader.NameTable.Add(@"Soap12AddressBinding");
+            _id142_enumeration = Reader.NameTable.Add(@"enumeration");
+            _id24_SoapAddressBinding = Reader.NameTable.Add(@"SoapAddressBinding");
+            _id103_include = Reader.NameTable.Add(@"include");
+            _id139_maxLength = Reader.NameTable.Add(@"maxLength");
+            _id165_maxOccurs = Reader.NameTable.Add(@"maxOccurs");
+            _id65_MimePart = Reader.NameTable.Add(@"MimePart");
+            _id102_id = Reader.NameTable.Add(@"id");
+            _id196_Item = Reader.NameTable.Add(@"XmlSchemaSimpleContentExtension");
+            _id140_length = Reader.NameTable.Add(@"length");
+            _id27_type = Reader.NameTable.Add(@"type");
+            _id106_complexType = Reader.NameTable.Add(@"complexType");
+            _id31_output = Reader.NameTable.Add(@"output");
+            _id1_definitions = Reader.NameTable.Add(@"definitions");
+            _id4_name = Reader.NameTable.Add(@"name");
+            _id132_union = Reader.NameTable.Add(@"union");
+            _id29_OperationBinding = Reader.NameTable.Add(@"OperationBinding");
+            _id170_key = Reader.NameTable.Add(@"key");
+            _id45_Item = Reader.NameTable.Add(@"http://microsoft.com/wsdl/mime/textMatching/");
+            _id95_Item = Reader.NameTable.Add(@"http://www.w3.org/2001/XMLSchema");
+            _id169_substitutionGroup = Reader.NameTable.Add(@"substitutionGroup");
+            _id178_xpath = Reader.NameTable.Add(@"xpath");
+            _id9_types = Reader.NameTable.Add(@"types");
+            _id97_attributeFormDefault = Reader.NameTable.Add(@"attributeFormDefault");
+            _id62_pattern = Reader.NameTable.Add(@"pattern");
+            _id58_MimeTextMatch = Reader.NameTable.Add(@"MimeTextMatch");
+            _id180_XmlSchemaKey = Reader.NameTable.Add(@"XmlSchemaKey");
+            _id10_message = Reader.NameTable.Add(@"message");
+            _id8_import = Reader.NameTable.Add(@"import");
+            _id148_XmlSchemaMinLengthFacet = Reader.NameTable.Add(@"XmlSchemaMinLengthFacet");
+            _id105_simpleType = Reader.NameTable.Add(@"simpleType");
+            _id181_XmlSchemaComplexType = Reader.NameTable.Add(@"XmlSchemaComplexType");
+            _id164_minOccurs = Reader.NameTable.Add(@"minOccurs");
+            _id144_maxExclusive = Reader.NameTable.Add(@"maxExclusive");
+            _id160_XmlSchemaFractionDigitsFacet = Reader.NameTable.Add(@"XmlSchemaFractionDigitsFacet");
+            _id124_XmlSchemaAttribute = Reader.NameTable.Add(@"XmlSchemaAttribute");
+            _id209_Import = Reader.NameTable.Add(@"Import");
+            _id206_schemaLocation = Reader.NameTable.Add(@"schemaLocation");
+            _id179_XmlSchemaUnique = Reader.NameTable.Add(@"XmlSchemaUnique");
+            _id75_style = Reader.NameTable.Add(@"style");
+            _id119_XmlSchemaDocumentation = Reader.NameTable.Add(@"XmlSchemaDocumentation");
+            _id136_base = Reader.NameTable.Add(@"base");
+            _id66_MimeXmlBinding = Reader.NameTable.Add(@"MimeXmlBinding");
+            _id30_input = Reader.NameTable.Add(@"input");
+            _id40_content = Reader.NameTable.Add(@"content");
+            _id93_Types = Reader.NameTable.Add(@"Types");
+            _id94_schema = Reader.NameTable.Add(@"schema");
+            _id200_Item = Reader.NameTable.Add(@"XmlSchemaComplexContentExtension");
+            _id67_MimeContentBinding = Reader.NameTable.Add(@"MimeContentBinding");
+            _id59_group = Reader.NameTable.Add(@"group");
+            _id32_fault = Reader.NameTable.Add(@"fault");
+            _id80_transport = Reader.NameTable.Add(@"transport");
+            _id98_blockDefault = Reader.NameTable.Add(@"blockDefault");
+            _id13_service = Reader.NameTable.Add(@"service");
+            _id54_SoapHeaderBinding = Reader.NameTable.Add(@"SoapHeaderBinding");
+            _id204_system = Reader.NameTable.Add(@"system");
+            _id16_Port = Reader.NameTable.Add(@"Port");
+            _id108_notation = Reader.NameTable.Add(@"notation");
+            _id186_choice = Reader.NameTable.Add(@"choice");
+            _id110_attributeGroup = Reader.NameTable.Add(@"attributeGroup");
+            _id79_Soap12Binding = Reader.NameTable.Add(@"Soap12Binding");
+            _id77_SoapOperationBinding = Reader.NameTable.Add(@"SoapOperationBinding");
+            _id115_XmlSchemaAnnotation = Reader.NameTable.Add(@"XmlSchemaAnnotation");
+            _id83_verb = Reader.NameTable.Add(@"verb");
+            _id72_HttpUrlEncodedBinding = Reader.NameTable.Add(@"HttpUrlEncodedBinding");
+            _id39_OutputBinding = Reader.NameTable.Add(@"OutputBinding");
+            _id183_complexContent = Reader.NameTable.Add(@"complexContent");
+            _id202_XmlSchemaNotation = Reader.NameTable.Add(@"XmlSchemaNotation");
+            _id81_SoapBinding = Reader.NameTable.Add(@"SoapBinding");
+            _id199_Item = Reader.NameTable.Add(@"XmlSchemaComplexContentRestriction");
+            _id28_operation = Reader.NameTable.Add(@"operation");
+            _id122_XmlSchemaAttributeGroupRef = Reader.NameTable.Add(@"XmlSchemaAttributeGroupRef");
+            _id155_XmlSchemaPatternFacet = Reader.NameTable.Add(@"XmlSchemaPatternFacet");
+            _id76_soapActionRequired = Reader.NameTable.Add(@"soapActionRequired");
+            _id90_Message = Reader.NameTable.Add(@"Message");
+            _id159_XmlSchemaMinInclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMinInclusiveFacet");
+            _id208_XmlSchemaInclude = Reader.NameTable.Add(@"XmlSchemaInclude");
+            _id85_Operation = Reader.NameTable.Add(@"Operation");
+            _id130_list = Reader.NameTable.Add(@"list");
+            _id14_Service = Reader.NameTable.Add(@"Service");
+            _id22_required = Reader.NameTable.Add(@"required");
+            _id174_refer = Reader.NameTable.Add(@"refer");
+            _id71_HttpUrlReplacementBinding = Reader.NameTable.Add(@"HttpUrlReplacementBinding");
+            _id56_MimeTextBinding = Reader.NameTable.Add(@"MimeTextBinding");
+            _id87_OperationFault = Reader.NameTable.Add(@"OperationFault");
+            _id125_default = Reader.NameTable.Add(@"default");
+            _id15_port = Reader.NameTable.Add(@"port");
+            _id51_SoapHeaderFaultBinding = Reader.NameTable.Add(@"SoapHeaderFaultBinding");
+            _id128_XmlSchemaSimpleType = Reader.NameTable.Add(@"XmlSchemaSimpleType");
+            _id36_namespace = Reader.NameTable.Add(@"namespace");
+            _id175_selector = Reader.NameTable.Add(@"selector");
+            _id150_XmlSchemaMinExclusiveFacet = Reader.NameTable.Add(@"XmlSchemaMinExclusiveFacet");
+            _id100_elementFormDefault = Reader.NameTable.Add(@"elementFormDefault");
+            _id26_Binding = Reader.NameTable.Add(@"Binding");
+            _id197_Item = Reader.NameTable.Add(@"XmlSchemaSimpleContentRestriction");
+            _id126_fixed = Reader.NameTable.Add(@"fixed");
+            _id107_annotation = Reader.NameTable.Add(@"annotation");
+            _id99_finalDefault = Reader.NameTable.Add(@"finalDefault");
+            _id137_fractionDigits = Reader.NameTable.Add(@"fractionDigits");
+            _id70_urlReplacement = Reader.NameTable.Add(@"urlReplacement");
+            _id189_XmlSchemaChoice = Reader.NameTable.Add(@"XmlSchemaChoice");
+            _id2_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/");
+            _id112_anyAttribute = Reader.NameTable.Add(@"anyAttribute");
+            _id89_OperationInput = Reader.NameTable.Add(@"OperationInput");
+            _id141_totalDigits = Reader.NameTable.Add(@"totalDigits");
+            _id61_repeats = Reader.NameTable.Add(@"repeats");
+            _id184_simpleContent = Reader.NameTable.Add(@"simpleContent");
+            _id55_SoapBodyBinding = Reader.NameTable.Add(@"SoapBodyBinding");
+            _id145_whiteSpace = Reader.NameTable.Add(@"whiteSpace");
+            _id167_block = Reader.NameTable.Add(@"block");
+            _id151_XmlSchemaWhiteSpaceFacet = Reader.NameTable.Add(@"XmlSchemaWhiteSpaceFacet");
+            _id12_binding = Reader.NameTable.Add(@"binding");
+            _id109_attribute = Reader.NameTable.Add(@"attribute");
+            _id171_unique = Reader.NameTable.Add(@"unique");
+            _id120_lang = Reader.NameTable.Add(@"lang");
+            _id173_XmlSchemaKeyref = Reader.NameTable.Add(@"XmlSchemaKeyref");
+            _id177_XmlSchemaXPath = Reader.NameTable.Add(@"XmlSchemaXPath");
+            _id34_Soap12FaultBinding = Reader.NameTable.Add(@"Soap12FaultBinding");
+            _id41_Item = Reader.NameTable.Add(@"http://schemas.xmlsoap.org/wsdl/mime/");
+            _id156_XmlSchemaTotalDigitsFacet = Reader.NameTable.Add(@"XmlSchemaTotalDigitsFacet");
+            _id113_XmlSchemaAnyAttribute = Reader.NameTable.Add(@"XmlSchemaAnyAttribute");
         }
     }
 }

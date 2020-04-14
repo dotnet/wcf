@@ -101,11 +101,11 @@ namespace System.Web.Services.Configuration
 
         internal Type[] GetAllFormatExtensionTypes()
         {
-            return this.defaultFormatTypes;
+            return _defaultFormatTypes;
         }
 
 
-        static XmlFormatExtensionPointAttribute GetExtensionPointAttribute(Type type)
+        private static XmlFormatExtensionPointAttribute GetExtensionPointAttribute(Type type)
         {
             object[] attrs = new List<object>(type.GetTypeInfo().GetCustomAttributes(typeof(XmlFormatExtensionPointAttribute), false)).ToArray();
             if (attrs.Length == 0)
@@ -113,7 +113,7 @@ namespace System.Web.Services.Configuration
             return (XmlFormatExtensionPointAttribute)attrs[0];
         }
 
-        Type[] defaultFormatTypes = new Type[] {
+        private Type[] _defaultFormatTypes = new Type[] {
                                                    typeof(HttpAddressBinding),
                                                    typeof(HttpBinding),
                                                    typeof(HttpOperationBinding),
@@ -135,6 +135,5 @@ namespace System.Web.Services.Configuration
                                                    typeof(Soap12FaultBinding),
                                                    typeof(Soap12HeaderBinding),
                                                    typeof(Soap12AddressBinding) };
-
     }
 }

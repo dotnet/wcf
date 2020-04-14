@@ -20,16 +20,16 @@ namespace System.ServiceModel.Security
         private const int DefaultMaximumKeyDerivationNonceLength = 128; // bytes
 
         private static WSSecurityTokenSerializer s_instance;
-        private readonly bool emitBspRequiredAttributes;
-        private readonly SecurityVersion securityVersion;
-        private readonly List<SerializerEntries> serializerEntries;
-        private WSSecureConversation secureConversation;
+        private readonly bool _emitBspRequiredAttributes;
+        private readonly SecurityVersion _securityVersion;
+        private readonly List<SerializerEntries> _serializerEntries;
+        private WSSecureConversation _secureConversation;
         private readonly List<TokenEntry> _tokenEntries;
-        private int maximumKeyDerivationOffset;
-        private int maximumKeyDerivationLabelLength;
-        private int maximumKeyDerivationNonceLength;
+        private int _maximumKeyDerivationOffset;
+        private int _maximumKeyDerivationLabelLength;
+        private int _maximumKeyDerivationNonceLength;
 
-        private KeyInfoSerializer keyInfoSerializer;
+        private KeyInfoSerializer _keyInfoSerializer;
 
         public WSSecurityTokenSerializer()
             : this(SecurityVersion.WSSecurity11)
@@ -91,21 +91,21 @@ namespace System.ServiceModel.Security
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maximumKeyDerivationNonceLength", SRServiceModel.ValueMustBeGreaterThanZero));
             }
 
-            this.securityVersion = securityVersion;
-            this.emitBspRequiredAttributes = emitBspRequiredAttributes;
-            this.maximumKeyDerivationOffset = maximumKeyDerivationOffset;
-            this.maximumKeyDerivationNonceLength = maximumKeyDerivationNonceLength;
-            this.maximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
+            _securityVersion = securityVersion;
+            _emitBspRequiredAttributes = emitBspRequiredAttributes;
+            _maximumKeyDerivationOffset = maximumKeyDerivationOffset;
+            _maximumKeyDerivationNonceLength = maximumKeyDerivationNonceLength;
+            _maximumKeyDerivationLabelLength = maximumKeyDerivationLabelLength;
 
-            this.serializerEntries = new List<SerializerEntries>();
+            _serializerEntries = new List<SerializerEntries>();
 
             if (secureConversationVersion == SecureConversationVersion.WSSecureConversationFeb2005)
             {
-                this.secureConversation = new WSSecureConversationFeb2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
+                _secureConversation = new WSSecureConversationFeb2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
             }
             else if (secureConversationVersion == SecureConversationVersion.WSSecureConversation13)
             {
-                this.secureConversation = new WSSecureConversationDec2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
+                _secureConversation = new WSSecureConversationDec2005(this, securityStateEncoder, knownTypes, maximumKeyDerivationOffset, maximumKeyDerivationLabelLength, maximumKeyDerivationNonceLength);
             }
             else
             {
@@ -114,26 +114,26 @@ namespace System.ServiceModel.Security
 
             if (securityVersion == SecurityVersion.WSSecurity10)
             {
-                this.serializerEntries.Add(new WSSecurityJan2004(this, samlSerializer));
+                _serializerEntries.Add(new WSSecurityJan2004(this, samlSerializer));
             }
             else if (securityVersion == SecurityVersion.WSSecurity11)
             {
-                this.serializerEntries.Add(new WSSecurityXXX2005(this, samlSerializer));
+                _serializerEntries.Add(new WSSecurityXXX2005(this, samlSerializer));
             }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("securityVersion", SRServiceModel.MessageSecurityVersionOutOfRange));
             }
-            this.serializerEntries.Add(this.secureConversation);
+            _serializerEntries.Add(_secureConversation);
             IdentityModel.TrustDictionary trustDictionary;
             if (trustVersion == TrustVersion.WSTrustFeb2005)
             {
-                this.serializerEntries.Add(new WSTrustFeb2005(this));
+                _serializerEntries.Add(new WSTrustFeb2005(this));
                 trustDictionary = new IdentityModel.TrustFeb2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Feb2005DictionaryStrings));
             }
             else if (trustVersion == TrustVersion.WSTrust13)
             {
-                this.serializerEntries.Add(new WSTrustDec2005(this));
+                _serializerEntries.Add(new WSTrustDec2005(this));
                 trustDictionary = new IdentityModel.TrustDec2005Dictionary(new CollectionDictionary(DXD.TrustDec2005Dictionary.Dec2005DictionaryString));
             }
             else
@@ -143,9 +143,9 @@ namespace System.ServiceModel.Security
 
             _tokenEntries = new List<TokenEntry>();
 
-            for (int i = 0; i < this.serializerEntries.Count; ++i)
+            for (int i = 0; i < _serializerEntries.Count; ++i)
             {
-                SerializerEntries serializerEntry = this.serializerEntries[i];
+                SerializerEntries serializerEntry = _serializerEntries[i];
                 serializerEntry.PopulateTokenEntries(_tokenEntries);
             }
 
@@ -153,7 +153,7 @@ namespace System.ServiceModel.Security
             dictionaryManager.SecureConversationDec2005Dictionary = new IdentityModel.SecureConversationDec2005Dictionary(new CollectionDictionary(DXD.SecureConversationDec2005Dictionary.SecureConversationDictionaryStrings));
             dictionaryManager.SecurityAlgorithmDec2005Dictionary = new IdentityModel.SecurityAlgorithmDec2005Dictionary(new CollectionDictionary(DXD.SecurityAlgorithmDec2005Dictionary.SecurityAlgorithmDictionaryStrings));
 
-            this.keyInfoSerializer = new WSKeyInfoSerializer(this.emitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
+            _keyInfoSerializer = new WSKeyInfoSerializer(_emitBspRequiredAttributes, dictionaryManager, trustDictionary, this, securityVersion, secureConversationVersion);
         }
 
         public static WSSecurityTokenSerializer DefaultInstance
@@ -168,35 +168,35 @@ namespace System.ServiceModel.Security
 
         public bool EmitBspRequiredAttributes
         {
-            get { return this.emitBspRequiredAttributes; }
+            get { return _emitBspRequiredAttributes; }
         }
 
         public SecurityVersion SecurityVersion
         {
-            get { return this.securityVersion; }
+            get { return _securityVersion; }
         }
 
         public int MaximumKeyDerivationOffset
         {
-            get { return this.maximumKeyDerivationOffset; }
+            get { return _maximumKeyDerivationOffset; }
         }
 
         public int MaximumKeyDerivationLabelLength
         {
-            get { return this.maximumKeyDerivationLabelLength; }
+            get { return _maximumKeyDerivationLabelLength; }
         }
 
         public int MaximumKeyDerivationNonceLength
         {
-            get { return this.maximumKeyDerivationNonceLength; }
+            get { return _maximumKeyDerivationNonceLength; }
         }
 
         internal WSSecureConversation SecureConversation
         {
-            get { return this.secureConversation; }
+            get { return _secureConversation; }
         }
 
-        bool ShouldWrapException(Exception e)
+        private bool ShouldWrapException(Exception e)
         {
             if (Fx.IsFatal(e))
             {
@@ -263,7 +263,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                return this.keyInfoSerializer.CanReadKeyIdentifier(reader);
+                return _keyInfoSerializer.CanReadKeyIdentifier(reader);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -275,7 +275,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                return this.keyInfoSerializer.ReadKeyIdentifier(reader);
+                return _keyInfoSerializer.ReadKeyIdentifier(reader);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -287,8 +287,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-
-                return this.keyInfoSerializer.CanWriteKeyIdentifier(keyIdentifier);
+                return _keyInfoSerializer.CanWriteKeyIdentifier(keyIdentifier);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -300,7 +299,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                this.keyInfoSerializer.WriteKeyIdentifier(writer, keyIdentifier);
+                _keyInfoSerializer.WriteKeyIdentifier(writer, keyIdentifier);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -312,7 +311,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                return this.keyInfoSerializer.CanReadKeyIdentifierClause(reader);
+                return _keyInfoSerializer.CanReadKeyIdentifierClause(reader);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -324,7 +323,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                return this.keyInfoSerializer.ReadKeyIdentifierClause(reader);
+                return _keyInfoSerializer.ReadKeyIdentifierClause(reader);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -336,7 +335,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                return this.keyInfoSerializer.CanWriteKeyIdentifierClause(keyIdentifierClause);
+                return _keyInfoSerializer.CanWriteKeyIdentifierClause(keyIdentifierClause);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -348,7 +347,7 @@ namespace System.ServiceModel.Security
         {
             try
             {
-                this.keyInfoSerializer.WriteKeyIdentifierClause(writer, keyIdentifierClause);
+                _keyInfoSerializer.WriteKeyIdentifierClause(writer, keyIdentifierClause);
             }
             catch (System.IdentityModel.SecurityMessageSerializationException ex)
             {
@@ -587,6 +586,5 @@ namespace System.ServiceModel.Security
                 return false;
             }
         }
-
     }
 }

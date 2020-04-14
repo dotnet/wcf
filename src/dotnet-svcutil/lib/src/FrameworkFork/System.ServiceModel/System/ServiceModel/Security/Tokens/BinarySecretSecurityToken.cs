@@ -11,10 +11,10 @@ namespace System.ServiceModel.Security.Tokens
     //TODO: [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
     public class BinarySecretSecurityToken : SecurityToken
     {
-        string id;
-        DateTime effectiveTime;
-        byte[] key;
-        ReadOnlyCollection<SecurityKey> securityKeys;
+        private string _id;
+        private DateTime _effectiveTime;
+        private byte[] _key;
+        private ReadOnlyCollection<SecurityKey> _securityKeys;
 
         public BinarySecretSecurityToken(int keySizeInBits)
             : this(SecurityUniqueId.Create().Value, keySizeInBits)
@@ -46,28 +46,28 @@ namespace System.ServiceModel.Security.Tokens
             if (key == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("key");
 
-            this.id = id;
-            this.effectiveTime = DateTime.UtcNow;
-            this.key = new byte[key.Length];
-            Buffer.BlockCopy(key, 0, this.key, 0, key.Length);
+            _id = id;
+            _effectiveTime = DateTime.UtcNow;
+            _key = new byte[key.Length];
+            Buffer.BlockCopy(key, 0, _key, 0, key.Length);
             if (allowCrypto)
             {
-                this.securityKeys = SecurityUtils.CreateSymmetricSecurityKeys(this.key);
+                _securityKeys = SecurityUtils.CreateSymmetricSecurityKeys(_key);
             }
             else
             {
-                this.securityKeys = EmptyReadOnlyCollection<SecurityKey>.Instance;
+                _securityKeys = EmptyReadOnlyCollection<SecurityKey>.Instance;
             }
         }
 
         public override string Id
         {
-            get { return this.id; }
+            get { return _id; }
         }
 
         public override DateTime ValidFrom
         {
-            get { return this.effectiveTime; }
+            get { return _effectiveTime; }
         }
 
         public override DateTime ValidTo
@@ -78,17 +78,17 @@ namespace System.ServiceModel.Security.Tokens
 
         public int KeySize
         {
-            get { return (this.key.Length * 8); }
+            get { return (_key.Length * 8); }
         }
 
         public override ReadOnlyCollection<SecurityKey> SecurityKeys
         {
-            get { return this.securityKeys; }
+            get { return _securityKeys; }
         }
 
         public byte[] GetKeyBytes()
         {
-            return SecurityUtils.CloneBuffer(this.key);
+            return SecurityUtils.CloneBuffer(_key);
         }
     }
 }

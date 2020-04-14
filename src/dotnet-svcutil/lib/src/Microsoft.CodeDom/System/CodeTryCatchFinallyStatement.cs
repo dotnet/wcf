@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -14,21 +14,23 @@ namespace Microsoft.CodeDom {
     ///     optionally finally block.
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeTryCatchFinallyStatement : CodeStatement {
-        private CodeStatementCollection tryStatments = new CodeStatementCollection();
-        private CodeStatementCollection finallyStatments = new CodeStatementCollection();
-        private CodeCatchClauseCollection catchClauses = new CodeCatchClauseCollection();
+    public class CodeTryCatchFinallyStatement : CodeStatement
+    {
+        private CodeStatementCollection _tryStatments = new CodeStatementCollection();
+        private CodeStatementCollection _finallyStatments = new CodeStatementCollection();
+        private CodeCatchClauseCollection _catchClauses = new CodeCatchClauseCollection();
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTryCatchFinallyStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeTryCatchFinallyStatement() {
+        public CodeTryCatchFinallyStatement()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       clauses.
         ///    </para>
         /// </devdoc>
-        public CodeTryCatchFinallyStatement(CodeStatement[] tryStatements, CodeCatchClause[] catchClauses) {
+        public CodeTryCatchFinallyStatement(CodeStatement[] tryStatements, CodeCatchClause[] catchClauses)
+        {
             TryStatements.AddRange(tryStatements);
             CatchClauses.AddRange(catchClauses);
         }
@@ -48,7 +51,8 @@ namespace Microsoft.CodeDom {
         ///       try, catch clauses, and finally statements.
         ///    </para>
         /// </devdoc>
-        public CodeTryCatchFinallyStatement(CodeStatement[] tryStatements, CodeCatchClause[] catchClauses, CodeStatement[] finallyStatements) {
+        public CodeTryCatchFinallyStatement(CodeStatement[] tryStatements, CodeCatchClause[] catchClauses, CodeStatement[] finallyStatements)
+        {
             TryStatements.AddRange(tryStatements);
             CatchClauses.AddRange(catchClauses);
             FinallyStatements.AddRange(finallyStatements);
@@ -60,9 +64,11 @@ namespace Microsoft.CodeDom {
         ///       the try statements to try.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection TryStatements {
-            get {
-                return tryStatments;
+        public CodeStatementCollection TryStatements
+        {
+            get
+            {
+                return _tryStatments;
             }
         }
 
@@ -71,9 +77,11 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the catch clauses to use.
         ///    </para>
         /// </devdoc>
-        public CodeCatchClauseCollection CatchClauses {
-            get {
-                return catchClauses;
+        public CodeCatchClauseCollection CatchClauses
+        {
+            get
+            {
+                return _catchClauses;
             }
         }
 
@@ -83,9 +91,11 @@ namespace Microsoft.CodeDom {
         ///       the finally statements to use.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection FinallyStatements {
-            get {
-                return finallyStatments;
+        public CodeStatementCollection FinallyStatements
+        {
+            get
+            {
+                return _finallyStatments;
             }
         }
     }

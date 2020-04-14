@@ -57,7 +57,6 @@ namespace System.ServiceModel.Channels
                 {
                     using (XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter(textWriter))
                     {
-
                         if (IsMessageVersionSupported(MessageVersion.Soap12WSAddressing10))
                         {
                             WriteHeader(writer, MessageVersion.Soap12WSAddressing10);

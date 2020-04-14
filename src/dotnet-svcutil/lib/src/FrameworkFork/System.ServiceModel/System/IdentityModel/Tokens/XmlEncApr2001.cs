@@ -8,27 +8,27 @@ namespace System.IdentityModel.Tokens
     using Microsoft.Xml;
     using KeyIdentifierClauseEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierClauseEntry;
 
-    class XmlEncApr2001 : SecurityTokenSerializer.SerializerEntries
+    internal class XmlEncApr2001 : SecurityTokenSerializer.SerializerEntries
     {
-        KeyInfoSerializer securityTokenSerializer;
+        private KeyInfoSerializer _securityTokenSerializer;
 
         public XmlEncApr2001(KeyInfoSerializer securityTokenSerializer)
         {
-            this.securityTokenSerializer = securityTokenSerializer;
+            _securityTokenSerializer = securityTokenSerializer;
         }
 
         public override void PopulateKeyIdentifierClauseEntries(IList<KeyIdentifierClauseEntry> keyIdentifierClauseEntries)
         {
-            keyIdentifierClauseEntries.Add(new EncryptedKeyClauseEntry(this.securityTokenSerializer));
+            keyIdentifierClauseEntries.Add(new EncryptedKeyClauseEntry(_securityTokenSerializer));
         }
 
         internal class EncryptedKeyClauseEntry : SecurityTokenSerializer.KeyIdentifierClauseEntry
         {
-            KeyInfoSerializer securityTokenSerializer;
+            private KeyInfoSerializer _securityTokenSerializer;
 
             public EncryptedKeyClauseEntry(KeyInfoSerializer securityTokenSerializer)
             {
-                this.securityTokenSerializer = securityTokenSerializer;
+                _securityTokenSerializer = securityTokenSerializer;
             }
 
             protected override XmlDictionaryString LocalName
@@ -71,9 +71,9 @@ namespace System.IdentityModel.Tokens
                     }
                 }
 
-                if (this.securityTokenSerializer.CanReadKeyIdentifier(reader))
+                if (_securityTokenSerializer.CanReadKeyIdentifier(reader))
                 {
-                    encryptingKeyIdentifier = this.securityTokenSerializer.ReadKeyIdentifier(reader);
+                    encryptingKeyIdentifier = _securityTokenSerializer.ReadKeyIdentifier(reader);
                 }
 
                 reader.ReadStartElement(XD.XmlEncryptionDictionary.CipherData, NamespaceUri);
@@ -120,7 +120,7 @@ namespace System.IdentityModel.Tokens
 
                 if (encryptedKeyClause.EncryptingKeyIdentifier != null)
                 {
-                    this.securityTokenSerializer.WriteKeyIdentifier(writer, encryptedKeyClause.EncryptingKeyIdentifier);
+                    _securityTokenSerializer.WriteKeyIdentifier(writer, encryptedKeyClause.EncryptingKeyIdentifier);
                 }
 
                 writer.WriteStartElement(XD.XmlEncryptionDictionary.Prefix.Value, XD.XmlEncryptionDictionary.CipherData, NamespaceUri);

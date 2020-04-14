@@ -9,48 +9,47 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class SpecialIXmlSerializableRemapper : SimpleTypeRemapper
     {
-        Dictionary<string, CodeTypeDeclaration> specialIXmlSerializableTypes = new Dictionary<string, CodeTypeDeclaration>();
-        TypeDeclCollection typeDeclCollection = new TypeDeclCollection();
-        const string specialTypeName = "schema";
-        const string specialFieldName = "schema";
-        static string currentMatchingFullTypeName = null;
-        readonly ArrayOfXElementTypeHelper ArrayOfXElementTypeHelper;
+        private Dictionary<string, CodeTypeDeclaration> _specialIXmlSerializableTypes = new Dictionary<string, CodeTypeDeclaration>();
+        private TypeDeclCollection _typeDeclCollection = new TypeDeclCollection();
+        private const string specialTypeName = "schema";
+        private const string specialFieldName = "schema";
+        private static string s_currentMatchingFullTypeName = null;
+        private readonly ArrayOfXElementTypeHelper _arrayOfXElementTypeHelper;
 
         public SpecialIXmlSerializableRemapper(ArrayOfXElementTypeHelper arrayOfXElementTypeHelper)
             : base(null, ArrayOfXElementTypeHelper.ArrayOfXElementRef.BaseType)
         {
-            this.ArrayOfXElementTypeHelper = arrayOfXElementTypeHelper;
+            _arrayOfXElementTypeHelper = arrayOfXElementTypeHelper;
         }
 
         protected override bool Match(CodeTypeReference typeref)
         {
             if (typeref.BaseType.Contains("."))
             {
-                currentMatchingFullTypeName = typeref.BaseType;
-                return specialIXmlSerializableTypes.ContainsKey(typeref.BaseType);
+                s_currentMatchingFullTypeName = typeref.BaseType;
+                return _specialIXmlSerializableTypes.ContainsKey(typeref.BaseType);
             }
             else
             {
                 return MatchTypeName(typeref.BaseType);
             }
-
         }
 
-        bool MatchTypeName(string typeName)
+        private bool MatchTypeName(string typeName)
         {
-            foreach (string name in specialIXmlSerializableTypes.Keys)
+            foreach (string name in _specialIXmlSerializableTypes.Keys)
             {
                 if (name.EndsWith(typeName, StringComparison.Ordinal))
                 {
-                    currentMatchingFullTypeName = name;
+                    s_currentMatchingFullTypeName = name;
                     return true;
                 }
             }
-            currentMatchingFullTypeName = null;
+            s_currentMatchingFullTypeName = null;
             return false;
         }
 
-        bool IsSpecialIXmlSerializableType(CodeTypeDeclaration type)
+        private bool IsSpecialIXmlSerializableType(CodeTypeDeclaration type)
         {
             foreach (CodeTypeMember member in type.Members)
             {
@@ -59,7 +58,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     if (memberProp.Name == specialFieldName
                         && memberProp.Type.BaseType == specialTypeName
-                        && !typeDeclCollection.AllTypeDecls.ContainsKey(specialTypeName))
+                        && !_typeDeclCollection.AllTypeDecls.ContainsKey(specialTypeName))
                     {
                         return true;
                     }
@@ -72,7 +71,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             foreach (CodeTypeReference typeRef in typeDecl.BaseTypes)
             {
-                if(CodeDomHelpers.MatchType<Microsoft.Xml.Serialization.IXmlSerializable>(typeRef))
+                if (CodeDomHelpers.MatchType<Microsoft.Xml.Serialization.IXmlSerializable>(typeRef))
                     return true;
             }
             return false;
@@ -80,37 +79,37 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         protected override void Map(CodeTypeReference typeref)
         {
-            string typeNamespace = typeDeclCollection.TypeNamespaceMappings[currentMatchingFullTypeName];
-            if (!string.IsNullOrEmpty(currentMatchingFullTypeName))
+            string typeNamespace = _typeDeclCollection.TypeNamespaceMappings[s_currentMatchingFullTypeName];
+            if (!string.IsNullOrEmpty(s_currentMatchingFullTypeName))
             {
-                ArrayOfXElementTypeHelper.CheckToAdd(typeNamespace);
+                _arrayOfXElementTypeHelper.CheckToAdd(typeNamespace);
             }
-            typeref.BaseType = string.IsNullOrEmpty(typeNamespace) ? destType : typeDeclCollection.TypeNamespaceMappings[currentMatchingFullTypeName] + "." + destType;
+            typeref.BaseType = string.IsNullOrEmpty(typeNamespace) ? destType : _typeDeclCollection.TypeNamespaceMappings[s_currentMatchingFullTypeName] + "." + destType;
         }
 
         protected override void Visit(CodeCompileUnit cu)
         {
             base.Visit(cu);
-            typeDeclCollection.Visit(cu);
+            _typeDeclCollection.Visit(cu);
             CodeTypeDeclaration typeDecl;
-            foreach (string typeName in typeDeclCollection.AllTypeDecls.Keys)
+            foreach (string typeName in _typeDeclCollection.AllTypeDecls.Keys)
             {
-                typeDecl = typeDeclCollection.AllTypeDecls[typeName];
+                typeDecl = _typeDeclCollection.AllTypeDecls[typeName];
                 if (IsSpecialIXmlSerializableType(typeDecl) || IsIXmlSerializableType(typeDecl))
                 {
-                    System.Diagnostics.Debug.Assert(!specialIXmlSerializableTypes.ContainsKey(typeName), $"Key '{typeName}' already added to dictionary!");
-                    specialIXmlSerializableTypes[typeName] = typeDeclCollection.AllTypeDecls[typeName];
+                    System.Diagnostics.Debug.Assert(!_specialIXmlSerializableTypes.ContainsKey(typeName), $"Key '{typeName}' already added to dictionary!");
+                    _specialIXmlSerializableTypes[typeName] = _typeDeclCollection.AllTypeDecls[typeName];
                 }
             }
         }
-        
+
         protected override void FinishVisit(CodeCompileUnit cu)
         {
             base.FinishVisit(cu);
             List<string> namespaceToAdd = new List<string>();
             foreach (CodeNamespace ns in cu.Namespaces)
             {
-                foreach (CodeTypeDeclaration typeDecl in specialIXmlSerializableTypes.Values)
+                foreach (CodeTypeDeclaration typeDecl in _specialIXmlSerializableTypes.Values)
                 {
                     if (ns.Types.Contains(typeDecl))
                     {
@@ -121,7 +120,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
             foreach (string ns in namespaceToAdd)
             {
-                ArrayOfXElementTypeHelper.AddToCompileUnit(cu, ns);
+                _arrayOfXElementTypeHelper.AddToCompileUnit(cu, ns);
             }
         }
     }

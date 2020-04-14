@@ -9,7 +9,7 @@ namespace System.IdentityModel.Policy
 {
     internal class DefaultAuthorizationContext : AuthorizationContext
     {
-        private static DefaultAuthorizationContext _empty;
+        private static DefaultAuthorizationContext s_empty;
         private SecurityUniqueId _id;
         private ReadOnlyCollection<ClaimSet> _claimSets;
         private DateTime _expirationTime;
@@ -26,9 +26,9 @@ namespace System.IdentityModel.Policy
         {
             get
             {
-                if (_empty == null)
-                    _empty = new DefaultAuthorizationContext(new DefaultEvaluationContext());
-                return _empty;
+                if (s_empty == null)
+                    s_empty = new DefaultAuthorizationContext(new DefaultEvaluationContext());
+                return s_empty;
             }
         }
 

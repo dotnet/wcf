@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.ServiceModel.Channels;
@@ -8,29 +9,29 @@ namespace System.ServiceModel
     {
         internal const bool DefaultEstablishSecurityContext = true;
 
-        bool establishSecurityContext;
+        private bool _establishSecurityContext;
 
         public NonDualMessageSecurityOverHttp()
             : base()
         {
-            this.establishSecurityContext = DefaultEstablishSecurityContext;
+            _establishSecurityContext = DefaultEstablishSecurityContext;
         }
 
         public bool EstablishSecurityContext
         {
             get
             {
-                return this.establishSecurityContext;
+                return _establishSecurityContext;
             }
             set
             {
-                this.establishSecurityContext = value;
+                _establishSecurityContext = value;
             }
         }
 
         protected override bool IsSecureConversationEnabled()
         {
-            return this.establishSecurityContext;
+            return _establishSecurityContext;
         }
     }
 }

@@ -14,10 +14,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
     {
         private const string DataContractXsdBaseNamespace = "http://schemas.datacontract.org/2004/07/";
 
-        private List<string> files = new List<string>();
+        private List<string> _files = new List<string>();
         public IEnumerable<string> Files
         {
-            get { return this.files; }
+            get { return _files; }
         }
 
         public string AddFileName(string basePath, string fileName, string extension)
@@ -41,9 +41,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
             for (uint i = 1; i < uint.MaxValue; i++)
             {
-                if (!files.Any((f) => StringComparer.OrdinalIgnoreCase.Compare(f, filePath) == 0))
+                if (!_files.Any((f) => StringComparer.OrdinalIgnoreCase.Compare(f, filePath) == 0))
                 {
-                    files.Add(filePath);
+                    _files.Add(filePath);
                     return filePath;
                 }
 
@@ -196,7 +196,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
         public static bool TryCreateUri(string filePath1, out Uri fileUri)
         {
-            if(Uri.TryCreate(filePath1, UriKind.Absolute, out fileUri) || Uri.TryCreate(filePath1, UriKind.Relative, out fileUri))
+            if (Uri.TryCreate(filePath1, UriKind.Absolute, out fileUri) || Uri.TryCreate(filePath1, UriKind.Relative, out fileUri))
             {
                 return fileUri.IsFile;
             }

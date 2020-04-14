@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System.Reflection;
     using System;
     using Microsoft.CodeDom;
@@ -10,23 +10,28 @@ namespace Microsoft.Xml.Serialization {
 
     /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping"]/*' />
     /// <internalonly/>
-    public class XmlMemberMapping {
-        MemberMapping mapping;
+    public class XmlMemberMapping
+    {
+        private MemberMapping _mapping;
 
-        internal XmlMemberMapping(MemberMapping mapping) {
-            this.mapping = mapping;
+        internal XmlMemberMapping(MemberMapping mapping)
+        {
+            _mapping = mapping;
         }
 
-        internal MemberMapping Mapping {
-            get { return mapping; }
+        internal MemberMapping Mapping
+        {
+            get { return _mapping; }
         }
 
-        internal Accessor Accessor {
-            get { return mapping.Accessor; }
+        internal Accessor Accessor
+        {
+            get { return _mapping.Accessor; }
         }
 
         /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.Any"]/*' />
-        public bool Any {
+        public bool Any
+        {
             get { return Accessor.Any; }
         }
 
@@ -34,7 +39,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string ElementName { 
+        public string ElementName
+        {
             get { return Accessor.UnescapeName(Accessor.Name); }
         }
 
@@ -42,7 +48,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string XsdElementName { 
+        public string XsdElementName
+        {
             get { return Accessor.Name; }
         }
 
@@ -50,7 +57,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Namespace {
+        public string Namespace
+        {
             get { return Accessor.Namespace; }
         }
 
@@ -58,15 +66,17 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string MemberName {
-            get { return mapping.Name; }
+        public string MemberName
+        {
+            get { return _mapping.Name; }
         }
 
         /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.TypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeName {
+        public string TypeName
+        {
             get { return Accessor.Mapping != null ? Accessor.Mapping.TypeName : String.Empty; }
         }
 
@@ -74,7 +84,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeNamespace {
+        public string TypeNamespace
+        {
             get { return Accessor.Mapping != null ? Accessor.Mapping.Namespace : null; }
         }
 
@@ -82,28 +93,32 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeFullName {
-            get { return mapping.TypeDesc.FullName; }
+        public string TypeFullName
+        {
+            get { return _mapping.TypeDesc.FullName; }
         }
 
         /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.CheckSpecified"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool CheckSpecified {
-            get { return mapping.CheckSpecified != SpecifiedAccessor.None; }
+        public bool CheckSpecified
+        {
+            get { return _mapping.CheckSpecified != SpecifiedAccessor.None; }
         }
 
-        internal bool IsNullable {
-            get { return mapping.IsNeedNullable; }
+        internal bool IsNullable
+        {
+            get { return _mapping.IsNeedNullable; }
         }
 
         /// <include file='doc\XmlMemberMapping.uex' path='docs/doc[@for="XmlMemberMapping.GenerateTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string GenerateTypeName(CodeDomProvider codeProvider) {
-            return mapping.GetTypeName(codeProvider);
+        public string GenerateTypeName(CodeDomProvider codeProvider)
+        {
+            return _mapping.GetTypeName(codeProvider);
         }
     }
 }

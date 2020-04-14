@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
@@ -11,7 +11,6 @@ namespace System.ServiceModel.Channels
 
     public class MessageEncodingBindingElementImporter : IWsdlImportExtension, IPolicyImportExtension
     {
-
         void IWsdlImportExtension.BeforeImport(ServiceDescriptionCollection wsdlDocuments, XmlSchemaSet xmlSchemas, ICollection<XmlElement> policy)
         {
         }
@@ -65,10 +64,9 @@ namespace System.ServiceModel.Channels
                     }
                 }
             }
-
         }
 
-        static void ImportFaultSoapAction(WsdlContractConversionContext contractContext, FaultDescription fault, FaultBinding wsdlFaultBinding)
+        private static void ImportFaultSoapAction(WsdlContractConversionContext contractContext, FaultDescription fault, FaultBinding wsdlFaultBinding)
         {
             string soapAction = SoapHelper.ReadSoapAction(wsdlFaultBinding.OperationBinding);
 
@@ -87,7 +85,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void ImportMessageSoapAction(WsdlContractConversionContext contractContext, MessageDescription message, MessageBinding wsdlMessageBinding, bool isResponse)
+        private static void ImportMessageSoapAction(WsdlContractConversionContext contractContext, MessageDescription message, MessageBinding wsdlMessageBinding, bool isResponse)
         {
             string soapAction = SoapHelper.ReadSoapAction(wsdlMessageBinding.OperationBinding);
 
@@ -115,7 +113,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void EnsureMessageEncoding(WsdlEndpointConversionContext context, MessageEncodingBindingElement encodingBindingElement)
+        private static void EnsureMessageEncoding(WsdlEndpointConversionContext context, MessageEncodingBindingElement encodingBindingElement)
         {
             EnvelopeVersion soapVersion = SoapHelper.GetSoapVersion(context.WsdlBinding);
             AddressingVersion addressingVersion;
@@ -143,14 +141,14 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static BindingElementCollection GetBindingElements(WsdlEndpointConversionContext context)
+        private static BindingElementCollection GetBindingElements(WsdlEndpointConversionContext context)
         {
             Binding binding = context.Endpoint.Binding;
             BindingElementCollection elements = binding is CustomBinding ? ((CustomBinding)binding).Elements : binding.CreateBindingElements();
             return elements;
         }
 
-        static CustomBinding ConvertToCustomBinding(WsdlEndpointConversionContext context)
+        private static CustomBinding ConvertToCustomBinding(WsdlEndpointConversionContext context)
         {
             CustomBinding customBinding = context.Endpoint.Binding as CustomBinding;
             if (customBinding == null)
@@ -177,7 +175,7 @@ namespace System.ServiceModel.Channels
             ImportPolicyInternal(context);
         }
 
-        void ImportPolicyInternal(PolicyConversionContext context)
+        private void ImportPolicyInternal(PolicyConversionContext context)
         {
             ICollection<XmlElement> assertions = context.GetBindingAssertions();
 
@@ -193,7 +191,7 @@ namespace System.ServiceModel.Channels
             context.BindingElements.Add(encodingBindingElement);
         }
 
-        static void ApplyAddressingVersion(MessageEncodingBindingElement encodingBindingElement, AddressingVersion addressingVersion)
+        private static void ApplyAddressingVersion(MessageEncodingBindingElement encodingBindingElement, AddressingVersion addressingVersion)
         {
             EnvelopeVersion defaultEnvelopeVersion = encodingBindingElement.MessageVersion.Envelope;
 
@@ -211,7 +209,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        MessageEncodingBindingElement CreateEncodingBindingElement(ICollection<XmlElement> assertions, out XmlElement encodingAssertion)
+        private MessageEncodingBindingElement CreateEncodingBindingElement(ICollection<XmlElement> assertions, out XmlElement encodingAssertion)
         {
             encodingAssertion = null;
             foreach (XmlElement assertion in assertions)
@@ -241,7 +239,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    static class MessageEncodingPolicyConstants
+    internal static class MessageEncodingPolicyConstants
     {
         public const string BinaryEncodingName = "BinaryEncoding";
         public const string BinaryEncodingNamespace = "http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1";

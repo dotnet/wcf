@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
+namespace Microsoft.CodeDom.Compiler
+{
     using System;
     using Microsoft.CodeDom;
     using System.Collections;
@@ -16,41 +17,42 @@ namespace Microsoft.CodeDom.Compiler {
     ///       Represents the parameters used in to invoke the compiler.
     ///    </para>
     /// </devdoc>
-    
-    
+
+
     // [Serializable],
-    public class CompilerParameters {
-
+    public class CompilerParameters
+    {
         // [OptionalField]  // Not available in DNX (NetCore)
-        private string coreAssemblyFileName = String.Empty;
+        private string _coreAssemblyFileName = String.Empty;
 
-        private StringCollection assemblyNames = new StringCollection();
+        private StringCollection _assemblyNames = new StringCollection();
 
         // [OptionalField]  // Not available in DNX (NetCore) 
-        private StringCollection embeddedResources = new StringCollection();
+        private StringCollection _embeddedResources = new StringCollection();
         // [OptionalField]  // Not available in DNX (NetCore)         
-        private StringCollection linkedResources = new StringCollection();
-        
-        private string outputName;
-        private string mainClass;
-        private bool generateInMemory = false;
-        private bool includeDebugInformation = false;
-        private int warningLevel = -1;  // -1 means not set (use compiler default)
-        private string compilerOptions;
-        private string win32Resource;
-        private bool treatWarningsAsErrors = false;
-        private bool generateExecutable = false;
-        private TempFileCollection tempFiles;
+        private StringCollection _linkedResources = new StringCollection();
+
+        private string _outputName;
+        private string _mainClass;
+        private bool _generateInMemory = false;
+        private bool _includeDebugInformation = false;
+        private int _warningLevel = -1;  // -1 means not set (use compiler default)
+        private string _compilerOptions;
+        private string _win32Resource;
+        private bool _treatWarningsAsErrors = false;
+        private bool _generateExecutable = false;
+        private TempFileCollection _tempFiles;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.Compiler.CompilerParameters'/>.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         public CompilerParameters() :
-            this(null, null) {
+            this(null, null)
+        {
         }
 
         /// <devdoc>
@@ -59,10 +61,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       assembly names.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         public CompilerParameters(string[] assemblyNames) :
-            this(assemblyNames, null, false) {
+            this(assemblyNames, null, false)
+        {
         }
 
         /// <devdoc>
@@ -71,10 +74,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       assembly names and output name.
         ///    </para>
         /// </devdoc>
-        
-        
+
+
         public CompilerParameters(string[] assemblyNames, string outputName) :
-            this(assemblyNames, outputName, false) {
+            this(assemblyNames, outputName, false)
+        {
         }
 
         /// <devdoc>
@@ -83,13 +87,15 @@ namespace Microsoft.CodeDom.Compiler {
         ///       assembly names, output name and a whether to include debug information flag.
         ///    </para>
         /// </devdoc>
-        
-        public CompilerParameters(string[] assemblyNames, string outputName, bool includeDebugInformation) {
-            if (assemblyNames != null) {
+
+        public CompilerParameters(string[] assemblyNames, string outputName, bool includeDebugInformation)
+        {
+            if (assemblyNames != null)
+            {
                 ReferencedAssemblies.AddRange(assemblyNames);
             }
-            this.outputName = outputName;
-            this.includeDebugInformation = includeDebugInformation;
+            _outputName = outputName;
+            _includeDebugInformation = includeDebugInformation;
         }
 
 
@@ -106,12 +112,15 @@ namespace Microsoft.CodeDom.Compiler {
         /// specifying additional entries in the <code>Microsoft.CodeDom.Compiler.<bold>ReferencedAssemblies</bold></code> collection.<br />
         /// Note: An <code>ICodeCompiler</code> / <code>CoodeDomProvider</code> implementation may choose to ignore this property.
         /// </summary>
-        public string CoreAssemblyFileName {
-            get {
-                return coreAssemblyFileName;
+        public string CoreAssemblyFileName
+        {
+            get
+            {
+                return _coreAssemblyFileName;
             }
-            set {
-                coreAssemblyFileName = value;
+            set
+            {
+                _coreAssemblyFileName = value;
             }
         }
 
@@ -120,12 +129,15 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets whether to generate an executable.
         ///    </para>
         /// </devdoc>
-        public bool GenerateExecutable {
-            get {
-                return generateExecutable;
+        public bool GenerateExecutable
+        {
+            get
+            {
+                return _generateExecutable;
             }
-            set {
-                generateExecutable = value;
+            set
+            {
+                _generateExecutable = value;
             }
         }
 
@@ -134,12 +146,15 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets whether to generate in memory.
         ///    </para>
         /// </devdoc>
-        public bool GenerateInMemory {
-            get {
-                return generateInMemory;
+        public bool GenerateInMemory
+        {
+            get
+            {
+                return _generateInMemory;
             }
-            set {
-                generateInMemory = value;
+            set
+            {
+                _generateInMemory = value;
             }
         }
 
@@ -148,9 +163,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the assemblies referenced by the source to compile.
         ///    </para>
         /// </devdoc>
-        public StringCollection ReferencedAssemblies {
-            get {
-                return assemblyNames;
+        public StringCollection ReferencedAssemblies
+        {
+            get
+            {
+                return _assemblyNames;
             }
         }
 
@@ -159,12 +176,15 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the main class.
         ///    </para>
         /// </devdoc>
-        public string MainClass {
-            get {
-                return mainClass;
+        public string MainClass
+        {
+            get
+            {
+                return _mainClass;
             }
-            set {
-                mainClass = value;
+            set
+            {
+                _mainClass = value;
             }
         }
 
@@ -173,14 +193,16 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the output assembly.
         ///    </para>
         /// </devdoc>
-        public string OutputAssembly {
-            
-            get {
-                return outputName;
+        public string OutputAssembly
+        {
+            get
+            {
+                return _outputName;
             }
-            
-            set {
-                outputName = value;
+
+            set
+            {
+                _outputName = value;
             }
         }
 
@@ -189,14 +211,17 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the temp files.
         ///    </para>
         /// </devdoc>
-        public TempFileCollection TempFiles {
-            get {
-                if (tempFiles == null)
-                    tempFiles = new TempFileCollection();
-                return tempFiles;
+        public TempFileCollection TempFiles
+        {
+            get
+            {
+                if (_tempFiles == null)
+                    _tempFiles = new TempFileCollection();
+                return _tempFiles;
             }
-            set {
-                tempFiles = value;
+            set
+            {
+                _tempFiles = value;
             }
         }
 
@@ -206,60 +231,75 @@ namespace Microsoft.CodeDom.Compiler {
         ///       executable.
         ///    </para>
         /// </devdoc>
-        public bool IncludeDebugInformation {
-            get {
-                return includeDebugInformation;
+        public bool IncludeDebugInformation
+        {
+            get
+            {
+                return _includeDebugInformation;
             }
-            set {
-                includeDebugInformation = value;
-            }
-        }
-
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public bool TreatWarningsAsErrors {
-            get {
-                return treatWarningsAsErrors;
-            }
-            set {
-                treatWarningsAsErrors = value;
+            set
+            {
+                _includeDebugInformation = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public int WarningLevel {
-            get {
-                return warningLevel;
+        public bool TreatWarningsAsErrors
+        {
+            get
+            {
+                return _treatWarningsAsErrors;
             }
-            set {
-                warningLevel = value;
-            }
-        }
-
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public string CompilerOptions {
-            get {
-                return compilerOptions;
-            }
-            set {
-                compilerOptions = value;
+            set
+            {
+                _treatWarningsAsErrors = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Win32Resource {
-            get {
-                return win32Resource;
+        public int WarningLevel
+        {
+            get
+            {
+                return _warningLevel;
             }
-            set {
-                win32Resource = value;
+            set
+            {
+                _warningLevel = value;
+            }
+        }
+
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public string CompilerOptions
+        {
+            get
+            {
+                return _compilerOptions;
+            }
+            set
+            {
+                _compilerOptions = value;
+            }
+        }
+
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public string Win32Resource
+        {
+            get
+            {
+                return _win32Resource;
+            }
+            set
+            {
+                _win32Resource = value;
             }
         }
 
@@ -268,10 +308,12 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the resources to be compiled into the target
         ///    </para>
         /// </devdoc>
-        [ComVisible(false)]        
-        public StringCollection EmbeddedResources {
-            get {
-                return embeddedResources;
+        [ComVisible(false)]
+        public StringCollection EmbeddedResources
+        {
+            get
+            {
+                return _embeddedResources;
             }
         }
 
@@ -280,10 +322,12 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the linked resources
         ///    </para>
         /// </devdoc>
-        [ComVisible(false)]        
-        public StringCollection LinkedResources {
-            get {
-                return linkedResources;
+        [ComVisible(false)]
+        public StringCollection LinkedResources
+        {
+            get
+            {
+                return _linkedResources;
             }
         }
     }

@@ -30,11 +30,11 @@ namespace System.ServiceModel.Channels
             Addressing10Strings.FaultAction, Addressing10Strings.DefaultFaultAction);
         private static MessagePartSpecification s_addressing10SignedMessageParts;
 
-        static AddressingVersion addressing200408 = new AddressingVersion(Addressing200408Strings.Namespace,
+        private static AddressingVersion s_addressing200408 = new AddressingVersion(Addressing200408Strings.Namespace,
                     XD.Addressing200408Dictionary.Namespace, SRServiceModel.Addressing200408ToStringFormat, Addressing200408SignedMessageParts,
                     Addressing200408Strings.Anonymous, XD.Addressing200408Dictionary.Anonymous, null,
                     Addressing200408Strings.FaultAction, Addressing200408Strings.DefaultFaultAction);
-        static MessagePartSpecification s_addressing200408SignedMessageParts;
+        private static MessagePartSpecification s_addressing200408SignedMessageParts;
 
         private AddressingVersion(string ns, XmlDictionaryString dictionaryNs, string toStringFormat,
             MessagePartSpecification signedMessageParts, string anonymous, XmlDictionaryString dictionaryAnonymous, string none, string faultAction, string defaultFaultAction)
@@ -62,7 +62,7 @@ namespace System.ServiceModel.Channels
 
         public static AddressingVersion WSAddressingAugust2004
         {
-            get { return addressing200408; }
+            get { return s_addressing200408; }
         }
 
         public static AddressingVersion WSAddressing10
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static MessagePartSpecification Addressing200408SignedMessageParts
+        private static MessagePartSpecification Addressing200408SignedMessageParts
         {
             get
             {

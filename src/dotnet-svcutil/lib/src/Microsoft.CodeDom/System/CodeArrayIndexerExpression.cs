@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,50 +15,59 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeArrayIndexerExpression : CodeExpression {
-        private CodeExpression targetObject;
-        private CodeExpressionCollection indices;
+    public class CodeArrayIndexerExpression : CodeExpression
+    {
+        private CodeExpression _targetObject;
+        private CodeExpressionCollection _indices;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayIndexerExpression() {
+        public CodeArrayIndexerExpression()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayIndexerExpression(CodeExpression targetObject, params CodeExpression[] indices) {
-            this.targetObject = targetObject;
-            this.indices = new CodeExpressionCollection();
-            this.indices.AddRange(indices);
+        public CodeArrayIndexerExpression(CodeExpression targetObject, params CodeExpression[] indices)
+        {
+            _targetObject = targetObject;
+            _indices = new CodeExpressionCollection();
+            _indices.AddRange(indices);
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeExpressionCollection Indices {
-            get {
-                if (indices == null) {
-                    indices = new CodeExpressionCollection();
+        public CodeExpressionCollection Indices
+        {
+            get
+            {
+                if (_indices == null)
+                {
+                    _indices = new CodeExpressionCollection();
                 }
-                return indices;
+                return _indices;
             }
         }
     }

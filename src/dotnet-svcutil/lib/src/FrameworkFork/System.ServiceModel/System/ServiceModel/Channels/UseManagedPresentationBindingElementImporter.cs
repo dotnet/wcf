@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using Microsoft.Xml;
     using System.ServiceModel.Description;
 
-    static class UseManagedPresentationPolicyStrings
+    internal static class UseManagedPresentationPolicyStrings
     {
         public const string UseManagedPresentationName = "UseManagedPresentation";
         public const string RequireFederatedIdentityProvisioningName = "RequireFederatedIdentityProvisioning";

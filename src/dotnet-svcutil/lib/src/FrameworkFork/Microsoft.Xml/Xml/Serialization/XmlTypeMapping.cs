@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System.Reflection;
     using System;
 
@@ -10,12 +10,14 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlTypeMapping : XmlMapping {
-
-        internal XmlTypeMapping(TypeScope scope, ElementAccessor accessor) : base(scope, accessor) { 
+    public class XmlTypeMapping : XmlMapping
+    {
+        internal XmlTypeMapping(TypeScope scope, ElementAccessor accessor) : base(scope, accessor)
+        {
         }
 
-        internal TypeMapping Mapping {
+        internal TypeMapping Mapping
+        {
             get { return Accessor.Mapping; }
         }
 
@@ -23,7 +25,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeName {
+        public string TypeName
+        {
             get { return Mapping.TypeDesc.Name; }
         }
 
@@ -31,7 +34,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeFullName {
+        public string TypeFullName
+        {
             get { return Mapping.TypeDesc.FullName; }
         }
 
@@ -39,7 +43,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string XsdTypeName {
+        public string XsdTypeName
+        {
             get { return Mapping.TypeName; }
         }
 
@@ -47,7 +52,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string XsdTypeNamespace {
+        public string XsdTypeNamespace
+        {
             get { return Mapping.Namespace; }
         }
     }

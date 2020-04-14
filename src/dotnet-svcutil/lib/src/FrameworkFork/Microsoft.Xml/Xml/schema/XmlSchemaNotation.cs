@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using Microsoft.Xml.Serialization;
@@ -12,20 +13,22 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaNotation : XmlSchemaAnnotated {
-        string name;        
-        string publicId;
-        string systemId;
-        XmlQualifiedName qname = XmlQualifiedName.Empty; 
-        
+    public class XmlSchemaNotation : XmlSchemaAnnotated
+    {
+        private string _name;
+        private string _publicId;
+        private string _systemId;
+        private XmlQualifiedName _qname = XmlQualifiedName.Empty;
+
         /// <include file='doc\XmlSchemaNotation.uex' path='docs/doc[@for="XmlSchemaNotation.Name"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("name")]
-        public string Name { 
-            get { return name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <include file='doc\XmlSchemaNotation.uex' path='docs/doc[@for="XmlSchemaNotation.Public"]/*' />
@@ -33,9 +36,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("public")]
-        public string Public {
-            get { return publicId; }
-            set { publicId = value; }
+        public string Public
+        {
+            get { return _publicId; }
+            set { _publicId = value; }
         }
 
         /// <include file='doc\XmlSchemaNotation.uex' path='docs/doc[@for="XmlSchemaNotation.System"]/*' />
@@ -43,19 +47,22 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("system")]
-        public string System {
-            get { return systemId; }
-            set { systemId = value; }
+        public string System
+        {
+            get { return _systemId; }
+            set { _systemId = value; }
         }
 
         [XmlIgnore]
-        internal XmlQualifiedName QualifiedName {
-            get { return qname; }
-            set { qname = value; }
+        internal XmlQualifiedName QualifiedName
+        {
+            get { return _qname; }
+            set { _qname = value; }
         }
 
         [XmlIgnore]
-        internal override string NameAttribute {
+        internal override string NameAttribute
+        {
             get { return Name; }
             set { Name = value; }
         }

@@ -17,7 +17,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         /// this property is used to track if we detected any error during the codegen process, ToolConsole will set the exit code
         /// to the correct value based on the value of this property
         /// </summary>
-        bool ErrorDetected {get; set;}
+        bool ErrorDetected { get; set; }
 
         /// <summary>
         /// Extension method that allows projects/flavors to add/remove state for the WsdlImporter we will use to import
@@ -73,5 +73,4 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         /// </param>
         void ClientGenerated(ServiceContractGenerator generator);
     }
-
 }

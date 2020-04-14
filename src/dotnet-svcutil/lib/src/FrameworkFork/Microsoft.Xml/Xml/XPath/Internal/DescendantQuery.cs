@@ -1,56 +1,73 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
 
-    internal class DescendantQuery : DescendantBaseQuery {
-        XPathNodeIterator nodeIterator;
+    internal class DescendantQuery : DescendantBaseQuery
+    {
+        private XPathNodeIterator _nodeIterator;
 
-        internal DescendantQuery(Query  qyParent, string Name, string Prefix, XPathNodeType Type, bool matchSelf, bool abbrAxis)
-            : base(qyParent, Name, Prefix, Type, matchSelf, abbrAxis) {}
+        internal DescendantQuery(Query qyParent, string Name, string Prefix, XPathNodeType Type, bool matchSelf, bool abbrAxis)
+            : base(qyParent, Name, Prefix, Type, matchSelf, abbrAxis) { }
 
-        public DescendantQuery(DescendantQuery other) : base(other) {
-            this.nodeIterator = Clone(other.nodeIterator);
+        public DescendantQuery(DescendantQuery other) : base(other)
+        {
+            _nodeIterator = Clone(other._nodeIterator);
         }
 
-        public override void Reset() {
-            nodeIterator = null;
+        public override void Reset()
+        {
+            _nodeIterator = null;
             base.Reset();
         }
 
-        public override XPathNavigator Advance() {
-            while (true) {
-                if (nodeIterator == null) {
+        public override XPathNavigator Advance()
+        {
+            while (true)
+            {
+                if (_nodeIterator == null)
+                {
                     position = 0;
                     XPathNavigator nav = qyInput.Advance();
-                    if (nav == null) {
+                    if (nav == null)
+                    {
                         return null;
                     }
-                    if (NameTest) {
-                        if (TypeTest == XPathNodeType.ProcessingInstruction) {
-                            nodeIterator = new IteratorFilter(nav.SelectDescendants(TypeTest, matchSelf), Name);
-                        } else {
-                            nodeIterator = nav.SelectDescendants(Name, Namespace, matchSelf);
+                    if (NameTest)
+                    {
+                        if (TypeTest == XPathNodeType.ProcessingInstruction)
+                        {
+                            _nodeIterator = new IteratorFilter(nav.SelectDescendants(TypeTest, matchSelf), Name);
                         }
-                    } else {
-                        nodeIterator = nav.SelectDescendants(TypeTest, matchSelf);
+                        else
+                        {
+                            _nodeIterator = nav.SelectDescendants(Name, Namespace, matchSelf);
+                        }
+                    }
+                    else
+                    {
+                        _nodeIterator = nav.SelectDescendants(TypeTest, matchSelf);
                     }
                 }
 
-                if (nodeIterator.MoveNext()) {
+                if (_nodeIterator.MoveNext())
+                {
                     position++;
-                    currentNode = nodeIterator.Current;
+                    currentNode = _nodeIterator.Current;
                     return currentNode;
-                } else {
-                    nodeIterator = null;
+                }
+                else
+                {
+                    _nodeIterator = null;
                 }
             }
         }
-                    
-        public override XPathNodeIterator Clone() { return new DescendantQuery(this); }         
+
+        public override XPathNodeIterator Clone() { return new DescendantQuery(this); }
     }
 }

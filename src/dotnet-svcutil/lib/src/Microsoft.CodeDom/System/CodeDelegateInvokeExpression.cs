@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,20 +16,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeDelegateInvokeExpression : CodeExpression {
-        private CodeExpression targetObject;
-        private CodeExpressionCollection parameters = new CodeExpressionCollection();
+    public class CodeDelegateInvokeExpression : CodeExpression
+    {
+        private CodeExpression _targetObject;
+        private CodeExpressionCollection _parameters = new CodeExpressionCollection();
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeDelegateInvokeExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeDelegateInvokeExpression() {
+        public CodeDelegateInvokeExpression()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeDelegateInvokeExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeDelegateInvokeExpression(CodeExpression targetObject) {
+        public CodeDelegateInvokeExpression(CodeExpression targetObject)
+        {
             TargetObject = targetObject;
         }
 
@@ -47,7 +50,8 @@ namespace Microsoft.CodeDom {
         ///       .
         ///    </para>
         /// </devdoc>
-        public CodeDelegateInvokeExpression(CodeExpression targetObject, params CodeExpression[] parameters) {
+        public CodeDelegateInvokeExpression(CodeExpression targetObject, params CodeExpression[] parameters)
+        {
             TargetObject = targetObject;
             Parameters.AddRange(parameters);
         }
@@ -58,12 +62,15 @@ namespace Microsoft.CodeDom {
         ///       delegate's target object.
         ///    </para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                this.targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
@@ -73,9 +80,11 @@ namespace Microsoft.CodeDom {
         ///       delegate parameters.
         ///    </para>
         /// </devdoc>
-        public CodeExpressionCollection Parameters {
-            get {
-                return parameters;
+        public CodeExpressionCollection Parameters
+        {
+            get
+            {
+                return _parameters;
             }
         }
     }

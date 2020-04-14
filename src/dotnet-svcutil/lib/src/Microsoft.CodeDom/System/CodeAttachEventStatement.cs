@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeAttachEventStatement : CodeStatement {
-        private CodeEventReferenceExpression eventRef;
-        private CodeExpression listener;
+    public class CodeAttachEventStatement : CodeStatement
+    {
+        private CodeEventReferenceExpression _eventRef;
+        private CodeExpression _listener;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeAttachEventStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeAttachEventStatement() {
+        public CodeAttachEventStatement()
+        {
         }
 
         /// <devdoc>
@@ -36,17 +38,19 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of the <see cref='Microsoft.CodeDom.CodeAttachEventStatement'/> class using the specified arguments.
         ///    </para>
         /// </devdoc>
-        public CodeAttachEventStatement(CodeEventReferenceExpression eventRef, CodeExpression listener) {
-            this.eventRef = eventRef;
-            this.listener = listener;
+        public CodeAttachEventStatement(CodeEventReferenceExpression eventRef, CodeExpression listener)
+        {
+            _eventRef = eventRef;
+            _listener = listener;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeAttachEventStatement(CodeExpression targetObject, string eventName, CodeExpression listener) {
-            this.eventRef = new CodeEventReferenceExpression(targetObject, eventName);
-            this.listener = listener;
+        public CodeAttachEventStatement(CodeExpression targetObject, string eventName, CodeExpression listener)
+        {
+            _eventRef = new CodeEventReferenceExpression(targetObject, eventName);
+            _listener = listener;
         }
 
         /// <devdoc>
@@ -54,15 +58,19 @@ namespace Microsoft.CodeDom {
         ///       The event to attach a listener to.
         ///    </para>
         /// </devdoc>
-        public CodeEventReferenceExpression Event {
-            get {
-                if (eventRef == null) {
+        public CodeEventReferenceExpression Event
+        {
+            get
+            {
+                if (_eventRef == null)
+                {
                     return new CodeEventReferenceExpression();
                 }
-                return eventRef;
+                return _eventRef;
             }
-            set {
-                eventRef = value;
+            set
+            {
+                _eventRef = value;
             }
         }
 
@@ -71,12 +79,15 @@ namespace Microsoft.CodeDom {
         ///       The new listener.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Listener {
-            get {
-                return listener;
+        public CodeExpression Listener
+        {
+            get
+            {
+                return _listener;
             }
-            set {
-                listener = value;
+            set
+            {
+                _listener = value;
             }
         }
     }

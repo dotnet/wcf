@@ -8,7 +8,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class VisitorFixup : CodeFixup
     {
-        static CodeDomVisitor[] GetVisitors(ServiceContractGenerator generator, CommandProcessorOptions options)
+        private static CodeDomVisitor[] GetVisitors(ServiceContractGenerator generator, CommandProcessorOptions options)
         {
             ArrayOfXElementTypeHelper arrayOfXElementTypeHelper = new ArrayOfXElementTypeHelper((generator.Options & ServiceContractGenerationOptions.InternalTypes) == ServiceContractGenerationOptions.InternalTypes, generator.TargetCompileUnit);
 
@@ -21,7 +21,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new MakeOldAsyncMethodsPrivate(),
                         new RemoveExtensibleDataObjectImpl(),
                         new XmlDomAttributeFixer(),
-                        new SpecialIXmlSerializableRemapper(arrayOfXElementTypeHelper), 
+                        new SpecialIXmlSerializableRemapper(arrayOfXElementTypeHelper),
                         new EnsureAdditionalAssemblyReference(),
                         new CreateCallbackImpl((generator.Options & ServiceContractGenerationOptions.TaskBasedAsynchronousMethod) == ServiceContractGenerationOptions.TaskBasedAsynchronousMethod, generator),
                         new AddAsyncOpenClose(), // this one need to run after CreateCallbakImpl which provide name of VerifyCallbackEvents method

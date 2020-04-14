@@ -19,39 +19,39 @@ namespace System.ServiceModel.Channels
         ITransportPolicyImport,
         IWsdlExportExtension
     {
-        int duplicateMessageHistoryLength;
-        long maxPendingMessagesTotalSize;
-        UdpRetransmissionSettings retransmissionSettings;
-        int socketReceiveBufferSize;
-        int timeToLive;
+        private int _duplicateMessageHistoryLength;
+        private long _maxPendingMessagesTotalSize;
+        private UdpRetransmissionSettings _retransmissionSettings;
+        private int _socketReceiveBufferSize;
+        private int _timeToLive;
 
         [SuppressMessage(FxCop.Category.Usage, FxCop.Rule.DoNotCallOverridableMethodsInConstructors, Justification = "this call is intended")]
         public UdpTransportBindingElement()
             : base()
         {
-            this.duplicateMessageHistoryLength = UdpConstants.Defaults.DuplicateMessageHistoryLength;
-            this.maxPendingMessagesTotalSize = UdpConstants.Defaults.DefaultMaxPendingMessagesTotalSize;
+            _duplicateMessageHistoryLength = UdpConstants.Defaults.DuplicateMessageHistoryLength;
+            _maxPendingMessagesTotalSize = UdpConstants.Defaults.DefaultMaxPendingMessagesTotalSize;
 
-            this.retransmissionSettings = new UdpRetransmissionSettings();
-            this.socketReceiveBufferSize = UdpConstants.Defaults.SocketReceiveBufferSize;
-            this.timeToLive = UdpConstants.Defaults.TimeToLive;
+            _retransmissionSettings = new UdpRetransmissionSettings();
+            _socketReceiveBufferSize = UdpConstants.Defaults.SocketReceiveBufferSize;
+            _timeToLive = UdpConstants.Defaults.TimeToLive;
         }
 
         internal UdpTransportBindingElement(UdpTransportBindingElement other)
             : base(other)
         {
-            this.duplicateMessageHistoryLength = other.duplicateMessageHistoryLength;
-            this.maxPendingMessagesTotalSize = other.maxPendingMessagesTotalSize;
-            this.retransmissionSettings = other.retransmissionSettings.Clone();
-            this.socketReceiveBufferSize = other.socketReceiveBufferSize;
-            this.timeToLive = other.timeToLive;
+            _duplicateMessageHistoryLength = other._duplicateMessageHistoryLength;
+            _maxPendingMessagesTotalSize = other._maxPendingMessagesTotalSize;
+            _retransmissionSettings = other._retransmissionSettings.Clone();
+            _socketReceiveBufferSize = other._socketReceiveBufferSize;
+            _timeToLive = other._timeToLive;
             this.MulticastInterfaceId = other.MulticastInterfaceId;
         }
 
         [DefaultValue(UdpConstants.Defaults.DuplicateMessageHistoryLength)]
         public int DuplicateMessageHistoryLength
         {
-            get { return this.duplicateMessageHistoryLength; }
+            get { return _duplicateMessageHistoryLength; }
             set
             {
                 const int min = 0;
@@ -60,7 +60,7 @@ namespace System.ServiceModel.Channels
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value,
                         SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
-                this.duplicateMessageHistoryLength = value;
+                _duplicateMessageHistoryLength = value;
             }
         }
 
@@ -69,7 +69,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxPendingMessagesTotalSize;
+                return _maxPendingMessagesTotalSize;
             }
 
             set
@@ -81,7 +81,7 @@ namespace System.ServiceModel.Channels
                         SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
 
-                this.maxPendingMessagesTotalSize = value;
+                _maxPendingMessagesTotalSize = value;
             }
         }
 
@@ -92,7 +92,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.retransmissionSettings;
+                return _retransmissionSettings;
             }
             set
             {
@@ -101,7 +101,7 @@ namespace System.ServiceModel.Channels
                     throw FxTrace.Exception.ArgumentNull("value");
                 }
 
-                this.retransmissionSettings = value;
+                _retransmissionSettings = value;
             }
         }
 
@@ -113,33 +113,31 @@ namespace System.ServiceModel.Channels
         [DefaultValue(UdpConstants.Defaults.SocketReceiveBufferSize)]
         public int SocketReceiveBufferSize
         {
-            get { return this.socketReceiveBufferSize; }
+            get { return _socketReceiveBufferSize; }
             set
             {
-
                 if (value < UdpConstants.MinReceiveBufferSize)
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value,
                         SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, UdpConstants.MinReceiveBufferSize));
                 }
 
-                this.socketReceiveBufferSize = value;
+                _socketReceiveBufferSize = value;
             }
         }
 
         [DefaultValue(UdpConstants.Defaults.TimeToLive)]
         public int TimeToLive
         {
-            get { return this.timeToLive; }
+            get { return _timeToLive; }
             set
             {
-
                 if (value < UdpConstants.MinTimeToLive || value > UdpConstants.MaxTimeToLive)
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value, "TODO: SR");
-                        // SR.ArgumentOutOfMinMaxRange(UdpConstants.MinTimeToLive, UdpConstants.MaxTimeToLive));
+                    // SR.ArgumentOutOfMinMaxRange(UdpConstants.MinTimeToLive, UdpConstants.MaxTimeToLive));
                 }
-                this.timeToLive = value;
+                _timeToLive = value;
             }
         }
 

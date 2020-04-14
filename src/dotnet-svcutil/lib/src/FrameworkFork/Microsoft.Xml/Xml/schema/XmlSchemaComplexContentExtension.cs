@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -13,20 +14,22 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaComplexContentExtension : XmlSchemaContent {
-        XmlSchemaParticle particle;
-        XmlSchemaObjectCollection attributes = new XmlSchemaObjectCollection();
-        XmlSchemaAnyAttribute anyAttribute;
-        XmlQualifiedName baseTypeName = XmlQualifiedName.Empty; 
+    public class XmlSchemaComplexContentExtension : XmlSchemaContent
+    {
+        private XmlSchemaParticle _particle;
+        private XmlSchemaObjectCollection _attributes = new XmlSchemaObjectCollection();
+        private XmlSchemaAnyAttribute _anyAttribute;
+        private XmlQualifiedName _baseTypeName = XmlQualifiedName.Empty;
 
         /// <include file='doc\XmlSchemaComplexContentExtension.uex' path='docs/doc[@for="XmlSchemaComplexContentExtension.BaseTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("base")]
-        public XmlQualifiedName BaseTypeName { 
-            get { return baseTypeName; }
-            set { baseTypeName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName BaseTypeName
+        {
+            get { return _baseTypeName; }
+            set { _baseTypeName = (value == null ? XmlQualifiedName.Empty : value); }
         }
 
         /// <include file='doc\XmlSchemaComplexContentExtension.uex' path='docs/doc[@for="XmlSchemaComplexContentExtension.Particle"]/*' />
@@ -37,9 +40,10 @@ namespace Microsoft.Xml.Schema {
          XmlElement("choice", typeof(XmlSchemaChoice)),
          XmlElement("all", typeof(XmlSchemaAll)),
          XmlElement("sequence", typeof(XmlSchemaSequence))]
-        public XmlSchemaParticle Particle {
-            get { return particle; }
-            set { particle = value; }
+        public XmlSchemaParticle Particle
+        {
+            get { return _particle; }
+            set { _particle = value; }
         }
 
         /// <include file='doc\XmlSchemaComplexContentExtension.uex' path='docs/doc[@for="XmlSchemaComplexContentExtension.Attributes"]/*' />
@@ -48,8 +52,9 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlElement("attribute", typeof(XmlSchemaAttribute)),
          XmlElement("attributeGroup", typeof(XmlSchemaAttributeGroupRef))]
-        public XmlSchemaObjectCollection Attributes {
-            get { return attributes; }
+        public XmlSchemaObjectCollection Attributes
+        {
+            get { return _attributes; }
         }
 
 
@@ -58,15 +63,16 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("anyAttribute")]
-        public XmlSchemaAnyAttribute AnyAttribute {
-            get { return anyAttribute; }
-            set { anyAttribute = value; }
+        public XmlSchemaAnyAttribute AnyAttribute
+        {
+            get { return _anyAttribute; }
+            set { _anyAttribute = value; }
         }
-        
-        internal void SetAttributes(XmlSchemaObjectCollection newAttributes) {
-            attributes = newAttributes;
+
+        internal void SetAttributes(XmlSchemaObjectCollection newAttributes)
+        {
+            _attributes = newAttributes;
         }
     }
-
 }
 

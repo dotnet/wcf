@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System.ServiceModel;
@@ -14,6 +15,5 @@ namespace System.ServiceModel.Description
         [OperationContract(Action = MetadataStrings.WSTransfer.GetAction, ReplyAction = MetadataStrings.WSTransfer.GetResponseAction, AsyncPattern = true)]
         IAsyncResult BeginGet(Message request, AsyncCallback callback, object state);
         Message EndGet(IAsyncResult result);
-
     }
 }

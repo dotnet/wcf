@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -72,7 +72,6 @@ namespace System.ServiceModel.Channels
                             }
                         }
                     }
-
                 }
 
                 // Try to upgrade to standard binding

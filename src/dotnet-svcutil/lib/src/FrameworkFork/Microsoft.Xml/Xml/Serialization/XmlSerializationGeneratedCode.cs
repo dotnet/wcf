@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using System.IO;
     using System.Collections;
@@ -10,81 +11,92 @@ namespace Microsoft.Xml.Serialization {
     using System.Reflection;
     using System.Security;
     using System.Globalization;
-   
+
     /// <include file='doc\XmlSerializationGeneratedCode.uex' path='docs/doc[@for="XmlSerializationGeneratedCode"]/*' />
     ///<internalonly/>
-    public abstract class XmlSerializationGeneratedCode {
-        TempAssembly tempAssembly;
-        int threadCode;
+    public abstract class XmlSerializationGeneratedCode
+    {
+        private TempAssembly _tempAssembly;
+        private int _threadCode;
         //ResolveEventHandler assemblyResolver;
 
-        internal void Init(TempAssembly tempAssembly) {
-            this.tempAssembly = tempAssembly;
+        internal void Init(TempAssembly tempAssembly)
+        {
+            _tempAssembly = tempAssembly;
         }
 
         // this method must be called at the end of serialization
-        internal void Dispose() {
-
+        internal void Dispose()
+        {
         }
     }
 
-    internal class XmlSerializationCodeGen {
-        IndentedWriter writer;
-        int nextMethodNumber = 0;
-        Hashtable methodNames = new Hashtable();
-        ReflectionAwareCodeGen raCodeGen;
-        TypeScope[] scopes;
-        TypeDesc stringTypeDesc = null;
-        TypeDesc qnameTypeDesc = null;
-        string access;
-        string className;
-        TypeMapping[] referencedMethods;
-        int references = 0;
-        Hashtable generatedMethods = new Hashtable();
+    internal class XmlSerializationCodeGen
+    {
+        private IndentedWriter _writer;
+        private int _nextMethodNumber = 0;
+        private Hashtable _methodNames = new Hashtable();
+        private ReflectionAwareCodeGen _raCodeGen;
+        private TypeScope[] _scopes;
+        private TypeDesc _stringTypeDesc = null;
+        private TypeDesc _qnameTypeDesc = null;
+        private string _access;
+        private string _className;
+        private TypeMapping[] _referencedMethods;
+        private int _references = 0;
+        private Hashtable _generatedMethods = new Hashtable();
 
-        internal XmlSerializationCodeGen(IndentedWriter writer, TypeScope[] scopes, string access, string className) {
-            this.writer = writer;
-            this.scopes = scopes;
-            if (scopes.Length > 0) {
-                stringTypeDesc = scopes[0].GetTypeDesc(typeof(string));
-                qnameTypeDesc = scopes[0].GetTypeDesc(typeof(XmlQualifiedName));
+        internal XmlSerializationCodeGen(IndentedWriter writer, TypeScope[] scopes, string access, string className)
+        {
+            _writer = writer;
+            _scopes = scopes;
+            if (scopes.Length > 0)
+            {
+                _stringTypeDesc = scopes[0].GetTypeDesc(typeof(string));
+                _qnameTypeDesc = scopes[0].GetTypeDesc(typeof(XmlQualifiedName));
             }
-            this.raCodeGen = new ReflectionAwareCodeGen(writer);
-            this.className = className;
-            this.access = access;
+            _raCodeGen = new ReflectionAwareCodeGen(writer);
+            _className = className;
+            _access = access;
         }
 
-        internal IndentedWriter Writer { get { return writer; } }
-        internal int NextMethodNumber { get { return nextMethodNumber; } set { nextMethodNumber = value; } }
-        internal ReflectionAwareCodeGen RaCodeGen { get { return raCodeGen; } }
-        internal TypeDesc StringTypeDesc { get { return stringTypeDesc; } }
-        internal TypeDesc QnameTypeDesc { get { return qnameTypeDesc; } }
-        internal string ClassName { get { return className; } }
-        internal string Access { get { return access; } }
-        internal TypeScope[] Scopes { get { return scopes; } }
-        internal Hashtable MethodNames { get { return methodNames; } }
-        internal Hashtable GeneratedMethods { get { return generatedMethods; } }
+        internal IndentedWriter Writer { get { return _writer; } }
+        internal int NextMethodNumber { get { return _nextMethodNumber; } set { _nextMethodNumber = value; } }
+        internal ReflectionAwareCodeGen RaCodeGen { get { return _raCodeGen; } }
+        internal TypeDesc StringTypeDesc { get { return _stringTypeDesc; } }
+        internal TypeDesc QnameTypeDesc { get { return _qnameTypeDesc; } }
+        internal string ClassName { get { return _className; } }
+        internal string Access { get { return _access; } }
+        internal TypeScope[] Scopes { get { return _scopes; } }
+        internal Hashtable MethodNames { get { return _methodNames; } }
+        internal Hashtable GeneratedMethods { get { return _generatedMethods; } }
 
-        internal virtual void GenerateMethod(TypeMapping mapping){}
+        internal virtual void GenerateMethod(TypeMapping mapping) { }
 
-        internal void GenerateReferencedMethods() {
-            while(references > 0) {
-                TypeMapping mapping = referencedMethods[--references];
+        internal void GenerateReferencedMethods()
+        {
+            while (_references > 0)
+            {
+                TypeMapping mapping = _referencedMethods[--_references];
                 GenerateMethod(mapping);
             }
         }
 
-        internal string ReferenceMapping(TypeMapping mapping) {
-            if (!mapping.IsSoap) {
-                if (generatedMethods[mapping] == null) {
-                    referencedMethods = EnsureArrayIndex(referencedMethods, references);
-                    referencedMethods[references++] = mapping;
+        internal string ReferenceMapping(TypeMapping mapping)
+        {
+            if (!mapping.IsSoap)
+            {
+                if (_generatedMethods[mapping] == null)
+                {
+                    _referencedMethods = EnsureArrayIndex(_referencedMethods, _references);
+                    _referencedMethods[_references++] = mapping;
                 }
             }
-            return (string)methodNames[mapping];
+            return (string)_methodNames[mapping];
         }
 
-        TypeMapping[] EnsureArrayIndex(TypeMapping[] a, int index) {
+        private TypeMapping[] EnsureArrayIndex(TypeMapping[] a, int index)
+        {
             if (a == null) return new TypeMapping[32];
             if (index < a.Length) return a;
             TypeMapping[] b = new TypeMapping[a.Length + 32];
@@ -92,81 +104,88 @@ namespace Microsoft.Xml.Serialization {
             return b;
         }
 
-        internal void WriteQuotedCSharpString(string value) {
-            raCodeGen.WriteQuotedCSharpString(value);
+        internal void WriteQuotedCSharpString(string value)
+        {
+            _raCodeGen.WriteQuotedCSharpString(value);
         }
 
-        internal void GenerateHashtableGetBegin(string privateName, string publicName) {
-            writer.Write(typeof(Hashtable).FullName);
-            writer.Write(" ");
-            writer.Write(privateName);
-            writer.WriteLine(" = null;");
-            writer.Write("public override ");
-            writer.Write(typeof(Hashtable).FullName);
+        internal void GenerateHashtableGetBegin(string privateName, string publicName)
+        {
+            _writer.Write(typeof(Hashtable).FullName);
+            _writer.Write(" ");
+            _writer.Write(privateName);
+            _writer.WriteLine(" = null;");
+            _writer.Write("public override ");
+            _writer.Write(typeof(Hashtable).FullName);
 
-            writer.Write(" ");
-            writer.Write(publicName);
-            writer.WriteLine(" {");
-            writer.Indent++;
+            _writer.Write(" ");
+            _writer.Write(publicName);
+            _writer.WriteLine(" {");
+            _writer.Indent++;
 
-            writer.WriteLine("get {");
-            writer.Indent++;
+            _writer.WriteLine("get {");
+            _writer.Indent++;
 
-            writer.Write("if (");
-            writer.Write(privateName);
-            writer.WriteLine(" == null) {");
-            writer.Indent++;
+            _writer.Write("if (");
+            _writer.Write(privateName);
+            _writer.WriteLine(" == null) {");
+            _writer.Indent++;
 
-            writer.Write(typeof(Hashtable).FullName);
-            writer.Write(" _tmp = new ");
-            writer.Write(typeof(Hashtable).FullName);
-            writer.WriteLine("();");
-
+            _writer.Write(typeof(Hashtable).FullName);
+            _writer.Write(" _tmp = new ");
+            _writer.Write(typeof(Hashtable).FullName);
+            _writer.WriteLine("();");
         }
 
-        internal void GenerateHashtableGetEnd(string privateName) {
-            writer.Write("if (");
-            writer.Write(privateName);
-            writer.Write(" == null) ");
-            writer.Write(privateName);
-            writer.WriteLine(" = _tmp;");
-            writer.Indent--;
-            writer.WriteLine("}");
+        internal void GenerateHashtableGetEnd(string privateName)
+        {
+            _writer.Write("if (");
+            _writer.Write(privateName);
+            _writer.Write(" == null) ");
+            _writer.Write(privateName);
+            _writer.WriteLine(" = _tmp;");
+            _writer.Indent--;
+            _writer.WriteLine("}");
 
-            writer.Write("return ");
-            writer.Write(privateName);
-            writer.WriteLine(";");
-            writer.Indent--;
-            writer.WriteLine("}");
+            _writer.Write("return ");
+            _writer.Write(privateName);
+            _writer.WriteLine(";");
+            _writer.Indent--;
+            _writer.WriteLine("}");
 
-            writer.Indent--;
-            writer.WriteLine("}");
+            _writer.Indent--;
+            _writer.WriteLine("}");
         }
-        internal void GeneratePublicMethods(string privateName, string publicName, string[] methods, XmlMapping[] xmlMappings) {
+        internal void GeneratePublicMethods(string privateName, string publicName, string[] methods, XmlMapping[] xmlMappings)
+        {
             GenerateHashtableGetBegin(privateName, publicName);
-            if (methods != null && methods.Length != 0 && xmlMappings != null && xmlMappings.Length == methods.Length) {
-                for (int i = 0; i < methods.Length; i++) {
+            if (methods != null && methods.Length != 0 && xmlMappings != null && xmlMappings.Length == methods.Length)
+            {
+                for (int i = 0; i < methods.Length; i++)
+                {
                     if (methods[i] == null)
                         continue;
-                    writer.Write("_tmp[");
+                    _writer.Write("_tmp[");
                     WriteQuotedCSharpString(xmlMappings[i].Key);
-                    writer.Write("] = ");
+                    _writer.Write("] = ");
                     WriteQuotedCSharpString(methods[i]);
-                    writer.WriteLine(";");
+                    _writer.WriteLine(";");
                 }
             }
             GenerateHashtableGetEnd(privateName);
         }
 
-        internal void GenerateSupportedTypes(Type[] types) {
-            writer.Write("public override ");
-            writer.Write(typeof(bool).FullName);
-            writer.Write(" CanSerialize(");
-            writer.Write(typeof(Type).FullName);
-            writer.WriteLine(" type) {");
-            writer.Indent++;
+        internal void GenerateSupportedTypes(Type[] types)
+        {
+            _writer.Write("public override ");
+            _writer.Write(typeof(bool).FullName);
+            _writer.Write(" CanSerialize(");
+            _writer.Write(typeof(Type).FullName);
+            _writer.WriteLine(" type) {");
+            _writer.Indent++;
             Hashtable uniqueTypes = new Hashtable();
-            for (int i = 0; i < types.Length; i++) {
+            for (int i = 0; i < types.Length; i++)
+            {
                 Type type = types[i];
                 if (type == null)
                     continue;
@@ -180,16 +199,17 @@ namespace Microsoft.Xml.Serialization {
                 if (info.IsGenericType || info.ContainsGenericParameters && DynamicAssemblies.IsTypeDynamic(type.GetGenericArguments()))
                     continue;
                 uniqueTypes[type] = type;
-                writer.Write("if (type == typeof(");
-                writer.Write(CodeIdentifier.GetCSharpName(type));
-                writer.WriteLine(")) return true;");
+                _writer.Write("if (type == typeof(");
+                _writer.Write(CodeIdentifier.GetCSharpName(type));
+                _writer.WriteLine(")) return true;");
             }
-            writer.WriteLine("return false;");
-            writer.Indent--;
-            writer.WriteLine("}");
+            _writer.WriteLine("return false;");
+            _writer.Indent--;
+            _writer.WriteLine("}");
         }
 
-        internal static bool IsWildcard(SpecialMapping mapping) {
+        internal static bool IsWildcard(SpecialMapping mapping)
+        {
             if (mapping is SerializableMapping)
                 return ((SerializableMapping)mapping).IsAny;
             return mapping.TypeDesc.CanBeElementValue;

@@ -31,8 +31,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             this.Name = name;
-            this._serializationName = name;
-            this._value = originalValue;
+            _serializationName = name;
+            _value = originalValue;
             this.Aliases = new List<string>();
 
             if (aliases != null && aliases.Length > 0)
@@ -56,7 +56,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private object _value;
         public object Value
         {
-            get { return this._value; }
+            get { return _value; }
             set { SetValue(value); }
         }
 
@@ -71,8 +71,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private string _serializationName;
         public string SerializationName
         {
-            get { return this._serializationName; }
-            set { if (value != null && !Aliases.Contains(value)) Aliases.Add(value); this._serializationName = value; }
+            get { return _serializationName; }
+            set { if (value != null && !Aliases.Contains(value)) Aliases.Add(value); _serializationName = value; }
         }
 
         // Determines whether the option can be serialized. 
@@ -80,8 +80,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private bool _canSerialize = true;
         public virtual bool CanSerialize
         {
-            get { return this._canSerialize && this.Value != null && !this.Value.Equals(this.DefaultValue); }
-            set { this._canSerialize = value; }
+            get { return _canSerialize && this.Value != null && !this.Value.Equals(this.DefaultValue); }
+            set { _canSerialize = value; }
         }
 
         // events
@@ -107,7 +107,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // other._serializationName = this._serializationName;
 
             // copy the canserialize field, not the property.  The field contains a hardcoded value while the property may be computed dynamically!
-            other._canSerialize = this._canSerialize;
+            other._canSerialize = _canSerialize;
 
             other.Value = this.Value;
             other.DefaultValue = this.DefaultValue;
@@ -136,9 +136,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 // notify event handlers (if any) to pre-process the value.
                 value = OnValueChanging(value);
 
-                this._value = value;
+                _value = value;
 
-                if (oldValue != this._value)
+                if (oldValue != _value)
                 {
                     OnValueChanged(oldValue);
                 }
@@ -154,7 +154,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             var stringValue = value as string;
             OptionValueParser.ThrowInvalidValueIf(value == null || (stringValue != null && string.IsNullOrWhiteSpace(stringValue)), jToken, this);
 
-            this._value = value;
+            _value = value;
             OnDeserialized();
         }
 

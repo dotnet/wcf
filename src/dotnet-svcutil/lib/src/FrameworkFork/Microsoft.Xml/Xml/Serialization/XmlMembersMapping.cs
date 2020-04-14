@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
+namespace Microsoft.Xml.Serialization
+{
     using System.Reflection;
     using System;
     using System.Text;
@@ -11,20 +12,24 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlMembersMapping : XmlMapping {
-        XmlMemberMapping[] mappings;
+    public class XmlMembersMapping : XmlMapping
+    {
+        private XmlMemberMapping[] _mappings;
 
-        internal XmlMembersMapping(TypeScope scope, ElementAccessor accessor, XmlMappingAccess access) : base(scope, accessor, access) {
+        internal XmlMembersMapping(TypeScope scope, ElementAccessor accessor, XmlMappingAccess access) : base(scope, accessor, access)
+        {
             MembersMapping mapping = (MembersMapping)accessor.Mapping;
             StringBuilder key = new StringBuilder();
             key.Append(":");
-            mappings = new XmlMemberMapping[mapping.Members.Length];
-            for (int i = 0; i < mappings.Length; i++) {
-                if (mapping.Members[i].TypeDesc.Type != null) {
+            _mappings = new XmlMemberMapping[mapping.Members.Length];
+            for (int i = 0; i < _mappings.Length; i++)
+            {
+                if (mapping.Members[i].TypeDesc.Type != null)
+                {
                     key.Append(GenerateKey(mapping.Members[i].TypeDesc.Type, null, null));
                     key.Append(":");
                 }
-                mappings[i] = new XmlMemberMapping(mapping.Members[i]);
+                _mappings[i] = new XmlMemberMapping(mapping.Members[i]);
             }
             SetKeyInternal(key.ToString());
         }
@@ -33,7 +38,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeName {
+        public string TypeName
+        {
             get { return Accessor.Mapping.TypeName; }
         }
 
@@ -41,7 +47,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string TypeNamespace {
+        public string TypeNamespace
+        {
             get { return Accessor.Mapping.Namespace; }
         }
 
@@ -49,16 +56,18 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlMemberMapping this[int index] {
-            get { return mappings[index]; }
+        public XmlMemberMapping this[int index]
+        {
+            get { return _mappings[index]; }
         }
 
         /// <include file='doc\XmlMembersMapping.uex' path='docs/doc[@for="XmlMembersMapping.Count"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public int Count {
-            get { return mappings.Length; }
+        public int Count
+        {
+            get { return _mappings.Length; }
         }
     }
 }

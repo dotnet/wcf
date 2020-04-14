@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.Runtime.Serialization
 {
     using System;
@@ -28,7 +28,6 @@ namespace System.Runtime.Serialization
 
     internal static class SchemaHelper
     {
-
         internal static bool NamespacesEqual(string ns1, string ns2)
         {
             if (ns1 == null || ns1.Length == 0)

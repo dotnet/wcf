@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,15 +15,17 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeLinePragma {
-        private string fileName;
-        private int lineNumber;
+    public class CodeLinePragma
+    {
+        private string _fileName;
+        private int _lineNumber;
 
-        public CodeLinePragma() {
+        public CodeLinePragma()
+        {
         }
 
         /// <devdoc>
@@ -31,7 +33,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeLinePragma'/>.
         ///    </para>
         /// </devdoc>
-        public CodeLinePragma(string fileName, int lineNumber) {
+        public CodeLinePragma(string fileName, int lineNumber)
+        {
             FileName = fileName;
             LineNumber = lineNumber;
         }
@@ -43,12 +46,15 @@ namespace Microsoft.CodeDom {
         ///       the associated file.
         ///    </para>
         /// </devdoc>
-        public string FileName {
-            get {
-                return (fileName == null) ? string.Empty : fileName;
+        public string FileName
+        {
+            get
+            {
+                return (_fileName == null) ? string.Empty : _fileName;
             }
-            set {
-                fileName = value;
+            set
+            {
+                _fileName = value;
             }
         }
 
@@ -58,12 +64,15 @@ namespace Microsoft.CodeDom {
         ///       the current pragma.
         ///    </para>
         /// </devdoc>
-        public int LineNumber {
-            get {
-                return lineNumber;
+        public int LineNumber
+        {
+            get
+            {
+                return _lineNumber;
             }
-            set {
-                lineNumber = value;
+            set
+            {
+                _lineNumber = value;
             }
         }
     }

@@ -5,9 +5,10 @@ using System.Collections;
 using System.ComponentModel;
 using Microsoft.Xml.Serialization;
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
 
@@ -15,36 +16,40 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaType : XmlSchemaAnnotated {
-        string name;
-        XmlSchemaDerivationMethod final = XmlSchemaDerivationMethod.None;
-        XmlSchemaDerivationMethod derivedBy;
-        XmlSchemaType baseSchemaType;
-        XmlSchemaDatatype datatype;
-        XmlSchemaDerivationMethod finalResolved;
-        volatile SchemaElementDecl elementDecl;
-        volatile XmlQualifiedName qname = XmlQualifiedName.Empty; 
-        XmlSchemaType redefined;
+    public class XmlSchemaType : XmlSchemaAnnotated
+    {
+        private string _name;
+        private XmlSchemaDerivationMethod _final = XmlSchemaDerivationMethod.None;
+        private XmlSchemaDerivationMethod _derivedBy;
+        private XmlSchemaType _baseSchemaType;
+        private XmlSchemaDatatype _datatype;
+        private XmlSchemaDerivationMethod _finalResolved;
+        private volatile SchemaElementDecl _elementDecl;
+        private volatile XmlQualifiedName _qname = XmlQualifiedName.Empty;
+        private XmlSchemaType _redefined;
 
         //compiled information
-        XmlSchemaContentType contentType;
+        private XmlSchemaContentType _contentType;
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.GetXsdSimpleType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static XmlSchemaSimpleType GetBuiltInSimpleType(XmlQualifiedName qualifiedName) {
-            if (qualifiedName == null) {
+        public static XmlSchemaSimpleType GetBuiltInSimpleType(XmlQualifiedName qualifiedName)
+        {
+            if (qualifiedName == null)
+            {
                 throw new ArgumentNullException("qualifiedName");
             }
             return DatatypeImplementation.GetSimpleTypeFromXsdType(qualifiedName);
         }
-        
+
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.GetXsdSimpleType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static XmlSchemaSimpleType GetBuiltInSimpleType(XmlTypeCode typeCode) {
+        public static XmlSchemaSimpleType GetBuiltInSimpleType(XmlTypeCode typeCode)
+        {
             return DatatypeImplementation.GetSimpleTypeFromTypeCode(typeCode);
         }
 
@@ -52,8 +57,10 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static XmlSchemaComplexType GetBuiltInComplexType(XmlTypeCode typeCode) {
-            if (typeCode == XmlTypeCode.Item) {
+        public static XmlSchemaComplexType GetBuiltInComplexType(XmlTypeCode typeCode)
+        {
+            if (typeCode == XmlTypeCode.Item)
+            {
                 return XmlSchemaComplexType.AnyType;
             }
             return null;
@@ -63,14 +70,18 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static XmlSchemaComplexType GetBuiltInComplexType(XmlQualifiedName qualifiedName) {
-            if (qualifiedName == null) {
+        public static XmlSchemaComplexType GetBuiltInComplexType(XmlQualifiedName qualifiedName)
+        {
+            if (qualifiedName == null)
+            {
                 throw new ArgumentNullException("qualifiedName");
             }
-            if (qualifiedName.Equals(XmlSchemaComplexType.AnyType.QualifiedName)) {
+            if (qualifiedName.Equals(XmlSchemaComplexType.AnyType.QualifiedName))
+            {
                 return XmlSchemaComplexType.AnyType;
             }
-            if (qualifiedName.Equals(XmlSchemaComplexType.UntypedAnyType.QualifiedName)) {
+            if (qualifiedName.Equals(XmlSchemaComplexType.UntypedAnyType.QualifiedName))
+            {
                 return XmlSchemaComplexType.UntypedAnyType;
             }
             return null;
@@ -81,9 +92,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("name")]
-        public string Name { 
-            get { return name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.Final"]/*' />
@@ -91,9 +103,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("final"), DefaultValue(XmlSchemaDerivationMethod.None)]
-        public XmlSchemaDerivationMethod Final {
-             get { return final; }
-             set { final = value; }
+        public XmlSchemaDerivationMethod Final
+        {
+            get { return _final; }
+            set { _final = value; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.QualifiedName"]/*' />
@@ -101,8 +114,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlQualifiedName QualifiedName {
-            get { return qname; }
+        public XmlQualifiedName QualifiedName
+        {
+            get { return _qname; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.FinalResolved"]/*' />
@@ -110,8 +124,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaDerivationMethod FinalResolved {
-             get { return finalResolved; }
+        public XmlSchemaDerivationMethod FinalResolved
+        {
+            get { return _finalResolved; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.BaseSchemaType"]/*' />
@@ -120,25 +135,29 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlIgnore]
         [Obsolete("This property has been deprecated. Please use BaseXmlSchemaType property that returns a strongly typed base schema type. http://go.microsoft.com/fwlink/?linkid=14202")]
-        public object BaseSchemaType {
-            get {
-                if (baseSchemaType == null)
+        public object BaseSchemaType
+        {
+            get
+            {
+                if (_baseSchemaType == null)
                     return null;
 
-                if (baseSchemaType.QualifiedName.Namespace == XmlReservedNs.NsXs) {
-                    return baseSchemaType.Datatype;
+                if (_baseSchemaType.QualifiedName.Namespace == XmlReservedNs.NsXs)
+                {
+                    return _baseSchemaType.Datatype;
                 }
-                return baseSchemaType;
+                return _baseSchemaType;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.BaseSchemaType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaType BaseXmlSchemaType {
-            get { return baseSchemaType;}
+        public XmlSchemaType BaseXmlSchemaType
+        {
+            get { return _baseSchemaType; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.DerivedBy"]/*' />
@@ -146,8 +165,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaDerivationMethod DerivedBy {
-            get { return derivedBy; }
+        public XmlSchemaDerivationMethod DerivedBy
+        {
+            get { return _derivedBy; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.Datatype"]/*' />
@@ -155,8 +175,9 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public XmlSchemaDatatype Datatype {
-            get { return datatype;}
+        public XmlSchemaDatatype Datatype
+        {
+            get { return _datatype; }
         }
 
         /// <include file='doc\XmlSchemaType.uex' path='docs/doc[@for="XmlSchemaType.IsMixed"]/*' />
@@ -164,36 +185,46 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public virtual bool IsMixed {
+        public virtual bool IsMixed
+        {
             get { return false; }
-            set {;}
+            set {; }
         }
-    
+
         [XmlIgnore]
-        public XmlTypeCode TypeCode {
-            get {
-                if (this == XmlSchemaComplexType.AnyType) {
+        public XmlTypeCode TypeCode
+        {
+            get
+            {
+                if (this == XmlSchemaComplexType.AnyType)
+                {
                     return XmlTypeCode.Item;
                 }
-                if (datatype == null) {
+                if (_datatype == null)
+                {
                     return XmlTypeCode.None;
                 }
-                return datatype.TypeCode;
+                return _datatype.TypeCode;
             }
         }
 
         [XmlIgnore]
-        internal XmlValueConverter ValueConverter {
-            get {
-                if (datatype == null) { //Default converter
+        internal XmlValueConverter ValueConverter
+        {
+            get
+            {
+                if (_datatype == null)
+                { //Default converter
                     return XmlUntypedConverter.Untyped;
                 }
-                return datatype.ValueConverter;
+                return _datatype.ValueConverter;
             }
         }
 
-        internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler) {
-            if (schemaSet != null) {
+        internal XmlReader Validate(XmlReader reader, XmlResolver resolver, XmlSchemaSet schemaSet, ValidationEventHandler valEventHandler)
+        {
+            if (schemaSet != null)
+            {
                 XmlReaderSettings readerSettings = new XmlReaderSettings();
                 readerSettings.ValidationType = ValidationType.Schema;
                 readerSettings.Schemas = schemaSet;
@@ -203,104 +234,127 @@ namespace Microsoft.Xml.Schema {
             return null;
         }
 
-        internal XmlSchemaContentType SchemaContentType {
-            get {
-                return contentType;
+        internal XmlSchemaContentType SchemaContentType
+        {
+            get
+            {
+                return _contentType;
             }
         }
 
-        internal void SetQualifiedName(XmlQualifiedName value) {
-            qname = value;
+        internal void SetQualifiedName(XmlQualifiedName value)
+        {
+            _qname = value;
         }
 
-        internal void SetFinalResolved(XmlSchemaDerivationMethod value) {
-             finalResolved = value; 
+        internal void SetFinalResolved(XmlSchemaDerivationMethod value)
+        {
+            _finalResolved = value;
         }
 
-        internal void SetBaseSchemaType(XmlSchemaType value) { 
-            baseSchemaType = value;
+        internal void SetBaseSchemaType(XmlSchemaType value)
+        {
+            _baseSchemaType = value;
         }
 
-        internal void SetDerivedBy(XmlSchemaDerivationMethod value) { 
-            derivedBy = value;
+        internal void SetDerivedBy(XmlSchemaDerivationMethod value)
+        {
+            _derivedBy = value;
         }
 
-        internal void SetDatatype(XmlSchemaDatatype value) { 
-            datatype = value;
+        internal void SetDatatype(XmlSchemaDatatype value)
+        {
+            _datatype = value;
         }
 
-        internal SchemaElementDecl ElementDecl {
-            get { return elementDecl; }
-            set { elementDecl = value; }
+        internal SchemaElementDecl ElementDecl
+        {
+            get { return _elementDecl; }
+            set { _elementDecl = value; }
         }
 
         [XmlIgnore]
-        internal XmlSchemaType Redefined {
-            get { return redefined; }
-            set { redefined = value; }
+        internal XmlSchemaType Redefined
+        {
+            get { return _redefined; }
+            set { _redefined = value; }
         }
 
-        internal virtual XmlQualifiedName DerivedFrom {
+        internal virtual XmlQualifiedName DerivedFrom
+        {
             get { return XmlQualifiedName.Empty; }
         }
-        
-        internal void SetContentType(XmlSchemaContentType value) { 
-            contentType = value; 
+
+        internal void SetContentType(XmlSchemaContentType value)
+        {
+            _contentType = value;
         }
-       
-        public static bool IsDerivedFrom(XmlSchemaType derivedType, XmlSchemaType baseType, XmlSchemaDerivationMethod except) {
-            if (derivedType == null || baseType == null) {
+
+        public static bool IsDerivedFrom(XmlSchemaType derivedType, XmlSchemaType baseType, XmlSchemaDerivationMethod except)
+        {
+            if (derivedType == null || baseType == null)
+            {
                 return false;
             }
 
-            if (derivedType == baseType) {
+            if (derivedType == baseType)
+            {
                 return true;
             }
-            
-            if (baseType == XmlSchemaComplexType.AnyType) { //Not checking for restriction blocked since all types are implicitly derived by restriction from xs:anyType
+
+            if (baseType == XmlSchemaComplexType.AnyType)
+            { //Not checking for restriction blocked since all types are implicitly derived by restriction from xs:anyType
                 return true;
             }
-            do {
+            do
+            {
                 XmlSchemaSimpleType dt = derivedType as XmlSchemaSimpleType;
                 XmlSchemaSimpleType bt = baseType as XmlSchemaSimpleType;
-                if (bt != null && dt != null) { //SimpleTypes
-                    if (bt == DatatypeImplementation.AnySimpleType) { //Not checking block=restriction
+                if (bt != null && dt != null)
+                { //SimpleTypes
+                    if (bt == DatatypeImplementation.AnySimpleType)
+                    { //Not checking block=restriction
                         return true;
                     }
-                    if ((except & derivedType.DerivedBy) != 0 || !dt.Datatype.IsDerivedFrom(bt.Datatype)) {
+                    if ((except & derivedType.DerivedBy) != 0 || !dt.Datatype.IsDerivedFrom(bt.Datatype))
+                    {
                         return false;
                     }
                     return true;
                 }
-                else { //Complex types
-                    if ((except & derivedType.DerivedBy) != 0) {
+                else
+                { //Complex types
+                    if ((except & derivedType.DerivedBy) != 0)
+                    {
                         return false;
                     }
                     derivedType = derivedType.BaseXmlSchemaType;
-                    if (derivedType == baseType) {
+                    if (derivedType == baseType)
+                    {
                         return true;
                     }
                 }
-
-            } while(derivedType != null);
+            } while (derivedType != null);
 
             return false;
         }
 
 
-        internal static bool IsDerivedFromDatatype(XmlSchemaDatatype derivedDataType, XmlSchemaDatatype baseDataType, XmlSchemaDerivationMethod except) {
-            if (DatatypeImplementation.AnySimpleType.Datatype == baseDataType) {
+        internal static bool IsDerivedFromDatatype(XmlSchemaDatatype derivedDataType, XmlSchemaDatatype baseDataType, XmlSchemaDerivationMethod except)
+        {
+            if (DatatypeImplementation.AnySimpleType.Datatype == baseDataType)
+            {
                 return true;
             }
             return derivedDataType.IsDerivedFrom(baseDataType);
         }
 
         [XmlIgnore]
-        internal override string NameAttribute {
+        internal override string NameAttribute
+        {
             get { return Name; }
             set { Name = value; }
         }
     }
-
 }
 

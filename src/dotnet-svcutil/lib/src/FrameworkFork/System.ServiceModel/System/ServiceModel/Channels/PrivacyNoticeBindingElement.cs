@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System.ServiceModel.Description;
@@ -8,26 +9,26 @@ namespace System.ServiceModel.Channels
 
     public sealed class PrivacyNoticeBindingElement : BindingElement, IPolicyExportExtension
     {
-        Uri url;
-        int version;
+        private Uri _url;
+        private int _version;
 
         public PrivacyNoticeBindingElement()
         {
-            this.url = null;
+            _url = null;
         }
 
         public PrivacyNoticeBindingElement(PrivacyNoticeBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.url = elementToBeCloned.url;
-            this.version = elementToBeCloned.version;
+            _url = elementToBeCloned._url;
+            _version = elementToBeCloned._version;
         }
 
         public Uri Url
         {
             get
             {
-                return this.url;
+                return _url;
             }
             set
             {
@@ -36,7 +37,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
                 }
 
-                this.url = value;
+                _url = value;
             }
         }
 
@@ -44,7 +45,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.version;
+                return _version;
             }
             set
             {
@@ -52,7 +53,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBePositive));
                 }
-                this.version = value;
+                _version = value;
             }
         }
 
@@ -104,7 +105,7 @@ namespace System.ServiceModel.Channels
             PrivacyNoticeBindingElement privacy = b as PrivacyNoticeBindingElement;
             if (privacy == null)
                 return false;
-            return (this.url == privacy.url && this.version == privacy.version);
+            return (_url == privacy._url && _version == privacy._version);
         }
     }
 }

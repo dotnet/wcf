@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-
-
+namespace Microsoft.Xml.Schema
+{
     using System;
     using System.Threading;
     using System.Collections;
@@ -22,39 +21,44 @@ namespace Microsoft.Xml.Schema {
     ///       efficient runtime validation of any given subtree.</para>
     /// </devdoc>
     [Obsolete("Use Microsoft.Xml.Schema.XmlSchemaSet for schema compilation and validation. http://go.microsoft.com/fwlink/?linkid=14202")]
-    public sealed class XmlSchemaCollection: ICollection {
-        private Hashtable               collection;
-        private XmlNameTable            nameTable;
-        private SchemaNames             schemaNames;
-        private ReaderWriterLockSlim    wLock;
-        private int                     timeout = Timeout.Infinite;
-        private bool                    isThreadSafe = true;
-        private ValidationEventHandler  validationEventHandler = null;
-        private XmlResolver             xmlResolver = null;
+    public sealed class XmlSchemaCollection : ICollection
+    {
+        private Hashtable _collection;
+        private XmlNameTable _nameTable;
+        private SchemaNames _schemaNames;
+        private ReaderWriterLockSlim _wLock;
+        private int _timeout = Timeout.Infinite;
+        private bool _isThreadSafe = true;
+        private ValidationEventHandler _validationEventHandler = null;
+        private XmlResolver _xmlResolver = null;
 
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.XmlSchemaCollection"]/*' />
         /// <devdoc>
         ///    <para>Construct a new empty schema collection.</para>
         /// </devdoc>
-        public XmlSchemaCollection() : this(new NameTable()) {
+        public XmlSchemaCollection() : this(new NameTable())
+        {
         }
- 
+
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.XmlSchemaCollection1"]/*' />
         /// <devdoc>
         ///    <para>Construct a new empty schema collection with associated XmlNameTable.
         ///       The XmlNameTable is used when loading schemas</para>
         /// </devdoc>
-        public XmlSchemaCollection(XmlNameTable nametable) {
-            if (nametable == null) {
+        public XmlSchemaCollection(XmlNameTable nametable)
+        {
+            if (nametable == null)
+            {
                 throw new ArgumentNullException("nametable");
             }
-            nameTable = nametable;
-            collection = Hashtable.Synchronized(new Hashtable());
-            xmlResolver = Microsoft.Xml.XmlConfiguration.XmlReaderSection.CreateDefaultResolver();
-            isThreadSafe = true;
-            if (isThreadSafe) {
-                wLock = new ReaderWriterLockSlim();
+            _nameTable = nametable;
+            _collection = Hashtable.Synchronized(new Hashtable());
+            _xmlResolver = Microsoft.Xml.XmlConfiguration.XmlReaderSection.CreateDefaultResolver();
+            _isThreadSafe = true;
+            if (_isThreadSafe)
+            {
+                _wLock = new ReaderWriterLockSlim();
             }
         }
 
@@ -63,28 +67,32 @@ namespace Microsoft.Xml.Schema {
         ///    <para>Returns the number of namespaces defined in this collection
         ///       (whether or not there is an actual schema associated with those namespaces or not).</para>
         /// </devdoc>
-        public int Count {
-            get { return collection.Count;}
+        public int Count
+        {
+            get { return _collection.Count; }
         }
- 
+
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.NameTable"]/*' />
         /// <devdoc>
         ///    <para>The default XmlNameTable used by the XmlSchemaCollection when loading new schemas.</para>
         /// </devdoc>
-        public XmlNameTable NameTable {
-            get { return nameTable;}
+        public XmlNameTable NameTable
+        {
+            get { return _nameTable; }
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.ValidationEventHandler"]/*' />
-        public  event ValidationEventHandler ValidationEventHandler {
-            add { validationEventHandler += value; }
-            remove { validationEventHandler -= value; }
+        public event ValidationEventHandler ValidationEventHandler
+        {
+            add { _validationEventHandler += value; }
+            remove { _validationEventHandler -= value; }
         }
 
         internal XmlResolver XmlResolver
         {
-            set {
-                xmlResolver = value;
+            set
+            {
+                _xmlResolver = value;
             }
         }
 
@@ -97,27 +105,31 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
-        public XmlSchema Add(string ns, string uri) {
+        public XmlSchema Add(string ns, string uri)
+        {
             if (uri == null || uri.Length == 0)
                 throw new ArgumentNullException("uri");
-            XmlTextReader reader = new XmlTextReader(uri, nameTable);
-            reader.XmlResolver = xmlResolver;
+            XmlTextReader reader = new XmlTextReader(uri, _nameTable);
+            reader.XmlResolver = _xmlResolver;
 
             XmlSchema schema = null;
-            try {
-                schema = Add(ns, reader, xmlResolver);
-                while(reader.Read());// wellformness check
+            try
+            {
+                schema = Add(ns, reader, _xmlResolver);
+                while (reader.Read()) ;// wellformness check
             }
-            finally {
+            finally
+            {
                 reader.Close();
             }
             return schema;
         }
 
-	/// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.Add4"]/*' />
-        public XmlSchema Add(String ns, XmlReader reader) {
-	    return Add(ns, reader, xmlResolver);	
-	}
+        /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.Add4"]/*' />
+        public XmlSchema Add(String ns, XmlReader reader)
+        {
+            return Add(ns, reader, _xmlResolver);
+        }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.Add1"]/*' />
         /// <devdoc>
@@ -125,28 +137,33 @@ namespace Microsoft.Xml.Schema {
         ///       If the given schema references other namespaces, the schemas for those
         ///       other namespaces are NOT automatically loaded.</para>
         /// </devdoc>
-        public XmlSchema Add(String ns, XmlReader reader, XmlResolver resolver) {
+        public XmlSchema Add(String ns, XmlReader reader, XmlResolver resolver)
+        {
             if (reader == null)
                 throw new ArgumentNullException("reader");
             XmlNameTable readerNameTable = reader.NameTable;
-            SchemaInfo schemaInfo = new SchemaInfo(); 
-	        
-            Parser parser = new Parser(SchemaType.None, readerNameTable, GetSchemaNames(readerNameTable), validationEventHandler);
+            SchemaInfo schemaInfo = new SchemaInfo();
+
+            Parser parser = new Parser(SchemaType.None, readerNameTable, GetSchemaNames(readerNameTable), _validationEventHandler);
             parser.XmlResolver = resolver;
             SchemaType schemaType;
-            try {
+            try
+            {
                 schemaType = parser.Parse(reader, ns);
             }
-            catch (XmlSchemaException e) {
+            catch (XmlSchemaException e)
+            {
                 SendValidationEvent(e);
                 return null;
             }
 
-            if (schemaType == SchemaType.XSD) {
-				schemaInfo.SchemaType = SchemaType.XSD;
+            if (schemaType == SchemaType.XSD)
+            {
+                schemaInfo.SchemaType = SchemaType.XSD;
                 return Add(ns, schemaInfo, parser.XmlSchema, true, resolver);
             }
-            else {
+            else
+            {
                 SchemaInfo xdrSchema = parser.XdrSchema;
                 return Add(ns, parser.XdrSchema, null, true, resolver);
             }
@@ -156,16 +173,18 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSchema Add(XmlSchema schema) {
-			return Add(schema, xmlResolver);
+        public XmlSchema Add(XmlSchema schema)
+        {
+            return Add(schema, _xmlResolver);
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.Add5"]/*' />
-	    public XmlSchema Add(XmlSchema schema, XmlResolver resolver) {
+	    public XmlSchema Add(XmlSchema schema, XmlResolver resolver)
+        {
             if (schema == null)
                 throw new ArgumentNullException("schema");
 
-            SchemaInfo schemaInfo = new SchemaInfo(); 
+            SchemaInfo schemaInfo = new SchemaInfo();
             schemaInfo.SchemaType = SchemaType.XSD;
             return Add(schema.TargetNamespace, schemaInfo, schema, true, resolver);
         }
@@ -175,14 +194,16 @@ namespace Microsoft.Xml.Schema {
         ///    <para>Adds all the namespaces defined in the given collection
         ///       (including their associated schemas) to this collection.</para>
         /// </devdoc>
-        public void Add(XmlSchemaCollection schema) {
+        public void Add(XmlSchemaCollection schema)
+        {
             if (schema == null)
                 throw new ArgumentNullException("schema");
             if (this == schema)
                 return;
-            IDictionaryEnumerator enumerator = schema.collection.GetEnumerator();
-            while (enumerator.MoveNext()) {
-                XmlSchemaCollectionNode node = (XmlSchemaCollectionNode) enumerator.Value;
+            IDictionaryEnumerator enumerator = schema._collection.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                XmlSchemaCollectionNode node = (XmlSchemaCollectionNode)enumerator.Value;
                 Add(node.NamespaceURI, node);
             }
         }
@@ -192,9 +213,11 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>Looks up the schema by it's associated namespace URI</para>
         /// </devdoc>
-        public XmlSchema this[string ns] {
-            get {
-                XmlSchemaCollectionNode node = (XmlSchemaCollectionNode)collection[(ns != null) ? ns: string.Empty];
+        public XmlSchema this[string ns]
+        {
+            get
+            {
+                XmlSchemaCollectionNode node = (XmlSchemaCollectionNode)_collection[(ns != null) ? ns : string.Empty];
                 return (node != null) ? node.Schema : null;
             }
         }
@@ -203,16 +226,19 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool Contains(XmlSchema schema) {
-            if (schema == null) {
+        public bool Contains(XmlSchema schema)
+        {
+            if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
             }
             return this[schema.TargetNamespace] != null;
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.Contains1"]/*' />
-        public bool Contains(string ns) {
-            return collection[(ns != null) ? ns : string.Empty] != null;
+        public bool Contains(string ns)
+        {
+            return _collection[(ns != null) ? ns : string.Empty] != null;
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.IEnumerable.GetEnumerator"]/*' />
@@ -220,23 +246,27 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         /// Get a IEnumerator of the XmlSchemaCollection.
         /// </devdoc>
-        IEnumerator IEnumerable.GetEnumerator() {
-            return new XmlSchemaCollectionEnumerator(collection);
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new XmlSchemaCollectionEnumerator(_collection);
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.GetEnumerator"]/*' />
-        public XmlSchemaCollectionEnumerator GetEnumerator() {
-            return new XmlSchemaCollectionEnumerator(collection);
+        public XmlSchemaCollectionEnumerator GetEnumerator()
+        {
+            return new XmlSchemaCollectionEnumerator(_collection);
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.ICollection.CopyTo"]/*' />
         /// <internalonly/>
-        void ICollection.CopyTo(Array array, int index) {
+        void ICollection.CopyTo(Array array, int index)
+        {
             if (array == null)
                 throw new ArgumentNullException("array");
             if (index < 0)
                 throw new ArgumentOutOfRangeException("index");
-            for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext();) {
+            for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext();)
+            {
                 array.SetValue(e.Current, index++);
             }
         }
@@ -245,15 +275,19 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void CopyTo(XmlSchema[] array, int index) {
+        public void CopyTo(XmlSchema[] array, int index)
+        {
             if (array == null)
                 throw new ArgumentNullException("array");
             if (index < 0)
                 throw new ArgumentOutOfRangeException("index");
-            for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext();) {
+            for (XmlSchemaCollectionEnumerator e = this.GetEnumerator(); e.MoveNext();)
+            {
                 XmlSchema schema = e.Current;
-                if (schema != null) {
-                    if (index == array.Length) {
+                if (schema != null)
+                {
+                    if (index == array.Length)
+                    {
                         throw new ArgumentOutOfRangeException("index");
                     }
                     array[index++] = e.Current;
@@ -263,162 +297,196 @@ namespace Microsoft.Xml.Schema {
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.ICollection.IsSynchronized"]/*' />
         /// <internalonly/>
-        bool ICollection.IsSynchronized {
+        bool ICollection.IsSynchronized
+        {
             get { return true; }
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.ICollection.SyncRoot"]/*' />
         /// <internalonly/>
-        object ICollection.SyncRoot {
+        object ICollection.SyncRoot
+        {
             get { return this; }
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollection.ICollection.Count"]/*' />
         /// <internalonly/>
-        int ICollection.Count {
-            get { return collection.Count; }
+        int ICollection.Count
+        {
+            get { return _collection.Count; }
         }
 
-        internal SchemaInfo GetSchemaInfo(string ns) {
-            XmlSchemaCollectionNode node = (XmlSchemaCollectionNode)collection[(ns != null) ? ns : string.Empty];
+        internal SchemaInfo GetSchemaInfo(string ns)
+        {
+            XmlSchemaCollectionNode node = (XmlSchemaCollectionNode)_collection[(ns != null) ? ns : string.Empty];
             return (node != null) ? node.SchemaInfo : null;
         }
 
-        internal SchemaNames GetSchemaNames(XmlNameTable nt) {
-            if (nameTable != nt) {
+        internal SchemaNames GetSchemaNames(XmlNameTable nt)
+        {
+            if (_nameTable != nt)
+            {
                 return new SchemaNames(nt);
             }
-            else {
-                if (schemaNames == null) {
-                    schemaNames = new SchemaNames( nameTable );
+            else
+            {
+                if (_schemaNames == null)
+                {
+                    _schemaNames = new SchemaNames(_nameTable);
                 }
-                return schemaNames;
+                return _schemaNames;
             }
         }
 
-        internal XmlSchema Add(string ns, SchemaInfo schemaInfo, XmlSchema schema, bool compile) {
-		return Add(ns, schemaInfo, schema, compile, xmlResolver);
-	}
+        internal XmlSchema Add(string ns, SchemaInfo schemaInfo, XmlSchema schema, bool compile)
+        {
+            return Add(ns, schemaInfo, schema, compile, _xmlResolver);
+        }
 
-        private XmlSchema Add(string ns, SchemaInfo schemaInfo, XmlSchema schema, bool compile, XmlResolver resolver) {
+        private XmlSchema Add(string ns, SchemaInfo schemaInfo, XmlSchema schema, bool compile, XmlResolver resolver)
+        {
             int errorCount = 0;
-            if (schema != null) {
-                if (schema.ErrorCount == 0 && compile) {
-					if (!schema.CompileSchema(this, resolver, schemaInfo, ns, validationEventHandler, nameTable, true)) {
-						errorCount = 1;
-					}
-					ns = schema.TargetNamespace == null ? string.Empty : schema.TargetNamespace;
+            if (schema != null)
+            {
+                if (schema.ErrorCount == 0 && compile)
+                {
+                    if (!schema.CompileSchema(this, resolver, schemaInfo, ns, _validationEventHandler, _nameTable, true))
+                    {
+                        errorCount = 1;
+                    }
+                    ns = schema.TargetNamespace == null ? string.Empty : schema.TargetNamespace;
                 }
-				errorCount += schema.ErrorCount;
-            } 
-            else {
+                errorCount += schema.ErrorCount;
+            }
+            else
+            {
                 errorCount += schemaInfo.ErrorCount;
                 //ns = ns == null? string.Empty : NameTable.Add(ns);
                 ns = NameTable.Add(ns); //Added without checking for ns == null, since XDR cannot have null namespace
             }
-            if (errorCount == 0) {
+            if (errorCount == 0)
+            {
                 XmlSchemaCollectionNode node = new XmlSchemaCollectionNode();
                 node.NamespaceURI = ns;
-                node.SchemaInfo = schemaInfo; 
-				node.Schema = schema; 
+                node.SchemaInfo = schemaInfo;
+                node.Schema = schema;
                 Add(ns, node);
                 return schema;
             }
             return null;
         }
 
-        private void Add(string ns, XmlSchemaCollectionNode node) {
-            if (isThreadSafe)
-                wLock.TryEnterWriteLock(timeout);
-                //wLock.AcquireWriterLock(timeout);           
-            try {
-                if (collection[ns] != null)
-                    collection.Remove(ns);
-                collection.Add(ns, node);    
+        private void Add(string ns, XmlSchemaCollectionNode node)
+        {
+            if (_isThreadSafe)
+                _wLock.TryEnterWriteLock(_timeout);
+            //wLock.AcquireWriterLock(timeout);           
+            try
+            {
+                if (_collection[ns] != null)
+                    _collection.Remove(ns);
+                _collection.Add(ns, node);
             }
-            finally {
-                if (isThreadSafe)
-                    wLock.ExitWriteLock();
-                    //wLock.ReleaseWriterLock();                      
+            finally
+            {
+                if (_isThreadSafe)
+                    _wLock.ExitWriteLock();
+                //wLock.ReleaseWriterLock();                      
             }
         }
 
-        private void SendValidationEvent(XmlSchemaException e) {
-            if (validationEventHandler != null) {
-                validationEventHandler(this, new ValidationEventArgs(e));
-            } 
-            else {
+        private void SendValidationEvent(XmlSchemaException e)
+        {
+            if (_validationEventHandler != null)
+            {
+                _validationEventHandler(this, new ValidationEventArgs(e));
+            }
+            else
+            {
                 throw e;
             }
         }
 
-        internal ValidationEventHandler EventHandler {
-            get {
-                return validationEventHandler;
+        internal ValidationEventHandler EventHandler
+        {
+            get
+            {
+                return _validationEventHandler;
             }
-            set {
-                validationEventHandler = value;
+            set
+            {
+                _validationEventHandler = value;
             }
         }
     };
 
 
-    internal sealed class XmlSchemaCollectionNode {
-        private String      namespaceUri;
-        private SchemaInfo  schemaInfo;
-        private XmlSchema   schema;
+    internal sealed class XmlSchemaCollectionNode
+    {
+        private String _namespaceUri;
+        private SchemaInfo _schemaInfo;
+        private XmlSchema _schema;
 
-        internal String NamespaceURI {
-            get { return namespaceUri;}
-            set { namespaceUri = value;}
+        internal String NamespaceURI
+        {
+            get { return _namespaceUri; }
+            set { _namespaceUri = value; }
         }
 
-        internal SchemaInfo SchemaInfo {       
-            get { return schemaInfo;}
-            set { schemaInfo = value;}
+        internal SchemaInfo SchemaInfo
+        {
+            get { return _schemaInfo; }
+            set { _schemaInfo = value; }
         }
 
-        internal XmlSchema Schema {
-            get { return schema;}
-            set { schema = value;}
-        }   
-}
+        internal XmlSchema Schema
+        {
+            get { return _schema; }
+            set { _schema = value; }
+        }
+    }
 
 
     /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollectionEnumerator"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public sealed class XmlSchemaCollectionEnumerator: IEnumerator {
-        private IDictionaryEnumerator     enumerator;
+    public sealed class XmlSchemaCollectionEnumerator : IEnumerator
+    {
+        private IDictionaryEnumerator _enumerator;
 
-        internal XmlSchemaCollectionEnumerator( Hashtable collection ) {
-            enumerator = collection.GetEnumerator();            
+        internal XmlSchemaCollectionEnumerator(Hashtable collection)
+        {
+            _enumerator = collection.GetEnumerator();
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollectionEnumerator.IEnumerator.Reset"]/*' />
         /// <internalonly/>
-        void IEnumerator.Reset() {
-            enumerator.Reset();
+        void IEnumerator.Reset()
+        {
+            _enumerator.Reset();
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollectionEnumerator.IEnumerator.MoveNext"]/*' />
         /// <internalonly/>
-        bool IEnumerator.MoveNext() {
-            return enumerator.MoveNext();
+        bool IEnumerator.MoveNext()
+        {
+            return _enumerator.MoveNext();
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollectionEnumerator.MoveNext"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool MoveNext() {
-            return enumerator.MoveNext();
+        public bool MoveNext()
+        {
+            return _enumerator.MoveNext();
         }
 
         /// <include file='doc\XmlSchemaCollection.uex' path='docs/doc[@for="XmlSchemaCollectionEnumerator.IEnumerator.Current"]/*' />
         /// <internalonly/>
-        object IEnumerator.Current {
+        object IEnumerator.Current
+        {
             get { return this.Current; }
         }
 
@@ -426,9 +494,11 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSchema Current {
-            get {
-                XmlSchemaCollectionNode n = (XmlSchemaCollectionNode)enumerator.Value;
+        public XmlSchema Current
+        {
+            get
+            {
+                XmlSchemaCollectionNode n = (XmlSchemaCollectionNode)_enumerator.Value;
                 if (n != null)
                     return n.Schema;
                 else
@@ -436,9 +506,11 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        internal XmlSchemaCollectionNode CurrentNode {
-            get {
-                XmlSchemaCollectionNode n = (XmlSchemaCollectionNode)enumerator.Value;
+        internal XmlSchemaCollectionNode CurrentNode
+        {
+            get
+            {
+                XmlSchemaCollectionNode n = (XmlSchemaCollectionNode)_enumerator.Value;
                 return n;
             }
         }

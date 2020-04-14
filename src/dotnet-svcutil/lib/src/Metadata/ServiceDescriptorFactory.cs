@@ -14,21 +14,21 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
     /// </summary>
     public class ServiceDescriptorFactory
     {
-        IHttpCredentialsProvider userCredentialsProvider;
-        IClientCertificateProvider clientCertificateProvider;
-        IServerCertificateValidationProvider serverCertificateValidationProvider;
+        private IHttpCredentialsProvider _userCredentialsProvider;
+        private IClientCertificateProvider _clientCertificateProvider;
+        private IServerCertificateValidationProvider _serverCertificateValidationProvider;
 
-        object cacheLock = new object();
-        Dictionary<int, ServiceDescriptor> cache = new Dictionary<int, ServiceDescriptor>();
+        private object _cacheLock = new object();
+        private Dictionary<int, ServiceDescriptor> _cache = new Dictionary<int, ServiceDescriptor>();
 
         public ServiceDescriptorFactory(
             IHttpCredentialsProvider userCredentialsProvider,
             IClientCertificateProvider clientCertificateProvider,
             IServerCertificateValidationProvider serverCertificateValidationProvider)
         {
-            this.userCredentialsProvider = userCredentialsProvider;
-            this.clientCertificateProvider = clientCertificateProvider;
-            this.serverCertificateValidationProvider = serverCertificateValidationProvider;
+            _userCredentialsProvider = userCredentialsProvider;
+            _clientCertificateProvider = clientCertificateProvider;
+            _serverCertificateValidationProvider = serverCertificateValidationProvider;
         }
 
 
@@ -42,16 +42,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             ServiceDescriptor serviceDescriptor;
             var key = metadaDocLoader.GetHashCode();
 
-            lock (this.cacheLock)
+            lock (_cacheLock)
             {
-                if (this.cache.ContainsKey(key) && this.cache[key].MetadataImported)
+                if (_cache.ContainsKey(key) && _cache[key].MetadataImported)
                 {
-                    serviceDescriptor = this.cache[key];
+                    serviceDescriptor = _cache[key];
                 }
                 else
                 {
                     serviceDescriptor = CreateServiceDescriptor(metadaDocLoader);
-                    this.cache[key] = serviceDescriptor;
+                    _cache[key] = serviceDescriptor;
                 }
             }
 
@@ -76,14 +76,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         public ServiceDescriptor Get(string metadataUri)
         {
             // validate the uri, this would throw if invalid.
-            var metadaDocLoader = CreateMetadataDocumentLoader(metadataUri, this.userCredentialsProvider, this.clientCertificateProvider, this.serverCertificateValidationProvider);
+            var metadaDocLoader = CreateMetadataDocumentLoader(metadataUri, _userCredentialsProvider, _clientCertificateProvider, _serverCertificateValidationProvider);
             return Get(metadaDocLoader);
         }
 
         public ServiceDescriptor Get(IEnumerable<string> metadataFiles)
         {
             // validate the uris, this would throw if invalid.
-            var metadaDocLoader = CreateMetadataDocumentLoader(metadataFiles, false, this.userCredentialsProvider, this.clientCertificateProvider, this.serverCertificateValidationProvider);
+            var metadaDocLoader = CreateMetadataDocumentLoader(metadataFiles, false, _userCredentialsProvider, _clientCertificateProvider, _serverCertificateValidationProvider);
             return Get(metadaDocLoader);
         }
 
@@ -94,10 +94,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// </summary>
         public void Purge()
         {
-            lock (this.cacheLock)
+            lock (_cacheLock)
             {
-                var removeKeys = this.cache.Keys.Where((k) => !this.cache[k].MetadataImported).ToList();
-                removeKeys.ForEach((k) => this.cache.Remove(k));
+                var removeKeys = _cache.Keys.Where((k) => !_cache[k].MetadataImported).ToList();
+                removeKeys.ForEach((k) => _cache.Remove(k));
             }
         }
     }

@@ -1,43 +1,56 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Collections.Generic;
 
-    internal sealed class XPathAncestorQuery : CacheAxisQuery {
-        private bool matchSelf;
+    internal sealed class XPathAncestorQuery : CacheAxisQuery
+    {
+        private bool _matchSelf;
 
-        public XPathAncestorQuery(Query qyInput, string name, string prefix, XPathNodeType typeTest, bool matchSelf) : base(qyInput, name, prefix, typeTest)  {
-            this.matchSelf = matchSelf;
+        public XPathAncestorQuery(Query qyInput, string name, string prefix, XPathNodeType typeTest, bool matchSelf) : base(qyInput, name, prefix, typeTest)
+        {
+            _matchSelf = matchSelf;
         }
-        private XPathAncestorQuery(XPathAncestorQuery other) : base(other) {
-            this.matchSelf = other.matchSelf;
+        private XPathAncestorQuery(XPathAncestorQuery other) : base(other)
+        {
+            _matchSelf = other._matchSelf;
         }
 
-        public override object Evaluate(XPathNodeIterator context) {
+        public override object Evaluate(XPathNodeIterator context)
+        {
             base.Evaluate(context);
 
-            XPathNavigator ancestor = null;            
+            XPathNavigator ancestor = null;
             XPathNavigator input;
-            while ((input = qyInput.Advance()) != null) {
-                if (matchSelf) {
-                    if (matches(input)) {
-                        if (!Insert(outputBuffer, input)) {
+            while ((input = qyInput.Advance()) != null)
+            {
+                if (_matchSelf)
+                {
+                    if (matches(input))
+                    {
+                        if (!Insert(outputBuffer, input))
+                        {
                             // If input is already in output buffer all its ancestors are in a buffer as well.
-                            continue; 
+                            continue;
                         }
                     }
                 }
-                if (ancestor == null || ! ancestor.MoveTo(input)) {
+                if (ancestor == null || !ancestor.MoveTo(input))
+                {
                     ancestor = input.Clone();
                 }
-                while (ancestor.MoveToParent()) {
-                    if (matches(ancestor)) {
-                        if (!Insert(outputBuffer, ancestor)) {
+                while (ancestor.MoveToParent())
+                {
+                    if (matches(ancestor))
+                    {
+                        if (!Insert(outputBuffer, ancestor))
+                        {
                             // If input is already in output buffer all its ancestors are in a buffer as well.
                             break;
                         }
@@ -51,15 +64,19 @@ namespace MS.Internal.Xml.XPath {
         public override int CurrentPosition { get { return outputBuffer.Count - count + 1; } }
         public override QueryProps Properties { get { return base.Properties | QueryProps.Reverse; } }
 
-        public override void PrintQuery(XmlWriter w) {
+        public override void PrintQuery(XmlWriter w)
+        {
             w.WriteStartElement(this.GetType().Name);
-            if (matchSelf) {
+            if (_matchSelf)
+            {
                 w.WriteAttributeString("self", "yes");
             }
-            if (NameTest) {
+            if (NameTest)
+            {
                 w.WriteAttributeString("name", Prefix.Length != 0 ? Prefix + ':' + Name : Name);
             }
-            if (TypeTest != XPathNodeType.Element) {
+            if (TypeTest != XPathNodeType.Element)
+            {
                 w.WriteAttributeString("nodeType", TypeTest.ToString());
             }
             qyInput.PrintQuery(w);

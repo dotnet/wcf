@@ -9,20 +9,24 @@ using System.Collections.Generic;
 
 using System.Threading.Tasks;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     //
     // XmlCharCheckingReaderWithNS
     //
-    internal partial class XmlCharCheckingReader : XmlWrappingReader {
-
-        public override async Task< bool > ReadAsync() {
-            switch ( state ) {
+    internal partial class XmlCharCheckingReader : XmlWrappingReader
+    {
+        public override async Task<bool> ReadAsync()
+        {
+            switch (_state)
+            {
                 case State.Initial:
-                    state = State.Interactive;
-                    if ( base.reader.ReadState == ReadState.Initial ) {
+                    _state = State.Interactive;
+                    if (base.reader.ReadState == ReadState.Initial)
+                    {
                         goto case State.Interactive;
                     }
                     break;
@@ -32,63 +36,76 @@ namespace Microsoft.Xml {
 
                 case State.InReadBinary:
                     await FinishReadBinaryAsync().ConfigureAwait(false);
-                    state = State.Interactive;
+                    _state = State.Interactive;
                     goto case State.Interactive;
 
                 case State.Interactive:
-                    if ( !await base.reader.ReadAsync().ConfigureAwait(false) ) {
+                    if (!await base.reader.ReadAsync().ConfigureAwait(false))
+                    {
                         return false;
                     }
                     break;
 
                 default:
-                    Debug.Assert( false );
+                    Debug.Assert(false);
                     return false;
             }
 
             XmlNodeType nodeType = base.reader.NodeType;
 
-            if ( !checkCharacters ) {
-                switch ( nodeType ) {
+            if (!_checkCharacters)
+            {
+                switch (nodeType)
+                {
                     case XmlNodeType.Comment:
-                        if ( ignoreComments ) {
+                        if (_ignoreComments)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
                         break;
                     case XmlNodeType.Whitespace:
-                        if ( ignoreWhitespace ) {
+                        if (_ignoreWhitespace)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
                         break;
                     case XmlNodeType.ProcessingInstruction:
-                        if ( ignorePis ) {
+                        if (_ignorePis)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
                         break;
                     case XmlNodeType.DocumentType:
-                        if ( dtdProcessing == DtdProcessing.Prohibit ) {
-                            Throw( ResXml.Xml_DtdIsProhibitedEx, string.Empty );
+                        if (_dtdProcessing == DtdProcessing.Prohibit)
+                        {
+                            Throw(ResXml.Xml_DtdIsProhibitedEx, string.Empty);
                         }
-                        else if ( dtdProcessing == DtdProcessing.Ignore ) {
+                        else if (_dtdProcessing == DtdProcessing.Ignore)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
                         break;
                 }
                 return true;
             }
-            else {
-                switch ( nodeType ) {
+            else
+            {
+                switch (nodeType)
+                {
                     case XmlNodeType.Element:
-                        if ( checkCharacters ) {
+                        if (_checkCharacters)
+                        {
                             // check element name
-                            ValidateQName( base.reader.Prefix, base.reader.LocalName );
+                            ValidateQName(base.reader.Prefix, base.reader.LocalName);
 
                             // check values of attributes
-                            if ( base.reader.MoveToFirstAttribute() ) {
-                                do {
-                                    ValidateQName( base.reader.Prefix, base.reader.LocalName );
-                                    CheckCharacters( base.reader.Value );
-                                } while ( base.reader.MoveToNextAttribute() );
+                            if (base.reader.MoveToFirstAttribute())
+                            {
+                                do
+                                {
+                                    ValidateQName(base.reader.Prefix, base.reader.LocalName);
+                                    CheckCharacters(base.reader.Value);
+                                } while (base.reader.MoveToNextAttribute());
 
                                 base.reader.MoveToElement();
                             }
@@ -97,270 +114,323 @@ namespace Microsoft.Xml {
 
                     case XmlNodeType.Text:
                     case XmlNodeType.CDATA:
-                        if ( checkCharacters ) {
-                            CheckCharacters( await base.reader.GetValueAsync().ConfigureAwait(false) );
+                        if (_checkCharacters)
+                        {
+                            CheckCharacters(await base.reader.GetValueAsync().ConfigureAwait(false));
                         }
                         break;
 
                     case XmlNodeType.EntityReference:
-                        if ( checkCharacters ) {
+                        if (_checkCharacters)
+                        {
                             // check name
-                            ValidateQName( base.reader.Name );
+                            ValidateQName(base.reader.Name);
                         }
                         break;
 
                     case XmlNodeType.ProcessingInstruction:
-                        if ( ignorePis ) {
+                        if (_ignorePis)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
-                        if ( checkCharacters ) {
-                            ValidateQName( base.reader.Name );
-                            CheckCharacters( base.reader.Value );
+                        if (_checkCharacters)
+                        {
+                            ValidateQName(base.reader.Name);
+                            CheckCharacters(base.reader.Value);
                         }
                         break;
 
                     case XmlNodeType.Comment:
-                        if ( ignoreComments ) {
+                        if (_ignoreComments)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
-                        if ( checkCharacters ) {
-                            CheckCharacters( base.reader.Value );
+                        if (_checkCharacters)
+                        {
+                            CheckCharacters(base.reader.Value);
                         }
                         break;
 
                     case XmlNodeType.DocumentType:
-                        if ( dtdProcessing == DtdProcessing.Prohibit ) {
-                            Throw( ResXml.Xml_DtdIsProhibitedEx, string.Empty );
+                        if (_dtdProcessing == DtdProcessing.Prohibit)
+                        {
+                            Throw(ResXml.Xml_DtdIsProhibitedEx, string.Empty);
                         }
-                        else if ( dtdProcessing == DtdProcessing.Ignore ) {
+                        else if (_dtdProcessing == DtdProcessing.Ignore)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
-                        if ( checkCharacters ) {
-                            ValidateQName( base.reader.Name );
-                            CheckCharacters( base.reader.Value );
-                            
+                        if (_checkCharacters)
+                        {
+                            ValidateQName(base.reader.Name);
+                            CheckCharacters(base.reader.Value);
+
                             string str;
-                            str = base.reader.GetAttribute( "SYSTEM" );
-                            if ( str != null ) {
-                                CheckCharacters( str );
+                            str = base.reader.GetAttribute("SYSTEM");
+                            if (str != null)
+                            {
+                                CheckCharacters(str);
                             }
 
-                            str = base.reader.GetAttribute( "PUBLIC" );
-                            if ( str != null ) {
+                            str = base.reader.GetAttribute("PUBLIC");
+                            if (str != null)
+                            {
                                 int i;
-                                if ( ( i = xmlCharType.IsPublicId( str ) ) >= 0 ) {
-                                    Throw( ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs( str, i ) );
+                                if ((i = _xmlCharType.IsPublicId(str)) >= 0)
+                                {
+                                    Throw(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(str, i));
                                 }
                             }
                         }
                         break;
 
                     case XmlNodeType.Whitespace:
-                        if ( ignoreWhitespace ) {
+                        if (_ignoreWhitespace)
+                        {
                             return await ReadAsync().ConfigureAwait(false);
                         }
-                        if ( checkCharacters ) {
-                            CheckWhitespace( await base.reader.GetValueAsync().ConfigureAwait(false) );
+                        if (_checkCharacters)
+                        {
+                            CheckWhitespace(await base.reader.GetValueAsync().ConfigureAwait(false));
                         }
                         break;
 
                     case XmlNodeType.SignificantWhitespace:
-                        if ( checkCharacters ) {
-                            CheckWhitespace( await base.reader.GetValueAsync().ConfigureAwait(false) );
+                        if (_checkCharacters)
+                        {
+                            CheckWhitespace(await base.reader.GetValueAsync().ConfigureAwait(false));
                         }
                         break;
 
                     case XmlNodeType.EndElement:
-                        if ( checkCharacters ) {
-                            ValidateQName( base.reader.Prefix, base.reader.LocalName );
+                        if (_checkCharacters)
+                        {
+                            ValidateQName(base.reader.Prefix, base.reader.LocalName);
                         }
                         break;
 
                     default:
                         break;
                 }
-                lastNodeType = nodeType;
+                _lastNodeType = nodeType;
                 return true;
             }
         }
 
-        public override async Task< int > ReadContentAsBase64Async( byte[] buffer, int index, int count ) {
-            if (ReadState != ReadState.Interactive) {
+        public override async Task<int> ReadContentAsBase64Async(byte[] buffer, int index, int count)
+        {
+            if (ReadState != ReadState.Interactive)
+            {
                 return 0;
             }
 
-            if ( state != State.InReadBinary ) {
+            if (_state != State.InReadBinary)
+            {
                 // forward ReadBase64Chunk calls into the base (wrapped) reader if possible, i.e. if it can read binary and we 
                 // should not check characters
-                if ( base.CanReadBinaryContent && ( !checkCharacters ) ) {
-                    readBinaryHelper = null;
-                    state = State.InReadBinary;
-                    return await base.ReadContentAsBase64Async( buffer, index, count ).ConfigureAwait(false);
+                if (base.CanReadBinaryContent && (!_checkCharacters))
+                {
+                    _readBinaryHelper = null;
+                    _state = State.InReadBinary;
+                    return await base.ReadContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
                 }
                 // the wrapped reader cannot read chunks or we are on an element where we should check characters or ignore white spaces
-                else {
-                    readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset( readBinaryHelper, this );
+                else
+                {
+                    _readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(_readBinaryHelper, this);
                 }
             }
-            else { 
+            else
+            {
                 // forward calls into wrapped reader 
-                if ( readBinaryHelper == null ) {
-                    return await base.ReadContentAsBase64Async( buffer, index, count ).ConfigureAwait(false);
+                if (_readBinaryHelper == null)
+                {
+                    return await base.ReadContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
                 }
             }
 
             // turn off InReadBinary state in order to have a normal Read() behavior when called from readBinaryHelper
-            state = State.Interactive;
+            _state = State.Interactive;
 
             // call to the helper
-            int readCount = await readBinaryHelper.ReadContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
+            int readCount = await _readBinaryHelper.ReadContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
 
             // turn on InReadBinary in again and return
-            state = State.InReadBinary;
+            _state = State.InReadBinary;
             return readCount;
         }
 
-        public override async Task< int > ReadContentAsBinHexAsync( byte[] buffer, int index, int count ) {
-            if (ReadState != ReadState.Interactive) {
+        public override async Task<int> ReadContentAsBinHexAsync(byte[] buffer, int index, int count)
+        {
+            if (ReadState != ReadState.Interactive)
+            {
                 return 0;
             }
 
-            if ( state != State.InReadBinary ) {
+            if (_state != State.InReadBinary)
+            {
                 // forward ReadBinHexChunk calls into the base (wrapped) reader if possible, i.e. if it can read chunks and we 
                 // should not check characters
-                if ( base.CanReadBinaryContent && ( !checkCharacters ) ) {
-                    readBinaryHelper = null;
-                    state = State.InReadBinary;
-                    return await base.ReadContentAsBinHexAsync( buffer, index, count ).ConfigureAwait(false);
+                if (base.CanReadBinaryContent && (!_checkCharacters))
+                {
+                    _readBinaryHelper = null;
+                    _state = State.InReadBinary;
+                    return await base.ReadContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
                 }
                 // the wrapped reader cannot read chunks or we are on an element where we should check characters or ignore white spaces
-                else {
-                    readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset( readBinaryHelper, this );
+                else
+                {
+                    _readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(_readBinaryHelper, this);
                 }
             }
-            else { 
+            else
+            {
                 // forward calls into wrapped reader 
-                if ( readBinaryHelper == null ) {
-                    return await base.ReadContentAsBinHexAsync( buffer, index, count ).ConfigureAwait(false);
+                if (_readBinaryHelper == null)
+                {
+                    return await base.ReadContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
                 }
             }
 
             // turn off InReadBinary state in order to have a normal Read() behavior when called from readBinaryHelper
-            state = State.Interactive;
+            _state = State.Interactive;
 
             // call to the helper
-            int readCount = await readBinaryHelper.ReadContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
+            int readCount = await _readBinaryHelper.ReadContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
 
             // turn on InReadBinary in again and return
-            state = State.InReadBinary;
-            return readCount;        
-        }
-
-        public override async Task< int > ReadElementContentAsBase64Async( byte[] buffer, int index, int count ) {
-            // check arguments
-            if (buffer == null) {
-                throw new ArgumentNullException("buffer");
-            }
-            if (count < 0) {
-                throw new ArgumentOutOfRangeException("count");
-            }
-            if (index < 0) {
-                throw new ArgumentOutOfRangeException("index");
-            }
-            if (buffer.Length - index < count) {
-                throw new ArgumentOutOfRangeException("count");
-            }
-
-            if (ReadState != ReadState.Interactive) {
-                return 0;
-            }
-
-            if ( state != State.InReadBinary ) {
-                // forward ReadBase64Chunk calls into the base (wrapped) reader if possible, i.e. if it can read binary and we 
-                // should not check characters
-                if ( base.CanReadBinaryContent && ( !checkCharacters ) ) {
-                    readBinaryHelper = null;
-                    state = State.InReadBinary;
-                    return await base.ReadElementContentAsBase64Async( buffer, index, count ).ConfigureAwait(false);
-                }
-                // the wrapped reader cannot read chunks or we are on an element where we should check characters or ignore white spaces
-                else {
-                    readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset( readBinaryHelper, this );
-                }
-            }
-            else { 
-                // forward calls into wrapped reader 
-                if ( readBinaryHelper == null ) {
-                    return await base.ReadElementContentAsBase64Async( buffer, index, count ).ConfigureAwait(false);
-                }
-            }
-
-            // turn off InReadBinary state in order to have a normal Read() behavior when called from readBinaryHelper
-            state = State.Interactive;
-
-            // call to the helper
-            int readCount = await readBinaryHelper.ReadElementContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
-
-            // turn on InReadBinary in again and return
-            state = State.InReadBinary;
+            _state = State.InReadBinary;
             return readCount;
         }
 
-        public override async Task< int > ReadElementContentAsBinHexAsync( byte[] buffer, int index, int count ) {
+        public override async Task<int> ReadElementContentAsBase64Async(byte[] buffer, int index, int count)
+        {
             // check arguments
-            if (buffer == null) {
+            if (buffer == null)
+            {
                 throw new ArgumentNullException("buffer");
             }
-            if (count < 0) {
+            if (count < 0)
+            {
                 throw new ArgumentOutOfRangeException("count");
             }
-            if (index < 0) {
+            if (index < 0)
+            {
                 throw new ArgumentOutOfRangeException("index");
             }
-            if (buffer.Length - index < count) {
+            if (buffer.Length - index < count)
+            {
                 throw new ArgumentOutOfRangeException("count");
             }
-            if (ReadState != ReadState.Interactive) {
+
+            if (ReadState != ReadState.Interactive)
+            {
                 return 0;
             }
 
-            if ( state != State.InReadBinary ) {
-                // forward ReadBinHexChunk calls into the base (wrapped) reader if possible, i.e. if it can read chunks and we 
+            if (_state != State.InReadBinary)
+            {
+                // forward ReadBase64Chunk calls into the base (wrapped) reader if possible, i.e. if it can read binary and we 
                 // should not check characters
-                if ( base.CanReadBinaryContent && ( !checkCharacters ) ) {
-                    readBinaryHelper = null;
-                    state = State.InReadBinary;
-                    return await base.ReadElementContentAsBinHexAsync( buffer, index, count ).ConfigureAwait(false);
+                if (base.CanReadBinaryContent && (!_checkCharacters))
+                {
+                    _readBinaryHelper = null;
+                    _state = State.InReadBinary;
+                    return await base.ReadElementContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
                 }
                 // the wrapped reader cannot read chunks or we are on an element where we should check characters or ignore white spaces
-                else {
-                    readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset( readBinaryHelper, this );
+                else
+                {
+                    _readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(_readBinaryHelper, this);
                 }
             }
-            else { 
+            else
+            {
                 // forward calls into wrapped reader 
-                if ( readBinaryHelper == null ) {
-                    return await base.ReadElementContentAsBinHexAsync( buffer, index, count ).ConfigureAwait(false);
+                if (_readBinaryHelper == null)
+                {
+                    return await base.ReadElementContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
                 }
             }
 
             // turn off InReadBinary state in order to have a normal Read() behavior when called from readBinaryHelper
-            state = State.Interactive;
+            _state = State.Interactive;
 
             // call to the helper
-            int readCount = await readBinaryHelper.ReadElementContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
+            int readCount = await _readBinaryHelper.ReadElementContentAsBase64Async(buffer, index, count).ConfigureAwait(false);
 
             // turn on InReadBinary in again and return
-            state = State.InReadBinary;
-            return readCount;        
+            _state = State.InReadBinary;
+            return readCount;
         }
 
-        private async Task FinishReadBinaryAsync() {
-            state = State.Interactive;
-            if ( readBinaryHelper != null ) {
-                await readBinaryHelper.FinishAsync().ConfigureAwait(false);
+        public override async Task<int> ReadElementContentAsBinHexAsync(byte[] buffer, int index, int count)
+        {
+            // check arguments
+            if (buffer == null)
+            {
+                throw new ArgumentNullException("buffer");
+            }
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException("count");
+            }
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
+            if (buffer.Length - index < count)
+            {
+                throw new ArgumentOutOfRangeException("count");
+            }
+            if (ReadState != ReadState.Interactive)
+            {
+                return 0;
+            }
+
+            if (_state != State.InReadBinary)
+            {
+                // forward ReadBinHexChunk calls into the base (wrapped) reader if possible, i.e. if it can read chunks and we 
+                // should not check characters
+                if (base.CanReadBinaryContent && (!_checkCharacters))
+                {
+                    _readBinaryHelper = null;
+                    _state = State.InReadBinary;
+                    return await base.ReadElementContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
+                }
+                // the wrapped reader cannot read chunks or we are on an element where we should check characters or ignore white spaces
+                else
+                {
+                    _readBinaryHelper = ReadContentAsBinaryHelper.CreateOrReset(_readBinaryHelper, this);
+                }
+            }
+            else
+            {
+                // forward calls into wrapped reader 
+                if (_readBinaryHelper == null)
+                {
+                    return await base.ReadElementContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
+                }
+            }
+
+            // turn off InReadBinary state in order to have a normal Read() behavior when called from readBinaryHelper
+            _state = State.Interactive;
+
+            // call to the helper
+            int readCount = await _readBinaryHelper.ReadElementContentAsBinHexAsync(buffer, index, count).ConfigureAwait(false);
+
+            // turn on InReadBinary in again and return
+            _state = State.InReadBinary;
+            return readCount;
+        }
+
+        private async Task FinishReadBinaryAsync()
+        {
+            _state = State.Interactive;
+            if (_readBinaryHelper != null)
+            {
+                await _readBinaryHelper.FinishAsync().ConfigureAwait(false);
             }
         }
-
     }
 }

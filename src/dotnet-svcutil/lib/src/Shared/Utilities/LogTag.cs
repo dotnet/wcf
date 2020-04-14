@@ -11,11 +11,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     /// </summary>
     internal class LogTag
     {
-        private readonly string value;
+        private readonly string _value;
 
-        private static string TagStart = "$";
-        private static string TagEnd = "!#";
-        private static int TagLength = 4;
+        private static string s_tagStart = "$";
+        private static string s_tagEnd = "!#";
+        private static int s_tagLength = 4;
 
         public static LogTag Information { get; } = new LogTag("$I!#");
         public static LogTag Important { get; } = new LogTag("$T!#");
@@ -33,11 +33,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private LogTag(string tag)
         {
-            if (string.IsNullOrEmpty(tag) || tag.Length != LogTag.TagLength || !tag.StartsWith(TagStart, StringComparison.Ordinal) || !tag.EndsWith(TagEnd, StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(tag) || tag.Length != LogTag.s_tagLength || !tag.StartsWith(s_tagStart, StringComparison.Ordinal) || !tag.EndsWith(s_tagEnd, StringComparison.Ordinal))
             {
                 throw new ArgumentException(string.Empty, nameof(tag));
             }
-            value = tag;
+            _value = tag;
         }
 
         // Enable LogTag objects to be treated as strings, but not the opposite to ensure strong type validation for function parameters.
@@ -56,9 +56,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             tag = null;
             value = string.Empty;
 
-            if (!string.IsNullOrEmpty(message) && message.Length >= LogTag.TagLength)
+            if (!string.IsNullOrEmpty(message) && message.Length >= LogTag.s_tagLength)
             {
-                tag = message.Substring(0, LogTag.TagLength);
+                tag = message.Substring(0, LogTag.s_tagLength);
                 if (tag != Important && tag != Information && tag != Warning && tag != Error && tag != LogMessage && tag != TraceSuccess && tag != TraceFailure && tag != TraceProperty && tag != TraceException)
                 {
                     tag = null;
@@ -73,12 +73,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public override string ToString()
         {
-            return this.value;
+            return _value;
         }
 
         public override int GetHashCode()
         {
-            return this.value.GetHashCode();
+            return _value.GetHashCode();
         }
     }
 }

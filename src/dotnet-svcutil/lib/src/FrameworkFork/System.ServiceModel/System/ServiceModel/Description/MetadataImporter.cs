@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Description
 {
     using System.Collections.Generic;
@@ -13,10 +13,10 @@ namespace System.ServiceModel.Description
 
     public abstract partial class MetadataImporter
     {
-        readonly KeyedByTypeCollection<IPolicyImportExtension> policyExtensions;
-        readonly Dictionary<XmlQualifiedName, ContractDescription> knownContracts = new Dictionary<XmlQualifiedName, ContractDescription>();
-        readonly Collection<MetadataConversionError> errors = new Collection<MetadataConversionError>();
-        readonly Dictionary<object, object> state = new Dictionary<object, object>();
+        private readonly KeyedByTypeCollection<IPolicyImportExtension> _policyExtensions;
+        private readonly Dictionary<XmlQualifiedName, ContractDescription> _knownContracts = new Dictionary<XmlQualifiedName, ContractDescription>();
+        private readonly Collection<MetadataConversionError> _errors = new Collection<MetadataConversionError>();
+        private readonly Dictionary<object, object> _state = new Dictionary<object, object>();
 
         //prevent inheritance until we are ready to allow it.
         internal MetadataImporter()
@@ -43,27 +43,27 @@ namespace System.ServiceModel.Description
             }
 
             this.Quotas = quotas;
-            this.policyExtensions = new KeyedByTypeCollection<IPolicyImportExtension>(policyImportExtensions);
+            _policyExtensions = new KeyedByTypeCollection<IPolicyImportExtension>(policyImportExtensions);
         }
 
         public KeyedByTypeCollection<IPolicyImportExtension> PolicyImportExtensions
         {
-            get { return this.policyExtensions; }
+            get { return _policyExtensions; }
         }
 
         public Collection<MetadataConversionError> Errors
         {
-            get { return this.errors; }
+            get { return _errors; }
         }
 
         public Dictionary<object, object> State
         {
-            get { return this.state; }
+            get { return _state; }
         }
 
         public Dictionary<XmlQualifiedName, ContractDescription> KnownContracts
         {
-            get { return this.knownContracts; }
+            get { return _knownContracts; }
         }
 
         // Abstract Building Methods
@@ -90,7 +90,7 @@ namespace System.ServiceModel.Description
 
         internal bool TryImportPolicy(PolicyConversionContext policyContext)
         {
-            foreach (IPolicyImportExtension policyImporter in policyExtensions)
+            foreach (IPolicyImportExtension policyImporter in _policyExtensions)
             {
                 try
                 {
@@ -130,12 +130,12 @@ namespace System.ServiceModel.Description
         }
 
         [SecuritySafeCritical]
-        static Collection<IPolicyImportExtension> LoadPolicyExtensionsFromConfig()
+        private static Collection<IPolicyImportExtension> LoadPolicyExtensionsFromConfig()
         {
             throw new NotImplementedException();
         }
 
-        Exception CreateExtensionException(IPolicyImportExtension importer, Exception e)
+        private Exception CreateExtensionException(IPolicyImportExtension importer, Exception e)
         {
             string errorMessage = SRServiceModel.Format(SRServiceModel.PolicyExtensionImportError, importer.GetType(), e.Message);
             return new InvalidOperationException(errorMessage, e);
@@ -143,38 +143,37 @@ namespace System.ServiceModel.Description
 
         internal class BindingOnlyPolicyConversionContext : PolicyConversionContext
         {
-            static readonly PolicyAssertionCollection noPolicy = new PolicyAssertionCollection();
-            readonly BindingElementCollection bindingElements = new BindingElementCollection();
-            readonly PolicyAssertionCollection bindingPolicy;
+            private static readonly PolicyAssertionCollection s_noPolicy = new PolicyAssertionCollection();
+            private readonly BindingElementCollection _bindingElements = new BindingElementCollection();
+            private readonly PolicyAssertionCollection _bindingPolicy;
 
             internal BindingOnlyPolicyConversionContext(ServiceEndpoint endpoint, IEnumerable<XmlElement> bindingPolicy)
                 : base(endpoint)
             {
-                this.bindingPolicy = new PolicyAssertionCollection(bindingPolicy);
+                _bindingPolicy = new PolicyAssertionCollection(bindingPolicy);
             }
 
-            public override BindingElementCollection BindingElements { get { return this.bindingElements; } }
+            public override BindingElementCollection BindingElements { get { return _bindingElements; } }
 
             public override PolicyAssertionCollection GetBindingAssertions()
             {
-                return this.bindingPolicy;
+                return _bindingPolicy;
             }
 
             public override PolicyAssertionCollection GetOperationBindingAssertions(OperationDescription operation)
             {
-                return noPolicy;
+                return s_noPolicy;
             }
 
             public override PolicyAssertionCollection GetMessageBindingAssertions(MessageDescription message)
             {
-                return noPolicy;
+                return s_noPolicy;
             }
 
             public override PolicyAssertionCollection GetFaultBindingAssertions(FaultDescription fault)
             {
-                return noPolicy;
+                return s_noPolicy;
             }
         }
     }
-
 }

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization.Advanced {
-
+namespace Microsoft.Xml.Serialization.Advanced
+{
     using System;
     using Microsoft.Xml.Schema;
     using Microsoft.Xml;
@@ -18,84 +18,105 @@ namespace Microsoft.Xml.Serialization.Advanced {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public abstract class SchemaImporterExtension {
+    public abstract class SchemaImporterExtension
+    {
         /// <include file='doc\SchemaImporterExtension.uex' path='docs/doc[@for="SchemaImporterExtension.ImportSchemaType"]/*' />
-        public virtual string ImportSchemaType(string name, string ns, XmlSchemaObject context, XmlSchemas schemas, XmlSchemaImporter importer, 
-            CodeCompileUnit compileUnit, CodeNamespace mainNamespace, CodeGenerationOptions options, CodeDomProvider codeProvider) {
+        public virtual string ImportSchemaType(string name, string ns, XmlSchemaObject context, XmlSchemas schemas, XmlSchemaImporter importer,
+            CodeCompileUnit compileUnit, CodeNamespace mainNamespace, CodeGenerationOptions options, CodeDomProvider codeProvider)
+        {
             return null;
         }
 
         /// <include file='doc\SchemaImporterExtension.uex' path='docs/doc[@for="SchemaImporterExtension.ImportSchemaType1"]/*' />
         public virtual string ImportSchemaType(XmlSchemaType type, XmlSchemaObject context, XmlSchemas schemas, XmlSchemaImporter importer,
-            CodeCompileUnit compileUnit, CodeNamespace mainNamespace, CodeGenerationOptions options, CodeDomProvider codeProvider) {
+            CodeCompileUnit compileUnit, CodeNamespace mainNamespace, CodeGenerationOptions options, CodeDomProvider codeProvider)
+        {
             return null;
         }
 
         /// <include file='doc\SchemaImporterExtension.uex' path='docs/doc[@for="SchemaImporterExtension.ImportSchemaType1"]/*' />
         public virtual string ImportAnyElement(XmlSchemaAny any, bool mixed, XmlSchemas schemas, XmlSchemaImporter importer,
-            CodeCompileUnit compileUnit, CodeNamespace mainNamespace, CodeGenerationOptions options, CodeDomProvider codeProvider) {
+            CodeCompileUnit compileUnit, CodeNamespace mainNamespace, CodeGenerationOptions options, CodeDomProvider codeProvider)
+        {
             return null;
         }
 
         /// <include file='doc\SchemaImporterExtension.uex' path='docs/doc[@for="SchemaImporterExtension.ImportDefaultValue"]/*' />
-        public virtual CodeExpression ImportDefaultValue(string value, string type) {
+        public virtual CodeExpression ImportDefaultValue(string value, string type)
+        {
             return null;
         }
     }
 
-    public class SchemaImporterExtensionCollection : CollectionBase {
-        Hashtable exNames;
+    public class SchemaImporterExtensionCollection : CollectionBase
+    {
+        private Hashtable _exNames;
 
-        internal Hashtable Names {
-            get {
-                if (exNames == null)
-                    exNames = new Hashtable();
-                return exNames;
+        internal Hashtable Names
+        {
+            get
+            {
+                if (_exNames == null)
+                    _exNames = new Hashtable();
+                return _exNames;
             }
         }
 
-        public int Add(SchemaImporterExtension extension) {
+        public int Add(SchemaImporterExtension extension)
+        {
             return Add(extension.GetType().FullName, extension);
         }
 
-        public int Add(string name, Type type) {
-            if (type.GetTypeInfo().IsSubclassOf(typeof(SchemaImporterExtension))) {
+        public int Add(string name, Type type)
+        {
+            if (type.GetTypeInfo().IsSubclassOf(typeof(SchemaImporterExtension)))
+            {
                 return Add(name, (SchemaImporterExtension)Activator.CreateInstance(type));
             }
-            else {
+            else
+            {
                 throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidSchemaExtension, type));
             }
         }
-        
-        public void Remove(string name) {
-            if (Names[name] != null) {
+
+        public void Remove(string name)
+        {
+            if (Names[name] != null)
+            {
                 List.Remove(Names[name]);
                 Names[name] = null;
             }
         }
 
-        public new void Clear() {
+        public new void Clear()
+        {
             Names.Clear();
             List.Clear();
         }
 
-        internal SchemaImporterExtensionCollection Clone() {
+        internal SchemaImporterExtensionCollection Clone()
+        {
             SchemaImporterExtensionCollection clone = new SchemaImporterExtensionCollection();
-            clone.exNames = (Hashtable)this.Names.Clone();
-            foreach (object o in this.List) {
+            clone._exNames = (Hashtable)this.Names.Clone();
+            foreach (object o in this.List)
+            {
                 clone.List.Add(o);
             }
             return clone;
         }
 
-        public SchemaImporterExtension this[int index] {
+        public SchemaImporterExtension this[int index]
+        {
             get { return (SchemaImporterExtension)List[index]; }
             set { List[index] = value; }
         }
 
-        internal int Add(string name, SchemaImporterExtension extension) {
-            if (Names[name] != null) {
-                if (Names[name].GetType() != extension.GetType()) {
+        internal int Add(string name, SchemaImporterExtension extension)
+        {
+            if (Names[name] != null)
+            {
+                if (Names[name].GetType() != extension.GetType())
+                {
                     throw new InvalidOperationException(ResXml.GetString(ResXml.XmlConfigurationDuplicateExtension, name));
                 }
                 return -1;
@@ -103,82 +124,97 @@ namespace Microsoft.Xml.Serialization.Advanced {
             Names[name] = extension;
             return List.Add(extension);
         }
-        
-        public void Insert(int index, SchemaImporterExtension extension) {
+
+        public void Insert(int index, SchemaImporterExtension extension)
+        {
             List.Insert(index, extension);
         }
-        
-        public int IndexOf(SchemaImporterExtension extension) {
+
+        public int IndexOf(SchemaImporterExtension extension)
+        {
             return List.IndexOf(extension);
         }
-        
-        public bool Contains(SchemaImporterExtension extension) {
+
+        public bool Contains(SchemaImporterExtension extension)
+        {
             return List.Contains(extension);
         }
-        
-        public void Remove(SchemaImporterExtension extension) {
+
+        public void Remove(SchemaImporterExtension extension)
+        {
             List.Remove(extension);
         }
-        
-        public void CopyTo(SchemaImporterExtension[] array, int index) {
+
+        public void CopyTo(SchemaImporterExtension[] array, int index)
+        {
             List.CopyTo(array, index);
         }
     }
 
-    internal class MappedTypeDesc {
-        string name;
-        string ns;
-        XmlSchemaType xsdType;
-        XmlSchemaObject context;
-        string clrType;
-        SchemaImporterExtension extension;
-        CodeNamespace code;
-        bool exported = false;
-        StringCollection references;
+    internal class MappedTypeDesc
+    {
+        private string _name;
+        private string _ns;
+        private XmlSchemaType _xsdType;
+        private XmlSchemaObject _context;
+        private string _clrType;
+        private SchemaImporterExtension _extension;
+        private CodeNamespace _code;
+        private bool _exported = false;
+        private StringCollection _references;
 
-        internal MappedTypeDesc(string clrType, string name, string ns, XmlSchemaType xsdType, XmlSchemaObject context, SchemaImporterExtension extension, CodeNamespace code, StringCollection references) {
-            this.clrType = clrType.Replace('+', '.');
-            this.name = name;
-            this.ns = ns;
-            this.xsdType = xsdType;
-            this.context = context;
-            this.code = code;
-            this.references = references;
-            this.extension = extension;
+        internal MappedTypeDesc(string clrType, string name, string ns, XmlSchemaType xsdType, XmlSchemaObject context, SchemaImporterExtension extension, CodeNamespace code, StringCollection references)
+        {
+            _clrType = clrType.Replace('+', '.');
+            _name = name;
+            _ns = ns;
+            _xsdType = xsdType;
+            _context = context;
+            _code = code;
+            _references = references;
+            _extension = extension;
         }
 
-        internal SchemaImporterExtension Extension { get { return extension; } }
-        internal string Name { get { return clrType; } }
-        
-        internal StringCollection ReferencedAssemblies { 
-            get { 
-                if (references == null)
-                    references = new StringCollection();
-                return references; 
-            } 
+        internal SchemaImporterExtension Extension { get { return _extension; } }
+        internal string Name { get { return _clrType; } }
+
+        internal StringCollection ReferencedAssemblies
+        {
+            get
+            {
+                if (_references == null)
+                    _references = new StringCollection();
+                return _references;
+            }
         }
 
-        internal CodeTypeDeclaration ExportTypeDefinition(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit) {
-            if (exported)
+        internal CodeTypeDeclaration ExportTypeDefinition(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit)
+        {
+            if (_exported)
                 return null;
-            exported = true;
+            _exported = true;
 
-            foreach(CodeNamespaceImport import in code.Imports) {
+            foreach (CodeNamespaceImport import in _code.Imports)
+            {
                 codeNamespace.Imports.Add(import);
             }
             CodeTypeDeclaration codeClass = null;
-            string comment = ResXml.GetString(ResXml.XmlExtensionComment, extension.GetType().FullName);
-            foreach(CodeTypeDeclaration type in code.Types) {
-                if (clrType == type.Name) {
+            string comment = ResXml.GetString(ResXml.XmlExtensionComment, _extension.GetType().FullName);
+            foreach (CodeTypeDeclaration type in _code.Types)
+            {
+                if (_clrType == type.Name)
+                {
                     if (codeClass != null)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlExtensionDuplicateDefinition, extension.GetType().FullName, clrType));
+                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlExtensionDuplicateDefinition, _extension.GetType().FullName, _clrType));
                     codeClass = type;
                 }
                 type.Comments.Add(new CodeCommentStatement(comment, false));
                 codeNamespace.Types.Add(type);
             }
-            if (codeCompileUnit != null) {
-                foreach(string reference in ReferencedAssemblies) {
+            if (codeCompileUnit != null)
+            {
+                foreach (string reference in ReferencedAssemblies)
+                {
                     if (codeCompileUnit.ReferencedAssemblies.Contains(reference))
                         continue;
                     codeCompileUnit.ReferencedAssemblies.Add(reference);

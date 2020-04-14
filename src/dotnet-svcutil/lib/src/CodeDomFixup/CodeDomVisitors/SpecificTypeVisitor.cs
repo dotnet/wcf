@@ -7,10 +7,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal abstract class SpecificTypeVisitor : CodeDomVisitor
     {
-        CodeTypeDeclaration currentType = null;
+        private CodeTypeDeclaration _currentType = null;
         protected CodeTypeDeclaration CurrentType
         {
-            get { return this.currentType; }
+            get { return _currentType; }
         }
 
         protected override void Visit(CodeTypeDeclaration type)
@@ -38,15 +38,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             ExitSpecificType();
         }
 
-        void EnterSpecificType(CodeTypeDeclaration type)
+        private void EnterSpecificType(CodeTypeDeclaration type)
         {
-            this.currentType = type;
+            _currentType = type;
             OnEnterSpecificType();
         }
-        void ExitSpecificType()
+        private void ExitSpecificType()
         {
             OnExitSpecificType();
-            this.currentType = null;
+            _currentType = null;
         }
 
         protected virtual void OnEnterSpecificType() { }
@@ -54,5 +54,4 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         protected abstract bool IsSpecificType(CodeTypeDeclaration type);
     }
-
 }

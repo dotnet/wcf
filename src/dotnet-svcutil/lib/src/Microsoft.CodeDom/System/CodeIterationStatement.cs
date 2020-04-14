@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,22 +15,24 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeIterationStatement : CodeStatement {
-        private CodeStatement initStatement;
-        private CodeExpression testExpression;
-        private CodeStatement incrementStatement;
-        private CodeStatementCollection statements = new CodeStatementCollection();
+    public class CodeIterationStatement : CodeStatement
+    {
+        private CodeStatement _initStatement;
+        private CodeExpression _testExpression;
+        private CodeStatement _incrementStatement;
+        private CodeStatementCollection _statements = new CodeStatementCollection();
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeIterationStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeIterationStatement() {
+        public CodeIterationStatement()
+        {
         }
 
         /// <devdoc>
@@ -38,7 +40,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeIterationStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeIterationStatement(CodeStatement initStatement, CodeExpression testExpression, CodeStatement incrementStatement, params CodeStatement[] statements) {
+        public CodeIterationStatement(CodeStatement initStatement, CodeExpression testExpression, CodeStatement incrementStatement, params CodeStatement[] statements)
+        {
             InitStatement = initStatement;
             TestExpression = testExpression;
             IncrementStatement = incrementStatement;
@@ -51,12 +54,15 @@ namespace Microsoft.CodeDom {
         ///       the loop initialization statement.
         ///    </para>
         /// </devdoc>
-        public CodeStatement InitStatement {
-            get {
-                return initStatement;
+        public CodeStatement InitStatement
+        {
+            get
+            {
+                return _initStatement;
             }
-            set {
-                initStatement = value;
+            set
+            {
+                _initStatement = value;
             }
         }
 
@@ -66,12 +72,15 @@ namespace Microsoft.CodeDom {
         ///       the expression to test for.
         ///    </para>
         /// </devdoc>
-        public CodeExpression TestExpression {
-            get {
-                return testExpression;
+        public CodeExpression TestExpression
+        {
+            get
+            {
+                return _testExpression;
             }
-            set {
-                testExpression = value;
+            set
+            {
+                _testExpression = value;
             }
         }
 
@@ -81,12 +90,15 @@ namespace Microsoft.CodeDom {
         ///       the per loop cycle increment statement.
         ///    </para>
         /// </devdoc>
-        public CodeStatement IncrementStatement {
-            get {
-                return incrementStatement;
+        public CodeStatement IncrementStatement
+        {
+            get
+            {
+                return _incrementStatement;
             }
-            set {
-                incrementStatement = value;
+            set
+            {
+                _incrementStatement = value;
             }
         }
 
@@ -96,10 +108,12 @@ namespace Microsoft.CodeDom {
         ///       the statements to be executed within the loop.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection Statements {
-            get {
-                return statements;
+        public CodeStatementCollection Statements
+        {
+            get
+            {
+                return _statements;
             }
-        }        
+        }
     }
 }

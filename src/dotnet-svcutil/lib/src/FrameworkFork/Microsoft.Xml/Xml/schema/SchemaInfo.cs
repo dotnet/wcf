@@ -5,14 +5,16 @@ using System;
 using Microsoft.Xml;
 using System.Diagnostics;
 using System.Collections.Generic;
-    
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
 #if !SILVERLIGHT
-    internal enum AttributeMatchState {
+    internal enum AttributeMatchState
+    {
         AttributeFound,
         AnyIdAttributeFound,
         UndeclaredElementAndAttribute,
@@ -26,160 +28,197 @@ namespace Microsoft.Xml.Schema {
     }
 #endif
 
-    internal class SchemaInfo : IDtdInfo {
-        Dictionary<XmlQualifiedName, SchemaElementDecl> elementDecls = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
-        Dictionary<XmlQualifiedName, SchemaElementDecl> undeclaredElementDecls = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
+    internal class SchemaInfo : IDtdInfo
+    {
+        private Dictionary<XmlQualifiedName, SchemaElementDecl> _elementDecls = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
+        private Dictionary<XmlQualifiedName, SchemaElementDecl> _undeclaredElementDecls = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
 
-        Dictionary<XmlQualifiedName, SchemaEntity> generalEntities;
-        Dictionary<XmlQualifiedName, SchemaEntity> parameterEntities;
+        private Dictionary<XmlQualifiedName, SchemaEntity> _generalEntities;
+        private Dictionary<XmlQualifiedName, SchemaEntity> _parameterEntities;
 
-        XmlQualifiedName docTypeName = XmlQualifiedName.Empty;
-        string internalDtdSubset = string.Empty;
-        bool hasNonCDataAttributes = false;
-        bool hasDefaultAttributes = false;
+        private XmlQualifiedName _docTypeName = XmlQualifiedName.Empty;
+        private string _internalDtdSubset = string.Empty;
+        private bool _hasNonCDataAttributes = false;
+        private bool _hasDefaultAttributes = false;
 
 #if !SILVERLIGHT
-        Dictionary<string, bool> targetNamespaces = new Dictionary<string, bool>();
-        Dictionary<XmlQualifiedName, SchemaAttDef> attributeDecls = new Dictionary<XmlQualifiedName, SchemaAttDef>();
-        int errorCount;
-        SchemaType schemaType;
-        Dictionary<XmlQualifiedName, SchemaElementDecl> elementDeclsByType = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
-        Dictionary<string, SchemaNotation> notations;
+        private Dictionary<string, bool> _targetNamespaces = new Dictionary<string, bool>();
+        private Dictionary<XmlQualifiedName, SchemaAttDef> _attributeDecls = new Dictionary<XmlQualifiedName, SchemaAttDef>();
+        private int _errorCount;
+        private SchemaType _schemaType;
+        private Dictionary<XmlQualifiedName, SchemaElementDecl> _elementDeclsByType = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
+        private Dictionary<string, SchemaNotation> _notations;
 #endif
 
 
-        internal SchemaInfo() {
+        internal SchemaInfo()
+        {
 #if !SILVERLIGHT
-            schemaType = SchemaType.None;
+            _schemaType = SchemaType.None;
 #endif
         }
 
-        public XmlQualifiedName DocTypeName {
-            get { return docTypeName; }
-            set { docTypeName = value; }
+        public XmlQualifiedName DocTypeName
+        {
+            get { return _docTypeName; }
+            set { _docTypeName = value; }
         }
 
-        internal string InternalDtdSubset {
-            get { return internalDtdSubset; }
-            set { internalDtdSubset = value; }
+        internal string InternalDtdSubset
+        {
+            get { return _internalDtdSubset; }
+            set { _internalDtdSubset = value; }
         }
 
-        internal Dictionary<XmlQualifiedName, SchemaElementDecl> ElementDecls {
-            get { return elementDecls; }
+        internal Dictionary<XmlQualifiedName, SchemaElementDecl> ElementDecls
+        {
+            get { return _elementDecls; }
         }
 
-        internal Dictionary<XmlQualifiedName, SchemaElementDecl> UndeclaredElementDecls {
-            get { return undeclaredElementDecls; }
+        internal Dictionary<XmlQualifiedName, SchemaElementDecl> UndeclaredElementDecls
+        {
+            get { return _undeclaredElementDecls; }
         }
 
-        internal Dictionary<XmlQualifiedName, SchemaEntity> GeneralEntities {
-            get {
-                if (this.generalEntities == null) {
-                    this.generalEntities = new Dictionary<XmlQualifiedName, SchemaEntity>();
+        internal Dictionary<XmlQualifiedName, SchemaEntity> GeneralEntities
+        {
+            get
+            {
+                if (_generalEntities == null)
+                {
+                    _generalEntities = new Dictionary<XmlQualifiedName, SchemaEntity>();
                 }
-                return this.generalEntities;
+                return _generalEntities;
             }
         }
 
-        internal Dictionary<XmlQualifiedName, SchemaEntity> ParameterEntities {
-            get {
-                if (this.parameterEntities == null) {
-                    this.parameterEntities = new Dictionary<XmlQualifiedName, SchemaEntity>();
+        internal Dictionary<XmlQualifiedName, SchemaEntity> ParameterEntities
+        {
+            get
+            {
+                if (_parameterEntities == null)
+                {
+                    _parameterEntities = new Dictionary<XmlQualifiedName, SchemaEntity>();
                 }
-                return this.parameterEntities;
+                return _parameterEntities;
             }
         }
 
 #if !SILVERLIGHT
-        internal SchemaType SchemaType {
-            get { return schemaType;}
-            set { schemaType = value;}
+        internal SchemaType SchemaType
+        {
+            get { return _schemaType; }
+            set { _schemaType = value; }
         }
 
-        internal Dictionary<string, bool> TargetNamespaces {
-            get { return targetNamespaces; }
+        internal Dictionary<string, bool> TargetNamespaces
+        {
+            get { return _targetNamespaces; }
         }
 
-        internal Dictionary<XmlQualifiedName, SchemaElementDecl> ElementDeclsByType {
-            get { return elementDeclsByType; }
+        internal Dictionary<XmlQualifiedName, SchemaElementDecl> ElementDeclsByType
+        {
+            get { return _elementDeclsByType; }
         }
 
-        internal Dictionary<XmlQualifiedName, SchemaAttDef> AttributeDecls {
-            get { return attributeDecls; }
+        internal Dictionary<XmlQualifiedName, SchemaAttDef> AttributeDecls
+        {
+            get { return _attributeDecls; }
         }
 
-        internal Dictionary<string, SchemaNotation> Notations {
-            get {
-                if (this.notations == null) {
-                    this.notations = new Dictionary<string, SchemaNotation>();
+        internal Dictionary<string, SchemaNotation> Notations
+        {
+            get
+            {
+                if (_notations == null)
+                {
+                    _notations = new Dictionary<string, SchemaNotation>();
                 }
-                return this.notations; 
+                return _notations;
             }
         }
 
-        internal int ErrorCount {
-            get { return errorCount; }
-            set { errorCount = value; }
+        internal int ErrorCount
+        {
+            get { return _errorCount; }
+            set { _errorCount = value; }
         }
 
-        internal SchemaElementDecl GetElementDecl(XmlQualifiedName qname) {
+        internal SchemaElementDecl GetElementDecl(XmlQualifiedName qname)
+        {
             SchemaElementDecl elemDecl;
-            if (elementDecls.TryGetValue(qname, out elemDecl)) {
+            if (_elementDecls.TryGetValue(qname, out elemDecl))
+            {
                 return elemDecl;
             }
             return null;
         }
-        
-        internal SchemaElementDecl GetTypeDecl(XmlQualifiedName qname) {
+
+        internal SchemaElementDecl GetTypeDecl(XmlQualifiedName qname)
+        {
             SchemaElementDecl elemDecl;
-            if (elementDeclsByType.TryGetValue(qname, out elemDecl)) {
+            if (_elementDeclsByType.TryGetValue(qname, out elemDecl))
+            {
                 return elemDecl;
             }
             return null;
         }
 
-        
-        internal XmlSchemaElement GetElement(XmlQualifiedName qname) {
+
+        internal XmlSchemaElement GetElement(XmlQualifiedName qname)
+        {
             SchemaElementDecl ed = GetElementDecl(qname);
-            if (ed != null) {
+            if (ed != null)
+            {
                 return ed.SchemaElement;
             }
             return null;
         }
-        
-        internal XmlSchemaAttribute GetAttribute(XmlQualifiedName qname) {
-            SchemaAttDef attdef = (SchemaAttDef)attributeDecls[qname];
-            if (attdef != null) {
+
+        internal XmlSchemaAttribute GetAttribute(XmlQualifiedName qname)
+        {
+            SchemaAttDef attdef = (SchemaAttDef)_attributeDecls[qname];
+            if (attdef != null)
+            {
                 return attdef.SchemaAttribute;
             }
             return null;
         }
-        
-        internal XmlSchemaElement GetType(XmlQualifiedName qname) {
+
+        internal XmlSchemaElement GetType(XmlQualifiedName qname)
+        {
             SchemaElementDecl ed = GetElementDecl(qname);
-            if (ed != null) {
+            if (ed != null)
+            {
                 return ed.SchemaElement;
             }
             return null;
         }
 
-        internal bool HasSchema(string ns) {
-            return targetNamespaces.ContainsKey(ns);
-        }
-        
-        internal bool Contains(string ns) {
-            return targetNamespaces.ContainsKey(ns);
+        internal bool HasSchema(string ns)
+        {
+            return _targetNamespaces.ContainsKey(ns);
         }
 
-        internal SchemaAttDef GetAttributeXdr(SchemaElementDecl ed, XmlQualifiedName qname) {
+        internal bool Contains(string ns)
+        {
+            return _targetNamespaces.ContainsKey(ns);
+        }
+
+        internal SchemaAttDef GetAttributeXdr(SchemaElementDecl ed, XmlQualifiedName qname)
+        {
             SchemaAttDef attdef = null;
-            if (ed != null) {
-                attdef = ed.GetAttDef(qname);;
-                if (attdef == null) {
-                    if (!ed.ContentValidator.IsOpen || qname.Namespace.Length == 0) {
+            if (ed != null)
+            {
+                attdef = ed.GetAttDef(qname); ;
+                if (attdef == null)
+                {
+                    if (!ed.ContentValidator.IsOpen || qname.Namespace.Length == 0)
+                    {
                         throw new XmlSchemaException(ResXml.Sch_UndeclaredAttribute, qname.ToString());
                     }
-                    if (!attributeDecls.TryGetValue(qname, out attdef) && targetNamespaces.ContainsKey(qname.Namespace)) {
+                    if (!_attributeDecls.TryGetValue(qname, out attdef) && _targetNamespaces.ContainsKey(qname.Namespace))
+                    {
                         throw new XmlSchemaException(ResXml.Sch_UndeclaredAttribute, qname.ToString());
                     }
                 }
@@ -188,72 +227,94 @@ namespace Microsoft.Xml.Schema {
         }
 
 
-        internal SchemaAttDef GetAttributeXsd(SchemaElementDecl ed, XmlQualifiedName qname, XmlSchemaObject partialValidationType, out AttributeMatchState attributeMatchState) {
+        internal SchemaAttDef GetAttributeXsd(SchemaElementDecl ed, XmlQualifiedName qname, XmlSchemaObject partialValidationType, out AttributeMatchState attributeMatchState)
+        {
             SchemaAttDef attdef = null;
             attributeMatchState = AttributeMatchState.UndeclaredAttribute;
-            if (ed != null) {
+            if (ed != null)
+            {
                 attdef = ed.GetAttDef(qname);
-                if (attdef != null) {
+                if (attdef != null)
+                {
                     attributeMatchState = AttributeMatchState.AttributeFound;
                     return attdef;
                 }
                 XmlSchemaAnyAttribute any = ed.AnyAttribute;
-                if (any != null) {
-                    if (!any.NamespaceList.Allows(qname)) {
+                if (any != null)
+                {
+                    if (!any.NamespaceList.Allows(qname))
+                    {
                         attributeMatchState = AttributeMatchState.ProhibitedAnyAttribute;
                     }
-                    else if (any.ProcessContentsCorrect != XmlSchemaContentProcessing.Skip) {
-                        if (attributeDecls.TryGetValue(qname, out attdef)) {
-                            if (attdef.Datatype.TypeCode == XmlTypeCode.Id) { //anyAttribute match whose type is ID
+                    else if (any.ProcessContentsCorrect != XmlSchemaContentProcessing.Skip)
+                    {
+                        if (_attributeDecls.TryGetValue(qname, out attdef))
+                        {
+                            if (attdef.Datatype.TypeCode == XmlTypeCode.Id)
+                            { //anyAttribute match whose type is ID
                                 attributeMatchState = AttributeMatchState.AnyIdAttributeFound;
                             }
-                            else {
+                            else
+                            {
                                 attributeMatchState = AttributeMatchState.AttributeFound;
                             }
                         }
-                        else if (any.ProcessContentsCorrect == XmlSchemaContentProcessing.Lax) {
+                        else if (any.ProcessContentsCorrect == XmlSchemaContentProcessing.Lax)
+                        {
                             attributeMatchState = AttributeMatchState.AnyAttributeLax;
                         }
                     }
-                    else {
+                    else
+                    {
                         attributeMatchState = AttributeMatchState.AnyAttributeSkip;
                     }
                 }
-                else if (ed.ProhibitedAttributes.ContainsKey(qname)) {
+                else if (ed.ProhibitedAttributes.ContainsKey(qname))
+                {
                     attributeMatchState = AttributeMatchState.ProhibitedAttribute;
                 }
             }
-            else if (partialValidationType != null) {
+            else if (partialValidationType != null)
+            {
                 XmlSchemaAttribute attr = partialValidationType as XmlSchemaAttribute;
-                if (attr != null) {
-                    if (qname.Equals(attr.QualifiedName)) {
+                if (attr != null)
+                {
+                    if (qname.Equals(attr.QualifiedName))
+                    {
                         attdef = attr.AttDef;
                         attributeMatchState = AttributeMatchState.AttributeFound;
                     }
-                    else {
+                    else
+                    {
                         attributeMatchState = AttributeMatchState.AttributeNameMismatch;
                     }
                 }
-                else {
+                else
+                {
                     attributeMatchState = AttributeMatchState.ValidateAttributeInvalidCall;
                 }
             }
-            else {
-                if (attributeDecls.TryGetValue(qname, out attdef)) {
+            else
+            {
+                if (_attributeDecls.TryGetValue(qname, out attdef))
+                {
                     attributeMatchState = AttributeMatchState.AttributeFound;
                 }
-                else {
+                else
+                {
                     attributeMatchState = AttributeMatchState.UndeclaredElementAndAttribute;
                 }
             }
             return attdef;
         }
 
-        internal SchemaAttDef GetAttributeXsd(SchemaElementDecl ed, XmlQualifiedName qname, ref bool skip) {
+        internal SchemaAttDef GetAttributeXsd(SchemaElementDecl ed, XmlQualifiedName qname, ref bool skip)
+        {
             AttributeMatchState attributeMatchState;
 
             SchemaAttDef attDef = GetAttributeXsd(ed, qname, null, out attributeMatchState);
-            switch(attributeMatchState) {
+            switch (attributeMatchState)
+            {
                 case AttributeMatchState.UndeclaredAttribute:
                     throw new XmlSchemaException(ResXml.Sch_UndeclaredAttribute, qname.ToString());
 
@@ -277,113 +338,144 @@ namespace Microsoft.Xml.Schema {
             }
             return attDef;
         }
-            
-        internal void Add(SchemaInfo sinfo, ValidationEventHandler eventhandler) {
-            if (schemaType == SchemaType.None) {
-                schemaType = sinfo.SchemaType;
+
+        internal void Add(SchemaInfo sinfo, ValidationEventHandler eventhandler)
+        {
+            if (_schemaType == SchemaType.None)
+            {
+                _schemaType = sinfo.SchemaType;
             }
-            else if (schemaType != sinfo.SchemaType) {
-                if (eventhandler != null) {
+            else if (_schemaType != sinfo.SchemaType)
+            {
+                if (eventhandler != null)
+                {
                     eventhandler(this, new ValidationEventArgs(new XmlSchemaException(ResXml.Sch_MixSchemaTypes, string.Empty)));
                 }
                 return;
             }
 
-            foreach(string tns in sinfo.TargetNamespaces.Keys) {
-                if (!targetNamespaces.ContainsKey(tns)) {
-                    targetNamespaces.Add(tns, true);
+            foreach (string tns in sinfo.TargetNamespaces.Keys)
+            {
+                if (!_targetNamespaces.ContainsKey(tns))
+                {
+                    _targetNamespaces.Add(tns, true);
                 }
             }
 
-            foreach(KeyValuePair<XmlQualifiedName, SchemaElementDecl> entry in sinfo.elementDecls) {
-                if (!elementDecls.ContainsKey(entry.Key)) {
-                    elementDecls.Add(entry.Key, entry.Value);
+            foreach (KeyValuePair<XmlQualifiedName, SchemaElementDecl> entry in sinfo._elementDecls)
+            {
+                if (!_elementDecls.ContainsKey(entry.Key))
+                {
+                    _elementDecls.Add(entry.Key, entry.Value);
                 }
             }
-            foreach(KeyValuePair<XmlQualifiedName, SchemaElementDecl> entry in sinfo.elementDeclsByType) {
-                if (!elementDeclsByType.ContainsKey(entry.Key)) {
-                    elementDeclsByType.Add(entry.Key, entry.Value);
-                }   
-            }
-            foreach (SchemaAttDef attdef in sinfo.AttributeDecls.Values) {
-                if (!attributeDecls.ContainsKey(attdef.Name)) {
-                    attributeDecls.Add(attdef.Name, attdef);
+            foreach (KeyValuePair<XmlQualifiedName, SchemaElementDecl> entry in sinfo._elementDeclsByType)
+            {
+                if (!_elementDeclsByType.ContainsKey(entry.Key))
+                {
+                    _elementDeclsByType.Add(entry.Key, entry.Value);
                 }
             }
-            foreach (SchemaNotation notation in sinfo.Notations.Values) {
-                if (!Notations.ContainsKey(notation.Name.Name)) {
+            foreach (SchemaAttDef attdef in sinfo.AttributeDecls.Values)
+            {
+                if (!_attributeDecls.ContainsKey(attdef.Name))
+                {
+                    _attributeDecls.Add(attdef.Name, attdef);
+                }
+            }
+            foreach (SchemaNotation notation in sinfo.Notations.Values)
+            {
+                if (!Notations.ContainsKey(notation.Name.Name))
+                {
                     Notations.Add(notation.Name.Name, notation);
                 }
             }
-
         }
 #endif
 
-        internal void Finish() {
-            Dictionary<XmlQualifiedName, SchemaElementDecl> elements = elementDecls;
-            for ( int i = 0; i < 2; i++ ) {
-                foreach ( SchemaElementDecl e in elements.Values ) {
-                    if ( e.HasNonCDataAttribute ) {
-                        hasNonCDataAttributes = true;
+        internal void Finish()
+        {
+            Dictionary<XmlQualifiedName, SchemaElementDecl> elements = _elementDecls;
+            for (int i = 0; i < 2; i++)
+            {
+                foreach (SchemaElementDecl e in elements.Values)
+                {
+                    if (e.HasNonCDataAttribute)
+                    {
+                        _hasNonCDataAttributes = true;
                     }
-                    if ( e.DefaultAttDefs != null ) {
-                        hasDefaultAttributes = true;
+                    if (e.DefaultAttDefs != null)
+                    {
+                        _hasDefaultAttributes = true;
                     }
                 }
-                elements = undeclaredElementDecls;
+                elements = _undeclaredElementDecls;
             }
         }
-//
-// IDtdInfo interface
-//
-#region IDtdInfo Members
-        bool IDtdInfo.HasDefaultAttributes {
-            get {
-                return hasDefaultAttributes;
-            }
-        }
-
-        bool IDtdInfo.HasNonCDataAttributes {
-            get {
-                return hasNonCDataAttributes;
+        //
+        // IDtdInfo interface
+        //
+        #region IDtdInfo Members
+        bool IDtdInfo.HasDefaultAttributes
+        {
+            get
+            {
+                return _hasDefaultAttributes;
             }
         }
 
-        IDtdAttributeListInfo IDtdInfo.LookupAttributeList(string prefix, string localName) {
+        bool IDtdInfo.HasNonCDataAttributes
+        {
+            get
+            {
+                return _hasNonCDataAttributes;
+            }
+        }
+
+        IDtdAttributeListInfo IDtdInfo.LookupAttributeList(string prefix, string localName)
+        {
             XmlQualifiedName qname = new XmlQualifiedName(prefix, localName);
             SchemaElementDecl elementDecl;
-            if (!elementDecls.TryGetValue(qname, out elementDecl)) {
-                undeclaredElementDecls.TryGetValue(qname, out elementDecl);
+            if (!_elementDecls.TryGetValue(qname, out elementDecl))
+            {
+                _undeclaredElementDecls.TryGetValue(qname, out elementDecl);
             }
             return elementDecl;
         }
 
-        IEnumerable<IDtdAttributeListInfo> IDtdInfo.GetAttributeLists() {
-            foreach (SchemaElementDecl elemDecl in elementDecls.Values) {
+        IEnumerable<IDtdAttributeListInfo> IDtdInfo.GetAttributeLists()
+        {
+            foreach (SchemaElementDecl elemDecl in _elementDecls.Values)
+            {
                 IDtdAttributeListInfo eleDeclAsAttList = (IDtdAttributeListInfo)elemDecl;
                 yield return eleDeclAsAttList;
             }
         }
 
-        IDtdEntityInfo IDtdInfo.LookupEntity(string name) {
-            if (generalEntities == null) {
+        IDtdEntityInfo IDtdInfo.LookupEntity(string name)
+        {
+            if (_generalEntities == null)
+            {
                 return null;
             }
             XmlQualifiedName qname = new XmlQualifiedName(name);
             SchemaEntity entity;
-            if (generalEntities.TryGetValue(qname, out entity)) {
+            if (_generalEntities.TryGetValue(qname, out entity))
+            {
                 return entity;
             }
             return null;
         }
 
-        XmlQualifiedName IDtdInfo.Name {
-            get { return docTypeName; }
+        XmlQualifiedName IDtdInfo.Name
+        {
+            get { return _docTypeName; }
         }
 
-        string IDtdInfo.InternalDtdSubset {
-            get { return internalDtdSubset; }
+        string IDtdInfo.InternalDtdSubset
+        {
+            get { return _internalDtdSubset; }
         }
-#endregion
+        #endregion
     }
 }

@@ -11,7 +11,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     internal static class OutputPathHelper
     {
         private const string DataContractXsdBaseNamespace = "http://schemas.datacontract.org/2004/07/";
-        private static readonly int DataContractXsdBaseNamespaceLength = DataContractXsdBaseNamespace.Length;
+        private static readonly int s_dataContractXsdBaseNamespaceLength = DataContractXsdBaseNamespace.Length;
 
         public static string BuildFilePath(string defaultFileName, string directoryPath, string filePath, string extension, string option)
         {
@@ -45,7 +45,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public static string TryGetDirectoryPath(string directory)
         {
-
             if (directory == null || directory.Length == 0)
             {
                 return Directory.GetCurrentDirectory();
@@ -115,20 +114,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (Uri.TryCreate(ns, UriKind.RelativeOrAbsolute, out Uri nsUri))
                 {
-
                     if (nsUri.IsAbsoluteUri)
                     {
-
                         string absoluteUriString = nsUri.AbsoluteUri;
                         if (absoluteUriString.StartsWith(DataContractXsdBaseNamespace, StringComparison.Ordinal))
                         {
-                            int length = absoluteUriString.Length - DataContractXsdBaseNamespaceLength;
+                            int length = absoluteUriString.Length - s_dataContractXsdBaseNamespaceLength;
                             if (absoluteUriString.EndsWith("/", StringComparison.Ordinal))
                                 length--;
                             if (length > 0)
                             {
                                 FilenameFromUri_Add(fileNameBuilder,
-                                    absoluteUriString.Substring(DataContractXsdBaseNamespaceLength, length).Replace('/', '.'));
+                                    absoluteUriString.Substring(s_dataContractXsdBaseNamespaceLength, length).Replace('/', '.'));
                             }
                             else
                             {
@@ -143,7 +140,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                 absolutePath = absolutePath.Substring(0, absolutePath.Length - 1);
                             FilenameFromUri_Add(fileNameBuilder, absolutePath.Replace('/', '.'));
                         }
-
                     }
                     else
                     {
@@ -156,7 +152,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return filename;
         }
 
-        static void FilenameFromUri_Add(StringBuilder path, string segment)
+        private static void FilenameFromUri_Add(StringBuilder path, string segment)
         {
             if (segment != null)
             {

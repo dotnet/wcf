@@ -13,7 +13,7 @@ namespace System.Runtime.Serialization
     internal static class __HResults
     {
         internal const Int32 COR_E_SYSTEM = unchecked((int)0x80131501);
-    }  
-}  
+    }
+}
 
 // HResults.cs

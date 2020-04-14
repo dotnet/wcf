@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
-    
+namespace Microsoft.CodeDom.Compiler
+{
     using System.Runtime.InteropServices;
 
     using System.Diagnostics;
@@ -13,32 +13,35 @@ namespace Microsoft.CodeDom.Compiler {
     using System.Reflection;
     using System.Globalization;
     using Microsoft.CodeDom;
-    
+
     using System.Text;
-    
+
     /// <devdoc>
     ///    <para>Provides a base class for code generators.</para>
     /// </devdoc>
-    
-    
-    public abstract class CodeGenerator : ICodeGenerator {
-        private const int ParameterMultilineThreshold = 15;        
-        private IndentedTextWriter output;
-        private CodeGeneratorOptions options;
 
-        private CodeTypeDeclaration currentClass;
-        private CodeTypeMember currentMember;
 
-        private bool inNestedBinary = false;
+    public abstract class CodeGenerator : ICodeGenerator
+    {
+        private const int ParameterMultilineThreshold = 15;
+        private IndentedTextWriter _output;
+        private CodeGeneratorOptions _options;
+
+        private CodeTypeDeclaration _currentClass;
+        private CodeTypeMember _currentMember;
+
+        private bool _inNestedBinary = false;
 
         /// <devdoc>
         ///    <para>
         ///       Gets the current class.
         ///    </para>
         /// </devdoc>
-        protected CodeTypeDeclaration CurrentClass {
-            get {
-                return currentClass;
+        protected CodeTypeDeclaration CurrentClass
+        {
+            get
+            {
+                return _currentClass;
             }
         }
 
@@ -47,10 +50,13 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the current class name.
         ///    </para>
         /// </devdoc>
-        protected string CurrentTypeName {
-            get {
-                if (currentClass != null) {
-                    return currentClass.Name;
+        protected string CurrentTypeName
+        {
+            get
+            {
+                if (_currentClass != null)
+                {
+                    return _currentClass.Name;
                 }
                 return "<% unknown %>";
             }
@@ -61,9 +67,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the current member of the class.
         ///    </para>
         /// </devdoc>
-        protected CodeTypeMember CurrentMember {
-            get {
-                return currentMember;
+        protected CodeTypeMember CurrentMember
+        {
+            get
+            {
+                return _currentMember;
             }
         }
 
@@ -72,10 +80,13 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the current member name.
         ///    </para>
         /// </devdoc>
-        protected string CurrentMemberName {
-            get {
-                if (currentMember != null) {
-                    return currentMember.Name;
+        protected string CurrentMemberName
+        {
+            get
+            {
+                if (_currentMember != null)
+                {
+                    return _currentMember.Name;
                 }
                 return "<% unknown %>";
             }
@@ -87,10 +98,13 @@ namespace Microsoft.CodeDom.Compiler {
         ///       generated is an interface.
         ///    </para>
         /// </devdoc>
-        protected bool IsCurrentInterface {
-            get {
-                if (currentClass != null && !(currentClass is CodeTypeDelegate)) {
-                    return currentClass.IsInterface;
+        protected bool IsCurrentInterface
+        {
+            get
+            {
+                if (_currentClass != null && !(_currentClass is CodeTypeDelegate))
+                {
+                    return _currentClass.IsInterface;
                 }
                 return false;
             }
@@ -102,10 +116,13 @@ namespace Microsoft.CodeDom.Compiler {
         ///       is a class.
         ///    </para>
         /// </devdoc>
-        protected bool IsCurrentClass {
-            get {
-                if (currentClass != null && !(currentClass is CodeTypeDelegate)) {
-                    return currentClass.IsClass;
+        protected bool IsCurrentClass
+        {
+            get
+            {
+                if (_currentClass != null && !(_currentClass is CodeTypeDelegate))
+                {
+                    return _currentClass.IsClass;
                 }
                 return false;
             }
@@ -117,10 +134,13 @@ namespace Microsoft.CodeDom.Compiler {
         ///       is a struct.
         ///    </para>
         /// </devdoc>
-        protected bool IsCurrentStruct {
-            get {
-                if (currentClass != null && !(currentClass is CodeTypeDelegate)) {
-                    return currentClass.IsStruct;
+        protected bool IsCurrentStruct
+        {
+            get
+            {
+                if (_currentClass != null && !(_currentClass is CodeTypeDelegate))
+                {
+                    return _currentClass.IsStruct;
                 }
                 return false;
             }
@@ -132,10 +152,13 @@ namespace Microsoft.CodeDom.Compiler {
         ///       is an enumeration.
         ///    </para>
         /// </devdoc>
-        protected bool IsCurrentEnum {
-            get {
-                if (currentClass != null && !(currentClass is CodeTypeDelegate)) {
-                    return currentClass.IsEnum;
+        protected bool IsCurrentEnum
+        {
+            get
+            {
+                if (_currentClass != null && !(_currentClass is CodeTypeDelegate))
+                {
+                    return _currentClass.IsEnum;
                 }
                 return false;
             }
@@ -147,9 +170,12 @@ namespace Microsoft.CodeDom.Compiler {
         ///       is a delegate.
         ///    </para>
         /// </devdoc>
-        protected bool IsCurrentDelegate {
-            get {
-                if (currentClass != null && currentClass is CodeTypeDelegate) {
+        protected bool IsCurrentDelegate
+        {
+            get
+            {
+                if (_currentClass != null && _currentClass is CodeTypeDelegate)
+                {
                     return true;
                 }
                 return false;
@@ -161,12 +187,15 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the amount of spaces to indent.
         ///    </para>
         /// </devdoc>
-        protected int Indent {
-            get {
-                return output.Indent;
+        protected int Indent
+        {
+            get
+            {
+                return _output.Indent;
             }
-            set {
-                output.Indent = value;
+            set
+            {
+                _output.Indent = value;
             }
         }
 
@@ -183,41 +212,49 @@ namespace Microsoft.CodeDom.Compiler {
         ///       to use for output.
         ///    </para>
         /// </devdoc>
-        protected TextWriter Output {
-            get {
-                return output;
+        protected TextWriter Output
+        {
+            get
+            {
+                return _output;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected CodeGeneratorOptions Options {
-            get {
-                return options;
+        protected CodeGeneratorOptions Options
+        {
+            get
+            {
+                return _options;
             }
         }
 
-        private void GenerateType(CodeTypeDeclaration e) {
-            currentClass = e;
+        private void GenerateType(CodeTypeDeclaration e)
+        {
+            _currentClass = e;
 
-            if (e.StartDirectives.Count > 0) {
+            if (e.StartDirectives.Count > 0)
+            {
                 GenerateDirectives(e.StartDirectives);
             }
 
             GenerateCommentStatements(e.Comments);
-            
+
             if (e.LinePragma != null) GenerateLinePragmaStart(e.LinePragma);
 
             GenerateTypeStart(e);
-            
-            if (Options.VerbatimOrder) {
-                foreach (CodeTypeMember member in e.Members) {
-                    GenerateTypeMember(member, e);
-                }                
-            }
-            else {
 
+            if (Options.VerbatimOrder)
+            {
+                foreach (CodeTypeMember member in e.Members)
+                {
+                    GenerateTypeMember(member, e);
+                }
+            }
+            else
+            {
                 GenerateFields(e);
 
                 GenerateSnippetMembers(e);
@@ -235,116 +272,137 @@ namespace Microsoft.CodeDom.Compiler {
                 GenerateNestedTypes(e);
             }
             // Nested types clobber the current class, so reset it.
-            currentClass = e;
+            _currentClass = e;
 
             GenerateTypeEnd(e);
             if (e.LinePragma != null) GenerateLinePragmaEnd(e.LinePragma);
-            
-            if (e.EndDirectives.Count > 0) {
+
+            if (e.EndDirectives.Count > 0)
+            {
                 GenerateDirectives(e.EndDirectives);
             }
-            
         }
-        
-        protected virtual void GenerateDirectives(CodeDirectiveCollection directives) {            
-        } 
-        
-        private void GenerateTypeMember(CodeTypeMember member, CodeTypeDeclaration declaredType) {
 
-            if (options.BlankLinesBetweenMembers) {
+        protected virtual void GenerateDirectives(CodeDirectiveCollection directives)
+        {
+        }
+
+        private void GenerateTypeMember(CodeTypeMember member, CodeTypeDeclaration declaredType)
+        {
+            if (_options.BlankLinesBetweenMembers)
+            {
                 Output.WriteLine();
             }
-            
-            if (member is CodeTypeDeclaration) {
-                ((ICodeGenerator)this).GenerateCodeFromType((CodeTypeDeclaration)member, output.InnerWriter, options);
-                
+
+            if (member is CodeTypeDeclaration)
+            {
+                ((ICodeGenerator)this).GenerateCodeFromType((CodeTypeDeclaration)member, _output.InnerWriter, _options);
+
                 // Nested types clobber the current class, so reset it.
-                currentClass = declaredType;
-                
+                _currentClass = declaredType;
+
                 // For nested types, comments and line pragmas are handled separately, so return here
                 return;
             }
-            
-            if (member.StartDirectives.Count > 0) {
+
+            if (member.StartDirectives.Count > 0)
+            {
                 GenerateDirectives(member.StartDirectives);
             }
-                       
+
             GenerateCommentStatements(member.Comments);
-            
-            if (member.LinePragma != null) {
+
+            if (member.LinePragma != null)
+            {
                 GenerateLinePragmaStart(member.LinePragma);
             }
-            
-            if (member is CodeMemberField) {
+
+            if (member is CodeMemberField)
+            {
                 GenerateField((CodeMemberField)member);
             }
-            else if (member is CodeMemberProperty) {
+            else if (member is CodeMemberProperty)
+            {
                 GenerateProperty((CodeMemberProperty)member, declaredType);
             }
-            else if (member is CodeMemberMethod) {
-                if (member is CodeConstructor) {
+            else if (member is CodeMemberMethod)
+            {
+                if (member is CodeConstructor)
+                {
                     GenerateConstructor((CodeConstructor)member, declaredType);
                 }
-                else if (member is CodeTypeConstructor) {
-                    GenerateTypeConstructor((CodeTypeConstructor) member);
+                else if (member is CodeTypeConstructor)
+                {
+                    GenerateTypeConstructor((CodeTypeConstructor)member);
                 }
-                else if (member is CodeEntryPointMethod) {
+                else if (member is CodeEntryPointMethod)
+                {
                     GenerateEntryPointMethod((CodeEntryPointMethod)member, declaredType);
-                } 
-                else {
+                }
+                else
+                {
                     GenerateMethod((CodeMemberMethod)member, declaredType);
                 }
-            }            
-            else if (member is CodeMemberEvent) {
+            }
+            else if (member is CodeMemberEvent)
+            {
                 GenerateEvent((CodeMemberEvent)member, declaredType);
             }
-            else if (member is CodeSnippetTypeMember) {
-
+            else if (member is CodeSnippetTypeMember)
+            {
                 // Don't indent snippets, in order to preserve the column
                 // information from the original code.  This improves the debugging
                 // experience.
                 int savedIndent = Indent;
-                Indent=0;
+                Indent = 0;
 
                 GenerateSnippetMember((CodeSnippetTypeMember)member);
 
                 // Restore the indent
-                Indent=savedIndent;
-                
+                Indent = savedIndent;
+
                 // Generate an extra new line at the end of the snippet.
                 // If the snippet is comment and this type only contains comments.
                 // The generated code will not compile. 
                 Output.WriteLine();
             }
 
-            if (member.LinePragma != null) {
+            if (member.LinePragma != null)
+            {
                 GenerateLinePragmaEnd(member.LinePragma);
             }
 
-            if (member.EndDirectives.Count > 0) {
+            if (member.EndDirectives.Count > 0)
+            {
                 GenerateDirectives(member.EndDirectives);
             }
         }
 
-        private void GenerateTypeConstructors(CodeTypeDeclaration e) {
+        private void GenerateTypeConstructors(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
-                if (en.Current is CodeTypeConstructor) {
-                    currentMember = (CodeTypeMember)en.Current;
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeTypeConstructor)
+                {
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeTypeConstructor imp = (CodeTypeConstructor)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
                     GenerateTypeConstructor(imp);
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
                 }
             }
@@ -354,9 +412,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para> Generates code for the namepsaces in the specifield CodeDom compile unit.
         ///     </para>
         /// </devdoc>
-        protected void GenerateNamespaces(CodeCompileUnit e) {
-            foreach (CodeNamespace n in e.Namespaces) {
-                ((ICodeGenerator)this).GenerateCodeFromNamespace(n, output.InnerWriter, options);
+        protected void GenerateNamespaces(CodeCompileUnit e)
+        {
+            foreach (CodeNamespace n in e.Namespaces)
+            {
+                ((ICodeGenerator)this).GenerateCodeFromNamespace(n, _output.InnerWriter, _options);
             }
         }
 
@@ -364,227 +424,284 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para> Generates code for the specified CodeDom namespace representation and the classes it
         ///       contains.</para>
         /// </devdoc>
-        protected void GenerateTypes(CodeNamespace e) {
-            foreach (CodeTypeDeclaration c in e.Types) {
-                if (options.BlankLinesBetweenMembers) {
-                            Output.WriteLine();
+        protected void GenerateTypes(CodeNamespace e)
+        {
+            foreach (CodeTypeDeclaration c in e.Types)
+            {
+                if (_options.BlankLinesBetweenMembers)
+                {
+                    Output.WriteLine();
                 }
-                ((ICodeGenerator)this).GenerateCodeFromType(c, output.InnerWriter, options);
+                ((ICodeGenerator)this).GenerateCodeFromType(c, _output.InnerWriter, _options);
             }
         }
 
         /// <internalonly/>
-        bool ICodeGenerator.Supports(GeneratorSupport support) {
+        bool ICodeGenerator.Supports(GeneratorSupport support)
+        {
             return this.Supports(support);
         }
 
         /// <internalonly/>
-        void ICodeGenerator.GenerateCodeFromType(CodeTypeDeclaration e, TextWriter w, CodeGeneratorOptions o) {
+        void ICodeGenerator.GenerateCodeFromType(CodeTypeDeclaration e, TextWriter w, CodeGeneratorOptions o)
+        {
             bool setLocal = false;
-            if (output != null && w != output.InnerWriter) {
+            if (_output != null && w != _output.InnerWriter)
+            {
                 throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
             }
-            if (output == null) {
+            if (_output == null)
+            {
                 setLocal = true;
-                options = (o == null) ? new CodeGeneratorOptions() : o;
-                output = new IndentedTextWriter(w, options.IndentString);
+                _options = (o == null) ? new CodeGeneratorOptions() : o;
+                _output = new IndentedTextWriter(w, _options.IndentString);
             }
 
-            try {
+            try
+            {
                 GenerateType(e);
             }
-            finally {
-                if (setLocal) {
-                    output = null;
-                    options = null;
+            finally
+            {
+                if (setLocal)
+                {
+                    _output = null;
+                    _options = null;
                 }
             }
         }
 
         /// <internalonly/>
-        void ICodeGenerator.GenerateCodeFromExpression(CodeExpression e, TextWriter w, CodeGeneratorOptions o) {
+        void ICodeGenerator.GenerateCodeFromExpression(CodeExpression e, TextWriter w, CodeGeneratorOptions o)
+        {
             bool setLocal = false;
-            if (output != null && w != output.InnerWriter) {
+            if (_output != null && w != _output.InnerWriter)
+            {
                 throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
             }
-            if (output == null) {
+            if (_output == null)
+            {
                 setLocal = true;
-                options = (o == null) ? new CodeGeneratorOptions() : o;
-                output = new IndentedTextWriter(w, options.IndentString);
+                _options = (o == null) ? new CodeGeneratorOptions() : o;
+                _output = new IndentedTextWriter(w, _options.IndentString);
             }
 
-            try {
+            try
+            {
                 GenerateExpression(e);
             }
-            finally {
-                if (setLocal) {
-                    output = null;
-                    options = null;
+            finally
+            {
+                if (setLocal)
+                {
+                    _output = null;
+                    _options = null;
                 }
             }
         }
 
         /// <internalonly/>
-        void ICodeGenerator.GenerateCodeFromCompileUnit(CodeCompileUnit e, TextWriter w, CodeGeneratorOptions o) {
+        void ICodeGenerator.GenerateCodeFromCompileUnit(CodeCompileUnit e, TextWriter w, CodeGeneratorOptions o)
+        {
             bool setLocal = false;
-            if (output != null && w != output.InnerWriter) {
+            if (_output != null && w != _output.InnerWriter)
+            {
                 throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
             }
-            if (output == null) {
+            if (_output == null)
+            {
                 setLocal = true;
-                options = (o == null) ? new CodeGeneratorOptions() : o;
-                output = new IndentedTextWriter(w, options.IndentString);
+                _options = (o == null) ? new CodeGeneratorOptions() : o;
+                _output = new IndentedTextWriter(w, _options.IndentString);
             }
 
-            try {
-                if (e is CodeSnippetCompileUnit) {
-                    GenerateSnippetCompileUnit((CodeSnippetCompileUnit) e);
+            try
+            {
+                if (e is CodeSnippetCompileUnit)
+                {
+                    GenerateSnippetCompileUnit((CodeSnippetCompileUnit)e);
                 }
-                else {
+                else
+                {
                     GenerateCompileUnit(e);
                 }
             }
-            finally {
-                if (setLocal) {
-                    output = null;
-                    options = null;
+            finally
+            {
+                if (setLocal)
+                {
+                    _output = null;
+                    _options = null;
                 }
             }
         }
 
         /// <internalonly/>
-        void ICodeGenerator.GenerateCodeFromNamespace(CodeNamespace e, TextWriter w, CodeGeneratorOptions o) {
+        void ICodeGenerator.GenerateCodeFromNamespace(CodeNamespace e, TextWriter w, CodeGeneratorOptions o)
+        {
             bool setLocal = false;
-            if (output != null && w != output.InnerWriter) {
+            if (_output != null && w != _output.InnerWriter)
+            {
                 throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
             }
-            if (output == null) {
+            if (_output == null)
+            {
                 setLocal = true;
-                options = (o == null) ? new CodeGeneratorOptions() : o;
-                output = new IndentedTextWriter(w, options.IndentString);
+                _options = (o == null) ? new CodeGeneratorOptions() : o;
+                _output = new IndentedTextWriter(w, _options.IndentString);
             }
 
-            try {
+            try
+            {
                 GenerateNamespace(e);
             }
-            finally {
-                if (setLocal) {
-                    output = null;
-                    options = null;
+            finally
+            {
+                if (setLocal)
+                {
+                    _output = null;
+                    _options = null;
                 }
             }
         }
 
         /// <internalonly/>
-        void ICodeGenerator.GenerateCodeFromStatement(CodeStatement e, TextWriter w, CodeGeneratorOptions o) {
+        void ICodeGenerator.GenerateCodeFromStatement(CodeStatement e, TextWriter w, CodeGeneratorOptions o)
+        {
             bool setLocal = false;
-            if (output != null && w != output.InnerWriter) {
+            if (_output != null && w != _output.InnerWriter)
+            {
                 throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
             }
-            if (output == null) {
+            if (_output == null)
+            {
                 setLocal = true;
-                options = (o == null) ? new CodeGeneratorOptions() : o;
-                output = new IndentedTextWriter(w, options.IndentString);
+                _options = (o == null) ? new CodeGeneratorOptions() : o;
+                _output = new IndentedTextWriter(w, _options.IndentString);
             }
 
-            try {
+            try
+            {
                 GenerateStatement(e);
             }
-            finally {
-                if (setLocal) {
-                    output = null;
-                    options = null;
+            finally
+            {
+                if (setLocal)
+                {
+                    _output = null;
+                    _options = null;
                 }
             }
         }
-        
-        public virtual void GenerateCodeFromMember(CodeTypeMember member, TextWriter writer, CodeGeneratorOptions options) {
-            if (this.output != null) {
+
+        public virtual void GenerateCodeFromMember(CodeTypeMember member, TextWriter writer, CodeGeneratorOptions options)
+        {
+            if (_output != null)
+            {
                 throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenReentrance));
             }
-            this.options = (options == null) ? new CodeGeneratorOptions() : options;
-            this.output = new IndentedTextWriter(writer, this.options.IndentString);
+            _options = (options == null) ? new CodeGeneratorOptions() : options;
+            _output = new IndentedTextWriter(writer, _options.IndentString);
 
-            try {
+            try
+            {
                 CodeTypeDeclaration dummyClass = new CodeTypeDeclaration();
-                this.currentClass = dummyClass;
+                _currentClass = dummyClass;
                 GenerateTypeMember(member, dummyClass);
             }
-            finally {
-                this.currentClass = null;
-                this.output = null;
-                this.options = null;
+            finally
+            {
+                _currentClass = null;
+                _output = null;
+                _options = null;
             }
         }
-        
+
 
         /// <internalonly/>
-        bool ICodeGenerator.IsValidIdentifier(string value) {
+        bool ICodeGenerator.IsValidIdentifier(string value)
+        {
             return this.IsValidIdentifier(value);
         }
         /// <internalonly/>
-        void ICodeGenerator.ValidateIdentifier(string value) {
+        void ICodeGenerator.ValidateIdentifier(string value)
+        {
             this.ValidateIdentifier(value);
         }
 
         /// <internalonly/>
-        string ICodeGenerator.CreateEscapedIdentifier(string value) {
+        string ICodeGenerator.CreateEscapedIdentifier(string value)
+        {
             return this.CreateEscapedIdentifier(value);
         }
 
         /// <internalonly/>
-        string ICodeGenerator.CreateValidIdentifier(string value) {
+        string ICodeGenerator.CreateValidIdentifier(string value)
+        {
             return this.CreateValidIdentifier(value);
         }
 
         /// <internalonly/>
-        string ICodeGenerator.GetTypeOutput(CodeTypeReference type) {
+        string ICodeGenerator.GetTypeOutput(CodeTypeReference type)
+        {
             return this.GetTypeOutput(type);
         }
 
-        private void GenerateConstructors(CodeTypeDeclaration e) {
+        private void GenerateConstructors(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
-                if (en.Current is CodeConstructor) {
-                    currentMember = (CodeTypeMember)en.Current;
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeConstructor)
+                {
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeConstructor imp = (CodeConstructor)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
                     GenerateConstructor(imp, e);
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
                 }
             }
         }
 
-        private void GenerateEvents(CodeTypeDeclaration e) {
+        private void GenerateEvents(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
-                if (en.Current is CodeMemberEvent) {
-                    currentMember = (CodeTypeMember)en.Current;
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeMemberEvent)
+                {
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeMemberEvent imp = (CodeMemberEvent)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
                     GenerateEvent(imp, e);
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
                 }
             }
@@ -593,131 +710,171 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>Generates code for the specified CodeDom code expression representation.</para>
         /// </devdoc>
-        protected void GenerateExpression(CodeExpression e) {
-            if (e is CodeArrayCreateExpression) {
+        protected void GenerateExpression(CodeExpression e)
+        {
+            if (e is CodeArrayCreateExpression)
+            {
                 GenerateArrayCreateExpression((CodeArrayCreateExpression)e);
             }
-            else if (e is CodeBaseReferenceExpression) {
+            else if (e is CodeBaseReferenceExpression)
+            {
                 GenerateBaseReferenceExpression((CodeBaseReferenceExpression)e);
             }
-            else if (e is CodeBinaryOperatorExpression) {
+            else if (e is CodeBinaryOperatorExpression)
+            {
                 GenerateBinaryOperatorExpression((CodeBinaryOperatorExpression)e);
             }
-            else if (e is CodeCastExpression) {
+            else if (e is CodeCastExpression)
+            {
                 GenerateCastExpression((CodeCastExpression)e);
             }
-            else if (e is CodeDelegateCreateExpression) {
+            else if (e is CodeDelegateCreateExpression)
+            {
                 GenerateDelegateCreateExpression((CodeDelegateCreateExpression)e);
             }
-            else if (e is CodeFieldReferenceExpression) {
+            else if (e is CodeFieldReferenceExpression)
+            {
                 GenerateFieldReferenceExpression((CodeFieldReferenceExpression)e);
             }
-            else if (e is CodeArgumentReferenceExpression) {
+            else if (e is CodeArgumentReferenceExpression)
+            {
                 GenerateArgumentReferenceExpression((CodeArgumentReferenceExpression)e);
             }
-            else if (e is CodeVariableReferenceExpression) {
+            else if (e is CodeVariableReferenceExpression)
+            {
                 GenerateVariableReferenceExpression((CodeVariableReferenceExpression)e);
             }
-            else if (e is CodeIndexerExpression) {
+            else if (e is CodeIndexerExpression)
+            {
                 GenerateIndexerExpression((CodeIndexerExpression)e);
             }
-            else if (e is CodeArrayIndexerExpression) {
+            else if (e is CodeArrayIndexerExpression)
+            {
                 GenerateArrayIndexerExpression((CodeArrayIndexerExpression)e);
             }
-            else if (e is CodeSnippetExpression) {
+            else if (e is CodeSnippetExpression)
+            {
                 GenerateSnippetExpression((CodeSnippetExpression)e);
             }
-            else if (e is CodeMethodInvokeExpression) {
+            else if (e is CodeMethodInvokeExpression)
+            {
                 GenerateMethodInvokeExpression((CodeMethodInvokeExpression)e);
             }
-            else if (e is CodeMethodReferenceExpression) {
+            else if (e is CodeMethodReferenceExpression)
+            {
                 GenerateMethodReferenceExpression((CodeMethodReferenceExpression)e);
             }
-            else if (e is CodeEventReferenceExpression) {
+            else if (e is CodeEventReferenceExpression)
+            {
                 GenerateEventReferenceExpression((CodeEventReferenceExpression)e);
             }
-            else if (e is CodeDelegateInvokeExpression) {
+            else if (e is CodeDelegateInvokeExpression)
+            {
                 GenerateDelegateInvokeExpression((CodeDelegateInvokeExpression)e);
             }
-            else if (e is CodeObjectCreateExpression) {
+            else if (e is CodeObjectCreateExpression)
+            {
                 GenerateObjectCreateExpression((CodeObjectCreateExpression)e);
             }
-            else if (e is CodeParameterDeclarationExpression) {
+            else if (e is CodeParameterDeclarationExpression)
+            {
                 GenerateParameterDeclarationExpression((CodeParameterDeclarationExpression)e);
             }
-            else if (e is CodeDirectionExpression) {
+            else if (e is CodeDirectionExpression)
+            {
                 GenerateDirectionExpression((CodeDirectionExpression)e);
             }
-            else if (e is CodePrimitiveExpression) {
+            else if (e is CodePrimitiveExpression)
+            {
                 GeneratePrimitiveExpression((CodePrimitiveExpression)e);
             }
-            else if (e is CodePropertyReferenceExpression) {
+            else if (e is CodePropertyReferenceExpression)
+            {
                 GeneratePropertyReferenceExpression((CodePropertyReferenceExpression)e);
             }
-            else if (e is CodePropertySetValueReferenceExpression) {
+            else if (e is CodePropertySetValueReferenceExpression)
+            {
                 GeneratePropertySetValueReferenceExpression((CodePropertySetValueReferenceExpression)e);
             }
-            else if (e is CodeThisReferenceExpression) {
+            else if (e is CodeThisReferenceExpression)
+            {
                 GenerateThisReferenceExpression((CodeThisReferenceExpression)e);
             }
-            else if (e is CodeTypeReferenceExpression) {
+            else if (e is CodeTypeReferenceExpression)
+            {
                 GenerateTypeReferenceExpression((CodeTypeReferenceExpression)e);
             }
-            else if (e is CodeTypeOfExpression) {
+            else if (e is CodeTypeOfExpression)
+            {
                 GenerateTypeOfExpression((CodeTypeOfExpression)e);
             }
-            else if (e is CodeDefaultValueExpression) {
+            else if (e is CodeDefaultValueExpression)
+            {
                 GenerateDefaultValueExpression((CodeDefaultValueExpression)e);
             }
-            else {
-                if (e == null) {
+            else
+            {
+                if (e == null)
+                {
                     throw new ArgumentNullException("e");
                 }
-                else {
+                else
+                {
                     throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
                 }
             }
         }
 
-        private void GenerateFields(CodeTypeDeclaration e) {
+        private void GenerateFields(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
-                if (en.Current is CodeMemberField) {
-                    currentMember = (CodeTypeMember)en.Current;
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeMemberField)
+                {
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeMemberField imp = (CodeMemberField)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
                     GenerateField(imp);
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
                 }
             }
         }
 
-        private void GenerateSnippetMembers(CodeTypeDeclaration e) {
+        private void GenerateSnippetMembers(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
             bool hasSnippet = false;
-            while (en.MoveNext()) {
-                if (en.Current is CodeSnippetTypeMember) {
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeSnippetTypeMember)
+                {
                     hasSnippet = true;
-                    currentMember = (CodeTypeMember)en.Current;
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeSnippetTypeMember imp = (CodeSnippetTypeMember)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
 
@@ -725,24 +882,25 @@ namespace Microsoft.CodeDom.Compiler {
                     // information from the original code.  This improves the debugging
                     // experience.
                     int savedIndent = Indent;
-                    Indent=0;
+                    Indent = 0;
 
                     GenerateSnippetMember(imp);
 
                     // Restore the indent
-                    Indent=savedIndent;
+                    Indent = savedIndent;
 
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
-
                 }
             }
             // Generate an extra new line at the end of the snippet.
             // If the snippet is comment and this type only contains comments.
             // The generated code will not compile. 
-            if(hasSnippet) {
+            if (hasSnippet)
+            {
                 Output.WriteLine();
             }
         }
@@ -751,59 +909,72 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para> Generates code for the specified snippet code block
         ///       </para>
         /// </devdoc>
-        protected virtual void GenerateSnippetCompileUnit(CodeSnippetCompileUnit e) {
-            
+        protected virtual void GenerateSnippetCompileUnit(CodeSnippetCompileUnit e)
+        {
             GenerateDirectives(e.StartDirectives);
 
             if (e.LinePragma != null) GenerateLinePragmaStart(e.LinePragma);
             Output.WriteLine(e.Value);
             if (e.LinePragma != null) GenerateLinePragmaEnd(e.LinePragma);
 
-            if (e.EndDirectives.Count > 0) {
+            if (e.EndDirectives.Count > 0)
+            {
                 GenerateDirectives(e.EndDirectives);
-            }            
+            }
         }
 
-        private void GenerateMethods(CodeTypeDeclaration e) {
+        private void GenerateMethods(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
+            while (en.MoveNext())
+            {
                 if (en.Current is CodeMemberMethod
                     && !(en.Current is CodeTypeConstructor)
-                    && !(en.Current is CodeConstructor)) {
-                    currentMember = (CodeTypeMember)en.Current;
+                    && !(en.Current is CodeConstructor))
+                {
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeMemberMethod imp = (CodeMemberMethod)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
-                    if (en.Current is CodeEntryPointMethod) {
+                    if (en.Current is CodeEntryPointMethod)
+                    {
                         GenerateEntryPointMethod((CodeEntryPointMethod)en.Current, e);
-                    } 
-                    else {
+                    }
+                    else
+                    {
                         GenerateMethod(imp, e);
                     }
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
                 }
             }
         }
 
-        private void GenerateNestedTypes(CodeTypeDeclaration e) {
+        private void GenerateNestedTypes(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
-                if (en.Current is CodeTypeDeclaration) {
-                    if (options.BlankLinesBetweenMembers) {
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeTypeDeclaration)
+                {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
                     CodeTypeDeclaration currentClass = (CodeTypeDeclaration)en.Current;
-                    ((ICodeGenerator)this).GenerateCodeFromType(currentClass, output.InnerWriter, options);
+                    ((ICodeGenerator)this).GenerateCodeFromType(currentClass, _output.InnerWriter, _options);
                 }
             }
         }
@@ -812,7 +983,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para> Generates code for the specified CodeDom
         ///       compile unit representation.</para>
         /// </devdoc>
-        protected virtual void GenerateCompileUnit(CodeCompileUnit e) {
+        protected virtual void GenerateCompileUnit(CodeCompileUnit e)
+        {
             GenerateCompileUnitStart(e);
             GenerateNamespaces(e);
             GenerateCompileUnitEnd(e);
@@ -822,7 +994,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para> Generates code for the specified CodeDom
         ///       namespace representation.</para>
         /// </devdoc>
-        protected virtual void GenerateNamespace(CodeNamespace e) {
+        protected virtual void GenerateNamespace(CodeNamespace e)
+        {
             GenerateCommentStatements(e.Comments);
             GenerateNamespaceStart(e);
 
@@ -839,9 +1012,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected void GenerateNamespaceImports(CodeNamespace e) {
+        protected void GenerateNamespaceImports(CodeNamespace e)
+        {
             IEnumerator en = e.Imports.GetEnumerator();
-            while (en.MoveNext()) {
+            while (en.MoveNext())
+            {
                 CodeNamespaceImport imp = (CodeNamespaceImport)en.Current;
                 if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
                 GenerateNamespaceImport(imp);
@@ -849,25 +1024,31 @@ namespace Microsoft.CodeDom.Compiler {
             }
         }
 
-        private void GenerateProperties(CodeTypeDeclaration e) {
+        private void GenerateProperties(CodeTypeDeclaration e)
+        {
             IEnumerator en = e.Members.GetEnumerator();
-            while (en.MoveNext()) {
-                if (en.Current is CodeMemberProperty) {
-                    currentMember = (CodeTypeMember)en.Current;
+            while (en.MoveNext())
+            {
+                if (en.Current is CodeMemberProperty)
+                {
+                    _currentMember = (CodeTypeMember)en.Current;
 
-                    if (options.BlankLinesBetweenMembers) {
+                    if (_options.BlankLinesBetweenMembers)
+                    {
                         Output.WriteLine();
                     }
-                    if (currentMember.StartDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.StartDirectives);
+                    if (_currentMember.StartDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.StartDirectives);
                     }
-                    GenerateCommentStatements(currentMember.Comments);
+                    GenerateCommentStatements(_currentMember.Comments);
                     CodeMemberProperty imp = (CodeMemberProperty)en.Current;
                     if (imp.LinePragma != null) GenerateLinePragmaStart(imp.LinePragma);
                     GenerateProperty(imp, e);
                     if (imp.LinePragma != null) GenerateLinePragmaEnd(imp.LinePragma);
-                    if (currentMember.EndDirectives.Count > 0) {
-                        GenerateDirectives(currentMember.EndDirectives);
+                    if (_currentMember.EndDirectives.Count > 0)
+                    {
+                        GenerateDirectives(_currentMember.EndDirectives);
                     }
                 }
             }
@@ -879,76 +1060,96 @@ namespace Microsoft.CodeDom.Compiler {
         ///       the specified CodeDom based statement representation.
         ///    </para>
         /// </devdoc>
-        protected void GenerateStatement(CodeStatement e) {        
-            if (e.StartDirectives.Count > 0) {
+        protected void GenerateStatement(CodeStatement e)
+        {
+            if (e.StartDirectives.Count > 0)
+            {
                 GenerateDirectives(e.StartDirectives);
             }
-        
-            if (e.LinePragma != null) {
+
+            if (e.LinePragma != null)
+            {
                 GenerateLinePragmaStart(e.LinePragma);
             }
 
-            if (e is CodeCommentStatement) {
+            if (e is CodeCommentStatement)
+            {
                 GenerateCommentStatement((CodeCommentStatement)e);
             }
-            else if (e is CodeMethodReturnStatement) {
+            else if (e is CodeMethodReturnStatement)
+            {
                 GenerateMethodReturnStatement((CodeMethodReturnStatement)e);
             }
-            else if (e is CodeConditionStatement) {
+            else if (e is CodeConditionStatement)
+            {
                 GenerateConditionStatement((CodeConditionStatement)e);
             }
-            else if (e is CodeTryCatchFinallyStatement) {
+            else if (e is CodeTryCatchFinallyStatement)
+            {
                 GenerateTryCatchFinallyStatement((CodeTryCatchFinallyStatement)e);
             }
-            else if (e is CodeAssignStatement) {
+            else if (e is CodeAssignStatement)
+            {
                 GenerateAssignStatement((CodeAssignStatement)e);
             }
-            else if (e is CodeExpressionStatement) {
+            else if (e is CodeExpressionStatement)
+            {
                 GenerateExpressionStatement((CodeExpressionStatement)e);
             }
-            else if (e is CodeIterationStatement) {
+            else if (e is CodeIterationStatement)
+            {
                 GenerateIterationStatement((CodeIterationStatement)e);
             }
-            else if (e is CodeThrowExceptionStatement) {
+            else if (e is CodeThrowExceptionStatement)
+            {
                 GenerateThrowExceptionStatement((CodeThrowExceptionStatement)e);
             }
-            else if (e is CodeSnippetStatement) {
+            else if (e is CodeSnippetStatement)
+            {
                 // Don't indent snippet statements, in order to preserve the column
                 // information from the original code.  This improves the debugging
                 // experience.
                 int savedIndent = Indent;
-                Indent=0;
+                Indent = 0;
 
                 GenerateSnippetStatement((CodeSnippetStatement)e);
 
                 // Restore the indent
-                Indent=savedIndent;
+                Indent = savedIndent;
             }
-            else if (e is CodeVariableDeclarationStatement) {
+            else if (e is CodeVariableDeclarationStatement)
+            {
                 GenerateVariableDeclarationStatement((CodeVariableDeclarationStatement)e);
             }
-            else if (e is CodeAttachEventStatement) {
+            else if (e is CodeAttachEventStatement)
+            {
                 GenerateAttachEventStatement((CodeAttachEventStatement)e);
             }
-            else if (e is CodeRemoveEventStatement) {
+            else if (e is CodeRemoveEventStatement)
+            {
                 GenerateRemoveEventStatement((CodeRemoveEventStatement)e);
             }
-            else if (e is CodeGotoStatement) {
+            else if (e is CodeGotoStatement)
+            {
                 GenerateGotoStatement((CodeGotoStatement)e);
             }
-            else if (e is CodeLabeledStatement) {
+            else if (e is CodeLabeledStatement)
+            {
                 GenerateLabeledStatement((CodeLabeledStatement)e);
             }
-            else {
+            else
+            {
                 throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
             }
 
-            if (e.LinePragma != null) {
+            if (e.LinePragma != null)
+            {
                 GenerateLinePragmaEnd(e.LinePragma);
             }
-            if (e.EndDirectives.Count > 0) {
+            if (e.EndDirectives.Count > 0)
+            {
                 GenerateDirectives(e.EndDirectives);
-            }            
+            }
         }
 
         /// <devdoc>
@@ -956,10 +1157,12 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified CodeDom based statement representations.
         ///    </para>
         /// </devdoc>
-        protected void GenerateStatements(CodeStatementCollection stms) {
+        protected void GenerateStatements(CodeStatementCollection stms)
+        {
             IEnumerator en = stms.GetEnumerator();
-            while (en.MoveNext()) {
-                ((ICodeGenerator)this).GenerateCodeFromStatement((CodeStatement)en.Current, output.InnerWriter, options);
+            while (en.MoveNext())
+            {
+                ((ICodeGenerator)this).GenerateCodeFromStatement((CodeStatement)en.Current, _output.InnerWriter, _options);
             }
         }
 
@@ -968,16 +1171,20 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified Microsoft.CodeDom.CodeAttributeBlock.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputAttributeDeclarations(CodeAttributeDeclarationCollection attributes) {
+        protected virtual void OutputAttributeDeclarations(CodeAttributeDeclarationCollection attributes)
+        {
             if (attributes.Count == 0) return;
             GenerateAttributeDeclarationsStart(attributes);
             bool first = true;
             IEnumerator en = attributes.GetEnumerator();
-            while (en.MoveNext()) {
-                if (first) {
+            while (en.MoveNext())
+            {
+                if (first)
+                {
                     first = false;
                 }
-                else {
+                else
+                {
                     ContinueOnNewLine(", ");
                 }
 
@@ -986,11 +1193,14 @@ namespace Microsoft.CodeDom.Compiler {
                 Output.Write("(");
 
                 bool firstArg = true;
-                foreach (CodeAttributeArgument arg in current.Arguments) {
-                    if (firstArg) {
+                foreach (CodeAttributeArgument arg in current.Arguments)
+                {
+                    if (firstArg)
+                    {
                         firstArg = false;
                     }
-                    else {
+                    else
+                    {
                         Output.Write(", ");
                     }
 
@@ -998,7 +1208,6 @@ namespace Microsoft.CodeDom.Compiler {
                 }
 
                 Output.Write(")");
-
             }
             GenerateAttributeDeclarationsEnd(attributes);
         }
@@ -1009,12 +1218,14 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Outputs an argument in a attribute block.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputAttributeArgument(CodeAttributeArgument arg) {
-            if (arg.Name != null && arg.Name.Length > 0) {
+        protected virtual void OutputAttributeArgument(CodeAttributeArgument arg)
+        {
+            if (arg.Name != null && arg.Name.Length > 0)
+            {
                 OutputIdentifier(arg.Name);
                 Output.Write("=");
             }
-            ((ICodeGenerator)this).GenerateCodeFromExpression(arg.Value, output.InnerWriter, options);
+            ((ICodeGenerator)this).GenerateCodeFromExpression(arg.Value, _output.InnerWriter, _options);
         }
 
         /// <devdoc>
@@ -1022,8 +1233,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified Microsoft.CodeDom.FieldDirection.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputDirection(FieldDirection dir) {
-            switch (dir) {
+        protected virtual void OutputDirection(FieldDirection dir)
+        {
+            switch (dir)
+            {
                 case FieldDirection.In:
                     break;
                 case FieldDirection.Out:
@@ -1038,14 +1251,17 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void OutputFieldScopeModifier(MemberAttributes attributes) {
-            switch (attributes & MemberAttributes.VTableMask) {
+        protected virtual void OutputFieldScopeModifier(MemberAttributes attributes)
+        {
+            switch (attributes & MemberAttributes.VTableMask)
+            {
                 case MemberAttributes.New:
                     Output.Write("new ");
                     break;
             }
 
-            switch (attributes & MemberAttributes.ScopeMask) {
+            switch (attributes & MemberAttributes.ScopeMask)
+            {
                 case MemberAttributes.Final:
                     break;
                 case MemberAttributes.Static:
@@ -1064,13 +1280,15 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified member access modifier.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputMemberAccessModifier(MemberAttributes attributes) {
-            switch (attributes & MemberAttributes.AccessMask) {
+        protected virtual void OutputMemberAccessModifier(MemberAttributes attributes)
+        {
+            switch (attributes & MemberAttributes.AccessMask)
+            {
                 case MemberAttributes.Assembly:
                     Output.Write("internal ");
                     break;
                 case MemberAttributes.FamilyAndAssembly:
-                    Output.Write("internal ");  /*FamANDAssem*/ 
+                    Output.Write("internal ");  /*FamANDAssem*/
                     break;
                 case MemberAttributes.Family:
                     Output.Write("protected ");
@@ -1092,14 +1310,17 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified member scope modifier.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputMemberScopeModifier(MemberAttributes attributes) {
-            switch (attributes & MemberAttributes.VTableMask) {
+        protected virtual void OutputMemberScopeModifier(MemberAttributes attributes)
+        {
+            switch (attributes & MemberAttributes.VTableMask)
+            {
                 case MemberAttributes.New:
                     Output.Write("new ");
                     break;
             }
 
-            switch (attributes & MemberAttributes.ScopeMask) {
+            switch (attributes & MemberAttributes.ScopeMask)
+            {
                 case MemberAttributes.Abstract:
                     Output.Write("abstract ");
                     break;
@@ -1113,7 +1334,8 @@ namespace Microsoft.CodeDom.Compiler {
                     Output.Write("override ");
                     break;
                 default:
-                    switch (attributes & MemberAttributes.AccessMask) {
+                    switch (attributes & MemberAttributes.AccessMask)
+                    {
                         case MemberAttributes.Family:
                         case MemberAttributes.Public:
                             Output.Write("virtual ");
@@ -1138,39 +1360,47 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified type attributes.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputTypeAttributes(TypeAttributes attributes, bool isStruct, bool isEnum) {
-            switch(attributes & TypeAttributes.VisibilityMask) {
-                case TypeAttributes.Public:                  
-                case TypeAttributes.NestedPublic:                    
+        protected virtual void OutputTypeAttributes(TypeAttributes attributes, bool isStruct, bool isEnum)
+        {
+            switch (attributes & TypeAttributes.VisibilityMask)
+            {
+                case TypeAttributes.Public:
+                case TypeAttributes.NestedPublic:
                     Output.Write("public ");
                     break;
                 case TypeAttributes.NestedPrivate:
                     Output.Write("private ");
                     break;
             }
-            
-            if (isStruct) {
+
+            if (isStruct)
+            {
                 Output.Write("struct ");
             }
-            else if (isEnum) {
+            else if (isEnum)
+            {
                 Output.Write("enum ");
-            }     
-            else {            
-                switch (attributes & TypeAttributes.ClassSemanticsMask) {
+            }
+            else
+            {
+                switch (attributes & TypeAttributes.ClassSemanticsMask)
+                {
                     case TypeAttributes.Class:
-                        if ((attributes & TypeAttributes.Sealed) == TypeAttributes.Sealed) {
+                        if ((attributes & TypeAttributes.Sealed) == TypeAttributes.Sealed)
+                        {
                             Output.Write("sealed ");
                         }
-                        if ((attributes & TypeAttributes.Abstract) == TypeAttributes.Abstract) {
+                        if ((attributes & TypeAttributes.Abstract) == TypeAttributes.Abstract)
+                        {
                             Output.Write("abstract ");
                         }
                         Output.Write("class ");
-                        break;                
+                        break;
                     case TypeAttributes.Interface:
                         Output.Write("interface ");
                         break;
-                }     
-            }   
+                }
+            }
         }
 
         /// <devdoc>
@@ -1178,7 +1408,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified object type and name pair.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputTypeNamePair(CodeTypeReference typeRef, string name) {
+        protected virtual void OutputTypeNamePair(CodeTypeReference typeRef, string name)
+        {
             OutputType(typeRef);
             Output.Write(" ");
             OutputIdentifier(name);
@@ -1187,7 +1418,8 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void OutputIdentifier(string ident) {
+        protected virtual void OutputIdentifier(string ident)
+        {
             Output.Write(ident);
         }
 
@@ -1196,7 +1428,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified expression list.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputExpressionList(CodeExpressionCollection expressions) {
+        protected virtual void OutputExpressionList(CodeExpressionCollection expressions)
+        {
             OutputExpressionList(expressions, false /*newlineBetweenItems*/);
         }
 
@@ -1205,21 +1438,25 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified expression list.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputExpressionList(CodeExpressionCollection expressions, bool newlineBetweenItems) {
+        protected virtual void OutputExpressionList(CodeExpressionCollection expressions, bool newlineBetweenItems)
+        {
             bool first = true;
             IEnumerator en = expressions.GetEnumerator();
             Indent++;
-            while (en.MoveNext()) {
-                if (first) {
+            while (en.MoveNext())
+            {
+                if (first)
+                {
                     first = false;
                 }
-                else {
+                else
+                {
                     if (newlineBetweenItems)
                         ContinueOnNewLine(",");
                     else
                         Output.Write(", ");
                 }
-                ((ICodeGenerator)this).GenerateCodeFromExpression((CodeExpression)en.Current, output.InnerWriter, options);
+                ((ICodeGenerator)this).GenerateCodeFromExpression((CodeExpression)en.Current, _output.InnerWriter, _options);
             }
             Indent--;
         }
@@ -1229,8 +1466,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified operator.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputOperator(CodeBinaryOperatorType op) {
-            switch (op) {
+        protected virtual void OutputOperator(CodeBinaryOperatorType op)
+        {
+            switch (op)
+            {
                 case CodeBinaryOperatorType.Add:
                     Output.Write("+");
                     break;
@@ -1290,27 +1529,34 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Generates code for the specified parameters.
         ///    </para>
         /// </devdoc>
-        protected virtual void OutputParameters(CodeParameterDeclarationExpressionCollection parameters) {
+        protected virtual void OutputParameters(CodeParameterDeclarationExpressionCollection parameters)
+        {
             bool first = true;
             bool multiline = parameters.Count > ParameterMultilineThreshold;
-            if (multiline) {
+            if (multiline)
+            {
                 Indent += 3;
             }
             IEnumerator en = parameters.GetEnumerator();
-            while (en.MoveNext()) {
+            while (en.MoveNext())
+            {
                 CodeParameterDeclarationExpression current = (CodeParameterDeclarationExpression)en.Current;
-                if (first) {
+                if (first)
+                {
                     first = false;
                 }
-                else {
+                else
+                {
                     Output.Write(", ");
                 }
-                if (multiline) {
+                if (multiline)
+                {
                     ContinueOnNewLine("");
                 }
                 GenerateExpression(current);
             }
-            if (multiline) {
+            if (multiline)
+            {
                 Indent -= 3;
             }
         }
@@ -1336,41 +1582,46 @@ namespace Microsoft.CodeDom.Compiler {
         ///       expression representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateBinaryOperatorExpression(CodeBinaryOperatorExpression e) {
+        protected virtual void GenerateBinaryOperatorExpression(CodeBinaryOperatorExpression e)
+        {
             bool indentedExpression = false;
             Output.Write("(");
 
             GenerateExpression(e.Left);
             Output.Write(" ");
 
-            if (e.Left is CodeBinaryOperatorExpression || e.Right is CodeBinaryOperatorExpression) {
+            if (e.Left is CodeBinaryOperatorExpression || e.Right is CodeBinaryOperatorExpression)
+            {
                 // In case the line gets too long with nested binary operators, we need to output them on
                 // different lines. However we want to indent them to maintain readability, but this needs
                 // to be done only once;
-                if (!inNestedBinary) {
+                if (!_inNestedBinary)
+                {
                     indentedExpression = true;
-                    inNestedBinary = true;
+                    _inNestedBinary = true;
                     Indent += 3;
                 }
                 ContinueOnNewLine("");
             }
- 
+
             OutputOperator(e.Operator);
 
             Output.Write(" ");
             GenerateExpression(e.Right);
 
             Output.Write(")");
-            if (indentedExpression) {
+            if (indentedExpression)
+            {
                 Indent -= 3;
-                inNestedBinary = false;
+                _inNestedBinary = false;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void ContinueOnNewLine(string st) {
+        protected virtual void ContinueOnNewLine(string st)
+        {
             Output.WriteLine(st);
         }
 
@@ -1405,7 +1656,7 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected abstract void GenerateVariableReferenceExpression(CodeVariableReferenceExpression e);
-        
+
         /// <devdoc>
         ///    <para>
         ///       Generates code for the specified CodeDom based indexer expression
@@ -1465,8 +1716,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       based parameter declaration expression representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateParameterDeclarationExpression(CodeParameterDeclarationExpression e) {
-            if (e.CustomAttributes.Count > 0) {
+        protected virtual void GenerateParameterDeclarationExpression(CodeParameterDeclarationExpression e)
+        {
+            if (e.CustomAttributes.Count > 0)
+            {
                 OutputAttributeDeclarations(e.CustomAttributes);
                 Output.Write(" ");
             }
@@ -1478,7 +1731,8 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void GenerateDirectionExpression(CodeDirectionExpression e) {
+        protected virtual void GenerateDirectionExpression(CodeDirectionExpression e)
+        {
             OutputDirection(e.Direction);
             GenerateExpression(e.Expression);
         }
@@ -1490,46 +1744,61 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GeneratePrimitiveExpression(CodePrimitiveExpression e) {
-            if (e.Value == null) {
+        protected virtual void GeneratePrimitiveExpression(CodePrimitiveExpression e)
+        {
+            if (e.Value == null)
+            {
                 Output.Write(NullToken);
             }
-            else if (e.Value is string) {
+            else if (e.Value is string)
+            {
                 Output.Write(QuoteSnippetString((string)e.Value));
             }
-            else if (e.Value is char) {
+            else if (e.Value is char)
+            {
                 Output.Write("'" + e.Value.ToString() + "'");
             }
-            else if (e.Value is byte) {
+            else if (e.Value is byte)
+            {
                 Output.Write(((byte)e.Value).ToString());
             }
-            else if (e.Value is Int16) {
+            else if (e.Value is Int16)
+            {
                 Output.Write(((Int16)e.Value).ToString());
             }
-            else if (e.Value is Int32) {
+            else if (e.Value is Int32)
+            {
                 Output.Write(((Int32)e.Value).ToString());
             }
-            else if (e.Value is Int64) {
+            else if (e.Value is Int64)
+            {
                 Output.Write(((Int64)e.Value).ToString());
             }
-            else if (e.Value is Single) {
+            else if (e.Value is Single)
+            {
                 GenerateSingleFloatValue((Single)e.Value);
             }
-            else if (e.Value is Double) {
+            else if (e.Value is Double)
+            {
                 GenerateDoubleValue((Double)e.Value);
             }
-            else if (e.Value is Decimal) {
+            else if (e.Value is Decimal)
+            {
                 GenerateDecimalValue((Decimal)e.Value);
             }
-            else if (e.Value is bool) {
-                if ((bool)e.Value) {
+            else if (e.Value is bool)
+            {
+                if ((bool)e.Value)
+                {
                     Output.Write("true");
                 }
-                else {
+                else
+                {
                     Output.Write("false");
                 }
             }
-            else {
+            else
+            {
                 throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidPrimitiveType, e.Value.GetType().ToString()));
             }
         }
@@ -1537,26 +1806,30 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void GenerateSingleFloatValue(Single s) {
+        protected virtual void GenerateSingleFloatValue(Single s)
+        {
             Output.Write(s.ToString("R", CultureInfo.InvariantCulture));
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void GenerateDoubleValue(Double d) {
+        protected virtual void GenerateDoubleValue(Double d)
+        {
             Output.Write(d.ToString("R", CultureInfo.InvariantCulture));
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void GenerateDecimalValue(Decimal d) {
+        protected virtual void GenerateDecimalValue(Decimal d)
+        {
             Output.Write(d.ToString());
         }
 
         // TODO: this should be abstract, but that will break language providers which don't support DefaultValueExpression.
-        protected virtual void GenerateDefaultValueExpression(CodeDefaultValueExpression e) {
+        protected virtual void GenerateDefaultValueExpression(CodeDefaultValueExpression e)
+        {
         }
 
         /// <devdoc>
@@ -1586,7 +1859,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateTypeReferenceExpression(CodeTypeReferenceExpression e) {
+        protected virtual void GenerateTypeReferenceExpression(CodeTypeReferenceExpression e)
+        {
             OutputType(e.Type);
         }
 
@@ -1596,7 +1870,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateTypeOfExpression(CodeTypeOfExpression e) {
+        protected virtual void GenerateTypeOfExpression(CodeTypeOfExpression e)
+        {
             Output.Write("typeof(");
             OutputType(e.Type);
             Output.Write(")");
@@ -1629,8 +1904,9 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateCommentStatement(CodeCommentStatement e) {
-            if(e.Comment == null)
+        protected virtual void GenerateCommentStatement(CodeCommentStatement e)
+        {
+            if (e.Comment == null)
                 throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.Argument_NullComment, "e"), "e");
             GenerateComment(e.Comment);
         }
@@ -1638,8 +1914,10 @@ namespace Microsoft.CodeDom.Compiler {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected virtual void GenerateCommentStatements(CodeCommentStatementCollection e) {
-            foreach (CodeCommentStatement comment in e) {
+        protected virtual void GenerateCommentStatements(CodeCommentStatementCollection e)
+        {
+            foreach (CodeCommentStatement comment in e)
+            {
                 GenerateCommentStatement(comment);
             }
         }
@@ -1707,7 +1985,8 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateSnippetStatement(CodeSnippetStatement e) {
+        protected virtual void GenerateSnippetStatement(CodeSnippetStatement e)
+        {
             Output.WriteLine(e.Value);
         }
 
@@ -1806,8 +2085,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateCompileUnitStart(CodeCompileUnit e) {
-            if (e.StartDirectives.Count > 0) {
+        protected virtual void GenerateCompileUnitStart(CodeCompileUnit e)
+        {
+            if (e.StartDirectives.Count > 0)
+            {
                 GenerateDirectives(e.StartDirectives);
             }
         }
@@ -1817,12 +2098,14 @@ namespace Microsoft.CodeDom.Compiler {
         ///       representation.
         ///    </para>
         /// </devdoc>
-        protected virtual void GenerateCompileUnitEnd(CodeCompileUnit e) {
-            if (e.EndDirectives.Count > 0) {
+        protected virtual void GenerateCompileUnitEnd(CodeCompileUnit e)
+        {
+            if (e.EndDirectives.Count > 0)
+            {
                 GenerateDirectives(e.EndDirectives);
             }
         }
-         /// <devdoc>
+        /// <devdoc>
         ///    <para>
         ///       Generates code for the specified CodeDom based namespace start
         ///       representation.
@@ -1874,8 +2157,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets whether the specified identifier is valid.
         ///    </para>
         /// </devdoc>
-        protected virtual void ValidateIdentifier(string value) {
-            if (!IsValidIdentifier(value)) {
+        protected virtual void ValidateIdentifier(string value)
+        {
+            if (!IsValidIdentifier(value))
+            {
                 throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidIdentifier, value));
             }
         }
@@ -1918,18 +2203,21 @@ namespace Microsoft.CodeDom.Compiler {
             return IsValidTypeNameOrIdentifier(value, true);
         }
 
-        private static bool IsValidTypeNameOrIdentifier(string value, bool isTypeName) {
+        private static bool IsValidTypeNameOrIdentifier(string value, bool isTypeName)
+        {
             bool nextMustBeStartChar = true;
-            
-            if (value.Length == 0) 
+
+            if (value.Length == 0)
                 return false;
 
             // each char must be Lu, Ll, Lt, Lm, Lo, Nd, Mn, Mc, Pc
             // 
-            for(int i = 0; i < value.Length; i++) {
+            for (int i = 0; i < value.Length; i++)
+            {
                 char ch = value[i];
                 UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(ch);
-                switch (uc) {
+                switch (uc)
+                {
                     case UnicodeCategory.UppercaseLetter:        // Lu
                     case UnicodeCategory.LowercaseLetter:        // Ll
                     case UnicodeCategory.TitlecaseLetter:        // Lt
@@ -1946,12 +2234,13 @@ namespace Microsoft.CodeDom.Compiler {
                         // Underscore is a valid starting character, even though it is a ConnectorPunctuation.
                         if (nextMustBeStartChar && ch != '_')
                             return false;
-                        
+
                         nextMustBeStartChar = false;
                         break;
                     default:
                         // We only check the special Type chars for type names. 
-                        if (isTypeName && IsSpecialTypeChar(ch, ref nextMustBeStartChar)) {
+                        if (isTypeName && IsSpecialTypeChar(ch, ref nextMustBeStartChar))
+                        {
                             break;
                         }
 
@@ -1965,8 +2254,10 @@ namespace Microsoft.CodeDom.Compiler {
         // This can be a special character like a separator that shows up in a type name
         // This is an odd set of characters.  Some come from characters that are allowed by C++, like < and >.
         // Others are characters that are specified in the type and assembly name grammer. 
-        private static bool IsSpecialTypeChar(char ch, ref bool nextMustBeStartChar) {
-            switch(ch) {
+        private static bool IsSpecialTypeChar(char ch, ref bool nextMustBeStartChar)
+        {
+            switch (ch)
+            {
                 case ':':
                 case '.':
                 case '$':
@@ -1994,10 +2285,10 @@ namespace Microsoft.CodeDom.Compiler {
         ///       in a langauge independent manner.
         ///    </para>
         /// </devdoc>
-        public static void ValidateIdentifiers(CodeObject e) {
+        public static void ValidateIdentifiers(CodeObject e)
+        {
             CodeValidator codeValidator = new CodeValidator(); // This has internal state and hence is not static
             codeValidator.ValidateIdentifiers(e);
         }
-
     }
 }

@@ -570,7 +570,7 @@ namespace System.Runtime.Serialization
             private static Type[] s_knownInterfaces;
 
             private Type _itemType;
-            bool _isItemTypeNullable;
+            private bool _isItemTypeNullable;
             private CollectionKind _kind;
             private readonly MethodInfo _getEnumeratorMethod, _addMethod;
             private readonly ConstructorInfo _constructor;

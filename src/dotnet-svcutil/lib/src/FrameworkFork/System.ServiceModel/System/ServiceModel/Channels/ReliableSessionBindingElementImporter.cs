@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System.Collections;
@@ -9,7 +10,7 @@ namespace System.ServiceModel.Channels
     using System.ServiceModel.Description;
     using Microsoft.Xml;
 
-    static class ReliableSessionPolicyStrings
+    internal static class ReliableSessionPolicyStrings
     {
         public const string AcknowledgementInterval = "AcknowledgementInterval";
         public const string AtLeastOnce = "AtLeastOnce";
@@ -76,7 +77,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static ReliableSessionBindingElement GetReliableSessionBindingElement(PolicyConversionContext context)
+        private static ReliableSessionBindingElement GetReliableSessionBindingElement(PolicyConversionContext context)
         {
             ReliableSessionBindingElement settings = context.BindingElements.Find<ReliableSessionBindingElement>();
 
@@ -89,12 +90,12 @@ namespace System.ServiceModel.Channels
             return settings;
         }
 
-        static bool Is11Assertion(XmlNode node, string assertion)
+        private static bool Is11Assertion(XmlNode node, string assertion)
         {
             return IsElement(node, ReliableSessionPolicyStrings.NET11Namespace, assertion);
         }
 
-        static bool IsElement(XmlNode node, string ns, string assertion)
+        private static bool IsElement(XmlNode node, string ns, string assertion)
         {
             if (assertion == null)
             {
@@ -107,12 +108,12 @@ namespace System.ServiceModel.Channels
                 && (node.LocalName == assertion));
         }
 
-        static bool IsFeb2005Assertion(XmlNode node, string assertion)
+        private static bool IsFeb2005Assertion(XmlNode node, string assertion)
         {
             return IsElement(node, ReliableSessionPolicyStrings.ReliableSessionFebruary2005Namespace, assertion);
         }
 
-        static void ProcessReliableSession11Assertion(MetadataImporter importer, XmlElement element,
+        private static void ProcessReliableSession11Assertion(MetadataImporter importer, XmlElement element,
             ReliableSessionBindingElement settings)
         {
             // Version
@@ -166,7 +167,7 @@ namespace System.ServiceModel.Channels
             // Schema allows arbitrary elements from now on, ignore everything else
         }
 
-        static void ProcessReliableSessionFeb2005Assertion(XmlElement element, ReliableSessionBindingElement settings)
+        private static void ProcessReliableSessionFeb2005Assertion(XmlElement element, ReliableSessionBindingElement settings)
         {
             // Version
             settings.ReliableMessagingVersion = ReliableMessagingVersion.WSReliableMessagingFebruary2005;
@@ -203,7 +204,7 @@ namespace System.ServiceModel.Channels
             // Schema allows arbitrary elements from now on, ignore everything else
         }
 
-        static void ProcessWsrm11Policy(MetadataImporter importer, XmlNode node, ReliableSessionBindingElement settings)
+        private static void ProcessWsrm11Policy(MetadataImporter importer, XmlNode node, ReliableSessionBindingElement settings)
         {
             XmlElement element = ThrowIfNotPolicyElement(node, ReliableMessagingVersion.WSReliableMessaging11);
             IEnumerable<IEnumerable<XmlElement>> alternatives = importer.NormalizePolicy(new XmlElement[] { element });
@@ -238,7 +239,7 @@ namespace System.ServiceModel.Channels
             Wsrm11PolicyAlternative.ThrowInvalidBindingException();
         }
 
-        static TimeSpan ReadMillisecondsAttribute(XmlNode wsrmNode, bool convertToTimeSpan)
+        private static TimeSpan ReadMillisecondsAttribute(XmlNode wsrmNode, bool convertToTimeSpan)
         {
             XmlAttribute millisecondsAttribute = wsrmNode.Attributes[ReliableSessionPolicyStrings.Milliseconds];
             if (millisecondsAttribute == null)
@@ -284,7 +285,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void SetInactivityTimeout(ReliableSessionBindingElement settings, TimeSpan inactivityTimeout, string localName)
+        private static void SetInactivityTimeout(ReliableSessionBindingElement settings, TimeSpan inactivityTimeout, string localName)
         {
             try
             {
@@ -296,7 +297,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void SetAcknowledgementInterval(ReliableSessionBindingElement settings, TimeSpan acknowledgementInterval, string localName)
+        private static void SetAcknowledgementInterval(ReliableSessionBindingElement settings, TimeSpan acknowledgementInterval, string localName)
         {
             try
             {
@@ -308,12 +309,12 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static bool ShouldSkipNodeType(XmlNodeType type)
+        private static bool ShouldSkipNodeType(XmlNodeType type)
         {
             return (type == XmlNodeType.Comment || type == XmlNodeType.SignificantWhitespace || type == XmlNodeType.Whitespace || type == XmlNodeType.Notation);
         }
 
-        static XmlNode SkipToNode(IEnumerator nodes)
+        private static XmlNode SkipToNode(IEnumerator nodes)
         {
             while (nodes.MoveNext())
             {
@@ -328,7 +329,7 @@ namespace System.ServiceModel.Channels
             return null;
         }
 
-        static XmlElement ThrowIfNotPolicyElement(XmlNode node, ReliableMessagingVersion reliableMessagingVersion)
+        private static XmlElement ThrowIfNotPolicyElement(XmlNode node, ReliableMessagingVersion reliableMessagingVersion)
         {
             string policyLocalName = MetadataStrings.WSPolicy.Elements.Policy;
 
@@ -353,16 +354,16 @@ namespace System.ServiceModel.Channels
             return (XmlElement)node;
         }
 
-        class Wsrm11PolicyAlternative
+        private class Wsrm11PolicyAlternative
         {
-            bool hasValidPolicy = true;
-            bool isOrdered = false;
+            private bool _hasValidPolicy = true;
+            private bool _isOrdered = false;
 
             public bool HasValidPolicy
             {
                 get
                 {
-                    return this.hasValidPolicy;
+                    return _hasValidPolicy;
                 }
             }
 
@@ -415,10 +416,10 @@ namespace System.ServiceModel.Channels
 
             public void TransferSettings(ReliableSessionBindingElement settings)
             {
-                settings.Ordered = this.isOrdered;
+                settings.Ordered = _isOrdered;
             }
 
-            bool TryImportSequenceSTR(XmlElement node)
+            private bool TryImportSequenceSTR(XmlElement node)
             {
                 string wsrmNs = ReliableSessionPolicyStrings.ReliableSession11Namespace;
 
@@ -429,14 +430,14 @@ namespace System.ServiceModel.Channels
 
                 if (IsElement(node, wsrmNs, ReliableSessionPolicyStrings.SequenceTransportSecurity))
                 {
-                    this.hasValidPolicy = false;
+                    _hasValidPolicy = false;
                     return true;
                 }
 
                 return false;
             }
 
-            bool TryImportDeliveryAssurance(MetadataImporter importer, XmlElement node)
+            private bool TryImportDeliveryAssurance(MetadataImporter importer, XmlElement node)
             {
                 string wsrmNs = ReliableSessionPolicyStrings.ReliableSession11Namespace;
 
@@ -484,9 +485,9 @@ namespace System.ServiceModel.Channels
                             if (IsElement(element, wsrmNs, ReliableSessionPolicyStrings.InOrder))
                             {
                                 // set ordered
-                                if (!this.isOrdered)
+                                if (!_isOrdered)
                                 {
-                                    this.isOrdered = true;
+                                    _isOrdered = true;
                                 }
 
                                 continue;
@@ -522,7 +523,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        enum State
+        private enum State
         {
             Security,
             DeliveryAssurance,

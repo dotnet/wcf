@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System;
-    using System.IO; 
-    using System.Reflection; 
+    using System.IO;
+    using System.Reflection;
     using System.Collections;
     using System.Collections.Generic;
     using Microsoft.Xml.Schema;
@@ -28,7 +28,8 @@ namespace Microsoft.Xml.Serialization {
     // - dealing with Serializable and xmlelement
     // and lots of other little details
 
-    internal enum TypeKind {
+    internal enum TypeKind
+    {
         Root,
         Primitive,
         Enum,
@@ -43,7 +44,8 @@ namespace Microsoft.Xml.Serialization {
         Serializable
     }
 
-    internal enum TypeFlags {
+    internal enum TypeFlags
+    {
         None = 0x0,
         Abstract = 0x1,
         Reference = 0x2,
@@ -66,42 +68,44 @@ namespace Microsoft.Xml.Serialization {
         Unsupported = 0x100000,
     }
 
-    internal class TypeDesc {
-        string name;
-        string fullName;
-        string cSharpName;
-        TypeDesc arrayElementTypeDesc;
-        TypeDesc arrayTypeDesc;
-        TypeDesc nullableTypeDesc;
-        TypeKind kind;
-        XmlSchemaType dataType;
-        Type type;
-        TypeDesc baseTypeDesc;
-        TypeFlags flags;
-        string formatterName;
-        bool isXsdType;
-        bool isMixed;
-        MappedTypeDesc extendedType;
-        int weight;
-        Exception exception;
+    internal class TypeDesc
+    {
+        private string _name;
+        private string _fullName;
+        private string _cSharpName;
+        private TypeDesc _arrayElementTypeDesc;
+        private TypeDesc _arrayTypeDesc;
+        private TypeDesc _nullableTypeDesc;
+        private TypeKind _kind;
+        private XmlSchemaType _dataType;
+        private Type _type;
+        private TypeDesc _baseTypeDesc;
+        private TypeFlags _flags;
+        private string _formatterName;
+        private bool _isXsdType;
+        private bool _isMixed;
+        private MappedTypeDesc _extendedType;
+        private int _weight;
+        private Exception _exception;
 
-        internal TypeDesc(string name, string fullName, XmlSchemaType dataType, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags, string formatterName) {
-            this.name = name.Replace('+', '.');
-            this.fullName = fullName.Replace('+', '.');
-            this.kind = kind;
-            this.baseTypeDesc = baseTypeDesc;
-            this.flags = flags;
-            this.isXsdType = kind == TypeKind.Primitive;
-            if (this.isXsdType)
-                this.weight = 1;
+        internal TypeDesc(string name, string fullName, XmlSchemaType dataType, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags, string formatterName)
+        {
+            _name = name.Replace('+', '.');
+            _fullName = fullName.Replace('+', '.');
+            _kind = kind;
+            _baseTypeDesc = baseTypeDesc;
+            _flags = flags;
+            _isXsdType = kind == TypeKind.Primitive;
+            if (_isXsdType)
+                _weight = 1;
             else if (kind == TypeKind.Enum)
-                this.weight = 2;
-            else if (this.kind == TypeKind.Root)
-                this.weight = -1;
+                _weight = 2;
+            else if (_kind == TypeKind.Root)
+                _weight = -1;
             else
-                this.weight = baseTypeDesc == null ? 0 : baseTypeDesc.Weight + 1;
-            this.dataType = dataType;
-            this.formatterName = formatterName;
+                _weight = baseTypeDesc == null ? 0 : baseTypeDesc.Weight + 1;
+            _dataType = dataType;
+            _formatterName = formatterName;
         }
 
         internal TypeDesc(string name, string fullName, XmlSchemaType dataType, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags)
@@ -111,297 +115,367 @@ namespace Microsoft.Xml.Serialization {
             : this(name, fullName, (XmlSchemaType)null, kind, baseTypeDesc, flags, null) { }
 
         internal TypeDesc(Type type, bool isXsdType, XmlSchemaType dataType, string formatterName, TypeFlags flags)
-            : this(type.Name, type.FullName, dataType, TypeKind.Primitive, (TypeDesc)null, flags, formatterName) {
-            this.isXsdType = isXsdType;
-            this.type = type;
+            : this(type.Name, type.FullName, dataType, TypeKind.Primitive, (TypeDesc)null, flags, formatterName)
+        {
+            _isXsdType = isXsdType;
+            _type = type;
         }
         internal TypeDesc(Type type, string name, string fullName, TypeKind kind, TypeDesc baseTypeDesc, TypeFlags flags, TypeDesc arrayElementTypeDesc)
-            : this(name, fullName, null, kind, baseTypeDesc, flags, null) {
-
-            this.arrayElementTypeDesc = arrayElementTypeDesc;
-            this.type = type;
+            : this(name, fullName, null, kind, baseTypeDesc, flags, null)
+        {
+            _arrayElementTypeDesc = arrayElementTypeDesc;
+            _type = type;
         }
 
-        public override string ToString() {
-            return fullName;
+        public override string ToString()
+        {
+            return _fullName;
         }
 
-        internal TypeFlags Flags {
-            get { return flags; }
+        internal TypeFlags Flags
+        {
+            get { return _flags; }
         }
 
-        internal bool IsXsdType {
-            get { return isXsdType; }
+        internal bool IsXsdType
+        {
+            get { return _isXsdType; }
         }
 
-        internal bool IsMappedType {
-            get { return extendedType != null; }
+        internal bool IsMappedType
+        {
+            get { return _extendedType != null; }
         }
 
-        internal MappedTypeDesc ExtendedType {
-            get { return extendedType; }
+        internal MappedTypeDesc ExtendedType
+        {
+            get { return _extendedType; }
         }
 
-        internal string Name {
-            get { return name; }
+        internal string Name
+        {
+            get { return _name; }
         }
 
-        internal string FullName {
-            get { return fullName; }
+        internal string FullName
+        {
+            get { return _fullName; }
         }
 
-        internal string CSharpName {
-            get {
-                if (cSharpName == null) {
-                    cSharpName = type == null ? CodeIdentifier.GetCSharpName(fullName) : CodeIdentifier.GetCSharpName(type);
+        internal string CSharpName
+        {
+            get
+            {
+                if (_cSharpName == null)
+                {
+                    _cSharpName = _type == null ? CodeIdentifier.GetCSharpName(_fullName) : CodeIdentifier.GetCSharpName(_type);
                 }
-                return cSharpName;
+                return _cSharpName;
             }
         }
 
-        internal XmlSchemaType DataType {
-            get { return dataType; }
+        internal XmlSchemaType DataType
+        {
+            get { return _dataType; }
         }
 
-        internal Type Type {
-            get { return type; }
+        internal Type Type
+        {
+            get { return _type; }
         }
 
-        internal string FormatterName {
-            get { return formatterName; }
+        internal string FormatterName
+        {
+            get { return _formatterName; }
         }
 
-        internal TypeKind Kind {
-            get { return kind; }
+        internal TypeKind Kind
+        {
+            get { return _kind; }
         }
 
-        internal bool IsValueType {
-            get { return (flags & TypeFlags.Reference) == 0; }
+        internal bool IsValueType
+        {
+            get { return (_flags & TypeFlags.Reference) == 0; }
         }
 
-        internal bool CanBeAttributeValue {
-            get { return (flags & TypeFlags.CanBeAttributeValue) != 0; }
+        internal bool CanBeAttributeValue
+        {
+            get { return (_flags & TypeFlags.CanBeAttributeValue) != 0; }
         }
 
-        internal bool XmlEncodingNotRequired {
-            get { return (flags & TypeFlags.XmlEncodingNotRequired) != 0; }
+        internal bool XmlEncodingNotRequired
+        {
+            get { return (_flags & TypeFlags.XmlEncodingNotRequired) != 0; }
         }
 
-        internal bool CanBeElementValue {
-            get { return (flags & TypeFlags.CanBeElementValue) != 0; }
+        internal bool CanBeElementValue
+        {
+            get { return (_flags & TypeFlags.CanBeElementValue) != 0; }
         }
 
-        internal bool CanBeTextValue {
-            get { return (flags & TypeFlags.CanBeTextValue) != 0; }
+        internal bool CanBeTextValue
+        {
+            get { return (_flags & TypeFlags.CanBeTextValue) != 0; }
         }
 
-        internal bool IsMixed {
-            get { return isMixed || CanBeTextValue; }
-            set { isMixed = value; }
+        internal bool IsMixed
+        {
+            get { return _isMixed || CanBeTextValue; }
+            set { _isMixed = value; }
         }
 
-        internal bool IsSpecial {
-            get { return (flags & TypeFlags.Special) != 0; }
+        internal bool IsSpecial
+        {
+            get { return (_flags & TypeFlags.Special) != 0; }
         }
 
-        internal bool IsAmbiguousDataType {
-            get { return (flags & TypeFlags.AmbiguousDataType) != 0; }
+        internal bool IsAmbiguousDataType
+        {
+            get { return (_flags & TypeFlags.AmbiguousDataType) != 0; }
         }
 
-        internal bool HasCustomFormatter {
-            get { return (flags & TypeFlags.HasCustomFormatter) != 0; }
+        internal bool HasCustomFormatter
+        {
+            get { return (_flags & TypeFlags.HasCustomFormatter) != 0; }
         }
 
-        internal bool HasDefaultSupport {
-            get { return (flags & TypeFlags.IgnoreDefault) == 0; }
+        internal bool HasDefaultSupport
+        {
+            get { return (_flags & TypeFlags.IgnoreDefault) == 0; }
         }
 
-        internal bool HasIsEmpty {
-            get { return (flags & TypeFlags.HasIsEmpty) != 0; }
+        internal bool HasIsEmpty
+        {
+            get { return (_flags & TypeFlags.HasIsEmpty) != 0; }
         }
 
-        internal bool CollapseWhitespace {
-            get { return (flags & TypeFlags.CollapseWhitespace) != 0; }
+        internal bool CollapseWhitespace
+        {
+            get { return (_flags & TypeFlags.CollapseWhitespace) != 0; }
         }
 
-        internal bool HasDefaultConstructor {
-            get { return (flags & TypeFlags.HasDefaultConstructor) != 0; }
+        internal bool HasDefaultConstructor
+        {
+            get { return (_flags & TypeFlags.HasDefaultConstructor) != 0; }
         }
 
-        internal bool IsUnsupported {
-            get { return (flags & TypeFlags.Unsupported) != 0; }
+        internal bool IsUnsupported
+        {
+            get { return (_flags & TypeFlags.Unsupported) != 0; }
         }
 
-        internal bool IsGenericInterface {
-            get { return (flags & TypeFlags.GenericInterface) != 0; }
+        internal bool IsGenericInterface
+        {
+            get { return (_flags & TypeFlags.GenericInterface) != 0; }
         }
 
-        internal bool IsPrivateImplementation {
-            get { return (flags & TypeFlags.UsePrivateImplementation) != 0; }
+        internal bool IsPrivateImplementation
+        {
+            get { return (_flags & TypeFlags.UsePrivateImplementation) != 0; }
         }
 
-        internal bool CannotNew {
+        internal bool CannotNew
+        {
             get { return !HasDefaultConstructor || ConstructorInaccessible; }
         }
 
-        internal bool IsAbstract {
-            get { return (flags & TypeFlags.Abstract) != 0; }
+        internal bool IsAbstract
+        {
+            get { return (_flags & TypeFlags.Abstract) != 0; }
         }
 
-        internal bool IsOptionalValue {
-            get { return (flags & TypeFlags.OptionalValue) != 0; }
+        internal bool IsOptionalValue
+        {
+            get { return (_flags & TypeFlags.OptionalValue) != 0; }
         }
 
-        internal bool UseReflection {
-            get { return (flags & TypeFlags.UseReflection) != 0; }
+        internal bool UseReflection
+        {
+            get { return (_flags & TypeFlags.UseReflection) != 0; }
         }
 
-        internal bool IsVoid {
-            get { return kind == TypeKind.Void; }
+        internal bool IsVoid
+        {
+            get { return _kind == TypeKind.Void; }
         }
 
-        internal bool IsClass {
-            get { return kind == TypeKind.Class; }
+        internal bool IsClass
+        {
+            get { return _kind == TypeKind.Class; }
         }
 
-        internal bool IsStructLike {
-            get { return kind == TypeKind.Struct || kind == TypeKind.Class; }
+        internal bool IsStructLike
+        {
+            get { return _kind == TypeKind.Struct || _kind == TypeKind.Class; }
         }
 
-        internal bool IsArrayLike {
-            get { return kind == TypeKind.Array || kind == TypeKind.Collection || kind == TypeKind.Enumerable; }
+        internal bool IsArrayLike
+        {
+            get { return _kind == TypeKind.Array || _kind == TypeKind.Collection || _kind == TypeKind.Enumerable; }
         }
 
-        internal bool IsCollection {
-            get { return kind == TypeKind.Collection; }
+        internal bool IsCollection
+        {
+            get { return _kind == TypeKind.Collection; }
         }
 
-        internal bool IsEnumerable {
-            get { return kind == TypeKind.Enumerable; }
+        internal bool IsEnumerable
+        {
+            get { return _kind == TypeKind.Enumerable; }
         }
 
-        internal bool IsArray {
-            get { return kind == TypeKind.Array; }
+        internal bool IsArray
+        {
+            get { return _kind == TypeKind.Array; }
         }
 
-        internal bool IsPrimitive {
-            get { return kind == TypeKind.Primitive; }
+        internal bool IsPrimitive
+        {
+            get { return _kind == TypeKind.Primitive; }
         }
 
-        internal bool IsEnum {
-            get { return kind == TypeKind.Enum; }
+        internal bool IsEnum
+        {
+            get { return _kind == TypeKind.Enum; }
         }
 
-        internal bool IsNullable {
+        internal bool IsNullable
+        {
             get { return !IsValueType; }
         }
 
-        internal bool IsRoot {
-            get { return kind == TypeKind.Root; }
+        internal bool IsRoot
+        {
+            get { return _kind == TypeKind.Root; }
         }
 
-        internal bool ConstructorInaccessible {
-            get { return (flags & TypeFlags.CtorInaccessible) != 0; }
+        internal bool ConstructorInaccessible
+        {
+            get { return (_flags & TypeFlags.CtorInaccessible) != 0; }
         }
 
-        internal Exception Exception {
-            get { return exception; }
-            set { exception = value; }
+        internal Exception Exception
+        {
+            get { return _exception; }
+            set { _exception = value; }
         }
 
-        internal TypeDesc GetNullableTypeDesc(Type type) {
+        internal TypeDesc GetNullableTypeDesc(Type type)
+        {
             if (IsOptionalValue)
                 return this;
 
-            if (nullableTypeDesc == null) {
-                nullableTypeDesc = new TypeDesc("NullableOf" + this.name, "System.Nullable`1[" + this.fullName + "]", null, TypeKind.Struct, this, this.flags | TypeFlags.OptionalValue, this.formatterName);
-                nullableTypeDesc.type = type;
+            if (_nullableTypeDesc == null)
+            {
+                _nullableTypeDesc = new TypeDesc("NullableOf" + _name, "System.Nullable`1[" + _fullName + "]", null, TypeKind.Struct, this, _flags | TypeFlags.OptionalValue, _formatterName);
+                _nullableTypeDesc._type = type;
             }
 
-            return nullableTypeDesc;
+            return _nullableTypeDesc;
         }
-        internal void CheckSupported() {
-            if (IsUnsupported) {
-                if (Exception != null) {
+        internal void CheckSupported()
+        {
+            if (IsUnsupported)
+            {
+                if (Exception != null)
+                {
                     throw Exception;
                 }
-                else {
+                else
+                {
                     throw new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, FullName));
                 }
             }
-            if (baseTypeDesc != null)
-                baseTypeDesc.CheckSupported();
-            if (arrayElementTypeDesc != null)
-                arrayElementTypeDesc.CheckSupported();
+            if (_baseTypeDesc != null)
+                _baseTypeDesc.CheckSupported();
+            if (_arrayElementTypeDesc != null)
+                _arrayElementTypeDesc.CheckSupported();
         }
 
-        internal void CheckNeedConstructor() {
-            if (!IsValueType && !IsAbstract && !HasDefaultConstructor) {
-                flags |= TypeFlags.Unsupported;
-                this.exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlConstructorInaccessible, FullName));
+        internal void CheckNeedConstructor()
+        {
+            if (!IsValueType && !IsAbstract && !HasDefaultConstructor)
+            {
+                _flags |= TypeFlags.Unsupported;
+                _exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlConstructorInaccessible, FullName));
             }
         }
 
-        internal string ArrayLengthName {
-            get { return kind == TypeKind.Array ? "Length" : "Count"; }
+        internal string ArrayLengthName
+        {
+            get { return _kind == TypeKind.Array ? "Length" : "Count"; }
         }
 
-        internal TypeDesc ArrayElementTypeDesc {
-            get { return arrayElementTypeDesc; }
-            set { arrayElementTypeDesc = value; }
+        internal TypeDesc ArrayElementTypeDesc
+        {
+            get { return _arrayElementTypeDesc; }
+            set { _arrayElementTypeDesc = value; }
         }
 
-        internal int Weight {
-            get { return weight; }
+        internal int Weight
+        {
+            get { return _weight; }
         }
 
-        internal TypeDesc CreateArrayTypeDesc() {
-            if (arrayTypeDesc == null)
-                arrayTypeDesc = new TypeDesc(null, name + "[]", fullName + "[]", TypeKind.Array, null, TypeFlags.Reference | (flags & TypeFlags.UseReflection), this);
-            return arrayTypeDesc;
+        internal TypeDesc CreateArrayTypeDesc()
+        {
+            if (_arrayTypeDesc == null)
+                _arrayTypeDesc = new TypeDesc(null, _name + "[]", _fullName + "[]", TypeKind.Array, null, TypeFlags.Reference | (_flags & TypeFlags.UseReflection), this);
+            return _arrayTypeDesc;
         }
 
-        internal TypeDesc CreateMappedTypeDesc(MappedTypeDesc extension) {
-            TypeDesc newTypeDesc = new TypeDesc(extension.Name, extension.Name, null, this.kind, this.baseTypeDesc, this.flags, null);
-            newTypeDesc.isXsdType = this.isXsdType;
-            newTypeDesc.isMixed = this.isMixed;
-            newTypeDesc.extendedType = extension;
-            newTypeDesc.dataType = this.dataType;
+        internal TypeDesc CreateMappedTypeDesc(MappedTypeDesc extension)
+        {
+            TypeDesc newTypeDesc = new TypeDesc(extension.Name, extension.Name, null, _kind, _baseTypeDesc, _flags, null);
+            newTypeDesc._isXsdType = _isXsdType;
+            newTypeDesc._isMixed = _isMixed;
+            newTypeDesc._extendedType = extension;
+            newTypeDesc._dataType = _dataType;
             return newTypeDesc;
         }
 
-        internal TypeDesc BaseTypeDesc {
-            get { return baseTypeDesc; }
-            set {
-                baseTypeDesc = value;
-                weight = baseTypeDesc == null ? 0 : baseTypeDesc.Weight + 1;
+        internal TypeDesc BaseTypeDesc
+        {
+            get { return _baseTypeDesc; }
+            set
+            {
+                _baseTypeDesc = value;
+                _weight = _baseTypeDesc == null ? 0 : _baseTypeDesc.Weight + 1;
             }
         }
 
-        internal bool IsDerivedFrom(TypeDesc baseTypeDesc) {
+        internal bool IsDerivedFrom(TypeDesc baseTypeDesc)
+        {
             TypeDesc typeDesc = this;
-            while (typeDesc != null) {
+            while (typeDesc != null)
+            {
                 if (typeDesc == baseTypeDesc) return true;
                 typeDesc = typeDesc.BaseTypeDesc;
             }
             return baseTypeDesc.IsRoot;
         }
 
-        internal static TypeDesc FindCommonBaseTypeDesc(TypeDesc[] typeDescs) {
+        internal static TypeDesc FindCommonBaseTypeDesc(TypeDesc[] typeDescs)
+        {
             if (typeDescs.Length == 0) return null;
             TypeDesc leastDerivedTypeDesc = null;
             int leastDerivedLevel = int.MaxValue;
 
-            for (int i = 0; i < typeDescs.Length; i++) {
+            for (int i = 0; i < typeDescs.Length; i++)
+            {
                 int derivationLevel = typeDescs[i].Weight;
-                if (derivationLevel < leastDerivedLevel) {
+                if (derivationLevel < leastDerivedLevel)
+                {
                     leastDerivedLevel = derivationLevel;
                     leastDerivedTypeDesc = typeDescs[i];
                 }
             }
-            while (leastDerivedTypeDesc != null) {
+            while (leastDerivedTypeDesc != null)
+            {
                 int i;
-                for (i = 0; i < typeDescs.Length; i++) {
+                for (i = 0; i < typeDescs.Length; i++)
+                {
                     if (!typeDescs[i].IsDerivedFrom(leastDerivedTypeDesc)) break;
                 }
                 if (i == typeDescs.Length) break;
@@ -411,16 +485,17 @@ namespace Microsoft.Xml.Serialization {
         }
     }
 
-    internal class TypeScope {
-        Hashtable typeDescs = new Hashtable();
-        Hashtable arrayTypeDescs = new Hashtable();
-        ArrayList typeMappings = new ArrayList();
+    internal class TypeScope
+    {
+        private Hashtable _typeDescs = new Hashtable();
+        private Hashtable _arrayTypeDescs = new Hashtable();
+        private ArrayList _typeMappings = new ArrayList();
 
-        static Hashtable primitiveTypes = new Hashtable();
-        static Hashtable primitiveDataTypes = new Hashtable();
-        static NameTable primitiveNames = new NameTable();
+        private static Hashtable s_primitiveTypes = new Hashtable();
+        private static Hashtable s_primitiveDataTypes = new Hashtable();
+        private static NameTable s_primitiveNames = new NameTable();
 
-        static string[] unsupportedTypes = new string[] {
+        private static string[] s_unsupportedTypes = new string[] {
             "anyURI",
             "duration",
             "ENTITY",
@@ -444,7 +519,8 @@ namespace Microsoft.Xml.Serialization {
             "token"
         };
 
-        static TypeScope() {
+        static TypeScope()
+        {
             AddPrimitive(typeof(string), "string", "String", TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.Reference | TypeFlags.HasDefaultConstructor);
             AddPrimitive(typeof(int), "int", "Int32", TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.XmlEncodingNotRequired);
             AddPrimitive(typeof(bool), "boolean", "Boolean", TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.XmlEncodingNotRequired);
@@ -488,17 +564,20 @@ namespace Microsoft.Xml.Serialization {
             // to add support for them we would need to create custom formatters for them
             // normalizedString is the only one unsuported type that suppose to preserve whitesapce
             AddPrimitive(typeof(string), "normalizedString", "String", TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.Reference | TypeFlags.HasDefaultConstructor);
-            for (int i = 0; i < unsupportedTypes.Length; i++) {
-                AddPrimitive(typeof(string), unsupportedTypes[i], "String", TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.Reference | TypeFlags.CollapseWhitespace);
+            for (int i = 0; i < s_unsupportedTypes.Length; i++)
+            {
+                AddPrimitive(typeof(string), s_unsupportedTypes[i], "String", TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.Reference | TypeFlags.CollapseWhitespace);
             }
         }
 
-        internal static bool IsKnownType(Type type) {
+        internal static bool IsKnownType(Type type)
+        {
             if (type == typeof(object))
                 return true;
             if (type.GetTypeInfo().IsEnum)
                 return false;
-            switch (Type.GetTypeCode(type)) {
+            switch (Type.GetTypeCode(type))
+            {
                 case TypeCode.String: return true;
                 case TypeCode.Int32: return true;
                 case TypeCode.Boolean: return true;
@@ -521,7 +600,8 @@ namespace Microsoft.Xml.Serialization {
                         return true;
                     else if (type == typeof(Guid))
                         return true;
-                    else if (type == typeof(XmlNode[])) {
+                    else if (type == typeof(XmlNode[]))
+                    {
                         return true;
                     }
                     break;
@@ -529,10 +609,12 @@ namespace Microsoft.Xml.Serialization {
             return false;
         }
 
-        static void AddSoapEncodedTypes(string ns) {
+        private static void AddSoapEncodedTypes(string ns)
+        {
             AddSoapEncodedPrimitive(typeof(string), "normalizedString", ns, "String", new XmlQualifiedName("normalizedString", XmlSchema.Namespace), TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.Reference | TypeFlags.HasDefaultConstructor);
-            for (int i = 0; i < unsupportedTypes.Length; i++) {
-                AddSoapEncodedPrimitive(typeof(string), unsupportedTypes[i], ns, "String", new XmlQualifiedName(unsupportedTypes[i], XmlSchema.Namespace), TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.Reference | TypeFlags.CollapseWhitespace);
+            for (int i = 0; i < s_unsupportedTypes.Length; i++)
+            {
+                AddSoapEncodedPrimitive(typeof(string), s_unsupportedTypes[i], ns, "String", new XmlQualifiedName(s_unsupportedTypes[i], XmlSchema.Namespace), TypeFlags.AmbiguousDataType | TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.Reference | TypeFlags.CollapseWhitespace);
             }
 
             AddSoapEncodedPrimitive(typeof(string), "string", ns, "String", new XmlQualifiedName("string", XmlSchema.Namespace), TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.Reference);
@@ -567,74 +649,90 @@ namespace Microsoft.Xml.Serialization {
             AddSoapEncodedPrimitive(typeof(byte[]), "base64", ns, "ByteArrayBase64", new XmlQualifiedName("base64Binary", XmlSchema.Namespace), TypeFlags.CanBeAttributeValue | TypeFlags.CanBeElementValue | TypeFlags.IgnoreDefault | TypeFlags.Reference);
         }
 
-        static void AddPrimitive(Type type, string dataTypeName, string formatterName, TypeFlags flags) {
+        private static void AddPrimitive(Type type, string dataTypeName, string formatterName, TypeFlags flags)
+        {
             XmlSchemaSimpleType dataType = new XmlSchemaSimpleType();
             dataType.Name = dataTypeName;
             TypeDesc typeDesc = new TypeDesc(type, true, dataType, formatterName, flags);
-            if (primitiveTypes[type] == null)
-                primitiveTypes.Add(type, typeDesc);
-            primitiveDataTypes.Add(dataType, typeDesc);
-            primitiveNames.Add(dataTypeName, XmlSchema.Namespace, typeDesc);
+            if (s_primitiveTypes[type] == null)
+                s_primitiveTypes.Add(type, typeDesc);
+            s_primitiveDataTypes.Add(dataType, typeDesc);
+            s_primitiveNames.Add(dataTypeName, XmlSchema.Namespace, typeDesc);
         }
 
-        static void AddNonXsdPrimitive(Type type, string dataTypeName, string ns, string formatterName, XmlQualifiedName baseTypeName, XmlSchemaFacet[] facets, TypeFlags flags) {
+        private static void AddNonXsdPrimitive(Type type, string dataTypeName, string ns, string formatterName, XmlQualifiedName baseTypeName, XmlSchemaFacet[] facets, TypeFlags flags)
+        {
             XmlSchemaSimpleType dataType = new XmlSchemaSimpleType();
             dataType.Name = dataTypeName;
             XmlSchemaSimpleTypeRestriction restriction = new XmlSchemaSimpleTypeRestriction();
             restriction.BaseTypeName = baseTypeName;
-            foreach (XmlSchemaFacet facet in facets) {
+            foreach (XmlSchemaFacet facet in facets)
+            {
                 restriction.Facets.Add(facet);
             }
             dataType.Content = restriction;
             TypeDesc typeDesc = new TypeDesc(type, false, dataType, formatterName, flags);
-            if (primitiveTypes[type] == null)
-                primitiveTypes.Add(type, typeDesc);
-            primitiveDataTypes.Add(dataType, typeDesc);
-            primitiveNames.Add(dataTypeName, ns, typeDesc);
+            if (s_primitiveTypes[type] == null)
+                s_primitiveTypes.Add(type, typeDesc);
+            s_primitiveDataTypes.Add(dataType, typeDesc);
+            s_primitiveNames.Add(dataTypeName, ns, typeDesc);
         }
 
-        static void AddSoapEncodedPrimitive(Type type, string dataTypeName, string ns, string formatterName, XmlQualifiedName baseTypeName, TypeFlags flags) {
+        private static void AddSoapEncodedPrimitive(Type type, string dataTypeName, string ns, string formatterName, XmlQualifiedName baseTypeName, TypeFlags flags)
+        {
             AddNonXsdPrimitive(type, dataTypeName, ns, formatterName, baseTypeName, new XmlSchemaFacet[0], flags);
         }
 
-        internal TypeDesc GetTypeDesc(string name, string ns) {
+        internal TypeDesc GetTypeDesc(string name, string ns)
+        {
             return GetTypeDesc(name, ns, TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue | TypeFlags.CanBeAttributeValue);
         }
 
-        internal TypeDesc GetTypeDesc(string name, string ns, TypeFlags flags) {
-            TypeDesc typeDesc = (TypeDesc)primitiveNames[name, ns];
-            if (typeDesc != null) {
-                if ((typeDesc.Flags & flags) != 0) {
+        internal TypeDesc GetTypeDesc(string name, string ns, TypeFlags flags)
+        {
+            TypeDesc typeDesc = (TypeDesc)s_primitiveNames[name, ns];
+            if (typeDesc != null)
+            {
+                if ((typeDesc.Flags & flags) != 0)
+                {
                     return typeDesc;
                 }
             }
             return null;
         }
 
-        internal TypeDesc GetTypeDesc(XmlSchemaSimpleType dataType) {
-            return (TypeDesc)primitiveDataTypes[dataType];
+        internal TypeDesc GetTypeDesc(XmlSchemaSimpleType dataType)
+        {
+            return (TypeDesc)s_primitiveDataTypes[dataType];
         }
 
-        internal TypeDesc GetTypeDesc(Type type) {
+        internal TypeDesc GetTypeDesc(Type type)
+        {
             return GetTypeDesc(type, null, true, true);
         }
 
-        internal TypeDesc GetTypeDesc(Type type, MemberInfo source) {
+        internal TypeDesc GetTypeDesc(Type type, MemberInfo source)
+        {
             return GetTypeDesc(type, source, true, true);
         }
 
-        internal TypeDesc GetTypeDesc(Type type, MemberInfo source, bool directReference) {
+        internal TypeDesc GetTypeDesc(Type type, MemberInfo source, bool directReference)
+        {
             return GetTypeDesc(type, source, directReference, true);
         }
 
-        internal TypeDesc GetTypeDesc(Type type, MemberInfo source, bool directReference, bool throwOnError) {
-            if (type.GetTypeInfo().ContainsGenericParameters) {
+        internal TypeDesc GetTypeDesc(Type type, MemberInfo source, bool directReference, bool throwOnError)
+        {
+            if (type.GetTypeInfo().ContainsGenericParameters)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnsupportedOpenGenericType, type.ToString()));
             }
-            TypeDesc typeDesc = (TypeDesc)primitiveTypes[type];
-            if (typeDesc == null) {
-                typeDesc = (TypeDesc)typeDescs[type];
-                if (typeDesc == null) {
+            TypeDesc typeDesc = (TypeDesc)s_primitiveTypes[type];
+            if (typeDesc == null)
+            {
+                typeDesc = (TypeDesc)_typeDescs[type];
+                if (typeDesc == null)
+                {
                     typeDesc = ImportTypeDesc(type, source, directReference);
                 }
             }
@@ -645,37 +743,44 @@ namespace Microsoft.Xml.Serialization {
             return typeDesc;
         }
 
-        internal TypeDesc GetArrayTypeDesc(Type type) {
-            TypeDesc typeDesc = (TypeDesc)arrayTypeDescs[type];
-            if (typeDesc == null) {
+        internal TypeDesc GetArrayTypeDesc(Type type)
+        {
+            TypeDesc typeDesc = (TypeDesc)_arrayTypeDescs[type];
+            if (typeDesc == null)
+            {
                 typeDesc = GetTypeDesc(type);
                 if (!typeDesc.IsArrayLike)
                     typeDesc = ImportTypeDesc(type, null, false);
                 typeDesc.CheckSupported();
-                arrayTypeDescs.Add(type, typeDesc);
+                _arrayTypeDescs.Add(type, typeDesc);
             }
             return typeDesc;
         }
 
-        internal TypeMapping GetTypeMappingFromTypeDesc(TypeDesc typeDesc) {
-            foreach (TypeMapping typeMapping in TypeMappings) {
+        internal TypeMapping GetTypeMappingFromTypeDesc(TypeDesc typeDesc)
+        {
+            foreach (TypeMapping typeMapping in TypeMappings)
+            {
                 if (typeMapping.TypeDesc == typeDesc)
                     return typeMapping;
             }
             return null;
         }
 
-        internal Type GetTypeFromTypeDesc(TypeDesc typeDesc) {
+        internal Type GetTypeFromTypeDesc(TypeDesc typeDesc)
+        {
             if (typeDesc.Type != null)
                 return typeDesc.Type;
-            foreach (DictionaryEntry de in typeDescs) {
+            foreach (DictionaryEntry de in _typeDescs)
+            {
                 if (de.Value == typeDesc)
                     return de.Key as Type;
             }
             return null;
         }
 
-        TypeDesc ImportTypeDesc(Type type, MemberInfo memberInfo, bool directReference) {
+        private TypeDesc ImportTypeDesc(Type type, MemberInfo memberInfo, bool directReference)
+        {
             TypeDesc typeDesc = null;
             TypeKind kind;
             Type arrayElementType = null;
@@ -685,87 +790,109 @@ namespace Microsoft.Xml.Serialization {
 
             TypeInfo info = type.GetTypeInfo();
 
-            if (!info.IsPublic && !info.IsNestedPublic) {
+            if (!info.IsPublic && !info.IsNestedPublic)
+            {
                 flags |= TypeFlags.Unsupported;
                 exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlTypeInaccessible, type.FullName));
             }
-            else if (directReference && (info.IsAbstract && info.IsSealed)) {
+            else if (directReference && (info.IsAbstract && info.IsSealed))
+            {
                 flags |= TypeFlags.Unsupported;
                 exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlTypeStatic, type.FullName));
             }
 
-            if (DynamicAssemblies.IsTypeDynamic(type)) {
+            if (DynamicAssemblies.IsTypeDynamic(type))
+            {
                 flags |= TypeFlags.UseReflection;
             }
             if (!info.IsValueType)
                 flags |= TypeFlags.Reference;
 
-            if (type == typeof(object)) {
+            if (type == typeof(object))
+            {
                 kind = TypeKind.Root;
                 flags |= TypeFlags.HasDefaultConstructor;
             }
-            else if (type == typeof(ValueType)) {
+            else if (type == typeof(ValueType))
+            {
                 kind = TypeKind.Enum;
                 flags |= TypeFlags.Unsupported;
-                if (exception == null) {
+                if (exception == null)
+                {
                     exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, type.FullName));
                 }
             }
-            else if (type == typeof(void)) {
+            else if (type == typeof(void))
+            {
                 kind = TypeKind.Void;
             }
-            else if (typeof(IXmlSerializable).IsAssignableFrom(type)) {
+            else if (typeof(IXmlSerializable).IsAssignableFrom(type))
+            {
                 // CONSIDER, just because it's typed, doesn't mean it has schema?
                 kind = TypeKind.Serializable;
                 flags |= TypeFlags.Special | TypeFlags.CanBeElementValue;
                 flags |= GetConstructorFlags(type, ref exception);
             }
-            else if (type.IsArray) {
+            else if (type.IsArray)
+            {
                 kind = TypeKind.Array;
-                if (type.GetArrayRank() > 1) {
+                if (type.GetArrayRank() > 1)
+                {
                     flags |= TypeFlags.Unsupported;
-                    if (exception == null) {
+                    if (exception == null)
+                    {
                         exception = new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedRank, type.FullName));
                     }
                 }
                 arrayElementType = type.GetElementType();
                 flags |= TypeFlags.HasDefaultConstructor;
             }
-            else if (typeof(ICollection).IsAssignableFrom(type) && !IsArraySegment(type)) {
+            else if (typeof(ICollection).IsAssignableFrom(type) && !IsArraySegment(type))
+            {
                 kind = TypeKind.Collection;
                 arrayElementType = GetCollectionElementType(type, memberInfo == null ? null : memberInfo.DeclaringType.FullName + "." + memberInfo.Name);
                 flags |= GetConstructorFlags(type, ref exception);
             }
-            else if (type == typeof(XmlQualifiedName)) {
+            else if (type == typeof(XmlQualifiedName))
+            {
                 kind = TypeKind.Primitive;
             }
-            else if (info.IsPrimitive) {
+            else if (info.IsPrimitive)
+            {
                 kind = TypeKind.Primitive;
                 flags |= TypeFlags.Unsupported;
-                if (exception == null) {
+                if (exception == null)
+                {
                     exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, type.FullName));
                 }
             }
-            else if (info.IsEnum) {
+            else if (info.IsEnum)
+            {
                 kind = TypeKind.Enum;
             }
-            else if (info.IsValueType) {
+            else if (info.IsValueType)
+            {
                 kind = TypeKind.Struct;
-                if (IsOptionalValue(type)) {
+                if (IsOptionalValue(type))
+                {
                     baseType = type.GetGenericArguments()[0];
                     flags |= TypeFlags.OptionalValue;
                 }
-                else {
+                else
+                {
                     baseType = info.BaseType;
                 }
                 if (info.IsAbstract) flags |= TypeFlags.Abstract;
             }
-            else if (info.IsClass) {
-                if (type == typeof(XmlAttribute)) {
+            else if (info.IsClass)
+            {
+                if (type == typeof(XmlAttribute))
+                {
                     kind = TypeKind.Attribute;
                     flags |= TypeFlags.Special | TypeFlags.CanBeAttributeValue;
                 }
-                else if (typeof(XmlNode).IsAssignableFrom(type)) {
+                else if (typeof(XmlNode).IsAssignableFrom(type))
+                {
                     kind = TypeKind.Node;
                     baseType = info.BaseType;
                     flags |= TypeFlags.Special | TypeFlags.CanBeElementValue | TypeFlags.CanBeTextValue;
@@ -776,40 +903,50 @@ namespace Microsoft.Xml.Serialization {
                     else if (type.IsAssignableFrom(typeof(XmlAttribute)))
                         flags |= TypeFlags.CanBeAttributeValue;
                 }
-                else {
+                else
+                {
                     kind = TypeKind.Class;
                     baseType = info.BaseType;
                     if (info.IsAbstract)
                         flags |= TypeFlags.Abstract;
                 }
             }
-            else if (info.IsInterface) {
+            else if (info.IsInterface)
+            {
                 kind = TypeKind.Void;
                 flags |= TypeFlags.Unsupported;
-                if (exception == null) {
-                    if (memberInfo == null) {
+                if (exception == null)
+                {
+                    if (memberInfo == null)
+                    {
                         exception = new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedInterface, type.FullName));
                     }
-                    else {
+                    else
+                    {
                         exception = new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedInterfaceDetails, memberInfo.DeclaringType.FullName + "." + memberInfo.Name, type.FullName));
                     }
                 }
             }
-            else {
+            else
+            {
                 kind = TypeKind.Void;
                 flags |= TypeFlags.Unsupported;
-                if (exception == null) {
+                if (exception == null)
+                {
                     exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, type.FullName));
                 }
             }
 
             // check to see if the type has public default constructor for classes
-            if (kind == TypeKind.Class && !info.IsAbstract) {
+            if (kind == TypeKind.Class && !info.IsAbstract)
+            {
                 flags |= GetConstructorFlags(type, ref exception);
             }
             // check if a struct-like type is enumerable
-            if (kind == TypeKind.Struct || kind == TypeKind.Class) {
-                if (typeof(IEnumerable).IsAssignableFrom(type) && !IsArraySegment(type)) {
+            if (kind == TypeKind.Struct || kind == TypeKind.Class)
+            {
+                if (typeof(IEnumerable).IsAssignableFrom(type) && !IsArraySegment(type))
+                {
                     arrayElementType = GetEnumeratorElementType(type, ref flags);
                     kind = TypeKind.Enumerable;
 
@@ -825,24 +962,29 @@ namespace Microsoft.Xml.Serialization {
             if (directReference && (typeDesc.IsClass || kind == TypeKind.Serializable))
                 typeDesc.CheckNeedConstructor();
 
-            if (typeDesc.IsUnsupported) {
+            if (typeDesc.IsUnsupported)
+            {
                 // return right away, do not check anything else
                 return typeDesc;
             }
-            typeDescs.Add(type, typeDesc);
+            _typeDescs.Add(type, typeDesc);
 
-            if (arrayElementType != null) {
+            if (arrayElementType != null)
+            {
                 TypeDesc td = GetTypeDesc(arrayElementType, memberInfo, true, false);
                 // explicitly disallow read-only elements, even if they are collections
-                if (directReference && (td.IsCollection || td.IsEnumerable) && !td.IsPrimitive) {
+                if (directReference && (td.IsCollection || td.IsEnumerable) && !td.IsPrimitive)
+                {
                     td.CheckNeedConstructor();
                 }
                 typeDesc.ArrayElementTypeDesc = td;
             }
-            if (baseType != null && baseType != typeof(object) && baseType != typeof(ValueType)) {
+            if (baseType != null && baseType != typeof(object) && baseType != typeof(ValueType))
+            {
                 typeDesc.BaseTypeDesc = GetTypeDesc(baseType, memberInfo, false, false);
             }
-            if (info.IsNestedPublic) {
+            if (info.IsNestedPublic)
+            {
                 //for (Type t = type.DeclaringType; t != null && !t.ContainsGenericParameters && !(t.IsAbstract && t.IsSealed); t = t.DeclaringType)
                 Type t = type.DeclaringType;
                 for (TypeInfo tinfo = t != null ? t.GetTypeInfo() : null; tinfo != null && !tinfo.ContainsGenericParameters && !(tinfo.IsAbstract && tinfo.IsSealed); t = t.DeclaringType)
@@ -851,12 +993,15 @@ namespace Microsoft.Xml.Serialization {
             return typeDesc;
         }
 
-        private static bool IsArraySegment(Type t) {
+        private static bool IsArraySegment(Type t)
+        {
             return t.GetTypeInfo().IsGenericType && (t.GetGenericTypeDefinition() == typeof(ArraySegment<>));
         }
 
-        internal static bool IsOptionalValue(Type type) {
-            if (type.GetTypeInfo().IsGenericType) {
+        internal static bool IsOptionalValue(Type type)
+        {
+            if (type.GetTypeInfo().IsGenericType)
+            {
                 if (type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition())
                     return true;
             }
@@ -872,22 +1017,27 @@ namespace Microsoft.Xml.Serialization {
         */
 
         // UNDONE: this code is c# specific and should be switched to using CodeDom
-        internal static string TypeName(Type t) {
-            if (t.IsArray) {
+        internal static string TypeName(Type t)
+        {
+            if (t.IsArray)
+            {
                 return "ArrayOf" + TypeName(t.GetElementType());
             }
-            else if (t.GetTypeInfo().IsGenericType) {
+            else if (t.GetTypeInfo().IsGenericType)
+            {
                 StringBuilder typeName = new StringBuilder();
                 StringBuilder ns = new StringBuilder();
                 string name = t.Name;
                 int arity = name.IndexOf("`", StringComparison.Ordinal);
-                if (arity >= 0) {
+                if (arity >= 0)
+                {
                     name = name.Substring(0, arity);
                 }
                 typeName.Append(name);
                 typeName.Append("Of");
                 Type[] arguments = t.GetGenericArguments();
-                for (int i = 0; i < arguments.Length; i++) {
+                for (int i = 0; i < arguments.Length; i++)
+                {
                     typeName.Append(TypeName(arguments[i]));
                     ns.Append(arguments[i].Namespace);
                 }
@@ -903,14 +1053,16 @@ namespace Microsoft.Xml.Serialization {
             return t.Name;
         }
 
-        internal static Type GetArrayElementType(Type type, string memberInfo) {
+        internal static Type GetArrayElementType(Type type, string memberInfo)
+        {
             if (type.IsArray)
                 return type.GetElementType();
             else if (IsArraySegment(type))
                 return null;
             else if (typeof(ICollection).IsAssignableFrom(type))
                 return GetCollectionElementType(type, memberInfo);
-            else if (typeof(IEnumerable).IsAssignableFrom(type)) {
+            else if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
                 TypeFlags flags = TypeFlags.None;
                 return GetEnumeratorElementType(type, ref flags);
             }
@@ -918,7 +1070,8 @@ namespace Microsoft.Xml.Serialization {
                 return null;
         }
 
-        internal static MemberMapping[] GetAllMembers(StructMapping mapping) {
+        internal static MemberMapping[] GetAllMembers(StructMapping mapping)
+        {
             if (mapping.BaseMapping == null)
                 return mapping.Members;
             ArrayList list = new ArrayList();
@@ -926,68 +1079,83 @@ namespace Microsoft.Xml.Serialization {
             return (MemberMapping[])list.ToArray(typeof(MemberMapping));
         }
 
-        internal static void GetAllMembers(StructMapping mapping, ArrayList list) {
-            if (mapping.BaseMapping != null) {
+        internal static void GetAllMembers(StructMapping mapping, ArrayList list)
+        {
+            if (mapping.BaseMapping != null)
+            {
                 GetAllMembers(mapping.BaseMapping, list);
             }
-            for (int i = 0; i < mapping.Members.Length; i++) {
+            for (int i = 0; i < mapping.Members.Length; i++)
+            {
                 list.Add(mapping.Members[i]);
             }
         }
 
-        internal static MemberMapping[] GetAllMembers(StructMapping mapping, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos) {
+        internal static MemberMapping[] GetAllMembers(StructMapping mapping, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
+        {
             MemberMapping[] mappings = GetAllMembers(mapping);
             PopulateMemberInfos(mapping, mappings, memberInfos);
             return mappings;
         }
 
-        internal static MemberMapping[] GetSettableMembers(StructMapping structMapping) {
+        internal static MemberMapping[] GetSettableMembers(StructMapping structMapping)
+        {
             ArrayList list = new ArrayList();
             GetSettableMembers(structMapping, list);
             return (MemberMapping[])list.ToArray(typeof(MemberMapping));
         }
 
-        static void GetSettableMembers(StructMapping mapping, ArrayList list) {
-            if (mapping.BaseMapping != null) {
+        private static void GetSettableMembers(StructMapping mapping, ArrayList list)
+        {
+            if (mapping.BaseMapping != null)
+            {
                 GetSettableMembers(mapping.BaseMapping, list);
             }
 
-            if(mapping.Members != null) {
-                foreach (MemberMapping memberMapping in mapping.Members) {                
+            if (mapping.Members != null)
+            {
+                foreach (MemberMapping memberMapping in mapping.Members)
+                {
                     MemberInfo memberInfo = memberMapping.MemberInfo;
                     PropertyInfo propertyInfo = memberInfo as PropertyInfo;
-                    if (propertyInfo != null) {
-                        if (propertyInfo != null && !CanWriteProperty(propertyInfo, memberMapping.TypeDesc)) {
+                    if (propertyInfo != null)
+                    {
+                        if (propertyInfo != null && !CanWriteProperty(propertyInfo, memberMapping.TypeDesc))
+                        {
                             throw new InvalidOperationException(ResXml.GetString(ResXml.XmlReadOnlyPropertyError, propertyInfo.DeclaringType, propertyInfo.Name));
                         }
                     }
-                    list.Add(memberMapping);                
+                    list.Add(memberMapping);
                 }
             }
         }
 
-        static bool CanWriteProperty(PropertyInfo propertyInfo, TypeDesc typeDesc) {
+        private static bool CanWriteProperty(PropertyInfo propertyInfo, TypeDesc typeDesc)
+        {
             Debug.Assert(propertyInfo != null);
             Debug.Assert(typeDesc != null);
 
             // If the property is a collection, we don't need a setter.
-            if (typeDesc.Kind == TypeKind.Collection || typeDesc.Kind == TypeKind.Enumerable) {
+            if (typeDesc.Kind == TypeKind.Collection || typeDesc.Kind == TypeKind.Enumerable)
+            {
                 return true;
             }
             // Else the property needs a public setter.
             return propertyInfo.SetMethod != null && propertyInfo.SetMethod.IsPublic;
         }
 
-        internal static MemberMapping[] GetSettableMembers(StructMapping mapping, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos) {
+        internal static MemberMapping[] GetSettableMembers(StructMapping mapping, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
+        {
             MemberMapping[] mappings = GetSettableMembers(mapping);
             PopulateMemberInfos(mapping, mappings, memberInfos);
             return mappings;
         }
 
-        static void PopulateMemberInfos(StructMapping structMapping, MemberMapping[] mappings, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
+        private static void PopulateMemberInfos(StructMapping structMapping, MemberMapping[] mappings, System.Collections.Generic.Dictionary<string, MemberInfo> memberInfos)
         {
             memberInfos.Clear();
-            for (int i = 0; i < mappings.Length; ++i) {
+            for (int i = 0; i < mappings.Length; ++i)
+            {
                 memberInfos[mappings[i].Name] = mappings[i].MemberInfo;
                 if (mappings[i].ChoiceIdentifier != null)
                     memberInfos[mappings[i].ChoiceIdentifier.MemberName] = mappings[i].ChoiceIdentifier.MemberInfo;
@@ -1037,7 +1205,7 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        static bool ShouldBeReplaced(MemberInfo memberInfoToBeReplaced, Type derivedType, out MemberInfo replacedInfo)
+        private static bool ShouldBeReplaced(MemberInfo memberInfoToBeReplaced, Type derivedType, out MemberInfo replacedInfo)
         {
             replacedInfo = memberInfoToBeReplaced;
             Type currentType = derivedType;
@@ -1082,15 +1250,20 @@ namespace Microsoft.Xml.Serialization {
             return false;
         }
 
-        static TypeFlags GetConstructorFlags(Type type, ref Exception exception) {
+        private static TypeFlags GetConstructorFlags(Type type, ref Exception exception)
+        {
             ConstructorInfo ctor = type.GetConstructor(new Type[0]);
-            if (ctor != null) {
+            if (ctor != null)
+            {
                 TypeFlags flags = TypeFlags.HasDefaultConstructor;
                 if (!ctor.IsPublic)
                     flags |= TypeFlags.CtorInaccessible;
-                else {
-                    foreach(var obsolete in ctor.GetCustomAttributes<ObsoleteAttribute>(false)) { 
-                        if (obsolete.IsError) {
+                else
+                {
+                    foreach (var obsolete in ctor.GetCustomAttributes<ObsoleteAttribute>(false))
+                    {
+                        if (obsolete.IsError)
+                        {
                             flags |= TypeFlags.CtorInaccessible;
                         }
                     }
@@ -1100,35 +1273,44 @@ namespace Microsoft.Xml.Serialization {
             return 0;
         }
 
-        static Type GetEnumeratorElementType(Type type, ref TypeFlags flags) {
-            if (typeof(IEnumerable).IsAssignableFrom(type)) {
+        private static Type GetEnumeratorElementType(Type type, ref TypeFlags flags)
+        {
+            if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
                 MethodInfo enumerator = type.GetMethod("GetEnumerator", new Type[0]);
 
-                if (enumerator == null || !typeof(IEnumerator).IsAssignableFrom(enumerator.ReturnType)) {
+                if (enumerator == null || !typeof(IEnumerator).IsAssignableFrom(enumerator.ReturnType))
+                {
                     // try generic implementation
                     enumerator = null;
-                    foreach (MemberInfo member in type.GetMember("System.Collections.Generic.IEnumerable<*", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)) {
+                    foreach (MemberInfo member in type.GetMember("System.Collections.Generic.IEnumerable<*", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic))
+                    {
                         enumerator = member as MethodInfo;
-                        if (enumerator != null && typeof(IEnumerator).IsAssignableFrom(enumerator.ReturnType)) {
+                        if (enumerator != null && typeof(IEnumerator).IsAssignableFrom(enumerator.ReturnType))
+                        {
                             // use the first one we find
                             flags |= TypeFlags.GenericInterface;
                             break;
                         }
-                        else {
+                        else
+                        {
                             enumerator = null;
                         }
                     }
-                    if (enumerator == null) {
+                    if (enumerator == null)
+                    {
                         // and finally private interface implementation
                         flags |= TypeFlags.UsePrivateImplementation;
                         enumerator = type.GetMethod("System.Collections.IEnumerable.GetEnumerator", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
                     }
                 }
-                if (enumerator == null || !typeof(IEnumerator).IsAssignableFrom(enumerator.ReturnType)) {
+                if (enumerator == null || !typeof(IEnumerator).IsAssignableFrom(enumerator.ReturnType))
+                {
                     return null;
                 }
                 var customAttribs = enumerator.GetCustomAttributes(false) as Attribute[];
-                if (customAttribs != null) {
+                if (customAttribs != null)
+                {
                     XmlAttributes methodAttrs = new XmlAttributes(customAttribs);
                     if (methodAttrs.XmlIgnore) return null;
                 }
@@ -1137,42 +1319,54 @@ namespace Microsoft.Xml.Serialization {
 
                 MethodInfo addMethod = type.GetMethod("Add", new Type[] { currentType });
 
-                if (addMethod == null && currentType != typeof(object)) {
+                if (addMethod == null && currentType != typeof(object))
+                {
                     currentType = typeof(object);
                     addMethod = type.GetMethod("Add", new Type[] { currentType });
                 }
-                if (addMethod == null) {
+                if (addMethod == null)
+                {
                     throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoAddMethod, type.FullName, currentType, "IEnumerable"));
                 }
                 return currentType;
             }
-            else {
+            else
+            {
                 return null;
             }
         }
 
-        internal static PropertyInfo GetDefaultIndexer(Type type, string memberInfo) {
-            if (typeof(IDictionary).IsAssignableFrom(type)) {
-                if (memberInfo == null) {
+        internal static PropertyInfo GetDefaultIndexer(Type type, string memberInfo)
+        {
+            if (typeof(IDictionary).IsAssignableFrom(type))
+            {
+                if (memberInfo == null)
+                {
                     throw new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedIDictionary, type.FullName));
                 }
-                else {
+                else
+                {
                     throw new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedIDictionaryDetails, memberInfo, type.FullName));
                 }
             }
 
             MemberInfo[] defaultMembers = type.GetDefaultMembers();
             PropertyInfo indexer = null;
-            if (defaultMembers != null && defaultMembers.Length > 0) {
-                for (Type t = type; t != null; t = t.GetTypeInfo().BaseType) {
-                    for (int i = 0; i < defaultMembers.Length; i++) {
-                        if (defaultMembers[i] is PropertyInfo) {
+            if (defaultMembers != null && defaultMembers.Length > 0)
+            {
+                for (Type t = type; t != null; t = t.GetTypeInfo().BaseType)
+                {
+                    for (int i = 0; i < defaultMembers.Length; i++)
+                    {
+                        if (defaultMembers[i] is PropertyInfo)
+                        {
                             PropertyInfo defaultProp = (PropertyInfo)defaultMembers[i];
                             if (defaultProp.DeclaringType != t) continue;
                             if (!defaultProp.CanRead) continue;
                             MethodInfo getMethod = defaultProp.GetGetMethod();
                             ParameterInfo[] parameters = getMethod.GetParameters();
-                            if (parameters.Length == 1 && parameters[0].ParameterType == typeof(int)) {
+                            if (parameters.Length == 1 && parameters[0].ParameterType == typeof(int))
+                            {
                                 indexer = defaultProp;
                                 break;
                             }
@@ -1181,34 +1375,41 @@ namespace Microsoft.Xml.Serialization {
                     if (indexer != null) break;
                 }
             }
-            if (indexer == null) {
+            if (indexer == null)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoDefaultAccessors, type.FullName));
             }
             MethodInfo addMethod = type.GetMethod("Add", new Type[] { indexer.PropertyType });
-            if (addMethod == null) {
+            if (addMethod == null)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoAddMethod, type.FullName, indexer.PropertyType, "ICollection"));
             }
             return indexer;
         }
-        static Type GetCollectionElementType(Type type, string memberInfo) {
+        private static Type GetCollectionElementType(Type type, string memberInfo)
+        {
             return GetDefaultIndexer(type, memberInfo).PropertyType;
         }
 
-        static internal XmlQualifiedName ParseWsdlArrayType(string type, out string dims, XmlSchemaObject parent) {
+        static internal XmlQualifiedName ParseWsdlArrayType(string type, out string dims, XmlSchemaObject parent)
+        {
             string ns;
             string name;
 
             int nsLen = type.LastIndexOf(':');
 
-            if (nsLen <= 0) {
+            if (nsLen <= 0)
+            {
                 ns = "";
             }
-            else {
+            else
+            {
                 ns = type.Substring(0, nsLen);
             }
             int nameLen = type.IndexOf('[', nsLen + 1);
 
-            if (nameLen <= nsLen) {
+            if (nameLen <= nsLen)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayTypeSyntax, type));
             }
             name = type.Substring(nsLen + 1, nameLen - nsLen - 1);
@@ -1216,10 +1417,13 @@ namespace Microsoft.Xml.Serialization {
 
             // parent is not null only in the case when we used XmlSchema.Read(), 
             // in which case we need to fixup the wsdl:arayType attribute value
-            while (parent != null) {
-                if (parent.Namespaces != null) {
+            while (parent != null)
+            {
+                if (parent.Namespaces != null)
+                {
                     string wsdlNs = (string)parent.Namespaces.Namespaces[ns];
-                    if (wsdlNs != null) {
+                    if (wsdlNs != null)
+                    {
                         ns = wsdlNs;
                         break;
                     }
@@ -1229,21 +1433,25 @@ namespace Microsoft.Xml.Serialization {
             return new XmlQualifiedName(name, ns);
         }
 
-        internal ICollection Types {
-            get { return this.typeDescs.Keys; }
+        internal ICollection Types
+        {
+            get { return _typeDescs.Keys; }
         }
 
-        internal void AddTypeMapping(TypeMapping typeMapping) {
-            typeMappings.Add(typeMapping);
+        internal void AddTypeMapping(TypeMapping typeMapping)
+        {
+            _typeMappings.Add(typeMapping);
         }
 
-        internal ICollection TypeMappings {
-            get { return typeMappings; }
+        internal ICollection TypeMappings
+        {
+            get { return _typeMappings; }
         }
-        internal static Hashtable PrimtiveTypes { get { return primitiveTypes; } }
+        internal static Hashtable PrimtiveTypes { get { return s_primitiveTypes; } }
     }
 
-    internal class Soap {
+    internal class Soap
+    {
         private Soap() { }
         internal const string Encoding = "http://schemas.xmlsoap.org/soap/encoding/";
         internal const string UrType = "anyType";
@@ -1251,20 +1459,23 @@ namespace Microsoft.Xml.Serialization {
         internal const string ArrayType = "arrayType";
     }
 
-    internal class Soap12 {
+    internal class Soap12
+    {
         private Soap12() { }
         internal const string Encoding = "http://www.w3.org/2003/05/soap-encoding";
         internal const string RpcNamespace = "http://www.w3.org/2003/05/soap-rpc";
         internal const string RpcResult = "result";
     }
 
-    internal class Wsdl {
+    internal class Wsdl
+    {
         private Wsdl() { }
         internal const string Namespace = "http://schemas.xmlsoap.org/wsdl/";
         internal const string ArrayType = "arrayType";
     }
 
-    internal class UrtTypes {
+    internal class UrtTypes
+    {
         private UrtTypes() { }
         internal const string Namespace = "http://microsoft.com/wsdl/types/";
     }

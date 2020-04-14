@@ -141,7 +141,7 @@ namespace System.Runtime
                 }
                 else
                 {
-                    this._callback(_state);
+                    _callback(_state);
                 }
             }
             [Fx.Tag.SecurityNote(Critical = "Implements a the critical abstract Trace method, " +
@@ -156,7 +156,7 @@ namespace System.Runtime
                     try
                     {
                         EtwDiagnosticTrace.ActivityId = _activityId;
-                        this._callback(_state);
+                        _callback(_state);
                     }
                     finally
                     {
@@ -166,7 +166,7 @@ namespace System.Runtime
                 else
                 {
                     Guid previous = Guid.Empty;
-                    this._callback(_state);
+                    _callback(_state);
                 }
             }
         }

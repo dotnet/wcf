@@ -8,9 +8,11 @@ using System.Text;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Microsoft.Xml {
+namespace Microsoft.Xml
+{
     /* These are the tokens used by the Yukon BinaryXml protocol */
-    internal enum BinXmlToken {
+    internal enum BinXmlToken
+    {
         Error = 0,
         NotImpl = -2,
         EOF = -1,

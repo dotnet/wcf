@@ -13,7 +13,7 @@ namespace System.ServiceModel
         private static TimeSpan s_spnLookupTime = TimeSpan.FromMinutes(1);
 
         // Double-checked locking pattern requires volatile for read/write synchronization
-        private volatile bool hasSpnSidBeenComputed;
+        private volatile bool _hasSpnSidBeenComputed;
 
         private Object _thisLock = new Object();
 

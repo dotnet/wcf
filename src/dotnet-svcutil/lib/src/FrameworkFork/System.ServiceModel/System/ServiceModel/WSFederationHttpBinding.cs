@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System;
@@ -19,11 +20,11 @@ namespace System.ServiceModel
 
     public class WSFederationHttpBinding : WSHttpBindingBase
     {
-        static readonly MessageSecurityVersion WSMessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
+        private static readonly MessageSecurityVersion s_WSMessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
 
-        Uri privacyNoticeAt;
-        int privacyNoticeVersion;
-        WSFederationHttpSecurity security = new WSFederationHttpSecurity();
+        private Uri _privacyNoticeAt;
+        private int _privacyNoticeVersion;
+        private WSFederationHttpSecurity _security = new WSFederationHttpSecurity();
 
         public WSFederationHttpBinding(string configName)
             : this()
@@ -44,47 +45,47 @@ namespace System.ServiceModel
         public WSFederationHttpBinding(WSFederationHttpSecurityMode securityMode, bool reliableSessionEnabled)
             : base(reliableSessionEnabled)
         {
-            security.Mode = securityMode;
+            _security.Mode = securityMode;
         }
 
 
         internal WSFederationHttpBinding(WSFederationHttpSecurity security, PrivacyNoticeBindingElement privacy, bool reliableSessionEnabled)
             : base(reliableSessionEnabled)
         {
-            this.security = security;
+            _security = security;
             if (null != privacy)
             {
-                this.privacyNoticeAt = privacy.Url;
-                this.privacyNoticeVersion = privacy.Version;
+                _privacyNoticeAt = privacy.Url;
+                _privacyNoticeVersion = privacy.Version;
             }
         }
 
         [DefaultValue(null)]
         public Uri PrivacyNoticeAt
         {
-            get { return this.privacyNoticeAt; }
-            set { this.privacyNoticeAt = value; }
+            get { return _privacyNoticeAt; }
+            set { _privacyNoticeAt = value; }
         }
 
         [DefaultValue(0)]
         public int PrivacyNoticeVersion
         {
-            get { return this.privacyNoticeVersion; }
-            set { this.privacyNoticeVersion = value; }
+            get { return _privacyNoticeVersion; }
+            set { _privacyNoticeVersion = value; }
         }
 
         public WSFederationHttpSecurity Security
         {
-            get { return this.security; }
+            get { return _security; }
             set
             {
                 if (value == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                this.security = value;
+                _security = value;
             }
         }
 
-        PrivacyNoticeBindingElement CreatePrivacyPolicy()
+        private PrivacyNoticeBindingElement CreatePrivacyPolicy()
         {
             PrivacyNoticeBindingElement privacy = null;
 
@@ -92,7 +93,7 @@ namespace System.ServiceModel
             {
                 privacy = new PrivacyNoticeBindingElement();
                 privacy.Url = this.PrivacyNoticeAt;
-                privacy.Version = this.privacyNoticeVersion;
+                privacy.Version = _privacyNoticeVersion;
             }
 
             return privacy;
@@ -115,7 +116,7 @@ namespace System.ServiceModel
             HttpsTransportBindingElement httpsBinding = transport as HttpsTransportBindingElement;
             if (httpsBinding != null && httpsBinding.MessageSecurityVersion != null)
             {
-                if (httpsBinding.MessageSecurityVersion.SecurityPolicyVersion != WSMessageSecurityVersion.SecurityPolicyVersion)
+                if (httpsBinding.MessageSecurityVersion.SecurityPolicyVersion != s_WSMessageSecurityVersion.SecurityPolicyVersion)
                 {
                     return false;
                 }
@@ -142,7 +143,7 @@ namespace System.ServiceModel
 
         protected override TransportBindingElement GetTransport()
         {
-            if (security.Mode == WSFederationHttpSecurityMode.None || security.Mode == WSFederationHttpSecurityMode.Message)
+            if (_security.Mode == WSFederationHttpSecurityMode.None || _security.Mode == WSFederationHttpSecurityMode.Message)
             {
                 return this.HttpTransport;
             }
@@ -172,21 +173,20 @@ namespace System.ServiceModel
 
         protected override SecurityBindingElement CreateMessageSecurity()
         {
-            return security.CreateMessageSecurity(this.ReliableSession.Enabled, WSMessageSecurityVersion);
+            return _security.CreateMessageSecurity(this.ReliableSession.Enabled, s_WSMessageSecurityVersion);
         }
 
         // if you make changes here, see also WS2007FederationHttpBinding.TryCreateSecurity()
-        static bool TryCreateSecurity(SecurityBindingElement sbe, WSFederationHttpSecurityMode mode, HttpTransportSecurity transportSecurity, bool isReliableSession, out WSFederationHttpSecurity security)
+        private static bool TryCreateSecurity(SecurityBindingElement sbe, WSFederationHttpSecurityMode mode, HttpTransportSecurity transportSecurity, bool isReliableSession, out WSFederationHttpSecurity security)
         {
-            if (!WSFederationHttpSecurity.TryCreate(sbe, mode, transportSecurity, isReliableSession, WSMessageSecurityVersion, out security))
+            if (!WSFederationHttpSecurity.TryCreate(sbe, mode, transportSecurity, isReliableSession, s_WSMessageSecurityVersion, out security))
                 return false;
             // the last check: make sure that security binding element match the incoming security
-            return System.ServiceModel.Configuration.SecurityElement.AreBindingsMatching(security.CreateMessageSecurity(isReliableSession, WSMessageSecurityVersion), sbe);
+            return System.ServiceModel.Configuration.SecurityElement.AreBindingsMatching(security.CreateMessageSecurity(isReliableSession, s_WSMessageSecurityVersion), sbe);
         }
 
         public override BindingElementCollection CreateBindingElements()
         {   // return collection of BindingElements
-
             BindingElementCollection bindingElements = base.CreateBindingElements();
             // order of BindingElements is important
 

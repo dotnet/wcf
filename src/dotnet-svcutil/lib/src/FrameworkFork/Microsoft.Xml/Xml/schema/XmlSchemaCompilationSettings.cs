@@ -1,27 +1,31 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
-    public sealed class XmlSchemaCompilationSettings {
+    public sealed class XmlSchemaCompilationSettings
+    {
+        private bool _enableUpaCheck;
 
-        bool enableUpaCheck;
-
-        public XmlSchemaCompilationSettings() {
-            enableUpaCheck = true;
+        public XmlSchemaCompilationSettings()
+        {
+            _enableUpaCheck = true;
         }
 
-        public bool EnableUpaCheck {
-            get {
-                return enableUpaCheck;
+        public bool EnableUpaCheck
+        {
+            get
+            {
+                return _enableUpaCheck;
             }
-            set {
-                enableUpaCheck = value;
+            set
+            {
+                _enableUpaCheck = value;
             }
         }
     }
-    
 }

@@ -476,7 +476,7 @@ namespace System.ServiceModel.Dispatcher
                         ServiceModelActivity.Current.Suspend();
                     }
 
-                    for (; ;)
+                    for (; ; )
                     {
                         TimeSpan remaining = timeoutHelper.RemainingTime();
                         Message reply;

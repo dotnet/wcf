@@ -18,18 +18,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class CodeSerializer
     {
-        private static readonly string DefaultFileName = "ServiceReferences";
-        private static readonly Encoding ouputEncoding = new System.Text.UTF8Encoding(true);
+        private static readonly string s_defaultFileName = "ServiceReferences";
+        private static readonly Encoding s_ouputEncoding = new System.Text.UTF8Encoding(true);
 
-        private readonly CodeDomProvider codeProvider;
-        private readonly string outputFilePath;
+        private readonly CodeDomProvider _codeProvider;
+        private readonly string _outputFilePath;
 
         internal CodeSerializer(CommandProcessorOptions options, IEnumerable<MetadataSection> inputMetadata)
         {
             string extension = GetOutputFileExtension(options);
             string outputFilename = GetOutputFileName(options, inputMetadata);
-            this.outputFilePath = OutputPathHelper.BuildFilePath(DefaultFileName, options.OutputDir.FullName, outputFilename, extension, CommandProcessorOptions.Switches.OutputFile.Name);
-            this.codeProvider = options.CodeProvider;
+            _outputFilePath = OutputPathHelper.BuildFilePath(s_defaultFileName, options.OutputDir.FullName, outputFilename, extension, CommandProcessorOptions.Switches.OutputFile.Name);
+            _codeProvider = options.CodeProvider;
         }
 
         public string Save(CodeCompileUnit codeCompileUnit)
@@ -57,7 +57,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public string SaveCode(CodeCompileUnit codeCompileUnit)
         {
             string filePath = null;
-            OutputPathHelper.CreateDirectoryIfNeeded(outputFilePath);
+            OutputPathHelper.CreateDirectoryIfNeeded(_outputFilePath);
 
             CodeGeneratorOptions codeGenOptions = new CodeGeneratorOptions();
             codeGenOptions.BracingStyle = "C";
@@ -66,7 +66,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 try
                 {
-                    this.codeProvider.GenerateCodeFromCompileUnit(codeCompileUnit, writer, codeGenOptions);
+                    _codeProvider.GenerateCodeFromCompileUnit(codeCompileUnit, writer, codeGenOptions);
                     writer.Flush();
                 }
                 catch (Exception e)
@@ -75,9 +75,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     try
                     {
-                        if (File.Exists(this.outputFilePath))
+                        if (File.Exists(_outputFilePath))
                         {
-                            File.Delete(this.outputFilePath);
+                            File.Delete(_outputFilePath);
                         }
                     }
                     catch (System.UnauthorizedAccessException)
@@ -86,7 +86,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     throw new ToolRuntimeException(SR.GetString(SR.ErrCodegenError), e);
                 }
-                filePath = this.outputFilePath.Contains(" ") ? string.Format(CultureInfo.InvariantCulture, "\"{0}\"", this.outputFilePath) : this.outputFilePath;
+                filePath = _outputFilePath.Contains(" ") ? string.Format(CultureInfo.InvariantCulture, "\"{0}\"", _outputFilePath) : _outputFilePath;
             }
 
             return filePath;
@@ -94,16 +94,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private StreamWriter CreateOutputFile()
         {
-            OutputPathHelper.CreateDirectoryIfNeeded(this.outputFilePath);
+            OutputPathHelper.CreateDirectoryIfNeeded(_outputFilePath);
 
             try
             {
-                return new StreamWriter(new FileStream(this.outputFilePath, FileMode.Create, FileAccess.Write), ouputEncoding);
+                return new StreamWriter(new FileStream(_outputFilePath, FileMode.Create, FileAccess.Write), s_ouputEncoding);
             }
             catch (Exception e)
             {
                 if (Utils.IsFatalOrUnexpected(e)) throw;
-                throw new ToolRuntimeException(SR.GetString(SR.ErrCannotCreateFileFormat, this.outputFilePath), e);
+                throw new ToolRuntimeException(SR.GetString(SR.ErrCannotCreateFileFormat, _outputFilePath), e);
             }
         }
 
@@ -179,7 +179,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                         if (string.IsNullOrWhiteSpace(fileName))
                         {
-                            fileName = CodeSerializer.DefaultFileName;
+                            fileName = CodeSerializer.s_defaultFileName;
                         }
                     }
                 }

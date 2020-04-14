@@ -313,7 +313,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        ImmutableDispatchRuntime GetRuntimeCore()
+        private ImmutableDispatchRuntime GetRuntimeCore()
         {
             lock (this.ThisLock)
             {
@@ -347,7 +347,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal class UnhandledActionInvoker : IOperationInvoker
         {
-            readonly DispatchRuntime _dispatchRuntime;
+            private readonly DispatchRuntime _dispatchRuntime;
 
             public UnhandledActionInvoker(DispatchRuntime dispatchRuntime)
             {
@@ -528,7 +528,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        class CallbackInstanceProvider : IInstanceProvider
+        private class CallbackInstanceProvider : IInstanceProvider
         {
             object IInstanceProvider.GetInstance(InstanceContext instanceContext)
             {

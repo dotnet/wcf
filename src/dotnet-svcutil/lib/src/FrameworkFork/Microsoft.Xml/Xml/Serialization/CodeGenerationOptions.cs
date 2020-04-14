@@ -2,9 +2,10 @@
 // Licensed under the MIT license.
 
 
-namespace Microsoft.Xml.Serialization {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Serialization
+{
+    using System;
+    using Microsoft.Xml;
     using System.ComponentModel;
 
     /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions"]/*' />
@@ -58,7 +59,7 @@ namespace Microsoft.Xml.Serialization {
         /// </devdoc>
         [XmlEnum("order")]
         GenerateOrder = 0x08,
-        
+
         /// <include file='doc\CodeGenerationOptions.uex' path='docs/doc[@for="CodeGenerationOptions.EnableDataBinding"]/*' />
         /// <devdoc>
         ///    <para>

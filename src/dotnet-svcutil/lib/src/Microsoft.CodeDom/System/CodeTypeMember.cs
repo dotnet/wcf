@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,23 +16,24 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeTypeMember : CodeObject {
-        private MemberAttributes attributes = MemberAttributes.Private | MemberAttributes.Final;
-        private string name;
-        private CodeCommentStatementCollection comments = new CodeCommentStatementCollection();
-        private CodeAttributeDeclarationCollection customAttributes = null;
-        private CodeLinePragma linePragma;
-        
+    public class CodeTypeMember : CodeObject
+    {
+        private MemberAttributes _attributes = MemberAttributes.Private | MemberAttributes.Final;
+        private string _name;
+        private CodeCommentStatementCollection _comments = new CodeCommentStatementCollection();
+        private CodeAttributeDeclarationCollection _customAttributes = null;
+        private CodeLinePragma _linePragma;
+
         // Optionally Serializable
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeDirectiveCollection startDirectives = null;
+        private CodeDirectiveCollection _startDirectives = null;
         // [OptionalField]  // Not available in DNX (NetCore)        
-        private CodeDirectiveCollection endDirectives = null;
-        
+        private CodeDirectiveCollection _endDirectives = null;
+
 
         /// <devdoc>
         ///    <para>
@@ -40,12 +41,15 @@ namespace Microsoft.CodeDom {
         ///       the name of the member.
         ///    </para>
         /// </devdoc>
-        public string Name {
-            get {
-                return (name == null) ? string.Empty : name;
+        public string Name
+        {
+            get
+            {
+                return (_name == null) ? string.Empty : _name;
             }
-            set {
-                name = value;
+            set
+            {
+                _name = value;
             }
         }
 
@@ -55,12 +59,15 @@ namespace Microsoft.CodeDom {
         ///       the attributes of the member.
         ///    </para>
         /// </devdoc>
-        public MemberAttributes Attributes {
-            get {
-                return attributes;
+        public MemberAttributes Attributes
+        {
+            get
+            {
+                return _attributes;
             }
-            set {
-                attributes = value;
+            set
+            {
+                _attributes = value;
             }
         }
 
@@ -71,15 +78,19 @@ namespace Microsoft.CodeDom {
         ///       member.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeDeclarationCollection CustomAttributes {
-            get {
-                if (customAttributes == null) {
-                    customAttributes = new CodeAttributeDeclarationCollection();
+        public CodeAttributeDeclarationCollection CustomAttributes
+        {
+            get
+            {
+                if (_customAttributes == null)
+                {
+                    _customAttributes = new CodeAttributeDeclarationCollection();
                 }
-                return customAttributes;
+                return _customAttributes;
             }
-            set {
-                customAttributes = value;
+            set
+            {
+                _customAttributes = value;
             }
         }
 
@@ -88,12 +99,15 @@ namespace Microsoft.CodeDom {
         ///       The line the statement occurs on.
         ///    </para>
         /// </devdoc>
-        public CodeLinePragma LinePragma {
-            get {
-                return linePragma;
+        public CodeLinePragma LinePragma
+        {
+            get
+            {
+                return _linePragma;
             }
-            set {
-                linePragma = value;
+            set
+            {
+                _linePragma = value;
             }
         }
 
@@ -102,29 +116,37 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the member comment collection members.
         ///    </para>
         /// </devdoc>
-        public CodeCommentStatementCollection Comments {
-            get {
-                return comments;
-            }
-        }
-        
-        public CodeDirectiveCollection StartDirectives {
-            get {
-                if (startDirectives == null) {
-                    startDirectives = new CodeDirectiveCollection();
-                }
-                return startDirectives;                
+        public CodeCommentStatementCollection Comments
+        {
+            get
+            {
+                return _comments;
             }
         }
 
-        public CodeDirectiveCollection EndDirectives {
-            get {
-                if (endDirectives == null) {
-                    endDirectives = new CodeDirectiveCollection();
+        public CodeDirectiveCollection StartDirectives
+        {
+            get
+            {
+                if (_startDirectives == null)
+                {
+                    _startDirectives = new CodeDirectiveCollection();
                 }
-                return endDirectives ;                
+                return _startDirectives;
             }
-        }        
+        }
+
+        public CodeDirectiveCollection EndDirectives
+        {
+            get
+            {
+                if (_endDirectives == null)
+                {
+                    _endDirectives = new CodeDirectiveCollection();
+                }
+                return _endDirectives;
+            }
+        }
     }
 }
 

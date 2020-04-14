@@ -8,30 +8,30 @@ using System.Text;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    static class HelpGenerator
+    internal static class HelpGenerator
     {
-        private static StringBuilder HelpBuilder;
+        private static StringBuilder s_helpBuilder;
 
         internal static string GenerateHelpText()
         {
-            HelpBuilder = new StringBuilder();
+            s_helpBuilder = new StringBuilder();
             HelpGenerator.WriteUsage();
-            HelpBuilder.AppendLine();
-            HelpBuilder.AppendLine();
+            s_helpBuilder.AppendLine();
+            s_helpBuilder.AppendLine();
             HelpGenerator.WriteCodeGenerationHelp();
-            HelpBuilder.AppendLine();
-            HelpBuilder.AppendLine();
+            s_helpBuilder.AppendLine();
+            s_helpBuilder.AppendLine();
             HelpGenerator.WriteExamples();
-            HelpBuilder.AppendLine();
-            HelpBuilder.AppendLine();
-            return HelpBuilder.ToString();
+            s_helpBuilder.AppendLine();
+            s_helpBuilder.AppendLine();
+            return s_helpBuilder.ToString();
         }
 
         private static void WriteUsage()
         {
-            HelpBuilder.AppendLine(SR.GetString(SR.HelpUsage1));
-            HelpBuilder.AppendLine();
-            HelpBuilder.AppendLine(SR.GetString(SR.HelpUsage2));
+            s_helpBuilder.AppendLine(SR.GetString(SR.HelpUsage1));
+            s_helpBuilder.AppendLine();
+            s_helpBuilder.AppendLine(SR.GetString(SR.HelpUsage2));
         }
 
         private static void WriteCodeGenerationHelp()
@@ -86,23 +86,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private static void WriteExample(string syntax, string explanation)
         {
             ParagraphHelper paragraphHelper = new ParagraphHelper();
-            HelpBuilder.AppendLine(string.Format(CultureInfo.InvariantCulture, " {0}", syntax));
-            HelpBuilder.AppendLine(paragraphHelper.AddIndentation(string.Format(CultureInfo.InvariantCulture, "    {0}", explanation), indentLength: 4));
-            HelpBuilder.AppendLine();
+            s_helpBuilder.AppendLine(string.Format(CultureInfo.InvariantCulture, " {0}", syntax));
+            s_helpBuilder.AppendLine(paragraphHelper.AddIndentation(string.Format(CultureInfo.InvariantCulture, "    {0}", explanation), indentLength: 4));
+            s_helpBuilder.AppendLine();
         }
 
-        class ArgumentInfo
+        private class ArgumentInfo
         {
-            const string argHelpPrefix = " ";
-            const string argHelpSeperator = " - ";
+            private const string argHelpPrefix = " ";
+            private const string argHelpSeperator = " - ";
 
             internal static ArgumentInfo CreateInputHelpInfo(string input, string helpText, bool beginGroup = false)
             {
                 return new ArgumentInfo()
                 {
-                    name = input,
-                    helpText = helpText,
-                    beginGroup = beginGroup
+                    _name = input,
+                    _helpText = helpText,
+                    _beginGroup = beginGroup
                 };
             }
 
@@ -110,9 +110,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 return new ArgumentInfo()
                 {
-                    name = String.Format(CultureInfo.InvariantCulture, "{0}{1}", CommandSwitch.FullSwitchIndicator, option),
-                    helpText = helpText,
-                    beginGroup = beginGroup
+                    _name = String.Format(CultureInfo.InvariantCulture, "{0}{1}", CommandSwitch.FullSwitchIndicator, option),
+                    _helpText = helpText,
+                    _beginGroup = beginGroup
                 };
             }
 
@@ -120,37 +120,37 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 return new ArgumentInfo()
                 {
-                    name = String.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", CommandSwitch.FullSwitchIndicator, option, optionUse),
-                    helpText = helpText,
-                    beginGroup = beginGroup
+                    _name = String.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", CommandSwitch.FullSwitchIndicator, option, optionUse),
+                    _helpText = helpText,
+                    _beginGroup = beginGroup
                 };
             }
 
-            bool beginGroup;
-            string name;
-            string helpText;
+            private bool _beginGroup;
+            private string _name;
+            private string _helpText;
 
             public bool BeginGroup
             {
-                get { return beginGroup; }
-                set { beginGroup = value; }
+                get { return _beginGroup; }
+                set { _beginGroup = value; }
             }
 
             public string Name
             {
-                get { return name; }
+                get { return _name; }
             }
             public string HelpText
             {
-                set { helpText = value; }
+                set { _helpText = value; }
             }
 
-            string GenerateHelp(string pattern)
+            private string GenerateHelp(string pattern)
             {
-                return string.Format(CultureInfo.InvariantCulture, pattern, name, helpText);
+                return string.Format(CultureInfo.InvariantCulture, pattern, _name, _helpText);
             }
 
-            static int CalculateMaxNameLength(ArgumentInfo[] arguments)
+            private static int CalculateMaxNameLength(ArgumentInfo[] arguments)
             {
                 int maxNameLength = 0;
                 foreach (ArgumentInfo argument in arguments)
@@ -174,39 +174,39 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 foreach (ArgumentInfo argument in arguments)
                 {
                     if (argument.BeginGroup)
-                        HelpBuilder.AppendLine();
+                        s_helpBuilder.AppendLine();
 
                     string optionHelp = argument.GenerateHelp(helpPattern);
-                    HelpBuilder.AppendLine(paragraphHelper.AddIndentation(optionHelp, helpTextIndent));
+                    s_helpBuilder.AppendLine(paragraphHelper.AddIndentation(optionHelp, helpTextIndent));
                 }
             }
         }
 
-        class HelpCategory
+        private class HelpCategory
         {
             static HelpCategory()
             {
                 try
                 {
                     if (Console.WindowWidth > 75)
-                        nameMidpoint = Console.WindowWidth / 3;
+                        s_nameMidpoint = Console.WindowWidth / 3;
                     else
-                        nameMidpoint = 25;
+                        s_nameMidpoint = 25;
                 }
                 catch
                 {
-                    nameMidpoint = 25;
+                    s_nameMidpoint = 25;
                 }
             }
 
-            static int nameMidpoint;
+            private static int s_nameMidpoint;
 
-            int nameStart;
-            string name;
-            string description = null;
-            string syntax = null;
-            ArgumentInfo[] options;
-            ArgumentInfo[] inputs;
+            private int _nameStart;
+            private string _name;
+            private string _description = null;
+            private string _syntax = null;
+            private ArgumentInfo[] _options;
+            private ArgumentInfo[] _inputs;
 
             public HelpCategory(string name)
             {
@@ -215,68 +215,68 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     name = string.Empty;
                 }
-                this.name = name;
-                this.nameStart = nameMidpoint - (name.Length / 2);
+                _name = name;
+                _nameStart = s_nameMidpoint - (name.Length / 2);
             }
 
             public ArgumentInfo[] Options
             {
-                get { return options; }
-                set { options = value; }
+                get { return _options; }
+                set { _options = value; }
             }
 
             public ArgumentInfo[] Inputs
             {
-                get { return inputs; }
-                set { inputs = value; }
+                get { return _inputs; }
+                set { _inputs = value; }
             }
 
             public void WriteHelp()
             {
-                HelpBuilder.AppendLine(new string(' ', nameStart) + this.name);
-                HelpBuilder.AppendLine();
+                s_helpBuilder.AppendLine(new string(' ', _nameStart) + _name);
+                s_helpBuilder.AppendLine();
 
-                if (this.inputs != null)
+                if (_inputs != null)
                 {
-                    ArgumentInfo.WriteArguments(this.inputs);
-                    HelpBuilder.AppendLine();
+                    ArgumentInfo.WriteArguments(_inputs);
+                    s_helpBuilder.AppendLine();
                 }
 
-                if (this.options != null)
+                if (_options != null)
                 {
-                    HelpBuilder.AppendLine(SR.GetString(SR.HelpOptions));
-                    HelpBuilder.AppendLine();
-                    ArgumentInfo.WriteArguments(this.options);
-                    HelpBuilder.AppendLine();
+                    s_helpBuilder.AppendLine(SR.GetString(SR.HelpOptions));
+                    s_helpBuilder.AppendLine();
+                    ArgumentInfo.WriteArguments(_options);
+                    s_helpBuilder.AppendLine();
                 }
             }
         }
     }
 
     // Helper class to insert whitespace into a string so multiple lines will line up correctly in the console window.
-    class ParagraphHelper
+    internal class ParagraphHelper
     {
-        int indentLength;
-        int cursorLeft;
-        int lineWidth;
-        StringBuilder stringBuilder;
+        private int _indentLength;
+        private int _cursorLeft;
+        private int _lineWidth;
+        private StringBuilder _stringBuilder;
 
         public string AddIndentation(string text, int indentLength)
         {
-            this.indentLength = indentLength;
+            _indentLength = indentLength;
             this.Reset();
             this.AppendParagraph(text);
-            return this.stringBuilder.ToString();
+            return _stringBuilder.ToString();
         }
 
-        void Reset()
+        private void Reset()
         {
-            this.stringBuilder = new StringBuilder();
-            this.cursorLeft = GetConsoleCursorLeft();
-            this.lineWidth = GetBufferWidth();
+            _stringBuilder = new StringBuilder();
+            _cursorLeft = GetConsoleCursorLeft();
+            _lineWidth = GetBufferWidth();
         }
 
-        void AppendParagraph(string text)
+        private void AppendParagraph(string text)
         {
             int index = 0;
             while (index < text.Length)
@@ -286,10 +286,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        void AppendWord(string text, ref int index)
+        private void AppendWord(string text, ref int index)
         {
             // If we're at the beginning of a new line we should indent.
-            if ((this.cursorLeft == 0) && (index != 0))
+            if ((_cursorLeft == 0) && (index != 0))
                 AppendIndent();
 
             int wordLength = FindWordLength(text, index);
@@ -307,8 +307,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     this.AppendLineBreak();
                     this.AppendIndent();
                 }
-                this.stringBuilder.Append(text, index, wordLength);
-                this.cursorLeft += wordLength;
+                _stringBuilder.Append(text, index, wordLength);
+                _cursorLeft += wordLength;
             }
             else
             {
@@ -318,28 +318,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             index += wordLength;
         }
 
-        void AppendWithOverflow(string test, ref int start, ref int wordLength)
+        private void AppendWithOverflow(string test, ref int start, ref int wordLength)
         {
             do
             {
-                this.stringBuilder.Append(test, start, this.BufferWidth);
+                _stringBuilder.Append(test, start, this.BufferWidth);
                 start += this.BufferWidth;
                 wordLength -= this.BufferWidth;
                 this.AppendLineBreak();
 
                 if (wordLength > 0)
                     this.AppendIndent();
-
             } while (wordLength > this.BufferWidth);
 
             if (wordLength > 0)
             {
-                this.stringBuilder.Append(test, start, wordLength);
-                this.cursorLeft += wordLength;
+                _stringBuilder.Append(test, start, wordLength);
+                _cursorLeft += wordLength;
             }
         }
 
-        void AppendWhitespace(string text, ref int index)
+        private void AppendWhitespace(string text, ref int index)
         {
             while ((index < text.Length) && char.IsWhiteSpace(text[index]))
             {
@@ -359,50 +358,50 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     this.AppendLineBreak();
                     index += Environment.NewLine.Length;
                 }
-                else if (this.cursorLeft == 0 && index != 0)
+                else if (_cursorLeft == 0 && index != 0)
                 {
                     AppendIndent();
                     index++;
                 }
                 else
                 {
-                    this.stringBuilder.Append(text[index]);
+                    _stringBuilder.Append(text[index]);
                     index++;
-                    cursorLeft++;
+                    _cursorLeft++;
                 }
             }
         }
 
-        void AppendIndent()
+        private void AppendIndent()
         {
-            this.stringBuilder.Append(' ', this.indentLength);
-            this.cursorLeft += this.indentLength;
+            _stringBuilder.Append(' ', _indentLength);
+            _cursorLeft += _indentLength;
         }
 
-        void AppendLineBreak()
+        private void AppendLineBreak()
         {
             if (BufferWidth != 0)
-                this.stringBuilder.AppendLine();
-            this.cursorLeft = 0;
+                _stringBuilder.AppendLine();
+            _cursorLeft = 0;
         }
 
-        int BufferWidth
+        private int BufferWidth
         {
             get
             {
-                return this.lineWidth - this.cursorLeft;
+                return _lineWidth - _cursorLeft;
             }
         }
 
-        int HangingLineWidth
+        private int HangingLineWidth
         {
             get
             {
-                return this.lineWidth - this.indentLength;
+                return _lineWidth - _indentLength;
             }
         }
 
-        static int FindWordLength(string text, int index)
+        private static int FindWordLength(string text, int index)
         {
             for (int end = index; end < text.Length; end++)
             {
@@ -412,9 +411,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return text.Length - index;
         }
 
-        static bool AtNewLine(string text, int index)
+        private static bool AtNewLine(string text, int index)
         {
-
             if ((index + Environment.NewLine.Length) > text.Length)
             {
                 return false;
@@ -431,7 +429,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return true;
         }
 
-        static int GetConsoleCursorLeft()
+        private static int GetConsoleCursorLeft()
         {
             try
             {
@@ -443,7 +441,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static int GetBufferWidth()
+        private static int GetBufferWidth()
         {
             try
             {

@@ -210,7 +210,6 @@ namespace System.Runtime
 
         public void TraceEtwException(Exception exception, EventLevel eventLevel)
         {
-
         }
 
         private TException TraceException<TException>(TException exception)

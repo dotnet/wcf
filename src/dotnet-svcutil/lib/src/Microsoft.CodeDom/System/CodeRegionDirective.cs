@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -10,37 +10,46 @@ namespace Microsoft.CodeDom {
     using System.Runtime.InteropServices;
 
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeRegionDirective: CodeDirective {
-        private string regionText;
-        private CodeRegionMode regionMode;
+    public class CodeRegionDirective : CodeDirective
+    {
+        private string _regionText;
+        private CodeRegionMode _regionMode;
 
-        public CodeRegionDirective() {
+        public CodeRegionDirective()
+        {
         }
-        
-        public CodeRegionDirective(CodeRegionMode regionMode, string regionText) {
+
+        public CodeRegionDirective(CodeRegionMode regionMode, string regionText)
+        {
             this.RegionText = regionText;
-            this.regionMode = regionMode;
+            _regionMode = regionMode;
         }
 
-        public string RegionText {
-            get {
-                return (regionText == null) ? string.Empty : regionText;
+        public string RegionText
+        {
+            get
+            {
+                return (_regionText == null) ? string.Empty : _regionText;
             }
-            set {
-                regionText = value;
+            set
+            {
+                _regionText = value;
             }
         }
-                
-        public CodeRegionMode RegionMode {
-            get {
-                return regionMode;
+
+        public CodeRegionMode RegionMode
+        {
+            get
+            {
+                return _regionMode;
             }
-            set {
-                regionMode = value;
+            set
+            {
+                _regionMode = value;
             }
         }
     }

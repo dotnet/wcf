@@ -195,8 +195,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         /// </summary>
         public TOptionBase GetOption<TOptionBase>(string optionId, bool throwOnMissing = true) where TOptionBase : OptionBase
         {
-            var option = this.PropertyBag.ContainsKey(optionId) ? 
-                this.PropertyBag[optionId] : 
+            var option = this.PropertyBag.ContainsKey(optionId) ?
+                this.PropertyBag[optionId] :
                 this.PropertyBag.Values.FirstOrDefault(v => v.HasSameId(optionId));
 
             if (option == null && throwOnMissing)

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using System.Collections;
     using System.Diagnostics;
@@ -10,14 +10,15 @@ namespace Microsoft.Xml.Serialization {
     using System.Reflection.Emit;
     using System.Text.RegularExpressions;
 
-    internal class SourceInfo {
+    internal class SourceInfo
+    {
         //a[ia]
         //((global::Microsoft.Xml.Serialization.XmlSerializerNamespaces)p[0])
-        static Regex regex = new Regex("([(][(](?<t>[^)]+)[)])?(?<a>[^[]+)[[](?<ia>.+)[]][)]?");
+        private static Regex s_regex = new Regex("([(][(](?<t>[^)]+)[)])?(?<a>[^[]+)[[](?<ia>.+)[]][)]?");
         //((global::Microsoft.CFx.Test.Common.TypeLibrary.IXSType_9)o), @"IXSType_9", @"", true, true);
-        static Regex regex2 = new Regex("[(][(](?<cast>[^)]+)[)](?<arg>[^)]+)[)]");
+        private static Regex s_regex2 = new Regex("[(][(](?<cast>[^)]+)[)](?<arg>[^)]+)[)]");
 
-        static readonly Lazy<MethodInfo> iListGetItemMethod = new Lazy<MethodInfo>(
+        private static readonly Lazy<MethodInfo> s_iListGetItemMethod = new Lazy<MethodInfo>(
             () =>
             {
                 return typeof(IList).GetMethod(
@@ -35,7 +36,8 @@ namespace Microsoft.Xml.Serialization {
         public readonly Type Type;
         public readonly CodeGenerator ILG;
 
-        public SourceInfo(string source, string arg, MemberInfo memberInfo, Type type, CodeGenerator ilg) {
+        public SourceInfo(string source, string arg, MemberInfo memberInfo, Type type, CodeGenerator ilg)
+        {
             this.Source = source;
             this.Arg = arg ?? source;
             this.MemberInfo = memberInfo;
@@ -43,36 +45,46 @@ namespace Microsoft.Xml.Serialization {
             this.ILG = ilg;
         }
 
-        public SourceInfo CastTo(TypeDesc td) {
+        public SourceInfo CastTo(TypeDesc td)
+        {
             return new SourceInfo("((" + td.CSharpName + ")" + Source + ")", Arg, MemberInfo, td.Type, ILG);
         }
 
-        public void LoadAddress(Type elementType) {
+        public void LoadAddress(Type elementType)
+        {
             InternalLoad(elementType, asAddress: true);
         }
 
-        public void Load(Type elementType) {
+        public void Load(Type elementType)
+        {
             InternalLoad(elementType);
         }
 
-        private void InternalLoad(Type elementType, bool asAddress = false) {
-            Match match = regex.Match(Arg);
-            if (match.Success) {
+        private void InternalLoad(Type elementType, bool asAddress = false)
+        {
+            Match match = s_regex.Match(Arg);
+            if (match.Success)
+            {
                 object varA = ILG.GetVariable(match.Groups["a"].Value);
                 Type varType = ILG.GetVariableType(varA);
                 object varIA = ILG.GetVariable(match.Groups["ia"].Value);
-                if (varType.IsArray) {
+                if (varType.IsArray)
+                {
                     ILG.Load(varA);
                     ILG.Load(varIA);
                     Type eType = varType.GetElementType();
-                    if (CodeGenerator.IsNullableGenericType(eType)) {
+                    if (CodeGenerator.IsNullableGenericType(eType))
+                    {
                         ILG.Ldelema(eType);
                         ConvertNullableValue(eType, elementType);
                     }
-                    else {
-                        if (eType.GetTypeInfo().IsValueType) {
+                    else
+                    {
+                        if (eType.GetTypeInfo().IsValueType)
+                        {
                             ILG.Ldelema(eType);
-                            if (!asAddress) {
+                            if (!asAddress)
+                            {
                                 ILG.Ldobj(eType);
                             }
                         }
@@ -82,7 +94,8 @@ namespace Microsoft.Xml.Serialization {
                             ILG.ConvertValue(eType, elementType);
                     }
                 }
-                else {
+                else
+                {
                     ILG.Load(varA);
                     ILG.Load(varIA);
                     MethodInfo get_Item = varType.GetMethod(
@@ -95,33 +108,39 @@ namespace Microsoft.Xml.Serialization {
 
                     if (get_Item == null && typeof(IList).IsAssignableFrom(varType))
                     {
-                        get_Item = iListGetItemMethod.Value;
+                        get_Item = s_iListGetItemMethod.Value;
                     }
 
                     Debug.Assert(get_Item != null);
                     ILG.Call(get_Item);
                     Type eType = get_Item.ReturnType;
-                    if (CodeGenerator.IsNullableGenericType(eType)) {
+                    if (CodeGenerator.IsNullableGenericType(eType))
+                    {
                         LocalBuilder localTmp = ILG.GetTempLocal(eType);
                         ILG.Stloc(localTmp);
                         ILG.Ldloca(localTmp);
                         ConvertNullableValue(eType, elementType);
                     }
-                    else if ((elementType != null) && !(eType.IsAssignableFrom(elementType) || elementType.IsAssignableFrom(eType))) {
+                    else if ((elementType != null) && !(eType.IsAssignableFrom(elementType) || elementType.IsAssignableFrom(eType)))
+                    {
                         throw new CodeGeneratorConversionException(eType, elementType, asAddress, "IsNotAssignableFrom");
                     }
-                    else {
+                    else
+                    {
                         Convert(eType, elementType, asAddress);
                     }
                 }
             }
-            else if (Source == "null") {
+            else if (Source == "null")
+            {
                 ILG.Load(null);
             }
-            else {
+            else
+            {
                 object var;
                 Type varType;
-                if (Arg.StartsWith("o.@", StringComparison.Ordinal) || MemberInfo != null) {
+                if (Arg.StartsWith("o.@", StringComparison.Ordinal) || MemberInfo != null)
+                {
                     var = ILG.GetVariable(Arg.StartsWith("o.@", StringComparison.Ordinal) ? "o" : Arg);
                     varType = ILG.GetVariableType(var);
                     if (varType.GetTypeInfo().IsValueType)
@@ -129,17 +148,19 @@ namespace Microsoft.Xml.Serialization {
                     else
                         ILG.Load(var);
                 }
-                else {
+                else
+                {
                     var = ILG.GetVariable(Arg);
                     varType = ILG.GetVariableType(var);
 
                     if (CodeGenerator.IsNullableGenericType(varType) &&
-                        varType.GetGenericArguments()[0] == elementType) {
-
+                        varType.GetGenericArguments()[0] == elementType)
+                    {
                         ILG.LoadAddress(var);
                         ConvertNullableValue(varType, elementType);
                     }
-                    else {
+                    else
+                    {
                         if (asAddress)
                             ILG.LoadAddress(var);
                         else
@@ -147,21 +168,26 @@ namespace Microsoft.Xml.Serialization {
                     }
                 }
 
-                if (MemberInfo != null) {
-                    Type memberType = (MemberInfo is FieldInfo) ? 
+                if (MemberInfo != null)
+                {
+                    Type memberType = (MemberInfo is FieldInfo) ?
                         ((FieldInfo)MemberInfo).FieldType : ((PropertyInfo)MemberInfo).PropertyType;
-                    if (CodeGenerator.IsNullableGenericType(memberType)) {
+                    if (CodeGenerator.IsNullableGenericType(memberType))
+                    {
                         ILG.LoadMemberAddress(MemberInfo);
                         ConvertNullableValue(memberType, elementType);
                     }
-                    else {
+                    else
+                    {
                         ILG.LoadMember(MemberInfo);
                         Convert(memberType, elementType, asAddress);
                     }
                 }
-                else {
-                    match = regex2.Match(Source);
-                    if (match.Success) {
+                else
+                {
+                    match = s_regex2.Match(Source);
+                    if (match.Success)
+                    {
                         Debug.Assert(match.Groups["arg"].Value == Arg);
                         Debug.Assert(match.Groups["cast"].Value == CodeIdentifier.GetCSharpName(Type));
                         if (asAddress)
@@ -175,8 +201,10 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        private void Convert(Type sourceType, Type targetType, bool asAddress) {
-            if (targetType != null) {
+        private void Convert(Type sourceType, Type targetType, bool asAddress)
+        {
+            if (targetType != null)
+            {
                 if (asAddress)
                     ILG.ConvertAddress(sourceType, targetType);
                 else
@@ -184,9 +212,11 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        private void ConvertNullableValue(Type nullableType, Type targetType) {
+        private void ConvertNullableValue(Type nullableType, Type targetType)
+        {
             System.Diagnostics.Debug.Assert(targetType == nullableType || targetType.IsAssignableFrom(nullableType.GetGenericArguments()[0]));
-            if (targetType != nullableType) {
+            if (targetType != nullableType)
+            {
                 MethodInfo Nullable_get_Value = nullableType.GetMethod(
                     "get_Value",
                     CodeGenerator.InstanceBindingFlags,
@@ -195,29 +225,34 @@ namespace Microsoft.Xml.Serialization {
                     null
                     );
                 ILG.Call(Nullable_get_Value);
-                if (targetType != null) {
+                if (targetType != null)
+                {
                     ILG.ConvertValue(Nullable_get_Value.ReturnType, targetType);
                 }
             }
         }
 
-        public static implicit operator string(SourceInfo source) {
+        public static implicit operator string(SourceInfo source)
+        {
             return source.Source;
         }
 
-        public static bool operator !=(SourceInfo a, SourceInfo b) {
+        public static bool operator !=(SourceInfo a, SourceInfo b)
+        {
             if ((object)a != null)
                 return !a.Equals(b);
             return (object)b != null;
         }
 
-        public static bool operator ==(SourceInfo a, SourceInfo b) {
+        public static bool operator ==(SourceInfo a, SourceInfo b)
+        {
             if ((object)a != null)
                 return a.Equals(b);
             return (object)b == null;
         }
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object obj)
+        {
             if (obj == null)
                 return Source == null;
             SourceInfo info = obj as SourceInfo;
@@ -226,7 +261,8 @@ namespace Microsoft.Xml.Serialization {
             return false;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return (Source == null) ? 0 : Source.GetHashCode();
         }
     }

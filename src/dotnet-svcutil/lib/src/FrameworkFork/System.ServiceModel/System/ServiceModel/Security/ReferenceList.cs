@@ -11,13 +11,13 @@ namespace System.ServiceModel.Security
     using ISecurityElement = System.IdentityModel.ISecurityElement;
 
     [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
-    sealed class ReferenceList : ISecurityElement
+    internal sealed class ReferenceList : ISecurityElement
     {
         internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.ReferenceList;
-        const string NamespacePrefix = XmlEncryptionStrings.Prefix;
+        private const string NamespacePrefix = XmlEncryptionStrings.Prefix;
         internal static readonly XmlDictionaryString NamespaceUri = EncryptedType.NamespaceUri;
         internal static readonly XmlDictionaryString UriAttribute = XD.XmlEncryptionDictionary.URI;
-        List<string> referredIds = new List<string>();
+        private List<string> _referredIds = new List<string>();
 
         public ReferenceList()
         {
@@ -25,7 +25,7 @@ namespace System.ServiceModel.Security
 
         public int DataReferenceCount
         {
-            get { return this.referredIds.Count; }
+            get { return _referredIds.Count; }
         }
 
         public bool HasId
@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            this.referredIds.Add(id);
+            _referredIds.Add(id);
         }
 
         public bool ContainsReferredId(string id)
@@ -58,12 +58,12 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            return this.referredIds.Contains(id);
+            return _referredIds.Contains(id);
         }
 
         public string GetReferredId(int index)
         {
-            return this.referredIds[index];
+            return _referredIds[index];
         }
 
         public void ReadFrom(XmlDictionaryReader reader)
@@ -72,12 +72,12 @@ namespace System.ServiceModel.Security
             while (reader.IsStartElement())
             {
                 string id = DataReference.ReadFrom(reader);
-                if (this.referredIds.Contains(id))
+                if (_referredIds.Contains(id))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                         new SecurityMessageSerializationException(System.SRServiceModel.Format(SR_IdentityModel.InvalidDataReferenceInReferenceList, "#" + id)));
                 }
-                this.referredIds.Add(id);
+                _referredIds.Add(id);
             }
             reader.ReadEndElement(); // ReferenceList
             if (this.DataReferenceCount == 0)
@@ -92,7 +92,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("id"));
             }
-            return this.referredIds.Remove(id);
+            return _referredIds.Remove(id);
         }
 
         public void WriteTo(XmlDictionaryWriter writer, DictionaryManager dictionaryManager)
@@ -104,12 +104,12 @@ namespace System.ServiceModel.Security
             writer.WriteStartElement(NamespacePrefix, ElementName, NamespaceUri);
             for (int i = 0; i < this.DataReferenceCount; i++)
             {
-                DataReference.WriteTo(writer, this.referredIds[i]);
+                DataReference.WriteTo(writer, _referredIds[i]);
             }
             writer.WriteEndElement(); // ReferenceList
         }
 
-        static class DataReference
+        private static class DataReference
         {
             internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.DataReference;
             internal static readonly XmlDictionaryString NamespaceUri = EncryptedType.NamespaceUri;

@@ -16,17 +16,17 @@ namespace System.ServiceModel.Security.Tokens
     {
         internal const bool defaultRequireCancellation = false;
 
-        bool requireCancellation = defaultRequireCancellation;
-        BindingContext issuerBindingContext;
+        private bool _requireCancellation = defaultRequireCancellation;
+        private BindingContext _issuerBindingContext;
 
 
         protected SspiSecurityTokenParameters(SspiSecurityTokenParameters other)
             : base(other)
         {
-            this.requireCancellation = other.requireCancellation;
-            if (other.issuerBindingContext != null)
+            _requireCancellation = other._requireCancellation;
+            if (other._issuerBindingContext != null)
             {
-                this.issuerBindingContext = other.issuerBindingContext.Clone();
+                _issuerBindingContext = other._issuerBindingContext.Clone();
             }
         }
 
@@ -40,7 +40,7 @@ namespace System.ServiceModel.Security.Tokens
         public SspiSecurityTokenParameters(bool requireCancellation)
             : base()
         {
-            this.requireCancellation = requireCancellation;
+            _requireCancellation = requireCancellation;
         }
 
         internal protected override bool HasAsymmetricKey { get { return false; } }
@@ -49,11 +49,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.requireCancellation;
+                return _requireCancellation;
             }
             set
             {
-                this.requireCancellation = value;
+                _requireCancellation = value;
             }
         }
 
@@ -61,7 +61,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerBindingContext;
+                return _issuerBindingContext;
             }
             set
             {
@@ -69,7 +69,7 @@ namespace System.ServiceModel.Security.Tokens
                 {
                     value = value.Clone();
                 }
-                this.issuerBindingContext = value;
+                _issuerBindingContext = value;
             }
         }
 

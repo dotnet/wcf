@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-namespace Microsoft.Xml.Serialization {
+
+namespace Microsoft.Xml.Serialization
+{
     using System.IO;
     using System.Collections;
     using System.Text;
@@ -9,287 +11,287 @@ namespace Microsoft.Xml.Serialization {
 
     internal class XmlCountingReader : XmlReader, IXmlTextParser, IXmlLineInfo
     {
-        XmlReader innerReader;
-        int advanceCount;
+        private XmlReader _innerReader;
+        private int _advanceCount;
 
-        internal XmlCountingReader(XmlReader xmlReader) 
+        internal XmlCountingReader(XmlReader xmlReader)
         {
             if (xmlReader == null)
                 throw new ArgumentNullException("xmlReader");
-            this.innerReader = xmlReader;
-            this.advanceCount = 0;
+            _innerReader = xmlReader;
+            _advanceCount = 0;
         }
 
-        internal int AdvanceCount { get { return advanceCount; } }
+        internal int AdvanceCount { get { return _advanceCount; } }
 
-        void IncrementCount()
+        private void IncrementCount()
         {
-            if (advanceCount == Int32.MaxValue)
-                advanceCount = 0;
+            if (_advanceCount == Int32.MaxValue)
+                _advanceCount = 0;
             else
-                advanceCount++;
+                _advanceCount++;
         }
 
         // Properties (non-advancing)
-        public override XmlReaderSettings Settings { get { return innerReader.Settings; } }
-        public override XmlNodeType NodeType { get { return innerReader.NodeType; } }
-        public override string Name { get { return innerReader.Name; } }
-        public override string LocalName { get { return innerReader.LocalName; } }
-        public override string NamespaceURI { get { return innerReader.NamespaceURI; } }
-        public override string Prefix { get { return innerReader.Prefix; } }
-        public override bool HasValue { get { return innerReader.HasValue; } }
-        public override string Value { get { return innerReader.Value; } }
-        public override int Depth { get { return innerReader.Depth; } }
-        public override string BaseURI { get { return innerReader.BaseURI; } }
-        public override bool IsEmptyElement { get { return innerReader.IsEmptyElement; } }
-        public override bool IsDefault { get { return innerReader.IsDefault; } }
-        public override char QuoteChar { get { return innerReader.QuoteChar; } }
-        public override XmlSpace XmlSpace { get { return innerReader.XmlSpace; } }
-        public override string XmlLang { get { return innerReader.XmlLang; } }
-        public override IXmlSchemaInfo SchemaInfo { get { return innerReader.SchemaInfo; } }
-        public override Type ValueType { get { return innerReader.ValueType; } }
-        public override int AttributeCount { get { return innerReader.AttributeCount; } }
-        public override string this[int i] { get { return innerReader[i]; } }
-        public override string this[string name] { get { return innerReader[name]; } }
-        public override string this[string name, string namespaceURI] { get { return innerReader[name, namespaceURI]; } }
-        public override bool EOF { get { return innerReader.EOF; } }
-        public override ReadState ReadState { get { return innerReader.ReadState; } }
-        public override XmlNameTable NameTable { get { return innerReader.NameTable; } }
-        public override bool CanResolveEntity { get { return innerReader.CanResolveEntity; } }
-        public override bool CanReadBinaryContent { get { return innerReader.CanReadBinaryContent; } }
-        public override bool CanReadValueChunk { get { return innerReader.CanReadValueChunk; } }
-        public override bool HasAttributes { get { return innerReader.HasAttributes; } }
+        public override XmlReaderSettings Settings { get { return _innerReader.Settings; } }
+        public override XmlNodeType NodeType { get { return _innerReader.NodeType; } }
+        public override string Name { get { return _innerReader.Name; } }
+        public override string LocalName { get { return _innerReader.LocalName; } }
+        public override string NamespaceURI { get { return _innerReader.NamespaceURI; } }
+        public override string Prefix { get { return _innerReader.Prefix; } }
+        public override bool HasValue { get { return _innerReader.HasValue; } }
+        public override string Value { get { return _innerReader.Value; } }
+        public override int Depth { get { return _innerReader.Depth; } }
+        public override string BaseURI { get { return _innerReader.BaseURI; } }
+        public override bool IsEmptyElement { get { return _innerReader.IsEmptyElement; } }
+        public override bool IsDefault { get { return _innerReader.IsDefault; } }
+        public override char QuoteChar { get { return _innerReader.QuoteChar; } }
+        public override XmlSpace XmlSpace { get { return _innerReader.XmlSpace; } }
+        public override string XmlLang { get { return _innerReader.XmlLang; } }
+        public override IXmlSchemaInfo SchemaInfo { get { return _innerReader.SchemaInfo; } }
+        public override Type ValueType { get { return _innerReader.ValueType; } }
+        public override int AttributeCount { get { return _innerReader.AttributeCount; } }
+        public override string this[int i] { get { return _innerReader[i]; } }
+        public override string this[string name] { get { return _innerReader[name]; } }
+        public override string this[string name, string namespaceURI] { get { return _innerReader[name, namespaceURI]; } }
+        public override bool EOF { get { return _innerReader.EOF; } }
+        public override ReadState ReadState { get { return _innerReader.ReadState; } }
+        public override XmlNameTable NameTable { get { return _innerReader.NameTable; } }
+        public override bool CanResolveEntity { get { return _innerReader.CanResolveEntity; } }
+        public override bool CanReadBinaryContent { get { return _innerReader.CanReadBinaryContent; } }
+        public override bool CanReadValueChunk { get { return _innerReader.CanReadValueChunk; } }
+        public override bool HasAttributes { get { return _innerReader.HasAttributes; } }
 
         // Methods (non-advancing)
         // Reader tends to under-count rather than over-count 
-        public override void Close() { innerReader.Close(); }
-        public override string GetAttribute(string name) { return innerReader.GetAttribute(name); }
-        public override string GetAttribute(string name, string namespaceURI) { return innerReader.GetAttribute(name, namespaceURI); }
-        public override string GetAttribute(int i) { return innerReader.GetAttribute(i); }
-        public override bool MoveToAttribute(string name) { return innerReader.MoveToAttribute(name); }
-        public override bool MoveToAttribute(string name, string ns) { return innerReader.MoveToAttribute(name, ns); }
-        public override void MoveToAttribute(int i) { innerReader.MoveToAttribute(i); }
-        public override bool MoveToFirstAttribute() { return innerReader.MoveToFirstAttribute(); }
-        public override bool MoveToNextAttribute() { return innerReader.MoveToNextAttribute(); }
-        public override bool MoveToElement() { return innerReader.MoveToElement(); }
-        public override string LookupNamespace(string prefix) { return innerReader.LookupNamespace(prefix); }
-        public override bool ReadAttributeValue() { return innerReader.ReadAttributeValue(); }
-        public override void ResolveEntity() { innerReader.ResolveEntity(); }
-        public override bool IsStartElement() { return innerReader.IsStartElement(); }
-        public override bool IsStartElement(string name) { return innerReader.IsStartElement(name); }
-        public override bool IsStartElement(string localname, string ns) { return innerReader.IsStartElement(localname, ns); }
-        public override XmlReader ReadSubtree() { return innerReader.ReadSubtree(); }
-        public override XmlNodeType MoveToContent() { return innerReader.MoveToContent(); }
+        public override void Close() { _innerReader.Close(); }
+        public override string GetAttribute(string name) { return _innerReader.GetAttribute(name); }
+        public override string GetAttribute(string name, string namespaceURI) { return _innerReader.GetAttribute(name, namespaceURI); }
+        public override string GetAttribute(int i) { return _innerReader.GetAttribute(i); }
+        public override bool MoveToAttribute(string name) { return _innerReader.MoveToAttribute(name); }
+        public override bool MoveToAttribute(string name, string ns) { return _innerReader.MoveToAttribute(name, ns); }
+        public override void MoveToAttribute(int i) { _innerReader.MoveToAttribute(i); }
+        public override bool MoveToFirstAttribute() { return _innerReader.MoveToFirstAttribute(); }
+        public override bool MoveToNextAttribute() { return _innerReader.MoveToNextAttribute(); }
+        public override bool MoveToElement() { return _innerReader.MoveToElement(); }
+        public override string LookupNamespace(string prefix) { return _innerReader.LookupNamespace(prefix); }
+        public override bool ReadAttributeValue() { return _innerReader.ReadAttributeValue(); }
+        public override void ResolveEntity() { _innerReader.ResolveEntity(); }
+        public override bool IsStartElement() { return _innerReader.IsStartElement(); }
+        public override bool IsStartElement(string name) { return _innerReader.IsStartElement(name); }
+        public override bool IsStartElement(string localname, string ns) { return _innerReader.IsStartElement(localname, ns); }
+        public override XmlReader ReadSubtree() { return _innerReader.ReadSubtree(); }
+        public override XmlNodeType MoveToContent() { return _innerReader.MoveToContent(); }
 
         // Methods (advancing)
         public override bool Read()
         {
             IncrementCount();
-            return innerReader.Read();
+            return _innerReader.Read();
         }
 
         public override void Skip()
         {
             IncrementCount();
-            innerReader.Skip();
+            _innerReader.Skip();
         }
 
         public override string ReadInnerXml()
         {
-            if (innerReader.NodeType != XmlNodeType.Attribute)
+            if (_innerReader.NodeType != XmlNodeType.Attribute)
                 IncrementCount();
-            return innerReader.ReadInnerXml();
+            return _innerReader.ReadInnerXml();
         }
         public override string ReadOuterXml()
         {
-            if (innerReader.NodeType != XmlNodeType.Attribute)
+            if (_innerReader.NodeType != XmlNodeType.Attribute)
                 IncrementCount();
-            return innerReader.ReadOuterXml();
+            return _innerReader.ReadOuterXml();
         }
-        public override object ReadContentAsObject() 
-        {
-            IncrementCount(); 
-            return innerReader.ReadContentAsObject();
-        }
-        public override bool ReadContentAsBoolean() 
+        public override object ReadContentAsObject()
         {
             IncrementCount();
-            return innerReader.ReadContentAsBoolean();
+            return _innerReader.ReadContentAsObject();
         }
-        public override DateTime ReadContentAsDateTime() 
+        public override bool ReadContentAsBoolean()
         {
             IncrementCount();
-            return innerReader.ReadContentAsDateTime();
+            return _innerReader.ReadContentAsBoolean();
         }
-        public override double ReadContentAsDouble() 
+        public override DateTime ReadContentAsDateTime()
         {
             IncrementCount();
-            return innerReader.ReadContentAsDouble();
+            return _innerReader.ReadContentAsDateTime();
+        }
+        public override double ReadContentAsDouble()
+        {
+            IncrementCount();
+            return _innerReader.ReadContentAsDouble();
         }
         public override int ReadContentAsInt()
         {
             IncrementCount();
-            return innerReader.ReadContentAsInt();
+            return _innerReader.ReadContentAsInt();
         }
         public override long ReadContentAsLong()
         {
             IncrementCount();
-            return innerReader.ReadContentAsLong();
+            return _innerReader.ReadContentAsLong();
         }
         public override string ReadContentAsString()
         {
             IncrementCount();
-            return innerReader.ReadContentAsString();
+            return _innerReader.ReadContentAsString();
         }
         public override object ReadContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
         {
             IncrementCount();
-            return innerReader.ReadContentAs(returnType, namespaceResolver);
+            return _innerReader.ReadContentAs(returnType, namespaceResolver);
         }
         public override object ReadElementContentAsObject()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsObject();
+            return _innerReader.ReadElementContentAsObject();
         }
         public override object ReadElementContentAsObject(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsObject(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsObject(localName, namespaceURI);
         }
         public override bool ReadElementContentAsBoolean()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsBoolean();
+            return _innerReader.ReadElementContentAsBoolean();
         }
         public override bool ReadElementContentAsBoolean(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsBoolean(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsBoolean(localName, namespaceURI);
         }
         public override DateTime ReadElementContentAsDateTime()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsDateTime();
+            return _innerReader.ReadElementContentAsDateTime();
         }
         public override DateTime ReadElementContentAsDateTime(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsDateTime(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsDateTime(localName, namespaceURI);
         }
         public override double ReadElementContentAsDouble()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsDouble();
+            return _innerReader.ReadElementContentAsDouble();
         }
         public override double ReadElementContentAsDouble(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsDouble(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsDouble(localName, namespaceURI);
         }
         public override int ReadElementContentAsInt()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsInt();
+            return _innerReader.ReadElementContentAsInt();
         }
         public override int ReadElementContentAsInt(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsInt(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsInt(localName, namespaceURI);
         }
         public override long ReadElementContentAsLong()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsLong();
+            return _innerReader.ReadElementContentAsLong();
         }
         public override long ReadElementContentAsLong(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsLong(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsLong(localName, namespaceURI);
         }
         public override string ReadElementContentAsString()
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsString();
+            return _innerReader.ReadElementContentAsString();
         }
         public override string ReadElementContentAsString(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsString(localName, namespaceURI);
+            return _innerReader.ReadElementContentAsString(localName, namespaceURI);
         }
         public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAs(returnType, namespaceResolver);
+            return _innerReader.ReadElementContentAs(returnType, namespaceResolver);
         }
-        public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver, string localName, string namespaceURI) 
+        public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver, string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAs(returnType, namespaceResolver, localName, namespaceURI);
+            return _innerReader.ReadElementContentAs(returnType, namespaceResolver, localName, namespaceURI);
         }
         public override int ReadContentAsBase64(byte[] buffer, int index, int count)
         {
             IncrementCount();
-            return innerReader.ReadContentAsBase64(buffer, index, count);
+            return _innerReader.ReadContentAsBase64(buffer, index, count);
         }
         public override int ReadElementContentAsBase64(byte[] buffer, int index, int count)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsBase64(buffer, index, count);
+            return _innerReader.ReadElementContentAsBase64(buffer, index, count);
         }
         public override int ReadContentAsBinHex(byte[] buffer, int index, int count)
         {
             IncrementCount();
-            return innerReader.ReadContentAsBinHex(buffer, index, count);
+            return _innerReader.ReadContentAsBinHex(buffer, index, count);
         }
         public override int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
         {
             IncrementCount();
-            return innerReader.ReadElementContentAsBinHex(buffer, index, count);
+            return _innerReader.ReadElementContentAsBinHex(buffer, index, count);
         }
         public override int ReadValueChunk(char[] buffer, int index, int count)
         {
             IncrementCount();
-            return innerReader.ReadValueChunk(buffer, index, count);
+            return _innerReader.ReadValueChunk(buffer, index, count);
         }
         public override string ReadString()
         {
             IncrementCount();
-            return innerReader.ReadString();
+            return _innerReader.ReadString();
         }
         public override void ReadStartElement()
         {
             IncrementCount();
-            innerReader.ReadStartElement();
+            _innerReader.ReadStartElement();
         }
         public override void ReadStartElement(string name)
         {
             IncrementCount();
-            innerReader.ReadStartElement(name);
+            _innerReader.ReadStartElement(name);
         }
         public override void ReadStartElement(string localname, string ns)
         {
             IncrementCount();
-            innerReader.ReadStartElement(localname, ns);
+            _innerReader.ReadStartElement(localname, ns);
         }
         public override string ReadElementString()
         {
             IncrementCount();
-            return innerReader.ReadElementString();
+            return _innerReader.ReadElementString();
         }
         public override string ReadElementString(string name)
         {
             IncrementCount();
-            return innerReader.ReadElementString(name);
+            return _innerReader.ReadElementString(name);
         }
         public override string ReadElementString(string localname, string ns)
         {
             IncrementCount();
-            return innerReader.ReadElementString(localname, ns);
+            return _innerReader.ReadElementString(localname, ns);
         }
         public override void ReadEndElement()
         {
             IncrementCount();
-            innerReader.ReadEndElement();
+            _innerReader.ReadEndElement();
         }
         public override bool ReadToFollowing(string name)
         {
@@ -299,41 +301,43 @@ namespace Microsoft.Xml.Serialization {
         public override bool ReadToFollowing(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadToFollowing(localName, namespaceURI);
+            return _innerReader.ReadToFollowing(localName, namespaceURI);
         }
         public override bool ReadToDescendant(string name)
         {
             IncrementCount();
-            return innerReader.ReadToDescendant(name);
+            return _innerReader.ReadToDescendant(name);
         }
         public override bool ReadToDescendant(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadToDescendant(localName, namespaceURI);
+            return _innerReader.ReadToDescendant(localName, namespaceURI);
         }
         public override bool ReadToNextSibling(string name)
         {
             IncrementCount();
-            return innerReader.ReadToNextSibling(name);
+            return _innerReader.ReadToNextSibling(name);
         }
         public override bool ReadToNextSibling(string localName, string namespaceURI)
         {
             IncrementCount();
-            return innerReader.ReadToNextSibling(localName, namespaceURI);
+            return _innerReader.ReadToNextSibling(localName, namespaceURI);
         }
 
         // IDisposable interface
         protected override void Dispose(bool disposing)
         {
-            try {
-                if (disposing) 
+            try
+            {
+                if (disposing)
                 {
-                    IDisposable disposableReader = innerReader as IDisposable;
+                    IDisposable disposableReader = _innerReader as IDisposable;
                     if (disposableReader != null)
                         disposableReader.Dispose();
                 }
             }
-            finally {
+            finally
+            {
                 base.Dispose(disposing);
             }
         }
@@ -343,10 +347,10 @@ namespace Microsoft.Xml.Serialization {
         {
             get
             {
-                XmlTextReader xmlTextReader = innerReader as XmlTextReader;
+                XmlTextReader xmlTextReader = _innerReader as XmlTextReader;
                 if (xmlTextReader == null)
                 {
-                    IXmlTextParser xmlTextParser = innerReader as IXmlTextParser;
+                    IXmlTextParser xmlTextParser = _innerReader as IXmlTextParser;
                     return (xmlTextParser == null) ? false : xmlTextParser.Normalized;
                 }
                 else
@@ -354,11 +358,11 @@ namespace Microsoft.Xml.Serialization {
             }
             set
             {
-                XmlTextReader xmlTextReader = innerReader as XmlTextReader;
-                if (xmlTextReader == null) 
+                XmlTextReader xmlTextReader = _innerReader as XmlTextReader;
+                if (xmlTextReader == null)
                 {
-                    IXmlTextParser xmlTextParser = innerReader as IXmlTextParser;
-                    if (xmlTextParser != null) 
+                    IXmlTextParser xmlTextParser = _innerReader as IXmlTextParser;
+                    if (xmlTextParser != null)
                         xmlTextParser.Normalized = value;
                 }
                 else
@@ -366,37 +370,37 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        WhitespaceHandling IXmlTextParser.WhitespaceHandling 
+        WhitespaceHandling IXmlTextParser.WhitespaceHandling
         {
             get
             {
-                XmlTextReader xmlTextReader = innerReader as XmlTextReader;
+                XmlTextReader xmlTextReader = _innerReader as XmlTextReader;
                 if (xmlTextReader == null)
                 {
-                    IXmlTextParser xmlTextParser = innerReader as IXmlTextParser;
+                    IXmlTextParser xmlTextParser = _innerReader as IXmlTextParser;
                     return (xmlTextParser == null) ? WhitespaceHandling.None : xmlTextParser.WhitespaceHandling;
                 }
                 else
                     return xmlTextReader.WhitespaceHandling;
             }
-            set 
+            set
             {
-                XmlTextReader xmlTextReader = innerReader as XmlTextReader;
-                if (xmlTextReader == null) 
+                XmlTextReader xmlTextReader = _innerReader as XmlTextReader;
+                if (xmlTextReader == null)
                 {
-                    IXmlTextParser xmlTextParser = innerReader as IXmlTextParser;
-                    if (xmlTextParser != null) 
+                    IXmlTextParser xmlTextParser = _innerReader as IXmlTextParser;
+                    if (xmlTextParser != null)
                         xmlTextParser.WhitespaceHandling = value;
                 }
                 else
                     xmlTextReader.WhitespaceHandling = value;
             }
         }
-        
+
         // IXmlLineInfo members
         bool IXmlLineInfo.HasLineInfo()
         {
-            IXmlLineInfo iXmlLineInfo = innerReader as IXmlLineInfo;
+            IXmlLineInfo iXmlLineInfo = _innerReader as IXmlLineInfo;
             return (iXmlLineInfo == null) ? false : iXmlLineInfo.HasLineInfo();
         }
 
@@ -404,7 +408,7 @@ namespace Microsoft.Xml.Serialization {
         {
             get
             {
-                IXmlLineInfo iXmlLineInfo = innerReader as IXmlLineInfo;
+                IXmlLineInfo iXmlLineInfo = _innerReader as IXmlLineInfo;
                 return (iXmlLineInfo == null) ? 0 : iXmlLineInfo.LineNumber;
             }
         }
@@ -413,10 +417,9 @@ namespace Microsoft.Xml.Serialization {
         {
             get
             {
-                IXmlLineInfo iXmlLineInfo = innerReader as IXmlLineInfo;
+                IXmlLineInfo iXmlLineInfo = _innerReader as IXmlLineInfo;
                 return (iXmlLineInfo == null) ? 0 : iXmlLineInfo.LinePosition;
             }
         }
-
     }
 }

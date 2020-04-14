@@ -150,6 +150,5 @@ namespace System.ServiceModel.Channels
         }
 
         #endregion
-
     }
 }

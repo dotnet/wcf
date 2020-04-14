@@ -8,9 +8,8 @@ namespace System.ServiceModel.Security
     using System.Security.Authentication.ExtendedProtection;
 
     //TODO: [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
-    interface ISspiNegotiation : IDisposable
+    internal interface ISspiNegotiation : IDisposable
     {
-
         DateTime ExpirationTimeUtc
         {
             get;
@@ -45,7 +44,7 @@ namespace System.ServiceModel.Security
     }
 
     [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
-    interface ISspiNegotiationInfo
+    internal interface ISspiNegotiationInfo
     {
         ISspiNegotiation SspiNegotiation { get; }
     }

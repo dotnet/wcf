@@ -2,7 +2,8 @@
 // Licensed under the MIT license.
 
 
-namespace Microsoft.Xml.Serialization {
+namespace Microsoft.Xml.Serialization
+{
     using System;
 
 
@@ -11,43 +12,48 @@ namespace Microsoft.Xml.Serialization {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [AttributeUsage(AttributeTargets.Assembly)]
-    public sealed class XmlSerializerVersionAttribute : System.Attribute {
-        string mvid;
-        string serializerVersion;
-        string ns;
-        Type type;
-        
+    public sealed class XmlSerializerVersionAttribute : System.Attribute
+    {
+        private string _mvid;
+        private string _serializerVersion;
+        private string _ns;
+        private Type _type;
+
         /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.XmlSerializerVersionAttribute"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializerVersionAttribute() {
+        public XmlSerializerVersionAttribute()
+        {
         }
-        
+
         /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.XmlSerializerAssemblyAttribute1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializerVersionAttribute(Type type) {
-            this.type = type;
-        }
-        
-        /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public string ParentAssemblyId {
-            get { return mvid; }
-            set { mvid = value; }
+        public XmlSerializerVersionAttribute(Type type)
+        {
+            _type = type;
         }
 
         /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Version {
-            get { return serializerVersion; }
-            set { serializerVersion = value; }
+        public string ParentAssemblyId
+        {
+            get { return _mvid; }
+            set { _mvid = value; }
+        }
+
+        /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.ParentAssemblyId"]/*' />
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public string Version
+        {
+            get { return _serializerVersion; }
+            set { _serializerVersion = value; }
         }
 
 
@@ -55,18 +61,20 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Namespace {
-            get { return ns; }
-            set { ns = value; }
+        public string Namespace
+        {
+            get { return _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\XmlSerializerVersionAttribute.uex' path='docs/doc[@for="XmlSerializerVersionAttribute.TypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public Type Type {
-            get { return type; }
-            set { type = value; }
+        public Type Type
+        {
+            get { return _type; }
+            set { _type = value; }
         }
     }
 }

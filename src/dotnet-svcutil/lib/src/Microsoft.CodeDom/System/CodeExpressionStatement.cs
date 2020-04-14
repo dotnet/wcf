@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,35 +16,41 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeExpressionStatement : CodeStatement {
-        private CodeExpression expression;
+    public class CodeExpressionStatement : CodeStatement
+    {
+        private CodeExpression _expression;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeExpressionStatement() {
-        }
-        
-        /// <devdoc>
-        ///    <para>[To be supplied.]</para>
-        /// </devdoc>
-        public CodeExpressionStatement(CodeExpression expression) {
-            this.expression = expression;
+        public CodeExpressionStatement()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeExpression Expression {
-            get {
-                return expression;
+        public CodeExpressionStatement(CodeExpression expression)
+        {
+            _expression = expression;
+        }
+
+        /// <devdoc>
+        ///    <para>[To be supplied.]</para>
+        /// </devdoc>
+        public CodeExpression Expression
+        {
+            get
+            {
+                return _expression;
             }
-            set {
-                expression = value;
+            set
+            {
+                _expression = value;
             }
         }
     }

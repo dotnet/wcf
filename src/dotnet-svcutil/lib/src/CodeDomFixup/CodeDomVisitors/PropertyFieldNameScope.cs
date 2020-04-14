@@ -7,34 +7,33 @@ using System.Reflection;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-
     internal class PropertyFieldNameScope : NameScope
     {
-        Dictionary<string, MemberInfo> nameTable = new Dictionary<string, MemberInfo>();
+        private Dictionary<string, MemberInfo> _nameTable = new Dictionary<string, MemberInfo>();
         public PropertyFieldNameScope(Type type)
         {
             foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
             {
-                nameTable[property.Name] = property;
+                _nameTable[property.Name] = property;
             }
 
             foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
             {
-                nameTable[field.Name] = field;
+                _nameTable[field.Name] = field;
             }
         }
 
         public override bool Contains(string key)
         {
-            if (this.nameTable == null)
+            if (_nameTable == null)
                 throw new ObjectDisposedException(GetType().Name);
 
-            return this.nameTable.ContainsKey(key);
+            return _nameTable.ContainsKey(key);
         }
 
         protected override void OnDispose()
         {
-            this.nameTable = null;
+            _nameTable = null;
         }
     }
 }

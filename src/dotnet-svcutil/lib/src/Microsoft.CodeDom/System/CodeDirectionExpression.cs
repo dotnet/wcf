@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,50 +13,59 @@ namespace Microsoft.CodeDom {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeDirectionExpression : CodeExpression {
-        private CodeExpression expression;
-        private FieldDirection direction = FieldDirection.In;
+    public class CodeDirectionExpression : CodeExpression
+    {
+        private CodeExpression _expression;
+        private FieldDirection _direction = FieldDirection.In;
 
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeDirectionExpression() {
+        public CodeDirectionExpression()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeDirectionExpression(FieldDirection direction, CodeExpression expression) {
-            this.expression = expression;
-            this.direction = direction;
+        public CodeDirectionExpression(FieldDirection direction, CodeExpression expression)
+        {
+            _expression = expression;
+            _direction = direction;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeExpression Expression {
-            get {
-                return expression;
+        public CodeExpression Expression
+        {
+            get
+            {
+                return _expression;
             }
-            set {
-                expression = value;
+            set
+            {
+                _expression = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public FieldDirection Direction {
-            get {
-                return direction;
+        public FieldDirection Direction
+        {
+            get
+            {
+                return _direction;
             }
-            set {
-                direction = value;
+            set
+            {
+                _direction = value;
             }
         }
     }

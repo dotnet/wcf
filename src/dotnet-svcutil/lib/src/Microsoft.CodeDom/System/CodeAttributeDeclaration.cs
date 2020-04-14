@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,22 +15,24 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeAttributeDeclaration {
-        private string name;
-        private CodeAttributeArgumentCollection arguments = new CodeAttributeArgumentCollection();
+    public class CodeAttributeDeclaration
+    {
+        private string _name;
+        private CodeAttributeArgumentCollection _arguments = new CodeAttributeArgumentCollection();
         // [OptionalField]  // Not available in DNX (NetCore) 
-        private CodeTypeReference attributeType;
-        
+        private CodeTypeReference _attributeType;
+
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeAttributeDeclaration'/>.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeDeclaration() {
+        public CodeAttributeDeclaration()
+        {
         }
 
         /// <devdoc>
@@ -38,7 +40,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeAttributeDeclaration'/> using the specified name.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeDeclaration(string name) {
+        public CodeAttributeDeclaration(string name)
+        {
             Name = name;
         }
 
@@ -48,21 +51,26 @@ namespace Microsoft.CodeDom {
         ///       arguments.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeDeclaration(string name, params CodeAttributeArgument[] arguments) {
+        public CodeAttributeDeclaration(string name, params CodeAttributeArgument[] arguments)
+        {
             Name = name;
             Arguments.AddRange(arguments);
         }
 
-        public CodeAttributeDeclaration(CodeTypeReference attributeType) : this ( attributeType, null) {
+        public CodeAttributeDeclaration(CodeTypeReference attributeType) : this(attributeType, null)
+        {
         }
 
-        public CodeAttributeDeclaration(CodeTypeReference attributeType, params CodeAttributeArgument[] arguments) {
-            this.attributeType = attributeType;                
-            if( attributeType != null) {
-                this.name = attributeType.BaseType;
+        public CodeAttributeDeclaration(CodeTypeReference attributeType, params CodeAttributeArgument[] arguments)
+        {
+            _attributeType = attributeType;
+            if (attributeType != null)
+            {
+                _name = attributeType.BaseType;
             }
 
-            if(arguments != null) {
+            if (arguments != null)
+            {
                 Arguments.AddRange(arguments);
             }
         }
@@ -72,13 +80,16 @@ namespace Microsoft.CodeDom {
         ///       The name of the attribute being declared.
         ///    </para>
         /// </devdoc>
-        public string Name {
-            get {
-                return (name == null) ? string.Empty : name;
+        public string Name
+        {
+            get
+            {
+                return (_name == null) ? string.Empty : _name;
             }
-            set {
-                name = value;
-                attributeType = new CodeTypeReference(name);                
+            set
+            {
+                _name = value;
+                _attributeType = new CodeTypeReference(_name);
             }
         }
 
@@ -87,15 +98,19 @@ namespace Microsoft.CodeDom {
         ///       The arguments for the attribute.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeArgumentCollection Arguments {
-            get {
-                return arguments;
+        public CodeAttributeArgumentCollection Arguments
+        {
+            get
+            {
+                return _arguments;
             }
         }
 
-        public CodeTypeReference AttributeType {
-            get {
-                return attributeType;
+        public CodeTypeReference AttributeType
+        {
+            get
+            {
+                return _attributeType;
             }
         }
     }

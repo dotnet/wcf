@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.ComponentModel;
@@ -40,13 +41,13 @@ namespace System.ServiceModel
         }
     }
 
-    class OleTransactionsProtocol : TransactionProtocol
+    internal class OleTransactionsProtocol : TransactionProtocol
     {
-        static TransactionProtocol instance = new OleTransactionsProtocol();
+        private static TransactionProtocol s_instance = new OleTransactionsProtocol();
 
         internal static TransactionProtocol Instance
         {
-            get { return instance; }
+            get { return s_instance; }
         }
 
         internal override string Name
@@ -55,13 +56,13 @@ namespace System.ServiceModel
         }
     }
 
-    class WSAtomicTransactionOctober2004Protocol : TransactionProtocol
+    internal class WSAtomicTransactionOctober2004Protocol : TransactionProtocol
     {
-        static TransactionProtocol instance = new WSAtomicTransactionOctober2004Protocol();
+        private static TransactionProtocol s_instance = new WSAtomicTransactionOctober2004Protocol();
 
         internal static TransactionProtocol Instance
         {
-            get { return instance; }
+            get { return s_instance; }
         }
 
         internal override string Name
@@ -70,13 +71,13 @@ namespace System.ServiceModel
         }
     }
 
-    class WSAtomicTransaction11Protocol : TransactionProtocol
+    internal class WSAtomicTransaction11Protocol : TransactionProtocol
     {
-        static TransactionProtocol instance = new WSAtomicTransaction11Protocol();
+        private static TransactionProtocol s_instance = new WSAtomicTransaction11Protocol();
 
         internal static TransactionProtocol Instance
         {
-            get { return instance; }
+            get { return s_instance; }
         }
 
         internal override string Name

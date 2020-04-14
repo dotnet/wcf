@@ -18,7 +18,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             set { Environment.SetEnvironmentVariable(SvcutilKeepBootstrapDirEnvVar, value ? "1" : string.Empty); }
             get { return Int32.TryParse(Environment.GetEnvironmentVariable(SvcutilKeepBootstrapDirEnvVar), out int ret) ? (ret > 0 ? true : false) : false; }
 #else
-            set {}
+            set { }
             get { return false; }
 #endif
         }
@@ -49,5 +49,5 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 #endif
-        }
+    }
 }

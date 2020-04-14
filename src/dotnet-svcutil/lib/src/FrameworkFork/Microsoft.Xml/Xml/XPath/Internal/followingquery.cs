@@ -1,65 +1,82 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
 
-    internal sealed class FollowingQuery : BaseAxisQuery {
-        private XPathNavigator input;
-        private XPathNodeIterator iterator;
+    internal sealed class FollowingQuery : BaseAxisQuery
+    {
+        private XPathNavigator _input;
+        private XPathNodeIterator _iterator;
 
-        public FollowingQuery(Query qyInput, string name, string prefix, XPathNodeType typeTest) : base(qyInput, name, prefix, typeTest) {}
-        private FollowingQuery(FollowingQuery other) : base(other) {
-            this.input    = Clone(other.input);
-            this.iterator = Clone(other.iterator);
+        public FollowingQuery(Query qyInput, string name, string prefix, XPathNodeType typeTest) : base(qyInput, name, prefix, typeTest) { }
+        private FollowingQuery(FollowingQuery other) : base(other)
+        {
+            _input = Clone(other._input);
+            _iterator = Clone(other._iterator);
         }
 
-        public override void Reset() {
-            iterator = null;
+        public override void Reset()
+        {
+            _iterator = null;
             base.Reset();
         }
 
-        public override XPathNavigator Advance() {
-            if (iterator == null) {
-                input = qyInput.Advance();
-                if (input == null) {
+        public override XPathNavigator Advance()
+        {
+            if (_iterator == null)
+            {
+                _input = qyInput.Advance();
+                if (_input == null)
+                {
                     return null;
                 }
 
                 XPathNavigator prev;
-                do {
-                    prev = input.Clone();
-                    input = qyInput.Advance();
-                } while (prev.IsDescendant(input));
-                input = prev;
+                do
+                {
+                    prev = _input.Clone();
+                    _input = qyInput.Advance();
+                } while (prev.IsDescendant(_input));
+                _input = prev;
 
-                iterator = XPathEmptyIterator.Instance;
+                _iterator = XPathEmptyIterator.Instance;
             }
- 
-            while (! iterator.MoveNext()) {
+
+            while (!_iterator.MoveNext())
+            {
                 bool matchSelf;
-                if (input.NodeType == XPathNodeType.Attribute || input.NodeType == XPathNodeType.Namespace) {
-                    input.MoveToParent();
+                if (_input.NodeType == XPathNodeType.Attribute || _input.NodeType == XPathNodeType.Namespace)
+                {
+                    _input.MoveToParent();
                     matchSelf = false;
-                } else {
-                    while (! input.MoveToNext()) {
-                        if (! input.MoveToParent()) {
+                }
+                else
+                {
+                    while (!_input.MoveToNext())
+                    {
+                        if (!_input.MoveToParent())
+                        {
                             return null;
                         }
                     }
                     matchSelf = true;
                 }
-                if (NameTest) {
-                    iterator = input.SelectDescendants(Name, Namespace, matchSelf);
-                } else {
-                    iterator = input.SelectDescendants(TypeTest, matchSelf);
+                if (NameTest)
+                {
+                    _iterator = _input.SelectDescendants(Name, Namespace, matchSelf);
+                }
+                else
+                {
+                    _iterator = _input.SelectDescendants(TypeTest, matchSelf);
                 }
             }
             position++;
-            currentNode = iterator.Current;
+            currentNode = _iterator.Current;
             return currentNode;
         }
 

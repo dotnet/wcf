@@ -14,7 +14,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             CollectionHelpers.MapList<CodeMemberMethod>(
                 type.Members,
-                delegate(CodeMemberMethod method)
+                delegate (CodeMemberMethod method)
                 {
                     return CodeDomHelpers.IsBeginMethod(method) ||
                            CodeDomHelpers.IsTaskAsyncMethod(method) ||
@@ -24,7 +24,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             );
         }
 
-        void CopyAttrsToTaskAsyncMethod(CodeMemberMethod syncMethod, int index)
+        private void CopyAttrsToTaskAsyncMethod(CodeMemberMethod syncMethod, int index)
         {
             CodeMemberMethod taskAyncMethod = CodeDomHelpers.GetTaskAsyncMethodForMethod(CurrentType.Members, syncMethod);
             if (taskAyncMethod != null && !ReferenceEquals(taskAyncMethod, syncMethod))

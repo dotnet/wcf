@@ -11,15 +11,16 @@ using Microsoft.Xml.Schema;
 #if SILVERLIGHT
 using BufferBuilder=Microsoft.Xml.BufferBuilder;
 #else
-using BufferBuilder=System.Text.StringBuilder;
+using BufferBuilder = System.Text.StringBuilder;
 #endif
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal partial interface IDtdParserAdapter {
 
+    internal partial interface IDtdParserAdapter
+    {
         XmlNameTable NameTable { get; }
         IXmlNamespaceResolver NamespaceResolver { get; }
 
@@ -34,40 +35,40 @@ namespace Microsoft.Xml {
         int EntityStackLength { get; }
         bool IsEntityEolNormalized { get; }
 
-         int  ReadData();
+        int ReadData();
 
-        void OnNewLine( int pos );
+        void OnNewLine(int pos);
 
-         int  ParseNumericCharRef( BufferBuilder internalSubsetBuilder );
-         int  ParseNamedCharRef( bool expand, BufferBuilder internalSubsetBuilder );
-        void ParsePI( BufferBuilder sb );
-        void ParseComment( BufferBuilder sb );
+        int ParseNumericCharRef(BufferBuilder internalSubsetBuilder);
+        int ParseNamedCharRef(bool expand, BufferBuilder internalSubsetBuilder);
+        void ParsePI(BufferBuilder sb);
+        void ParseComment(BufferBuilder sb);
 
-        bool PushEntity( IDtdEntityInfo entity, out int entityId );
+        bool PushEntity(IDtdEntityInfo entity, out int entityId);
 
-        bool PopEntity( out IDtdEntityInfo oldEntity, out int newEntityId );
+        bool PopEntity(out IDtdEntityInfo oldEntity, out int newEntityId);
 
-         bool  PushExternalSubset( string systemId, string publicId );
+        bool PushExternalSubset(string systemId, string publicId);
 
-        void PushInternalDtd( string baseUri, string internalDtd );
-        void OnSystemId( string systemId, LineInfo keywordLineInfo, LineInfo systemLiteralLineInfo );
-        void OnPublicId( string publicId, LineInfo keywordLineInfo, LineInfo publicLiteralLineInfo );
+        void PushInternalDtd(string baseUri, string internalDtd);
+        void OnSystemId(string systemId, LineInfo keywordLineInfo, LineInfo systemLiteralLineInfo);
+        void OnPublicId(string publicId, LineInfo keywordLineInfo, LineInfo publicLiteralLineInfo);
 
-        void Throw( Exception e );
-
+        void Throw(Exception e);
     }
 
 #if !SILVERLIGHT
-    internal interface IDtdParserAdapterWithValidation : IDtdParserAdapter {
+    internal interface IDtdParserAdapterWithValidation : IDtdParserAdapter
+    {
         bool DtdValidation { get; }
         IValidationEventHandling ValidationEventHandling { get; }
     }
 
-    internal interface IDtdParserAdapterV1 : IDtdParserAdapterWithValidation {
+    internal interface IDtdParserAdapterV1 : IDtdParserAdapterWithValidation
+    {
         bool V1CompatibilityMode { get; }
         bool Normalization { get; }
         bool Namespaces { get; }
     }
 #endif
-
 }

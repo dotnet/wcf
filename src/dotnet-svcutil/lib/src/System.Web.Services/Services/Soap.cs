@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace System.Web.Services {
+namespace System.Web.Services
+{
     using System;
     using Microsoft.Xml;
 
-    internal class Soap {
+    internal class Soap
+    {
         private Soap() { }
         internal const string XmlNamespace = "http://www.w3.org/XML/1998/namespace";
         internal const string Encoding = "http://schemas.xmlsoap.org/soap/encoding/";
@@ -20,7 +22,8 @@ namespace System.Web.Services {
         internal const string DimeContentType = "application/dime";
         internal const string SoapContentType = "text/xml";
 
-        internal class Attribute {
+        internal class Attribute
+        {
             private Attribute() { }
             internal const string MustUnderstand = "mustUnderstand";
             internal const string Actor = "actor";
@@ -29,7 +32,8 @@ namespace System.Web.Services {
             internal const string ConformsTo = "conformsTo";
         }
 
-        internal class Element {
+        internal class Element
+        {
             private Element() { }
             internal const string Envelope = "Envelope";
             internal const string Header = "Header";
@@ -44,7 +48,8 @@ namespace System.Web.Services {
             internal const string Claim = "Claim";
         }
 
-        internal class Code {
+        internal class Code
+        {
             private Code() { }
             internal const string Server = "Server";
             internal const string VersionMismatch = "VersionMismatch";
@@ -53,20 +58,23 @@ namespace System.Web.Services {
         }
     }
 
-    internal sealed class Soap12 {
+    internal sealed class Soap12
+    {
         private Soap12() { }
         internal const string Namespace = "http://www.w3.org/2003/05/soap-envelope";
         internal const string Encoding = "http://www.w3.org/2003/05/soap-encoding";
         internal const string RpcNamespace = "http://www.w3.org/2003/05/soap-rpc";
         internal const string Prefix = "soap12";
-        internal class Attribute {
+        internal class Attribute
+        {
             private Attribute() { }
             internal const string UpgradeEnvelopeQname = "qname";
             internal const string Role = "role";
             internal const string Relay = "relay";
         }
 
-        internal sealed class Element {
+        internal sealed class Element
+        {
             private Element() { }
             internal const string Upgrade = "Upgrade";
             internal const string UpgradeEnvelope = "SupportedEnvelope";
@@ -80,7 +88,8 @@ namespace System.Web.Services {
             internal const string FaultDetail = "Detail";
         }
 
-        internal sealed class Code {
+        internal sealed class Code
+        {
             private Code() { }
             internal const string VersionMismatch = "VersionMismatch";
             internal const string MustUnderstand = "MustUnderstand";

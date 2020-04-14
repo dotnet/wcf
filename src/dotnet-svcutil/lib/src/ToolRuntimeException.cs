@@ -5,9 +5,9 @@ using System;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    internal class ToolRuntimeException : Exception 
+    internal class ToolRuntimeException : Exception
     {
-        internal virtual ToolExitCode ExitCode { get;  } = ToolExitCode.RuntimeError;
+        internal virtual ToolExitCode ExitCode { get; } = ToolExitCode.RuntimeError;
 
         public ToolRuntimeException()
         {

@@ -14,7 +14,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class EndpointSelector : MetadataFixup
     {
-        static List<string> s_bindingValidationErrors = new List<string>();
+        private static List<string> s_bindingValidationErrors = new List<string>();
 
         public EndpointSelector(WsdlImporter importer, Collection<ServiceEndpoint> endpoints, Collection<Binding> bindings, Collection<ContractDescription> contracts)
             : base(importer, endpoints, bindings, contracts)
@@ -30,12 +30,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static bool SelectEndpoint(ServiceEndpoint endpoint)
+        private static bool SelectEndpoint(ServiceEndpoint endpoint)
         {
             return IsBindingSupported(endpoint.Binding);
         }
 
-        static bool IsBindingSupported(Binding binding)
+        private static bool IsBindingSupported(Binding binding)
         {
             s_bindingValidationErrors.Clear();
 
@@ -92,7 +92,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return s_bindingValidationErrors.Count == 0;
         }
 
-        static void ValidateBindingElements(Binding binding)
+        private static void ValidateBindingElements(Binding binding)
         {
             BindingElementCollection bindingElements = binding.CreateBindingElements();
 
@@ -175,7 +175,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static void ValidateTransportSecurityBindingElement(TransportSecurityBindingElement transportSecurityBindingElement)
+        private static void ValidateTransportSecurityBindingElement(TransportSecurityBindingElement transportSecurityBindingElement)
         {
             if (transportSecurityBindingElement.EndpointSupportingTokenParameters.Signed.Count != 0 ||
                 transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEndorsing.Count != 0)
@@ -255,7 +255,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static void ValidateUserNamePasswordSecurityBindingElement(TransportSecurityBindingElement transportSecurityBindingElement)
+        private static void ValidateUserNamePasswordSecurityBindingElement(TransportSecurityBindingElement transportSecurityBindingElement)
         {
             bool singleSignedEncryptedParam = transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted.Count == 1;
             System.Diagnostics.Debug.Assert(singleSignedEncryptedParam, "Unexpected number of SignedEncrypted token parameters in transport security binding!");
@@ -309,7 +309,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        void AddWarning(ServiceEndpoint endpoint, int i)
+        private void AddWarning(ServiceEndpoint endpoint, int i)
         {
             MetadataConversionError warning;
 
@@ -325,7 +325,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             string incompatEndpointMsg = string.Format(CultureInfo.InvariantCulture, SR.WrnIncompatibleEndpointFormat, endpoint.Name, endpoint.Address);
 
             warning = new MetadataConversionError(incompatEndpointMsg, isWarning: true);
-            if(!importer.Errors.Contains(warning))
+            if (!importer.Errors.Contains(warning))
             {
                 importer.Errors.Add(warning);
             }

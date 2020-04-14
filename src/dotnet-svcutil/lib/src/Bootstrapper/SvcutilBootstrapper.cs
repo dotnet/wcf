@@ -15,7 +15,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     internal class SvcutilBootstrapper : IDisposable
     {
         private const string ProjectName = "SvcutilBootstrapper.csproj";
-        private static readonly string BootstrapperParamsFileName = $"{Tool.ToolName}-bootstrapper.params.json";
+        private static readonly string s_bootstrapperParamsFileName = $"{Tool.ToolName}-bootstrapper.params.json";
 
         private MSBuildProj MSBuildProj { get; set; }
 
@@ -144,8 +144,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             await this.MSBuildProj.SaveAsync(logger, cancellationToken).ConfigureAwait(false);
         }
 
-        private static readonly string ProgramClass =
-        @"using System
+        private static readonly string s_programClass =
+        @"using System;
 namespace SvcutilBootstrap {
     public class Program {
         public static int Main(string[] args) {
@@ -159,13 +159,13 @@ namespace SvcutilBootstrap {
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Generating Program.cs ...").ConfigureAwait(false))
             {
                 string programFilePath = Path.Combine(this.MSBuildProj.DirectoryPath, "Program.cs");
-                File.WriteAllText(programFilePath, ProgramClass);
+                File.WriteAllText(programFilePath, s_programClass);
             }
         }
 
         private async Task<string> GenerateParamsFileAsync(ILogger logger, CancellationToken cancellationToken)
         {
-            var paramsFilePath = Path.Combine(this.MSBuildProj.DirectoryPath, BootstrapperParamsFileName);
+            var paramsFilePath = Path.Combine(this.MSBuildProj.DirectoryPath, s_bootstrapperParamsFileName);
             using (await SafeLogger.WriteStartOperationAsync(logger, $"Generating {paramsFilePath} params file ...").ConfigureAwait(false))
             {
                 await AsyncHelper.RunAsync(() => this.Options.Save(paramsFilePath), cancellationToken).ConfigureAwait(false);
@@ -230,18 +230,18 @@ namespace SvcutilBootstrap {
         }
 
         #region IDisposable Support
-        private bool disposedValue; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
                     this.MSBuildProj?.Dispose();
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

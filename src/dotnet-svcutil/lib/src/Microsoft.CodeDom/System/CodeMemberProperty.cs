@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,56 +15,67 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeMemberProperty : CodeTypeMember {
-        private CodeTypeReference type;
-        private CodeParameterDeclarationExpressionCollection parameters = new CodeParameterDeclarationExpressionCollection();
-        private bool hasGet;
-        private bool hasSet;
-        private CodeStatementCollection getStatements = new CodeStatementCollection();
-        private CodeStatementCollection setStatements = new CodeStatementCollection();
-        private CodeTypeReference privateImplements = null;
-        private CodeTypeReferenceCollection implementationTypes = null;
-        
+    public class CodeMemberProperty : CodeTypeMember
+    {
+        private CodeTypeReference _type;
+        private CodeParameterDeclarationExpressionCollection _parameters = new CodeParameterDeclarationExpressionCollection();
+        private bool _hasGet;
+        private bool _hasSet;
+        private CodeStatementCollection _getStatements = new CodeStatementCollection();
+        private CodeStatementCollection _setStatements = new CodeStatementCollection();
+        private CodeTypeReference _privateImplements = null;
+        private CodeTypeReferenceCollection _implementationTypes = null;
+
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReference PrivateImplementationType {
-            get {
-                return privateImplements;
+        public CodeTypeReference PrivateImplementationType
+        {
+            get
+            {
+                return _privateImplements;
             }
-            set {
-                privateImplements = value;
+            set
+            {
+                _privateImplements = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReferenceCollection ImplementationTypes {
-            get {
-                if (implementationTypes == null) {
-                    implementationTypes = new CodeTypeReferenceCollection();
+        public CodeTypeReferenceCollection ImplementationTypes
+        {
+            get
+            {
+                if (_implementationTypes == null)
+                {
+                    _implementationTypes = new CodeTypeReferenceCollection();
                 }
-                return implementationTypes;
+                return _implementationTypes;
             }
         }
 
         /// <devdoc>
         ///    <para>Gets or sets the data type of the property.</para>
         /// </devdoc>
-        public CodeTypeReference Type {
-            get {
-                if (type == null) {
-                    type = new CodeTypeReference("");
+        public CodeTypeReference Type
+        {
+            get
+            {
+                if (_type == null)
+                {
+                    _type = new CodeTypeReference("");
                 }
-                return type;
+                return _type;
             }
-            set {
-                type = value;
+            set
+            {
+                _type = value;
             }
         }
 
@@ -74,14 +85,18 @@ namespace Microsoft.CodeDom {
         ///       indicating whether the property has a get method accessor.
         ///    </para>
         /// </devdoc>
-        public bool HasGet {
-            get {
-                return hasGet || getStatements.Count > 0;
+        public bool HasGet
+        {
+            get
+            {
+                return _hasGet || _getStatements.Count > 0;
             }
-            set {
-                hasGet = value;
-                if (!value) {
-                    getStatements.Clear();
+            set
+            {
+                _hasGet = value;
+                if (!value)
+                {
+                    _getStatements.Clear();
                 }
             }
         }
@@ -92,14 +107,18 @@ namespace Microsoft.CodeDom {
         ///       indicating whether the property has a set method accessor.
         ///    </para>
         /// </devdoc>
-        public bool HasSet {
-            get {
-                return hasSet || setStatements.Count > 0;
+        public bool HasSet
+        {
+            get
+            {
+                return _hasSet || _setStatements.Count > 0;
             }
-            set {
-                hasSet = value;
-                if (!value) {
-                    setStatements.Clear();
+            set
+            {
+                _hasSet = value;
+                if (!value)
+                {
+                    _setStatements.Clear();
                 }
             }
         }
@@ -110,9 +129,11 @@ namespace Microsoft.CodeDom {
         ///       property.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection GetStatements {
-            get {
-                return getStatements;
+        public CodeStatementCollection GetStatements
+        {
+            get
+            {
+                return _getStatements;
             }
         }
 
@@ -121,9 +142,11 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the collection of get statements for the property.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection SetStatements {
-            get {
-                return setStatements;
+        public CodeStatementCollection SetStatements
+        {
+            get
+            {
+                return _setStatements;
             }
         }
 
@@ -134,9 +157,11 @@ namespace Microsoft.CodeDom {
         ///       the property.
         ///    </para>
         /// </devdoc>
-        public CodeParameterDeclarationExpressionCollection Parameters {
-            get {
-                return parameters;
+        public CodeParameterDeclarationExpressionCollection Parameters
+        {
+            get
+            {
+                return _parameters;
             }
         }
     }

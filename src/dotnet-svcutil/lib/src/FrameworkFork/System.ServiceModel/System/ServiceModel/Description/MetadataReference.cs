@@ -16,10 +16,10 @@ namespace System.ServiceModel.Description
     [XmlRoot(ElementName = MetadataStrings.MetadataExchangeStrings.MetadataReference, Namespace = MetadataStrings.MetadataExchangeStrings.Namespace)]
     public class MetadataReference : IXmlSerializable
     {
-        EndpointAddress address;
-        AddressingVersion addressVersion;
-        Collection<XmlAttribute> attributes = new Collection<XmlAttribute>();
-        static XmlDocument Document = new XmlDocument();
+        private EndpointAddress _address;
+        private AddressingVersion _addressVersion;
+        private Collection<XmlAttribute> _attributes = new Collection<XmlAttribute>();
+        private static XmlDocument s_document = new XmlDocument();
 
         public MetadataReference()
         {
@@ -27,20 +27,20 @@ namespace System.ServiceModel.Description
 
         public MetadataReference(EndpointAddress address, AddressingVersion addressVersion)
         {
-            this.address = address;
-            this.addressVersion = addressVersion;
+            _address = address;
+            _addressVersion = addressVersion;
         }
 
         public EndpointAddress Address
         {
-            get { return this.address; }
-            set { this.address = value; }
+            get { return _address; }
+            set { _address = value; }
         }
 
         public AddressingVersion AddressVersion
         {
-            get { return this.addressVersion; }
-            set { this.addressVersion = value; }
+            get { return _addressVersion; }
+            set { _addressVersion = value; }
         }
 
         Microsoft.Xml.Schema.XmlSchema IXmlSerializable.GetSchema()
@@ -50,14 +50,14 @@ namespace System.ServiceModel.Description
 
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            this.address = EndpointAddress.ReadFrom(XmlDictionaryReader.CreateDictionaryReader(reader), out this.addressVersion);
+            _address = EndpointAddress.ReadFrom(XmlDictionaryReader.CreateDictionaryReader(reader), out _addressVersion);
         }
 
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            if (address != null)
+            if (_address != null)
             {
-                address.WriteContentsTo(this.addressVersion, writer);
+                _address.WriteContentsTo(_addressVersion, writer);
             }
         }
     }

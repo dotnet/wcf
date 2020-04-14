@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using Microsoft.CodeDom;
 using System.Collections.Generic;
@@ -12,22 +13,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class CreateCallbackImpl : ClientClassVisitor
     {
-        bool taskBasedAsync;
-        List<CodeTypeDeclaration> eventArgsList = new List<CodeTypeDeclaration>();
-        ServiceContractGenerator generator;
-        MetadataConversionError requestReplyError;
-        CodeTypeDeclaration eventBasedDuplexClass;
+        private bool _taskBasedAsync;
+        private List<CodeTypeDeclaration> _eventArgsList = new List<CodeTypeDeclaration>();
+        private ServiceContractGenerator _generator;
+        private MetadataConversionError _requestReplyError;
+        private CodeTypeDeclaration _eventBasedDuplexClass;
 
         public CreateCallbackImpl(bool taskBasedAsync, ServiceContractGenerator generator)
         {
-            this.taskBasedAsync = taskBasedAsync;
-            this.generator = generator;
+            _taskBasedAsync = taskBasedAsync;
+            _generator = generator;
         }
 
         protected override bool IsSpecificType(CodeTypeDeclaration type)
         {
             // Check if the current client class is for duplex service.
-            return this.taskBasedAsync &&
+            return _taskBasedAsync &&
                 base.IsSpecificType(type) &&
                 CodeDomHelpers.MatchGenericBaseType(type.BaseTypes[0], typeof(DuplexClientBase<>));
         }
@@ -43,30 +44,30 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void CreateEventBasedDuplexClass(CodeTypeDeclaration type, CodeTypeDeclaration callbackInterface)
         {
-            this.eventBasedDuplexClass = new CodeTypeDeclaration(type.Name);
-            this.eventBasedDuplexClass.IsPartial = true;
+            _eventBasedDuplexClass = new CodeTypeDeclaration(type.Name);
+            _eventBasedDuplexClass.IsPartial = true;
             type.Name += "Base";
-            this.eventBasedDuplexClass.BaseTypes.Add(type.Name);
+            _eventBasedDuplexClass.BaseTypes.Add(type.Name);
             CodeTypeDeclaration callbackImpl;
-            using (CodeTypeNameScope nameScope = new CodeTypeNameScope(eventBasedDuplexClass))
+            using (CodeTypeNameScope nameScope = new CodeTypeNameScope(_eventBasedDuplexClass))
             {
-                Dictionary<string, string> methodNames = GenerateEventAsyncMethods(nameScope, this.eventBasedDuplexClass, callbackInterface, this.eventArgsList);
-                callbackImpl = CreateCallbackImplClass(nameScope, this.eventBasedDuplexClass, callbackInterface, methodNames);
-                this.eventBasedDuplexClass.Members.Add(callbackImpl);
+                Dictionary<string, string> methodNames = GenerateEventAsyncMethods(nameScope, _eventBasedDuplexClass, callbackInterface, _eventArgsList);
+                callbackImpl = CreateCallbackImplClass(nameScope, _eventBasedDuplexClass, callbackInterface, methodNames);
+                _eventBasedDuplexClass.Members.Add(callbackImpl);
             }
             // Create ctor
-            CreateCtorOverload(eventBasedDuplexClass, callbackImpl);
+            CreateCtorOverload(_eventBasedDuplexClass, callbackImpl);
         }
 
         private MetadataConversionError RequestReplyError
         {
             get
             {
-                if (requestReplyError == null)
+                if (_requestReplyError == null)
                 {
-                    requestReplyError = new MetadataConversionError(SR.RequestReplyCallbackContractNotSupported, false);
+                    _requestReplyError = new MetadataConversionError(SR.RequestReplyCallbackContractNotSupported, false);
                 }
-                return requestReplyError;
+                return _requestReplyError;
             }
         }
 
@@ -74,7 +75,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             CollectionHelpers.MapList<CodeMemberMethod>(
                 callbackInterface.Members,
-                delegate(CodeMemberMethod method)
+                delegate (CodeMemberMethod method)
                 {
                     return !CodeDomHelpers.IsTaskAsyncMethod(method);
                 },
@@ -86,14 +87,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             base.FinishVisit(cu);
 
-            foreach (CodeTypeDeclaration type in this.eventArgsList)
+            foreach (CodeTypeDeclaration type in _eventArgsList)
             {
                 cu.Namespaces[0].Types.Add(type);
             }
 
-            if (this.eventBasedDuplexClass != null)
+            if (_eventBasedDuplexClass != null)
             {
-                cu.Namespaces[0].Types.Add(this.eventBasedDuplexClass);
+                cu.Namespaces[0].Types.Add(_eventBasedDuplexClass);
             }
         }
 
@@ -132,7 +133,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         MethodName = "Initialize",
                     },
                     Parameters = { new CodeThisReferenceExpression() }
-
                 }
             );
             parent.Members.Add(ctor);
@@ -172,7 +172,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         MethodName = "Initialize",
                     },
                     Parameters = { new CodeThisReferenceExpression() }
-
                 }
             );
             parent.Members.Add(ctor);
@@ -193,7 +192,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             //}
             ctor = new CodeConstructor();
             ctor.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(callbackImpl.Name), "callbackImpl"));
-            ctor.BaseConstructorArgs.Add(new CodeObjectCreateExpression(new CodeTypeReference(typeof(System.ServiceModel.InstanceContext)), new CodeArgumentReferenceExpression("callbackImpl")));;
+            ctor.BaseConstructorArgs.Add(new CodeObjectCreateExpression(new CodeTypeReference(typeof(System.ServiceModel.InstanceContext)), new CodeArgumentReferenceExpression("callbackImpl"))); ;
 
             ctor.Statements.Add(
                 new CodeMethodInvokeExpression()
@@ -204,13 +203,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         MethodName = "Initialize",
                     },
                     Parameters = { new CodeThisReferenceExpression() }
-
                 }
             );
             parent.Members.Add(ctor);
         }
 
-        static Dictionary<string, string> GenerateEventAsyncMethods(CodeTypeNameScope nameScope, CodeTypeDeclaration parent, CodeTypeDeclaration callbackInterface, List<CodeTypeDeclaration> eventArgsList)
+        private static Dictionary<string, string> GenerateEventAsyncMethods(CodeTypeNameScope nameScope, CodeTypeDeclaration parent, CodeTypeDeclaration callbackInterface, List<CodeTypeDeclaration> eventArgsList)
         {
             Dictionary<string, string> methodNames = new Dictionary<string, string>();
             List<CodeMemberEvent> receivedEvents = new List<CodeMemberEvent>();
@@ -239,7 +237,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return methodNames;
         }
 
-        static CodeMemberMethod CreateOperationReceivedMethod(CodeTypeNameScope nameScope, CodeMemberMethod syncMethod,
+        private static CodeMemberMethod CreateOperationReceivedMethod(CodeTypeNameScope nameScope, CodeMemberMethod syncMethod,
             CodeTypeDeclaration operationReceivedEventArgsType, CodeMemberEvent operationCompletedEvent)
         {
             CodeMemberMethod operationCompletedMethod = new CodeMemberMethod();
@@ -310,7 +308,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return operationCompletedMethod;
         }
 
-        static CodeMemberEvent CreateOperationReceivedEvent(CodeTypeNameScope nameScope, CodeMemberMethod syncMethod,
+        private static CodeMemberEvent CreateOperationReceivedEvent(CodeTypeNameScope nameScope, CodeMemberMethod syncMethod,
             CodeTypeDeclaration operationCompletedEventArgsType)
         {
             // public event System.EventHandler<OnEcho2CallbackEventArgs> OnEcho2Callback;
@@ -331,7 +329,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return operationCompletedEvent;
         }
 
-        static CodeTypeDeclaration CreateOperationReceivedEventArgsType(CodeTypeNameScope nameScope, CodeMemberMethod syncMethod)
+        private static CodeTypeDeclaration CreateOperationReceivedEventArgsType(CodeTypeNameScope nameScope, CodeMemberMethod syncMethod)
         {
             if (syncMethod.Parameters.Count <= 0)
             {
@@ -391,7 +389,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
 
-        static CodeTypeDeclaration CreateCallbackImplClass(CodeTypeNameScope nameScope, CodeTypeDeclaration parent, CodeTypeDeclaration callbackInterface, Dictionary<string, string> methodNames)
+        private static CodeTypeDeclaration CreateCallbackImplClass(CodeTypeNameScope nameScope, CodeTypeDeclaration parent, CodeTypeDeclaration callbackInterface, Dictionary<string, string> methodNames)
         {
             CodeTypeDeclaration callbackImpl = new CodeTypeDeclaration();
             callbackImpl.Name = nameScope.UniqueMemberName(parent.Name + "Callback");
@@ -406,7 +404,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return callbackImpl;
         }
 
-        static void AddMembers(CodeTypeDeclaration callbackImpl, CodeTypeDeclaration parent)
+        private static void AddMembers(CodeTypeDeclaration callbackImpl, CodeTypeDeclaration parent)
         {
             callbackImpl.Members.Add(
                 new CodeMemberField()
@@ -417,7 +415,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             );
         }
 
-        static void AddInitialize(CodeTypeDeclaration callbackImpl, CodeTypeDeclaration parent)
+        private static void AddInitialize(CodeTypeDeclaration callbackImpl, CodeTypeDeclaration parent)
         {
             // public void Initialize(PollingDuplexEchoClient proxy)
             CodeMemberMethod m = new CodeMemberMethod();
@@ -446,7 +444,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             callbackImpl.Members.Add(m);
         }
 
-        static void AddMethods(CodeTypeDeclaration callbackImpl, CodeTypeDeclaration callbackInterface, Dictionary<string, string> methodNames)
+        private static void AddMethods(CodeTypeDeclaration callbackImpl, CodeTypeDeclaration callbackInterface, Dictionary<string, string> methodNames)
         {
             foreach (CodeMemberMethod method in callbackInterface.Members)
             {
@@ -493,7 +491,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static CodeTypeDeclaration GetCallbackContractType(CodeTypeDeclaration iface)
+        private static CodeTypeDeclaration GetCallbackContractType(CodeTypeDeclaration iface)
         {
             CodeAttributeDeclaration serviceContractAttribute = null;
             foreach (CodeAttributeDeclaration attr in iface.CustomAttributes)
@@ -518,7 +516,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return null;
         }
 
-        static bool IsSyncOperationContract(CodeMemberMethod method)
+        private static bool IsSyncOperationContract(CodeMemberMethod method)
         {
             CodeAttributeDeclaration operationContractAttribute = null;
             foreach (CodeAttributeDeclaration attr in method.CustomAttributes)

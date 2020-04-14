@@ -16,15 +16,15 @@ namespace System.IdentityModel.Tokens
     /// </summary>
     internal class KeyInfoSerializer : SecurityTokenSerializer
     {
-        readonly List<SecurityTokenSerializer.KeyIdentifierEntry> keyIdentifierEntries;
-        readonly List<SecurityTokenSerializer.KeyIdentifierClauseEntry> keyIdentifierClauseEntries;
-        readonly List<SecurityTokenSerializer.SerializerEntries> serializerEntries;
-        readonly List<TokenEntry> tokenEntries;
+        private readonly List<SecurityTokenSerializer.KeyIdentifierEntry> _keyIdentifierEntries;
+        private readonly List<SecurityTokenSerializer.KeyIdentifierClauseEntry> _keyIdentifierClauseEntries;
+        private readonly List<SecurityTokenSerializer.SerializerEntries> _serializerEntries;
+        private readonly List<TokenEntry> _tokenEntries;
 
 
-        DictionaryManager dictionaryManager;
-        bool emitBspRequiredAttributes;
-        SecurityTokenSerializer innerSecurityTokenSerializer;
+        private DictionaryManager _dictionaryManager;
+        private bool _emitBspRequiredAttributes;
+        private SecurityTokenSerializer _innerSecurityTokenSerializer;
 
         /// <summary>
         /// Creates an instance of <see cref="SecurityKeyIdentifierClauseSerializer"/>
@@ -50,25 +50,25 @@ namespace System.IdentityModel.Tokens
             SecurityTokenSerializer innerSecurityTokenSerializer,
             Func<KeyInfoSerializer, IEnumerable<SerializerEntries>> additionalEntries)
         {
-            this.dictionaryManager = dictionaryManager;
-            this.emitBspRequiredAttributes = emitBspRequiredAttributes;
-            this.innerSecurityTokenSerializer = innerSecurityTokenSerializer;
+            _dictionaryManager = dictionaryManager;
+            _emitBspRequiredAttributes = emitBspRequiredAttributes;
+            _innerSecurityTokenSerializer = innerSecurityTokenSerializer;
 
-            this.serializerEntries = new List<SecurityTokenSerializer.SerializerEntries>();
+            _serializerEntries = new List<SecurityTokenSerializer.SerializerEntries>();
 
-            this.serializerEntries.Add(new XmlDsigSep2000(this));
-            this.serializerEntries.Add(new XmlEncApr2001(this));
-            this.serializerEntries.Add(new System.IdentityModel.Security.WSTrust(this, trustDictionary));
+            _serializerEntries.Add(new XmlDsigSep2000(this));
+            _serializerEntries.Add(new XmlEncApr2001(this));
+            _serializerEntries.Add(new System.IdentityModel.Security.WSTrust(this, trustDictionary));
             if (additionalEntries != null)
             {
                 foreach (SerializerEntries entries in additionalEntries(this))
                 {
-                    this.serializerEntries.Add(entries);
+                    _serializerEntries.Add(entries);
                 }
             }
 
             bool wsSecuritySerializerFound = false;
-            foreach (SerializerEntries entry in this.serializerEntries)
+            foreach (SerializerEntries entry in _serializerEntries)
             {
                 if ((entry is WSSecurityXXX2005) || (entry is WSSecurityJan2004))
                 {
@@ -79,25 +79,25 @@ namespace System.IdentityModel.Tokens
 
             if (!wsSecuritySerializerFound)
             {
-                this.serializerEntries.Add(new WSSecurityXXX2005(this));
+                _serializerEntries.Add(new WSSecurityXXX2005(this));
             }
 
-            this.tokenEntries = new List<TokenEntry>();
-            this.keyIdentifierEntries = new List<SecurityTokenSerializer.KeyIdentifierEntry>();
-            this.keyIdentifierClauseEntries = new List<SecurityTokenSerializer.KeyIdentifierClauseEntry>();
+            _tokenEntries = new List<TokenEntry>();
+            _keyIdentifierEntries = new List<SecurityTokenSerializer.KeyIdentifierEntry>();
+            _keyIdentifierClauseEntries = new List<SecurityTokenSerializer.KeyIdentifierClauseEntry>();
 
-            for (int i = 0; i < this.serializerEntries.Count; ++i)
+            for (int i = 0; i < _serializerEntries.Count; ++i)
             {
-                SecurityTokenSerializer.SerializerEntries serializerEntry = this.serializerEntries[i];
-                serializerEntry.PopulateTokenEntries(this.tokenEntries);
-                serializerEntry.PopulateKeyIdentifierEntries(this.keyIdentifierEntries);
-                serializerEntry.PopulateKeyIdentifierClauseEntries(this.keyIdentifierClauseEntries);
+                SecurityTokenSerializer.SerializerEntries serializerEntry = _serializerEntries[i];
+                serializerEntry.PopulateTokenEntries(_tokenEntries);
+                serializerEntry.PopulateKeyIdentifierEntries(_keyIdentifierEntries);
+                serializerEntry.PopulateKeyIdentifierClauseEntries(_keyIdentifierClauseEntries);
             }
         }
 
         public DictionaryManager DictionaryManager
         {
-            get { return this.dictionaryManager; }
+            get { return _dictionaryManager; }
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                return this.emitBspRequiredAttributes;
+                return _emitBspRequiredAttributes;
             }
         }
 
@@ -115,11 +115,11 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                return this.innerSecurityTokenSerializer == null ? this : this.innerSecurityTokenSerializer;
+                return _innerSecurityTokenSerializer == null ? this : _innerSecurityTokenSerializer;
             }
             set
             {
-                this.innerSecurityTokenSerializer = value;
+                _innerSecurityTokenSerializer = value;
             }
         }
 
@@ -146,9 +146,9 @@ namespace System.IdentityModel.Tokens
         protected override bool CanReadKeyIdentifierCore(XmlReader reader)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            for (int i = 0; i < this.keyIdentifierEntries.Count; i++)
+            for (int i = 0; i < _keyIdentifierEntries.Count; i++)
             {
-                KeyIdentifierEntry keyIdentifierEntry = this.keyIdentifierEntries[i];
+                KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.CanReadKeyIdentifierCore(localReader))
                     return true;
             }
@@ -183,9 +183,9 @@ namespace System.IdentityModel.Tokens
 
         protected override bool CanWriteKeyIdentifierCore(SecurityKeyIdentifier keyIdentifier)
         {
-            for (int i = 0; i < this.keyIdentifierEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierEntries.Count; ++i)
             {
-                KeyIdentifierEntry keyIdentifierEntry = this.keyIdentifierEntries[i];
+                KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.SupportsCore(keyIdentifier))
                     return true;
             }
@@ -196,9 +196,9 @@ namespace System.IdentityModel.Tokens
         {
             bool wroteKeyIdentifier = false;
             XmlDictionaryWriter localWriter = XmlDictionaryWriter.CreateDictionaryWriter(writer);
-            for (int i = 0; i < this.keyIdentifierEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierEntries.Count; ++i)
             {
-                KeyIdentifierEntry keyIdentifierEntry = this.keyIdentifierEntries[i];
+                KeyIdentifierEntry keyIdentifierEntry = _keyIdentifierEntries[i];
                 if (keyIdentifierEntry.SupportsCore(keyIdentifier))
                 {
                     try
@@ -233,9 +233,9 @@ namespace System.IdentityModel.Tokens
         protected override bool CanReadKeyIdentifierClauseCore(XmlReader reader)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; i++)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; i++)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.CanReadKeyIdentifierClauseCore(localReader))
                     return true;
             }
@@ -245,9 +245,9 @@ namespace System.IdentityModel.Tokens
         protected override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlReader reader)
         {
             XmlDictionaryReader localReader = XmlDictionaryReader.CreateDictionaryReader(reader);
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; i++)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; i++)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.CanReadKeyIdentifierClauseCore(localReader))
                 {
                     try
@@ -273,9 +273,9 @@ namespace System.IdentityModel.Tokens
 
         protected override bool CanWriteKeyIdentifierClauseCore(SecurityKeyIdentifierClause keyIdentifierClause)
         {
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; ++i)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.SupportsCore(keyIdentifierClause))
                     return true;
             }
@@ -286,9 +286,9 @@ namespace System.IdentityModel.Tokens
         {
             bool wroteKeyIdentifierClause = false;
             XmlDictionaryWriter localWriter = XmlDictionaryWriter.CreateDictionaryWriter(writer);
-            for (int i = 0; i < this.keyIdentifierClauseEntries.Count; ++i)
+            for (int i = 0; i < _keyIdentifierClauseEntries.Count; ++i)
             {
-                KeyIdentifierClauseEntry keyIdentifierClauseEntry = this.keyIdentifierClauseEntries[i];
+                KeyIdentifierClauseEntry keyIdentifierClauseEntry = _keyIdentifierClauseEntries[i];
                 if (keyIdentifierClauseEntry.SupportsCore(keyIdentifierClause))
                 {
                     try
@@ -321,13 +321,13 @@ namespace System.IdentityModel.Tokens
 
         internal void PopulateStrEntries(IList<StrEntry> strEntries)
         {
-            foreach (SerializerEntries serializerEntry in serializerEntries)
+            foreach (SerializerEntries serializerEntry in _serializerEntries)
             {
                 serializerEntry.PopulateStrEntries(strEntries);
             }
         }
 
-        bool ShouldWrapException(Exception e)
+        private bool ShouldWrapException(Exception e)
         {
             return ((e is ArgumentException) || (e is FormatException) || (e is InvalidOperationException));
         }
@@ -336,9 +336,9 @@ namespace System.IdentityModel.Tokens
         {
             if (tokenTypeUri != null)
             {
-                for (int i = 0; i < this.tokenEntries.Count; i++)
+                for (int i = 0; i < _tokenEntries.Count; i++)
                 {
-                    TokenEntry tokenEntry = this.tokenEntries[i];
+                    TokenEntry tokenEntry = _tokenEntries[i];
 
                     if (tokenEntry.SupportsTokenTypeUri(tokenTypeUri))
                     {
@@ -353,9 +353,9 @@ namespace System.IdentityModel.Tokens
         {
             if (tokenType != null)
             {
-                for (int i = 0; i < this.tokenEntries.Count; i++)
+                for (int i = 0; i < _tokenEntries.Count; i++)
                 {
-                    TokenEntry tokenEntry = this.tokenEntries[i];
+                    TokenEntry tokenEntry = _tokenEntries[i];
 
                     if (tokenEntry.SupportsCore(tokenType))
                     {
@@ -365,6 +365,5 @@ namespace System.IdentityModel.Tokens
             }
             return null;
         }
-
     }
 }

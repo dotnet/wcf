@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System.ServiceModel;
@@ -8,7 +9,7 @@ namespace System.ServiceModel.Channels
     using System.Collections.Generic;
     using Microsoft.Xml;
 
-    static class TransactionPolicyStrings
+    internal static class TransactionPolicyStrings
     {
         public const string OptionalLocal = MetadataStrings.WSPolicy.Attributes.Optional;
         public const string OptionalPrefix10 = MetadataStrings.WSPolicy.Prefix + "1";
@@ -122,13 +123,13 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        void UpdateTransactionFlowAtribute(OperationDescription operation, TransactionFlowOption txFlow)
+        private void UpdateTransactionFlowAtribute(OperationDescription operation, TransactionFlowOption txFlow)
         {
             operation.Behaviors.Remove<TransactionFlowAttribute>();
             operation.Behaviors.Add(new TransactionFlowAttribute(txFlow));
         }
 
-        static void TrackAgreement(ref bool everyoneAgrees, TransactionFlowOption option,
+        private static void TrackAgreement(ref bool everyoneAgrees, TransactionFlowOption option,
                                    ref TransactionFlowOption agreedOption, ref bool anOperationCares)
         {
             if (!anOperationCares)
@@ -145,7 +146,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void TrackAgreementTransactionProtocol(ref bool everyoneAgrees, TransactionProtocol option,
+        private static void TrackAgreementTransactionProtocol(ref bool everyoneAgrees, TransactionProtocol option,
                                               ref TransactionProtocol agreedOption, ref bool anOperationCares)
         {
             if (!anOperationCares)
@@ -162,7 +163,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        TransactionFlowOption GetOption(XmlElement elem, bool useLegacyNs)
+        private TransactionFlowOption GetOption(XmlElement elem, bool useLegacyNs)
         {
             try
             {
@@ -179,19 +180,19 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static bool IsRealOptionalTrue(XmlElement elem)
+        private static bool IsRealOptionalTrue(XmlElement elem)
         {
             string value12 = elem.GetAttribute(TransactionPolicyStrings.OptionalLocal, MetadataStrings.WSPolicy.NamespaceUri);
             string value15 = elem.GetAttribute(TransactionPolicyStrings.OptionalLocal, MetadataStrings.WSPolicy.NamespaceUri15);
             return XmlUtil.IsTrue(value12) || XmlUtil.IsTrue(value15);
         }
-        static bool IsLegacyOptionalTrue(XmlElement elem)
+        private static bool IsLegacyOptionalTrue(XmlElement elem)
         {
             string valueLegacy = elem.GetAttribute(TransactionPolicyStrings.OptionalLocal, TransactionPolicyStrings.OptionalNamespaceLegacy);
             return XmlUtil.IsTrue(valueLegacy);
         }
 
-        TransactionFlowBindingElement EnsureBindingElement(PolicyConversionContext context)
+        private TransactionFlowBindingElement EnsureBindingElement(PolicyConversionContext context)
         {
             TransactionFlowBindingElement settings = context.BindingElements.Find<TransactionFlowBindingElement>();
             if (settings == null)

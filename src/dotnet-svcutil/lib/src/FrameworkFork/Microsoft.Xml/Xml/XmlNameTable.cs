@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     /// <include file='doc\XmlNameTable.uex' path='docs/doc[@for="XmlNameTable"]/*' />
     /// <devdoc>
@@ -13,7 +14,8 @@ namespace Microsoft.Xml {
     ///    <see langword='abstract'/>
     ///    .</para>
     /// </devdoc>
-    public abstract class XmlNameTable {
+    public abstract class XmlNameTable
+    {
         /// <include file='doc\XmlNameTable.uex' path='docs/doc[@for="XmlNameTable.Get"]/*' />
         /// <devdoc>
         ///    <para>Gets the atomized String object containing the same

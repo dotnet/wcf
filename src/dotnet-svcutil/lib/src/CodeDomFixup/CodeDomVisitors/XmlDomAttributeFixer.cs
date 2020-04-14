@@ -9,7 +9,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     internal class XmlDomAttributeFixer : CodeDomVisitor
     {
         // removes members of the affected type
-        static readonly Type[] filteredTypes = new Type[] { typeof(Microsoft.Xml.XmlAttribute), };
+        private static readonly Type[] s_filteredTypes = new Type[] { typeof(Microsoft.Xml.XmlAttribute), };
         protected override void Visit(CodeTypeDeclaration type)
         {
             base.Visit(type);
@@ -17,7 +17,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             CollectionHelpers.MapList<CodeTypeMember>(type.Members, IsNonFilteredMember, AddWarningComment);
         }
 
-        static bool IsNonFilteredMember(CodeTypeMember member)
+        private static bool IsNonFilteredMember(CodeTypeMember member)
         {
             CodeTypeReference memberType = null;
 
@@ -35,10 +35,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            return memberType == null || !CodeDomHelpers.MatchAnyBaseType(memberType, filteredTypes);
+            return memberType == null || !CodeDomHelpers.MatchAnyBaseType(memberType, s_filteredTypes);
         }
 
-        static void AddWarningComment(CodeTypeMember member, int index)
+        private static void AddWarningComment(CodeTypeMember member, int index)
         {
             // CONSIDER: add warning comment for filtered member
         }

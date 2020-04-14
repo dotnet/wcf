@@ -1,26 +1,33 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
+namespace Microsoft.Xml.Schema
+{
     using System;
     using System.Diagnostics;
     using System.Collections;
 
-    internal class SchemaNamespaceManager : XmlNamespaceManager {
-        XmlSchemaObject node;
-    
-        public SchemaNamespaceManager(XmlSchemaObject node) {
-            this.node = node;
+    internal class SchemaNamespaceManager : XmlNamespaceManager
+    {
+        private XmlSchemaObject _node;
+
+        public SchemaNamespaceManager(XmlSchemaObject node)
+        {
+            _node = node;
         }
-        
-        public override string LookupNamespace(string prefix) {
-            if (prefix == "xml") { //Special case for the XML namespace
+
+        public override string LookupNamespace(string prefix)
+        {
+            if (prefix == "xml")
+            { //Special case for the XML namespace
                 return XmlReservedNs.NsXml;
             }
             Hashtable namespaces;
-            for (XmlSchemaObject current = node; current != null; current = current.Parent) {
+            for (XmlSchemaObject current = _node; current != null; current = current.Parent)
+            {
                 namespaces = current.Namespaces.Namespaces;
-                if (namespaces != null && namespaces.Count > 0) {
+                if (namespaces != null && namespaces.Count > 0)
+                {
                     object uri = namespaces[prefix];
                     if (uri != null)
                         return (string)uri;
@@ -29,16 +36,22 @@ namespace Microsoft.Xml.Schema {
             return prefix.Length == 0 ? string.Empty : null;
         }
 
-        public override string LookupPrefix(string ns) {
-            if (ns == XmlReservedNs.NsXml) { //Special case for the XML namespace
+        public override string LookupPrefix(string ns)
+        {
+            if (ns == XmlReservedNs.NsXml)
+            { //Special case for the XML namespace
                 return "xml";
             }
             Hashtable namespaces;
-            for (XmlSchemaObject current = node; current != null; current = current.Parent) {
+            for (XmlSchemaObject current = _node; current != null; current = current.Parent)
+            {
                 namespaces = current.Namespaces.Namespaces;
-                if (namespaces != null && namespaces.Count > 0) {
-                    foreach(DictionaryEntry entry in namespaces) {
-                        if (entry.Value.Equals(ns)) {
+                if (namespaces != null && namespaces.Count > 0)
+                {
+                    foreach (DictionaryEntry entry in namespaces)
+                    {
+                        if (entry.Value.Equals(ns))
+                        {
                             return (string)entry.Key;
                         }
                     }
@@ -46,6 +59,5 @@ namespace Microsoft.Xml.Schema {
             }
             return null;
         }
-
-  }; //SchemaNamespaceManager
+    }; //SchemaNamespaceManager
 }

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.ComponentModel;
@@ -8,14 +9,14 @@ namespace System.ServiceModel
     //TODO: [TypeConverter(typeof(ReliableMessagingVersionConverter))]
     public abstract class ReliableMessagingVersion
     {
-        XmlDictionaryString dictionaryNs;
-        string ns;
+        private XmlDictionaryString _dictionaryNs;
+        private string _ns;
 
         // Do not initialize directly, this constructor is for derived classes.
         internal ReliableMessagingVersion(string ns, XmlDictionaryString dictionaryNs)
         {
-            this.ns = ns;
-            this.dictionaryNs = dictionaryNs;
+            _ns = ns;
+            _dictionaryNs = dictionaryNs;
         }
 
         public static ReliableMessagingVersion Default
@@ -35,12 +36,12 @@ namespace System.ServiceModel
 
         internal XmlDictionaryString DictionaryNamespace
         {
-            get { return this.dictionaryNs; }
+            get { return _dictionaryNs; }
         }
 
         internal string Namespace
         {
-            get { return this.ns; }
+            get { return _ns; }
         }
 
         internal static bool IsDefined(ReliableMessagingVersion reliableMessagingVersion)
@@ -50,18 +51,18 @@ namespace System.ServiceModel
         }
     }
 
-    class WSReliableMessaging11Version : ReliableMessagingVersion
+    internal class WSReliableMessaging11Version : ReliableMessagingVersion
     {
-        static ReliableMessagingVersion instance = new WSReliableMessaging11Version();
+        private static ReliableMessagingVersion s_instance = new WSReliableMessaging11Version();
 
-        WSReliableMessaging11Version()
+        private WSReliableMessaging11Version()
             : base(Wsrm11Strings.Namespace, DXD.Wsrm11Dictionary.Namespace)
         {
         }
 
         internal static ReliableMessagingVersion Instance
         {
-            get { return instance; }
+            get { return s_instance; }
         }
 
         public override string ToString()
@@ -70,18 +71,18 @@ namespace System.ServiceModel
         }
     }
 
-    class WSReliableMessagingFebruary2005Version : ReliableMessagingVersion
+    internal class WSReliableMessagingFebruary2005Version : ReliableMessagingVersion
     {
-        WSReliableMessagingFebruary2005Version()
+        private WSReliableMessagingFebruary2005Version()
             : base(WsrmFeb2005Strings.Namespace, XD.WsrmFeb2005Dictionary.Namespace)
         {
         }
 
-        static ReliableMessagingVersion instance = new WSReliableMessagingFebruary2005Version();
+        private static ReliableMessagingVersion s_instance = new WSReliableMessagingFebruary2005Version();
 
         internal static ReliableMessagingVersion Instance
         {
-            get { return instance; }
+            get { return s_instance; }
         }
 
         public override string ToString()

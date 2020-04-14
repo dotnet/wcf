@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeObjectCreateExpression : CodeExpression {
-        private CodeTypeReference createType;
-        private CodeExpressionCollection parameters = new CodeExpressionCollection();
+    public class CodeObjectCreateExpression : CodeExpression
+    {
+        private CodeTypeReference _createType;
+        private CodeExpressionCollection _parameters = new CodeExpressionCollection();
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new <see cref='Microsoft.CodeDom.CodeObjectCreateExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeObjectCreateExpression() {
+        public CodeObjectCreateExpression()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       parameters.
         ///    </para>
         /// </devdoc>
-        public CodeObjectCreateExpression(CodeTypeReference createType, params CodeExpression[] parameters) {
+        public CodeObjectCreateExpression(CodeTypeReference createType, params CodeExpression[] parameters)
+        {
             CreateType = createType;
             Parameters.AddRange(parameters);
         }
@@ -45,7 +48,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeObjectCreateExpression(string createType, params CodeExpression[] parameters) {
+        public CodeObjectCreateExpression(string createType, params CodeExpression[] parameters)
+        {
             CreateType = new CodeTypeReference(createType);
             Parameters.AddRange(parameters);
         }
@@ -53,7 +57,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeObjectCreateExpression(Type createType, params CodeExpression[] parameters) {
+        public CodeObjectCreateExpression(Type createType, params CodeExpression[] parameters)
+        {
             CreateType = new CodeTypeReference(createType);
             Parameters.AddRange(parameters);
         }
@@ -63,15 +68,19 @@ namespace Microsoft.CodeDom {
         ///       The type of the object to create.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference CreateType {
-            get {
-                if (createType == null) {
-                    createType = new CodeTypeReference("");
+        public CodeTypeReference CreateType
+        {
+            get
+            {
+                if (_createType == null)
+                {
+                    _createType = new CodeTypeReference("");
                 }
-                return createType;
+                return _createType;
             }
-            set {
-                createType = value;
+            set
+            {
+                _createType = value;
             }
         }
 
@@ -81,9 +90,11 @@ namespace Microsoft.CodeDom {
         ///       object.
         ///    </para>
         /// </devdoc>
-        public CodeExpressionCollection Parameters {
-            get {
-                return parameters;
+        public CodeExpressionCollection Parameters
+        {
+            get
+            {
+                return _parameters;
             }
         }
     }

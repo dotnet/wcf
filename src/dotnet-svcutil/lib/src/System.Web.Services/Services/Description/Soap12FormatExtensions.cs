@@ -13,7 +13,6 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPrefix("soap12", Soap12Binding.Namespace)]
     public sealed class Soap12Binding : SoapBinding
     {
-
         /// <include file='doc\Soap12FormatExtensions.uex' path='docs/doc[@for="Soap12Binding.Namespace"]/*' />
         public new const string Namespace = "http://schemas.xmlsoap.org/wsdl/soap12/";
         /// <include file='doc\Soap12FormatExtensions.uex' path='docs/doc[@for="Soap12Binding.HttpTransport"]/*' />
@@ -24,14 +23,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("operation", Soap12Binding.Namespace, typeof(OperationBinding))]
     public sealed class Soap12OperationBinding : SoapOperationBinding
     {
-        bool soapActionRequired;
+        private bool _soapActionRequired;
 
         /// <include file='doc\Soap12FormatExtensions.uex' path='docs/doc[@for="Soap12OperationBinding.SoapActionRequired"]/*' />
         [XmlAttribute("soapActionRequired"), DefaultValue(false)]
         public bool SoapActionRequired
         {
-            get { return soapActionRequired; }
-            set { soapActionRequired = value; }
+            get { return _soapActionRequired; }
+            set { _soapActionRequired = value; }
         }
     }
 

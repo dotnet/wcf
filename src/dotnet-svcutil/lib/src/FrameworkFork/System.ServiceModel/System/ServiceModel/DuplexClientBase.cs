@@ -8,7 +8,6 @@ namespace System.ServiceModel
     public abstract class DuplexClientBase<TChannel> : ClientBase<TChannel>
         where TChannel : class
     {
-
         protected DuplexClientBase(InstanceContext callbackInstance)
         {
             throw new PlatformNotSupportedException(SRServiceModel.ConfigurationFilesNotSupported);

@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -10,7 +11,8 @@ namespace MS.Internal.Xml.XPath {
     using Microsoft.Xml.Xsl;
     using System.Collections;
 
-    internal sealed class EmptyQuery : Query {
+    internal sealed class EmptyQuery : Query
+    {
         public override XPathNavigator Advance() { return null; }
         public override XPathNodeIterator Clone() { return this; }
         public override object Evaluate(XPathNodeIterator context) { return this; }

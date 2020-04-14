@@ -1,147 +1,190 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     using System.Text;
     using System.Diagnostics;
     using Microsoft.Xml.Schema;
 
-    internal class XmlName : IXmlSchemaInfo {
-        string prefix;
-        string localName;
-        string ns;
-        string name;
-        int hashCode;
+    internal class XmlName : IXmlSchemaInfo
+    {
+        private string _prefix;
+        private string _localName;
+        private string _ns;
+        private string _name;
+        private int _hashCode;
         internal XmlDocument ownerDoc;
         internal XmlName next;
 
-        public static XmlName Create(string prefix, string localName, string ns, int hashCode, XmlDocument ownerDoc, XmlName next, IXmlSchemaInfo schemaInfo) {
-            if (schemaInfo == null) {
+        public static XmlName Create(string prefix, string localName, string ns, int hashCode, XmlDocument ownerDoc, XmlName next, IXmlSchemaInfo schemaInfo)
+        {
+            if (schemaInfo == null)
+            {
                 return new XmlName(prefix, localName, ns, hashCode, ownerDoc, next);
             }
-            else {
+            else
+            {
                 return new XmlNameEx(prefix, localName, ns, hashCode, ownerDoc, next, schemaInfo);
             }
         }
 
-        internal XmlName(string prefix, string localName, string ns, int hashCode, XmlDocument ownerDoc, XmlName next) {
-            this.prefix = prefix;
-            this.localName = localName;
-            this.ns = ns;
-            this.name = null;
-            this.hashCode = hashCode;
+        internal XmlName(string prefix, string localName, string ns, int hashCode, XmlDocument ownerDoc, XmlName next)
+        {
+            _prefix = prefix;
+            _localName = localName;
+            _ns = ns;
+            _name = null;
+            _hashCode = hashCode;
             this.ownerDoc = ownerDoc;
             this.next = next;
         }
 
-        public string LocalName {
-            get { 
-                return localName;
+        public string LocalName
+        {
+            get
+            {
+                return _localName;
             }
         }
 
-        public string NamespaceURI {
-            get { 
-                return ns;
+        public string NamespaceURI
+        {
+            get
+            {
+                return _ns;
             }
         }
 
-        public string Prefix {
-            get { 
-                return prefix;
+        public string Prefix
+        {
+            get
+            {
+                return _prefix;
             }
         }
 
-        public int HashCode {
-            get { 
-                return hashCode;
+        public int HashCode
+        {
+            get
+            {
+                return _hashCode;
             }
         }
 
-        public XmlDocument OwnerDocument {
-            get { 
+        public XmlDocument OwnerDocument
+        {
+            get
+            {
                 return ownerDoc;
             }
         }
 
-        public string Name {
-            get {
-                if ( name == null ) {
-                    Debug.Assert( prefix != null );
-                    if ( prefix.Length > 0 ) {
-                        if ( localName.Length > 0 ) {
-                            string n = string.Concat( prefix, ":", localName );
-                            lock ( ownerDoc.NameTable ) {
-                                if ( name == null ) {
-                                    name = ownerDoc.NameTable.Add( n );
+        public string Name
+        {
+            get
+            {
+                if (_name == null)
+                {
+                    Debug.Assert(_prefix != null);
+                    if (_prefix.Length > 0)
+                    {
+                        if (_localName.Length > 0)
+                        {
+                            string n = string.Concat(_prefix, ":", _localName);
+                            lock (ownerDoc.NameTable)
+                            {
+                                if (_name == null)
+                                {
+                                    _name = ownerDoc.NameTable.Add(n);
                                 }
                             }
                         }
-                        else {
-                            name = prefix;
+                        else
+                        {
+                            _name = _prefix;
                         }
                     }
-                    else {
-                        name = localName;
+                    else
+                    {
+                        _name = _localName;
                     }
-                    Debug.Assert( Ref.Equal( name, ownerDoc.NameTable.Get( name ) ) );
+                    Debug.Assert(Ref.Equal(_name, ownerDoc.NameTable.Get(_name)));
                 }
-                return name;
+                return _name;
             }
         }
 
-        public virtual XmlSchemaValidity Validity { 
-            get { 
+        public virtual XmlSchemaValidity Validity
+        {
+            get
+            {
                 return XmlSchemaValidity.NotKnown;
-            } 
+            }
         }
 
-        public virtual bool IsDefault { 
-            get { 
-                return false; 
-            } 
-        }
-
-        public virtual bool IsNil { 
-            get { 
+        public virtual bool IsDefault
+        {
+            get
+            {
                 return false;
-            } 
-        }
-
-        public virtual XmlSchemaSimpleType MemberType {
-            get { 
-                return null; 
             }
         }
 
-        public virtual XmlSchemaType SchemaType {
-            get { 
-                return null; 
+        public virtual bool IsNil
+        {
+            get
+            {
+                return false;
             }
         }
 
-        public virtual XmlSchemaElement SchemaElement {
-            get { 
-                return null; 
+        public virtual XmlSchemaSimpleType MemberType
+        {
+            get
+            {
+                return null;
             }
         }
 
-        public virtual XmlSchemaAttribute SchemaAttribute {
-            get { 
-                return null; 
+        public virtual XmlSchemaType SchemaType
+        {
+            get
+            {
+                return null;
             }
         }
 
-        public virtual bool Equals(IXmlSchemaInfo schemaInfo) {
+        public virtual XmlSchemaElement SchemaElement
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public virtual XmlSchemaAttribute SchemaAttribute
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public virtual bool Equals(IXmlSchemaInfo schemaInfo)
+        {
             return schemaInfo == null;
         }
 
-        public static int GetHashCode(string name) {
+        public static int GetHashCode(string name)
+        {
             int hashCode = 0;
-            if (name != null) {
-                for (int i = name.Length - 1; i >= 0; i--) {
+            if (name != null)
+            {
+                for (int i = name.Length - 1; i >= 0; i--)
+                {
                     char ch = name[i];
                     if (ch == ':') break;
                     hashCode += (hashCode << 7) ^ ch;
@@ -154,96 +197,117 @@ namespace Microsoft.Xml {
         }
     }
 
-    internal sealed class XmlNameEx : XmlName {
-        byte flags;
-        XmlSchemaSimpleType memberType;
-        XmlSchemaType schemaType;
-        object decl;
+    internal sealed class XmlNameEx : XmlName
+    {
+        private byte _flags;
+        private XmlSchemaSimpleType _memberType;
+        private XmlSchemaType _schemaType;
+        private object _decl;
 
         // flags
         // 0,1  : Validity
         // 2    : IsDefault
         // 3    : IsNil
-        const byte ValidityMask = 0x03;
-        const byte IsDefaultBit = 0x04;
-        const byte IsNilBit     = 0x08;
+        private const byte ValidityMask = 0x03;
+        private const byte IsDefaultBit = 0x04;
+        private const byte IsNilBit = 0x08;
 
-        internal XmlNameEx(string prefix, string localName, string ns, int hashCode, XmlDocument ownerDoc, XmlName next, IXmlSchemaInfo schemaInfo) : base(prefix, localName, ns, hashCode, ownerDoc, next) {
+        internal XmlNameEx(string prefix, string localName, string ns, int hashCode, XmlDocument ownerDoc, XmlName next, IXmlSchemaInfo schemaInfo) : base(prefix, localName, ns, hashCode, ownerDoc, next)
+        {
             SetValidity(schemaInfo.Validity);
             SetIsDefault(schemaInfo.IsDefault);
             SetIsNil(schemaInfo.IsNil);
-            memberType = schemaInfo.MemberType;
-            schemaType = schemaInfo.SchemaType;
-            decl = schemaInfo.SchemaElement != null 
-                   ? (object)schemaInfo.SchemaElement 
-                   : (object)schemaInfo.SchemaAttribute; 
+            _memberType = schemaInfo.MemberType;
+            _schemaType = schemaInfo.SchemaType;
+            _decl = schemaInfo.SchemaElement != null
+                   ? (object)schemaInfo.SchemaElement
+                   : (object)schemaInfo.SchemaAttribute;
         }
 
-        public override XmlSchemaValidity Validity { 
-            get { 
-                return ownerDoc.CanReportValidity ? (XmlSchemaValidity)(flags & ValidityMask) : XmlSchemaValidity.NotKnown;
-            } 
-        }
-
-        public override bool IsDefault { 
-            get { 
-                return (flags & IsDefaultBit) != 0;
-            } 
-        }
-
-        public override bool IsNil { 
-            get { 
-                return (flags & IsNilBit) != 0;
-            } 
-        }
-
-        public override XmlSchemaSimpleType MemberType {
-            get { 
-                return memberType; 
+        public override XmlSchemaValidity Validity
+        {
+            get
+            {
+                return ownerDoc.CanReportValidity ? (XmlSchemaValidity)(_flags & ValidityMask) : XmlSchemaValidity.NotKnown;
             }
         }
 
-        public override XmlSchemaType SchemaType {
-            get { 
-                return schemaType; 
+        public override bool IsDefault
+        {
+            get
+            {
+                return (_flags & IsDefaultBit) != 0;
             }
         }
 
-        public override XmlSchemaElement SchemaElement {
-            get { 
-                return decl as XmlSchemaElement; 
+        public override bool IsNil
+        {
+            get
+            {
+                return (_flags & IsNilBit) != 0;
             }
         }
 
-        public override XmlSchemaAttribute SchemaAttribute {
-            get { 
-                return decl as XmlSchemaAttribute; 
+        public override XmlSchemaSimpleType MemberType
+        {
+            get
+            {
+                return _memberType;
             }
         }
 
-        public void SetValidity(XmlSchemaValidity value) {
-            flags = (byte)((flags & ~ValidityMask) | (byte)(value));
+        public override XmlSchemaType SchemaType
+        {
+            get
+            {
+                return _schemaType;
+            }
         }
 
-        public void SetIsDefault(bool value) {
-            if (value) flags = (byte)(flags | IsDefaultBit);
-            else flags = (byte)(flags & ~IsDefaultBit);
+        public override XmlSchemaElement SchemaElement
+        {
+            get
+            {
+                return _decl as XmlSchemaElement;
+            }
         }
 
-        public void SetIsNil(bool value) {
-            if (value) flags = (byte)(flags | IsNilBit);
-            else flags = (byte)(flags & ~IsNilBit);
+        public override XmlSchemaAttribute SchemaAttribute
+        {
+            get
+            {
+                return _decl as XmlSchemaAttribute;
+            }
         }
 
-        public override bool Equals(IXmlSchemaInfo schemaInfo) {
+        public void SetValidity(XmlSchemaValidity value)
+        {
+            _flags = (byte)((_flags & ~ValidityMask) | (byte)(value));
+        }
+
+        public void SetIsDefault(bool value)
+        {
+            if (value) _flags = (byte)(_flags | IsDefaultBit);
+            else _flags = (byte)(_flags & ~IsDefaultBit);
+        }
+
+        public void SetIsNil(bool value)
+        {
+            if (value) _flags = (byte)(_flags | IsNilBit);
+            else _flags = (byte)(_flags & ~IsNilBit);
+        }
+
+        public override bool Equals(IXmlSchemaInfo schemaInfo)
+        {
             if (schemaInfo != null
-                && schemaInfo.Validity == (XmlSchemaValidity)(flags & ValidityMask)
-                && schemaInfo.IsDefault == ((flags & IsDefaultBit) != 0) 
-                && schemaInfo.IsNil == ((flags & IsNilBit) != 0) 
-                && (object)schemaInfo.MemberType == (object)memberType 
-                && (object)schemaInfo.SchemaType == (object)schemaType
-                && (object)schemaInfo.SchemaElement == (object)(decl as XmlSchemaElement) 
-                && (object)schemaInfo.SchemaAttribute == (object)(decl as XmlSchemaAttribute)) {
+                && schemaInfo.Validity == (XmlSchemaValidity)(_flags & ValidityMask)
+                && schemaInfo.IsDefault == ((_flags & IsDefaultBit) != 0)
+                && schemaInfo.IsNil == ((_flags & IsNilBit) != 0)
+                && (object)schemaInfo.MemberType == (object)_memberType
+                && (object)schemaInfo.SchemaType == (object)_schemaType
+                && (object)schemaInfo.SchemaElement == (object)(_decl as XmlSchemaElement)
+                && (object)schemaInfo.SchemaAttribute == (object)(_decl as XmlSchemaAttribute))
+            {
                 return true;
             }
             return false;

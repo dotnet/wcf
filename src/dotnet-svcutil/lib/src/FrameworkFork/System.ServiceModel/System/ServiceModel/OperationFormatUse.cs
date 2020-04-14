@@ -9,7 +9,7 @@ namespace System.ServiceModel
         Encoded,
     }
 
-    static class OperationFormatUseHelper
+    internal static class OperationFormatUseHelper
     {
         static public bool IsDefined(OperationFormatUse x)
         {

@@ -6,9 +6,8 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Dispatcher
 {
-    class PerSessionInstanceContextProvider : InstanceContextProviderBase
+    internal class PerSessionInstanceContextProvider : InstanceContextProviderBase
     {
-
         internal PerSessionInstanceContextProvider(DispatchRuntime dispatchRuntime)
             : base(dispatchRuntime)
         {

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using System;
@@ -19,17 +20,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private const string eventNamePrefix = "VS/dotnetSvcutil/";
         private const string testModeVariable = "DOTNET_SVCUTIL_TEST_MODE";
 
-        private static bool? _isUserOptedIn = null;
+        private static bool? s_isUserOptedIn = null;
         public static bool IsUserOptedIn
         {
             get
             {
-                if (!_isUserOptedIn.HasValue)
+                if (!s_isUserOptedIn.HasValue)
                 {
                     string optOut = Environment.GetEnvironmentVariable(OptOutVariable);
                     if (string.IsNullOrEmpty(optOut))
                     {
-                        _isUserOptedIn = true;
+                        s_isUserOptedIn = true;
                     }
                     else
                     {
@@ -39,38 +40,38 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             case "true":
                             case "1":
                             case "yes":
-                                _isUserOptedIn = false;
+                                s_isUserOptedIn = false;
                                 break;
                             case "false":
                             case "0":
                             case "no":
                             default:
-                                _isUserOptedIn = true;
+                                s_isUserOptedIn = true;
                                 break;
                         }
                     }
                 }
 
-                return _isUserOptedIn.Value;
+                return s_isUserOptedIn.Value;
             }
             set
             {
-                _isUserOptedIn = value;
+                s_isUserOptedIn = value;
             }
         }
 
-        private static readonly object _lockObj = new object();
-        private static AppInsightsTelemetryClient _instance = null;
+        private static readonly object s_lockObj = new object();
+        private static AppInsightsTelemetryClient s_instance = null;
         private TelemetryClient _telemetryClient = null;
 
         private AppInsightsTelemetryClient(TelemetryClient telemetryClient)
         {
-            this._telemetryClient = telemetryClient;
+            _telemetryClient = telemetryClient;
         }
 
         public static async Task<AppInsightsTelemetryClient> GetInstanceAsync(CancellationToken cancellationToken)
         {
-            if (_instance == null)
+            if (s_instance == null)
             {
                 try
                 {
@@ -79,9 +80,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         testMode = false;
                     }
 
-                    lock (_lockObj)
+                    lock (s_lockObj)
                     {
-                        if (_instance == null)
+                        if (s_instance == null)
                         {
                             if (!IsUserOptedIn)
                             {
@@ -101,11 +102,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                             config.TelemetryChannel.DeveloperMode = testMode;
 
-                            _instance = new AppInsightsTelemetryClient(new TelemetryClient(config));
+                            s_instance = new AppInsightsTelemetryClient(new TelemetryClient(config));
                         }
                     }
 
-                    var telemetryClient = _instance._telemetryClient;
+                    var telemetryClient = s_instance._telemetryClient;
                     telemetryClient.InstrumentationKey = instrumentationKey;
 
                     // Populate context with properties that are common and should be logged for all events.
@@ -130,11 +131,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 #if DEBUG
                     ToolConsole.WriteWarning(ex.Message);
 #endif
-                    _isUserOptedIn = false;
+                    s_isUserOptedIn = false;
                 }
             }
 
-            return _instance;
+            return s_instance;
         }
 
         // This is copied from the 32 bit implementation from String.GetHashCode.
@@ -147,7 +148,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     int hash1 = (5381 << 16) + 5381;
                     int hash2 = hash1;
-                    
+
                     int* pint = (int*)src;
                     int len = str.Length;
                     while (len > 2)
@@ -187,13 +188,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return "Unknown";
             }
         }
-        
+
         public void TrackEvent(string eventName)
         {
             if (IsUserOptedIn)
             {
-                this._telemetryClient.TrackEvent(eventNamePrefix + eventName);
-                this._telemetryClient.Flush();
+                _telemetryClient.TrackEvent(eventNamePrefix + eventName);
+                _telemetryClient.Flush();
             }
         }
 
@@ -201,8 +202,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             if (IsUserOptedIn)
             {
-                this._telemetryClient.TrackEvent(eventNamePrefix + eventName, properties);
-                this._telemetryClient.Flush();
+                _telemetryClient.TrackEvent(eventNamePrefix + eventName, properties);
+                _telemetryClient.Flush();
             }
         }
 
@@ -218,8 +219,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 var properties = new Dictionary<string, string>();
                 properties.Add("ExceptionString", exceptionString);
 
-                this._telemetryClient.TrackEvent(eventNamePrefix + eventName, properties);
-                this._telemetryClient.Flush();
+                _telemetryClient.TrackEvent(eventNamePrefix + eventName, properties);
+                _telemetryClient.Flush();
             }
         }
     }

@@ -44,7 +44,7 @@ namespace System.IdentityModel.Tokens
             return null;
         }
 
-        bool CanCreateLocalKeyIdentifierClause()
+        private bool CanCreateLocalKeyIdentifierClause()
         {
             return (this.Id != null);
         }

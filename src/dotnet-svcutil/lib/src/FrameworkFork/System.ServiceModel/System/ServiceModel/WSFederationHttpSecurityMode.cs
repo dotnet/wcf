@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     public enum WSFederationHttpSecurityMode
@@ -9,7 +10,7 @@ namespace System.ServiceModel
         TransportWithMessageCredential
     }
 
-    static class WSFederationHttpSecurityModeHelper
+    internal static class WSFederationHttpSecurityModeHelper
     {
         internal static bool IsDefined(WSFederationHttpSecurityMode value)
         {

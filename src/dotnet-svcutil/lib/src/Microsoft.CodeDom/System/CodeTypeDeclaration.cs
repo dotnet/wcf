@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -17,28 +17,27 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeTypeDeclaration : CodeTypeMember {
+    public class CodeTypeDeclaration : CodeTypeMember
+    {
+        private TypeAttributes _attributes = TypeAttributes.Public | TypeAttributes.Class;
+        private CodeTypeReferenceCollection _baseTypes = new CodeTypeReferenceCollection();
+        private CodeTypeMemberCollection _members = new CodeTypeMemberCollection();
 
-
-        private TypeAttributes attributes = TypeAttributes.Public | TypeAttributes.Class;
-        private CodeTypeReferenceCollection baseTypes = new CodeTypeReferenceCollection();
-        private CodeTypeMemberCollection members = new CodeTypeMemberCollection();
-                
-        private bool isEnum;    
-        private bool isStruct;
-        private int  populated = 0x0;
+        private bool _isEnum;
+        private bool _isStruct;
+        private int _populated = 0x0;
         private const int BaseTypesCollection = 0x1;
         private const int MembersCollection = 0x2;
 
         // Need to be made optionally serializable
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeTypeParameterCollection typeParameters;
+        private CodeTypeParameterCollection _typeParameters;
         // [OptionalField]  // Not available in DNX (NetCore)
-        private bool isPartial = false;
+        private bool _isPartial = false;
 
 
         /// <devdoc>
@@ -47,7 +46,7 @@ namespace Microsoft.CodeDom {
         ///    </para>
         /// </devdoc>
         public event EventHandler PopulateBaseTypes;
-        
+
         /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the Members Collection is accessed.  
@@ -61,7 +60,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTypeDeclaration'/>.
         ///    </para>
         /// </devdoc>
-        public CodeTypeDeclaration() {
+        public CodeTypeDeclaration()
+        {
         }
 
         /// <devdoc>
@@ -69,7 +69,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTypeDeclaration'/> with the specified name.
         ///    </para>
         /// </devdoc>
-        public CodeTypeDeclaration(string name) {
+        public CodeTypeDeclaration(string name)
+        {
             Name = name;
         }
 
@@ -78,12 +79,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the attributes of the class.
         ///    </para>
         /// </devdoc>
-        public TypeAttributes TypeAttributes {
-            get {
-                return attributes;
+        public TypeAttributes TypeAttributes
+        {
+            get
+            {
+                return _attributes;
             }
-            set {
-                attributes = value;
+            set
+            {
+                _attributes = value;
             }
         }
 
@@ -93,13 +97,16 @@ namespace Microsoft.CodeDom {
         ///       the base types of the class.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReferenceCollection BaseTypes {
-            get {
-                if (0 == (populated & BaseTypesCollection)) {
-                    populated |= BaseTypesCollection;
+        public CodeTypeReferenceCollection BaseTypes
+        {
+            get
+            {
+                if (0 == (_populated & BaseTypesCollection))
+                {
+                    _populated |= BaseTypesCollection;
                     if (PopulateBaseTypes != null) PopulateBaseTypes(this, EventArgs.Empty);
                 }
-                return baseTypes;
+                return _baseTypes;
             }
         }
 
@@ -109,16 +116,20 @@ namespace Microsoft.CodeDom {
         ///       indicating whether the class is a class.
         ///    </para>
         /// </devdoc>
-        public bool IsClass {
-            get {
-                return(attributes & TypeAttributes.ClassSemanticsMask) == TypeAttributes.Class && !isEnum && !isStruct;
+        public bool IsClass
+        {
+            get
+            {
+                return (_attributes & TypeAttributes.ClassSemanticsMask) == TypeAttributes.Class && !_isEnum && !_isStruct;
             }
-            set {                  
-                if (value) {
-                    attributes &= ~TypeAttributes.ClassSemanticsMask;
-                    attributes |= TypeAttributes.Class;
-                    isStruct = false;
-                    isEnum = false;                       
+            set
+            {
+                if (value)
+                {
+                    _attributes &= ~TypeAttributes.ClassSemanticsMask;
+                    _attributes |= TypeAttributes.Class;
+                    _isStruct = false;
+                    _isEnum = false;
                 }
             }
         }
@@ -129,18 +140,23 @@ namespace Microsoft.CodeDom {
         ///       indicating whether the class is a struct.
         ///    </para>
         /// </devdoc>
-        public bool IsStruct {
-            get {
-                return isStruct;
+        public bool IsStruct
+        {
+            get
+            {
+                return _isStruct;
             }
-            set {        
-                if (value) {
-                    attributes &= ~TypeAttributes.ClassSemanticsMask;
-                    isStruct = true;
-                    isEnum = false;                       
-                }                          
-                else {
-                    isStruct = false;
+            set
+            {
+                if (value)
+                {
+                    _attributes &= ~TypeAttributes.ClassSemanticsMask;
+                    _isStruct = true;
+                    _isEnum = false;
+                }
+                else
+                {
+                    _isStruct = false;
                 }
             }
         }
@@ -151,18 +167,23 @@ namespace Microsoft.CodeDom {
         ///       indicating whether the class is an enumeration.
         ///    </para>
         /// </devdoc>
-        public bool IsEnum {
-            get {
-                return isEnum;
+        public bool IsEnum
+        {
+            get
+            {
+                return _isEnum;
             }
-            set {
-                if (value) {
-                    attributes &= ~TypeAttributes.ClassSemanticsMask;
-                    isStruct = false;
-                    isEnum = true;                       
-                }  
-                else {
-                    isEnum = false;
+            set
+            {
+                if (value)
+                {
+                    _attributes &= ~TypeAttributes.ClassSemanticsMask;
+                    _isStruct = false;
+                    _isEnum = true;
+                }
+                else
+                {
+                    _isEnum = false;
                 }
             }
         }
@@ -173,30 +194,38 @@ namespace Microsoft.CodeDom {
         ///       indicating whether the class is an interface.
         ///    </para>
         /// </devdoc>
-        public bool IsInterface {
-            get {
-                return(attributes & TypeAttributes.ClassSemanticsMask) == TypeAttributes.Interface;
+        public bool IsInterface
+        {
+            get
+            {
+                return (_attributes & TypeAttributes.ClassSemanticsMask) == TypeAttributes.Interface;
             }
-            set {
-                if (value) {
-                    attributes &= ~TypeAttributes.ClassSemanticsMask;
-                    attributes |= TypeAttributes.Interface;
-                    isStruct = false;
-                    isEnum = false;                       
+            set
+            {
+                if (value)
+                {
+                    _attributes &= ~TypeAttributes.ClassSemanticsMask;
+                    _attributes |= TypeAttributes.Interface;
+                    _isStruct = false;
+                    _isEnum = false;
                 }
-                else {
-                    attributes &= ~TypeAttributes.Interface;
+                else
+                {
+                    _attributes &= ~TypeAttributes.Interface;
                 }
             }
         }
 
-        public bool IsPartial {
-            get {
-                return isPartial;
+        public bool IsPartial
+        {
+            get
+            {
+                return _isPartial;
             }
-            set {
-                isPartial = value;
-                }
+            set
+            {
+                _isPartial = value;
+            }
         }
 
         /// <devdoc>
@@ -204,23 +233,29 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the class member collection members.
         ///    </para>
         /// </devdoc>
-        public CodeTypeMemberCollection Members {
-            get {
-                if (0 == (populated & MembersCollection)) {
-                    populated |= MembersCollection;
+        public CodeTypeMemberCollection Members
+        {
+            get
+            {
+                if (0 == (_populated & MembersCollection))
+                {
+                    _populated |= MembersCollection;
                     if (PopulateMembers != null) PopulateMembers(this, EventArgs.Empty);
                 }
-                return members;
+                return _members;
             }
         }
 
         [System.Runtime.InteropServices.ComVisible(false)]
-        public CodeTypeParameterCollection TypeParameters {  
-            get {
-                if( typeParameters == null) {
-                    typeParameters = new CodeTypeParameterCollection();
+        public CodeTypeParameterCollection TypeParameters
+        {
+            get
+            {
+                if (_typeParameters == null)
+                {
+                    _typeParameters = new CodeTypeParameterCollection();
                 }
-                return typeParameters;
+                return _typeParameters;
             }
         }
     }

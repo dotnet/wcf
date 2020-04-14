@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
-    
+namespace Microsoft.CodeDom.Compiler
+{
     using System;
     using System.ComponentModel;
 
@@ -11,9 +11,10 @@ namespace Microsoft.CodeDom.Compiler {
     /// </devdoc>
     [
         Flags,
-        // Serializable,
+    // Serializable,
     ]
-    public enum GeneratorSupport {
+    public enum GeneratorSupport
+    {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
@@ -116,7 +117,7 @@ namespace Microsoft.CodeDom.Compiler {
         ///    <para>Supports partial classes.</para>
         /// </devdoc>
         PartialTypes = 0x00400000,
-        GenericTypeReference   = 0x00800000,  
+        GenericTypeReference = 0x00800000,
         GenericTypeDeclaration = 0x01000000,
         DeclareIndexerProperties = 0x02000000,
     }

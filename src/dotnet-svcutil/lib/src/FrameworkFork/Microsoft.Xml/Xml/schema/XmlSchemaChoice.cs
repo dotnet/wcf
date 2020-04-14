@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -13,8 +14,9 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaChoice : XmlSchemaGroupBase {
-        XmlSchemaObjectCollection items = new XmlSchemaObjectCollection();
+    public class XmlSchemaChoice : XmlSchemaGroupBase
+    {
+        private XmlSchemaObjectCollection _items = new XmlSchemaObjectCollection();
 
         /// <include file='doc\XmlSchemaChoice.uex' path='docs/doc[@for="XmlSchemaChoice.Items"]/*' />
         /// <devdoc>
@@ -25,16 +27,19 @@ namespace Microsoft.Xml.Schema {
          XmlElement("choice", typeof(XmlSchemaChoice)),
          XmlElement("sequence", typeof(XmlSchemaSequence)),
          XmlElement("any", typeof(XmlSchemaAny))]
-        public override XmlSchemaObjectCollection Items {
-            get { return items; }
+        public override XmlSchemaObjectCollection Items
+        {
+            get { return _items; }
         }
 
-        internal override bool IsEmpty {
-            get { return  base.IsEmpty /*|| items.Count == 0*/; }
+        internal override bool IsEmpty
+        {
+            get { return base.IsEmpty /*|| items.Count == 0*/; }
         }
-        
-        internal override void SetItems(XmlSchemaObjectCollection newItems) {
-            items = newItems;
+
+        internal override void SetItems(XmlSchemaObjectCollection newItems)
+        {
+            _items = newItems;
         }
     }
 }

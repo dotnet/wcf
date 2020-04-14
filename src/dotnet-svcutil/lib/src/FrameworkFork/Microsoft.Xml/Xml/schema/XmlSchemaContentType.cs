@@ -2,12 +2,14 @@
 // Licensed under the MIT license.
 
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
     /// <include file='doc\XmlSchemaContentType.uex' path='docs/doc[@for="XmlSchemaContentType"]/*' />
-    public enum XmlSchemaContentType {
+    public enum XmlSchemaContentType
+    {
         /// <include file='doc\XmlSchemaContentType.uex' path='docs/doc[@for="XmlSchemaContentType.TextOnly"]/*' />
         TextOnly,
         /// <include file='doc\XmlSchemaContentType.uex' path='docs/doc[@for="XmlSchemaContentType.Empty"]/*' />
@@ -17,5 +19,4 @@ namespace Microsoft.Xml.Schema {
         /// <include file='doc\XmlSchemaContentType.uex' path='docs/doc[@for="XmlSchemaContentType.Mixed"]/*' />
         Mixed
     };
-
 }

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-    
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using System.Collections;
     using System.IO;
@@ -19,44 +19,45 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class SoapCodeExporter : CodeExporter {
-
+    public class SoapCodeExporter : CodeExporter
+    {
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="SoapCodeExporter.SoapCodeExporter"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapCodeExporter(CodeNamespace codeNamespace) : base(codeNamespace, null, null, CodeGenerationOptions.GenerateProperties, null) {}
+        public SoapCodeExporter(CodeNamespace codeNamespace) : base(codeNamespace, null, null, CodeGenerationOptions.GenerateProperties, null) { }
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="SoapCodeExporter.SoapCodeExporter1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit) : base(codeNamespace, codeCompileUnit, null, CodeGenerationOptions.GenerateProperties, null) {}
+        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit) : base(codeNamespace, codeCompileUnit, null, CodeGenerationOptions.GenerateProperties, null) { }
 
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="SoapCodeExporter.SoapCodeExporter2"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit, CodeGenerationOptions options) : base(codeNamespace, codeCompileUnit, null, CodeGenerationOptions.GenerateProperties, null) {}
+        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit, CodeGenerationOptions options) : base(codeNamespace, codeCompileUnit, null, CodeGenerationOptions.GenerateProperties, null) { }
 
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="XmlCodeExporter.SoapCodeExporter3"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit, CodeGenerationOptions options, Hashtable mappings) 
-            : base(codeNamespace, codeCompileUnit, null, options, mappings) {}
+        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit, CodeGenerationOptions options, Hashtable mappings)
+            : base(codeNamespace, codeCompileUnit, null, options, mappings) { }
 
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="XmlCodeExporter.SoapCodeExporter4"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit, CodeDomProvider codeProvider, CodeGenerationOptions options, Hashtable mappings) 
-            : base(codeNamespace, codeCompileUnit, codeProvider, options, mappings) {}
+        public SoapCodeExporter(CodeNamespace codeNamespace, CodeCompileUnit codeCompileUnit, CodeDomProvider codeProvider, CodeGenerationOptions options, Hashtable mappings)
+            : base(codeNamespace, codeCompileUnit, codeProvider, options, mappings) { }
 
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="SoapCodeExporter.ExportTypeMapping"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void ExportTypeMapping(XmlTypeMapping xmlTypeMapping) {
+        public void ExportTypeMapping(XmlTypeMapping xmlTypeMapping)
+        {
             xmlTypeMapping.CheckShallow();
             CheckScope(xmlTypeMapping.Scope);
             ExportElement(xmlTypeMapping.Accessor);
@@ -66,38 +67,48 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void ExportMembersMapping(XmlMembersMapping xmlMembersMapping) {
+        public void ExportMembersMapping(XmlMembersMapping xmlMembersMapping)
+        {
             xmlMembersMapping.CheckShallow();
             CheckScope(xmlMembersMapping.Scope);
-            for (int i = 0; i < xmlMembersMapping.Count; i++) {
+            for (int i = 0; i < xmlMembersMapping.Count; i++)
+            {
                 ExportElement((ElementAccessor)xmlMembersMapping[i].Accessor);
             }
         }
 
-        void ExportElement(ElementAccessor element) {
+        private void ExportElement(ElementAccessor element)
+        {
             ExportType(element.Mapping);
         }
 
-        void ExportType(TypeMapping mapping) {
+        private void ExportType(TypeMapping mapping)
+        {
             if (mapping.IsReference)
                 return;
-            if (ExportedMappings[mapping] == null) {
+            if (ExportedMappings[mapping] == null)
+            {
                 CodeTypeDeclaration codeClass = null;
                 ExportedMappings.Add(mapping, mapping);
-                if (mapping is EnumMapping) {
+                if (mapping is EnumMapping)
+                {
                     codeClass = ExportEnum((EnumMapping)mapping, typeof(SoapEnumAttribute));
                 }
-                else if (mapping is StructMapping) {
+                else if (mapping is StructMapping)
+                {
                     codeClass = ExportStruct((StructMapping)mapping);
                 }
-                else if (mapping is ArrayMapping) {
+                else if (mapping is ArrayMapping)
+                {
                     EnsureTypesExported(((ArrayMapping)mapping).Elements, null);
                 }
-                if (codeClass != null) {
+                if (codeClass != null)
+                {
                     // Add [GeneratedCodeAttribute(Tool=.., Version=..)]
                     codeClass.CustomAttributes.Add(GeneratedCodeAttribute);
 
-                    if (!codeClass.IsEnum) {
+                    if (!codeClass.IsEnum)
+                    {
                         // Add [DebuggerStepThrough]
                         codeClass.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(DebuggerStepThroughAttribute).FullName));
                     }
@@ -107,8 +118,10 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        CodeTypeDeclaration ExportStruct(StructMapping mapping) {
-            if (mapping.TypeDesc.IsRoot) {
+        private CodeTypeDeclaration ExportStruct(StructMapping mapping)
+        {
+            if (mapping.TypeDesc.IsRoot)
+            {
                 ExportRoot(mapping, typeof(SoapIncludeAttribute));
                 return null;
             }
@@ -124,10 +137,11 @@ namespace Microsoft.Xml.Serialization {
 
             CodeNamespace.Types.Add(codeClass);
 
-            if (baseName != null && baseName.Length > 0) {
+            if (baseName != null && baseName.Length > 0)
+            {
                 codeClass.BaseTypes.Add(baseName);
             }
-            else 
+            else
                 AddPropertyChangedNotifier(codeClass);
 
             codeClass.TypeAttributes |= TypeAttributes.Public;
@@ -136,17 +150,22 @@ namespace Microsoft.Xml.Serialization {
 
             CodeExporter.AddIncludeMetadata(codeClass.CustomAttributes, mapping, typeof(SoapIncludeAttribute));
 
-            if (GenerateProperties) {
-                for (int i = 0; i < mapping.Members.Length; i++) {
+            if (GenerateProperties)
+            {
+                for (int i = 0; i < mapping.Members.Length; i++)
+                {
                     ExportProperty(codeClass, mapping.Members[i], mapping.Scope);
                 }
             }
-            else {
-                for (int i = 0; i < mapping.Members.Length; i++) {
+            else
+            {
+                for (int i = 0; i < mapping.Members.Length; i++)
+                {
                     ExportMember(codeClass, mapping.Members[i]);
                 }
             }
-            for (int i = 0; i < mapping.Members.Length; i++) {
+            for (int i = 0; i < mapping.Members.Length; i++)
+            {
                 EnsureTypesExported(mapping.Members[i].Elements, null);
             }
 
@@ -159,7 +178,8 @@ namespace Microsoft.Xml.Serialization {
         }
 
         // [PermissionSet(SecurityAction.InheritanceDemand, Name="FullTrust")]
-        internal override void ExportDerivedStructs(StructMapping mapping) {
+        internal override void ExportDerivedStructs(StructMapping mapping)
+        {
             for (StructMapping derived = mapping.DerivedMappings; derived != null; derived = derived.NextDerivedMapping)
                 ExportType(derived);
         }
@@ -168,45 +188,54 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void AddMappingMetadata(CodeAttributeDeclarationCollection metadata, XmlMemberMapping member, bool forceUseMemberName) {
+        public void AddMappingMetadata(CodeAttributeDeclarationCollection metadata, XmlMemberMapping member, bool forceUseMemberName)
+        {
             AddMemberMetadata(metadata, member.Mapping, forceUseMemberName);
-        }         
-         
+        }
+
         /// <include file='doc\SoapCodeExporter.uex' path='docs/doc[@for="SoapCodeExporter.AddMappingMetadata1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void AddMappingMetadata(CodeAttributeDeclarationCollection metadata, XmlMemberMapping member) {
+        public void AddMappingMetadata(CodeAttributeDeclarationCollection metadata, XmlMemberMapping member)
+        {
             AddMemberMetadata(metadata, member.Mapping, false);
         }
 
-        void AddElementMetadata(CodeAttributeDeclarationCollection metadata, string elementName, TypeDesc typeDesc, bool isNullable) {
+        private void AddElementMetadata(CodeAttributeDeclarationCollection metadata, string elementName, TypeDesc typeDesc, bool isNullable)
+        {
             CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SoapElementAttribute).FullName);
-            if (elementName != null) {
+            if (elementName != null)
+            {
                 attribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(elementName)));
             }
-            if (typeDesc != null && typeDesc.IsAmbiguousDataType) {
+            if (typeDesc != null && typeDesc.IsAmbiguousDataType)
+            {
                 attribute.Arguments.Add(new CodeAttributeArgument("DataType", new CodePrimitiveExpression(typeDesc.DataType.Name)));
             }
-            if (isNullable) {
+            if (isNullable)
+            {
                 attribute.Arguments.Add(new CodeAttributeArgument("IsNullable", new CodePrimitiveExpression(true)));
             }
             metadata.Add(attribute);
         }
 
-        void AddMemberMetadata(CodeAttributeDeclarationCollection metadata, MemberMapping member, bool forceUseMemberName) {
+        private void AddMemberMetadata(CodeAttributeDeclarationCollection metadata, MemberMapping member, bool forceUseMemberName)
+        {
             if (member.Elements.Length == 0) return;
             ElementAccessor element = member.Elements[0];
             TypeMapping mapping = (TypeMapping)element.Mapping;
             string elemName = Accessor.UnescapeName(element.Name);
             bool sameName = ((elemName == member.Name) && !forceUseMemberName);
 
-            if (!sameName || mapping.TypeDesc.IsAmbiguousDataType || element.IsNullable) {
+            if (!sameName || mapping.TypeDesc.IsAmbiguousDataType || element.IsNullable)
+            {
                 AddElementMetadata(metadata, sameName ? null : elemName, mapping.TypeDesc.IsAmbiguousDataType ? mapping.TypeDesc : null, element.IsNullable);
             }
         }
 
-        void ExportMember(CodeTypeDeclaration codeClass, MemberMapping member) {
+        private void ExportMember(CodeTypeDeclaration codeClass, MemberMapping member)
+        {
             string fieldType = member.GetTypeName(CodeProvider);
             CodeMemberField field = new CodeMemberField(fieldType, member.Name);
             field.Attributes = (field.Attributes & ~MemberAttributes.AccessMask) | MemberAttributes.Public;
@@ -214,7 +243,8 @@ namespace Microsoft.Xml.Serialization {
             codeClass.Members.Add(field);
             AddMemberMetadata(field.CustomAttributes, member, false);
 
-            if (member.CheckSpecified != SpecifiedAccessor.None) {
+            if (member.CheckSpecified != SpecifiedAccessor.None)
+            {
                 field = new CodeMemberField(typeof(bool).FullName, member.Name + "Specified");
                 field.Attributes = (field.Attributes & ~MemberAttributes.AccessMask) | MemberAttributes.Public;
                 field.Comments.Add(new CodeCommentStatement(ResXml.GetString(ResXml.XmlRemarks), true));
@@ -224,7 +254,8 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        void ExportProperty(CodeTypeDeclaration codeClass, MemberMapping member, CodeIdentifiers memberScope) {
+        private void ExportProperty(CodeTypeDeclaration codeClass, MemberMapping member, CodeIdentifiers memberScope)
+        {
             string fieldName = memberScope.AddUnique(CodeExporter.MakeFieldName(member.Name), member);
             string fieldType = member.GetTypeName(CodeProvider);
             // need to create a private field
@@ -237,11 +268,12 @@ namespace Microsoft.Xml.Serialization {
             AddMemberMetadata(prop.CustomAttributes, member, false);
             codeClass.Members.Add(prop);
 
-            if (member.CheckSpecified != SpecifiedAccessor.None) {
+            if (member.CheckSpecified != SpecifiedAccessor.None)
+            {
                 field = new CodeMemberField(typeof(bool).FullName, fieldName + "Specified");
                 field.Attributes = MemberAttributes.Private;
                 codeClass.Members.Add(field);
-                
+
                 prop = CreatePropertyDeclaration(field, member.Name + "Specified", typeof(bool).FullName);
                 prop.Comments.Add(new CodeCommentStatement(ResXml.GetString(ResXml.XmlRemarks), true));
                 CodeAttributeDeclaration attribute = new CodeAttributeDeclaration(typeof(SoapIgnoreAttribute).FullName);
@@ -250,7 +282,8 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        internal override void EnsureTypesExported(Accessor[] accessors, string ns) {
+        internal override void EnsureTypesExported(Accessor[] accessors, string ns)
+        {
             if (accessors == null) return;
             for (int i = 0; i < accessors.Length; i++)
                 ExportType(accessors[i].Mapping);

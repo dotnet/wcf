@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,20 +16,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeCastExpression : CodeExpression {
-        private CodeTypeReference targetType;
-        private CodeExpression expression;
+    public class CodeCastExpression : CodeExpression
+    {
+        private CodeTypeReference _targetType;
+        private CodeExpression _expression;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeCastExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeCastExpression() {
+        public CodeCastExpression()
+        {
         }
 
         /// <devdoc>
@@ -38,7 +40,8 @@ namespace Microsoft.CodeDom {
         ///       parameters.
         ///    </para>
         /// </devdoc>
-        public CodeCastExpression(CodeTypeReference targetType, CodeExpression expression) {
+        public CodeCastExpression(CodeTypeReference targetType, CodeExpression expression)
+        {
             TargetType = targetType;
             Expression = expression;
         }
@@ -46,7 +49,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeCastExpression(string targetType, CodeExpression expression) {
+        public CodeCastExpression(string targetType, CodeExpression expression)
+        {
             TargetType = new CodeTypeReference(targetType);
             Expression = expression;
         }
@@ -54,7 +58,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeCastExpression(Type targetType, CodeExpression expression) {
+        public CodeCastExpression(Type targetType, CodeExpression expression)
+        {
             TargetType = new CodeTypeReference(targetType);
             Expression = expression;
         }
@@ -64,15 +69,19 @@ namespace Microsoft.CodeDom {
         ///       The target type of the cast.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference TargetType {
-            get {
-                if (targetType == null) {
-                    targetType = new CodeTypeReference("");
+        public CodeTypeReference TargetType
+        {
+            get
+            {
+                if (_targetType == null)
+                {
+                    _targetType = new CodeTypeReference("");
                 }
-                return targetType;
+                return _targetType;
             }
-            set {
-                targetType = value;
+            set
+            {
+                _targetType = value;
             }
         }
 
@@ -81,12 +90,15 @@ namespace Microsoft.CodeDom {
         ///       The expression to cast.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Expression {
-            get {
-                return expression;
+        public CodeExpression Expression
+        {
+            get
+            {
+                return _expression;
             }
-            set {
-                expression = value;
+            set
+            {
+                _expression = value;
             }
         }
     }

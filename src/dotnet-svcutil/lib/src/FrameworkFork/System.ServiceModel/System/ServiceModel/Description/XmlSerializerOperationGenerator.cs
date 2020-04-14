@@ -15,26 +15,26 @@ using System.Reflection;
 
 namespace System.ServiceModel.Description
 {
-    class XmlSerializerOperationGenerator : IOperationBehavior, IOperationContractGenerationExtension
+    internal class XmlSerializerOperationGenerator : IOperationBehavior, IOperationContractGenerationExtension
     {
-        OperationGenerator operationGenerator;
-        Dictionary<MessagePartDescription, PartInfo> partInfoTable;
-        Dictionary<OperationDescription, XmlSerializerFormatAttribute> operationAttributes = new Dictionary<OperationDescription, XmlSerializerFormatAttribute>();
-        XmlCodeExporter xmlExporter;
-        SoapCodeExporter soapExporter;
+        private OperationGenerator _operationGenerator;
+        private Dictionary<MessagePartDescription, PartInfo> _partInfoTable;
+        private Dictionary<OperationDescription, XmlSerializerFormatAttribute> _operationAttributes = new Dictionary<OperationDescription, XmlSerializerFormatAttribute>();
+        private XmlCodeExporter _xmlExporter;
+        private SoapCodeExporter _soapExporter;
 
-        XmlSerializerImportOptions options;
-        CodeNamespace codeNamespace;
+        private XmlSerializerImportOptions _options;
+        private CodeNamespace _codeNamespace;
 
         internal XmlSerializerOperationGenerator(XmlSerializerImportOptions options)
         {
-            operationGenerator = new OperationGenerator();
-            this.options = options;
-            this.codeNamespace = GetTargetCodeNamespace(options);
-            partInfoTable = new Dictionary<MessagePartDescription, PartInfo>();
+            _operationGenerator = new OperationGenerator();
+            _options = options;
+            _codeNamespace = GetTargetCodeNamespace(options);
+            _partInfoTable = new Dictionary<MessagePartDescription, PartInfo>();
         }
 
-        static CodeNamespace GetTargetCodeNamespace(XmlSerializerImportOptions options)
+        private static CodeNamespace GetTargetCodeNamespace(XmlSerializerImportOptions options)
         {
             CodeNamespace targetCodeNamespace = null;
             string clrNamespace = options.ClrNamespace ?? string.Empty;
@@ -59,19 +59,19 @@ namespace System.ServiceModel.Description
             partInfo.MemberMapping = memberMapping;
             partInfo.MembersMapping = membersMapping;
             partInfo.IsEncoded = isEncoded;
-            partInfoTable[part] = partInfo;
+            _partInfoTable[part] = partInfo;
         }
 
         public XmlCodeExporter XmlExporter
         {
             get
             {
-                if (this.xmlExporter == null)
+                if (_xmlExporter == null)
                 {
-                    this.xmlExporter = new XmlCodeExporter(this.codeNamespace, this.options.CodeCompileUnit, this.options.CodeProvider,
-                        this.options.WebReferenceOptions.CodeGenerationOptions, null);
+                    _xmlExporter = new XmlCodeExporter(_codeNamespace, _options.CodeCompileUnit, _options.CodeProvider,
+                        _options.WebReferenceOptions.CodeGenerationOptions, null);
                 }
-                return xmlExporter;
+                return _xmlExporter;
             }
         }
 
@@ -79,23 +79,23 @@ namespace System.ServiceModel.Description
         {
             get
             {
-                if (this.soapExporter == null)
+                if (_soapExporter == null)
                 {
-                    this.soapExporter = new SoapCodeExporter(this.codeNamespace, this.options.CodeCompileUnit, this.options.CodeProvider,
-                        this.options.WebReferenceOptions.CodeGenerationOptions, null);
+                    _soapExporter = new SoapCodeExporter(_codeNamespace, _options.CodeCompileUnit, _options.CodeProvider,
+                        _options.WebReferenceOptions.CodeGenerationOptions, null);
                 }
-                return soapExporter;
+                return _soapExporter;
             }
         }
 
-        OperationGenerator OperationGenerator
+        private OperationGenerator OperationGenerator
         {
-            get { return this.operationGenerator; }
+            get { return _operationGenerator; }
         }
 
         internal Dictionary<OperationDescription, XmlSerializerFormatAttribute> OperationAttributes
         {
-            get { return operationAttributes; }
+            get { return _operationAttributes; }
         }
 
 
@@ -111,13 +111,13 @@ namespace System.ServiceModel.Description
 
         void IOperationBehavior.ApplyClientBehavior(OperationDescription description, ClientOperation proxy) { }
 
-        static object contractMarker = new object();
+        private static object s_contractMarker = new object();
         // Assumption: gets called exactly once per operation
         void IOperationContractGenerationExtension.GenerateOperation(OperationContractGenerationContext context)
         {
             if (context == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("context");
-            if (partInfoTable != null && partInfoTable.Count > 0)
+            if (_partInfoTable != null && _partInfoTable.Count > 0)
             {
                 Dictionary<XmlMembersMapping, XmlMembersMapping> alreadyExported = new Dictionary<XmlMembersMapping, XmlMembersMapping>();
                 foreach (MessageDescription message in context.Operation.Messages)
@@ -141,12 +141,12 @@ namespace System.ServiceModel.Description
 
             XmlSerializerFormatAttribute xmlSerializerFormatAttribute = (xmlSerializerOperationBehavior == null) ? new XmlSerializerFormatAttribute() : xmlSerializerOperationBehavior.XmlSerializerFormatAttribute;
             OperationFormatStyle style = xmlSerializerFormatAttribute.Style;
-            operationGenerator.GenerateOperation(context, ref style, xmlSerializerFormatAttribute.IsEncoded, new WrappedBodyTypeGenerator(context), new Dictionary<MessagePartDescription, ICollection<CodeTypeReference>>());
+            _operationGenerator.GenerateOperation(context, ref style, xmlSerializerFormatAttribute.IsEncoded, new WrappedBodyTypeGenerator(context), new Dictionary<MessagePartDescription, ICollection<CodeTypeReference>>());
             context.ServiceContractGenerator.AddReferencedAssembly(typeof(Microsoft.Xml.Serialization.XmlTypeAttribute).GetTypeInfo().Assembly);
             xmlSerializerFormatAttribute.Style = style;
             context.SyncMethod.CustomAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, xmlSerializerFormatAttribute));
             AddKnownTypes(context.SyncMethod.CustomAttributes, xmlSerializerFormatAttribute.IsEncoded ? SoapExporter.IncludeMetadata : XmlExporter.IncludeMetadata);
-            DataContractSerializerOperationGenerator.UpdateTargetCompileUnit(context, this.options.CodeCompileUnit);
+            DataContractSerializerOperationGenerator.UpdateTargetCompileUnit(context, _options.CodeCompileUnit);
         }
 
         private void AddKnownTypes(CodeAttributeDeclarationCollection destination, CodeAttributeDeclarationCollection source)
@@ -178,9 +178,9 @@ namespace System.ServiceModel.Description
 
         private void GeneratePartType(Dictionary<XmlMembersMapping, XmlMembersMapping> alreadyExported, MessagePartDescription part, string partNamespace)
         {
-            if (!partInfoTable.ContainsKey(part))
+            if (!_partInfoTable.ContainsKey(part))
                 return;
-            PartInfo partInfo = partInfoTable[part];
+            PartInfo partInfo = _partInfoTable[part];
             XmlMembersMapping membersMapping = partInfo.MembersMapping;
             XmlMemberMapping memberMapping = partInfo.MemberMapping;
             if (!alreadyExported.ContainsKey(membersMapping))
@@ -197,29 +197,29 @@ namespace System.ServiceModel.Description
             else
                 XmlExporter.AddMappingMetadata(additionalAttributes, memberMapping, partNamespace, false/*forceUseMemberName*/);
             part.BaseType = GetTypeName(memberMapping);
-            operationGenerator.ParameterTypes.Add(part, new CodeTypeReference(part.BaseType));
-            operationGenerator.ParameterAttributes.Add(part, additionalAttributes);
+            _operationGenerator.ParameterTypes.Add(part, new CodeTypeReference(part.BaseType));
+            _operationGenerator.ParameterAttributes.Add(part, additionalAttributes);
         }
 
         internal string GetTypeName(XmlMemberMapping member)
         {
-            string typeName = member.GenerateTypeName(options.CodeProvider);
+            string typeName = member.GenerateTypeName(_options.CodeProvider);
             // If it is an array type, get the array element type name instead
             string comparableTypeName = typeName.Replace("[]", null);
-            if (codeNamespace != null && !string.IsNullOrEmpty(codeNamespace.Name))
+            if (_codeNamespace != null && !string.IsNullOrEmpty(_codeNamespace.Name))
             {
-                foreach (CodeTypeDeclaration typeDecl in codeNamespace.Types)
+                foreach (CodeTypeDeclaration typeDecl in _codeNamespace.Types)
                 {
                     if (typeDecl.Name == comparableTypeName)
                     {
-                        typeName = codeNamespace.Name + "." + typeName;
+                        typeName = _codeNamespace.Name + "." + typeName;
                     }
                 }
             }
             return typeName;
         }
 
-        class PartInfo
+        private class PartInfo
         {
             internal XmlMemberMapping MemberMapping;
             internal XmlMembersMapping MembersMapping;
@@ -228,10 +228,10 @@ namespace System.ServiceModel.Description
 
         internal class WrappedBodyTypeGenerator : IWrappedBodyTypeGenerator
         {
-            OperationContractGenerationContext context;
+            private OperationContractGenerationContext _context;
             public WrappedBodyTypeGenerator(OperationContractGenerationContext context)
             {
-                this.context = context;
+                _context = context;
             }
             public void ValidateForParameterMode(OperationDescription operation)
             {
@@ -249,7 +249,7 @@ namespace System.ServiceModel.Description
                     return;
                 XmlTypeAttribute xmlType = new XmlTypeAttribute();
                 xmlType.Namespace = typeNS;
-                typeAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, xmlType));
+                typeAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(_context.Contract.ServiceContractGenerator, xmlType));
             }
         }
     }

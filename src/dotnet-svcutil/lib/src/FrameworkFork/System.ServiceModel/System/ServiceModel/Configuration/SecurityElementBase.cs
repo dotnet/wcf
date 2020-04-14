@@ -17,15 +17,15 @@ namespace System.ServiceModel.Configuration
     public partial class SecurityElementBase : BindingElementExtensionElement
     {
         // if you add another variable, make sure to adjust: CopyFrom and UnMerge methods.
-        SecurityBindingElement failedSecurityBindingElement = null;
-        bool willX509IssuerReferenceAssertionBeWritten;
-        SecurityKeyType templateKeyType = IssuedSecurityTokenParameters.defaultKeyType;
+        private SecurityBindingElement _failedSecurityBindingElement = null;
+        private bool _willX509IssuerReferenceAssertionBeWritten;
+        private SecurityKeyType _templateKeyType = IssuedSecurityTokenParameters.defaultKeyType;
 
         internal SecurityElementBase()
         {
         }
 
-        internal bool HasImportFailed { get { return this.failedSecurityBindingElement != null; } }
+        internal bool HasImportFailed { get { return _failedSecurityBindingElement != null; } }
 
         internal bool IsSecurityElementBootstrap { get; set; } // Used in serialization path to optimize Xml representation
 
@@ -38,7 +38,7 @@ namespace System.ServiceModel.Configuration
             throw new NotImplementedException();
         }
 
-        static bool AreTokenParametersMatching(SecurityTokenParameters p1, SecurityTokenParameters p2, bool skipRequireDerivedKeysComparison, bool exactMessageSecurityVersion)
+        private static bool AreTokenParametersMatching(SecurityTokenParameters p1, SecurityTokenParameters p2, bool skipRequireDerivedKeysComparison, bool exactMessageSecurityVersion)
         {
             if (p1 == null || p2 == null)
                 return false;
@@ -85,7 +85,7 @@ namespace System.ServiceModel.Configuration
             return true;
         }
 
-        static bool AreTokenParameterCollectionsMatching(Collection<SecurityTokenParameters> c1, Collection<SecurityTokenParameters> c2, bool exactMessageSecurityVersion)
+        private static bool AreTokenParameterCollectionsMatching(Collection<SecurityTokenParameters> c1, Collection<SecurityTokenParameters> c2, bool exactMessageSecurityVersion)
         {
             if (c1.Count != c2.Count)
                 return false;

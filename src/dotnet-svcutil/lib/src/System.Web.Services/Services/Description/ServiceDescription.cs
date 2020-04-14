@@ -35,30 +35,30 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public const string Namespace = "http://schemas.xmlsoap.org/wsdl/";
         internal const string Prefix = "wsdl";
-        Types types;
-        ImportCollection imports;
-        MessageCollection messages;
-        PortTypeCollection portTypes;
-        BindingCollection bindings;
-        ServiceCollection services;
-        string targetNamespace;
-        ServiceDescriptionFormatExtensionCollection extensions;
-        ServiceDescriptionCollection parent;
-        string appSettingUrlKey;
-        string appSettingBaseUrl;
-        string retrievalUrl;
-        static XmlSerializer serializer;
-        static XmlSerializerNamespaces namespaces;
-        const WsiProfiles SupportedClaims = WsiProfiles.BasicProfile1_1;
-        static XmlSchema schema = null;
-        static XmlSchema soapEncodingSchema = null;
-        StringCollection validationWarnings;
-        static StringCollection warnings = new StringCollection();
-        ServiceDescription next;
+        private Types _types;
+        private ImportCollection _imports;
+        private MessageCollection _messages;
+        private PortTypeCollection _portTypes;
+        private BindingCollection _bindings;
+        private ServiceCollection _services;
+        private string _targetNamespace;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
+        private ServiceDescriptionCollection _parent;
+        private string _appSettingUrlKey;
+        private string _appSettingBaseUrl;
+        private string _retrievalUrl;
+        private static XmlSerializer s_serializer;
+        private static XmlSerializerNamespaces s_namespaces;
+        private const WsiProfiles SupportedClaims = WsiProfiles.BasicProfile1_1;
+        private static XmlSchema s_schema = null;
+        private static XmlSchema s_soapEncodingSchema = null;
+        private StringCollection _validationWarnings;
+        private static StringCollection s_warnings = new StringCollection();
+        private ServiceDescription _next;
 
         private static void InstanceValidation(object sender, ValidationEventArgs args)
         {
-            warnings.Add(ResWebServices.GetString(ResWebServices.WsdlInstanceValidationDetails, args.Message, args.Exception.LineNumber.ToString(CultureInfo.InvariantCulture), args.Exception.LinePosition.ToString(CultureInfo.InvariantCulture)));
+            s_warnings.Add(ResWebServices.GetString(ResWebServices.WsdlInstanceValidationDetails, args.Message, args.Exception.LineNumber.ToString(CultureInfo.InvariantCulture), args.Exception.LinePosition.ToString(CultureInfo.InvariantCulture)));
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.RetrievalUrl"]/*' />
@@ -68,13 +68,13 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public string RetrievalUrl
         {
-            get { return retrievalUrl == null ? string.Empty : retrievalUrl; }
-            set { retrievalUrl = value; }
+            get { return _retrievalUrl == null ? string.Empty : _retrievalUrl; }
+            set { _retrievalUrl = value; }
         }
 
         internal void SetParent(ServiceDescriptionCollection parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.ServiceDescriptions"]/*' />
@@ -84,7 +84,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public ServiceDescriptionCollection ServiceDescriptions
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
@@ -94,7 +94,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Imports"]/*' />
@@ -104,7 +104,7 @@ namespace System.Web.Services.Description
         [XmlElement("import")]
         public ImportCollection Imports
         {
-            get { if (imports == null) imports = new ImportCollection(this); return imports; }
+            get { if (_imports == null) _imports = new ImportCollection(this); return _imports; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Types"]/*' />
@@ -114,8 +114,8 @@ namespace System.Web.Services.Description
         [XmlElement("types")]
         public Types Types
         {
-            get { if (types == null) types = new Types(); return types; }
-            set { types = value; }
+            get { if (_types == null) _types = new Types(); return _types; }
+            set { _types = value; }
         }
 
         private bool ShouldSerializeTypes() { return Types.HasItems(); }
@@ -127,7 +127,7 @@ namespace System.Web.Services.Description
         [XmlElement("message")]
         public MessageCollection Messages
         {
-            get { if (messages == null) messages = new MessageCollection(this); return messages; }
+            get { if (_messages == null) _messages = new MessageCollection(this); return _messages; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.PortTypes"]/*' />
@@ -137,7 +137,7 @@ namespace System.Web.Services.Description
         [XmlElement("portType")]
         public PortTypeCollection PortTypes
         {
-            get { if (portTypes == null) portTypes = new PortTypeCollection(this); return portTypes; }
+            get { if (_portTypes == null) _portTypes = new PortTypeCollection(this); return _portTypes; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Bindings"]/*' />
@@ -147,7 +147,7 @@ namespace System.Web.Services.Description
         [XmlElement("binding")]
         public BindingCollection Bindings
         {
-            get { if (bindings == null) bindings = new BindingCollection(this); return bindings; }
+            get { if (_bindings == null) _bindings = new BindingCollection(this); return _bindings; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Services"]/*' />
@@ -157,7 +157,7 @@ namespace System.Web.Services.Description
         [XmlElement("service")]
         public ServiceCollection Services
         {
-            get { if (services == null) services = new ServiceCollection(this); return services; }
+            get { if (_services == null) _services = new ServiceCollection(this); return _services; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.TargetNamespace"]/*' />
@@ -167,8 +167,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("targetNamespace")]
         public string TargetNamespace
         {
-            get { return targetNamespace; }
-            set { targetNamespace = value; }
+            get { return _targetNamespace; }
+            set { _targetNamespace = value; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Schema"]/*' />
@@ -179,11 +179,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (schema == null)
+                if (s_schema == null)
                 {
-                    schema = XmlSchema.Read(new StringReader(Schemas.Wsdl), null);
+                    s_schema = XmlSchema.Read(new StringReader(Schemas.Wsdl), null);
                 }
-                return schema;
+                return s_schema;
             }
         }
 
@@ -191,11 +191,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (soapEncodingSchema == null)
+                if (s_soapEncodingSchema == null)
                 {
-                    soapEncodingSchema = XmlSchema.Read(new StringReader(Schemas.SoapEncoding), null);
+                    s_soapEncodingSchema = XmlSchema.Read(new StringReader(Schemas.SoapEncoding), null);
                 }
-                return soapEncodingSchema;
+                return s_soapEncodingSchema;
             }
         }
 
@@ -208,17 +208,17 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (validationWarnings == null)
+                if (_validationWarnings == null)
                 {
-                    validationWarnings = new StringCollection();
+                    _validationWarnings = new StringCollection();
                 }
-                return validationWarnings;
+                return _validationWarnings;
             }
         }
 
         internal void SetWarnings(StringCollection warnings)
         {
-            this.validationWarnings = warnings;
+            _validationWarnings = warnings;
         }
 
         // This is a special serializer that hardwires to the generated
@@ -272,36 +272,36 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (serializer == null)
+                if (s_serializer == null)
                 {
                     WebServicesSection config = WebServicesSection.Current;
                     XmlAttributeOverrides overrides = new XmlAttributeOverrides();
                     XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
                     ns.Add("s", XmlSchema.Namespace);
                     WebServicesSection.LoadXmlFormatExtensions(config.GetAllFormatExtensionTypes(), overrides, ns);
-                    namespaces = ns;
-                    serializer = new ServiceDescriptionSerializer();
+                    s_namespaces = ns;
+                    s_serializer = new ServiceDescriptionSerializer();
                 }
-                return serializer;
+                return s_serializer;
             }
         }
 
         internal string AppSettingBaseUrl
         {
-            get { return appSettingBaseUrl; }
-            set { appSettingBaseUrl = value; }
+            get { return _appSettingBaseUrl; }
+            set { _appSettingBaseUrl = value; }
         }
 
         internal string AppSettingUrlKey
         {
-            get { return appSettingUrlKey; }
-            set { appSettingUrlKey = value; }
+            get { return _appSettingUrlKey; }
+            set { _appSettingUrlKey = value; }
         }
 
         internal ServiceDescription Next
         {
-            get { return next; }
-            set { next = value; }
+            get { return _next; }
+            set { _next = value; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Read"]/*' />
@@ -399,7 +399,7 @@ namespace System.Web.Services.Description
                 readerSettings.Schemas.Add(Schema);
                 readerSettings.Schemas.Add(SoapBinding.Schema);
                 readerSettings.ValidationEventHandler += new ValidationEventHandler(InstanceValidation);
-                warnings.Clear();
+                s_warnings.Clear();
                 XmlReader validatingReader = XmlReader.Create(reader, readerSettings);
                 if (reader.ReadState != ReadState.Initial)
                 {
@@ -407,10 +407,11 @@ namespace System.Web.Services.Description
                     validatingReader.Read();
                 }
                 ServiceDescription sd = (ServiceDescription)Serializer.Deserialize(validatingReader);
-                sd.SetWarnings(warnings);
+                sd.SetWarnings(s_warnings);
                 return sd;
             }
-            else {
+            else
+            {
                 return (ServiceDescription)Serializer.Deserialize(reader);
             }
         }
@@ -475,7 +476,7 @@ namespace System.Web.Services.Description
             XmlSerializerNamespaces ns;
             if (Namespaces == null || Namespaces.Count == 0)
             {
-                ns = new XmlSerializerNamespaces(namespaces);
+                ns = new XmlSerializerNamespaces(s_namespaces);
                 ns.Add(ServiceDescription.Prefix, ServiceDescription.Namespace);
                 if (this.TargetNamespace != null && this.TargetNamespace.Length != 0)
                 {
@@ -498,7 +499,8 @@ namespace System.Web.Services.Description
                     }
                 }
             }
-            else {
+            else
+            {
                 ns = Namespaces;
             }
             serializer.Serialize(writer, this, ns);
@@ -562,14 +564,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Import : DocumentableItem
     {
-        string ns;
-        string location;
-        ServiceDescription parent;
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private string _ns;
+        private string _location;
+        private ServiceDescription _parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         internal void SetParent(ServiceDescription parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
@@ -579,7 +581,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Import.ServiceDescription"]/*' />
@@ -588,7 +590,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public ServiceDescription ServiceDescription
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Import.Namespace"]/*' />
@@ -598,8 +600,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("namespace")]
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Import.Location"]/*' />
@@ -609,8 +611,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("location")]
         public string Location
         {
-            get { return location == null ? string.Empty : location; }
-            set { location = value; }
+            get { return _location == null ? string.Empty : _location; }
+            set { _location = value; }
         }
     }
 
@@ -621,11 +623,11 @@ namespace System.Web.Services.Description
     /// </devdoc>
     public abstract class DocumentableItem
     {
-        XmlDocument parent;
-        string documentation;
-        XmlElement documentationElement;
-        XmlAttribute[] anyAttribute;
-        XmlSerializerNamespaces namespaces;
+        private XmlDocument _parent;
+        private string _documentation;
+        private XmlElement _documentationElement;
+        private XmlAttribute[] _anyAttribute;
+        private XmlSerializerNamespaces _namespaces;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="DocumentableItem.Documentation"]/*' />
         /// <devdoc>
@@ -636,20 +638,20 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (documentation != null)
-                    return documentation;
-                if (documentationElement == null)
+                if (_documentation != null)
+                    return _documentation;
+                if (_documentationElement == null)
                     return string.Empty;
-                return documentationElement.InnerXml;
+                return _documentationElement.InnerXml;
             }
             set
             {
-                documentation = value;
+                _documentation = value;
                 StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
                 XmlTextWriter xmlWriter = new XmlTextWriter(writer);
                 xmlWriter.WriteElementString(ServiceDescription.Prefix, "documentation", ServiceDescription.Namespace, value);
                 Parent.LoadXml(writer.ToString());
-                documentationElement = parent.DocumentElement;
+                _documentationElement = _parent.DocumentElement;
                 xmlWriter.Close();
             }
         }
@@ -662,11 +664,11 @@ namespace System.Web.Services.Description
         [ComVisible(false)]
         public XmlElement DocumentationElement
         {
-            get { return documentationElement; }
+            get { return _documentationElement; }
             set
             {
-                documentationElement = value;
-                documentation = null;
+                _documentationElement = value;
+                _documentation = null;
             }
         }
 
@@ -675,11 +677,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                return this.anyAttribute;
+                return _anyAttribute;
             }
             set
             {
-                this.anyAttribute = value;
+                _anyAttribute = value;
             }
         }
 
@@ -692,11 +694,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (this.namespaces == null)
-                    this.namespaces = new XmlSerializerNamespaces();
-                return this.namespaces;
+                if (_namespaces == null)
+                    _namespaces = new XmlSerializerNamespaces();
+                return _namespaces;
             }
-            set { this.namespaces = value; }
+            set { _namespaces = value; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="DocumentableItem.Extensions"]/*' />
@@ -710,20 +712,20 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (parent == null)
-                    parent = new XmlDocument();
-                return parent;
+                if (_parent == null)
+                    _parent = new XmlDocument();
+                return _parent;
             }
         }
 
         internal XmlElement GetDocumentationElement()
         {
-            if (documentationElement == null)
+            if (_documentationElement == null)
             {
-                documentationElement = Parent.CreateElement(ServiceDescription.Prefix, "documentation", ServiceDescription.Namespace);
-                Parent.InsertBefore(documentationElement, null);
+                _documentationElement = Parent.CreateElement(ServiceDescription.Prefix, "documentation", ServiceDescription.Namespace);
+                Parent.InsertBefore(_documentationElement, null);
             }
-            return documentationElement;
+            return _documentationElement;
         }
     }
 
@@ -733,7 +735,7 @@ namespace System.Web.Services.Description
     /// </devdoc>
     public abstract class NamedItem : DocumentableItem
     {
-        string name;
+        private string _name;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="NamedItem.Name"]/*' />
         /// <devdoc>
@@ -742,8 +744,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("name")]
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
     }
 
@@ -754,13 +756,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Port : NamedItem
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
-        XmlQualifiedName binding = XmlQualifiedName.Empty;
-        Service parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
+        private XmlQualifiedName _binding = XmlQualifiedName.Empty;
+        private Service _parent;
 
         internal void SetParent(Service parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Port.Service"]/*' />
@@ -769,7 +771,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public Service Service
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Port.Extensions"]/*' />
@@ -779,7 +781,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Port.Binding"]/*' />
@@ -789,8 +791,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("binding")]
         public XmlQualifiedName Binding
         {
-            get { return binding; }
-            set { binding = value; }
+            get { return _binding; }
+            set { _binding = value; }
         }
     }
 
@@ -801,13 +803,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Service : NamedItem
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
-        PortCollection ports;
-        ServiceDescription parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
+        private PortCollection _ports;
+        private ServiceDescription _parent;
 
         internal void SetParent(ServiceDescription parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Service.ServiceDescription"]/*' />
@@ -816,7 +818,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public ServiceDescription ServiceDescription
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Service.Extensions"]/*' />
@@ -826,7 +828,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Service.Ports"]/*' />
@@ -836,7 +838,7 @@ namespace System.Web.Services.Description
         [XmlElement("port")]
         public PortCollection Ports
         {
-            get { if (ports == null) ports = new PortCollection(this); return ports; }
+            get { if (_ports == null) _ports = new PortCollection(this); return _ports; }
         }
     }
 
@@ -847,7 +849,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class FaultBinding : MessageBinding
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="FaultBinding.Extensions"]/*' />
         /// <devdoc>
@@ -856,7 +858,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -866,11 +868,11 @@ namespace System.Web.Services.Description
     /// </devdoc>
     public abstract class MessageBinding : NamedItem
     {
-        OperationBinding parent;
+        private OperationBinding _parent;
 
         internal void SetParent(OperationBinding parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="MessageBinding.OperationBinding"]/*' />
@@ -879,7 +881,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public OperationBinding OperationBinding
         {
-            get { return parent; }
+            get { return _parent; }
         }
     }
 
@@ -890,7 +892,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class InputBinding : MessageBinding
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="InputBinding.Extensions"]/*' />
         /// <devdoc>
@@ -899,7 +901,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -910,7 +912,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class OutputBinding : MessageBinding
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="OutputBinding.Extensions"]/*' />
         /// <devdoc>
@@ -919,7 +921,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -930,15 +932,15 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class OperationBinding : NamedItem
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
-        FaultBindingCollection faults;
-        InputBinding input;
-        OutputBinding output;
-        Binding parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
+        private FaultBindingCollection _faults;
+        private InputBinding _input;
+        private OutputBinding _output;
+        private Binding _parent;
 
         internal void SetParent(Binding parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="OperationBinding.Binding"]/*' />
@@ -947,7 +949,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public Binding Binding
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="OperationBinding.Extensions"]/*' />
@@ -957,7 +959,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="OperationBinding.Input"]/*' />
@@ -967,17 +969,17 @@ namespace System.Web.Services.Description
         [XmlElement("input")]
         public InputBinding Input
         {
-            get { return input; }
+            get { return _input; }
             set
             {
-                if (input != null)
+                if (_input != null)
                 {
-                    input.SetParent(null);
+                    _input.SetParent(null);
                 }
-                input = value;
-                if (input != null)
+                _input = value;
+                if (_input != null)
                 {
-                    input.SetParent(this);
+                    _input.SetParent(this);
                 }
             }
         }
@@ -989,17 +991,17 @@ namespace System.Web.Services.Description
         [XmlElement("output")]
         public OutputBinding Output
         {
-            get { return output; }
+            get { return _output; }
             set
             {
-                if (output != null)
+                if (_output != null)
                 {
-                    output.SetParent(null);
+                    _output.SetParent(null);
                 }
-                output = value;
-                if (output != null)
+                _output = value;
+                if (_output != null)
                 {
-                    output.SetParent(this);
+                    _output.SetParent(this);
                 }
             }
         }
@@ -1011,7 +1013,7 @@ namespace System.Web.Services.Description
         [XmlElement("fault")]
         public FaultBindingCollection Faults
         {
-            get { if (faults == null) faults = new FaultBindingCollection(this); return faults; }
+            get { if (_faults == null) _faults = new FaultBindingCollection(this); return _faults; }
         }
     }
 
@@ -1022,14 +1024,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Binding : NamedItem
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
-        OperationBindingCollection operations;
-        XmlQualifiedName type = XmlQualifiedName.Empty;
-        ServiceDescription parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
+        private OperationBindingCollection _operations;
+        private XmlQualifiedName _type = XmlQualifiedName.Empty;
+        private ServiceDescription _parent;
 
         internal void SetParent(ServiceDescription parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Binding.ServiceDescription"]/*' />
@@ -1038,7 +1040,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public ServiceDescription ServiceDescription
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Binding.Extensions"]/*' />
@@ -1048,7 +1050,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Binding.Operations"]/*' />
@@ -1058,7 +1060,7 @@ namespace System.Web.Services.Description
         [XmlElement("operation")]
         public OperationBindingCollection Operations
         {
-            get { if (operations == null) operations = new OperationBindingCollection(this); return operations; }
+            get { if (_operations == null) _operations = new OperationBindingCollection(this); return _operations; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Binding.Type"]/*' />
@@ -1070,10 +1072,10 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if ((object)type == null) return XmlQualifiedName.Empty;
-                return type;
+                if ((object)_type == null) return XmlQualifiedName.Empty;
+                return _type;
             }
-            set { type = value; }
+            set { _type = value; }
         }
     }
 
@@ -1083,12 +1085,12 @@ namespace System.Web.Services.Description
     /// </devdoc>
     public abstract class OperationMessage : NamedItem
     {
-        XmlQualifiedName message = XmlQualifiedName.Empty;
-        Operation parent;
+        private XmlQualifiedName _message = XmlQualifiedName.Empty;
+        private Operation _parent;
 
         internal void SetParent(Operation parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="OperationMessage.Operation"]/*' />
@@ -1097,7 +1099,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public Operation Operation
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="OperationMessage.Message"]/*' />
@@ -1107,8 +1109,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("message")]
         public XmlQualifiedName Message
         {
-            get { return message; }
-            set { message = value; }
+            get { return _message; }
+            set { _message = value; }
         }
     }
 
@@ -1119,7 +1121,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class OperationFault : OperationMessage
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
         /// <devdoc>
@@ -1128,7 +1130,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -1139,7 +1141,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class OperationInput : OperationMessage
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
         /// <devdoc>
@@ -1148,7 +1150,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -1159,7 +1161,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class OperationOutput : OperationMessage
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
         /// <devdoc>
@@ -1168,7 +1170,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -1179,15 +1181,15 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Operation : NamedItem
     {
-        string[] parameters;
-        OperationMessageCollection messages;
-        OperationFaultCollection faults;
-        PortType parent;
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private string[] _parameters;
+        private OperationMessageCollection _messages;
+        private OperationFaultCollection _faults;
+        private PortType _parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         internal void SetParent(PortType parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
@@ -1197,7 +1199,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Operation.PortType"]/*' />
@@ -1206,7 +1208,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public PortType PortType
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Operation.ParameterOrderString"]/*' />
@@ -1218,21 +1220,21 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (parameters == null) return string.Empty;
+                if (_parameters == null) return string.Empty;
                 StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < parameters.Length; i++)
+                for (int i = 0; i < _parameters.Length; i++)
                 {
                     if (i > 0) builder.Append(' ');
-                    builder.Append(parameters[i]);
+                    builder.Append(_parameters[i]);
                 }
                 return builder.ToString();
             }
             set
             {
                 if (value == null)
-                    parameters = null;
+                    _parameters = null;
                 else
-                    parameters = value.Split(new char[] { ' ' });
+                    _parameters = value.Split(new char[] { ' ' });
             }
         }
 
@@ -1243,8 +1245,8 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public string[] ParameterOrder
         {
-            get { return parameters; }
-            set { parameters = value; }
+            get { return _parameters; }
+            set { _parameters = value; }
         }
 
 
@@ -1256,7 +1258,7 @@ namespace System.Web.Services.Description
         XmlElement("output", typeof(OperationOutput))]
         public OperationMessageCollection Messages
         {
-            get { if (messages == null) messages = new OperationMessageCollection(this); return messages; }
+            get { if (_messages == null) _messages = new OperationMessageCollection(this); return _messages; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Operation.Faults"]/*' />
@@ -1266,7 +1268,7 @@ namespace System.Web.Services.Description
         [XmlElement("fault")]
         public OperationFaultCollection Faults
         {
-            get { if (faults == null) faults = new OperationFaultCollection(this); return faults; }
+            get { if (_faults == null) _faults = new OperationFaultCollection(this); return _faults; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Operation.IsBoundBy"]/*' />
@@ -1336,13 +1338,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class PortType : NamedItem
     {
-        OperationCollection operations;
-        ServiceDescription parent;
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private OperationCollection _operations;
+        private ServiceDescription _parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         internal void SetParent(ServiceDescription parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
@@ -1352,7 +1354,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="PortType.ServiceDescription"]/*' />
@@ -1361,7 +1363,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public ServiceDescription ServiceDescription
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="PortType.Operations"]/*' />
@@ -1371,7 +1373,7 @@ namespace System.Web.Services.Description
         [XmlElement("operation")]
         public OperationCollection Operations
         {
-            get { if (operations == null) operations = new OperationCollection(this); return operations; }
+            get { if (_operations == null) _operations = new OperationCollection(this); return _operations; }
         }
     }
 
@@ -1382,13 +1384,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Message : NamedItem
     {
-        MessagePartCollection parts;
-        ServiceDescription parent;
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private MessagePartCollection _parts;
+        private ServiceDescription _parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         internal void SetParent(ServiceDescription parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
@@ -1398,7 +1400,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Message.ServiceDescription"]/*' />
@@ -1407,7 +1409,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public ServiceDescription ServiceDescription
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Message.Parts"]/*' />
@@ -1417,7 +1419,7 @@ namespace System.Web.Services.Description
         [XmlElement("part")]
         public MessagePartCollection Parts
         {
-            get { if (parts == null) parts = new MessagePartCollection(this); return parts; }
+            get { if (_parts == null) _parts = new MessagePartCollection(this); return _parts; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Message.FindPartsByName"]/*' />
@@ -1440,9 +1442,9 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public MessagePart FindPartByName(string partName)
         {
-            for (int i = 0; i < parts.Count; i++)
+            for (int i = 0; i < _parts.Count; i++)
             {
-                MessagePart part = parts[i];
+                MessagePart part = _parts[i];
                 if (part.Name == partName) return part;
             }
             throw new ArgumentException(ResWebServices.GetString(ResWebServices.MissingMessagePartForMessageFromNamespace3, partName, Name, ServiceDescription.TargetNamespace), "partName");
@@ -1456,14 +1458,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class MessagePart : NamedItem
     {
-        XmlQualifiedName type = XmlQualifiedName.Empty;
-        XmlQualifiedName element = XmlQualifiedName.Empty;
-        Message parent;
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private XmlQualifiedName _type = XmlQualifiedName.Empty;
+        private XmlQualifiedName _element = XmlQualifiedName.Empty;
+        private Message _parent;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         internal void SetParent(Message parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.Extensions"]/*' />
@@ -1473,7 +1475,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="MessagePart.Message"]/*' />
@@ -1482,7 +1484,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public Message Message
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="MessagePart.Element"]/*' />
@@ -1492,8 +1494,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("element")]
         public XmlQualifiedName Element
         {
-            get { return element; }
-            set { element = value; }
+            get { return _element; }
+            set { _element = value; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="MessagePart.Type"]/*' />
@@ -1505,10 +1507,10 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if ((object)type == null) return XmlQualifiedName.Empty;
-                return type;
+                if ((object)_type == null) return XmlQualifiedName.Empty;
+                return _type;
             }
-            set { type = value; }
+            set { _type = value; }
         }
     }
 
@@ -1519,13 +1521,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class Types : DocumentableItem
     {
-        XmlSchemas schemas;
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private XmlSchemas _schemas;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         internal bool HasItems()
         {
-            return (schemas != null && schemas.Count > 0) ||
-                (extensions != null && extensions.Count > 0);
+            return (_schemas != null && _schemas.Count > 0) ||
+                (_extensions != null && _extensions.Count > 0);
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Types.Extensions"]/*' />
@@ -1535,7 +1537,7 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public override ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="Types.Schemas"]/*' />
@@ -1545,7 +1547,7 @@ namespace System.Web.Services.Description
         [XmlElement("schema", typeof(XmlSchema), Namespace = XmlSchema.Namespace)]
         public XmlSchemas Schemas
         {
-            get { if (schemas == null) schemas = new XmlSchemas(); return schemas; }
+            get { if (_schemas == null) _schemas = new XmlSchemas(); return _schemas; }
         }
     }
 
@@ -1561,7 +1563,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public ServiceDescriptionFormatExtensionCollection(object parent) : base(parent) { }
 
-        ArrayList handledElements;
+        private ArrayList _handledElements;
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionFormatExtensionCollection.this"]/*' />
         /// <devdoc>
@@ -1701,12 +1703,12 @@ namespace System.Web.Services.Description
             return (XmlElement[])list.ToArray(typeof(XmlElement));
         }
 
-        void SetHandled(XmlElement element)
+        private void SetHandled(XmlElement element)
         {
-            if (handledElements == null)
-                handledElements = new ArrayList();
-            if (!handledElements.Contains(element))
-                handledElements.Add(element);
+            if (_handledElements == null)
+                _handledElements = new ArrayList();
+            if (!_handledElements.Contains(element))
+                _handledElements.Add(element);
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionFormatExtensionCollection.IsHandled"]/*' />
@@ -1733,13 +1735,13 @@ namespace System.Web.Services.Description
                 return ((ServiceDescriptionFormatExtension)item).Required;
         }
 
-        bool IsHandled(XmlElement element)
+        private bool IsHandled(XmlElement element)
         {
-            if (handledElements == null) return false;
-            return handledElements.Contains(element);
+            if (_handledElements == null) return false;
+            return _handledElements.Contains(element);
         }
 
-        bool IsRequired(XmlElement element)
+        private bool IsRequired(XmlElement element)
         {
             XmlAttribute requiredAttr = element.Attributes["required", ServiceDescription.Namespace];
             if (requiredAttr == null || requiredAttr.Value == null)
@@ -1777,13 +1779,13 @@ namespace System.Web.Services.Description
     /// </devdoc>
     public abstract class ServiceDescriptionFormatExtension
     {
-        object parent;
-        bool required;
-        bool handled;
+        private object _parent;
+        private bool _required;
+        private bool _handled;
 
         internal void SetParent(object parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionFormatExtension.Parent"]/*' />
@@ -1792,7 +1794,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         public object Parent
         {
-            get { return parent; }
+            get { return _parent; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionFormatExtension.Required"]/*' />
@@ -1802,8 +1804,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("required", Namespace = ServiceDescription.Namespace), DefaultValue(false)]
         public bool Required
         {
-            get { return required; }
-            set { required = value; }
+            get { return _required; }
+            set { _required = value; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionFormatExtension.Handled"]/*' />
@@ -1813,8 +1815,8 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public bool Handled
         {
-            get { return handled; }
-            set { handled = value; }
+            get { return _handled; }
+            set { _handled = value; }
         }
     }
 
@@ -1981,16 +1983,19 @@ namespace System.Web.Services.Description
                     {
                         return OperationFlow.OneWay;
                     }
-                    else {
+                    else
+                    {
                         return OperationFlow.Notification;
                     }
                 }
-                else {
+                else
+                {
                     if (List[0] is OperationInput)
                     {
                         return OperationFlow.RequestResponse;
                     }
-                    else {
+                    else
+                    {
                         return OperationFlow.SolicitResponse;
                     }
                 }
@@ -3092,12 +3097,12 @@ namespace System.Web.Services.Description
     /// </devdoc>
     public abstract class ServiceDescriptionBaseCollection : CollectionBase
     {
-        Hashtable table; // CONSIDER, better implementation
-        object parent;
+        private Hashtable _table; // CONSIDER, better implementation
+        private object _parent;
 
         internal ServiceDescriptionBaseCollection(object parent)
         {
-            this.parent = parent;
+            _parent = parent;
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionBaseCollection.Table"]/*' />
@@ -3106,7 +3111,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         protected virtual IDictionary Table
         {
-            get { if (table == null) table = new Hashtable(); return table; }
+            get { if (_table == null) _table = new Hashtable(); return _table; }
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescriptionBaseCollection.GetKey"]/*' />
@@ -3167,7 +3172,7 @@ namespace System.Web.Services.Description
             AddValue(newValue);
         }
 
-        void AddValue(object value)
+        private void AddValue(object value)
         {
             string key = GetKey(value);
             if (key != null)
@@ -3186,22 +3191,23 @@ namespace System.Web.Services.Description
                     {
                         throw new ArgumentException(GetDuplicateMessage(value.GetType(), key), e.InnerException);
                     }
-                    else {
+                    else
+                    {
                         throw e;
                     }
                 }
             }
-            SetParent(value, parent);
+            SetParent(value, _parent);
         }
 
-        void RemoveValue(object value)
+        private void RemoveValue(object value)
         {
             string key = GetKey(value);
             if (key != null) Table.Remove(key);
             SetParent(value, null);
         }
 
-        static string GetDuplicateMessage(Type type, string elemName)
+        private static string GetDuplicateMessage(Type type, string elemName)
         {
             string message = null;
             if (type == typeof(ServiceDescriptionFormatExtension))
@@ -3239,7 +3245,7 @@ namespace System.Web.Services.Description
 
     internal class Schemas
     {
-        Schemas() { }
+        private Schemas() { }
         internal const string Wsdl = @"<?xml version='1.0' encoding='UTF-8' ?> 
 <xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'
            xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'

@@ -11,9 +11,9 @@ namespace System.ServiceModel.Description
     //For export we provide a builder that allows the gradual construction of a set of MetadataDocuments
     public abstract class MetadataExporter
     {
-        PolicyVersion policyVersion = PolicyVersion.Policy12;
-        readonly Collection<MetadataConversionError> errors = new Collection<MetadataConversionError>();
-        readonly Dictionary<object, object> state = new Dictionary<object, object>();
+        private PolicyVersion _policyVersion = PolicyVersion.Policy12;
+        private readonly Collection<MetadataConversionError> _errors = new Collection<MetadataConversionError>();
+        private readonly Dictionary<object, object> _state = new Dictionary<object, object>();
 
         //prevent inheritance until we are ready to allow it.
         internal MetadataExporter()
@@ -24,23 +24,23 @@ namespace System.ServiceModel.Description
         {
             get
             {
-                return this.policyVersion;
+                return _policyVersion;
             }
             set
             {
                 if (value == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                this.policyVersion = value;
+                _policyVersion = value;
             }
         }
 
         public Collection<MetadataConversionError> Errors
         {
-            get { return this.errors; }
+            get { return _errors; }
         }
         public Dictionary<object, object> State
         {
-            get { return this.state; }
+            get { return _state; }
         }
 
         public abstract void ExportContract(ContractDescription contract);
@@ -73,75 +73,74 @@ namespace System.ServiceModel.Description
             return this.ExportPolicy(endpoint, null);
         }
 
-        sealed class ExportedPolicyConversionContext : PolicyConversionContext
+        private sealed class ExportedPolicyConversionContext : PolicyConversionContext
         {
-            readonly BindingElementCollection bindingElements;
-            PolicyAssertionCollection bindingAssertions;
-            Dictionary<OperationDescription, PolicyAssertionCollection> operationBindingAssertions;
-            Dictionary<MessageDescription, PolicyAssertionCollection> messageBindingAssertions;
-            Dictionary<FaultDescription, PolicyAssertionCollection> faultBindingAssertions;
-            BindingParameterCollection bindingParameters;
+            private readonly BindingElementCollection _bindingElements;
+            private PolicyAssertionCollection _bindingAssertions;
+            private Dictionary<OperationDescription, PolicyAssertionCollection> _operationBindingAssertions;
+            private Dictionary<MessageDescription, PolicyAssertionCollection> _messageBindingAssertions;
+            private Dictionary<FaultDescription, PolicyAssertionCollection> _faultBindingAssertions;
+            private BindingParameterCollection _bindingParameters;
 
             internal ExportedPolicyConversionContext(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
                 : base(endpoint)
             {
-                this.bindingElements = endpoint.Binding.CreateBindingElements();
-                this.bindingAssertions = new PolicyAssertionCollection();
-                this.operationBindingAssertions = new Dictionary<OperationDescription, PolicyAssertionCollection>();
-                this.messageBindingAssertions = new Dictionary<MessageDescription, PolicyAssertionCollection>();
-                this.faultBindingAssertions = new Dictionary<FaultDescription, PolicyAssertionCollection>();
-                this.bindingParameters = bindingParameters;
+                _bindingElements = endpoint.Binding.CreateBindingElements();
+                _bindingAssertions = new PolicyAssertionCollection();
+                _operationBindingAssertions = new Dictionary<OperationDescription, PolicyAssertionCollection>();
+                _messageBindingAssertions = new Dictionary<MessageDescription, PolicyAssertionCollection>();
+                _faultBindingAssertions = new Dictionary<FaultDescription, PolicyAssertionCollection>();
+                _bindingParameters = bindingParameters;
             }
 
             public override BindingElementCollection BindingElements
             {
-                get { return this.bindingElements; }
+                get { return _bindingElements; }
             }
 
             internal override BindingParameterCollection BindingParameters
             {
-                get { return this.bindingParameters; }
+                get { return _bindingParameters; }
             }
 
             public override PolicyAssertionCollection GetBindingAssertions()
             {
-                return bindingAssertions;
+                return _bindingAssertions;
             }
 
             public override PolicyAssertionCollection GetOperationBindingAssertions(OperationDescription operation)
             {
-                lock (operationBindingAssertions)
+                lock (_operationBindingAssertions)
                 {
-                    if (!operationBindingAssertions.ContainsKey(operation))
-                        operationBindingAssertions.Add(operation, new PolicyAssertionCollection());
+                    if (!_operationBindingAssertions.ContainsKey(operation))
+                        _operationBindingAssertions.Add(operation, new PolicyAssertionCollection());
                 }
 
-                return operationBindingAssertions[operation];
+                return _operationBindingAssertions[operation];
             }
 
             public override PolicyAssertionCollection GetMessageBindingAssertions(MessageDescription message)
             {
-                lock (messageBindingAssertions)
+                lock (_messageBindingAssertions)
                 {
-                    if (!messageBindingAssertions.ContainsKey(message))
-                        messageBindingAssertions.Add(message, new PolicyAssertionCollection());
+                    if (!_messageBindingAssertions.ContainsKey(message))
+                        _messageBindingAssertions.Add(message, new PolicyAssertionCollection());
                 }
-                return messageBindingAssertions[message];
+                return _messageBindingAssertions[message];
             }
 
             public override PolicyAssertionCollection GetFaultBindingAssertions(FaultDescription fault)
             {
-                lock (faultBindingAssertions)
+                lock (_faultBindingAssertions)
                 {
-                    if (!faultBindingAssertions.ContainsKey(fault))
-                        faultBindingAssertions.Add(fault, new PolicyAssertionCollection());
+                    if (!_faultBindingAssertions.ContainsKey(fault))
+                        _faultBindingAssertions.Add(fault, new PolicyAssertionCollection());
                 }
-                return faultBindingAssertions[fault];
+                return _faultBindingAssertions[fault];
             }
-
         }
 
-        Exception CreateExtensionException(IPolicyExportExtension exporter, Exception e)
+        private Exception CreateExtensionException(IPolicyExportExtension exporter, Exception e)
         {
             string errorMessage = SRServiceModel.Format(SRServiceModel.PolicyExtensionExportError, exporter.GetType(), e.Message);
             return new InvalidOperationException(errorMessage, e);

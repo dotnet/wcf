@@ -10,12 +10,12 @@ namespace System.ServiceModel
 {
     public class NetTcpBinding : Binding
     {
-        OptionalReliableSession _reliableSession;
+        private OptionalReliableSession _reliableSession;
         // private BindingElements
         private TcpTransportBindingElement _transport;
         private BinaryMessageEncodingBindingElement _encoding;
-        TransactionFlowBindingElement _context;
-        ReliableSessionBindingElement _session;
+        private TransactionFlowBindingElement _context;
+        private ReliableSessionBindingElement _session;
         private long _maxBufferPoolSize;
         private NetTcpSecurity _security = new NetTcpSecurity();
 
@@ -33,7 +33,7 @@ namespace System.ServiceModel
         }
 
 
-        NetTcpBinding(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding, TransactionFlowBindingElement context, ReliableSessionBindingElement session, NetTcpSecurity security)
+        private NetTcpBinding(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding, TransactionFlowBindingElement context, ReliableSessionBindingElement session, NetTcpSecurity security)
             : this()
         {
             _security = security;
@@ -118,7 +118,7 @@ namespace System.ServiceModel
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
                 }
-                this._reliableSession.CopySettings(value);
+                _reliableSession.CopySettings(value);
             }
         }
 
@@ -152,7 +152,7 @@ namespace System.ServiceModel
             set { _context.TransactionProtocol = value; }
         }
 
-        static TransactionFlowBindingElement GetDefaultTransactionFlowBindingElement()
+        private static TransactionFlowBindingElement GetDefaultTransactionFlowBindingElement()
         {
             return new TransactionFlowBindingElement(NetTcpDefaults.TransactionsEnabled);
         }
@@ -170,7 +170,7 @@ namespace System.ServiceModel
             _maxBufferPoolSize = TransportDefaults.MaxBufferPoolSize;
         }
 
-        void InitializeFrom(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding, TransactionFlowBindingElement context, ReliableSessionBindingElement session)
+        private void InitializeFrom(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding, TransactionFlowBindingElement context, ReliableSessionBindingElement session)
         {
             // TODO: Fx.Assert(transport != null, "Invalid (null) transport value.");
             // TODO: Fx.Assert(encoding != null, "Invalid (null) encoding value.");
@@ -228,7 +228,7 @@ namespace System.ServiceModel
         // check that properties of the HttpTransportBindingElement and 
         // MessageEncodingBindingElement not exposed as properties on BasicHttpBinding 
         // match default values of the binding elements
-        bool IsBindingElementsMatch(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding, TransactionFlowBindingElement context, ReliableSessionBindingElement session)
+        private bool IsBindingElementsMatch(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding, TransactionFlowBindingElement context, ReliableSessionBindingElement session)
         {
             if (!_transport.IsMatch(transport))
                 return false;
@@ -408,7 +408,7 @@ namespace System.ServiceModel
             }
         }
 
-        static bool TryCreateSecurity(SecurityBindingElement sbe, UnifiedSecurityMode mode, bool isReliableSession, BindingElement transportSecurity, TcpTransportSecurity tcpTransportSecurity, out NetTcpSecurity security)
+        private static bool TryCreateSecurity(SecurityBindingElement sbe, UnifiedSecurityMode mode, bool isReliableSession, BindingElement transportSecurity, TcpTransportSecurity tcpTransportSecurity, out NetTcpSecurity security)
         {
             if (sbe != null)
                 mode &= UnifiedSecurityMode.Message | UnifiedSecurityMode.TransportWithMessageCredential;

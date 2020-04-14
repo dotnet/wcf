@@ -11,14 +11,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class WcfCodeGenerationExtension : IWcfCodeGenerationExtension
     {
-        private Collection<ServiceEndpoint> endpoints;
+        private Collection<ServiceEndpoint> _endpoints;
         private bool _errorDetected;
-        private bool isVB;
-        private CommandProcessorOptions options;
+        private bool _isVB;
+        private CommandProcessorOptions _options;
 
         public WcfCodeGenerationExtension(CommandProcessorOptions options)
         {
-            this.options = options;
+            _options = options;
         }
 
         public bool ErrorDetected
@@ -29,14 +29,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public void WsdlImporting(WsdlImporter importer)
         {
-            RunFixups(MetadataFixup.GetPreFixups(importer), this.options);
-            this.isVB = IsVB(importer);
+            RunFixups(MetadataFixup.GetPreFixups(importer), _options);
+            _isVB = IsVB(importer);
             UpdateExitStatus(importer.Errors);
         }
 
         public void WsdlImported(WsdlImporter importer, Collection<ServiceEndpoint> endpoints, Collection<Binding> bindings, Collection<ContractDescription> contracts)
         {
-            RunFixups(MetadataFixup.GetPostFixups(importer, endpoints, bindings, contracts), this.options);
+            RunFixups(MetadataFixup.GetPostFixups(importer, endpoints, bindings, contracts), _options);
 
             bool hasContractOperations = false;
             foreach (var contract in contracts)
@@ -58,7 +58,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             UpdateExitStatus(importer.Errors);
-            this.endpoints = endpoints;
+            _endpoints = endpoints;
         }
 
         public void ClientGenerating(ServiceContractGenerator generator)
@@ -75,19 +75,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             if (generator != null)
             {
-                RunFixups(CodeFixup.GetFixups(generator), this.options);
-                ConfigToCode converter = new ConfigToCode() { IsVB = this.isVB };
-                converter.MoveBindingsToCode(generator.TargetCompileUnit, this.endpoints);
+                RunFixups(CodeFixup.GetFixups(generator), _options);
+                ConfigToCode converter = new ConfigToCode() { IsVB = _isVB };
+                converter.MoveBindingsToCode(generator.TargetCompileUnit, _endpoints);
                 CodeDomVisitor.Visit(new CodeDomVisitor[] { new NamespaceFixup() }, generator.TargetCompileUnit);
                 UpdateExitStatus(generator.Errors);
             }
         }
 
-        void UpdateExitStatus(Collection<MetadataConversionError> errors)
+        private void UpdateExitStatus(Collection<MetadataConversionError> errors)
         {
-            foreach(var err in errors)
+            foreach (var err in errors)
             {
-                if(!err.IsWarning)
+                if (!err.IsWarning)
                 {
                     ErrorDetected = true;
                     break;
@@ -95,7 +95,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static void RunFixups(IFixup[] fixups, CommandProcessorOptions options)
+        private static void RunFixups(IFixup[] fixups, CommandProcessorOptions options)
         {
             for (int i = 0; i < fixups.Length; i++)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static bool IsVB(WsdlImporter importer)
+        private static bool IsVB(WsdlImporter importer)
         {
             if (importer.State.ContainsKey(typeof(XsdDataContractImporter)))
             {
@@ -113,6 +113,5 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             return false;
         }
-
     }
 }

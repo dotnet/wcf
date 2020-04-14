@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeFieldReferenceExpression : CodeExpression {
-        private CodeExpression targetObject;
-        private string fieldName;
+    public class CodeFieldReferenceExpression : CodeExpression
+    {
+        private CodeExpression _targetObject;
+        private string _fieldName;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeFieldReferenceExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeFieldReferenceExpression() {
+        public CodeFieldReferenceExpression()
+        {
         }
 
         /// <devdoc>
@@ -36,7 +38,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeFieldReferenceExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeFieldReferenceExpression(CodeExpression targetObject, string fieldName) {
+        public CodeFieldReferenceExpression(CodeExpression targetObject, string fieldName)
+        {
             TargetObject = targetObject;
             FieldName = fieldName;
         }
@@ -47,12 +50,15 @@ namespace Microsoft.CodeDom {
         ///       the target object.
         ///    </para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
@@ -62,12 +68,15 @@ namespace Microsoft.CodeDom {
         ///       the field name.
         ///    </para>
         /// </devdoc>
-        public string FieldName {
-            get {
-                return (fieldName == null) ? string.Empty : fieldName;
+        public string FieldName
+        {
+            get
+            {
+                return (_fieldName == null) ? string.Empty : _fieldName;
             }
-            set {
-                fieldName = value;
+            set
+            {
+                _fieldName = value;
             }
         }
     }

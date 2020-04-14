@@ -8,15 +8,15 @@ namespace System.ServiceModel.Dispatcher
 {
     internal sealed class MessageOperationFormatter : IClientMessageFormatter, IDispatchMessageFormatter
     {
-        static MessageOperationFormatter _instance;
+        private static MessageOperationFormatter s_instance;
 
         internal static MessageOperationFormatter Instance
         {
             get
             {
-                if (MessageOperationFormatter._instance == null)
-                    MessageOperationFormatter._instance = new MessageOperationFormatter();
-                return MessageOperationFormatter._instance;
+                if (MessageOperationFormatter.s_instance == null)
+                    MessageOperationFormatter.s_instance = new MessageOperationFormatter();
+                return MessageOperationFormatter.s_instance;
             }
         }
 

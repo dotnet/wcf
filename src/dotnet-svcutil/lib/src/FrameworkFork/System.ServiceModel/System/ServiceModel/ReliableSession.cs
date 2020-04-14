@@ -13,7 +13,7 @@ namespace System.ServiceModel
     // discover/Intellisense
     public class ReliableSession
     {
-        ReliableSessionBindingElement _element;
+        private ReliableSessionBindingElement _element;
 
         public ReliableSession()
         {

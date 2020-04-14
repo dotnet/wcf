@@ -57,7 +57,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         internal const string WCFCSParamsFileName = "ConnectedService.json";
         internal const string BaseServiceReferenceName = "ServiceReference";
 
-        private static readonly List<string> CmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name };
+        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name };
 
         internal class CommandSwitches
         {
@@ -146,7 +146,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         // user switches are disallowed when a params file is provided.
                         var options = cmdOptions.GetOptions().ToList();
                         var disallowedSwitchesOnParamsFilesProvided = CommandSwitch.All
-                            .Where(s => !CmdLineOverwriteSwitches.Contains(s.Name) && s.SwitchLevel <= OperationalContext.Global && options.Any(o =>
+                            .Where(s => !s_cmdLineOverwriteSwitches.Contains(s.Name) && s.SwitchLevel <= OperationalContext.Global && options.Any(o =>
                             {
                                 if (o.HasSameId(s.Name))
                                 {
@@ -283,8 +283,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     if (IsUpdateOperation)
                     {
-                        CmdLineOverwriteSwitches.Add(Switches.Update.Name);
-                        var disallowedUserOptionsOnUpdateOperation = this.GetOptions().Where(o => !CmdLineOverwriteSwitches.Any(n => o.HasSameId(n)));
+                        s_cmdLineOverwriteSwitches.Add(Switches.Update.Name);
+                        var disallowedUserOptionsOnUpdateOperation = this.GetOptions().Where(o => !s_cmdLineOverwriteSwitches.Any(n => o.HasSameId(n)));
 
                         // special-case inputs as there's no switch for them.
                         if (this.Inputs.Count > 0)

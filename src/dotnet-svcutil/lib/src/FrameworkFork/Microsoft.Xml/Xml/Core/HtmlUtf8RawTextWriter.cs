@@ -10,39 +10,41 @@ using Microsoft.Xml.Schema;
 using System.Diagnostics;
 using MS.Internal.Xml;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal class HtmlUtf8RawTextWriter : XmlUtf8RawTextWriter {
-//
-// Fields
-//
-        protected ByteStack         elementScope;
+
+    internal class HtmlUtf8RawTextWriter : XmlUtf8RawTextWriter
+    {
+        //
+        // Fields
+        //
+        protected ByteStack elementScope;
         protected ElementProperties currentElementProperties;
-        private AttributeProperties currentAttributeProperties;
+        private AttributeProperties _currentAttributeProperties;
 
-        private bool    endsWithAmpersand;
-        private byte [] uriEscapingBuffer;
+        private bool _endsWithAmpersand;
+        private byte[] _uriEscapingBuffer;
 
         // settings
-        private string  mediaType;
-        private bool doNotEscapeUriAttributes;
+        private string _mediaType;
+        private bool _doNotEscapeUriAttributes;
 
-//
-// Static fields
-//
+        //
+        // Static fields
+        //
         protected static TernaryTreeReadOnly elementPropertySearch;
         protected static TernaryTreeReadOnly attributePropertySearch;
 
-//
-// Constants
-//
+        //
+        // Constants
+        //
         private const int StackIncrement = 10;
 
-//
-// Constructors
-//
+        //
+        // Constructors
+        //
 
 
 
@@ -51,93 +53,107 @@ namespace Microsoft.Xml {
 
 
 
-        public HtmlUtf8RawTextWriter( Stream stream, XmlWriterSettings settings ) : base( stream, settings ) {
-            Init( settings );
+        public HtmlUtf8RawTextWriter(Stream stream, XmlWriterSettings settings) : base(stream, settings)
+        {
+            Init(settings);
         }
 
-//
-// XmlRawWriter implementation
-//
-        internal override void WriteXmlDeclaration( XmlStandalone standalone ) {
+        //
+        // XmlRawWriter implementation
+        //
+        internal override void WriteXmlDeclaration(XmlStandalone standalone)
+        {
             // Ignore xml declaration
         }
 
-        internal override void WriteXmlDeclaration( string xmldecl ) {
+        internal override void WriteXmlDeclaration(string xmldecl)
+        {
             // Ignore xml declaration
         }
 
         /// Html rules allow public ID without system ID and always output "html"
-        public override void WriteDocType( string name, string pubid, string sysid, string subset ) {
-            Debug.Assert( name != null && name.Length > 0 );
+        public override void WriteDocType(string name, string pubid, string sysid, string subset)
+        {
+            Debug.Assert(name != null && name.Length > 0);
 
-            
 
-            RawText( "<!DOCTYPE ");
+
+            RawText("<!DOCTYPE ");
 
             // Bug 114337: Always output "html" or "HTML" in doc-type, even if "name" is something else
-            if ( name == "HTML" )
-                RawText( "HTML" );
+            if (name == "HTML")
+                RawText("HTML");
             else
-                RawText( "html" );
+                RawText("html");
 
-            if ( pubid != null ) {
-                RawText( " PUBLIC \"" );
-                RawText( pubid );
-                if ( sysid != null ) {
-                    RawText( "\" \"" );
-                    RawText( sysid );
+            if (pubid != null)
+            {
+                RawText(" PUBLIC \"");
+                RawText(pubid);
+                if (sysid != null)
+                {
+                    RawText("\" \"");
+                    RawText(sysid);
                 }
-                bufBytes[bufPos++] = (byte) '"';
+                bufBytes[bufPos++] = (byte)'"';
             }
-            else if ( sysid != null ) {
-                RawText( " SYSTEM \"" );
-                RawText( sysid );
-                bufBytes[bufPos++] = (byte) '"';
+            else if (sysid != null)
+            {
+                RawText(" SYSTEM \"");
+                RawText(sysid);
+                bufBytes[bufPos++] = (byte)'"';
             }
-            else {
-                bufBytes[bufPos++] = (byte) ' ';
-            }
-
-            if ( subset != null ) {
-                bufBytes[bufPos++] = (byte) '[';
-                RawText( subset );
-                bufBytes[bufPos++] = (byte) ']';
+            else
+            {
+                bufBytes[bufPos++] = (byte)' ';
             }
 
-            bufBytes[this.bufPos++] = (byte) '>';
+            if (subset != null)
+            {
+                bufBytes[bufPos++] = (byte)'[';
+                RawText(subset);
+                bufBytes[bufPos++] = (byte)']';
+            }
+
+            bufBytes[this.bufPos++] = (byte)'>';
         }
 
         // For the HTML element, it should call this method with ns and prefix as String.Empty
-        public override void WriteStartElement( string prefix, string localName, string ns ) {
-            Debug.Assert( localName != null && localName.Length != 0 && prefix != null && ns != null );
+        public override void WriteStartElement(string prefix, string localName, string ns)
+        {
+            Debug.Assert(localName != null && localName.Length != 0 && prefix != null && ns != null);
 
-            elementScope.Push( (byte)currentElementProperties );
+            elementScope.Push((byte)currentElementProperties);
 
-            if ( ns.Length == 0 ) {
-                Debug.Assert( prefix.Length == 0 );
+            if (ns.Length == 0)
+            {
+                Debug.Assert(prefix.Length == 0);
 
-                
-                currentElementProperties = (ElementProperties)elementPropertySearch.FindCaseInsensitiveString( localName );
-                base.bufBytes[bufPos++] = (byte) '<';
-                base.RawText( localName );
+
+                currentElementProperties = (ElementProperties)elementPropertySearch.FindCaseInsensitiveString(localName);
+                base.bufBytes[bufPos++] = (byte)'<';
+                base.RawText(localName);
                 base.attrEndPos = bufPos;
             }
-            else {
+            else
+            {
                 // Since the HAS_NS has no impact to the ElementTextBlock behavior,
                 // we don't need to push it into the stack.
                 currentElementProperties = ElementProperties.HAS_NS;
-                base.WriteStartElement( prefix, localName, ns );
+                base.WriteStartElement(prefix, localName, ns);
             }
         }
 
         // Output >. For HTML needs to output META info
-        internal override void StartElementContent() {
-            base.bufBytes[base.bufPos++] = (byte) '>';
+        internal override void StartElementContent()
+        {
+            base.bufBytes[base.bufPos++] = (byte)'>';
 
             // Detect whether content is output
             this.contentPos = this.bufPos;
 
-            if ( ( currentElementProperties & ElementProperties.HEAD ) != 0 ) {
+            if ((currentElementProperties & ElementProperties.HEAD) != 0)
+            {
                 WriteMetaElement();
             }
         }
@@ -146,43 +162,51 @@ namespace Microsoft.Xml {
         // for HTML(ns.Length == 0)
         //    not an empty tag <h1></h1>
         //    empty tag <basefont>
-        internal override void WriteEndElement( string prefix, string localName, string ns ) {
-            if ( ns.Length == 0 ) {
-                Debug.Assert( prefix.Length == 0 );
+        internal override void WriteEndElement(string prefix, string localName, string ns)
+        {
+            if (ns.Length == 0)
+            {
+                Debug.Assert(prefix.Length == 0);
 
-                
 
-                if ( ( currentElementProperties & ElementProperties.EMPTY ) == 0 ) {
-                    bufBytes[base.bufPos++] = (byte) '<'; 
-                    bufBytes[base.bufPos++] = (byte) '/'; 
-                    base.RawText( localName ); 
-                    bufBytes[base.bufPos++] = (byte) '>';
+
+                if ((currentElementProperties & ElementProperties.EMPTY) == 0)
+                {
+                    bufBytes[base.bufPos++] = (byte)'<';
+                    bufBytes[base.bufPos++] = (byte)'/';
+                    base.RawText(localName);
+                    bufBytes[base.bufPos++] = (byte)'>';
                 }
             }
-            else {
+            else
+            {
                 //xml content
-                base.WriteEndElement( prefix, localName, ns );
+                base.WriteEndElement(prefix, localName, ns);
             }
 
             currentElementProperties = (ElementProperties)elementScope.Pop();
-       }
+        }
 
-        internal override void WriteFullEndElement( string prefix, string localName, string ns ) {
-            if ( ns.Length == 0 ) {
-                Debug.Assert( prefix.Length == 0 );
+        internal override void WriteFullEndElement(string prefix, string localName, string ns)
+        {
+            if (ns.Length == 0)
+            {
+                Debug.Assert(prefix.Length == 0);
 
-                
 
-                if ( ( currentElementProperties & ElementProperties.EMPTY ) == 0 ) {
-                    bufBytes[base.bufPos++] = (byte) '<'; 
-                    bufBytes[base.bufPos++] = (byte) '/'; 
-                    base.RawText( localName ); 
-                    bufBytes[base.bufPos++] = (byte) '>';
+
+                if ((currentElementProperties & ElementProperties.EMPTY) == 0)
+                {
+                    bufBytes[base.bufPos++] = (byte)'<';
+                    bufBytes[base.bufPos++] = (byte)'/';
+                    base.RawText(localName);
+                    bufBytes[base.bufPos++] = (byte)'>';
                 }
             }
-            else {
+            else
+            {
                 //xml content
-                base.WriteFullEndElement( prefix, localName, ns );
+                base.WriteFullEndElement(prefix, localName, ns);
             }
 
             currentElementProperties = (ElementProperties)elementScope.Pop();
@@ -285,163 +309,190 @@ namespace Microsoft.Xml {
         //          output amp;
         //     }
         //
-        public override void WriteStartAttribute( string prefix, string localName, string ns ) {
-            Debug.Assert( localName != null && localName.Length != 0 && prefix != null  && ns != null );
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
+        {
+            Debug.Assert(localName != null && localName.Length != 0 && prefix != null && ns != null);
 
-            if ( ns.Length == 0 ) {
-                Debug.Assert( prefix.Length == 0 );
-                
+            if (ns.Length == 0)
+            {
+                Debug.Assert(prefix.Length == 0);
 
-                if ( base.attrEndPos == bufPos ) {
-                    base.bufBytes[bufPos++] = (byte) ' ';
+
+                if (base.attrEndPos == bufPos)
+                {
+                    base.bufBytes[bufPos++] = (byte)' ';
                 }
-                base.RawText( localName );
+                base.RawText(localName);
 
-                if ( ( currentElementProperties & ( ElementProperties.BOOL_PARENT | ElementProperties.URI_PARENT | ElementProperties.NAME_PARENT ) ) != 0 ) {
-                    currentAttributeProperties = (AttributeProperties)attributePropertySearch.FindCaseInsensitiveString( localName ) &
+                if ((currentElementProperties & (ElementProperties.BOOL_PARENT | ElementProperties.URI_PARENT | ElementProperties.NAME_PARENT)) != 0)
+                {
+                    _currentAttributeProperties = (AttributeProperties)attributePropertySearch.FindCaseInsensitiveString(localName) &
                                                  (AttributeProperties)currentElementProperties;
 
-                    if ( ( currentAttributeProperties & AttributeProperties.BOOLEAN ) != 0 ) {
+                    if ((_currentAttributeProperties & AttributeProperties.BOOLEAN) != 0)
+                    {
                         base.inAttributeValue = true;
                         return;
                     }
                 }
-                else {
-                    currentAttributeProperties = AttributeProperties.DEFAULT;
+                else
+                {
+                    _currentAttributeProperties = AttributeProperties.DEFAULT;
                 }
 
-                base.bufBytes[bufPos++] = (byte) '=';
-                base.bufBytes[bufPos++] = (byte) '"';
+                base.bufBytes[bufPos++] = (byte)'=';
+                base.bufBytes[bufPos++] = (byte)'"';
             }
-            else {
-                base.WriteStartAttribute( prefix, localName, ns );
-                currentAttributeProperties = AttributeProperties.DEFAULT;
+            else
+            {
+                base.WriteStartAttribute(prefix, localName, ns);
+                _currentAttributeProperties = AttributeProperties.DEFAULT;
             }
 
             base.inAttributeValue = true;
         }
 
         // Output the amp; at end of EndAttribute
-        public override void WriteEndAttribute() {
-
-            if ( ( currentAttributeProperties & AttributeProperties.BOOLEAN ) != 0 ) {
+        public override void WriteEndAttribute()
+        {
+            if ((_currentAttributeProperties & AttributeProperties.BOOLEAN) != 0)
+            {
                 base.attrEndPos = bufPos;
             }
-            else {
-                if ( endsWithAmpersand ) {
+            else
+            {
+                if (_endsWithAmpersand)
+                {
                     OutputRestAmps();
-                    endsWithAmpersand = false;
+                    _endsWithAmpersand = false;
                 }
 
-                
 
-                base.bufBytes[bufPos++] = (byte) '"';
+
+                base.bufBytes[bufPos++] = (byte)'"';
             }
             base.inAttributeValue = false;
             base.attrEndPos = bufPos;
         }
 
         // HTML PI's use ">" to terminate rather than "?>".
-        public override void WriteProcessingInstruction( string target, string text ) {
-            Debug.Assert( target != null && target.Length != 0 && text != null );
+        public override void WriteProcessingInstruction(string target, string text)
+        {
+            Debug.Assert(target != null && target.Length != 0 && text != null);
 
-            
 
-            bufBytes[base.bufPos++] = (byte) '<';
-            bufBytes[base.bufPos++] = (byte) '?';
-            base.RawText( target );
-            bufBytes[base.bufPos++] = (byte) ' ';
 
-            base.WriteCommentOrPi( text, '?' );
+            bufBytes[base.bufPos++] = (byte)'<';
+            bufBytes[base.bufPos++] = (byte)'?';
+            base.RawText(target);
+            bufBytes[base.bufPos++] = (byte)' ';
 
-            base.bufBytes[base.bufPos++] = (byte) '>';
+            base.WriteCommentOrPi(text, '?');
 
-            if ( base.bufPos > base.bufLen ) {
+            base.bufBytes[base.bufPos++] = (byte)'>';
+
+            if (base.bufPos > base.bufLen)
+            {
                 FlushBuffer();
             }
         }
 
         // Serialize either attribute or element text using HTML rules.
-        public override unsafe void WriteString( string text ) {
-            Debug.Assert( text != null );
+        public override unsafe void WriteString(string text)
+        {
+            Debug.Assert(text != null);
 
-            
 
-            fixed ( char * pSrc = text ) {
-                char * pSrcEnd = pSrc + text.Length;
-                if ( base.inAttributeValue) {
-                    WriteHtmlAttributeTextBlock( pSrc, pSrcEnd );
+
+            fixed (char* pSrc = text)
+            {
+                char* pSrcEnd = pSrc + text.Length;
+                if (base.inAttributeValue)
+                {
+                    WriteHtmlAttributeTextBlock(pSrc, pSrcEnd);
                 }
-                else {
-                    WriteHtmlElementTextBlock( pSrc, pSrcEnd );
-                }
-            }
-        }
-
-        public override void WriteEntityRef( string name ) {
-            throw new InvalidOperationException( ResXml.GetString( ResXml.Xml_InvalidOperation ) );
-        }
-
-        public override void WriteCharEntity( char ch ) {
-            throw new InvalidOperationException( ResXml.GetString( ResXml.Xml_InvalidOperation ) );
-        }
-
-        public override void WriteSurrogateCharEntity( char lowChar, char highChar ) {
-            throw new InvalidOperationException( ResXml.GetString( ResXml.Xml_InvalidOperation ) );
-        }
-
-        public override unsafe void WriteChars( char[] buffer, int index, int count ) {
-            Debug.Assert( buffer != null );
-            Debug.Assert( index >= 0 );
-            Debug.Assert( count >= 0 && index + count <= buffer.Length );
-
-            
-
-            fixed ( char * pSrcBegin = &buffer[index] ) {
-                if ( inAttributeValue ) {
-                    WriteAttributeTextBlock( pSrcBegin, pSrcBegin + count );
-                }
-                else {
-                    WriteElementTextBlock( pSrcBegin, pSrcBegin + count );
+                else
+                {
+                    WriteHtmlElementTextBlock(pSrc, pSrcEnd);
                 }
             }
         }
 
-//
-// Private methods
-//
+        public override void WriteEntityRef(string name)
+        {
+            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+        }
 
-        private void Init( XmlWriterSettings settings ) {
-            Debug.Assert( (int)ElementProperties.URI_PARENT == (int)AttributeProperties.URI );
-            Debug.Assert( (int)ElementProperties.BOOL_PARENT == (int)AttributeProperties.BOOLEAN );
-            Debug.Assert( (int)ElementProperties.NAME_PARENT == (int)AttributeProperties.NAME );
+        public override void WriteCharEntity(char ch)
+        {
+            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+        }
 
-            if ( elementPropertySearch == null ) {
+        public override void WriteSurrogateCharEntity(char lowChar, char highChar)
+        {
+            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+        }
+
+        public override unsafe void WriteChars(char[] buffer, int index, int count)
+        {
+            Debug.Assert(buffer != null);
+            Debug.Assert(index >= 0);
+            Debug.Assert(count >= 0 && index + count <= buffer.Length);
+
+
+
+            fixed (char* pSrcBegin = &buffer[index])
+            {
+                if (inAttributeValue)
+                {
+                    WriteAttributeTextBlock(pSrcBegin, pSrcBegin + count);
+                }
+                else
+                {
+                    WriteElementTextBlock(pSrcBegin, pSrcBegin + count);
+                }
+            }
+        }
+
+        //
+        // Private methods
+        //
+
+        private void Init(XmlWriterSettings settings)
+        {
+            Debug.Assert((int)ElementProperties.URI_PARENT == (int)AttributeProperties.URI);
+            Debug.Assert((int)ElementProperties.BOOL_PARENT == (int)AttributeProperties.BOOLEAN);
+            Debug.Assert((int)ElementProperties.NAME_PARENT == (int)AttributeProperties.NAME);
+
+            if (elementPropertySearch == null)
+            {
                 //elementPropertySearch should be init last for the mutli thread safe situation.
-                attributePropertySearch = new TernaryTreeReadOnly(HtmlTernaryTree.htmlAttributes );
-                elementPropertySearch = new TernaryTreeReadOnly( HtmlTernaryTree.htmlElements );
+                attributePropertySearch = new TernaryTreeReadOnly(HtmlTernaryTree.htmlAttributes);
+                elementPropertySearch = new TernaryTreeReadOnly(HtmlTernaryTree.htmlElements);
             }
 
-            elementScope = new ByteStack( StackIncrement );
-            uriEscapingBuffer = new byte[5];
+            elementScope = new ByteStack(StackIncrement);
+            _uriEscapingBuffer = new byte[5];
             currentElementProperties = ElementProperties.DEFAULT;
 
-            mediaType = settings.MediaType;
-            doNotEscapeUriAttributes = settings.DoNotEscapeUriAttributes;
+            _mediaType = settings.MediaType;
+            _doNotEscapeUriAttributes = settings.DoNotEscapeUriAttributes;
         }
 
-        protected void WriteMetaElement() {
+        protected void WriteMetaElement()
+        {
             base.RawText("<META http-equiv=\"Content-Type\"");
 
-            if ( mediaType == null ) {
-                mediaType = "text/html";
+            if (_mediaType == null)
+            {
+                _mediaType = "text/html";
             }
 
-            base.RawText( " content=\"" );
-            base.RawText( mediaType );
-            base.RawText( "; charset=" );
-            base.RawText( base.encoding.WebName );
-            base.RawText( "\">" );
+            base.RawText(" content=\"");
+            base.RawText(_mediaType);
+            base.RawText("; charset=");
+            base.RawText(base.encoding.WebName);
+            base.RawText("\">");
         }
 
         // Justify the stack usage:
@@ -453,34 +504,44 @@ namespace Microsoft.Xml {
         //
         // In the situation 2 and 3, the stored currentElementProrperties will be E2's,
         // only the top of the stack is the real E1 element properties.
-        protected unsafe void WriteHtmlElementTextBlock( char * pSrc, char * pSrcEnd ) {
-            if ( ( currentElementProperties & ElementProperties.NO_ENTITIES ) != 0 ) {
-                base.RawText( pSrc, pSrcEnd );
-            } else {
-                base.WriteElementTextBlock( pSrc, pSrcEnd );
+        protected unsafe void WriteHtmlElementTextBlock(char* pSrc, char* pSrcEnd)
+        {
+            if ((currentElementProperties & ElementProperties.NO_ENTITIES) != 0)
+            {
+                base.RawText(pSrc, pSrcEnd);
             }
-
+            else
+            {
+                base.WriteElementTextBlock(pSrc, pSrcEnd);
+            }
         }
 
-        protected unsafe void WriteHtmlAttributeTextBlock( char * pSrc, char * pSrcEnd ) {
-            if ( ( currentAttributeProperties & ( AttributeProperties.BOOLEAN | AttributeProperties.URI | AttributeProperties.NAME ) ) != 0 ) {
-                if ( ( currentAttributeProperties & AttributeProperties.BOOLEAN ) != 0 ) {
+        protected unsafe void WriteHtmlAttributeTextBlock(char* pSrc, char* pSrcEnd)
+        {
+            if ((_currentAttributeProperties & (AttributeProperties.BOOLEAN | AttributeProperties.URI | AttributeProperties.NAME)) != 0)
+            {
+                if ((_currentAttributeProperties & AttributeProperties.BOOLEAN) != 0)
+                {
                     //if output boolean attribute, ignore this call.
                     return;
                 }
 
-                if ( ( currentAttributeProperties & ( AttributeProperties.URI | AttributeProperties.NAME ) ) != 0 && !doNotEscapeUriAttributes ) {
-                    WriteUriAttributeText( pSrc, pSrcEnd );
+                if ((_currentAttributeProperties & (AttributeProperties.URI | AttributeProperties.NAME)) != 0 && !_doNotEscapeUriAttributes)
+                {
+                    WriteUriAttributeText(pSrc, pSrcEnd);
                 }
-                else {
-                    WriteHtmlAttributeText( pSrc, pSrcEnd );
+                else
+                {
+                    WriteHtmlAttributeText(pSrc, pSrcEnd);
                 }
             }
-            else if ( ( currentElementProperties & ElementProperties.HAS_NS ) != 0 ) {
-                base.WriteAttributeTextBlock( pSrc, pSrcEnd );
+            else if ((currentElementProperties & ElementProperties.HAS_NS) != 0)
+            {
+                base.WriteAttributeTextBlock(pSrc, pSrcEnd);
             }
-            else {
-                WriteHtmlAttributeText( pSrc, pSrcEnd );
+            else
+            {
+                WriteHtmlAttributeText(pSrc, pSrcEnd);
             }
         }
 
@@ -504,41 +565,47 @@ namespace Microsoft.Xml {
         //      else output amp;
         //
 
-        private unsafe void WriteHtmlAttributeText( char * pSrc, char *pSrcEnd ) {
-            if ( endsWithAmpersand ) {
-                if ( pSrcEnd - pSrc > 0 && pSrc[0] != '{' ) {
+        private unsafe void WriteHtmlAttributeText(char* pSrc, char* pSrcEnd)
+        {
+            if (_endsWithAmpersand)
+            {
+                if (pSrcEnd - pSrc > 0 && pSrc[0] != '{')
+                {
                     OutputRestAmps();
                 }
-                endsWithAmpersand = false;
+                _endsWithAmpersand = false;
             }
 
-            fixed ( byte * pDstBegin = bufBytes ) {
-                byte * pDst = pDstBegin + this.bufPos;
+            fixed (byte* pDstBegin = bufBytes)
+            {
+                byte* pDst = pDstBegin + this.bufPos;
 
                 char ch = (char)0;
-                for (;;) {
-                    byte * pDstEnd = pDst + ( pSrcEnd - pSrc );
-                    if ( pDstEnd > pDstBegin + bufLen ) {
+                for (; ; )
+                {
+                    byte* pDstEnd = pDst + (pSrcEnd - pSrc);
+                    if (pDstEnd > pDstBegin + bufLen)
+                    {
                         pDstEnd = pDstBegin + bufLen;
                     }
 
 
-                    while ( pDst < pDstEnd && ( ( ( xmlCharType.charProperties[( ch = *pSrc )] & XmlCharType.fAttrValue ) != 0 ) && ch <= 0x7F ) ) {
-
-
-
+                    while (pDst < pDstEnd && (((xmlCharType.charProperties[(ch = *pSrc)] & XmlCharType.fAttrValue) != 0) && ch <= 0x7F))
+                    {
                         *pDst++ = (byte)ch;
                         pSrc++;
                     }
-                    Debug.Assert( pSrc <= pSrcEnd );
+                    Debug.Assert(pSrc <= pSrcEnd);
 
                     // end of value
-                    if ( pSrc >= pSrcEnd ) {
+                    if (pSrc >= pSrcEnd)
+                    {
                         break;
                     }
 
                     // end of buffer
-                    if ( pDst >= pDstEnd ) {
+                    if (pDst >= pDstEnd)
+                    {
                         bufPos = (int)(pDst - pDstBegin);
                         FlushBuffer();
                         pDst = pDstBegin + 1;
@@ -546,19 +613,22 @@ namespace Microsoft.Xml {
                     }
 
                     // some character needs to be escaped
-                    switch ( ch ) {
+                    switch (ch)
+                    {
                         case '&':
-                            if ( pSrc + 1 == pSrcEnd ) {
-                                endsWithAmpersand = true;
+                            if (pSrc + 1 == pSrcEnd)
+                            {
+                                _endsWithAmpersand = true;
                             }
-                            else if ( pSrc[1] != '{' ) {
+                            else if (pSrc[1] != '{')
+                            {
                                 pDst = XmlUtf8RawTextWriter.AmpEntity(pDst);
                                 break;
                             }
                             *pDst++ = (byte)ch;
                             break;
                         case '"':
-                            pDst = QuoteEntity( pDst );
+                            pDst = QuoteEntity(pDst);
                             break;
                         case '<':
                         case '>':
@@ -568,14 +638,14 @@ namespace Microsoft.Xml {
                             break;
                         case (char)0xD:
                             // do not normalize new lines in attributes - just escape them
-                            pDst = CarriageReturnEntity( pDst );
+                            pDst = CarriageReturnEntity(pDst);
                             break;
                         case (char)0xA:
                             // do not normalize new lines in attributes - just escape them
-                            pDst = LineFeedEntity( pDst );
+                            pDst = LineFeedEntity(pDst);
                             break;
                         default:
-                            EncodeChar( ref pSrc, pSrcEnd, ref pDst);
+                            EncodeChar(ref pSrc, pSrcEnd, ref pDst);
                             continue;
                     }
                     pSrc++;
@@ -584,37 +654,46 @@ namespace Microsoft.Xml {
             }
         }
 
-        private unsafe void WriteUriAttributeText( char * pSrc, char * pSrcEnd ) {
-            if ( endsWithAmpersand ) {
-                if ( pSrcEnd - pSrc > 0 && pSrc[0] != '{' ) {
+        private unsafe void WriteUriAttributeText(char* pSrc, char* pSrcEnd)
+        {
+            if (_endsWithAmpersand)
+            {
+                if (pSrcEnd - pSrc > 0 && pSrc[0] != '{')
+                {
                     OutputRestAmps();
                 }
-                this.endsWithAmpersand = false;
+                _endsWithAmpersand = false;
             }
 
-            fixed ( byte * pDstBegin = bufBytes ) {
-                byte * pDst = pDstBegin + this.bufPos;
+            fixed (byte* pDstBegin = bufBytes)
+            {
+                byte* pDst = pDstBegin + this.bufPos;
 
                 char ch = (char)0;
-                for (;;) {
-                    byte * pDstEnd = pDst + ( pSrcEnd - pSrc );
-                    if ( pDstEnd > pDstBegin + bufLen ) {
+                for (; ; )
+                {
+                    byte* pDstEnd = pDst + (pSrcEnd - pSrc);
+                    if (pDstEnd > pDstBegin + bufLen)
+                    {
                         pDstEnd = pDstBegin + bufLen;
                     }
 
-                    while ( pDst < pDstEnd && ( ( ( xmlCharType.charProperties[( ch = *pSrc )] & XmlCharType.fAttrValue ) != 0 ) && ch < 0x80 ) ) {
+                    while (pDst < pDstEnd && (((xmlCharType.charProperties[(ch = *pSrc)] & XmlCharType.fAttrValue) != 0) && ch < 0x80))
+                    {
                         *pDst++ = (byte)ch;
                         pSrc++;
                     }
-                    Debug.Assert( pSrc <= pSrcEnd );
+                    Debug.Assert(pSrc <= pSrcEnd);
 
                     // end of value
-                    if ( pSrc >= pSrcEnd ) {
+                    if (pSrc >= pSrcEnd)
+                    {
                         break;
                     }
 
                     // end of buffer
-                    if ( pDst >= pDstEnd ) {
+                    if (pDst >= pDstEnd)
+                    {
                         bufPos = (int)(pDst - pDstBegin);
                         FlushBuffer();
                         pDst = pDstBegin + 1;
@@ -622,19 +701,22 @@ namespace Microsoft.Xml {
                     }
 
                     // some character needs to be escaped
-                    switch ( ch ) {
+                    switch (ch)
+                    {
                         case '&':
-                            if ( pSrc + 1 == pSrcEnd ) {
-                                endsWithAmpersand = true;
+                            if (pSrc + 1 == pSrcEnd)
+                            {
+                                _endsWithAmpersand = true;
                             }
-                            else if ( pSrc[1] != '{' ) {
+                            else if (pSrc[1] != '{')
+                            {
                                 pDst = XmlUtf8RawTextWriter.AmpEntity(pDst);
                                 break;
                             }
                             *pDst++ = (byte)ch;
                             break;
                         case '"':
-                            pDst = QuoteEntity( pDst );
+                            pDst = QuoteEntity(pDst);
                             break;
                         case '<':
                         case '>':
@@ -644,24 +726,26 @@ namespace Microsoft.Xml {
                             break;
                         case (char)0xD:
                             // do not normalize new lines in attributes - just escape them
-                            pDst = CarriageReturnEntity( pDst );
+                            pDst = CarriageReturnEntity(pDst);
                             break;
                         case (char)0xA:
                             // do not normalize new lines in attributes - just escape them
-                            pDst = LineFeedEntity( pDst );
+                            pDst = LineFeedEntity(pDst);
                             break;
                         default:
                             const string hexDigits = "0123456789ABCDEF";
-                            fixed ( byte * pUriEscapingBuffer = uriEscapingBuffer ) {
-                                byte * pByte = pUriEscapingBuffer;
-                                byte * pEnd = pByte;
+                            fixed (byte* pUriEscapingBuffer = _uriEscapingBuffer)
+                            {
+                                byte* pByte = pUriEscapingBuffer;
+                                byte* pEnd = pByte;
 
-                                XmlUtf8RawTextWriter.CharToUTF8( ref pSrc, pSrcEnd, ref pEnd );
+                                XmlUtf8RawTextWriter.CharToUTF8(ref pSrc, pSrcEnd, ref pEnd);
 
-                                while ( pByte < pEnd ) {
-                                    *pDst++ = (byte) '%'; 
-                                    *pDst++ = (byte) hexDigits[*pByte >> 4];
-                                    *pDst++ = (byte) hexDigits[*pByte & 0xF];
+                                while (pByte < pEnd)
+                                {
+                                    *pDst++ = (byte)'%';
+                                    *pDst++ = (byte)hexDigits[*pByte >> 4];
+                                    *pDst++ = (byte)hexDigits[*pByte & 0xF];
                                     pByte++;
                                 }
                             }
@@ -674,7 +758,8 @@ namespace Microsoft.Xml {
         }
 
         // For handling &{ in Html text field. If & is not followed by {, it still needs to be escaped.
-        private void OutputRestAmps() {
+        private void OutputRestAmps()
+        {
             base.bufBytes[bufPos++] = (byte)'a';
             base.bufBytes[bufPos++] = (byte)'m';
             base.bufBytes[bufPos++] = (byte)'p';
@@ -720,112 +805,127 @@ namespace Microsoft.Xml {
     //
     // 4).    SE SC    same as above          EE            a). check stored blockPro                      <A></A>
     //                                                     b). true:  indentLevel no change
-    internal class HtmlUtf8RawTextWriterIndent : HtmlUtf8RawTextWriter {
-//
-// Fields
-//
-        int indentLevel;
+    internal class HtmlUtf8RawTextWriterIndent : HtmlUtf8RawTextWriter
+    {
+        //
+        // Fields
+        //
+        private int _indentLevel;
 
         // for detecting SE SC sitution
-        int endBlockPos;
+        private int _endBlockPos;
 
         // settings
-        string  indentChars;
-        bool    newLineOnAttributes;
+        private string _indentChars;
+        private bool _newLineOnAttributes;
 
-//
-// Constructors
-//
-
-
+        //
+        // Constructors
+        //
 
 
 
 
 
-        public HtmlUtf8RawTextWriterIndent( Stream stream, XmlWriterSettings settings ) : base( stream, settings ) {
-            Init( settings );
+
+
+        public HtmlUtf8RawTextWriterIndent(Stream stream, XmlWriterSettings settings) : base(stream, settings)
+        {
+            Init(settings);
         }
 
-//
-// XmlRawWriter overrides
-//
+        //
+        // XmlRawWriter overrides
+        //
         /// <summary>
         /// Serialize the document type declaration.
         /// </summary>
-        public override void WriteDocType( string name, string pubid, string sysid, string subset ) {
-            base.WriteDocType( name, pubid, sysid, subset );
+        public override void WriteDocType(string name, string pubid, string sysid, string subset)
+        {
+            base.WriteDocType(name, pubid, sysid, subset);
 
             // Allow indentation after DocTypeDecl
-            endBlockPos = base.bufPos;
+            _endBlockPos = base.bufPos;
         }
 
-        public override void WriteStartElement(string prefix, string localName, string ns ) {
-            Debug.Assert( localName != null && localName.Length != 0 && prefix != null && ns != null );
+        public override void WriteStartElement(string prefix, string localName, string ns)
+        {
+            Debug.Assert(localName != null && localName.Length != 0 && prefix != null && ns != null);
 
-            
 
-            base.elementScope.Push( (byte)base.currentElementProperties );
 
-            if ( ns.Length == 0 ) {
-                Debug.Assert( prefix.Length == 0 );
+            base.elementScope.Push((byte)base.currentElementProperties);
 
-                base.currentElementProperties = (ElementProperties)elementPropertySearch.FindCaseInsensitiveString( localName );
+            if (ns.Length == 0)
+            {
+                Debug.Assert(prefix.Length == 0);
 
-                if ( endBlockPos == base.bufPos && ( base.currentElementProperties & ElementProperties.BLOCK_WS ) != 0 ) {
+                base.currentElementProperties = (ElementProperties)elementPropertySearch.FindCaseInsensitiveString(localName);
+
+                if (_endBlockPos == base.bufPos && (base.currentElementProperties & ElementProperties.BLOCK_WS) != 0)
+                {
                     WriteIndent();
                 }
-                indentLevel++;
+                _indentLevel++;
 
-                base.bufBytes[bufPos++] = (byte) '<';
+                base.bufBytes[bufPos++] = (byte)'<';
             }
-            else {
+            else
+            {
                 base.currentElementProperties = ElementProperties.HAS_NS | ElementProperties.BLOCK_WS;
 
-                if ( endBlockPos == base.bufPos ) {
+                if (_endBlockPos == base.bufPos)
+                {
                     WriteIndent();
                 }
-                indentLevel++;
+                _indentLevel++;
 
-                base.bufBytes[base.bufPos++] = (byte) '<';
-                if ( prefix.Length != 0 ) {
-                    base.RawText( prefix );
-                    base.bufBytes[base.bufPos++] = (byte) ':';
+                base.bufBytes[base.bufPos++] = (byte)'<';
+                if (prefix.Length != 0)
+                {
+                    base.RawText(prefix);
+                    base.bufBytes[base.bufPos++] = (byte)':';
                 }
             }
-            base.RawText( localName );
+            base.RawText(localName);
             base.attrEndPos = bufPos;
         }
 
-        internal override void StartElementContent() {
-            base.bufBytes[base.bufPos++] = (byte) '>';
+        internal override void StartElementContent()
+        {
+            base.bufBytes[base.bufPos++] = (byte)'>';
 
             // Detect whether content is output
             base.contentPos = base.bufPos;
 
-            if ( ( currentElementProperties & ElementProperties.HEAD ) != 0) {
+            if ((currentElementProperties & ElementProperties.HEAD) != 0)
+            {
                 WriteIndent();
                 WriteMetaElement();
-                endBlockPos = base.bufPos;
+                _endBlockPos = base.bufPos;
             }
-            else if ( ( base.currentElementProperties & ElementProperties.BLOCK_WS ) != 0 ) {
+            else if ((base.currentElementProperties & ElementProperties.BLOCK_WS) != 0)
+            {
                 // store the element block position
-                endBlockPos = base.bufPos;
+                _endBlockPos = base.bufPos;
             }
         }
 
-        internal override void WriteEndElement( string prefix, string localName, string ns ) {
+        internal override void WriteEndElement(string prefix, string localName, string ns)
+        {
             bool isBlockWs;
-            Debug.Assert( localName != null && localName.Length != 0 && prefix != null && ns != null );
+            Debug.Assert(localName != null && localName.Length != 0 && prefix != null && ns != null);
 
-            indentLevel--;
+            _indentLevel--;
 
             // If this element has block whitespace properties,
-            isBlockWs = ( base.currentElementProperties & ElementProperties.BLOCK_WS ) != 0;
-            if ( isBlockWs ) {
+            isBlockWs = (base.currentElementProperties & ElementProperties.BLOCK_WS) != 0;
+            if (isBlockWs)
+            {
                 // And if the last node to be output had block whitespace properties,
                 // And if content was output within this element,
-                if ( endBlockPos == base.bufPos && base.contentPos != base.bufPos ) {
+                if (_endBlockPos == base.bufPos && base.contentPos != base.bufPos)
+                {
                     // Then indent
                     WriteIndent();
                 }
@@ -837,37 +937,43 @@ namespace Microsoft.Xml {
             base.contentPos = 0;
 
             // Mark end of element in buffer for element's with block whitespace properties
-            if ( isBlockWs ) {
-                endBlockPos = base.bufPos;
+            if (isBlockWs)
+            {
+                _endBlockPos = base.bufPos;
             }
         }
 
-        public override void WriteStartAttribute( string prefix, string localName, string ns ) {
-            if ( newLineOnAttributes ) {
-                RawText( base.newLineChars );
-                indentLevel++;
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
+        {
+            if (_newLineOnAttributes)
+            {
+                RawText(base.newLineChars);
+                _indentLevel++;
                 WriteIndent();
-                indentLevel--;
+                _indentLevel--;
             }
-            base.WriteStartAttribute( prefix, localName, ns );
+            base.WriteStartAttribute(prefix, localName, ns);
         }
 
-        protected override void FlushBuffer() {
+        protected override void FlushBuffer()
+        {
             // Make sure the buffer will reset the block position
-            endBlockPos = ( endBlockPos == base.bufPos ) ? 1 : 0;
+            _endBlockPos = (_endBlockPos == base.bufPos) ? 1 : 0;
             base.FlushBuffer();
         }
 
-//
-// Private methods
-//
-        private void Init( XmlWriterSettings settings ) {
-            indentLevel = 0;
-            indentChars = settings.IndentChars;
-            newLineOnAttributes = settings.NewLineOnAttributes;
+        //
+        // Private methods
+        //
+        private void Init(XmlWriterSettings settings)
+        {
+            _indentLevel = 0;
+            _indentChars = settings.IndentChars;
+            _newLineOnAttributes = settings.NewLineOnAttributes;
         }
 
-        private void WriteIndent() {
+        private void WriteIndent()
+        {
             // <block><inline>  -- suppress ws betw <block> and <inline>
             // <block><block>   -- don't suppress ws betw <block> and <block>
             // <block>text      -- suppress ws betw <block> and text (handled by wcharText method)
@@ -880,9 +986,10 @@ namespace Microsoft.Xml {
             // <inline><?PI?>   -- suppress ws betw <inline> and PI
             // <inline><!-- --> -- suppress ws betw <inline> and comment
 
-            RawText( base.newLineChars );
-            for ( int i = indentLevel; i > 0; i-- ) {
-                RawText( indentChars );
+            RawText(base.newLineChars);
+            for (int i = _indentLevel; i > 0; i--)
+            {
+                RawText(_indentChars);
             }
         }
     }

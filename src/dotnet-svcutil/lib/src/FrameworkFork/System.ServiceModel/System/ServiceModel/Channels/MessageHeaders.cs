@@ -791,7 +791,7 @@ namespace System.ServiceModel.Channels
             }
 
             XmlDictionaryReader reader = GetBufferedMessageHeaderReaderAtHeaderContents(bufferedMessageData);
-            for (; ;)
+            for (; ; )
             {
                 if (reader.NodeType != XmlNodeType.Element)
                     reader.MoveToContent();

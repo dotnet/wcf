@@ -1,30 +1,34 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using Microsoft.Xml;
 using Microsoft.Xml.XPath;
 using System.Diagnostics;
 
-namespace MS.Internal.Xml.Cache {
-
+namespace MS.Internal.Xml.Cache
+{
     /// <summary>
     /// Base internal class of all XPathDocument XPathNodeIterator implementations.
     /// </summary>
-    internal abstract class XPathDocumentBaseIterator : XPathNodeIterator {
+    internal abstract class XPathDocumentBaseIterator : XPathNodeIterator
+    {
         protected XPathDocumentNavigator ctxt;
         protected int pos;
 
         /// <summary>
         /// Create a new iterator that is initially positioned on the "ctxt" node.
         /// </summary>
-        protected XPathDocumentBaseIterator(XPathDocumentNavigator ctxt) {
+        protected XPathDocumentBaseIterator(XPathDocumentNavigator ctxt)
+        {
             this.ctxt = new XPathDocumentNavigator(ctxt);
         }
 
         /// <summary>
         /// Create a new iterator that is a copy of "iter".
         /// </summary>
-        protected XPathDocumentBaseIterator(XPathDocumentBaseIterator iter) {
+        protected XPathDocumentBaseIterator(XPathDocumentBaseIterator iter)
+        {
             this.ctxt = new XPathDocumentNavigator(iter.ctxt);
             this.pos = iter.pos;
         }
@@ -32,14 +36,16 @@ namespace MS.Internal.Xml.Cache {
         /// <summary>
         /// Return the current navigator.
         /// </summary>
-        public override XPathNavigator Current {
+        public override XPathNavigator Current
+        {
             get { return this.ctxt; }
         }
 
         /// <summary>
         /// Return the iterator's current position.
         /// </summary>
-        public override int CurrentPosition {
+        public override int CurrentPosition
+        {
             get { return this.pos; }
         }
     }
@@ -48,44 +54,51 @@ namespace MS.Internal.Xml.Cache {
     /// <summary>
     /// Iterate over all element children with a particular QName.
     /// </summary>
-    internal class XPathDocumentElementChildIterator : XPathDocumentBaseIterator {
-        private string localName, namespaceUri;
+    internal class XPathDocumentElementChildIterator : XPathDocumentBaseIterator
+    {
+        private string _localName,_namespaceUri;
 
         /// <summary>
         /// Create an iterator that ranges over all element children of "parent" having the specified QName.
         /// </summary>
-        public XPathDocumentElementChildIterator(XPathDocumentNavigator parent, string name, string namespaceURI) : base(parent) {
+        public XPathDocumentElementChildIterator(XPathDocumentNavigator parent, string name, string namespaceURI) : base(parent)
+        {
             if (namespaceURI == null) throw new ArgumentNullException("namespaceURI");
 
-            this.localName = parent.NameTable.Get(name);
-            this.namespaceUri = namespaceURI;
+            _localName = parent.NameTable.Get(name);
+            _namespaceUri = namespaceURI;
         }
 
         /// <summary>
         /// Create a new iterator that is a copy of "iter".
         /// </summary>
-        public XPathDocumentElementChildIterator(XPathDocumentElementChildIterator iter) : base(iter) {
-            this.localName = iter.localName;
-            this.namespaceUri = iter.namespaceUri;
+        public XPathDocumentElementChildIterator(XPathDocumentElementChildIterator iter) : base(iter)
+        {
+            _localName = iter._localName;
+            _namespaceUri = iter._namespaceUri;
         }
 
         /// <summary>
         /// Create a copy of this iterator.
         /// </summary>
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new XPathDocumentElementChildIterator(this);
         }
 
         /// <summary>
         /// Position the iterator to the next matching child.
         /// </summary>
-        public override bool MoveNext() {
-            if (this.pos == 0) {
-                if (!this.ctxt.MoveToChild(this.localName, this.namespaceUri))
+        public override bool MoveNext()
+        {
+            if (this.pos == 0)
+            {
+                if (!this.ctxt.MoveToChild(_localName, _namespaceUri))
                     return false;
             }
-            else {
-                if (!this.ctxt.MoveToNext(this.localName, this.namespaceUri))
+            else
+            {
+                if (!this.ctxt.MoveToNext(_localName, _namespaceUri))
                     return false;
             }
 
@@ -98,40 +111,47 @@ namespace MS.Internal.Xml.Cache {
     /// <summary>
     /// Iterate over all content children with a particular XPathNodeType.
     /// </summary>
-    internal class XPathDocumentKindChildIterator : XPathDocumentBaseIterator {
-        private XPathNodeType typ;
+    internal class XPathDocumentKindChildIterator : XPathDocumentBaseIterator
+    {
+        private XPathNodeType _typ;
 
         /// <summary>
         /// Create an iterator that ranges over all content children of "parent" having the specified XPathNodeType.
         /// </summary>
-        public XPathDocumentKindChildIterator(XPathDocumentNavigator parent, XPathNodeType typ) : base(parent) {
-            this.typ = typ;
+        public XPathDocumentKindChildIterator(XPathDocumentNavigator parent, XPathNodeType typ) : base(parent)
+        {
+            _typ = typ;
         }
 
         /// <summary>
         /// Create a new iterator that is a copy of "iter".
         /// </summary>
-        public XPathDocumentKindChildIterator(XPathDocumentKindChildIterator iter) : base(iter) {
-            this.typ = iter.typ;
+        public XPathDocumentKindChildIterator(XPathDocumentKindChildIterator iter) : base(iter)
+        {
+            _typ = iter._typ;
         }
 
         /// <summary>
         /// Create a copy of this iterator.
         /// </summary>
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new XPathDocumentKindChildIterator(this);
         }
 
         /// <summary>
         /// Position the iterator to the next descendant.
         /// </summary>
-        public override bool MoveNext() {
-            if (this.pos == 0) {
-                if (!this.ctxt.MoveToChild(this.typ))
+        public override bool MoveNext()
+        {
+            if (this.pos == 0)
+            {
+                if (!this.ctxt.MoveToChild(_typ))
                     return false;
             }
-            else {
-                if (!this.ctxt.MoveToNext(this.typ))
+            else
+            {
+                if (!this.ctxt.MoveToNext(_typ))
                     return false;
             }
 
@@ -144,59 +164,67 @@ namespace MS.Internal.Xml.Cache {
     /// <summary>
     /// Iterate over all element descendants with a particular QName.
     /// </summary>
-    internal class XPathDocumentElementDescendantIterator : XPathDocumentBaseIterator {
-        private XPathDocumentNavigator end;
-        private string localName, namespaceUri;
-        private bool matchSelf;
+    internal class XPathDocumentElementDescendantIterator : XPathDocumentBaseIterator
+    {
+        private XPathDocumentNavigator _end;
+        private string _localName,_namespaceUri;
+        private bool _matchSelf;
 
         /// <summary>
         /// Create an iterator that ranges over all element descendants of "root" having the specified QName.
         /// </summary>
-        public XPathDocumentElementDescendantIterator(XPathDocumentNavigator root, string name, string namespaceURI, bool matchSelf) : base(root) {
+        public XPathDocumentElementDescendantIterator(XPathDocumentNavigator root, string name, string namespaceURI, bool matchSelf) : base(root)
+        {
             if (namespaceURI == null) throw new ArgumentNullException("namespaceURI");
 
-            this.localName = root.NameTable.Get(name);
-            this.namespaceUri = namespaceURI;
-            this.matchSelf = matchSelf;
+            _localName = root.NameTable.Get(name);
+            _namespaceUri = namespaceURI;
+            _matchSelf = matchSelf;
 
             // Find the next non-descendant node that follows "root" in document order
-            if (root.NodeType != XPathNodeType.Root) {
-                this.end = new XPathDocumentNavigator(root);
-                this.end.MoveToNonDescendant();
+            if (root.NodeType != XPathNodeType.Root)
+            {
+                _end = new XPathDocumentNavigator(root);
+                _end.MoveToNonDescendant();
             }
         }
 
         /// <summary>
         /// Create a new iterator that is a copy of "iter".
         /// </summary>
-        public XPathDocumentElementDescendantIterator(XPathDocumentElementDescendantIterator iter) : base(iter) {
-            this.end = iter.end;
-            this.localName = iter.localName;
-            this.namespaceUri = iter.namespaceUri;
-            this.matchSelf = iter.matchSelf;
+        public XPathDocumentElementDescendantIterator(XPathDocumentElementDescendantIterator iter) : base(iter)
+        {
+            _end = iter._end;
+            _localName = iter._localName;
+            _namespaceUri = iter._namespaceUri;
+            _matchSelf = iter._matchSelf;
         }
 
         /// <summary>
         /// Create a copy of this iterator.
         /// </summary>
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new XPathDocumentElementDescendantIterator(this);
         }
 
         /// <summary>
         /// Position the iterator to the next descendant.
         /// </summary>
-        public override bool MoveNext() {
-            if (this.matchSelf) {
-                this.matchSelf = false;
+        public override bool MoveNext()
+        {
+            if (_matchSelf)
+            {
+                _matchSelf = false;
 
-                if (this.ctxt.IsElementMatch(this.localName, this.namespaceUri)) {
+                if (this.ctxt.IsElementMatch(_localName, _namespaceUri))
+                {
                     this.pos++;
                     return true;
                 }
             }
 
-            if (!this.ctxt.MoveToFollowing(this.localName, this.namespaceUri, this.end))
+            if (!this.ctxt.MoveToFollowing(_localName, _namespaceUri, _end))
                 return false;
 
             this.pos++;
@@ -208,55 +236,63 @@ namespace MS.Internal.Xml.Cache {
     /// <summary>
     /// Iterate over all content descendants with a particular XPathNodeType.
     /// </summary>
-    internal class XPathDocumentKindDescendantIterator : XPathDocumentBaseIterator {
-        private XPathDocumentNavigator end;
-        private XPathNodeType typ;
-        private bool matchSelf;
+    internal class XPathDocumentKindDescendantIterator : XPathDocumentBaseIterator
+    {
+        private XPathDocumentNavigator _end;
+        private XPathNodeType _typ;
+        private bool _matchSelf;
 
         /// <summary>
         /// Create an iterator that ranges over all content descendants of "root" having the specified XPathNodeType.
         /// </summary>
-        public XPathDocumentKindDescendantIterator(XPathDocumentNavigator root, XPathNodeType typ, bool matchSelf) : base(root) {
-            this.typ = typ;
-            this.matchSelf = matchSelf;
+        public XPathDocumentKindDescendantIterator(XPathDocumentNavigator root, XPathNodeType typ, bool matchSelf) : base(root)
+        {
+            _typ = typ;
+            _matchSelf = matchSelf;
 
             // Find the next non-descendant node that follows "root" in document order
-            if (root.NodeType != XPathNodeType.Root) {
-                this.end = new XPathDocumentNavigator(root);
-                this.end.MoveToNonDescendant();
+            if (root.NodeType != XPathNodeType.Root)
+            {
+                _end = new XPathDocumentNavigator(root);
+                _end.MoveToNonDescendant();
             }
         }
 
         /// <summary>
         /// Create a new iterator that is a copy of "iter".
         /// </summary>
-        public XPathDocumentKindDescendantIterator(XPathDocumentKindDescendantIterator iter) : base(iter) {
-            this.end = iter.end;
-            this.typ = iter.typ;
-            this.matchSelf = iter.matchSelf;
+        public XPathDocumentKindDescendantIterator(XPathDocumentKindDescendantIterator iter) : base(iter)
+        {
+            _end = iter._end;
+            _typ = iter._typ;
+            _matchSelf = iter._matchSelf;
         }
 
         /// <summary>
         /// Create a copy of this iterator.
         /// </summary>
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new XPathDocumentKindDescendantIterator(this);
         }
 
         /// <summary>
         /// Position the iterator to the next descendant.
         /// </summary>
-        public override bool MoveNext() {
-            if (this.matchSelf) {
-                this.matchSelf = false;
+        public override bool MoveNext()
+        {
+            if (_matchSelf)
+            {
+                _matchSelf = false;
 
-                if (this.ctxt.IsKindMatch(this.typ)) {
+                if (this.ctxt.IsKindMatch(_typ))
+                {
                     this.pos++;
                     return true;
                 }
             }
 
-            if (!this.ctxt.MoveToFollowing(this.typ, this.end))
+            if (!this.ctxt.MoveToFollowing(_typ, _end))
                 return false;
 
             this.pos++;

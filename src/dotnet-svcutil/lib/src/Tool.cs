@@ -34,17 +34,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        private static string _pkgVersion;
+        private static string s_pkgVersion;
         internal static string PackageVersion
         {
             get
             {
-                if (string.IsNullOrEmpty(_pkgVersion))
+                if (string.IsNullOrEmpty(s_pkgVersion))
                 {
-                    _pkgVersion = typeof(Tool).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                    s_pkgVersion = typeof(Tool).GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                         .InformationalVersion.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                 }
-                return _pkgVersion;
+                return s_pkgVersion;
             }
         }
 
@@ -324,7 +324,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        private static bool processingException = false;
+        private static bool s_processingException = false;
         private static async Task<int> ProcessExceptionAsync(Exception ex, CommandProcessorOptions options)
         {
             int retVal = (int)ToolExitCode.Unknown;
@@ -335,7 +335,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 try
                 {
-                    processingException = true;
+                    s_processingException = true;
 
                     var agex = ex as AggregateException;
 

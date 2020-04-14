@@ -12,19 +12,19 @@ namespace System.ServiceModel.Description
     using System.ServiceModel.Channels;
     using System.ServiceModel.Dispatcher;
 
-    class DataContractSerializerOperationGenerator : IOperationBehavior, IOperationContractGenerationExtension
+    internal class DataContractSerializerOperationGenerator : IOperationBehavior, IOperationContractGenerationExtension
     {
-        Dictionary<OperationDescription, DataContractFormatAttribute> operationAttributes = new Dictionary<OperationDescription, DataContractFormatAttribute>();
-        OperationGenerator operationGenerator;
-        Dictionary<MessagePartDescription, ICollection<CodeTypeReference>> knownTypes;
-        Dictionary<MessagePartDescription, bool> isNonNillableReferenceTypes;
-        CodeCompileUnit codeCompileUnit;
+        private Dictionary<OperationDescription, DataContractFormatAttribute> _operationAttributes = new Dictionary<OperationDescription, DataContractFormatAttribute>();
+        private OperationGenerator _operationGenerator;
+        private Dictionary<MessagePartDescription, ICollection<CodeTypeReference>> _knownTypes;
+        private Dictionary<MessagePartDescription, bool> _isNonNillableReferenceTypes;
+        private CodeCompileUnit _codeCompileUnit;
 
         public DataContractSerializerOperationGenerator() : this(new CodeCompileUnit()) { }
         public DataContractSerializerOperationGenerator(CodeCompileUnit codeCompileUnit)
         {
-            this.codeCompileUnit = codeCompileUnit;
-            this.operationGenerator = new OperationGenerator();
+            _codeCompileUnit = codeCompileUnit;
+            _operationGenerator = new OperationGenerator();
         }
 
         internal void Add(MessagePartDescription part, CodeTypeReference typeReference, ICollection<CodeTypeReference> knownTypeReferences, bool isNonNillableReferenceType)
@@ -34,29 +34,29 @@ namespace System.ServiceModel.Description
                 KnownTypes.Add(part, knownTypeReferences);
             if (isNonNillableReferenceType)
             {
-                if (isNonNillableReferenceTypes == null)
-                    isNonNillableReferenceTypes = new Dictionary<MessagePartDescription, bool>();
-                isNonNillableReferenceTypes.Add(part, isNonNillableReferenceType);
+                if (_isNonNillableReferenceTypes == null)
+                    _isNonNillableReferenceTypes = new Dictionary<MessagePartDescription, bool>();
+                _isNonNillableReferenceTypes.Add(part, isNonNillableReferenceType);
             }
         }
 
         internal OperationGenerator OperationGenerator
         {
-            get { return this.operationGenerator; }
+            get { return _operationGenerator; }
         }
 
         internal Dictionary<OperationDescription, DataContractFormatAttribute> OperationAttributes
         {
-            get { return operationAttributes; }
+            get { return _operationAttributes; }
         }
 
         internal Dictionary<MessagePartDescription, ICollection<CodeTypeReference>> KnownTypes
         {
             get
             {
-                if (this.knownTypes == null)
-                    this.knownTypes = new Dictionary<MessagePartDescription, ICollection<CodeTypeReference>>();
-                return this.knownTypes;
+                if (_knownTypes == null)
+                    _knownTypes = new Dictionary<MessagePartDescription, ICollection<CodeTypeReference>>();
+                return _knownTypes;
             }
         }
 
@@ -76,11 +76,11 @@ namespace System.ServiceModel.Description
             DataContractSerializerOperationBehavior DataContractSerializerOperationBehavior = context.Operation.Behaviors.Find<DataContractSerializerOperationBehavior>() as DataContractSerializerOperationBehavior;
             DataContractFormatAttribute dataContractFormatAttribute = (DataContractSerializerOperationBehavior == null) ? new DataContractFormatAttribute() : DataContractSerializerOperationBehavior.DataContractFormatAttribute;
             OperationFormatStyle style = dataContractFormatAttribute.Style;
-            operationGenerator.GenerateOperation(context, ref style, false/*isEncoded*/, new WrappedBodyTypeGenerator(this, context), knownTypes);
+            _operationGenerator.GenerateOperation(context, ref style, false/*isEncoded*/, new WrappedBodyTypeGenerator(this, context), _knownTypes);
             dataContractFormatAttribute.Style = style;
             if (dataContractFormatAttribute.Style != TypeLoader.DefaultDataContractFormatAttribute.Style)
                 context.SyncMethod.CustomAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, dataContractFormatAttribute));
-            if (knownTypes != null)
+            if (_knownTypes != null)
             {
                 Dictionary<CodeTypeReference, object> operationKnownTypes = new Dictionary<CodeTypeReference, object>(new CodeTypeReferenceComparer());
                 foreach (MessageDescription message in context.Operation.Messages)
@@ -93,13 +93,13 @@ namespace System.ServiceModel.Description
                         AddKnownTypesForPart(context, message.Body.ReturnValue, operationKnownTypes);
                 }
             }
-            UpdateTargetCompileUnit(context, this.codeCompileUnit);
+            UpdateTargetCompileUnit(context, _codeCompileUnit);
         }
 
-        void AddKnownTypesForPart(OperationContractGenerationContext context, MessagePartDescription part, Dictionary<CodeTypeReference, object> operationKnownTypes)
+        private void AddKnownTypesForPart(OperationContractGenerationContext context, MessagePartDescription part, Dictionary<CodeTypeReference, object> operationKnownTypes)
         {
             ICollection<CodeTypeReference> knownTypesForPart;
-            if (knownTypes.TryGetValue(part, out knownTypesForPart))
+            if (_knownTypes.TryGetValue(part, out knownTypesForPart))
             {
                 foreach (CodeTypeReference knownTypeReference in knownTypesForPart)
                 {
@@ -142,13 +142,13 @@ namespace System.ServiceModel.Description
 
         internal class WrappedBodyTypeGenerator : IWrappedBodyTypeGenerator
         {
-            static CodeTypeReference dataContractAttributeTypeRef = new CodeTypeReference(typeof(DataContractAttribute));
-            int memberCount;
-            OperationContractGenerationContext context;
-            DataContractSerializerOperationGenerator dataContractSerializerOperationGenerator;
+            private static CodeTypeReference s_dataContractAttributeTypeRef = new CodeTypeReference(typeof(DataContractAttribute));
+            private int _memberCount;
+            private OperationContractGenerationContext _context;
+            private DataContractSerializerOperationGenerator _dataContractSerializerOperationGenerator;
             public void ValidateForParameterMode(OperationDescription operation)
             {
-                if (dataContractSerializerOperationGenerator.isNonNillableReferenceTypes == null)
+                if (_dataContractSerializerOperationGenerator._isNonNillableReferenceTypes == null)
                     return;
                 foreach (MessageDescription messageDescription in operation.Messages)
                 {
@@ -164,9 +164,9 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            void ValidateForParameterMode(MessagePartDescription part)
+            private void ValidateForParameterMode(MessagePartDescription part)
             {
-                if (dataContractSerializerOperationGenerator.isNonNillableReferenceTypes.ContainsKey(part))
+                if (_dataContractSerializerOperationGenerator._isNonNillableReferenceTypes.ContainsKey(part))
                 {
                     ParameterModeException parameterModeException = new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_ElementIsNotNillable, part.Name, part.Namespace));
                     parameterModeException.MessageContractType = MessageContractType.BareMessageContract;
@@ -176,8 +176,8 @@ namespace System.ServiceModel.Description
 
             public WrappedBodyTypeGenerator(DataContractSerializerOperationGenerator dataContractSerializerOperationGenerator, OperationContractGenerationContext context)
             {
-                this.context = context;
-                this.dataContractSerializerOperationGenerator = dataContractSerializerOperationGenerator;
+                _context = context;
+                _dataContractSerializerOperationGenerator = dataContractSerializerOperationGenerator;
             }
 
             public void AddMemberAttributes(XmlName messageName, MessagePartDescription part, CodeAttributeDeclarationCollection attributesImported, CodeAttributeDeclarationCollection typeAttributes, CodeAttributeDeclarationCollection fieldAttributes)
@@ -185,12 +185,11 @@ namespace System.ServiceModel.Description
                 CodeAttributeDeclaration dataContractAttributeDecl = null;
                 foreach (CodeAttributeDeclaration attr in typeAttributes)
                 {
-                    if (attr.AttributeType.BaseType == dataContractAttributeTypeRef.BaseType)
+                    if (attr.AttributeType.BaseType == s_dataContractAttributeTypeRef.BaseType)
                     {
                         dataContractAttributeDecl = attr;
                         break;
                     }
-
                 }
 
                 if (dataContractAttributeDecl == null)
@@ -214,27 +213,26 @@ namespace System.ServiceModel.Description
                     dataContractAttributeDecl.Arguments.Add(new CodeAttributeArgument("Namespace", new CodePrimitiveExpression(part.Namespace)));
 
                 DataMemberAttribute dataMemberAttribute = new DataMemberAttribute();
-                dataMemberAttribute.Order = memberCount++;
+                dataMemberAttribute.Order = _memberCount++;
                 dataMemberAttribute.EmitDefaultValue = !IsNonNillableReferenceType(part);
-                fieldAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, dataMemberAttribute));
-
+                fieldAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(_context.Contract.ServiceContractGenerator, dataMemberAttribute));
             }
 
             private bool IsNonNillableReferenceType(MessagePartDescription part)
             {
-                if (dataContractSerializerOperationGenerator.isNonNillableReferenceTypes == null)
+                if (_dataContractSerializerOperationGenerator._isNonNillableReferenceTypes == null)
                     return false;
-                return dataContractSerializerOperationGenerator.isNonNillableReferenceTypes.ContainsKey(part);
+                return _dataContractSerializerOperationGenerator._isNonNillableReferenceTypes.ContainsKey(part);
             }
 
             public void AddTypeAttributes(string messageName, string typeNS, CodeAttributeDeclarationCollection typeAttributes, bool isEncoded)
             {
-                typeAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(context.Contract.ServiceContractGenerator, new DataContractAttribute()));
-                memberCount = 0;
+                typeAttributes.Add(OperationGenerator.GenerateAttributeDeclaration(_context.Contract.ServiceContractGenerator, new DataContractAttribute()));
+                _memberCount = 0;
             }
         }
 
-        class CodeTypeReferenceComparer : IEqualityComparer<CodeTypeReference>
+        private class CodeTypeReferenceComparer : IEqualityComparer<CodeTypeReference>
         {
             public bool Equals(CodeTypeReference x, CodeTypeReference y)
             {
@@ -265,6 +263,5 @@ namespace System.ServiceModel.Description
                 return obj.GetHashCode();
             }
         }
-
     }
 }

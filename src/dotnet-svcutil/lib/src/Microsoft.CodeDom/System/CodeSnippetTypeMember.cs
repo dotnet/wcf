@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -17,19 +17,21 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeSnippetTypeMember : CodeTypeMember {
-        private string text;
+    public class CodeSnippetTypeMember : CodeTypeMember
+    {
+        private string _text;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeSnippetTypeMember'/>.
         ///    </para>
         /// </devdoc>
-        public CodeSnippetTypeMember() {
+        public CodeSnippetTypeMember()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeSnippetTypeMember'/>.
         ///    </para>
         /// </devdoc>
-        public CodeSnippetTypeMember(string text) {
+        public CodeSnippetTypeMember(string text)
+        {
             Text = text;
         }
 
@@ -46,12 +49,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the code for the class member.
         ///    </para>
         /// </devdoc>
-        public string Text {
-            get {
-                return (text == null) ? string.Empty : text;
+        public string Text
+        {
+            get
+            {
+                return (_text == null) ? string.Empty : _text;
             }
-            set {
-                text = value;
+            set
+            {
+                _text = value;
             }
         }
     }

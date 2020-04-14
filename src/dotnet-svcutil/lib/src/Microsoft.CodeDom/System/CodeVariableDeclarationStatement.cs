@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,21 +15,23 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeVariableDeclarationStatement : CodeStatement {
-        private CodeTypeReference type;
-        private string name;
-        private CodeExpression initExpression;
+    public class CodeVariableDeclarationStatement : CodeStatement
+    {
+        private CodeTypeReference _type;
+        private string _name;
+        private CodeExpression _initExpression;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeVariableDeclarationStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement() {
+        public CodeVariableDeclarationStatement()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeVariableDeclarationStatement'/> using the specified type and name.
         ///    </para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement(CodeTypeReference type, string name) {
+        public CodeVariableDeclarationStatement(CodeTypeReference type, string name)
+        {
             Type = type;
             Name = name;
         }
@@ -45,7 +48,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement(string type, string name) {
+        public CodeVariableDeclarationStatement(string type, string name)
+        {
             Type = new CodeTypeReference(type);
             Name = name;
         }
@@ -53,7 +57,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement(Type type, string name) {
+        public CodeVariableDeclarationStatement(Type type, string name)
+        {
             Type = new CodeTypeReference(type);
             Name = name;
         }
@@ -64,7 +69,8 @@ namespace Microsoft.CodeDom {
         ///       initialization expression.
         ///    </para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement(CodeTypeReference type, string name, CodeExpression initExpression) {
+        public CodeVariableDeclarationStatement(CodeTypeReference type, string name, CodeExpression initExpression)
+        {
             Type = type;
             Name = name;
             InitExpression = initExpression;
@@ -73,7 +79,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement(string type, string name, CodeExpression initExpression) {
+        public CodeVariableDeclarationStatement(string type, string name, CodeExpression initExpression)
+        {
             Type = new CodeTypeReference(type);
             Name = name;
             InitExpression = initExpression;
@@ -82,7 +89,8 @@ namespace Microsoft.CodeDom {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeVariableDeclarationStatement(Type type, string name, CodeExpression initExpression) {
+        public CodeVariableDeclarationStatement(Type type, string name, CodeExpression initExpression)
+        {
             Type = new CodeTypeReference(type);
             Name = name;
             InitExpression = initExpression;
@@ -93,12 +101,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the initialization expression for the variable.
         ///    </para>
         /// </devdoc>
-        public CodeExpression InitExpression {
-            get {
-                return initExpression;
+        public CodeExpression InitExpression
+        {
+            get
+            {
+                return _initExpression;
             }
-            set {
-                initExpression = value;
+            set
+            {
+                _initExpression = value;
             }
         }
 
@@ -107,12 +118,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the name of the variable.
         ///    </para>
         /// </devdoc>
-        public string Name {
-            get {
-                return (name == null) ? string.Empty : name;
+        public string Name
+        {
+            get
+            {
+                return (_name == null) ? string.Empty : _name;
             }
-            set {
-                name = value;
+            set
+            {
+                _name = value;
             }
         }
 
@@ -121,15 +135,19 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the type of the variable.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference Type {
-            get {
-                if (type == null) {
-                    type = new CodeTypeReference("");
+        public CodeTypeReference Type
+        {
+            get
+            {
+                if (_type == null)
+                {
+                    _type = new CodeTypeReference("");
                 }
-                return type;
+                return _type;
             }
-            set {
-                type = value;
+            set
+            {
+                _type = value;
             }
         }
     }

@@ -7,23 +7,23 @@ namespace System.ServiceModel.Security
     using System.ServiceModel.Channels;
     using Microsoft.Xml;
 
-    class EncryptedData : EncryptedType
+    internal class EncryptedData : EncryptedType
     {
         internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.EncryptedData;
         internal static readonly string ElementType = XmlEncryptionStrings.ElementType;
         internal static readonly string ContentType = XmlEncryptionStrings.ContentType;
-        SymmetricAlgorithm algorithm;
-        byte[] decryptedBuffer;
-        ArraySegment<byte> buffer;
-        byte[] iv;
-        byte[] cipherText;
+        private SymmetricAlgorithm _algorithm;
+        private byte[] _decryptedBuffer;
+        private ArraySegment<byte> _buffer;
+        private byte[] _iv;
+        private byte[] _cipherText;
 
         protected override XmlDictionaryString OpeningElementName
         {
             get { return ElementName; }
         }
 
-        void EnsureDecryptionSet()
+        private void EnsureDecryptionSet()
         {
             if (this.State == EncryptionState.DecryptionSetup)
             {
@@ -42,20 +42,20 @@ namespace System.ServiceModel.Security
         public byte[] GetDecryptedBuffer()
         {
             EnsureDecryptionSet();
-            return this.decryptedBuffer;
+            return _decryptedBuffer;
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader)
         {
-            this.cipherText = reader.ReadContentAsBase64();
+            _cipherText = reader.ReadContentAsBase64();
         }
 
         protected override void ReadCipherData(XmlDictionaryReader reader, long maxBufferSize)
         {
-            this.cipherText = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
+            _cipherText = SecurityUtils.ReadContentAsBase64(reader, maxBufferSize);
         }
 
-        void SetPlainText()
+        private void SetPlainText()
         {
             throw new NotImplementedException();
         }
@@ -70,7 +70,7 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("algorithm");
             }
-            this.algorithm = algorithm;
+            _algorithm = algorithm;
             this.State = EncryptionState.DecryptionSetup;
         }
 
@@ -84,15 +84,15 @@ namespace System.ServiceModel.Security
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("algorithm");
             }
-            this.algorithm = algorithm;
-            this.buffer = buffer;
+            _algorithm = algorithm;
+            _buffer = buffer;
             this.State = EncryptionState.EncryptionSetup;
         }
 
         protected override void WriteCipherData(XmlDictionaryWriter writer)
         {
-            writer.WriteBase64(this.iv, 0, this.iv.Length);
-            writer.WriteBase64(this.cipherText, 0, this.cipherText.Length);
+            writer.WriteBase64(_iv, 0, _iv.Length);
+            writer.WriteBase64(_cipherText, 0, _cipherText.Length);
         }
     }
 }

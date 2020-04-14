@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,56 +13,66 @@ namespace Microsoft.CodeDom {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeLabeledStatement : CodeStatement {
-        private string label;
-        private CodeStatement statement;
+    public class CodeLabeledStatement : CodeStatement
+    {
+        private string _label;
+        private CodeStatement _statement;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeLabeledStatement() {
+        public CodeLabeledStatement()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeLabeledStatement(string label) {
-            this.label = label;
+        public CodeLabeledStatement(string label)
+        {
+            _label = label;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeLabeledStatement(string label, CodeStatement statement) {
-            this.label = label;
-            this.statement = statement;
+        public CodeLabeledStatement(string label, CodeStatement statement)
+        {
+            _label = label;
+            _statement = statement;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Label {
-            get {
-                return (label == null) ? string.Empty : label;
+        public string Label
+        {
+            get
+            {
+                return (_label == null) ? string.Empty : _label;
             }
-            set {
-                this.label = value;
+            set
+            {
+                _label = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeStatement Statement {
-            get {
-                return statement;
+        public CodeStatement Statement
+        {
+            get
+            {
+                return _statement;
             }
-            set {
-                this.statement = value;
+            set
+            {
+                _statement = value;
             }
         }
     }

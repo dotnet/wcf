@@ -6,27 +6,33 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Xml.Schema;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal class XmlAsyncCheckReader : XmlReader {
 
-        private readonly XmlReader coreReader = null;
-        private Task lastTask = AsyncHelper.DoneTask;
+    internal class XmlAsyncCheckReader : XmlReader
+    {
+        private readonly XmlReader _coreReader = null;
+        private Task _lastTask = AsyncHelper.DoneTask;
 
-        internal XmlReader CoreReader {
-            get {
-                return coreReader;
+        internal XmlReader CoreReader
+        {
+            get
+            {
+                return _coreReader;
             }
         }
 
         public static XmlAsyncCheckReader CreateAsyncCheckWrapper(XmlReader reader)
         {
-            if (reader is IXmlLineInfo) {
-                if (reader is IXmlNamespaceResolver) {
+            if (reader is IXmlLineInfo)
+            {
+                if (reader is IXmlNamespaceResolver)
+                {
 #if !FEATURE_NETCORE
-                    if (reader is IXmlSchemaInfo) {
+                    if (reader is IXmlSchemaInfo)
+                    {
                         return new XmlAsyncCheckReaderWithLineInfoNSSchema(reader);
                     }
 #endif // !FEATURE_NETCORE
@@ -37,7 +43,8 @@ namespace Microsoft.Xml {
 #endif // !FEATURE_NETCORE
                 return new XmlAsyncCheckReaderWithLineInfo(reader);
             }
-            else if (reader is IXmlNamespaceResolver) {
+            else if (reader is IXmlNamespaceResolver)
+            {
 #if !FEATURE_NETCORE
                 Debug.Assert(!(reader is IXmlSchemaInfo));
 #endif // !FEATURE_NETCORE
@@ -49,25 +56,32 @@ namespace Microsoft.Xml {
             return new XmlAsyncCheckReader(reader);
         }
 
-        public XmlAsyncCheckReader(XmlReader reader) {
-            coreReader = reader;
+        public XmlAsyncCheckReader(XmlReader reader)
+        {
+            _coreReader = reader;
         }
 
-        private void CheckAsync() {
-            if (!lastTask.IsCompleted) {
+        private void CheckAsync()
+        {
+            if (!_lastTask.IsCompleted)
+            {
                 throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_AsyncIsRunningException));
             }
         }
 
         #region Sync Methods, Properties Check
-        
-        public override XmlReaderSettings Settings {
-            get {
-                XmlReaderSettings settings = coreReader.Settings;
-                if (null != settings) {
+
+        public override XmlReaderSettings Settings
+        {
+            get
+            {
+                XmlReaderSettings settings = _coreReader.Settings;
+                if (null != settings)
+                {
                     settings = settings.Clone();
                 }
-                else {
+                else
+                {
                     settings = new XmlReaderSettings();
                 }
 
@@ -75,852 +89,1022 @@ namespace Microsoft.Xml {
                 return settings;
             }
         }
-        
-        public override XmlNodeType NodeType {
-            get {
+
+        public override XmlNodeType NodeType
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.NodeType;
+                return _coreReader.NodeType;
             }
         }
-        
-        public override string Name {
-            get {
+
+        public override string Name
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.Name;
+                return _coreReader.Name;
             }
         }
-        
-        public override string LocalName {
-            get {
+
+        public override string LocalName
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.LocalName;
+                return _coreReader.LocalName;
             }
         }
-        
-        public override string NamespaceURI {
-            get {
+
+        public override string NamespaceURI
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.NamespaceURI;
+                return _coreReader.NamespaceURI;
             }
         }
-        
-        public override string Prefix {
-            get {
+
+        public override string Prefix
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.Prefix;
+                return _coreReader.Prefix;
             }
         }
-        
-        public override bool HasValue {
-            get {
+
+        public override bool HasValue
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.HasValue;
+                return _coreReader.HasValue;
             }
         }
-        
-        public override string Value {
-            get {
+
+        public override string Value
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.Value;
+                return _coreReader.Value;
             }
         }
-        
-        public override int Depth {
-            get {
+
+        public override int Depth
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.Depth;
+                return _coreReader.Depth;
             }
         }
-        
-        public override string BaseURI {
-            get {
+
+        public override string BaseURI
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.BaseURI;
+                return _coreReader.BaseURI;
             }
         }
-        
-        public override bool IsEmptyElement {
-            get {
+
+        public override bool IsEmptyElement
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.IsEmptyElement;
+                return _coreReader.IsEmptyElement;
             }
         }
-        
-        public override bool IsDefault {
-            get {
+
+        public override bool IsDefault
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.IsDefault;
+                return _coreReader.IsDefault;
             }
         }
-        
+
 #if !SILVERLIGHT
-        public override char QuoteChar {
-            get {
+        public override char QuoteChar
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.QuoteChar;
+                return _coreReader.QuoteChar;
             }
         }
 #endif // !SILVERLIGHT
-        
-        public override XmlSpace XmlSpace {
-            get {
+
+        public override XmlSpace XmlSpace
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.XmlSpace;
+                return _coreReader.XmlSpace;
             }
         }
-        
-        public override string XmlLang {
-            get {
+
+        public override string XmlLang
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.XmlLang;
+                return _coreReader.XmlLang;
             }
         }
-        
+
 #if !FEATURE_NETCORE
-        public override IXmlSchemaInfo SchemaInfo {
-            get {
+        public override IXmlSchemaInfo SchemaInfo
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.SchemaInfo;
+                return _coreReader.SchemaInfo;
             }
         }
 #endif // !FEATURE_NETCORE
-        
-        public override System.Type ValueType {
-            get {
-                CheckAsync();
-                return coreReader.ValueType;
-            }
-        }
-        
-        public override object ReadContentAsObject() {
-            CheckAsync();
-            return coreReader.ReadContentAsObject();
-        }
-        
-        public override bool ReadContentAsBoolean() {
-            CheckAsync();
-            return coreReader.ReadContentAsBoolean();
-        }
-        
-        public override DateTime ReadContentAsDateTime() {
-            CheckAsync();
-            return coreReader.ReadContentAsDateTime();
-        }
-        
-        public override double ReadContentAsDouble() {
-            CheckAsync();
-            return coreReader.ReadContentAsDouble();
-        }
-        
-        public override float ReadContentAsFloat() {
-            CheckAsync();
-            return coreReader.ReadContentAsFloat();
-        }
-        
-        public override decimal ReadContentAsDecimal() {
-            CheckAsync();
-            return coreReader.ReadContentAsDecimal();
-        }
-        
-        public override int ReadContentAsInt() {
-            CheckAsync();
-            return coreReader.ReadContentAsInt();
-        }
-        
-        public override long ReadContentAsLong() {
-            CheckAsync();
-            return coreReader.ReadContentAsLong();
-        }
-        
-        public override string ReadContentAsString() {
-            CheckAsync();
-            return coreReader.ReadContentAsString();
-        }
-        
-        public override object ReadContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver) {
-            CheckAsync();
-            return coreReader.ReadContentAs(returnType, namespaceResolver);
-        }
-        
-        public override object ReadElementContentAsObject() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsObject();
-        }
-        
-        public override object ReadElementContentAsObject(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsObject(localName, namespaceURI);
-        }
-        
-        public override bool ReadElementContentAsBoolean() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsBoolean();
-        }
-        
-        public override bool ReadElementContentAsBoolean(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsBoolean(localName, namespaceURI);
-        }
-        
-        public override DateTime ReadElementContentAsDateTime() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsDateTime();
-        }
-        
-        public override DateTime ReadElementContentAsDateTime(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsDateTime(localName, namespaceURI);
-        }
 
-        public override DateTimeOffset ReadContentAsDateTimeOffset() {
-            CheckAsync();
-            return coreReader.ReadContentAsDateTimeOffset();
-        }
-        
-        public override double ReadElementContentAsDouble() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsDouble();
-        }
-        
-        public override double ReadElementContentAsDouble(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsDouble(localName, namespaceURI);
-        }
-        
-        public override float ReadElementContentAsFloat() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsFloat();
-        }
-        
-        public override float ReadElementContentAsFloat(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsFloat(localName, namespaceURI);
-        }
-        
-        public override decimal ReadElementContentAsDecimal() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsDecimal();
-        }
-        
-        public override decimal ReadElementContentAsDecimal(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsDecimal(localName, namespaceURI);
-        }
-        
-        public override int ReadElementContentAsInt() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsInt();
-        }
-        
-        public override int ReadElementContentAsInt(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsInt(localName, namespaceURI);
-        }
-        
-        public override long ReadElementContentAsLong() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsLong();
-        }
-        
-        public override long ReadElementContentAsLong(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsLong(localName, namespaceURI);
-        }
-        
-        public override string ReadElementContentAsString() {
-            CheckAsync();
-            return coreReader.ReadElementContentAsString();
-        }
-        
-        public override string ReadElementContentAsString(string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsString(localName, namespaceURI);
-        }
-        
-        public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver) {
-            CheckAsync();
-            return coreReader.ReadElementContentAs(returnType, namespaceResolver);
-        }
-        
-        public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver, string localName, string namespaceURI) {
-            CheckAsync();
-            return coreReader.ReadElementContentAs(returnType, namespaceResolver, localName, namespaceURI);
-        }
-        
-        public override int AttributeCount {
-            get {
+        public override System.Type ValueType
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.AttributeCount;
-            }
-        }
-        
-        public override string GetAttribute(string name) {
-            CheckAsync();
-            return coreReader.GetAttribute(name);
-        }
-        
-        public override string GetAttribute(string name, string namespaceURI) {
-            CheckAsync();
-            return coreReader.GetAttribute(name, namespaceURI);
-        }
-        
-        public override string GetAttribute(int i) {
-            CheckAsync();
-            return coreReader.GetAttribute(i);
-        }
-
-        public override string this[int i] {
-            get {
-                CheckAsync();
-                return coreReader[i];
+                return _coreReader.ValueType;
             }
         }
 
-        public override string this[string name] {
-            get {
+        public override object ReadContentAsObject()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsObject();
+        }
+
+        public override bool ReadContentAsBoolean()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsBoolean();
+        }
+
+        public override DateTime ReadContentAsDateTime()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsDateTime();
+        }
+
+        public override double ReadContentAsDouble()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsDouble();
+        }
+
+        public override float ReadContentAsFloat()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsFloat();
+        }
+
+        public override decimal ReadContentAsDecimal()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsDecimal();
+        }
+
+        public override int ReadContentAsInt()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsInt();
+        }
+
+        public override long ReadContentAsLong()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsLong();
+        }
+
+        public override string ReadContentAsString()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsString();
+        }
+
+        public override object ReadContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAs(returnType, namespaceResolver);
+        }
+
+        public override object ReadElementContentAsObject()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsObject();
+        }
+
+        public override object ReadElementContentAsObject(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsObject(localName, namespaceURI);
+        }
+
+        public override bool ReadElementContentAsBoolean()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsBoolean();
+        }
+
+        public override bool ReadElementContentAsBoolean(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsBoolean(localName, namespaceURI);
+        }
+
+        public override DateTime ReadElementContentAsDateTime()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsDateTime();
+        }
+
+        public override DateTime ReadElementContentAsDateTime(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsDateTime(localName, namespaceURI);
+        }
+
+        public override DateTimeOffset ReadContentAsDateTimeOffset()
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsDateTimeOffset();
+        }
+
+        public override double ReadElementContentAsDouble()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsDouble();
+        }
+
+        public override double ReadElementContentAsDouble(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsDouble(localName, namespaceURI);
+        }
+
+        public override float ReadElementContentAsFloat()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsFloat();
+        }
+
+        public override float ReadElementContentAsFloat(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsFloat(localName, namespaceURI);
+        }
+
+        public override decimal ReadElementContentAsDecimal()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsDecimal();
+        }
+
+        public override decimal ReadElementContentAsDecimal(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsDecimal(localName, namespaceURI);
+        }
+
+        public override int ReadElementContentAsInt()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsInt();
+        }
+
+        public override int ReadElementContentAsInt(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsInt(localName, namespaceURI);
+        }
+
+        public override long ReadElementContentAsLong()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsLong();
+        }
+
+        public override long ReadElementContentAsLong(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsLong(localName, namespaceURI);
+        }
+
+        public override string ReadElementContentAsString()
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsString();
+        }
+
+        public override string ReadElementContentAsString(string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsString(localName, namespaceURI);
+        }
+
+        public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAs(returnType, namespaceResolver);
+        }
+
+        public override object ReadElementContentAs(Type returnType, IXmlNamespaceResolver namespaceResolver, string localName, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAs(returnType, namespaceResolver, localName, namespaceURI);
+        }
+
+        public override int AttributeCount
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader[name];
+                return _coreReader.AttributeCount;
             }
         }
 
-        public override string this[string name, string namespaceURI] {
-            get {
+        public override string GetAttribute(string name)
+        {
+            CheckAsync();
+            return _coreReader.GetAttribute(name);
+        }
+
+        public override string GetAttribute(string name, string namespaceURI)
+        {
+            CheckAsync();
+            return _coreReader.GetAttribute(name, namespaceURI);
+        }
+
+        public override string GetAttribute(int i)
+        {
+            CheckAsync();
+            return _coreReader.GetAttribute(i);
+        }
+
+        public override string this[int i]
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader[name, namespaceURI];
+                return _coreReader[i];
             }
         }
-        
-        public override bool MoveToAttribute(string name) {
-            CheckAsync();
-            return coreReader.MoveToAttribute(name);
-        }
-        
-        public override bool MoveToAttribute(string name, string ns) {
-            CheckAsync();
-            return coreReader.MoveToAttribute(name, ns);
-        }
-        
-        public override void MoveToAttribute(int i) {
-            CheckAsync();
-            coreReader.MoveToAttribute(i);
-        }
-        
-        public override bool MoveToFirstAttribute() {
-            CheckAsync();
-            return coreReader.MoveToFirstAttribute();
-        }
-        
-        public override bool MoveToNextAttribute() {
-            CheckAsync();
-            return coreReader.MoveToNextAttribute();
-        }
-        
-        public override bool MoveToElement() {
-            CheckAsync();
-            return coreReader.MoveToElement();
-        }
-        
-        public override bool ReadAttributeValue() {
-            CheckAsync();
-            return coreReader.ReadAttributeValue();
-        }
-        
-        public override bool Read() {
-            CheckAsync();
-            return coreReader.Read();
-        }
-        
-        public override bool EOF {
-            get {
+
+        public override string this[string name]
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.EOF;
+                return _coreReader[name];
             }
         }
-        
-        public override void Close() {
-            CheckAsync();
-            coreReader.Close();
-        }
-        
-        public override ReadState ReadState {
-            get {
+
+        public override string this[string name, string namespaceURI]
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.ReadState;
+                return _coreReader[name, namespaceURI];
             }
         }
-        
-        public override void Skip() {
+
+        public override bool MoveToAttribute(string name)
+        {
             CheckAsync();
-            coreReader.Skip();
+            return _coreReader.MoveToAttribute(name);
         }
-        
-        public override XmlNameTable NameTable {
-            get {
+
+        public override bool MoveToAttribute(string name, string ns)
+        {
+            CheckAsync();
+            return _coreReader.MoveToAttribute(name, ns);
+        }
+
+        public override void MoveToAttribute(int i)
+        {
+            CheckAsync();
+            _coreReader.MoveToAttribute(i);
+        }
+
+        public override bool MoveToFirstAttribute()
+        {
+            CheckAsync();
+            return _coreReader.MoveToFirstAttribute();
+        }
+
+        public override bool MoveToNextAttribute()
+        {
+            CheckAsync();
+            return _coreReader.MoveToNextAttribute();
+        }
+
+        public override bool MoveToElement()
+        {
+            CheckAsync();
+            return _coreReader.MoveToElement();
+        }
+
+        public override bool ReadAttributeValue()
+        {
+            CheckAsync();
+            return _coreReader.ReadAttributeValue();
+        }
+
+        public override bool Read()
+        {
+            CheckAsync();
+            return _coreReader.Read();
+        }
+
+        public override bool EOF
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.NameTable;
+                return _coreReader.EOF;
             }
         }
-        
-        public override string LookupNamespace(string prefix) {
+
+        public override void Close()
+        {
             CheckAsync();
-            return coreReader.LookupNamespace(prefix);
+            _coreReader.Close();
         }
-        
-        public override bool CanResolveEntity {
-            get {
+
+        public override ReadState ReadState
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.CanResolveEntity;
+                return _coreReader.ReadState;
             }
         }
-        
-        public override void ResolveEntity() {
+
+        public override void Skip()
+        {
             CheckAsync();
-            coreReader.ResolveEntity();
+            _coreReader.Skip();
         }
-        
-        public override bool CanReadBinaryContent {
-            get {
+
+        public override XmlNameTable NameTable
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.CanReadBinaryContent;
+                return _coreReader.NameTable;
             }
         }
-        
-        public override int ReadContentAsBase64(byte[] buffer, int index, int count) {
+
+        public override string LookupNamespace(string prefix)
+        {
             CheckAsync();
-            return coreReader.ReadContentAsBase64(buffer, index, count);
+            return _coreReader.LookupNamespace(prefix);
         }
-        
-        public override int ReadElementContentAsBase64(byte[] buffer, int index, int count) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsBase64(buffer, index, count);
-        }
-        
-        public override int ReadContentAsBinHex(byte[] buffer, int index, int count) {
-            CheckAsync();
-            return coreReader.ReadContentAsBinHex(buffer, index, count);
-        }
-        
-        public override int ReadElementContentAsBinHex(byte[] buffer, int index, int count) {
-            CheckAsync();
-            return coreReader.ReadElementContentAsBinHex(buffer, index, count);
-        }
-        
-        public override bool CanReadValueChunk {
-            get {
+
+        public override bool CanResolveEntity
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.CanReadValueChunk;
+                return _coreReader.CanResolveEntity;
             }
         }
-        
-        public override int ReadValueChunk(char[] buffer, int index, int count) {
+
+        public override void ResolveEntity()
+        {
             CheckAsync();
-            return coreReader.ReadValueChunk(buffer, index, count);
+            _coreReader.ResolveEntity();
         }
-        
+
+        public override bool CanReadBinaryContent
+        {
+            get
+            {
+                CheckAsync();
+                return _coreReader.CanReadBinaryContent;
+            }
+        }
+
+        public override int ReadContentAsBase64(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsBase64(buffer, index, count);
+        }
+
+        public override int ReadElementContentAsBase64(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsBase64(buffer, index, count);
+        }
+
+        public override int ReadContentAsBinHex(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            return _coreReader.ReadContentAsBinHex(buffer, index, count);
+        }
+
+        public override int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            return _coreReader.ReadElementContentAsBinHex(buffer, index, count);
+        }
+
+        public override bool CanReadValueChunk
+        {
+            get
+            {
+                CheckAsync();
+                return _coreReader.CanReadValueChunk;
+            }
+        }
+
+        public override int ReadValueChunk(char[] buffer, int index, int count)
+        {
+            CheckAsync();
+            return _coreReader.ReadValueChunk(buffer, index, count);
+        }
+
 #if !SILVERLIGHT
-        public override string ReadString() {
+        public override string ReadString()
+        {
             CheckAsync();
-            return coreReader.ReadString();
+            return _coreReader.ReadString();
         }
 #endif // !SILVERLIGHT
-        
-        public override XmlNodeType MoveToContent() {
+
+        public override XmlNodeType MoveToContent()
+        {
             CheckAsync();
-            return coreReader.MoveToContent();
+            return _coreReader.MoveToContent();
         }
-        
-        public override void ReadStartElement() {
+
+        public override void ReadStartElement()
+        {
             CheckAsync();
-            coreReader.ReadStartElement();
+            _coreReader.ReadStartElement();
         }
-        
-        public override void ReadStartElement(string name) {
+
+        public override void ReadStartElement(string name)
+        {
             CheckAsync();
-            coreReader.ReadStartElement(name);
+            _coreReader.ReadStartElement(name);
         }
-        
-        public override void ReadStartElement(string localname, string ns) {
+
+        public override void ReadStartElement(string localname, string ns)
+        {
             CheckAsync();
-            coreReader.ReadStartElement(localname, ns);
+            _coreReader.ReadStartElement(localname, ns);
         }
-        
+
 #if !SILVERLIGHT
-        public override string ReadElementString() {
+        public override string ReadElementString()
+        {
             CheckAsync();
-            return coreReader.ReadElementString();
+            return _coreReader.ReadElementString();
         }
-        
-        public override string ReadElementString(string name) {
+
+        public override string ReadElementString(string name)
+        {
             CheckAsync();
-            return coreReader.ReadElementString(name);
+            return _coreReader.ReadElementString(name);
         }
-        
-        public override string ReadElementString(string localname, string ns) {
+
+        public override string ReadElementString(string localname, string ns)
+        {
             CheckAsync();
-            return coreReader.ReadElementString(localname, ns);
+            return _coreReader.ReadElementString(localname, ns);
         }
 #endif // !SILVERLIGHT
-        
-        public override void ReadEndElement() {
+
+        public override void ReadEndElement()
+        {
             CheckAsync();
-            coreReader.ReadEndElement();
+            _coreReader.ReadEndElement();
         }
-        
-        public override bool IsStartElement() {
+
+        public override bool IsStartElement()
+        {
             CheckAsync();
-            return coreReader.IsStartElement();
+            return _coreReader.IsStartElement();
         }
-        
-        public override bool IsStartElement(string name) {
+
+        public override bool IsStartElement(string name)
+        {
             CheckAsync();
-            return coreReader.IsStartElement(name);
+            return _coreReader.IsStartElement(name);
         }
-        
-        public override bool IsStartElement(string localname, string ns) {
+
+        public override bool IsStartElement(string localname, string ns)
+        {
             CheckAsync();
-            return coreReader.IsStartElement(localname, ns);
+            return _coreReader.IsStartElement(localname, ns);
         }
-        
-        public override bool ReadToFollowing(string name) {
+
+        public override bool ReadToFollowing(string name)
+        {
             CheckAsync();
-            return coreReader.ReadToFollowing(name);
+            return _coreReader.ReadToFollowing(name);
         }
-        
-        public override bool ReadToFollowing(string localName, string namespaceURI) {
+
+        public override bool ReadToFollowing(string localName, string namespaceURI)
+        {
             CheckAsync();
-            return coreReader.ReadToFollowing(localName, namespaceURI);
+            return _coreReader.ReadToFollowing(localName, namespaceURI);
         }
-        
-        public override bool ReadToDescendant(string name) {
+
+        public override bool ReadToDescendant(string name)
+        {
             CheckAsync();
-            return coreReader.ReadToDescendant(name);
+            return _coreReader.ReadToDescendant(name);
         }
-        
-        public override bool ReadToDescendant(string localName, string namespaceURI) {
+
+        public override bool ReadToDescendant(string localName, string namespaceURI)
+        {
             CheckAsync();
-            return coreReader.ReadToDescendant(localName, namespaceURI);
+            return _coreReader.ReadToDescendant(localName, namespaceURI);
         }
-        
-        public override bool ReadToNextSibling(string name) {
+
+        public override bool ReadToNextSibling(string name)
+        {
             CheckAsync();
-            return coreReader.ReadToNextSibling(name);
+            return _coreReader.ReadToNextSibling(name);
         }
-        
-        public override bool ReadToNextSibling(string localName, string namespaceURI) {
+
+        public override bool ReadToNextSibling(string localName, string namespaceURI)
+        {
             CheckAsync();
-            return coreReader.ReadToNextSibling(localName, namespaceURI);
+            return _coreReader.ReadToNextSibling(localName, namespaceURI);
         }
-        
-        public override string ReadInnerXml() {
+
+        public override string ReadInnerXml()
+        {
             CheckAsync();
-            return coreReader.ReadInnerXml();
+            return _coreReader.ReadInnerXml();
         }
-        
-        public override string ReadOuterXml() {
+
+        public override string ReadOuterXml()
+        {
             CheckAsync();
-            return coreReader.ReadOuterXml();
+            return _coreReader.ReadOuterXml();
         }
-        
-        public override XmlReader ReadSubtree() {
+
+        public override XmlReader ReadSubtree()
+        {
             CheckAsync();
-            XmlReader subtreeReader = coreReader.ReadSubtree();
+            XmlReader subtreeReader = _coreReader.ReadSubtree();
             return CreateAsyncCheckWrapper(subtreeReader);
         }
-        
-        public override bool HasAttributes {
-            get {
+
+        public override bool HasAttributes
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.HasAttributes;
+                return _coreReader.HasAttributes;
             }
         }
 
-        protected override void Dispose(bool disposing) {
+        protected override void Dispose(bool disposing)
+        {
             CheckAsync();
             //since it is protected method, we can't call coreReader.Dispose(disposing). 
             //Internal, it is always called to Dipose(true). So call coreReader.Dispose() is OK.
-            coreReader.Dispose();
+            _coreReader.Dispose();
         }
 
 #if !SILVERLIGHT
-        internal override XmlNamespaceManager NamespaceManager {
-            get {
+        internal override XmlNamespaceManager NamespaceManager
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.NamespaceManager;
+                return _coreReader.NamespaceManager;
             }
         }
 
-        internal override IDtdInfo DtdInfo {
-            get {
+        internal override IDtdInfo DtdInfo
+        {
+            get
+            {
                 CheckAsync();
-                return coreReader.DtdInfo;
+                return _coreReader.DtdInfo;
             }
         }
 #endif
 
-#endregion
+        #endregion
 
-#region Async Methods
-        
-        public override Task<string> GetValueAsync() {
+        #region Async Methods
+
+        public override Task<string> GetValueAsync()
+        {
             CheckAsync();
-            var task = coreReader.GetValueAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<object> ReadContentAsObjectAsync() {
-            CheckAsync();
-            var task = coreReader.ReadContentAsObjectAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<string> ReadContentAsStringAsync() {
-            CheckAsync();
-            var task = coreReader.ReadContentAsStringAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<object> ReadContentAsAsync(Type returnType, IXmlNamespaceResolver namespaceResolver) {
-            CheckAsync();
-            var task = coreReader.ReadContentAsAsync(returnType, namespaceResolver);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<object> ReadElementContentAsObjectAsync() {
-            CheckAsync();
-            var task = coreReader.ReadElementContentAsObjectAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<string> ReadElementContentAsStringAsync() {
-            CheckAsync();
-            var task = coreReader.ReadElementContentAsStringAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<object> ReadElementContentAsAsync(Type returnType, IXmlNamespaceResolver namespaceResolver) {
-            CheckAsync();
-            var task = coreReader.ReadElementContentAsAsync(returnType, namespaceResolver);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<bool> ReadAsync() {
-            CheckAsync();
-            var task = coreReader.ReadAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task SkipAsync() {
-            CheckAsync();
-            var task = coreReader.SkipAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<int> ReadContentAsBase64Async(byte[] buffer, int index, int count) {
-            CheckAsync();
-            var task = coreReader.ReadContentAsBase64Async(buffer, index, count);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<int> ReadElementContentAsBase64Async(byte[] buffer, int index, int count) {
-            CheckAsync();
-            var task = coreReader.ReadElementContentAsBase64Async(buffer, index, count);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<int> ReadContentAsBinHexAsync(byte[] buffer, int index, int count) {
-            CheckAsync();
-            var task = coreReader.ReadContentAsBinHexAsync(buffer, index, count);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<int> ReadElementContentAsBinHexAsync(byte[] buffer, int index, int count) {
-            CheckAsync();
-            var task = coreReader.ReadElementContentAsBinHexAsync(buffer, index, count);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<int> ReadValueChunkAsync(char[] buffer, int index, int count) {
-            CheckAsync();
-            var task = coreReader.ReadValueChunkAsync(buffer, index, count);
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<XmlNodeType> MoveToContentAsync() {
-            CheckAsync();
-            var task = coreReader.MoveToContentAsync();
-            lastTask = task;
-            return task;
-        }
-      
-        public override Task<string> ReadInnerXmlAsync() {
-            CheckAsync();
-            var task = coreReader.ReadInnerXmlAsync();
-            lastTask = task;
-            return task;
-        }
-        
-        public override Task<string> ReadOuterXmlAsync() {
-            CheckAsync();
-            var task = coreReader.ReadOuterXmlAsync();
-            lastTask = task;
+            var task = _coreReader.GetValueAsync();
+            _lastTask = task;
             return task;
         }
 
-#endregion
+        public override Task<object> ReadContentAsObjectAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadContentAsObjectAsync();
+            _lastTask = task;
+            return task;
+        }
 
+        public override Task<string> ReadContentAsStringAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadContentAsStringAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<object> ReadContentAsAsync(Type returnType, IXmlNamespaceResolver namespaceResolver)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadContentAsAsync(returnType, namespaceResolver);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<object> ReadElementContentAsObjectAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadElementContentAsObjectAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<string> ReadElementContentAsStringAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadElementContentAsStringAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<object> ReadElementContentAsAsync(Type returnType, IXmlNamespaceResolver namespaceResolver)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadElementContentAsAsync(returnType, namespaceResolver);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<bool> ReadAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task SkipAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.SkipAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<int> ReadContentAsBase64Async(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadContentAsBase64Async(buffer, index, count);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<int> ReadElementContentAsBase64Async(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadElementContentAsBase64Async(buffer, index, count);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<int> ReadContentAsBinHexAsync(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadContentAsBinHexAsync(buffer, index, count);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<int> ReadElementContentAsBinHexAsync(byte[] buffer, int index, int count)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadElementContentAsBinHexAsync(buffer, index, count);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<int> ReadValueChunkAsync(char[] buffer, int index, int count)
+        {
+            CheckAsync();
+            var task = _coreReader.ReadValueChunkAsync(buffer, index, count);
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<XmlNodeType> MoveToContentAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.MoveToContentAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<string> ReadInnerXmlAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadInnerXmlAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        public override Task<string> ReadOuterXmlAsync()
+        {
+            CheckAsync();
+            var task = _coreReader.ReadOuterXmlAsync();
+            _lastTask = task;
+            return task;
+        }
+
+        #endregion
     }
 
-    internal class XmlAsyncCheckReaderWithNS : XmlAsyncCheckReader, IXmlNamespaceResolver {
-        private readonly IXmlNamespaceResolver readerAsIXmlNamespaceResolver;
+    internal class XmlAsyncCheckReaderWithNS : XmlAsyncCheckReader, IXmlNamespaceResolver
+    {
+        private readonly IXmlNamespaceResolver _readerAsIXmlNamespaceResolver;
 
         public XmlAsyncCheckReaderWithNS(XmlReader reader)
-            : base(reader) {
-
-            readerAsIXmlNamespaceResolver = (IXmlNamespaceResolver)reader;
+            : base(reader)
+        {
+            _readerAsIXmlNamespaceResolver = (IXmlNamespaceResolver)reader;
         }
 
-#region IXmlNamespaceResolver members
+        #region IXmlNamespaceResolver members
         IDictionary<string, string> IXmlNamespaceResolver.GetNamespacesInScope(XmlNamespaceScope scope)
         {
-            return readerAsIXmlNamespaceResolver.GetNamespacesInScope(scope);
+            return _readerAsIXmlNamespaceResolver.GetNamespacesInScope(scope);
         }
 
         string IXmlNamespaceResolver.LookupNamespace(string prefix)
         {
-            return readerAsIXmlNamespaceResolver.LookupNamespace(prefix);
+            return _readerAsIXmlNamespaceResolver.LookupNamespace(prefix);
         }
 
         string IXmlNamespaceResolver.LookupPrefix(string namespaceName)
         {
-            return readerAsIXmlNamespaceResolver.LookupPrefix(namespaceName);
+            return _readerAsIXmlNamespaceResolver.LookupPrefix(namespaceName);
         }
-#endregion
+        #endregion
     }
 
-    internal class XmlAsyncCheckReaderWithLineInfo : XmlAsyncCheckReader, IXmlLineInfo {
-
-        private readonly IXmlLineInfo readerAsIXmlLineInfo;
+    internal class XmlAsyncCheckReaderWithLineInfo : XmlAsyncCheckReader, IXmlLineInfo
+    {
+        private readonly IXmlLineInfo _readerAsIXmlLineInfo;
 
         public XmlAsyncCheckReaderWithLineInfo(XmlReader reader)
-            : base(reader) {
-
-            readerAsIXmlLineInfo = (IXmlLineInfo)reader;
+            : base(reader)
+        {
+            _readerAsIXmlLineInfo = (IXmlLineInfo)reader;
         }
 
-#region IXmlLineInfo members
-        public virtual bool HasLineInfo() {
-            return readerAsIXmlLineInfo.HasLineInfo();
+        #region IXmlLineInfo members
+        public virtual bool HasLineInfo()
+        {
+            return _readerAsIXmlLineInfo.HasLineInfo();
         }
 
-        public virtual int LineNumber {
-            get {
-                return readerAsIXmlLineInfo.LineNumber;
+        public virtual int LineNumber
+        {
+            get
+            {
+                return _readerAsIXmlLineInfo.LineNumber;
             }
         }
 
-        public virtual int LinePosition {
-            get {
-                return readerAsIXmlLineInfo.LinePosition;
+        public virtual int LinePosition
+        {
+            get
+            {
+                return _readerAsIXmlLineInfo.LinePosition;
             }
         }
-#endregion
+        #endregion
     }
 
-    internal class XmlAsyncCheckReaderWithLineInfoNS : XmlAsyncCheckReaderWithLineInfo, IXmlNamespaceResolver {
-
-        private readonly IXmlNamespaceResolver readerAsIXmlNamespaceResolver;
+    internal class XmlAsyncCheckReaderWithLineInfoNS : XmlAsyncCheckReaderWithLineInfo, IXmlNamespaceResolver
+    {
+        private readonly IXmlNamespaceResolver _readerAsIXmlNamespaceResolver;
 
         public XmlAsyncCheckReaderWithLineInfoNS(XmlReader reader)
-            : base(reader) {
-
-            readerAsIXmlNamespaceResolver = (IXmlNamespaceResolver)reader;
+            : base(reader)
+        {
+            _readerAsIXmlNamespaceResolver = (IXmlNamespaceResolver)reader;
         }
 
-#region IXmlNamespaceResolver members
-        IDictionary<string, string> IXmlNamespaceResolver.GetNamespacesInScope(XmlNamespaceScope scope) {
-            return readerAsIXmlNamespaceResolver.GetNamespacesInScope(scope);
+        #region IXmlNamespaceResolver members
+        IDictionary<string, string> IXmlNamespaceResolver.GetNamespacesInScope(XmlNamespaceScope scope)
+        {
+            return _readerAsIXmlNamespaceResolver.GetNamespacesInScope(scope);
         }
 
-        string IXmlNamespaceResolver.LookupNamespace(string prefix) {
-            return readerAsIXmlNamespaceResolver.LookupNamespace(prefix);
+        string IXmlNamespaceResolver.LookupNamespace(string prefix)
+        {
+            return _readerAsIXmlNamespaceResolver.LookupNamespace(prefix);
         }
 
-        string IXmlNamespaceResolver.LookupPrefix(string namespaceName) {
-            return readerAsIXmlNamespaceResolver.LookupPrefix(namespaceName);
+        string IXmlNamespaceResolver.LookupPrefix(string namespaceName)
+        {
+            return _readerAsIXmlNamespaceResolver.LookupPrefix(namespaceName);
         }
-#endregion
+        #endregion
     }
 
 #if !FEATURE_NETCORE
-    internal class XmlAsyncCheckReaderWithLineInfoNSSchema : XmlAsyncCheckReaderWithLineInfoNS, IXmlSchemaInfo {
-
-        private readonly IXmlSchemaInfo readerAsIXmlSchemaInfo;
+    internal class XmlAsyncCheckReaderWithLineInfoNSSchema : XmlAsyncCheckReaderWithLineInfoNS, IXmlSchemaInfo
+    {
+        private readonly IXmlSchemaInfo _readerAsIXmlSchemaInfo;
 
         public XmlAsyncCheckReaderWithLineInfoNSSchema(XmlReader reader)
-            : base(reader) {
-
-            readerAsIXmlSchemaInfo = (IXmlSchemaInfo)reader;
+            : base(reader)
+        {
+            _readerAsIXmlSchemaInfo = (IXmlSchemaInfo)reader;
         }
 
 
-#region IXmlSchemaInfo members
+        #region IXmlSchemaInfo members
 
-        XmlSchemaValidity IXmlSchemaInfo.Validity {
-            get {
-                return readerAsIXmlSchemaInfo.Validity;
+        XmlSchemaValidity IXmlSchemaInfo.Validity
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.Validity;
             }
         }
 
-        bool IXmlSchemaInfo.IsDefault {
-            get {
-                return readerAsIXmlSchemaInfo.IsDefault;
+        bool IXmlSchemaInfo.IsDefault
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.IsDefault;
             }
         }
 
-        bool IXmlSchemaInfo.IsNil {
-            get {
-                return readerAsIXmlSchemaInfo.IsNil;
+        bool IXmlSchemaInfo.IsNil
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.IsNil;
             }
         }
 
-        XmlSchemaSimpleType IXmlSchemaInfo.MemberType {
-            get {
-                return readerAsIXmlSchemaInfo.MemberType;
+        XmlSchemaSimpleType IXmlSchemaInfo.MemberType
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.MemberType;
             }
         }
 
-        XmlSchemaType IXmlSchemaInfo.SchemaType {
-            get {
-                return readerAsIXmlSchemaInfo.SchemaType;
+        XmlSchemaType IXmlSchemaInfo.SchemaType
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.SchemaType;
             }
         }
 
-        XmlSchemaElement IXmlSchemaInfo.SchemaElement {
-            get {
-                return readerAsIXmlSchemaInfo.SchemaElement;
+        XmlSchemaElement IXmlSchemaInfo.SchemaElement
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.SchemaElement;
             }
         }
 
-        XmlSchemaAttribute IXmlSchemaInfo.SchemaAttribute {
-            get {
-                return readerAsIXmlSchemaInfo.SchemaAttribute;
+        XmlSchemaAttribute IXmlSchemaInfo.SchemaAttribute
+        {
+            get
+            {
+                return _readerAsIXmlSchemaInfo.SchemaAttribute;
             }
         }
-#endregion
+        #endregion
     }
 #endif // !FEATURE_NETCORE
 }

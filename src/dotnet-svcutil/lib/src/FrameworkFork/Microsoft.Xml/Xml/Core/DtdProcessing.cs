@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     // DtdProcessing enumerations speficies how will an XmlReader handle DTDs in the XML document.
     //
     // Prohibit     The XmlReader will throw an exception when it finds a '<!DOCTYPE' markup.
@@ -12,7 +13,8 @@ namespace Microsoft.Xml {
     //              The DocumentType node will not be reported.
     // Parse        The DTD will be parsed and fully processed (entities expanded, default attributes added etc.)
     //
-    public enum DtdProcessing {
+    public enum DtdProcessing
+    {
         Prohibit,
         Ignore,
         Parse,

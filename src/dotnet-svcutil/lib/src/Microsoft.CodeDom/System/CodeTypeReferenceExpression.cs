@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,19 +15,21 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeTypeReferenceExpression : CodeExpression {
-        private CodeTypeReference type;
+    public class CodeTypeReferenceExpression : CodeExpression
+    {
+        private CodeTypeReference _type;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTypeReferenceExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReferenceExpression() {
+        public CodeTypeReferenceExpression()
+        {
         }
 
         /// <devdoc>
@@ -35,21 +37,24 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTypeReferenceExpression'/> using the specified type.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReferenceExpression(CodeTypeReference type) {
+        public CodeTypeReferenceExpression(CodeTypeReference type)
+        {
             Type = type;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReferenceExpression(string type) {
+        public CodeTypeReferenceExpression(string type)
+        {
             Type = new CodeTypeReference(type);
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReferenceExpression(Type type) {
+        public CodeTypeReferenceExpression(Type type)
+        {
             Type = new CodeTypeReference(type);
         }
 
@@ -58,15 +63,19 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the type to reference.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference Type {
-            get {
-                if (type == null) {
-                    type = new CodeTypeReference("");
+        public CodeTypeReference Type
+        {
+            get
+            {
+                if (_type == null)
+                {
+                    _type = new CodeTypeReference("");
                 }
-                return type;
+                return _type;
             }
-            set {
-                type = value;
+            set
+            {
+                _type = value;
             }
         }
     }

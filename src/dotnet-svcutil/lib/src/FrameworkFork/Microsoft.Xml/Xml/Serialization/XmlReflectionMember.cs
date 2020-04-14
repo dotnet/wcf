@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System;
 
     /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember"]/*' />
@@ -10,68 +10,73 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlReflectionMember {
-        string memberName;
-        Type type;
-        XmlAttributes xmlAttributes = new XmlAttributes();
-        SoapAttributes soapAttributes = new SoapAttributes();
-        bool isReturnValue;
-        bool overrideIsNullable;
+    public class XmlReflectionMember
+    {
+        private string _memberName;
+        private Type _type;
+        private XmlAttributes _xmlAttributes = new XmlAttributes();
+        private SoapAttributes _soapAttributes = new SoapAttributes();
+        private bool _isReturnValue;
+        private bool _overrideIsNullable;
 
         /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.MemberType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public Type MemberType {
-            get { return type; }
-            set { type = value; }
+        public Type MemberType
+        {
+            get { return _type; }
+            set { _type = value; }
         }
 
         /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.XmlAttributes"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAttributes XmlAttributes {
-            get { return xmlAttributes; }
-            set { xmlAttributes = value; }
+        public XmlAttributes XmlAttributes
+        {
+            get { return _xmlAttributes; }
+            set { _xmlAttributes = value; }
         }
 
         /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.SoapAttributes"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public SoapAttributes SoapAttributes {
-            get { return soapAttributes; }
-            set { soapAttributes = value; }
+        public SoapAttributes SoapAttributes
+        {
+            get { return _soapAttributes; }
+            set { _soapAttributes = value; }
         }
 
         /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.MemberName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string MemberName {
-            get { return memberName == null ? string.Empty : memberName; }
-            set { memberName = value; }
+        public string MemberName
+        {
+            get { return _memberName == null ? string.Empty : _memberName; }
+            set { _memberName = value; }
         }
 
         /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.IsReturnValue"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool IsReturnValue {
-            get { return isReturnValue; }
-            set { isReturnValue = value; }
+        public bool IsReturnValue
+        {
+            get { return _isReturnValue; }
+            set { _isReturnValue = value; }
         }
 
         /// <include file='doc\XmlReflectionMember.uex' path='docs/doc[@for="XmlReflectionMember.OverrideIsNullable"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool OverrideIsNullable {
-            get { return overrideIsNullable; }
-            set { overrideIsNullable = value; }
+        public bool OverrideIsNullable
+        {
+            get { return _overrideIsNullable; }
+            set { _overrideIsNullable = value; }
         }
     }
-
-
 }

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System.Collections;
@@ -18,22 +19,22 @@ namespace System.ServiceModel.Description
 
     public class WsdlImporter : MetadataImporter
     {
-        readonly Dictionary<WsdlNS.NamedItem, WsdlImportException> importErrors = new Dictionary<WsdlNS.NamedItem, WsdlImportException>();
-        bool isFaulted = false;
+        private readonly Dictionary<WsdlNS.NamedItem, WsdlImportException> _importErrors = new Dictionary<WsdlNS.NamedItem, WsdlImportException>();
+        private bool _isFaulted = false;
 
-        readonly Dictionary<XmlQualifiedName, WsdlContractConversionContext> importedPortTypes = new Dictionary<XmlQualifiedName, WsdlContractConversionContext>();
-        readonly Dictionary<XmlQualifiedName, WsdlEndpointConversionContext> importedBindings = new Dictionary<XmlQualifiedName, WsdlEndpointConversionContext>();
-        readonly Dictionary<WsdlNS.Port, ServiceEndpoint> importedPorts = new Dictionary<WsdlNS.Port, ServiceEndpoint>();
+        private readonly Dictionary<XmlQualifiedName, WsdlContractConversionContext> _importedPortTypes = new Dictionary<XmlQualifiedName, WsdlContractConversionContext>();
+        private readonly Dictionary<XmlQualifiedName, WsdlEndpointConversionContext> _importedBindings = new Dictionary<XmlQualifiedName, WsdlEndpointConversionContext>();
+        private readonly Dictionary<WsdlNS.Port, ServiceEndpoint> _importedPorts = new Dictionary<WsdlNS.Port, ServiceEndpoint>();
 
-        readonly KeyedByTypeCollection<IWsdlImportExtension> wsdlExtensions;
+        private readonly KeyedByTypeCollection<IWsdlImportExtension> _wsdlExtensions;
 
-        readonly WsdlNS.ServiceDescriptionCollection wsdlDocuments = new WsdlNS.ServiceDescriptionCollection();
-        readonly XmlSchemaSet xmlSchemas = WsdlExporter.GetEmptySchemaSet();
-        readonly Dictionary<string, XmlElement> policyDocuments = new Dictionary<string, XmlElement>();
-        readonly Dictionary<string, string> warnings = new Dictionary<string, string>();
-        WsdlPolicyReader wsdlPolicyReader;
+        private readonly WsdlNS.ServiceDescriptionCollection _wsdlDocuments = new WsdlNS.ServiceDescriptionCollection();
+        private readonly XmlSchemaSet _xmlSchemas = WsdlExporter.GetEmptySchemaSet();
+        private readonly Dictionary<string, XmlElement> _policyDocuments = new Dictionary<string, XmlElement>();
+        private readonly Dictionary<string, string> _warnings = new Dictionary<string, string>();
+        private WsdlPolicyReader _wsdlPolicyReader;
 
-        bool beforeImportCalled = false;
+        private bool _beforeImportCalled = false;
 
         public WsdlImporter(MetadataSet metadata)
             : this(metadata, null, null, MetadataImporterQuotas.Defaults)
@@ -56,7 +57,7 @@ namespace System.ServiceModel.Description
                 wsdlImportExtensions = LoadWsdlExtensionsFromConfig();
             }
 
-            this.wsdlExtensions = new KeyedByTypeCollection<IWsdlImportExtension>(wsdlImportExtensions);
+            _wsdlExtensions = new KeyedByTypeCollection<IWsdlImportExtension>(wsdlImportExtensions);
 
             // then look at metadata
             if (metadata == null)
@@ -67,28 +68,28 @@ namespace System.ServiceModel.Description
 
         public KeyedByTypeCollection<IWsdlImportExtension> WsdlImportExtensions
         {
-            get { return this.wsdlExtensions; }
+            get { return _wsdlExtensions; }
         }
 
         public WsdlNS.ServiceDescriptionCollection WsdlDocuments
         {
-            get { return this.wsdlDocuments; }
+            get { return _wsdlDocuments; }
         }
 
         public XmlSchemaSet XmlSchemas
         {
-            get { return this.xmlSchemas; }
+            get { return _xmlSchemas; }
         }
 
-        WsdlPolicyReader PolicyReader
+        private WsdlPolicyReader PolicyReader
         {
             get
             {
-                if (this.wsdlPolicyReader == null)
+                if (_wsdlPolicyReader == null)
                 {
-                    this.wsdlPolicyReader = new WsdlPolicyReader(this);
+                    _wsdlPolicyReader = new WsdlPolicyReader(this);
                 }
-                return wsdlPolicyReader;
+                return _wsdlPolicyReader;
             }
         }
 
@@ -100,12 +101,12 @@ namespace System.ServiceModel.Description
 
         public override Collection<ContractDescription> ImportAllContracts()
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             EnsureBeforeImportCalled();
             Collection<ContractDescription> contracts = new Collection<ContractDescription>();
-            foreach (WsdlNS.ServiceDescription wsdl in this.wsdlDocuments)
+            foreach (WsdlNS.ServiceDescription wsdl in _wsdlDocuments)
                 foreach (WsdlNS.PortType wsdlPortType in wsdl.PortTypes)
                 {
                     if (IsBlackListed(wsdlPortType))
@@ -120,7 +121,7 @@ namespace System.ServiceModel.Description
 
         public override ServiceEndpointCollection ImportAllEndpoints()
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             EnsureBeforeImportCalled();
@@ -140,7 +141,7 @@ namespace System.ServiceModel.Description
 
         public Collection<Binding> ImportAllBindings()
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             EnsureBeforeImportCalled();
@@ -161,7 +162,7 @@ namespace System.ServiceModel.Description
         // WSDL Specific methods
         public ContractDescription ImportContract(WsdlNS.PortType wsdlPortType)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (wsdlPortType == null)
@@ -172,7 +173,7 @@ namespace System.ServiceModel.Description
 
         public Binding ImportBinding(WsdlNS.Binding wsdlBinding)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (wsdlBinding == null)
@@ -183,7 +184,7 @@ namespace System.ServiceModel.Description
 
         public ServiceEndpoint ImportEndpoint(WsdlNS.Port wsdlPort)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (wsdlPort == null)
@@ -194,7 +195,7 @@ namespace System.ServiceModel.Description
 
         public ServiceEndpointCollection ImportEndpoints(WsdlNS.PortType wsdlPortType)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (wsdlPortType == null)
@@ -217,7 +218,7 @@ namespace System.ServiceModel.Description
 
         internal ServiceEndpointCollection ImportEndpoints(ContractDescription contract)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (contract == null)
@@ -242,7 +243,7 @@ namespace System.ServiceModel.Description
 
         public ServiceEndpointCollection ImportEndpoints(WsdlNS.Binding wsdlBinding)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (wsdlBinding == null)
@@ -268,7 +269,7 @@ namespace System.ServiceModel.Description
 
         public ServiceEndpointCollection ImportEndpoints(WsdlNS.Service wsdlService)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlImporterIsFaulted));
 
             if (wsdlService == null)
@@ -288,12 +289,12 @@ namespace System.ServiceModel.Description
             return endpoints;
         }
 
-        bool IsBlackListed(WsdlNS.NamedItem item)
+        private bool IsBlackListed(WsdlNS.NamedItem item)
         {
-            return importErrors.ContainsKey(item);
+            return _importErrors.ContainsKey(item);
         }
 
-        ContractDescription ImportWsdlPortType(WsdlNS.PortType wsdlPortType, WsdlPortTypeImportOptions importOptions, ErrorBehavior errorBehavior)
+        private ContractDescription ImportWsdlPortType(WsdlNS.PortType wsdlPortType, WsdlPortTypeImportOptions importOptions, ErrorBehavior errorBehavior)
         {
             if (IsBlackListed(wsdlPortType))
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateAlreadyFaultedException(wsdlPortType));
@@ -308,13 +309,11 @@ namespace System.ServiceModel.Description
 
                 try
                 {
-
                     contractDescription = CreateContractDescription(wsdlPortType, wsdlPortTypeQName);
                     WsdlContractConversionContext contractContext = new WsdlContractConversionContext(contractDescription, wsdlPortType);
 
                     foreach (WsdlNS.Operation wsdlOperation in wsdlPortType.Operations)
                     {
-
                         OperationDescription operationDescription = CreateOperationDescription(wsdlPortType, wsdlOperation, contractDescription);
                         contractContext.AddOperation(operationDescription, wsdlOperation);
 
@@ -336,7 +335,7 @@ namespace System.ServiceModel.Description
                     CallImportContract(contractContext);
                     VerifyImportedWsdlPortType(wsdlPortType);
 
-                    importedPortTypes.Add(wsdlPortTypeQName, contractContext);
+                    _importedPortTypes.Add(wsdlPortTypeQName, contractContext);
                 }
 #pragma warning disable 56500 // covered by FxCOP
                 catch (Exception e)
@@ -355,7 +354,7 @@ namespace System.ServiceModel.Description
             return contractDescription;
         }
 
-        WsdlEndpointConversionContext ImportWsdlBinding(WsdlNS.Binding wsdlBinding, ErrorBehavior errorBehavior)
+        private WsdlEndpointConversionContext ImportWsdlBinding(WsdlNS.Binding wsdlBinding, ErrorBehavior errorBehavior)
         {
             //Check for exisiting exception
             if (IsBlackListed(wsdlBinding))
@@ -367,7 +366,7 @@ namespace System.ServiceModel.Description
 
 
 
-            if (!importedBindings.TryGetValue(wsdlBindingQName, out bindingEndpointContext))
+            if (!_importedBindings.TryGetValue(wsdlBindingQName, out bindingEndpointContext))
             {
                 EnsureBeforeImportCalled();
 
@@ -376,7 +375,7 @@ namespace System.ServiceModel.Description
                     bool wasExistingContract;
                     ContractDescription contractDescription = GetOrImportContractDescription(wsdlBinding.Type, out wasExistingContract);
                     WsdlContractConversionContext contractContext = null;
-                    importedPortTypes.TryGetValue(wsdlBinding.Type, out contractContext);
+                    _importedPortTypes.TryGetValue(wsdlBinding.Type, out contractContext);
 
                     ServiceEndpoint newWsdlBindingEndpoint = new ServiceEndpoint(contractDescription);
                     bindingEndpointContext = new WsdlEndpointConversionContext(contractContext, newWsdlBindingEndpoint, wsdlBinding, null);
@@ -384,7 +383,7 @@ namespace System.ServiceModel.Description
                     foreach (WsdlNS.OperationBinding wsdlOperationBinding in wsdlBinding.Operations)
                         try
                         {
-                            OperationDescription operation = Binding2DescriptionHelper.FindOperationDescription(wsdlOperationBinding, wsdlDocuments, bindingEndpointContext);
+                            OperationDescription operation = Binding2DescriptionHelper.FindOperationDescription(wsdlOperationBinding, _wsdlDocuments, bindingEndpointContext);
                             bindingEndpointContext.AddOperationBinding(operation, wsdlOperationBinding);
 
                             for (int i = 0; i < operation.Messages.Count; i++)
@@ -417,7 +416,7 @@ namespace System.ServiceModel.Description
 
                     CallImportEndpoint(bindingEndpointContext);
                     VerifyImportedWsdlBinding(wsdlBinding);
-                    importedBindings.Add(wsdlBindingQName, bindingEndpointContext);
+                    _importedBindings.Add(wsdlBindingQName, bindingEndpointContext);
                 }
 #pragma warning disable 56500 // covered by FxCOP
                 catch (Exception e)
@@ -435,20 +434,20 @@ namespace System.ServiceModel.Description
             return bindingEndpointContext;
         }
 
-        ServiceEndpoint ImportWsdlPort(WsdlNS.Port wsdlPort, ErrorBehavior errorBehavior)
+        private ServiceEndpoint ImportWsdlPort(WsdlNS.Port wsdlPort, ErrorBehavior errorBehavior)
         {
             if (IsBlackListed(wsdlPort))
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateAlreadyFaultedException(wsdlPort));
 
 
             ServiceEndpoint endpoint = null;
-            if (!importedPorts.TryGetValue(wsdlPort, out endpoint))
+            if (!_importedPorts.TryGetValue(wsdlPort, out endpoint))
             {
                 EnsureBeforeImportCalled();
 
                 try
                 {
-                    WsdlNS.Binding wsdlBinding = this.wsdlDocuments.GetBinding(wsdlPort.Binding);
+                    WsdlNS.Binding wsdlBinding = _wsdlDocuments.GetBinding(wsdlPort.Binding);
 
                     WsdlEndpointConversionContext bindingEndpointContext = ImportWsdlBinding(wsdlBinding, errorBehavior);
                     if (bindingEndpointContext == null)
@@ -474,8 +473,7 @@ namespace System.ServiceModel.Description
 
                     CallImportEndpoint(endpointContext);
                     VerifyImportedWsdlPort(wsdlPort);
-                    importedPorts.Add(wsdlPort, endpoint);
-
+                    _importedPorts.Add(wsdlPort, endpoint);
                 }
 #pragma warning disable 56500 // covered by FxCOP
                 catch (Exception e)
@@ -494,7 +492,7 @@ namespace System.ServiceModel.Description
             return endpoint;
         }
 
-        static bool TryCreateMessageDescription(WsdlNS.OperationMessage wsdlOperationMessage, OperationDescription operationDescription, out MessageDescription messageDescription)
+        private static bool TryCreateMessageDescription(WsdlNS.OperationMessage wsdlOperationMessage, OperationDescription operationDescription, out MessageDescription messageDescription)
         {
             string actionUri = WSAddressingHelper.GetWsaActionUri(wsdlOperationMessage);
             MessageDirection direction;
@@ -516,9 +514,8 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        static bool TryCreateFaultDescription(WsdlNS.OperationFault wsdlOperationFault, OperationDescription operationDescription, out FaultDescription faultDescription)
+        private static bool TryCreateFaultDescription(WsdlNS.OperationFault wsdlOperationFault, OperationDescription operationDescription, out FaultDescription faultDescription)
         {
-
             if (string.IsNullOrEmpty(wsdlOperationFault.Name))
             {
                 faultDescription = null;
@@ -532,7 +529,7 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        ContractDescription CreateContractDescription(WsdlNS.PortType wsdlPortType, XmlQualifiedName wsdlPortTypeQName)
+        private ContractDescription CreateContractDescription(WsdlNS.PortType wsdlPortType, XmlQualifiedName wsdlPortTypeQName)
         {
             ContractDescription contractDescription;
             XmlQualifiedName contractQName = WsdlNamingHelper.GetContractName(wsdlPortTypeQName);
@@ -541,7 +538,7 @@ namespace System.ServiceModel.Description
             return contractDescription;
         }
 
-        OperationDescription CreateOperationDescription(WsdlNS.PortType wsdlPortType, WsdlNS.Operation wsdlOperation, ContractDescription contract)
+        private OperationDescription CreateOperationDescription(WsdlNS.PortType wsdlPortType, WsdlNS.Operation wsdlOperation, ContractDescription contract)
         {
             string operationName = WsdlNamingHelper.GetOperationName(wsdlOperation);
             OperationDescription operationDescription = new OperationDescription(operationName, contract);
@@ -550,7 +547,7 @@ namespace System.ServiceModel.Description
             return operationDescription;
         }
 
-        Binding CreateBinding(WsdlEndpointConversionContext endpointContext, XmlQualifiedName bindingQName)
+        private Binding CreateBinding(WsdlEndpointConversionContext endpointContext, XmlQualifiedName bindingQName)
         {
             try
             {
@@ -562,7 +559,6 @@ namespace System.ServiceModel.Description
                 binding.Namespace = bindingQName.Namespace;
 
                 return binding;
-
             }
 #pragma warning disable 56500 // covered by FxCOP
             catch (Exception e)
@@ -573,13 +569,13 @@ namespace System.ServiceModel.Description
             }
         }
 
-        ContractDescription GetOrImportContractDescription(XmlQualifiedName wsdlPortTypeQName, out bool wasExistingContractDescription)
+        private ContractDescription GetOrImportContractDescription(XmlQualifiedName wsdlPortTypeQName, out bool wasExistingContractDescription)
         {
             ContractDescription contractDescription;
 
             if (!TryFindExistingContract(wsdlPortTypeQName, out contractDescription))
             {
-                WsdlNS.PortType wsdlPortType = wsdlDocuments.GetPortType(wsdlPortTypeQName);
+                WsdlNS.PortType wsdlPortType = _wsdlDocuments.GetPortType(wsdlPortTypeQName);
 
                 contractDescription = ImportWsdlPortType(wsdlPortType, WsdlPortTypeImportOptions.IgnoreExistingContracts, ErrorBehavior.RethrowExceptions);
 
@@ -590,9 +586,8 @@ namespace System.ServiceModel.Description
             return contractDescription;
         }
 
-        void ProcessMetadataDocuments(IEnumerable<MetadataSection> metadataSections)
+        private void ProcessMetadataDocuments(IEnumerable<MetadataSection> metadataSections)
         {
-
             foreach (MetadataSection doc in metadataSections)
             {
                 try
@@ -602,11 +597,11 @@ namespace System.ServiceModel.Description
 
                     if (doc.Dialect == MetadataSection.ServiceDescriptionDialect)
                     {
-                        wsdlDocuments.Add(TryConvert<WsdlNS.ServiceDescription>(doc));
+                        _wsdlDocuments.Add(TryConvert<WsdlNS.ServiceDescription>(doc));
                     }
                     if (doc.Dialect == MetadataSection.XmlSchemaDialect)
                     {
-                        xmlSchemas.Add(TryConvert<XmlSchema>(doc));
+                        _xmlSchemas.Add(TryConvert<XmlSchema>(doc));
                     }
                     if (doc.Dialect == MetadataSection.PolicyDialect)
                     {
@@ -616,7 +611,7 @@ namespace System.ServiceModel.Description
                         }
                         else
                         {
-                            policyDocuments.Add(doc.Identifier, TryConvert<XmlElement>(doc));
+                            _policyDocuments.Add(doc.Identifier, TryConvert<XmlElement>(doc));
                         }
                     }
                 }
@@ -630,7 +625,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        T TryConvert<T>(MetadataSection doc)
+        private T TryConvert<T>(MetadataSection doc)
         {
             try
             {
@@ -643,7 +638,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        bool TryFindExistingContract(XmlQualifiedName wsdlPortTypeQName, out ContractDescription existingContract)
+        private bool TryFindExistingContract(XmlQualifiedName wsdlPortTypeQName, out ContractDescription existingContract)
         {
             XmlQualifiedName contractQName = WsdlNamingHelper.GetContractName(wsdlPortTypeQName);
 
@@ -652,7 +647,7 @@ namespace System.ServiceModel.Description
                 return true;
 
             WsdlContractConversionContext contractContext;
-            if (importedPortTypes.TryGetValue(wsdlPortTypeQName, out contractContext))
+            if (_importedPortTypes.TryGetValue(wsdlPortTypeQName, out contractContext))
             {
                 existingContract = contractContext.Contract;
                 return true;
@@ -661,32 +656,32 @@ namespace System.ServiceModel.Description
             return false;
         }
 
-        void EnsureBeforeImportCalled()
+        private void EnsureBeforeImportCalled()
         {
-            if (!beforeImportCalled)
+            if (!_beforeImportCalled)
             {
-                foreach (IWsdlImportExtension extension in this.wsdlExtensions)
+                foreach (IWsdlImportExtension extension in _wsdlExtensions)
                 {
                     try
                     {
-                        extension.BeforeImport(this.wsdlDocuments, this.xmlSchemas, this.policyDocuments.Values);
+                        extension.BeforeImport(_wsdlDocuments, _xmlSchemas, _policyDocuments.Values);
                     }
 #pragma warning disable 56500 // covered by FxCOP
                     catch (Exception e)
                     {
-                        this.isFaulted = true;
+                        _isFaulted = true;
                         if (Fx.IsFatal(e))
                             throw;
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateBeforeImportExtensionException(extension, e));
                     }
                 }
-                beforeImportCalled = true;
+                _beforeImportCalled = true;
             }
         }
 
-        void CallImportContract(WsdlContractConversionContext contractConversionContext)
+        private void CallImportContract(WsdlContractConversionContext contractConversionContext)
         {
-            foreach (IWsdlImportExtension extension in this.wsdlExtensions)
+            foreach (IWsdlImportExtension extension in _wsdlExtensions)
                 try
                 {
                     extension.ImportContract(this, contractConversionContext);
@@ -700,13 +695,12 @@ namespace System.ServiceModel.Description
                 }
         }
 
-        void CallImportEndpoint(WsdlEndpointConversionContext endpointConversionContext)
+        private void CallImportEndpoint(WsdlEndpointConversionContext endpointConversionContext)
         {
-            foreach (IWsdlImportExtension extension in this.wsdlExtensions)
+            foreach (IWsdlImportExtension extension in _wsdlExtensions)
                 try
                 {
                     extension.ImportEndpoint(this, endpointConversionContext);
-
                 }
 #pragma warning disable 56500 // covered by FxCOP
                 catch (Exception e)
@@ -717,7 +711,7 @@ namespace System.ServiceModel.Description
                 }
         }
 
-        void VerifyImportedWsdlPortType(WsdlNS.PortType wsdlPortType)
+        private void VerifyImportedWsdlPortType(WsdlNS.PortType wsdlPortType)
         {
             VerifyImportedExtensions(wsdlPortType);
             foreach (WsdlNS.Operation wsdlOperation in wsdlPortType.Operations)
@@ -736,7 +730,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void VerifyImportedWsdlBinding(WsdlNS.Binding wsdlBinding)
+        private void VerifyImportedWsdlBinding(WsdlNS.Binding wsdlBinding)
         {
             VerifyImportedExtensions(wsdlBinding);
             foreach (WsdlNS.OperationBinding wsdlOperationBinding in wsdlBinding.Operations)
@@ -760,12 +754,12 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void VerifyImportedWsdlPort(WsdlNS.Port wsdlPort)
+        private void VerifyImportedWsdlPort(WsdlNS.Port wsdlPort)
         {
             VerifyImportedExtensions(wsdlPort);
         }
 
-        void VerifyImportedExtensions(WsdlNS.NamedItem item)
+        private void VerifyImportedExtensions(WsdlNS.NamedItem item)
         {
             foreach (object ext in item.Extensions)
             {
@@ -789,7 +783,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static bool IsNonSoapWsdl11BindingExtension(object ext)
+        private static bool IsNonSoapWsdl11BindingExtension(object ext)
         {
             if (ext is WsdlNS.HttpAddressBinding
                 || ext is WsdlNS.HttpBinding
@@ -807,10 +801,9 @@ namespace System.ServiceModel.Description
             }
 
             return false;
-
         }
 
-        XmlQualifiedName GetUnhandledExtensionQName(object extension, WsdlNS.NamedItem item)
+        private XmlQualifiedName GetUnhandledExtensionQName(object extension, WsdlNS.NamedItem item)
         {
             XmlElement element = extension as XmlElement;
             if (element != null)
@@ -837,7 +830,6 @@ namespace System.ServiceModel.Description
         {
             internal static OperationDescription FindOperationDescription(WsdlNS.OperationBinding wsdlOperationBinding, WsdlNS.ServiceDescriptionCollection wsdlDocuments, WsdlEndpointConversionContext endpointContext)
             {
-
                 OperationDescription operation;
                 if (endpointContext.ContractConversionContext != null)
                 {
@@ -873,7 +865,7 @@ namespace System.ServiceModel.Description
                 return null;
             }
 
-            static WsdlNS.Operation FindWsdlOperation(WsdlNS.OperationBinding wsdlOperationBinding, WsdlNS.ServiceDescriptionCollection wsdlDocuments)
+            private static WsdlNS.Operation FindWsdlOperation(WsdlNS.OperationBinding wsdlOperationBinding, WsdlNS.ServiceDescriptionCollection wsdlDocuments)
             {
                 WsdlNS.PortType wsdlPortType = wsdlDocuments.GetPortType(wsdlOperationBinding.Binding.Type);
 
@@ -960,7 +952,7 @@ namespace System.ServiceModel.Description
                 return result;
             }
 
-            static MatchResult MatchOperationParameterName(WsdlNS.MessageBinding wsdlMessageBinding, WsdlNS.OperationMessage wsdlOperationMessage)
+            private static MatchResult MatchOperationParameterName(WsdlNS.MessageBinding wsdlMessageBinding, WsdlNS.OperationMessage wsdlOperationMessage)
             {
                 string wsdlOperationMessageName = wsdlOperationMessage.Name;
                 string wsdlMessageBindingName = wsdlMessageBinding.Name;
@@ -985,7 +977,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static OperationDescription FindOperationDescription(ContractDescription contract, WsdlNS.OperationBinding wsdlOperationBinding)
+            private static OperationDescription FindOperationDescription(ContractDescription contract, WsdlNS.OperationBinding wsdlOperationBinding)
             {
                 foreach (OperationDescription operationDescription in contract.Operations)
                 {
@@ -996,7 +988,7 @@ namespace System.ServiceModel.Description
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnableToLocateOperation2, wsdlOperationBinding.Name, contract.Name)));
             }
 
-            static bool CompareOperations(OperationDescription operationDescription, ContractDescription parentContractDescription, WsdlNS.OperationBinding wsdlOperationBinding)
+            private static bool CompareOperations(OperationDescription operationDescription, ContractDescription parentContractDescription, WsdlNS.OperationBinding wsdlOperationBinding)
             {
                 string wsdlOperationName = WsdlExporter.WsdlNamingHelper.GetWsdlOperationName(operationDescription, parentContractDescription);
 
@@ -1015,7 +1007,6 @@ namespace System.ServiceModel.Description
                     return false;
 
                 return true;
-
             }
 
             private static bool FindMessage(MessageDescriptionCollection messageDescriptionCollection, MessageDirection transferDirection)
@@ -1025,7 +1016,6 @@ namespace System.ServiceModel.Description
                         return true;
                 return false;
             }
-
         }
 
         internal static class WSAddressingHelper
@@ -1055,7 +1045,7 @@ namespace System.ServiceModel.Description
                 return null;
             }
 
-            static string CreateDefaultWsaActionUri(WsdlNS.OperationMessage wsdlOperationMessage)
+            private static string CreateDefaultWsaActionUri(WsdlNS.OperationMessage wsdlOperationMessage)
             {
                 if (wsdlOperationMessage is WsdlNS.OperationFault)
                     return AddressingVersion.WSAddressing10.DefaultFaultAction;
@@ -1100,7 +1090,6 @@ namespace System.ServiceModel.Description
                     {
                         return new EndpointAddress(soapAddressBinding.Location);
                     }
-
                 }
                 return null;
             }
@@ -1183,7 +1172,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static class WsdlNamingHelper
+        private static class WsdlNamingHelper
         {
             internal static XmlQualifiedName GetBindingName(WsdlNS.Binding wsdlBinding)
             {
@@ -1298,7 +1287,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static XmlAttribute FindAttribute(XmlAttribute[] attributes, string localName, string ns)
+            private static XmlAttribute FindAttribute(XmlAttribute[] attributes, string localName, string ns)
             {
                 if (attributes != null)
                 {
@@ -1317,10 +1306,10 @@ namespace System.ServiceModel.Description
         internal static class SoapInPolicyWorkaroundHelper
         {
             public const string soapTransportUriKey = "TransportBindingElementImporter.TransportUri";
-            const string workaroundNS = NamingHelper.DefaultNamespace + "temporaryworkaround";
-            const string bindingAttrName = "bindingName";
-            const string bindingAttrNamespace = "bindingNamespace";
-            static XmlDocument xmlDocument;
+            private const string workaroundNS = NamingHelper.DefaultNamespace + "temporaryworkaround";
+            private const string bindingAttrName = "bindingName";
+            private const string bindingAttrNamespace = "bindingNamespace";
+            private static XmlDocument s_xmlDocument;
 
             static public void InsertAdHocPolicy(WsdlNS.Binding wsdlBinding, string value, string key)
             {
@@ -1352,7 +1341,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static string AddPolicyUri(WsdlNS.Binding wsdlBinding, string name)
+            private static string AddPolicyUri(WsdlNS.Binding wsdlBinding, string name)
             {
                 string policyUris = ReadPolicyUris(wsdlBinding);
                 string id = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}_{1}_BindingAdHocPolicy", wsdlBinding.Name, name);
@@ -1361,11 +1350,11 @@ namespace System.ServiceModel.Description
                 return id;
             }
 
-            static XmlDocument XmlDoc
+            private static XmlDocument XmlDoc
             {
                 get
                 {
-                    if (xmlDocument == null)
+                    if (s_xmlDocument == null)
                     {
                         NameTable nameTable = new NameTable();
                         nameTable.Add(MetadataStrings.WSPolicy.Elements.Policy);
@@ -1373,15 +1362,14 @@ namespace System.ServiceModel.Description
                         nameTable.Add(MetadataStrings.WSPolicy.Elements.ExactlyOne);
                         nameTable.Add(MetadataStrings.WSPolicy.Attributes.PolicyURIs);
                         nameTable.Add(MetadataStrings.Wsu.Attributes.Id);
-                        xmlDocument = new XmlDocument(nameTable);
+                        s_xmlDocument = new XmlDocument(nameTable);
                     }
-                    return xmlDocument;
+                    return s_xmlDocument;
                 }
             }
 
-            static void WritePolicyUris(WsdlNS.DocumentableItem item, string newValue)
+            private static void WritePolicyUris(WsdlNS.DocumentableItem item, string newValue)
             {
-
                 int i;
                 XmlAttribute[] attributes = item.ExtensibleAttributes;
                 if (attributes != null && attributes.Length > 0)
@@ -1395,7 +1383,6 @@ namespace System.ServiceModel.Description
                     // Need to extend
                     i = attributes.Length;
                     Array.Resize<XmlAttribute>(ref attributes, i + 1);
-
                 }
                 else
                 {
@@ -1408,7 +1395,7 @@ namespace System.ServiceModel.Description
                 item.ExtensibleAttributes = attributes;
             }
 
-            static XmlAttribute CreatePolicyURIsAttribute(string value)
+            private static XmlAttribute CreatePolicyURIsAttribute(string value)
             {
                 XmlAttribute attribute = XmlDoc.CreateAttribute(MetadataStrings.WSPolicy.Prefix,
                                                             MetadataStrings.WSPolicy.Attributes.PolicyURIs,
@@ -1418,9 +1405,8 @@ namespace System.ServiceModel.Description
                 return attribute;
             }
 
-            static string ReadPolicyUris(WsdlNS.DocumentableItem item)
+            private static string ReadPolicyUris(WsdlNS.DocumentableItem item)
             {
-
                 XmlAttribute[] attributes = item.ExtensibleAttributes;
                 if (attributes != null && attributes.Length > 0)
                 {
@@ -1436,9 +1422,8 @@ namespace System.ServiceModel.Description
                 return string.Empty;
             }
 
-            static void InsertPolicy(string key, string id, WsdlNS.ServiceDescription policyWsdl, string value, XmlQualifiedName wsdlBindingQName)
+            private static void InsertPolicy(string key, string id, WsdlNS.ServiceDescription policyWsdl, string value, XmlQualifiedName wsdlBindingQName)
             {
-
                 // Create [wsp:Policy]
                 XmlElement policyElement = CreatePolicyElement(key, value, wsdlBindingQName);
 
@@ -1451,12 +1436,10 @@ namespace System.ServiceModel.Description
 
                 // Add wsp:Policy To WSDL
                 policyWsdl.Extensions.Add(policyElement);
-
             }
 
-            static XmlElement CreatePolicyElement(string elementName, string value, XmlQualifiedName wsdlBindingQName)
+            private static XmlElement CreatePolicyElement(string elementName, string value, XmlQualifiedName wsdlBindingQName)
             {
-
                 // Create [wsp:Policy]
                 XmlElement policyElement = XmlDoc.CreateElement(MetadataStrings.WSPolicy.Prefix,
                                                             MetadataStrings.WSPolicy.Elements.Policy,
@@ -1475,14 +1458,14 @@ namespace System.ServiceModel.Description
                 exactlyOneElement.AppendChild(allElement);
 
                 // Add [wsp:Policy/wsp:ExactlyOne/wsp:All/*]
-                XmlElement workaroundElement = xmlDocument.CreateElement(elementName, workaroundNS);
+                XmlElement workaroundElement = s_xmlDocument.CreateElement(elementName, workaroundNS);
                 workaroundElement.InnerText = value;
 
-                XmlAttribute bindingName = xmlDocument.CreateAttribute(bindingAttrName);
+                XmlAttribute bindingName = s_xmlDocument.CreateAttribute(bindingAttrName);
                 bindingName.Value = wsdlBindingQName.Name;
                 workaroundElement.Attributes.Append(bindingName);
 
-                XmlAttribute bindingNamespace = xmlDocument.CreateAttribute(bindingAttrNamespace);
+                XmlAttribute bindingNamespace = s_xmlDocument.CreateAttribute(bindingAttrNamespace);
                 bindingNamespace.Value = wsdlBindingQName.Namespace;
                 workaroundElement.Attributes.Append(bindingNamespace);
 
@@ -1514,7 +1497,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        IEnumerable<WsdlNS.Binding> FindBindingsForPortType(WsdlNS.PortType wsdlPortType)
+        private IEnumerable<WsdlNS.Binding> FindBindingsForPortType(WsdlNS.PortType wsdlPortType)
         {
             foreach (WsdlNS.Binding wsdlBinding in GetAllBindings())
             {
@@ -1524,7 +1507,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        IEnumerable<WsdlNS.Binding> FindBindingsForContract(ContractDescription contract)
+        private IEnumerable<WsdlNS.Binding> FindBindingsForContract(ContractDescription contract)
         {
             XmlQualifiedName qName = WsdlExporter.WsdlNamingHelper.GetPortTypeQName(contract);
             foreach (WsdlNS.Binding wsdlBinding in GetAllBindings())
@@ -1535,7 +1518,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        IEnumerable<WsdlNS.Port> FindPortsForBinding(WsdlNS.Binding binding)
+        private IEnumerable<WsdlNS.Port> FindPortsForBinding(WsdlNS.Binding binding)
         {
             foreach (WsdlNS.Port wsdlPort in GetAllPorts())
             {
@@ -1544,7 +1527,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        IEnumerable<WsdlNS.Binding> GetAllBindings()
+        private IEnumerable<WsdlNS.Binding> GetAllBindings()
         {
             foreach (WsdlNS.ServiceDescription wsdl in this.WsdlDocuments)
             {
@@ -1555,7 +1538,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        IEnumerable<WsdlNS.Port> GetAllPorts()
+        private IEnumerable<WsdlNS.Port> GetAllPorts()
         {
             foreach (WsdlNS.ServiceDescription wsdl in this.WsdlDocuments)
             {
@@ -1572,7 +1555,7 @@ namespace System.ServiceModel.Description
         // TODO :[Fx.Tag.SecurityNote(Critical = "Uses ClientSection.UnsafeGetSection to get config in PT.",
         //    Safe = "Does not leak config object, just picks up extensions.")]
         [SecuritySafeCritical]
-        static Collection<IWsdlImportExtension> LoadWsdlExtensionsFromConfig()
+        private static Collection<IWsdlImportExtension> LoadWsdlExtensionsFromConfig()
         {
             // implement extension laoding with code w/o going to the config file.
             throw new NotImplementedException();
@@ -1580,7 +1563,6 @@ namespace System.ServiceModel.Description
 
         internal static IEnumerable<MetadataSection> CreateMetadataDocuments(WsdlNS.ServiceDescriptionCollection wsdlDocuments, XmlSchemaSet xmlSchemas, IEnumerable<XmlElement> policyDocuments)
         {
-
             if (wsdlDocuments != null)
                 foreach (WsdlNS.ServiceDescription wsdl in wsdlDocuments)
                     yield return MetadataSection.CreateFromServiceDescription(wsdl);
@@ -1594,7 +1576,7 @@ namespace System.ServiceModel.Description
                     yield return MetadataSection.CreateFromPolicy(policyDocument, null);
         }
 
-        BindingElementCollection ImportPolicyFromWsdl(WsdlEndpointConversionContext endpointContext)
+        private BindingElementCollection ImportPolicyFromWsdl(WsdlEndpointConversionContext endpointContext)
         {
             PolicyAlternatives policyAlternatives = this.PolicyReader.GetPolicyAlternatives(endpointContext);
             IEnumerable<PolicyConversionContext> policyContexts = GetPolicyConversionContextEnumerator(endpointContext.Endpoint, policyAlternatives, this.Quotas);
@@ -1641,7 +1623,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static UnrecognizedAssertionsBindingElement CollectUnrecognizedAssertions(PolicyConversionContext policyContext, WsdlEndpointConversionContext endpointContext)
+        private static UnrecognizedAssertionsBindingElement CollectUnrecognizedAssertions(PolicyConversionContext policyContext, WsdlEndpointConversionContext endpointContext)
         {
             XmlQualifiedName bindingQName = new XmlQualifiedName(endpointContext.WsdlBinding.Name, endpointContext.WsdlBinding.ServiceDescription.TargetNamespace);
             UnrecognizedAssertionsBindingElement unknownBindingElement = new UnrecognizedAssertionsBindingElement(bindingQName, policyContext.GetBindingAssertions());
@@ -1663,7 +1645,7 @@ namespace System.ServiceModel.Description
             return unknownBindingElement;
         }
 
-        static void AppendUnImportedPolicyErrorMessage(ref StringBuilder unImportedPolicyMessage, WsdlEndpointConversionContext endpointContext, PolicyConversionContext policyContext)
+        private static void AppendUnImportedPolicyErrorMessage(ref StringBuilder unImportedPolicyMessage, WsdlEndpointConversionContext endpointContext, PolicyConversionContext policyContext)
         {
             if (unImportedPolicyMessage == null)
             {
@@ -1696,10 +1678,9 @@ namespace System.ServiceModel.Description
                     }
                 }
             }
-
         }
 
-        static void AddUnImportedPolicyString(StringBuilder stringBuilder, WsdlNS.NamedItem item, IEnumerable<XmlElement> unimportdPolicy)
+        private static void AddUnImportedPolicyString(StringBuilder stringBuilder, WsdlNS.NamedItem item, IEnumerable<XmlElement> unimportdPolicy)
         {
             stringBuilder.AppendLine(SRServiceModel.Format(SRServiceModel.UnImportedAssertionList, CreateXPathString(item)));
             // do not putput duplicated assetions
@@ -1721,7 +1702,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static void WriteElement(XmlElement element, StringBuilder stringBuilder)
+        private static void WriteElement(XmlElement element, StringBuilder stringBuilder)
         {
             stringBuilder.Append("    <");
             stringBuilder.Append(element.Name);
@@ -1745,11 +1726,11 @@ namespace System.ServiceModel.Description
             stringBuilder.AppendLine();
         }
 
-        const string xPathDocumentFormatString = "//wsdl:definitions[@targetNamespace='{0}']";
-        const string xPathItemSubFormatString = "/wsdl:{0}";
-        const string xPathNamedItemSubFormatString = xPathItemSubFormatString + "[@name='{1}']";
+        private const string xPathDocumentFormatString = "//wsdl:definitions[@targetNamespace='{0}']";
+        private const string xPathItemSubFormatString = "/wsdl:{0}";
+        private const string xPathNamedItemSubFormatString = xPathItemSubFormatString + "[@name='{1}']";
 
-        static string GetElementName(WsdlNS.NamedItem item)
+        private static string GetElementName(WsdlNS.NamedItem item)
         {
             if (item is WsdlNS.PortType)
                 return "wsdl:portType";
@@ -1772,7 +1753,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static string CreateXPathString(WsdlNS.NamedItem item)
+        private static string CreateXPathString(WsdlNS.NamedItem item)
         {
             if (item == null)
                 return SRServiceModel.XPathUnavailable;
@@ -1793,7 +1774,7 @@ namespace System.ServiceModel.Description
             return documentPath + itemPath + rest;
         }
 
-        static void GetXPathParameters(WsdlNS.NamedItem item, out string wsdlNs, out string localName, ref string nameValue, ref string rest)
+        private static void GetXPathParameters(WsdlNS.NamedItem item, out string wsdlNs, out string localName, ref string nameValue, ref string rest)
         {
             if (item is WsdlNS.ServiceDescription)
             {
@@ -1881,17 +1862,17 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void LogImportWarning(string warningMessage)
+        private void LogImportWarning(string warningMessage)
         {
-            if (warnings.ContainsKey(warningMessage))
+            if (_warnings.ContainsKey(warningMessage))
                 return;
-            if (warnings.Count >= 1024)
-                warnings.Clear();
-            warnings.Add(warningMessage, warningMessage);
+            if (_warnings.Count >= 1024)
+                _warnings.Clear();
+            _warnings.Add(warningMessage, warningMessage);
             this.Errors.Add(new MetadataConversionError(warningMessage, true));
         }
 
-        void LogImportError(WsdlNS.NamedItem item, WsdlImportException wie, bool isWarning)
+        private void LogImportError(WsdlNS.NamedItem item, WsdlImportException wie, bool isWarning)
         {
             string errormessage;
             if (wie.InnerException != null && (wie.InnerException is WsdlImportException))
@@ -1905,47 +1886,47 @@ namespace System.ServiceModel.Description
                 errormessage = SRServiceModel.Format(SRServiceModel.WsdlImportErrorMessageDetail, GetElementName(item), CreateXPathString(wie.SourceItem), wie.Message);
             }
 
-            importErrors.Add(item, wie);
+            _importErrors.Add(item, wie);
             this.Errors.Add(new MetadataConversionError(errormessage, isWarning));
         }
 
-        static Exception CreateBeforeImportExtensionException(IWsdlImportExtension importer, Exception e)
+        private static Exception CreateBeforeImportExtensionException(IWsdlImportExtension importer, Exception e)
         {
             string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionBeforeImportError, importer.GetType().AssemblyQualifiedName, e.Message);
             return new InvalidOperationException(errorMessage, e);
         }
 
-        Exception CreateAlreadyFaultedException(WsdlNS.NamedItem item)
+        private Exception CreateAlreadyFaultedException(WsdlNS.NamedItem item)
         {
-            WsdlImportException innerException = importErrors[item];
+            WsdlImportException innerException = _importErrors[item];
             string warningMsg = SRServiceModel.Format(SRServiceModel.WsdlItemAlreadyFaulted, GetElementName(item));
             return new AlreadyFaultedException(warningMsg, innerException);
         }
 
-        static Exception CreateExtensionException(IWsdlImportExtension importer, Exception e)
+        private static Exception CreateExtensionException(IWsdlImportExtension importer, Exception e)
         {
             string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionImportError, importer.GetType().FullName, e.Message);
             //consider hsomu, allow internal exceptions to throw WsdlImportException and handle it in some special way?
             return new InvalidOperationException(errorMessage, e);
         }
 
-        class AlreadyFaultedException : InvalidOperationException
+        private class AlreadyFaultedException : InvalidOperationException
         {
             internal AlreadyFaultedException(string message, WsdlImportException innerException)
                 : base(message, innerException)
             { }
         }
 
-        class WsdlImportException : Exception
+        private class WsdlImportException : Exception
         {
-            WsdlNS.NamedItem sourceItem;
-            readonly string xPath = null;
+            private WsdlNS.NamedItem _sourceItem;
+            private readonly string _xPath = null;
 
-            WsdlImportException(WsdlNS.NamedItem item, Exception innerException)
+            private WsdlImportException(WsdlNS.NamedItem item, Exception innerException)
                 : base(string.Empty, innerException)
             {
-                this.xPath = CreateXPathString(item);
-                this.sourceItem = item;
+                _xPath = CreateXPathString(item);
+                _sourceItem = item;
             }
 
             internal static WsdlImportException Create(WsdlNS.NamedItem item, Exception innerException)
@@ -1953,7 +1934,7 @@ namespace System.ServiceModel.Description
                 WsdlImportException wie = innerException as WsdlImportException;
                 if (wie != null && wie.IsChildNodeOf(item))
                 {
-                    wie.sourceItem = item;
+                    wie._sourceItem = item;
                     return wie;
                 }
                 else
@@ -1971,9 +1952,9 @@ namespace System.ServiceModel.Description
                 return this.XPath.StartsWith(CreateXPathString(item), StringComparison.Ordinal);
             }
 
-            internal string XPath { get { return xPath; } }
+            internal string XPath { get { return _xPath; } }
 
-            internal WsdlNS.NamedItem SourceItem { get { return sourceItem; } }
+            internal WsdlNS.NamedItem SourceItem { get { return _sourceItem; } }
 
             public override string Message
             {
@@ -1994,19 +1975,19 @@ namespace System.ServiceModel.Description
 
         internal class WsdlPolicyReader
         {
-            WsdlImporter importer;
-            WsdlPolicyDictionary policyDictionary;
+            private WsdlImporter _importer;
+            private WsdlPolicyDictionary _policyDictionary;
 
-            static readonly string[] EmptyStringArray = new string[0];
+            private static readonly string[] s_emptyStringArray = new string[0];
 
             internal WsdlPolicyReader(WsdlImporter importer)
             {
-                this.importer = importer;
-                this.policyDictionary = new WsdlPolicyDictionary(importer);
+                _importer = importer;
+                _policyDictionary = new WsdlPolicyDictionary(importer);
                 importer.PolicyWarningOccured += this.LogPolicyNormalizationWarning;
             }
 
-            IEnumerable<IEnumerable<XmlElement>> GetPolicyAlternatives(WsdlNS.NamedItem item, WsdlNS.ServiceDescription wsdl)
+            private IEnumerable<IEnumerable<XmlElement>> GetPolicyAlternatives(WsdlNS.NamedItem item, WsdlNS.ServiceDescription wsdl)
             {
                 Collection<XmlElement> policyElements = new Collection<XmlElement>();
 
@@ -2018,18 +1999,18 @@ namespace System.ServiceModel.Description
                 foreach (XmlElement element in GetEmbeddedPolicy(item))
                 {
                     policyElements.Add(element);
-                    if (!policyDictionary.PolicySourceTable.ContainsKey(element))
-                        policyDictionary.PolicySourceTable.Add(element, wsdl);
+                    if (!_policyDictionary.PolicySourceTable.ContainsKey(element))
+                        _policyDictionary.PolicySourceTable.Add(element, wsdl);
                 }
 
-                return importer.NormalizePolicy(policyElements);
+                return _importer.NormalizePolicy(policyElements);
             }
 
-            void LogPolicyNormalizationWarning(XmlElement contextAssertion, string warningMessage)
+            private void LogPolicyNormalizationWarning(XmlElement contextAssertion, string warningMessage)
             {
                 string xPath = null;
                 if (contextAssertion != null)
-                    xPath = this.policyDictionary.CreateIdXPath(contextAssertion);
+                    xPath = _policyDictionary.CreateIdXPath(contextAssertion);
 
                 StringBuilder warningMsg = new StringBuilder();
                 warningMsg.AppendLine(warningMessage);
@@ -2045,7 +2026,7 @@ namespace System.ServiceModel.Description
                     //
                     warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.XPathPointer, SRServiceModel.XPathUnavailable));
                 }
-                importer.LogImportWarning(warningMsg.ToString());
+                _importer.LogImportWarning(warningMsg.ToString());
             }
 
             internal static bool ContainsPolicy(WsdlNS.Binding wsdlBinding)
@@ -2094,26 +2075,26 @@ namespace System.ServiceModel.Description
                 return embeddedPolicies;
             }
 
-            IEnumerable<XmlElement> GetReferencedPolicy(WsdlNS.NamedItem item, WsdlNS.ServiceDescription wsdl)
+            private IEnumerable<XmlElement> GetReferencedPolicy(WsdlNS.NamedItem item, WsdlNS.ServiceDescription wsdl)
             {
                 string xPath = CreateXPathString(item);
 
                 foreach (string policyRef in GetPolicyReferenceUris(item, xPath))
                 {
-                    XmlElement policy = policyDictionary.ResolvePolicyReference(policyRef, wsdl);
+                    XmlElement policy = _policyDictionary.ResolvePolicyReference(policyRef, wsdl);
                     if (policy == null)
                     {
                         StringBuilder warningMsg = new StringBuilder();
                         warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.UnableToFindPolicyWithId, policyRef));
                         warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.XPathPointer, xPath));
-                        importer.LogImportWarning(warningMsg.ToString());
+                        _importer.LogImportWarning(warningMsg.ToString());
                         continue;
                     }
                     yield return policy;
                 }
             }
 
-            IEnumerable<string> GetPolicyReferenceUris(WsdlNS.NamedItem item, string xPath)
+            private IEnumerable<string> GetPolicyReferenceUris(WsdlNS.NamedItem item, string xPath)
             {
                 //
                 // get policy from wsp:PolicyUris attribute
@@ -2128,7 +2109,7 @@ namespace System.ServiceModel.Description
                     yield return policyUri;
             }
 
-            IEnumerable<string> ReadPolicyReferenceElements(WsdlNS.NamedItem item, string xPath)
+            private IEnumerable<string> ReadPolicyReferenceElements(WsdlNS.NamedItem item, string xPath)
             {
                 List<XmlElement> policyReferences = new List<XmlElement>();
                 policyReferences.AddRange(item.Extensions.FindAll(MetadataStrings.WSPolicy.Elements.PolicyReference,
@@ -2143,12 +2124,12 @@ namespace System.ServiceModel.Description
                     if (idRef == null)
                     {
                         string warningMsg = SRServiceModel.Format(SRServiceModel.PolicyReferenceMissingURI, MetadataStrings.WSPolicy.Attributes.URI);
-                        importer.LogImportWarning(warningMsg);
+                        _importer.LogImportWarning(warningMsg);
                     }
                     else if (idRef == string.Empty)
                     {
                         string warningMsg = SRServiceModel.PolicyReferenceInvalidId;
-                        importer.LogImportWarning(warningMsg);
+                        _importer.LogImportWarning(warningMsg);
                         continue;
                     }
                     else
@@ -2158,9 +2139,8 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static string[] ReadPolicyUrisAttribute(WsdlNS.NamedItem item)
+            private static string[] ReadPolicyUrisAttribute(WsdlNS.NamedItem item)
             {
-
                 XmlAttribute[] attributes = item.ExtensibleAttributes;
                 if (attributes != null && attributes.Length > 0)
                 {
@@ -2173,10 +2153,10 @@ namespace System.ServiceModel.Description
                     }
                 }
 
-                return EmptyStringArray;
+                return s_emptyStringArray;
             }
 
-            static bool HasPolicyAttached(WsdlNS.NamedItem item)
+            private static bool HasPolicyAttached(WsdlNS.NamedItem item)
             {
                 XmlAttribute[] attributes = item.ExtensibleAttributes;
                 if (attributes != null && Array.Exists(attributes, PolicyHelper.IsPolicyURIs))
@@ -2211,7 +2191,7 @@ namespace System.ServiceModel.Description
                 if (endpointContext.WsdlPort != null)
                 {
                     IEnumerable<IEnumerable<XmlElement>> wsdlPortAlternatives = this.GetPolicyAlternatives(endpointContext.WsdlPort, endpointContext.WsdlPort.Service.ServiceDescription);
-                    policyAlternatives.EndpointAlternatives = PolicyHelper.CrossProduct<XmlElement>(wsdlBindingAlternatives, wsdlPortAlternatives, new YieldLimiter(this.importer.Quotas.MaxYields, this.importer));
+                    policyAlternatives.EndpointAlternatives = PolicyHelper.CrossProduct<XmlElement>(wsdlBindingAlternatives, wsdlPortAlternatives, new YieldLimiter(_importer.Quotas.MaxYields, _importer));
                 }
                 else
                 {
@@ -2263,7 +2243,7 @@ namespace System.ServiceModel.Description
                 return policyAlternatives;
             }
 
-            void CreateMessageBindingAlternatives(PolicyAlternatives policyAlternatives, WsdlNS.ServiceDescription bindingWsdl, MessageDescription message, WsdlNS.MessageBinding wsdlMessageBinding)
+            private void CreateMessageBindingAlternatives(PolicyAlternatives policyAlternatives, WsdlNS.ServiceDescription bindingWsdl, MessageDescription message, WsdlNS.MessageBinding wsdlMessageBinding)
             {
                 try
                 {
@@ -2279,7 +2259,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            void CreateFaultBindingAlternatives(PolicyAlternatives policyAlternatives, WsdlNS.ServiceDescription bindingWsdl, FaultDescription fault, WsdlNS.FaultBinding wsdlFaultBinding)
+            private void CreateFaultBindingAlternatives(PolicyAlternatives policyAlternatives, WsdlNS.ServiceDescription bindingWsdl, FaultDescription fault, WsdlNS.FaultBinding wsdlFaultBinding)
             {
                 try
                 {
@@ -2297,29 +2277,29 @@ namespace System.ServiceModel.Description
 
             internal XmlElement ResolvePolicyReference(string policyReference, XmlElement contextPolicyAssertion)
             {
-                return this.policyDictionary.ResolvePolicyReference(policyReference, contextPolicyAssertion);
+                return _policyDictionary.ResolvePolicyReference(policyReference, contextPolicyAssertion);
             }
 
-            class WsdlPolicyDictionary
+            private class WsdlPolicyDictionary
             {
-                readonly MetadataImporter importer;
-                readonly Dictionary<WsdlNS.ServiceDescription, Dictionary<string, XmlElement>> embeddedPolicyDictionary = new Dictionary<WsdlNS.ServiceDescription, Dictionary<string, XmlElement>>();
-                readonly Dictionary<string, XmlElement> externalPolicyDictionary = new Dictionary<string, XmlElement>();
-                readonly Dictionary<XmlElement, WsdlNS.ServiceDescription> policySourceTable = new Dictionary<XmlElement, WsdlNS.ServiceDescription>();
+                private readonly MetadataImporter _importer;
+                private readonly Dictionary<WsdlNS.ServiceDescription, Dictionary<string, XmlElement>> _embeddedPolicyDictionary = new Dictionary<WsdlNS.ServiceDescription, Dictionary<string, XmlElement>>();
+                private readonly Dictionary<string, XmlElement> _externalPolicyDictionary = new Dictionary<string, XmlElement>();
+                private readonly Dictionary<XmlElement, WsdlNS.ServiceDescription> _policySourceTable = new Dictionary<XmlElement, WsdlNS.ServiceDescription>();
 
                 internal Dictionary<XmlElement, WsdlNS.ServiceDescription> PolicySourceTable
                 {
-                    get { return policySourceTable; }
+                    get { return _policySourceTable; }
                 }
 
                 internal WsdlPolicyDictionary(WsdlImporter importer)
                 {
-                    this.importer = importer;
+                    _importer = importer;
 
                     //
                     // Embedded Policy documents
                     //
-                    foreach (WsdlNS.ServiceDescription wsdl in importer.wsdlDocuments)
+                    foreach (WsdlNS.ServiceDescription wsdl in importer._wsdlDocuments)
                     {
                         foreach (XmlElement element in WsdlPolicyReader.GetEmbeddedPolicy(wsdl))
                         {
@@ -2330,14 +2310,13 @@ namespace System.ServiceModel.Description
                     //
                     // External Policy documents
                     //
-                    foreach (KeyValuePair<string, XmlElement> policyDocument in importer.policyDocuments)
+                    foreach (KeyValuePair<string, XmlElement> policyDocument in importer._policyDocuments)
                     {
                         AddExternalPolicy(importer, policyDocument);
                     }
-
                 }
 
-                void AddEmbeddedPolicy(WsdlImporter importer, WsdlNS.ServiceDescription wsdl, XmlElement element)
+                private void AddEmbeddedPolicy(WsdlImporter importer, WsdlNS.ServiceDescription wsdl, XmlElement element)
                 {
                     string key = GetFragmentIdentifier(element);
                     if (String.IsNullOrEmpty(key))
@@ -2349,10 +2328,10 @@ namespace System.ServiceModel.Description
                     }
 
                     Dictionary<string, XmlElement> wsdlPolicyDictionary;
-                    if (!this.embeddedPolicyDictionary.TryGetValue(wsdl, out wsdlPolicyDictionary))
+                    if (!_embeddedPolicyDictionary.TryGetValue(wsdl, out wsdlPolicyDictionary))
                     {
                         wsdlPolicyDictionary = new Dictionary<string, XmlElement>();
-                        this.embeddedPolicyDictionary.Add(wsdl, wsdlPolicyDictionary);
+                        _embeddedPolicyDictionary.Add(wsdl, wsdlPolicyDictionary);
                     }
                     else if (wsdlPolicyDictionary.ContainsKey(key))
                     {
@@ -2363,10 +2342,10 @@ namespace System.ServiceModel.Description
                     }
 
                     wsdlPolicyDictionary.Add(key, element);
-                    policySourceTable.Add(element, wsdl);
+                    _policySourceTable.Add(element, wsdl);
                 }
 
-                void AddExternalPolicy(WsdlImporter importer, KeyValuePair<string, XmlElement> policyDocument)
+                private void AddExternalPolicy(WsdlImporter importer, KeyValuePair<string, XmlElement> policyDocument)
                 {
                     if (policyDocument.Value.NamespaceURI != MetadataStrings.WSPolicy.NamespaceUri
                         && policyDocument.Value.NamespaceURI != MetadataStrings.WSPolicy.NamespaceUri15)
@@ -2384,14 +2363,14 @@ namespace System.ServiceModel.Description
                     }
 
                     string key = CreateKeyFromPolicy(policyDocument.Key, policyDocument.Value);
-                    if (externalPolicyDictionary.ContainsKey(key))
+                    if (_externalPolicyDictionary.ContainsKey(key))
                     {
                         string warningMsg = SRServiceModel.Format(SRServiceModel.DuplicatePolicyDocumentSkipped, key);
                         importer.LogImportWarning(warningMsg);
                         return;
                     }
 
-                    this.externalPolicyDictionary.Add(key, policyDocument.Value);
+                    _externalPolicyDictionary.Add(key, policyDocument.Value);
                 }
 
                 internal XmlElement ResolvePolicyReference(string policyReference, XmlElement contextPolicyAssertion)
@@ -2400,7 +2379,7 @@ namespace System.ServiceModel.Description
 
                     if (policyReference[0] != '#')
                     {
-                        externalPolicyDictionary.TryGetValue(policyReference, out policy);
+                        _externalPolicyDictionary.TryGetValue(policyReference, out policy);
                         return policy;
                     }
 
@@ -2410,7 +2389,7 @@ namespace System.ServiceModel.Description
                     }
 
                     WsdlNS.ServiceDescription sourceWsdl;
-                    if (!policySourceTable.TryGetValue(contextPolicyAssertion, out sourceWsdl))
+                    if (!_policySourceTable.TryGetValue(contextPolicyAssertion, out sourceWsdl))
                     {
                         return null;
                     }
@@ -2423,12 +2402,12 @@ namespace System.ServiceModel.Description
                     XmlElement policy;
                     if (policyReference[0] != '#')
                     {
-                        externalPolicyDictionary.TryGetValue(policyReference, out policy);
+                        _externalPolicyDictionary.TryGetValue(policyReference, out policy);
                         return policy;
                     }
 
                     Dictionary<string, XmlElement> wsdlPolicyDictionary;
-                    if (!this.embeddedPolicyDictionary.TryGetValue(wsdlDocument, out wsdlPolicyDictionary))
+                    if (!_embeddedPolicyDictionary.TryGetValue(wsdlDocument, out wsdlPolicyDictionary))
                     {
                         return null;
                     }
@@ -2437,26 +2416,26 @@ namespace System.ServiceModel.Description
                     return policy;
                 }
 
-                static string CreateKeyFromPolicy(string identifier, XmlElement policyElement)
+                private static string CreateKeyFromPolicy(string identifier, XmlElement policyElement)
                 {
                     string policyId = GetFragmentIdentifier(policyElement);
                     string policyUri = string.Format(CultureInfo.InvariantCulture, "{0}{1}", identifier, policyId);
                     return policyUri;
                 }
 
-                static string GetFragmentIdentifier(XmlElement element)
+                private static string GetFragmentIdentifier(XmlElement element)
                 {
                     return PolicyHelper.GetFragmentIdentifier(element);
                 }
 
-                static readonly string wspPolicy = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", MetadataStrings.WSPolicy.Prefix, MetadataStrings.WSPolicy.Elements.Policy);
-                static readonly string xmlId = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", MetadataStrings.Xml.Prefix, MetadataStrings.Xml.Attributes.Id);
-                static readonly string wsuId = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", MetadataStrings.Wsu.Prefix, MetadataStrings.Wsu.Attributes.Id);
+                private static readonly string s_wspPolicy = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", MetadataStrings.WSPolicy.Prefix, MetadataStrings.WSPolicy.Elements.Policy);
+                private static readonly string s_xmlId = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", MetadataStrings.Xml.Prefix, MetadataStrings.Xml.Attributes.Id);
+                private static readonly string s_wsuId = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", MetadataStrings.Wsu.Prefix, MetadataStrings.Wsu.Attributes.Id);
 
                 internal string CreateIdXPath(XmlElement policyAssertion)
                 {
                     WsdlNS.ServiceDescription sourceWsdl;
-                    if (!policySourceTable.TryGetValue(policyAssertion, out sourceWsdl))
+                    if (!_policySourceTable.TryGetValue(policyAssertion, out sourceWsdl))
                     {
                         return null;
                     }
@@ -2475,31 +2454,29 @@ namespace System.ServiceModel.Description
                     string idAttrib;
                     if (element.HasAttribute(MetadataStrings.Wsu.Attributes.Id, MetadataStrings.Wsu.NamespaceUri))
                     {
-                        idAttrib = wsuId;
+                        idAttrib = s_wsuId;
                     }
                     else if (element.HasAttribute(MetadataStrings.Xml.Attributes.Id, MetadataStrings.Xml.NamespaceUri))
                     {
-                        idAttrib = xmlId;
+                        idAttrib = s_xmlId;
                     }
                     else
                     {
                         Fx.Assert("CreateIdXPath always called with a valid key");
                         return null;
                     }
-                    return string.Format(CultureInfo.InvariantCulture, "{0}/{1}/[@{2}='{3}']", xPath, wspPolicy, idAttrib, key);
+                    return string.Format(CultureInfo.InvariantCulture, "{0}/{1}/[@{2}='{3}']", xPath, s_wspPolicy, idAttrib, key);
                 }
-
             }
-
         }
 
-        enum ErrorBehavior
+        private enum ErrorBehavior
         {
             RethrowExceptions,
             DoNotThrowExceptions,
         }
 
-        enum WsdlPortTypeImportOptions
+        private enum WsdlPortTypeImportOptions
         {
             ReuseExistingContracts,
             IgnoreExistingContracts,

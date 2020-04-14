@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,20 +13,22 @@ namespace Microsoft.CodeDom {
     ///    <para> Represents a comment.</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeComment : CodeObject {
-        private string text;
-        private bool docComment = false;
+    public class CodeComment : CodeObject
+    {
+        private string _text;
+        private bool _docComment = false;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeComment'/>.
         ///    </para>
         /// </devdoc>
-        public CodeComment() {
+        public CodeComment()
+        {
         }
 
         /// <devdoc>
@@ -35,27 +37,32 @@ namespace Microsoft.CodeDom {
         ///       contents.
         ///    </para>
         /// </devdoc>
-        public CodeComment(string text) {
+        public CodeComment(string text)
+        {
             Text = text;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeComment(string text, bool docComment) {
+        public CodeComment(string text, bool docComment)
+        {
             Text = text;
-            this.docComment = docComment;
+            _docComment = docComment;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool DocComment {
-            get {
-                return docComment;
+        public bool DocComment
+        {
+            get
+            {
+                return _docComment;
             }
-            set {
-                docComment = value;
+            set
+            {
+                _docComment = value;
             }
         }
 
@@ -65,12 +72,15 @@ namespace Microsoft.CodeDom {
         ///       the text of the comment.
         ///    </para>
         /// </devdoc>
-        public string Text {
-            get {
-                return (text == null) ? string.Empty : text;
+        public string Text
+        {
+            get
+            {
+                return (_text == null) ? string.Empty : _text;
             }
-            set {
-                text = value;
+            set
+            {
+                _text = value;
             }
         }
     }

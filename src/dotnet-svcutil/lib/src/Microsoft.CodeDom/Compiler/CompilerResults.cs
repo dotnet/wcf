@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
+namespace Microsoft.CodeDom.Compiler
+{
     using System;
     using Microsoft.CodeDom;
     using System.Reflection;
@@ -19,13 +20,14 @@ namespace Microsoft.CodeDom.Compiler {
     ///    </para>
     /// </devdoc>
     // [Serializable()]
-    public class CompilerResults {
-        private CompilerErrorCollection errors = new CompilerErrorCollection();
-        private StringCollection output = new StringCollection();
-        private Assembly compiledAssembly;
-        private string pathToAssembly;
-        private int nativeCompilerReturnValue;
-        private TempFileCollection tempFiles;
+    public class CompilerResults
+    {
+        private CompilerErrorCollection _errors = new CompilerErrorCollection();
+        private StringCollection _output = new StringCollection();
+        private Assembly _compiledAssembly;
+        private string _pathToAssembly;
+        private int _nativeCompilerReturnValue;
+        private TempFileCollection _tempFiles;
 
         /// <devdoc>
         ///    <para>
@@ -34,8 +36,9 @@ namespace Microsoft.CodeDom.Compiler {
         ///       temporary files.
         ///    </para>
         /// </devdoc>
-        public CompilerResults(TempFileCollection tempFiles) {
-            this.tempFiles = tempFiles;
+        public CompilerResults(TempFileCollection tempFiles)
+        {
+            _tempFiles = tempFiles;
         }
 
         /// <devdoc>
@@ -43,13 +46,16 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the temporary files to use.
         ///    </para>
         /// </devdoc>
-        public TempFileCollection TempFiles {
-            get {
-                return tempFiles;
+        public TempFileCollection TempFiles
+        {
+            get
+            {
+                return _tempFiles;
             }
 
-            set {
-                tempFiles = value;
+            set
+            {
+                _tempFiles = value;
             }
         }
 
@@ -58,19 +64,23 @@ namespace Microsoft.CodeDom.Compiler {
         ///       The compiled assembly.
         ///    </para>
         /// </devdoc>
-        public Assembly CompiledAssembly {
-            get {
-                if (compiledAssembly == null && pathToAssembly != null) {
+        public Assembly CompiledAssembly
+        {
+            get
+            {
+                if (_compiledAssembly == null && _pathToAssembly != null)
+                {
                     AssemblyName assemName = new AssemblyName();
                     // assemName.CodeBase = pathToAssembly;
-                    compiledAssembly = Assembly.Load(assemName);
+                    _compiledAssembly = Assembly.Load(assemName);
                 }
-                return compiledAssembly;
+                return _compiledAssembly;
             }
 
-            
-            set {
-                compiledAssembly = value;
+
+            set
+            {
+                _compiledAssembly = value;
             }
         }
         /// <devdoc>
@@ -78,9 +88,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the collection of compiler errors.
         ///    </para>
         /// </devdoc>
-        public CompilerErrorCollection Errors {
-            get {
-                return errors;
+        public CompilerErrorCollection Errors
+        {
+            get
+            {
+                return _errors;
             }
         }
 
@@ -89,10 +101,11 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the compiler output messages.
         ///    </para>
         /// </devdoc>
-        public StringCollection Output {
-            
-            get {
-                return output;
+        public StringCollection Output
+        {
+            get
+            {
+                return _output;
             }
         }
 
@@ -101,17 +114,18 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the path to the assembly.
         ///    </para>
         /// </devdoc>
-        public string PathToAssembly {
-            
-            
-            get {
-                return pathToAssembly;
+        public string PathToAssembly
+        {
+            get
+            {
+                return _pathToAssembly;
             }
 
-            
-            
-            set {
-                pathToAssembly = value;
+
+
+            set
+            {
+                _pathToAssembly = value;
             }
         }
 
@@ -120,14 +134,17 @@ namespace Microsoft.CodeDom.Compiler {
         ///       Gets or sets the compiler's return value.
         ///    </para>
         /// </devdoc>
-        public int NativeCompilerReturnValue {
-            get {
-                return nativeCompilerReturnValue;
+        public int NativeCompilerReturnValue
+        {
+            get
+            {
+                return _nativeCompilerReturnValue;
             }
 
-            
-            set {
-                nativeCompilerReturnValue = value;
+
+            set
+            {
+                _nativeCompilerReturnValue = value;
             }
         }
     }

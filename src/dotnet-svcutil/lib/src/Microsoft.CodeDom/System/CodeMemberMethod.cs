@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,61 +15,66 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeMemberMethod : CodeTypeMember {
-        private CodeParameterDeclarationExpressionCollection parameters = new CodeParameterDeclarationExpressionCollection();
-        private CodeStatementCollection statements = new CodeStatementCollection();
-        private CodeTypeReference returnType;
-        private CodeTypeReference privateImplements = null;
-        private CodeTypeReferenceCollection implementationTypes = null;
-        private CodeAttributeDeclarationCollection returnAttributes = null;
-        
+    public class CodeMemberMethod : CodeTypeMember
+    {
+        private CodeParameterDeclarationExpressionCollection _parameters = new CodeParameterDeclarationExpressionCollection();
+        private CodeStatementCollection _statements = new CodeStatementCollection();
+        private CodeTypeReference _returnType;
+        private CodeTypeReference _privateImplements = null;
+        private CodeTypeReferenceCollection _implementationTypes = null;
+        private CodeAttributeDeclarationCollection _returnAttributes = null;
+
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeTypeParameterCollection typeParameters;
-        
-        private int  populated = 0x0;
+        private CodeTypeParameterCollection _typeParameters;
+
+        private int _populated = 0x0;
         private const int ParametersCollection = 0x1;
         private const int StatementsCollection = 0x2;
         private const int ImplTypesCollection = 0x4;
-        
+
         /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the Parameters Collection is accessed.  
         ///    </para>
         /// </devdoc>
         public event EventHandler PopulateParameters;
-        
+
         /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the Statements Collection is accessed.  
         ///    </para>
         /// </devdoc>
         public event EventHandler PopulateStatements;
-        
+
         /// <devdoc>
         ///    <para>
         ///       An event that will be fired the first time the ImplementationTypes Collection is accessed.  
         ///    </para>
         /// </devdoc>
         public event EventHandler PopulateImplementationTypes;
-        
+
         /// <devdoc>
         ///    <para>
         ///       Gets or sets the return type of the method.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference ReturnType {
-            get {
-                if (returnType == null) {
-                    returnType = new CodeTypeReference(typeof(void).FullName);
+        public CodeTypeReference ReturnType
+        {
+            get
+            {
+                if (_returnType == null)
+                {
+                    _returnType = new CodeTypeReference(typeof(void).FullName);
                 }
-                return returnType;
+                return _returnType;
             }
-            set {
-                returnType = value;
+            set
+            {
+                _returnType = value;
             }
         }
 
@@ -78,13 +83,16 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the statements within the method.
         ///    </para>
         /// </devdoc>
-        public CodeStatementCollection Statements {
-            get {
-                if (0 == (populated & StatementsCollection)) {
-                    populated |= StatementsCollection;
+        public CodeStatementCollection Statements
+        {
+            get
+            {
+                if (0 == (_populated & StatementsCollection))
+                {
+                    _populated |= StatementsCollection;
                     if (PopulateStatements != null) PopulateStatements(this, EventArgs.Empty);
                 }
-                return statements;
+                return _statements;
             }
         }
 
@@ -93,65 +101,81 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the parameter declarations for the method.
         ///    </para>
         /// </devdoc>
-        public CodeParameterDeclarationExpressionCollection Parameters {
-            get {
-                if (0 == (populated & ParametersCollection)) {
-                    populated |= ParametersCollection;
+        public CodeParameterDeclarationExpressionCollection Parameters
+        {
+            get
+            {
+                if (0 == (_populated & ParametersCollection))
+                {
+                    _populated |= ParametersCollection;
                     if (PopulateParameters != null) PopulateParameters(this, EventArgs.Empty);
                 }
-                return parameters;
+                return _parameters;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReference PrivateImplementationType {
-            get {
-                return privateImplements;
+        public CodeTypeReference PrivateImplementationType
+        {
+            get
+            {
+                return _privateImplements;
             }
-            set {
-                privateImplements = value;
+            set
+            {
+                _privateImplements = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeTypeReferenceCollection ImplementationTypes {
-            get {
-                if (implementationTypes == null) {
-                    implementationTypes = new CodeTypeReferenceCollection();
+        public CodeTypeReferenceCollection ImplementationTypes
+        {
+            get
+            {
+                if (_implementationTypes == null)
+                {
+                    _implementationTypes = new CodeTypeReferenceCollection();
                 }
-                
-                if (0 == (populated & ImplTypesCollection)) {
-                    populated |= ImplTypesCollection;
+
+                if (0 == (_populated & ImplTypesCollection))
+                {
+                    _populated |= ImplTypesCollection;
                     if (PopulateImplementationTypes != null) PopulateImplementationTypes(this, EventArgs.Empty);
                 }
-                return implementationTypes;
+                return _implementationTypes;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeAttributeDeclarationCollection ReturnTypeCustomAttributes {
-            get {
-                if (returnAttributes == null) {
-                    returnAttributes = new CodeAttributeDeclarationCollection();
+        public CodeAttributeDeclarationCollection ReturnTypeCustomAttributes
+        {
+            get
+            {
+                if (_returnAttributes == null)
+                {
+                    _returnAttributes = new CodeAttributeDeclarationCollection();
                 }
-                return returnAttributes;
+                return _returnAttributes;
             }
         }
 
         [System.Runtime.InteropServices.ComVisible(false)]
-        public CodeTypeParameterCollection TypeParameters {  
-            get {
-                if( typeParameters == null) {
-                    typeParameters = new CodeTypeParameterCollection();
+        public CodeTypeParameterCollection TypeParameters
+        {
+            get
+            {
+                if (_typeParameters == null)
+                {
+                    _typeParameters = new CodeTypeParameterCollection();
                 }
 
-                return typeParameters;
+                return _typeParameters;
             }
         }
     }

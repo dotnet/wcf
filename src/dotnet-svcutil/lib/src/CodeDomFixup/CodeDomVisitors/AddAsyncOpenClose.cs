@@ -21,7 +21,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static CodeMemberMethod GenerateTaskBasedAsyncMethod(string methodName, NameScope nameScope)
+        private static CodeMemberMethod GenerateTaskBasedAsyncMethod(string methodName, NameScope nameScope)
         {
             CodeTypeReference delegateType = new CodeTypeReference(typeof(Action<>));
             delegateType.TypeArguments.Add(new CodeTypeReference(typeof(IAsyncResult)));
@@ -31,7 +31,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 Name = nameScope.UniqueMemberName(methodName + "Async"),
                 Attributes = MemberAttributes.Public,
-                ReturnType = new CodeTypeReference(typeof(Task)), 
+                ReturnType = new CodeTypeReference(typeof(Task)),
             };
 
             // new Action<IAsyncResult>((ICommunicationObject)this).EndOpen)
@@ -60,7 +60,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
         // ((ICommunicationObject)this).BeginOpen(null, null)
-        static CodeMethodInvokeExpression GenerateBeginMethodInvokeExpression(string methodName)
+        private static CodeMethodInvokeExpression GenerateBeginMethodInvokeExpression(string methodName)
         {
             return new CodeMethodInvokeExpression()
             {

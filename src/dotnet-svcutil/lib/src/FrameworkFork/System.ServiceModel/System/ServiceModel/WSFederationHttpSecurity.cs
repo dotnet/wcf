@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.Runtime;
@@ -10,46 +11,46 @@ namespace System.ServiceModel
     {
         internal const WSFederationHttpSecurityMode DefaultMode = WSFederationHttpSecurityMode.Message;
 
-        WSFederationHttpSecurityMode mode;
-        FederatedMessageSecurityOverHttp messageSecurity;
+        private WSFederationHttpSecurityMode _mode;
+        private FederatedMessageSecurityOverHttp _messageSecurity;
 
         public WSFederationHttpSecurity()
             : this(DefaultMode, new FederatedMessageSecurityOverHttp())
         {
         }
 
-        WSFederationHttpSecurity(WSFederationHttpSecurityMode mode, FederatedMessageSecurityOverHttp messageSecurity)
+        private WSFederationHttpSecurity(WSFederationHttpSecurityMode mode, FederatedMessageSecurityOverHttp messageSecurity)
         {
             Fx.Assert(WSFederationHttpSecurityModeHelper.IsDefined(mode), string.Format("Invalid WSFederationHttpSecurityMode value: {0}", mode.ToString()));
 
-            this.mode = mode;
-            this.messageSecurity = messageSecurity == null ? new FederatedMessageSecurityOverHttp() : messageSecurity;
+            _mode = mode;
+            _messageSecurity = messageSecurity == null ? new FederatedMessageSecurityOverHttp() : messageSecurity;
         }
 
         public WSFederationHttpSecurityMode Mode
         {
-            get { return this.mode; }
+            get { return _mode; }
             set
             {
                 if (!WSFederationHttpSecurityModeHelper.IsDefined(value))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.mode = value;
+                _mode = value;
             }
         }
 
         public FederatedMessageSecurityOverHttp Message
         {
-            get { return this.messageSecurity; }
-            set { this.messageSecurity = value; }
+            get { return _messageSecurity; }
+            set { _messageSecurity = value; }
         }
 
         internal SecurityBindingElement CreateMessageSecurity(bool isReliableSessionEnabled, MessageSecurityVersion version)
         {
-            if (this.mode == WSFederationHttpSecurityMode.Message || this.mode == WSFederationHttpSecurityMode.TransportWithMessageCredential)
+            if (_mode == WSFederationHttpSecurityMode.Message || _mode == WSFederationHttpSecurityMode.TransportWithMessageCredential)
             {
-                return this.messageSecurity.CreateSecurityBindingElement(this.Mode == WSFederationHttpSecurityMode.TransportWithMessageCredential, isReliableSessionEnabled, version);
+                return _messageSecurity.CreateSecurityBindingElement(this.Mode == WSFederationHttpSecurityMode.TransportWithMessageCredential, isReliableSessionEnabled, version);
             }
             else
             {

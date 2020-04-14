@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System;
     using System.Diagnostics;
     using System.Runtime.InteropServices;
@@ -14,9 +14,10 @@ namespace Microsoft.CodeDom {
     /// </devdoc>
     [
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public enum FieldDirection {
+    public enum FieldDirection
+    {
         /// <devdoc>
         ///    <para>
         ///       Incoming field.

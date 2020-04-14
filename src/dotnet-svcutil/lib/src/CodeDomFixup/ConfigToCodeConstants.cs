@@ -3,7 +3,6 @@
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-
     internal static class ConfigToCodeConstants
     {
         internal const string EndpointConfigurationParameter = "endpointConfiguration";

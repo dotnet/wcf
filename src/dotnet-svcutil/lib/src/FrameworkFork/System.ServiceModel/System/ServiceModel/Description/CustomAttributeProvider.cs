@@ -86,7 +86,7 @@ namespace System.ServiceModel.Description
                 case AttributeProviderType.ParameterInfo:
                     //GetCustomAttributes could return null instead of empty collection for a known System.Relection issue, workaround the issue by explicitly checking the null
                     var customAttributes = this.ParameterInfo.GetCustomAttributes(attributeType, inherit);
-                    return customAttributes == null ? null: customAttributes.ToArray();
+                    return customAttributes == null ? null : customAttributes.ToArray();
             }
             Contract.Assert(false, "This should never execute.");
             throw ExceptionHelper.PlatformNotSupported();

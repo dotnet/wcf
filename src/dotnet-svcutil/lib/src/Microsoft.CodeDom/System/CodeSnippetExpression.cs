@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,28 +15,31 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeSnippetExpression : CodeExpression {
-        private string value;
+    public class CodeSnippetExpression : CodeExpression
+    {
+        private string _value;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeSnippetExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeSnippetExpression() {
+        public CodeSnippetExpression()
+        {
         }
-        
+
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeSnippetExpression'/> using the specified snippet
         ///       expression.
         ///    </para>
         /// </devdoc>
-        public CodeSnippetExpression(string value) {
+        public CodeSnippetExpression(string value)
+        {
             Value = value;
         }
 
@@ -45,12 +48,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the snippet expression.
         ///    </para>
         /// </devdoc>
-        public string Value {
-            get {
-                return (value == null) ? string.Empty : value;
+        public string Value
+        {
+            get
+            {
+                return (_value == null) ? string.Empty : _value;
             }
-            set {
-                this.value = value;
+            set
+            {
+                _value = value;
             }
         }
     }

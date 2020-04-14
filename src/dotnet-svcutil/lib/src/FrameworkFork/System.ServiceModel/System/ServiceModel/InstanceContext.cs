@@ -276,7 +276,7 @@ namespace System.ServiceModel
             return TaskHelpers.CompletedTask();
         }
 
-        void SetUserObject(object newUserObject)
+        private void SetUserObject(object newUserObject)
         {
             if (_behavior != null && !_wellKnown)
             {

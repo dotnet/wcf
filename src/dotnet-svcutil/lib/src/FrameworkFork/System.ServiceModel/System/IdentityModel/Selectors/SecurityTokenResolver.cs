@@ -160,7 +160,6 @@ namespace System.IdentityModel.Selectors
                 token = null;
                 for (int i = 0; i < keyIdentifier.Count; ++i)
                 {
-
                     SecurityToken securityToken = ResolveSecurityToken(keyIdentifier[i]);
                     if (securityToken != null)
                     {
@@ -186,7 +185,7 @@ namespace System.IdentityModel.Selectors
                 return (token != null);
             }
 
-            SecurityToken ResolveSecurityToken(SecurityKeyIdentifierClause keyIdentifierClause)
+            private SecurityToken ResolveSecurityToken(SecurityKeyIdentifierClause keyIdentifierClause)
             {
                 if (keyIdentifierClause == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("keyIdentifierClause");
@@ -202,8 +201,6 @@ namespace System.IdentityModel.Selectors
 
                 return null;
             }
-
         }
-
     }
 }

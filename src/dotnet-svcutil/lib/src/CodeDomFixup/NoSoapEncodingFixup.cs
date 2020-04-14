@@ -27,7 +27,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (new SoapEncodingOperationFilter(contract).Filter())
                 {
                     MetadataConversionError warning = new MetadataConversionError(string.Format(CultureInfo.InvariantCulture, SR.ErrIncompatibleContractSoapEncodingFormat, contract.Name), isWarning: true);
-                    if(!importer.Errors.Contains(warning))
+                    if (!importer.Errors.Contains(warning))
                     {
                         importer.Errors.Add(warning);
                     }
@@ -35,30 +35,30 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        class SoapEncodingOperationFilter
+        private class SoapEncodingOperationFilter
         {
-            ContractDescription contract;
-            bool filteredAny = false;
+            private ContractDescription _contract;
+            private bool _filteredAny = false;
             internal SoapEncodingOperationFilter(ContractDescription contract)
             {
-                this.contract = contract;
+                _contract = contract;
             }
 
             internal bool Filter()
             {
-                CollectionHelpers.MapList<OperationDescription>(contract.Operations, IsNotSoapEncoding, OnFiltered);
-                return filteredAny;
+                CollectionHelpers.MapList<OperationDescription>(_contract.Operations, IsNotSoapEncoding, OnFiltered);
+                return _filteredAny;
             }
 
-            static bool IsNotSoapEncoding(OperationDescription op)
+            private static bool IsNotSoapEncoding(OperationDescription op)
             {
                 XmlSerializerOperationBehavior behavior = op.Behaviors.Find<XmlSerializerOperationBehavior>();
                 return behavior == null || behavior.XmlSerializerFormatAttribute.Use != OperationFormatUse.Encoded;
             }
 
-            void OnFiltered(OperationDescription op, int index)
+            private void OnFiltered(OperationDescription op, int index)
             {
-                filteredAny = true;
+                _filteredAny = true;
             }
         }
     }

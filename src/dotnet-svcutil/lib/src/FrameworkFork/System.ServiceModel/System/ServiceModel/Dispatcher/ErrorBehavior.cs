@@ -22,7 +22,7 @@ namespace System.ServiceModel.Dispatcher
             _messageVersion = channelDispatcher.MessageVersion;
         }
 
-        void InitializeFault(ref MessageRpc rpc)
+        private void InitializeFault(ref MessageRpc rpc)
         {
             Exception error = rpc.Error;
             FaultException fault = error as FaultException;
@@ -45,7 +45,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProvideMessageFaultCore(ref MessageRpc rpc)
+        private void ProvideMessageFaultCore(ref MessageRpc rpc)
         {
             if (_messageVersion != rpc.RequestVersion)
             {
@@ -59,7 +59,7 @@ namespace System.ServiceModel.Dispatcher
             this.ProvideMessageFaultCoreCoda(ref rpc);
         }
 
-        void ProvideMessageFaultCoreCoda(ref MessageRpc rpc)
+        private void ProvideMessageFaultCoreCoda(ref MessageRpc rpc)
         {
             if (rpc.FaultInfo.Fault.Headers.Action == null)
             {
@@ -156,7 +156,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void HandleErrorCore(ref MessageRpc rpc)
+        private void HandleErrorCore(ref MessageRpc rpc)
         {
             bool handled = HandleErrorCommon(rpc.Error, ref rpc.FaultInfo);
             if (handled)

@@ -12,14 +12,14 @@ namespace System.ServiceModel
 
     public class UdpBinding : Binding, IBindingRuntimePreferences
     {
-        TextMessageEncodingBindingElement textEncoding;
-        UdpTransportBindingElement udpTransport;
+        private TextMessageEncodingBindingElement _textEncoding;
+        private UdpTransportBindingElement _udpTransport;
 
         public UdpBinding()
             : base()
         {
-            this.textEncoding = new TextMessageEncodingBindingElement();
-            this.udpTransport = new UdpTransportBindingElement();
+            _textEncoding = new TextMessageEncodingBindingElement();
+            _udpTransport = new UdpTransportBindingElement();
         }
 
         private UdpBinding(UdpTransportBindingElement transport, TextMessageEncodingBindingElement encoding)
@@ -42,11 +42,11 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.udpTransport.DuplicateMessageHistoryLength;
+                return _udpTransport.DuplicateMessageHistoryLength;
             }
             set
             {
-                this.udpTransport.DuplicateMessageHistoryLength = value;
+                _udpTransport.DuplicateMessageHistoryLength = value;
             }
         }
 
@@ -55,11 +55,11 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.udpTransport.MaxBufferPoolSize;
+                return _udpTransport.MaxBufferPoolSize;
             }
             set
             {
-                this.udpTransport.MaxBufferPoolSize = value;
+                _udpTransport.MaxBufferPoolSize = value;
             }
         }
 
@@ -68,12 +68,12 @@ namespace System.ServiceModel
         {
             get
             {
-                return Math.Max(this.udpTransport.RetransmissionSettings.MaxUnicastRetransmitCount, this.udpTransport.RetransmissionSettings.MaxMulticastRetransmitCount);
+                return Math.Max(_udpTransport.RetransmissionSettings.MaxUnicastRetransmitCount, _udpTransport.RetransmissionSettings.MaxMulticastRetransmitCount);
             }
             set
             {
-                this.udpTransport.RetransmissionSettings.MaxUnicastRetransmitCount = value;
-                this.udpTransport.RetransmissionSettings.MaxMulticastRetransmitCount = value;
+                _udpTransport.RetransmissionSettings.MaxUnicastRetransmitCount = value;
+                _udpTransport.RetransmissionSettings.MaxMulticastRetransmitCount = value;
             }
         }
 
@@ -82,11 +82,11 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.udpTransport.MaxPendingMessagesTotalSize;
+                return _udpTransport.MaxPendingMessagesTotalSize;
             }
             set
             {
-                this.udpTransport.MaxPendingMessagesTotalSize = value;
+                _udpTransport.MaxPendingMessagesTotalSize = value;
             }
         }
 
@@ -95,70 +95,70 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.udpTransport.MaxReceivedMessageSize;
+                return _udpTransport.MaxReceivedMessageSize;
             }
             set
             {
-                this.udpTransport.MaxReceivedMessageSize = value;
+                _udpTransport.MaxReceivedMessageSize = value;
             }
         }
 
         [DefaultValue(UdpConstants.Defaults.MulticastInterfaceId)]
         public string MulticastInterfaceId
         {
-            get { return this.udpTransport.MulticastInterfaceId; }
-            set { this.udpTransport.MulticastInterfaceId = value; }
+            get { return _udpTransport.MulticastInterfaceId; }
+            set { _udpTransport.MulticastInterfaceId = value; }
         }
 
         public XmlDictionaryReaderQuotas ReaderQuotas
         {
-            get { return this.textEncoding.ReaderQuotas; }
+            get { return _textEncoding.ReaderQuotas; }
             set
             {
                 if (value == null)
                 {
                     throw FxTrace.Exception.ArgumentNull("value");
                 }
-                value.CopyTo(this.textEncoding.ReaderQuotas);
+                value.CopyTo(_textEncoding.ReaderQuotas);
             }
         }
 
         //TODO: [TypeConverter(typeof(EncodingConverter))]
         public Encoding TextEncoding
         {
-            get { return this.textEncoding.WriteEncoding; }
-            set { this.textEncoding.WriteEncoding = value; }
+            get { return _textEncoding.WriteEncoding; }
+            set { _textEncoding.WriteEncoding = value; }
         }
 
         [DefaultValue(UdpConstants.Defaults.TimeToLive)]
         public int TimeToLive
         {
-            get { return this.udpTransport.TimeToLive; }
-            set { this.udpTransport.TimeToLive = value; }
+            get { return _udpTransport.TimeToLive; }
+            set { _udpTransport.TimeToLive = value; }
         }
 
         public override string Scheme
         {
-            get { return this.udpTransport.Scheme; }
+            get { return _udpTransport.Scheme; }
         }
 
         public override BindingElementCollection CreateBindingElements()
         {
             BindingElementCollection bindingElements = new BindingElementCollection();
-            bindingElements.Add(this.textEncoding);
-            bindingElements.Add(this.udpTransport);
+            bindingElements.Add(_textEncoding);
+            bindingElements.Add(_udpTransport);
 
             return bindingElements.Clone();
         }
 
-        bool BindingElementsPropertiesMatch(UdpTransportBindingElement transport, MessageEncodingBindingElement encoding)
+        private bool BindingElementsPropertiesMatch(UdpTransportBindingElement transport, MessageEncodingBindingElement encoding)
         {
-            if (!this.udpTransport.IsMatch(transport))
+            if (!_udpTransport.IsMatch(transport))
             {
                 return false;
             }
 
-            if (!this.textEncoding.IsMatch(encoding))
+            if (!_textEncoding.IsMatch(encoding))
             {
                 return false;
             }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace System.ServiceModel.Channels
 {
     // Enforces an overall timeout based on the TimeoutHelper passed in
-    class TimeoutStream : DelegatingStream
+    internal class TimeoutStream : DelegatingStream
     {
         private TimeoutHelper _timeoutHelper;
         private bool _disposed;

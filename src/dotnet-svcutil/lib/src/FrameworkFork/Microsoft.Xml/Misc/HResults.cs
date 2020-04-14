@@ -34,13 +34,13 @@ the range allocations described above, please make sure the corerror.h file
 gets updated.
 */
 
-namespace System {
-
-    internal static class HResults{
-
+namespace System
+{
+    internal static class HResults
+    {
         // Xml
-        internal const int Xml       = unchecked((int)0x80131940);
+        internal const int Xml = unchecked((int)0x80131940);
         internal const int XmlSchema = unchecked((int)0x80131941);
-        internal const int XmlXPath  = unchecked((int)0x80131943);
+        internal const int XmlXPath = unchecked((int)0x80131943);
     }
 }

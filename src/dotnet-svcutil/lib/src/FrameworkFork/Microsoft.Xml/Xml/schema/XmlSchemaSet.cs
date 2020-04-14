@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Runtime.Versioning;
 
 
-namespace Microsoft.Xml.Schema {
-
+namespace Microsoft.Xml.Schema
+{
 #if SILVERLIGHT
     public class XmlSchemaSet
     {
@@ -30,124 +30,137 @@ namespace Microsoft.Xml.Schema {
     ///       The Validate method then uses this internal representation for
     ///       efficient runtime validation of any given subtree.</para>
     /// </devdoc>
-    public class XmlSchemaSet {
-        XmlNameTable nameTable;         
-        SchemaNames schemaNames;
-        SortedList schemas;              // List of source schemas 
-        
-        //Event handling
-        ValidationEventHandler internalEventHandler;
-        ValidationEventHandler eventHandler;
+    public class XmlSchemaSet
+    {
+        private XmlNameTable _nameTable;
+        private SchemaNames _schemaNames;
+        private SortedList _schemas;              // List of source schemas 
 
-        bool isCompiled = false;
+        //Event handling
+        private ValidationEventHandler _internalEventHandler;
+        private ValidationEventHandler _eventHandler;
+
+        private bool _isCompiled = false;
 
         //Dictionary<Uri, XmlSchema> schemaLocations;
         //Dictionary<ChameleonKey, XmlSchema> chameleonSchemas;
-        Hashtable schemaLocations;
-        Hashtable chameleonSchemas;
+        private Hashtable _schemaLocations;
+        private Hashtable _chameleonSchemas;
 
-        Hashtable targetNamespaces;
-        bool compileAll;
-        
+        private Hashtable _targetNamespaces;
+        private bool _compileAll;
+
         //Cached Compiled Info
-        SchemaInfo cachedCompiledInfo;
-        
+        private SchemaInfo _cachedCompiledInfo;
+
         //Reader settings to parse schema
-        XmlReaderSettings readerSettings;
-        XmlSchema schemaForSchema;  //Only one schema for schema per set
-     
+        private XmlReaderSettings _readerSettings;
+        private XmlSchema _schemaForSchema;  //Only one schema for schema per set
+
         //Schema compilation settings
-        XmlSchemaCompilationSettings compilationSettings;
+        private XmlSchemaCompilationSettings _compilationSettings;
 
         internal XmlSchemaObjectTable elements;
         internal XmlSchemaObjectTable attributes;
         internal XmlSchemaObjectTable schemaTypes;
         internal XmlSchemaObjectTable substitutionGroups;
-        private XmlSchemaObjectTable typeExtensions;
+        private XmlSchemaObjectTable _typeExtensions;
 
         //Thread safety
-        private Object internalSyncObject;
-        internal Object InternalSyncObject {
-            get {
-                if (internalSyncObject == null) {
+        private Object _internalSyncObject;
+        internal Object InternalSyncObject
+        {
+            get
+            {
+                if (_internalSyncObject == null)
+                {
                     Object o = new Object();
-                    Interlocked.CompareExchange<Object>(ref internalSyncObject, o, null);
+                    Interlocked.CompareExchange<Object>(ref _internalSyncObject, o, null);
                 }
-                return internalSyncObject;
+                return _internalSyncObject;
             }
         }
 
-//Constructors
+        //Constructors
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.XmlSchemaSet"]/*' />
         /// <devdoc>
         ///    <para>Construct a new empty schema schemas.</para>
         /// </devdoc>
-        public XmlSchemaSet() : this(new NameTable()) {
+        public XmlSchemaSet() : this(new NameTable())
+        {
         }
- 
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.XmlSchemaSet1"]/*' />
         /// <devdoc>
         ///    <para>Construct a new empty schema schemas with associated XmlNameTable.
         ///       The XmlNameTable is used when loading schemas</para>
         /// </devdoc>
-        public XmlSchemaSet(XmlNameTable nameTable) {
-            if (nameTable == null) {
+        public XmlSchemaSet(XmlNameTable nameTable)
+        {
+            if (nameTable == null)
+            {
                 throw new ArgumentNullException("nameTable");
             }
-            this.nameTable = nameTable;
-            schemas = new SortedList();
+            _nameTable = nameTable;
+            _schemas = new SortedList();
 
             /*schemaLocations = new Dictionary<Uri, XmlSchema>();
             chameleonSchemas = new Dictionary<ChameleonKey, XmlSchema>();*/
-            schemaLocations = new Hashtable();
-            chameleonSchemas = new Hashtable();
-            targetNamespaces = new Hashtable();
-            internalEventHandler = new ValidationEventHandler(InternalValidationCallback);
-            eventHandler = internalEventHandler;
-            
-            readerSettings = new XmlReaderSettings();
+            _schemaLocations = new Hashtable();
+            _chameleonSchemas = new Hashtable();
+            _targetNamespaces = new Hashtable();
+            _internalEventHandler = new ValidationEventHandler(InternalValidationCallback);
+            _eventHandler = _internalEventHandler;
+
+            _readerSettings = new XmlReaderSettings();
 
             // we don't have to check XmlReaderSettings.EnableLegacyXmlSettings() here because the following
             // code will return same result either we are running on v4.5 or later
-            if (readerSettings.GetXmlResolver() == null)
+            if (_readerSettings.GetXmlResolver() == null)
             {
                 // The created resolver will be used in the schema validation only
-                readerSettings.XmlResolver = new XmlUrlResolver();
-                readerSettings.IsXmlResolverSet = false;
+                _readerSettings.XmlResolver = new XmlUrlResolver();
+                _readerSettings.IsXmlResolverSet = false;
             }
-            
-            readerSettings.NameTable = nameTable;
-            readerSettings.DtdProcessing = DtdProcessing.Prohibit;
-    
-            compilationSettings = new XmlSchemaCompilationSettings();
-            cachedCompiledInfo = new SchemaInfo();
-            compileAll = true;
+
+            _readerSettings.NameTable = nameTable;
+            _readerSettings.DtdProcessing = DtdProcessing.Prohibit;
+
+            _compilationSettings = new XmlSchemaCompilationSettings();
+            _cachedCompiledInfo = new SchemaInfo();
+            _compileAll = true;
         }
 
 
-//Public Properties       
+        //Public Properties       
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.NameTable"]/*' />
         /// <devdoc>
         ///    <para>The default XmlNameTable used by the XmlSchemaSet when loading new schemas.</para>
         /// </devdoc>
-        public XmlNameTable NameTable {
-            get { return nameTable;}
+        public XmlNameTable NameTable
+        {
+            get { return _nameTable; }
         }
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.ValidationEventHandler"]/*' />
-        public  event ValidationEventHandler ValidationEventHandler {
-            add {
-                eventHandler -= internalEventHandler;
-                eventHandler += value;
-                if (eventHandler == null) {
-                    eventHandler = internalEventHandler;
+        public event ValidationEventHandler ValidationEventHandler
+        {
+            add
+            {
+                _eventHandler -= _internalEventHandler;
+                _eventHandler += value;
+                if (_eventHandler == null)
+                {
+                    _eventHandler = _internalEventHandler;
                 }
             }
-            remove {
-                eventHandler -= value;
-                if (eventHandler == null) {
-                    eventHandler = internalEventHandler;
+            remove
+            {
+                _eventHandler -= value;
+                if (_eventHandler == null)
+                {
+                    _eventHandler = _internalEventHandler;
                 }
             }
         }
@@ -156,32 +169,39 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>IsCompiled is true when the schema set is in compiled state</para>
         /// </devdoc>
-        public bool IsCompiled {
-            get { 
-                return isCompiled; 
+        public bool IsCompiled
+        {
+            get
+            {
+                return _isCompiled;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.XmlResolver"]/*' />
         /// <devdoc>
         ///    <para></para>
         /// </devdoc>
-        public XmlResolver XmlResolver {
-            set {
-                readerSettings.XmlResolver = value;
+        public XmlResolver XmlResolver
+        {
+            set
+            {
+                _readerSettings.XmlResolver = value;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.CompilationSettings"]/*' />
         /// <devdoc>
         ///    <para></para>
         /// </devdoc>
-        public XmlSchemaCompilationSettings CompilationSettings {
-            get {
-                return compilationSettings;
+        public XmlSchemaCompilationSettings CompilationSettings
+        {
+            get
+            {
+                return _compilationSettings;
             }
-            set {
-               compilationSettings = value;
+            set
+            {
+                _compilationSettings = value;
             }
         }
 
@@ -189,31 +209,39 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>Returns the count of schemas in the set</para>
         /// </devdoc>
-        public int Count {
-            get {
-                return schemas.Count;
+        public int Count
+        {
+            get
+            {
+                return _schemas.Count;
             }
         }
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.GlobalElements"]/*' />
         /// <devdoc>
         ///    <para></para>
         /// </devdoc>
-        public XmlSchemaObjectTable GlobalElements {
-            get {
-                if (elements == null) {
+        public XmlSchemaObjectTable GlobalElements
+        {
+            get
+            {
+                if (elements == null)
+                {
                     elements = new XmlSchemaObjectTable();
                 }
                 return elements;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.GlobalAttributes"]/*' />
         /// <devdoc>
         ///    <para></para>
         /// </devdoc>
-        public XmlSchemaObjectTable GlobalAttributes {
-            get {
-                if (attributes == null) {
+        public XmlSchemaObjectTable GlobalAttributes
+        {
+            get
+            {
+                if (attributes == null)
+                {
                     attributes = new XmlSchemaObjectTable();
                 }
                 return attributes;
@@ -224,9 +252,12 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para></para>
         /// </devdoc>
-        public XmlSchemaObjectTable GlobalTypes {
-            get {
-                if (schemaTypes == null) {
+        public XmlSchemaObjectTable GlobalTypes
+        {
+            get
+            {
+                if (schemaTypes == null)
+                {
                     schemaTypes = new XmlSchemaObjectTable();
                 }
                 return schemaTypes;
@@ -238,9 +269,12 @@ namespace Microsoft.Xml.Schema {
         ///    <para></para>
         /// </devdoc>
         /// TODO: Need to make this public    
-        internal XmlSchemaObjectTable SubstitutionGroups {
-            get {
-                if (substitutionGroups == null) {
+        internal XmlSchemaObjectTable SubstitutionGroups
+        {
+            get
+            {
+                if (substitutionGroups == null)
+                {
                     substitutionGroups = new XmlSchemaObjectTable();
                 }
                 return substitutionGroups;
@@ -250,24 +284,29 @@ namespace Microsoft.Xml.Schema {
         /// <summary>
         /// Table of all types extensions
         /// </summary>
-        internal Hashtable SchemaLocations {
-            get {
-                return schemaLocations;
+        internal Hashtable SchemaLocations
+        {
+            get
+            {
+                return _schemaLocations;
             }
         }
 
         /// <summary>
         /// Table of all types extensions
         /// </summary>
-        internal XmlSchemaObjectTable TypeExtensions {
-            get {
-                if (typeExtensions == null) {
-                    typeExtensions = new XmlSchemaObjectTable();
+        internal XmlSchemaObjectTable TypeExtensions
+        {
+            get
+            {
+                if (_typeExtensions == null)
+                {
+                    _typeExtensions = new XmlSchemaObjectTable();
                 }
-                return typeExtensions;
+                return _typeExtensions;
             }
         }
-//Public Methods
+        //Public Methods
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add1"]/*' />
         /// <devdoc>
@@ -277,39 +316,48 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
-        public XmlSchema Add(String targetNamespace, String schemaUri) {
-            if (schemaUri == null || schemaUri.Length == 0) {
+        public XmlSchema Add(String targetNamespace, String schemaUri)
+        {
+            if (schemaUri == null || schemaUri.Length == 0)
+            {
                 throw new ArgumentNullException("schemaUri");
             }
-            if (targetNamespace != null) {
+            if (targetNamespace != null)
+            {
                 targetNamespace = XmlComplianceUtil.CDataNormalize(targetNamespace);
             }
             XmlSchema schema = null;
-            lock (InternalSyncObject) {
+            lock (InternalSyncObject)
+            {
                 //Check if schema from url has already been added
-                XmlResolver tempResolver = readerSettings.GetXmlResolver();
-                if ( tempResolver == null ) {
+                XmlResolver tempResolver = _readerSettings.GetXmlResolver();
+                if (tempResolver == null)
+                {
                     tempResolver = new XmlUrlResolver();
                 }
                 Uri tempSchemaUri = tempResolver.ResolveUri(null, schemaUri);
-                if (IsSchemaLoaded(tempSchemaUri, targetNamespace, out schema)) {
+                if (IsSchemaLoaded(tempSchemaUri, targetNamespace, out schema))
+                {
                     return schema;
                 }
-                else {
+                else
+                {
                     //Url already not processed; Load SOM from url
-                    XmlReader reader = XmlReader.Create(schemaUri, readerSettings);
-                    try {
+                    XmlReader reader = XmlReader.Create(schemaUri, _readerSettings);
+                    try
+                    {
                         schema = Add(targetNamespace, ParseSchema(targetNamespace, reader)); //TODO can move parsing outside lock boundary
-                        while(reader.Read());// wellformness check; 
+                        while (reader.Read()) ;// wellformness check; 
                     }
-                    finally {
+                    finally
+                    {
                         reader.Close();
                     }
                 }
             }
             return schema;
         }
-        
+
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add4"]/*' />
         /// <devdoc>
@@ -317,53 +365,67 @@ namespace Microsoft.Xml.Schema {
         ///       If the given schema references other namespaces, the schemas for those
         ///       other namespaces are NOT automatically loaded.</para>
         /// </devdoc>
-        public XmlSchema Add(String targetNamespace, XmlReader schemaDocument) {
-            if (schemaDocument == null) {
+        public XmlSchema Add(String targetNamespace, XmlReader schemaDocument)
+        {
+            if (schemaDocument == null)
+            {
                 throw new ArgumentNullException("schemaDocument");
             }
-            if (targetNamespace != null) {
+            if (targetNamespace != null)
+            {
                 targetNamespace = XmlComplianceUtil.CDataNormalize(targetNamespace);
             }
-            lock (InternalSyncObject) {
+            lock (InternalSyncObject)
+            {
                 XmlSchema schema = null;
                 Uri schemaUri = new Uri(schemaDocument.BaseURI, UriKind.RelativeOrAbsolute);
-                if (IsSchemaLoaded(schemaUri, targetNamespace, out schema)) {
+                if (IsSchemaLoaded(schemaUri, targetNamespace, out schema))
+                {
                     return schema;
                 }
-                else {
-                    DtdProcessing dtdProcessing = this.readerSettings.DtdProcessing;
+                else
+                {
+                    DtdProcessing dtdProcessing = _readerSettings.DtdProcessing;
                     SetDtdProcessing(schemaDocument);
                     schema = Add(targetNamespace, ParseSchema(targetNamespace, schemaDocument));
-                    this.readerSettings.DtdProcessing = dtdProcessing; //reset dtdProcessing setting
+                    _readerSettings.DtdProcessing = dtdProcessing; //reset dtdProcessing setting
                     return schema;
                 }
             }
         }
-        
-        
+
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add5"]/*' />
         /// <devdoc>
         ///    <para>Adds all the namespaces defined in the given schemas
         ///       (including their associated schemas) to this schemas.</para>
         /// </devdoc>
-        public void Add(XmlSchemaSet schemas) {
-            if (schemas == null) {
+        public void Add(XmlSchemaSet schemas)
+        {
+            if (schemas == null)
+            {
                 throw new ArgumentNullException("schemas");
             }
-            if (this == schemas) {
+            if (this == schemas)
+            {
                 return;
             }
             bool thisLockObtained = false;
             bool schemasLockObtained = false;
-            try {
-                while(true) {
+            try
+            {
+                while (true)
+                {
                     Monitor.TryEnter(InternalSyncObject, ref thisLockObtained);
-                    if (thisLockObtained) {
+                    if (thisLockObtained)
+                    {
                         Monitor.TryEnter(schemas.InternalSyncObject, ref schemasLockObtained);
-                        if (schemasLockObtained) {
+                        if (schemasLockObtained)
+                        {
                             break;
                         }
-                        else {
+                        else
+                        {
                             Monitor.Exit(InternalSyncObject); //Give up this lock and try both again
                             thisLockObtained = false;
                             Thread.Sleep(10);  //Thread.Yield(); //Let the thread that holds the lock run
@@ -371,55 +433,70 @@ namespace Microsoft.Xml.Schema {
                         }
                     }
                 }
-                
+
                 XmlSchema currentSchema;
                 //TODO Need to copy chameleon Schemas and schemaLocations from other set
-                if (schemas.IsCompiled) { 
+                if (schemas.IsCompiled)
+                {
                     CopyFromCompiledSet(schemas);
                 }
-                else { 
+                else
+                {
                     bool remove = false;
                     string tns = null;
-                    foreach(XmlSchema schema in schemas.SortedSchemas.Values) {
+                    foreach (XmlSchema schema in schemas.SortedSchemas.Values)
+                    {
                         tns = schema.TargetNamespace;
-                        if (tns == null) {
+                        if (tns == null)
+                        {
                             tns = string.Empty;
                         }
-                        if (this.schemas.ContainsKey(schema.SchemaId) || FindSchemaByNSAndUrl(schema.BaseUri, tns, null) != null) { //Do not already existing url
+                        if (_schemas.ContainsKey(schema.SchemaId) || FindSchemaByNSAndUrl(schema.BaseUri, tns, null) != null)
+                        { //Do not already existing url
                             continue;
                         }
                         currentSchema = Add(schema.TargetNamespace, schema);
-                        if(currentSchema == null) {
+                        if (currentSchema == null)
+                        {
                             remove = true;
                             break;
                         }
                     }
                     //Remove all from the set if even one schema in the passed in set is not preprocessed.
-                    if (remove) {
-                        foreach(XmlSchema schema in schemas.SortedSchemas.Values) { //Remove all previously added schemas from the set
-                            this.schemas.Remove(schema.SchemaId); //Might remove schema that was already there and was not added thru this operation
-                            schemaLocations.Remove(schema.BaseUri);
+                    if (remove)
+                    {
+                        foreach (XmlSchema schema in schemas.SortedSchemas.Values)
+                        { //Remove all previously added schemas from the set
+                            _schemas.Remove(schema.SchemaId); //Might remove schema that was already there and was not added thru this operation
+                            _schemaLocations.Remove(schema.BaseUri);
                         }
                     }
                 }
             }
-            finally { //release locks on sets
-                if (thisLockObtained) {
+            finally
+            { //release locks on sets
+                if (thisLockObtained)
+                {
                     Monitor.Exit(InternalSyncObject);
                 }
-                if (schemasLockObtained) {
+                if (schemasLockObtained)
+                {
                     Monitor.Exit(schemas.InternalSyncObject);
                 }
             }
         }
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Add6"]/*' />
-        public XmlSchema Add(XmlSchema schema) {
-            if (schema == null) {
+        public XmlSchema Add(XmlSchema schema)
+        {
+            if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
             }
-            lock (InternalSyncObject) {
-                if (schemas.ContainsKey(schema.SchemaId)) {
+            lock (InternalSyncObject)
+            {
+                if (_schemas.ContainsKey(schema.SchemaId))
+                {
                     return schema;
                 }
                 return Add(schema.TargetNamespace, schema);
@@ -427,30 +504,36 @@ namespace Microsoft.Xml.Schema {
         }
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Remove"]/*' />
-        public XmlSchema Remove(XmlSchema schema) {
+        public XmlSchema Remove(XmlSchema schema)
+        {
             return Remove(schema, true);
         }
-        
-        /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.RemoveRecursive"]/*' />
-        public bool RemoveRecursive(XmlSchema schemaToRemove) {
 
-            if (schemaToRemove == null) {
+        /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.RemoveRecursive"]/*' />
+        public bool RemoveRecursive(XmlSchema schemaToRemove)
+        {
+            if (schemaToRemove == null)
+            {
                 throw new ArgumentNullException("schemaToRemove");
             }
-            if (!schemas.ContainsKey(schemaToRemove.SchemaId)) {
+            if (!_schemas.ContainsKey(schemaToRemove.SchemaId))
+            {
                 return false;
             }
 
-            lock (InternalSyncObject) { //Need to lock here so that remove cannot be called while the set is being compiled
-                if (schemas.ContainsKey(schemaToRemove.SchemaId)) { //Need to check again
-                    
+            lock (InternalSyncObject)
+            { //Need to lock here so that remove cannot be called while the set is being compiled
+                if (_schemas.ContainsKey(schemaToRemove.SchemaId))
+                { //Need to check again
                     //Build disallowedNamespaces list
                     Hashtable disallowedNamespaces = new Hashtable();
                     disallowedNamespaces.Add(GetTargetNamespace(schemaToRemove), schemaToRemove);
                     string importedNS;
-                    for (int i = 0; i < schemaToRemove.ImportedNamespaces.Count; i++) {
+                    for (int i = 0; i < schemaToRemove.ImportedNamespaces.Count; i++)
+                    {
                         importedNS = (string)schemaToRemove.ImportedNamespaces[i];
-                        if (disallowedNamespaces[importedNS] == null) {
+                        if (disallowedNamespaces[importedNS] == null)
+                        {
                             disallowedNamespaces.Add(importedNS, importedNS);
                         }
                     }
@@ -459,22 +542,28 @@ namespace Microsoft.Xml.Schema {
                     //Need to check if other schemas in the set import schemaToRemove / any of its imports
                     ArrayList needToCheckSchemaList = new ArrayList();
                     XmlSchema mainSchema;
-                    for (int i =0; i < schemas.Count; i++) {
-                        mainSchema = (XmlSchema)schemas.GetByIndex(i);
-                        if (mainSchema == schemaToRemove || 
-                            schemaToRemove.ImportedSchemas.Contains(mainSchema)) {
+                    for (int i = 0; i < _schemas.Count; i++)
+                    {
+                        mainSchema = (XmlSchema)_schemas.GetByIndex(i);
+                        if (mainSchema == schemaToRemove ||
+                            schemaToRemove.ImportedSchemas.Contains(mainSchema))
+                        {
                             continue;
                         }
                         needToCheckSchemaList.Add(mainSchema);
                     }
 
                     mainSchema = null;
-                    for (int i = 0; i < needToCheckSchemaList.Count; i++) { //Perf: Not using nested foreach here
+                    for (int i = 0; i < needToCheckSchemaList.Count; i++)
+                    { //Perf: Not using nested foreach here
                         mainSchema = (XmlSchema)needToCheckSchemaList[i];
-                        
-                        if (mainSchema.ImportedNamespaces.Count > 0) {
-                            foreach(string tns in disallowedNamespaces.Keys) {
-                                if (mainSchema.ImportedNamespaces.Contains(tns)) {
+
+                        if (mainSchema.ImportedNamespaces.Count > 0)
+                        {
+                            foreach (string tns in disallowedNamespaces.Keys)
+                            {
+                                if (mainSchema.ImportedNamespaces.Contains(tns))
+                                {
                                     SendValidationEvent(new XmlSchemaException(ResXml.Sch_SchemaNotRemoved, string.Empty), XmlSeverityType.Warning);
                                     return false;
                                 }
@@ -483,7 +572,8 @@ namespace Microsoft.Xml.Schema {
                     }
 
                     Remove(schemaToRemove, true);
-                    for (int i = 0; i < schemaToRemove.ImportedSchemas.Count; ++i) {
+                    for (int i = 0; i < schemaToRemove.ImportedSchemas.Count; ++i)
+                    {
                         XmlSchema impSchema = (XmlSchema)schemaToRemove.ImportedSchemas[i];
                         Remove(impSchema, true);
                     }
@@ -494,69 +584,83 @@ namespace Microsoft.Xml.Schema {
         }
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Contains1"]/*' />
-        public bool Contains(String targetNamespace) {
-           if (targetNamespace == null) {
-               targetNamespace = string.Empty;
-           }
-           return targetNamespaces[targetNamespace] != null;
+        public bool Contains(String targetNamespace)
+        {
+            if (targetNamespace == null)
+            {
+                targetNamespace = string.Empty;
+            }
+            return _targetNamespaces[targetNamespace] != null;
         }
-        
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Contains2"]/*' />
-        public bool Contains(XmlSchema schema) {
-            if (schema == null) {
+        public bool Contains(XmlSchema schema)
+        {
+            if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
             }
-            return schemas.ContainsValue(schema);
+            return _schemas.ContainsValue(schema);
         }
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Compile"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void Compile() {
-            if (isCompiled) {
+        public void Compile()
+        {
+            if (_isCompiled)
+            {
                 return;
             }
-            if (schemas.Count == 0) {
+            if (_schemas.Count == 0)
+            {
                 ClearTables(); //Clear any previously present compiled state left by calling just Remove() on the set
-                cachedCompiledInfo = new SchemaInfo();
-                isCompiled = true;
-                compileAll = false;
+                _cachedCompiledInfo = new SchemaInfo();
+                _isCompiled = true;
+                _compileAll = false;
                 return;
             }
-            lock (InternalSyncObject) {
-                
-                if (!isCompiled) { //Locking before checking isCompiled to avoid problems with double locking
-                    Compiler compiler = new Compiler(nameTable, eventHandler, schemaForSchema, compilationSettings);
+            lock (InternalSyncObject)
+            {
+                if (!_isCompiled)
+                { //Locking before checking isCompiled to avoid problems with double locking
+                    Compiler compiler = new Compiler(_nameTable, _eventHandler, _schemaForSchema, _compilationSettings);
                     SchemaInfo newCompiledInfo = new SchemaInfo();
                     int schemaIndex = 0;
-                    if (!compileAll) { //if we are not compiling everything again, Move the pre-compiled schemas to the compiler's tables
-                        compiler.ImportAllCompiledSchemas(this); 
+                    if (!_compileAll)
+                    { //if we are not compiling everything again, Move the pre-compiled schemas to the compiler's tables
+                        compiler.ImportAllCompiledSchemas(this);
                     }
-                    try { //First thing to do in the try block is to acquire locks since finally will try to release them. 
+                    try
+                    { //First thing to do in the try block is to acquire locks since finally will try to release them. 
                         //If we dont accuire the locks first, and an exception occurs in the code before the locking code, then Threading.SynchronizationLockException will be thrown
                         //when attempting to release it in the finally block
                         XmlSchema currentSchema;
                         XmlSchema xmlNSSchema = Preprocessor.GetBuildInSchema();
-                        for (schemaIndex = 0; schemaIndex < schemas.Count; schemaIndex++) {
-                            currentSchema = (XmlSchema)schemas.GetByIndex(schemaIndex);
-                            
+                        for (schemaIndex = 0; schemaIndex < _schemas.Count; schemaIndex++)
+                        {
+                            currentSchema = (XmlSchema)_schemas.GetByIndex(schemaIndex);
+
                             //Lock schema to be compiled
-#pragma warning disable 0618 
+#pragma warning disable 0618
                             //@TODO: This overload of Monitor.Enter is obsolete.  Please change this to use Monitor.Enter(ref bool), and remove the pragmas   -- ericeil
                             Monitor.Enter(currentSchema);
 #pragma warning restore 0618
                             if (!currentSchema.IsPreprocessed)
                             {
                                 SendValidationEvent(new XmlSchemaException(ResXml.Sch_SchemaNotPreprocessed, string.Empty), XmlSeverityType.Error);
-                                isCompiled = false;
+                                _isCompiled = false;
                                 return;
                             }
-                            if (currentSchema.IsCompiledBySet) {
-                                if (!compileAll) {
+                            if (currentSchema.IsCompiledBySet)
+                            {
+                                if (!_compileAll)
+                                {
                                     continue;
                                 }
-                                else if ((object)currentSchema == (object)xmlNSSchema) { // prepare for xml namespace schema without cleanup
+                                else if ((object)currentSchema == (object)xmlNSSchema)
+                                { // prepare for xml namespace schema without cleanup
                                     compiler.Prepare(currentSchema, false);
                                     continue;
                                 }
@@ -564,28 +668,34 @@ namespace Microsoft.Xml.Schema {
                             compiler.Prepare(currentSchema, true);
                         }
 
-                        isCompiled = compiler.Execute(this, newCompiledInfo);
-                        if (isCompiled) {
-                            if (!compileAll) {
-                                newCompiledInfo.Add(cachedCompiledInfo, eventHandler); //Add all the items from the old to the new compiled object
+                        _isCompiled = compiler.Execute(this, newCompiledInfo);
+                        if (_isCompiled)
+                        {
+                            if (!_compileAll)
+                            {
+                                newCompiledInfo.Add(_cachedCompiledInfo, _eventHandler); //Add all the items from the old to the new compiled object
                             }
-                            compileAll = false;
-                            cachedCompiledInfo = newCompiledInfo; //Replace the compiled info in the set after successful compilation
+                            _compileAll = false;
+                            _cachedCompiledInfo = newCompiledInfo; //Replace the compiled info in the set after successful compilation
                         }
                     }
-                    finally {
+                    finally
+                    {
                         //Release locks on all schemas
                         XmlSchema currentSchema;
-                        if (schemaIndex == schemas.Count) {
+                        if (schemaIndex == _schemas.Count)
+                        {
                             schemaIndex--;
                         }
-                        for (int i = schemaIndex; i >= 0; i--) {
-                            currentSchema = (XmlSchema)schemas.GetByIndex(i);
-                            if (currentSchema == Preprocessor.GetBuildInSchema()) { //dont re-set compiled flags for xml namespace schema
+                        for (int i = schemaIndex; i >= 0; i--)
+                        {
+                            currentSchema = (XmlSchema)_schemas.GetByIndex(i);
+                            if (currentSchema == Preprocessor.GetBuildInSchema())
+                            { //dont re-set compiled flags for xml namespace schema
                                 Monitor.Exit(currentSchema);
                                 continue;
                             }
-                            currentSchema.IsCompiledBySet = isCompiled;
+                            currentSchema.IsCompiledBySet = _isCompiled;
                             Monitor.Exit(currentSchema);
                         }
                     }
@@ -598,21 +708,24 @@ namespace Microsoft.Xml.Schema {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSchema Reprocess(XmlSchema schema) {
+        public XmlSchema Reprocess(XmlSchema schema)
+        {
             // Due to bug 644477 - this method is tightly coupled (THE CODE IS BASICALLY COPIED) to Remove, Add and AddSchemaToSet
             // methods. If you change anything here *make sure* to update Remove/Add/AddSchemaToSet method(s) accordingly.
             // The only difference is that we don't touch .schemas collection here to not break a code like this:
             // foreach(XmlSchema s in schemaset.schemas) { schemaset.Reprocess(s); }
             // This is by purpose.
-            if (schema == null) {
+            if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
             }
-            if (!schemas.ContainsKey(schema.SchemaId)) {
+            if (!_schemas.ContainsKey(schema.SchemaId))
+            {
                 throw new ArgumentException(ResXml.GetString(ResXml.Sch_SchemaDoesNotExist), "schema");
             }
             XmlSchema originalSchema = schema;
-            lock (InternalSyncObject) { //Lock set so that set cannot be compiled in another thread
-
+            lock (InternalSyncObject)
+            { //Lock set so that set cannot be compiled in another thread
                 // This code is copied from method:
                 // Remove(XmlSchema schema, bool forceCompile) 
                 // If you changed anything here go and change the same in Remove(XmlSchema schema, bool forceCompile) method
@@ -620,15 +733,17 @@ namespace Microsoft.Xml.Schema {
 
                 RemoveSchemaFromGlobalTables(schema);
                 RemoveSchemaFromCaches(schema);
-                if (schema.BaseUri != null) {
-                    schemaLocations.Remove(schema.BaseUri);
+                if (schema.BaseUri != null)
+                {
+                    _schemaLocations.Remove(schema.BaseUri);
                 }
                 string tns = GetTargetNamespace(schema);
-                if (Schemas(tns).Count == 0) { //This is the only schema for that namespace
-                    targetNamespaces.Remove(tns);
+                if (Schemas(tns).Count == 0)
+                { //This is the only schema for that namespace
+                    _targetNamespaces.Remove(tns);
                 }
-                isCompiled = false;
-                compileAll = true; //Force compilation of the whole set; This is when the set is not completely thread-safe
+                _isCompiled = false;
+                _compileAll = true; //Force compilation of the whole set; This is when the set is not completely thread-safe
 
                 #endregion //Copied from Remove(XmlSchema schema, bool forceCompile)
 
@@ -638,34 +753,41 @@ namespace Microsoft.Xml.Schema {
                 // If you changed anything here go and change the same in Add(string targetNamespace, XmlSchema schema) method
                 #region Copied from Add(string targetNamespace, XmlSchema schema)
 
-                if (schema.ErrorCount != 0) { //Schema with parsing errors cannot be loaded
+                if (schema.ErrorCount != 0)
+                { //Schema with parsing errors cannot be loaded
                     return originalSchema;
                 }
-                if (PreprocessSchema(ref schema, schema.TargetNamespace)) { //No perf opt for already compiled schemas
-
+                if (PreprocessSchema(ref schema, schema.TargetNamespace))
+                { //No perf opt for already compiled schemas
                     // This code is copied from method:
                     // AddSchemaToSet(XmlSchema schema)
                     // If you changed anything here go and change the same in AddSchemaToSet(XmlSchema schema) method
                     #region Copied from AddSchemaToSet(XmlSchema schema)
 
                     //Add to targetNamespaces table
-                    if (targetNamespaces[tns] == null) {
-                        targetNamespaces.Add(tns, tns);
+                    if (_targetNamespaces[tns] == null)
+                    {
+                        _targetNamespaces.Add(tns, tns);
                     }
-                    if (schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null) { //it has xs:anyType
-                        schemaForSchema = schema;
+                    if (_schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null)
+                    { //it has xs:anyType
+                        _schemaForSchema = schema;
                     }
-                    for (int i = 0; i < schema.ImportedSchemas.Count; ++i) {    //Once preprocessed external schemas property is set
+                    for (int i = 0; i < schema.ImportedSchemas.Count; ++i)
+                    {    //Once preprocessed external schemas property is set
                         XmlSchema s = (XmlSchema)schema.ImportedSchemas[i];
-                        if (!schemas.ContainsKey(s.SchemaId)) {
-                            schemas.Add(s.SchemaId, s);
+                        if (!_schemas.ContainsKey(s.SchemaId))
+                        {
+                            _schemas.Add(s.SchemaId, s);
                         }
                         tns = GetTargetNamespace(s);
-                        if (targetNamespaces[tns] == null) {
-                            targetNamespaces.Add(tns, tns);
+                        if (_targetNamespaces[tns] == null)
+                        {
+                            _targetNamespaces.Add(tns, tns);
                         }
-                        if (schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null) { //it has xs:anyType
-                            schemaForSchema = schema;
+                        if (_schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null)
+                        { //it has xs:anyType
+                            _schemaForSchema = schema;
                         }
                     }
                     #endregion //Copied from AddSchemaToSet(XmlSchema schema)
@@ -676,62 +798,71 @@ namespace Microsoft.Xml.Schema {
                 return originalSchema;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.CopyTo"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public void CopyTo(XmlSchema[] schemas, int index) {
+        public void CopyTo(XmlSchema[] schemas, int index)
+        {
             if (schemas == null)
                 throw new ArgumentNullException("schemas");
-            if (index < 0 || index > schemas.Length -1 )
+            if (index < 0 || index > schemas.Length - 1)
                 throw new ArgumentOutOfRangeException("index");
-            this.schemas.Values.CopyTo(schemas, index);
+            _schemas.Values.CopyTo(schemas, index);
         }
 
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Schemas1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public ICollection Schemas() {       
-            return schemas.Values; 
+        public ICollection Schemas()
+        {
+            return _schemas.Values;
         }
-        
+
         /// <include file='doc\XmlSchemaSet.uex' path='docs/doc[@for="XmlSchemaSet.Schemas1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public ICollection Schemas(String targetNamespace) {       
+        public ICollection Schemas(String targetNamespace)
+        {
             ArrayList tnsSchemas = new ArrayList();
             XmlSchema currentSchema;
-            if (targetNamespace == null) {
+            if (targetNamespace == null)
+            {
                 targetNamespace = string.Empty;
             }
-            for (int i=0; i < schemas.Count; i++) {
-                currentSchema = (XmlSchema)schemas.GetByIndex(i);
-                if (GetTargetNamespace(currentSchema) == targetNamespace) {
+            for (int i = 0; i < _schemas.Count; i++)
+            {
+                currentSchema = (XmlSchema)_schemas.GetByIndex(i);
+                if (GetTargetNamespace(currentSchema) == targetNamespace)
+                {
                     tnsSchemas.Add(currentSchema);
                 }
             }
             return tnsSchemas;
         }
-        
-//Internal Methods
 
-        private XmlSchema Add(string targetNamespace, XmlSchema schema) {
+        //Internal Methods
+
+        private XmlSchema Add(string targetNamespace, XmlSchema schema)
+        {
             // Due to bug 644477 - this method is tightly coupled (THE CODE IS BASICALLY COPIED) to Reprocess 
             // method. If you change anything here *make sure* to update Reprocess method accordingly.
 
-            if (schema == null || schema.ErrorCount != 0) { //Schema with parsing errors cannot be loaded
-                return null;    
+            if (schema == null || schema.ErrorCount != 0)
+            { //Schema with parsing errors cannot be loaded
+                return null;
             }
 
             // This code is copied to method:
             // Reprocess(XmlSchema schema) 
             // If you changed anything here go and change the same in Reprocess(XmlSchema schema) method
-            if (PreprocessSchema(ref schema, targetNamespace)) { //No perf opt for already compiled schemas
+            if (PreprocessSchema(ref schema, targetNamespace))
+            { //No perf opt for already compiled schemas
                 AddSchemaToSet(schema);
-                isCompiled = false;
+                _isCompiled = false;
                 return schema;
             }
             return null;
@@ -812,107 +943,134 @@ namespace Microsoft.Xml.Schema {
 #endif
 
         //For use by the validator when loading schemaLocations in the instance
-        internal void Add(String targetNamespace, XmlReader reader, Hashtable validatedNamespaces) {
-            if (reader == null) {
+        internal void Add(String targetNamespace, XmlReader reader, Hashtable validatedNamespaces)
+        {
+            if (reader == null)
+            {
                 throw new ArgumentNullException("reader");
             }
-            if (targetNamespace == null) {
+            if (targetNamespace == null)
+            {
                 targetNamespace = string.Empty;
             }
-            if (validatedNamespaces[targetNamespace] != null) {
-                if (FindSchemaByNSAndUrl(new Uri(reader.BaseURI, UriKind.RelativeOrAbsolute), targetNamespace, null) != null) {
+            if (validatedNamespaces[targetNamespace] != null)
+            {
+                if (FindSchemaByNSAndUrl(new Uri(reader.BaseURI, UriKind.RelativeOrAbsolute), targetNamespace, null) != null)
+                {
                     return;
                 }
-                else {
+                else
+                {
                     throw new XmlSchemaException(ResXml.Sch_ComponentAlreadySeenForNS, targetNamespace);
                 }
             }
 
             //Not locking set as this will not be accessible outside the validator
             XmlSchema schema;
-            if (IsSchemaLoaded(new Uri(reader.BaseURI, UriKind.RelativeOrAbsolute), targetNamespace, out schema)) {
+            if (IsSchemaLoaded(new Uri(reader.BaseURI, UriKind.RelativeOrAbsolute), targetNamespace, out schema))
+            {
                 return;
             }
-            else { //top-level schema not present for same url
+            else
+            { //top-level schema not present for same url
                 schema = ParseSchema(targetNamespace, reader);
 
                 //Store the previous locations
-                DictionaryEntry[] oldLocations = new DictionaryEntry[schemaLocations.Count];
-                schemaLocations.CopyTo(oldLocations, 0);
+                DictionaryEntry[] oldLocations = new DictionaryEntry[_schemaLocations.Count];
+                _schemaLocations.CopyTo(oldLocations, 0);
 
                 //Add to set
                 Add(targetNamespace, schema);
-                if (schema.ImportedSchemas.Count > 0) { //Check imports
+                if (schema.ImportedSchemas.Count > 0)
+                { //Check imports
                     string tns;
-                    for (int i = 0; i < schema.ImportedSchemas.Count; ++i) {
+                    for (int i = 0; i < schema.ImportedSchemas.Count; ++i)
+                    {
                         XmlSchema impSchema = (XmlSchema)schema.ImportedSchemas[i];
                         tns = impSchema.TargetNamespace;
-                        if (tns == null) {
+                        if (tns == null)
+                        {
                             tns = string.Empty;
                         }
-                        if (validatedNamespaces[tns] != null && (FindSchemaByNSAndUrl(impSchema.BaseUri, tns, oldLocations) == null) ) {
+                        if (validatedNamespaces[tns] != null && (FindSchemaByNSAndUrl(impSchema.BaseUri, tns, oldLocations) == null))
+                        {
                             RemoveRecursive(schema);
                             throw new XmlSchemaException(ResXml.Sch_ComponentAlreadySeenForNS, tns);
                         }
                     }
-                 }
+                }
             }
         }
 
-        internal XmlSchema FindSchemaByNSAndUrl(Uri schemaUri, string ns, DictionaryEntry[] locationsTable) {
-            if (schemaUri == null || schemaUri.OriginalString.Length == 0) {
+        internal XmlSchema FindSchemaByNSAndUrl(Uri schemaUri, string ns, DictionaryEntry[] locationsTable)
+        {
+            if (schemaUri == null || schemaUri.OriginalString.Length == 0)
+            {
                 return null;
             }
             XmlSchema schema = null;
-            if (locationsTable == null) {
-                schema = (XmlSchema)schemaLocations[schemaUri];
+            if (locationsTable == null)
+            {
+                schema = (XmlSchema)_schemaLocations[schemaUri];
             }
-            else {
-                for (int i = 0; i < locationsTable.Length; i++) {
-                    if (schemaUri.Equals(locationsTable[i].Key)) {
+            else
+            {
+                for (int i = 0; i < locationsTable.Length; i++)
+                {
+                    if (schemaUri.Equals(locationsTable[i].Key))
+                    {
                         schema = (XmlSchema)locationsTable[i].Value;
                         break;
                     }
                 }
             }
-            if (schema != null) {
+            if (schema != null)
+            {
                 Debug.Assert(ns != null);
                 string tns = schema.TargetNamespace == null ? string.Empty : schema.TargetNamespace;
-                if (tns == ns) {
+                if (tns == ns)
+                {
                     return schema;
                 }
-                else if (tns == string.Empty) { //There could be a chameleon for same ns
+                else if (tns == string.Empty)
+                { //There could be a chameleon for same ns
                     // It is OK to pass in the schema we have found so far, since it must have the schemaUri we're looking for
                     // (we found it that way above) and it must be the original chameleon schema (the one without target ns)
                     // as we don't add the chameleon copies into the locations tables above.
                     Debug.Assert(schema.BaseUri.Equals(schemaUri));
                     ChameleonKey cKey = new ChameleonKey(ns, schema);
-                    schema = (XmlSchema)chameleonSchemas[cKey]; //Need not clone if a schema for that namespace already exists
+                    schema = (XmlSchema)_chameleonSchemas[cKey]; //Need not clone if a schema for that namespace already exists
                 }
-                else {
+                else
+                {
                     schema = null;
                 }
             }
             return schema;
         }
 
-        private void SetDtdProcessing(XmlReader reader) {
-            if (reader.Settings != null) {
-                this.readerSettings.DtdProcessing = reader.Settings.DtdProcessing;
-            }  
-            else {
+        private void SetDtdProcessing(XmlReader reader)
+        {
+            if (reader.Settings != null)
+            {
+                _readerSettings.DtdProcessing = reader.Settings.DtdProcessing;
+            }
+            else
+            {
                 XmlTextReader v1Reader = reader as XmlTextReader;
-                if (v1Reader != null) {
-                   this.readerSettings.DtdProcessing = v1Reader.DtdProcessing;
+                if (v1Reader != null)
+                {
+                    _readerSettings.DtdProcessing = v1Reader.DtdProcessing;
                 }
             }
         }
 
-        private void AddSchemaToSet(XmlSchema schema) {
+        private void AddSchemaToSet(XmlSchema schema)
+        {
             // Due to bug 644477 - this method is tightly coupled (THE CODE IS BASICALLY COPIED) to Reprocess 
             // method. If you change anything here *make sure* to update Reprocess method accordingly.
 
-            schemas.Add(schema.SchemaId, schema);
+            _schemas.Add(schema.SchemaId, schema);
             //Add to targetNamespaces table
 
             // This code is copied to method:
@@ -921,68 +1079,88 @@ namespace Microsoft.Xml.Schema {
             #region This code is copied to Reprocess(XmlSchema schema) method
 
             string tns = GetTargetNamespace(schema);
-            if (targetNamespaces[tns] == null) {
-                targetNamespaces.Add(tns, tns);
+            if (_targetNamespaces[tns] == null)
+            {
+                _targetNamespaces.Add(tns, tns);
             }
-            if (schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null) { //it has xs:anyType
-                schemaForSchema = schema;
+            if (_schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null)
+            { //it has xs:anyType
+                _schemaForSchema = schema;
             }
-            for (int i = 0; i < schema.ImportedSchemas.Count; ++i) {    //Once preprocessed external schemas property is set
-                XmlSchema s = (XmlSchema)schema.ImportedSchemas[i]; 
-                if (!schemas.ContainsKey(s.SchemaId)) {
-                    schemas.Add(s.SchemaId, s);
+            for (int i = 0; i < schema.ImportedSchemas.Count; ++i)
+            {    //Once preprocessed external schemas property is set
+                XmlSchema s = (XmlSchema)schema.ImportedSchemas[i];
+                if (!_schemas.ContainsKey(s.SchemaId))
+                {
+                    _schemas.Add(s.SchemaId, s);
                 }
                 tns = GetTargetNamespace(s);
-                if (targetNamespaces[tns] == null) {
-                    targetNamespaces.Add(tns, tns);
+                if (_targetNamespaces[tns] == null)
+                {
+                    _targetNamespaces.Add(tns, tns);
                 }
-                if (schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null) { //it has xs:anyType
-                    schemaForSchema = schema;
+                if (_schemaForSchema == null && tns == XmlReservedNs.NsXs && schema.SchemaTypes[DatatypeImplementation.QnAnyType] != null)
+                { //it has xs:anyType
+                    _schemaForSchema = schema;
                 }
             }
 
             #endregion // This code is copied to Reprocess(XmlSchema schema) method
         }
 
-        private void ProcessNewSubstitutionGroups(XmlSchemaObjectTable substitutionGroupsTable, bool resolve) {
-            foreach(XmlSchemaSubstitutionGroup substGroup in substitutionGroupsTable.Values) {
-                if (resolve) { //Resolve substitutionGroups within this schema
+        private void ProcessNewSubstitutionGroups(XmlSchemaObjectTable substitutionGroupsTable, bool resolve)
+        {
+            foreach (XmlSchemaSubstitutionGroup substGroup in substitutionGroupsTable.Values)
+            {
+                if (resolve)
+                { //Resolve substitutionGroups within this schema
                     ResolveSubstitutionGroup(substGroup, substitutionGroupsTable);
                 }
 
                 //Add or Merge new substitutionGroups with those that already exist in the set 
                 XmlQualifiedName head = substGroup.Examplar;
                 XmlSchemaSubstitutionGroup oldSubstGroup = (XmlSchemaSubstitutionGroup)substitutionGroups[head];
-                if (oldSubstGroup != null) {
-                    for (int i = 0; i < substGroup.Members.Count; ++i) {
-                        if (!oldSubstGroup.Members.Contains(substGroup.Members[i])) {
+                if (oldSubstGroup != null)
+                {
+                    for (int i = 0; i < substGroup.Members.Count; ++i)
+                    {
+                        if (!oldSubstGroup.Members.Contains(substGroup.Members[i]))
+                        {
                             oldSubstGroup.Members.Add(substGroup.Members[i]);
                         }
                     }
                 }
-                else {
+                else
+                {
                     AddToTable(substitutionGroups, head, substGroup);
                 }
             }
         }
-   
-        private void ResolveSubstitutionGroup(XmlSchemaSubstitutionGroup substitutionGroup, XmlSchemaObjectTable substTable) {
+
+        private void ResolveSubstitutionGroup(XmlSchemaSubstitutionGroup substitutionGroup, XmlSchemaObjectTable substTable)
+        {
             List<XmlSchemaElement> newMembers = null;
             XmlSchemaElement headElement = (XmlSchemaElement)elements[substitutionGroup.Examplar];
-            if (substitutionGroup.Members.Contains(headElement)) {// already checked
+            if (substitutionGroup.Members.Contains(headElement))
+            {// already checked
                 return;
             }
-            for (int i = 0; i < substitutionGroup.Members.Count; ++i) {
+            for (int i = 0; i < substitutionGroup.Members.Count; ++i)
+            {
                 XmlSchemaElement element = (XmlSchemaElement)substitutionGroup.Members[i];
 
                 //Chain to other head's that are members of this head's substGroup
                 XmlSchemaSubstitutionGroup g = (XmlSchemaSubstitutionGroup)substTable[element.QualifiedName];
-                if (g != null) {
+                if (g != null)
+                {
                     ResolveSubstitutionGroup(g, substTable);
-                    for (int j = 0; j < g.Members.Count; ++j) {
+                    for (int j = 0; j < g.Members.Count; ++j)
+                    {
                         XmlSchemaElement element1 = (XmlSchemaElement)g.Members[j];
-                        if (element1 != element) { //Exclude the head
-                            if (newMembers == null) {
+                        if (element1 != element)
+                        { //Exclude the head
+                            if (newMembers == null)
+                            {
                                 newMembers = new List<XmlSchemaElement>();
                             }
                             newMembers.Add(element1);
@@ -990,43 +1168,52 @@ namespace Microsoft.Xml.Schema {
                     }
                 }
             }
-            if (newMembers != null) {
-                for (int i = 0; i < newMembers.Count; ++i) {
+            if (newMembers != null)
+            {
+                for (int i = 0; i < newMembers.Count; ++i)
+                {
                     substitutionGroup.Members.Add(newMembers[i]);
                 }
             }
             substitutionGroup.Members.Add(headElement);
         }
 
-        internal XmlSchema Remove(XmlSchema schema, bool forceCompile) {
+        internal XmlSchema Remove(XmlSchema schema, bool forceCompile)
+        {
             // Due to bug 644477 - this method is tightly coupled (THE CODE IS BASICALLY COPIED) to Reprocess 
             // method. If you change anything here *make sure* to update Reprocess method accordingly.
-            if (schema == null) {
+            if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
             }
-            lock (InternalSyncObject) { //Need to lock here so that remove cannot be called while the set is being compiled
-                if (schemas.ContainsKey(schema.SchemaId)) {
-
+            lock (InternalSyncObject)
+            { //Need to lock here so that remove cannot be called while the set is being compiled
+                if (_schemas.ContainsKey(schema.SchemaId))
+                {
                     // This code is copied to method:
                     // Reprocess(XmlSchema schema) 
                     // If you changed anything here go and change the same in Reprocess(XmlSchema schema) method
                     #region This code is copied to Reprocess(XmlSchema schema) method
 
-                    if (forceCompile) {
+                    if (forceCompile)
+                    {
                         RemoveSchemaFromGlobalTables(schema);
                         RemoveSchemaFromCaches(schema);
                     }
-                    schemas.Remove(schema.SchemaId);
-                    if (schema.BaseUri != null) {
-                        schemaLocations.Remove(schema.BaseUri);
+                    _schemas.Remove(schema.SchemaId);
+                    if (schema.BaseUri != null)
+                    {
+                        _schemaLocations.Remove(schema.BaseUri);
                     }
                     string tns = GetTargetNamespace(schema);
-                    if (Schemas(tns).Count == 0) { //This is the only schema for that namespace
-                        targetNamespaces.Remove(tns);
+                    if (Schemas(tns).Count == 0)
+                    { //This is the only schema for that namespace
+                        _targetNamespaces.Remove(tns);
                     }
-                    if (forceCompile) {
-                        isCompiled = false;
-                        compileAll = true; //Force compilation of the whole set; This is when the set is not completely thread-safe
+                    if (forceCompile)
+                    {
+                        _isCompiled = false;
+                        _compileAll = true; //Force compilation of the whole set; This is when the set is not completely thread-safe
                     }
                     return schema;
 
@@ -1036,7 +1223,8 @@ namespace Microsoft.Xml.Schema {
             return null;
         }
 
-        private void ClearTables() {
+        private void ClearTables()
+        {
             GlobalElements.Clear();
             GlobalAttributes.Clear();
             GlobalTypes.Clear();
@@ -1044,323 +1232,411 @@ namespace Microsoft.Xml.Schema {
             TypeExtensions.Clear();
         }
 
-        internal bool PreprocessSchema(ref XmlSchema schema, string targetNamespace) {
-            Preprocessor prep = new Preprocessor(nameTable, GetSchemaNames(nameTable), eventHandler, compilationSettings);
-            prep.XmlResolver = readerSettings.GetXmlResolver_CheckConfig();
-            prep.ReaderSettings = readerSettings;
-            prep.SchemaLocations = schemaLocations;
-            prep.ChameleonSchemas = chameleonSchemas;
+        internal bool PreprocessSchema(ref XmlSchema schema, string targetNamespace)
+        {
+            Preprocessor prep = new Preprocessor(_nameTable, GetSchemaNames(_nameTable), _eventHandler, _compilationSettings);
+            prep.XmlResolver = _readerSettings.GetXmlResolver_CheckConfig();
+            prep.ReaderSettings = _readerSettings;
+            prep.SchemaLocations = _schemaLocations;
+            prep.ChameleonSchemas = _chameleonSchemas;
             bool hasErrors = prep.Execute(schema, targetNamespace, true);
             schema = prep.RootSchema; //For any root level chameleon cloned
             return hasErrors;
         }
-        
-        internal XmlSchema ParseSchema(string targetNamespace, XmlReader reader) {
+
+        internal XmlSchema ParseSchema(string targetNamespace, XmlReader reader)
+        {
             XmlNameTable readerNameTable = reader.NameTable;
             SchemaNames schemaNames = GetSchemaNames(readerNameTable);
-            Parser parser = new Parser(SchemaType.XSD, readerNameTable, schemaNames, eventHandler);
-            parser.XmlResolver = readerSettings.GetXmlResolver_CheckConfig();
+            Parser parser = new Parser(SchemaType.XSD, readerNameTable, schemaNames, _eventHandler);
+            parser.XmlResolver = _readerSettings.GetXmlResolver_CheckConfig();
             SchemaType schemaType;
-            try {
+            try
+            {
                 schemaType = parser.Parse(reader, targetNamespace);
             }
-            catch(XmlSchemaException e) {
+            catch (XmlSchemaException e)
+            {
                 SendValidationEvent(e, XmlSeverityType.Error);
                 return null;
             }
             return parser.XmlSchema;
         }
-        
-        internal void CopyFromCompiledSet(XmlSchemaSet otherSet) {
+
+        internal void CopyFromCompiledSet(XmlSchemaSet otherSet)
+        {
             XmlSchema currentSchema;
             SortedList copyFromList = otherSet.SortedSchemas;
-            bool setIsCompiled = schemas.Count == 0 ? true : false; 
+            bool setIsCompiled = _schemas.Count == 0 ? true : false;
             ArrayList existingSchemas = new ArrayList();
 
             SchemaInfo newCompiledInfo = new SchemaInfo();
             Uri baseUri;
-            for(int i=0; i < copyFromList.Count; i++) {
+            for (int i = 0; i < copyFromList.Count; i++)
+            {
                 currentSchema = (XmlSchema)copyFromList.GetByIndex(i);
                 baseUri = currentSchema.BaseUri;
-                if (schemas.ContainsKey(currentSchema.SchemaId) || (baseUri != null && baseUri.OriginalString.Length != 0 && schemaLocations[baseUri] != null)) {
+                if (_schemas.ContainsKey(currentSchema.SchemaId) || (baseUri != null && baseUri.OriginalString.Length != 0 && _schemaLocations[baseUri] != null))
+                {
                     existingSchemas.Add(currentSchema);
                     continue;
                 }
-                schemas.Add(currentSchema.SchemaId, currentSchema);
-                if (baseUri != null && baseUri.OriginalString.Length != 0) {
-                    schemaLocations.Add(baseUri, currentSchema);
+                _schemas.Add(currentSchema.SchemaId, currentSchema);
+                if (baseUri != null && baseUri.OriginalString.Length != 0)
+                {
+                    _schemaLocations.Add(baseUri, currentSchema);
                 }
                 string tns = GetTargetNamespace(currentSchema);
-                if (targetNamespaces[tns] == null) {
-                    targetNamespaces.Add(tns, tns);
+                if (_targetNamespaces[tns] == null)
+                {
+                    _targetNamespaces.Add(tns, tns);
                 }
             }
 
             VerifyTables();
-            foreach (XmlSchemaElement element in otherSet.GlobalElements.Values) {
-                if(!AddToTable(elements, element.QualifiedName, element)) {
+            foreach (XmlSchemaElement element in otherSet.GlobalElements.Values)
+            {
+                if (!AddToTable(elements, element.QualifiedName, element))
+                {
                     goto RemoveAll;
                 }
             }
-            foreach (XmlSchemaAttribute attribute in otherSet.GlobalAttributes.Values) {
-                if (!AddToTable(attributes, attribute.QualifiedName, attribute)) {
+            foreach (XmlSchemaAttribute attribute in otherSet.GlobalAttributes.Values)
+            {
+                if (!AddToTable(attributes, attribute.QualifiedName, attribute))
+                {
                     goto RemoveAll;
                 }
             }
-            foreach (XmlSchemaType schemaType in otherSet.GlobalTypes.Values) {
-                if (!AddToTable(schemaTypes, schemaType.QualifiedName, schemaType)) {
+            foreach (XmlSchemaType schemaType in otherSet.GlobalTypes.Values)
+            {
+                if (!AddToTable(schemaTypes, schemaType.QualifiedName, schemaType))
+                {
                     goto RemoveAll;
                 }
             }
             //TODO get otherSet's substitutionGroups
             ProcessNewSubstitutionGroups(otherSet.SubstitutionGroups, false);
 
-            newCompiledInfo.Add(cachedCompiledInfo, eventHandler); //Add all the items from the old to the new compiled object
-            newCompiledInfo.Add(otherSet.CompiledInfo,eventHandler); //TODO: Throw error on conflicting types that are not from the same schema / baseUri
-            cachedCompiledInfo = newCompiledInfo; //Replace the compiled info in the set after successful compilation
-            if (setIsCompiled) {
-                isCompiled = true;
-                compileAll = false;
+            newCompiledInfo.Add(_cachedCompiledInfo, _eventHandler); //Add all the items from the old to the new compiled object
+            newCompiledInfo.Add(otherSet.CompiledInfo, _eventHandler); //TODO: Throw error on conflicting types that are not from the same schema / baseUri
+            _cachedCompiledInfo = newCompiledInfo; //Replace the compiled info in the set after successful compilation
+            if (setIsCompiled)
+            {
+                _isCompiled = true;
+                _compileAll = false;
             }
             return;
-        
-            RemoveAll:
-                foreach (XmlSchema schemaToRemove in copyFromList.Values) {
-                    if (!existingSchemas.Contains(schemaToRemove)) {
-                        Remove(schemaToRemove, false);
-                    }
-                }
-                foreach (XmlSchemaElement elementToRemove in otherSet.GlobalElements.Values) {
-                    if(!existingSchemas.Contains((XmlSchema)elementToRemove.Parent)) {
-                        elements.Remove(elementToRemove.QualifiedName);
-                    }
-                }
-                foreach (XmlSchemaAttribute attributeToRemove in otherSet.GlobalAttributes.Values) {
-                    if(!existingSchemas.Contains((XmlSchema)attributeToRemove.Parent)) {
-                        attributes.Remove(attributeToRemove.QualifiedName);
-                    }
-                }
-                foreach (XmlSchemaType schemaTypeToRemove in otherSet.GlobalTypes.Values) {
-                    if(!existingSchemas.Contains((XmlSchema)schemaTypeToRemove.Parent)) {
-                        schemaTypes.Remove(schemaTypeToRemove.QualifiedName);
-                    }
-                }
-        }
 
-        internal SchemaInfo CompiledInfo {
-            get {
-                return cachedCompiledInfo; 
+        RemoveAll:
+            foreach (XmlSchema schemaToRemove in copyFromList.Values)
+            {
+                if (!existingSchemas.Contains(schemaToRemove))
+                {
+                    Remove(schemaToRemove, false);
+                }
+            }
+            foreach (XmlSchemaElement elementToRemove in otherSet.GlobalElements.Values)
+            {
+                if (!existingSchemas.Contains((XmlSchema)elementToRemove.Parent))
+                {
+                    elements.Remove(elementToRemove.QualifiedName);
+                }
+            }
+            foreach (XmlSchemaAttribute attributeToRemove in otherSet.GlobalAttributes.Values)
+            {
+                if (!existingSchemas.Contains((XmlSchema)attributeToRemove.Parent))
+                {
+                    attributes.Remove(attributeToRemove.QualifiedName);
+                }
+            }
+            foreach (XmlSchemaType schemaTypeToRemove in otherSet.GlobalTypes.Values)
+            {
+                if (!existingSchemas.Contains((XmlSchema)schemaTypeToRemove.Parent))
+                {
+                    schemaTypes.Remove(schemaTypeToRemove.QualifiedName);
+                }
             }
         }
-        
-        internal XmlReaderSettings ReaderSettings {
-            get {
-                return readerSettings;
+
+        internal SchemaInfo CompiledInfo
+        {
+            get
+            {
+                return _cachedCompiledInfo;
             }
         }
-        
-        internal XmlResolver GetResolver() {
-            return readerSettings.GetXmlResolver_CheckConfig();
-        }
-        
-        internal ValidationEventHandler GetEventHandler() {
-            return eventHandler;
+
+        internal XmlReaderSettings ReaderSettings
+        {
+            get
+            {
+                return _readerSettings;
+            }
         }
 
-        internal SchemaNames GetSchemaNames(XmlNameTable nt) {
-            if (nameTable != nt) {
+        internal XmlResolver GetResolver()
+        {
+            return _readerSettings.GetXmlResolver_CheckConfig();
+        }
+
+        internal ValidationEventHandler GetEventHandler()
+        {
+            return _eventHandler;
+        }
+
+        internal SchemaNames GetSchemaNames(XmlNameTable nt)
+        {
+            if (_nameTable != nt)
+            {
                 return new SchemaNames(nt);
             }
-            else {
-                if (schemaNames == null) {
-                    schemaNames = new SchemaNames( nameTable );
+            else
+            {
+                if (_schemaNames == null)
+                {
+                    _schemaNames = new SchemaNames(_nameTable);
                 }
-                return schemaNames;
+                return _schemaNames;
             }
         }
-        
-        internal bool IsSchemaLoaded(Uri schemaUri, string targetNamespace, out XmlSchema schema) {
+
+        internal bool IsSchemaLoaded(Uri schemaUri, string targetNamespace, out XmlSchema schema)
+        {
             schema = null;
-            if (targetNamespace == null) {
+            if (targetNamespace == null)
+            {
                 targetNamespace = string.Empty;
             }
-            if (GetSchemaByUri(schemaUri, out schema)) {
-                if (schemas.ContainsKey(schema.SchemaId) && (targetNamespace.Length == 0 || targetNamespace == schema.TargetNamespace)) { //schema is present in set
+            if (GetSchemaByUri(schemaUri, out schema))
+            {
+                if (_schemas.ContainsKey(schema.SchemaId) && (targetNamespace.Length == 0 || targetNamespace == schema.TargetNamespace))
+                { //schema is present in set
                     //Schema found
                 }
-                else if (schema.TargetNamespace == null) { //If schema not in set or namespace doesnt match, then it might be a chameleon
+                else if (schema.TargetNamespace == null)
+                { //If schema not in set or namespace doesnt match, then it might be a chameleon
                     XmlSchema chameleonSchema = FindSchemaByNSAndUrl(schemaUri, targetNamespace, null);
-                    if (chameleonSchema != null && schemas.ContainsKey(chameleonSchema.SchemaId)) {
+                    if (chameleonSchema != null && _schemas.ContainsKey(chameleonSchema.SchemaId))
+                    {
                         schema = chameleonSchema;
                     }
-                    else {
+                    else
+                    {
                         schema = Add(targetNamespace, schema);
                     }
                 }
-                else if (targetNamespace.Length != 0 && targetNamespace != schema.TargetNamespace) {
+                else if (targetNamespace.Length != 0 && targetNamespace != schema.TargetNamespace)
+                {
                     SendValidationEvent(new XmlSchemaException(ResXml.Sch_MismatchTargetNamespaceEx, new string[] { targetNamespace, schema.TargetNamespace }), XmlSeverityType.Error);
                     schema = null;
                 }
-                else {
+                else
+                {
                     //If here, schema not present in set but in loc and might be added in loc through an earlier include
                     //S.TNS != null && ( tns == null or tns == s.TNS)
                     AddSchemaToSet(schema);
                 }
                 return true; //Schema Found
-           }
-           return false;
+            }
+            return false;
         }
 
-        internal bool GetSchemaByUri(Uri schemaUri, out XmlSchema schema) {
+        internal bool GetSchemaByUri(Uri schemaUri, out XmlSchema schema)
+        {
             schema = null;
-            if (schemaUri == null || schemaUri.OriginalString.Length == 0) {
-                return false;                    
-            }                    
-            schema = (XmlSchema)schemaLocations[schemaUri];
-            if (schema != null) {
+            if (schemaUri == null || schemaUri.OriginalString.Length == 0)
+            {
+                return false;
+            }
+            schema = (XmlSchema)_schemaLocations[schemaUri];
+            if (schema != null)
+            {
                 return true;
             }
             return false;
         }
 
-        internal string GetTargetNamespace(XmlSchema schema) {
+        internal string GetTargetNamespace(XmlSchema schema)
+        {
             return schema.TargetNamespace == null ? string.Empty : schema.TargetNamespace;
         }
 
 
-        internal SortedList SortedSchemas {
-            get {
-                return schemas;
-            }
-        }
-        
-        internal bool CompileAll {
-            get {
-                return compileAll;
+        internal SortedList SortedSchemas
+        {
+            get
+            {
+                return _schemas;
             }
         }
 
-//Private Methods
-        private void RemoveSchemaFromCaches(XmlSchema schema) {
+        internal bool CompileAll
+        {
+            get
+            {
+                return _compileAll;
+            }
+        }
+
+        //Private Methods
+        private void RemoveSchemaFromCaches(XmlSchema schema)
+        {
             //Remove From ChameleonSchemas and schemaLocations cache
             List<XmlSchema> reprocessList = new List<XmlSchema>();
             schema.GetExternalSchemasList(reprocessList, schema);
-            for (int i = 0; i < reprocessList.Count; ++i) { //Remove schema from schemaLocations & chameleonSchemas tables
-                if (reprocessList[i].BaseUri != null && reprocessList[i].BaseUri.OriginalString.Length != 0) {
-                    schemaLocations.Remove(reprocessList[i].BaseUri);
+            for (int i = 0; i < reprocessList.Count; ++i)
+            { //Remove schema from schemaLocations & chameleonSchemas tables
+                if (reprocessList[i].BaseUri != null && reprocessList[i].BaseUri.OriginalString.Length != 0)
+                {
+                    _schemaLocations.Remove(reprocessList[i].BaseUri);
                 }
                 //Remove from chameleon table
-                ICollection chameleonKeys = chameleonSchemas.Keys;
+                ICollection chameleonKeys = _chameleonSchemas.Keys;
                 ArrayList removalList = new ArrayList();
-                foreach(ChameleonKey cKey in chameleonKeys) {
-                    if (cKey.chameleonLocation.Equals(reprocessList[i].BaseUri)) {
+                foreach (ChameleonKey cKey in chameleonKeys)
+                {
+                    if (cKey.chameleonLocation.Equals(reprocessList[i].BaseUri))
+                    {
                         // The key will have the originalSchema set to null if the location was not empty
                         //   otherwise we need to care about it as there may be more chameleon schemas without
                         //   a base URI and we want to remove only those which were created as a clone of the one
                         //   we're removing.
-                        if (cKey.originalSchema == null || Ref.ReferenceEquals(cKey.originalSchema, reprocessList[i])) {
+                        if (cKey.originalSchema == null || Ref.ReferenceEquals(cKey.originalSchema, reprocessList[i]))
+                        {
                             removalList.Add(cKey);
                         }
                     }
                 }
-                for (int j = 0; j < removalList.Count; ++j) {
-                    chameleonSchemas.Remove(removalList[j]);
+                for (int j = 0; j < removalList.Count; ++j)
+                {
+                    _chameleonSchemas.Remove(removalList[j]);
                 }
             }
         }
 
-        private void RemoveSchemaFromGlobalTables(XmlSchema schema) {
-            if (schemas.Count == 0) {
-                return;                    
+        private void RemoveSchemaFromGlobalTables(XmlSchema schema)
+        {
+            if (_schemas.Count == 0)
+            {
+                return;
             }
-            VerifyTables();                
-            foreach (XmlSchemaElement elementToRemove in schema.Elements.Values) {
+            VerifyTables();
+            foreach (XmlSchemaElement elementToRemove in schema.Elements.Values)
+            {
                 XmlSchemaElement elem = (XmlSchemaElement)elements[elementToRemove.QualifiedName];
-                if (elem == elementToRemove) {
+                if (elem == elementToRemove)
+                {
                     elements.Remove(elementToRemove.QualifiedName);
                 }
             }
-            foreach (XmlSchemaAttribute attributeToRemove in schema.Attributes.Values) {
+            foreach (XmlSchemaAttribute attributeToRemove in schema.Attributes.Values)
+            {
                 XmlSchemaAttribute attr = (XmlSchemaAttribute)attributes[attributeToRemove.QualifiedName];
-                if (attr == attributeToRemove) {
+                if (attr == attributeToRemove)
+                {
                     attributes.Remove(attributeToRemove.QualifiedName);
                 }
             }
-            foreach (XmlSchemaType schemaTypeToRemove in schema.SchemaTypes.Values) {
+            foreach (XmlSchemaType schemaTypeToRemove in schema.SchemaTypes.Values)
+            {
                 XmlSchemaType schemaType = (XmlSchemaType)schemaTypes[schemaTypeToRemove.QualifiedName];
-                if (schemaType == schemaTypeToRemove) {
+                if (schemaType == schemaTypeToRemove)
+                {
                     schemaTypes.Remove(schemaTypeToRemove.QualifiedName);
                 }
             }
         }
-        private bool AddToTable(XmlSchemaObjectTable table, XmlQualifiedName qname, XmlSchemaObject item) {
-            if (qname.Name.Length == 0) {
+        private bool AddToTable(XmlSchemaObjectTable table, XmlQualifiedName qname, XmlSchemaObject item)
+        {
+            if (qname.Name.Length == 0)
+            {
                 return true;
             }
-            XmlSchemaObject existingObject = (XmlSchemaObject)table[qname]; 
-            if (existingObject != null) {
-                if (existingObject == item || existingObject.SourceUri == item.SourceUri) {
+            XmlSchemaObject existingObject = (XmlSchemaObject)table[qname];
+            if (existingObject != null)
+            {
+                if (existingObject == item || existingObject.SourceUri == item.SourceUri)
+                {
                     return true;
                 }
                 string code = string.Empty;
-                if (item is XmlSchemaComplexType) {
+                if (item is XmlSchemaComplexType)
+                {
                     code = ResXml.Sch_DupComplexType;
-                } 
-                else if (item is XmlSchemaSimpleType) {
+                }
+                else if (item is XmlSchemaSimpleType)
+                {
                     code = ResXml.Sch_DupSimpleType;
-                } 
-                else if (item is XmlSchemaElement) {
+                }
+                else if (item is XmlSchemaElement)
+                {
                     code = ResXml.Sch_DupGlobalElement;
-                } 
-                else if (item is XmlSchemaAttribute) {
-                    if (qname.Namespace == XmlReservedNs.NsXml) {
+                }
+                else if (item is XmlSchemaAttribute)
+                {
+                    if (qname.Namespace == XmlReservedNs.NsXml)
+                    {
                         XmlSchema schemaForXmlNS = Preprocessor.GetBuildInSchema();
                         XmlSchemaObject builtInAttribute = schemaForXmlNS.Attributes[qname];
-                        if (existingObject == builtInAttribute) { //replace built-in one
+                        if (existingObject == builtInAttribute)
+                        { //replace built-in one
                             table.Insert(qname, item);
                             return true;
                         }
-                        else if (item == builtInAttribute) { //trying to overwrite customer's component with built-in, ignore built-in
+                        else if (item == builtInAttribute)
+                        { //trying to overwrite customer's component with built-in, ignore built-in
                             return true;
                         }
                     }
                     code = ResXml.Sch_DupGlobalAttribute;
-                } 
-                SendValidationEvent(new XmlSchemaException(code,qname.ToString()), XmlSeverityType.Error);
+                }
+                SendValidationEvent(new XmlSchemaException(code, qname.ToString()), XmlSeverityType.Error);
                 return false;
-            } 
-            else {
+            }
+            else
+            {
                 table.Add(qname, item);
                 return true;
             }
         }
 
-        private void VerifyTables() {
-            if (elements == null) {
+        private void VerifyTables()
+        {
+            if (elements == null)
+            {
                 elements = new XmlSchemaObjectTable();
             }
-            if (attributes == null) {
+            if (attributes == null)
+            {
                 attributes = new XmlSchemaObjectTable();
             }
-            if (schemaTypes == null) {
+            if (schemaTypes == null)
+            {
                 schemaTypes = new XmlSchemaObjectTable();
             }
-            if (substitutionGroups == null) {
+            if (substitutionGroups == null)
+            {
                 substitutionGroups = new XmlSchemaObjectTable();
             }
         }
 
-        private void InternalValidationCallback(object sender, ValidationEventArgs e ) {
-            if (e.Severity == XmlSeverityType.Error) {
+        private void InternalValidationCallback(object sender, ValidationEventArgs e)
+        {
+            if (e.Severity == XmlSeverityType.Error)
+            {
                 throw e.Exception;
             }
         }
-        
-        private void SendValidationEvent(XmlSchemaException e, XmlSeverityType severity) {
-            if (eventHandler != null) {
-                eventHandler(this, new ValidationEventArgs(e, severity));
-            } 
-            else {
+
+        private void SendValidationEvent(XmlSchemaException e, XmlSeverityType severity)
+        {
+            if (_eventHandler != null)
+            {
+                _eventHandler(this, new ValidationEventArgs(e, severity));
+            }
+            else
+            {
                 throw e;
             }
         }

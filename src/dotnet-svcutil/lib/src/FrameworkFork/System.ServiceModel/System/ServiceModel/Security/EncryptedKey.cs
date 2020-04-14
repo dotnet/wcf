@@ -13,7 +13,7 @@ namespace System.ServiceModel.Security
     using ISecurityElement = System.IdentityModel.ISecurityElement;
 
     [TypeForwardedFrom("System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")]
-    abstract class EncryptedType : ISecurityElement
+    internal abstract class EncryptedType : ISecurityElement
     {
         internal static readonly XmlDictionaryString NamespaceUri = XD.XmlEncryptionDictionary.Namespace;
         internal static readonly XmlDictionaryString EncodingAttribute = XD.XmlEncryptionDictionary.Encoding;
@@ -22,32 +22,32 @@ namespace System.ServiceModel.Security
         internal static readonly XmlDictionaryString CipherDataElementName = XD.XmlEncryptionDictionary.CipherData;
         internal static readonly XmlDictionaryString CipherValueElementName = XD.XmlEncryptionDictionary.CipherValue;
 
-        string encoding;
-        EncryptionMethodElement encryptionMethod;
-        string id;
-        string wsuId;
-        SecurityKeyIdentifier keyIdentifier;
-        string mimeType;
-        EncryptionState state;
-        string type;
-        SecurityTokenSerializer tokenSerializer;
-        bool shouldReadXmlReferenceKeyInfoClause;
+        private string _encoding;
+        private EncryptionMethodElement _encryptionMethod;
+        private string _id;
+        private string _wsuId;
+        private SecurityKeyIdentifier _keyIdentifier;
+        private string _mimeType;
+        private EncryptionState _state;
+        private string _type;
+        private SecurityTokenSerializer _tokenSerializer;
+        private bool _shouldReadXmlReferenceKeyInfoClause;
 
         protected EncryptedType()
         {
-            this.encryptionMethod.Init();
-            this.state = EncryptionState.New;
+            _encryptionMethod.Init();
+            _state = EncryptionState.New;
         }
 
         public string Encoding
         {
             get
             {
-                return this.encoding;
+                return _encoding;
             }
             set
             {
-                this.encoding = value;
+                _encoding = value;
             }
         }
 
@@ -55,11 +55,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.encryptionMethod.algorithm;
+                return _encryptionMethod.algorithm;
             }
             set
             {
-                this.encryptionMethod.algorithm = value;
+                _encryptionMethod.algorithm = value;
             }
         }
 
@@ -67,11 +67,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.encryptionMethod.algorithmDictionaryString;
+                return _encryptionMethod.algorithmDictionaryString;
             }
             set
             {
-                this.encryptionMethod.algorithmDictionaryString = value;
+                _encryptionMethod.algorithmDictionaryString = value;
             }
         }
 
@@ -87,11 +87,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.id;
+                return _id;
             }
             set
             {
-                this.id = value;
+                _id = value;
             }
         }
 
@@ -102,11 +102,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.shouldReadXmlReferenceKeyInfoClause;
+                return _shouldReadXmlReferenceKeyInfoClause;
             }
             set
             {
-                this.shouldReadXmlReferenceKeyInfoClause = value;
+                _shouldReadXmlReferenceKeyInfoClause = value;
             }
         }
 
@@ -114,11 +114,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.wsuId;
+                return _wsuId;
             }
             set
             {
-                this.wsuId = value;
+                _wsuId = value;
             }
         }
 
@@ -126,11 +126,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.keyIdentifier;
+                return _keyIdentifier;
             }
             set
             {
-                this.keyIdentifier = value;
+                _keyIdentifier = value;
             }
         }
 
@@ -138,11 +138,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.mimeType;
+                return _mimeType;
             }
             set
             {
-                this.mimeType = value;
+                _mimeType = value;
             }
         }
 
@@ -150,11 +150,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.type;
+                return _type;
             }
             set
             {
-                this.type = value;
+                _type = value;
             }
         }
 
@@ -167,11 +167,11 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                return this.state;
+                return _state;
             }
             set
             {
-                this.state = value;
+                _state = value;
             }
         }
         protected abstract void ForceEncryption();
@@ -206,20 +206,20 @@ namespace System.ServiceModel.Security
         {
             ValidateReadState();
             reader.MoveToStartElement(OpeningElementName, NamespaceUri);
-            this.encoding = reader.GetAttribute(EncodingAttribute, null);
-            this.id = reader.GetAttribute(XD.XmlEncryptionDictionary.Id, null) ?? SecurityUniqueId.Create().Value;
-            this.wsuId = reader.GetAttribute(XD.XmlEncryptionDictionary.Id, XD.UtilityDictionary.Namespace) ?? SecurityUniqueId.Create().Value;
-            this.mimeType = reader.GetAttribute(MimeTypeAttribute, null);
-            this.type = reader.GetAttribute(TypeAttribute, null);
+            _encoding = reader.GetAttribute(EncodingAttribute, null);
+            _id = reader.GetAttribute(XD.XmlEncryptionDictionary.Id, null) ?? SecurityUniqueId.Create().Value;
+            _wsuId = reader.GetAttribute(XD.XmlEncryptionDictionary.Id, XD.UtilityDictionary.Namespace) ?? SecurityUniqueId.Create().Value;
+            _mimeType = reader.GetAttribute(MimeTypeAttribute, null);
+            _type = reader.GetAttribute(TypeAttribute, null);
             ReadAdditionalAttributes(reader);
             reader.Read();
 
             if (reader.IsStartElement(EncryptionMethodElement.ElementName, NamespaceUri))
             {
-                this.encryptionMethod.ReadFrom(reader);
+                _encryptionMethod.ReadFrom(reader);
             }
 
-            if (this.tokenSerializer.CanReadKeyIdentifier(reader))
+            if (_tokenSerializer.CanReadKeyIdentifier(reader))
             {
                 XmlElement xml = null;
                 XmlDictionaryReader localReader;
@@ -238,7 +238,7 @@ namespace System.ServiceModel.Security
 
                 try
                 {
-                    this.KeyIdentifier = this.tokenSerializer.ReadKeyIdentifier(localReader);
+                    this.KeyIdentifier = _tokenSerializer.ReadKeyIdentifier(localReader);
                 }
                 catch (Exception e)
                 {
@@ -251,7 +251,7 @@ namespace System.ServiceModel.Security
                         throw;
                     }
 
-                    this.keyIdentifier = ReadGenericXmlSecurityKeyIdentifier(XmlDictionaryReader.CreateDictionaryReader(new XmlNodeReader(xml)), e);
+                    _keyIdentifier = ReadGenericXmlSecurityKeyIdentifier(XmlDictionaryReader.CreateDictionaryReader(new XmlNodeReader(xml)), e);
                 }
             }
 
@@ -292,30 +292,30 @@ namespace System.ServiceModel.Security
             }
             ValidateWriteState();
             writer.WriteStartElement(XmlEncryptionStrings.Prefix, this.OpeningElementName, NamespaceUri);
-            if (this.id != null && this.id.Length != 0)
+            if (_id != null && _id.Length != 0)
             {
                 writer.WriteAttributeString(XD.XmlEncryptionDictionary.Id, null, this.Id);
             }
-            if (this.type != null)
+            if (_type != null)
             {
                 writer.WriteAttributeString(TypeAttribute, null, this.Type);
             }
-            if (this.mimeType != null)
+            if (_mimeType != null)
             {
                 writer.WriteAttributeString(MimeTypeAttribute, null, this.MimeType);
             }
-            if (this.encoding != null)
+            if (_encoding != null)
             {
                 writer.WriteAttributeString(EncodingAttribute, null, this.Encoding);
             }
             WriteAdditionalAttributes(writer, dictionaryManager);
-            if (this.encryptionMethod.algorithm != null)
+            if (_encryptionMethod.algorithm != null)
             {
-                this.encryptionMethod.WriteTo(writer);
+                _encryptionMethod.WriteTo(writer);
             }
             if (this.KeyIdentifier != null)
             {
-                this.tokenSerializer.WriteKeyIdentifier(writer, this.KeyIdentifier);
+                _tokenSerializer.WriteKeyIdentifier(writer, this.KeyIdentifier);
             }
 
             writer.WriteStartElement(CipherDataElementName, NamespaceUri);
@@ -328,7 +328,7 @@ namespace System.ServiceModel.Security
             writer.WriteEndElement(); // OpeningElementName
         }
 
-        void ValidateReadState()
+        private void ValidateReadState()
         {
             if (this.State != EncryptionState.New)
             {
@@ -336,7 +336,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        void ValidateWriteState()
+        private void ValidateWriteState()
         {
             if (this.State == EncryptionState.EncryptionSetup)
             {
@@ -358,7 +358,7 @@ namespace System.ServiceModel.Security
             Encrypted
         }
 
-        struct EncryptionMethodElement
+        private struct EncryptionMethodElement
         {
             internal string algorithm;
             internal XmlDictionaryString algorithmDictionaryString;

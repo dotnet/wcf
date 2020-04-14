@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
+namespace Microsoft.Xml.Schema
+{
     using System;
     using System.ComponentModel;
     using Microsoft.Xml;
@@ -13,553 +14,680 @@ namespace Microsoft.Xml.Schema {
     using System.Globalization;
 
     /// <include file='doc\XmlSchemaFacet.uex' path='docs/doc[@for="XmlSchemaFacet"]/*' />
-    internal abstract class FacetsChecker {
+    internal abstract class FacetsChecker
+    {
+        private struct FacetsCompiler
+        {
+            private DatatypeImplementation _datatype;
+            private RestrictionFacets _derivedRestriction;
 
-    private struct FacetsCompiler {
-        DatatypeImplementation datatype;
-        RestrictionFacets derivedRestriction;
-        
-        RestrictionFlags baseFlags; 
-        RestrictionFlags baseFixedFlags; 
-        RestrictionFlags validRestrictionFlags; 
-        
-        //Helpers
-        XmlSchemaDatatype nonNegativeInt; 
-        XmlSchemaDatatype builtInType;
-        XmlTypeCode builtInEnum;
+            private RestrictionFlags _baseFlags;
+            private RestrictionFlags _baseFixedFlags;
+            private RestrictionFlags _validRestrictionFlags;
 
-        bool firstPattern;
-        StringBuilder regStr;
-        XmlSchemaPatternFacet pattern_facet;
+            //Helpers
+            private XmlSchemaDatatype _nonNegativeInt;
+            private XmlSchemaDatatype _builtInType;
+            private XmlTypeCode _builtInEnum;
 
-        public FacetsCompiler(DatatypeImplementation baseDatatype, RestrictionFacets restriction) {
-            firstPattern = true;
-            regStr = null;
-            pattern_facet = null;
-            datatype = baseDatatype;
-            derivedRestriction = restriction;
-            baseFlags = datatype.Restriction != null ? datatype.Restriction.Flags : 0;
-            baseFixedFlags = datatype.Restriction != null ? datatype.Restriction.FixedFlags : 0;
-            validRestrictionFlags = datatype.ValidRestrictionFlags;
-            nonNegativeInt = DatatypeImplementation.GetSimpleTypeFromTypeCode(XmlTypeCode.NonNegativeInteger).Datatype;
-            builtInEnum = !(datatype is Datatype_union || datatype is Datatype_List) ? datatype.TypeCode : 0;
-            builtInType = (int)builtInEnum > 0 ? DatatypeImplementation.GetSimpleTypeFromTypeCode(builtInEnum).Datatype : datatype;
-        }
+            private bool _firstPattern;
+            private StringBuilder _regStr;
+            private XmlSchemaPatternFacet _pattern_facet;
 
-        internal void CompileLengthFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.Length, ResXml.Sch_LengthFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.Length, ResXml.Sch_DupLengthFacet);
-            derivedRestriction.Length = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(nonNegativeInt, facet, ResXml.Sch_LengthFacetInvalid, null, null));
-            
-            if ((baseFixedFlags & RestrictionFlags.Length) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.Length, derivedRestriction.Length)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
+            public FacetsCompiler(DatatypeImplementation baseDatatype, RestrictionFacets restriction)
+            {
+                _firstPattern = true;
+                _regStr = null;
+                _pattern_facet = null;
+                _datatype = baseDatatype;
+                _derivedRestriction = restriction;
+                _baseFlags = _datatype.Restriction != null ? _datatype.Restriction.Flags : 0;
+                _baseFixedFlags = _datatype.Restriction != null ? _datatype.Restriction.FixedFlags : 0;
+                _validRestrictionFlags = _datatype.ValidRestrictionFlags;
+                _nonNegativeInt = DatatypeImplementation.GetSimpleTypeFromTypeCode(XmlTypeCode.NonNegativeInteger).Datatype;
+                _builtInEnum = !(_datatype is Datatype_union || _datatype is Datatype_List) ? _datatype.TypeCode : 0;
+                _builtInType = (int)_builtInEnum > 0 ? DatatypeImplementation.GetSimpleTypeFromTypeCode(_builtInEnum).Datatype : _datatype;
             }
-            if ((baseFlags & RestrictionFlags.Length) != 0) {
-                if (datatype.Restriction.Length < derivedRestriction.Length) {
-                    throw new XmlSchemaException(ResXml.Sch_LengthGtBaseLength, facet);
-                }
-            }
-            // If the base has the MinLength facet, check that our derived length is not violating it
-            if ((baseFlags & RestrictionFlags.MinLength) != 0) {
-                if (datatype.Restriction.MinLength > derivedRestriction.Length) {
-                    throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
-                }
-            }
-            // If the base has the MaxLength facet, check that our derived length is not violating it
-            if ((baseFlags & RestrictionFlags.MaxLength) != 0) {
-                if (datatype.Restriction.MaxLength < derivedRestriction.Length) {
-                    throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
-                }
-            }
-            SetFlag(facet, RestrictionFlags.Length);
-        }
 
-        internal void CompileMinLengthFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.MinLength, ResXml.Sch_MinLengthFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.MinLength, ResXml.Sch_DupMinLengthFacet);
-            derivedRestriction.MinLength = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(nonNegativeInt, facet, ResXml.Sch_MinLengthFacetInvalid, null, null));
-            
-            if ((baseFixedFlags & RestrictionFlags.MinLength) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.MinLength, derivedRestriction.MinLength)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            if ((baseFlags & RestrictionFlags.MinLength) != 0) {
-                if (datatype.Restriction.MinLength > derivedRestriction.MinLength) {
-                    throw new XmlSchemaException(ResXml.Sch_MinLengthGtBaseMinLength, facet);
-                }
-            }
-            if ((baseFlags & RestrictionFlags.Length) != 0) {
-                if (datatype.Restriction.Length < derivedRestriction.MinLength) {
-                    throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
-                }
-            }
-            SetFlag(facet, RestrictionFlags.MinLength);
-        }
+            internal void CompileLengthFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.Length, ResXml.Sch_LengthFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.Length, ResXml.Sch_DupLengthFacet);
+                _derivedRestriction.Length = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(_nonNegativeInt, facet, ResXml.Sch_LengthFacetInvalid, null, null));
 
-        internal void CompileMaxLengthFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.MaxLength, ResXml.Sch_MaxLengthFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.MaxLength, ResXml.Sch_DupMaxLengthFacet);
-            derivedRestriction.MaxLength = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(nonNegativeInt, facet, ResXml.Sch_MaxLengthFacetInvalid, null, null));
-
-            if ((baseFixedFlags & RestrictionFlags.MaxLength) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.MaxLength, derivedRestriction.MaxLength)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            if ((baseFlags & RestrictionFlags.MaxLength) != 0) {
-                if (datatype.Restriction.MaxLength < derivedRestriction.MaxLength) {
-                    throw new XmlSchemaException(ResXml.Sch_MaxLengthGtBaseMaxLength, facet);
-                }
-            }
-            if ((baseFlags & RestrictionFlags.Length) != 0) {
-                if (datatype.Restriction.Length > derivedRestriction.MaxLength) {
-                    throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
-                }
-            }
-            SetFlag(facet, RestrictionFlags.MaxLength);
-        }
-
-        internal void CompilePatternFacet(XmlSchemaPatternFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.Pattern, ResXml.Sch_PatternFacetProhibited);
-            if(firstPattern == true) {
-                regStr = new StringBuilder();
-                regStr.Append("(");
-                regStr.Append(facet.Value);
-                pattern_facet = facet;
-                firstPattern = false;
-            }
-            else {
-                regStr.Append(")|(");
-                regStr.Append(facet.Value);
-            }
-            SetFlag(facet, RestrictionFlags.Pattern);
-        }
-
-        internal void CompileEnumerationFacet(XmlSchemaFacet facet, IXmlNamespaceResolver nsmgr, XmlNameTable nameTable) {
-            CheckProhibitedFlag(facet, RestrictionFlags.Enumeration, ResXml.Sch_EnumerationFacetProhibited);
-            if (derivedRestriction.Enumeration == null) {
-                derivedRestriction.Enumeration = new ArrayList();
-            }
-            derivedRestriction.Enumeration.Add(ParseFacetValue(datatype, facet, ResXml.Sch_EnumerationFacetInvalid, nsmgr, nameTable));
-            SetFlag(facet, RestrictionFlags.Enumeration);
-        }
-
-        internal void CompileWhitespaceFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.WhiteSpace, ResXml.Sch_WhiteSpaceFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.WhiteSpace, ResXml.Sch_DupWhiteSpaceFacet);
-            if (facet.Value == "preserve") {
-                derivedRestriction.WhiteSpace = XmlSchemaWhiteSpace.Preserve;
-            }
-            else if (facet.Value == "replace") {
-                derivedRestriction.WhiteSpace = XmlSchemaWhiteSpace.Replace;
-            }
-            else if (facet.Value == "collapse") {
-                derivedRestriction.WhiteSpace = XmlSchemaWhiteSpace.Collapse;
-            }
-            else {
-                throw new XmlSchemaException(ResXml.Sch_InvalidWhiteSpace, facet.Value, facet);
-            }
-            if ((baseFixedFlags & RestrictionFlags.WhiteSpace) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.WhiteSpace, derivedRestriction.WhiteSpace)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            //Check base and derived whitespace facets
-            XmlSchemaWhiteSpace baseWhitespace;
-            if ((baseFlags & RestrictionFlags.WhiteSpace) != 0) {
-                baseWhitespace = datatype.Restriction.WhiteSpace;
-            }
-            else {
-                baseWhitespace = datatype.BuiltInWhitespaceFacet;
-            }
-            if ( baseWhitespace == XmlSchemaWhiteSpace.Collapse &&
-                (derivedRestriction.WhiteSpace == XmlSchemaWhiteSpace.Replace || derivedRestriction.WhiteSpace == XmlSchemaWhiteSpace.Preserve)
-            ) {
-                throw new XmlSchemaException(ResXml.Sch_WhiteSpaceRestriction1, facet);
-            }
-            if (baseWhitespace == XmlSchemaWhiteSpace.Replace &&
-                derivedRestriction.WhiteSpace == XmlSchemaWhiteSpace.Preserve
-            ) {
-                throw new XmlSchemaException(ResXml.Sch_WhiteSpaceRestriction2, facet);
-            }
-            SetFlag(facet, RestrictionFlags.WhiteSpace);
-        }
-
-        internal void CompileMaxInclusiveFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.MaxInclusive, ResXml.Sch_MaxInclusiveFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.MaxInclusive, ResXml.Sch_DupMaxInclusiveFacet);
-            derivedRestriction.MaxInclusive = ParseFacetValue(builtInType, facet, ResXml.Sch_MaxInclusiveFacetInvalid, null, null);
-            
-            if ((baseFixedFlags & RestrictionFlags.MaxInclusive) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.MaxInclusive, derivedRestriction.MaxInclusive)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            CheckValue(derivedRestriction.MaxInclusive, facet);
-            SetFlag(facet, RestrictionFlags.MaxInclusive);
-        }
-
-        internal void CompileMaxExclusiveFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.MaxExclusive, ResXml.Sch_MaxExclusiveFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.MaxExclusive, ResXml.Sch_DupMaxExclusiveFacet);
-            derivedRestriction.MaxExclusive = ParseFacetValue(builtInType, facet, ResXml.Sch_MaxExclusiveFacetInvalid, null, null);
-            
-            if ((baseFixedFlags & RestrictionFlags.MaxExclusive) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.MaxExclusive, derivedRestriction.MaxExclusive)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            CheckValue(derivedRestriction.MaxExclusive, facet);
-            SetFlag(facet, RestrictionFlags.MaxExclusive);
-        }
-
-        internal void CompileMinInclusiveFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.MinInclusive, ResXml.Sch_MinInclusiveFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.MinInclusive, ResXml.Sch_DupMinInclusiveFacet);
-            derivedRestriction.MinInclusive = ParseFacetValue(builtInType, facet, ResXml.Sch_MinInclusiveFacetInvalid, null, null);
-
-            if ((baseFixedFlags & RestrictionFlags.MinInclusive) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.MinInclusive, derivedRestriction.MinInclusive)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            CheckValue(derivedRestriction.MinInclusive, facet);
-            SetFlag(facet, RestrictionFlags.MinInclusive);
-        }
-
-        internal void CompileMinExclusiveFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.MinExclusive, ResXml.Sch_MinExclusiveFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.MinExclusive, ResXml.Sch_DupMinExclusiveFacet);
-            derivedRestriction.MinExclusive = ParseFacetValue(builtInType, facet, ResXml.Sch_MinExclusiveFacetInvalid, null, null);
-
-            if ((baseFixedFlags & RestrictionFlags.MinExclusive) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.MinExclusive, derivedRestriction.MinExclusive)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            CheckValue(derivedRestriction.MinExclusive, facet);
-            SetFlag(facet, RestrictionFlags.MinExclusive);
-        }
-
-        internal void CompileTotalDigitsFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.TotalDigits, ResXml.Sch_TotalDigitsFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.TotalDigits, ResXml.Sch_DupTotalDigitsFacet);
-            XmlSchemaDatatype positiveInt = DatatypeImplementation.GetSimpleTypeFromTypeCode(XmlTypeCode.PositiveInteger).Datatype;                        
-            derivedRestriction.TotalDigits = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(positiveInt, facet, ResXml.Sch_TotalDigitsFacetInvalid, null, null));
-            
-            if ((baseFixedFlags & RestrictionFlags.TotalDigits) != 0) {
-                if (!datatype.IsEqual(datatype.Restriction.TotalDigits, derivedRestriction.TotalDigits)) {
-                    throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
-                }
-            }
-            if ((baseFlags & RestrictionFlags.TotalDigits) != 0) {
-                if(derivedRestriction.TotalDigits > datatype.Restriction.TotalDigits) {
-                    throw new XmlSchemaException(ResXml.Sch_TotalDigitsMismatch, string.Empty);
-                }
-            }
-            SetFlag(facet, RestrictionFlags.TotalDigits);
-        }
-
-        internal void CompileFractionDigitsFacet(XmlSchemaFacet facet) {
-            CheckProhibitedFlag(facet, RestrictionFlags.FractionDigits, ResXml.Sch_FractionDigitsFacetProhibited);
-            CheckDupFlag(facet, RestrictionFlags.FractionDigits, ResXml.Sch_DupFractionDigitsFacet);
-            derivedRestriction.FractionDigits = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(nonNegativeInt, facet, ResXml.Sch_FractionDigitsFacetInvalid, null, null));
-
-            if ((derivedRestriction.FractionDigits != 0) && (datatype.TypeCode != XmlTypeCode.Decimal)) {
-                throw new XmlSchemaException(ResXml.Sch_FractionDigitsFacetInvalid, ResXml.GetString(ResXml.Sch_FractionDigitsNotOnDecimal), facet);
-            }
-            if ((baseFlags & RestrictionFlags.FractionDigits) != 0) {
-                if (derivedRestriction.FractionDigits > datatype.Restriction.FractionDigits) {
-                    throw new XmlSchemaException(ResXml.Sch_TotalDigitsMismatch, string.Empty);
-                }
-            }
-            SetFlag(facet, RestrictionFlags.FractionDigits);
-        }
-
-        internal void FinishFacetCompile() {
-            //Additional check for pattern facet
-            //If facet is XMLSchemaPattern, then the String built inside the loop
-            //needs to be converted to a RegEx
-            if(firstPattern == false) {
-                if (derivedRestriction.Patterns == null) {
-                    derivedRestriction.Patterns = new ArrayList();
-                }
-                try {
-                    regStr.Append(")");
-                    string tempStr = regStr.ToString();
-                    if(tempStr.IndexOf('|') != -1) { // ordinal compare
-                        regStr.Insert(0,"(");
-                        regStr.Append(")");
+                if ((_baseFixedFlags & RestrictionFlags.Length) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.Length, _derivedRestriction.Length))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
                     }
-                   derivedRestriction.Patterns.Add(new Regex(Preprocess(regStr.ToString()), RegexOptions.None));
-
-                } catch (Exception e) {
-                    throw new XmlSchemaException(ResXml.Sch_PatternFacetInvalid, new string[] {e.Message}, e, pattern_facet.SourceUri, pattern_facet.LineNumber, pattern_facet.LinePosition, pattern_facet);
                 }
+                if ((_baseFlags & RestrictionFlags.Length) != 0)
+                {
+                    if (_datatype.Restriction.Length < _derivedRestriction.Length)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_LengthGtBaseLength, facet);
+                    }
+                }
+                // If the base has the MinLength facet, check that our derived length is not violating it
+                if ((_baseFlags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (_datatype.Restriction.MinLength > _derivedRestriction.Length)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
+                    }
+                }
+                // If the base has the MaxLength facet, check that our derived length is not violating it
+                if ((_baseFlags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (_datatype.Restriction.MaxLength < _derivedRestriction.Length)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
+                    }
+                }
+                SetFlag(facet, RestrictionFlags.Length);
             }
-        }
 
-        private void CheckValue(object value, XmlSchemaFacet facet) {
-            RestrictionFacets restriction = datatype.Restriction;
-            switch (facet.FacetType) {
-                case FacetType.MaxInclusive:
-                    if ((baseFlags & RestrictionFlags.MaxInclusive) != 0) { //Base facet has maxInclusive
-                        if (datatype.Compare(value, restriction.MaxInclusive) > 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MaxInclusiveMismatch, string.Empty);
+            internal void CompileMinLengthFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.MinLength, ResXml.Sch_MinLengthFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.MinLength, ResXml.Sch_DupMinLengthFacet);
+                _derivedRestriction.MinLength = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(_nonNegativeInt, facet, ResXml.Sch_MinLengthFacetInvalid, null, null));
+
+                if ((_baseFixedFlags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.MinLength, _derivedRestriction.MinLength))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                if ((_baseFlags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (_datatype.Restriction.MinLength > _derivedRestriction.MinLength)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MinLengthGtBaseMinLength, facet);
+                    }
+                }
+                if ((_baseFlags & RestrictionFlags.Length) != 0)
+                {
+                    if (_datatype.Restriction.Length < _derivedRestriction.MinLength)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
+                    }
+                }
+                SetFlag(facet, RestrictionFlags.MinLength);
+            }
+
+            internal void CompileMaxLengthFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.MaxLength, ResXml.Sch_MaxLengthFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.MaxLength, ResXml.Sch_DupMaxLengthFacet);
+                _derivedRestriction.MaxLength = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(_nonNegativeInt, facet, ResXml.Sch_MaxLengthFacetInvalid, null, null));
+
+                if ((_baseFixedFlags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.MaxLength, _derivedRestriction.MaxLength))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                if ((_baseFlags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (_datatype.Restriction.MaxLength < _derivedRestriction.MaxLength)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MaxLengthGtBaseMaxLength, facet);
+                    }
+                }
+                if ((_baseFlags & RestrictionFlags.Length) != 0)
+                {
+                    if (_datatype.Restriction.Length > _derivedRestriction.MaxLength)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MaxMinLengthBaseLength, facet);
+                    }
+                }
+                SetFlag(facet, RestrictionFlags.MaxLength);
+            }
+
+            internal void CompilePatternFacet(XmlSchemaPatternFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.Pattern, ResXml.Sch_PatternFacetProhibited);
+                if (_firstPattern == true)
+                {
+                    _regStr = new StringBuilder();
+                    _regStr.Append("(");
+                    _regStr.Append(facet.Value);
+                    _pattern_facet = facet;
+                    _firstPattern = false;
+                }
+                else
+                {
+                    _regStr.Append(")|(");
+                    _regStr.Append(facet.Value);
+                }
+                SetFlag(facet, RestrictionFlags.Pattern);
+            }
+
+            internal void CompileEnumerationFacet(XmlSchemaFacet facet, IXmlNamespaceResolver nsmgr, XmlNameTable nameTable)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.Enumeration, ResXml.Sch_EnumerationFacetProhibited);
+                if (_derivedRestriction.Enumeration == null)
+                {
+                    _derivedRestriction.Enumeration = new ArrayList();
+                }
+                _derivedRestriction.Enumeration.Add(ParseFacetValue(_datatype, facet, ResXml.Sch_EnumerationFacetInvalid, nsmgr, nameTable));
+                SetFlag(facet, RestrictionFlags.Enumeration);
+            }
+
+            internal void CompileWhitespaceFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.WhiteSpace, ResXml.Sch_WhiteSpaceFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.WhiteSpace, ResXml.Sch_DupWhiteSpaceFacet);
+                if (facet.Value == "preserve")
+                {
+                    _derivedRestriction.WhiteSpace = XmlSchemaWhiteSpace.Preserve;
+                }
+                else if (facet.Value == "replace")
+                {
+                    _derivedRestriction.WhiteSpace = XmlSchemaWhiteSpace.Replace;
+                }
+                else if (facet.Value == "collapse")
+                {
+                    _derivedRestriction.WhiteSpace = XmlSchemaWhiteSpace.Collapse;
+                }
+                else
+                {
+                    throw new XmlSchemaException(ResXml.Sch_InvalidWhiteSpace, facet.Value, facet);
+                }
+                if ((_baseFixedFlags & RestrictionFlags.WhiteSpace) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.WhiteSpace, _derivedRestriction.WhiteSpace))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                //Check base and derived whitespace facets
+                XmlSchemaWhiteSpace baseWhitespace;
+                if ((_baseFlags & RestrictionFlags.WhiteSpace) != 0)
+                {
+                    baseWhitespace = _datatype.Restriction.WhiteSpace;
+                }
+                else
+                {
+                    baseWhitespace = _datatype.BuiltInWhitespaceFacet;
+                }
+                if (baseWhitespace == XmlSchemaWhiteSpace.Collapse &&
+                    (_derivedRestriction.WhiteSpace == XmlSchemaWhiteSpace.Replace || _derivedRestriction.WhiteSpace == XmlSchemaWhiteSpace.Preserve)
+                )
+                {
+                    throw new XmlSchemaException(ResXml.Sch_WhiteSpaceRestriction1, facet);
+                }
+                if (baseWhitespace == XmlSchemaWhiteSpace.Replace &&
+                    _derivedRestriction.WhiteSpace == XmlSchemaWhiteSpace.Preserve
+                )
+                {
+                    throw new XmlSchemaException(ResXml.Sch_WhiteSpaceRestriction2, facet);
+                }
+                SetFlag(facet, RestrictionFlags.WhiteSpace);
+            }
+
+            internal void CompileMaxInclusiveFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.MaxInclusive, ResXml.Sch_MaxInclusiveFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.MaxInclusive, ResXml.Sch_DupMaxInclusiveFacet);
+                _derivedRestriction.MaxInclusive = ParseFacetValue(_builtInType, facet, ResXml.Sch_MaxInclusiveFacetInvalid, null, null);
+
+                if ((_baseFixedFlags & RestrictionFlags.MaxInclusive) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.MaxInclusive, _derivedRestriction.MaxInclusive))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                CheckValue(_derivedRestriction.MaxInclusive, facet);
+                SetFlag(facet, RestrictionFlags.MaxInclusive);
+            }
+
+            internal void CompileMaxExclusiveFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.MaxExclusive, ResXml.Sch_MaxExclusiveFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.MaxExclusive, ResXml.Sch_DupMaxExclusiveFacet);
+                _derivedRestriction.MaxExclusive = ParseFacetValue(_builtInType, facet, ResXml.Sch_MaxExclusiveFacetInvalid, null, null);
+
+                if ((_baseFixedFlags & RestrictionFlags.MaxExclusive) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.MaxExclusive, _derivedRestriction.MaxExclusive))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                CheckValue(_derivedRestriction.MaxExclusive, facet);
+                SetFlag(facet, RestrictionFlags.MaxExclusive);
+            }
+
+            internal void CompileMinInclusiveFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.MinInclusive, ResXml.Sch_MinInclusiveFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.MinInclusive, ResXml.Sch_DupMinInclusiveFacet);
+                _derivedRestriction.MinInclusive = ParseFacetValue(_builtInType, facet, ResXml.Sch_MinInclusiveFacetInvalid, null, null);
+
+                if ((_baseFixedFlags & RestrictionFlags.MinInclusive) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.MinInclusive, _derivedRestriction.MinInclusive))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                CheckValue(_derivedRestriction.MinInclusive, facet);
+                SetFlag(facet, RestrictionFlags.MinInclusive);
+            }
+
+            internal void CompileMinExclusiveFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.MinExclusive, ResXml.Sch_MinExclusiveFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.MinExclusive, ResXml.Sch_DupMinExclusiveFacet);
+                _derivedRestriction.MinExclusive = ParseFacetValue(_builtInType, facet, ResXml.Sch_MinExclusiveFacetInvalid, null, null);
+
+                if ((_baseFixedFlags & RestrictionFlags.MinExclusive) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.MinExclusive, _derivedRestriction.MinExclusive))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                CheckValue(_derivedRestriction.MinExclusive, facet);
+                SetFlag(facet, RestrictionFlags.MinExclusive);
+            }
+
+            internal void CompileTotalDigitsFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.TotalDigits, ResXml.Sch_TotalDigitsFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.TotalDigits, ResXml.Sch_DupTotalDigitsFacet);
+                XmlSchemaDatatype positiveInt = DatatypeImplementation.GetSimpleTypeFromTypeCode(XmlTypeCode.PositiveInteger).Datatype;
+                _derivedRestriction.TotalDigits = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(positiveInt, facet, ResXml.Sch_TotalDigitsFacetInvalid, null, null));
+
+                if ((_baseFixedFlags & RestrictionFlags.TotalDigits) != 0)
+                {
+                    if (!_datatype.IsEqual(_datatype.Restriction.TotalDigits, _derivedRestriction.TotalDigits))
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FacetBaseFixed, facet);
+                    }
+                }
+                if ((_baseFlags & RestrictionFlags.TotalDigits) != 0)
+                {
+                    if (_derivedRestriction.TotalDigits > _datatype.Restriction.TotalDigits)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_TotalDigitsMismatch, string.Empty);
+                    }
+                }
+                SetFlag(facet, RestrictionFlags.TotalDigits);
+            }
+
+            internal void CompileFractionDigitsFacet(XmlSchemaFacet facet)
+            {
+                CheckProhibitedFlag(facet, RestrictionFlags.FractionDigits, ResXml.Sch_FractionDigitsFacetProhibited);
+                CheckDupFlag(facet, RestrictionFlags.FractionDigits, ResXml.Sch_DupFractionDigitsFacet);
+                _derivedRestriction.FractionDigits = XmlBaseConverter.DecimalToInt32((decimal)ParseFacetValue(_nonNegativeInt, facet, ResXml.Sch_FractionDigitsFacetInvalid, null, null));
+
+                if ((_derivedRestriction.FractionDigits != 0) && (_datatype.TypeCode != XmlTypeCode.Decimal))
+                {
+                    throw new XmlSchemaException(ResXml.Sch_FractionDigitsFacetInvalid, ResXml.GetString(ResXml.Sch_FractionDigitsNotOnDecimal), facet);
+                }
+                if ((_baseFlags & RestrictionFlags.FractionDigits) != 0)
+                {
+                    if (_derivedRestriction.FractionDigits > _datatype.Restriction.FractionDigits)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_TotalDigitsMismatch, string.Empty);
+                    }
+                }
+                SetFlag(facet, RestrictionFlags.FractionDigits);
+            }
+
+            internal void FinishFacetCompile()
+            {
+                //Additional check for pattern facet
+                //If facet is XMLSchemaPattern, then the String built inside the loop
+                //needs to be converted to a RegEx
+                if (_firstPattern == false)
+                {
+                    if (_derivedRestriction.Patterns == null)
+                    {
+                        _derivedRestriction.Patterns = new ArrayList();
+                    }
+                    try
+                    {
+                        _regStr.Append(")");
+                        string tempStr = _regStr.ToString();
+                        if (tempStr.IndexOf('|') != -1)
+                        { // ordinal compare
+                            _regStr.Insert(0, "(");
+                            _regStr.Append(")");
                         }
+                        _derivedRestriction.Patterns.Add(new Regex(Preprocess(_regStr.ToString()), RegexOptions.None));
                     }
-                    if ((baseFlags & RestrictionFlags.MaxExclusive) != 0) { //Base facet has maxExclusive
-                        if (datatype.Compare(value, restriction.MaxExclusive) >= 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MaxIncExlMismatch, string.Empty);
-                        }
+                    catch (Exception e)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_PatternFacetInvalid, new string[] { e.Message }, e, _pattern_facet.SourceUri, _pattern_facet.LineNumber, _pattern_facet.LinePosition, _pattern_facet);
                     }
-                break;
-
-                case FacetType.MaxExclusive:
-                    if ((baseFlags & RestrictionFlags.MaxExclusive) != 0) { //Base facet has maxExclusive
-                        if (datatype.Compare(value, restriction.MaxExclusive) > 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MaxExclusiveMismatch, string.Empty);
-                        }
-                    }
-                    if ((baseFlags & RestrictionFlags.MaxInclusive) != 0) { //Base facet has maxInclusive
-                        if (datatype.Compare(value, restriction.MaxInclusive) > 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MaxExlIncMismatch, string.Empty);
-                        }
-                    }
-                break;
-
-                case FacetType.MinInclusive:
-                    if ((baseFlags & RestrictionFlags.MinInclusive) != 0) { //Base facet has minInclusive
-                        if (datatype.Compare(value, restriction.MinInclusive) < 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MinInclusiveMismatch, string.Empty);
-                        }
-                    }
-                    if ((baseFlags & RestrictionFlags.MinExclusive) != 0) { //Base facet has minExclusive
-                        if (datatype.Compare(value, restriction.MinExclusive) < 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MinIncExlMismatch, string.Empty);
-                        }
-                    }
-                    if ((baseFlags & RestrictionFlags.MaxExclusive) != 0) { //Base facet has maxExclusive
-                        if (datatype.Compare(value, restriction.MaxExclusive) >= 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MinIncMaxExlMismatch, string.Empty);
-                        }
-                    }
-                break;
-
-                case FacetType.MinExclusive:
-                    if ((baseFlags & RestrictionFlags.MinExclusive) != 0) { //Base facet has minExclusive
-                        if (datatype.Compare(value, restriction.MinExclusive) < 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MinExclusiveMismatch, string.Empty);
-                        }
-                    }
-                    if ((baseFlags & RestrictionFlags.MinInclusive) != 0) { //Base facet has minInclusive
-                        if (datatype.Compare(value, restriction.MinInclusive) < 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MinExlIncMismatch, string.Empty);
-                        }
-                    }
-                    if ((baseFlags & RestrictionFlags.MaxExclusive) != 0) { //Base facet has maxExclusive
-                        if (datatype.Compare(value, restriction.MaxExclusive) >= 0) {
-                            throw new XmlSchemaException(ResXml.Sch_MinExlMaxExlMismatch, string.Empty);
-                        }
-                    }
-                break;
-
-                default:
-                    Debug.Assert(false);
-                break;
-            }
-        }
-
-        internal void CompileFacetCombinations() {
-            RestrictionFacets baseRestriction = datatype.Restriction;
-            //They are not allowed on the same type but allowed on derived types.
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MaxInclusive) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MaxExclusive) != 0
-            ) {
-                throw new XmlSchemaException(ResXml.Sch_MaxInclusiveExclusive, string.Empty);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinInclusive) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MinExclusive) != 0
-            ) {
-                throw new XmlSchemaException(ResXml.Sch_MinInclusiveExclusive, string.Empty);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.Length) != 0 &&
-                (derivedRestriction.Flags & (RestrictionFlags.MinLength|RestrictionFlags.MaxLength)) != 0
-            ) {
-                throw new XmlSchemaException(ResXml.Sch_LengthAndMinMax, string.Empty);
-            }
-            
-            CopyFacetsFromBaseType();
-
-            // Check combinations
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinLength) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MaxLength) != 0
-            ) {
-                if (derivedRestriction.MinLength > derivedRestriction.MaxLength) {
-                    throw new XmlSchemaException(ResXml.Sch_MinLengthGtMaxLength, string.Empty);
                 }
             }
 
-            //TODO  MinInc /MinExc /MaxInc / MaxExc checked in derived types
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinInclusive) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MaxInclusive) != 0
-            ) {
-                if (datatype.Compare(derivedRestriction.MinInclusive, derivedRestriction.MaxInclusive) > 0) {
-                    throw new XmlSchemaException(ResXml.Sch_MinInclusiveGtMaxInclusive, string.Empty);
-                }
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinInclusive) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MaxExclusive) != 0
-            ) {
-                if (datatype.Compare(derivedRestriction.MinInclusive, derivedRestriction.MaxExclusive) > 0) {
-                    throw new XmlSchemaException(ResXml.Sch_MinInclusiveGtMaxExclusive, string.Empty);
-                }
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinExclusive) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MaxExclusive) != 0
-            ) {
-                if (datatype.Compare(derivedRestriction.MinExclusive, derivedRestriction.MaxExclusive) > 0) {
-                    throw new XmlSchemaException(ResXml.Sch_MinExclusiveGtMaxExclusive, string.Empty);
-                }
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinExclusive) != 0 &&
-                (derivedRestriction.Flags & RestrictionFlags.MaxInclusive) != 0
-            ) {
-                if (datatype.Compare(derivedRestriction.MinExclusive, derivedRestriction.MaxInclusive) > 0) {
-                    throw new XmlSchemaException(ResXml.Sch_MinExclusiveGtMaxInclusive, string.Empty);
-                }
-            }
-            if ((derivedRestriction.Flags & (RestrictionFlags.TotalDigits|RestrictionFlags.FractionDigits)) == (RestrictionFlags.TotalDigits|RestrictionFlags.FractionDigits)) {
-                if (derivedRestriction.FractionDigits > derivedRestriction.TotalDigits) {
-                    throw new XmlSchemaException(ResXml.Sch_FractionDigitsGtTotalDigits, string.Empty);
-                }
-            }
-        }
+            private void CheckValue(object value, XmlSchemaFacet facet)
+            {
+                RestrictionFacets restriction = _datatype.Restriction;
+                switch (facet.FacetType)
+                {
+                    case FacetType.MaxInclusive:
+                        if ((_baseFlags & RestrictionFlags.MaxInclusive) != 0)
+                        { //Base facet has maxInclusive
+                            if (_datatype.Compare(value, restriction.MaxInclusive) > 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MaxInclusiveMismatch, string.Empty);
+                            }
+                        }
+                        if ((_baseFlags & RestrictionFlags.MaxExclusive) != 0)
+                        { //Base facet has maxExclusive
+                            if (_datatype.Compare(value, restriction.MaxExclusive) >= 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MaxIncExlMismatch, string.Empty);
+                            }
+                        }
+                        break;
 
-        private void CopyFacetsFromBaseType() {
-            RestrictionFacets baseRestriction = datatype.Restriction;
-            // Copy additional facets from the base type
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.Length) == 0 &&
-                (baseFlags & RestrictionFlags.Length) != 0
-            ) {
-                derivedRestriction.Length = baseRestriction.Length;
-                SetFlag(RestrictionFlags.Length);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinLength) == 0 &&
-                (baseFlags & RestrictionFlags.MinLength) != 0
-            ) {
-                derivedRestriction.MinLength = baseRestriction.MinLength;
-                SetFlag(RestrictionFlags.MinLength);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MaxLength) == 0 &&
-                (baseFlags & RestrictionFlags.MaxLength) != 0
-            ) {
-                derivedRestriction.MaxLength = baseRestriction.MaxLength;
-                SetFlag(RestrictionFlags.MaxLength);
-            }
-            if ((baseFlags & RestrictionFlags.Pattern) != 0) {
-                if (derivedRestriction.Patterns == null) {
-                    derivedRestriction.Patterns = baseRestriction.Patterns;
+                    case FacetType.MaxExclusive:
+                        if ((_baseFlags & RestrictionFlags.MaxExclusive) != 0)
+                        { //Base facet has maxExclusive
+                            if (_datatype.Compare(value, restriction.MaxExclusive) > 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MaxExclusiveMismatch, string.Empty);
+                            }
+                        }
+                        if ((_baseFlags & RestrictionFlags.MaxInclusive) != 0)
+                        { //Base facet has maxInclusive
+                            if (_datatype.Compare(value, restriction.MaxInclusive) > 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MaxExlIncMismatch, string.Empty);
+                            }
+                        }
+                        break;
+
+                    case FacetType.MinInclusive:
+                        if ((_baseFlags & RestrictionFlags.MinInclusive) != 0)
+                        { //Base facet has minInclusive
+                            if (_datatype.Compare(value, restriction.MinInclusive) < 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MinInclusiveMismatch, string.Empty);
+                            }
+                        }
+                        if ((_baseFlags & RestrictionFlags.MinExclusive) != 0)
+                        { //Base facet has minExclusive
+                            if (_datatype.Compare(value, restriction.MinExclusive) < 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MinIncExlMismatch, string.Empty);
+                            }
+                        }
+                        if ((_baseFlags & RestrictionFlags.MaxExclusive) != 0)
+                        { //Base facet has maxExclusive
+                            if (_datatype.Compare(value, restriction.MaxExclusive) >= 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MinIncMaxExlMismatch, string.Empty);
+                            }
+                        }
+                        break;
+
+                    case FacetType.MinExclusive:
+                        if ((_baseFlags & RestrictionFlags.MinExclusive) != 0)
+                        { //Base facet has minExclusive
+                            if (_datatype.Compare(value, restriction.MinExclusive) < 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MinExclusiveMismatch, string.Empty);
+                            }
+                        }
+                        if ((_baseFlags & RestrictionFlags.MinInclusive) != 0)
+                        { //Base facet has minInclusive
+                            if (_datatype.Compare(value, restriction.MinInclusive) < 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MinExlIncMismatch, string.Empty);
+                            }
+                        }
+                        if ((_baseFlags & RestrictionFlags.MaxExclusive) != 0)
+                        { //Base facet has maxExclusive
+                            if (_datatype.Compare(value, restriction.MaxExclusive) >= 0)
+                            {
+                                throw new XmlSchemaException(ResXml.Sch_MinExlMaxExlMismatch, string.Empty);
+                            }
+                        }
+                        break;
+
+                    default:
+                        Debug.Assert(false);
+                        break;
                 }
-                else {
-                    derivedRestriction.Patterns.AddRange(baseRestriction.Patterns);
+            }
+
+            internal void CompileFacetCombinations()
+            {
+                RestrictionFacets baseRestriction = _datatype.Restriction;
+                //They are not allowed on the same type but allowed on derived types.
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxInclusive) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxExclusive) != 0
+                )
+                {
+                    throw new XmlSchemaException(ResXml.Sch_MaxInclusiveExclusive, string.Empty);
                 }
-                SetFlag(RestrictionFlags.Pattern);
-            }
-
-            if ((baseFlags & RestrictionFlags.Enumeration) != 0) {
-                if (derivedRestriction.Enumeration == null) {
-                    derivedRestriction.Enumeration = baseRestriction.Enumeration;
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinInclusive) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MinExclusive) != 0
+                )
+                {
+                    throw new XmlSchemaException(ResXml.Sch_MinInclusiveExclusive, string.Empty);
                 }
-                SetFlag(RestrictionFlags.Enumeration);
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.Length) != 0 &&
+                    (_derivedRestriction.Flags & (RestrictionFlags.MinLength | RestrictionFlags.MaxLength)) != 0
+                )
+                {
+                    throw new XmlSchemaException(ResXml.Sch_LengthAndMinMax, string.Empty);
+                }
+
+                CopyFacetsFromBaseType();
+
+                // Check combinations
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinLength) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxLength) != 0
+                )
+                {
+                    if (_derivedRestriction.MinLength > _derivedRestriction.MaxLength)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MinLengthGtMaxLength, string.Empty);
+                    }
+                }
+
+                //TODO  MinInc /MinExc /MaxInc / MaxExc checked in derived types
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinInclusive) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxInclusive) != 0
+                )
+                {
+                    if (_datatype.Compare(_derivedRestriction.MinInclusive, _derivedRestriction.MaxInclusive) > 0)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MinInclusiveGtMaxInclusive, string.Empty);
+                    }
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinInclusive) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxExclusive) != 0
+                )
+                {
+                    if (_datatype.Compare(_derivedRestriction.MinInclusive, _derivedRestriction.MaxExclusive) > 0)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MinInclusiveGtMaxExclusive, string.Empty);
+                    }
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinExclusive) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxExclusive) != 0
+                )
+                {
+                    if (_datatype.Compare(_derivedRestriction.MinExclusive, _derivedRestriction.MaxExclusive) > 0)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MinExclusiveGtMaxExclusive, string.Empty);
+                    }
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinExclusive) != 0 &&
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxInclusive) != 0
+                )
+                {
+                    if (_datatype.Compare(_derivedRestriction.MinExclusive, _derivedRestriction.MaxInclusive) > 0)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_MinExclusiveGtMaxInclusive, string.Empty);
+                    }
+                }
+                if ((_derivedRestriction.Flags & (RestrictionFlags.TotalDigits | RestrictionFlags.FractionDigits)) == (RestrictionFlags.TotalDigits | RestrictionFlags.FractionDigits))
+                {
+                    if (_derivedRestriction.FractionDigits > _derivedRestriction.TotalDigits)
+                    {
+                        throw new XmlSchemaException(ResXml.Sch_FractionDigitsGtTotalDigits, string.Empty);
+                    }
+                }
             }
 
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.WhiteSpace) == 0 &&
-                (baseFlags & RestrictionFlags.WhiteSpace) != 0
-            ) {
-                derivedRestriction.WhiteSpace = baseRestriction.WhiteSpace;
-                SetFlag(RestrictionFlags.WhiteSpace);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MaxInclusive) == 0 &&
-                (baseFlags & RestrictionFlags.MaxInclusive) != 0
-            ) {
-                derivedRestriction.MaxInclusive = baseRestriction.MaxInclusive;
-                SetFlag(RestrictionFlags.MaxInclusive);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MaxExclusive) == 0 &&
-                (baseFlags & RestrictionFlags.MaxExclusive) != 0
-            ) {
-                derivedRestriction.MaxExclusive = baseRestriction.MaxExclusive;
-                SetFlag(RestrictionFlags.MaxExclusive);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinInclusive) == 0 &&
-                (baseFlags & RestrictionFlags.MinInclusive) != 0
-            ) {
-                derivedRestriction.MinInclusive = baseRestriction.MinInclusive;
-                SetFlag(RestrictionFlags.MinInclusive);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.MinExclusive) == 0 &&
-                (baseFlags & RestrictionFlags.MinExclusive) != 0
-            ) {
-                derivedRestriction.MinExclusive = baseRestriction.MinExclusive;
-                SetFlag(RestrictionFlags.MinExclusive);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.TotalDigits) == 0 &&
-                (baseFlags & RestrictionFlags.TotalDigits) != 0
-            ) {
-                derivedRestriction.TotalDigits = baseRestriction.TotalDigits;
-                SetFlag(RestrictionFlags.TotalDigits);
-            }
-            if (
-                (derivedRestriction.Flags & RestrictionFlags.FractionDigits) == 0 &&
-                (baseFlags & RestrictionFlags.FractionDigits) != 0
-            ) {
-                derivedRestriction.FractionDigits = baseRestriction.FractionDigits;
-                SetFlag(RestrictionFlags.FractionDigits);
-            }
-        }
+            private void CopyFacetsFromBaseType()
+            {
+                RestrictionFacets baseRestriction = _datatype.Restriction;
+                // Copy additional facets from the base type
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.Length) == 0 &&
+                    (_baseFlags & RestrictionFlags.Length) != 0
+                )
+                {
+                    _derivedRestriction.Length = baseRestriction.Length;
+                    SetFlag(RestrictionFlags.Length);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinLength) == 0 &&
+                    (_baseFlags & RestrictionFlags.MinLength) != 0
+                )
+                {
+                    _derivedRestriction.MinLength = baseRestriction.MinLength;
+                    SetFlag(RestrictionFlags.MinLength);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxLength) == 0 &&
+                    (_baseFlags & RestrictionFlags.MaxLength) != 0
+                )
+                {
+                    _derivedRestriction.MaxLength = baseRestriction.MaxLength;
+                    SetFlag(RestrictionFlags.MaxLength);
+                }
+                if ((_baseFlags & RestrictionFlags.Pattern) != 0)
+                {
+                    if (_derivedRestriction.Patterns == null)
+                    {
+                        _derivedRestriction.Patterns = baseRestriction.Patterns;
+                    }
+                    else
+                    {
+                        _derivedRestriction.Patterns.AddRange(baseRestriction.Patterns);
+                    }
+                    SetFlag(RestrictionFlags.Pattern);
+                }
 
-        private object ParseFacetValue(XmlSchemaDatatype datatype, XmlSchemaFacet facet, string code, IXmlNamespaceResolver nsmgr, XmlNameTable nameTable) {
-            object typedValue;
-            Exception ex = datatype.TryParseValue(facet.Value, nameTable, nsmgr, out typedValue);
-            if (ex == null) {
-                return typedValue;
-            }
-            else {
-                throw new XmlSchemaException(code, new string[] {ex.Message} , ex, facet.SourceUri, facet.LineNumber, facet.LinePosition, facet);
-            }
-        }
+                if ((_baseFlags & RestrictionFlags.Enumeration) != 0)
+                {
+                    if (_derivedRestriction.Enumeration == null)
+                    {
+                        _derivedRestriction.Enumeration = baseRestriction.Enumeration;
+                    }
+                    SetFlag(RestrictionFlags.Enumeration);
+                }
 
-        private struct Map {
-            internal Map(char m, string r) {
-                match = m;
-                replacement = r;
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.WhiteSpace) == 0 &&
+                    (_baseFlags & RestrictionFlags.WhiteSpace) != 0
+                )
+                {
+                    _derivedRestriction.WhiteSpace = baseRestriction.WhiteSpace;
+                    SetFlag(RestrictionFlags.WhiteSpace);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxInclusive) == 0 &&
+                    (_baseFlags & RestrictionFlags.MaxInclusive) != 0
+                )
+                {
+                    _derivedRestriction.MaxInclusive = baseRestriction.MaxInclusive;
+                    SetFlag(RestrictionFlags.MaxInclusive);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MaxExclusive) == 0 &&
+                    (_baseFlags & RestrictionFlags.MaxExclusive) != 0
+                )
+                {
+                    _derivedRestriction.MaxExclusive = baseRestriction.MaxExclusive;
+                    SetFlag(RestrictionFlags.MaxExclusive);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinInclusive) == 0 &&
+                    (_baseFlags & RestrictionFlags.MinInclusive) != 0
+                )
+                {
+                    _derivedRestriction.MinInclusive = baseRestriction.MinInclusive;
+                    SetFlag(RestrictionFlags.MinInclusive);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.MinExclusive) == 0 &&
+                    (_baseFlags & RestrictionFlags.MinExclusive) != 0
+                )
+                {
+                    _derivedRestriction.MinExclusive = baseRestriction.MinExclusive;
+                    SetFlag(RestrictionFlags.MinExclusive);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.TotalDigits) == 0 &&
+                    (_baseFlags & RestrictionFlags.TotalDigits) != 0
+                )
+                {
+                    _derivedRestriction.TotalDigits = baseRestriction.TotalDigits;
+                    SetFlag(RestrictionFlags.TotalDigits);
+                }
+                if (
+                    (_derivedRestriction.Flags & RestrictionFlags.FractionDigits) == 0 &&
+                    (_baseFlags & RestrictionFlags.FractionDigits) != 0
+                )
+                {
+                    _derivedRestriction.FractionDigits = baseRestriction.FractionDigits;
+                    SetFlag(RestrictionFlags.FractionDigits);
+                }
             }
-            internal char match;
-            internal string replacement;
-        };
 
-        private static readonly Map[] c_map = {
+            private object ParseFacetValue(XmlSchemaDatatype datatype, XmlSchemaFacet facet, string code, IXmlNamespaceResolver nsmgr, XmlNameTable nameTable)
+            {
+                object typedValue;
+                Exception ex = datatype.TryParseValue(facet.Value, nameTable, nsmgr, out typedValue);
+                if (ex == null)
+                {
+                    return typedValue;
+                }
+                else
+                {
+                    throw new XmlSchemaException(code, new string[] { ex.Message }, ex, facet.SourceUri, facet.LineNumber, facet.LinePosition, facet);
+                }
+            }
+
+            private struct Map
+            {
+                internal Map(char m, string r)
+                {
+                    match = m;
+                    replacement = r;
+                }
+                internal char match;
+                internal string replacement;
+            };
+
+            private static readonly Map[] s_map = {
             new Map('c', "\\p{_xmlC}"),
             new Map('C', "\\P{_xmlC}"),
             new Map('d', "\\p{_xmlD}"),
@@ -569,221 +697,266 @@ namespace Microsoft.Xml.Schema {
             new Map('w', "\\p{_xmlW}"),
             new Map('W', "\\P{_xmlW}"),
         };
-        private static string Preprocess(string pattern) {
-            StringBuilder bufBld = new StringBuilder();
-            bufBld.Append("^");
+            private static string Preprocess(string pattern)
+            {
+                StringBuilder bufBld = new StringBuilder();
+                bufBld.Append("^");
 
-            char[] source = pattern.ToCharArray();
-            int length = pattern.Length;
-            int copyPosition = 0;
-            for (int position = 0; position < length - 2; position ++) {
-                if (source[position] == '\\') {
-                    if (source[position + 1] == '\\') {
-                        position ++; // skip it
-                    }
-                    else {
-                        char ch = source[position + 1];
-                        for (int i = 0; i < c_map.Length; i++) {
-                            if (c_map[i].match == ch) {
-                                if (copyPosition < position) {
-                                    bufBld.Append(source, copyPosition, position - copyPosition);
+                char[] source = pattern.ToCharArray();
+                int length = pattern.Length;
+                int copyPosition = 0;
+                for (int position = 0; position < length - 2; position++)
+                {
+                    if (source[position] == '\\')
+                    {
+                        if (source[position + 1] == '\\')
+                        {
+                            position++; // skip it
+                        }
+                        else
+                        {
+                            char ch = source[position + 1];
+                            for (int i = 0; i < s_map.Length; i++)
+                            {
+                                if (s_map[i].match == ch)
+                                {
+                                    if (copyPosition < position)
+                                    {
+                                        bufBld.Append(source, copyPosition, position - copyPosition);
+                                    }
+                                    bufBld.Append(s_map[i].replacement);
+                                    position++;
+                                    copyPosition = position + 1;
+                                    break;
                                 }
-                                bufBld.Append(c_map[i].replacement);
-                                position ++;
-                                copyPosition = position + 1;
-                                break;
                             }
                         }
                     }
                 }
-            }
-            if (copyPosition < length) {
-                bufBld.Append(source, copyPosition, length - copyPosition);
+                if (copyPosition < length)
+                {
+                    bufBld.Append(source, copyPosition, length - copyPosition);
+                }
+
+                bufBld.Append("$");
+                return bufBld.ToString();
             }
 
-            bufBld.Append("$");
-            return bufBld.ToString();
+            private void CheckProhibitedFlag(XmlSchemaFacet facet, RestrictionFlags flag, string errorCode)
+            {
+                if ((_validRestrictionFlags & flag) == 0)
+                {
+                    throw new XmlSchemaException(errorCode, _datatype.TypeCodeString, facet);
+                }
+            }
+
+            private void CheckDupFlag(XmlSchemaFacet facet, RestrictionFlags flag, string errorCode)
+            {
+                if ((_derivedRestriction.Flags & flag) != 0)
+                {
+                    throw new XmlSchemaException(errorCode, facet);
+                }
+            }
+
+            private void SetFlag(XmlSchemaFacet facet, RestrictionFlags flag)
+            {
+                _derivedRestriction.Flags |= flag;
+                if (facet.IsFixed)
+                {
+                    _derivedRestriction.FixedFlags |= flag;
+                }
+            }
+
+            private void SetFlag(RestrictionFlags flag)
+            {
+                _derivedRestriction.Flags |= flag;
+                if ((_baseFixedFlags & flag) != 0)
+                {
+                    _derivedRestriction.FixedFlags |= flag;
+                }
+            }
         }
 
-        private void CheckProhibitedFlag(XmlSchemaFacet facet, RestrictionFlags flag, string errorCode) {
-            if ((validRestrictionFlags & flag) == 0) {
-                throw new XmlSchemaException(errorCode, datatype.TypeCodeString, facet);
-            }
-        }
-
-        private void CheckDupFlag(XmlSchemaFacet facet, RestrictionFlags flag, string errorCode) {
-            if ((derivedRestriction.Flags & flag) != 0) {
-                throw new XmlSchemaException(errorCode, facet);
-            }
-        }
-
-        private void SetFlag(XmlSchemaFacet facet, RestrictionFlags flag) {
-            derivedRestriction.Flags |= flag;
-            if (facet.IsFixed) {
-                derivedRestriction.FixedFlags |= flag;
-            }
-        }
-
-        private void SetFlag(RestrictionFlags flag) {
-            derivedRestriction.Flags |= flag;
-            if ((baseFixedFlags & flag) != 0) {
-                derivedRestriction.FixedFlags |= flag;
-            }
-        }
-
-    }
-        
-        internal virtual Exception CheckLexicalFacets(ref string parseString, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckLexicalFacets(ref string parseString, XmlSchemaDatatype datatype)
+        {
             CheckWhitespaceFacets(ref parseString, datatype);
             return CheckPatternFacets(datatype.Restriction, parseString);
         }
-        internal virtual Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(decimal value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(decimal value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(Int64 value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(Int64 value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(Int32 value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(Int32 value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(Int16 value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(Int16 value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(byte value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(byte value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(DateTime value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(DateTime value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(double value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(double value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(float value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(float value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(string value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(string value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(byte[] value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(byte[] value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(TimeSpan value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(TimeSpan value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        internal virtual Exception CheckValueFacets(XmlQualifiedName value, XmlSchemaDatatype datatype) {
+        internal virtual Exception CheckValueFacets(XmlQualifiedName value, XmlSchemaDatatype datatype)
+        {
             return null;
         }
-        
-        internal void CheckWhitespaceFacets(ref string s, XmlSchemaDatatype datatype) {
+
+        internal void CheckWhitespaceFacets(ref string s, XmlSchemaDatatype datatype)
+        {
             // before parsing, check whitespace facet
             RestrictionFacets restriction = datatype.Restriction;
 
-            switch (datatype.Variety) {
+            switch (datatype.Variety)
+            {
                 case XmlSchemaDatatypeVariety.List:
                     s = s.Trim();
-                break;
+                    break;
 
                 case XmlSchemaDatatypeVariety.Atomic:
-                    if (datatype.BuiltInWhitespaceFacet == XmlSchemaWhiteSpace.Collapse) {
+                    if (datatype.BuiltInWhitespaceFacet == XmlSchemaWhiteSpace.Collapse)
+                    {
                         s = XmlComplianceUtil.NonCDataNormalize(s);
                     }
-                    else if (datatype.BuiltInWhitespaceFacet == XmlSchemaWhiteSpace.Replace) {
+                    else if (datatype.BuiltInWhitespaceFacet == XmlSchemaWhiteSpace.Replace)
+                    {
                         s = XmlComplianceUtil.CDataNormalize(s);
                     }
-                    else if (restriction != null && (restriction.Flags & RestrictionFlags.WhiteSpace) != 0) { //Restriction has whitespace facet specified
-                        if (restriction.WhiteSpace == XmlSchemaWhiteSpace.Replace) {
+                    else if (restriction != null && (restriction.Flags & RestrictionFlags.WhiteSpace) != 0)
+                    { //Restriction has whitespace facet specified
+                        if (restriction.WhiteSpace == XmlSchemaWhiteSpace.Replace)
+                        {
                             s = XmlComplianceUtil.CDataNormalize(s);
                         }
-                        else if (restriction.WhiteSpace == XmlSchemaWhiteSpace.Collapse) {
+                        else if (restriction.WhiteSpace == XmlSchemaWhiteSpace.Collapse)
+                        {
                             s = XmlComplianceUtil.NonCDataNormalize(s);
                         }
                     }
-                break;
+                    break;
 
                 default:
-                break;
-
+                    break;
             }
         }
-        internal Exception CheckPatternFacets(RestrictionFacets restriction, string value) {
-            if (restriction != null && (restriction.Flags & RestrictionFlags.Pattern) != 0) {
-                for (int i = 0; i < restriction.Patterns.Count; ++i) {
+        internal Exception CheckPatternFacets(RestrictionFacets restriction, string value)
+        {
+            if (restriction != null && (restriction.Flags & RestrictionFlags.Pattern) != 0)
+            {
+                for (int i = 0; i < restriction.Patterns.Count; ++i)
+                {
                     Regex regex = (Regex)restriction.Patterns[i];
-                    if (!regex.IsMatch(value)) {
+                    if (!regex.IsMatch(value))
+                    {
                         return new XmlSchemaException(ResXml.Sch_PatternConstraintFailed, string.Empty);
                     }
                 }
             }
             return null;
         }
-        
-        internal virtual bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+
+        internal virtual bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return false;
         }
 
         //Compile-time Facet Checking
-        internal virtual RestrictionFacets ConstructRestriction(DatatypeImplementation datatype, XmlSchemaObjectCollection facets, XmlNameTable nameTable) {
+        internal virtual RestrictionFacets ConstructRestriction(DatatypeImplementation datatype, XmlSchemaObjectCollection facets, XmlNameTable nameTable)
+        {
             //Datatype is the type on which this method is called
             RestrictionFacets derivedRestriction = new RestrictionFacets();
             FacetsCompiler facetCompiler = new FacetsCompiler(datatype, derivedRestriction);
 
-            for (int i = 0; i < facets.Count; ++i) {
+            for (int i = 0; i < facets.Count; ++i)
+            {
                 XmlSchemaFacet facet = (XmlSchemaFacet)facets[i];
-                if (facet.Value == null) {
+                if (facet.Value == null)
+                {
                     throw new XmlSchemaException(ResXml.Sch_InvalidFacet, facet);
                 }
                 IXmlNamespaceResolver nsmgr = new SchemaNamespaceManager(facet);
-                switch(facet.FacetType) {
+                switch (facet.FacetType)
+                {
                     case FacetType.Length:
                         facetCompiler.CompileLengthFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.MinLength:
                         facetCompiler.CompileMinLengthFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.MaxLength:
                         facetCompiler.CompileMaxLengthFacet(facet);
-                    break;
-    
+                        break;
+
                     case FacetType.Pattern:
                         facetCompiler.CompilePatternFacet(facet as XmlSchemaPatternFacet);
-                    break;
+                        break;
 
                     case FacetType.Enumeration:
-                        facetCompiler.CompileEnumerationFacet(facet, nsmgr, nameTable);                        
-                    break;
+                        facetCompiler.CompileEnumerationFacet(facet, nsmgr, nameTable);
+                        break;
 
                     case FacetType.Whitespace:
                         facetCompiler.CompileWhitespaceFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.MinInclusive:
                         facetCompiler.CompileMinInclusiveFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.MinExclusive:
                         facetCompiler.CompileMinExclusiveFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.MaxInclusive:
                         facetCompiler.CompileMaxInclusiveFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.MaxExclusive:
                         facetCompiler.CompileMaxExclusiveFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.TotalDigits:
                         facetCompiler.CompileTotalDigitsFacet(facet);
-                    break;
+                        break;
 
                     case FacetType.FractionDigits:
                         facetCompiler.CompileFractionDigitsFacet(facet);
-                    break;
+                        break;
 
                     default:
                         throw new XmlSchemaException(ResXml.Sch_UnknownFacet, facet);
@@ -794,77 +967,95 @@ namespace Microsoft.Xml.Schema {
             return derivedRestriction;
         }
 
-        
 
-        
 
-        internal static decimal Power(int x, int y) {
+
+
+        internal static decimal Power(int x, int y)
+        {
             //Returns X raised to the power Y
             decimal returnValue = 1m;
             decimal decimalValue = (decimal)x;
-            if ( y > 28 ) { //CLR decimal cannot handle more than 29 digits (10 power 28.)
+            if (y > 28)
+            { //CLR decimal cannot handle more than 29 digits (10 power 28.)
                 return decimal.MaxValue;
             }
-            for (int i = 0; i < y; i++) {
+            for (int i = 0; i < y; i++)
+            {
                 returnValue = returnValue * decimalValue;
             }
             return returnValue;
         }
     }
-    
 
-    internal class Numeric10FacetsChecker : FacetsChecker {
-        static readonly char[] signs = new char[] {'+', '-'};
-        decimal maxValue;
-        decimal minValue;
 
-        internal Numeric10FacetsChecker(decimal minVal, decimal maxVal) {
-            minValue = minVal;
-            maxValue = maxVal;
+    internal class Numeric10FacetsChecker : FacetsChecker
+    {
+        private static readonly char[] s_signs = new char[] { '+', '-' };
+        private decimal _maxValue;
+        private decimal _minValue;
+
+        internal Numeric10FacetsChecker(decimal minVal, decimal maxVal)
+        {
+            _minValue = minVal;
+            _maxValue = maxVal;
         }
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
 
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             decimal decimalValue = datatype.ValueConverter.ToDecimal(value);
             return CheckValueFacets(decimalValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(decimal value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(decimal value, XmlSchemaDatatype datatype)
+        {
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
             XmlValueConverter valueConverter = datatype.ValueConverter;
-            
+
             //Check built-in facets
-            if (value > maxValue || value < minValue) {
+            if (value > _maxValue || value < _minValue)
+            {
                 return new OverflowException(ResXml.GetString(ResXml.XmlConvert_Overflow, value.ToString(), datatype.TypeCodeString));
             }
             //Check user-defined facets
-            if (flags != 0) {
-                if ((flags & RestrictionFlags.MaxInclusive) != 0) {
-                    if (value > valueConverter.ToDecimal(restriction.MaxInclusive)) {
+            if (flags != 0)
+            {
+                if ((flags & RestrictionFlags.MaxInclusive) != 0)
+                {
+                    if (value > valueConverter.ToDecimal(restriction.MaxInclusive))
+                    {
                         return new XmlSchemaException(ResXml.Sch_MaxInclusiveConstraintFailed, string.Empty);
                     }
                 }
 
-                if ((flags & RestrictionFlags.MaxExclusive) != 0) {
-                    if (value >= valueConverter.ToDecimal(restriction.MaxExclusive)) {
+                if ((flags & RestrictionFlags.MaxExclusive) != 0)
+                {
+                    if (value >= valueConverter.ToDecimal(restriction.MaxExclusive))
+                    {
                         return new XmlSchemaException(ResXml.Sch_MaxExclusiveConstraintFailed, string.Empty);
                     }
                 }
 
-                if ((flags & RestrictionFlags.MinInclusive) != 0) {
-                    if (value < valueConverter.ToDecimal(restriction.MinInclusive)) {
+                if ((flags & RestrictionFlags.MinInclusive) != 0)
+                {
+                    if (value < valueConverter.ToDecimal(restriction.MinInclusive))
+                    {
                         return new XmlSchemaException(ResXml.Sch_MinInclusiveConstraintFailed, string.Empty);
                     }
                 }
-                
-                if ((flags & RestrictionFlags.MinExclusive) != 0) {
-                    if (value <= valueConverter.ToDecimal(restriction.MinExclusive)) {
+
+                if ((flags & RestrictionFlags.MinExclusive) != 0)
+                {
+                    if (value <= valueConverter.ToDecimal(restriction.MinExclusive))
+                    {
                         return new XmlSchemaException(ResXml.Sch_MinExclusiveConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.Enumeration) != 0) {
-                    if (!MatchEnumeration(value, restriction.Enumeration, valueConverter)) {
+                if ((flags & RestrictionFlags.Enumeration) != 0)
+                {
+                    if (!MatchEnumeration(value, restriction.Enumeration, valueConverter))
+                    {
                         return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                     }
                 }
@@ -872,165 +1063,211 @@ namespace Microsoft.Xml.Schema {
             }
             return null;
         }
-        
-        internal override Exception CheckValueFacets(Int64 value, XmlSchemaDatatype datatype) {
+
+        internal override Exception CheckValueFacets(Int64 value, XmlSchemaDatatype datatype)
+        {
             decimal decimalValue = (decimal)value;
             return CheckValueFacets(decimalValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(Int32 value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(Int32 value, XmlSchemaDatatype datatype)
+        {
             decimal decimalValue = (decimal)value;
             return CheckValueFacets(decimalValue, datatype);
         }
-        internal override Exception CheckValueFacets(Int16 value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(Int16 value, XmlSchemaDatatype datatype)
+        {
             decimal decimalValue = (decimal)value;
             return CheckValueFacets(decimalValue, datatype);
         }
-        internal override Exception CheckValueFacets(byte value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(byte value, XmlSchemaDatatype datatype)
+        {
             decimal decimalValue = (decimal)value;
             return CheckValueFacets(decimalValue, datatype);
         }
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration(datatype.ValueConverter.ToDecimal(value), enumeration, datatype.ValueConverter);
         }
 
-        internal bool MatchEnumeration(decimal value, ArrayList enumeration, XmlValueConverter valueConverter) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (value == valueConverter.ToDecimal(enumeration[i])) {
+        internal bool MatchEnumeration(decimal value, ArrayList enumeration, XmlValueConverter valueConverter)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (value == valueConverter.ToDecimal(enumeration[i]))
+                {
                     return true;
                 }
             }
             return false;
         }
-        internal Exception CheckTotalAndFractionDigits(decimal value, int totalDigits, int fractionDigits, bool checkTotal, bool checkFraction) {
+        internal Exception CheckTotalAndFractionDigits(decimal value, int totalDigits, int fractionDigits, bool checkTotal, bool checkFraction)
+        {
             decimal maxValue = FacetsChecker.Power(10, totalDigits) - 1; //(decimal)Math.Pow(10, totalDigits) - 1 ;
             int powerCnt = 0;
-            if (value < 0) {
+            if (value < 0)
+            {
                 value = Decimal.Negate(value); //Need to compare maxValue allowed against the absolute value
             }
-            while (Decimal.Truncate(value) != value) { //Till it has a fraction
+            while (Decimal.Truncate(value) != value)
+            { //Till it has a fraction
                 value = value * 10;
                 powerCnt++;
             }
-        
-            if (checkTotal && (value > maxValue || powerCnt > totalDigits)) {
+
+            if (checkTotal && (value > maxValue || powerCnt > totalDigits))
+            {
                 return new XmlSchemaException(ResXml.Sch_TotalDigitsConstraintFailed, string.Empty);
             }
-            if (checkFraction && powerCnt > fractionDigits) {
+            if (checkFraction && powerCnt > fractionDigits)
+            {
                 return new XmlSchemaException(ResXml.Sch_FractionDigitsConstraintFailed, string.Empty);
             }
             return null;
         }
     }
 
-    
-    internal class Numeric2FacetsChecker : FacetsChecker {
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+
+    internal class Numeric2FacetsChecker : FacetsChecker
+    {
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             double doubleValue = datatype.ValueConverter.ToDouble(value);
             return CheckValueFacets(doubleValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(double value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(double value, XmlSchemaDatatype datatype)
+        {
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
             XmlValueConverter valueConverter = datatype.ValueConverter;
 
-            if ((flags & RestrictionFlags.MaxInclusive) != 0) {
-                if (value > valueConverter.ToDouble(restriction.MaxInclusive)) {
+            if ((flags & RestrictionFlags.MaxInclusive) != 0)
+            {
+                if (value > valueConverter.ToDouble(restriction.MaxInclusive))
+                {
                     return new XmlSchemaException(ResXml.Sch_MaxInclusiveConstraintFailed, string.Empty);
                 }
             }
-            if ((flags & RestrictionFlags.MaxExclusive) != 0) {
-                if (value >= valueConverter.ToDouble(restriction.MaxExclusive)) {
+            if ((flags & RestrictionFlags.MaxExclusive) != 0)
+            {
+                if (value >= valueConverter.ToDouble(restriction.MaxExclusive))
+                {
                     return new XmlSchemaException(ResXml.Sch_MaxExclusiveConstraintFailed, string.Empty);
                 }
             }
 
-            if ((flags & RestrictionFlags.MinInclusive) != 0) {
-                if (value < (valueConverter.ToDouble(restriction.MinInclusive))) {
+            if ((flags & RestrictionFlags.MinInclusive) != 0)
+            {
+                if (value < (valueConverter.ToDouble(restriction.MinInclusive)))
+                {
                     return new XmlSchemaException(ResXml.Sch_MinInclusiveConstraintFailed, string.Empty);
                 }
             }
-            
-            if ((flags & RestrictionFlags.MinExclusive) != 0) {
-                if (value <= valueConverter.ToDouble(restriction.MinExclusive)) {
+
+            if ((flags & RestrictionFlags.MinExclusive) != 0)
+            {
+                if (value <= valueConverter.ToDouble(restriction.MinExclusive))
+                {
                     return new XmlSchemaException(ResXml.Sch_MinExclusiveConstraintFailed, string.Empty);
                 }
             }
-            if ((flags & RestrictionFlags.Enumeration) != 0) {
-                if (!MatchEnumeration(value, restriction.Enumeration, valueConverter)) {
+            if ((flags & RestrictionFlags.Enumeration) != 0)
+            {
+                if (!MatchEnumeration(value, restriction.Enumeration, valueConverter))
+                {
                     return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                 }
             }
             return null;
         }
-        
-        internal override Exception CheckValueFacets(float value, XmlSchemaDatatype datatype) {
+
+        internal override Exception CheckValueFacets(float value, XmlSchemaDatatype datatype)
+        {
             double doubleValue = (double)value;
             return CheckValueFacets(doubleValue, datatype);
         }
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration(datatype.ValueConverter.ToDouble(value), enumeration, datatype.ValueConverter);
         }
-        private bool MatchEnumeration(double value, ArrayList enumeration, XmlValueConverter valueConverter) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (value == valueConverter.ToDouble(enumeration[i])) {
+        private bool MatchEnumeration(double value, ArrayList enumeration, XmlValueConverter valueConverter)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (value == valueConverter.ToDouble(enumeration[i]))
+                {
                     return true;
                 }
             }
             return false;
         }
     }
-    
-    internal class DurationFacetsChecker: FacetsChecker {
 
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+    internal class DurationFacetsChecker : FacetsChecker
+    {
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             TimeSpan timeSpanValue = (TimeSpan)datatype.ValueConverter.ChangeType(value, typeof(TimeSpan));
             return CheckValueFacets(timeSpanValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(TimeSpan value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(TimeSpan value, XmlSchemaDatatype datatype)
+        {
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
 
-            if ((flags & RestrictionFlags.MaxInclusive) != 0) {
-                if (TimeSpan.Compare(value, (TimeSpan)restriction.MaxInclusive) > 0) {
+            if ((flags & RestrictionFlags.MaxInclusive) != 0)
+            {
+                if (TimeSpan.Compare(value, (TimeSpan)restriction.MaxInclusive) > 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MaxInclusiveConstraintFailed, string.Empty);
                 }
             }
-            
-            if ((flags & RestrictionFlags.MaxExclusive) != 0) {
-                if (TimeSpan.Compare(value, (TimeSpan)restriction.MaxExclusive) >= 0) {
+
+            if ((flags & RestrictionFlags.MaxExclusive) != 0)
+            {
+                if (TimeSpan.Compare(value, (TimeSpan)restriction.MaxExclusive) >= 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MaxExclusiveConstraintFailed, string.Empty);
                 }
             }
-            
-            if ((flags & RestrictionFlags.MinInclusive) != 0) {
-                if (TimeSpan.Compare(value, (TimeSpan)restriction.MinInclusive) < 0) {
+
+            if ((flags & RestrictionFlags.MinInclusive) != 0)
+            {
+                if (TimeSpan.Compare(value, (TimeSpan)restriction.MinInclusive) < 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MinInclusiveConstraintFailed, string.Empty);
                 }
             }
-            
-            if ((flags & RestrictionFlags.MinExclusive) != 0) {
-                if (TimeSpan.Compare(value, (TimeSpan)restriction.MinExclusive) <= 0) {
+
+            if ((flags & RestrictionFlags.MinExclusive) != 0)
+            {
+                if (TimeSpan.Compare(value, (TimeSpan)restriction.MinExclusive) <= 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MinExclusiveConstraintFailed, string.Empty);
                 }
             }
-            if ((flags & RestrictionFlags.Enumeration) != 0) {
-                if (!MatchEnumeration(value, restriction.Enumeration)) {
+            if ((flags & RestrictionFlags.Enumeration) != 0)
+            {
+                if (!MatchEnumeration(value, restriction.Enumeration))
+                {
                     return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                 }
             }
             return null;
         }
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration((TimeSpan)value, enumeration);
         }
 
-        private bool MatchEnumeration(TimeSpan value, ArrayList enumeration) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (TimeSpan.Compare(value, (TimeSpan)enumeration[i]) == 0) {
+        private bool MatchEnumeration(TimeSpan value, ArrayList enumeration)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (TimeSpan.Compare(value, (TimeSpan)enumeration[i]) == 0)
+                {
                     return true;
                 }
             }
@@ -1038,112 +1275,144 @@ namespace Microsoft.Xml.Schema {
         }
     }
 
-    internal class DateTimeFacetsChecker: FacetsChecker {
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+    internal class DateTimeFacetsChecker : FacetsChecker
+    {
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             DateTime dateTimeValue = datatype.ValueConverter.ToDateTime(value);
             return CheckValueFacets(dateTimeValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(DateTime value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(DateTime value, XmlSchemaDatatype datatype)
+        {
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
-            
-            if ((flags & RestrictionFlags.MaxInclusive) != 0) {
-                if (datatype.Compare(value, (DateTime)restriction.MaxInclusive) > 0) {
+
+            if ((flags & RestrictionFlags.MaxInclusive) != 0)
+            {
+                if (datatype.Compare(value, (DateTime)restriction.MaxInclusive) > 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MaxInclusiveConstraintFailed, string.Empty);
                 }
             }
-            
-            if ((flags & RestrictionFlags.MaxExclusive) != 0) {
-                if (datatype.Compare(value, (DateTime)restriction.MaxExclusive) >= 0) {
+
+            if ((flags & RestrictionFlags.MaxExclusive) != 0)
+            {
+                if (datatype.Compare(value, (DateTime)restriction.MaxExclusive) >= 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MaxExclusiveConstraintFailed, string.Empty);
                 }
             }
-            
-            if ((flags & RestrictionFlags.MinInclusive) != 0) {
-                if (datatype.Compare(value, (DateTime)restriction.MinInclusive) < 0) {
+
+            if ((flags & RestrictionFlags.MinInclusive) != 0)
+            {
+                if (datatype.Compare(value, (DateTime)restriction.MinInclusive) < 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MinInclusiveConstraintFailed, string.Empty);
-                } 
+                }
             }
-            
-            if ((flags & RestrictionFlags.MinExclusive) != 0) {
-                if (datatype.Compare(value, (DateTime)restriction.MinExclusive) <= 0) {
+
+            if ((flags & RestrictionFlags.MinExclusive) != 0)
+            {
+                if (datatype.Compare(value, (DateTime)restriction.MinExclusive) <= 0)
+                {
                     return new XmlSchemaException(ResXml.Sch_MinExclusiveConstraintFailed, string.Empty);
                 }
             }
-            if ((flags & RestrictionFlags.Enumeration) != 0) {
-                if (!MatchEnumeration(value, restriction.Enumeration, datatype)) {
+            if ((flags & RestrictionFlags.Enumeration) != 0)
+            {
+                if (!MatchEnumeration(value, restriction.Enumeration, datatype))
+                {
                     return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                 }
             }
             return null;
         }
 
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration(datatype.ValueConverter.ToDateTime(value), enumeration, datatype);
         }
 
-        private bool MatchEnumeration(DateTime value, ArrayList enumeration, XmlSchemaDatatype datatype) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (datatype.Compare(value, (DateTime)enumeration[i]) == 0) {
+        private bool MatchEnumeration(DateTime value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (datatype.Compare(value, (DateTime)enumeration[i]) == 0)
+                {
                     return true;
                 }
             }
             return false;
         }
-    }        
+    }
 
-    internal class StringFacetsChecker : FacetsChecker { //All types derived from string & anyURI
-        static Regex languagePattern;
+    internal class StringFacetsChecker : FacetsChecker
+    { //All types derived from string & anyURI
+        private static Regex s_languagePattern;
 
-        static Regex LanguagePattern {
-            get {
-                if (languagePattern == null) {
+        private static Regex LanguagePattern
+        {
+            get
+            {
+                if (s_languagePattern == null)
+                {
                     Regex langRegex = new Regex("^([a-zA-Z]{1,8})(-[a-zA-Z0-9]{1,8})*$", RegexOptions.None);
-                    Interlocked.CompareExchange(ref languagePattern, langRegex, null);
+                    Interlocked.CompareExchange(ref s_languagePattern, langRegex, null);
                 }
-                return languagePattern;
+                return s_languagePattern;
             }
         }
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             string stringValue = datatype.ValueConverter.ToString(value);
             return CheckValueFacets(stringValue, datatype, true);
         }
 
-        internal override Exception CheckValueFacets(string value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(string value, XmlSchemaDatatype datatype)
+        {
             return CheckValueFacets(value, datatype, true);
         }
 
-        internal Exception CheckValueFacets(string value, XmlSchemaDatatype datatype, bool verifyUri) {
+        internal Exception CheckValueFacets(string value, XmlSchemaDatatype datatype, bool verifyUri)
+        {
             //Length, MinLength, MaxLength
             int length = value.Length;
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
             Exception exception;
-            
+
             exception = CheckBuiltInFacets(value, datatype.TypeCode, verifyUri);
             if (exception != null) return exception;
 
-            if (flags != 0) {
-                if ((flags & RestrictionFlags.Length) != 0) {
-                    if (restriction.Length != length) {
+            if (flags != 0)
+            {
+                if ((flags & RestrictionFlags.Length) != 0)
+                {
+                    if (restriction.Length != length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_LengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.MinLength) != 0) {
-                    if (length < restriction.MinLength) {
+                if ((flags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (length < restriction.MinLength)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MinLengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.MaxLength) != 0) {
-                    if (restriction.MaxLength < length) {
+                if ((flags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (restriction.MaxLength < length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MaxLengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.Enumeration) != 0) {
-                    if (!MatchEnumeration(value, restriction.Enumeration, datatype)) {
+                if ((flags & RestrictionFlags.Enumeration) != 0)
+                {
+                    if (!MatchEnumeration(value, restriction.Enumeration, datatype))
+                    {
                         return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                     }
                 }
@@ -1151,21 +1420,29 @@ namespace Microsoft.Xml.Schema {
             return null;
         }
 
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration(datatype.ValueConverter.ToString(value), enumeration, datatype);
         }
 
-        private bool MatchEnumeration(string value, ArrayList enumeration, XmlSchemaDatatype datatype) {
-            if (datatype.TypeCode == XmlTypeCode.AnyUri) {
-                for (int i = 0; i < enumeration.Count; ++i) {
-                    if (value.Equals(((Uri)enumeration[i]).OriginalString)) {
+        private bool MatchEnumeration(string value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
+            if (datatype.TypeCode == XmlTypeCode.AnyUri)
+            {
+                for (int i = 0; i < enumeration.Count; ++i)
+                {
+                    if (value.Equals(((Uri)enumeration[i]).OriginalString))
+                    {
                         return true;
                     }
                 }
             }
-            else {
-                for (int i = 0; i < enumeration.Count; ++i) {
-                    if (value.Equals((string)enumeration[i])) {
+            else
+            {
+                for (int i = 0; i < enumeration.Count; ++i)
+                {
+                    if (value.Equals((string)enumeration[i]))
+                    {
                         return true;
                     }
                 }
@@ -1173,13 +1450,15 @@ namespace Microsoft.Xml.Schema {
             return false;
         }
 
-        private Exception CheckBuiltInFacets(string s, XmlTypeCode typeCode, bool verifyUri) {
+        private Exception CheckBuiltInFacets(string s, XmlTypeCode typeCode, bool verifyUri)
+        {
             Exception exception = null;
 
-            switch (typeCode) {
-
+            switch (typeCode)
+            {
                 case XmlTypeCode.AnyUri:
-                    if (verifyUri) {
+                    if (verifyUri)
+                    {
                         Uri uri;
                         exception = XmlConvert.TryToUri(s, out uri);
                     }
@@ -1194,10 +1473,12 @@ namespace Microsoft.Xml.Schema {
                     break;
 
                 case XmlTypeCode.Language:
-                    if (s == null || s.Length == 0) {
+                    if (s == null || s.Length == 0)
+                    {
                         return new XmlSchemaException(ResXml.Sch_EmptyAttributeValue, string.Empty);
                     }
-                    if (!LanguagePattern.IsMatch(s)) {
+                    if (!LanguagePattern.IsMatch(s))
+                    {
                         return new XmlSchemaException(ResXml.Sch_InvalidLanguageId, string.Empty);
                     }
                     break;
@@ -1222,50 +1503,65 @@ namespace Microsoft.Xml.Schema {
             return exception;
         }
     }
-    
-    internal class QNameFacetsChecker : FacetsChecker {
 
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+    internal class QNameFacetsChecker : FacetsChecker
+    {
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             XmlQualifiedName qualifiedNameValue = (XmlQualifiedName)datatype.ValueConverter.ChangeType(value, typeof(XmlQualifiedName));
             return CheckValueFacets(qualifiedNameValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(XmlQualifiedName value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(XmlQualifiedName value, XmlSchemaDatatype datatype)
+        {
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
-            if (flags != 0) { //If there are facets defined
+            if (flags != 0)
+            { //If there are facets defined
                 string strValue = value.ToString();
                 int length = strValue.Length;
-                if ((flags & RestrictionFlags.Length) != 0) {
-                    if (restriction.Length != length) {
+                if ((flags & RestrictionFlags.Length) != 0)
+                {
+                    if (restriction.Length != length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_LengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.MinLength) != 0) {
-                    if (length < restriction.MinLength) {
+                if ((flags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (length < restriction.MinLength)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MinLengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.MaxLength) != 0) {
-                    if (restriction.MaxLength < length) {
+                if ((flags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (restriction.MaxLength < length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MaxLengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.Enumeration) != 0) {
-                    if (!MatchEnumeration(value, restriction.Enumeration)) {
+                if ((flags & RestrictionFlags.Enumeration) != 0)
+                {
+                    if (!MatchEnumeration(value, restriction.Enumeration))
+                    {
                         return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                     }
                 }
             }
             return null;
         }
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration((XmlQualifiedName)datatype.ValueConverter.ChangeType(value, typeof(XmlQualifiedName)), enumeration);
         }
 
-        private bool MatchEnumeration(XmlQualifiedName value, ArrayList enumeration) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (value.Equals((XmlQualifiedName)enumeration[i])) {
+        private bool MatchEnumeration(XmlQualifiedName value, ArrayList enumeration)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (value.Equals((XmlQualifiedName)enumeration[i]))
+                {
                     return true;
                 }
             }
@@ -1273,100 +1569,129 @@ namespace Microsoft.Xml.Schema {
         }
     }
 
-    internal class MiscFacetsChecker : FacetsChecker { //For bool, anySimpleType
+    internal class MiscFacetsChecker : FacetsChecker
+    { //For bool, anySimpleType
     }
 
-    internal class BinaryFacetsChecker : FacetsChecker { //hexBinary & Base64Binary
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+    internal class BinaryFacetsChecker : FacetsChecker
+    { //hexBinary & Base64Binary
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             byte[] byteArrayValue = (byte[])value;
             return CheckValueFacets(byteArrayValue, datatype);
         }
 
-        internal override Exception CheckValueFacets(byte[] value, XmlSchemaDatatype datatype) {
+        internal override Exception CheckValueFacets(byte[] value, XmlSchemaDatatype datatype)
+        {
             //Length, MinLength, MaxLength
             RestrictionFacets restriction = datatype.Restriction;
             int length = value.Length;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
-            if (flags != 0) { //if it has facets defined
-                if ((flags & RestrictionFlags.Length) != 0) {
-                    if (restriction.Length != length) {
+            if (flags != 0)
+            { //if it has facets defined
+                if ((flags & RestrictionFlags.Length) != 0)
+                {
+                    if (restriction.Length != length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_LengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.MinLength) != 0) {
-                    if (length < restriction.MinLength) {
+                if ((flags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (length < restriction.MinLength)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MinLengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.MaxLength) != 0) {
-                    if (restriction.MaxLength < length) {
+                if ((flags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (restriction.MaxLength < length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MaxLengthConstraintFailed, string.Empty);
                     }
                 }
-                if ((flags & RestrictionFlags.Enumeration) != 0) {
-                    if (!MatchEnumeration(value, restriction.Enumeration, datatype)) {
+                if ((flags & RestrictionFlags.Enumeration) != 0)
+                {
+                    if (!MatchEnumeration(value, restriction.Enumeration, datatype))
+                    {
                         return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                     }
                 }
             }
             return null;
         }
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
             return MatchEnumeration((byte[])value, enumeration, datatype);
         }
 
-        private bool MatchEnumeration(byte[] value, ArrayList enumeration, XmlSchemaDatatype datatype) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (datatype.Compare(value, (byte[])enumeration[i]) == 0) {
+        private bool MatchEnumeration(byte[] value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (datatype.Compare(value, (byte[])enumeration[i]) == 0)
+                {
                     return true;
                 }
             }
             return false;
         }
     }
-    
-    internal class ListFacetsChecker : FacetsChecker {
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+
+    internal class ListFacetsChecker : FacetsChecker
+    {
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             //Check for facets allowed on lists - Length, MinLength, MaxLength
             Array values = value as Array;
             Debug.Assert(values != null);
 
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
-            
-            if ((flags & (RestrictionFlags.Length|RestrictionFlags.MinLength|RestrictionFlags.MaxLength)) != 0) {
+
+            if ((flags & (RestrictionFlags.Length | RestrictionFlags.MinLength | RestrictionFlags.MaxLength)) != 0)
+            {
                 int length = values.Length;
-                if ((flags & RestrictionFlags.Length) != 0) {
-                    if (restriction.Length != length) {
+                if ((flags & RestrictionFlags.Length) != 0)
+                {
+                    if (restriction.Length != length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_LengthConstraintFailed, string.Empty);
                     }
                 }
 
-                if ((flags & RestrictionFlags.MinLength) != 0) {
-                    if (length < restriction.MinLength) {
+                if ((flags & RestrictionFlags.MinLength) != 0)
+                {
+                    if (length < restriction.MinLength)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MinLengthConstraintFailed, string.Empty);
                     }
                 }
 
-                if ((flags & RestrictionFlags.MaxLength) != 0) {
-                    if (restriction.MaxLength < length) {
+                if ((flags & RestrictionFlags.MaxLength) != 0)
+                {
+                    if (restriction.MaxLength < length)
+                    {
                         return new XmlSchemaException(ResXml.Sch_MaxLengthConstraintFailed, string.Empty);
                     }
                 }
             }
-            if ((flags & RestrictionFlags.Enumeration) != 0) {
-                if (!MatchEnumeration(value, restriction.Enumeration, datatype)) {
+            if ((flags & RestrictionFlags.Enumeration) != 0)
+            {
+                if (!MatchEnumeration(value, restriction.Enumeration, datatype))
+                {
                     return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                 }
             }
             return null;
         }
 
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (datatype.Compare(value, enumeration[i]) == 0) {
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (datatype.Compare(value, enumeration[i]) == 0)
+                {
                     return true;
                 }
             }
@@ -1374,23 +1699,29 @@ namespace Microsoft.Xml.Schema {
         }
     }
 
-    internal class UnionFacetsChecker : FacetsChecker {
-        
-        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype) {
+    internal class UnionFacetsChecker : FacetsChecker
+    {
+        internal override Exception CheckValueFacets(object value, XmlSchemaDatatype datatype)
+        {
             RestrictionFacets restriction = datatype.Restriction;
             RestrictionFlags flags = restriction != null ? restriction.Flags : 0;
-            
-            if ((flags & RestrictionFlags.Enumeration) != 0) {
-                if (!MatchEnumeration(value, restriction.Enumeration, datatype)) {
+
+            if ((flags & RestrictionFlags.Enumeration) != 0)
+            {
+                if (!MatchEnumeration(value, restriction.Enumeration, datatype))
+                {
                     return new XmlSchemaException(ResXml.Sch_EnumerationConstraintFailed, string.Empty);
                 }
             }
             return null;
         }
 
-        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype) {
-            for (int i = 0; i < enumeration.Count; ++i) {
-                if (datatype.Compare(value, enumeration[i]) == 0) { //Compare on Datatype_union will compare two XsdSimpleValue
+        internal override bool MatchEnumeration(object value, ArrayList enumeration, XmlSchemaDatatype datatype)
+        {
+            for (int i = 0; i < enumeration.Count; ++i)
+            {
+                if (datatype.Compare(value, enumeration[i]) == 0)
+                { //Compare on Datatype_union will compare two XsdSimpleValue
                     return true;
                 }
             }

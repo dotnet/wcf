@@ -1,15 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Collections;
 
-    internal class Function : AstNode {
-        public enum FunctionType {
+    internal class Function : AstNode
+    {
+        public enum FunctionType
+        {
             FuncLast,
             FuncPosition,
             FuncCount,
@@ -40,46 +43,52 @@ namespace MS.Internal.Xml.XPath {
             FuncUserDefined,
         };
 
-        private FunctionType functionType;
-        private ArrayList argumentList;
+        private FunctionType _functionType;
+        private ArrayList _argumentList;
 
-        private string name = null;
-        private string prefix = null;
+        private string _name = null;
+        private string _prefix = null;
 
-        public Function(FunctionType ftype, ArrayList argumentList) {
-            this.functionType = ftype;
-            this.argumentList = new ArrayList(argumentList);
+        public Function(FunctionType ftype, ArrayList argumentList)
+        {
+            _functionType = ftype;
+            _argumentList = new ArrayList(argumentList);
         }
 
-        public Function(string prefix, string name, ArrayList argumentList) {
-            this.functionType = FunctionType.FuncUserDefined;
-            this.prefix = prefix;
-            this.name = name;
-            this.argumentList = new ArrayList(argumentList);
+        public Function(string prefix, string name, ArrayList argumentList)
+        {
+            _functionType = FunctionType.FuncUserDefined;
+            _prefix = prefix;
+            _name = name;
+            _argumentList = new ArrayList(argumentList);
         }
 
-        public Function(FunctionType ftype) {
-            this.functionType = ftype;
+        public Function(FunctionType ftype)
+        {
+            _functionType = ftype;
         }
 
-        public Function(FunctionType ftype, AstNode arg) {
-            functionType = ftype;
-            argumentList = new ArrayList();
-            argumentList.Add(arg);
+        public Function(FunctionType ftype, AstNode arg)
+        {
+            _functionType = ftype;
+            _argumentList = new ArrayList();
+            _argumentList.Add(arg);
         }
 
-        public override AstType Type { get {return  AstType.Function;} }
+        public override AstType Type { get { return AstType.Function; } }
 
-        public override XPathResultType ReturnType {
-            get {
-                return ReturnTypes[(int) functionType];
+        public override XPathResultType ReturnType
+        {
+            get
+            {
+                return ReturnTypes[(int)_functionType];
             }
         }
 
-        public FunctionType TypeOfFunction { get { return functionType; } }
-        public ArrayList    ArgumentList   { get { return argumentList; } }
-        public string       Prefix         { get { return prefix;       } }
-        public string       Name           { get { return name;         } }
+        public FunctionType TypeOfFunction { get { return _functionType; } }
+        public ArrayList ArgumentList { get { return _argumentList; } }
+        public string Prefix { get { return _prefix; } }
+        public string Name { get { return _name; } }
 
         internal static XPathResultType[] ReturnTypes = {
             /* FunctionType.FuncLast            */ XPathResultType.Number ,
@@ -109,7 +118,7 @@ namespace MS.Internal.Xml.XPath {
             /* FunctionType.FuncFloor           */ XPathResultType.Number ,
             /* FunctionType.FuncCeiling         */ XPathResultType.Number ,
             /* FunctionType.FuncRound           */ XPathResultType.Number ,
-            /* FunctionType.FuncUserDefined     */ XPathResultType.Any  
+            /* FunctionType.FuncUserDefined     */ XPathResultType.Any
         };
     }
 }

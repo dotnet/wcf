@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -14,22 +14,24 @@ namespace Microsoft.CodeDom {
     ///       an expression that creates an array.</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeArrayCreateExpression : CodeExpression {
-        private CodeTypeReference createType;
-        private CodeExpressionCollection initializers = new CodeExpressionCollection();
-        private CodeExpression sizeExpression;
-        private int size = 0;
+    public class CodeArrayCreateExpression : CodeExpression
+    {
+        private CodeTypeReference _createType;
+        private CodeExpressionCollection _initializers = new CodeExpressionCollection();
+        private CodeExpression _sizeExpression;
+        private int _size = 0;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeArrayCreateExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeArrayCreateExpression() {
+        public CodeArrayCreateExpression()
+        {
         }
 
         /// <devdoc>
@@ -38,25 +40,28 @@ namespace Microsoft.CodeDom {
         ///       array type and initializers.
         ///    </para>
         /// </devdoc>
-        public CodeArrayCreateExpression(CodeTypeReference createType, params CodeExpression[] initializers) {
-            this.createType = createType;
-            this.initializers.AddRange(initializers);
+        public CodeArrayCreateExpression(CodeTypeReference createType, params CodeExpression[] initializers)
+        {
+            _createType = createType;
+            _initializers.AddRange(initializers);
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayCreateExpression(string createType, params CodeExpression[] initializers) {
-            this.createType = new CodeTypeReference(createType);
-            this.initializers.AddRange(initializers);
+        public CodeArrayCreateExpression(string createType, params CodeExpression[] initializers)
+        {
+            _createType = new CodeTypeReference(createType);
+            _initializers.AddRange(initializers);
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayCreateExpression(Type createType, params CodeExpression[] initializers) {
-            this.createType = new CodeTypeReference(createType);
-            this.initializers.AddRange(initializers);
+        public CodeArrayCreateExpression(Type createType, params CodeExpression[] initializers)
+        {
+            _createType = new CodeTypeReference(createType);
+            _initializers.AddRange(initializers);
         }
 
         /// <devdoc>
@@ -65,25 +70,28 @@ namespace Microsoft.CodeDom {
         ///       type and size.
         ///    </para>
         /// </devdoc>
-        public CodeArrayCreateExpression(CodeTypeReference createType, int size) {
-            this.createType = createType;
-            this.size = size;
+        public CodeArrayCreateExpression(CodeTypeReference createType, int size)
+        {
+            _createType = createType;
+            _size = size;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayCreateExpression(string createType, int size) {
-            this.createType = new CodeTypeReference(createType);
-            this.size = size;
+        public CodeArrayCreateExpression(string createType, int size)
+        {
+            _createType = new CodeTypeReference(createType);
+            _size = size;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayCreateExpression(Type createType, int size) {
-            this.createType = new CodeTypeReference(createType);
-            this.size = size;
+        public CodeArrayCreateExpression(Type createType, int size)
+        {
+            _createType = new CodeTypeReference(createType);
+            _size = size;
         }
 
         /// <devdoc>
@@ -92,25 +100,28 @@ namespace Microsoft.CodeDom {
         ///       type and size.
         ///    </para>
         /// </devdoc>
-        public CodeArrayCreateExpression(CodeTypeReference createType, CodeExpression size) {
-            this.createType = createType;
-            this.sizeExpression = size;
+        public CodeArrayCreateExpression(CodeTypeReference createType, CodeExpression size)
+        {
+            _createType = createType;
+            _sizeExpression = size;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayCreateExpression(string createType, CodeExpression size) {
-            this.createType = new CodeTypeReference(createType);
-            this.sizeExpression = size;
+        public CodeArrayCreateExpression(string createType, CodeExpression size)
+        {
+            _createType = new CodeTypeReference(createType);
+            _sizeExpression = size;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArrayCreateExpression(Type createType, CodeExpression size) {
-            this.createType = new CodeTypeReference(createType);
-            this.sizeExpression = size;
+        public CodeArrayCreateExpression(Type createType, CodeExpression size)
+        {
+            _createType = new CodeTypeReference(createType);
+            _sizeExpression = size;
         }
 
         /// <devdoc>
@@ -119,15 +130,19 @@ namespace Microsoft.CodeDom {
         ///       the type of the array to create.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference CreateType {
-            get {
-                if (createType == null) {
-                    createType = new CodeTypeReference("");
+        public CodeTypeReference CreateType
+        {
+            get
+            {
+                if (_createType == null)
+                {
+                    _createType = new CodeTypeReference("");
                 }
-                return createType;
+                return _createType;
             }
-            set {
-                createType = value;
+            set
+            {
+                _createType = value;
             }
         }
 
@@ -137,9 +152,11 @@ namespace Microsoft.CodeDom {
         ///       the initializers to initialize the array with.
         ///    </para>
         /// </devdoc>
-        public CodeExpressionCollection Initializers {
-            get {
-                return initializers;
+        public CodeExpressionCollection Initializers
+        {
+            get
+            {
+                return _initializers;
             }
         }
 
@@ -149,24 +166,30 @@ namespace Microsoft.CodeDom {
         ///       the size of the array.
         ///    </para>
         /// </devdoc>
-        public int Size {
-            get {
-                return size;
+        public int Size
+        {
+            get
+            {
+                return _size;
             }
-            set {
-                size = value;
+            set
+            {
+                _size = value;
             }
         }
 
         /// <devdoc>
         ///    <para>Gets or sets the size of the array.</para>
         /// </devdoc>
-        public CodeExpression SizeExpression {
-            get {
-                return sizeExpression;
+        public CodeExpression SizeExpression
+        {
+            get
+            {
+                return _sizeExpression;
             }
-            set {
-                sizeExpression = value;
+            set
+            {
+                _sizeExpression = value;
             }
         }
     }

@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.IO;
@@ -12,8 +13,10 @@ namespace Microsoft.Xml.Schema {
     using Microsoft.Xml.Serialization;
 
 
-    internal sealed class XsdBuilder : SchemaBuilder {
-        private enum State {
+    internal sealed class XsdBuilder : SchemaBuilder
+    {
+        private enum State
+        {
             Root,
             Schema,
             Annotation,
@@ -63,17 +66,19 @@ namespace Microsoft.Xml.Schema {
             Documentation,
             Redefine,
         }
-        private const int STACK_INCREMENT         = 10;
+        private const int STACK_INCREMENT = 10;
 
         private delegate void XsdBuildFunction(XsdBuilder builder, string value);
         private delegate void XsdInitFunction(XsdBuilder builder, string value);
         private delegate void XsdEndChildFunction(XsdBuilder builder);
 
-        private sealed class XsdAttributeEntry {
+        private sealed class XsdAttributeEntry
+        {
             public SchemaNames.Token Attribute;               // possible attribute names
             public XsdBuildFunction BuildFunc;  // Corresponding build functions for attribute value
 
-            public XsdAttributeEntry(SchemaNames.Token a, XsdBuildFunction build) {
+            public XsdAttributeEntry(SchemaNames.Token a, XsdBuildFunction build)
+            {
                 Attribute = a;
                 BuildFunc = build;
             }
@@ -83,47 +88,53 @@ namespace Microsoft.Xml.Schema {
         // XsdEntry controls the states of parsing a schema document
         // and calls the corresponding "init", "end" and "build" functions when necessary
         //
-        private sealed class XsdEntry {
+        private sealed class XsdEntry
+        {
             public SchemaNames.Token Name;                  // the name of the object it is comparing to
-            public State CurrentState;                     
+            public State CurrentState;
             public State[] NextStates;                   // possible next states
             public XsdAttributeEntry[] Attributes;       // allowed attributes
             public XsdInitFunction InitFunc;             // "init" functions in XsdBuilder
             public XsdEndChildFunction EndChildFunc;     // "end" functions in XsdBuilder for EndChildren
             public bool ParseContent;                       // whether text content is allowed  
 
-            public XsdEntry(SchemaNames.Token n, 
-                            State   state, 
-                            State[] nextStates, 
-                            XsdAttributeEntry[] attributes, 
-                            XsdInitFunction init, 
-                            XsdEndChildFunction end, 
-                            bool parseContent) {
+            public XsdEntry(SchemaNames.Token n,
+                            State state,
+                            State[] nextStates,
+                            XsdAttributeEntry[] attributes,
+                            XsdInitFunction init,
+                            XsdEndChildFunction end,
+                            bool parseContent)
+            {
                 Name = n;
                 CurrentState = state;
                 NextStates = nextStates;
                 Attributes = attributes;
                 InitFunc = init;
                 EndChildFunc = end;
-                ParseContent = parseContent; 
+                ParseContent = parseContent;
             }
         };
 
-        
-        //required for Parsing QName
-        class BuilderNamespaceManager : XmlNamespaceManager {
-            XmlNamespaceManager nsMgr;
-            XmlReader reader;
 
-            public BuilderNamespaceManager(XmlNamespaceManager nsMgr, XmlReader reader) {
-                this.nsMgr = nsMgr;
-                this.reader = reader;
+        //required for Parsing QName
+        private class BuilderNamespaceManager : XmlNamespaceManager
+        {
+            private XmlNamespaceManager _nsMgr;
+            private XmlReader _reader;
+
+            public BuilderNamespaceManager(XmlNamespaceManager nsMgr, XmlReader reader)
+            {
+                _nsMgr = nsMgr;
+                _reader = reader;
             }
 
-            public override string LookupNamespace(string prefix) { 
-                string ns = nsMgr.LookupNamespace(prefix);
-                if (ns == null) {
-                    ns = reader.LookupNamespace(prefix);
+            public override string LookupNamespace(string prefix)
+            {
+                string ns = _nsMgr.LookupNamespace(prefix);
+                if (ns == null)
+                {
+                    ns = _reader.LookupNamespace(prefix);
                 }
                 return ns;
             }
@@ -135,70 +146,70 @@ namespace Microsoft.Xml.Schema {
         //
         //Elements
         //
-        private static readonly State[] SchemaElement = {   
+        private static readonly State[] s_schemaElement = {
             State.Schema};
-        private static readonly State[] SchemaSubelements = {   
+        private static readonly State[] s_schemaSubelements = {
             State.Annotation, State.Include, State.Import, State.Redefine,
             State.ComplexType, State.SimpleType, State.Element, State.Attribute,
-            State.AttributeGroup, State.Group, State.Notation}; 
-        private static readonly State[] AttributeSubelements = { 
+            State.AttributeGroup, State.Group, State.Notation};
+        private static readonly State[] s_attributeSubelements = {
             State.Annotation, State.SimpleType};
-        private static readonly State[] ElementSubelements   = { 
+        private static readonly State[] s_elementSubelements = {
             State.Annotation, State.SimpleType, State.ComplexType,
             State.Unique, State.Key, State.KeyRef};
-        private static readonly State[] ComplexTypeSubelements = {
+        private static readonly State[] s_complexTypeSubelements = {
             State.Annotation, State.SimpleContent, State.ComplexContent,
-            State.GroupRef, State.All, State.Choice, State.Sequence, 
+            State.GroupRef, State.All, State.Choice, State.Sequence,
             State.Attribute, State.AttributeGroupRef, State.AnyAttribute};
-        private static readonly State[] SimpleContentSubelements = { 
+        private static readonly State[] s_simpleContentSubelements = {
             State.Annotation, State.SimpleContentRestriction, State.SimpleContentExtension };
-        private static readonly State[] SimpleContentExtensionSubelements = { 
+        private static readonly State[] s_simpleContentExtensionSubelements = {
             State.Annotation, State.Attribute, State.AttributeGroupRef, State.AnyAttribute};
-        private static readonly State[] SimpleContentRestrictionSubelements = { 
-            State.Annotation, State.SimpleType,  
-            State.Enumeration, State.Length, State.MaxExclusive, State.MaxInclusive, State.MaxLength, State.MinExclusive, 
-            State.MinInclusive, State.MinLength, State.Pattern, State.TotalDigits, State.FractionDigits, State.WhiteSpace, 
+        private static readonly State[] s_simpleContentRestrictionSubelements = {
+            State.Annotation, State.SimpleType,
+            State.Enumeration, State.Length, State.MaxExclusive, State.MaxInclusive, State.MaxLength, State.MinExclusive,
+            State.MinInclusive, State.MinLength, State.Pattern, State.TotalDigits, State.FractionDigits, State.WhiteSpace,
             State.Attribute, State.AttributeGroupRef, State.AnyAttribute};
-        private static readonly State[] ComplexContentSubelements = { 
+        private static readonly State[] s_complexContentSubelements = {
             State.Annotation, State.ComplexContentRestriction, State.ComplexContentExtension };
-        private static readonly State[] ComplexContentExtensionSubelements = { 
-            State.Annotation, State.GroupRef, State.All, State.Choice, State.Sequence, 
+        private static readonly State[] s_complexContentExtensionSubelements = {
+            State.Annotation, State.GroupRef, State.All, State.Choice, State.Sequence,
             State.Attribute, State.AttributeGroupRef, State.AnyAttribute};
-        private static readonly State[] ComplexContentRestrictionSubelements = { 
-            State.Annotation, State.GroupRef, State.All, State.Choice, State.Sequence, 
+        private static readonly State[] s_complexContentRestrictionSubelements = {
+            State.Annotation, State.GroupRef, State.All, State.Choice, State.Sequence,
             State.Attribute, State.AttributeGroupRef, State.AnyAttribute};
-        private static readonly State[] SimpleTypeSubelements   = { 
+        private static readonly State[] s_simpleTypeSubelements = {
             State.Annotation, State.SimpleTypeList, State.SimpleTypeRestriction, State.SimpleTypeUnion};
-        private static readonly State[] SimpleTypeRestrictionSubelements   = { 
-            State.Annotation, State.SimpleType, 
-            State.Enumeration, State.Length, State.MaxExclusive, State.MaxInclusive, State.MaxLength, State.MinExclusive, 
+        private static readonly State[] s_simpleTypeRestrictionSubelements = {
+            State.Annotation, State.SimpleType,
+            State.Enumeration, State.Length, State.MaxExclusive, State.MaxInclusive, State.MaxLength, State.MinExclusive,
             State.MinInclusive, State.MinLength, State.Pattern, State.TotalDigits, State.FractionDigits, State.WhiteSpace};
-        private static readonly State[] SimpleTypeListSubelements   = { 
+        private static readonly State[] s_simpleTypeListSubelements = {
             State.Annotation, State.SimpleType};
-        private static readonly State[] SimpleTypeUnionSubelements   = { 
+        private static readonly State[] s_simpleTypeUnionSubelements = {
             State.Annotation, State.SimpleType};
-        private static readonly State[] RedefineSubelements   = { 
+        private static readonly State[] s_redefineSubelements = {
             State.Annotation, State.AttributeGroup, State.ComplexType, State.Group, State.SimpleType };
-        private static readonly State[] AttributeGroupSubelements = { 
+        private static readonly State[] s_attributeGroupSubelements = {
             State.Annotation, State.Attribute, State.AttributeGroupRef, State.AnyAttribute};
-        private static readonly State[] GroupSubelements = { 
+        private static readonly State[] s_groupSubelements = {
             State.Annotation, State.All, State.Choice, State.Sequence};
-        private static readonly State[] AllSubelements = { 
+        private static readonly State[] s_allSubelements = {
             State.Annotation, State.Element};
-        private static readonly State[] ChoiceSequenceSubelements = { 
+        private static readonly State[] s_choiceSequenceSubelements = {
             State.Annotation, State.Element, State.GroupRef, State.Choice, State.Sequence, State.Any};
-        private static readonly State[] IdentityConstraintSubelements = { 
+        private static readonly State[] s_identityConstraintSubelements = {
             State.Annotation, State.Selector, State.Field};
-        private static readonly State[] AnnotationSubelements = { 
+        private static readonly State[] s_annotationSubelements = {
             State.AppInfo, State.Documentation};
-        private static readonly State[] AnnotatedSubelements = {
-            State.Annotation}; 
+        private static readonly State[] s_annotatedSubelements = {
+            State.Annotation};
 
 
         //
         //Attributes
         //
-        private static readonly XsdAttributeEntry[] SchemaAttributes = {
+        private static readonly XsdAttributeEntry[] s_schemaAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaAttributeFormDefault,    new XsdBuildFunction(BuildSchema_AttributeFormDefault) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaElementFormDefault,      new XsdBuildFunction(BuildSchema_ElementFormDefault) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaTargetNamespace,         new XsdBuildFunction(BuildSchema_TargetNamespace) ),
@@ -208,18 +219,18 @@ namespace Microsoft.Xml.Schema {
             new XsdAttributeEntry(SchemaNames.Token.SchemaBlockDefault,            new XsdBuildFunction(BuildSchema_BlockDefault) )
         };
 
-        private static readonly XsdAttributeEntry[] AttributeAttributes = {
+        private static readonly XsdAttributeEntry[] s_attributeAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaDefault,                 new XsdBuildFunction(BuildAttribute_Default) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaFixed,                   new XsdBuildFunction(BuildAttribute_Fixed) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaForm,                    new XsdBuildFunction(BuildAttribute_Form) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
-            new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildAttribute_Name) ),       
+            new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildAttribute_Name) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaRef,                     new XsdBuildFunction(BuildAttribute_Ref) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaType,                    new XsdBuildFunction(BuildAttribute_Type) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaUse,                     new XsdBuildFunction(BuildAttribute_Use) )
         };
 
-        private static readonly XsdAttributeEntry[] ElementAttributes = {
+        private static readonly XsdAttributeEntry[] s_elementAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaAbstract,                new XsdBuildFunction(BuildElement_Abstract) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaBlock,                   new XsdBuildFunction(BuildElement_Block) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaDefault,                 new XsdBuildFunction(BuildElement_Default) ),
@@ -236,7 +247,7 @@ namespace Microsoft.Xml.Schema {
             new XsdAttributeEntry(SchemaNames.Token.SchemaType,                    new XsdBuildFunction(BuildElement_Type) )
         };
 
-        private static readonly XsdAttributeEntry[] ComplexTypeAttributes = {
+        private static readonly XsdAttributeEntry[] s_complexTypeAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaAbstract,                new XsdBuildFunction(BuildComplexType_Abstract) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaBlock,                   new XsdBuildFunction(BuildComplexType_Block) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaFinal,                   new XsdBuildFunction(BuildComplexType_Final) ),
@@ -245,86 +256,86 @@ namespace Microsoft.Xml.Schema {
             new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildComplexType_Name) )
         };
 
-        private static readonly XsdAttributeEntry[] SimpleContentAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleContentAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
         };
 
-        private static readonly XsdAttributeEntry[] SimpleContentExtensionAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleContentExtensionAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaBase,                    new XsdBuildFunction(BuildSimpleContentExtension_Base) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) )
         };
 
-        private static readonly XsdAttributeEntry[] SimpleContentRestrictionAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleContentRestrictionAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaBase,                    new XsdBuildFunction(BuildSimpleContentRestriction_Base) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
         };
 
-        private static readonly XsdAttributeEntry[] ComplexContentAttributes = {
+        private static readonly XsdAttributeEntry[] s_complexContentAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMixed,                   new XsdBuildFunction(BuildComplexContent_Mixed) ),
         };
 
-        private static readonly XsdAttributeEntry[] ComplexContentExtensionAttributes = {
+        private static readonly XsdAttributeEntry[] s_complexContentExtensionAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaBase,                    new XsdBuildFunction(BuildComplexContentExtension_Base) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
         };
 
-        private static readonly XsdAttributeEntry[] ComplexContentRestrictionAttributes = {
+        private static readonly XsdAttributeEntry[] s_complexContentRestrictionAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaBase,                    new XsdBuildFunction(BuildComplexContentRestriction_Base) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
         };
 
-        private static readonly XsdAttributeEntry[] SimpleTypeAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleTypeAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaFinal,                   new XsdBuildFunction(BuildSimpleType_Final) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildSimpleType_Name) )
         };
 
-        private static readonly XsdAttributeEntry[] SimpleTypeRestrictionAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleTypeRestrictionAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaBase,                    new XsdBuildFunction(BuildSimpleTypeRestriction_Base) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
         };
 
-        private static readonly XsdAttributeEntry[] SimpleTypeUnionAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleTypeUnionAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMemberTypes,             new XsdBuildFunction(BuildSimpleTypeUnion_MemberTypes) ),
         };
 
-        private static readonly XsdAttributeEntry[] SimpleTypeListAttributes = {
+        private static readonly XsdAttributeEntry[] s_simpleTypeListAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaItemType,                new XsdBuildFunction(BuildSimpleTypeList_ItemType) ),
         };
 
-        private static readonly XsdAttributeEntry[] AttributeGroupAttributes = {
+        private static readonly XsdAttributeEntry[] s_attributeGroupAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildAttributeGroup_Name) ),
         };
 
-        private static readonly XsdAttributeEntry[] AttributeGroupRefAttributes = {
+        private static readonly XsdAttributeEntry[] s_attributeGroupRefAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaRef,                     new XsdBuildFunction(BuildAttributeGroupRef_Ref) )
         };
 
-        private static readonly XsdAttributeEntry[] GroupAttributes = {
+        private static readonly XsdAttributeEntry[] s_groupAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildGroup_Name) ),
         };
 
-        private static readonly XsdAttributeEntry[] GroupRefAttributes = {
+        private static readonly XsdAttributeEntry[] s_groupRefAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMaxOccurs,               new XsdBuildFunction(BuildParticle_MaxOccurs) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMinOccurs,               new XsdBuildFunction(BuildParticle_MinOccurs) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaRef,                     new XsdBuildFunction(BuildGroupRef_Ref) )
-        }; 
+        };
 
-        private static readonly XsdAttributeEntry[] ParticleAttributes = {
+        private static readonly XsdAttributeEntry[] s_particleAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMaxOccurs,               new XsdBuildFunction(BuildParticle_MaxOccurs) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMinOccurs,               new XsdBuildFunction(BuildParticle_MinOccurs) ),
         };
 
 
-        private static readonly XsdAttributeEntry[] AnyAttributes = {
+        private static readonly XsdAttributeEntry[] s_anyAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMaxOccurs,               new XsdBuildFunction(BuildParticle_MaxOccurs) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaMinOccurs,               new XsdBuildFunction(BuildParticle_MinOccurs) ),
@@ -332,264 +343,264 @@ namespace Microsoft.Xml.Schema {
             new XsdAttributeEntry(SchemaNames.Token.SchemaProcessContents,         new XsdBuildFunction(BuildAny_ProcessContents) )
         };
 
-        private static readonly XsdAttributeEntry[] IdentityConstraintAttributes = {
+        private static readonly XsdAttributeEntry[] s_identityConstraintAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
-            new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildIdentityConstraint_Name) ), 
-            new XsdAttributeEntry(SchemaNames.Token.SchemaRefer,                   new XsdBuildFunction(BuildIdentityConstraint_Refer) ) 
+            new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildIdentityConstraint_Name) ),
+            new XsdAttributeEntry(SchemaNames.Token.SchemaRefer,                   new XsdBuildFunction(BuildIdentityConstraint_Refer) )
         };
 
-        private static readonly XsdAttributeEntry[] SelectorAttributes = {
+        private static readonly XsdAttributeEntry[] s_selectorAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
-            new XsdAttributeEntry(SchemaNames.Token.SchemaXPath,                   new XsdBuildFunction(BuildSelector_XPath) ) 
+            new XsdAttributeEntry(SchemaNames.Token.SchemaXPath,                   new XsdBuildFunction(BuildSelector_XPath) )
         };
 
-        private static readonly XsdAttributeEntry[] FieldAttributes = {
+        private static readonly XsdAttributeEntry[] s_fieldAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
-            new XsdAttributeEntry(SchemaNames.Token.SchemaXPath,                   new XsdBuildFunction(BuildField_XPath) ) 
+            new XsdAttributeEntry(SchemaNames.Token.SchemaXPath,                   new XsdBuildFunction(BuildField_XPath) )
         };
 
-        private static readonly XsdAttributeEntry[] NotationAttributes = {
+        private static readonly XsdAttributeEntry[] s_notationAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
-            new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildNotation_Name) ), 
+            new XsdAttributeEntry(SchemaNames.Token.SchemaName,                    new XsdBuildFunction(BuildNotation_Name) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaPublic,                  new XsdBuildFunction(BuildNotation_Public) ),
-            new XsdAttributeEntry(SchemaNames.Token.SchemaSystem,                  new XsdBuildFunction(BuildNotation_System) ) 
+            new XsdAttributeEntry(SchemaNames.Token.SchemaSystem,                  new XsdBuildFunction(BuildNotation_System) )
         };
 
-        private static readonly XsdAttributeEntry[] IncludeAttributes = {
+        private static readonly XsdAttributeEntry[] s_includeAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaSchemaLocation,          new XsdBuildFunction(BuildInclude_SchemaLocation) )
         };
 
-        private static readonly XsdAttributeEntry[] ImportAttributes = {
+        private static readonly XsdAttributeEntry[] s_importAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaNamespace,               new XsdBuildFunction(BuildImport_Namespace) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaSchemaLocation,          new XsdBuildFunction(BuildImport_SchemaLocation) )
         };
 
-        private static readonly XsdAttributeEntry[] FacetAttributes = {
+        private static readonly XsdAttributeEntry[] s_facetAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaFixed,                   new XsdBuildFunction(BuildFacet_Fixed) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaValue,                   new XsdBuildFunction(BuildFacet_Value) )
         };
 
-        private static readonly XsdAttributeEntry[] AnyAttributeAttributes = {
+        private static readonly XsdAttributeEntry[] s_anyAttributeAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaNamespace,               new XsdBuildFunction(BuildAnyAttribute_Namespace) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaProcessContents,         new XsdBuildFunction(BuildAnyAttribute_ProcessContents) )
         };
 
-        private static readonly XsdAttributeEntry[] DocumentationAttributes = {
+        private static readonly XsdAttributeEntry[] s_documentationAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaSource,                  new XsdBuildFunction(BuildDocumentation_Source) ),
             new XsdAttributeEntry(SchemaNames.Token.XmlLang,                       new XsdBuildFunction(BuildDocumentation_XmlLang) )
         };
 
-        private static readonly XsdAttributeEntry[] AppinfoAttributes = {
+        private static readonly XsdAttributeEntry[] s_appinfoAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaSource,                  new XsdBuildFunction(BuildAppinfo_Source) )
         };
 
-        private static readonly XsdAttributeEntry[] RedefineAttributes = {
+        private static readonly XsdAttributeEntry[] s_redefineAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
             new XsdAttributeEntry(SchemaNames.Token.SchemaSchemaLocation,          new XsdBuildFunction(BuildRedefine_SchemaLocation) )
         };
 
-        private static readonly XsdAttributeEntry[] AnnotationAttributes = {
+        private static readonly XsdAttributeEntry[] s_annotationAttributes = {
             new XsdAttributeEntry(SchemaNames.Token.SchemaId,                      new XsdBuildFunction(BuildAnnotated_Id) ),
         };
         //
         // XSD Schema entries
         //                        
 
-       private static readonly XsdEntry[] SchemaEntries = {
-       /* Root */                       new XsdEntry( SchemaNames.Token.Empty, State.Root, SchemaElement, null, 
-                                                      null, 
-                                                      null, 
-                                                      true),
-       /* Schema */                     new XsdEntry( SchemaNames.Token.XsdSchema, State.Schema,     SchemaSubelements, SchemaAttributes, 
-                                                      new XsdInitFunction(InitSchema), 
+        private static readonly XsdEntry[] s_schemaEntries = {
+       /* Root */                       new XsdEntry( SchemaNames.Token.Empty, State.Root, s_schemaElement, null,
+                                                      null,
                                                       null,
                                                       true),
-       /* Annotation */                 new XsdEntry( SchemaNames.Token.XsdAnnotation, State.Annotation,     AnnotationSubelements, AnnotationAttributes,
-                                                      new XsdInitFunction(InitAnnotation), 
+       /* Schema */                     new XsdEntry( SchemaNames.Token.XsdSchema, State.Schema,     s_schemaSubelements, s_schemaAttributes,
+                                                      new XsdInitFunction(InitSchema),
                                                       null,
                                                       true),
-       /* Include */                    new XsdEntry( SchemaNames.Token.XsdInclude, State.Include,    AnnotatedSubelements, IncludeAttributes,
-                                                      new XsdInitFunction(InitInclude),       
+       /* Annotation */                 new XsdEntry( SchemaNames.Token.XsdAnnotation, State.Annotation,     s_annotationSubelements, s_annotationAttributes,
+                                                      new XsdInitFunction(InitAnnotation),
                                                       null,
                                                       true),
-       /* Import */                     new XsdEntry( SchemaNames.Token.XsdImport, State.Import,     AnnotatedSubelements, ImportAttributes,
-                                                      new XsdInitFunction(InitImport),   
+       /* Include */                    new XsdEntry( SchemaNames.Token.XsdInclude, State.Include,    s_annotatedSubelements, s_includeAttributes,
+                                                      new XsdInitFunction(InitInclude),
                                                       null,
                                                       true),
-       /* Element */                    new XsdEntry( SchemaNames.Token.XsdElement, State.Element,     ElementSubelements, ElementAttributes,
-                                                      new XsdInitFunction(InitElement),    
+       /* Import */                     new XsdEntry( SchemaNames.Token.XsdImport, State.Import,     s_annotatedSubelements, s_importAttributes,
+                                                      new XsdInitFunction(InitImport),
                                                       null,
                                                       true),
-       /* Attribute */                  new XsdEntry( SchemaNames.Token.XsdAttribute, State.Attribute,     AttributeSubelements, AttributeAttributes,
-                                                      new XsdInitFunction(InitAttribute),    
+       /* Element */                    new XsdEntry( SchemaNames.Token.XsdElement, State.Element,     s_elementSubelements, s_elementAttributes,
+                                                      new XsdInitFunction(InitElement),
                                                       null,
                                                       true),
-       /* AttributeGroup */             new XsdEntry( SchemaNames.Token.xsdAttributeGroup, State.AttributeGroup,     AttributeGroupSubelements, AttributeGroupAttributes,
-                                                      new XsdInitFunction(InitAttributeGroup),    
+       /* Attribute */                  new XsdEntry( SchemaNames.Token.XsdAttribute, State.Attribute,     s_attributeSubelements, s_attributeAttributes,
+                                                      new XsdInitFunction(InitAttribute),
                                                       null,
                                                       true),
-       /* AttributeGroupRef */          new XsdEntry( SchemaNames.Token.xsdAttributeGroup, State.AttributeGroupRef,  AnnotatedSubelements, AttributeGroupRefAttributes,
-                                                      new XsdInitFunction(InitAttributeGroupRef),    
+       /* AttributeGroup */             new XsdEntry( SchemaNames.Token.xsdAttributeGroup, State.AttributeGroup,     s_attributeGroupSubelements, s_attributeGroupAttributes,
+                                                      new XsdInitFunction(InitAttributeGroup),
                                                       null,
                                                       true),
-       /* AnyAttribute */               new XsdEntry( SchemaNames.Token.XsdAnyAttribute, State.AnyAttribute,     AnnotatedSubelements, AnyAttributeAttributes,
-                                                      new XsdInitFunction(InitAnyAttribute),    
+       /* AttributeGroupRef */          new XsdEntry( SchemaNames.Token.xsdAttributeGroup, State.AttributeGroupRef,  s_annotatedSubelements, s_attributeGroupRefAttributes,
+                                                      new XsdInitFunction(InitAttributeGroupRef),
                                                       null,
                                                       true),
-       /* Group */                      new XsdEntry( SchemaNames.Token.XsdGroup, State.Group,     GroupSubelements, GroupAttributes,
-                                                      new XsdInitFunction(InitGroup),    
+       /* AnyAttribute */               new XsdEntry( SchemaNames.Token.XsdAnyAttribute, State.AnyAttribute,     s_annotatedSubelements, s_anyAttributeAttributes,
+                                                      new XsdInitFunction(InitAnyAttribute),
                                                       null,
                                                       true),
-       /* GroupRef */                   new XsdEntry( SchemaNames.Token.XsdGroup, State.GroupRef,     AnnotatedSubelements, GroupRefAttributes,
-                                                      new XsdInitFunction(InitGroupRef),    
+       /* Group */                      new XsdEntry( SchemaNames.Token.XsdGroup, State.Group,     s_groupSubelements, s_groupAttributes,
+                                                      new XsdInitFunction(InitGroup),
                                                       null,
                                                       true),
-       /* All */                        new XsdEntry( SchemaNames.Token.XsdAll, State.All,     AllSubelements, ParticleAttributes,
-                                                      new XsdInitFunction(InitAll),    
+       /* GroupRef */                   new XsdEntry( SchemaNames.Token.XsdGroup, State.GroupRef,     s_annotatedSubelements, s_groupRefAttributes,
+                                                      new XsdInitFunction(InitGroupRef),
                                                       null,
                                                       true),
-       /* Choice */                     new XsdEntry( SchemaNames.Token.XsdChoice, State.Choice,     ChoiceSequenceSubelements, ParticleAttributes,
-                                                      new XsdInitFunction(InitChoice),    
+       /* All */                        new XsdEntry( SchemaNames.Token.XsdAll, State.All,     s_allSubelements, s_particleAttributes,
+                                                      new XsdInitFunction(InitAll),
                                                       null,
                                                       true),
-       /* Sequence */                   new XsdEntry( SchemaNames.Token.XsdSequence, State.Sequence,     ChoiceSequenceSubelements, ParticleAttributes,
-                                                      new XsdInitFunction(InitSequence),    
+       /* Choice */                     new XsdEntry( SchemaNames.Token.XsdChoice, State.Choice,     s_choiceSequenceSubelements, s_particleAttributes,
+                                                      new XsdInitFunction(InitChoice),
                                                       null,
                                                       true),
-       /* Any */                        new XsdEntry( SchemaNames.Token.XsdAny, State.Any,     AnnotatedSubelements, AnyAttributes,
-                                                      new XsdInitFunction(InitAny),    
+       /* Sequence */                   new XsdEntry( SchemaNames.Token.XsdSequence, State.Sequence,     s_choiceSequenceSubelements, s_particleAttributes,
+                                                      new XsdInitFunction(InitSequence),
                                                       null,
                                                       true),
-       /* Notation */                   new XsdEntry( SchemaNames.Token.XsdNotation, State.Notation,     AnnotatedSubelements, NotationAttributes,
-                                                      new XsdInitFunction(InitNotation),    
+       /* Any */                        new XsdEntry( SchemaNames.Token.XsdAny, State.Any,     s_annotatedSubelements, s_anyAttributes,
+                                                      new XsdInitFunction(InitAny),
                                                       null,
                                                       true),
-       /* SimpleType */                 new XsdEntry( SchemaNames.Token.XsdSimpleType, State.SimpleType,     SimpleTypeSubelements, SimpleTypeAttributes,
-                                                      new XsdInitFunction(InitSimpleType),    
+       /* Notation */                   new XsdEntry( SchemaNames.Token.XsdNotation, State.Notation,     s_annotatedSubelements, s_notationAttributes,
+                                                      new XsdInitFunction(InitNotation),
                                                       null,
                                                       true),
-       /* ComplexType */                new XsdEntry( SchemaNames.Token.XsdComplexType, State.ComplexType,     ComplexTypeSubelements, ComplexTypeAttributes,
-                                                      new XsdInitFunction(InitComplexType),    
+       /* SimpleType */                 new XsdEntry( SchemaNames.Token.XsdSimpleType, State.SimpleType,     s_simpleTypeSubelements, s_simpleTypeAttributes,
+                                                      new XsdInitFunction(InitSimpleType),
                                                       null,
                                                       true),
-       /* ComplexContent */             new XsdEntry( SchemaNames.Token.XsdComplexContent, State.ComplexContent,  ComplexContentSubelements, ComplexContentAttributes,
-                                                      new XsdInitFunction(InitComplexContent),    
+       /* ComplexType */                new XsdEntry( SchemaNames.Token.XsdComplexType, State.ComplexType,     s_complexTypeSubelements, s_complexTypeAttributes,
+                                                      new XsdInitFunction(InitComplexType),
                                                       null,
                                                       true),
-       /* ComplexContentRestriction */    new XsdEntry( SchemaNames.Token.XsdComplexContentRestriction, State.ComplexContentRestriction,  ComplexContentRestrictionSubelements, ComplexContentRestrictionAttributes,
-                                                      new XsdInitFunction(InitComplexContentRestriction),    
+       /* ComplexContent */             new XsdEntry( SchemaNames.Token.XsdComplexContent, State.ComplexContent,  s_complexContentSubelements, s_complexContentAttributes,
+                                                      new XsdInitFunction(InitComplexContent),
                                                       null,
                                                       true),
-       /* ComplexContentExtension */  new XsdEntry( SchemaNames.Token.XsdComplexContentExtension, State.ComplexContentExtension,  ComplexContentExtensionSubelements, ComplexContentExtensionAttributes,
-                                                      new XsdInitFunction(InitComplexContentExtension),    
+       /* ComplexContentRestriction */    new XsdEntry( SchemaNames.Token.XsdComplexContentRestriction, State.ComplexContentRestriction,  s_complexContentRestrictionSubelements, s_complexContentRestrictionAttributes,
+                                                      new XsdInitFunction(InitComplexContentRestriction),
                                                       null,
                                                       true),
-       /* SimpleContent */              new XsdEntry( SchemaNames.Token.XsdSimpleContent, State.SimpleContent,  SimpleContentSubelements, SimpleContentAttributes,
-                                                      new XsdInitFunction(InitSimpleContent),    
+       /* ComplexContentExtension */  new XsdEntry( SchemaNames.Token.XsdComplexContentExtension, State.ComplexContentExtension,  s_complexContentExtensionSubelements, s_complexContentExtensionAttributes,
+                                                      new XsdInitFunction(InitComplexContentExtension),
                                                       null,
                                                       true),
-       /* SimpleContentExtension */     new XsdEntry( SchemaNames.Token.XsdSimpleContentExtension, State.SimpleContentExtension,  SimpleContentExtensionSubelements, SimpleContentExtensionAttributes,
-                                                      new XsdInitFunction(InitSimpleContentExtension),    
+       /* SimpleContent */              new XsdEntry( SchemaNames.Token.XsdSimpleContent, State.SimpleContent,  s_simpleContentSubelements, s_simpleContentAttributes,
+                                                      new XsdInitFunction(InitSimpleContent),
                                                       null,
                                                       true),
-       /* SimpleContentRestriction */   new XsdEntry( SchemaNames.Token.XsdSimpleContentRestriction, State.SimpleContentRestriction,  SimpleContentRestrictionSubelements, SimpleContentRestrictionAttributes,
-                                                      new XsdInitFunction(InitSimpleContentRestriction),    
+       /* SimpleContentExtension */     new XsdEntry( SchemaNames.Token.XsdSimpleContentExtension, State.SimpleContentExtension,  s_simpleContentExtensionSubelements, s_simpleContentExtensionAttributes,
+                                                      new XsdInitFunction(InitSimpleContentExtension),
                                                       null,
                                                       true),
-       /* SimpleTypeUnion */            new XsdEntry( SchemaNames.Token.XsdSimpleTypeUnion, State.SimpleTypeUnion,    SimpleTypeUnionSubelements, SimpleTypeUnionAttributes,
-                                                      new XsdInitFunction(InitSimpleTypeUnion),    
+       /* SimpleContentRestriction */   new XsdEntry( SchemaNames.Token.XsdSimpleContentRestriction, State.SimpleContentRestriction,  s_simpleContentRestrictionSubelements, s_simpleContentRestrictionAttributes,
+                                                      new XsdInitFunction(InitSimpleContentRestriction),
                                                       null,
                                                       true),
-       /* SimpleTypeList */             new XsdEntry( SchemaNames.Token.XsdSimpleTypeList, State.SimpleTypeList,     SimpleTypeListSubelements, SimpleTypeListAttributes,
-                                                      new XsdInitFunction(InitSimpleTypeList),    
+       /* SimpleTypeUnion */            new XsdEntry( SchemaNames.Token.XsdSimpleTypeUnion, State.SimpleTypeUnion,    s_simpleTypeUnionSubelements, s_simpleTypeUnionAttributes,
+                                                      new XsdInitFunction(InitSimpleTypeUnion),
                                                       null,
                                                       true),
-       /* SimpleTypeRestriction */      new XsdEntry( SchemaNames.Token.XsdSimpleTypeRestriction, State.SimpleTypeRestriction,  SimpleTypeRestrictionSubelements, SimpleTypeRestrictionAttributes,
-                                                      new XsdInitFunction(InitSimpleTypeRestriction),    
+       /* SimpleTypeList */             new XsdEntry( SchemaNames.Token.XsdSimpleTypeList, State.SimpleTypeList,     s_simpleTypeListSubelements, s_simpleTypeListAttributes,
+                                                      new XsdInitFunction(InitSimpleTypeList),
                                                       null,
                                                       true),
-       /* Unique */                     new XsdEntry( SchemaNames.Token.XsdUnique,  State.Unique,    IdentityConstraintSubelements, IdentityConstraintAttributes,
-                                                      new XsdInitFunction(InitIdentityConstraint),    
+       /* SimpleTypeRestriction */      new XsdEntry( SchemaNames.Token.XsdSimpleTypeRestriction, State.SimpleTypeRestriction,  s_simpleTypeRestrictionSubelements, s_simpleTypeRestrictionAttributes,
+                                                      new XsdInitFunction(InitSimpleTypeRestriction),
                                                       null,
                                                       true),
-       /* Key */                        new XsdEntry( SchemaNames.Token.XsdKey, State.Key,        IdentityConstraintSubelements, IdentityConstraintAttributes,
-                                                      new XsdInitFunction(InitIdentityConstraint),    
+       /* Unique */                     new XsdEntry( SchemaNames.Token.XsdUnique,  State.Unique,    s_identityConstraintSubelements, s_identityConstraintAttributes,
+                                                      new XsdInitFunction(InitIdentityConstraint),
                                                       null,
                                                       true),
-       /* KeyRef */                     new XsdEntry( SchemaNames.Token.XsdKeyref, State.KeyRef,     IdentityConstraintSubelements, IdentityConstraintAttributes,
-                                                      new XsdInitFunction(InitIdentityConstraint),    
+       /* Key */                        new XsdEntry( SchemaNames.Token.XsdKey, State.Key,        s_identityConstraintSubelements, s_identityConstraintAttributes,
+                                                      new XsdInitFunction(InitIdentityConstraint),
                                                       null,
                                                       true),
-       /* Selector */                   new XsdEntry( SchemaNames.Token.XsdSelector, State.Selector,     AnnotatedSubelements, SelectorAttributes,
+       /* KeyRef */                     new XsdEntry( SchemaNames.Token.XsdKeyref, State.KeyRef,     s_identityConstraintSubelements, s_identityConstraintAttributes,
+                                                      new XsdInitFunction(InitIdentityConstraint),
+                                                      null,
+                                                      true),
+       /* Selector */                   new XsdEntry( SchemaNames.Token.XsdSelector, State.Selector,     s_annotatedSubelements, s_selectorAttributes,
                                                       new XsdInitFunction(InitSelector),
                                                       null,
                                                       true),
-       /* Field */                      new XsdEntry( SchemaNames.Token.XsdField, State.Field,     AnnotatedSubelements, FieldAttributes,
-                                                      new XsdInitFunction(InitField),    
+       /* Field */                      new XsdEntry( SchemaNames.Token.XsdField, State.Field,     s_annotatedSubelements, s_fieldAttributes,
+                                                      new XsdInitFunction(InitField),
                                                       null,
                                                       true),
-       /* MinExclusive */               new XsdEntry( SchemaNames.Token.XsdMinExclusive, State.MinExclusive,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* MinExclusive */               new XsdEntry( SchemaNames.Token.XsdMinExclusive, State.MinExclusive,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* MinInclusive */               new XsdEntry( SchemaNames.Token.XsdMinInclusive, State.MinInclusive,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* MinInclusive */               new XsdEntry( SchemaNames.Token.XsdMinInclusive, State.MinInclusive,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* MaxExclusive */               new XsdEntry( SchemaNames.Token.XsdMaxExclusive, State.MaxExclusive,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* MaxExclusive */               new XsdEntry( SchemaNames.Token.XsdMaxExclusive, State.MaxExclusive,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* MaxInclusive */               new XsdEntry( SchemaNames.Token.XsdMaxInclusive, State.MaxInclusive,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* MaxInclusive */               new XsdEntry( SchemaNames.Token.XsdMaxInclusive, State.MaxInclusive,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* TotalDigits */                new XsdEntry( SchemaNames.Token.XsdTotalDigits, State.TotalDigits,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* TotalDigits */                new XsdEntry( SchemaNames.Token.XsdTotalDigits, State.TotalDigits,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* FractionDigits */             new XsdEntry( SchemaNames.Token.XsdFractionDigits, State.FractionDigits,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* FractionDigits */             new XsdEntry( SchemaNames.Token.XsdFractionDigits, State.FractionDigits,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* Length */                     new XsdEntry( SchemaNames.Token.XsdLength, State.Length,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* Length */                     new XsdEntry( SchemaNames.Token.XsdLength, State.Length,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* MinLength */                  new XsdEntry( SchemaNames.Token.XsdMinLength, State.MinLength,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* MinLength */                  new XsdEntry( SchemaNames.Token.XsdMinLength, State.MinLength,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* MaxLength */                  new XsdEntry( SchemaNames.Token.XsdMaxLength, State.MaxLength,     AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* MaxLength */                  new XsdEntry( SchemaNames.Token.XsdMaxLength, State.MaxLength,     s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* Enumeration */                new XsdEntry( SchemaNames.Token.XsdEnumeration, State.Enumeration,    AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* Enumeration */                new XsdEntry( SchemaNames.Token.XsdEnumeration, State.Enumeration,    s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* Pattern */                    new XsdEntry( SchemaNames.Token.XsdPattern, State.Pattern,    AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* Pattern */                    new XsdEntry( SchemaNames.Token.XsdPattern, State.Pattern,    s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* WhiteSpace */                 new XsdEntry( SchemaNames.Token.XsdWhitespace, State.WhiteSpace, AnnotatedSubelements, FacetAttributes,
-                                                      new XsdInitFunction(InitFacet),    
+       /* WhiteSpace */                 new XsdEntry( SchemaNames.Token.XsdWhitespace, State.WhiteSpace, s_annotatedSubelements, s_facetAttributes,
+                                                      new XsdInitFunction(InitFacet),
                                                       null,
                                                       true),
-       /* AppInfo */                    new XsdEntry( SchemaNames.Token.XsdAppInfo, State.AppInfo,    null, AppinfoAttributes,
-                                                      new XsdInitFunction(InitAppinfo), 
+       /* AppInfo */                    new XsdEntry( SchemaNames.Token.XsdAppInfo, State.AppInfo,    null, s_appinfoAttributes,
+                                                      new XsdInitFunction(InitAppinfo),
                                                       new XsdEndChildFunction(EndAppinfo),
                                                       false),
-       /* Documentation */              new XsdEntry( SchemaNames.Token.XsdDocumentation, State.Documentation,    null, DocumentationAttributes,
-                                                      new XsdInitFunction(InitDocumentation),    
+       /* Documentation */              new XsdEntry( SchemaNames.Token.XsdDocumentation, State.Documentation,    null, s_documentationAttributes,
+                                                      new XsdInitFunction(InitDocumentation),
                                                       new XsdEndChildFunction(EndDocumentation),
                                                       false),
-       /* Redefine */                   new XsdEntry( SchemaNames.Token.XsdRedefine, State.Redefine,    RedefineSubelements, RedefineAttributes,
-                                                      new XsdInitFunction(InitRedefine),    
+       /* Redefine */                   new XsdEntry( SchemaNames.Token.XsdRedefine, State.Redefine,    s_redefineSubelements, s_redefineAttributes,
+                                                      new XsdInitFunction(InitRedefine),
                                                       new XsdEndChildFunction(EndRedefine),
                                                       true)
         };
@@ -597,111 +608,116 @@ namespace Microsoft.Xml.Schema {
         //
         // for 'block' and 'final' attribute values
         //
-        private static readonly int[]    DerivationMethodValues = { 
+        private static readonly int[] s_derivationMethodValues = {
             (int)XmlSchemaDerivationMethod.Substitution,
-            (int)XmlSchemaDerivationMethod.Extension, 
-            (int)XmlSchemaDerivationMethod.Restriction, 
-            (int)XmlSchemaDerivationMethod.List, 
-            (int)XmlSchemaDerivationMethod.Union, 
-            (int)XmlSchemaDerivationMethod.All, 
-        };        
-        private static readonly string[] DerivationMethodStrings = { 
-            "substitution",
-            "extension", 
-            "restriction", 
-            "list", 
-            "union", 
-            "#all", 
+            (int)XmlSchemaDerivationMethod.Extension,
+            (int)XmlSchemaDerivationMethod.Restriction,
+            (int)XmlSchemaDerivationMethod.List,
+            (int)XmlSchemaDerivationMethod.Union,
+            (int)XmlSchemaDerivationMethod.All,
         };
-                 
-        private static readonly string[] FormStringValues = { "qualified", "unqualified"};
-        private static readonly string[] UseStringValues = { "optional", "prohibited", "required" };
-        private static readonly string[] ProcessContentsStringValues = {"skip", "lax", "strict"};
+        private static readonly string[] s_derivationMethodStrings = {
+            "substitution",
+            "extension",
+            "restriction",
+            "list",
+            "union",
+            "#all",
+        };
 
-        private XmlReader reader;
-        private PositionInfo positionInfo;
-        private XsdEntry currentEntry;
-        private XsdEntry nextEntry;
-        private bool hasChild;
-        private HWStack stateHistory = new HWStack(STACK_INCREMENT);
-        private Stack containerStack = new Stack();
-        private XmlNameTable nameTable;
-        private SchemaNames schemaNames;
-        private XmlNamespaceManager namespaceManager;
-        private bool canIncludeImport;
+        private static readonly string[] s_formStringValues = { "qualified", "unqualified" };
+        private static readonly string[] s_useStringValues = { "optional", "prohibited", "required" };
+        private static readonly string[] s_processContentsStringValues = { "skip", "lax", "strict" };
 
-        private XmlSchema schema;
-        private XmlSchemaObject xso;
-        private XmlSchemaElement element;
-        private XmlSchemaAny anyElement;
-        private XmlSchemaAttribute attribute;
-        private XmlSchemaAnyAttribute anyAttribute;
-        private XmlSchemaComplexType complexType;
-        private XmlSchemaSimpleType simpleType;
-        private XmlSchemaComplexContent complexContent;
-        private XmlSchemaComplexContentExtension complexContentExtension;
-        private XmlSchemaComplexContentRestriction complexContentRestriction;
-        private XmlSchemaSimpleContent simpleContent;
-        private XmlSchemaSimpleContentExtension simpleContentExtension;
-        private XmlSchemaSimpleContentRestriction simpleContentRestriction;
-        private XmlSchemaSimpleTypeUnion simpleTypeUnion;
-        private XmlSchemaSimpleTypeList simpleTypeList;
-        private XmlSchemaSimpleTypeRestriction simpleTypeRestriction;
-        private XmlSchemaGroup group;  
-        private XmlSchemaGroupRef groupRef; 
-        private XmlSchemaAll all;  
-        private XmlSchemaChoice choice;  
-        private XmlSchemaSequence sequence;
-        private XmlSchemaParticle particle;
-        private XmlSchemaAttributeGroup attributeGroup;
-        private XmlSchemaAttributeGroupRef attributeGroupRef;
-        private XmlSchemaNotation notation; 
-        private XmlSchemaIdentityConstraint identityConstraint; 
-        private XmlSchemaXPath xpath;
-        private XmlSchemaInclude include;
-        private XmlSchemaImport import;
-        private XmlSchemaAnnotation annotation;
-        private XmlSchemaAppInfo appInfo;  
-        private XmlSchemaDocumentation documentation;
-        private XmlSchemaFacet facet;
-        private XmlNode[] markup;
-        private XmlSchemaRedefine redefine;
+        private XmlReader _reader;
+        private PositionInfo _positionInfo;
+        private XsdEntry _currentEntry;
+        private XsdEntry _nextEntry;
+        private bool _hasChild;
+        private HWStack _stateHistory = new HWStack(STACK_INCREMENT);
+        private Stack _containerStack = new Stack();
+        private XmlNameTable _nameTable;
+        private SchemaNames _schemaNames;
+        private XmlNamespaceManager _namespaceManager;
+        private bool _canIncludeImport;
 
-        private ValidationEventHandler validationEventHandler;
-        private ArrayList unhandledAttributes = new ArrayList();
-        private Hashtable namespaces;
+        private XmlSchema _schema;
+        private XmlSchemaObject _xso;
+        private XmlSchemaElement _element;
+        private XmlSchemaAny _anyElement;
+        private XmlSchemaAttribute _attribute;
+        private XmlSchemaAnyAttribute _anyAttribute;
+        private XmlSchemaComplexType _complexType;
+        private XmlSchemaSimpleType _simpleType;
+        private XmlSchemaComplexContent _complexContent;
+        private XmlSchemaComplexContentExtension _complexContentExtension;
+        private XmlSchemaComplexContentRestriction _complexContentRestriction;
+        private XmlSchemaSimpleContent _simpleContent;
+        private XmlSchemaSimpleContentExtension _simpleContentExtension;
+        private XmlSchemaSimpleContentRestriction _simpleContentRestriction;
+        private XmlSchemaSimpleTypeUnion _simpleTypeUnion;
+        private XmlSchemaSimpleTypeList _simpleTypeList;
+        private XmlSchemaSimpleTypeRestriction _simpleTypeRestriction;
+        private XmlSchemaGroup _group;
+        private XmlSchemaGroupRef _groupRef;
+        private XmlSchemaAll _all;
+        private XmlSchemaChoice _choice;
+        private XmlSchemaSequence _sequence;
+        private XmlSchemaParticle _particle;
+        private XmlSchemaAttributeGroup _attributeGroup;
+        private XmlSchemaAttributeGroupRef _attributeGroupRef;
+        private XmlSchemaNotation _notation;
+        private XmlSchemaIdentityConstraint _identityConstraint;
+        private XmlSchemaXPath _xpath;
+        private XmlSchemaInclude _include;
+        private XmlSchemaImport _import;
+        private XmlSchemaAnnotation _annotation;
+        private XmlSchemaAppInfo _appInfo;
+        private XmlSchemaDocumentation _documentation;
+        private XmlSchemaFacet _facet;
+        private XmlNode[] _markup;
+        private XmlSchemaRedefine _redefine;
 
-        internal XsdBuilder( 
+        private ValidationEventHandler _validationEventHandler;
+        private ArrayList _unhandledAttributes = new ArrayList();
+        private Hashtable _namespaces;
+
+        internal XsdBuilder(
                            XmlReader reader,
-                           XmlNamespaceManager curmgr, 
-                           XmlSchema schema, 
+                           XmlNamespaceManager curmgr,
+                           XmlSchema schema,
                            XmlNameTable nameTable,
                            SchemaNames schemaNames,
                            ValidationEventHandler eventhandler
-                           ) {
-            this.reader = reader;
-            this.xso = this.schema = schema;
-            this.namespaceManager = new BuilderNamespaceManager(curmgr, reader);
-            this.validationEventHandler = eventhandler;
-            this.nameTable = nameTable;
-            this.schemaNames = schemaNames;
-            this.stateHistory = new HWStack(STACK_INCREMENT);
-            this.currentEntry = SchemaEntries[0];
-            positionInfo = PositionInfo.GetPositionInfo(reader);
+                           )
+        {
+            _reader = reader;
+            _xso = _schema = schema;
+            _namespaceManager = new BuilderNamespaceManager(curmgr, reader);
+            _validationEventHandler = eventhandler;
+            _nameTable = nameTable;
+            _schemaNames = schemaNames;
+            _stateHistory = new HWStack(STACK_INCREMENT);
+            _currentEntry = s_schemaEntries[0];
+            _positionInfo = PositionInfo.GetPositionInfo(reader);
         }
 
-        internal override bool ProcessElement(string prefix, string name, string ns) {
+        internal override bool ProcessElement(string prefix, string name, string ns)
+        {
             XmlQualifiedName qname = new XmlQualifiedName(name, ns);
-            if (GetNextState(qname)) {
+            if (GetNextState(qname))
+            {
                 Push();
-                Debug.Assert(this.currentEntry.InitFunc != null);
-                xso = null;
-                this.currentEntry.InitFunc(this, null);
-                Debug.Assert(xso != null);
+                Debug.Assert(_currentEntry.InitFunc != null);
+                _xso = null;
+                _currentEntry.InitFunc(this, null);
+                Debug.Assert(_xso != null);
                 RecordPosition();
             }
-            else {
-                if (!IsSkipableElement(qname)) {
+            else
+            {
+                if (!IsSkipableElement(qname))
+                {
                     SendValidationEvent(ResXml.Sch_UnsupportedElement, qname.ToString());
                 }
                 return false;
@@ -709,18 +725,24 @@ namespace Microsoft.Xml.Schema {
             return true;
         }
 
-        internal override void ProcessAttribute(string prefix, string name, string ns, string value) {
+        internal override void ProcessAttribute(string prefix, string name, string ns, string value)
+        {
             XmlQualifiedName qname = new XmlQualifiedName(name, ns);
-            if (this.currentEntry.Attributes != null) {
-                for (int i = 0; i < this.currentEntry.Attributes.Length; i++) {
-                    XsdAttributeEntry a = this.currentEntry.Attributes[i];
-                    if (this.schemaNames.TokenToQName[(int)a.Attribute].Equals(qname)) {
-                        try {
+            if (_currentEntry.Attributes != null)
+            {
+                for (int i = 0; i < _currentEntry.Attributes.Length; i++)
+                {
+                    XsdAttributeEntry a = _currentEntry.Attributes[i];
+                    if (_schemaNames.TokenToQName[(int)a.Attribute].Equals(qname))
+                    {
+                        try
+                        {
                             a.BuildFunc(this, value);
-                        } 
-                        catch (XmlSchemaException e) {
-                            e.SetSource(this.reader.BaseURI, this.positionInfo.LineNumber, this.positionInfo.LinePosition);
-                            SendValidationEvent(ResXml.Sch_InvalidXsdAttributeDatatypeValue, new string[] {name, e.Message},XmlSeverityType.Error);
+                        }
+                        catch (XmlSchemaException e)
+                        {
+                            e.SetSource(_reader.BaseURI, _positionInfo.LineNumber, _positionInfo.LinePosition);
+                            SendValidationEvent(ResXml.Sch_InvalidXsdAttributeDatatypeValue, new string[] { name, e.Message }, XmlSeverityType.Error);
                         }
                         return;
                     }
@@ -728,180 +750,202 @@ namespace Microsoft.Xml.Schema {
             }
 
             // Check non-supported attribute
-            if ((ns != this.schemaNames.NsXs) && (ns.Length != 0)) {
-                if (ns == this.schemaNames.NsXmlNs) {
-                    if (this.namespaces == null) {
-                        this.namespaces = new Hashtable();
+            if ((ns != _schemaNames.NsXs) && (ns.Length != 0))
+            {
+                if (ns == _schemaNames.NsXmlNs)
+                {
+                    if (_namespaces == null)
+                    {
+                        _namespaces = new Hashtable();
                     }
-                    this.namespaces.Add((name == this.schemaNames.QnXmlNs.Name) ? string.Empty : name, value);
+                    _namespaces.Add((name == _schemaNames.QnXmlNs.Name) ? string.Empty : name, value);
                 }
-                else {
-                    XmlAttribute attribute = new XmlAttribute(prefix, name, ns, this.schema.Document);
+                else
+                {
+                    XmlAttribute attribute = new XmlAttribute(prefix, name, ns, _schema.Document);
                     attribute.Value = value;
-                    this.unhandledAttributes.Add(attribute);
+                    _unhandledAttributes.Add(attribute);
                 }
-            } 
-            else {
+            }
+            else
+            {
                 SendValidationEvent(ResXml.Sch_UnsupportedAttribute, qname.ToString());
             }
         }
 
-        internal override bool IsContentParsed() {
-            return this.currentEntry.ParseContent;
+        internal override bool IsContentParsed()
+        {
+            return _currentEntry.ParseContent;
         }
 
-        internal override void ProcessMarkup(XmlNode[] markup) {
-            this.markup = markup;
+        internal override void ProcessMarkup(XmlNode[] markup)
+        {
+            _markup = markup;
         }
 
-        internal override void ProcessCData(string value) {
+        internal override void ProcessCData(string value)
+        {
             SendValidationEvent(ResXml.Sch_TextNotAllowed, value);
         }
 
-        internal override void StartChildren() {
-            if (this.xso != null ) {
-                if (this.namespaces != null && this.namespaces.Count > 0) {
-                    this.xso.Namespaces.Namespaces = this.namespaces;
-                    this.namespaces = null;
+        internal override void StartChildren()
+        {
+            if (_xso != null)
+            {
+                if (_namespaces != null && _namespaces.Count > 0)
+                {
+                    _xso.Namespaces.Namespaces = _namespaces;
+                    _namespaces = null;
                 }
-                if (this.unhandledAttributes.Count != 0) {
-                    this.xso.SetUnhandledAttributes((XmlAttribute[])this.unhandledAttributes.ToArray(typeof(Microsoft.Xml.XmlAttribute)));
-                    this.unhandledAttributes.Clear();
+                if (_unhandledAttributes.Count != 0)
+                {
+                    _xso.SetUnhandledAttributes((XmlAttribute[])_unhandledAttributes.ToArray(typeof(Microsoft.Xml.XmlAttribute)));
+                    _unhandledAttributes.Clear();
                 }
             }
         }
 
-        internal override void EndChildren() {
-            if (this.currentEntry.EndChildFunc != null) {
-                (this.currentEntry.EndChildFunc)(this);
+        internal override void EndChildren()
+        {
+            if (_currentEntry.EndChildFunc != null)
+            {
+                (this._currentEntry.EndChildFunc)(this);
             }
             Pop();
         }
 
 
         // State stack push & pop
-        private void Push() {
-            this.stateHistory.Push();
-            this.stateHistory[this.stateHistory.Length - 1] = this.currentEntry;
-            containerStack.Push(GetContainer(this.currentEntry.CurrentState));
-            this.currentEntry = this.nextEntry;
-            if (this.currentEntry.Name != SchemaNames.Token.XsdAnnotation) {
-                this.hasChild = false;
+        private void Push()
+        {
+            _stateHistory.Push();
+            _stateHistory[_stateHistory.Length - 1] = _currentEntry;
+            _containerStack.Push(GetContainer(_currentEntry.CurrentState));
+            _currentEntry = _nextEntry;
+            if (_currentEntry.Name != SchemaNames.Token.XsdAnnotation)
+            {
+                _hasChild = false;
             }
         }
 
-        private void Pop() {
-            this.currentEntry = (XsdEntry)this.stateHistory.Pop();
-            SetContainer(this.currentEntry.CurrentState, containerStack.Pop());
-            this.hasChild = true;
+        private void Pop()
+        {
+            _currentEntry = (XsdEntry)_stateHistory.Pop();
+            SetContainer(_currentEntry.CurrentState, _containerStack.Pop());
+            _hasChild = true;
         }
 
-        private SchemaNames.Token CurrentElement {
-            get { return this.currentEntry.Name;}
+        private SchemaNames.Token CurrentElement
+        {
+            get { return _currentEntry.Name; }
         }
 
-        private SchemaNames.Token ParentElement {
-            get { return((XsdEntry)this.stateHistory[this.stateHistory.Length - 1]).Name;}
+        private SchemaNames.Token ParentElement
+        {
+            get { return ((XsdEntry)_stateHistory[_stateHistory.Length - 1]).Name; }
         }
 
-        private XmlSchemaObject ParentContainer {
-            get { return (XmlSchemaObject)containerStack.Peek(); }
+        private XmlSchemaObject ParentContainer
+        {
+            get { return (XmlSchemaObject)_containerStack.Peek(); }
         }
 
-        private XmlSchemaObject GetContainer(State state) {
+        private XmlSchemaObject GetContainer(State state)
+        {
             XmlSchemaObject container = null;
-            switch (state) {
+            switch (state)
+            {
                 case State.Root:
                     break;
                 case State.Schema:
-                    container = this.schema;
+                    container = _schema;
                     break;
                 case State.Annotation:
-                    container = this.annotation;
+                    container = _annotation;
                     break;
                 case State.Include:
-                    container = this.include;
+                    container = _include;
                     break;
                 case State.Import:
-                    container = this.import;
+                    container = _import;
                     break;
                 case State.Element:
-                    container = this.element;
+                    container = _element;
                     break;
                 case State.Attribute:
-                    container = this.attribute;
+                    container = _attribute;
                     break;
                 case State.AttributeGroup:
-                    container = this.attributeGroup;
+                    container = _attributeGroup;
                     break;
                 case State.AttributeGroupRef:
-                    container = this.attributeGroupRef;
+                    container = _attributeGroupRef;
                     break;
                 case State.AnyAttribute:
-                    container = this.anyAttribute;
+                    container = _anyAttribute;
                     break;
                 case State.Group:
-                    container = this.group;
+                    container = _group;
                     break;
                 case State.GroupRef:
-                    container = this.groupRef;
+                    container = _groupRef;
                     break;
                 case State.All:
-                    container = this.all;
+                    container = _all;
                     break;
                 case State.Choice:
-                    container = this.choice;
+                    container = _choice;
                     break;
                 case State.Sequence:
-                    container = this.sequence;
+                    container = _sequence;
                     break;
                 case State.Any:
-                    container = this.anyElement;
+                    container = _anyElement;
                     break;
                 case State.Notation:
-                    container = this.notation;
+                    container = _notation;
                     break;
                 case State.SimpleType:
-                    container = this.simpleType;
+                    container = _simpleType;
                     break;
                 case State.ComplexType:
-                    container = this.complexType;
+                    container = _complexType;
                     break;
                 case State.ComplexContent:
-                    container = this.complexContent;
+                    container = _complexContent;
                     break;
                 case State.ComplexContentExtension:
-                    container = this.complexContentExtension;
+                    container = _complexContentExtension;
                     break;
                 case State.ComplexContentRestriction:
-                    container = this.complexContentRestriction;
+                    container = _complexContentRestriction;
                     break;
                 case State.SimpleContent:
-                    container = this.simpleContent;
+                    container = _simpleContent;
                     break;
                 case State.SimpleContentExtension:
-                    container = this.simpleContentExtension;
+                    container = _simpleContentExtension;
                     break;
                 case State.SimpleContentRestriction:
-                    container = this.simpleContentRestriction;
+                    container = _simpleContentRestriction;
                     break;
                 case State.SimpleTypeUnion:
-                    container = this.simpleTypeUnion;
+                    container = _simpleTypeUnion;
                     break;
                 case State.SimpleTypeList:
-                    container = this.simpleTypeList;
+                    container = _simpleTypeList;
                     break;
                 case State.SimpleTypeRestriction:
-                    container = this.simpleTypeRestriction;
+                    container = _simpleTypeRestriction;
                     break;
                 case State.Unique:
                 case State.Key:
                 case State.KeyRef:
-                    container = this.identityConstraint;
+                    container = _identityConstraint;
                     break;
                 case State.Selector:
                 case State.Field:
-                    container = this.xpath;
+                    container = _xpath;
                     break;
                 case State.MinExclusive:
                 case State.MinInclusive:
@@ -915,16 +959,16 @@ namespace Microsoft.Xml.Schema {
                 case State.Enumeration:
                 case State.Pattern:
                 case State.WhiteSpace:
-                    container = this.facet;
+                    container = _facet;
                     break;
                 case State.AppInfo:
-                    container = this.appInfo;
+                    container = _appInfo;
                     break;
                 case State.Documentation:
-                    container = this.documentation;
+                    container = _documentation;
                     break;
                 case State.Redefine:
-                    container = this.redefine;
+                    container = _redefine;
                     break;
                 default:
                     Debug.Assert(false, "State is " + state);
@@ -933,98 +977,100 @@ namespace Microsoft.Xml.Schema {
             return container;
         }
 
-        private void SetContainer(State state, object container) {
-            switch (state) {
+        private void SetContainer(State state, object container)
+        {
+            switch (state)
+            {
                 case State.Root:
                     break;
                 case State.Schema:
                     break;
                 case State.Annotation:
-                    this.annotation = (XmlSchemaAnnotation)container;
+                    _annotation = (XmlSchemaAnnotation)container;
                     break;
                 case State.Include:
-                    this.include = (XmlSchemaInclude)container;
+                    _include = (XmlSchemaInclude)container;
                     break;
                 case State.Import:
-                    this.import = (XmlSchemaImport)container;
+                    _import = (XmlSchemaImport)container;
                     break;
                 case State.Element:
-                    this.element = (XmlSchemaElement)container;
+                    _element = (XmlSchemaElement)container;
                     break;
                 case State.Attribute:
-                    this.attribute = (XmlSchemaAttribute)container;
+                    _attribute = (XmlSchemaAttribute)container;
                     break;
                 case State.AttributeGroup:
-                    this.attributeGroup = (XmlSchemaAttributeGroup)container;
+                    _attributeGroup = (XmlSchemaAttributeGroup)container;
                     break;
                 case State.AttributeGroupRef:
-                    this.attributeGroupRef = (XmlSchemaAttributeGroupRef)container;
+                    _attributeGroupRef = (XmlSchemaAttributeGroupRef)container;
                     break;
                 case State.AnyAttribute:
-                    this.anyAttribute = (XmlSchemaAnyAttribute)container;
+                    _anyAttribute = (XmlSchemaAnyAttribute)container;
                     break;
                 case State.Group:
-                    this.group = (XmlSchemaGroup)container;
+                    _group = (XmlSchemaGroup)container;
                     break;
                 case State.GroupRef:
-                    this.groupRef = (XmlSchemaGroupRef)container;
+                    _groupRef = (XmlSchemaGroupRef)container;
                     break;
                 case State.All:
-                    this.all = (XmlSchemaAll)container;
+                    _all = (XmlSchemaAll)container;
                     break;
                 case State.Choice:
-                    this.choice = (XmlSchemaChoice)container;
+                    _choice = (XmlSchemaChoice)container;
                     break;
                 case State.Sequence:
-                    this.sequence = (XmlSchemaSequence)container;
+                    _sequence = (XmlSchemaSequence)container;
                     break;
                 case State.Any:
-                    this.anyElement = (XmlSchemaAny)container;
+                    _anyElement = (XmlSchemaAny)container;
                     break;
                 case State.Notation:
-                    this.notation = (XmlSchemaNotation)container;
+                    _notation = (XmlSchemaNotation)container;
                     break;
                 case State.SimpleType:
-                    this.simpleType = (XmlSchemaSimpleType)container;
+                    _simpleType = (XmlSchemaSimpleType)container;
                     break;
                 case State.ComplexType:
-                    this.complexType = (XmlSchemaComplexType)container;
+                    _complexType = (XmlSchemaComplexType)container;
                     break;
                 case State.ComplexContent:
-                    this.complexContent = (XmlSchemaComplexContent)container;
+                    _complexContent = (XmlSchemaComplexContent)container;
                     break;
                 case State.ComplexContentExtension:
-                    this.complexContentExtension = (XmlSchemaComplexContentExtension)container;
+                    _complexContentExtension = (XmlSchemaComplexContentExtension)container;
                     break;
                 case State.ComplexContentRestriction:
-                    this.complexContentRestriction = (XmlSchemaComplexContentRestriction)container;
+                    _complexContentRestriction = (XmlSchemaComplexContentRestriction)container;
                     break;
                 case State.SimpleContent:
-                    this.simpleContent = (XmlSchemaSimpleContent)container;
+                    _simpleContent = (XmlSchemaSimpleContent)container;
                     break;
                 case State.SimpleContentExtension:
-                    this.simpleContentExtension = (XmlSchemaSimpleContentExtension)container;
+                    _simpleContentExtension = (XmlSchemaSimpleContentExtension)container;
                     break;
                 case State.SimpleContentRestriction:
-                    this.simpleContentRestriction = (XmlSchemaSimpleContentRestriction)container;
+                    _simpleContentRestriction = (XmlSchemaSimpleContentRestriction)container;
                     break;
                 case State.SimpleTypeUnion:
-                    this.simpleTypeUnion = (XmlSchemaSimpleTypeUnion)container;
+                    _simpleTypeUnion = (XmlSchemaSimpleTypeUnion)container;
                     break;
                 case State.SimpleTypeList:
-                    this.simpleTypeList = (XmlSchemaSimpleTypeList)container;
+                    _simpleTypeList = (XmlSchemaSimpleTypeList)container;
                     break;
                 case State.SimpleTypeRestriction:
-                    this.simpleTypeRestriction = (XmlSchemaSimpleTypeRestriction)container;
+                    _simpleTypeRestriction = (XmlSchemaSimpleTypeRestriction)container;
                     break;
                 case State.Unique:
                 case State.Key:
                 case State.KeyRef:
-                    this.identityConstraint = (XmlSchemaIdentityConstraint)container;
+                    _identityConstraint = (XmlSchemaIdentityConstraint)container;
                     break;
                 case State.Selector:
                 case State.Field:
-                    this.xpath = (XmlSchemaXPath)container;
+                    _xpath = (XmlSchemaXPath)container;
                     break;
                 case State.MinExclusive:
                 case State.MinInclusive:
@@ -1038,16 +1084,16 @@ namespace Microsoft.Xml.Schema {
                 case State.Enumeration:
                 case State.Pattern:
                 case State.WhiteSpace:
-                    this.facet = (XmlSchemaFacet)container;
+                    _facet = (XmlSchemaFacet)container;
                     break;
                 case State.AppInfo:
-                    this.appInfo = (XmlSchemaAppInfo)container;
+                    _appInfo = (XmlSchemaAppInfo)container;
                     break;
                 case State.Documentation:
-                    this.documentation = (XmlSchemaDocumentation)container;
+                    _documentation = (XmlSchemaDocumentation)container;
                     break;
                 case State.Redefine:
-                    this.redefine = (XmlSchemaRedefine)container;
+                    _redefine = (XmlSchemaRedefine)container;
                     break;
                 default:
                     Debug.Assert(false, "State is " + state);
@@ -1059,8 +1105,9 @@ namespace Microsoft.Xml.Schema {
         // XSD Schema
         //
 
-        private static void BuildAnnotated_Id(XsdBuilder builder, string value) {
-            builder.xso.IdAttribute = value;
+        private static void BuildAnnotated_Id(XsdBuilder builder, string value)
+        {
+            builder._xso.IdAttribute = value;
         }
 
         /*
@@ -1076,34 +1123,41 @@ namespace Microsoft.Xml.Schema {
               Content: ((include | import | redefine | annotation)* , ((attribute | attributeGroup | complexType | element | group | notation | simpleType) , annotation*)*)
             </schema>
         */
-        
-        private static void BuildSchema_AttributeFormDefault(XsdBuilder builder, string value) {
-            builder.schema.AttributeFormDefault = (XmlSchemaForm)builder.ParseEnum(value, "attributeFormDefault", FormStringValues);
+
+        private static void BuildSchema_AttributeFormDefault(XsdBuilder builder, string value)
+        {
+            builder._schema.AttributeFormDefault = (XmlSchemaForm)builder.ParseEnum(value, "attributeFormDefault", s_formStringValues);
         }
 
-        private static void BuildSchema_ElementFormDefault(XsdBuilder builder, string value) {
-            builder.schema.ElementFormDefault = (XmlSchemaForm)builder.ParseEnum(value, "elementFormDefault", FormStringValues);
-        }
- 
-        private static void BuildSchema_TargetNamespace(XsdBuilder builder, string value) {
-            builder.schema.TargetNamespace = value;    
+        private static void BuildSchema_ElementFormDefault(XsdBuilder builder, string value)
+        {
+            builder._schema.ElementFormDefault = (XmlSchemaForm)builder.ParseEnum(value, "elementFormDefault", s_formStringValues);
         }
 
-        private static void BuildSchema_Version(XsdBuilder builder, string value) {
-            builder.schema.Version = value;
+        private static void BuildSchema_TargetNamespace(XsdBuilder builder, string value)
+        {
+            builder._schema.TargetNamespace = value;
         }
 
-        private static void BuildSchema_FinalDefault(XsdBuilder builder, string value) {
-            builder.schema.FinalDefault = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "finalDefault");
+        private static void BuildSchema_Version(XsdBuilder builder, string value)
+        {
+            builder._schema.Version = value;
         }
 
-        private static void BuildSchema_BlockDefault(XsdBuilder builder, string value) {
-            builder.schema.BlockDefault = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "blockDefault");
+        private static void BuildSchema_FinalDefault(XsdBuilder builder, string value)
+        {
+            builder._schema.FinalDefault = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "finalDefault");
         }
 
-        private static void InitSchema(XsdBuilder builder, string value) {
-            builder.canIncludeImport = true;
-            builder.xso = builder.schema;
+        private static void BuildSchema_BlockDefault(XsdBuilder builder, string value)
+        {
+            builder._schema.BlockDefault = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "blockDefault");
+        }
+
+        private static void InitSchema(XsdBuilder builder, string value)
+        {
+            builder._canIncludeImport = true;
+            builder._xso = builder._schema;
         }
 
         /*
@@ -1114,16 +1168,19 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </include>
         */
-        private static void InitInclude(XsdBuilder builder, string value) {
-            if (!builder.canIncludeImport) {
-                builder.SendValidationEvent(ResXml.Sch_IncludeLocation, null);        
+        private static void InitInclude(XsdBuilder builder, string value)
+        {
+            if (!builder._canIncludeImport)
+            {
+                builder.SendValidationEvent(ResXml.Sch_IncludeLocation, null);
             }
-            builder.xso = builder.include = new XmlSchemaInclude();
-            builder.schema.Includes.Add(builder.include);
+            builder._xso = builder._include = new XmlSchemaInclude();
+            builder._schema.Includes.Add(builder._include);
         }
 
-        private static void BuildInclude_SchemaLocation(XsdBuilder builder, string value) {
-            builder.include.SchemaLocation = value;
+        private static void BuildInclude_SchemaLocation(XsdBuilder builder, string value)
+        {
+            builder._include.SchemaLocation = value;
         }
 
         /*
@@ -1135,20 +1192,24 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </import>
         */
-        private static void InitImport(XsdBuilder builder, string value) {
-            if (!builder.canIncludeImport) {
-                builder.SendValidationEvent(ResXml.Sch_ImportLocation, null);            
+        private static void InitImport(XsdBuilder builder, string value)
+        {
+            if (!builder._canIncludeImport)
+            {
+                builder.SendValidationEvent(ResXml.Sch_ImportLocation, null);
             }
-            builder.xso = builder.import = new XmlSchemaImport();
-            builder.schema.Includes.Add(builder.import);
+            builder._xso = builder._import = new XmlSchemaImport();
+            builder._schema.Includes.Add(builder._import);
         }
 
-        private static void BuildImport_Namespace(XsdBuilder builder, string value) {
-            builder.import.Namespace = value;
+        private static void BuildImport_Namespace(XsdBuilder builder, string value)
+        {
+            builder._import.Namespace = value;
         }
 
-        private static void BuildImport_SchemaLocation(XsdBuilder builder, string value) {
-            builder.import.SchemaLocation = value;
+        private static void BuildImport_SchemaLocation(XsdBuilder builder, string value)
+        {
+            builder._import.SchemaLocation = value;
         }
 
         /*
@@ -1158,20 +1219,24 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation | (attributeGroup | complexType | group | simpleType))*
             </redefine>
         */
-        private static void InitRedefine(XsdBuilder builder, string value) {
-            if (!builder.canIncludeImport) {
-                builder.SendValidationEvent(ResXml.Sch_RedefineLocation, null);            
+        private static void InitRedefine(XsdBuilder builder, string value)
+        {
+            if (!builder._canIncludeImport)
+            {
+                builder.SendValidationEvent(ResXml.Sch_RedefineLocation, null);
             }
-            builder.xso = builder.redefine = new XmlSchemaRedefine();
-            builder.schema.Includes.Add(builder.redefine);
+            builder._xso = builder._redefine = new XmlSchemaRedefine();
+            builder._schema.Includes.Add(builder._redefine);
         }
 
-        private static void BuildRedefine_SchemaLocation(XsdBuilder builder, string value) {
-            builder.redefine.SchemaLocation = value;
+        private static void BuildRedefine_SchemaLocation(XsdBuilder builder, string value)
+        {
+            builder._redefine.SchemaLocation = value;
         }
 
-        private static void EndRedefine(XsdBuilder builder) {    
-            builder.canIncludeImport = true;
+        private static void EndRedefine(XsdBuilder builder)
+        {
+            builder._canIncludeImport = true;
         }
 
         /*
@@ -1187,41 +1252,49 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (simpleType?))
             </attribute>
         */
-        private static void InitAttribute(XsdBuilder builder, string value) {
-            builder.xso = builder.attribute = new XmlSchemaAttribute();
+        private static void InitAttribute(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._attribute = new XmlSchemaAttribute();
             if (builder.ParentElement == SchemaNames.Token.XsdSchema)
-                builder.schema.Items.Add(builder.attribute);
-            else 
-                builder.AddAttribute(builder.attribute);
-            builder.canIncludeImport = false;  // disable import and include elements in schema
+                builder._schema.Items.Add(builder._attribute);
+            else
+                builder.AddAttribute(builder._attribute);
+            builder._canIncludeImport = false;  // disable import and include elements in schema
         }
 
-        private static void BuildAttribute_Default(XsdBuilder builder, string value) {
-            builder.attribute.DefaultValue = value;
+        private static void BuildAttribute_Default(XsdBuilder builder, string value)
+        {
+            builder._attribute.DefaultValue = value;
         }
 
-        private static void BuildAttribute_Fixed(XsdBuilder builder, string value) {
-            builder.attribute.FixedValue = value;
+        private static void BuildAttribute_Fixed(XsdBuilder builder, string value)
+        {
+            builder._attribute.FixedValue = value;
         }
 
-        private static void BuildAttribute_Form(XsdBuilder builder, string value) {
-            builder.attribute.Form = (XmlSchemaForm)builder.ParseEnum(value, "form", FormStringValues);
+        private static void BuildAttribute_Form(XsdBuilder builder, string value)
+        {
+            builder._attribute.Form = (XmlSchemaForm)builder.ParseEnum(value, "form", s_formStringValues);
         }
 
-        private static void BuildAttribute_Use(XsdBuilder builder, string value) {
-            builder.attribute.Use = (XmlSchemaUse)builder.ParseEnum(value, "use", UseStringValues);
+        private static void BuildAttribute_Use(XsdBuilder builder, string value)
+        {
+            builder._attribute.Use = (XmlSchemaUse)builder.ParseEnum(value, "use", s_useStringValues);
         }
 
-        private static void BuildAttribute_Ref(XsdBuilder builder, string value) {
-            builder.attribute.RefName = builder.ParseQName(value, "ref");
+        private static void BuildAttribute_Ref(XsdBuilder builder, string value)
+        {
+            builder._attribute.RefName = builder.ParseQName(value, "ref");
         }
 
-        private static void BuildAttribute_Name(XsdBuilder builder, string value) {
-            builder.attribute.Name = value;
+        private static void BuildAttribute_Name(XsdBuilder builder, string value)
+        {
+            builder._attribute.Name = value;
         }
 
-        private static void BuildAttribute_Type(XsdBuilder builder, string value) {
-            builder.attribute.SchemaTypeName = builder.ParseQName(value, "type");
+        private static void BuildAttribute_Type(XsdBuilder builder, string value)
+        {
+            builder._attribute.SchemaTypeName = builder.ParseQName(value, "type");
         }
 
         /*
@@ -1243,22 +1316,24 @@ namespace Microsoft.Xml.Schema {
               {any attributes with non-schema namespace . . .}>
               Content: (annotation? , ((simpleType | complexType)? , (key | keyref | unique)*))
             </element>
-        */    
-        private static void InitElement(XsdBuilder builder, string value) {
-            builder.xso = builder.element = new XmlSchemaElement();
-            builder.canIncludeImport = false;
-            switch (builder.ParentElement) {
+        */
+        private static void InitElement(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._element = new XmlSchemaElement();
+            builder._canIncludeImport = false;
+            switch (builder.ParentElement)
+            {
                 case SchemaNames.Token.XsdSchema:
-                    builder.schema.Items.Add(builder.element);
+                    builder._schema.Items.Add(builder._element);
                     break;
                 case SchemaNames.Token.XsdAll:
-                    builder.all.Items.Add(builder.element);
+                    builder._all.Items.Add(builder._element);
                     break;
                 case SchemaNames.Token.XsdChoice:
-                    builder.choice.Items.Add(builder.element);
+                    builder._choice.Items.Add(builder._element);
                     break;
                 case SchemaNames.Token.XsdSequence:
-                    builder.sequence.Items.Add(builder.element);
+                    builder._sequence.Items.Add(builder._element);
                     break;
                 default:
                     Debug.Assert(false);
@@ -1266,56 +1341,69 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        private static void BuildElement_Abstract(XsdBuilder builder, string value) {
-            builder.element.IsAbstract = builder.ParseBoolean(value, "abstract");
+        private static void BuildElement_Abstract(XsdBuilder builder, string value)
+        {
+            builder._element.IsAbstract = builder.ParseBoolean(value, "abstract");
         }
 
-        private static void BuildElement_Block(XsdBuilder builder, string value) {
-            builder.element.Block = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "block");
+        private static void BuildElement_Block(XsdBuilder builder, string value)
+        {
+            builder._element.Block = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "block");
         }
 
-        private static void BuildElement_Default(XsdBuilder builder, string value) {
-            builder.element.DefaultValue = value;
+        private static void BuildElement_Default(XsdBuilder builder, string value)
+        {
+            builder._element.DefaultValue = value;
         }
 
-        private static void BuildElement_Form(XsdBuilder builder, string value) {
-            builder.element.Form = (XmlSchemaForm)builder.ParseEnum(value, "form", FormStringValues);
+        private static void BuildElement_Form(XsdBuilder builder, string value)
+        {
+            builder._element.Form = (XmlSchemaForm)builder.ParseEnum(value, "form", s_formStringValues);
         }
 
-        private static void BuildElement_SubstitutionGroup(XsdBuilder builder, string value) {
-            builder.element.SubstitutionGroup = builder.ParseQName(value, "substitutionGroup");
+        private static void BuildElement_SubstitutionGroup(XsdBuilder builder, string value)
+        {
+            builder._element.SubstitutionGroup = builder.ParseQName(value, "substitutionGroup");
         }
 
-        private static void BuildElement_Final(XsdBuilder builder, string value) {
-            builder.element.Final = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "final");
+        private static void BuildElement_Final(XsdBuilder builder, string value)
+        {
+            builder._element.Final = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "final");
         }
 
-        private static void BuildElement_Fixed(XsdBuilder builder, string value) {
-            builder.element.FixedValue = value;
+        private static void BuildElement_Fixed(XsdBuilder builder, string value)
+        {
+            builder._element.FixedValue = value;
         }
 
-        private static void BuildElement_MaxOccurs(XsdBuilder builder, string value) {
-            builder.SetMaxOccurs(builder.element, value);
+        private static void BuildElement_MaxOccurs(XsdBuilder builder, string value)
+        {
+            builder.SetMaxOccurs(builder._element, value);
         }
 
-        private static void BuildElement_MinOccurs(XsdBuilder builder, string value) {
-            builder.SetMinOccurs(builder.element, value);
+        private static void BuildElement_MinOccurs(XsdBuilder builder, string value)
+        {
+            builder.SetMinOccurs(builder._element, value);
         }
 
-        private static void BuildElement_Name(XsdBuilder builder, string value) {
-            builder.element.Name = value;
+        private static void BuildElement_Name(XsdBuilder builder, string value)
+        {
+            builder._element.Name = value;
         }
 
-        private static void BuildElement_Nillable(XsdBuilder builder, string value) {
-            builder.element.IsNillable = builder.ParseBoolean(value, "nillable");
+        private static void BuildElement_Nillable(XsdBuilder builder, string value)
+        {
+            builder._element.IsNillable = builder.ParseBoolean(value, "nillable");
         }
 
-        private static void BuildElement_Ref(XsdBuilder builder, string value) {
-            builder.element.RefName = builder.ParseQName(value, "ref");
+        private static void BuildElement_Ref(XsdBuilder builder, string value)
+        {
+            builder._element.RefName = builder.ParseQName(value, "ref");
         }
 
-        private static void BuildElement_Type(XsdBuilder builder, string value) {
-            builder.element.SchemaTypeName = builder.ParseQName(value, "type");
+        private static void BuildElement_Type(XsdBuilder builder, string value)
+        {
+            builder._element.SchemaTypeName = builder.ParseQName(value, "type");
         }
 
         /*
@@ -1326,69 +1414,80 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , ((list | restriction | union)))
             </simpleType>
         */
-        private static void InitSimpleType(XsdBuilder builder, string value) {
-            builder.xso = builder.simpleType = new XmlSchemaSimpleType();
-            switch (builder.ParentElement) {
+        private static void InitSimpleType(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._simpleType = new XmlSchemaSimpleType();
+            switch (builder.ParentElement)
+            {
                 case SchemaNames.Token.XsdSchema:
-                    builder.canIncludeImport = false;  // disable import and include elements in schema
-                    builder.schema.Items.Add(builder.simpleType);                    
+                    builder._canIncludeImport = false;  // disable import and include elements in schema
+                    builder._schema.Items.Add(builder._simpleType);
                     break;
                 case SchemaNames.Token.XsdRedefine:
-                    builder.redefine.Items.Add(builder.simpleType);                    
+                    builder._redefine.Items.Add(builder._simpleType);
                     break;
                 case SchemaNames.Token.XsdAttribute:
-                    if (builder.attribute.SchemaType != null) {
+                    if (builder._attribute.SchemaType != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupXsdElement, "simpleType");
                     }
-                    builder.attribute.SchemaType = builder.simpleType;
+                    builder._attribute.SchemaType = builder._simpleType;
                     break;
                 case SchemaNames.Token.XsdElement:
-                    if (builder.element.SchemaType != null) {
+                    if (builder._element.SchemaType != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupXsdElement, "simpleType");
                     }
-                    if (builder.element.Constraints.Count != 0) {
+                    if (builder._element.Constraints.Count != 0)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_TypeAfterConstraints, null);
                     }
-                    builder.element.SchemaType = builder.simpleType;
+                    builder._element.SchemaType = builder._simpleType;
                     break;
                 case SchemaNames.Token.XsdSimpleTypeList:
-                    if (builder.simpleTypeList.ItemType != null) {
+                    if (builder._simpleTypeList.ItemType != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupXsdElement, "simpleType");
                     }
-                    builder.simpleTypeList.ItemType = builder.simpleType;
+                    builder._simpleTypeList.ItemType = builder._simpleType;
                     break;
                 case SchemaNames.Token.XsdSimpleTypeRestriction:
-                    if (builder.simpleTypeRestriction.BaseType != null) {
+                    if (builder._simpleTypeRestriction.BaseType != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupXsdElement, "simpleType");
                     }
-                    builder.simpleTypeRestriction.BaseType = builder.simpleType;
+                    builder._simpleTypeRestriction.BaseType = builder._simpleType;
                     break;
                 case SchemaNames.Token.XsdSimpleContentRestriction:
-                    if (builder.simpleContentRestriction.BaseType != null) {
+                    if (builder._simpleContentRestriction.BaseType != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupXsdElement, "simpleType");
                     }
                     if (
-                        builder.simpleContentRestriction.Attributes.Count != 0 || 
-                        builder.simpleContentRestriction.AnyAttribute != null || 
-                        builder.simpleContentRestriction.Facets.Count != 0
-                    ) {
+                        builder._simpleContentRestriction.Attributes.Count != 0 ||
+                        builder._simpleContentRestriction.AnyAttribute != null ||
+                        builder._simpleContentRestriction.Facets.Count != 0
+                    )
+                    {
                         builder.SendValidationEvent(ResXml.Sch_SimpleTypeRestriction, null);
                     }
-                    builder.simpleContentRestriction.BaseType = builder.simpleType;
+                    builder._simpleContentRestriction.BaseType = builder._simpleType;
                     break;
 
                 case SchemaNames.Token.XsdSimpleTypeUnion:
-                    builder.simpleTypeUnion.BaseTypes.Add(builder.simpleType);  
+                    builder._simpleTypeUnion.BaseTypes.Add(builder._simpleType);
                     break;
             }
         }
 
-        private static void BuildSimpleType_Name(XsdBuilder builder, string value) {
-            builder.simpleType.Name =value;
+        private static void BuildSimpleType_Name(XsdBuilder builder, string value)
+        {
+            builder._simpleType.Name = value;
         }
 
-        private static void BuildSimpleType_Final(XsdBuilder builder, string value) {
-            builder.simpleType.Final = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "final");
+        private static void BuildSimpleType_Final(XsdBuilder builder, string value)
+        {
+            builder._simpleType.Final = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "final");
         }
 
 
@@ -1400,21 +1499,26 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (simpleType*))
             </union>
         */
-        private static void InitSimpleTypeUnion(XsdBuilder builder, string value) {
-            if (builder.simpleType.Content != null) {
+        private static void InitSimpleTypeUnion(XsdBuilder builder, string value)
+        {
+            if (builder._simpleType.Content != null)
+            {
                 builder.SendValidationEvent(ResXml.Sch_DupSimpleTypeChild, null);
-            }    
-            builder.xso = builder.simpleTypeUnion = new XmlSchemaSimpleTypeUnion();
-            builder.simpleType.Content = builder.simpleTypeUnion;
+            }
+            builder._xso = builder._simpleTypeUnion = new XmlSchemaSimpleTypeUnion();
+            builder._simpleType.Content = builder._simpleTypeUnion;
         }
 
-        private static void BuildSimpleTypeUnion_MemberTypes(XsdBuilder builder, string value) {
+        private static void BuildSimpleTypeUnion_MemberTypes(XsdBuilder builder, string value)
+        {
             XmlSchemaDatatype dt = XmlSchemaDatatype.FromXmlTokenizedTypeXsd(XmlTokenizedType.QName).DeriveByList(null);
-            try {
-                builder.simpleTypeUnion.MemberTypes = (XmlQualifiedName[])dt.ParseValue(value, builder.nameTable, builder.namespaceManager);
-            } 
-            catch (XmlSchemaException e) {
-                e.SetSource(builder.reader.BaseURI, builder.positionInfo.LineNumber, builder.positionInfo.LinePosition);
+            try
+            {
+                builder._simpleTypeUnion.MemberTypes = (XmlQualifiedName[])dt.ParseValue(value, builder._nameTable, builder._namespaceManager);
+            }
+            catch (XmlSchemaException e)
+            {
+                e.SetSource(builder._reader.BaseURI, builder._positionInfo.LineNumber, builder._positionInfo.LinePosition);
                 builder.SendValidationEvent(e);
             }
         }
@@ -1428,16 +1532,19 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (simpleType?))
             </list>
         */
-        private static void InitSimpleTypeList(XsdBuilder builder, string value) {   
-            if (builder.simpleType.Content != null) {
+        private static void InitSimpleTypeList(XsdBuilder builder, string value)
+        {
+            if (builder._simpleType.Content != null)
+            {
                 builder.SendValidationEvent(ResXml.Sch_DupSimpleTypeChild, null);
             }
-            builder.xso = builder.simpleTypeList = new XmlSchemaSimpleTypeList();
-            builder.simpleType.Content = builder.simpleTypeList;
+            builder._xso = builder._simpleTypeList = new XmlSchemaSimpleTypeList();
+            builder._simpleType.Content = builder._simpleTypeList;
         }
 
-        private static void BuildSimpleTypeList_ItemType(XsdBuilder builder, string value) {
-            builder.simpleTypeList.ItemTypeName = builder.ParseQName(value, "itemType");
+        private static void BuildSimpleTypeList_ItemType(XsdBuilder builder, string value)
+        {
+            builder._simpleTypeList.ItemTypeName = builder.ParseQName(value, "itemType");
         }
 
         /*
@@ -1448,16 +1555,19 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (simpleType? , ((duration | encoding | enumeration | length | maxExclusive | maxInclusive | maxLength | minExclusive | minInclusive | minLength | pattern | period | TotalDigits | FractionDigits)*)))
             </restriction>
         */
-        private static void InitSimpleTypeRestriction(XsdBuilder builder, string value) {
-            if (builder.simpleType.Content != null) {
+        private static void InitSimpleTypeRestriction(XsdBuilder builder, string value)
+        {
+            if (builder._simpleType.Content != null)
+            {
                 builder.SendValidationEvent(ResXml.Sch_DupSimpleTypeChild, null);
             }
-            builder.xso = builder.simpleTypeRestriction = new XmlSchemaSimpleTypeRestriction();
-            builder.simpleType.Content = builder.simpleTypeRestriction;
+            builder._xso = builder._simpleTypeRestriction = new XmlSchemaSimpleTypeRestriction();
+            builder._simpleType.Content = builder._simpleTypeRestriction;
         }
 
-        private static void BuildSimpleTypeRestriction_Base(XsdBuilder builder, string value) {
-            builder.simpleTypeRestriction.BaseTypeName = builder.ParseQName(value, "base");
+        private static void BuildSimpleTypeRestriction_Base(XsdBuilder builder, string value)
+        {
+            builder._simpleTypeRestriction.BaseTypeName = builder.ParseQName(value, "base");
         }
 
         /*
@@ -1472,46 +1582,55 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (simpleContent | complexContent | ((group | all | choice | sequence)? , ((attribute | attributeGroup)* , anyAttribute?))))
             </complexType>
         */
-        private static void InitComplexType(XsdBuilder builder, string value) {
-            builder.xso = builder.complexType = new XmlSchemaComplexType();
-            switch (builder.ParentElement) {
+        private static void InitComplexType(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._complexType = new XmlSchemaComplexType();
+            switch (builder.ParentElement)
+            {
                 case SchemaNames.Token.XsdSchema:
-                    builder.canIncludeImport = false;  // disable import and include elements in schema
-                    builder.schema.Items.Add(builder.complexType);                    
+                    builder._canIncludeImport = false;  // disable import and include elements in schema
+                    builder._schema.Items.Add(builder._complexType);
                     break;
                 case SchemaNames.Token.XsdRedefine:
-                    builder.redefine.Items.Add(builder.complexType);                    
+                    builder._redefine.Items.Add(builder._complexType);
                     break;
                 case SchemaNames.Token.XsdElement:
-                    if (builder.element.SchemaType != null) {
+                    if (builder._element.SchemaType != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "complexType");
                     }
-                    if (builder.element.Constraints.Count != 0) {
+                    if (builder._element.Constraints.Count != 0)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_TypeAfterConstraints, null);
                     }
-                    builder.element.SchemaType = builder.complexType;
+                    builder._element.SchemaType = builder._complexType;
                     break;
             }
         }
 
-        private static void BuildComplexType_Abstract(XsdBuilder builder, string value) {
-            builder.complexType.IsAbstract = builder.ParseBoolean(value, "abstract");
+        private static void BuildComplexType_Abstract(XsdBuilder builder, string value)
+        {
+            builder._complexType.IsAbstract = builder.ParseBoolean(value, "abstract");
         }
 
-        private static void BuildComplexType_Block(XsdBuilder builder, string value) {
-            builder.complexType.Block = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "block");
+        private static void BuildComplexType_Block(XsdBuilder builder, string value)
+        {
+            builder._complexType.Block = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "block");
         }
 
-        private static void BuildComplexType_Final(XsdBuilder builder, string value) {
-            builder.complexType.Final = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "final");
+        private static void BuildComplexType_Final(XsdBuilder builder, string value)
+        {
+            builder._complexType.Final = (XmlSchemaDerivationMethod)builder.ParseBlockFinalEnum(value, "final");
         }
 
-        private static void BuildComplexType_Mixed(XsdBuilder builder, string value) {
-            builder.complexType.IsMixed = builder.ParseBoolean(value, "mixed");
+        private static void BuildComplexType_Mixed(XsdBuilder builder, string value)
+        {
+            builder._complexType.IsMixed = builder.ParseBoolean(value, "mixed");
         }
 
-        private static void BuildComplexType_Name(XsdBuilder builder, string value) {
-            builder.complexType.Name = value;
+        private static void BuildComplexType_Name(XsdBuilder builder, string value)
+        {
+            builder._complexType.Name = value;
         }
 
         /*
@@ -1522,18 +1641,21 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (restriction | extension))
             </complexContent>
         */
-        private static void InitComplexContent(XsdBuilder builder, string value) {
-            if ( (builder.complexType.ContentModel != null) ||
-                 (builder.complexType.Particle != null || builder.complexType.Attributes.Count != 0 || builder.complexType.AnyAttribute != null)
-               ) {
-                 builder.SendValidationEvent(ResXml.Sch_ComplexTypeContentModel, "complexContent");
+        private static void InitComplexContent(XsdBuilder builder, string value)
+        {
+            if ((builder._complexType.ContentModel != null) ||
+                 (builder._complexType.Particle != null || builder._complexType.Attributes.Count != 0 || builder._complexType.AnyAttribute != null)
+               )
+            {
+                builder.SendValidationEvent(ResXml.Sch_ComplexTypeContentModel, "complexContent");
             }
-            builder.xso = builder.complexContent = new XmlSchemaComplexContent();
-            builder.complexType.ContentModel = builder.complexContent;
+            builder._xso = builder._complexContent = new XmlSchemaComplexContent();
+            builder._complexType.ContentModel = builder._complexContent;
         }
 
-        private static void BuildComplexContent_Mixed(XsdBuilder builder, string value) {
-            builder.complexContent.IsMixed = builder.ParseBoolean(value, "mixed");
+        private static void BuildComplexContent_Mixed(XsdBuilder builder, string value)
+        {
+            builder._complexContent.IsMixed = builder.ParseBoolean(value, "mixed");
         }
 
         /*
@@ -1544,16 +1666,19 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , ((group | all | choice | sequence)? , ((attribute | attributeGroup)* , anyAttribute?)))
             </extension>
         */
-        private static void InitComplexContentExtension(XsdBuilder builder, string value) {
-            if (builder.complexContent.Content != null) {
+        private static void InitComplexContentExtension(XsdBuilder builder, string value)
+        {
+            if (builder._complexContent.Content != null)
+            {
                 builder.SendValidationEvent(ResXml.Sch_ComplexContentContentModel, "extension");
             }
-            builder.xso = builder.complexContentExtension = new XmlSchemaComplexContentExtension();
-            builder.complexContent.Content = builder.complexContentExtension;
+            builder._xso = builder._complexContentExtension = new XmlSchemaComplexContentExtension();
+            builder._complexContent.Content = builder._complexContentExtension;
         }
 
-        private static void BuildComplexContentExtension_Base(XsdBuilder builder, string value) {
-            builder.complexContentExtension.BaseTypeName = builder.ParseQName(value, "base");
+        private static void BuildComplexContentExtension_Base(XsdBuilder builder, string value)
+        {
+            builder._complexContentExtension.BaseTypeName = builder.ParseQName(value, "base");
         }
 
         /*
@@ -1564,13 +1689,15 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (group | all | choice | sequence)? , ((attribute | attributeGroup)* , anyAttribute?))
             </restriction>
         */
-        private static void InitComplexContentRestriction(XsdBuilder builder, string value) {
-            builder.xso = builder.complexContentRestriction = new XmlSchemaComplexContentRestriction();
-            builder.complexContent.Content = builder.complexContentRestriction;
+        private static void InitComplexContentRestriction(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._complexContentRestriction = new XmlSchemaComplexContentRestriction();
+            builder._complexContent.Content = builder._complexContentRestriction;
         }
 
-        private static void BuildComplexContentRestriction_Base(XsdBuilder builder, string value) {
-            builder.complexContentRestriction.BaseTypeName = builder.ParseQName(value, "base");
+        private static void BuildComplexContentRestriction_Base(XsdBuilder builder, string value)
+        {
+            builder._complexContentRestriction.BaseTypeName = builder.ParseQName(value, "base");
         }
 
         /*
@@ -1580,14 +1707,16 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (restriction | extension))
             </simpleContent>
         */
-        private static void InitSimpleContent(XsdBuilder builder, string value) {
-            if ( (builder.complexType.ContentModel != null) || 
-                 (builder.complexType.Particle != null || builder.complexType.Attributes.Count != 0 || builder.complexType.AnyAttribute != null)
-                 ) {
-                   builder.SendValidationEvent(ResXml.Sch_ComplexTypeContentModel, "simpleContent");
+        private static void InitSimpleContent(XsdBuilder builder, string value)
+        {
+            if ((builder._complexType.ContentModel != null) ||
+                 (builder._complexType.Particle != null || builder._complexType.Attributes.Count != 0 || builder._complexType.AnyAttribute != null)
+                 )
+            {
+                builder.SendValidationEvent(ResXml.Sch_ComplexTypeContentModel, "simpleContent");
             }
-            builder.xso = builder.simpleContent = new XmlSchemaSimpleContent();
-            builder.complexType.ContentModel = builder.simpleContent;
+            builder._xso = builder._simpleContent = new XmlSchemaSimpleContent();
+            builder._complexType.ContentModel = builder._simpleContent;
         }
 
         /*
@@ -1599,16 +1728,19 @@ namespace Microsoft.Xml.Schema {
             </extension>
         */
 
-        private static void InitSimpleContentExtension(XsdBuilder builder, string value) {
-            if (builder.simpleContent.Content != null) {
+        private static void InitSimpleContentExtension(XsdBuilder builder, string value)
+        {
+            if (builder._simpleContent.Content != null)
+            {
                 builder.SendValidationEvent(ResXml.Sch_DupElement, "extension");
             }
-            builder.xso = builder.simpleContentExtension = new XmlSchemaSimpleContentExtension();
-            builder.simpleContent.Content = builder.simpleContentExtension;
+            builder._xso = builder._simpleContentExtension = new XmlSchemaSimpleContentExtension();
+            builder._simpleContent.Content = builder._simpleContentExtension;
         }
 
-        private static void BuildSimpleContentExtension_Base(XsdBuilder builder, string value) {
-            builder.simpleContentExtension.BaseTypeName = builder.ParseQName(value, "base");
+        private static void BuildSimpleContentExtension_Base(XsdBuilder builder, string value)
+        {
+            builder._simpleContentExtension.BaseTypeName = builder.ParseQName(value, "base");
         }
 
 
@@ -1620,16 +1752,19 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , ((duration | encoding | enumeration | length | maxExclusive | maxInclusive | maxLength | minExclusive | minInclusive | minLength | pattern | period | totalDigits | fractionDigits)*)? , ((attribute | attributeGroup)* , anyAttribute?))
             </restriction>
         */
-        private static void InitSimpleContentRestriction(XsdBuilder builder, string value) {
-            if (builder.simpleContent.Content != null) {
+        private static void InitSimpleContentRestriction(XsdBuilder builder, string value)
+        {
+            if (builder._simpleContent.Content != null)
+            {
                 builder.SendValidationEvent(ResXml.Sch_DupElement, "restriction");
             }
-            builder.xso = builder.simpleContentRestriction = new XmlSchemaSimpleContentRestriction();
-            builder.simpleContent.Content = builder.simpleContentRestriction;
+            builder._xso = builder._simpleContentRestriction = new XmlSchemaSimpleContentRestriction();
+            builder._simpleContent.Content = builder._simpleContentRestriction;
         }
 
-        private static void BuildSimpleContentRestriction_Base(XsdBuilder builder, string value) {
-            builder.simpleContentRestriction.BaseTypeName = builder.ParseQName(value, "base");
+        private static void BuildSimpleContentRestriction_Base(XsdBuilder builder, string value)
+        {
+            builder._simpleContentRestriction.BaseTypeName = builder.ParseQName(value, "base");
         }
 
         /*
@@ -1641,21 +1776,24 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , ((attribute | attributeGroup)* , anyAttribute?))
             </attributeGroup>
         */
-        private static void InitAttributeGroup(XsdBuilder builder, string value) {
-            builder.canIncludeImport = false;
-            builder.xso = builder.attributeGroup = new XmlSchemaAttributeGroup();
-            switch (builder.ParentElement) {
+        private static void InitAttributeGroup(XsdBuilder builder, string value)
+        {
+            builder._canIncludeImport = false;
+            builder._xso = builder._attributeGroup = new XmlSchemaAttributeGroup();
+            switch (builder.ParentElement)
+            {
                 case SchemaNames.Token.XsdSchema:
-                    builder.schema.Items.Add(builder.attributeGroup);
+                    builder._schema.Items.Add(builder._attributeGroup);
                     break;
                 case SchemaNames.Token.XsdRedefine:
-                    builder.redefine.Items.Add(builder.attributeGroup);                    
+                    builder._redefine.Items.Add(builder._attributeGroup);
                     break;
             }
         }
 
-        private static void BuildAttributeGroup_Name(XsdBuilder builder, string value) {
-            builder.attributeGroup.Name = value;
+        private static void BuildAttributeGroup_Name(XsdBuilder builder, string value)
+        {
+            builder._attributeGroup.Name = value;
         }
 
         /*
@@ -1666,13 +1804,15 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </attributeGroup>
         */
-        private static void InitAttributeGroupRef(XsdBuilder builder, string value) {
-            builder.xso = builder.attributeGroupRef = new XmlSchemaAttributeGroupRef();
-            builder.AddAttribute(builder.attributeGroupRef);
+        private static void InitAttributeGroupRef(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._attributeGroupRef = new XmlSchemaAttributeGroupRef();
+            builder.AddAttribute(builder._attributeGroupRef);
         }
 
-        private static void BuildAttributeGroupRef_Ref(XsdBuilder builder, string value) {
-            builder.attributeGroupRef.RefName = builder.ParseQName(value, "ref");
+        private static void BuildAttributeGroupRef_Ref(XsdBuilder builder, string value)
+        {
+            builder._attributeGroupRef.RefName = builder.ParseQName(value, "ref");
         }
 
         /*
@@ -1684,57 +1824,68 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </anyAttribute>
         */
-        private static void InitAnyAttribute(XsdBuilder builder, string value) {
-            builder.xso = builder.anyAttribute = new XmlSchemaAnyAttribute();
-            switch (builder.ParentElement) {
+        private static void InitAnyAttribute(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._anyAttribute = new XmlSchemaAnyAttribute();
+            switch (builder.ParentElement)
+            {
                 case SchemaNames.Token.XsdComplexType:
-                    if (builder.complexType.ContentModel != null) {
+                    if (builder._complexType.ContentModel != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_AttributeMutuallyExclusive, "anyAttribute");
                     }
-                    if (builder.complexType.AnyAttribute != null) {
+                    if (builder._complexType.AnyAttribute != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "anyAttribute");
                     }
-                    builder.complexType.AnyAttribute = builder.anyAttribute;
+                    builder._complexType.AnyAttribute = builder._anyAttribute;
                     break;
                 case SchemaNames.Token.XsdSimpleContentRestriction:
-                    if (builder.simpleContentRestriction.AnyAttribute != null) {
+                    if (builder._simpleContentRestriction.AnyAttribute != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "anyAttribute");
                     }
-                    builder.simpleContentRestriction.AnyAttribute = builder.anyAttribute;
+                    builder._simpleContentRestriction.AnyAttribute = builder._anyAttribute;
                     break;
                 case SchemaNames.Token.XsdSimpleContentExtension:
-                    if (builder.simpleContentExtension.AnyAttribute != null) {
+                    if (builder._simpleContentExtension.AnyAttribute != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "anyAttribute");
                     }
-                    builder.simpleContentExtension.AnyAttribute = builder.anyAttribute;
+                    builder._simpleContentExtension.AnyAttribute = builder._anyAttribute;
                     break;
                 case SchemaNames.Token.XsdComplexContentExtension:
-                    if (builder.complexContentExtension.AnyAttribute != null) {
+                    if (builder._complexContentExtension.AnyAttribute != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "anyAttribute");
                     }
-                    builder.complexContentExtension.AnyAttribute = builder.anyAttribute;
+                    builder._complexContentExtension.AnyAttribute = builder._anyAttribute;
                     break;
                 case SchemaNames.Token.XsdComplexContentRestriction:
-                    if (builder.complexContentRestriction.AnyAttribute != null) {
+                    if (builder._complexContentRestriction.AnyAttribute != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "anyAttribute");
                     }
-                    builder.complexContentRestriction.AnyAttribute = builder.anyAttribute;
+                    builder._complexContentRestriction.AnyAttribute = builder._anyAttribute;
                     break;
                 case SchemaNames.Token.xsdAttributeGroup:
-                    if (builder.attributeGroup.AnyAttribute != null) {
+                    if (builder._attributeGroup.AnyAttribute != null)
+                    {
                         builder.SendValidationEvent(ResXml.Sch_DupElement, "anyAttribute");
                     }
-                    builder.attributeGroup.AnyAttribute = builder.anyAttribute;
+                    builder._attributeGroup.AnyAttribute = builder._anyAttribute;
                     break;
             }
         }
 
-        private static void BuildAnyAttribute_Namespace(XsdBuilder builder, string value) {
-            builder.anyAttribute.Namespace = value;
+        private static void BuildAnyAttribute_Namespace(XsdBuilder builder, string value)
+        {
+            builder._anyAttribute.Namespace = value;
         }
 
-        private static void BuildAnyAttribute_ProcessContents(XsdBuilder builder, string value) {
-            builder.anyAttribute.ProcessContents = (XmlSchemaContentProcessing)builder.ParseEnum(value, "processContents", ProcessContentsStringValues);
+        private static void BuildAnyAttribute_ProcessContents(XsdBuilder builder, string value)
+        {
+            builder._anyAttribute.ProcessContents = (XmlSchemaContentProcessing)builder.ParseEnum(value, "processContents", s_processContentsStringValues);
         }
 
         /*
@@ -1745,21 +1896,24 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (all | choice | sequence)?)
             </group>
         */
-        private static void InitGroup(XsdBuilder builder, string value) {
-            builder.xso = builder.group = new XmlSchemaGroup();
-            builder.canIncludeImport = false;  // disable import and include elements in schema
-            switch (builder.ParentElement) {
+        private static void InitGroup(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._group = new XmlSchemaGroup();
+            builder._canIncludeImport = false;  // disable import and include elements in schema
+            switch (builder.ParentElement)
+            {
                 case SchemaNames.Token.XsdSchema:
-                    builder.schema.Items.Add(builder.group);
+                    builder._schema.Items.Add(builder._group);
                     break;
                 case SchemaNames.Token.XsdRedefine:
-                    builder.redefine.Items.Add(builder.group);                    
+                    builder._redefine.Items.Add(builder._group);
                     break;
             }
         }
 
-        private static void BuildGroup_Name(XsdBuilder builder, string value) {
-            builder.group.Name = value;
+        private static void BuildGroup_Name(XsdBuilder builder, string value)
+        {
+            builder._group.Name = value;
         }
 
         /*
@@ -1772,21 +1926,25 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </group>
         */
-        private static void InitGroupRef(XsdBuilder builder, string value) {
-            builder.xso = builder.particle = builder.groupRef = new XmlSchemaGroupRef();
-            builder.AddParticle(builder.groupRef);
+        private static void InitGroupRef(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._particle = builder._groupRef = new XmlSchemaGroupRef();
+            builder.AddParticle(builder._groupRef);
         }
 
-        private static void BuildParticle_MaxOccurs(XsdBuilder builder, string value) {
-            builder.SetMaxOccurs(builder.particle, value);
+        private static void BuildParticle_MaxOccurs(XsdBuilder builder, string value)
+        {
+            builder.SetMaxOccurs(builder._particle, value);
         }
 
-        private static void BuildParticle_MinOccurs(XsdBuilder builder, string value) {
-            builder.SetMinOccurs(builder.particle, value);
+        private static void BuildParticle_MinOccurs(XsdBuilder builder, string value)
+        {
+            builder.SetMinOccurs(builder._particle, value);
         }
 
-        private static void BuildGroupRef_Ref(XsdBuilder builder, string value) {
-            builder.groupRef.RefName = builder.ParseQName(value, "ref");
+        private static void BuildGroupRef_Ref(XsdBuilder builder, string value)
+        {
+            builder._groupRef.RefName = builder.ParseQName(value, "ref");
         }
 
         /*
@@ -1798,9 +1956,10 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , element*)
             </all>
         */
-        private static void InitAll(XsdBuilder builder, string value) {
-            builder.xso = builder.particle = builder.all = new XmlSchemaAll();
-            builder.AddParticle(builder.all);
+        private static void InitAll(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._particle = builder._all = new XmlSchemaAll();
+            builder.AddParticle(builder._all);
         }
 
         /*
@@ -1812,9 +1971,10 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (element | group | choice | sequence | any)*)
             </choice>
         */
-        private static void InitChoice(XsdBuilder builder, string value) {
-            builder.xso = builder.particle = builder.choice = new XmlSchemaChoice();
-            builder.AddParticle(builder.choice);
+        private static void InitChoice(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._particle = builder._choice = new XmlSchemaChoice();
+            builder.AddParticle(builder._choice);
         }
 
         /*
@@ -1826,9 +1986,10 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (element | group | choice | sequence | any)*)
             </sequence>
         */
-        private static void InitSequence(XsdBuilder builder, string value) {
-            builder.xso = builder.particle = builder.sequence = new XmlSchemaSequence();
-            builder.AddParticle(builder.sequence);
+        private static void InitSequence(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._particle = builder._sequence = new XmlSchemaSequence();
+            builder.AddParticle(builder._sequence);
         }
 
         /*
@@ -1842,17 +2003,20 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </any>
         */
-        private static void InitAny(XsdBuilder builder, string value) {
-            builder.xso = builder.particle = builder.anyElement = new XmlSchemaAny();
-            builder.AddParticle(builder.anyElement);
-        } 
+        private static void InitAny(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._particle = builder._anyElement = new XmlSchemaAny();
+            builder.AddParticle(builder._anyElement);
+        }
 
-        private static void BuildAny_Namespace(XsdBuilder builder, string value) {
-            builder.anyElement.Namespace = value;
-        } 
+        private static void BuildAny_Namespace(XsdBuilder builder, string value)
+        {
+            builder._anyElement.Namespace = value;
+        }
 
-        private static void BuildAny_ProcessContents(XsdBuilder builder, string value) {
-            builder.anyElement.ProcessContents = (XmlSchemaContentProcessing)builder.ParseEnum(value, "processContents", ProcessContentsStringValues);
+        private static void BuildAny_ProcessContents(XsdBuilder builder, string value)
+        {
+            builder._anyElement.ProcessContents = (XmlSchemaContentProcessing)builder.ParseEnum(value, "processContents", s_processContentsStringValues);
         }
 
         /*
@@ -1865,22 +2029,26 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </notation>
         */
-        private static void InitNotation(XsdBuilder builder, string value) {
-            builder.xso = builder.notation = new XmlSchemaNotation();
-            builder.canIncludeImport = false;
-            builder.schema.Items.Add(builder.notation);
+        private static void InitNotation(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._notation = new XmlSchemaNotation();
+            builder._canIncludeImport = false;
+            builder._schema.Items.Add(builder._notation);
         }
 
-        private static void BuildNotation_Name(XsdBuilder builder, string value) {
-            builder.notation.Name = value;
+        private static void BuildNotation_Name(XsdBuilder builder, string value)
+        {
+            builder._notation.Name = value;
         }
 
-        private static void BuildNotation_Public(XsdBuilder builder, string value) {
-            builder.notation.Public = value;
+        private static void BuildNotation_Public(XsdBuilder builder, string value)
+        {
+            builder._notation.Public = value;
         }
 
-        private static void BuildNotation_System(XsdBuilder builder, string value) {
-            builder.notation.System = value;
+        private static void BuildNotation_System(XsdBuilder builder, string value)
+        {
+            builder._notation.System = value;
         }
 
         //
@@ -1894,63 +2062,70 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </duration>
         */
-        private static void InitFacet(XsdBuilder builder, string value) {
-            switch (builder.CurrentElement) {
+        private static void InitFacet(XsdBuilder builder, string value)
+        {
+            switch (builder.CurrentElement)
+            {
                 case SchemaNames.Token.XsdEnumeration:
-                    builder.facet = new XmlSchemaEnumerationFacet();
+                    builder._facet = new XmlSchemaEnumerationFacet();
                     break;
                 case SchemaNames.Token.XsdLength:
-                    builder.facet = new XmlSchemaLengthFacet();
+                    builder._facet = new XmlSchemaLengthFacet();
                     break;
                 case SchemaNames.Token.XsdMaxExclusive:
-                    builder.facet = new XmlSchemaMaxExclusiveFacet();
+                    builder._facet = new XmlSchemaMaxExclusiveFacet();
                     break;
                 case SchemaNames.Token.XsdMaxInclusive:
-                    builder.facet = new XmlSchemaMaxInclusiveFacet();
+                    builder._facet = new XmlSchemaMaxInclusiveFacet();
                     break;
                 case SchemaNames.Token.XsdMaxLength:
-                    builder.facet = new XmlSchemaMaxLengthFacet();
+                    builder._facet = new XmlSchemaMaxLengthFacet();
                     break;
                 case SchemaNames.Token.XsdMinExclusive:
-                    builder.facet = new XmlSchemaMinExclusiveFacet();
+                    builder._facet = new XmlSchemaMinExclusiveFacet();
                     break;
                 case SchemaNames.Token.XsdMinInclusive:
-                    builder.facet = new XmlSchemaMinInclusiveFacet();
+                    builder._facet = new XmlSchemaMinInclusiveFacet();
                     break;
                 case SchemaNames.Token.XsdMinLength:
-                    builder.facet = new XmlSchemaMinLengthFacet();
+                    builder._facet = new XmlSchemaMinLengthFacet();
                     break;
                 case SchemaNames.Token.XsdPattern:
-                    builder.facet = new XmlSchemaPatternFacet();
+                    builder._facet = new XmlSchemaPatternFacet();
                     break;
                 case SchemaNames.Token.XsdTotalDigits:
-                    builder.facet = new XmlSchemaTotalDigitsFacet();
+                    builder._facet = new XmlSchemaTotalDigitsFacet();
                     break;
                 case SchemaNames.Token.XsdFractionDigits:
-                    builder.facet = new XmlSchemaFractionDigitsFacet();
+                    builder._facet = new XmlSchemaFractionDigitsFacet();
                     break;
                 case SchemaNames.Token.XsdWhitespace:
-                    builder.facet = new XmlSchemaWhiteSpaceFacet();
+                    builder._facet = new XmlSchemaWhiteSpaceFacet();
                     break;
             }
-            builder.xso = builder.facet;
-            if (SchemaNames.Token.XsdSimpleTypeRestriction == builder.ParentElement) {
-                builder.simpleTypeRestriction.Facets.Add(builder.facet);
+            builder._xso = builder._facet;
+            if (SchemaNames.Token.XsdSimpleTypeRestriction == builder.ParentElement)
+            {
+                builder._simpleTypeRestriction.Facets.Add(builder._facet);
             }
-            else {
-                if (builder.simpleContentRestriction.Attributes.Count != 0 || (builder.simpleContentRestriction.AnyAttribute != null)) {
+            else
+            {
+                if (builder._simpleContentRestriction.Attributes.Count != 0 || (builder._simpleContentRestriction.AnyAttribute != null))
+                {
                     builder.SendValidationEvent(ResXml.Sch_InvalidFacetPosition, null);
                 }
-                builder.simpleContentRestriction.Facets.Add(builder.facet);
+                builder._simpleContentRestriction.Facets.Add(builder._facet);
             }
         }
 
-        private static void BuildFacet_Fixed(XsdBuilder builder, string value) {
-            builder.facet.IsFixed = builder.ParseBoolean(value, "fixed");
+        private static void BuildFacet_Fixed(XsdBuilder builder, string value)
+        {
+            builder._facet.IsFixed = builder.ParseBoolean(value, "fixed");
         }
 
-        private static void BuildFacet_Value(XsdBuilder builder, string value) {
-            builder.facet.Value = value;
+        private static void BuildFacet_Value(XsdBuilder builder, string value)
+        {
+            builder._facet.Value = value;
         }
 
         /*
@@ -1976,37 +2151,44 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation? , (selector , field+))
             </keyref>
         */
-        private static void InitIdentityConstraint(XsdBuilder builder, string value) {
-            if (!builder.element.RefName.IsEmpty) {
+        private static void InitIdentityConstraint(XsdBuilder builder, string value)
+        {
+            if (!builder._element.RefName.IsEmpty)
+            {
                 builder.SendValidationEvent(ResXml.Sch_ElementRef, null);
             }
 
-            switch (builder.CurrentElement) {
+            switch (builder.CurrentElement)
+            {
                 case SchemaNames.Token.XsdUnique:
-                    builder.xso = builder.identityConstraint = new XmlSchemaUnique();
+                    builder._xso = builder._identityConstraint = new XmlSchemaUnique();
                     break;
                 case SchemaNames.Token.XsdKey:
-                    builder.xso = builder.identityConstraint = new XmlSchemaKey();
+                    builder._xso = builder._identityConstraint = new XmlSchemaKey();
                     break;
                 case SchemaNames.Token.XsdKeyref:
-                    builder.xso = builder.identityConstraint = new XmlSchemaKeyref();
+                    builder._xso = builder._identityConstraint = new XmlSchemaKeyref();
                     break;
             }
-            builder.element.Constraints.Add(builder.identityConstraint);
+            builder._element.Constraints.Add(builder._identityConstraint);
         }
 
-        private static void BuildIdentityConstraint_Name(XsdBuilder builder, string value) {
-            builder.identityConstraint.Name = value;
-        } 
+        private static void BuildIdentityConstraint_Name(XsdBuilder builder, string value)
+        {
+            builder._identityConstraint.Name = value;
+        }
 
-        private static void BuildIdentityConstraint_Refer(XsdBuilder builder, string value) {
-            if (builder.identityConstraint is XmlSchemaKeyref) {
-                ((XmlSchemaKeyref)builder.identityConstraint).Refer = builder.ParseQName(value, "refer");
+        private static void BuildIdentityConstraint_Refer(XsdBuilder builder, string value)
+        {
+            if (builder._identityConstraint is XmlSchemaKeyref)
+            {
+                ((XmlSchemaKeyref)builder._identityConstraint).Refer = builder.ParseQName(value, "refer");
             }
-            else {
+            else
+            {
                 builder.SendValidationEvent(ResXml.Sch_UnsupportedAttribute, "refer");
             }
-        } 
+        }
 
         /*
             <selector 
@@ -2016,19 +2198,23 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </selector>
         */
-        private static void InitSelector(XsdBuilder builder, string value) {
-            builder.xso = builder.xpath = new XmlSchemaXPath();
-            if ( builder.identityConstraint.Selector == null ) {
-                builder.identityConstraint.Selector = builder.xpath;
+        private static void InitSelector(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._xpath = new XmlSchemaXPath();
+            if (builder._identityConstraint.Selector == null)
+            {
+                builder._identityConstraint.Selector = builder._xpath;
             }
-            else {
-                builder.SendValidationEvent(ResXml.Sch_DupSelector, builder.identityConstraint.Name);
+            else
+            {
+                builder.SendValidationEvent(ResXml.Sch_DupSelector, builder._identityConstraint.Name);
             }
         }
 
-        private static void BuildSelector_XPath(XsdBuilder builder, string value) {
-            builder.xpath.XPath = value;
-        } 
+        private static void BuildSelector_XPath(XsdBuilder builder, string value)
+        {
+            builder._xpath.XPath = value;
+        }
 
         /*
             <field 
@@ -2038,36 +2224,41 @@ namespace Microsoft.Xml.Schema {
               Content: (annotation?)
             </field>
         */
-        private static void InitField(XsdBuilder builder, string value) {
-            builder.xso = builder.xpath = new XmlSchemaXPath();
+        private static void InitField(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._xpath = new XmlSchemaXPath();
             // no selector before fields?
-            if ( builder.identityConstraint.Selector == null ) {
-                builder.SendValidationEvent(ResXml.Sch_SelectorBeforeFields, builder.identityConstraint.Name);
+            if (builder._identityConstraint.Selector == null)
+            {
+                builder.SendValidationEvent(ResXml.Sch_SelectorBeforeFields, builder._identityConstraint.Name);
             }
-            builder.identityConstraint.Fields.Add(builder.xpath);
+            builder._identityConstraint.Fields.Add(builder._xpath);
         }
 
-        private static void BuildField_XPath(XsdBuilder builder, string value) {
-            builder.xpath.XPath = value;
-        } 
+        private static void BuildField_XPath(XsdBuilder builder, string value)
+        {
+            builder._xpath.XPath = value;
+        }
 
         /*
             <annotation>
               Content: (appinfo | documentation)*
             </annotation>
         */
-        private static void InitAnnotation(XsdBuilder builder, string value) {
+        private static void InitAnnotation(XsdBuilder builder, string value)
+        {
             // On most elements annotations are only allowed to be the first child 
             //   (so the element must not have any children by now), and only one annotation is allowed.
             // Exceptions are xs:schema and xs:redefine, these can have any number of annotations
             //   in any place.
-            if (builder.hasChild && 
+            if (builder._hasChild &&
                 builder.ParentElement != SchemaNames.Token.XsdSchema &&
-                builder.ParentElement != SchemaNames.Token.XsdRedefine) {
+                builder.ParentElement != SchemaNames.Token.XsdRedefine)
+            {
                 builder.SendValidationEvent(ResXml.Sch_AnnotationLocation, null);
             }
-            builder.xso = builder.annotation = new XmlSchemaAnnotation();
-            builder.ParentContainer.AddAnnotation(builder.annotation);
+            builder._xso = builder._annotation = new XmlSchemaAnnotation();
+            builder.ParentContainer.AddAnnotation(builder._annotation);
         }
 
         /*
@@ -2076,18 +2267,21 @@ namespace Microsoft.Xml.Schema {
               Content: ({any})*
             </appinfo>
         */
-        private static void InitAppinfo(XsdBuilder builder, string value) {
-            builder.xso = builder.appInfo = new XmlSchemaAppInfo();
-            builder.annotation.Items.Add(builder.appInfo);
-            builder.markup = new XmlNode[] {};
+        private static void InitAppinfo(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._appInfo = new XmlSchemaAppInfo();
+            builder._annotation.Items.Add(builder._appInfo);
+            builder._markup = new XmlNode[] { };
         }
 
-        private static void BuildAppinfo_Source(XsdBuilder builder, string value) {
-            builder.appInfo.Source = ParseUriReference(value);
+        private static void BuildAppinfo_Source(XsdBuilder builder, string value)
+        {
+            builder._appInfo.Source = ParseUriReference(value);
         }
 
-        private static void EndAppinfo(XsdBuilder builder) {
-            builder.appInfo.Markup = builder.markup;
+        private static void EndAppinfo(XsdBuilder builder)
+        {
+            builder._appInfo.Markup = builder._markup;
         }
 
 
@@ -2097,29 +2291,34 @@ namespace Microsoft.Xml.Schema {
               Content: ({any})*
             </documentation>
         */
-        private static void InitDocumentation(XsdBuilder builder, string value) {
-            builder.xso = builder.documentation = new XmlSchemaDocumentation();
-            builder.annotation.Items.Add(builder.documentation);
-            builder.markup = new XmlNode[] {};
+        private static void InitDocumentation(XsdBuilder builder, string value)
+        {
+            builder._xso = builder._documentation = new XmlSchemaDocumentation();
+            builder._annotation.Items.Add(builder._documentation);
+            builder._markup = new XmlNode[] { };
         }
 
-        private static void BuildDocumentation_Source(XsdBuilder builder, string value) {
-            builder.documentation.Source = ParseUriReference(value);
+        private static void BuildDocumentation_Source(XsdBuilder builder, string value)
+        {
+            builder._documentation.Source = ParseUriReference(value);
         }
 
-        private static void BuildDocumentation_XmlLang(XsdBuilder builder, string value) {
-            try {
-                builder.documentation.Language = value;
-            } 
-            catch (XmlSchemaException e) {
-                e.SetSource(builder.reader.BaseURI, builder.positionInfo.LineNumber, builder.positionInfo.LinePosition);
+        private static void BuildDocumentation_XmlLang(XsdBuilder builder, string value)
+        {
+            try
+            {
+                builder._documentation.Language = value;
+            }
+            catch (XmlSchemaException e)
+            {
+                e.SetSource(builder._reader.BaseURI, builder._positionInfo.LineNumber, builder._positionInfo.LinePosition);
                 builder.SendValidationEvent(e);
             }
         }
 
-        private static void EndDocumentation(XsdBuilder builder) {
-            builder.documentation.Markup = builder.markup;
-
+        private static void EndDocumentation(XsdBuilder builder)
+        {
+            builder._documentation.Markup = builder._markup;
         }
 
 
@@ -2127,46 +2326,55 @@ namespace Microsoft.Xml.Schema {
         //
         // helper functions
 
-        private void AddAttribute(XmlSchemaObject value) {
-            switch (this.ParentElement) {
+        private void AddAttribute(XmlSchemaObject value)
+        {
+            switch (this.ParentElement)
+            {
                 case SchemaNames.Token.XsdComplexType:
-                    if (complexType.ContentModel != null) {
+                    if (_complexType.ContentModel != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AttributeMutuallyExclusive, "attribute");
                     }
-                    if (complexType.AnyAttribute != null) {
+                    if (_complexType.AnyAttribute != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AnyAttributeLastChild, null);
                     }
-                    this.complexType.Attributes.Add(value);
+                    _complexType.Attributes.Add(value);
                     break;
                 case SchemaNames.Token.XsdSimpleContentRestriction:
-                    if (simpleContentRestriction.AnyAttribute != null) {
+                    if (_simpleContentRestriction.AnyAttribute != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AnyAttributeLastChild, null);
                     }
-                    this.simpleContentRestriction.Attributes.Add(value);
+                    _simpleContentRestriction.Attributes.Add(value);
                     break;
                 case SchemaNames.Token.XsdSimpleContentExtension:
-                    if (simpleContentExtension.AnyAttribute != null) {
+                    if (_simpleContentExtension.AnyAttribute != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AnyAttributeLastChild, null);
                     }
-                    this.simpleContentExtension.Attributes.Add(value);
+                    _simpleContentExtension.Attributes.Add(value);
                     break;
                 case SchemaNames.Token.XsdComplexContentExtension:
-                    if (complexContentExtension.AnyAttribute != null) {
+                    if (_complexContentExtension.AnyAttribute != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AnyAttributeLastChild, null);
                     }
-                    this.complexContentExtension.Attributes.Add(value);
+                    _complexContentExtension.Attributes.Add(value);
                     break;
                 case SchemaNames.Token.XsdComplexContentRestriction:
-                    if (complexContentRestriction.AnyAttribute != null) {
+                    if (_complexContentRestriction.AnyAttribute != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AnyAttributeLastChild, null);
                     }
-                    this.complexContentRestriction.Attributes.Add(value);
+                    _complexContentRestriction.Attributes.Add(value);
                     break;
                 case SchemaNames.Token.xsdAttributeGroup:
-                    if (attributeGroup.AnyAttribute != null) {
+                    if (_attributeGroup.AnyAttribute != null)
+                    {
                         SendValidationEvent(ResXml.Sch_AnyAttributeLastChild, null);
                     }
-                    this.attributeGroup.Attributes.Add(value);
+                    _attributeGroup.Attributes.Add(value);
                     break;
                 default:
                     Debug.Assert(false);
@@ -2174,38 +2382,44 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        private void AddParticle(XmlSchemaParticle particle) {
-            switch (this.ParentElement) {
+        private void AddParticle(XmlSchemaParticle particle)
+        {
+            switch (this.ParentElement)
+            {
                 case SchemaNames.Token.XsdComplexType:
-                    if ( (complexType.ContentModel != null) || 
-                         (complexType.Attributes.Count != 0 || complexType.AnyAttribute != null) ||
-                         (complexType.Particle != null)
-                         ) {
+                    if ((_complexType.ContentModel != null) ||
+                         (_complexType.Attributes.Count != 0 || _complexType.AnyAttribute != null) ||
+                         (_complexType.Particle != null)
+                         )
+                    {
                         SendValidationEvent(ResXml.Sch_ComplexTypeContentModel, "complexType");
                     }
-                    complexType.Particle = particle;
+                    _complexType.Particle = particle;
                     break;
                 case SchemaNames.Token.XsdComplexContentExtension:
-                    if ( (complexContentExtension.Particle != null) ||
-                         (complexContentExtension.Attributes.Count != 0 || complexContentExtension.AnyAttribute != null)
-                       ) {
-                         SendValidationEvent(ResXml.Sch_ComplexContentContentModel, "ComplexContentExtension");
+                    if ((_complexContentExtension.Particle != null) ||
+                         (_complexContentExtension.Attributes.Count != 0 || _complexContentExtension.AnyAttribute != null)
+                       )
+                    {
+                        SendValidationEvent(ResXml.Sch_ComplexContentContentModel, "ComplexContentExtension");
                     }
-                    complexContentExtension.Particle = particle;
+                    _complexContentExtension.Particle = particle;
                     break;
                 case SchemaNames.Token.XsdComplexContentRestriction:
-                    if ( (complexContentRestriction.Particle != null) ||
-                         (complexContentRestriction.Attributes.Count != 0 || complexContentRestriction.AnyAttribute != null)
-                       ) {
-                         SendValidationEvent(ResXml.Sch_ComplexContentContentModel, "ComplexContentExtension");
+                    if ((_complexContentRestriction.Particle != null) ||
+                         (_complexContentRestriction.Attributes.Count != 0 || _complexContentRestriction.AnyAttribute != null)
+                       )
+                    {
+                        SendValidationEvent(ResXml.Sch_ComplexContentContentModel, "ComplexContentExtension");
                     }
-                    complexContentRestriction.Particle = particle;
+                    _complexContentRestriction.Particle = particle;
                     break;
                 case SchemaNames.Token.XsdGroup:
-                    if (group.Particle != null) {
+                    if (_group.Particle != null)
+                    {
                         SendValidationEvent(ResXml.Sch_DupGroupParticle, "particle");
                     }
-                    group.Particle = (XmlSchemaGroupBase)particle;
+                    _group.Particle = (XmlSchemaGroupBase)particle;
                     break;
                 case SchemaNames.Token.XsdChoice:
                 case SchemaNames.Token.XsdSequence:
@@ -2217,12 +2431,16 @@ namespace Microsoft.Xml.Schema {
             }
         }
 
-        private bool GetNextState(XmlQualifiedName qname) {
-            if (this.currentEntry.NextStates != null) {
-                for (int i = 0; i < this.currentEntry.NextStates.Length; ++i) {
-                    int state = (int)this.currentEntry.NextStates[i];
-                    if (this.schemaNames.TokenToQName[(int)SchemaEntries[state].Name].Equals(qname)) {
-                        this.nextEntry = SchemaEntries[state];
+        private bool GetNextState(XmlQualifiedName qname)
+        {
+            if (_currentEntry.NextStates != null)
+            {
+                for (int i = 0; i < _currentEntry.NextStates.Length; ++i)
+                {
+                    int state = (int)_currentEntry.NextStates[i];
+                    if (_schemaNames.TokenToQName[(int)s_schemaEntries[state].Name].Equals(qname))
+                    {
+                        _nextEntry = s_schemaEntries[state];
                         return true;
                     }
                 }
@@ -2231,42 +2449,54 @@ namespace Microsoft.Xml.Schema {
             return false;
         }
 
-        private bool IsSkipableElement(XmlQualifiedName qname) {
+        private bool IsSkipableElement(XmlQualifiedName qname)
+        {
             return ((CurrentElement == SchemaNames.Token.XsdDocumentation) ||
                     (CurrentElement == SchemaNames.Token.XsdAppInfo));
         }
 
-        private void SetMinOccurs(XmlSchemaParticle particle, string value) {
-            try {
+        private void SetMinOccurs(XmlSchemaParticle particle, string value)
+        {
+            try
+            {
                 particle.MinOccursString = value;
             }
-            catch(Exception) {
+            catch (Exception)
+            {
                 SendValidationEvent(ResXml.Sch_MinOccursInvalidXsd, null);
             }
         }
 
-        private void SetMaxOccurs(XmlSchemaParticle particle, string value) {
-            try {
+        private void SetMaxOccurs(XmlSchemaParticle particle, string value)
+        {
+            try
+            {
                 particle.MaxOccursString = value;
             }
-            catch(Exception) {
+            catch (Exception)
+            {
                 SendValidationEvent(ResXml.Sch_MaxOccursInvalidXsd, null);
             }
         }
 
-        private bool ParseBoolean(string value, string attributeName) {
-            try {
+        private bool ParseBoolean(string value, string attributeName)
+        {
+            try
+            {
                 return XmlConvert.ToBoolean(value);
             }
-            catch(Exception) {
+            catch (Exception)
+            {
                 SendValidationEvent(ResXml.Sch_InvalidXsdAttributeValue, attributeName, value, null);
                 return false;
             }
         }
 
-        private int ParseEnum(string value, string attributeName, string[] values) {
+        private int ParseEnum(string value, string attributeName, string[] values)
+        {
             string s = value.Trim();
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 if (values[i] == s)
                     return i + 1;
             }
@@ -2274,89 +2504,105 @@ namespace Microsoft.Xml.Schema {
             return 0;
         }
 
-        private XmlQualifiedName ParseQName(string value, string attributeName) {
-            try {
+        private XmlQualifiedName ParseQName(string value, string attributeName)
+        {
+            try
+            {
                 string prefix;
-				value = XmlComplianceUtil.NonCDataNormalize(value); //Normalize QName
-                return XmlQualifiedName.Parse(value, this.namespaceManager, out prefix);
-            } 
-            catch(Exception) {
+                value = XmlComplianceUtil.NonCDataNormalize(value); //Normalize QName
+                return XmlQualifiedName.Parse(value, _namespaceManager, out prefix);
+            }
+            catch (Exception)
+            {
                 SendValidationEvent(ResXml.Sch_InvalidXsdAttributeValue, attributeName, value, null);
                 return XmlQualifiedName.Empty;
             }
         }
 
-        private int ParseBlockFinalEnum(string value, string attributeName) {
+        private int ParseBlockFinalEnum(string value, string attributeName)
+        {
             const int HashAllLength = 4; // Length of "#all"
             int r = 0;
             string[] stringValues = XmlConvert.SplitString(value);
-            for (int i = 0; i < stringValues.Length; i++) {
+            for (int i = 0; i < stringValues.Length; i++)
+            {
                 bool matched = false;
-                for (int j = 0; j < DerivationMethodStrings.Length; j++) {
-                    if (stringValues[i] == DerivationMethodStrings[j]) {
-                        if ((r & DerivationMethodValues[j]) != 0 && (r & DerivationMethodValues[j]) != DerivationMethodValues[j]) {
+                for (int j = 0; j < s_derivationMethodStrings.Length; j++)
+                {
+                    if (stringValues[i] == s_derivationMethodStrings[j])
+                    {
+                        if ((r & s_derivationMethodValues[j]) != 0 && (r & s_derivationMethodValues[j]) != s_derivationMethodValues[j])
+                        {
                             SendValidationEvent(ResXml.Sch_InvalidXsdAttributeValue, attributeName, value, null);
                             return 0;
                         }
-                        r |= DerivationMethodValues[j];
+                        r |= s_derivationMethodValues[j];
                         matched = true;
                         break;
                     }
                 }
-                if (!matched) {
+                if (!matched)
+                {
                     SendValidationEvent(ResXml.Sch_InvalidXsdAttributeValue, attributeName, value, null);
                     return 0;
                 }
-                if (r == (int)XmlSchemaDerivationMethod.All && value.Length > HashAllLength) { //#all is not allowed with other values
+                if (r == (int)XmlSchemaDerivationMethod.All && value.Length > HashAllLength)
+                { //#all is not allowed with other values
                     SendValidationEvent(ResXml.Sch_InvalidXsdAttributeValue, attributeName, value, null);
                     return 0;
-                }   
+                }
             }
             return r;
-            
         }
 
-        private static string ParseUriReference(string s) {
+        private static string ParseUriReference(string s)
+        {
             return s;
         }
 
-        private void SendValidationEvent(string code, string arg0, string arg1, string arg2) {
-            SendValidationEvent(new XmlSchemaException(code, new string[] { arg0, arg1, arg2 }, this.reader.BaseURI, this.positionInfo.LineNumber, this.positionInfo.LinePosition));
+        private void SendValidationEvent(string code, string arg0, string arg1, string arg2)
+        {
+            SendValidationEvent(new XmlSchemaException(code, new string[] { arg0, arg1, arg2 }, _reader.BaseURI, _positionInfo.LineNumber, _positionInfo.LinePosition));
         }
 
-        private void SendValidationEvent(string code, string msg) {
-            SendValidationEvent(new XmlSchemaException(code, msg, this.reader.BaseURI, this.positionInfo.LineNumber, this.positionInfo.LinePosition));
+        private void SendValidationEvent(string code, string msg)
+        {
+            SendValidationEvent(new XmlSchemaException(code, msg, _reader.BaseURI, _positionInfo.LineNumber, _positionInfo.LinePosition));
         }
 
-        private void SendValidationEvent(string code, string[] args, XmlSeverityType severity) {
-            SendValidationEvent(new XmlSchemaException(code, args, this.reader.BaseURI, this.positionInfo.LineNumber, this.positionInfo.LinePosition), severity);
+        private void SendValidationEvent(string code, string[] args, XmlSeverityType severity)
+        {
+            SendValidationEvent(new XmlSchemaException(code, args, _reader.BaseURI, _positionInfo.LineNumber, _positionInfo.LinePosition), severity);
         }
 
-        private void SendValidationEvent(XmlSchemaException e, XmlSeverityType severity) {
-            this.schema.ErrorCount++;
-            e.SetSchemaObject(this.schema);
-            if (validationEventHandler != null) {
-                validationEventHandler(null, new ValidationEventArgs(e, severity));
+        private void SendValidationEvent(XmlSchemaException e, XmlSeverityType severity)
+        {
+            _schema.ErrorCount++;
+            e.SetSchemaObject(_schema);
+            if (_validationEventHandler != null)
+            {
+                _validationEventHandler(null, new ValidationEventArgs(e, severity));
             }
-            else if (severity == XmlSeverityType.Error) {
+            else if (severity == XmlSeverityType.Error)
+            {
                 throw e;
             }
         }
 
-        private void SendValidationEvent(XmlSchemaException e) {
+        private void SendValidationEvent(XmlSchemaException e)
+        {
             SendValidationEvent(e, XmlSeverityType.Error);
         }
 
-        private void RecordPosition() {
-            this.xso.SourceUri = this.reader.BaseURI;
-            this.xso.LineNumber = this.positionInfo.LineNumber;
-            this.xso.LinePosition = this.positionInfo.LinePosition;
-            if (this.xso != this.schema) {
-                this.xso.Parent = this.ParentContainer;
+        private void RecordPosition()
+        {
+            _xso.SourceUri = _reader.BaseURI;
+            _xso.LineNumber = _positionInfo.LineNumber;
+            _xso.LinePosition = _positionInfo.LinePosition;
+            if (_xso != _schema)
+            {
+                _xso.Parent = this.ParentContainer;
             }
-
         }
-
     }; // class XsdBuilder
-
 } // namespace Microsoft.Xml.Schema

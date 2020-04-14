@@ -148,7 +148,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return value;
         }
 
-        private static readonly string[] nonTelemetrySensitiveOptionIds = new string[]
+        private static readonly string[] s_nonTelemetrySensitiveOptionIds = new string[]
         {
             ApplicationOptions.ProviderIdKey, ApplicationOptions.VersionKey,
             UpdateOptions.CollectionTypesKey, UpdateOptions.ExcludeTypesKey, UpdateOptions.ReferencesKey, UpdateOptions.RuntimeIdentifierKey
@@ -164,9 +164,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 value = "<null>";
             }
-            else if (nonTelemetrySensitiveOptionIds.Any(id => option.HasSameId(id)))
+            else if (s_nonTelemetrySensitiveOptionIds.Any(id => option.HasSameId(id)))
             {
-                var newValue =  GetSerializationValue(value);
+                var newValue = GetSerializationValue(value);
                 if (newValue is List<object> list)
                 {
                     value = list.Select(item => $"'{item}'").Aggregate((cum, s) => cum + ", " + s).ToString();

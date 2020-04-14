@@ -548,7 +548,6 @@ namespace System.ServiceModel.Channels
                     TransferMode result;
                     if (!Enum.TryParse<TransferMode>(transferMode, true, out result) || !TransferModeHelper.IsDefined(result) || result == TransferMode.Buffered)
                     {
-
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(
                                 SRServiceModel.WebSocketTransportPolicyAssertionInvalid,
                                 policyContext.Contract.Namespace,

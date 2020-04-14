@@ -2,7 +2,8 @@
 // Licensed under the MIT license.
 #define SILVERLIGHT
 
-namespace Microsoft.Win32 {
+namespace Microsoft.Win32
+{
     using System;
     using System.Runtime.InteropServices;
 #if !SILVERLIGHT    
@@ -23,11 +24,12 @@ namespace Microsoft.Win32 {
     [HostProtection(MayLeakOnAbort = true)]
 #endif
 
-    internal static class NativeMethods {
-
+    internal static class NativeMethods
+    {
         //[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         [StructLayout(LayoutKind.Sequential)]
-        internal class TEXTMETRIC {
+        internal class TEXTMETRIC
+        {
             public int tmHeight = 0;
             public int tmAscent = 0;
             public int tmDescent = 0;
@@ -1743,7 +1745,5 @@ namespace Microsoft.Win32 {
 
 #endif // !FEATURE_PAL
 #endif // !SILVERLIGHT
-
     }
-
 }

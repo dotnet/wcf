@@ -13,14 +13,13 @@ namespace System.ServiceModel.Channels
     using WsdlNS = System.Web.Services.Description;
 
     // implemented by Indigo Transports
-    interface ITransportPolicyImport
+    internal interface ITransportPolicyImport
     {
         void ImportPolicy(MetadataImporter importer, PolicyConversionContext policyContext);
     }
 
     public class TransportBindingElementImporter : IWsdlImportExtension, IPolicyImportExtension
     {
-
         void IWsdlImportExtension.BeforeImport(WsdlNS.ServiceDescriptionCollection wsdlDocuments, XmlSchemaSet xmlSchemas, ICollection<XmlElement> policy)
         {
             WsdlImporter.SoapInPolicyWorkaroundHelper.InsertAdHocTransportPolicy(wsdlDocuments);
@@ -60,17 +59,16 @@ namespace System.ServiceModel.Channels
             {
                 ImportAddress(context, transportBindingElement);
             }
-
         }
 
-        static BindingElementCollection GetBindingElements(WsdlEndpointConversionContext context)
+        private static BindingElementCollection GetBindingElements(WsdlEndpointConversionContext context)
         {
             Binding binding = context.Endpoint.Binding;
             BindingElementCollection elements = binding is CustomBinding ? ((CustomBinding)binding).Elements : binding.CreateBindingElements();
             return elements;
         }
 
-        static CustomBinding ConvertToCustomBinding(WsdlEndpointConversionContext context)
+        private static CustomBinding ConvertToCustomBinding(WsdlEndpointConversionContext context)
         {
             CustomBinding customBinding = context.Endpoint.Binding as CustomBinding;
             if (customBinding == null)
@@ -81,7 +79,7 @@ namespace System.ServiceModel.Channels
             return customBinding;
         }
 
-        static void ImportAddress(WsdlEndpointConversionContext context, TransportBindingElement transportBindingElement)
+        private static void ImportAddress(WsdlEndpointConversionContext context, TransportBindingElement transportBindingElement)
         {
             EndpointAddress address = context.Endpoint.Address = WsdlImporter.WSAddressingHelper.ImportAddress(context.WsdlPort);
             if (address != null)
@@ -98,7 +96,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void CreateLegacyTransportBindingElement(WsdlImporter importer, WsdlNS.SoapBinding soapBinding, WsdlEndpointConversionContext context)
+        private static void CreateLegacyTransportBindingElement(WsdlImporter importer, WsdlNS.SoapBinding soapBinding, WsdlEndpointConversionContext context)
         {
             // We create a transportBindingElement based on the SoapBinding's Transport
             TransportBindingElement transportBindingElement = CreateTransportBindingElements(soapBinding.Transport, null);
@@ -109,7 +107,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static HttpsTransportBindingElement CreateHttpsFromHttp(HttpTransportBindingElement http)
+        private static HttpsTransportBindingElement CreateHttpsFromHttp(HttpTransportBindingElement http)
         {
             if (http == null) return new HttpsTransportBindingElement();
 
@@ -139,7 +137,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static TransportBindingElement CreateTransportBindingElements(string transportUri, PolicyConversionContext policyContext)
+        private static TransportBindingElement CreateTransportBindingElements(string transportUri, PolicyConversionContext policyContext)
         {
             TransportBindingElement transportBindingElement = null;
             // Try and Create TransportBindingElement
@@ -152,9 +150,9 @@ namespace System.ServiceModel.Channels
                     transportBindingElement = new TcpTransportBindingElement();
                     break;
                 case TransportPolicyConstants.NamedPipeTransportUri:
-// Not supported on .NET Core yet.
-//                     transportBindingElement = new NamedPipeTransportBindingElement();
-//                     break;
+                // Not supported on .NET Core yet.
+                //                     transportBindingElement = new NamedPipeTransportBindingElement();
+                //                     break;
                 case TransportPolicyConstants.PeerTransportUri:
                     throw new NotImplementedException();
                 case TransportPolicyConstants.WebSocketTransportUri:
@@ -171,9 +169,8 @@ namespace System.ServiceModel.Channels
             return transportBindingElement;
         }
 
-        static HttpTransportBindingElement GetHttpTransportBindingElement(PolicyConversionContext policyContext)
+        private static HttpTransportBindingElement GetHttpTransportBindingElement(PolicyConversionContext policyContext)
         {
-
             if (policyContext != null)
             {
                 WSSecurityPolicy sp = null;
@@ -191,15 +188,15 @@ namespace System.ServiceModel.Channels
 
     internal static class StateHelper
     {
-        readonly static object StateBagKey = new object();
+        private readonly static object s_stateBagKey = new object();
 
-        static Dictionary<XmlQualifiedName, XmlQualifiedName> GetGeneratedTransportBindingElements(MetadataImporter importer)
+        private static Dictionary<XmlQualifiedName, XmlQualifiedName> GetGeneratedTransportBindingElements(MetadataImporter importer)
         {
             object retValue;
-            if (!importer.State.TryGetValue(StateHelper.StateBagKey, out retValue))
+            if (!importer.State.TryGetValue(StateHelper.s_stateBagKey, out retValue))
             {
                 retValue = new Dictionary<XmlQualifiedName, XmlQualifiedName>();
-                importer.State.Add(StateHelper.StateBagKey, retValue);
+                importer.State.Add(StateHelper.s_stateBagKey, retValue);
             }
             return (Dictionary<XmlQualifiedName, XmlQualifiedName>)retValue;
         }

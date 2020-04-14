@@ -8,9 +8,9 @@ namespace System.ServiceModel
 {
     public class NetHttpsBinding : HttpBindingBase
     {
-        BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
-        NetHttpMessageEncoding _messageEncoding;
-        BasicHttpsSecurity _basicHttpsSecurity;
+        private BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
+        private NetHttpMessageEncoding _messageEncoding;
+        private BasicHttpsSecurity _basicHttpsSecurity;
 
         public NetHttpsBinding() : this(BasicHttpsSecurity.DefaultMode) { }
 
@@ -132,7 +132,7 @@ namespace System.ServiceModel
             }
         }
 
-        void Initialize()
+        private void Initialize()
         {
             _messageEncoding = NetHttpBindingDefaults.MessageEncoding;
             _binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement() { MessageVersion = MessageVersion.Soap12WSAddressing10 };
@@ -141,6 +141,5 @@ namespace System.ServiceModel
             InternalWebSocketSettings.SubProtocol = WebSocketTransportSettings.SoapSubProtocol;
             _basicHttpsSecurity = new BasicHttpsSecurity();
         }
-
     }
 }

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Description
 {
     using Microsoft.Xml;
@@ -11,13 +11,13 @@ namespace System.ServiceModel.Description
 
     public abstract class PolicyConversionContext
     {
-        readonly ContractDescription contract;
+        private readonly ContractDescription _contract;
 
         protected PolicyConversionContext(ServiceEndpoint endpoint)
         {
             if (endpoint == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("endpoint");
-            this.contract = endpoint.Contract;
+            _contract = endpoint.Contract;
         }
 
         public abstract BindingElementCollection BindingElements { get; }
@@ -30,7 +30,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        public ContractDescription Contract { get { return this.contract; } }
+        public ContractDescription Contract { get { return _contract; } }
 
         public abstract PolicyAssertionCollection GetBindingAssertions();
         public abstract PolicyAssertionCollection GetOperationBindingAssertions(OperationDescription operation);
@@ -53,7 +53,5 @@ namespace System.ServiceModel.Description
             }
             return result;
         }
-
     }
-
 }

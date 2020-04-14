@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -10,90 +11,110 @@ namespace MS.Internal.Xml.XPath {
     using Microsoft.Xml.Xsl;
     using FT = MS.Internal.Xml.XPath.Function.FunctionType;
 
-    internal sealed class NodeFunctions : ValueQuery {
-        Query arg = null;
-        FT funcType;
-        XsltContext xsltContext;
+    internal sealed class NodeFunctions : ValueQuery
+    {
+        private Query _arg = null;
+        private FT _funcType;
+        private XsltContext _xsltContext;
 
-        public NodeFunctions(FT funcType, Query arg) {
-            this.funcType = funcType;
-            this.arg = arg; 
+        public NodeFunctions(FT funcType, Query arg)
+        {
+            _funcType = funcType;
+            _arg = arg;
         }
 
-        public override void SetXsltContext(XsltContext context){
-            this.xsltContext = context.Whitespace ? context : null;
-            if (arg != null) {
-                arg.SetXsltContext(context);
+        public override void SetXsltContext(XsltContext context)
+        {
+            _xsltContext = context.Whitespace ? context : null;
+            if (_arg != null)
+            {
+                _arg.SetXsltContext(context);
             }
         }
-        
-        private XPathNavigator EvaluateArg(XPathNodeIterator context) {
-            if (arg == null) {
+
+        private XPathNavigator EvaluateArg(XPathNodeIterator context)
+        {
+            if (_arg == null)
+            {
                 return context.Current;
             }
-            arg.Evaluate(context);
-            return arg.Advance();
+            _arg.Evaluate(context);
+            return _arg.Advance();
         }
 
-        public override object Evaluate(XPathNodeIterator context)  {
+        public override object Evaluate(XPathNodeIterator context)
+        {
             XPathNavigator argVal;
 
-            switch (funcType) {
-            case FT.FuncPosition:
-                return (double)context.CurrentPosition;
-            case FT.FuncLast:
-                return (double)context.Count;
-            case FT.FuncNameSpaceUri:
-                argVal = EvaluateArg(context);
-                if (argVal != null) {
-                    return argVal.NamespaceURI;
-                }
-                break;
-            case FT.FuncLocalName:
-                argVal = EvaluateArg(context);
-                if (argVal != null) {
-                    return argVal.LocalName;
-                }
-                break;
-            case FT.FuncName :
-                argVal = EvaluateArg(context);
-                if (argVal != null) {
-                    return argVal.Name;
-                }
-                break;
-            case FT.FuncCount:
-                arg.Evaluate(context);
-                int count = 0;
-                if (xsltContext != null) {
-                    XPathNavigator nav;
-                    while ((nav = arg.Advance()) != null) {
-                        if (nav.NodeType != XPathNodeType.Whitespace || xsltContext.PreserveWhitespace(nav)) {
+            switch (_funcType)
+            {
+                case FT.FuncPosition:
+                    return (double)context.CurrentPosition;
+                case FT.FuncLast:
+                    return (double)context.Count;
+                case FT.FuncNameSpaceUri:
+                    argVal = EvaluateArg(context);
+                    if (argVal != null)
+                    {
+                        return argVal.NamespaceURI;
+                    }
+                    break;
+                case FT.FuncLocalName:
+                    argVal = EvaluateArg(context);
+                    if (argVal != null)
+                    {
+                        return argVal.LocalName;
+                    }
+                    break;
+                case FT.FuncName:
+                    argVal = EvaluateArg(context);
+                    if (argVal != null)
+                    {
+                        return argVal.Name;
+                    }
+                    break;
+                case FT.FuncCount:
+                    _arg.Evaluate(context);
+                    int count = 0;
+                    if (_xsltContext != null)
+                    {
+                        XPathNavigator nav;
+                        while ((nav = _arg.Advance()) != null)
+                        {
+                            if (nav.NodeType != XPathNodeType.Whitespace || _xsltContext.PreserveWhitespace(nav))
+                            {
+                                count++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        while (_arg.Advance() != null)
+                        {
                             count++;
                         }
                     }
-                } else {
-                    while (arg.Advance() != null) {
-                        count++;
-                    }
-                }
-                return (double) count;
+                    return (double)count;
             }
             return string.Empty;
         }
 
-        public override XPathResultType StaticType { get { return Function.ReturnTypes[(int)funcType]; } }
+        public override XPathResultType StaticType { get { return Function.ReturnTypes[(int)_funcType]; } }
 
-        public override XPathNodeIterator Clone() {
-            NodeFunctions method = new NodeFunctions(funcType, Clone(arg));
-            method.xsltContext = this.xsltContext;
+        public override XPathNodeIterator Clone()
+        {
+            NodeFunctions method = new NodeFunctions(_funcType, Clone(_arg));
+            method._xsltContext = _xsltContext;
             return method;
-       }
+        }
 
-        public override void PrintQuery(XmlWriter w) {
+        public override void PrintQuery(XmlWriter w)
+        {
             w.WriteStartElement(this.GetType().Name);
-            w.WriteAttributeString("name", funcType.ToString());
-            if (arg != null) {
-                arg.PrintQuery(w);
+            w.WriteAttributeString("name", _funcType.ToString());
+            if (_arg != null)
+            {
+                _arg.PrintQuery(w);
             }
             w.WriteEndElement();
         }

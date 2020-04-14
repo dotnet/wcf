@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,50 +15,60 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeStatement : CodeObject {
-        private CodeLinePragma linePragma;
-        
+    public class CodeStatement : CodeObject
+    {
+        private CodeLinePragma _linePragma;
+
         // Optionally Serializable
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeDirectiveCollection startDirectives = null;
+        private CodeDirectiveCollection _startDirectives = null;
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeDirectiveCollection endDirectives = null;
-        
+        private CodeDirectiveCollection _endDirectives = null;
+
 
         /// <devdoc>
         ///    <para>
         ///       The line the statement occurs on.
         ///    </para>
         /// </devdoc>
-        public CodeLinePragma LinePragma {
-            get {
-                return linePragma;
+        public CodeLinePragma LinePragma
+        {
+            get
+            {
+                return _linePragma;
             }
-            set {
-                linePragma = value;
-            }
-        }
-
-        public CodeDirectiveCollection StartDirectives {
-            get {
-                if (startDirectives == null) {
-                    startDirectives = new CodeDirectiveCollection();
-                }
-                return startDirectives;                
+            set
+            {
+                _linePragma = value;
             }
         }
 
-        public CodeDirectiveCollection EndDirectives {
-            get {
-                if (endDirectives == null) {
-                    endDirectives = new CodeDirectiveCollection();
+        public CodeDirectiveCollection StartDirectives
+        {
+            get
+            {
+                if (_startDirectives == null)
+                {
+                    _startDirectives = new CodeDirectiveCollection();
                 }
-                return endDirectives ;                
+                return _startDirectives;
             }
-        }        
+        }
+
+        public CodeDirectiveCollection EndDirectives
+        {
+            get
+            {
+                if (_endDirectives == null)
+                {
+                    _endDirectives = new CodeDirectiveCollection();
+                }
+                return _endDirectives;
+            }
+        }
     }
 }

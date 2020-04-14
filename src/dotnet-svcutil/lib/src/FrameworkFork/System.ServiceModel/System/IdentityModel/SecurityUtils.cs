@@ -169,7 +169,6 @@ namespace System.IdentityModel
                             policyState[i] = done;
                         }
                     }
-
                 } while (oldContextCount < evaluationContext.Generation);
 
                 _authorizationContext = new DefaultAuthorizationContext(evaluationContext);
@@ -410,7 +409,7 @@ namespace System.IdentityModel
                 identities.Add(_policy.PrimaryIdentity);
                 properties.Add(SecurityUtils.Identities, identities);
             }
-            
+
             _properties = properties;
         }
 

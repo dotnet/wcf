@@ -17,67 +17,70 @@ using BufferBuilder=Microsoft.Xml.BufferBuilder;
 using BufferBuilder = System.Text.StringBuilder;
 #endif
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal partial class DtdParser : IDtdParser {
 
-//
-// Private types
-//
-        enum Token {
-            CDATA           = XmlTokenizedType.CDATA,       // == 0
-            ID              = XmlTokenizedType.ID,          // == 1
-            IDREF           = XmlTokenizedType.IDREF,       // == 2
-            IDREFS          = XmlTokenizedType.IDREFS,      // == 3
-            ENTITY          = XmlTokenizedType.ENTITY,      // == 4
-            ENTITIES        = XmlTokenizedType.ENTITIES,    // == 5
-            NMTOKEN         = XmlTokenizedType.NMTOKEN,     // == 6
-            NMTOKENS        = XmlTokenizedType.NMTOKENS,    // == 7
-            NOTATION        = XmlTokenizedType.NOTATION,    // == 8
-            None            ,
-            PERef           ,
-            AttlistDecl     ,
-            ElementDecl     ,
-            EntityDecl      ,
-            NotationDecl    ,
-            Comment         ,
-            PI              ,
+    internal partial class DtdParser : IDtdParser
+    {
+        //
+        // Private types
+        //
+        private enum Token
+        {
+            CDATA = XmlTokenizedType.CDATA,       // == 0
+            ID = XmlTokenizedType.ID,          // == 1
+            IDREF = XmlTokenizedType.IDREF,       // == 2
+            IDREFS = XmlTokenizedType.IDREFS,      // == 3
+            ENTITY = XmlTokenizedType.ENTITY,      // == 4
+            ENTITIES = XmlTokenizedType.ENTITIES,    // == 5
+            NMTOKEN = XmlTokenizedType.NMTOKEN,     // == 6
+            NMTOKENS = XmlTokenizedType.NMTOKENS,    // == 7
+            NOTATION = XmlTokenizedType.NOTATION,    // == 8
+            None,
+            PERef,
+            AttlistDecl,
+            ElementDecl,
+            EntityDecl,
+            NotationDecl,
+            Comment,
+            PI,
             CondSectionStart,
-            CondSectionEnd  ,
-            Eof             ,
-            REQUIRED        ,
-            IMPLIED         ,
-            FIXED           ,
-            QName           ,
-            Name            ,
-            Nmtoken         ,
+            CondSectionEnd,
+            Eof,
+            REQUIRED,
+            IMPLIED,
+            FIXED,
+            QName,
+            Name,
+            Nmtoken,
             Quote,
-            LeftParen       ,
-            RightParen      ,
-            GreaterThan     ,
-            Or              ,
-            LeftBracket     ,
-            RightBracket    ,
-            PUBLIC          ,
-            SYSTEM          ,
-            Literal         ,
-            DOCTYPE         ,
-            NData           ,
-            Percent         ,
-            Star            ,
-            QMark           ,
-            Plus            ,
-            PCDATA          ,
-            Comma           ,
-            ANY             ,
-            EMPTY           ,
-            IGNORE          ,
-            INCLUDE         ,
+            LeftParen,
+            RightParen,
+            GreaterThan,
+            Or,
+            LeftBracket,
+            RightBracket,
+            PUBLIC,
+            SYSTEM,
+            Literal,
+            DOCTYPE,
+            NData,
+            Percent,
+            Star,
+            QMark,
+            Plus,
+            PCDATA,
+            Comma,
+            ANY,
+            EMPTY,
+            IGNORE,
+            INCLUDE,
         }
 
-        enum ScanningFunction {
+        private enum ScanningFunction
+        {
             SubsetContent,
             Name,
             QName,
@@ -114,20 +117,23 @@ namespace Microsoft.Xml {
             None,
         }
 
-        enum LiteralType { 
+        private enum LiteralType
+        {
             AttributeValue,
             EntityReplText,
             SystemOrPublicID
         }
 
 #if !SILVERLIGHT
-        class UndeclaredNotation {
+        private class UndeclaredNotation
+        {
             internal string name;
             internal int lineNo;
             internal int linePos;
             internal UndeclaredNotation next;
 
-            internal UndeclaredNotation( string name, int lineNo, int linePos ) { 
+            internal UndeclaredNotation(string name, int lineNo, int linePos)
+            {
                 this.name = name;
                 this.lineNo = lineNo;
                 this.linePos = linePos;
@@ -136,86 +142,87 @@ namespace Microsoft.Xml {
         }
 #endif
 
-//
-// Fields
-//
+        //
+        // Fields
+        //
         // connector to reader
-        IDtdParserAdapter readerAdapter;
+        private IDtdParserAdapter _readerAdapter;
 #if !SILVERLIGHT
-        IDtdParserAdapterWithValidation readerAdapterWithValidation;
+        private IDtdParserAdapterWithValidation _readerAdapterWithValidation;
 #endif
 
         // name table
-        XmlNameTable nameTable;
+        private XmlNameTable _nameTable;
 
         // final schema info
-        SchemaInfo  schemaInfo;
+        private SchemaInfo _schemaInfo;
 
         // XmlCharType instance
-        XmlCharType xmlCharType = XmlCharType.Instance;
+        private XmlCharType _xmlCharType = XmlCharType.Instance;
 
         // system & public id
-        string      systemId = string.Empty;
-        string      publicId = string.Empty;
+        private string _systemId = string.Empty;
+        private string _publicId = string.Empty;
 
         // flags
 #if !SILVERLIGHT
-        bool    normalize = true;
-        bool    validate = false;
-        bool    supportNamespaces = true;
-        bool    v1Compat = false;
+        private bool _normalize = true;
+        private bool _validate = false;
+        private bool _supportNamespaces = true;
+        private bool _v1Compat = false;
 #endif
 
         // cached character buffer
-        char[]  chars;
-        int     charsUsed;
-        int     curPos;
+        private char[] _chars;
+        private int _charsUsed;
+        private int _curPos;
 
         // scanning function for the next token
-        ScanningFunction scanningFunction;
-        ScanningFunction nextScaningFunction;
-        ScanningFunction savedScanningFunction; // this one is used only for adding spaces around parameter entities
+        private ScanningFunction _scanningFunction;
+        private ScanningFunction _nextScaningFunction;
+        private ScanningFunction _savedScanningFunction; // this one is used only for adding spaces around parameter entities
 
         // flag if whitespace seen before token
-        bool    whitespaceSeen;
+        private bool _whitespaceSeen;
 
         // start position of the last token (for name and value)
-        int     tokenStartPos;
+        private int _tokenStartPos;
 
         // colon position (for name)
-        int     colonPos;
+        private int _colonPos;
 
         // value of the internal subset
-        BufferBuilder internalSubsetValueSb = null;
+        private BufferBuilder _internalSubsetValueSb = null;
 
         // entities
-        int     externalEntitiesDepth = 0;
-        int     currentEntityId = 0;
+        private int _externalEntitiesDepth = 0;
+        private int _currentEntityId = 0;
 
         // free-floating DTD support
-        bool            freeFloatingDtd = false;
-        bool            hasFreeFloatingInternalSubset = false;
+        private bool _freeFloatingDtd = false;
+        private bool _hasFreeFloatingInternalSubset = false;
 
         // misc
-        BufferBuilder   stringBuilder;
-        int             condSectionDepth = 0;
-        LineInfo        literalLineInfo = new LineInfo( 0, 0 );
-        char            literalQuoteChar = '"';
-        string          documentBaseUri = string.Empty;
-        string          externalDtdBaseUri = string.Empty;
+        private BufferBuilder _stringBuilder;
+        private int _condSectionDepth = 0;
+        private LineInfo _literalLineInfo = new LineInfo(0, 0);
+        private char _literalQuoteChar = '"';
+        private string _documentBaseUri = string.Empty;
+        private string _externalDtdBaseUri = string.Empty;
 
 #if !SILVERLIGHT
-        Dictionary<string, UndeclaredNotation> undeclaredNotations = null;
-        int[] condSectionEntityIds = null;
+        private Dictionary<string, UndeclaredNotation> _undeclaredNotations = null;
+        private int[] _condSectionEntityIds = null;
 #endif
 
-        const int CondSectionEntityIdsInitialSize = 2;
+        private const int CondSectionEntityIdsInitialSize = 2;
 
-//
-// Constructor
-//
+        //
+        // Constructor
+        //
 
-        static DtdParser() {
+        static DtdParser()
+        {
 #if DEBUG
             //  The absolute numbering is utilized in attribute type parsing
             Debug.Assert( (int)Token.CDATA    == (int)XmlTokenizedType.CDATA    && (int)XmlTokenizedType.CDATA    == 0 );
@@ -230,190 +237,226 @@ namespace Microsoft.Xml {
 #endif
         }
 
-        DtdParser() {
+        private DtdParser()
+        {
         }
 
-        internal static IDtdParser Create() {
+        internal static IDtdParser Create()
+        {
             return new DtdParser();
         }
 
-//
-// Initialization methods
-//
+        //
+        // Initialization methods
+        //
 
-        private void Initialize(IDtdParserAdapter readerAdapter) {
+        private void Initialize(IDtdParserAdapter readerAdapter)
+        {
             Debug.Assert(readerAdapter != null);
-            this.readerAdapter = readerAdapter;
+            _readerAdapter = readerAdapter;
 #if !SILVERLIGHT
-            this.readerAdapterWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
+            _readerAdapterWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
 #endif
 
-            nameTable = readerAdapter.NameTable;
+            _nameTable = readerAdapter.NameTable;
 
 #if !SILVERLIGHT
             IDtdParserAdapterWithValidation raWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
-            if (raWithValidation != null) {
-                this.validate = raWithValidation.DtdValidation;
+            if (raWithValidation != null)
+            {
+                _validate = raWithValidation.DtdValidation;
             }
             IDtdParserAdapterV1 raV1 = readerAdapter as IDtdParserAdapterV1;
-            if (raV1 != null) {
-                v1Compat = raV1.V1CompatibilityMode;
-                this.normalize = raV1.Normalization;
-                this.supportNamespaces = raV1.Namespaces;
+            if (raV1 != null)
+            {
+                _v1Compat = raV1.V1CompatibilityMode;
+                _normalize = raV1.Normalization;
+                _supportNamespaces = raV1.Namespaces;
             }
 #endif
 
-            schemaInfo = new SchemaInfo();
+            _schemaInfo = new SchemaInfo();
 #if !SILVERLIGHT
-            schemaInfo.SchemaType = SchemaType.DTD;
+            _schemaInfo.SchemaType = SchemaType.DTD;
 #endif
 
-            stringBuilder = new BufferBuilder();
+            _stringBuilder = new BufferBuilder();
 
             Uri baseUri = readerAdapter.BaseUri;
-            if (baseUri != null) {
-                documentBaseUri = baseUri.ToString();
+            if (baseUri != null)
+            {
+                _documentBaseUri = baseUri.ToString();
             }
 
-            freeFloatingDtd = false;
+            _freeFloatingDtd = false;
         }
 
-        private void InitializeFreeFloatingDtd(string baseUri, string docTypeName, string publicId, string systemId, string internalSubset, IDtdParserAdapter adapter) {
+        private void InitializeFreeFloatingDtd(string baseUri, string docTypeName, string publicId, string systemId, string internalSubset, IDtdParserAdapter adapter)
+        {
             Initialize(adapter);
 
-            if ( docTypeName == null || docTypeName.Length == 0 ) {
-                throw XmlConvert.CreateInvalidNameArgumentException( docTypeName, "docTypeName" );
+            if (docTypeName == null || docTypeName.Length == 0)
+            {
+                throw XmlConvert.CreateInvalidNameArgumentException(docTypeName, "docTypeName");
             }
 
             // check doctype name
-            XmlConvert.VerifyName( docTypeName );
-            int colonPos = docTypeName.IndexOf( ':' );
-            if ( colonPos == -1 ) {
-                schemaInfo.DocTypeName = new XmlQualifiedName( nameTable.Add( docTypeName ) );
+            XmlConvert.VerifyName(docTypeName);
+            int colonPos = docTypeName.IndexOf(':');
+            if (colonPos == -1)
+            {
+                _schemaInfo.DocTypeName = new XmlQualifiedName(_nameTable.Add(docTypeName));
             }
-            else {
-                schemaInfo.DocTypeName = new XmlQualifiedName( nameTable.Add( docTypeName.Substring( 0, colonPos ) ),
-                                                               nameTable.Add( docTypeName.Substring( colonPos + 1 ) ) );
+            else
+            {
+                _schemaInfo.DocTypeName = new XmlQualifiedName(_nameTable.Add(docTypeName.Substring(0, colonPos)),
+                                                               _nameTable.Add(docTypeName.Substring(colonPos + 1)));
             }
-            
+
             int i;
             // check system id
-            if ( systemId != null && systemId.Length > 0 ) {
-                if ( ( i = xmlCharType.IsOnlyCharData( systemId ) ) >= 0 ) {
-                    ThrowInvalidChar( curPos, systemId, i );
+            if (systemId != null && systemId.Length > 0)
+            {
+                if ((i = _xmlCharType.IsOnlyCharData(systemId)) >= 0)
+                {
+                    ThrowInvalidChar(_curPos, systemId, i);
                 }
-                this.systemId = systemId;
+                _systemId = systemId;
             }
 
             // check public id
-            if ( publicId != null && publicId.Length > 0 ) {
-                if ( ( i = xmlCharType.IsPublicId( publicId ) ) >= 0 ) {
-                    ThrowInvalidChar( curPos, publicId, i );
+            if (publicId != null && publicId.Length > 0)
+            {
+                if ((i = _xmlCharType.IsPublicId(publicId)) >= 0)
+                {
+                    ThrowInvalidChar(_curPos, publicId, i);
                 }
-                this.publicId = publicId;
+                _publicId = publicId;
             }
 
             // init free-floating internal subset
-            if ( internalSubset != null && internalSubset.Length > 0 ) {
-                readerAdapter.PushInternalDtd( baseUri, internalSubset );
-                hasFreeFloatingInternalSubset = true;
+            if (internalSubset != null && internalSubset.Length > 0)
+            {
+                _readerAdapter.PushInternalDtd(baseUri, internalSubset);
+                _hasFreeFloatingInternalSubset = true;
             }
 
-            Uri baseUriOb = readerAdapter.BaseUri;
-            if ( baseUriOb != null ) {
-                documentBaseUri = baseUriOb.ToString();
+            Uri baseUriOb = _readerAdapter.BaseUri;
+            if (baseUriOb != null)
+            {
+                _documentBaseUri = baseUriOb.ToString();
             }
 
-            freeFloatingDtd = true;
+            _freeFloatingDtd = true;
         }
 
-//
-// IDtdParser interface
-//
-#region IDtdParser Members
+        //
+        // IDtdParser interface
+        //
+        #region IDtdParser Members
 
-         IDtdInfo  IDtdParser.ParseInternalDtd(IDtdParserAdapter adapter, bool saveInternalSubset) {
+        IDtdInfo IDtdParser.ParseInternalDtd(IDtdParserAdapter adapter, bool saveInternalSubset)
+        {
             Initialize(adapter);
             Parse(saveInternalSubset);
-            return schemaInfo;
+            return _schemaInfo;
         }
 
-         IDtdInfo  IDtdParser.ParseFreeFloatingDtd(string baseUri, string docTypeName, string publicId, string systemId, string internalSubset, IDtdParserAdapter adapter) {
+        IDtdInfo IDtdParser.ParseFreeFloatingDtd(string baseUri, string docTypeName, string publicId, string systemId, string internalSubset, IDtdParserAdapter adapter)
+        {
             InitializeFreeFloatingDtd(baseUri, docTypeName, publicId, systemId, internalSubset, adapter);
             Parse(false);
-            return schemaInfo;
+            return _schemaInfo;
         }
-#endregion
+        #endregion
 
-//
-// Private properties
-//
-    private bool ParsingInternalSubset {
-        get {
-            return externalEntitiesDepth == 0;
+        //
+        // Private properties
+        //
+        private bool ParsingInternalSubset
+        {
+            get
+            {
+                return _externalEntitiesDepth == 0;
+            }
         }
-    }
 
-    private bool IgnoreEntityReferences {
-        get { 
-            return scanningFunction == ScanningFunction.CondSection3;
+        private bool IgnoreEntityReferences
+        {
+            get
+            {
+                return _scanningFunction == ScanningFunction.CondSection3;
+            }
         }
-    }
 
-    private bool SaveInternalSubsetValue { 
-        get { 
-            return readerAdapter.EntityStackLength == 0 && internalSubsetValueSb != null;
+        private bool SaveInternalSubsetValue
+        {
+            get
+            {
+                return _readerAdapter.EntityStackLength == 0 && _internalSubsetValueSb != null;
+            }
         }
-    }
 
-    private bool ParsingTopLevelMarkup {
-        get {
-            return scanningFunction == ScanningFunction.SubsetContent || 
-                ( scanningFunction == ScanningFunction.ParamEntitySpace && savedScanningFunction == ScanningFunction.SubsetContent );
+        private bool ParsingTopLevelMarkup
+        {
+            get
+            {
+                return _scanningFunction == ScanningFunction.SubsetContent ||
+                    (_scanningFunction == ScanningFunction.ParamEntitySpace && _savedScanningFunction == ScanningFunction.SubsetContent);
+            }
         }
-    }
 
-    private bool SupportNamespaces {
-        get {
+        private bool SupportNamespaces
+        {
+            get
+            {
 #if SILVERLIGHT
             return true;
 #else
-            return supportNamespaces;
+                return _supportNamespaces;
 #endif
+            }
         }
-    }
 
-    private bool Normalize {
-        get {
+        private bool Normalize
+        {
+            get
+            {
 #if SILVERLIGHT
             return true;
 #else
-            return normalize;
+                return _normalize;
 #endif
+            }
         }
-    }
 
-//
-// Parsing methods
-//
+        //
+        // Parsing methods
+        //
 
-        private void Parse( bool saveInternalSubset ) {
-            if ( freeFloatingDtd ) {
+        private void Parse(bool saveInternalSubset)
+        {
+            if (_freeFloatingDtd)
+            {
                 ParseFreeFloatingDtd();
             }
-            else {
-                ParseInDocumentDtd( saveInternalSubset );
+            else
+            {
+                ParseInDocumentDtd(saveInternalSubset);
             }
 
-            schemaInfo.Finish();
+            _schemaInfo.Finish();
 
 #if !SILVERLIGHT
             // check undeclared forward references
-            if ( validate && undeclaredNotations != null ) {
-                foreach ( UndeclaredNotation un in undeclaredNotations.Values ) {
+            if (_validate && _undeclaredNotations != null)
+            {
+                foreach (UndeclaredNotation un in _undeclaredNotations.Values)
+                {
                     UndeclaredNotation tmpUn = un;
-                    while ( tmpUn != null ) {
-                        SendValidationEvent( XmlSeverityType.Error, new XmlSchemaException( ResXml.Sch_UndeclaredNotation, un.name, BaseUriStr, (int)un.lineNo, (int)un.linePos ) );
+                    while (tmpUn != null)
+                    {
+                        SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(ResXml.Sch_UndeclaredNotation, un.name, BaseUriStr, (int)un.lineNo, (int)un.linePos));
                         tmpUn = tmpUn.next;
                     }
                 }
@@ -421,32 +464,36 @@ namespace Microsoft.Xml {
 #endif
         }
 
-        private void ParseInDocumentDtd( bool saveInternalSubset ) {
+        private void ParseInDocumentDtd(bool saveInternalSubset)
+        {
             LoadParsingBuffer();
 
-            scanningFunction = ScanningFunction.QName;
-            nextScaningFunction = ScanningFunction.Doctype1;
+            _scanningFunction = ScanningFunction.QName;
+            _nextScaningFunction = ScanningFunction.Doctype1;
 
             // doctype name
-            if ( GetToken( false ) != Token.QName ) {
+            if (GetToken(false) != Token.QName)
+            {
                 OnUnexpectedError();
-            }   
-            schemaInfo.DocTypeName = GetNameQualified( true );
+            }
+            _schemaInfo.DocTypeName = GetNameQualified(true);
 
             // SYSTEM or PUBLIC id
-            Token token = GetToken( false );
-            if ( token == Token.SYSTEM || token == Token.PUBLIC ) {
+            Token token = GetToken(false);
+            if (token == Token.SYSTEM || token == Token.PUBLIC)
+            {
+                ParseExternalId(token, Token.DOCTYPE, out _publicId, out _systemId);
 
-                ParseExternalId( token, Token.DOCTYPE, out publicId, out systemId );
-
-                token = GetToken( false);
+                token = GetToken(false);
             }
 
-            switch ( token ) {
+            switch (token)
+            {
                 case Token.LeftBracket:
-                    if ( saveInternalSubset ) {
+                    if (saveInternalSubset)
+                    {
                         SaveParsingBuffer(); // this will cause saving the internal subset right from the point after '['
-                        internalSubsetValueSb = new BufferBuilder();
+                        _internalSubsetValueSb = new BufferBuilder();
                     }
                     ParseInternalSubset();
                     break;
@@ -458,42 +505,50 @@ namespace Microsoft.Xml {
             }
             SaveParsingBuffer();
 
-            if ( systemId != null && systemId.Length > 0 ) {
+            if (_systemId != null && _systemId.Length > 0)
+            {
                 ParseExternalSubset();
             }
         }
 
-        private void ParseFreeFloatingDtd() {
-            if ( hasFreeFloatingInternalSubset ) {
+        private void ParseFreeFloatingDtd()
+        {
+            if (_hasFreeFloatingInternalSubset)
+            {
                 LoadParsingBuffer();
                 ParseInternalSubset();
                 SaveParsingBuffer();
             }
 
-            if ( systemId != null && systemId.Length > 0 ) {
+            if (_systemId != null && _systemId.Length > 0)
+            {
                 ParseExternalSubset();
             }
         }
 
-        private void ParseInternalSubset() {
-            Debug.Assert( ParsingInternalSubset );
+        private void ParseInternalSubset()
+        {
+            Debug.Assert(ParsingInternalSubset);
             ParseSubset();
         }
 
-        private void ParseExternalSubset() {
-            Debug.Assert( externalEntitiesDepth == 0 );
+        private void ParseExternalSubset()
+        {
+            Debug.Assert(_externalEntitiesDepth == 0);
 
             // push external subset
-            if ( !readerAdapter.PushExternalSubset( systemId, publicId ) ) {
+            if (!_readerAdapter.PushExternalSubset(_systemId, _publicId))
+            {
                 return;
             }
 
-            Uri baseUri = readerAdapter.BaseUri;
-            if ( baseUri != null ) {
-                externalDtdBaseUri = baseUri.ToString();
+            Uri baseUri = _readerAdapter.BaseUri;
+            if (baseUri != null)
+            {
+                _externalDtdBaseUri = baseUri.ToString();
             }
 
-            externalEntitiesDepth++;
+            _externalEntitiesDepth++;
             LoadParsingBuffer();
 
             // parse
@@ -505,12 +560,15 @@ namespace Microsoft.Xml {
 #endif
         }
 
-        private void ParseSubset() {
+        private void ParseSubset()
+        {
             int startTagEntityId;
-            for (;;) {
-                Token token = GetToken( false );
-                startTagEntityId = currentEntityId;
-                switch ( token ) {
+            for (; ; )
+            {
+                Token token = GetToken(false);
+                startTagEntityId = _currentEntityId;
+                switch (token)
+                {
                     case Token.AttlistDecl:
                         ParseAttlistDecl();
                         break;
@@ -536,40 +594,48 @@ namespace Microsoft.Xml {
                         break;
 
                     case Token.CondSectionStart:
-                        if ( ParsingInternalSubset ) {
-                            Throw( curPos - 3, ResXml.Xml_InvalidConditionalSection ); // 3==strlen("<![")
+                        if (ParsingInternalSubset)
+                        {
+                            Throw(_curPos - 3, ResXml.Xml_InvalidConditionalSection); // 3==strlen("<![")
                         }
                         ParseCondSection();
-                        startTagEntityId = currentEntityId;
+                        startTagEntityId = _currentEntityId;
                         break;
                     case Token.CondSectionEnd:
-                        if ( condSectionDepth > 0 ) {
-                            condSectionDepth--;
+                        if (_condSectionDepth > 0)
+                        {
+                            _condSectionDepth--;
 #if !SILVERLIGHT
-                            if ( validate && currentEntityId != condSectionEntityIds[condSectionDepth] ) {
-                                SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                            if (_validate && _currentEntityId != _condSectionEntityIds[_condSectionDepth])
+                            {
+                                SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                             }
 #endif
                         }
-                        else {  
-                            Throw( curPos - 3, ResXml.Xml_UnexpectedCDataEnd );
+                        else
+                        {
+                            Throw(_curPos - 3, ResXml.Xml_UnexpectedCDataEnd);
                         }
                         break;
                     case Token.RightBracket:
-                        if ( ParsingInternalSubset ) {
-                            if ( condSectionDepth != 0 ) {
-                                Throw( curPos, ResXml.Xml_UnclosedConditionalSection );
+                        if (ParsingInternalSubset)
+                        {
+                            if (_condSectionDepth != 0)
+                            {
+                                Throw(_curPos, ResXml.Xml_UnclosedConditionalSection);
                             }
                             // append the rest to internal subset value but not the closing ']'
-                            if ( internalSubsetValueSb != null ) {
-                                Debug.Assert( curPos > 0 && chars[curPos-1] == ']' );
-                                SaveParsingBuffer( curPos - 1 );
-                                schemaInfo.InternalDtdSubset = internalSubsetValueSb.ToString();
-                                internalSubsetValueSb = null;
+                            if (_internalSubsetValueSb != null)
+                            {
+                                Debug.Assert(_curPos > 0 && _chars[_curPos - 1] == ']');
+                                SaveParsingBuffer(_curPos - 1);
+                                _schemaInfo.InternalDtdSubset = _internalSubsetValueSb.ToString();
+                                _internalSubsetValueSb = null;
                             }
                             // check '>'
-                            if ( GetToken( false ) != Token.GreaterThan ) {
-                                ThrowUnexpectedToken( curPos, ">" );
+                            if (GetToken(false) != Token.GreaterThan)
+                            {
+                                ThrowUnexpectedToken(_curPos, ">");
                             }
 #if DEBUG
                             // check entity nesting
@@ -577,35 +643,42 @@ namespace Microsoft.Xml {
                                           ( freeFloatingDtd && readerAdapter.EntityStackLength == 1 ) );
 #endif
                         }
-                        else {
-                            Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                        else
+                        {
+                            Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                         }
                         return;
                     case Token.Eof:
-                        if ( ParsingInternalSubset && !freeFloatingDtd ) {
-                            Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+                        if (ParsingInternalSubset && !_freeFloatingDtd)
+                        {
+                            Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                         }
-                        if ( condSectionDepth != 0 ) {
-                            Throw( curPos, ResXml.Xml_UnclosedConditionalSection );
+                        if (_condSectionDepth != 0)
+                        {
+                            Throw(_curPos, ResXml.Xml_UnclosedConditionalSection);
                         }
                         return;
                     default:
-                        Debug.Assert( false );
+                        Debug.Assert(false);
                         break;
                 }
 
-                Debug.Assert( scanningFunction == ScanningFunction.SubsetContent );
+                Debug.Assert(_scanningFunction == ScanningFunction.SubsetContent);
 
-                if ( currentEntityId != startTagEntityId ) {
+                if (_currentEntityId != startTagEntityId)
+                {
 #if SILVERLIGHT
                     Throw(curPos, Res.Sch_ParEntityRefNesting);
 #else
-                    if ( validate ) {
-                        SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                    if (_validate)
+                    {
+                        SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
-                    else {
-                        if ( !v1Compat ) {
-                            Throw( curPos, ResXml.Sch_ParEntityRefNesting );
+                    else
+                    {
+                        if (!_v1Compat)
+                        {
+                            Throw(_curPos, ResXml.Sch_ParEntityRefNesting);
                         }
                     }
 #endif
@@ -613,45 +686,55 @@ namespace Microsoft.Xml {
             }
         }
 
-        private void ParseAttlistDecl() {
-            if (GetToken(true) != Token.QName) {
+        private void ParseAttlistDecl()
+        {
+            if (GetToken(true) != Token.QName)
+            {
                 goto UnexpectedError;
             }
 
             // element name
             XmlQualifiedName elementName = GetNameQualified(true);
             SchemaElementDecl elementDecl;
-            if (!schemaInfo.ElementDecls.TryGetValue(elementName, out elementDecl)) {
-                if (!schemaInfo.UndeclaredElementDecls.TryGetValue(elementName, out elementDecl)) {
+            if (!_schemaInfo.ElementDecls.TryGetValue(elementName, out elementDecl))
+            {
+                if (!_schemaInfo.UndeclaredElementDecls.TryGetValue(elementName, out elementDecl))
+                {
                     elementDecl = new SchemaElementDecl(elementName, elementName.Namespace);
-                    schemaInfo.UndeclaredElementDecls.Add(elementName, elementDecl);
+                    _schemaInfo.UndeclaredElementDecls.Add(elementName, elementDecl);
                 }
             }
 
             SchemaAttDef attrDef = null;
-            for (; ; ) {
-                switch (GetToken(false)) {
+            for (; ; )
+            {
+                switch (GetToken(false))
+                {
                     case Token.QName:
                         XmlQualifiedName attrName = GetNameQualified(true);
                         attrDef = new SchemaAttDef(attrName, attrName.Namespace);
                         attrDef.IsDeclaredInExternal = !ParsingInternalSubset;
                         attrDef.LineNumber = (int)LineNo;
-                        attrDef.LinePosition = (int)LinePos - (curPos - tokenStartPos);
+                        attrDef.LinePosition = (int)LinePos - (_curPos - _tokenStartPos);
                         break;
                     case Token.GreaterThan:
 #if !SILVERLIGHT
-                        if ( v1Compat ) {
+                        if (_v1Compat)
+                        {
                             // check xml:space and xml:lang
                             // BUG BUG: For backward compatibility, we check the correct type and values of the
                             // xml:space attribute only on the last attribute in the list.
                             // See Webdata bugs #97457 and #93935.
-                            if ( attrDef != null && attrDef.Prefix.Length > 0 && attrDef.Prefix.Equals( "xml" ) && attrDef.Name.Name == "space" ) {
+                            if (attrDef != null && attrDef.Prefix.Length > 0 && attrDef.Prefix.Equals("xml") && attrDef.Name.Name == "space")
+                            {
                                 attrDef.Reserved = SchemaAttDef.Reserve.XmlSpace;
-                                if ( attrDef.Datatype.TokenizedType != XmlTokenizedType.ENUMERATION ) {
-                                    Throw( ResXml.Xml_EnumerationRequired, string.Empty, attrDef.LineNumber, attrDef.LinePosition );
+                                if (attrDef.Datatype.TokenizedType != XmlTokenizedType.ENUMERATION)
+                                {
+                                    Throw(ResXml.Xml_EnumerationRequired, string.Empty, attrDef.LineNumber, attrDef.LinePosition);
                                 }
-                                if ( validate ) {
-                                    attrDef.CheckXmlSpace( readerAdapterWithValidation.ValidationEventHandling );
+                                if (_validate)
+                                {
+                                    attrDef.CheckXmlSpace(_readerAdapterWithValidation.ValidationEventHandling);
                                 }
                             }
                         }
@@ -667,39 +750,48 @@ namespace Microsoft.Xml {
                 ParseAttlistDefault(attrDef, attrDefAlreadyExists);
 
                 // check xml:space and xml:lang
-                if (attrDef.Prefix.Length > 0 && attrDef.Prefix.Equals("xml")) {
-                    if ( attrDef.Name.Name == "space" ) {
+                if (attrDef.Prefix.Length > 0 && attrDef.Prefix.Equals("xml"))
+                {
+                    if (attrDef.Name.Name == "space")
+                    {
 #if !SILVERLIGHT
-                        if ( v1Compat ) {
+                        if (_v1Compat)
+                        {
                             // BUG BUG: For backward compatibility, we check the correct type and values of the
                             // xml:space attribute only on the last attribute in the list, and mark it as reserved 
                             // only its value is correct (=prevent XmlTextReader from fhrowing on invalid value). 
                             // See Webdata bugs #98168, #97457 and #93935.
                             string val = attrDef.DefaultValueExpanded.Trim();
-                            if ( val.Equals( "preserve" ) || val.Equals( "default" ) ) {
+                            if (val.Equals("preserve") || val.Equals("default"))
+                            {
                                 attrDef.Reserved = SchemaAttDef.Reserve.XmlSpace;
                             }
                         }
-                        else {
+                        else
+                        {
 #endif
                             attrDef.Reserved = SchemaAttDef.Reserve.XmlSpace;
-                            if ( attrDef.TokenizedType != XmlTokenizedType.ENUMERATION ) {
-                                Throw( ResXml.Xml_EnumerationRequired, string.Empty, attrDef.LineNumber, attrDef.LinePosition );
+                            if (attrDef.TokenizedType != XmlTokenizedType.ENUMERATION)
+                            {
+                                Throw(ResXml.Xml_EnumerationRequired, string.Empty, attrDef.LineNumber, attrDef.LinePosition);
                             }
 #if !SILVERLIGHT
-                            if ( validate ) {
-                                attrDef.CheckXmlSpace( readerAdapterWithValidation.ValidationEventHandling );
+                            if (_validate)
+                            {
+                                attrDef.CheckXmlSpace(_readerAdapterWithValidation.ValidationEventHandling);
                             }
                         }
 #endif
                     }
-                    else if ( attrDef.Name.Name == "lang" ) {
+                    else if (attrDef.Name.Name == "lang")
+                    {
                         attrDef.Reserved = SchemaAttDef.Reserve.XmlLang;
                     }
                 }
 
                 // add attribute to element decl
-                if (!attrDefAlreadyExists) {
+                if (!attrDefAlreadyExists)
+                {
                     elementDecl.AddAttDef(attrDef);
                 }
             }
@@ -708,28 +800,34 @@ namespace Microsoft.Xml {
             OnUnexpectedError();
         }
 
-        private void ParseAttlistType( SchemaAttDef attrDef, SchemaElementDecl elementDecl, bool ignoreErrors ) {
-            Token token = GetToken( true );
+        private void ParseAttlistType(SchemaAttDef attrDef, SchemaElementDecl elementDecl, bool ignoreErrors)
+        {
+            Token token = GetToken(true);
 
-            if ( token != Token.CDATA ) {
+            if (token != Token.CDATA)
+            {
                 elementDecl.HasNonCDataAttribute = true;
             }
-            
-            if ( IsAttributeValueType( token ) ) {
+
+            if (IsAttributeValueType(token))
+            {
                 attrDef.TokenizedType = (XmlTokenizedType)(int)token;
 #if !SILVERLIGHT
-                attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType( attrDef.Datatype.TypeCode );
+                attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType(attrDef.Datatype.TypeCode);
 #endif
 
-                switch ( token ) {
+                switch (token)
+                {
                     case Token.NOTATION:
                         break;
                     case Token.ID:
 #if !SILVERLIGHT
-                        if ( validate && elementDecl.IsIdDeclared ) {
-                            SchemaAttDef idAttrDef = elementDecl.GetAttDef( attrDef.Name );
-                            if ( ( idAttrDef == null || idAttrDef.Datatype.TokenizedType != XmlTokenizedType.ID ) && !ignoreErrors ) {
-                                SendValidationEvent( XmlSeverityType.Error, ResXml.Sch_IdAttrDeclared, elementDecl.Name.ToString() );
+                        if (_validate && elementDecl.IsIdDeclared)
+                        {
+                            SchemaAttDef idAttrDef = elementDecl.GetAttDef(attrDef.Name);
+                            if ((idAttrDef == null || idAttrDef.Datatype.TokenizedType != XmlTokenizedType.ID) && !ignoreErrors)
+                            {
+                                SendValidationEvent(XmlSeverityType.Error, ResXml.Sch_IdAttrDeclared, elementDecl.Name.ToString());
                             }
                         }
 #endif
@@ -740,44 +838,55 @@ namespace Microsoft.Xml {
                 }
 #if !SILVERLIGHT
                 // check notation constrains
-                if ( validate ) {
-                    if (elementDecl.IsNotationDeclared && !ignoreErrors ) {
-                        SendValidationEvent( curPos - 8, XmlSeverityType.Error, ResXml.Sch_DupNotationAttribute, elementDecl.Name.ToString() ); // 8 == strlen("NOTATION")
+                if (_validate)
+                {
+                    if (elementDecl.IsNotationDeclared && !ignoreErrors)
+                    {
+                        SendValidationEvent(_curPos - 8, XmlSeverityType.Error, ResXml.Sch_DupNotationAttribute, elementDecl.Name.ToString()); // 8 == strlen("NOTATION")
                     }
-                    else {
-                        if ( elementDecl.ContentValidator != null && 
+                    else
+                    {
+                        if (elementDecl.ContentValidator != null &&
                             elementDecl.ContentValidator.ContentType == XmlSchemaContentType.Empty &&
-                            !ignoreErrors ) {
-                            SendValidationEvent( curPos - 8, XmlSeverityType.Error, ResXml.Sch_NotationAttributeOnEmptyElement, elementDecl.Name.ToString() );// 8 == strlen("NOTATION")
+                            !ignoreErrors)
+                        {
+                            SendValidationEvent(_curPos - 8, XmlSeverityType.Error, ResXml.Sch_NotationAttributeOnEmptyElement, elementDecl.Name.ToString());// 8 == strlen("NOTATION")
                         }
                         elementDecl.IsNotationDeclared = true;
                     }
                 }
 #endif
 
-                if ( GetToken( true ) != Token.LeftParen ) {
+                if (GetToken(true) != Token.LeftParen)
+                {
                     goto UnexpectedError;
                 }
 
                 // parse notation list
-                if ( GetToken( false ) != Token.Name ) {
+                if (GetToken(false) != Token.Name)
+                {
                     goto UnexpectedError;
                 }
-                for (;;) {
+                for (; ; )
+                {
                     string notationName = GetNameString();
 #if !SILVERLIGHT
-                    if ( !schemaInfo.Notations.ContainsKey(notationName) ) {
+                    if (!_schemaInfo.Notations.ContainsKey(notationName))
+                    {
                         AddUndeclaredNotation(notationName);
                     }
-                    if ( validate && !v1Compat && attrDef.Values != null && attrDef.Values.Contains( notationName ) && !ignoreErrors ) {
-                        SendValidationEvent( XmlSeverityType.Error, new XmlSchemaException( ResXml.Xml_AttlistDuplNotationValue, notationName, BaseUriStr, (int)LineNo, (int)LinePos ) );
+                    if (_validate && !_v1Compat && attrDef.Values != null && attrDef.Values.Contains(notationName) && !ignoreErrors)
+                    {
+                        SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(ResXml.Xml_AttlistDuplNotationValue, notationName, BaseUriStr, (int)LineNo, (int)LinePos));
                     }
-                    attrDef.AddValue( notationName );
+                    attrDef.AddValue(notationName);
 #endif
 
-                    switch ( GetToken( false ) ) {
+                    switch (GetToken(false))
+                    {
                         case Token.Or:
-                            if ( GetToken( false ) != Token.Name ) {
+                            if (GetToken(false) != Token.Name)
+                            {
                                 goto UnexpectedError;
                             }
                             continue;
@@ -788,30 +897,34 @@ namespace Microsoft.Xml {
                     }
                 }
             }
-            else if ( token == Token.LeftParen ) {
+            else if (token == Token.LeftParen)
+            {
                 attrDef.TokenizedType = XmlTokenizedType.ENUMERATION;
 #if !SILVERLIGHT
-                attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType( attrDef.Datatype.TypeCode );
+                attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType(attrDef.Datatype.TypeCode);
 #endif
 
                 // parse nmtoken list
-                if ( GetToken( false ) != Token.Nmtoken ) 
+                if (GetToken(false) != Token.Nmtoken)
                     goto UnexpectedError;
 #if !SILVERLIGHT
-                attrDef.AddValue( GetNameString() );
+                attrDef.AddValue(GetNameString());
 #endif
 
-                for (;;) {
-                    switch ( GetToken( false ) ) {
+                for (; ; )
+                {
+                    switch (GetToken(false))
+                    {
                         case Token.Or:
-                            if ( GetToken( false ) != Token.Nmtoken ) 
+                            if (GetToken(false) != Token.Nmtoken)
                                 goto UnexpectedError;
                             string nmtoken = GetNmtokenString();
 #if !SILVERLIGHT
-                            if ( validate && !v1Compat && attrDef.Values != null && attrDef.Values.Contains( nmtoken ) && !ignoreErrors ) {
-                                SendValidationEvent( XmlSeverityType.Error, new XmlSchemaException( ResXml.Xml_AttlistDuplEnumValue, nmtoken, BaseUriStr, (int)LineNo, (int)LinePos ) );
+                            if (_validate && !_v1Compat && attrDef.Values != null && attrDef.Values.Contains(nmtoken) && !ignoreErrors)
+                            {
+                                SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(ResXml.Xml_AttlistDuplEnumValue, nmtoken, BaseUriStr, (int)LineNo, (int)LinePos));
                             }
-                            attrDef.AddValue( nmtoken );
+                            attrDef.AddValue(nmtoken);
 #endif
                             break;
                         case Token.RightParen:
@@ -821,7 +934,8 @@ namespace Microsoft.Xml {
                     }
                 }
             }
-            else {
+            else
+            {
                 goto UnexpectedError;
             }
 
@@ -829,8 +943,10 @@ namespace Microsoft.Xml {
             OnUnexpectedError();
         }
 
-        private void ParseAttlistDefault( SchemaAttDef attrDef, bool ignoreErrors ) {
-            switch ( GetToken( true ) ) {
+        private void ParseAttlistDefault(SchemaAttDef attrDef, bool ignoreErrors)
+        {
+            switch (GetToken(true))
+            {
                 case Token.REQUIRED:
                     attrDef.Presence = SchemaDeclBase.Use.Required;
                     return;
@@ -839,7 +955,8 @@ namespace Microsoft.Xml {
                     return;
                 case Token.FIXED:
                     attrDef.Presence = SchemaDeclBase.Use.Fixed;
-                    if ( GetToken( true ) != Token.Literal ) {
+                    if (GetToken(true) != Token.Literal)
+                    {
                         goto UnexpectedError;
                     }
                     break;
@@ -850,23 +967,26 @@ namespace Microsoft.Xml {
             }
 
 #if !SILVERLIGHT
-            if ( validate && attrDef.Datatype.TokenizedType == XmlTokenizedType.ID&& !ignoreErrors ) {
-                SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_AttListPresence, string.Empty );
+            if (_validate && attrDef.Datatype.TokenizedType == XmlTokenizedType.ID && !ignoreErrors)
+            {
+                SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_AttListPresence, string.Empty);
             }
 #endif
 
-            if ( attrDef.TokenizedType != XmlTokenizedType.CDATA ) {
+            if (attrDef.TokenizedType != XmlTokenizedType.CDATA)
+            {
                 // non-CDATA attribute type normalization - strip spaces
                 attrDef.DefaultValueExpanded = GetValueWithStrippedSpaces();
             }
-            else {
+            else
+            {
                 attrDef.DefaultValueExpanded = GetValue();
             }
-            attrDef.ValueLineNumber = (int)literalLineInfo.lineNo;
-            attrDef.ValueLinePosition = (int)literalLineInfo.linePos + 1;
+            attrDef.ValueLineNumber = (int)_literalLineInfo.lineNo;
+            attrDef.ValueLinePosition = (int)_literalLineInfo.linePos + 1;
 
 #if !SILVERLIGHT
-            DtdValidator.SetDefaultTypedValue( attrDef, readerAdapter );
+            DtdValidator.SetDefaultTypedValue(attrDef, _readerAdapter);
 #endif
             return;
 
@@ -874,31 +994,38 @@ namespace Microsoft.Xml {
             OnUnexpectedError();
         }
 
-        private void ParseElementDecl() {
+        private void ParseElementDecl()
+        {
             // element name
-            if ( GetToken( true ) != Token.QName ) {
+            if (GetToken(true) != Token.QName)
+            {
                 goto UnexpectedError;
             }
 
             // get schema decl for element
             SchemaElementDecl elementDecl = null;
-            XmlQualifiedName name = GetNameQualified( true );
+            XmlQualifiedName name = GetNameQualified(true);
 
-            if (schemaInfo.ElementDecls.TryGetValue(name, out elementDecl)) {
+            if (_schemaInfo.ElementDecls.TryGetValue(name, out elementDecl))
+            {
 #if !SILVERLIGHT
-                if ( validate ) {
-                    SendValidationEvent( curPos - name.Name.Length, XmlSeverityType.Error, ResXml.Sch_DupElementDecl, GetNameString() );
+                if (_validate)
+                {
+                    SendValidationEvent(_curPos - name.Name.Length, XmlSeverityType.Error, ResXml.Sch_DupElementDecl, GetNameString());
                 }
 #endif
             }
-            else {
-                if ( schemaInfo.UndeclaredElementDecls.TryGetValue(name, out elementDecl ) ) {
-                    schemaInfo.UndeclaredElementDecls.Remove( name );
+            else
+            {
+                if (_schemaInfo.UndeclaredElementDecls.TryGetValue(name, out elementDecl))
+                {
+                    _schemaInfo.UndeclaredElementDecls.Remove(name);
                 }
-                else {
-                    elementDecl = new SchemaElementDecl( name, name.Namespace );
+                else
+                {
+                    elementDecl = new SchemaElementDecl(name, name.Namespace);
                 }
-                schemaInfo.ElementDecls.Add( name, elementDecl );
+                _schemaInfo.ElementDecls.Add(name, elementDecl);
             }
             elementDecl.IsDeclaredInExternal = !ParsingInternalSubset;
 
@@ -924,7 +1051,8 @@ namespace Microsoft.Xml {
                     goto UnexpectedError;
             }
 #else
-            switch ( GetToken( true ) ) {
+            switch (GetToken(true))
+            {
                 case Token.EMPTY:
                     elementDecl.ContentValidator = ContentValidator.Empty;
                     break;
@@ -932,31 +1060,32 @@ namespace Microsoft.Xml {
                     elementDecl.ContentValidator = ContentValidator.Any;
                     break;
                 case Token.LeftParen:
-                    int startParenEntityId = currentEntityId;
-                    switch ( GetToken( false ) ) {
+                    int startParenEntityId = _currentEntityId;
+                    switch (GetToken(false))
+                    {
                         case Token.PCDATA:
-                        {
-                            ParticleContentValidator pcv = new ParticleContentValidator( XmlSchemaContentType.Mixed );
-                            pcv.Start();
-                            pcv.OpenGroup();
+                            {
+                                ParticleContentValidator pcv = new ParticleContentValidator(XmlSchemaContentType.Mixed);
+                                pcv.Start();
+                                pcv.OpenGroup();
 
-                            ParseElementMixedContent( pcv, startParenEntityId );
+                                ParseElementMixedContent(pcv, startParenEntityId);
 
-                            elementDecl.ContentValidator = pcv.Finish( true );
-                            break;
-                        }
+                                elementDecl.ContentValidator = pcv.Finish(true);
+                                break;
+                            }
                         case Token.None:
-                        {
-                            ParticleContentValidator pcv = null;
-                            pcv = new ParticleContentValidator( XmlSchemaContentType.ElementOnly );
-                            pcv.Start();
-                            pcv.OpenGroup();
+                            {
+                                ParticleContentValidator pcv = null;
+                                pcv = new ParticleContentValidator(XmlSchemaContentType.ElementOnly);
+                                pcv.Start();
+                                pcv.OpenGroup();
 
-                            ParseElementOnlyContent( pcv, startParenEntityId );
+                                ParseElementOnlyContent(pcv, startParenEntityId);
 
-                            elementDecl.ContentValidator = pcv.Finish( true );
-                            break;
-                        }
+                                elementDecl.ContentValidator = pcv.Finish(true);
+                                break;
+                            }
                         default:
                             goto UnexpectedError;
                     }
@@ -965,8 +1094,9 @@ namespace Microsoft.Xml {
                     goto UnexpectedError;
             }
 #endif
-            if ( GetToken( false ) != Token.GreaterThan ) {
-                ThrowUnexpectedToken( curPos, ">" );
+            if (GetToken(false) != Token.GreaterThan)
+            {
+                ThrowUnexpectedToken(_curPos, ">");
             }
             return;
 
@@ -1097,28 +1227,31 @@ namespace Microsoft.Xml {
 
         private class ParseElementOnlyContent_LocalFrame
         {
-            public ParseElementOnlyContent_LocalFrame(int startParentEntityIdParam) {
+            public ParseElementOnlyContent_LocalFrame(int startParentEntityIdParam)
+            {
                 startParenEntityId = startParentEntityIdParam;
                 parsingSchema = Token.None;
             }
-            
+
             // pcv doesn't need to be stored for each frame as it never changes
             public int startParenEntityId;
             public Token parsingSchema;
         }
 
-        private void ParseElementOnlyContent( ParticleContentValidator pcv, int startParenEntityId ) {
+        private void ParseElementOnlyContent(ParticleContentValidator pcv, int startParenEntityId)
+        {
             Stack<ParseElementOnlyContent_LocalFrame> localFrames = new Stack<ParseElementOnlyContent_LocalFrame>();
             ParseElementOnlyContent_LocalFrame currentFrame = new ParseElementOnlyContent_LocalFrame(startParenEntityId);
             localFrames.Push(currentFrame);
-            
+
         RecursiveCall:
-            
+
         Loop:
-            switch ( GetToken( false ) ) {
+            switch (GetToken(false))
+            {
                 case Token.QName:
-                    pcv.AddName( GetNameQualified(true), null );
-                    ParseHowMany( pcv );
+                    pcv.AddName(GetNameQualified(true), null);
+                    ParseHowMany(pcv);
                     break;
                 case Token.LeftParen:
                     pcv.OpenGroup();
@@ -1128,45 +1261,49 @@ namespace Microsoft.Xml {
                     // 
                     // But that would be recursion - so we will simulate the call using our localFrames stack 
                     //   instead. 
-                    currentFrame = 
-                        new ParseElementOnlyContent_LocalFrame(currentEntityId); 
-                    localFrames.Push(currentFrame); 
-                    goto RecursiveCall; 
-                    // And we should return here when we return from recursion call 
-                    //   but it's the same as returning after the switch statement 
+                    currentFrame =
+                        new ParseElementOnlyContent_LocalFrame(_currentEntityId);
+                    localFrames.Push(currentFrame);
+                    goto RecursiveCall;
+                // And we should return here when we return from recursion call 
+                //   but it's the same as returning after the switch statement 
 
                 case Token.GreaterThan:
-                    Throw( curPos, ResXml.Xml_InvalidContentModel );
+                    Throw(_curPos, ResXml.Xml_InvalidContentModel);
                     goto Return;
                 default:
                     goto UnexpectedError;
             }
 
         ReturnFromRecursiveCall:
-            switch ( GetToken( false ) ) {
+            switch (GetToken(false))
+            {
                 case Token.Comma:
-                    if ( currentFrame.parsingSchema == Token.Or ) {
-                        Throw( curPos, ResXml.Xml_InvalidContentModel );
+                    if (currentFrame.parsingSchema == Token.Or)
+                    {
+                        Throw(_curPos, ResXml.Xml_InvalidContentModel);
                     }
                     pcv.AddSequence();
                     currentFrame.parsingSchema = Token.Comma;
                     break;
                 case Token.Or:
-                    if (currentFrame.parsingSchema == Token.Comma) {
-                        Throw( curPos, ResXml.Xml_InvalidContentModel );
+                    if (currentFrame.parsingSchema == Token.Comma)
+                    {
+                        Throw(_curPos, ResXml.Xml_InvalidContentModel);
                     }
                     pcv.AddChoice();
                     currentFrame.parsingSchema = Token.Or;
                     break;
                 case Token.RightParen:
                     pcv.CloseGroup();
-                    if (validate && currentEntityId != currentFrame.startParenEntityId) {
-                        SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                    if (_validate && _currentEntityId != currentFrame.startParenEntityId)
+                    {
+                        SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
-                    ParseHowMany( pcv );
+                    ParseHowMany(pcv);
                     goto Return;
                 case Token.GreaterThan:
-                    Throw( curPos, ResXml.Xml_InvalidContentModel );
+                    Throw(_curPos, ResXml.Xml_InvalidContentModel);
                     goto Return;
                 default:
                     goto UnexpectedError;
@@ -1179,18 +1316,22 @@ namespace Microsoft.Xml {
         Return:
             // This is equivalent to return; statement
             //   we simlate it using our localFrames stack
-            localFrames.Pop(); 
-            if (localFrames.Count > 0) { 
-                currentFrame = (ParseElementOnlyContent_LocalFrame)localFrames.Peek(); 
-                goto ReturnFromRecursiveCall; 
-            } 
-            else { 
-                return; 
+            localFrames.Pop();
+            if (localFrames.Count > 0)
+            {
+                currentFrame = (ParseElementOnlyContent_LocalFrame)localFrames.Peek();
+                goto ReturnFromRecursiveCall;
+            }
+            else
+            {
+                return;
             }
         }
 
-        private void ParseHowMany( ParticleContentValidator pcv ) {
-            switch ( GetToken( false ) ) {
+        private void ParseHowMany(ParticleContentValidator pcv)
+        {
+            switch (GetToken(false))
+            {
                 case Token.Star:
                     pcv.AddStar();
                     return;
@@ -1205,53 +1346,67 @@ namespace Microsoft.Xml {
             }
         }
 
-        private void ParseElementMixedContent( ParticleContentValidator pcv, int startParenEntityId ) {
+        private void ParseElementMixedContent(ParticleContentValidator pcv, int startParenEntityId)
+        {
             bool hasNames = false;
             int connectorEntityId = -1;
-            int contentEntityId = currentEntityId;
+            int contentEntityId = _currentEntityId;
 
-            for (;;) {
-                switch ( GetToken( false ) ) {
+            for (; ; )
+            {
+                switch (GetToken(false))
+                {
                     case Token.RightParen:
                         pcv.CloseGroup();
-                        if ( validate && currentEntityId != startParenEntityId ) {
-                            SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                        if (_validate && _currentEntityId != startParenEntityId)
+                        {
+                            SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                         }
-                        if ( GetToken( false ) == Token.Star && hasNames ) {
+                        if (GetToken(false) == Token.Star && hasNames)
+                        {
                             pcv.AddStar();
                         }
-                        else if ( hasNames ) {
-                            ThrowUnexpectedToken( curPos, "*" );
+                        else if (hasNames)
+                        {
+                            ThrowUnexpectedToken(_curPos, "*");
                         }
                         return;
                     case Token.Or:
-                        if ( !hasNames ) {
+                        if (!hasNames)
+                        {
                             hasNames = true;
                         }
-                        else {
+                        else
+                        {
                             pcv.AddChoice();
                         }
-                        if ( validate ) { 
-                            connectorEntityId = currentEntityId;
-                            if ( contentEntityId < connectorEntityId ) {  // entity repl.text starting with connector
-                                SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                        if (_validate)
+                        {
+                            connectorEntityId = _currentEntityId;
+                            if (contentEntityId < connectorEntityId)
+                            {  // entity repl.text starting with connector
+                                SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                             }
                         }
 
-                        if ( GetToken( false ) != Token.QName ) {
+                        if (GetToken(false) != Token.QName)
+                        {
                             goto default;
                         }
-                        
-                        XmlQualifiedName name = GetNameQualified( true );
-                        if ( pcv.Exists( name ) && validate ) {
-                            SendValidationEvent( XmlSeverityType.Error, ResXml.Sch_DupElement, name.ToString() );
-                        }
-                        pcv.AddName( name, null );
 
-                        if ( validate ) {
-                            contentEntityId = currentEntityId;
-                            if ( contentEntityId < connectorEntityId ) { // entity repl.text ending with connector
-                                SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                        XmlQualifiedName name = GetNameQualified(true);
+                        if (pcv.Exists(name) && _validate)
+                        {
+                            SendValidationEvent(XmlSeverityType.Error, ResXml.Sch_DupElement, name.ToString());
+                        }
+                        pcv.AddName(name, null);
+
+                        if (_validate)
+                        {
+                            contentEntityId = _currentEntityId;
+                            if (contentEntityId < connectorEntityId)
+                            { // entity repl.text ending with connector
+                                SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                             }
                         }
                         continue;
@@ -1263,34 +1418,41 @@ namespace Microsoft.Xml {
         }
 #endif // Element content model parsing methods with validation support
 
-        private void ParseEntityDecl() {
+        private void ParseEntityDecl()
+        {
             bool isParamEntity = false;
             SchemaEntity entity = null;
 
             // get entity name and type
-            switch ( GetToken( true ) ) {
+            switch (GetToken(true))
+            {
                 case Token.Percent:
                     isParamEntity = true;
-                    if ( GetToken( true ) != Token.Name ) {
+                    if (GetToken(true) != Token.Name)
+                    {
                         goto UnexpectedError;
                     }
                     goto case Token.Name;
                 case Token.Name:
                     // create entity object
-                    XmlQualifiedName entityName = GetNameQualified( false );
-                    entity = new SchemaEntity( entityName, isParamEntity );
-                    
-                    entity.BaseURI = BaseUriStr;
-                    entity.DeclaredURI = ( externalDtdBaseUri.Length == 0 ) ? documentBaseUri : externalDtdBaseUri;
+                    XmlQualifiedName entityName = GetNameQualified(false);
+                    entity = new SchemaEntity(entityName, isParamEntity);
 
-                    if ( isParamEntity ) {
-                        if ( !schemaInfo.ParameterEntities.ContainsKey( entityName ) ) {
-                            schemaInfo.ParameterEntities.Add( entityName, entity );
+                    entity.BaseURI = BaseUriStr;
+                    entity.DeclaredURI = (_externalDtdBaseUri.Length == 0) ? _documentBaseUri : _externalDtdBaseUri;
+
+                    if (isParamEntity)
+                    {
+                        if (!_schemaInfo.ParameterEntities.ContainsKey(entityName))
+                        {
+                            _schemaInfo.ParameterEntities.Add(entityName, entity);
                         }
                     }
-                    else {
-                        if ( !schemaInfo.GeneralEntities.ContainsKey( entityName ) ) {
-                            schemaInfo.GeneralEntities.Add( entityName, entity );
+                    else
+                    {
+                        if (!_schemaInfo.GeneralEntities.ContainsKey(entityName))
+                        {
+                            _schemaInfo.GeneralEntities.Add(entityName, entity);
                         }
                     }
                     entity.DeclaredInExternal = !ParsingInternalSubset;
@@ -1300,35 +1462,41 @@ namespace Microsoft.Xml {
                     goto UnexpectedError;
             }
 
-            Token token = GetToken( true );
-            switch ( token ) {
+            Token token = GetToken(true);
+            switch (token)
+            {
                 case Token.PUBLIC:
                 case Token.SYSTEM:
                     string systemId;
                     string publicId;
 
-                    ParseExternalId( token, Token.EntityDecl, out publicId, out systemId );
+                    ParseExternalId(token, Token.EntityDecl, out publicId, out systemId);
 
                     entity.IsExternal = true;
                     entity.Url = systemId;
                     entity.Pubid = publicId;
 
-                    if ( GetToken( false ) == Token.NData ) {
-                        if ( isParamEntity ) {
-                            ThrowUnexpectedToken( curPos - 5, ">" ); // 5 == strlen("NDATA")
+                    if (GetToken(false) == Token.NData)
+                    {
+                        if (isParamEntity)
+                        {
+                            ThrowUnexpectedToken(_curPos - 5, ">"); // 5 == strlen("NDATA")
                         }
-                        if ( !whitespaceSeen ) { 
-                            Throw( curPos - 5, ResXml.Xml_ExpectingWhiteSpace, "NDATA" );
+                        if (!_whitespaceSeen)
+                        {
+                            Throw(_curPos - 5, ResXml.Xml_ExpectingWhiteSpace, "NDATA");
                         }
 
-                        if ( GetToken( true ) != Token.Name ) {
+                        if (GetToken(true) != Token.Name)
+                        {
                             goto UnexpectedError;
                         }
-                        
-                        entity.NData = GetNameQualified( false );
+
+                        entity.NData = GetNameQualified(false);
 #if !SILVERLIGHT
                         string notationName = entity.NData.Name;
-                        if ( !schemaInfo.Notations.ContainsKey(notationName) ) {
+                        if (!_schemaInfo.Notations.ContainsKey(notationName))
+                        {
                             AddUndeclaredNotation(notationName);
                         }
 #endif
@@ -1336,15 +1504,16 @@ namespace Microsoft.Xml {
                     break;
                 case Token.Literal:
                     entity.Text = GetValue();
-                    entity.Line = (int)literalLineInfo.lineNo;
-                    entity.Pos = (int)literalLineInfo.linePos;
+                    entity.Line = (int)_literalLineInfo.lineNo;
+                    entity.Pos = (int)_literalLineInfo.linePos;
                     break;
                 default:
                     goto UnexpectedError;
             }
 
-            if ( GetToken( false ) == Token.GreaterThan ) {
-                entity.ParsingInProgress = false; 
+            if (GetToken(false) == Token.GreaterThan)
+            {
+                entity.ParsingInProgress = false;
                 return;
             }
 
@@ -1352,89 +1521,108 @@ namespace Microsoft.Xml {
             OnUnexpectedError();
         }
 
-        private void ParseNotationDecl() {
+        private void ParseNotationDecl()
+        {
             // notation name
-            if ( GetToken( true ) != Token.Name ) {
+            if (GetToken(true) != Token.Name)
+            {
                 OnUnexpectedError();
             }
 
-            XmlQualifiedName notationName = GetNameQualified( false ); 
+            XmlQualifiedName notationName = GetNameQualified(false);
 #if !SILVERLIGHT
             SchemaNotation notation = null;
-            if ( !schemaInfo.Notations.ContainsKey( notationName.Name ) ) {
-                if ( undeclaredNotations != null ) {
-                    undeclaredNotations.Remove( notationName.Name );
+            if (!_schemaInfo.Notations.ContainsKey(notationName.Name))
+            {
+                if (_undeclaredNotations != null)
+                {
+                    _undeclaredNotations.Remove(notationName.Name);
                 }
-                notation = new SchemaNotation( notationName );
-                schemaInfo.Notations.Add(notation.Name.Name, notation);
-                
+                notation = new SchemaNotation(notationName);
+                _schemaInfo.Notations.Add(notation.Name.Name, notation);
             }
-            else {
+            else
+            {
                 // duplicate notation
-                if ( validate ) {
-                    SendValidationEvent( curPos - notationName.Name.Length, XmlSeverityType.Error, ResXml.Sch_DupNotation, notationName.Name );
+                if (_validate)
+                {
+                    SendValidationEvent(_curPos - notationName.Name.Length, XmlSeverityType.Error, ResXml.Sch_DupNotation, notationName.Name);
                 }
             }
 #endif
 
             // public / system id
-            Token token = GetToken( true );
-            if ( token == Token.SYSTEM || token == Token.PUBLIC ) {
+            Token token = GetToken(true);
+            if (token == Token.SYSTEM || token == Token.PUBLIC)
+            {
                 string notationPublicId, notationSystemId;
 
-                ParseExternalId( token, Token.NOTATION, out notationPublicId, out notationSystemId );
+                ParseExternalId(token, Token.NOTATION, out notationPublicId, out notationSystemId);
 
 #if !SILVERLIGHT
-                if ( notation != null ) {
+                if (notation != null)
+                {
                     notation.SystemLiteral = notationSystemId;
                     notation.Pubid = notationPublicId;
                 }
 #endif
             }
-            else {
+            else
+            {
                 OnUnexpectedError();
             }
 
-            if ( GetToken( false ) != Token.GreaterThan ) 
+            if (GetToken(false) != Token.GreaterThan)
                 OnUnexpectedError();
         }
 
 #if !SILVERLIGHT
-        private void AddUndeclaredNotation(string notationName) {
-            if (undeclaredNotations == null) {
-                undeclaredNotations = new Dictionary<string, UndeclaredNotation>();
+        private void AddUndeclaredNotation(string notationName)
+        {
+            if (_undeclaredNotations == null)
+            {
+                _undeclaredNotations = new Dictionary<string, UndeclaredNotation>();
             }
             UndeclaredNotation un = new UndeclaredNotation(notationName, LineNo, LinePos - notationName.Length);
             UndeclaredNotation loggedUn;
-            if (undeclaredNotations.TryGetValue(notationName, out loggedUn)) {
+            if (_undeclaredNotations.TryGetValue(notationName, out loggedUn))
+            {
                 un.next = loggedUn.next;
                 loggedUn.next = un;
             }
-            else {
-                undeclaredNotations.Add(notationName, un);
+            else
+            {
+                _undeclaredNotations.Add(notationName, un);
             }
         }
 #endif
 
-        private void ParseComment() {
+        private void ParseComment()
+        {
             SaveParsingBuffer();
 #if !SILVERLIGHT
-            try {
+            try
+            {
 #endif
-                if ( SaveInternalSubsetValue ) {
-                    readerAdapter.ParseComment( internalSubsetValueSb );
-                    internalSubsetValueSb.Append( "-->" );
+                if (SaveInternalSubsetValue)
+                {
+                    _readerAdapter.ParseComment(_internalSubsetValueSb);
+                    _internalSubsetValueSb.Append("-->");
                 }
-                else {
-                    readerAdapter.ParseComment( null );
+                else
+                {
+                    _readerAdapter.ParseComment(null);
                 }
 #if !SILVERLIGHT
             }
-            catch (XmlException e) {
-                if ( e.ResString == ResXml.Xml_UnexpectedEOF && currentEntityId != 0 ) {
-                    SendValidationEvent( XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, null );
+            catch (XmlException e)
+            {
+                if (e.ResString == ResXml.Xml_UnexpectedEOF && _currentEntityId != 0)
+                {
+                    SendValidationEvent(XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, null);
                 }
-                else {
+                else
+                {
                     throw;
                 }
             }
@@ -1442,60 +1630,74 @@ namespace Microsoft.Xml {
             LoadParsingBuffer();
         }
 
-        private void ParsePI() {
+        private void ParsePI()
+        {
             SaveParsingBuffer();
-            if ( SaveInternalSubsetValue ) {
-                readerAdapter.ParsePI( internalSubsetValueSb );
-                internalSubsetValueSb.Append( "?>" );
+            if (SaveInternalSubsetValue)
+            {
+                _readerAdapter.ParsePI(_internalSubsetValueSb);
+                _internalSubsetValueSb.Append("?>");
             }
-            else {
-                readerAdapter.ParsePI( null );
+            else
+            {
+                _readerAdapter.ParsePI(null);
             }
             LoadParsingBuffer();
         }
 
-        private void ParseCondSection() {
-            int csEntityId = currentEntityId;
+        private void ParseCondSection()
+        {
+            int csEntityId = _currentEntityId;
 
-            switch ( GetToken( false ) ) {
+            switch (GetToken(false))
+            {
                 case Token.INCLUDE:
-                    if ( GetToken( false ) != Token.LeftBracket ) {
+                    if (GetToken(false) != Token.LeftBracket)
+                    {
                         goto default;
                     }
 #if !SILVERLIGHT
-                    if ( validate && csEntityId != currentEntityId ) {
-                        SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                    if (_validate && csEntityId != _currentEntityId)
+                    {
+                        SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
-                    if ( validate ) {
-                        if ( condSectionEntityIds == null ) {
-                            condSectionEntityIds = new int[CondSectionEntityIdsInitialSize];
+                    if (_validate)
+                    {
+                        if (_condSectionEntityIds == null)
+                        {
+                            _condSectionEntityIds = new int[CondSectionEntityIdsInitialSize];
                         }
-                        else if ( condSectionEntityIds.Length == condSectionDepth ) {
-                            int[] tmp = new int[condSectionEntityIds.Length*2];
-                            Array.Copy( condSectionEntityIds, 0, tmp, 0, condSectionEntityIds.Length );
-                            condSectionEntityIds = tmp;
+                        else if (_condSectionEntityIds.Length == _condSectionDepth)
+                        {
+                            int[] tmp = new int[_condSectionEntityIds.Length * 2];
+                            Array.Copy(_condSectionEntityIds, 0, tmp, 0, _condSectionEntityIds.Length);
+                            _condSectionEntityIds = tmp;
                         }
-                        condSectionEntityIds[condSectionDepth] = csEntityId;
+                        _condSectionEntityIds[_condSectionDepth] = csEntityId;
                     }
 #endif
-                    condSectionDepth++;
+                    _condSectionDepth++;
                     break;
                 case Token.IGNORE:
-                    if ( GetToken( false ) != Token.LeftBracket ) {
+                    if (GetToken(false) != Token.LeftBracket)
+                    {
                         goto default;
                     }
 #if !SILVERLIGHT
-                    if ( validate && csEntityId != currentEntityId ) {
-                        SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                    if (_validate && csEntityId != _currentEntityId)
+                    {
+                        SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
 #endif
                     // the content of the ignore section is parsed & skipped by scanning function
-                    if ( GetToken( false ) != Token.CondSectionEnd ) {
+                    if (GetToken(false) != Token.CondSectionEnd)
+                    {
                         goto default;
                     }
 #if !SILVERLIGHT
-                    if ( validate && csEntityId != currentEntityId ) {
-                        SendValidationEvent( curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty );
+                    if (_validate && csEntityId != _currentEntityId)
+                    {
+                        SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
 #endif
                     break;
@@ -1505,480 +1707,569 @@ namespace Microsoft.Xml {
             }
         }
 
-        private void ParseExternalId( Token idTokenType, Token declType, out string publicId, out string systemId ) {
-
-            LineInfo keywordLineInfo = new LineInfo( LineNo, LinePos - 6 );
+        private void ParseExternalId(Token idTokenType, Token declType, out string publicId, out string systemId)
+        {
+            LineInfo keywordLineInfo = new LineInfo(LineNo, LinePos - 6);
             publicId = null;
             systemId = null;
 
-            if ( GetToken( true ) != Token.Literal ) {
-                ThrowUnexpectedToken( curPos, "\"", "'" );
+            if (GetToken(true) != Token.Literal)
+            {
+                ThrowUnexpectedToken(_curPos, "\"", "'");
             }
 
-            if ( idTokenType == Token.SYSTEM ) {
+            if (idTokenType == Token.SYSTEM)
+            {
                 systemId = GetValue();
 
-                if ( systemId.IndexOf( '#' ) >= 0 ) {
-                    Throw( curPos - systemId.Length - 1, ResXml.Xml_FragmentId, new string[] { systemId.Substring( systemId.IndexOf( '#' ) ), systemId } );
+                if (systemId.IndexOf('#') >= 0)
+                {
+                    Throw(_curPos - systemId.Length - 1, ResXml.Xml_FragmentId, new string[] { systemId.Substring(systemId.IndexOf('#')), systemId });
                 }
 
-                if ( declType == Token.DOCTYPE && !freeFloatingDtd ) {
-                    literalLineInfo.linePos++;
-                    readerAdapter.OnSystemId( systemId, keywordLineInfo, literalLineInfo );
+                if (declType == Token.DOCTYPE && !_freeFloatingDtd)
+                {
+                    _literalLineInfo.linePos++;
+                    _readerAdapter.OnSystemId(systemId, keywordLineInfo, _literalLineInfo);
                 }
             }
-            else {
-                Debug.Assert( idTokenType == Token.PUBLIC );
+            else
+            {
+                Debug.Assert(idTokenType == Token.PUBLIC);
                 publicId = GetValue();
 
                 // verify if it contains chars valid for public ids
                 int i;
-                if ( ( i = xmlCharType.IsPublicId( publicId ) ) >= 0 ) {
-                    ThrowInvalidChar( curPos - 1 - publicId.Length + i, publicId, i );
+                if ((i = _xmlCharType.IsPublicId(publicId)) >= 0)
+                {
+                    ThrowInvalidChar(_curPos - 1 - publicId.Length + i, publicId, i);
                 }
 
-                if ( declType == Token.DOCTYPE && !freeFloatingDtd ) {
-                    literalLineInfo.linePos++;
-                    readerAdapter.OnPublicId( publicId, keywordLineInfo, literalLineInfo );
+                if (declType == Token.DOCTYPE && !_freeFloatingDtd)
+                {
+                    _literalLineInfo.linePos++;
+                    _readerAdapter.OnPublicId(publicId, keywordLineInfo, _literalLineInfo);
 
-                    if ( GetToken( false ) == Token.Literal ) {
-                        if ( !whitespaceSeen ) {
-                            Throw( ResXml.Xml_ExpectingWhiteSpace, new string( literalQuoteChar, 1 ), (int)literalLineInfo.lineNo, (int)literalLineInfo.linePos );
+                    if (GetToken(false) == Token.Literal)
+                    {
+                        if (!_whitespaceSeen)
+                        {
+                            Throw(ResXml.Xml_ExpectingWhiteSpace, new string(_literalQuoteChar, 1), (int)_literalLineInfo.lineNo, (int)_literalLineInfo.linePos);
                         }
                         systemId = GetValue();
-                        literalLineInfo.linePos++;
-                        readerAdapter.OnSystemId( systemId, keywordLineInfo, literalLineInfo );
+                        _literalLineInfo.linePos++;
+                        _readerAdapter.OnSystemId(systemId, keywordLineInfo, _literalLineInfo);
                     }
-                    else {
-                        ThrowUnexpectedToken( curPos, "\"", "'" );
+                    else
+                    {
+                        ThrowUnexpectedToken(_curPos, "\"", "'");
                     }
                 }
-                else {
-                    if ( GetToken( false ) == Token.Literal ) {
-                        if ( !whitespaceSeen ) {
-                            Throw( ResXml.Xml_ExpectingWhiteSpace, new string( literalQuoteChar, 1 ), (int)literalLineInfo.lineNo, (int)literalLineInfo.linePos );
+                else
+                {
+                    if (GetToken(false) == Token.Literal)
+                    {
+                        if (!_whitespaceSeen)
+                        {
+                            Throw(ResXml.Xml_ExpectingWhiteSpace, new string(_literalQuoteChar, 1), (int)_literalLineInfo.lineNo, (int)_literalLineInfo.linePos);
                         }
                         systemId = GetValue();
                     }
-                    else if ( declType != Token.NOTATION ) {
-                        ThrowUnexpectedToken( curPos, "\"", "'" );
-                    } 
+                    else if (declType != Token.NOTATION)
+                    {
+                        ThrowUnexpectedToken(_curPos, "\"", "'");
+                    }
                 }
             }
-
         }
-//
-// Scanning methods - works directly with parsing buffer
-//
-        private  Token  GetToken( bool needWhiteSpace ) {
-           whitespaceSeen = false;
-            for (;;) {
-                switch ( chars[curPos] ) {
+        //
+        // Scanning methods - works directly with parsing buffer
+        //
+        private Token GetToken(bool needWhiteSpace)
+        {
+            _whitespaceSeen = false;
+            for (; ; )
+            {
+                switch (_chars[_curPos])
+                {
                     case (char)0:
-                        if ( curPos == charsUsed ) {
+                        if (_curPos == _charsUsed)
+                        {
                             goto ReadData;
                         }
-                        else {
-                            ThrowInvalidChar( chars, charsUsed, curPos );
+                        else
+                        {
+                            ThrowInvalidChar(_chars, _charsUsed, _curPos);
                         }
                         break;
                     case (char)0xA:
-                        whitespaceSeen = true;
-                        curPos++;
-                        readerAdapter.OnNewLine( curPos );
+                        _whitespaceSeen = true;
+                        _curPos++;
+                        _readerAdapter.OnNewLine(_curPos);
                         continue;
                     case (char)0xD:
-                        whitespaceSeen = true;
-                        if ( chars[curPos+1] == (char)0xA ) {
-                            if ( Normalize ) {
+                        _whitespaceSeen = true;
+                        if (_chars[_curPos + 1] == (char)0xA)
+                        {
+                            if (Normalize)
+                            {
                                 SaveParsingBuffer();          // EOL normalization of 0xD 0xA
-                                readerAdapter.CurrentPosition++;
+                                _readerAdapter.CurrentPosition++;
                             }
-                            curPos += 2;
+                            _curPos += 2;
                         }
-                        else if ( curPos+1 < charsUsed || readerAdapter.IsEof ) {
-                            chars[curPos] = (char)0xA;             // EOL normalization of 0xD
-                            curPos++;
+                        else if (_curPos + 1 < _charsUsed || _readerAdapter.IsEof)
+                        {
+                            _chars[_curPos] = (char)0xA;             // EOL normalization of 0xD
+                            _curPos++;
                         }
-                        else {
+                        else
+                        {
                             goto ReadData;
                         }
-                        readerAdapter.OnNewLine( curPos );
+                        _readerAdapter.OnNewLine(_curPos);
                         continue;
                     case (char)0x9:
                     case (char)0x20:
-                        whitespaceSeen = true;
-                        curPos++;
+                        _whitespaceSeen = true;
+                        _curPos++;
                         continue;
                     case '%':
-                        if ( charsUsed - curPos < 2 ) {
+                        if (_charsUsed - _curPos < 2)
+                        {
                             goto ReadData;
                         }
-                        if ( !xmlCharType.IsWhiteSpace( chars[curPos+1] ) ) {
-                            if ( IgnoreEntityReferences ) {
-                                curPos++;
+                        if (!_xmlCharType.IsWhiteSpace(_chars[_curPos + 1]))
+                        {
+                            if (IgnoreEntityReferences)
+                            {
+                                _curPos++;
                             }
-                            else {
-                                HandleEntityReference( true, false, false );
+                            else
+                            {
+                                HandleEntityReference(true, false, false);
                             }
                             continue;
                         }
                         goto default;
                     default:
-                        if ( needWhiteSpace && !whitespaceSeen && scanningFunction != ScanningFunction.ParamEntitySpace ) { 
-                            Throw( curPos, ResXml.Xml_ExpectingWhiteSpace, ParseUnexpectedToken( curPos ) );
+                        if (needWhiteSpace && !_whitespaceSeen && _scanningFunction != ScanningFunction.ParamEntitySpace)
+                        {
+                            Throw(_curPos, ResXml.Xml_ExpectingWhiteSpace, ParseUnexpectedToken(_curPos));
                         }
-                        tokenStartPos = curPos;
+                        _tokenStartPos = _curPos;
                     SwitchAgain:
-                        switch ( scanningFunction ) {
-                            case ScanningFunction.Name:              return ScanNameExpected();
-                            case ScanningFunction.QName:             return ScanQNameExpected();
-                            case ScanningFunction.Nmtoken:           return ScanNmtokenExpected();
-                            case ScanningFunction.SubsetContent:     return ScanSubsetContent();
-                            case ScanningFunction.Doctype1:          return ScanDoctype1();
-                            case ScanningFunction.Doctype2:          return ScanDoctype2();
-                            case ScanningFunction.Element1:          return ScanElement1();
-                            case ScanningFunction.Element2:          return ScanElement2();
-                            case ScanningFunction.Element3:          return ScanElement3();
-                            case ScanningFunction.Element4:          return ScanElement4();
-                            case ScanningFunction.Element5:          return ScanElement5();
-                            case ScanningFunction.Element6:          return ScanElement6();
-                            case ScanningFunction.Element7:          return ScanElement7();
-                            case ScanningFunction.Attlist1:          return ScanAttlist1();
-                            case ScanningFunction.Attlist2:          return ScanAttlist2();
-                            case ScanningFunction.Attlist3:          return ScanAttlist3();
-                            case ScanningFunction.Attlist4:          return ScanAttlist4();
-                            case ScanningFunction.Attlist5:          return ScanAttlist5();
-                            case ScanningFunction.Attlist6:          return ScanAttlist6();
-                            case ScanningFunction.Attlist7:          return ScanAttlist7();
-                            case ScanningFunction.Notation1:         return ScanNotation1();
-                            case ScanningFunction.SystemId:          return ScanSystemId();
-                            case ScanningFunction.PublicId1:         return ScanPublicId1();
-                            case ScanningFunction.PublicId2:         return ScanPublicId2();
-                            case ScanningFunction.Entity1:           return ScanEntity1();
-                            case ScanningFunction.Entity2:           return ScanEntity2();
-                            case ScanningFunction.Entity3:           return ScanEntity3();
-                            case ScanningFunction.CondSection1:      return ScanCondSection1();
-                            case ScanningFunction.CondSection2:      return ScanCondSection2();
-                            case ScanningFunction.CondSection3:      return ScanCondSection3();
-                            case ScanningFunction.ClosingTag:        return ScanClosingTag();
+                        switch (_scanningFunction)
+                        {
+                            case ScanningFunction.Name: return ScanNameExpected();
+                            case ScanningFunction.QName: return ScanQNameExpected();
+                            case ScanningFunction.Nmtoken: return ScanNmtokenExpected();
+                            case ScanningFunction.SubsetContent: return ScanSubsetContent();
+                            case ScanningFunction.Doctype1: return ScanDoctype1();
+                            case ScanningFunction.Doctype2: return ScanDoctype2();
+                            case ScanningFunction.Element1: return ScanElement1();
+                            case ScanningFunction.Element2: return ScanElement2();
+                            case ScanningFunction.Element3: return ScanElement3();
+                            case ScanningFunction.Element4: return ScanElement4();
+                            case ScanningFunction.Element5: return ScanElement5();
+                            case ScanningFunction.Element6: return ScanElement6();
+                            case ScanningFunction.Element7: return ScanElement7();
+                            case ScanningFunction.Attlist1: return ScanAttlist1();
+                            case ScanningFunction.Attlist2: return ScanAttlist2();
+                            case ScanningFunction.Attlist3: return ScanAttlist3();
+                            case ScanningFunction.Attlist4: return ScanAttlist4();
+                            case ScanningFunction.Attlist5: return ScanAttlist5();
+                            case ScanningFunction.Attlist6: return ScanAttlist6();
+                            case ScanningFunction.Attlist7: return ScanAttlist7();
+                            case ScanningFunction.Notation1: return ScanNotation1();
+                            case ScanningFunction.SystemId: return ScanSystemId();
+                            case ScanningFunction.PublicId1: return ScanPublicId1();
+                            case ScanningFunction.PublicId2: return ScanPublicId2();
+                            case ScanningFunction.Entity1: return ScanEntity1();
+                            case ScanningFunction.Entity2: return ScanEntity2();
+                            case ScanningFunction.Entity3: return ScanEntity3();
+                            case ScanningFunction.CondSection1: return ScanCondSection1();
+                            case ScanningFunction.CondSection2: return ScanCondSection2();
+                            case ScanningFunction.CondSection3: return ScanCondSection3();
+                            case ScanningFunction.ClosingTag: return ScanClosingTag();
                             case ScanningFunction.ParamEntitySpace:
-                                whitespaceSeen = true;
-                                scanningFunction = savedScanningFunction;
+                                _whitespaceSeen = true;
+                                _scanningFunction = _savedScanningFunction;
                                 goto SwitchAgain;
                             default:
-                                Debug.Assert( false );
+                                Debug.Assert(false);
                                 return Token.None;
                         }
                 }
             ReadData:
-                if ( readerAdapter.IsEof || ReadData() == 0 ) {
-                    if ( HandleEntityEnd( false ) ) {
+                if (_readerAdapter.IsEof || ReadData() == 0)
+                {
+                    if (HandleEntityEnd(false))
+                    {
                         continue;
                     }
-                    if ( scanningFunction == ScanningFunction.SubsetContent ) {
+                    if (_scanningFunction == ScanningFunction.SubsetContent)
+                    {
                         return Token.Eof;
                     }
-                    else {
-                        Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+                    else
+                    {
+                        Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                     }
                 }
             }
         }
 
-        private  Token  ScanSubsetContent() {
-            for (;;) {
-                switch ( chars[curPos] ) {
+        private Token ScanSubsetContent()
+        {
+            for (; ; )
+            {
+                switch (_chars[_curPos])
+                {
                     case '<':
-                        switch ( chars[curPos+1] ) {
+                        switch (_chars[_curPos + 1])
+                        {
                             case '!':
-                                switch ( chars[curPos+2] ) {
+                                switch (_chars[_curPos + 2])
+                                {
                                     case 'E':
-                                        if ( chars[curPos+3] == 'L' ) {
-                                            if ( charsUsed - curPos < 9 ) {
+                                        if (_chars[_curPos + 3] == 'L')
+                                        {
+                                            if (_charsUsed - _curPos < 9)
+                                            {
                                                 goto ReadData;
                                             }
-                                            if ( chars[curPos+4] != 'E' || chars[curPos+5] != 'M' ||
-                                                 chars[curPos+6] != 'E' || chars[curPos+7] != 'N' || 
-                                                 chars[curPos+8] != 'T' ) {
-                                                Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                            if (_chars[_curPos + 4] != 'E' || _chars[_curPos + 5] != 'M' ||
+                                                 _chars[_curPos + 6] != 'E' || _chars[_curPos + 7] != 'N' ||
+                                                 _chars[_curPos + 8] != 'T')
+                                            {
+                                                Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                             }
-                                            curPos += 9;
-                                            scanningFunction = ScanningFunction.QName;
-                                            nextScaningFunction = ScanningFunction.Element1;
+                                            _curPos += 9;
+                                            _scanningFunction = ScanningFunction.QName;
+                                            _nextScaningFunction = ScanningFunction.Element1;
                                             return Token.ElementDecl;
                                         }
-                                        else if ( chars[curPos+3] == 'N' ) {
-                                            if ( charsUsed - curPos < 8 ) {
+                                        else if (_chars[_curPos + 3] == 'N')
+                                        {
+                                            if (_charsUsed - _curPos < 8)
+                                            {
                                                 goto ReadData;
                                             }
-                                            if ( chars[curPos+4] != 'T' || chars[curPos+5] != 'I' || 
-                                                 chars[curPos+6] != 'T' || chars[curPos+7] != 'Y' ) {
-                                                Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                            if (_chars[_curPos + 4] != 'T' || _chars[_curPos + 5] != 'I' ||
+                                                 _chars[_curPos + 6] != 'T' || _chars[_curPos + 7] != 'Y')
+                                            {
+                                                Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                             }
-                                            curPos += 8;
-                                            scanningFunction = ScanningFunction.Entity1;
+                                            _curPos += 8;
+                                            _scanningFunction = ScanningFunction.Entity1;
                                             return Token.EntityDecl;
                                         }
-                                        else {
-                                            if ( charsUsed - curPos < 4 ) {
+                                        else
+                                        {
+                                            if (_charsUsed - _curPos < 4)
+                                            {
                                                 goto ReadData;
                                             }
-                                            Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                            Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                             return Token.None;
                                         }
 
                                     case 'A':
-                                        if ( charsUsed - curPos < 9 ) {
+                                        if (_charsUsed - _curPos < 9)
+                                        {
                                             goto ReadData;
                                         }
-                                        if ( chars[curPos+3] != 'T' || chars[curPos+4] != 'T' || 
-                                             chars[curPos+5] != 'L' || chars[curPos+6] != 'I' || 
-                                             chars[curPos+7] != 'S' || chars[curPos+8] != 'T' ) {
-                                            Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                        if (_chars[_curPos + 3] != 'T' || _chars[_curPos + 4] != 'T' ||
+                                             _chars[_curPos + 5] != 'L' || _chars[_curPos + 6] != 'I' ||
+                                             _chars[_curPos + 7] != 'S' || _chars[_curPos + 8] != 'T')
+                                        {
+                                            Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                         }
-                                        curPos += 9;
-                                        scanningFunction = ScanningFunction.QName;
-                                        nextScaningFunction = ScanningFunction.Attlist1;
+                                        _curPos += 9;
+                                        _scanningFunction = ScanningFunction.QName;
+                                        _nextScaningFunction = ScanningFunction.Attlist1;
                                         return Token.AttlistDecl;
 
                                     case 'N':
-                                        if ( charsUsed - curPos < 10 ) {
+                                        if (_charsUsed - _curPos < 10)
+                                        {
                                             goto ReadData;
                                         }
-                                        if ( chars[curPos+3] != 'O' || chars[curPos+4] != 'T' || 
-                                             chars[curPos+5] != 'A' || chars[curPos+6] != 'T' || 
-                                             chars[curPos+7] != 'I' || chars[curPos+8] != 'O' ||
-                                             chars[curPos+9] != 'N' ) {
-                                            Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                        if (_chars[_curPos + 3] != 'O' || _chars[_curPos + 4] != 'T' ||
+                                             _chars[_curPos + 5] != 'A' || _chars[_curPos + 6] != 'T' ||
+                                             _chars[_curPos + 7] != 'I' || _chars[_curPos + 8] != 'O' ||
+                                             _chars[_curPos + 9] != 'N')
+                                        {
+                                            Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                         }
-                                        curPos += 10;
-                                        scanningFunction = ScanningFunction.Name;
-                                        nextScaningFunction = ScanningFunction.Notation1;
+                                        _curPos += 10;
+                                        _scanningFunction = ScanningFunction.Name;
+                                        _nextScaningFunction = ScanningFunction.Notation1;
                                         return Token.NotationDecl;
 
                                     case '[':
-                                        curPos += 3;
-                                        scanningFunction = ScanningFunction.CondSection1;
+                                        _curPos += 3;
+                                        _scanningFunction = ScanningFunction.CondSection1;
                                         return Token.CondSectionStart;
                                     case '-':
-                                        if ( chars[curPos+3] == '-' ) {
-                                            curPos += 4;
+                                        if (_chars[_curPos + 3] == '-')
+                                        {
+                                            _curPos += 4;
                                             return Token.Comment;
                                         }
-                                        else {
-                                            if ( charsUsed - curPos < 4 ) {
+                                        else
+                                        {
+                                            if (_charsUsed - _curPos < 4)
+                                            {
                                                 goto ReadData;
                                             }
-                                            Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                            Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                             break;
                                         }
                                     default:
-                                        if ( charsUsed - curPos < 3 ) {
+                                        if (_charsUsed - _curPos < 3)
+                                        {
                                             goto ReadData;
                                         }
-                                        Throw( curPos + 2, ResXml.Xml_ExpectDtdMarkup );
+                                        Throw(_curPos + 2, ResXml.Xml_ExpectDtdMarkup);
                                         break;
                                 }
                                 break;
                             case '?':
-                                curPos += 2;
+                                _curPos += 2;
                                 return Token.PI;
                             default:
-                                if ( charsUsed - curPos < 2 ) {
+                                if (_charsUsed - _curPos < 2)
+                                {
                                     goto ReadData;
                                 }
-                                Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                                Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                                 return Token.None;
                         }
                         break;
                     case ']':
-                        if ( charsUsed - curPos < 2 && !readerAdapter.IsEof ) {
+                        if (_charsUsed - _curPos < 2 && !_readerAdapter.IsEof)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] != ']' ) {
-                            curPos++;  
-                            scanningFunction = ScanningFunction.ClosingTag;
+                        if (_chars[_curPos + 1] != ']')
+                        {
+                            _curPos++;
+                            _scanningFunction = ScanningFunction.ClosingTag;
                             return Token.RightBracket;
                         }
-                        if ( charsUsed - curPos < 3 && !readerAdapter.IsEof ) {
+                        if (_charsUsed - _curPos < 3 && !_readerAdapter.IsEof)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] == ']' && chars[curPos+2] == '>' ) {
-                            curPos += 3;
+                        if (_chars[_curPos + 1] == ']' && _chars[_curPos + 2] == '>')
+                        {
+                            _curPos += 3;
                             return Token.CondSectionEnd;
                         }
                         goto default;
                     default:
-                        if ( charsUsed - curPos == 0 ) {
+                        if (_charsUsed - _curPos == 0)
+                        {
                             goto ReadData;
                         }
-                        Throw( curPos, ResXml.Xml_ExpectDtdMarkup );
+                        Throw(_curPos, ResXml.Xml_ExpectDtdMarkup);
                         break;
                 }
             ReadData:
-                if ( ReadData() == 0 ) {
-                    Throw( charsUsed, ResXml.Xml_IncompleteDtdContent );
+                if (ReadData() == 0)
+                {
+                    Throw(_charsUsed, ResXml.Xml_IncompleteDtdContent);
                 }
             }
         }
 
-        private  Token  ScanNameExpected() {
+        private Token ScanNameExpected()
+        {
             ScanName();
-            scanningFunction = nextScaningFunction;
+            _scanningFunction = _nextScaningFunction;
             return Token.Name;
         }
 
-        private  Token  ScanQNameExpected() {
+        private Token ScanQNameExpected()
+        {
             ScanQName();
-            scanningFunction = nextScaningFunction;
+            _scanningFunction = _nextScaningFunction;
             return Token.QName;
         }
 
-        private  Token  ScanNmtokenExpected() {
+        private Token ScanNmtokenExpected()
+        {
             ScanNmtoken();
-            scanningFunction = nextScaningFunction;
+            _scanningFunction = _nextScaningFunction;
             return Token.Nmtoken;
         }
 
-        private  Token  ScanDoctype1() {
-            switch ( chars[curPos] ) {
+        private Token ScanDoctype1()
+        {
+            switch (_chars[_curPos])
+            {
                 case 'P':
-                    if ( !EatPublicKeyword() ) {
-                        Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    if (!EatPublicKeyword())
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     }
-                    nextScaningFunction = ScanningFunction.Doctype2;
-                    scanningFunction = ScanningFunction.PublicId1;
+                    _nextScaningFunction = ScanningFunction.Doctype2;
+                    _scanningFunction = ScanningFunction.PublicId1;
                     return Token.PUBLIC;
                 case 'S':
-                    if ( !EatSystemKeyword() ) {
-                        Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    if (!EatSystemKeyword())
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     }
-                    nextScaningFunction = ScanningFunction.Doctype2;
-                    scanningFunction = ScanningFunction.SystemId;
+                    _nextScaningFunction = ScanningFunction.Doctype2;
+                    _scanningFunction = ScanningFunction.SystemId;
                     return Token.SYSTEM;
                 case '[':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.LeftBracket;
                 case '>':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.GreaterThan;
                 default:
-                    Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     return Token.None;
             }
         }
 
-        private Token ScanDoctype2() {
-            switch ( chars[curPos] ) {
+        private Token ScanDoctype2()
+        {
+            switch (_chars[_curPos])
+            {
                 case '[':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.LeftBracket;
                 case '>':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.GreaterThan;
                 default:
-                    Throw( curPos, ResXml.Xml_ExpectSubOrClose );
+                    Throw(_curPos, ResXml.Xml_ExpectSubOrClose);
                     return Token.None;
             }
         }
 
-        private Token ScanClosingTag() {
-            if ( chars[curPos] != '>' ) {
-                ThrowUnexpectedToken( curPos, ">" );
+        private Token ScanClosingTag()
+        {
+            if (_chars[_curPos] != '>')
+            {
+                ThrowUnexpectedToken(_curPos, ">");
             }
-            curPos++;
-            scanningFunction = ScanningFunction.SubsetContent;
+            _curPos++;
+            _scanningFunction = ScanningFunction.SubsetContent;
             return Token.GreaterThan;
         }
 
-        private  Token  ScanElement1() {
-            for (;;) {
-                switch ( chars[curPos] ) {
+        private Token ScanElement1()
+        {
+            for (; ; )
+            {
+                switch (_chars[_curPos])
+                {
                     case '(':
-                        scanningFunction = ScanningFunction.Element2;
-                        curPos++;
+                        _scanningFunction = ScanningFunction.Element2;
+                        _curPos++;
                         return Token.LeftParen;
                     case 'E':
-                        if ( charsUsed - curPos < 5 ) {
+                        if (_charsUsed - _curPos < 5)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] == 'M' && chars[curPos+2] == 'P' &&
-                             chars[curPos+3] == 'T' && chars[curPos+4] == 'Y' ) {
-                            curPos += 5;
-                            scanningFunction = ScanningFunction.ClosingTag;
+                        if (_chars[_curPos + 1] == 'M' && _chars[_curPos + 2] == 'P' &&
+                             _chars[_curPos + 3] == 'T' && _chars[_curPos + 4] == 'Y')
+                        {
+                            _curPos += 5;
+                            _scanningFunction = ScanningFunction.ClosingTag;
                             return Token.EMPTY;
                         }
                         goto default;
                     case 'A':
-                        if ( charsUsed - curPos < 3 ) {
+                        if (_charsUsed - _curPos < 3)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] == 'N' && chars[curPos+2] == 'Y' ) {
-                            curPos += 3;
-                            scanningFunction = ScanningFunction.ClosingTag;
+                        if (_chars[_curPos + 1] == 'N' && _chars[_curPos + 2] == 'Y')
+                        {
+                            _curPos += 3;
+                            _scanningFunction = ScanningFunction.ClosingTag;
                             return Token.ANY;
                         }
                         goto default;
                     default:
-                        Throw( curPos, ResXml.Xml_InvalidContentModel );
+                        Throw(_curPos, ResXml.Xml_InvalidContentModel);
                         break;
                 }
             ReadData:
-                if ( ReadData() == 0 ) {
-                    Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+                if (ReadData() == 0)
+                {
+                    Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                 }
             }
         }
-        
-        private  Token  ScanElement2() {
-            if ( chars[curPos] == '#' ) {
-                while ( charsUsed - curPos < 7 ) {
-                    if ( ReadData() == 0 ) {
-                        Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+
+        private Token ScanElement2()
+        {
+            if (_chars[_curPos] == '#')
+            {
+                while (_charsUsed - _curPos < 7)
+                {
+                    if (ReadData() == 0)
+                    {
+                        Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                     }
                 }
-                if ( chars[curPos+1] == 'P' && chars[curPos+2] == 'C' &&
-                     chars[curPos+3] == 'D' && chars[curPos+4] == 'A' &&
-                     chars[curPos+5] == 'T' && chars[curPos+6] == 'A' ) {
-                    curPos += 7;
-                    scanningFunction = ScanningFunction.Element6;
+                if (_chars[_curPos + 1] == 'P' && _chars[_curPos + 2] == 'C' &&
+                     _chars[_curPos + 3] == 'D' && _chars[_curPos + 4] == 'A' &&
+                     _chars[_curPos + 5] == 'T' && _chars[_curPos + 6] == 'A')
+                {
+                    _curPos += 7;
+                    _scanningFunction = ScanningFunction.Element6;
                     return Token.PCDATA;
                 }
-                else {
-                    Throw( curPos + 1, ResXml.Xml_ExpectPcData );
+                else
+                {
+                    Throw(_curPos + 1, ResXml.Xml_ExpectPcData);
                 }
             }
 
-            scanningFunction = ScanningFunction.Element3;
+            _scanningFunction = ScanningFunction.Element3;
             return Token.None;
         }
 
-        private  Token  ScanElement3() {
-            switch ( chars[curPos] ) {
+        private Token ScanElement3()
+        {
+            switch (_chars[_curPos])
+            {
                 case '(':
-                    curPos++;
+                    _curPos++;
                     return Token.LeftParen;
                 case '>':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.GreaterThan;
                 default:
                     ScanQName();
-                    scanningFunction = ScanningFunction.Element4;
+                    _scanningFunction = ScanningFunction.Element4;
                     return Token.QName;
             }
         }
 
-        private Token ScanElement4() {
-            scanningFunction = ScanningFunction.Element5;
+        private Token ScanElement4()
+        {
+            _scanningFunction = ScanningFunction.Element5;
 
             Token t;
-            switch ( chars[curPos] ) {
+            switch (_chars[_curPos])
+            {
                 case '*':
                     t = Token.Star;
                     break;
@@ -1991,1329 +2282,1570 @@ namespace Microsoft.Xml {
                 default:
                     return Token.None;
             }
-            if ( whitespaceSeen ) {
-                Throw( curPos, ResXml.Xml_ExpectNoWhitespace );
+            if (_whitespaceSeen)
+            {
+                Throw(_curPos, ResXml.Xml_ExpectNoWhitespace);
             }
-            curPos++;
+            _curPos++;
             return t;
         }
 
-        private Token ScanElement5() {
-            switch ( chars[curPos] ) {
+        private Token ScanElement5()
+        {
+            switch (_chars[_curPos])
+            {
                 case ',':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Element3;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Element3;
                     return Token.Comma;
                 case '|':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Element3;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Element3;
                     return Token.Or;
                 case ')':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Element4;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Element4;
                     return Token.RightParen;
                 case '>':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.GreaterThan;
                 default:
-                    Throw( curPos, ResXml.Xml_ExpectOp );
+                    Throw(_curPos, ResXml.Xml_ExpectOp);
                     return Token.None;
             }
         }
 
-        private Token ScanElement6() {
-            switch ( chars[curPos] ) {
+        private Token ScanElement6()
+        {
+            switch (_chars[_curPos])
+            {
                 case ')':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Element7;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Element7;
                     return Token.RightParen;
                 case '|':
-                    curPos++;
-                    nextScaningFunction = ScanningFunction.Element6;
-                    scanningFunction = ScanningFunction.QName;
+                    _curPos++;
+                    _nextScaningFunction = ScanningFunction.Element6;
+                    _scanningFunction = ScanningFunction.QName;
                     return Token.Or;
                 default:
-                    ThrowUnexpectedToken( curPos, ")", "|" );
+                    ThrowUnexpectedToken(_curPos, ")", "|");
                     return Token.None;
             }
         }
 
-        private Token ScanElement7() {
-            scanningFunction = ScanningFunction.ClosingTag;
-            if ( chars[curPos] == '*' && !whitespaceSeen ) {
-                curPos++;
+        private Token ScanElement7()
+        {
+            _scanningFunction = ScanningFunction.ClosingTag;
+            if (_chars[_curPos] == '*' && !_whitespaceSeen)
+            {
+                _curPos++;
                 return Token.Star;
             }
             return Token.None;
         }
 
-        private  Token  ScanAttlist1() {
-            switch ( chars[curPos] ) {
+        private Token ScanAttlist1()
+        {
+            switch (_chars[_curPos])
+            {
                 case '>':
-                    curPos++;
-                    scanningFunction = ScanningFunction.SubsetContent;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.SubsetContent;
                     return Token.GreaterThan;
                 default:
-                    if ( !whitespaceSeen ) {
-                        Throw( curPos, ResXml.Xml_ExpectingWhiteSpace, ParseUnexpectedToken( curPos ) );
+                    if (!_whitespaceSeen)
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectingWhiteSpace, ParseUnexpectedToken(_curPos));
                     }
                     ScanQName();
-                    scanningFunction = ScanningFunction.Attlist2;
+                    _scanningFunction = ScanningFunction.Attlist2;
                     return Token.QName;
             }
         }
 
-        private  Token  ScanAttlist2() {
-            for (;;) {
-                switch ( chars[curPos] ) {
+        private Token ScanAttlist2()
+        {
+            for (; ; )
+            {
+                switch (_chars[_curPos])
+                {
                     case '(':
-                        curPos++;
-                        scanningFunction = ScanningFunction.Nmtoken;
-                        nextScaningFunction = ScanningFunction.Attlist5;
+                        _curPos++;
+                        _scanningFunction = ScanningFunction.Nmtoken;
+                        _nextScaningFunction = ScanningFunction.Attlist5;
                         return Token.LeftParen;
                     case 'C':
-                        if ( charsUsed - curPos < 5 )
+                        if (_charsUsed - _curPos < 5)
                             goto ReadData;
-                        if ( chars[curPos+1] != 'D' || chars[curPos+2] != 'A' ||
-                             chars[curPos+3] != 'T' || chars[curPos+4] != 'A' ) {
-                            Throw( curPos, ResXml.Xml_InvalidAttributeType1 );
+                        if (_chars[_curPos + 1] != 'D' || _chars[_curPos + 2] != 'A' ||
+                             _chars[_curPos + 3] != 'T' || _chars[_curPos + 4] != 'A')
+                        {
+                            Throw(_curPos, ResXml.Xml_InvalidAttributeType1);
                         }
-                        curPos += 5;
-                        scanningFunction = ScanningFunction.Attlist6;
+                        _curPos += 5;
+                        _scanningFunction = ScanningFunction.Attlist6;
                         return Token.CDATA;
                     case 'E':
-                        if ( charsUsed - curPos < 9 )
+                        if (_charsUsed - _curPos < 9)
                             goto ReadData;
-                        scanningFunction = ScanningFunction.Attlist6;
-                        if ( chars[curPos+1] != 'N' || chars[curPos+2] != 'T' ||
-                             chars[curPos+3] != 'I' || chars[curPos+4] != 'T' ) {
-                            Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                        _scanningFunction = ScanningFunction.Attlist6;
+                        if (_chars[_curPos + 1] != 'N' || _chars[_curPos + 2] != 'T' ||
+                             _chars[_curPos + 3] != 'I' || _chars[_curPos + 4] != 'T')
+                        {
+                            Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                         }
-                        switch ( chars[curPos+5] ) {
+                        switch (_chars[_curPos + 5])
+                        {
                             case 'I':
-                                if ( chars[curPos+6] != 'E' || chars[curPos+7] != 'S' ) {
-                                    Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                                if (_chars[_curPos + 6] != 'E' || _chars[_curPos + 7] != 'S')
+                                {
+                                    Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                                 }
-                                curPos += 8;
+                                _curPos += 8;
                                 return Token.ENTITIES;
                             case 'Y':
-                                curPos += 6;
+                                _curPos += 6;
                                 return Token.ENTITY;
                             default:
-                                Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                                Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                                 break;
                         }
                         break;
                     case 'I':
-                        if ( charsUsed - curPos < 6 )
+                        if (_charsUsed - _curPos < 6)
                             goto ReadData;
-                        scanningFunction = ScanningFunction.Attlist6;
-                        if ( chars[curPos+1] != 'D' ) {
-                            Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                        _scanningFunction = ScanningFunction.Attlist6;
+                        if (_chars[_curPos + 1] != 'D')
+                        {
+                            Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                         }
 
-                        if ( chars[curPos+2] != 'R' ) {
-                            curPos += 2;
+                        if (_chars[_curPos + 2] != 'R')
+                        {
+                            _curPos += 2;
                             return Token.ID;
                         }
 
-                        if ( chars[curPos+3] != 'E' || chars[curPos+4] != 'F' ) {
-                            Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                        if (_chars[_curPos + 3] != 'E' || _chars[_curPos + 4] != 'F')
+                        {
+                            Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                         }
 
-                        if ( chars[curPos+5] != 'S' ) {
-                            curPos += 5;
+                        if (_chars[_curPos + 5] != 'S')
+                        {
+                            _curPos += 5;
                             return Token.IDREF;
                         }
-                        else {
-                            curPos += 6;
+                        else
+                        {
+                            _curPos += 6;
                             return Token.IDREFS;
                         }
                     case 'N':
-                        if ( charsUsed - curPos < 8 && !readerAdapter.IsEof ) {
+                        if (_charsUsed - _curPos < 8 && !_readerAdapter.IsEof)
+                        {
                             goto ReadData;
                         }
-                        switch ( chars[curPos+1] ) {
+                        switch (_chars[_curPos + 1])
+                        {
                             case 'O':
-                                if ( chars[curPos+2] != 'T' || chars[curPos+3] != 'A' || 
-                                     chars[curPos+4] != 'T' || chars[curPos+5] != 'I' || 
-                                     chars[curPos+6] != 'O' || chars[curPos+7] != 'N' ) {
-                                    Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                                if (_chars[_curPos + 2] != 'T' || _chars[_curPos + 3] != 'A' ||
+                                     _chars[_curPos + 4] != 'T' || _chars[_curPos + 5] != 'I' ||
+                                     _chars[_curPos + 6] != 'O' || _chars[_curPos + 7] != 'N')
+                                {
+                                    Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                                 }
-                                curPos += 8;
-                                scanningFunction = ScanningFunction.Attlist3;
+                                _curPos += 8;
+                                _scanningFunction = ScanningFunction.Attlist3;
                                 return Token.NOTATION;
                             case 'M':
-                                if ( chars[curPos+2] != 'T' || chars[curPos+3] != 'O' || 
-                                     chars[curPos+4] != 'K' || chars[curPos+5] != 'E' || 
-                                    chars[curPos+6] != 'N' ) {
-                                    Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                                if (_chars[_curPos + 2] != 'T' || _chars[_curPos + 3] != 'O' ||
+                                     _chars[_curPos + 4] != 'K' || _chars[_curPos + 5] != 'E' ||
+                                    _chars[_curPos + 6] != 'N')
+                                {
+                                    Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                                 }
-                                scanningFunction = ScanningFunction.Attlist6;
+                                _scanningFunction = ScanningFunction.Attlist6;
 
-                                if ( chars[curPos+7] == 'S' ) {
-                                    curPos += 8;
+                                if (_chars[_curPos + 7] == 'S')
+                                {
+                                    _curPos += 8;
                                     return Token.NMTOKENS;
                                 }
-                                else {
-                                    curPos += 7;
+                                else
+                                {
+                                    _curPos += 7;
                                     return Token.NMTOKEN;
                                 }
                             default:
-                                Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                                Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                                 break;
                         }
                         break;
                     default:
-                        Throw( curPos, ResXml.Xml_InvalidAttributeType );
+                        Throw(_curPos, ResXml.Xml_InvalidAttributeType);
                         break;
                 }
 
             ReadData:
-                if ( ReadData() == 0 ) {
-                    Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+                if (ReadData() == 0)
+                {
+                    Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                 }
             }
         }
 
-        private Token ScanAttlist3() {
-            if ( chars[curPos] == '(' ) {
-                curPos++;
-                scanningFunction = ScanningFunction.Name;
-                nextScaningFunction = ScanningFunction.Attlist4;
+        private Token ScanAttlist3()
+        {
+            if (_chars[_curPos] == '(')
+            {
+                _curPos++;
+                _scanningFunction = ScanningFunction.Name;
+                _nextScaningFunction = ScanningFunction.Attlist4;
                 return Token.LeftParen;
             }
-            else {
-                ThrowUnexpectedToken( curPos, "(" );
+            else
+            {
+                ThrowUnexpectedToken(_curPos, "(");
                 return Token.None;
             }
         }
 
-        private Token ScanAttlist4() {
-            switch ( chars[curPos] ) {
+        private Token ScanAttlist4()
+        {
+            switch (_chars[_curPos])
+            {
                 case ')':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Attlist6;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Attlist6;
                     return Token.RightParen;
                 case '|':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Name;
-                    nextScaningFunction = ScanningFunction.Attlist4;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Name;
+                    _nextScaningFunction = ScanningFunction.Attlist4;
                     return Token.Or;
                 default:
-                    ThrowUnexpectedToken( curPos, ")", "|" );
+                    ThrowUnexpectedToken(_curPos, ")", "|");
                     return Token.None;
             }
         }
 
-        private Token ScanAttlist5() {
-            switch ( chars[curPos] ) {
+        private Token ScanAttlist5()
+        {
+            switch (_chars[_curPos])
+            {
                 case ')':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Attlist6;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Attlist6;
                     return Token.RightParen;
                 case '|':
-                    curPos++;
-                    scanningFunction = ScanningFunction.Nmtoken;
-                    nextScaningFunction = ScanningFunction.Attlist5;
+                    _curPos++;
+                    _scanningFunction = ScanningFunction.Nmtoken;
+                    _nextScaningFunction = ScanningFunction.Attlist5;
                     return Token.Or;
                 default:
-                    ThrowUnexpectedToken( curPos, ")", "|" );
+                    ThrowUnexpectedToken(_curPos, ")", "|");
                     return Token.None;
-                    
             }
         }
 
-        private  Token  ScanAttlist6() {
-            for (;;) {
-                switch ( chars[curPos] ) {
+        private Token ScanAttlist6()
+        {
+            for (; ; )
+            {
+                switch (_chars[_curPos])
+                {
                     case '"':
                     case '\'':
-                        ScanLiteral( LiteralType.AttributeValue );
-                        scanningFunction = ScanningFunction.Attlist1;
+                        ScanLiteral(LiteralType.AttributeValue);
+                        _scanningFunction = ScanningFunction.Attlist1;
                         return Token.Literal;
                     case '#':
-                        if ( charsUsed - curPos < 6 )
+                        if (_charsUsed - _curPos < 6)
                             goto ReadData;
-                        switch ( chars[curPos+1] ) {
+                        switch (_chars[_curPos + 1])
+                        {
                             case 'R':
-                                if ( charsUsed - curPos < 9 )
+                                if (_charsUsed - _curPos < 9)
                                     goto ReadData;
-                                if ( chars[curPos+2] != 'E' || chars[curPos+3] != 'Q' ||
-                                     chars[curPos+4] != 'U' || chars[curPos+5] != 'I' ||
-                                     chars[curPos+6] != 'R' || chars[curPos+7] != 'E' ||
-                                     chars[curPos+8] != 'D' ) {
-                                    Throw( curPos, ResXml.Xml_ExpectAttType );
+                                if (_chars[_curPos + 2] != 'E' || _chars[_curPos + 3] != 'Q' ||
+                                     _chars[_curPos + 4] != 'U' || _chars[_curPos + 5] != 'I' ||
+                                     _chars[_curPos + 6] != 'R' || _chars[_curPos + 7] != 'E' ||
+                                     _chars[_curPos + 8] != 'D')
+                                {
+                                    Throw(_curPos, ResXml.Xml_ExpectAttType);
                                 }
-                                curPos += 9;
-                                scanningFunction = ScanningFunction.Attlist1;
+                                _curPos += 9;
+                                _scanningFunction = ScanningFunction.Attlist1;
                                 return Token.REQUIRED;
                             case 'I':
-                                if ( charsUsed - curPos < 8 )
+                                if (_charsUsed - _curPos < 8)
                                     goto ReadData;
-                                if ( chars[curPos+2] != 'M' || chars[curPos+3] != 'P' ||
-                                     chars[curPos+4] != 'L' || chars[curPos+5] != 'I' ||
-                                     chars[curPos+6] != 'E' || chars[curPos+7] != 'D' ) {
-                                    Throw( curPos, ResXml.Xml_ExpectAttType );
+                                if (_chars[_curPos + 2] != 'M' || _chars[_curPos + 3] != 'P' ||
+                                     _chars[_curPos + 4] != 'L' || _chars[_curPos + 5] != 'I' ||
+                                     _chars[_curPos + 6] != 'E' || _chars[_curPos + 7] != 'D')
+                                {
+                                    Throw(_curPos, ResXml.Xml_ExpectAttType);
                                 }
-                                curPos += 8;
-                                scanningFunction = ScanningFunction.Attlist1;
+                                _curPos += 8;
+                                _scanningFunction = ScanningFunction.Attlist1;
                                 return Token.IMPLIED;
                             case 'F':
-                                if ( chars[curPos+2] != 'I' || chars[curPos+3] != 'X' ||
-                                     chars[curPos+4] != 'E' || chars[curPos+5] != 'D' ) {
-                                    Throw( curPos, ResXml.Xml_ExpectAttType );
+                                if (_chars[_curPos + 2] != 'I' || _chars[_curPos + 3] != 'X' ||
+                                     _chars[_curPos + 4] != 'E' || _chars[_curPos + 5] != 'D')
+                                {
+                                    Throw(_curPos, ResXml.Xml_ExpectAttType);
                                 }
-                                curPos += 6;
-                                scanningFunction = ScanningFunction.Attlist7;
+                                _curPos += 6;
+                                _scanningFunction = ScanningFunction.Attlist7;
                                 return Token.FIXED;
                             default:
-                                Throw( curPos, ResXml.Xml_ExpectAttType );
+                                Throw(_curPos, ResXml.Xml_ExpectAttType);
                                 break;
                         }
                         break;
                     default:
-                        Throw( curPos, ResXml.Xml_ExpectAttType );
+                        Throw(_curPos, ResXml.Xml_ExpectAttType);
                         break;
                 }
             ReadData:
-                if ( ReadData() == 0 ) {
-                    Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+                if (ReadData() == 0)
+                {
+                    Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                 }
             }
         }
 
-        private Token ScanAttlist7() {
-            switch ( chars[curPos] ) {
+        private Token ScanAttlist7()
+        {
+            switch (_chars[_curPos])
+            {
                 case '"':
                 case '\'':
-                    ScanLiteral( LiteralType.AttributeValue );
-                    scanningFunction = ScanningFunction.Attlist1;
+                    ScanLiteral(LiteralType.AttributeValue);
+                    _scanningFunction = ScanningFunction.Attlist1;
                     return Token.Literal;
                 default:
-                    ThrowUnexpectedToken( curPos, "\"", "'" );
+                    ThrowUnexpectedToken(_curPos, "\"", "'");
                     return Token.None;
             }
         }
 
-        private  Token  ScanLiteral( LiteralType literalType ) {
-            Debug.Assert( chars[curPos] == '"' || chars[curPos] == '\'' );
-            
-            char quoteChar = chars[curPos];
-            char replaceChar = ( literalType == LiteralType.AttributeValue ) ? (char)0x20 : (char)0xA;
-            int startQuoteEntityId = currentEntityId;
+        private Token ScanLiteral(LiteralType literalType)
+        {
+            Debug.Assert(_chars[_curPos] == '"' || _chars[_curPos] == '\'');
 
-            literalLineInfo.Set( LineNo, LinePos );
+            char quoteChar = _chars[_curPos];
+            char replaceChar = (literalType == LiteralType.AttributeValue) ? (char)0x20 : (char)0xA;
+            int startQuoteEntityId = _currentEntityId;
 
-            curPos++;
-            tokenStartPos = curPos;
+            _literalLineInfo.Set(LineNo, LinePos);
+
+            _curPos++;
+            _tokenStartPos = _curPos;
 
 #if SILVERLIGHT
             stringBuilder.Clear();
 #else
-            stringBuilder.Length = 0;
+            _stringBuilder.Length = 0;
 #endif
 
-            for (;;) {
-
+            for (; ; )
+            {
 #if SILVERLIGHT
                 while ( xmlCharType.IsAttributeValueChar( chars[curPos] ) && chars[curPos] != '%' ) {
                     curPos++;
                 }
 #else
-                unsafe {
-                    while ( ( xmlCharType.charProperties[chars[curPos]] & XmlCharType.fAttrValue ) != 0 && chars[curPos] != '%' ) {
-                        curPos++;
+                unsafe
+                {
+                    while ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fAttrValue) != 0 && _chars[_curPos] != '%')
+                    {
+                        _curPos++;
                     }
                 }
 #endif
 
-                if ( chars[curPos] == quoteChar && currentEntityId == startQuoteEntityId ) {
-                    if ( stringBuilder.Length > 0 ) {
-                        stringBuilder.Append( chars, tokenStartPos, curPos - tokenStartPos );
+                if (_chars[_curPos] == quoteChar && _currentEntityId == startQuoteEntityId)
+                {
+                    if (_stringBuilder.Length > 0)
+                    {
+                        _stringBuilder.Append(_chars, _tokenStartPos, _curPos - _tokenStartPos);
                     }
-                    curPos++;
-                    literalQuoteChar = quoteChar;
+                    _curPos++;
+                    _literalQuoteChar = quoteChar;
                     return Token.Literal;
                 }
 
-                int tmp1 = curPos - tokenStartPos;
-                if ( tmp1 > 0 ) {
-                    stringBuilder.Append( chars, tokenStartPos, tmp1 );
-                    tokenStartPos = curPos;
+                int tmp1 = _curPos - _tokenStartPos;
+                if (tmp1 > 0)
+                {
+                    _stringBuilder.Append(_chars, _tokenStartPos, tmp1);
+                    _tokenStartPos = _curPos;
                 }
 
-                switch ( chars[curPos] ) {
+                switch (_chars[_curPos])
+                {
                     case '"':
                     case '\'':
                     case '>':
-                        curPos++;
+                        _curPos++;
                         continue;
                     // eol
                     case (char)0xA:
-                        curPos++;
-                        if ( Normalize ) {
-                            stringBuilder.Append( replaceChar );        // For attributes: CDATA normalization of 0xA
-                            tokenStartPos = curPos;
+                        _curPos++;
+                        if (Normalize)
+                        {
+                            _stringBuilder.Append(replaceChar);        // For attributes: CDATA normalization of 0xA
+                            _tokenStartPos = _curPos;
                         }
-                        readerAdapter.OnNewLine( curPos );
+                        _readerAdapter.OnNewLine(_curPos);
                         continue;
                     case (char)0xD:
-                        if ( chars[curPos+1] == (char)0xA ) {
-                            if ( Normalize ) {
-                                if ( literalType == LiteralType.AttributeValue ) {
-                                    stringBuilder.Append( readerAdapter.IsEntityEolNormalized ? "\u0020\u0020" : "\u0020" ); // CDATA normalization of 0xD 0xA
+                        if (_chars[_curPos + 1] == (char)0xA)
+                        {
+                            if (Normalize)
+                            {
+                                if (literalType == LiteralType.AttributeValue)
+                                {
+                                    _stringBuilder.Append(_readerAdapter.IsEntityEolNormalized ? "\u0020\u0020" : "\u0020"); // CDATA normalization of 0xD 0xA
                                 }
-                                else {
-                                    stringBuilder.Append( readerAdapter.IsEntityEolNormalized ? "\u000D\u000A" : "\u000A" ); // EOL normalization of 0xD 0xA                                    
+                                else
+                                {
+                                    _stringBuilder.Append(_readerAdapter.IsEntityEolNormalized ? "\u000D\u000A" : "\u000A"); // EOL normalization of 0xD 0xA                                    
                                 }
-                                tokenStartPos = curPos + 2;
+                                _tokenStartPos = _curPos + 2;
 
                                 SaveParsingBuffer();          // EOL normalization of 0xD 0xA in internal subset value
-                                readerAdapter.CurrentPosition++;
+                                _readerAdapter.CurrentPosition++;
                             }
-                            curPos += 2;
+                            _curPos += 2;
                         }
-                        else if ( curPos+1 == charsUsed ) {
+                        else if (_curPos + 1 == _charsUsed)
+                        {
                             goto ReadData;
                         }
-                        else {
-                            curPos++;
-                            if ( Normalize ) {
-                                stringBuilder.Append( replaceChar ); // For attributes: CDATA normalization of 0xD and 0xD 0xA
-                                tokenStartPos = curPos;              // For entities:   EOL normalization of 0xD and 0xD 0xA
+                        else
+                        {
+                            _curPos++;
+                            if (Normalize)
+                            {
+                                _stringBuilder.Append(replaceChar); // For attributes: CDATA normalization of 0xD and 0xD 0xA
+                                _tokenStartPos = _curPos;              // For entities:   EOL normalization of 0xD and 0xD 0xA
                             }
                         }
-                        readerAdapter.OnNewLine( curPos );
+                        _readerAdapter.OnNewLine(_curPos);
                         continue;
                     // tab
                     case (char)0x9:
-                        if ( literalType == LiteralType.AttributeValue && Normalize ) {
-                            stringBuilder.Append( (char)0x20 );      // For attributes: CDATA normalization of 0x9
-                            tokenStartPos++;
+                        if (literalType == LiteralType.AttributeValue && Normalize)
+                        {
+                            _stringBuilder.Append((char)0x20);      // For attributes: CDATA normalization of 0x9
+                            _tokenStartPos++;
                         }
-                        curPos++;
+                        _curPos++;
                         continue;
                     // attribute values cannot contain '<'
                     case '<':
-                        if ( literalType == LiteralType.AttributeValue ) {
-                            Throw( curPos, ResXml.Xml_BadAttributeChar, XmlException.BuildCharExceptionArgs( '<', '\0' ) );
+                        if (literalType == LiteralType.AttributeValue)
+                        {
+                            Throw(_curPos, ResXml.Xml_BadAttributeChar, XmlException.BuildCharExceptionArgs('<', '\0'));
                         }
-                        curPos++;
+                        _curPos++;
                         continue;
                     // parameter entity reference
                     case '%':
-                        if ( literalType != LiteralType.EntityReplText ) {
-                            curPos++;
+                        if (literalType != LiteralType.EntityReplText)
+                        {
+                            _curPos++;
                             continue;
                         }
-                        HandleEntityReference( true, true, literalType == LiteralType.AttributeValue );
-                        tokenStartPos = curPos;
+                        HandleEntityReference(true, true, literalType == LiteralType.AttributeValue);
+                        _tokenStartPos = _curPos;
                         continue;
                     // general entity reference
                     case '&':
-                        if ( literalType == LiteralType.SystemOrPublicID ) {
-                            curPos++;
+                        if (literalType == LiteralType.SystemOrPublicID)
+                        {
+                            _curPos++;
                             continue;
                         }
-                        if ( curPos + 1 == charsUsed ) {
+                        if (_curPos + 1 == _charsUsed)
+                        {
                             goto ReadData;
                         }
                         // numeric characters reference
-                        if ( chars[curPos + 1] == '#' ) {
+                        if (_chars[_curPos + 1] == '#')
+                        {
                             SaveParsingBuffer();
-                            int endPos = readerAdapter.ParseNumericCharRef( SaveInternalSubsetValue ? internalSubsetValueSb : null );
+                            int endPos = _readerAdapter.ParseNumericCharRef(SaveInternalSubsetValue ? _internalSubsetValueSb : null);
                             LoadParsingBuffer();
-                            stringBuilder.Append( chars, curPos, endPos - curPos );
-                            readerAdapter.CurrentPosition = endPos;
-                            tokenStartPos = endPos;
-                            curPos = endPos;
+                            _stringBuilder.Append(_chars, _curPos, endPos - _curPos);
+                            _readerAdapter.CurrentPosition = endPos;
+                            _tokenStartPos = endPos;
+                            _curPos = endPos;
                             continue;
                         }
-                        else {
+                        else
+                        {
                             // general entity reference
                             SaveParsingBuffer();
-                            if ( literalType == LiteralType.AttributeValue ) {
-                                int endPos = readerAdapter.ParseNamedCharRef( true, SaveInternalSubsetValue ? internalSubsetValueSb : null );
+                            if (literalType == LiteralType.AttributeValue)
+                            {
+                                int endPos = _readerAdapter.ParseNamedCharRef(true, SaveInternalSubsetValue ? _internalSubsetValueSb : null);
                                 LoadParsingBuffer();
 
-                                if ( endPos >= 0 ) {
-                                    stringBuilder.Append( chars, curPos, endPos - curPos );
-                                    readerAdapter.CurrentPosition = endPos;
-                                    tokenStartPos = endPos;
-                                    curPos = endPos;
+                                if (endPos >= 0)
+                                {
+                                    _stringBuilder.Append(_chars, _curPos, endPos - _curPos);
+                                    _readerAdapter.CurrentPosition = endPos;
+                                    _tokenStartPos = endPos;
+                                    _curPos = endPos;
                                     continue;
                                 }
-                                else {
-                                    HandleEntityReference( false, true, true );
-                                    tokenStartPos = curPos;
+                                else
+                                {
+                                    HandleEntityReference(false, true, true);
+                                    _tokenStartPos = _curPos;
                                 }
                                 continue;
                             }
-                            else {
-                                int endPos = readerAdapter.ParseNamedCharRef( false, null );
+                            else
+                            {
+                                int endPos = _readerAdapter.ParseNamedCharRef(false, null);
                                 LoadParsingBuffer();
-    
-                                if ( endPos >= 0 ) {
-                                    tokenStartPos = curPos;
-                                    curPos = endPos;
+
+                                if (endPos >= 0)
+                                {
+                                    _tokenStartPos = _curPos;
+                                    _curPos = endPos;
                                     continue;
                                 }
-                                else {
-                                    stringBuilder.Append( '&' );
-                                    curPos++;
-                                    tokenStartPos = curPos;
+                                else
+                                {
+                                    _stringBuilder.Append('&');
+                                    _curPos++;
+                                    _tokenStartPos = _curPos;
                                     // Bypass general entities in entity values
                                     XmlQualifiedName entityName = ScanEntityName();
-                                    VerifyEntityReference( entityName, false, false, false );
+                                    VerifyEntityReference(entityName, false, false, false);
                                 }
                                 continue;
                             }
                         }
                     default:
                         // end of buffer
-                        if ( curPos == charsUsed ) {
+                        if (_curPos == _charsUsed)
+                        {
                             goto ReadData;
                         }
                         // surrogate chars
-                        else { 
-                            char ch = chars[curPos];
-                            if ( XmlCharType.IsHighSurrogate(ch) ) {
-                                if ( curPos + 1 == charsUsed ) {
+                        else
+                        {
+                            char ch = _chars[_curPos];
+                            if (XmlCharType.IsHighSurrogate(ch))
+                            {
+                                if (_curPos + 1 == _charsUsed)
+                                {
                                     goto ReadData;
                                 }
-                                curPos++;
-                                if ( XmlCharType.IsLowSurrogate(chars[curPos]) ) {
-                                    curPos++;
+                                _curPos++;
+                                if (XmlCharType.IsLowSurrogate(_chars[_curPos]))
+                                {
+                                    _curPos++;
                                     continue;
                                 }
                             }
-                            ThrowInvalidChar( chars, charsUsed, curPos );
+                            ThrowInvalidChar(_chars, _charsUsed, _curPos);
                             return Token.None;
                         }
                 }
 
             ReadData:
-                Debug.Assert( curPos - tokenStartPos == 0 );
+                Debug.Assert(_curPos - _tokenStartPos == 0);
 
                 // read new characters into the buffer
-                if ( readerAdapter.IsEof || ReadData() == 0 ) {
-                    if ( literalType == LiteralType.SystemOrPublicID || !HandleEntityEnd( true ) ) {
-                        Throw( curPos, ResXml.Xml_UnclosedQuote );
+                if (_readerAdapter.IsEof || ReadData() == 0)
+                {
+                    if (literalType == LiteralType.SystemOrPublicID || !HandleEntityEnd(true))
+                    {
+                        Throw(_curPos, ResXml.Xml_UnclosedQuote);
                     }
                 }
-                tokenStartPos = curPos;
+                _tokenStartPos = _curPos;
             }
         }
 
-        private XmlQualifiedName ScanEntityName() {
-            try {
+        private XmlQualifiedName ScanEntityName()
+        {
+            try
+            {
                 ScanName();
             }
-            catch ( XmlException e ) {
-                Throw( ResXml.Xml_ErrorParsingEntityName, string.Empty, e.LineNumber, e.LinePosition );
+            catch (XmlException e)
+            {
+                Throw(ResXml.Xml_ErrorParsingEntityName, string.Empty, e.LineNumber, e.LinePosition);
             }
 
-            if ( chars[curPos] != ';' ) {
-                ThrowUnexpectedToken( curPos, ";" );
+            if (_chars[_curPos] != ';')
+            {
+                ThrowUnexpectedToken(_curPos, ";");
             }
-            XmlQualifiedName entityName = GetNameQualified( false );
-            curPos++;
+            XmlQualifiedName entityName = GetNameQualified(false);
+            _curPos++;
 
             return entityName;
         }
 
-        private  Token  ScanNotation1() {
-            switch ( chars[curPos] ) {
+        private Token ScanNotation1()
+        {
+            switch (_chars[_curPos])
+            {
                 case 'P':
-                    if ( !EatPublicKeyword() ) {
-                        Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    if (!EatPublicKeyword())
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     }
-                    nextScaningFunction = ScanningFunction.ClosingTag;
-                    scanningFunction = ScanningFunction.PublicId1;
+                    _nextScaningFunction = ScanningFunction.ClosingTag;
+                    _scanningFunction = ScanningFunction.PublicId1;
                     return Token.PUBLIC;
                 case 'S':
-                    if ( !EatSystemKeyword() ) {
-                        Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    if (!EatSystemKeyword())
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     }
-                    nextScaningFunction = ScanningFunction.ClosingTag;
-                    scanningFunction = ScanningFunction.SystemId;
+                    _nextScaningFunction = ScanningFunction.ClosingTag;
+                    _scanningFunction = ScanningFunction.SystemId;
                     return Token.SYSTEM;
                 default:
-                    Throw( curPos, ResXml.Xml_ExpectExternalOrPublicId );
+                    Throw(_curPos, ResXml.Xml_ExpectExternalOrPublicId);
                     return Token.None;
             }
         }
 
-        private  Token  ScanSystemId() {
-            if ( chars[curPos] != '"' && chars[curPos] != '\'' ) {
-                ThrowUnexpectedToken( curPos, "\"", "'" );
+        private Token ScanSystemId()
+        {
+            if (_chars[_curPos] != '"' && _chars[_curPos] != '\'')
+            {
+                ThrowUnexpectedToken(_curPos, "\"", "'");
             }
 
-            ScanLiteral( LiteralType.SystemOrPublicID );
+            ScanLiteral(LiteralType.SystemOrPublicID);
 
-            scanningFunction = nextScaningFunction;
+            _scanningFunction = _nextScaningFunction;
             return Token.Literal;
         }
 
-        private  Token  ScanEntity1() {
-            if ( chars[curPos] == '%' ) {
-                curPos++;
-                nextScaningFunction = ScanningFunction.Entity2;
-                scanningFunction = ScanningFunction.Name;
+        private Token ScanEntity1()
+        {
+            if (_chars[_curPos] == '%')
+            {
+                _curPos++;
+                _nextScaningFunction = ScanningFunction.Entity2;
+                _scanningFunction = ScanningFunction.Name;
                 return Token.Percent;
             }
-            else {
+            else
+            {
                 ScanName();
-                scanningFunction = ScanningFunction.Entity2;
+                _scanningFunction = ScanningFunction.Entity2;
                 return Token.Name;
             }
         }
 
-        private  Token  ScanEntity2() {
-            switch ( chars[curPos] ) {
+        private Token ScanEntity2()
+        {
+            switch (_chars[_curPos])
+            {
                 case 'P':
-                    if ( !EatPublicKeyword() ) {
-                        Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    if (!EatPublicKeyword())
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     }
-                    nextScaningFunction = ScanningFunction.Entity3;
-                    scanningFunction = ScanningFunction.PublicId1;
+                    _nextScaningFunction = ScanningFunction.Entity3;
+                    _scanningFunction = ScanningFunction.PublicId1;
                     return Token.PUBLIC;
                 case 'S':
-                    if ( !EatSystemKeyword() ) {
-                        Throw( curPos, ResXml.Xml_ExpectExternalOrClose );
+                    if (!EatSystemKeyword())
+                    {
+                        Throw(_curPos, ResXml.Xml_ExpectExternalOrClose);
                     }
-                    nextScaningFunction = ScanningFunction.Entity3;
-                    scanningFunction = ScanningFunction.SystemId;
+                    _nextScaningFunction = ScanningFunction.Entity3;
+                    _scanningFunction = ScanningFunction.SystemId;
                     return Token.SYSTEM;
 
                 case '"':
                 case '\'':
-                    ScanLiteral( LiteralType.EntityReplText );
-                    scanningFunction = ScanningFunction.ClosingTag;
+                    ScanLiteral(LiteralType.EntityReplText);
+                    _scanningFunction = ScanningFunction.ClosingTag;
                     return Token.Literal;
                 default:
-                    Throw( curPos, ResXml.Xml_ExpectExternalIdOrEntityValue );
+                    Throw(_curPos, ResXml.Xml_ExpectExternalIdOrEntityValue);
                     return Token.None;
             }
         }
 
-        private  Token  ScanEntity3() {
-            if ( chars[curPos] == 'N' ) {
-                while ( charsUsed - curPos < 5 ) {
-                    if ( ReadData() == 0 ) {
+        private Token ScanEntity3()
+        {
+            if (_chars[_curPos] == 'N')
+            {
+                while (_charsUsed - _curPos < 5)
+                {
+                    if (ReadData() == 0)
+                    {
                         goto End;
                     }
                 }
-                if ( chars[curPos+1] == 'D' && chars[curPos+2] == 'A' && 
-                     chars[curPos+3] == 'T' && chars[curPos+4] == 'A' ) {
-                    curPos += 5;
-                    scanningFunction = ScanningFunction.Name;
-                    nextScaningFunction = ScanningFunction.ClosingTag;
+                if (_chars[_curPos + 1] == 'D' && _chars[_curPos + 2] == 'A' &&
+                     _chars[_curPos + 3] == 'T' && _chars[_curPos + 4] == 'A')
+                {
+                    _curPos += 5;
+                    _scanningFunction = ScanningFunction.Name;
+                    _nextScaningFunction = ScanningFunction.ClosingTag;
                     return Token.NData;
                 }
             }
         End:
-            scanningFunction = ScanningFunction.ClosingTag;
+            _scanningFunction = ScanningFunction.ClosingTag;
             return Token.None;
         }
 
-        private  Token  ScanPublicId1() {
-            if ( chars[curPos] != '"' && chars[curPos] != '\'' ) {
-                ThrowUnexpectedToken( curPos, "\"", "'" );
+        private Token ScanPublicId1()
+        {
+            if (_chars[_curPos] != '"' && _chars[_curPos] != '\'')
+            {
+                ThrowUnexpectedToken(_curPos, "\"", "'");
             }
 
-            ScanLiteral( LiteralType.SystemOrPublicID );
+            ScanLiteral(LiteralType.SystemOrPublicID);
 
-            scanningFunction = ScanningFunction.PublicId2;
+            _scanningFunction = ScanningFunction.PublicId2;
             return Token.Literal;
         }
 
-        private  Token  ScanPublicId2() {
-            if ( chars[curPos] != '"' && chars[curPos] != '\'' ) {
-                scanningFunction = nextScaningFunction;
+        private Token ScanPublicId2()
+        {
+            if (_chars[_curPos] != '"' && _chars[_curPos] != '\'')
+            {
+                _scanningFunction = _nextScaningFunction;
                 return Token.None;
             }
 
-            ScanLiteral( LiteralType.SystemOrPublicID );
-            scanningFunction = nextScaningFunction;
+            ScanLiteral(LiteralType.SystemOrPublicID);
+            _scanningFunction = _nextScaningFunction;
 
             return Token.Literal;
         }
 
-        private  Token  ScanCondSection1() {
-            if ( chars[curPos] != 'I' ) {
-                Throw( curPos, ResXml.Xml_ExpectIgnoreOrInclude );
+        private Token ScanCondSection1()
+        {
+            if (_chars[_curPos] != 'I')
+            {
+                Throw(_curPos, ResXml.Xml_ExpectIgnoreOrInclude);
             }
-            curPos++;
+            _curPos++;
 
-            for (;;) {
-                if ( charsUsed - curPos < 5 ) { 
+            for (; ; )
+            {
+                if (_charsUsed - _curPos < 5)
+                {
                     goto ReadData;
                 }
-                switch ( chars[curPos] ) {
+                switch (_chars[_curPos])
+                {
                     case 'N':
-                        if ( charsUsed - curPos < 6 ) { 
+                        if (_charsUsed - _curPos < 6)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] != 'C' || chars[curPos+2] != 'L' ||
-                             chars[curPos+3] != 'U' || chars[curPos+4] != 'D' || 
-                             chars[curPos+5] != 'E' || xmlCharType.IsNameSingleChar( chars[curPos+6] ) 
+                        if (_chars[_curPos + 1] != 'C' || _chars[_curPos + 2] != 'L' ||
+                             _chars[_curPos + 3] != 'U' || _chars[_curPos + 4] != 'D' ||
+                             _chars[_curPos + 5] != 'E' || _xmlCharType.IsNameSingleChar(_chars[_curPos + 6])
 #if XML10_FIFTH_EDITION
                              || xmlCharType.IsNCNameHighSurrogateChar( chars[curPos+6] ) 
 #endif
-                            ) {
+                            )
+                        {
                             goto default;
                         }
-                        nextScaningFunction = ScanningFunction.SubsetContent;
-                        scanningFunction = ScanningFunction.CondSection2;
-                        curPos += 6;
+                        _nextScaningFunction = ScanningFunction.SubsetContent;
+                        _scanningFunction = ScanningFunction.CondSection2;
+                        _curPos += 6;
                         return Token.INCLUDE;
                     case 'G':
-                        if ( chars[curPos+1] != 'N' || chars[curPos+2] != 'O' ||
-                             chars[curPos+3] != 'R' || chars[curPos+4] != 'E' ||
-                             xmlCharType.IsNameSingleChar( chars[curPos + 5] ) 
+                        if (_chars[_curPos + 1] != 'N' || _chars[_curPos + 2] != 'O' ||
+                             _chars[_curPos + 3] != 'R' || _chars[_curPos + 4] != 'E' ||
+                             _xmlCharType.IsNameSingleChar(_chars[_curPos + 5])
 #if XML10_FIFTH_EDITION
                             ||xmlCharType.IsNCNameHighSurrogateChar( chars[curPos+5] ) 
 #endif
-                            ) {
+                            )
+                        {
                             goto default;
                         }
-                        nextScaningFunction = ScanningFunction.CondSection3;
-                        scanningFunction = ScanningFunction.CondSection2;
-                        curPos += 5;
+                        _nextScaningFunction = ScanningFunction.CondSection3;
+                        _scanningFunction = ScanningFunction.CondSection2;
+                        _curPos += 5;
                         return Token.IGNORE;
                     default:
-                        Throw( curPos - 1, ResXml.Xml_ExpectIgnoreOrInclude );
+                        Throw(_curPos - 1, ResXml.Xml_ExpectIgnoreOrInclude);
                         return Token.None;
                 }
             ReadData:
-                if ( ReadData() == 0 ) {
-                    Throw( curPos, ResXml.Xml_IncompleteDtdContent );
+                if (ReadData() == 0)
+                {
+                    Throw(_curPos, ResXml.Xml_IncompleteDtdContent);
                 }
             }
         }
 
-        private Token ScanCondSection2() {
-            if ( chars[curPos] != '[' ) {
-                ThrowUnexpectedToken( curPos, "[" );
+        private Token ScanCondSection2()
+        {
+            if (_chars[_curPos] != '[')
+            {
+                ThrowUnexpectedToken(_curPos, "[");
             }
-            curPos++;
-            scanningFunction = nextScaningFunction;
+            _curPos++;
+            _scanningFunction = _nextScaningFunction;
             return Token.LeftBracket;
         }
 
-        private  Token  ScanCondSection3() {
+        private Token ScanCondSection3()
+        {
             int ignoreSectionDepth = 0;
 
             // skip ignored part
-            for (;;) {
-
+            for (; ; )
+            {
 #if SILVERLIGHT
                 while ( xmlCharType.IsTextChar(chars[curPos]) && chars[curPos] != ']' ) {
                     curPos++;
                 }
 #else
-                unsafe {
-                    while ( ( xmlCharType.charProperties[chars[curPos]] & XmlCharType.fText ) != 0 && chars[curPos] != ']' ) {
-                        curPos++;
+                unsafe
+                {
+                    while ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fText) != 0 && _chars[_curPos] != ']')
+                    {
+                        _curPos++;
                     }
                 }
 #endif
 
-                switch ( chars[curPos] ) {
+                switch (_chars[_curPos])
+                {
                     case '"':
                     case '\'':
                     case (char)0x9:
                     case '&':
-                        curPos++;
+                        _curPos++;
                         continue;
                     // eol
                     case (char)0xA:
-                        curPos++;
-                        readerAdapter.OnNewLine( curPos );
+                        _curPos++;
+                        _readerAdapter.OnNewLine(_curPos);
                         continue;
                     case (char)0xD:
-                        if ( chars[curPos+1] == (char)0xA ) {
-                            curPos += 2;
+                        if (_chars[_curPos + 1] == (char)0xA)
+                        {
+                            _curPos += 2;
                         }
-                        else if ( curPos+1 < charsUsed || readerAdapter.IsEof ) {
-                            curPos++;
+                        else if (_curPos + 1 < _charsUsed || _readerAdapter.IsEof)
+                        {
+                            _curPos++;
                         }
-                        else {
+                        else
+                        {
                             goto ReadData;
                         }
-                        readerAdapter.OnNewLine( curPos );
+                        _readerAdapter.OnNewLine(_curPos);
                         continue;
                     case '<':
-                        if ( charsUsed - curPos < 3 ) {
+                        if (_charsUsed - _curPos < 3)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] != '!' || chars[curPos+2] != '[' ) {
-                            curPos++;
+                        if (_chars[_curPos + 1] != '!' || _chars[_curPos + 2] != '[')
+                        {
+                            _curPos++;
                             continue;
                         }
                         ignoreSectionDepth++;
-                        curPos += 3;
+                        _curPos += 3;
                         continue;
                     case ']':
-                        if ( charsUsed - curPos < 3 ) {
+                        if (_charsUsed - _curPos < 3)
+                        {
                             goto ReadData;
                         }
-                        if ( chars[curPos+1] != ']' || chars[curPos+2] != '>' ) {
-                            curPos++;
+                        if (_chars[_curPos + 1] != ']' || _chars[_curPos + 2] != '>')
+                        {
+                            _curPos++;
                             continue;
                         }
-                        if ( ignoreSectionDepth > 0 ) {
+                        if (ignoreSectionDepth > 0)
+                        {
                             ignoreSectionDepth--;
-                            curPos += 3;
+                            _curPos += 3;
                             continue;
                         }
-                        else {
-                            curPos += 3;
-                            scanningFunction = ScanningFunction.SubsetContent;
+                        else
+                        {
+                            _curPos += 3;
+                            _scanningFunction = ScanningFunction.SubsetContent;
                             return Token.CondSectionEnd;
                         }
                     default:
                         // end of buffer
-                        if ( curPos == charsUsed ) {
+                        if (_curPos == _charsUsed)
+                        {
                             goto ReadData;
                         }
                         // surrogate chars
-                        else { 
-                            char ch = chars[curPos];
-                            if ( XmlCharType.IsHighSurrogate(ch) ) {
-                                if ( curPos + 1 == charsUsed ) {
+                        else
+                        {
+                            char ch = _chars[_curPos];
+                            if (XmlCharType.IsHighSurrogate(ch))
+                            {
+                                if (_curPos + 1 == _charsUsed)
+                                {
                                     goto ReadData;
                                 }
-                                curPos++;
-                                if ( XmlCharType.IsLowSurrogate(chars[curPos])) {
-                                    curPos++;
+                                _curPos++;
+                                if (XmlCharType.IsLowSurrogate(_chars[_curPos]))
+                                {
+                                    _curPos++;
                                     continue;
                                 }
                             }
-                            ThrowInvalidChar( chars, charsUsed, curPos );
+                            ThrowInvalidChar(_chars, _charsUsed, _curPos);
                             return Token.None;
                         }
                 }
 
             ReadData:
                 // read new characters into the buffer
-                if ( readerAdapter.IsEof || ReadData() == 0 ) {
-                    if ( HandleEntityEnd( false ) ) {
+                if (_readerAdapter.IsEof || ReadData() == 0)
+                {
+                    if (HandleEntityEnd(false))
+                    {
                         continue;
                     }
-                    Throw( curPos, ResXml.Xml_UnclosedConditionalSection );
+                    Throw(_curPos, ResXml.Xml_UnclosedConditionalSection);
                 }
-                tokenStartPos = curPos;
+                _tokenStartPos = _curPos;
             }
         }
 
-        private void ScanName() {
-            ScanQName( false );
+        private void ScanName()
+        {
+            ScanQName(false);
         }
 
-        private void ScanQName() {
-            ScanQName( SupportNamespaces );
+        private void ScanQName()
+        {
+            ScanQName(SupportNamespaces);
         }
 
-        private void ScanQName( bool isQName ) {
-            tokenStartPos = curPos;
+        private void ScanQName(bool isQName)
+        {
+            _tokenStartPos = _curPos;
             int colonOffset = -1;
 
-            for (;;) {
-
-                unsafe {
-
+            for (; ; )
+            {
+                unsafe
+                {
 #if SILVERLIGHT
                     if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
 #else
-                    if ( ( xmlCharType.charProperties[chars[curPos]] & XmlCharType.fNCStartNameSC ) != 0 || chars[curPos] == ':') { // if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
+                    if ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fNCStartNameSC) != 0 || _chars[_curPos] == ':')
+                    { // if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
 #endif
 
-                        curPos++;
+                        _curPos++;
                     }
 #if XML10_FIFTH_EDITION
                     else if ( curPos + 1 < charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[curPos+1], chars[curPos])) {
                         curPos += 2;
                     }
 #endif
-                    else {
-                        if ( curPos + 1 >= charsUsed ) {
-                            if ( ReadDataInName() ) {
+                    else
+                    {
+                        if (_curPos + 1 >= _charsUsed)
+                        {
+                            if (ReadDataInName())
+                            {
                                 continue;
                             }
-                            Throw( curPos, ResXml.Xml_UnexpectedEOF, "Name" );
+                            Throw(_curPos, ResXml.Xml_UnexpectedEOF, "Name");
                         }
-                        else {
-                            Throw( curPos, ResXml.Xml_BadStartNameChar, XmlException.BuildCharExceptionArgs( chars, charsUsed, curPos ) );
+                        else
+                        {
+                            Throw(_curPos, ResXml.Xml_BadStartNameChar, XmlException.BuildCharExceptionArgs(_chars, _charsUsed, _curPos));
                         }
                     }
                 }
 
-        ContinueName:
+            ContinueName:
 
-                unsafe {
-                    for (;;) {
-    #if SILVERLIGHT
+                unsafe
+                {
+                    for (; ; )
+                    {
+#if SILVERLIGHT
                         if ( xmlCharType.IsNCNameSingleChar( chars[curPos] ) ) {
-    #else
-                        if ( ( xmlCharType.charProperties[chars[curPos]] & XmlCharType.fNCNameSC ) != 0 ) { // while ( xmlCharType.IsNCNameSingleChar(chars[curPos]) ) {
-    #endif
+#else
+                        if ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fNCNameSC) != 0)
+                        { // while ( xmlCharType.IsNCNameSingleChar(chars[curPos]) ) {
+#endif
 
-                            curPos++;
+                            _curPos++;
                         }
 #if XML10_FIFTH_EDITION
                         else if ( curPos + 1 < charsUsed && xmlCharType.IsNameSurrogateChar(chars[curPos + 1], chars[curPos]) ) {
                             curPos += 2;
                         }
 #endif
-                        else {
+                        else
+                        {
                             break;
                         }
                     }
                 }
 
-                if ( chars[curPos] == ':' ) {
-                    if ( isQName ) {
-                        if ( colonOffset != -1 ) {
-                            Throw( curPos, ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs( ':', '\0' ));
+                if (_chars[_curPos] == ':')
+                {
+                    if (isQName)
+                    {
+                        if (colonOffset != -1)
+                        {
+                            Throw(_curPos, ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(':', '\0'));
                         }
-                        colonOffset = curPos - tokenStartPos;
-                        curPos++;
+                        colonOffset = _curPos - _tokenStartPos;
+                        _curPos++;
                         continue;
                     }
-                    else {
-                        curPos++;
+                    else
+                    {
+                        _curPos++;
                         goto ContinueName;
                     }
                 }
                 // end of buffer
-                else if ( curPos == charsUsed 
+                else if (_curPos == _charsUsed
 #if XML10_FIFTH_EDITION
                     || ( curPos + 1 == charsUsed && xmlCharType.IsNCNameHighSurrogateChar( chars[curPos] ) ) 
 #endif
-                    ) {
-                    if ( ReadDataInName() ) {
+                    )
+                {
+                    if (ReadDataInName())
+                    {
                         goto ContinueName;
                     }
-                    if ( tokenStartPos == curPos ) {
-                        Throw( curPos, ResXml.Xml_UnexpectedEOF, "Name" );
+                    if (_tokenStartPos == _curPos)
+                    {
+                        Throw(_curPos, ResXml.Xml_UnexpectedEOF, "Name");
                     }
                 }
                 // end of name
-                colonPos = ( colonOffset == -1 ) ? -1 : tokenStartPos + colonOffset;
+                _colonPos = (colonOffset == -1) ? -1 : _tokenStartPos + colonOffset;
                 return;
             }
         }
 
-        private  bool  ReadDataInName() {
-            int offset = curPos - tokenStartPos;
-            curPos = tokenStartPos;
-            bool newDataRead = ( ReadData() != 0 );
-            tokenStartPos = curPos;
-            curPos += offset;
+        private bool ReadDataInName()
+        {
+            int offset = _curPos - _tokenStartPos;
+            _curPos = _tokenStartPos;
+            bool newDataRead = (ReadData() != 0);
+            _tokenStartPos = _curPos;
+            _curPos += offset;
             return newDataRead;
         }
 
-        private void ScanNmtoken() {
-            tokenStartPos = curPos;
+        private void ScanNmtoken()
+        {
+            _tokenStartPos = _curPos;
 
-            for (;;) {
-
-                unsafe {
-                    for (;;) {
+            for (; ; )
+            {
+                unsafe
+                {
+                    for (; ; )
+                    {
 #if SILVERLIGHT
                         if ( xmlCharType.IsNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
 #else
-                        if ((xmlCharType.charProperties[chars[curPos]] & XmlCharType.fNCNameSC) != 0 || chars[curPos] == ':') {  // if ( xmlCharType.IsNCNameChar(chars[curPos]) || chars[curPos] == ':' ) {
+                        if ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fNCNameSC) != 0 || _chars[_curPos] == ':')
+                        {  // if ( xmlCharType.IsNCNameChar(chars[curPos]) || chars[curPos] == ':' ) {
 #endif
 
-                            curPos++;
+                            _curPos++;
                         }
 #if XML10_FIFTH_EDITION
                         else if (curPos + 1 < charsUsed && xmlCharType.IsNCNameSurrogateChar(chars[curPos + 1], chars[curPos])) {
                             curPos += 2;
                         }
 #endif
-                        else {
+                        else
+                        {
                             break;
                         }
                     }
                 }
 
-                if ( curPos < charsUsed 
+                if (_curPos < _charsUsed
 #if XML10_FIFTH_EDITION
                     && ( !xmlCharType.IsNCNameHighSurrogateChar( chars[curPos] ) || curPos + 1 < charsUsed ) 
 #endif
-                    ) {
-                    if ( curPos - tokenStartPos == 0 ) {
-                        Throw( curPos, ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs( chars, charsUsed, curPos ) );
+                    )
+                {
+                    if (_curPos - _tokenStartPos == 0)
+                    {
+                        Throw(_curPos, ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(_chars, _charsUsed, _curPos));
                     }
                     return;
                 }
 
-                int len = curPos - tokenStartPos;
-                curPos = tokenStartPos;
-                if ( ReadData() == 0 ) {
-                    if ( len > 0 ) {
-                        tokenStartPos = curPos;
-                        curPos += len;
+                int len = _curPos - _tokenStartPos;
+                _curPos = _tokenStartPos;
+                if (ReadData() == 0)
+                {
+                    if (len > 0)
+                    {
+                        _tokenStartPos = _curPos;
+                        _curPos += len;
                         return;
                     }
-                    Throw( curPos, ResXml.Xml_UnexpectedEOF, "NmToken" );
+                    Throw(_curPos, ResXml.Xml_UnexpectedEOF, "NmToken");
                 }
-                tokenStartPos = curPos;
-                curPos += len;
+                _tokenStartPos = _curPos;
+                _curPos += len;
             }
         }
 
-        private  bool  EatPublicKeyword() { 
-            Debug.Assert( chars[curPos] == 'P' );
-            while ( charsUsed - curPos < 6 ) {
-                if ( ReadData() == 0 ) {
+        private bool EatPublicKeyword()
+        {
+            Debug.Assert(_chars[_curPos] == 'P');
+            while (_charsUsed - _curPos < 6)
+            {
+                if (ReadData() == 0)
+                {
                     return false;
                 }
             }
-            if ( chars[curPos+1] != 'U' || chars[curPos+2] != 'B' ||
-                 chars[curPos+3] != 'L' || chars[curPos+4] != 'I' ||
-                 chars[curPos+5] != 'C' ) {
+            if (_chars[_curPos + 1] != 'U' || _chars[_curPos + 2] != 'B' ||
+                 _chars[_curPos + 3] != 'L' || _chars[_curPos + 4] != 'I' ||
+                 _chars[_curPos + 5] != 'C')
+            {
                 return false;
             }
-            curPos += 6;
+            _curPos += 6;
             return true;
         }
 
-        private  bool  EatSystemKeyword() { 
-            Debug.Assert( chars[curPos] == 'S' );
-            while ( charsUsed - curPos < 6 ) {
-                if ( ReadData() == 0 ) {
+        private bool EatSystemKeyword()
+        {
+            Debug.Assert(_chars[_curPos] == 'S');
+            while (_charsUsed - _curPos < 6)
+            {
+                if (ReadData() == 0)
+                {
                     return false;
                 }
             }
-            if ( chars[curPos+1] != 'Y' || chars[curPos+2] != 'S' ||
-                 chars[curPos+3] != 'T' || chars[curPos+4] != 'E' ||
-                 chars[curPos+5] != 'M' ) {
+            if (_chars[_curPos + 1] != 'Y' || _chars[_curPos + 2] != 'S' ||
+                 _chars[_curPos + 3] != 'T' || _chars[_curPos + 4] != 'E' ||
+                 _chars[_curPos + 5] != 'M')
+            {
                 return false;
             }
-            curPos += 6;
+            _curPos += 6;
             return true;
         }
 
-//
-// Scanned data getters
-//
-        private XmlQualifiedName GetNameQualified( bool canHavePrefix ) {
-            Debug.Assert( curPos - tokenStartPos > 0 );
-            if ( colonPos == -1 ) {
-                return new XmlQualifiedName( nameTable.Add( chars, tokenStartPos, curPos - tokenStartPos ) );
+        //
+        // Scanned data getters
+        //
+        private XmlQualifiedName GetNameQualified(bool canHavePrefix)
+        {
+            Debug.Assert(_curPos - _tokenStartPos > 0);
+            if (_colonPos == -1)
+            {
+                return new XmlQualifiedName(_nameTable.Add(_chars, _tokenStartPos, _curPos - _tokenStartPos));
             }
-            else {
-                if ( canHavePrefix ) {
-                    return new XmlQualifiedName( nameTable.Add( chars, colonPos + 1, curPos - colonPos - 1 ),
-                                                 nameTable.Add( chars, tokenStartPos, colonPos - tokenStartPos ) );
+            else
+            {
+                if (canHavePrefix)
+                {
+                    return new XmlQualifiedName(_nameTable.Add(_chars, _colonPos + 1, _curPos - _colonPos - 1),
+                                                 _nameTable.Add(_chars, _tokenStartPos, _colonPos - _tokenStartPos));
                 }
-                else {
-                    Throw( tokenStartPos, ResXml.Xml_ColonInLocalName, GetNameString() );
+                else
+                {
+                    Throw(_tokenStartPos, ResXml.Xml_ColonInLocalName, GetNameString());
                     return null;
                 }
             }
         }
 
-        private string GetNameString() {
-            Debug.Assert( curPos - tokenStartPos > 0 );
-            return new string( chars, tokenStartPos, curPos - tokenStartPos );
+        private string GetNameString()
+        {
+            Debug.Assert(_curPos - _tokenStartPos > 0);
+            return new string(_chars, _tokenStartPos, _curPos - _tokenStartPos);
         }
 
-        private string GetNmtokenString() {
+        private string GetNmtokenString()
+        {
             return GetNameString();
         }
 
-        private string GetValue() {
-            if ( stringBuilder.Length == 0 ) {
-                return new string( chars, tokenStartPos, curPos - tokenStartPos - 1 );
+        private string GetValue()
+        {
+            if (_stringBuilder.Length == 0)
+            {
+                return new string(_chars, _tokenStartPos, _curPos - _tokenStartPos - 1);
             }
-            else {
-                return stringBuilder.ToString();
+            else
+            {
+                return _stringBuilder.ToString();
             }
         }
 
-        private string GetValueWithStrippedSpaces() {
-            Debug.Assert( curPos == 0 || chars[curPos-1] == '"' || chars[curPos-1] == '\'' );
+        private string GetValueWithStrippedSpaces()
+        {
+            Debug.Assert(_curPos == 0 || _chars[_curPos - 1] == '"' || _chars[_curPos - 1] == '\'');
             // We cannot StripSpaces directly in the buffer - we need the original value inthe buffer intact so that the internal subset value is correct
-            string val = ( stringBuilder.Length == 0 ) ? new string( chars, tokenStartPos, curPos - tokenStartPos - 1 ) : stringBuilder.ToString();
-            return StripSpaces( val );
+            string val = (_stringBuilder.Length == 0) ? new string(_chars, _tokenStartPos, _curPos - _tokenStartPos - 1) : _stringBuilder.ToString();
+            return StripSpaces(val);
         }
 
-//
-// Parsing buffer maintainance methods
-//
-         int  ReadData() {
+        //
+        // Parsing buffer maintainance methods
+        //
+        private int ReadData()
+        {
             SaveParsingBuffer();
-            int charsRead = readerAdapter.ReadData();
+            int charsRead = _readerAdapter.ReadData();
             LoadParsingBuffer();
             return charsRead;
         }
 
-        private void LoadParsingBuffer() {
-            chars = readerAdapter.ParsingBuffer;
-            charsUsed = readerAdapter.ParsingBufferLength;
-            curPos = readerAdapter.CurrentPosition;
+        private void LoadParsingBuffer()
+        {
+            _chars = _readerAdapter.ParsingBuffer;
+            _charsUsed = _readerAdapter.ParsingBufferLength;
+            _curPos = _readerAdapter.CurrentPosition;
         }
 
-        private void SaveParsingBuffer() {
-            SaveParsingBuffer( curPos );
+        private void SaveParsingBuffer()
+        {
+            SaveParsingBuffer(_curPos);
         }
 
-        private void SaveParsingBuffer( int internalSubsetValueEndPos ) {
-            if ( SaveInternalSubsetValue ) {
-                Debug.Assert( internalSubsetValueSb != null );
+        private void SaveParsingBuffer(int internalSubsetValueEndPos)
+        {
+            if (SaveInternalSubsetValue)
+            {
+                Debug.Assert(_internalSubsetValueSb != null);
 
-                int readerCurPos = readerAdapter.CurrentPosition;
-                if ( internalSubsetValueEndPos - readerCurPos > 0 ) {
-                    internalSubsetValueSb.Append( chars, readerCurPos, internalSubsetValueEndPos - readerCurPos );
+                int readerCurPos = _readerAdapter.CurrentPosition;
+                if (internalSubsetValueEndPos - readerCurPos > 0)
+                {
+                    _internalSubsetValueSb.Append(_chars, readerCurPos, internalSubsetValueEndPos - readerCurPos);
                 }
             }
-            readerAdapter.CurrentPosition = curPos;
+            _readerAdapter.CurrentPosition = _curPos;
         }
 
-//
-// Entity handling
-//
-        private  bool  HandleEntityReference( bool paramEntity, bool inLiteral, bool inAttribute ) {
-            Debug.Assert( chars[curPos] == '&' || chars[curPos] == '%' );
-            curPos++;
+        //
+        // Entity handling
+        //
+        private bool HandleEntityReference(bool paramEntity, bool inLiteral, bool inAttribute)
+        {
+            Debug.Assert(_chars[_curPos] == '&' || _chars[_curPos] == '%');
+            _curPos++;
 
-            return HandleEntityReference( ScanEntityName(), paramEntity, inLiteral, inAttribute );
-
+            return HandleEntityReference(ScanEntityName(), paramEntity, inLiteral, inAttribute);
         }
 
-        private  bool  HandleEntityReference( XmlQualifiedName entityName, bool paramEntity, bool inLiteral, bool inAttribute ) {
-            Debug.Assert( chars[curPos-1] == ';' );
+        private bool HandleEntityReference(XmlQualifiedName entityName, bool paramEntity, bool inLiteral, bool inAttribute)
+        {
+            Debug.Assert(_chars[_curPos - 1] == ';');
 
             SaveParsingBuffer();
-            if ( paramEntity && ParsingInternalSubset && !ParsingTopLevelMarkup ) {
-                Throw( curPos - entityName.Name.Length - 1, ResXml.Xml_InvalidParEntityRef );
+            if (paramEntity && ParsingInternalSubset && !ParsingTopLevelMarkup)
+            {
+                Throw(_curPos - entityName.Name.Length - 1, ResXml.Xml_InvalidParEntityRef);
             }
 
-            SchemaEntity entity = VerifyEntityReference( entityName, paramEntity, true, inAttribute );
-            if ( entity == null ) {
+            SchemaEntity entity = VerifyEntityReference(entityName, paramEntity, true, inAttribute);
+            if (entity == null)
+            {
                 return false;
             }
-            if ( entity.ParsingInProgress ) {
-                Throw( curPos - entityName.Name.Length - 1, paramEntity ? ResXml.Xml_RecursiveParEntity : ResXml.Xml_RecursiveGenEntity, entityName.Name );
+            if (entity.ParsingInProgress)
+            {
+                Throw(_curPos - entityName.Name.Length - 1, paramEntity ? ResXml.Xml_RecursiveParEntity : ResXml.Xml_RecursiveGenEntity, entityName.Name);
             }
 
             int newEntityId;
-            if ( entity.IsExternal ) {
-
-                if ( !readerAdapter.PushEntity( entity, out newEntityId ) ) {
-
+            if (entity.IsExternal)
+            {
+                if (!_readerAdapter.PushEntity(entity, out newEntityId))
+                {
                     return false;
                 }
-                externalEntitiesDepth++;
+                _externalEntitiesDepth++;
             }
-            else {
-                if ( entity.Text.Length == 0 ) {
+            else
+            {
+                if (entity.Text.Length == 0)
+                {
                     return false;
                 }
 
-                if ( !readerAdapter.PushEntity( entity, out newEntityId ) ) {
-
+                if (!_readerAdapter.PushEntity(entity, out newEntityId))
+                {
                     return false;
                 }
             }
-            currentEntityId = newEntityId;
+            _currentEntityId = newEntityId;
 
-            if ( paramEntity && !inLiteral && scanningFunction != ScanningFunction.ParamEntitySpace ) {
-                savedScanningFunction = scanningFunction;
-                scanningFunction = ScanningFunction.ParamEntitySpace;
+            if (paramEntity && !inLiteral && _scanningFunction != ScanningFunction.ParamEntitySpace)
+            {
+                _savedScanningFunction = _scanningFunction;
+                _scanningFunction = ScanningFunction.ParamEntitySpace;
             }
 
             LoadParsingBuffer();
             return true;
         }
 
-        private bool HandleEntityEnd( bool inLiteral ) {
+        private bool HandleEntityEnd(bool inLiteral)
+        {
             SaveParsingBuffer();
-            
+
             IDtdEntityInfo oldEntity;
-            if ( !readerAdapter.PopEntity( out oldEntity, out currentEntityId ) ) {
+            if (!_readerAdapter.PopEntity(out oldEntity, out _currentEntityId))
+            {
                 return false;
             }
             LoadParsingBuffer();
 
-            if ( oldEntity == null  ) {
+            if (oldEntity == null)
+            {
                 // external subset popped
-                Debug.Assert( !ParsingInternalSubset || freeFloatingDtd );
-                Debug.Assert( currentEntityId == 0 );
-                if ( scanningFunction == ScanningFunction.ParamEntitySpace ) {
-                    scanningFunction = savedScanningFunction;
+                Debug.Assert(!ParsingInternalSubset || _freeFloatingDtd);
+                Debug.Assert(_currentEntityId == 0);
+                if (_scanningFunction == ScanningFunction.ParamEntitySpace)
+                {
+                    _scanningFunction = _savedScanningFunction;
                 }
                 return false;
             }
 
-            if ( oldEntity.IsExternal ) {
-                externalEntitiesDepth--;
+            if (oldEntity.IsExternal)
+            {
+                _externalEntitiesDepth--;
             }
 
-            if ( !inLiteral && scanningFunction != ScanningFunction.ParamEntitySpace ) {
-                savedScanningFunction = scanningFunction;
-                scanningFunction = ScanningFunction.ParamEntitySpace;
+            if (!inLiteral && _scanningFunction != ScanningFunction.ParamEntitySpace)
+            {
+                _savedScanningFunction = _scanningFunction;
+                _scanningFunction = ScanningFunction.ParamEntitySpace;
             }
 
             return true;
         }
 
-        private SchemaEntity VerifyEntityReference( XmlQualifiedName entityName, bool paramEntity, bool mustBeDeclared, bool inAttribute ) {
-            Debug.Assert( chars[curPos-1] == ';' );
+        private SchemaEntity VerifyEntityReference(XmlQualifiedName entityName, bool paramEntity, bool mustBeDeclared, bool inAttribute)
+        {
+            Debug.Assert(_chars[_curPos - 1] == ';');
 
             SchemaEntity entity;
-            if ( paramEntity ) {
-                schemaInfo.ParameterEntities.TryGetValue(entityName, out entity);
+            if (paramEntity)
+            {
+                _schemaInfo.ParameterEntities.TryGetValue(entityName, out entity);
             }
-            else {
-                schemaInfo.GeneralEntities.TryGetValue(entityName, out entity);
+            else
+            {
+                _schemaInfo.GeneralEntities.TryGetValue(entityName, out entity);
             }
 
-            if ( entity == null ) {
-                if ( paramEntity ) {
+            if (entity == null)
+            {
+                if (paramEntity)
+                {
 #if !SILVERLIGHT
-                    if ( validate ) {
-                        SendValidationEvent( curPos - entityName.Name.Length - 1, XmlSeverityType.Error, ResXml.Xml_UndeclaredParEntity, entityName.Name );
+                    if (_validate)
+                    {
+                        SendValidationEvent(_curPos - entityName.Name.Length - 1, XmlSeverityType.Error, ResXml.Xml_UndeclaredParEntity, entityName.Name);
                     }
 #endif
                 }
-                else if ( mustBeDeclared ) {
-                    if ( !ParsingInternalSubset ) {
+                else if (mustBeDeclared)
+                {
+                    if (!ParsingInternalSubset)
+                    {
 #if !SILVERLIGHT
-                        if (validate) {
-                            SendValidationEvent( curPos - entityName.Name.Length - 1, XmlSeverityType.Error, ResXml.Xml_UndeclaredEntity, entityName.Name );
+                        if (_validate)
+                        {
+                            SendValidationEvent(_curPos - entityName.Name.Length - 1, XmlSeverityType.Error, ResXml.Xml_UndeclaredEntity, entityName.Name);
                         }
 #endif
                     }
-                    else {
-                        Throw( curPos - entityName.Name.Length - 1, ResXml.Xml_UndeclaredEntity, entityName.Name );
+                    else
+                    {
+                        Throw(_curPos - entityName.Name.Length - 1, ResXml.Xml_UndeclaredEntity, entityName.Name);
                     }
                 }
                 return null;
             }
 
-            if ( !entity.NData.IsEmpty ) {
-                Throw( curPos - entityName.Name.Length - 1, ResXml.Xml_UnparsedEntityRef, entityName.Name ); 
+            if (!entity.NData.IsEmpty)
+            {
+                Throw(_curPos - entityName.Name.Length - 1, ResXml.Xml_UnparsedEntityRef, entityName.Name);
             }
 
-            if ( inAttribute && entity.IsExternal ) {
-                Throw( curPos - entityName.Name.Length - 1, ResXml.Xml_ExternalEntityInAttValue, entityName.Name );
+            if (inAttribute && entity.IsExternal)
+            {
+                Throw(_curPos - entityName.Name.Length - 1, ResXml.Xml_ExternalEntityInAttValue, entityName.Name);
             }
 
             return entity;
         }
 
-//
-// Helper methods and properties
-//
+        //
+        // Helper methods and properties
+        //
 #if !SILVERLIGHT
-        private void SendValidationEvent( int pos, XmlSeverityType severity, string code, string arg ) {
-            Debug.Assert( validate );
-            SendValidationEvent( severity, new XmlSchemaException( code, arg, BaseUriStr, (int)LineNo, (int)LinePos + ( pos - curPos ) ) );
+        private void SendValidationEvent(int pos, XmlSeverityType severity, string code, string arg)
+        {
+            Debug.Assert(_validate);
+            SendValidationEvent(severity, new XmlSchemaException(code, arg, BaseUriStr, (int)LineNo, (int)LinePos + (pos - _curPos)));
         }
 
-        private void SendValidationEvent( XmlSeverityType severity, string code, string arg ) {
-            Debug.Assert( validate );
-            SendValidationEvent( severity, new XmlSchemaException( code, arg, BaseUriStr, (int)LineNo, (int)LinePos ) );
+        private void SendValidationEvent(XmlSeverityType severity, string code, string arg)
+        {
+            Debug.Assert(_validate);
+            SendValidationEvent(severity, new XmlSchemaException(code, arg, BaseUriStr, (int)LineNo, (int)LinePos));
         }
 
-        private void SendValidationEvent( XmlSeverityType severity, XmlSchemaException e ) {
-            Debug.Assert( validate );
-            IValidationEventHandling eventHandling = readerAdapterWithValidation.ValidationEventHandling;
-            if ( eventHandling != null ) {
+        private void SendValidationEvent(XmlSeverityType severity, XmlSchemaException e)
+        {
+            Debug.Assert(_validate);
+            IValidationEventHandling eventHandling = _readerAdapterWithValidation.ValidationEventHandling;
+            if (eventHandling != null)
+            {
                 eventHandling.SendEvent(e, severity);
             }
         }
 #endif
 
-        private bool IsAttributeValueType( Token token ) {
+        private bool IsAttributeValueType(Token token)
+        {
             return (int)token >= (int)Token.CDATA && (int)token <= (int)Token.NOTATION;
         }
 
-        private int LineNo {
-            get {
-                return readerAdapter.LineNo;
+        private int LineNo
+        {
+            get
+            {
+                return _readerAdapter.LineNo;
             }
         }
 
-        private int LinePos {
-            get {
-                return curPos - readerAdapter.LineStartPosition;
+        private int LinePos
+        {
+            get
+            {
+                return _curPos - _readerAdapter.LineStartPosition;
             }
         }
 
-        private string BaseUriStr {
-            get {
-                Uri tmp = readerAdapter.BaseUri;
-                return ( tmp != null ) ? tmp.ToString() : string.Empty;
+        private string BaseUriStr
+        {
+            get
+            {
+                Uri tmp = _readerAdapter.BaseUri;
+                return (tmp != null) ? tmp.ToString() : string.Empty;
             }
         }
 
-        private void OnUnexpectedError() {
-            Debug.Assert( false, "This is an unexpected error that should have been handled in the ScanXXX methods." );
-            Throw( curPos, ResXml.Xml_InternalError );
+        private void OnUnexpectedError()
+        {
+            Debug.Assert(false, "This is an unexpected error that should have been handled in the ScanXXX methods.");
+            Throw(_curPos, ResXml.Xml_InternalError);
         }
 
-        void Throw( int curPos, string res ) {
-            Throw( curPos, res, string.Empty );
+        private void Throw(int curPos, string res)
+        {
+            Throw(curPos, res, string.Empty);
         }
 
-        void Throw( int curPos, string res, string arg ) {
-            this.curPos = curPos;
-            Uri baseUri = readerAdapter.BaseUri;
-            readerAdapter.Throw( new XmlException( res, arg, (int)LineNo, (int)LinePos, baseUri == null ? null : baseUri.ToString() ) );
+        private void Throw(int curPos, string res, string arg)
+        {
+            _curPos = curPos;
+            Uri baseUri = _readerAdapter.BaseUri;
+            _readerAdapter.Throw(new XmlException(res, arg, (int)LineNo, (int)LinePos, baseUri == null ? null : baseUri.ToString()));
         }
-        void Throw( int curPos, string res, string[] args ) {
-            this.curPos = curPos;
-            Uri baseUri = readerAdapter.BaseUri;
-            readerAdapter.Throw( new XmlException( res, args, (int)LineNo, (int)LinePos, baseUri == null ? null : baseUri.ToString() ) );
-        }
-
-        void Throw( string res, string arg, int lineNo, int linePos ) {
-            Uri baseUri = readerAdapter.BaseUri;
-            readerAdapter.Throw( new XmlException( res, arg, (int)lineNo, (int)linePos, baseUri == null ? null : baseUri.ToString() ) );
+        private void Throw(int curPos, string res, string[] args)
+        {
+            _curPos = curPos;
+            Uri baseUri = _readerAdapter.BaseUri;
+            _readerAdapter.Throw(new XmlException(res, args, (int)LineNo, (int)LinePos, baseUri == null ? null : baseUri.ToString()));
         }
 
-        void ThrowInvalidChar( int pos, string data, int invCharPos ) {
-            Throw( pos, ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs( data, invCharPos ));
+        private void Throw(string res, string arg, int lineNo, int linePos)
+        {
+            Uri baseUri = _readerAdapter.BaseUri;
+            _readerAdapter.Throw(new XmlException(res, arg, (int)lineNo, (int)linePos, baseUri == null ? null : baseUri.ToString()));
         }
 
-        void ThrowInvalidChar( char[] data, int length, int invCharPos ) {
-            Throw( invCharPos, ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs( data, length, invCharPos ) );
+        private void ThrowInvalidChar(int pos, string data, int invCharPos)
+        {
+            Throw(pos, ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(data, invCharPos));
         }
 
-        private void ThrowUnexpectedToken( int pos, string expectedToken ) {
-            ThrowUnexpectedToken( pos, expectedToken, null );
+        private void ThrowInvalidChar(char[] data, int length, int invCharPos)
+        {
+            Throw(invCharPos, ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(data, length, invCharPos));
         }
 
-        private void ThrowUnexpectedToken( int pos, string expectedToken1, string expectedToken2 ) {
-            string unexpectedToken = ParseUnexpectedToken( pos );
-            if ( expectedToken2 != null ) {
-                Throw( curPos, ResXml.Xml_UnexpectedTokens2, new string[3] { unexpectedToken, expectedToken1, expectedToken2 } );
+        private void ThrowUnexpectedToken(int pos, string expectedToken)
+        {
+            ThrowUnexpectedToken(pos, expectedToken, null);
+        }
+
+        private void ThrowUnexpectedToken(int pos, string expectedToken1, string expectedToken2)
+        {
+            string unexpectedToken = ParseUnexpectedToken(pos);
+            if (expectedToken2 != null)
+            {
+                Throw(_curPos, ResXml.Xml_UnexpectedTokens2, new string[3] { unexpectedToken, expectedToken1, expectedToken2 });
             }
-            else {
-                Throw( curPos, ResXml.Xml_UnexpectedTokenEx, new string[2] { unexpectedToken, expectedToken1 } );
+            else
+            {
+                Throw(_curPos, ResXml.Xml_UnexpectedTokenEx, new string[2] { unexpectedToken, expectedToken1 });
             }
         }
 
-        private string ParseUnexpectedToken( int startPos ) {
-            if ( xmlCharType.IsNCNameSingleChar( chars[startPos] ) 
+        private string ParseUnexpectedToken(int startPos)
+        {
+            if (_xmlCharType.IsNCNameSingleChar(_chars[startPos])
 #if XML10_FIFTH_EDITION
                 || xmlCharType.IsNCNameHighSurrogateChar( chars[startPos] ) 
 #endif
-                ) { // postpone the proper surrogate checking to the loop below
-
+                )
+            { // postpone the proper surrogate checking to the loop below
                 int endPos = startPos;
-                for (;;) {
-                    if ( xmlCharType.IsNCNameSingleChar( chars[endPos] ) ) {
+                for (; ; )
+                {
+                    if (_xmlCharType.IsNCNameSingleChar(_chars[endPos]))
+                    {
                         endPos++;
                     }
 #if XML10_FIFTH_EDITION
@@ -3322,16 +3854,18 @@ namespace Microsoft.Xml {
                         endPos += 2;
                     }
 #endif
-                    else {
+                    else
+                    {
                         break;
                     }
                 }
                 int len = endPos - startPos;
-                return new string( chars, startPos, len > 0 ? len : 1 );
+                return new string(_chars, startPos, len > 0 ? len : 1);
             }
-            else {
-                Debug.Assert( startPos < charsUsed );
-                return new string( chars, startPos, 1 );
+            else
+            {
+                Debug.Assert(startPos < _charsUsed);
+                return new string(_chars, startPos, 1);
             }
         }
 
@@ -3339,40 +3873,52 @@ namespace Microsoft.Xml {
         // !!! This method exists in 2 copies, here and in the XmlTextReaderImplHelper.cs
         //   If you're changing this one, please also fix the other one.
         //   (This is necessary due to packaging)
-        internal static string StripSpaces(string value) {
+        internal static string StripSpaces(string value)
+        {
             int len = value.Length;
-            if (len <= 0) {
+            if (len <= 0)
+            {
                 return string.Empty;
             }
 
             int startPos = 0;
             StringBuilder norValue = null;
 
-            while (value[startPos] == 0x20) {
+            while (value[startPos] == 0x20)
+            {
                 startPos++;
-                if (startPos == len) {
+                if (startPos == len)
+                {
                     return " ";
                 }
             }
 
             int i;
-            for (i = startPos; i < len; i++) {
-                if (value[i] == 0x20) {
+            for (i = startPos; i < len; i++)
+            {
+                if (value[i] == 0x20)
+                {
                     int j = i + 1;
-                    while (j < len && value[j] == 0x20) {
+                    while (j < len && value[j] == 0x20)
+                    {
                         j++;
                     }
-                    if (j == len) {
-                        if (norValue == null) {
+                    if (j == len)
+                    {
+                        if (norValue == null)
+                        {
                             return value.Substring(startPos, i - startPos);
                         }
-                        else {
+                        else
+                        {
                             norValue.Append(value, startPos, i - startPos);
                             return norValue.ToString();
                         }
                     }
-                    if (j > i + 1) {
-                        if (norValue == null) {
+                    if (j > i + 1)
+                    {
+                        if (norValue == null)
+                        {
                             norValue = new StringBuilder(len);
                         }
                         norValue.Append(value, startPos, i - startPos + 1);
@@ -3381,17 +3927,19 @@ namespace Microsoft.Xml {
                     }
                 }
             }
-            if (norValue == null) {
+            if (norValue == null)
+            {
                 return (startPos == 0) ? value : value.Substring(startPos, len - startPos);
             }
-            else {
-                if (i > startPos) {
+            else
+            {
+                if (i > startPos)
+                {
                     norValue.Append(value, startPos, i - startPos);
                 }
                 return norValue.ToString();
             }
         }
-
     }
 }
 

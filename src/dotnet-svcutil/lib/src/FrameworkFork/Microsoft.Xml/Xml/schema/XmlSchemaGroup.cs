@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using Microsoft.Xml.Serialization;
@@ -12,22 +13,24 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaGroup : XmlSchemaAnnotated {
-        string name;        
-        XmlSchemaGroupBase particle;
-        XmlSchemaParticle canonicalParticle;
-        XmlQualifiedName qname = XmlQualifiedName.Empty; 
-        XmlSchemaGroup redefined;
-        int selfReferenceCount;
+    public class XmlSchemaGroup : XmlSchemaAnnotated
+    {
+        private string _name;
+        private XmlSchemaGroupBase _particle;
+        private XmlSchemaParticle _canonicalParticle;
+        private XmlQualifiedName _qname = XmlQualifiedName.Empty;
+        private XmlSchemaGroup _redefined;
+        private int _selfReferenceCount;
 
         /// <include file='doc\XmlSchemaGroup.uex' path='docs/doc[@for="XmlSchemaGroup.Name"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("name")]
-        public string Name { 
-            get { return name; }
-            set { name = value; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <include file='doc\XmlSchemaGroup.uex' path='docs/doc[@for="XmlSchemaGroup.Particle"]/*' />
@@ -37,55 +40,65 @@ namespace Microsoft.Xml.Schema {
         [XmlElement("choice", typeof(XmlSchemaChoice)),
          XmlElement("all", typeof(XmlSchemaAll)),
          XmlElement("sequence", typeof(XmlSchemaSequence))]
-        public XmlSchemaGroupBase Particle {
-            get { return particle; }
-            set { particle = value; }
+        public XmlSchemaGroupBase Particle
+        {
+            get { return _particle; }
+            set { _particle = value; }
         }
 
         [XmlIgnore]
-        public XmlQualifiedName QualifiedName {
-            get { return qname; }
+        public XmlQualifiedName QualifiedName
+        {
+            get { return _qname; }
         }
 
         [XmlIgnore]
-        internal XmlSchemaParticle CanonicalParticle {
-            get { return canonicalParticle; }
-            set { canonicalParticle = value; }
+        internal XmlSchemaParticle CanonicalParticle
+        {
+            get { return _canonicalParticle; }
+            set { _canonicalParticle = value; }
         }
 
         [XmlIgnore]
-        internal XmlSchemaGroup Redefined {
-            get { return redefined; }
-            set { redefined = value; }
+        internal XmlSchemaGroup Redefined
+        {
+            get { return _redefined; }
+            set { _redefined = value; }
         }
 
         [XmlIgnore]
-        internal int SelfReferenceCount {
-            get { return selfReferenceCount; }
-            set { selfReferenceCount = value; }
+        internal int SelfReferenceCount
+        {
+            get { return _selfReferenceCount; }
+            set { _selfReferenceCount = value; }
         }
 
         [XmlIgnore]
-        internal override string NameAttribute {
+        internal override string NameAttribute
+        {
             get { return Name; }
             set { Name = value; }
         }
 
-        internal void SetQualifiedName(XmlQualifiedName value) { 
-            qname = value;
+        internal void SetQualifiedName(XmlQualifiedName value)
+        {
+            _qname = value;
         }
 
-        internal override XmlSchemaObject Clone() {
+        internal override XmlSchemaObject Clone()
+        {
             System.Diagnostics.Debug.Assert(false, "Should never call Clone() on XmlSchemaGroup. Call Clone(XmlSchema) instead.");
             return Clone(null);
         }
 
-        internal XmlSchemaObject Clone(XmlSchema parentSchema) {
+        internal XmlSchemaObject Clone(XmlSchema parentSchema)
+        {
             XmlSchemaGroup newGroup = (XmlSchemaGroup)MemberwiseClone();
-            if (XmlSchemaComplexType.HasParticleRef(this.particle, parentSchema)) {
-                newGroup.particle = XmlSchemaComplexType.CloneParticle(this.particle, parentSchema) as XmlSchemaGroupBase;
+            if (XmlSchemaComplexType.HasParticleRef(_particle, parentSchema))
+            {
+                newGroup._particle = XmlSchemaComplexType.CloneParticle(_particle, parentSchema) as XmlSchemaGroupBase;
             }
-            newGroup.canonicalParticle = XmlSchemaParticle.Empty;
+            newGroup._canonicalParticle = XmlSchemaParticle.Empty;
             return newGroup;
         }
     }

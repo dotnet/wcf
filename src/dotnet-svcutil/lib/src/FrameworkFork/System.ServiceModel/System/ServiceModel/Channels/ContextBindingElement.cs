@@ -15,10 +15,10 @@ namespace System.ServiceModel.Channels
         internal const ContextExchangeMechanism DefaultContextExchangeMechanism = ContextExchangeMechanism.ContextSoapHeader;
         internal const bool DefaultContextManagementEnabled = true;
         internal const ProtectionLevel DefaultProtectionLevel = ProtectionLevel.Sign;
-        ContextExchangeMechanism contextExchangeMechanism;
+        private ContextExchangeMechanism _contextExchangeMechanism;
 
-        bool contextManagementEnabled;
-        ProtectionLevel protectionLevel;
+        private bool _contextManagementEnabled;
+        private ProtectionLevel _protectionLevel;
 
         public ContextBindingElement()
             : this(DefaultProtectionLevel, DefaultContextExchangeMechanism, null, DefaultContextManagementEnabled)
@@ -53,7 +53,7 @@ namespace System.ServiceModel.Channels
             this.ContextManagementEnabled = contextManagementEnabled;
         }
 
-        ContextBindingElement(ContextBindingElement other)
+        private ContextBindingElement(ContextBindingElement other)
             : base(other)
         {
             this.ProtectionLevel = other.ProtectionLevel;
@@ -74,7 +74,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.contextExchangeMechanism;
+                return _contextExchangeMechanism;
             }
             set
             {
@@ -82,7 +82,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.contextExchangeMechanism = value;
+                _contextExchangeMechanism = value;
             }
         }
 
@@ -91,11 +91,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.contextManagementEnabled;
+                return _contextManagementEnabled;
             }
             set
             {
-                this.contextManagementEnabled = value;
+                _contextManagementEnabled = value;
             }
         }
 
@@ -104,7 +104,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.protectionLevel;
+                return _protectionLevel;
             }
             set
             {
@@ -112,7 +112,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.protectionLevel = value;
+                _protectionLevel = value;
             }
         }
 
@@ -184,7 +184,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (this.ProtectionLevel != other.protectionLevel)
+            if (this.ProtectionLevel != other._protectionLevel)
             {
                 return false;
             }

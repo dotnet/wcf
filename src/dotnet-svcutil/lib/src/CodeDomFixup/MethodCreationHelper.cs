@@ -112,7 +112,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     indent + "{0} </summary>" + Environment.NewLine +
                     indent + "{0} <param name=\"serviceEndpoint\">" + SR.ServiceEndpointComment + "</param>" + Environment.NewLine +
                     indent + "{0} <param name=\"clientCredentials\">" + SR.ClientCredentialsComment + "</param>" + Environment.NewLine;
-            
+
             if (!isVB)
             {
                 snippet = new CodeSnippetTypeMember(
@@ -123,7 +123,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 snippet = new CodeSnippetTypeMember(
                     string.Format(CultureInfo.InvariantCulture, comment, "'''") +
-                    indent + "Partial Private Shared Sub ConfigureEndpoint(ByVal serviceEndpoint As System.ServiceModel.Description.ServiceEndpoint, ByVal clientCredentials As System.ServiceModel.Description.ClientCredentials)" + Environment.NewLine + 
+                    indent + "Partial Private Shared Sub ConfigureEndpoint(ByVal serviceEndpoint As System.ServiceModel.Description.ServiceEndpoint, ByVal clientCredentials As System.ServiceModel.Description.ClientCredentials)" + Environment.NewLine +
                     indent + "End Sub");
             }
 
@@ -344,7 +344,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             "MessageSecurityVersion"),
                         new CodePropertyReferenceExpression(
                           new CodeTypeReferenceExpression(typeof(MessageSecurityVersion)),
-                          bindingElement.MessageSecurityVersion.ToString()))); 
+                          bindingElement.MessageSecurityVersion.ToString())));
             }
 
             if (defaultBindingElement.SecurityHeaderLayout != bindingElement.SecurityHeaderLayout)
@@ -493,7 +493,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         bindingElementRef,
                         "MaxBufferSize"),
                     new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(int)), "MaxValue")));
-     
+
             statements.Add(
                 new CodeAssignStatement(
                     new CodePropertyReferenceExpression(
@@ -522,7 +522,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                           "AuthenticationScheme"),
                       new CodePropertyReferenceExpression(
                           new CodeTypeReferenceExpression(typeof(AuthenticationSchemes)),
-                          bindingElement.AuthenticationScheme.ToString())));   
+                          bindingElement.AuthenticationScheme.ToString())));
             }
 
             statements.Add(
@@ -796,7 +796,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             const string ResultVarName = "result";
 
             NetHttpBinding defaultBinding = new NetHttpBinding();
-            
+
             statements.Add(
                 new CodeVariableDeclarationStatement(
                     typeof(NetHttpBinding),
@@ -909,7 +909,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             CodeExpression createIdentityExpression = null;
             EndpointIdentity identity = serviceEndpoint.Address.Identity;
-            
+
             if (identity != null && (identity is DnsEndpointIdentity))
             {
                 createIdentityExpression = new CodeObjectCreateExpression(identity.GetType(), new CodePrimitiveExpression(identity.IdentityClaim.Resource));
@@ -965,7 +965,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         ConfigToCodeConstants.GetBindingMethod,
                         new CodeFieldReferenceExpression(
                             new CodeTypeReferenceExpression(
-                                ConfigToCodeConstants.EndpointConfigurationEnumTypeName), 
+                                ConfigToCodeConstants.EndpointConfigurationEnumTypeName),
                                 endpointNames[0]))));
 
             this.GetDefaultEndpointAddress.Statements.Add(

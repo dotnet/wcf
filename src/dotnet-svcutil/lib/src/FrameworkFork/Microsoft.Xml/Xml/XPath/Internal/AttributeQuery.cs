@@ -1,42 +1,54 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
     using System.Diagnostics;
     using System.Globalization;
 
-    internal sealed class AttributeQuery : BaseAxisQuery {
-        private bool onAttribute = false;
+    internal sealed class AttributeQuery : BaseAxisQuery
+    {
+        private bool _onAttribute = false;
 
-        public AttributeQuery(Query qyParent, string Name, string Prefix, XPathNodeType Type) : base(qyParent, Name, Prefix, Type) {}
-        private AttributeQuery(AttributeQuery other) : base(other) {
-            this.onAttribute = other.onAttribute;
+        public AttributeQuery(Query qyParent, string Name, string Prefix, XPathNodeType Type) : base(qyParent, Name, Prefix, Type) { }
+        private AttributeQuery(AttributeQuery other) : base(other)
+        {
+            _onAttribute = other._onAttribute;
         }
-        public override void Reset() {
-            onAttribute = false;
+        public override void Reset()
+        {
+            _onAttribute = false;
             base.Reset();
         }
 
-        public override XPathNavigator Advance() {
-            while (true) {
-                if (! onAttribute) {
+        public override XPathNavigator Advance()
+        {
+            while (true)
+            {
+                if (!_onAttribute)
+                {
                     currentNode = qyInput.Advance();
-                    if (currentNode == null) {
+                    if (currentNode == null)
+                    {
                         return null;
                     }
                     position = 0;
                     currentNode = currentNode.Clone();
-                    onAttribute = currentNode.MoveToFirstAttribute();
-                } else {
-                    onAttribute = currentNode.MoveToNextAttribute();
+                    _onAttribute = currentNode.MoveToFirstAttribute();
+                }
+                else
+                {
+                    _onAttribute = currentNode.MoveToNextAttribute();
                 }
 
-                if (onAttribute) {
-                    Debug.Assert(! currentNode.NamespaceURI.Equals(XmlReservedNs.NsXmlNs));
-                    if (matches(currentNode)) {
+                if (_onAttribute)
+                {
+                    Debug.Assert(!currentNode.NamespaceURI.Equals(XmlReservedNs.NsXmlNs));
+                    if (matches(currentNode))
+                    {
                         position++;
                         return currentNode;
                     }
@@ -44,11 +56,15 @@ namespace MS.Internal.Xml.XPath {
             } // while
         }
 
-        public override XPathNavigator MatchNode(XPathNavigator context) {
-            if (context != null) {
-                if (context.NodeType == XPathNodeType.Attribute && matches(context)) {
+        public override XPathNavigator MatchNode(XPathNavigator context)
+        {
+            if (context != null)
+            {
+                if (context.NodeType == XPathNodeType.Attribute && matches(context))
+                {
                     XPathNavigator temp = context.Clone();
-                    if (temp.MoveToParent()) {
+                    if (temp.MoveToParent())
+                    {
                         return qyInput.MatchNode(temp);
                     }
                 }

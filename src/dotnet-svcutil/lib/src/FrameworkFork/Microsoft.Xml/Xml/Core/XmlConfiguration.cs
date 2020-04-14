@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 // using System.Configuration;
 using System.Globalization;
 using Microsoft.Xml;
 
-namespace Microsoft.Xml.XmlConfiguration {
-    internal static class XmlConfigurationString {
+namespace Microsoft.Xml.XmlConfiguration
+{
+    internal static class XmlConfigurationString
+    {
         internal const string XmlReaderSectionName = "xmlReader";
         internal const string XsltSectionName = "xslt";
 
@@ -20,8 +23,10 @@ namespace Microsoft.Xml.XmlConfiguration {
         internal static string XsltSectionPath = string.Format(CultureInfo.InvariantCulture, @"{0}/{1}", XmlConfigurationSectionName, XsltSectionName);
     }
 
-    public sealed class XmlReaderSection {
-        internal static XmlResolver CreateDefaultResolver() {
+    public sealed class XmlReaderSection
+    {
+        internal static XmlResolver CreateDefaultResolver()
+        {
             return new XmlUrlResolver();
         }
     }

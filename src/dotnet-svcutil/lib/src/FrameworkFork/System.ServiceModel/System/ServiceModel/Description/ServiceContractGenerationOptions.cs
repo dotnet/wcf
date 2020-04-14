@@ -15,5 +15,4 @@ namespace System.ServiceModel.Description
         EventBasedAsynchronousMethods = 32,
         TaskBasedAsynchronousMethod = 64
     }
-
 }

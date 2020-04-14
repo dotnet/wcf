@@ -9,286 +9,347 @@ using System.Collections;
 using System.Collections.Generic;
 // using System.Security.Permissions;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     // [PermissionSetAttribute( SecurityAction.InheritanceDemand, Name = "FullTrust" )]
     [Obsolete("Use XmlReader created by XmlReader.Create() method using appropriate XmlReaderSettings instead. http://go.microsoft.com/fwlink/?linkid=14202")]
-    public class XmlValidatingReader : XmlReader, IXmlLineInfo, IXmlNamespaceResolver {
-//
-// Member fields
-//
-        XmlValidatingReaderImpl impl;
-//
-// Constructors
-//
-        public XmlValidatingReader( XmlReader reader ) {
-            impl = new XmlValidatingReaderImpl( reader );
-            impl.OuterReader = this;
+    public class XmlValidatingReader : XmlReader, IXmlLineInfo, IXmlNamespaceResolver
+    {
+        //
+        // Member fields
+        //
+        private XmlValidatingReaderImpl _impl;
+        //
+        // Constructors
+        //
+        public XmlValidatingReader(XmlReader reader)
+        {
+            _impl = new XmlValidatingReaderImpl(reader);
+            _impl.OuterReader = this;
         }
-        
-        public XmlValidatingReader( string xmlFragment, XmlNodeType fragType, XmlParserContext context ) {
-            if (xmlFragment == null) {
+
+        public XmlValidatingReader(string xmlFragment, XmlNodeType fragType, XmlParserContext context)
+        {
+            if (xmlFragment == null)
+            {
                 throw new ArgumentNullException("xmlFragment");
             }
-            impl = new XmlValidatingReaderImpl( xmlFragment, fragType, context );
-            impl.OuterReader = this;
+            _impl = new XmlValidatingReaderImpl(xmlFragment, fragType, context);
+            _impl.OuterReader = this;
         }
 
-        public XmlValidatingReader( Stream xmlFragment, XmlNodeType fragType, XmlParserContext context ) {
-            if (xmlFragment == null) {
+        public XmlValidatingReader(Stream xmlFragment, XmlNodeType fragType, XmlParserContext context)
+        {
+            if (xmlFragment == null)
+            {
                 throw new ArgumentNullException("xmlFragment");
             }
-            impl = new XmlValidatingReaderImpl(xmlFragment, fragType, context);
-            impl.OuterReader = this;
+            _impl = new XmlValidatingReaderImpl(xmlFragment, fragType, context);
+            _impl.OuterReader = this;
         }
 
-//
-// XmlReader members
-//
-        public override XmlNodeType NodeType { 
-            get { return impl.NodeType; } 
+        //
+        // XmlReader members
+        //
+        public override XmlNodeType NodeType
+        {
+            get { return _impl.NodeType; }
         }
 
-        public override string Name { 
-            get { return impl.Name; } 
+        public override string Name
+        {
+            get { return _impl.Name; }
         }
 
-        public override string LocalName { 
-            get { return impl.LocalName; } 
+        public override string LocalName
+        {
+            get { return _impl.LocalName; }
         }
 
-        public override string NamespaceURI { 
-            get { return impl.NamespaceURI; } 
+        public override string NamespaceURI
+        {
+            get { return _impl.NamespaceURI; }
         }
 
-        public override string Prefix { 
-            get { return impl.Prefix; } 
+        public override string Prefix
+        {
+            get { return _impl.Prefix; }
         }
 
-        public override bool HasValue { 
-            get { return impl.HasValue; } 
+        public override bool HasValue
+        {
+            get { return _impl.HasValue; }
         }
 
-        public override string Value { 
-            get { return impl.Value; } 
+        public override string Value
+        {
+            get { return _impl.Value; }
         }
 
-        public override int Depth { 
-            get { return impl.Depth; } 
+        public override int Depth
+        {
+            get { return _impl.Depth; }
         }
 
-        public override string BaseURI { 
-            get { return impl.BaseURI; } 
+        public override string BaseURI
+        {
+            get { return _impl.BaseURI; }
         }
 
-        public override bool IsEmptyElement { 
-            get { return impl.IsEmptyElement; } 
+        public override bool IsEmptyElement
+        {
+            get { return _impl.IsEmptyElement; }
         }
 
-        public override bool IsDefault { 
-            get { return impl.IsDefault; } 
+        public override bool IsDefault
+        {
+            get { return _impl.IsDefault; }
         }
 
-        public override char QuoteChar { 
-            get { return impl.QuoteChar; } 
+        public override char QuoteChar
+        {
+            get { return _impl.QuoteChar; }
         }
 
-        public override XmlSpace XmlSpace { 
-            get { return impl.XmlSpace; } 
+        public override XmlSpace XmlSpace
+        {
+            get { return _impl.XmlSpace; }
         }
 
-        public override string XmlLang { 
-            get { return impl.XmlLang; } 
+        public override string XmlLang
+        {
+            get { return _impl.XmlLang; }
         }
 
         // XmlTextReader does not override SchemaInfo, ValueType and ReadTypeValue
 
-        public override int AttributeCount { get { return impl.AttributeCount; } }
+        public override int AttributeCount { get { return _impl.AttributeCount; } }
 
-        public override string GetAttribute( string name ) {
-            return impl.GetAttribute( name );
-        }
-
-        public override string GetAttribute( string localName, string namespaceURI ) {
-            return impl.GetAttribute( localName, namespaceURI );
+        public override string GetAttribute(string name)
+        {
+            return _impl.GetAttribute(name);
         }
 
-        public override string GetAttribute( int i ) {
-            return impl.GetAttribute( i );
+        public override string GetAttribute(string localName, string namespaceURI)
+        {
+            return _impl.GetAttribute(localName, namespaceURI);
         }
 
-        public override bool MoveToAttribute( string name ) {
-            return impl.MoveToAttribute( name );
+        public override string GetAttribute(int i)
+        {
+            return _impl.GetAttribute(i);
         }
 
-        public override bool MoveToAttribute( string localName, string namespaceURI ) {
-            return impl.MoveToAttribute( localName, namespaceURI );
+        public override bool MoveToAttribute(string name)
+        {
+            return _impl.MoveToAttribute(name);
         }
 
-        public override void MoveToAttribute( int i ) {
-            impl.MoveToAttribute( i );
+        public override bool MoveToAttribute(string localName, string namespaceURI)
+        {
+            return _impl.MoveToAttribute(localName, namespaceURI);
         }
 
-        public override bool MoveToFirstAttribute() {
-            return impl.MoveToFirstAttribute();
+        public override void MoveToAttribute(int i)
+        {
+            _impl.MoveToAttribute(i);
         }
 
-        public override bool MoveToNextAttribute() {
-            return impl.MoveToNextAttribute();
+        public override bool MoveToFirstAttribute()
+        {
+            return _impl.MoveToFirstAttribute();
         }
 
-        public override bool MoveToElement() {
-            return impl.MoveToElement();
+        public override bool MoveToNextAttribute()
+        {
+            return _impl.MoveToNextAttribute();
         }
 
-        public override bool ReadAttributeValue() {
-            return impl.ReadAttributeValue();
+        public override bool MoveToElement()
+        {
+            return _impl.MoveToElement();
         }
 
-        public override bool Read() {
-            return impl.Read();
+        public override bool ReadAttributeValue()
+        {
+            return _impl.ReadAttributeValue();
         }
 
-        public override bool EOF { 
-            get { return impl.EOF; } 
-        }
-        
-        public override void Close() {
-            impl.Close();
+        public override bool Read()
+        {
+            return _impl.Read();
         }
 
-        public override ReadState ReadState { 
-            get { return impl.ReadState; } 
-        }
-        
-        public override XmlNameTable NameTable { 
-            get { return impl.NameTable; } 
+        public override bool EOF
+        {
+            get { return _impl.EOF; }
         }
 
-        public override String LookupNamespace( String prefix ) {
-            string ns = impl.LookupNamespace( prefix );
-            if ( ns != null && ns.Length == 0 ) {
+        public override void Close()
+        {
+            _impl.Close();
+        }
+
+        public override ReadState ReadState
+        {
+            get { return _impl.ReadState; }
+        }
+
+        public override XmlNameTable NameTable
+        {
+            get { return _impl.NameTable; }
+        }
+
+        public override String LookupNamespace(String prefix)
+        {
+            string ns = _impl.LookupNamespace(prefix);
+            if (ns != null && ns.Length == 0)
+            {
                 ns = null;
             }
             return ns;
         }
 
-        public override bool CanResolveEntity  { 
-            get { return true; } 
-        }
-
-        public override void ResolveEntity() {
-            impl.ResolveEntity();
-        }
-
-    // Binary content access methods
-        public override bool CanReadBinaryContent {
+        public override bool CanResolveEntity
+        {
             get { return true; }
         }
 
-        public override int ReadContentAsBase64( byte[] buffer, int index, int count ) {
-            return impl.ReadContentAsBase64( buffer, index, count );
+        public override void ResolveEntity()
+        {
+            _impl.ResolveEntity();
         }
 
-        public override int ReadElementContentAsBase64( byte[] buffer, int index, int count ) {
-            return impl.ReadElementContentAsBase64( buffer, index, count );
+        // Binary content access methods
+        public override bool CanReadBinaryContent
+        {
+            get { return true; }
         }
 
-        public override int ReadContentAsBinHex( byte[] buffer, int index, int count ) {
-            return impl.ReadContentAsBinHex( buffer, index, count );
+        public override int ReadContentAsBase64(byte[] buffer, int index, int count)
+        {
+            return _impl.ReadContentAsBase64(buffer, index, count);
         }
 
-        public override int ReadElementContentAsBinHex( byte[] buffer, int index, int count ) {
-            return impl.ReadElementContentAsBinHex( buffer, index, count );
+        public override int ReadElementContentAsBase64(byte[] buffer, int index, int count)
+        {
+            return _impl.ReadElementContentAsBase64(buffer, index, count);
+        }
+
+        public override int ReadContentAsBinHex(byte[] buffer, int index, int count)
+        {
+            return _impl.ReadContentAsBinHex(buffer, index, count);
+        }
+
+        public override int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
+        {
+            return _impl.ReadElementContentAsBinHex(buffer, index, count);
         }
 
         // Overriden helper methods
 
-        public override string ReadString() {
-            impl.MoveOffEntityReference();
+        public override string ReadString()
+        {
+            _impl.MoveOffEntityReference();
             return base.ReadString();
         }
-        
-//
-// IXmlLineInfo members
-//
+
+        //
+        // IXmlLineInfo members
+        //
         public bool HasLineInfo() { return true; }
 
-        public int LineNumber { get { return impl.LineNumber; } }
+        public int LineNumber { get { return _impl.LineNumber; } }
 
-        public int LinePosition { get { return impl.LinePosition; } }
+        public int LinePosition { get { return _impl.LinePosition; } }
 
-//
-// IXmlNamespaceResolver members
-//
-        IDictionary<string,string> IXmlNamespaceResolver.GetNamespacesInScope( XmlNamespaceScope scope ) {
-            return impl.GetNamespacesInScope( scope );
+        //
+        // IXmlNamespaceResolver members
+        //
+        IDictionary<string, string> IXmlNamespaceResolver.GetNamespacesInScope(XmlNamespaceScope scope)
+        {
+            return _impl.GetNamespacesInScope(scope);
         }
 
-        string IXmlNamespaceResolver.LookupNamespace(string prefix) {
-            return impl.LookupNamespace( prefix );
+        string IXmlNamespaceResolver.LookupNamespace(string prefix)
+        {
+            return _impl.LookupNamespace(prefix);
         }
 
-        string IXmlNamespaceResolver.LookupPrefix( string namespaceName ) {
-            return impl.LookupPrefix( namespaceName );
+        string IXmlNamespaceResolver.LookupPrefix(string namespaceName)
+        {
+            return _impl.LookupPrefix(namespaceName);
         }
 
-//
-// XmlValidatingReader 
-//
-        public event ValidationEventHandler ValidationEventHandler {
-            add    { impl.ValidationEventHandler += value; }
-            remove { impl.ValidationEventHandler -= value; }
+        //
+        // XmlValidatingReader 
+        //
+        public event ValidationEventHandler ValidationEventHandler
+        {
+            add { _impl.ValidationEventHandler += value; }
+            remove { _impl.ValidationEventHandler -= value; }
         }
 
-        public object SchemaType {
-            get { return impl.SchemaType; }
+        public object SchemaType
+        {
+            get { return _impl.SchemaType; }
         }
 
-        public XmlReader Reader {
-            get { return impl.Reader; }
+        public XmlReader Reader
+        {
+            get { return _impl.Reader; }
         }
 
-        public ValidationType ValidationType {
-            get { return impl.ValidationType; }
-            set { impl.ValidationType = value; }
+        public ValidationType ValidationType
+        {
+            get { return _impl.ValidationType; }
+            set { _impl.ValidationType = value; }
         }
 
-        public XmlSchemaCollection Schemas {
-            get { return impl.Schemas; }
+        public XmlSchemaCollection Schemas
+        {
+            get { return _impl.Schemas; }
         }
 
-        public EntityHandling EntityHandling {
-            get { return impl.EntityHandling; }
-            set { impl.EntityHandling = value; }
-        }
-        
-        public XmlResolver XmlResolver {
-            set { impl.XmlResolver = value; }
+        public EntityHandling EntityHandling
+        {
+            get { return _impl.EntityHandling; }
+            set { _impl.EntityHandling = value; }
         }
 
-        public bool Namespaces {
-            get { return impl.Namespaces; }
-            set { impl.Namespaces = value; }
+        public XmlResolver XmlResolver
+        {
+            set { _impl.XmlResolver = value; }
         }
 
-        public object ReadTypedValue() {
-            return impl.ReadTypedValue();
+        public bool Namespaces
+        {
+            get { return _impl.Namespaces; }
+            set { _impl.Namespaces = value; }
         }
 
-        public Encoding Encoding {
-            get { return impl.Encoding; }
-        }
-//
-// Internal helper methods
-//
-        internal XmlValidatingReaderImpl Impl {
-            get { return impl; }
+        public object ReadTypedValue()
+        {
+            return _impl.ReadTypedValue();
         }
 
-        internal override IDtdInfo DtdInfo {
-            get { return impl.DtdInfo; }
+        public Encoding Encoding
+        {
+            get { return _impl.Encoding; }
+        }
+        //
+        // Internal helper methods
+        //
+        internal XmlValidatingReaderImpl Impl
+        {
+            get { return _impl; }
+        }
+
+        internal override IDtdInfo DtdInfo
+        {
+            get { return _impl.DtdInfo; }
         }
     }
 }

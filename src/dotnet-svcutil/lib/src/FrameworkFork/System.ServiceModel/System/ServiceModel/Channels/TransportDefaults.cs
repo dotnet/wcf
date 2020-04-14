@@ -164,7 +164,7 @@ namespace System.ServiceModel.Channels
         public const bool RequireClientCertificate = false;
         public const int MaxFaultSize = MaxBufferSize;
         public const int MaxSecurityFaultSize = 16384;
-        public const SslProtocols SslProtocols = 
+        public const SslProtocols SslProtocols =
                                            // SSL3 is not supported in CoreFx.
                                            System.Security.Authentication.SslProtocols.Tls |
                                            System.Security.Authentication.SslProtocols.Tls11 |
@@ -313,7 +313,7 @@ namespace System.ServiceModel.Channels
         public const bool PacketRoutable = false;
     }
 
-    static class ReliableSessionDefaults
+    internal static class ReliableSessionDefaults
     {
         internal const string AcknowledgementIntervalString = "00:00:00.2";
         internal static TimeSpan AcknowledgementInterval { get { return TimeSpanHelper.FromMilliseconds(200, AcknowledgementIntervalString); } }
@@ -340,7 +340,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    static class WSHttpBindingDefaults
+    internal static class WSHttpBindingDefaults
     {
         internal const WSMessageEncoding MessageEncoding = WSMessageEncoding.Text;
     }

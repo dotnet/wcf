@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
@@ -14,16 +14,16 @@ namespace System.ServiceModel.Channels
 
     public sealed class CompositeDuplexBindingElement : BindingElement //, IPolicyExportExtension
     {
-        Uri clientBaseAddress;
+        private Uri _clientBaseAddress;
 
         public CompositeDuplexBindingElement()
         {
         }
 
-        CompositeDuplexBindingElement(CompositeDuplexBindingElement elementToBeCloned)
+        private CompositeDuplexBindingElement(CompositeDuplexBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.clientBaseAddress = elementToBeCloned.ClientBaseAddress;
+            _clientBaseAddress = elementToBeCloned.ClientBaseAddress;
         }
 
         [DefaultValue(null)]
@@ -31,12 +31,12 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.clientBaseAddress;
+                return _clientBaseAddress;
             }
 
             set
             {
-                this.clientBaseAddress = value;
+                _clientBaseAddress = value;
             }
         }
 
@@ -72,7 +72,7 @@ namespace System.ServiceModel.Channels
                 && context.CanBuildInnerChannelFactory<IOutputChannel>();
         }
 
-        ChannelProtectionRequirements GetProtectionRequirements()
+        private ChannelProtectionRequirements GetProtectionRequirements()
         {
             ChannelProtectionRequirements result = new ChannelProtectionRequirements();
             XmlQualifiedName refPropHeaderName = new XmlQualifiedName(XD.UtilityDictionary.UniqueEndpointHeaderName.Value,
@@ -131,7 +131,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            return (this.clientBaseAddress == duplex.clientBaseAddress);
+            return (_clientBaseAddress == duplex._clientBaseAddress);
         }
     }
 }

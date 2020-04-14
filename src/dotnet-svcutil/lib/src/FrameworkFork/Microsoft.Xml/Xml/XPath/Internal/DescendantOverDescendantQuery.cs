@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -11,43 +12,58 @@ namespace MS.Internal.Xml.XPath {
     // This is posible when query which has this query as its input (child query) is descendent as well.
     // Work of this query doesn't depend on DOD of its input. 
     // It doesn't garate DOD of the output even when input is DOD. 
-    internal sealed class DescendantOverDescendantQuery : DescendantBaseQuery {
-        private int level = 0;
+    internal sealed class DescendantOverDescendantQuery : DescendantBaseQuery
+    {
+        private int _level = 0;
 
-        public DescendantOverDescendantQuery(Query  qyParent, bool matchSelf, string name, string prefix, XPathNodeType typeTest, bool abbrAxis) : 
-            base(qyParent, name, prefix, typeTest, matchSelf, abbrAxis) {}
-        private DescendantOverDescendantQuery(DescendantOverDescendantQuery other) : base(other) {
-            this.level = other.level;
+        public DescendantOverDescendantQuery(Query qyParent, bool matchSelf, string name, string prefix, XPathNodeType typeTest, bool abbrAxis) :
+            base(qyParent, name, prefix, typeTest, matchSelf, abbrAxis)
+        { }
+        private DescendantOverDescendantQuery(DescendantOverDescendantQuery other) : base(other)
+        {
+            _level = other._level;
         }
 
-        public override void Reset() {
-            level = 0;
+        public override void Reset()
+        {
+            _level = 0;
             base.Reset();
         }
 
-        public override XPathNavigator Advance() {
-            while (true) {
-                if (level == 0) {
+        public override XPathNavigator Advance()
+        {
+            while (true)
+            {
+                if (_level == 0)
+                {
                     currentNode = qyInput.Advance();
                     position = 0;
-                    if (currentNode == null) {
+                    if (currentNode == null)
+                    {
                         return null;
                     }
-                    if (matchSelf && matches(currentNode)) {
+                    if (matchSelf && matches(currentNode))
+                    {
                         position = 1;
                         return currentNode;
                     }
                     currentNode = currentNode.Clone();
-                    if (! MoveToFirstChild()) {
-                        continue;
-                    }
-                } else {
-                    if (!MoveUpUntillNext()) {
+                    if (!MoveToFirstChild())
+                    {
                         continue;
                     }
                 }
-                do {
-                    if (matches(currentNode)) {
+                else
+                {
+                    if (!MoveUpUntillNext())
+                    {
+                        continue;
+                    }
+                }
+                do
+                {
+                    if (matches(currentNode))
+                    {
                         position++;
                         return currentNode;
                     }
@@ -55,18 +71,23 @@ namespace MS.Internal.Xml.XPath {
             }
         }
 
-        private bool MoveToFirstChild() {
-            if (currentNode.MoveToFirstChild()) {
-                level++;
+        private bool MoveToFirstChild()
+        {
+            if (currentNode.MoveToFirstChild())
+            {
+                _level++;
                 return true;
             }
             return false;
         }
 
-        private bool MoveUpUntillNext() { // move up untill we can move next
-            while (! currentNode.MoveToNext()) {
-                -- level;
-                if (level == 0) {
+        private bool MoveUpUntillNext()
+        { // move up untill we can move next
+            while (!currentNode.MoveToNext())
+            {
+                --_level;
+                if (_level == 0)
+                {
                     return false;
                 }
                 bool result = currentNode.MoveToParent();

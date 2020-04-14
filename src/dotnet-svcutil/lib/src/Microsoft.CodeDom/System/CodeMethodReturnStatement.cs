@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,19 +15,21 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeMethodReturnStatement : CodeStatement {
-        private CodeExpression expression;
+    public class CodeMethodReturnStatement : CodeStatement
+    {
+        private CodeExpression _expression;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeMethodReturnStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeMethodReturnStatement() {
+        public CodeMethodReturnStatement()
+        {
         }
 
         /// <devdoc>
@@ -35,7 +37,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeMethodReturnStatement'/> using the specified expression.
         ///    </para>
         /// </devdoc>
-        public CodeMethodReturnStatement(CodeExpression expression) {
+        public CodeMethodReturnStatement(CodeExpression expression)
+        {
             Expression = expression;
         }
 
@@ -44,12 +47,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the expression that indicates the return statement.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Expression {
-            get {
-                return expression;
+        public CodeExpression Expression
+        {
+            get
+            {
+                return _expression;
             }
-            set {
-                expression = value;
+            set
+            {
+                _expression = value;
             }
         }
     }

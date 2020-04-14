@@ -578,7 +578,7 @@ namespace System.ServiceModel.Diagnostics
                 using (ServiceModelActivity activity = ServiceModelActivity.CreateBoundedActivity())
                 {
                     ServiceModelActivity.Start(activity, SRServiceModel.ActivityCallback, ActivityType.ExecuteUserCode);
-                    this._callback(result);
+                    _callback(result);
                 }
             }
         }

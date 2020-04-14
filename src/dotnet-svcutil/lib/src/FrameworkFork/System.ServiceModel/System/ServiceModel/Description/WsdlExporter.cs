@@ -17,27 +17,27 @@ namespace System.ServiceModel.Description
 
     public class WsdlExporter : MetadataExporter
     {
-        static XmlDocument xmlDocument;
-        bool isFaulted = false;
+        private static XmlDocument s_xmlDocument;
+        private bool _isFaulted = false;
 
 
-        WsdlNS.ServiceDescriptionCollection wsdlDocuments = new WsdlNS.ServiceDescriptionCollection();
-        XmlSchemaSet xmlSchemas = WsdlExporter.GetEmptySchemaSet();
+        private WsdlNS.ServiceDescriptionCollection _wsdlDocuments = new WsdlNS.ServiceDescriptionCollection();
+        private XmlSchemaSet _xmlSchemas = WsdlExporter.GetEmptySchemaSet();
 
-        Dictionary<ContractDescription, WsdlContractConversionContext> exportedContracts
+        private Dictionary<ContractDescription, WsdlContractConversionContext> _exportedContracts
             = new Dictionary<ContractDescription, WsdlContractConversionContext>();
-        Dictionary<BindingDictionaryKey, WsdlEndpointConversionContext> exportedBindings = new Dictionary<BindingDictionaryKey, WsdlEndpointConversionContext>();
-        Dictionary<EndpointDictionaryKey, ServiceEndpoint> exportedEndpoints = new Dictionary<EndpointDictionaryKey, ServiceEndpoint>();
+        private Dictionary<BindingDictionaryKey, WsdlEndpointConversionContext> _exportedBindings = new Dictionary<BindingDictionaryKey, WsdlEndpointConversionContext>();
+        private Dictionary<EndpointDictionaryKey, ServiceEndpoint> _exportedEndpoints = new Dictionary<EndpointDictionaryKey, ServiceEndpoint>();
 
         public override void ExportContract(ContractDescription contract)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlExporterIsFaulted));
 
             if (contract == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("contract");
 
-            if (!this.exportedContracts.ContainsKey(contract))
+            if (!_exportedContracts.ContainsKey(contract))
             {
                 try
                 {
@@ -83,11 +83,11 @@ namespace System.ServiceModel.Description
 
                     CallExportContract(contractContext);
 
-                    exportedContracts.Add(contract, contractContext);
+                    _exportedContracts.Add(contract, contractContext);
                 }
                 catch
                 {
-                    isFaulted = true;
+                    _isFaulted = true;
                     throw;
                 }
             }
@@ -95,7 +95,7 @@ namespace System.ServiceModel.Description
 
         public override void ExportEndpoint(ServiceEndpoint endpoint)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlExporterIsFaulted));
 
             if (endpoint == null)
@@ -111,7 +111,7 @@ namespace System.ServiceModel.Description
 
         internal void ExportEndpoints(IEnumerable<ServiceEndpoint> endpoints, XmlQualifiedName wsdlServiceQName, BindingParameterCollection bindingParameters)
         {
-            if (this.isFaulted)
+            if (_isFaulted)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.WsdlExporterIsFaulted));
 
             if (endpoints == null)
@@ -129,19 +129,19 @@ namespace System.ServiceModel.Description
         {
             MetadataSet set = new MetadataSet();
 
-            foreach (WsdlNS.ServiceDescription wsdl in wsdlDocuments)
+            foreach (WsdlNS.ServiceDescription wsdl in _wsdlDocuments)
                 set.MetadataSections.Add(MetadataSection.CreateFromServiceDescription(wsdl));
 
-            foreach (XmlSchema schema in xmlSchemas.Schemas())
+            foreach (XmlSchema schema in _xmlSchemas.Schemas())
                 set.MetadataSections.Add(MetadataSection.CreateFromSchema(schema));
 
             return set;
         }
 
-        public WsdlNS.ServiceDescriptionCollection GeneratedWsdlDocuments { get { return wsdlDocuments; } }
-        public XmlSchemaSet GeneratedXmlSchemas { get { return xmlSchemas; } }
+        public WsdlNS.ServiceDescriptionCollection GeneratedWsdlDocuments { get { return _wsdlDocuments; } }
+        public XmlSchemaSet GeneratedXmlSchemas { get { return _xmlSchemas; } }
 
-        void ExportEndpoint(ServiceEndpoint endpoint, XmlQualifiedName wsdlServiceQName, BindingParameterCollection bindingParameters)
+        private void ExportEndpoint(ServiceEndpoint endpoint, XmlQualifiedName wsdlServiceQName, BindingParameterCollection bindingParameters)
         {
             if (endpoint.Binding == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.EndpointsMustHaveAValidBinding1, endpoint.Name)));
@@ -150,14 +150,14 @@ namespace System.ServiceModel.Description
 
             try
             {
-                if (exportedEndpoints.ContainsKey(endpointKey))
+                if (_exportedEndpoints.ContainsKey(endpointKey))
                     return;
 
                 this.ExportContract(endpoint.Contract);
 
                 // Retreive Conversion Context for Contract;
                 // Note: Contract must have already been exported at this point.
-                WsdlContractConversionContext contractContext = this.exportedContracts[endpoint.Contract];
+                WsdlContractConversionContext contractContext = _exportedContracts[endpoint.Contract];
 
 
                 bool newWsdlBinding, bindingNameWasUniquified;
@@ -215,26 +215,26 @@ namespace System.ServiceModel.Description
                     }
                     // consider factoring this out of wsdl exporter
                     new WSPolicyAttachmentHelper(this.PolicyVersion).AttachPolicy(endpoint, endpointContext, policyContext);
-                    exportedBindings.Add(new BindingDictionaryKey(endpoint.Contract, endpoint.Binding), endpointContext);
+                    _exportedBindings.Add(new BindingDictionaryKey(endpoint.Contract, endpoint.Binding), endpointContext);
                 }
                 else
                 {
-                    endpointContext = new WsdlEndpointConversionContext(exportedBindings[new BindingDictionaryKey(endpoint.Contract, endpoint.Binding)], endpoint, wsdlPort);
+                    endpointContext = new WsdlEndpointConversionContext(_exportedBindings[new BindingDictionaryKey(endpoint.Contract, endpoint.Binding)], endpoint, wsdlPort);
                 }
 
                 CallExportEndpoint(endpointContext);
-                exportedEndpoints.Add(endpointKey, endpoint);
+                _exportedEndpoints.Add(endpointKey, endpoint);
                 if (bindingNameWasUniquified)
                     Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.WarnDuplicateBindingQNameNameOnExport, endpoint.Binding.Name, endpoint.Binding.Namespace, endpoint.Contract.Name), true /*isWarning*/));
             }
             catch
             {
-                isFaulted = true;
+                _isFaulted = true;
                 throw;
             }
         }
 
-        void CallExportEndpoint(WsdlEndpointConversionContext endpointContext)
+        private void CallExportEndpoint(WsdlEndpointConversionContext endpointContext)
         {
             foreach (IWsdlExportExtension extension in endpointContext.ExportExtensions)
             {
@@ -242,7 +242,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void CallExportContract(WsdlContractConversionContext contractContext)
+        private void CallExportContract(WsdlContractConversionContext contractContext)
         {
             foreach (IWsdlExportExtension extension in contractContext.ExportExtensions)
             {
@@ -250,7 +250,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        WsdlNS.PortType CreateWsdlPortType(ContractDescription contract)
+        private WsdlNS.PortType CreateWsdlPortType(ContractDescription contract)
         {
             XmlQualifiedName wsdlPortTypeQName = WsdlNamingHelper.GetPortTypeQName(contract);
 
@@ -265,7 +265,7 @@ namespace System.ServiceModel.Description
             return wsdlPortType;
         }
 
-        WsdlNS.Operation CreateWsdlOperation(OperationDescription operation, ContractDescription contract)
+        private WsdlNS.Operation CreateWsdlOperation(OperationDescription operation, ContractDescription contract)
         {
             WsdlNS.Operation wsdlOperation = new WsdlNS.Operation();
             wsdlOperation.Name = WsdlNamingHelper.GetWsdlOperationName(operation, contract);
@@ -273,7 +273,7 @@ namespace System.ServiceModel.Description
             return wsdlOperation;
         }
 
-        WsdlNS.OperationMessage CreateWsdlOperationMessage(MessageDescription message)
+        private WsdlNS.OperationMessage CreateWsdlOperationMessage(MessageDescription message)
         {
             WsdlNS.OperationMessage wsdlOperationMessage;
 
@@ -290,7 +290,7 @@ namespace System.ServiceModel.Description
             return wsdlOperationMessage;
         }
 
-        WsdlNS.OperationFault CreateWsdlOperationFault(FaultDescription fault)
+        private WsdlNS.OperationFault CreateWsdlOperationFault(FaultDescription fault)
         {
             WsdlNS.OperationFault wsdlOperationFault;
             wsdlOperationFault = new WsdlNS.OperationFault();
@@ -303,7 +303,7 @@ namespace System.ServiceModel.Description
             return wsdlOperationFault;
         }
 
-        WsdlNS.Binding CreateWsdlBindingAndPort(ServiceEndpoint endpoint, XmlQualifiedName wsdlServiceQName, out WsdlNS.Port wsdlPort, out bool newBinding, out bool bindingNameWasUniquified)
+        private WsdlNS.Binding CreateWsdlBindingAndPort(ServiceEndpoint endpoint, XmlQualifiedName wsdlServiceQName, out WsdlNS.Port wsdlPort, out bool newBinding, out bool bindingNameWasUniquified)
         {
             WsdlNS.ServiceDescription bindingWsdl;
             WsdlNS.Binding wsdlBinding;
@@ -312,7 +312,7 @@ namespace System.ServiceModel.Description
             XmlQualifiedName wsdlPortTypeQName;
             bool printWsdlDeclaration = IsWsdlExportable(endpoint.Binding);
 
-            if (!exportedBindings.TryGetValue(new BindingDictionaryKey(endpoint.Contract, endpoint.Binding), out bindingConversionContext))
+            if (!_exportedBindings.TryGetValue(new BindingDictionaryKey(endpoint.Contract, endpoint.Binding), out bindingConversionContext))
             {
                 wsdlBindingQName = WsdlNamingHelper.GetBindingQName(endpoint, this, out bindingNameWasUniquified);
                 bindingWsdl = GetOrCreateWsdl(wsdlBindingQName.Namespace);
@@ -320,7 +320,7 @@ namespace System.ServiceModel.Description
                 wsdlBinding.Name = wsdlBindingQName.Name;
                 newBinding = true;
 
-                WsdlNS.PortType wsdlPortType = exportedContracts[endpoint.Contract].WsdlPortType;
+                WsdlNS.PortType wsdlPortType = _exportedContracts[endpoint.Contract].WsdlPortType;
                 wsdlPortTypeQName = new XmlQualifiedName(wsdlPortType.Name, wsdlPortType.ServiceDescription.TargetNamespace);
                 wsdlBinding.Type = wsdlPortTypeQName;
                 if (printWsdlDeclaration)
@@ -333,7 +333,7 @@ namespace System.ServiceModel.Description
             {
                 wsdlBindingQName = new XmlQualifiedName(bindingConversionContext.WsdlBinding.Name, bindingConversionContext.WsdlBinding.ServiceDescription.TargetNamespace);
                 bindingNameWasUniquified = false;
-                bindingWsdl = wsdlDocuments[wsdlBindingQName.Namespace];
+                bindingWsdl = _wsdlDocuments[wsdlBindingQName.Namespace];
                 wsdlBinding = bindingWsdl.Bindings[wsdlBindingQName.Name];
                 wsdlPortTypeQName = wsdlBinding.Type;
                 newBinding = false;
@@ -371,14 +371,14 @@ namespace System.ServiceModel.Description
             return wsdlBinding;
         }
 
-        WsdlNS.OperationBinding CreateWsdlOperationBinding(ContractDescription contract, OperationDescription operation)
+        private WsdlNS.OperationBinding CreateWsdlOperationBinding(ContractDescription contract, OperationDescription operation)
         {
             WsdlNS.OperationBinding wsdlOperationBinding = new WsdlNS.OperationBinding();
             wsdlOperationBinding.Name = WsdlNamingHelper.GetWsdlOperationName(operation, contract);
             return wsdlOperationBinding;
         }
 
-        WsdlNS.MessageBinding CreateWsdlMessageBinding(MessageDescription messageDescription, Binding binding, WsdlNS.OperationBinding wsdlOperationBinding)
+        private WsdlNS.MessageBinding CreateWsdlMessageBinding(MessageDescription messageDescription, Binding binding, WsdlNS.OperationBinding wsdlOperationBinding)
         {
             WsdlNS.MessageBinding wsdlMessageBinding;
             if (messageDescription.Direction == MessageDirection.Input)
@@ -398,7 +398,7 @@ namespace System.ServiceModel.Description
             return wsdlMessageBinding;
         }
 
-        WsdlNS.FaultBinding CreateWsdlFaultBinding(FaultDescription faultDescription, Binding binding, WsdlNS.OperationBinding wsdlOperationBinding)
+        private WsdlNS.FaultBinding CreateWsdlFaultBinding(FaultDescription faultDescription, Binding binding, WsdlNS.OperationBinding wsdlOperationBinding)
         {
             WsdlNS.FaultBinding wsdlFaultBinding = new WsdlNS.FaultBinding();
             wsdlOperationBinding.Faults.Add(wsdlFaultBinding);
@@ -451,11 +451,11 @@ namespace System.ServiceModel.Description
             return false;
         }
 
-        static XmlDocument XmlDoc
+        private static XmlDocument XmlDoc
         {
             get
             {
-                if (xmlDocument == null)
+                if (s_xmlDocument == null)
                 {
                     Microsoft.Xml.NameTable nameTable = new Microsoft.Xml.NameTable();
                     nameTable.Add(MetadataStrings.WSPolicy.Elements.Policy);
@@ -468,9 +468,9 @@ namespace System.ServiceModel.Description
                     nameTable.Add(MetadataStrings.Addressing10.MetadataPolicy.Addressing);
                     nameTable.Add(MetadataStrings.Addressing10.MetadataPolicy.AnonymousResponses);
                     nameTable.Add(MetadataStrings.Addressing10.MetadataPolicy.NonAnonymousResponses);
-                    xmlDocument = new XmlDocument(nameTable);
+                    s_xmlDocument = new XmlDocument(nameTable);
                 }
-                return xmlDocument;
+                return s_xmlDocument;
             }
         }
 
@@ -478,7 +478,7 @@ namespace System.ServiceModel.Description
         internal WsdlNS.ServiceDescription GetOrCreateWsdl(string ns)
         {
             // NOTE: this method is not thread safe
-            WsdlNS.ServiceDescriptionCollection wsdlCollection = this.wsdlDocuments;
+            WsdlNS.ServiceDescriptionCollection wsdlCollection = _wsdlDocuments;
             WsdlNS.ServiceDescription wsdl = wsdlCollection[ns];
 
             // Look for wsdl in service descriptions that have been created. If we cannot find it then we create it
@@ -498,7 +498,7 @@ namespace System.ServiceModel.Description
             return wsdl;
         }
 
-        WsdlNS.Service GetOrCreateWsdlService(XmlQualifiedName wsdlServiceQName)
+        private WsdlNS.Service GetOrCreateWsdlService(XmlQualifiedName wsdlServiceQName)
         {
             // NOTE: this method is not thread safe
 
@@ -519,7 +519,7 @@ namespace System.ServiceModel.Description
             return wsdlService;
         }
 
-        static void EnsureWsdlContainsImport(WsdlNS.ServiceDescription srcWsdl, string target)
+        private static void EnsureWsdlContainsImport(WsdlNS.ServiceDescription srcWsdl, string target)
         {
             if (srcWsdl.TargetNamespace == target)
                 return;
@@ -539,7 +539,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void LogExportWarning(string warningMessage)
+        private void LogExportWarning(string warningMessage)
         {
             this.Errors.Add(new MetadataConversionError(warningMessage, true));
         }
@@ -551,7 +551,7 @@ namespace System.ServiceModel.Description
             return schemaSet;
         }
 
-        static bool IsWsdlExportable(Binding binding)
+        private static bool IsWsdlExportable(Binding binding)
         {
             BindingElementCollection bindingElements = binding.CreateBindingElements();
             if (bindingElements == null)
@@ -706,12 +706,12 @@ namespace System.ServiceModel.Description
             }
         }
 
-        class WSPolicyAttachmentHelper
+        private class WSPolicyAttachmentHelper
         {
-            PolicyVersion policyVersion;
+            private PolicyVersion _policyVersion;
             internal WSPolicyAttachmentHelper(PolicyVersion policyVersion)
             {
-                this.policyVersion = policyVersion;
+                _policyVersion = policyVersion;
             }
 
             internal void AttachPolicy(ServiceEndpoint endpoint, WsdlEndpointConversionContext endpointContext, PolicyConversionContext policyContext)
@@ -795,19 +795,19 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            void AttachItemPolicy(ICollection<XmlElement> assertions, string key, WsdlNS.ServiceDescription policyWsdl, WsdlNS.DocumentableItem item)
+            private void AttachItemPolicy(ICollection<XmlElement> assertions, string key, WsdlNS.ServiceDescription policyWsdl, WsdlNS.DocumentableItem item)
             {
                 string policyKey = InsertPolicy(key, policyWsdl, assertions);
                 InsertPolicyReference(policyKey, item);
             }
 
-            void InsertPolicyReference(string policyKey, WsdlNS.DocumentableItem item)
+            private void InsertPolicyReference(string policyKey, WsdlNS.DocumentableItem item)
             {
                 //Create wsp:PolicyReference Element On DocumentableItem
                 //---------------------------------------------------------------------------------------------------------
                 XmlElement policyReferenceElement = XmlDoc.CreateElement(MetadataStrings.WSPolicy.Prefix,
                                                             MetadataStrings.WSPolicy.Elements.PolicyReference,
-                                                            policyVersion.Namespace);
+                                                            _policyVersion.Namespace);
 
                 //Create wsp:PolicyURIs Attribute On DocumentableItem
                 //---------------------------------------------------------------------------------------------------------
@@ -818,7 +818,7 @@ namespace System.ServiceModel.Description
                 item.Extensions.Add(policyReferenceElement);
             }
 
-            string InsertPolicy(string key, WsdlNS.ServiceDescription policyWsdl, ICollection<XmlElement> assertions)
+            private string InsertPolicy(string key, WsdlNS.ServiceDescription policyWsdl, ICollection<XmlElement> assertions)
             {
                 // Create [wsp:Policy]
                 XmlElement policyElement = CreatePolicyElement(assertions);
@@ -839,23 +839,23 @@ namespace System.ServiceModel.Description
                 return string.Format(CultureInfo.InvariantCulture, "#{0}", key);
             }
 
-            XmlElement CreatePolicyElement(ICollection<XmlElement> assertions)
+            private XmlElement CreatePolicyElement(ICollection<XmlElement> assertions)
             {
                 // Create [wsp:Policy]
                 XmlElement policyElement = XmlDoc.CreateElement(MetadataStrings.WSPolicy.Prefix,
                                                             MetadataStrings.WSPolicy.Elements.Policy,
-                                                            policyVersion.Namespace);
+                                                            _policyVersion.Namespace);
 
                 // Create [wsp:Policy/wsp:ExactlyOne]
                 XmlElement exactlyOneElement = XmlDoc.CreateElement(MetadataStrings.WSPolicy.Prefix,
                                                             MetadataStrings.WSPolicy.Elements.ExactlyOne,
-                                                            policyVersion.Namespace);
+                                                            _policyVersion.Namespace);
                 policyElement.AppendChild(exactlyOneElement);
 
                 // Create [wsp:Policy/wsp:ExactlyOne/wsp:All]
                 XmlElement allElement = XmlDoc.CreateElement(MetadataStrings.WSPolicy.Prefix,
                                                             MetadataStrings.WSPolicy.Elements.All,
-                                                            policyVersion.Namespace);
+                                                            _policyVersion.Namespace);
                 exactlyOneElement.AppendChild(allElement);
 
                 // Add [wsp:Policy/wsp:ExactlyOne/wsp:All/*]
@@ -868,19 +868,19 @@ namespace System.ServiceModel.Description
                 return policyElement;
             }
 
-            static string CreateBindingPolicyKey(WsdlNS.Binding wsdlBinding)
+            private static string CreateBindingPolicyKey(WsdlNS.Binding wsdlBinding)
             {
                 return string.Format(CultureInfo.InvariantCulture, "{0}_policy", wsdlBinding.Name);
             }
 
-            static string CreateOperationBindingPolicyKey(WsdlNS.OperationBinding wsdlOperationBinding)
+            private static string CreateOperationBindingPolicyKey(WsdlNS.OperationBinding wsdlOperationBinding)
             {
                 return string.Format(CultureInfo.InvariantCulture, "{0}_{1}_policy",
                     wsdlOperationBinding.Binding.Name,
                     wsdlOperationBinding.Name);
             }
 
-            static string CreateMessageBindingPolicyKey(WsdlNS.MessageBinding wsdlMessageBinding, MessageDirection direction)
+            private static string CreateMessageBindingPolicyKey(WsdlNS.MessageBinding wsdlMessageBinding, MessageDirection direction)
             {
                 WsdlNS.OperationBinding wsdlOperationBinding = wsdlMessageBinding.OperationBinding;
                 WsdlNS.Binding wsdlBinding = wsdlOperationBinding.Binding;
@@ -891,7 +891,7 @@ namespace System.ServiceModel.Description
                     return string.Format(CultureInfo.InvariantCulture, "{0}_{1}_output_policy", wsdlBinding.Name, wsdlOperationBinding.Name);
             }
 
-            static string CreateFaultBindingPolicyKey(WsdlNS.FaultBinding wsdlFaultBinding)
+            private static string CreateFaultBindingPolicyKey(WsdlNS.FaultBinding wsdlFaultBinding)
             {
                 WsdlNS.OperationBinding wsdlOperationBinding = wsdlFaultBinding.OperationBinding;
                 WsdlNS.Binding wsdlBinding = wsdlOperationBinding.Binding;
@@ -904,23 +904,22 @@ namespace System.ServiceModel.Description
                     return string.Format(CultureInfo.InvariantCulture, "{0}_{1}_{2}_Fault", wsdlBinding.Name, wsdlOperationBinding.Name, wsdlFaultBinding.Name);
                 }
             }
-
         }
 
-        class WsdlNamespaceHelper
+        private class WsdlNamespaceHelper
         {
-            XmlSerializerNamespaces xmlSerializerNamespaces;
-            PolicyVersion policyVersion;
+            private XmlSerializerNamespaces _xmlSerializerNamespaces;
+            private PolicyVersion _policyVersion;
             internal XmlSerializerNamespaces SerializerNamespaces
             {
                 get
                 {
-                    if (xmlSerializerNamespaces == null)
+                    if (_xmlSerializerNamespaces == null)
                     {
                         XmlSerializerNamespaceWrapper namespaces = new XmlSerializerNamespaceWrapper();
                         namespaces.Add("wsdl", WsdlNS.ServiceDescription.Namespace);
                         namespaces.Add("xsd", XmlSchema.Namespace);
-                        namespaces.Add(MetadataStrings.WSPolicy.Prefix, policyVersion.Namespace);
+                        namespaces.Add(MetadataStrings.WSPolicy.Prefix, _policyVersion.Namespace);
                         namespaces.Add(MetadataStrings.Wsu.Prefix, MetadataStrings.Wsu.NamespaceUri);
                         namespaces.Add(MetadataStrings.Addressing200408.Prefix, MetadataStrings.Addressing200408.NamespaceUri);
                         namespaces.Add(MetadataStrings.Addressing200408.Policy.Prefix, MetadataStrings.Addressing200408.Policy.NamespaceUri);
@@ -934,35 +933,35 @@ namespace System.ServiceModel.Description
                         namespaces.Add("soap12", "http://schemas.xmlsoap.org/wsdl/soap12/");
                         namespaces.Add("soap", "http://schemas.xmlsoap.org/wsdl/soap/");
 
-                        xmlSerializerNamespaces = namespaces.GetNamespaces();
+                        _xmlSerializerNamespaces = namespaces.GetNamespaces();
                     }
-                    return xmlSerializerNamespaces;
+                    return _xmlSerializerNamespaces;
                 }
             }
 
             internal WsdlNamespaceHelper(PolicyVersion policyVersion)
             {
-                this.policyVersion = policyVersion;
+                _policyVersion = policyVersion;
             }
 
             // doesn't care if you add a duplicate prefix
-            class XmlSerializerNamespaceWrapper
+            private class XmlSerializerNamespaceWrapper
             {
-                readonly XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-                readonly Dictionary<string, string> lookup = new Dictionary<string, string>();
+                private readonly XmlSerializerNamespaces _namespaces = new XmlSerializerNamespaces();
+                private readonly Dictionary<string, string> _lookup = new Dictionary<string, string>();
 
                 internal void Add(string prefix, string namespaceUri)
                 {
-                    if (!lookup.ContainsKey(prefix))
+                    if (!_lookup.ContainsKey(prefix))
                     {
-                        namespaces.Add(prefix, namespaceUri);
-                        lookup.Add(prefix, namespaceUri);
+                        _namespaces.Add(prefix, namespaceUri);
+                        _lookup.Add(prefix, namespaceUri);
                     }
                 }
 
                 internal XmlSerializerNamespaces GetNamespaces()
                 {
-                    return namespaces;
+                    return _namespaces;
                 }
             }
 
@@ -999,7 +998,7 @@ namespace System.ServiceModel.Description
                 return prefix;
             }
 
-            static bool PrefixExists(XmlQualifiedName[] prefixDefinitions, string prefix)
+            private static bool PrefixExists(XmlQualifiedName[] prefixDefinitions, string prefix)
             {
                 return Array.Exists<XmlQualifiedName>(prefixDefinitions,
                     delegate (XmlQualifiedName prefixDef)
@@ -1010,10 +1009,9 @@ namespace System.ServiceModel.Description
                         }
                         return false;
                     });
-
             }
 
-            static bool TryMatchNamespace(XmlQualifiedName[] prefixDefinitions, string ns, out string prefix)
+            private static bool TryMatchNamespace(XmlQualifiedName[] prefixDefinitions, string ns, out string prefix)
             {
                 string foundPrefix = null;
                 Array.Find<XmlQualifiedName>(prefixDefinitions,
@@ -1053,12 +1051,12 @@ namespace System.ServiceModel.Description
                 return new XmlQualifiedName(uniquifiedLocalName, bindingWsdlNamespace);
             }
 
-            static NamingHelper.DoesNameExist WsdlBindingQNameExists(WsdlExporter exporter, string bindingWsdlNamespace)
+            private static NamingHelper.DoesNameExist WsdlBindingQNameExists(WsdlExporter exporter, string bindingWsdlNamespace)
             {
                 return delegate (string localName, object nameCollection)
                 {
                     XmlQualifiedName wsdlBindingQName = new XmlQualifiedName(localName, bindingWsdlNamespace);
-                    WsdlNS.ServiceDescription wsdl = exporter.wsdlDocuments[bindingWsdlNamespace];
+                    WsdlNS.ServiceDescription wsdl = exporter._wsdlDocuments[bindingWsdlNamespace];
                     if (wsdl != null && wsdl.Bindings[localName] != null)
                         return true;
 
@@ -1073,7 +1071,7 @@ namespace System.ServiceModel.Description
                 return NamingHelper.GetUniqueName(endpoint.Name, ServiceContainsPort(wsdlService), null);
             }
 
-            static NamingHelper.DoesNameExist ServiceContainsPort(WsdlNS.Service service)
+            private static NamingHelper.DoesNameExist ServiceContainsPort(WsdlNS.Service service)
             {
                 return delegate (string portName, object nameCollection)
                 {
@@ -1131,19 +1129,19 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            static void AddInitiatingAttribute(System.Web.Services.Description.Operation wsdlOperation, bool isInitiating)
+            private static void AddInitiatingAttribute(System.Web.Services.Description.Operation wsdlOperation, bool isInitiating)
             {
                 wsdlOperation.ExtensibleAttributes = CloneAndAddToAttributes(wsdlOperation.ExtensibleAttributes, NetSessionHelper.Prefix,
                     NetSessionHelper.IsInitiating, NetSessionHelper.NamespaceUri, ToValue(isInitiating));
             }
 
-            static void AddTerminatingAttribute(System.Web.Services.Description.Operation wsdlOperation, bool isTerminating)
+            private static void AddTerminatingAttribute(System.Web.Services.Description.Operation wsdlOperation, bool isTerminating)
             {
                 wsdlOperation.ExtensibleAttributes = CloneAndAddToAttributes(wsdlOperation.ExtensibleAttributes, NetSessionHelper.Prefix,
                     NetSessionHelper.IsTerminating, NetSessionHelper.NamespaceUri, ToValue(isTerminating));
             }
 
-            static XmlAttribute[] CloneAndAddToAttributes(XmlAttribute[] originalAttributes, string prefix, string localName, string ns, string value)
+            private static XmlAttribute[] CloneAndAddToAttributes(XmlAttribute[] originalAttributes, string prefix, string localName, string ns, string value)
             {
                 XmlAttribute newAttribute = XmlDoc.CreateAttribute(prefix, localName, ns);
                 newAttribute.Value = value;
@@ -1162,13 +1160,13 @@ namespace System.ServiceModel.Description
                 return attributes;
             }
 
-            static string ToValue(bool b)
+            private static string ToValue(bool b)
             {
                 return b ? NetSessionHelper.True : NetSessionHelper.False;
             }
         }
 
-        void CallExtension(WsdlContractConversionContext contractContext, IWsdlExportExtension extension)
+        private void CallExtension(WsdlContractConversionContext contractContext, IWsdlExportExtension extension)
         {
             try
             {
@@ -1183,7 +1181,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void CallExtension(WsdlEndpointConversionContext endpointContext, IWsdlExportExtension extension)
+        private void CallExtension(WsdlEndpointConversionContext endpointContext, IWsdlExportExtension extension)
         {
             try
             {
@@ -1198,7 +1196,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        Exception ThrowExtensionException(ContractDescription contract, IWsdlExportExtension exporter, Exception e)
+        private Exception ThrowExtensionException(ContractDescription contract, IWsdlExportExtension exporter, Exception e)
         {
             string contractIdentifier = new XmlQualifiedName(contract.Name, contract.Namespace).ToString();
             string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionContractExportError, exporter.GetType(), contractIdentifier);
@@ -1206,7 +1204,7 @@ namespace System.ServiceModel.Description
             return new InvalidOperationException(errorMessage, e);
         }
 
-        Exception ThrowExtensionException(ServiceEndpoint endpoint, IWsdlExportExtension exporter, Exception e)
+        private Exception ThrowExtensionException(ServiceEndpoint endpoint, IWsdlExportExtension exporter, Exception e)
         {
             string endpointIdentifier;
             if (endpoint.Address != null && endpoint.Address.Uri != null)
@@ -1224,7 +1222,7 @@ namespace System.ServiceModel.Description
             return new InvalidOperationException(errorMessage, e);
         }
 
-        sealed class BindingDictionaryKey
+        private sealed class BindingDictionaryKey
         {
             public readonly ContractDescription Contract;
             public readonly Binding Binding;
@@ -1249,7 +1247,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        sealed class EndpointDictionaryKey
+        private sealed class EndpointDictionaryKey
         {
             public readonly ServiceEndpoint Endpoint;
             public readonly XmlQualifiedName ServiceQName;

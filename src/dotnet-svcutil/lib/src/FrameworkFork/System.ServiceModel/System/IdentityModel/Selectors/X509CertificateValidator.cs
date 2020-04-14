@@ -79,7 +79,7 @@ namespace System.IdentityModel.Selectors
 
                 // implies _useMachineContext = false
                 // ctor for X509Chain(_useMachineContext, _chainPolicyOID) not present in CoreCLR
-                X509Chain chain = new X509Chain(); 
+                X509Chain chain = new X509Chain();
 
                 if (_chainPolicy != null)
                 {

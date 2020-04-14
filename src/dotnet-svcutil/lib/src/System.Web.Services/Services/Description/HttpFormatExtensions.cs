@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.Web.Services.Description
 {
     using Microsoft.Xml.Serialization;
@@ -9,14 +10,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("address", HttpBinding.Namespace, typeof(Port))]
     public sealed class HttpAddressBinding : ServiceDescriptionFormatExtension
     {
-        string location;
+        private string _location;
 
         /// <include file='doc\HttpFormatExtensions.uex' path='docs/doc[@for="HttpAddressBinding.Location"]/*' />
         [XmlAttribute("location")]
         public string Location
         {
-            get { return location == null ? string.Empty : location; }
-            set { location = value; }
+            get { return _location == null ? string.Empty : _location; }
+            set { _location = value; }
         }
     }
 
@@ -25,7 +26,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPrefix("http", HttpBinding.Namespace)]
     public sealed class HttpBinding : ServiceDescriptionFormatExtension
     {
-        string verb;
+        private string _verb;
 
         /// <include file='doc\HttpFormatExtensions.uex' path='docs/doc[@for="HttpBinding.Namespace"]/*' />
         public const string Namespace = "http://schemas.xmlsoap.org/wsdl/http/";
@@ -34,8 +35,8 @@ namespace System.Web.Services.Description
         [XmlAttribute("verb")]
         public string Verb
         {
-            get { return verb; }
-            set { verb = value; }
+            get { return _verb; }
+            set { _verb = value; }
         }
     }
 
@@ -43,14 +44,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("operation", HttpBinding.Namespace, typeof(OperationBinding))]
     public sealed class HttpOperationBinding : ServiceDescriptionFormatExtension
     {
-        string location;
+        private string _location;
 
         /// <include file='doc\HttpFormatExtensions.uex' path='docs/doc[@for="HttpOperationBinding.Location"]/*' />
         [XmlAttribute("location")]
         public string Location
         {
-            get { return location == null ? string.Empty : location; }
-            set { location = value; }
+            get { return _location == null ? string.Empty : _location; }
+            set { _location = value; }
         }
     }
 

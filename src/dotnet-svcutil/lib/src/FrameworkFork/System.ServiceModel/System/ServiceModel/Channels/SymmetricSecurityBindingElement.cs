@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -17,17 +18,17 @@ namespace System.ServiceModel.Channels
 
     public sealed class SymmetricSecurityBindingElement : SecurityBindingElement, IPolicyExportExtension
     {
-        MessageProtectionOrder messageProtectionOrder;
-        SecurityTokenParameters protectionTokenParameters;
-        bool requireSignatureConfirmation;
+        private MessageProtectionOrder _messageProtectionOrder;
+        private SecurityTokenParameters _protectionTokenParameters;
+        private bool _requireSignatureConfirmation;
 
-        SymmetricSecurityBindingElement(SymmetricSecurityBindingElement elementToBeCloned)
+        private SymmetricSecurityBindingElement(SymmetricSecurityBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.messageProtectionOrder = elementToBeCloned.messageProtectionOrder;
-            if (elementToBeCloned.protectionTokenParameters != null)
-                this.protectionTokenParameters = (SecurityTokenParameters)elementToBeCloned.protectionTokenParameters.Clone();
-            this.requireSignatureConfirmation = elementToBeCloned.requireSignatureConfirmation;
+            _messageProtectionOrder = elementToBeCloned._messageProtectionOrder;
+            if (elementToBeCloned._protectionTokenParameters != null)
+                _protectionTokenParameters = (SecurityTokenParameters)elementToBeCloned._protectionTokenParameters.Clone();
+            _requireSignatureConfirmation = elementToBeCloned._requireSignatureConfirmation;
         }
 
         public SymmetricSecurityBindingElement()
@@ -39,20 +40,20 @@ namespace System.ServiceModel.Channels
         public SymmetricSecurityBindingElement(SecurityTokenParameters protectionTokenParameters)
             : base()
         {
-            this.messageProtectionOrder = SecurityBindingElement.defaultMessageProtectionOrder;
-            this.requireSignatureConfirmation = SecurityBindingElement.defaultRequireSignatureConfirmation;
-            this.protectionTokenParameters = protectionTokenParameters;
+            _messageProtectionOrder = SecurityBindingElement.defaultMessageProtectionOrder;
+            _requireSignatureConfirmation = SecurityBindingElement.defaultRequireSignatureConfirmation;
+            _protectionTokenParameters = protectionTokenParameters;
         }
 
         public bool RequireSignatureConfirmation
         {
             get
             {
-                return this.requireSignatureConfirmation;
+                return _requireSignatureConfirmation;
             }
             set
             {
-                this.requireSignatureConfirmation = value;
+                _requireSignatureConfirmation = value;
             }
         }
 
@@ -60,13 +61,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.messageProtectionOrder;
+                return _messageProtectionOrder;
             }
             set
             {
                 if (!MessageProtectionOrderHelper.IsDefined(value))
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
-                this.messageProtectionOrder = value;
+                _messageProtectionOrder = value;
             }
         }
 
@@ -74,11 +75,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.protectionTokenParameters;
+                return _protectionTokenParameters;
             }
             set
             {
-                this.protectionTokenParameters = value;
+                _protectionTokenParameters = value;
             }
         }
 
@@ -132,8 +133,8 @@ namespace System.ServiceModel.Channels
         public override void SetKeyDerivation(bool requireDerivedKeys)
         {
             base.SetKeyDerivation(requireDerivedKeys);
-            if (this.protectionTokenParameters != null)
-                this.protectionTokenParameters.RequireDerivedKeys = requireDerivedKeys;
+            if (_protectionTokenParameters != null)
+                _protectionTokenParameters.RequireDerivedKeys = requireDerivedKeys;
         }
 
         internal override bool IsSetKeyDerivation(bool requireDerivedKeys)
@@ -141,7 +142,7 @@ namespace System.ServiceModel.Channels
             if (!base.IsSetKeyDerivation(requireDerivedKeys))
                 return false;
 
-            if (this.protectionTokenParameters != null && this.protectionTokenParameters.RequireDerivedKeys != requireDerivedKeys)
+            if (_protectionTokenParameters != null && _protectionTokenParameters.RequireDerivedKeys != requireDerivedKeys)
                 return false;
 
             return true;
@@ -181,11 +182,11 @@ namespace System.ServiceModel.Channels
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "MessageProtectionOrder: {0}", this.messageProtectionOrder.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "RequireSignatureConfirmation: {0}", this.requireSignatureConfirmation.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "MessageProtectionOrder: {0}", _messageProtectionOrder.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "RequireSignatureConfirmation: {0}", _requireSignatureConfirmation.ToString()));
             sb.Append("ProtectionTokenParameters: ");
-            if (this.protectionTokenParameters != null)
-                sb.AppendLine(this.protectionTokenParameters.ToString().Trim().Replace("\n", "\n  "));
+            if (_protectionTokenParameters != null)
+                sb.AppendLine(_protectionTokenParameters.ToString().Trim().Replace("\n", "\n  "));
             else
                 sb.AppendLine("null");
 

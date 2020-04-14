@@ -315,7 +315,7 @@ namespace System.ServiceModel
         }
     }
 
-    class Addressing200408Dictionary
+    internal class Addressing200408Dictionary
     {
         public XmlDictionaryString Namespace;
         public XmlDictionaryString Anonymous;
@@ -397,7 +397,7 @@ namespace System.ServiceModel
         }
     }
 
-   internal class PolicyDictionary
+    internal class PolicyDictionary
     {
         public XmlDictionaryString Namespace;
 
@@ -781,7 +781,7 @@ namespace System.ServiceModel
         }
     }
 
-    class WsrmFeb2005Dictionary
+    internal class WsrmFeb2005Dictionary
     {
         public XmlDictionaryString Identifier;
         public XmlDictionaryString Namespace;

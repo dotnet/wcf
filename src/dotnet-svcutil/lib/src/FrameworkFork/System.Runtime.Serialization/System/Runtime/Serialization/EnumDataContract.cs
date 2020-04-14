@@ -146,7 +146,7 @@ namespace System.Runtime.Serialization
             private static Dictionary<Type, XmlQualifiedName> s_typeToName;
             private static Dictionary<XmlQualifiedName, Type> s_nameToType;
 
-            XmlQualifiedName baseContractName;
+            private XmlQualifiedName _baseContractName;
             private List<DataMember> _members;
             private List<long> _values;
             private bool _isULong;
@@ -220,12 +220,12 @@ namespace System.Runtime.Serialization
             {
                 get
                 {
-                    return baseContractName;
+                    return _baseContractName;
                 }
                 set
                 {
-                    baseContractName = value;
-                    Type baseType = GetBaseType(baseContractName);
+                    _baseContractName = value;
+                    Type baseType = GetBaseType(_baseContractName);
                     if (baseType == null)
                         ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidEnumBaseType, value.Name, value.Namespace, StableName.Name, StableName.Namespace));
                     ImportBaseType(baseType);

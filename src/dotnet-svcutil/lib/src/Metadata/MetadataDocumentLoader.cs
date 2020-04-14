@@ -35,15 +35,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             Failed
         }
 
-        private readonly IHttpCredentialsProvider httpCredentialsProvider;
-        private readonly IClientCertificateProvider clientCertificatesProvider;
-        private readonly IServerCertificateValidationProvider serverCertificateValidationProvider;
+        private readonly IHttpCredentialsProvider _httpCredentialsProvider;
+        private readonly IClientCertificateProvider _clientCertificatesProvider;
+        private readonly IServerCertificateValidationProvider _serverCertificateValidationProvider;
 
-        private int? hashCode;
-        private readonly bool resolveExternalDocs;
-        private List<string> processedUri = new List<string>();
-        private List<string> updatedUri = new List<string>();
-        private readonly Object thisLock = new Object();
+        private int? _hashCode;
+        private readonly bool _resolveExternalDocs;
+        private List<string> _processedUri = new List<string>();
+        private List<string> _updatedUri = new List<string>();
+        private readonly Object _thisLock = new Object();
 
         /// <summary>
         /// The web server/service URL when the metadata is downloaded from a remote URI.
@@ -59,14 +59,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <summary>
         /// The Metadata sections parsed from the metadata documents
         /// </summary>
-        private readonly List<MetadataSection> metadataSections = new List<MetadataSection>();
-        public IEnumerable<MetadataSection> MetadataSections { get { return this.metadataSections; } }
+        private readonly List<MetadataSection> _metadataSections = new List<MetadataSection>();
+        public IEnumerable<MetadataSection> MetadataSections { get { return _metadataSections; } }
 
         /// <summary>
         /// A collection of exceptions (if any) thrown during the loading of remote or local documents.
         /// </summary>
-        private readonly List<Exception> documentLoadExceptions = new List<Exception>();
-        public IEnumerable<Exception> DocumentLoadExceptions { get { return this.documentLoadExceptions; } }
+        private readonly List<Exception> _documentLoadExceptions = new List<Exception>();
+        public IEnumerable<Exception> DocumentLoadExceptions { get { return _documentLoadExceptions; } }
 
         /// <summary>
         /// The object LoadState value.
@@ -82,9 +82,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <param name="serverCertificateValidationProvider"></param>
         public MetadataDocumentLoader(string uri, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider)
         {
-            this.httpCredentialsProvider = httpCredentialsProvider;
-            this.clientCertificatesProvider = clientCertificatesProvider;
-            this.serverCertificateValidationProvider = serverCertificateValidationProvider;
+            _httpCredentialsProvider = httpCredentialsProvider;
+            _clientCertificatesProvider = clientCertificatesProvider;
+            _serverCertificateValidationProvider = serverCertificateValidationProvider;
 
             if (string.IsNullOrEmpty(uri))
             {
@@ -102,12 +102,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 var fileInfoList = MetadataFileNameManager.ResolveFiles(metadataUri.LocalPath);
 
                 // when only the wsdl file is specified, we need to resolve any schema references.
-                this.resolveExternalDocs = fileInfoList.Length == 1;
+                _resolveExternalDocs = fileInfoList.Length == 1;
                 this.metadataSourceFiles.AddRange(fileInfoList.Select(fi => new Uri(fi.FullName, UriKind.Absolute)));
             }
             else
             {
-                this.resolveExternalDocs = true;
+                _resolveExternalDocs = true;
                 this.MetadataSourceUrl = metadataUri;
             }
         }
@@ -121,9 +121,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <param name="serverCertificateValidationProvider"></param>
         public MetadataDocumentLoader(IEnumerable<string> metadataFiles, bool resolveExternalDocuments, IHttpCredentialsProvider httpCredentialsProvider, IClientCertificateProvider clientCertificatesProvider, IServerCertificateValidationProvider serverCertificateValidationProvider)
         {
-            this.httpCredentialsProvider = httpCredentialsProvider;
-            this.clientCertificatesProvider = clientCertificatesProvider;
-            this.serverCertificateValidationProvider = serverCertificateValidationProvider;
+            _httpCredentialsProvider = httpCredentialsProvider;
+            _clientCertificatesProvider = clientCertificatesProvider;
+            _serverCertificateValidationProvider = serverCertificateValidationProvider;
 
             if (metadataFiles == null)
             {
@@ -146,7 +146,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 this.metadataSourceFiles.AddRange(fileInfoList.Select(fi => new Uri(fi.FullName, UriKind.Absolute)));
             }
 
-            this.resolveExternalDocs = resolveExternalDocuments;
+            _resolveExternalDocs = resolveExternalDocuments;
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
         public async Task LoadAsync(CancellationToken cancellationToken)
         {
-            lock (thisLock)
+            lock (_thisLock)
             {
                 // to ensure the object integrity we need to make sure the load operation is executed only once.
                 switch (this.State)
@@ -189,7 +189,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     }
                 }
 
-                FixupChameleonSchemas(this.metadataSections);
+                FixupChameleonSchemas(_metadataSections);
 
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -230,12 +230,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                         // Clone providers as they may be in use for a different URI.
                         MetadataExchangeResolver metadataExchangeResolver = MetadataExchangeResolver.Create(
                             new EndpointAddress(serviceUri),
-                            this.httpCredentialsProvider?.Clone() as IHttpCredentialsProvider,
-                            this.clientCertificatesProvider?.Clone() as IClientCertificateProvider,
-                            this.serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider);
+                            _httpCredentialsProvider?.Clone() as IHttpCredentialsProvider,
+                            _clientCertificatesProvider?.Clone() as IClientCertificateProvider,
+                            _serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider);
 
                         var metadataSections = await metadataExchangeResolver.ResolveMetadataAsync(cancellationToken).ConfigureAwait(false);
-                        this.metadataSections.AddRange(metadataSections);
+                        _metadataSections.AddRange(metadataSections);
                     }
                 }
             }
@@ -314,10 +314,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         {
             var schema = await AsyncHelper.RunAsync(() => XmlNS.Schema.XmlSchema.Read(reader, null), cancellationToken).ConfigureAwait(false);
 
-            this.metadataSections.Add(MetadataSection.CreateFromSchema(schema));
+            _metadataSections.Add(MetadataSection.CreateFromSchema(schema));
             schema.SourceUri = uri;
 
-            if (this.resolveExternalDocs)
+            if (_resolveExternalDocs)
             {
                 await LoadAsXmlSchemaIncludesAsync(schema, uri, basePath, cancellationToken).ConfigureAwait(false);
             }
@@ -343,7 +343,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
             wsdl.RetrievalUrl = uri;
 
-            if (this.resolveExternalDocs)
+            if (_resolveExternalDocs)
             {
                 foreach (WsdlNS.Import import in wsdl.Imports)
                 {
@@ -361,7 +361,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
             }
 
-            this.metadataSections.Add(MetadataSection.CreateFromServiceDescription(wsdl));
+            _metadataSections.Add(MetadataSection.CreateFromServiceDescription(wsdl));
         }
 
         private async Task<string> LoadAsSchemaImportLocationAsync(string schemaLocation, string baseUrl, string basePath, string specNamespace, string fileExtension, CancellationToken cancellationToken)
@@ -396,7 +396,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             catch (Exception ex)
             {
                 if (Utils.IsFatalOrUnexpected(ex)) throw;
-                this.documentLoadExceptions.Add(ex);
+                _documentLoadExceptions.Add(ex);
             }
 
             return resolvedLocation;
@@ -408,7 +408,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             doc.XmlResolver = null;
             doc.Load(reader);
             XmlNS.XmlElement policy = doc.DocumentElement;
-            this.metadataSections.Add(MetadataSection.CreateFromPolicy(policy, null));
+            _metadataSections.Add(MetadataSection.CreateFromPolicy(policy, null));
         }
 
         private void LoadAsUnknownXml(XmlNS.XmlReader reader)
@@ -417,7 +417,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             doc.XmlResolver = null;
             doc.Load(reader);
             XmlNS.XmlElement unknownXml = doc.DocumentElement;
-            this.metadataSections.Add(new MetadataSection(null, null, unknownXml));
+            _metadataSections.Add(new MetadataSection(null, null, unknownXml));
         }
 
         private async Task LoadAsEPRAsync(XmlNS.XmlReader reader, CancellationToken cancellationToken)
@@ -428,18 +428,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
                 MetadataExchangeResolver resolver = MetadataExchangeResolver.Create(epr, null, null, null);
                 IEnumerable<MetadataSection> resolvedMetadata = await resolver.ResolveMetadataAsync(cancellationToken).ConfigureAwait(false);
-                this.metadataSections.AddRange(resolvedMetadata);
+                _metadataSections.AddRange(resolvedMetadata);
             }
         }
 
         private bool IsUriProcessed(string uri)
         {
-            return CollectionContainsOrAdd(this.processedUri, uri);
+            return CollectionContainsOrAdd(_processedUri, uri);
         }
 
         private bool IsSchemaUpdated(string uri)
         {
-            return CollectionContainsOrAdd(this.updatedUri, uri);
+            return CollectionContainsOrAdd(_updatedUri, uri);
         }
 
         private bool CollectionContainsOrAdd(List<string> uriCollection, string uri)
@@ -560,9 +560,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         {
             MetadataExchangeResolver metadataExchangeResolver = MetadataExchangeResolver.Create(
                                 new EndpointAddress(schemaUri),
-                                this.httpCredentialsProvider?.Clone() as IHttpCredentialsProvider,
-                                this.clientCertificatesProvider?.Clone() as IClientCertificateProvider,
-                                this.serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider);
+                                _httpCredentialsProvider?.Clone() as IHttpCredentialsProvider,
+                                _clientCertificatesProvider?.Clone() as IClientCertificateProvider,
+                                _serverCertificateValidationProvider?.Clone() as IServerCertificateValidationProvider);
 
             return await metadataExchangeResolver.DownloadMetadataFileAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -625,7 +625,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
         private void UpdateMetadataSourceUri()
         {
-            foreach (var section in this.metadataSections)
+            foreach (var section in _metadataSections)
             {
                 if (section.Dialect == MetadataSection.ServiceDescriptionDialect)
                 {
@@ -692,7 +692,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         /// <returns></returns>
         public override int GetHashCode()
         {
-            if (!this.hashCode.HasValue)
+            if (!_hashCode.HasValue)
             {
                 const string MexUri = "/MEX";
                 string key = null;
@@ -724,10 +724,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     key = keyBuilder.ToString();
                 }
 
-                this.hashCode = key.GetHashCode();
+                _hashCode = key.GetHashCode();
             }
 
-            return this.hashCode.Value;
+            return _hashCode.Value;
         }
 
         private enum MetadataFileType

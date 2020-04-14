@@ -30,7 +30,7 @@ namespace System.ServiceModel.Security
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
 
-    class WSTrustDec2005 : WSTrustFeb2005
+    internal class WSTrustDec2005 : WSTrustFeb2005
     {
         public WSTrustDec2005(WSSecurityTokenSerializer tokenSerializer)
             : base(tokenSerializer)

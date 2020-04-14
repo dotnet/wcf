@@ -21,40 +21,40 @@ namespace System.ServiceModel.Security
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
 
-    class WSSecurityJan2004 : WSSecurityTokenSerializer.SerializerEntries
+    internal class WSSecurityJan2004 : WSSecurityTokenSerializer.SerializerEntries
     {
-        WSSecurityTokenSerializer tokenSerializer;
-        SamlSerializer samlSerializer;
+        private WSSecurityTokenSerializer _tokenSerializer;
+        private SamlSerializer _samlSerializer;
 
         public WSSecurityJan2004(WSSecurityTokenSerializer tokenSerializer, SamlSerializer samlSerializer)
         {
-            this.tokenSerializer = tokenSerializer;
-            this.samlSerializer = samlSerializer;
+            _tokenSerializer = tokenSerializer;
+            _samlSerializer = samlSerializer;
         }
 
         public WSSecurityTokenSerializer WSSecurityTokenSerializer
         {
-            get { return this.tokenSerializer; }
+            get { return _tokenSerializer; }
         }
 
         public SamlSerializer SamlSerializer
         {
-            get { return this.samlSerializer; }
+            get { return _samlSerializer; }
         }
 
         protected void PopulateJan2004TokenEntries(IList<TokenEntry> tokenEntryList)
         {
             tokenEntryList.Add(new GenericXmlTokenEntry());
-            tokenEntryList.Add(new UserNamePasswordTokenEntry(this.tokenSerializer));
-            tokenEntryList.Add(new KerberosTokenEntry(this.tokenSerializer));
-            tokenEntryList.Add(new X509TokenEntry(this.tokenSerializer));
+            tokenEntryList.Add(new UserNamePasswordTokenEntry(_tokenSerializer));
+            tokenEntryList.Add(new KerberosTokenEntry(_tokenSerializer));
+            tokenEntryList.Add(new X509TokenEntry(_tokenSerializer));
         }
 
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             PopulateJan2004TokenEntries(tokenEntryList);
-            tokenEntryList.Add(new SamlTokenEntry(this.tokenSerializer, this.samlSerializer));
-            tokenEntryList.Add(new WrappedKeyTokenEntry(this.tokenSerializer));
+            tokenEntryList.Add(new SamlTokenEntry(_tokenSerializer, _samlSerializer));
+            tokenEntryList.Add(new WrappedKeyTokenEntry(_tokenSerializer));
         }
 
         internal abstract class BinaryTokenEntry : TokenEntry
@@ -66,14 +66,14 @@ namespace System.ServiceModel.Security
             internal const string EncodingTypeValueHexBinary = SecurityJan2004Strings.EncodingTypeValueHexBinary;
             internal static readonly XmlDictionaryString ValueTypeAttribute = XD.SecurityJan2004Dictionary.ValueType;
 
-            WSSecurityTokenSerializer tokenSerializer;
-            string[] valueTypeUris = null;
+            private WSSecurityTokenSerializer _tokenSerializer;
+            private string[] _valueTypeUris = null;
 
             protected BinaryTokenEntry(WSSecurityTokenSerializer tokenSerializer, string valueTypeUri)
             {
-                this.tokenSerializer = tokenSerializer;
-                this.valueTypeUris = new string[1];
-                this.valueTypeUris[0] = valueTypeUri;
+                _tokenSerializer = tokenSerializer;
+                _valueTypeUris = new string[1];
+                _valueTypeUris[0] = valueTypeUri;
             }
 
             protected BinaryTokenEntry(WSSecurityTokenSerializer tokenSerializer, string[] valueTypeUris)
@@ -81,21 +81,21 @@ namespace System.ServiceModel.Security
                 if (valueTypeUris == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("valueTypeUris");
 
-                this.tokenSerializer = tokenSerializer;
-                this.valueTypeUris = new string[valueTypeUris.GetLength(0)];
-                for (int i = 0; i < this.valueTypeUris.GetLength(0); ++i)
-                    this.valueTypeUris[i] = valueTypeUris[i];
+                _tokenSerializer = tokenSerializer;
+                _valueTypeUris = new string[valueTypeUris.GetLength(0)];
+                for (int i = 0; i < _valueTypeUris.GetLength(0); ++i)
+                    _valueTypeUris[i] = valueTypeUris[i];
             }
 
             protected override XmlDictionaryString LocalName { get { return ElementName; } }
             protected override XmlDictionaryString NamespaceUri { get { return XD.SecurityJan2004Dictionary.Namespace; } }
-            public override string TokenTypeUri { get { return this.valueTypeUris[0]; } }
-            protected override string ValueTypeUri { get { return this.valueTypeUris[0]; } }
+            public override string TokenTypeUri { get { return _valueTypeUris[0]; } }
+            protected override string ValueTypeUri { get { return _valueTypeUris[0]; } }
             public override bool SupportsTokenTypeUri(string tokenTypeUri)
             {
-                for (int i = 0; i < this.valueTypeUris.GetLength(0); ++i)
+                for (int i = 0; i < _valueTypeUris.GetLength(0); ++i)
                 {
-                    if (this.valueTypeUris[i] == tokenTypeUri)
+                    if (_valueTypeUris[i] == tokenTypeUri)
                         return true;
                 }
 
@@ -136,11 +136,11 @@ namespace System.ServiceModel.Security
                 {
                     writer.WriteAttributeString(XD.UtilityDictionary.Prefix.Value, XD.UtilityDictionary.IdAttribute, XD.UtilityDictionary.Namespace, id);
                 }
-                if (valueTypeUris != null)
+                if (_valueTypeUris != null)
                 {
-                    writer.WriteAttributeString(ValueTypeAttribute, null, this.valueTypeUris[0]);
+                    writer.WriteAttributeString(ValueTypeAttribute, null, _valueTypeUris[0]);
                 }
-                if (this.tokenSerializer.EmitBspRequiredAttributes)
+                if (_tokenSerializer.EmitBspRequiredAttributes)
                 {
                     writer.WriteAttributeString(EncodingTypeAttribute, null, EncodingTypeValueBase64Binary);
                 }
@@ -149,7 +149,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        class GenericXmlTokenEntry : TokenEntry
+        private class GenericXmlTokenEntry : TokenEntry
         {
             protected override XmlDictionaryString LocalName { get { return null; } }
             protected override XmlDictionaryString NamespaceUri { get { return null; } }
@@ -189,7 +189,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        class KerberosTokenEntry : BinaryTokenEntry
+        private class KerberosTokenEntry : BinaryTokenEntry
         {
             public KerberosTokenEntry(WSSecurityTokenSerializer tokenSerializer)
                 : base(tokenSerializer, new string[] { SecurityJan2004Strings.KerberosTokenTypeGSS, SecurityJan2004Strings.KerberosTokenType1510 })
@@ -218,22 +218,22 @@ namespace System.ServiceModel.Security
         }
         protected class SamlTokenEntry : TokenEntry
         {
-            const string samlAssertionId = "AssertionID";
-            SamlSerializer samlSerializer;
-            SecurityTokenSerializer tokenSerializer;
+            private const string samlAssertionId = "AssertionID";
+            private SamlSerializer _samlSerializer;
+            private SecurityTokenSerializer _tokenSerializer;
 
             public SamlTokenEntry(SecurityTokenSerializer tokenSerializer, SamlSerializer samlSerializer)
             {
-                this.tokenSerializer = tokenSerializer;
+                _tokenSerializer = tokenSerializer;
                 if (samlSerializer != null)
                 {
-                    this.samlSerializer = samlSerializer;
+                    _samlSerializer = samlSerializer;
                 }
                 else
                 {
-                    this.samlSerializer = new SamlSerializer();
+                    _samlSerializer = new SamlSerializer();
                 }
-                this.samlSerializer.PopulateDictionary(BinaryMessageEncoderFactory.XmlDictionary);
+                _samlSerializer.PopulateDictionary(BinaryMessageEncoderFactory.XmlDictionary);
             }
 
             protected override XmlDictionaryString LocalName { get { return XD.SecurityJan2004Dictionary.SamlAssertion; } }
@@ -262,13 +262,13 @@ namespace System.ServiceModel.Security
             }
         }
 
-        class UserNamePasswordTokenEntry : TokenEntry
+        private class UserNamePasswordTokenEntry : TokenEntry
         {
-            WSSecurityTokenSerializer tokenSerializer;
+            private WSSecurityTokenSerializer _tokenSerializer;
 
             public UserNamePasswordTokenEntry(WSSecurityTokenSerializer tokenSerializer)
             {
-                this.tokenSerializer = tokenSerializer;
+                _tokenSerializer = tokenSerializer;
             }
 
             protected override XmlDictionaryString LocalName { get { return XD.SecurityJan2004Dictionary.UserNameTokenElement; } }
@@ -331,7 +331,7 @@ namespace System.ServiceModel.Security
                 WriteUserNamePassword(writer, upToken.Id, upToken.UserName, upToken.Password);
             }
 
-            void WriteUserNamePassword(XmlDictionaryWriter writer, string id, string userName, string password)
+            private void WriteUserNamePassword(XmlDictionaryWriter writer, string id, string userName, string password)
             {
                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.UserNameTokenElement,
                     XD.SecurityJan2004Dictionary.Namespace); // <wsse:UsernameToken
@@ -343,7 +343,7 @@ namespace System.ServiceModel.Security
                 {
                     writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.PasswordElement,
                         XD.SecurityJan2004Dictionary.Namespace);
-                    if (this.tokenSerializer.EmitBspRequiredAttributes)
+                    if (_tokenSerializer.EmitBspRequiredAttributes)
                     {
                         writer.WriteAttributeString(XD.SecurityJan2004Dictionary.TypeAttribute, null, SecurityJan2004Strings.UPTokenPasswordTextValue);
                     }
@@ -353,7 +353,7 @@ namespace System.ServiceModel.Security
                 writer.WriteEndElement(); // </wsse:UsernameToken>
             }
 
-            static string ParsePassword(XmlDictionaryReader reader)
+            private static string ParsePassword(XmlDictionaryReader reader)
             {
                 string type = reader.GetAttribute(XD.SecurityJan2004Dictionary.TypeAttribute, null);
                 if (type != null && type.Length > 0 && type != SecurityJan2004Strings.UPTokenPasswordTextValue)
@@ -364,7 +364,7 @@ namespace System.ServiceModel.Security
                 return reader.ReadElementString();
             }
 
-            static void ParseToken(XmlDictionaryReader reader, out string id, out string userName, out string password)
+            private static void ParseToken(XmlDictionaryReader reader, out string id, out string userName, out string password)
             {
                 id = null;
                 userName = null;
@@ -408,11 +408,11 @@ namespace System.ServiceModel.Security
 
         protected class WrappedKeyTokenEntry : TokenEntry
         {
-            WSSecurityTokenSerializer tokenSerializer;
+            private WSSecurityTokenSerializer _tokenSerializer;
 
             public WrappedKeyTokenEntry(WSSecurityTokenSerializer tokenSerializer)
             {
-                this.tokenSerializer = tokenSerializer;
+                _tokenSerializer = tokenSerializer;
             }
 
             protected override XmlDictionaryString LocalName { get { return EncryptedKey.ElementName; } }
@@ -424,7 +424,6 @@ namespace System.ServiceModel.Security
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXmlCore(XmlElement issuedTokenXml,
                 SecurityTokenReferenceStyle tokenReferenceStyle)
             {
-
                 TokenReferenceStyleHelper.Validate(tokenReferenceStyle);
 
                 switch (tokenReferenceStyle)
@@ -441,7 +440,7 @@ namespace System.ServiceModel.Security
             public override SecurityToken ReadTokenCore(XmlDictionaryReader reader, SecurityTokenResolver tokenResolver)
             {
                 EncryptedKey encryptedKey = new EncryptedKey();
-                encryptedKey.SecurityTokenSerializer = this.tokenSerializer;
+                encryptedKey.SecurityTokenSerializer = _tokenSerializer;
                 encryptedKey.ReadFrom(reader);
                 SecurityKeyIdentifier unwrappingTokenIdentifier = encryptedKey.KeyIdentifier;
                 byte[] wrappedKey = encryptedKey.GetWrappedKey();
@@ -452,7 +451,7 @@ namespace System.ServiceModel.Security
                 return wrappedKeyToken;
             }
 
-            WrappedKeySecurityToken CreateWrappedKeyToken(string id, string encryptionMethod, string carriedKeyName,
+            private WrappedKeySecurityToken CreateWrappedKeyToken(string id, string encryptionMethod, string carriedKeyName,
                 SecurityKeyIdentifier unwrappingTokenIdentifier, byte[] wrappedKey, SecurityTokenResolver tokenResolver)
             {
                 throw new NotImplementedException();
@@ -498,9 +497,9 @@ namespace System.ServiceModel.Security
 
         public class IdManager : SignatureTargetIdManager
         {
-            static readonly IdManager instance = new IdManager();
+            private static readonly IdManager s_instance = new IdManager();
 
-            IdManager()
+            private IdManager()
             {
             }
 
@@ -516,7 +515,7 @@ namespace System.ServiceModel.Security
 
             internal static IdManager Instance
             {
-                get { return instance; }
+                get { return s_instance; }
             }
 
             public override string ExtractId(XmlDictionaryReader reader)

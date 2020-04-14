@@ -13,8 +13,8 @@ namespace System.ServiceModel
     public class NetHttpBinding : HttpBindingBase
     {
         private BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
-        ReliableSessionBindingElement _session;
-        OptionalReliableSession _reliableSession;
+        private ReliableSessionBindingElement _session;
+        private OptionalReliableSession _reliableSession;
         private NetHttpMessageEncoding _messageEncoding;
         private BasicHttpSecurity _basicHttpSecurity;
 
@@ -279,7 +279,7 @@ namespace System.ServiceModel
             _basicHttpSecurity = new BasicHttpSecurity();
         }
 
-        void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, ReliableSessionBindingElement session)
+        private void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, ReliableSessionBindingElement session)
         {
             this.InitializeFrom(transport, encoding);
             if (encoding is BinaryMessageEncodingBindingElement)
@@ -306,9 +306,9 @@ namespace System.ServiceModel
             }
         }
 
-        bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, ReliableSessionBindingElement session)
+        private bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, ReliableSessionBindingElement session)
         {
-            if(_reliableSession.Enabled)
+            if (_reliableSession.Enabled)
             {
                 if (!_session.IsMatch(session))
                 {

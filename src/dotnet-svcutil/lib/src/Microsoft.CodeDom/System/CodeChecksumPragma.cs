@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -10,48 +10,60 @@ namespace Microsoft.CodeDom {
     using System.Runtime.InteropServices;
 
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeChecksumPragma: CodeDirective {
-        private string fileName;
-        private byte[] checksumData;
-        private Guid checksumAlgorithmId;
+    public class CodeChecksumPragma : CodeDirective
+    {
+        private string _fileName;
+        private byte[] _checksumData;
+        private Guid _checksumAlgorithmId;
 
-        public CodeChecksumPragma() {
-        }
-        
-        public CodeChecksumPragma(string fileName, Guid checksumAlgorithmId, byte[] checksumData) {
-            this.fileName = fileName;
-            this.checksumAlgorithmId = checksumAlgorithmId;
-            this.checksumData = checksumData;
+        public CodeChecksumPragma()
+        {
         }
 
-        public string FileName {
-            get {
-                return (fileName == null) ? string.Empty : fileName;
+        public CodeChecksumPragma(string fileName, Guid checksumAlgorithmId, byte[] checksumData)
+        {
+            _fileName = fileName;
+            _checksumAlgorithmId = checksumAlgorithmId;
+            _checksumData = checksumData;
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return (_fileName == null) ? string.Empty : _fileName;
             }
-            set {
-                fileName = value;
+            set
+            {
+                _fileName = value;
             }
         }
-        
-        public Guid ChecksumAlgorithmId {
-            get {
-                return checksumAlgorithmId;
+
+        public Guid ChecksumAlgorithmId
+        {
+            get
+            {
+                return _checksumAlgorithmId;
             }
-            set {
-                checksumAlgorithmId = value;
+            set
+            {
+                _checksumAlgorithmId = value;
             }
         }
-        
-        public byte[] ChecksumData {
-            get {
-                return checksumData;
+
+        public byte[] ChecksumData
+        {
+            get
+            {
+                return _checksumData;
             }
-            set {
-                checksumData = value;
+            set
+            {
+                _checksumData = value;
             }
         }
     }

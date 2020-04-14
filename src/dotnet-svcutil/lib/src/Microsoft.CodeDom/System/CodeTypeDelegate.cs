@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -16,20 +16,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeTypeDelegate : CodeTypeDeclaration {
-        private CodeParameterDeclarationExpressionCollection parameters = new CodeParameterDeclarationExpressionCollection();
-        private CodeTypeReference returnType;
+    public class CodeTypeDelegate : CodeTypeDeclaration
+    {
+        private CodeParameterDeclarationExpressionCollection _parameters = new CodeParameterDeclarationExpressionCollection();
+        private CodeTypeReference _returnType;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTypeDelegate'/>.
         ///    </para>
         /// </devdoc>
-        public CodeTypeDelegate() {
+        public CodeTypeDelegate()
+        {
             TypeAttributes &= ~TypeAttributes.ClassSemanticsMask;
             TypeAttributes |= TypeAttributes.Class;
             BaseTypes.Clear();
@@ -41,7 +43,8 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeTypeDelegate'/>.
         ///    </para>
         /// </devdoc>
-        public CodeTypeDelegate(string name) : this() {
+        public CodeTypeDelegate(string name) : this()
+        {
             Name = name;
         }
 
@@ -50,15 +53,19 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the return type of the delegate.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference ReturnType {
-            get {
-                if (returnType == null) {
-                    returnType = new CodeTypeReference("");
+        public CodeTypeReference ReturnType
+        {
+            get
+            {
+                if (_returnType == null)
+                {
+                    _returnType = new CodeTypeReference("");
                 }
-                return returnType;
+                return _returnType;
             }
-            set {
-                returnType = value;
+            set
+            {
+                _returnType = value;
             }
         }
 
@@ -67,9 +74,11 @@ namespace Microsoft.CodeDom {
         ///       The parameters of the delegate.
         ///    </para>
         /// </devdoc>
-        public CodeParameterDeclarationExpressionCollection Parameters {
-            get {
-                return parameters;
+        public CodeParameterDeclarationExpressionCollection Parameters
+        {
+            get
+            {
+                return _parameters;
             }
         }
     }

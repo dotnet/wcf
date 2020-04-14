@@ -2,14 +2,16 @@
 // Licensed under the MIT license.
 
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     /// <include file='doc\XmlNodeType.uex' path='docs/doc[@for="XmlNodeType"]/*' />
     /// <devdoc>
     ///    Specifies the type of node.
     /// </devdoc>
-    public enum XmlNodeType {
+    public enum XmlNodeType
+    {
         /// <include file='doc\XmlNodeType.uex' path='docs/doc[@for="XmlNodeType.None"]/*' />
         /// <devdoc>
         ///    For XPathNavigator, cursor is not positioned

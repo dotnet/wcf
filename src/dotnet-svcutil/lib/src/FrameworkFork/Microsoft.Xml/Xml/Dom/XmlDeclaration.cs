@@ -1,28 +1,30 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
     using System.Text;
     using System.Diagnostics;
 
     // Represents the xml declaration nodes: <?xml version='1.0' ...?>
-    public class XmlDeclaration : XmlLinkedNode {
+    public class XmlDeclaration : XmlLinkedNode
+    {
+        private const string YES = "yes";
+        private const string NO = "no";
 
-        const string YES = "yes";
-        const string NO = "no";
+        private string _version;
+        private string _encoding;
+        private string _standalone;
 
-        private string  version;
-        private string  encoding;
-        private string  standalone;
-
-        protected internal XmlDeclaration( string version, string encoding, string standalone, XmlDocument doc ) : base( doc ) {
-            if ( !IsValidXmlVersion( version ) )
-                throw new ArgumentException( ResXml.GetString( ResXml.Xdom_Version ) );
-            if( ( standalone != null ) && ( standalone.Length > 0 )  )
-                if ( ( standalone != YES ) && ( standalone != NO ) )
-                    throw new ArgumentException( ResXml.GetString(ResXml.Xdom_standalone, standalone) );
+        protected internal XmlDeclaration(string version, string encoding, string standalone, XmlDocument doc) : base(doc)
+        {
+            if (!IsValidXmlVersion(version))
+                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Version));
+            if ((standalone != null) && (standalone.Length > 0))
+                if ((standalone != YES) && (standalone != NO))
+                    throw new ArgumentException(ResXml.GetString(ResXml.Xdom_standalone, standalone));
             this.Encoding = encoding;
             this.Standalone = standalone;
             this.Version = version;
@@ -30,32 +32,37 @@ namespace Microsoft.Xml {
 
 
         // The version attribute for <?xml version= '1.0' ... ?>
-        public string Version {
-            get { return this.version; }
-            internal set { this.version = value; }
+        public string Version
+        {
+            get { return _version; }
+            internal set { _version = value; }
         }
 
         // Specifies the value of the encoding attribute, as for
         // <?xml version= '1.0' encoding= 'UTF-8' ?>
-        public string Encoding {
-            get { return this.encoding; }
-            set { this.encoding = ( (value == null) ? String.Empty : value ); }
+        public string Encoding
+        {
+            get { return _encoding; }
+            set { _encoding = ((value == null) ? String.Empty : value); }
         }
 
         // Specifies the value of the standalone attribute.
-        public string Standalone {
-            get { return this.standalone; }
-            set {
-                if ( value == null )
-                    this.standalone = String.Empty;
-                else if ( value.Length == 0 || value == YES || value == NO )
-                    this.standalone = value;
+        public string Standalone
+        {
+            get { return _standalone; }
+            set
+            {
+                if (value == null)
+                    _standalone = String.Empty;
+                else if (value.Length == 0 || value == YES || value == NO)
+                    _standalone = value;
                 else
-                    throw new ArgumentException( ResXml.GetString(ResXml.Xdom_standalone, value) );
+                    throw new ArgumentException(ResXml.GetString(ResXml.Xdom_standalone, value));
             }
         }
 
-        public override String Value {
+        public override String Value
+        {
             get { return InnerText; }
             set { InnerText = value; }
         }
@@ -63,15 +70,19 @@ namespace Microsoft.Xml {
 
         // Gets or sets the concatenated values of the node and
         // all its children.
-        public override string InnerText {
-            get {
+        public override string InnerText
+        {
+            get
+            {
                 StringBuilder strb = new StringBuilder("version=\"" + Version + "\"");
-                if ( Encoding.Length > 0 ) {
+                if (Encoding.Length > 0)
+                {
                     strb.Append(" encoding=\"");
                     strb.Append(Encoding);
                     strb.Append("\"");
                 }
-                if ( Standalone.Length > 0 ) {
+                if (Standalone.Length > 0)
+                {
                     strb.Append(" standalone=\"");
                     strb.Append(Standalone);
                     strb.Append("\"");
@@ -79,27 +90,30 @@ namespace Microsoft.Xml {
                 return strb.ToString();
             }
 
-            set {
+            set
+            {
                 string tempVersion = null;
                 string tempEncoding = null;
                 string tempStandalone = null;
-                string orgEncoding   = this.Encoding;
+                string orgEncoding = this.Encoding;
                 string orgStandalone = this.Standalone;
                 string orgVersion = this.Version;
 
-                XmlLoader.ParseXmlDeclarationValue( value, out tempVersion, out tempEncoding, out tempStandalone );
+                XmlLoader.ParseXmlDeclarationValue(value, out tempVersion, out tempEncoding, out tempStandalone);
 
-                try {
-                    if ( tempVersion != null && !IsValidXmlVersion(tempVersion) )
+                try
+                {
+                    if (tempVersion != null && !IsValidXmlVersion(tempVersion))
                         throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Version));
                     Version = tempVersion;
 
-                    if ( tempEncoding != null )
+                    if (tempEncoding != null)
                         Encoding = tempEncoding;
-                    if ( tempStandalone != null )
+                    if (tempStandalone != null)
                         Standalone = tempStandalone;
                 }
-                catch {
+                catch
+                {
                     Encoding = orgEncoding;
                     Standalone = orgStandalone;
                     Version = orgVersion;
@@ -111,40 +125,48 @@ namespace Microsoft.Xml {
         //override methods and properties from XmlNode
 
         // Gets the name of the node.
-        public override String Name {
-            get {
+        public override String Name
+        {
+            get
+            {
                 return "xml";
             }
         }
 
         // Gets the name of the current node without the namespace prefix.
-        public override string LocalName {
-            get { return Name;}
+        public override string LocalName
+        {
+            get { return Name; }
         }
 
         // Gets the type of the current node.
-        public override XmlNodeType NodeType {
-            get { return XmlNodeType.XmlDeclaration;}
+        public override XmlNodeType NodeType
+        {
+            get { return XmlNodeType.XmlDeclaration; }
         }
 
         // Creates a duplicate of this node.
-        public override XmlNode CloneNode(bool deep) {
-            Debug.Assert( OwnerDocument != null );
-            return OwnerDocument.CreateXmlDeclaration( Version, Encoding, Standalone );
+        public override XmlNode CloneNode(bool deep)
+        {
+            Debug.Assert(OwnerDocument != null);
+            return OwnerDocument.CreateXmlDeclaration(Version, Encoding, Standalone);
         }
 
         // Saves the node to the specified XmlWriter.
-        public override void WriteTo(XmlWriter w) {
+        public override void WriteTo(XmlWriter w)
+        {
             w.WriteProcessingInstruction(Name, InnerText);
         }
 
 
         // Saves all the children of the node to the specified XmlWriter.
-        public override void WriteContentTo(XmlWriter w) {
+        public override void WriteContentTo(XmlWriter w)
+        {
             // Intentionally do nothing since the node doesn't have children.
         }
 
-        private bool IsValidXmlVersion(string ver) {
+        private bool IsValidXmlVersion(string ver)
+        {
             return ver.Length >= 3 && ver[0] == '1' && ver[1] == '.' && XmlCharType.IsOnlyDigits(ver, 2, ver.Length - 2);
         }
     }

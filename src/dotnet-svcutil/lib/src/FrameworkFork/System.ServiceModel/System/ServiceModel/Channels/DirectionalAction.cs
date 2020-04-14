@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System.ServiceModel;
@@ -7,33 +8,33 @@ namespace System.ServiceModel.Channels
     using System.Collections.Generic;
     internal class DirectionalAction : IComparable<DirectionalAction>
     {
-        MessageDirection direction;
-        string action;
-        bool isNullAction;
+        private MessageDirection _direction;
+        private string _action;
+        private bool _isNullAction;
 
         internal DirectionalAction(MessageDirection direction, string action)
         {
             if (!MessageDirectionHelper.IsDefined(direction))
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("direction"));
 
-            this.direction = direction;
+            _direction = direction;
             if (action == null)
             {
-                this.action = MessageHeaders.WildcardAction;
-                this.isNullAction = true;
+                _action = MessageHeaders.WildcardAction;
+                _isNullAction = true;
             }
             else
             {
-                this.action = action;
-                this.isNullAction = false;
+                _action = action;
+                _isNullAction = false;
             }
         }
 
         public MessageDirection Direction
-        { get { return this.direction; } }
+        { get { return _direction; } }
 
         public string Action
-        { get { return this.isNullAction ? null : this.action; } }
+        { get { return _isNullAction ? null : _action; } }
 
         public override bool Equals(Object other)
         {
@@ -48,8 +49,8 @@ namespace System.ServiceModel.Channels
             if (other == null)
                 return false;
 
-            return (this.direction == other.direction)
-                && (this.action == other.action);
+            return (_direction == other._direction)
+                && (_action == other._action);
         }
 
         public int CompareTo(DirectionalAction other)
@@ -57,17 +58,17 @@ namespace System.ServiceModel.Channels
             if (other == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("other");
 
-            if ((this.direction == MessageDirection.Input) && (other.direction == MessageDirection.Output))
+            if ((_direction == MessageDirection.Input) && (other._direction == MessageDirection.Output))
                 return -1;
-            if ((this.direction == MessageDirection.Output) && (other.direction == MessageDirection.Input))
+            if ((_direction == MessageDirection.Output) && (other._direction == MessageDirection.Input))
                 return 1;
 
-            return this.action.CompareTo(other.action);
+            return _action.CompareTo(other._action);
         }
 
         public override int GetHashCode()
         {
-            return this.action.GetHashCode();
+            return _action.GetHashCode();
         }
     }
 }

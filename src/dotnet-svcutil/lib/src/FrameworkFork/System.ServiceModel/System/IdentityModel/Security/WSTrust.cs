@@ -15,20 +15,20 @@ namespace System.IdentityModel.Security
 
     internal class WSTrust : SecurityTokenSerializer.SerializerEntries
     {
-        KeyInfoSerializer securityTokenSerializer;
-        TrustDictionary serializerDictionary;
+        private KeyInfoSerializer _securityTokenSerializer;
+        private TrustDictionary _serializerDictionary;
 
         public WSTrust(KeyInfoSerializer securityTokenSerializer, TrustDictionary serializerDictionary)
         {
-            this.securityTokenSerializer = securityTokenSerializer;
-            this.serializerDictionary = serializerDictionary;
+            _securityTokenSerializer = securityTokenSerializer;
+            _serializerDictionary = serializerDictionary;
         }
 
         public TrustDictionary SerializerDictionary
         {
             get
             {
-                return this.serializerDictionary;
+                return _serializerDictionary;
             }
         }
 
@@ -43,57 +43,56 @@ namespace System.IdentityModel.Security
             keyIdentifierClauseEntries.Add(new GenericXmlSecurityKeyIdentifierClauseEntry(this));
         }
 
-        class BinarySecretTokenEntry : SecurityTokenSerializer.TokenEntry
+        private class BinarySecretTokenEntry : SecurityTokenSerializer.TokenEntry
         {
-            WSTrust parent;
+            private WSTrust _parent;
 
             public BinarySecretTokenEntry(WSTrust parent)
             {
-                this.parent = parent;
+                _parent = parent;
             }
 
-            protected override XmlDictionaryString LocalName { get { return parent.SerializerDictionary.BinarySecret; } }
-            protected override XmlDictionaryString NamespaceUri { get { return parent.SerializerDictionary.Namespace; } }
+            protected override XmlDictionaryString LocalName { get { return _parent.SerializerDictionary.BinarySecret; } }
+            protected override XmlDictionaryString NamespaceUri { get { return _parent.SerializerDictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(BinarySecretSecurityToken) }; }
             public override string TokenTypeUri { get { return null; } }
             protected override string ValueTypeUri { get { return null; } }
-
         }
 
         internal class BinarySecretClauseEntry : KeyIdentifierClauseEntry
         {
-            WSTrust parent;
-            TrustDictionary otherDictionary = null;
+            private WSTrust _parent;
+            private TrustDictionary _otherDictionary = null;
 
             public BinarySecretClauseEntry(WSTrust parent)
             {
-                this.parent = parent;
+                _parent = parent;
 
-                this.otherDictionary = null;
+                _otherDictionary = null;
 
                 if (parent.SerializerDictionary is TrustDec2005Dictionary)
                 {
-                    this.otherDictionary = parent.securityTokenSerializer.DictionaryManager.TrustFeb2005Dictionary;
+                    _otherDictionary = parent._securityTokenSerializer.DictionaryManager.TrustFeb2005Dictionary;
                 }
 
                 if (parent.SerializerDictionary is TrustFeb2005Dictionary)
                 {
-                    this.otherDictionary = parent.securityTokenSerializer.DictionaryManager.TrustDec2005Dictionary;
+                    _otherDictionary = parent._securityTokenSerializer.DictionaryManager.TrustDec2005Dictionary;
                 }
 
                 // always set it, so we don't have to worry about null
-                if (this.otherDictionary == null)
-                    this.otherDictionary = this.parent.SerializerDictionary;
+                if (_otherDictionary == null)
+                    _otherDictionary = _parent.SerializerDictionary;
             }
 
             protected override XmlDictionaryString LocalName
             {
-                get { return this.parent.SerializerDictionary.BinarySecret; }
+                get { return _parent.SerializerDictionary.BinarySecret; }
             }
 
             protected override XmlDictionaryString NamespaceUri
             {
-                get { return this.parent.SerializerDictionary.Namespace; }
+                get { return _parent.SerializerDictionary.Namespace; }
             }
 
             public override SecurityKeyIdentifierClause ReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
@@ -108,7 +107,7 @@ namespace System.IdentityModel.Security
 
             public override bool CanReadKeyIdentifierClauseCore(XmlDictionaryReader reader)
             {
-                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, this.otherDictionary.Namespace));
+                return (reader.IsStartElement(this.LocalName, this.NamespaceUri) || reader.IsStartElement(this.LocalName, _otherDictionary.Namespace));
             }
 
             public override void WriteKeyIdentifierClauseCore(XmlDictionaryWriter writer, SecurityKeyIdentifierClause keyIdentifierClause)
@@ -119,11 +118,11 @@ namespace System.IdentityModel.Security
 
         internal class GenericXmlSecurityKeyIdentifierClauseEntry : KeyIdentifierClauseEntry
         {
-            private WSTrust parent;
+            private WSTrust _parent;
 
             public GenericXmlSecurityKeyIdentifierClauseEntry(WSTrust parent)
             {
-                this.parent = parent;
+                _parent = parent;
             }
 
             protected override XmlDictionaryString LocalName

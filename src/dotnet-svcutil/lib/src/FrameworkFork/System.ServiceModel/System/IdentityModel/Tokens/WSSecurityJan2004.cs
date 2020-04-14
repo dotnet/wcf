@@ -17,33 +17,33 @@ namespace System.IdentityModel.Tokens
     using StrEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.StrEntry;
     using TokenEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.TokenEntry;
 
-    class WSSecurityJan2004 : SecurityTokenSerializer.SerializerEntries
+    internal class WSSecurityJan2004 : SecurityTokenSerializer.SerializerEntries
     {
-        KeyInfoSerializer securityTokenSerializer;
+        private KeyInfoSerializer _securityTokenSerializer;
 
         public WSSecurityJan2004(KeyInfoSerializer securityTokenSerializer)
         {
-            this.securityTokenSerializer = securityTokenSerializer;
+            _securityTokenSerializer = securityTokenSerializer;
         }
 
         public KeyInfoSerializer SecurityTokenSerializer
         {
-            get { return this.securityTokenSerializer; }
+            get { return _securityTokenSerializer; }
         }
 
         public override void PopulateKeyIdentifierClauseEntries(IList<KeyIdentifierClauseEntry> clauseEntries)
         {
             List<StrEntry> strEntries = new List<StrEntry>();
-            this.securityTokenSerializer.PopulateStrEntries(strEntries);
-            SecurityTokenReferenceJan2004ClauseEntry strClause = new SecurityTokenReferenceJan2004ClauseEntry(this.securityTokenSerializer.EmitBspRequiredAttributes, strEntries);
+            _securityTokenSerializer.PopulateStrEntries(strEntries);
+            SecurityTokenReferenceJan2004ClauseEntry strClause = new SecurityTokenReferenceJan2004ClauseEntry(_securityTokenSerializer.EmitBspRequiredAttributes, strEntries);
             clauseEntries.Add(strClause);
         }
 
         protected void PopulateJan2004StrEntries(IList<StrEntry> strEntries)
         {
-            strEntries.Add(new LocalReferenceStrEntry(this.securityTokenSerializer.EmitBspRequiredAttributes, this.securityTokenSerializer));
-            strEntries.Add(new KerberosHashStrEntry(this.securityTokenSerializer.EmitBspRequiredAttributes));
-            strEntries.Add(new X509SkiStrEntry(this.securityTokenSerializer.EmitBspRequiredAttributes));
+            strEntries.Add(new LocalReferenceStrEntry(_securityTokenSerializer.EmitBspRequiredAttributes, _securityTokenSerializer));
+            strEntries.Add(new KerberosHashStrEntry(_securityTokenSerializer.EmitBspRequiredAttributes));
+            strEntries.Add(new X509SkiStrEntry(_securityTokenSerializer.EmitBspRequiredAttributes));
             strEntries.Add(new X509IssuerSerialStrEntry());
             strEntries.Add(new RelDirectStrEntry());
             strEntries.Add(new SamlJan2004KeyIdentifierStrEntry());
@@ -80,12 +80,12 @@ namespace System.IdentityModel.Tokens
             internal const string EncodingTypeValueHexBinary = SecurityJan2004Strings.EncodingTypeValueHexBinary;
             internal static readonly XmlDictionaryString ValueTypeAttribute = XD.SecurityJan2004Dictionary.ValueType;
 
-            string[] valueTypeUris = null;
+            private string[] _valueTypeUris = null;
 
             protected BinaryTokenEntry(string valueTypeUri)
             {
-                this.valueTypeUris = new string[1];
-                this.valueTypeUris[0] = valueTypeUri;
+                _valueTypeUris = new string[1];
+                _valueTypeUris[0] = valueTypeUri;
             }
 
             protected BinaryTokenEntry(string[] valueTypeUris)
@@ -93,20 +93,20 @@ namespace System.IdentityModel.Tokens
                 if (valueTypeUris == null)
                     throw new ArgumentNullException("valueTypeUris"); // TODO:  DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("valueTypeUris");
 
-                this.valueTypeUris = new string[valueTypeUris.GetLength(0)];
-                for (int i = 0; i < this.valueTypeUris.GetLength(0); ++i)
-                    this.valueTypeUris[i] = valueTypeUris[i];
+                _valueTypeUris = new string[valueTypeUris.GetLength(0)];
+                for (int i = 0; i < _valueTypeUris.GetLength(0); ++i)
+                    _valueTypeUris[i] = valueTypeUris[i];
             }
 
             protected override XmlDictionaryString LocalName { get { return ElementName; } }
             protected override XmlDictionaryString NamespaceUri { get { return XD.SecurityJan2004Dictionary.Namespace; } }
-            public override string TokenTypeUri { get { return this.valueTypeUris[0]; } }
-            protected override string ValueTypeUri { get { return this.valueTypeUris[0]; } }
+            public override string TokenTypeUri { get { return _valueTypeUris[0]; } }
+            protected override string ValueTypeUri { get { return _valueTypeUris[0]; } }
             public override bool SupportsTokenTypeUri(string tokenTypeUri)
             {
-                for (int i = 0; i < this.valueTypeUris.GetLength(0); ++i)
+                for (int i = 0; i < _valueTypeUris.GetLength(0); ++i)
                 {
-                    if (this.valueTypeUris[i] == tokenTypeUri)
+                    if (_valueTypeUris[i] == tokenTypeUri)
                         return true;
                 }
 
@@ -114,7 +114,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
-        class GenericXmlTokenEntry : TokenEntry
+        private class GenericXmlTokenEntry : TokenEntry
         {
             protected override XmlDictionaryString LocalName { get { return null; } }
             protected override XmlDictionaryString NamespaceUri { get { return null; } }
@@ -123,7 +123,7 @@ namespace System.IdentityModel.Tokens
             protected override string ValueTypeUri { get { return null; } }
         }
 
-        class KerberosTokenEntry : BinaryTokenEntry
+        private class KerberosTokenEntry : BinaryTokenEntry
         {
             public KerberosTokenEntry()
                 : base(new string[] { SecurityJan2004Strings.KerberosTokenTypeGSS, SecurityJan2004Strings.KerberosTokenType1510 })
@@ -145,14 +145,13 @@ namespace System.IdentityModel.Tokens
             protected override string ValueTypeUri { get { return null; } }
         }
 
-        class UserNamePasswordTokenEntry : TokenEntry
+        private class UserNamePasswordTokenEntry : TokenEntry
         {
             protected override XmlDictionaryString LocalName { get { return XD.SecurityJan2004Dictionary.UserNameTokenElement; } }
             protected override XmlDictionaryString NamespaceUri { get { return XD.SecurityJan2004Dictionary.Namespace; } }
             protected override Type[] GetTokenTypesCore() { return new Type[] { typeof(UserNameSecurityToken) }; }
             public override string TokenTypeUri { get { return SecurityJan2004Strings.UPTokenType; } }
             protected override string ValueTypeUri { get { return null; } }
-
         }
 
         protected class WrappedKeyTokenEntry : TokenEntry
@@ -178,28 +177,28 @@ namespace System.IdentityModel.Tokens
 
         protected class SecurityTokenReferenceJan2004ClauseEntry : KeyIdentifierClauseEntry
         {
-            const int DefaultDerivedKeyLength = 32;
+            private const int DefaultDerivedKeyLength = 32;
 
-            bool emitBspRequiredAttributes;
-            IList<StrEntry> strEntries;
+            private bool _emitBspRequiredAttributes;
+            private IList<StrEntry> _strEntries;
 
             public SecurityTokenReferenceJan2004ClauseEntry(bool emitBspRequiredAttributes, IList<StrEntry> strEntries)
             {
-                this.emitBspRequiredAttributes = emitBspRequiredAttributes;
-                this.strEntries = strEntries;
+                _emitBspRequiredAttributes = emitBspRequiredAttributes;
+                _strEntries = strEntries;
             }
             protected bool EmitBspRequiredAttributes
             {
                 get
                 {
-                    return this.emitBspRequiredAttributes;
+                    return _emitBspRequiredAttributes;
                 }
             }
             protected IList<StrEntry> StrEntries
             {
                 get
                 {
-                    return this.strEntries;
+                    return _strEntries;
                 }
             }
 
@@ -231,9 +230,9 @@ namespace System.IdentityModel.Tokens
 
             public override bool SupportsCore(SecurityKeyIdentifierClause keyIdentifierClause)
             {
-                for (int i = 0; i < this.strEntries.Count; ++i)
+                for (int i = 0; i < _strEntries.Count; ++i)
                 {
-                    if (this.strEntries[i].SupportsCore(keyIdentifierClause))
+                    if (_strEntries[i].SupportsCore(keyIdentifierClause))
                     {
                         return true;
                     }
@@ -249,7 +248,7 @@ namespace System.IdentityModel.Tokens
 
         protected abstract class KeyIdentifierStrEntry : StrEntry
         {
-            bool emitBspRequiredAttributes;
+            private bool _emitBspRequiredAttributes;
 
             protected const string EncodingTypeValueBase64Binary = SecurityJan2004Strings.EncodingTypeValueBase64Binary;
             protected const string EncodingTypeValueHexBinary = SecurityJan2004Strings.EncodingTypeValueHexBinary;
@@ -259,11 +258,11 @@ namespace System.IdentityModel.Tokens
             protected virtual string DefaultEncodingType { get { return EncodingTypeValueBase64Binary; } }
             public abstract Type TokenType { get; }
             protected abstract string ValueTypeUri { get; }
-            protected bool EmitBspRequiredAttributes { get { return this.emitBspRequiredAttributes; } }
+            protected bool EmitBspRequiredAttributes { get { return _emitBspRequiredAttributes; } }
 
             protected KeyIdentifierStrEntry(bool emitBspRequiredAttributes)
             {
-                this.emitBspRequiredAttributes = emitBspRequiredAttributes;
+                _emitBspRequiredAttributes = emitBspRequiredAttributes;
             }
 
             public override bool CanReadClause(XmlDictionaryReader reader, string tokenType)
@@ -297,7 +296,7 @@ namespace System.IdentityModel.Tokens
             {
                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.KeyIdentifier, XD.SecurityJan2004Dictionary.Namespace);
                 writer.WriteAttributeString(XD.SecurityJan2004Dictionary.ValueType, null, ValueTypeUri);
-                if (this.emitBspRequiredAttributes)
+                if (_emitBspRequiredAttributes)
                 {
                     // Emit the encodingType attribute.
                     writer.WriteAttributeString(XD.SecurityJan2004Dictionary.EncodingType, null, DefaultEncodingType);
@@ -373,13 +372,13 @@ namespace System.IdentityModel.Tokens
 
         protected class LocalReferenceStrEntry : StrEntry
         {
-            bool emitBspRequiredAttributes;
-            KeyInfoSerializer tokenSerializer;
+            private bool _emitBspRequiredAttributes;
+            private KeyInfoSerializer _tokenSerializer;
 
             public LocalReferenceStrEntry(bool emitBspRequiredAttributes, KeyInfoSerializer tokenSerializer)
             {
-                this.emitBspRequiredAttributes = emitBspRequiredAttributes;
-                this.tokenSerializer = tokenSerializer;
+                _emitBspRequiredAttributes = emitBspRequiredAttributes;
+                _tokenSerializer = tokenSerializer;
             }
 
             public override Type GetTokenType(SecurityKeyIdentifierClause clause)
@@ -391,7 +390,7 @@ namespace System.IdentityModel.Tokens
             public string GetLocalTokenTypeUri(SecurityKeyIdentifierClause clause)
             {
                 Type tokenType = GetTokenType(clause);
-                return this.tokenSerializer.GetTokenTypeUri(tokenType);
+                return _tokenSerializer.GetTokenTypeUri(tokenType);
             }
             public override string GetTokenTypeUri()
             {
@@ -418,7 +417,7 @@ namespace System.IdentityModel.Tokens
                 Type[] tokenTypes = null;
                 if (tokenTypeUri != null)
                 {
-                    tokenTypes = this.tokenSerializer.GetTokenTypes(tokenTypeUri);
+                    tokenTypes = _tokenSerializer.GetTokenTypes(tokenTypeUri);
                 }
                 SecurityKeyIdentifierClause clause = new LocalIdKeyIdentifierClause(uri.Substring(1), derivationNonce, derivationLength, tokenTypes);
                 if (reader.IsEmptyElement)
@@ -442,7 +441,7 @@ namespace System.IdentityModel.Tokens
             {
                 LocalIdKeyIdentifierClause localIdClause = clause as LocalIdKeyIdentifierClause;
                 writer.WriteStartElement(XD.SecurityJan2004Dictionary.Prefix.Value, XD.SecurityJan2004Dictionary.Reference, XD.SecurityJan2004Dictionary.Namespace);
-                if (this.emitBspRequiredAttributes)
+                if (_emitBspRequiredAttributes)
                 {
                     string tokenTypeUri = GetLocalTokenTypeUri(localIdClause);
                     if (tokenTypeUri != null)
@@ -502,7 +501,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
-        class Saml2Jan2004KeyIdentifierStrEntry : SamlJan2004KeyIdentifierStrEntry
+        private class Saml2Jan2004KeyIdentifierStrEntry : SamlJan2004KeyIdentifierStrEntry
         {
             // handles SAML2.0
             protected override bool IsMatchingValueType(string valueType)
@@ -589,9 +588,9 @@ namespace System.IdentityModel.Tokens
         {
             internal static readonly XmlDictionaryString ElementName = XD.XmlEncryptionDictionary.EncryptedData;
 
-            static readonly IdManager instance = new IdManager();
+            private static readonly IdManager s_instance = new IdManager();
 
-            IdManager()
+            private IdManager()
             {
             }
 
@@ -607,7 +606,7 @@ namespace System.IdentityModel.Tokens
 
             internal static IdManager Instance
             {
-                get { return instance; }
+                get { return s_instance; }
             }
 
             public override string ExtractId(XmlDictionaryReader reader)

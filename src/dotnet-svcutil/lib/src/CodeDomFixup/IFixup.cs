@@ -3,7 +3,7 @@
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    interface IFixup
+    internal interface IFixup
     {
         void Fixup(CommandProcessorOptions options);
     }

@@ -11,14 +11,14 @@ namespace System.ServiceModel
         internal const BasicHttpSecurityMode DefaultMode = BasicHttpSecurityMode.None;
         private BasicHttpSecurityMode _mode;
         private HttpTransportSecurity _transportSecurity;
-        BasicHttpMessageSecurity _messageSecurity;
+        private BasicHttpMessageSecurity _messageSecurity;
 
         public BasicHttpSecurity()
             : this(DefaultMode, new HttpTransportSecurity(), new BasicHttpMessageSecurity())
         {
         }
 
-        BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity, BasicHttpMessageSecurity messageSecurity)
+        private BasicHttpSecurity(BasicHttpSecurityMode mode, HttpTransportSecurity transportSecurity, BasicHttpMessageSecurity messageSecurity)
         {
             Fx.Assert(BasicHttpSecurityModeHelper.IsDefined(mode), string.Format("Invalid BasicHttpSecurityMode value: {0}.", mode.ToString()));
             this.Mode = mode;

@@ -10,16 +10,16 @@ namespace System.ServiceModel
     using System.Runtime;
     using System.Runtime.InteropServices;
     using System.Security.Principal;
-   // using System.ServiceModel.ComIntegration;
+    // using System.ServiceModel.ComIntegration;
     using System.ServiceModel.Diagnostics;
     using System.Text;
     using Microsoft.Xml;
 
     public class UpnEndpointIdentity : EndpointIdentity
     {
-        bool hasUpnSidBeenComputed;
+        private bool _hasUpnSidBeenComputed;
 
-        Object thisLock = new Object();
+        private Object _thisLock = new Object();
 
         public UpnEndpointIdentity(string upnName)
         {
@@ -27,7 +27,7 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("upnName");
 
             base.Initialize(Claim.CreateUpnClaim(upnName));
-            this.hasUpnSidBeenComputed = false;
+            _hasUpnSidBeenComputed = false;
         }
     }
 }

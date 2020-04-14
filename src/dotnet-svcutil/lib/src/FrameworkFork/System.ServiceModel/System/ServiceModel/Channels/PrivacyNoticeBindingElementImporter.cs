@@ -1,25 +1,26 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using Microsoft.Xml;
     using System.ServiceModel.Description;
- 
-    static class PrivacyNoticePolicyStrings
+
+    internal static class PrivacyNoticePolicyStrings
     {
         public const string PrivacyNoticeName = "PrivacyNotice";
         public const string PrivacyNoticeVersionAttributeName = "Version";
         public const string PrivacyNoticeNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
         public const string PrivacyNoticePrefix = "ic";
     }
- 
+
     public sealed class PrivacyNoticeBindingElementImporter : IPolicyImportExtension
     {
         void IPolicyImportExtension.ImportPolicy(MetadataImporter importer, PolicyConversionContext policyContext)
         {
             if (policyContext == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("policyContext");
- 
+
             XmlElement privacyNoticeAssertion = PolicyConversionContext.FindAssertion(policyContext.GetBindingAssertions(),
                 PrivacyNoticePolicyStrings.PrivacyNoticeName, PrivacyNoticePolicyStrings.PrivacyNoticeNamespace, true);
             if (privacyNoticeAssertion != null)

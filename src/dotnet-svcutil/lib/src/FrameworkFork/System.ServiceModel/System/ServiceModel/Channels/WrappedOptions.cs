@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     public class WrappedOptions
     {
-        bool wrappedFlag = false;
-        public bool WrappedFlag { get { return this.wrappedFlag; } set { this.wrappedFlag = value; } }
+        private bool _wrappedFlag = false;
+        public bool WrappedFlag { get { return _wrappedFlag; } set { _wrappedFlag = value; } }
     }
 }

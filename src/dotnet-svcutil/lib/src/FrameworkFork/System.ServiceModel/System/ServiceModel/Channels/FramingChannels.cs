@@ -266,7 +266,7 @@ namespace System.ServiceModel.Channels
                 await connection.WriteAsync(ClientDuplexEncoder.PreambleEndBytes, 0, ClientDuplexEncoder.PreambleEndBytes.Length, true, timeoutHelper.RemainingTime());
             }
 
-            int ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());            
+            int ackBytesRead = await connection.ReadAsync(ackBuffer, 0, ackBuffer.Length, timeoutHelper.RemainingTime());
 
             if (!ConnectionUpgradeHelper.ValidatePreambleResponse(ackBuffer, ackBytesRead, _decoder, Via))
             {
@@ -448,7 +448,7 @@ namespace System.ServiceModel.Channels
             var timeoutHelper = new TimeoutHelper(timeout);
             ValidateReadingFaultString(decoder);
 
-            int size = await connection.ReadAsync(0, 
+            int size = await connection.ReadAsync(0,
                 Math.Min(FaultStringDecoder.FaultSizeQuota, connection.AsyncReadBufferSize),
                 timeoutHelper.RemainingTime());
 
@@ -474,7 +474,7 @@ namespace System.ServiceModel.Channels
                     if (size == 0)
                     {
                         offset = 0;
-                        size = await connection.ReadAsync(0, 
+                        size = await connection.ReadAsync(0,
                             Math.Min(FaultStringDecoder.FaultSizeQuota, connection.AsyncReadBufferSize),
                             timeoutHelper.RemainingTime());
                     }

@@ -12,30 +12,30 @@ namespace System.ServiceModel.Channels
 
     internal class UnrecognizedAssertionsBindingElement : BindingElement
     {
-        XmlQualifiedName wsdlBinding;
-        ICollection<XmlElement> bindingAsserions;
-        IDictionary<OperationDescription, ICollection<XmlElement>> operationAssertions;
-        IDictionary<MessageDescription, ICollection<XmlElement>> messageAssertions;
+        private XmlQualifiedName _wsdlBinding;
+        private ICollection<XmlElement> _bindingAsserions;
+        private IDictionary<OperationDescription, ICollection<XmlElement>> _operationAssertions;
+        private IDictionary<MessageDescription, ICollection<XmlElement>> _messageAssertions;
 
         internal protected UnrecognizedAssertionsBindingElement(XmlQualifiedName wsdlBinding, ICollection<XmlElement> bindingAsserions)
         {
             Fx.Assert(wsdlBinding != null, "");
-            this.wsdlBinding = wsdlBinding;
-            this.bindingAsserions = bindingAsserions;
+            _wsdlBinding = wsdlBinding;
+            _bindingAsserions = bindingAsserions;
         }
 
         internal XmlQualifiedName WsdlBinding
         {
-            get { return this.wsdlBinding; }
+            get { return _wsdlBinding; }
         }
 
         internal ICollection<XmlElement> BindingAsserions
         {
             get
             {
-                if (this.bindingAsserions == null)
-                    this.bindingAsserions = new Collection<XmlElement>();
-                return this.bindingAsserions;
+                if (_bindingAsserions == null)
+                    _bindingAsserions = new Collection<XmlElement>();
+                return _bindingAsserions;
             }
         }
 
@@ -43,9 +43,9 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.operationAssertions == null)
-                    this.operationAssertions = new Dictionary<OperationDescription, ICollection<XmlElement>>();
-                return this.operationAssertions;
+                if (_operationAssertions == null)
+                    _operationAssertions = new Dictionary<OperationDescription, ICollection<XmlElement>>();
+                return _operationAssertions;
             }
         }
 
@@ -53,9 +53,9 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                if (this.messageAssertions == null)
-                    this.messageAssertions = new Dictionary<MessageDescription, ICollection<XmlElement>>();
-                return this.messageAssertions;
+                if (_messageAssertions == null)
+                    _messageAssertions = new Dictionary<MessageDescription, ICollection<XmlElement>>();
+                return _messageAssertions;
             }
         }
 
@@ -90,10 +90,10 @@ namespace System.ServiceModel.Channels
         protected UnrecognizedAssertionsBindingElement(UnrecognizedAssertionsBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.wsdlBinding = elementToBeCloned.wsdlBinding;
-            this.bindingAsserions = elementToBeCloned.bindingAsserions;
-            this.operationAssertions = elementToBeCloned.operationAssertions;
-            this.messageAssertions = elementToBeCloned.messageAssertions;
+            _wsdlBinding = elementToBeCloned._wsdlBinding;
+            _bindingAsserions = elementToBeCloned._bindingAsserions;
+            _operationAssertions = elementToBeCloned._operationAssertions;
+            _messageAssertions = elementToBeCloned._messageAssertions;
         }
 
         public override T GetProperty<T>(BindingContext context)
@@ -109,7 +109,7 @@ namespace System.ServiceModel.Channels
         {
             //throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.UnsupportedBindingElementClone, typeof(UnrecognizedAssertionsBindingElement).Name)));
             // do not allow Cloning, return an empty BindingElement
-            return new UnrecognizedAssertionsBindingElement(new XmlQualifiedName(wsdlBinding.Name, wsdlBinding.Namespace), null);
+            return new UnrecognizedAssertionsBindingElement(new XmlQualifiedName(_wsdlBinding.Name, _wsdlBinding.Namespace), null);
         }
     }
 }

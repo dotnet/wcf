@@ -1,49 +1,64 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using Microsoft.Xml.XPath;
 
-    internal class XPathDescendantIterator: XPathAxisIterator {
-        private int level = 0;
+    internal class XPathDescendantIterator : XPathAxisIterator
+    {
+        private int _level = 0;
 
-        public XPathDescendantIterator(XPathNavigator nav, XPathNodeType type, bool matchSelf) : base(nav, type, matchSelf) {}
-        public XPathDescendantIterator(XPathNavigator nav, string name, string namespaceURI, bool matchSelf) : base(nav, name, namespaceURI, matchSelf) {}
+        public XPathDescendantIterator(XPathNavigator nav, XPathNodeType type, bool matchSelf) : base(nav, type, matchSelf) { }
+        public XPathDescendantIterator(XPathNavigator nav, string name, string namespaceURI, bool matchSelf) : base(nav, name, namespaceURI, matchSelf) { }
 
-        public XPathDescendantIterator(XPathDescendantIterator it) : base(it) {
-            this.level = it.level;
+        public XPathDescendantIterator(XPathDescendantIterator it) : base(it)
+        {
+            _level = it._level;
         }
 
-        public override XPathNodeIterator Clone() {
+        public override XPathNodeIterator Clone()
+        {
             return new XPathDescendantIterator(this);
         }
 
-        public override bool MoveNext() {
-            if (first) {
+        public override bool MoveNext()
+        {
+            if (first)
+            {
                 first = false;
-                if (matchSelf && Matches) {
+                if (matchSelf && Matches)
+                {
                     position = 1;
                     return true;
                 }
             }
 
-            while (true) {
-                if (nav.MoveToFirstChild()) {
-                    level++;
-                } else {
-                    while (true) {
-                        if (level == 0) {
+            while (true)
+            {
+                if (nav.MoveToFirstChild())
+                {
+                    _level++;
+                }
+                else
+                {
+                    while (true)
+                    {
+                        if (_level == 0)
+                        {
                             return false;
                         }
-                        if (nav.MoveToNext()) {
+                        if (nav.MoveToNext())
+                        {
                             break;
                         }
                         nav.MoveToParent();
-                        level--;
+                        _level--;
                     }
                 }
 
-                if (Matches) {
+                if (Matches)
+                {
                     position++;
                     return true;
                 }

@@ -13,7 +13,7 @@ namespace System.ServiceModel.Security
     using System.Text;
     using Microsoft.Xml;
 
-    sealed class NonceToken : BinarySecretSecurityToken
+    internal sealed class NonceToken : BinarySecretSecurityToken
     {
         public NonceToken(byte[] key)
             : this(SecurityUniqueId.Create().Value, key)

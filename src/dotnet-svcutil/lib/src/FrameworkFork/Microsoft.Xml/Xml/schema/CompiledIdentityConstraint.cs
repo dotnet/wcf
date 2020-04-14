@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Text;
@@ -12,71 +13,84 @@ namespace Microsoft.Xml.Schema {
     using Microsoft.Xml.XPath;
     using MS.Internal.Xml.XPath;
 
-    internal class CompiledIdentityConstraint {
-        internal XmlQualifiedName name = XmlQualifiedName.Empty;    
-        private ConstraintRole role;
-        private Asttree selector;
-        private Asttree[] fields;
+    internal class CompiledIdentityConstraint
+    {
+        internal XmlQualifiedName name = XmlQualifiedName.Empty;
+        private ConstraintRole _role;
+        private Asttree _selector;
+        private Asttree[] _fields;
         internal XmlQualifiedName refer = XmlQualifiedName.Empty;
 
-        public enum ConstraintRole {
+        public enum ConstraintRole
+        {
             Unique,
             Key,
             Keyref
         }
 
-        public ConstraintRole Role {
-            get { return this.role; }
+        public ConstraintRole Role
+        {
+            get { return _role; }
         }
 
-        public Asttree Selector {
-            get { return this.selector; }
+        public Asttree Selector
+        {
+            get { return _selector; }
         }
 
-        public Asttree[] Fields {
-            get { return this.fields; }
+        public Asttree[] Fields
+        {
+            get { return _fields; }
         }
 
         public static readonly CompiledIdentityConstraint Empty = new CompiledIdentityConstraint();
 
-        private CompiledIdentityConstraint() {}
+        private CompiledIdentityConstraint() { }
 
-        public CompiledIdentityConstraint(XmlSchemaIdentityConstraint constraint, XmlNamespaceManager nsmgr) {
+        public CompiledIdentityConstraint(XmlSchemaIdentityConstraint constraint, XmlNamespaceManager nsmgr)
+        {
             this.name = constraint.QualifiedName;
 
             //public Asttree (string xPath, bool isField, XmlNamespaceManager nsmgr)
-            try {
-                this.selector = new Asttree(constraint.Selector.XPath, false, nsmgr);
+            try
+            {
+                _selector = new Asttree(constraint.Selector.XPath, false, nsmgr);
             }
-            catch (XmlSchemaException e) {
+            catch (XmlSchemaException e)
+            {
                 e.SetSource(constraint.Selector);
                 throw e;
             }
             XmlSchemaObjectCollection fields = constraint.Fields;
             Debug.Assert(fields.Count > 0);
-            this.fields = new Asttree[fields.Count];
-            for(int idxField = 0; idxField < fields.Count; idxField ++) {
-                try {
-                    this.fields[idxField] = new Asttree(((XmlSchemaXPath)fields[idxField]).XPath, true, nsmgr);
+            _fields = new Asttree[fields.Count];
+            for (int idxField = 0; idxField < fields.Count; idxField++)
+            {
+                try
+                {
+                    _fields[idxField] = new Asttree(((XmlSchemaXPath)fields[idxField]).XPath, true, nsmgr);
                 }
-                catch (XmlSchemaException e) {
+                catch (XmlSchemaException e)
+                {
                     e.SetSource(constraint.Fields[idxField]);
                     throw e;
                 }
             }
-            if (constraint is XmlSchemaUnique) {
-                this.role = ConstraintRole.Unique;
-            } 
-            else if (constraint is XmlSchemaKey) {
-                this.role = ConstraintRole.Key;
-            } 
-            else {             // XmlSchemaKeyref
-                this.role = ConstraintRole.Keyref;
-                this.refer = ((XmlSchemaKeyref)constraint).Refer; 
+            if (constraint is XmlSchemaUnique)
+            {
+                _role = ConstraintRole.Unique;
+            }
+            else if (constraint is XmlSchemaKey)
+            {
+                _role = ConstraintRole.Key;
+            }
+            else
+            {             // XmlSchemaKeyref
+                _role = ConstraintRole.Keyref;
+                this.refer = ((XmlSchemaKeyref)constraint).Refer;
             }
         }
     }
-
 }
 
 

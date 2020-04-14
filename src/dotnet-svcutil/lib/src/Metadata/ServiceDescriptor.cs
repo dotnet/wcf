@@ -122,7 +122,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         }
 
         private void PopulateServices(WsdlImporter wsdlImporter, CancellationToken cancellationToken)
-        { 
+        {
             var orphanContracts = new List<ContractDescription>(this.Contracts);
             var services = new List<ServiceInfo>();
             foreach (WsdlNS.ServiceDescription wsdlDocument in wsdlImporter.WsdlDocuments)

@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using Microsoft.Xml.Serialization;
@@ -12,135 +13,169 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public abstract class XmlSchemaParticle : XmlSchemaAnnotated {
+    public abstract class XmlSchemaParticle : XmlSchemaAnnotated
+    {
         [Flags]
-        enum Occurs {
+        private enum Occurs
+        {
             None,
             Min,
             Max
         };
-        decimal minOccurs = decimal.One;
-        decimal maxOccurs = decimal.One;
-        Occurs flags = Occurs.None;
-        
+        private decimal _minOccurs = decimal.One;
+        private decimal _maxOccurs = decimal.One;
+        private Occurs _flags = Occurs.None;
+
         /// <include file='doc\XmlSchemaParticle.uex' path='docs/doc[@for="XmlSchemaParticle.MinOccursString"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("minOccurs")]
-        public string MinOccursString {
-            get { 
-                return (flags & Occurs.Min) == 0 ? null : XmlConvert.ToString(minOccurs); 
+        public string MinOccursString
+        {
+            get
+            {
+                return (_flags & Occurs.Min) == 0 ? null : XmlConvert.ToString(_minOccurs);
             }
-            set {
-                if (value == null) {
-                    minOccurs = decimal.One;
-                    flags &= ~Occurs.Min;
+            set
+            {
+                if (value == null)
+                {
+                    _minOccurs = decimal.One;
+                    _flags &= ~Occurs.Min;
                 }
-                else {
-                    minOccurs = XmlConvert.ToInteger(value);
-                    if (minOccurs < decimal.Zero) {
+                else
+                {
+                    _minOccurs = XmlConvert.ToInteger(value);
+                    if (_minOccurs < decimal.Zero)
+                    {
                         throw new XmlSchemaException(ResXml.Sch_MinOccursInvalidXsd, string.Empty);
                     }
-                    flags |= Occurs.Min;
+                    _flags |= Occurs.Min;
                 }
             }
         }
-        
+
         /// <include file='doc\XmlSchemaParticle.uex' path='docs/doc[@for="XmlSchemaParticle.MaxOccursString"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("maxOccurs")]
-        public string MaxOccursString {
-            get { 
-                return  (flags & Occurs.Max) == 0 ? null : (maxOccurs == decimal.MaxValue) ? "unbounded" : XmlConvert.ToString(maxOccurs); 
+        public string MaxOccursString
+        {
+            get
+            {
+                return (_flags & Occurs.Max) == 0 ? null : (_maxOccurs == decimal.MaxValue) ? "unbounded" : XmlConvert.ToString(_maxOccurs);
             }
-            set {
-                if (value == null) {
-                    maxOccurs = decimal.One;
-                    flags &= ~Occurs.Max;
+            set
+            {
+                if (value == null)
+                {
+                    _maxOccurs = decimal.One;
+                    _flags &= ~Occurs.Max;
                 }
-                else {
-                    if (value == "unbounded") {
-                        maxOccurs = decimal.MaxValue;
+                else
+                {
+                    if (value == "unbounded")
+                    {
+                        _maxOccurs = decimal.MaxValue;
                     }
-                    else {
-                        maxOccurs = XmlConvert.ToInteger(value); 
-                        if (maxOccurs < decimal.Zero) {
+                    else
+                    {
+                        _maxOccurs = XmlConvert.ToInteger(value);
+                        if (_maxOccurs < decimal.Zero)
+                        {
                             throw new XmlSchemaException(ResXml.Sch_MaxOccursInvalidXsd, string.Empty);
                         }
-                        else if (maxOccurs == decimal.Zero && (flags & Occurs.Min) == 0) {
-                            minOccurs = decimal.Zero;
+                        else if (_maxOccurs == decimal.Zero && (_flags & Occurs.Min) == 0)
+                        {
+                            _minOccurs = decimal.Zero;
                         }
                     }
-                    flags |= Occurs.Max;
+                    _flags |= Occurs.Max;
                 }
             }
         }
-        
+
         /// <include file='doc\XmlSchemaParticle.uex' path='docs/doc[@for="XmlSchemaParticle.MinOccurs"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public decimal MinOccurs {
-            get { return minOccurs; }
-            set {
-                if (value < decimal.Zero || value != decimal.Truncate(value)) {
+        public decimal MinOccurs
+        {
+            get { return _minOccurs; }
+            set
+            {
+                if (value < decimal.Zero || value != decimal.Truncate(value))
+                {
                     throw new XmlSchemaException(ResXml.Sch_MinOccursInvalidXsd, string.Empty);
                 }
-                minOccurs = value; 
-                flags |= Occurs.Min;
+                _minOccurs = value;
+                _flags |= Occurs.Min;
             }
         }
-        
+
         /// <include file='doc\XmlSchemaParticle.uex' path='docs/doc[@for="XmlSchemaParticle.MaxOccurs"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlIgnore]
-        public decimal MaxOccurs {
-            get { return maxOccurs; }
-            set { 
-                if (value < decimal.Zero || value != decimal.Truncate(value)) {
+        public decimal MaxOccurs
+        {
+            get { return _maxOccurs; }
+            set
+            {
+                if (value < decimal.Zero || value != decimal.Truncate(value))
+                {
                     throw new XmlSchemaException(ResXml.Sch_MaxOccursInvalidXsd, string.Empty);
                 }
-                maxOccurs = value; 
-                if (maxOccurs == decimal.Zero && (flags & Occurs.Min) == 0) {
-                    minOccurs = decimal.Zero;
+                _maxOccurs = value;
+                if (_maxOccurs == decimal.Zero && (_flags & Occurs.Min) == 0)
+                {
+                    _minOccurs = decimal.Zero;
                 }
-                flags |= Occurs.Max;
+                _flags |= Occurs.Max;
             }
         }
 
-        internal virtual bool IsEmpty {
-            get { return maxOccurs == decimal.Zero; }
-        } 
-
-        internal bool IsMultipleOccurrence {
-            get { return maxOccurs > decimal.One; }
+        internal virtual bool IsEmpty
+        {
+            get { return _maxOccurs == decimal.Zero; }
         }
-        
-        internal virtual string NameString {
-            get {
+
+        internal bool IsMultipleOccurrence
+        {
+            get { return _maxOccurs > decimal.One; }
+        }
+
+        internal virtual string NameString
+        {
+            get
+            {
                 return string.Empty;
             }
         }
-        
-        internal XmlQualifiedName GetQualifiedName() {
+
+        internal XmlQualifiedName GetQualifiedName()
+        {
             XmlSchemaElement elem = this as XmlSchemaElement;
-            if (elem != null) {
+            if (elem != null)
+            {
                 return elem.QualifiedName;
             }
-            else {
+            else
+            {
                 XmlSchemaAny any = this as XmlSchemaAny;
-                if (any != null) {
-                    string ns = any.Namespace; 
-                    if (ns != null) {
+                if (any != null)
+                {
+                    string ns = any.Namespace;
+                    if (ns != null)
+                    {
                         ns = ns.Trim();
                     }
-                    else {
+                    else
+                    {
                         ns = string.Empty;
                     }
                     return new XmlQualifiedName("*", ns.Length == 0 ? "##any" : ns);
@@ -149,10 +184,12 @@ namespace Microsoft.Xml.Schema {
             return XmlQualifiedName.Empty; //If ever called on other particles
         }
 
-        class EmptyParticle : XmlSchemaParticle {
-            internal override bool IsEmpty {
+        private class EmptyParticle : XmlSchemaParticle
+        {
+            internal override bool IsEmpty
+            {
                 get { return true; }
-            } 
+            }
         }
 
         internal static readonly XmlSchemaParticle Empty = new EmptyParticle();

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System.Collections.ObjectModel;
@@ -18,43 +19,43 @@ namespace System.ServiceModel
         internal const SecurityKeyType DefaultIssuedKeyType = SecurityKeyType.SymmetricKey;
         internal const bool DefaultEstablishSecurityContext = true;
 
-        bool establishSecurityContext;
-        bool negotiateServiceCredential;
-        SecurityAlgorithmSuite algorithmSuite;
-        EndpointAddress issuerAddress;
-        EndpointAddress issuerMetadataAddress;
-        Binding issuerBinding;
-        Collection<ClaimTypeRequirement> claimTypeRequirements;
-        string issuedTokenType;
-        SecurityKeyType issuedKeyType;
-        Collection<XmlElement> tokenRequestParameters;
+        private bool _establishSecurityContext;
+        private bool _negotiateServiceCredential;
+        private SecurityAlgorithmSuite _algorithmSuite;
+        private EndpointAddress _issuerAddress;
+        private EndpointAddress _issuerMetadataAddress;
+        private Binding _issuerBinding;
+        private Collection<ClaimTypeRequirement> _claimTypeRequirements;
+        private string _issuedTokenType;
+        private SecurityKeyType _issuedKeyType;
+        private Collection<XmlElement> _tokenRequestParameters;
 
         public FederatedMessageSecurityOverHttp()
         {
-            negotiateServiceCredential = DefaultNegotiateServiceCredential;
-            algorithmSuite = SecurityAlgorithmSuite.Default;
-            issuedKeyType = DefaultIssuedKeyType;
-            claimTypeRequirements = new Collection<ClaimTypeRequirement>();
-            tokenRequestParameters = new Collection<XmlElement>();
-            establishSecurityContext = DefaultEstablishSecurityContext;
+            _negotiateServiceCredential = DefaultNegotiateServiceCredential;
+            _algorithmSuite = SecurityAlgorithmSuite.Default;
+            _issuedKeyType = DefaultIssuedKeyType;
+            _claimTypeRequirements = new Collection<ClaimTypeRequirement>();
+            _tokenRequestParameters = new Collection<XmlElement>();
+            _establishSecurityContext = DefaultEstablishSecurityContext;
         }
 
         public bool NegotiateServiceCredential
         {
-            get { return this.negotiateServiceCredential; }
-            set { this.negotiateServiceCredential = value; }
+            get { return _negotiateServiceCredential; }
+            set { _negotiateServiceCredential = value; }
         }
 
         public SecurityAlgorithmSuite AlgorithmSuite
         {
-            get { return this.algorithmSuite; }
+            get { return _algorithmSuite; }
             set
             {
                 if (value == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
                 }
-                this.algorithmSuite = value;
+                _algorithmSuite = value;
             }
         }
 
@@ -62,26 +63,26 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.establishSecurityContext;
+                return _establishSecurityContext;
             }
             set
             {
-                this.establishSecurityContext = value;
+                _establishSecurityContext = value;
             }
         }
 
         [DefaultValue(null)]
         public EndpointAddress IssuerAddress
         {
-            get { return this.issuerAddress; }
-            set { this.issuerAddress = value; }
+            get { return _issuerAddress; }
+            set { _issuerAddress = value; }
         }
 
         [DefaultValue(null)]
         public EndpointAddress IssuerMetadataAddress
         {
-            get { return this.issuerMetadataAddress; }
-            set { this.issuerMetadataAddress = value; }
+            get { return _issuerMetadataAddress; }
+            set { _issuerMetadataAddress = value; }
         }
 
         [DefaultValue(null)]
@@ -89,42 +90,42 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.issuerBinding;
+                return _issuerBinding;
             }
             set
             {
-                this.issuerBinding = value;
+                _issuerBinding = value;
             }
         }
 
         [DefaultValue(null)]
         public string IssuedTokenType
         {
-            get { return this.issuedTokenType; }
-            set { this.issuedTokenType = value; }
+            get { return _issuedTokenType; }
+            set { _issuedTokenType = value; }
         }
 
         public SecurityKeyType IssuedKeyType
         {
-            get { return this.issuedKeyType; }
+            get { return _issuedKeyType; }
             set
             {
                 if (!SecurityKeyTypeHelper.IsDefined(value))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.issuedKeyType = value;
+                _issuedKeyType = value;
             }
         }
 
         public Collection<ClaimTypeRequirement> ClaimTypeRequirements
         {
-            get { return this.claimTypeRequirements; }
+            get { return _claimTypeRequirements; }
         }
 
         public Collection<XmlElement> TokenRequestParameters
         {
-            get { return this.tokenRequestParameters; }
+            get { return _tokenRequestParameters; }
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -185,6 +186,5 @@ namespace System.ServiceModel
         {
             return (this.TokenRequestParameters.Count > 0);
         }
-
     }
 }

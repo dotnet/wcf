@@ -512,7 +512,7 @@ namespace System.ServiceModel.Security
 #if SUPPORTS_WINDOWSIDENTITY
                 primaryPrincipal = Claim.CreateUpnClaim(principalName);
 #else
-                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported"); 
+                throw ExceptionHelper.PlatformNotSupported("UPN claim not supported");
 #endif // SUPPORTS_WINDOWSIDENTITY
             }
             else

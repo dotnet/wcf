@@ -61,6 +61,5 @@ namespace System.ServiceModel.Dispatcher
         void IOperationBehavior.ApplyClientBehavior(OperationDescription description, ClientOperation proxy)
         {
         }
-
     }
 }

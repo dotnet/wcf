@@ -11,21 +11,21 @@ namespace System.ServiceModel.Description
 
     public class ServiceContractGenerationContext
     {
-        readonly ServiceContractGenerator serviceContractGenerator;
-        readonly ContractDescription contract;
-        readonly CodeTypeDeclaration contractType;
-        readonly CodeTypeDeclaration duplexCallbackType;
-        readonly Collection<OperationContractGenerationContext> operations = new Collection<OperationContractGenerationContext>();
+        private readonly ServiceContractGenerator _serviceContractGenerator;
+        private readonly ContractDescription _contract;
+        private readonly CodeTypeDeclaration _contractType;
+        private readonly CodeTypeDeclaration _duplexCallbackType;
+        private readonly Collection<OperationContractGenerationContext> _operations = new Collection<OperationContractGenerationContext>();
 
-        CodeNamespace codeNamespace;
-        CodeTypeDeclaration channelType;
-        CodeTypeReference channelTypeReference;
-        CodeTypeDeclaration clientType;
-        CodeTypeReference clientTypeReference;
-        CodeTypeReference contractTypeReference;
-        CodeTypeReference duplexCallbackTypeReference;
+        private CodeNamespace _codeNamespace;
+        private CodeTypeDeclaration _channelType;
+        private CodeTypeReference _channelTypeReference;
+        private CodeTypeDeclaration _clientType;
+        private CodeTypeReference _clientTypeReference;
+        private CodeTypeReference _contractTypeReference;
+        private CodeTypeReference _duplexCallbackTypeReference;
 
-        ServiceContractGenerator.CodeTypeFactory typeFactory;
+        private ServiceContractGenerator.CodeTypeFactory _typeFactory;
 
         public ServiceContractGenerationContext(ServiceContractGenerator serviceContractGenerator, ContractDescription contract, CodeTypeDeclaration contractType)
         {
@@ -36,90 +36,88 @@ namespace System.ServiceModel.Description
             if (contractType == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("contractType"));
 
-            this.serviceContractGenerator = serviceContractGenerator;
-            this.contract = contract;
-            this.contractType = contractType;
+            _serviceContractGenerator = serviceContractGenerator;
+            _contract = contract;
+            _contractType = contractType;
         }
 
         public ServiceContractGenerationContext(ServiceContractGenerator serviceContractGenerator, ContractDescription contract, CodeTypeDeclaration contractType, CodeTypeDeclaration duplexCallbackType)
             : this(serviceContractGenerator, contract, contractType)
         {
-            this.duplexCallbackType = duplexCallbackType;
+            _duplexCallbackType = duplexCallbackType;
         }
 
         internal CodeTypeDeclaration ChannelType
         {
-            get { return this.channelType; }
-            set { this.channelType = value; }
+            get { return _channelType; }
+            set { _channelType = value; }
         }
 
         internal CodeTypeReference ChannelTypeReference
         {
-            get { return this.channelTypeReference; }
-            set { this.channelTypeReference = value; }
+            get { return _channelTypeReference; }
+            set { _channelTypeReference = value; }
         }
 
         internal CodeTypeDeclaration ClientType
         {
-            get { return this.clientType; }
-            set { this.clientType = value; }
+            get { return _clientType; }
+            set { _clientType = value; }
         }
 
         internal CodeTypeReference ClientTypeReference
         {
-            get { return this.clientTypeReference; }
-            set { this.clientTypeReference = value; }
+            get { return _clientTypeReference; }
+            set { _clientTypeReference = value; }
         }
 
         public ContractDescription Contract
         {
-            get { return this.contract; }
+            get { return _contract; }
         }
 
         public CodeTypeDeclaration ContractType
         {
-            get { return this.contractType; }
+            get { return _contractType; }
         }
 
         internal CodeTypeReference ContractTypeReference
         {
-            get { return this.contractTypeReference; }
-            set { this.contractTypeReference = value; }
+            get { return _contractTypeReference; }
+            set { _contractTypeReference = value; }
         }
 
         public CodeTypeDeclaration DuplexCallbackType
         {
-            get { return this.duplexCallbackType; }
+            get { return _duplexCallbackType; }
         }
 
         internal CodeTypeReference DuplexCallbackTypeReference
         {
-            get { return this.duplexCallbackTypeReference; }
-            set { this.duplexCallbackTypeReference = value; }
+            get { return _duplexCallbackTypeReference; }
+            set { _duplexCallbackTypeReference = value; }
         }
 
         internal CodeNamespace Namespace
         {
-            get { return this.codeNamespace; }
-            set { this.codeNamespace = value; }
+            get { return _codeNamespace; }
+            set { _codeNamespace = value; }
         }
 
         public Collection<OperationContractGenerationContext> Operations
         {
-            get { return this.operations; }
+            get { return _operations; }
         }
 
         public ServiceContractGenerator ServiceContractGenerator
         {
-            get { return this.serviceContractGenerator; }
+            get { return _serviceContractGenerator; }
         }
 
         internal ServiceContractGenerator.CodeTypeFactory TypeFactory
         {
-            get { return this.typeFactory; }
-            set { this.typeFactory = value; }
+            get { return _typeFactory; }
+            set { _typeFactory = value; }
         }
-
     }
-
 }

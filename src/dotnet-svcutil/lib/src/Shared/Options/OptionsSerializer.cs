@@ -58,10 +58,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         {
                             case ApplicationOptions.ProviderIdKey:
                             case ApplicationOptions.VersionKey:
-                            {
-                                ReadOption(option, jPropInfo.Value);
-                            }
-                            break;
+                                {
+                                    ReadOption(option, jPropInfo.Value);
+                                }
+                                break;
                             case ApplicationOptions.OptionsKey:
                                 // special-case the 'options' option to preserve the order. Observe that it must be set to ensure it is initialized only once in case there are multiple definitions in the JSON.
                                 option.Deserialize(new JValue(jPropInfo.Key));
@@ -228,7 +228,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        value = value is bool ? string.Empty :  $" \"{value}\"";
+                        value = value is bool ? string.Empty : $" \"{value}\"";
                         valueBuilder.Append($"--{option.Name}{value}{separator}");
                     }
                 }

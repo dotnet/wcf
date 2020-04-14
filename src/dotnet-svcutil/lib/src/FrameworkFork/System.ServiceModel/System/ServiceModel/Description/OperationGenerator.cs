@@ -14,19 +14,19 @@ namespace System.ServiceModel.Description
     using System.ComponentModel;
     using System.Threading.Tasks;
 
-    enum MessageContractType { None, WrappedMessageContract, BareMessageContract }
-    interface IWrappedBodyTypeGenerator
+    internal enum MessageContractType { None, WrappedMessageContract, BareMessageContract }
+    internal interface IWrappedBodyTypeGenerator
     {
         void ValidateForParameterMode(OperationDescription operationDescription);
         void AddMemberAttributes(XmlName messageName, MessagePartDescription part, CodeAttributeDeclarationCollection attributesImported, CodeAttributeDeclarationCollection typeAttributes, CodeAttributeDeclarationCollection fieldAttributes);
         void AddTypeAttributes(string messageName, string typeNS, CodeAttributeDeclarationCollection typeAttributes, bool isEncoded);
     }
 
-    class OperationGenerator //: IOperationBehavior, IOperationContractGenerationExtension
+    internal class OperationGenerator //: IOperationBehavior, IOperationContractGenerationExtension
     {
-        Dictionary<MessagePartDescription, CodeTypeReference> parameterTypes;
-        Dictionary<MessagePartDescription, CodeAttributeDeclarationCollection> parameterAttributes;
-        Dictionary<MessagePartDescription, string> specialPartName;
+        private Dictionary<MessagePartDescription, CodeTypeReference> _parameterTypes;
+        private Dictionary<MessagePartDescription, CodeAttributeDeclarationCollection> _parameterAttributes;
+        private Dictionary<MessagePartDescription, string> _specialPartName;
 
         internal OperationGenerator()
         {
@@ -36,9 +36,9 @@ namespace System.ServiceModel.Description
         {
             get
             {
-                if (this.parameterAttributes == null)
-                    this.parameterAttributes = new Dictionary<MessagePartDescription, CodeAttributeDeclarationCollection>();
-                return this.parameterAttributes;
+                if (_parameterAttributes == null)
+                    _parameterAttributes = new Dictionary<MessagePartDescription, CodeAttributeDeclarationCollection>();
+                return _parameterAttributes;
             }
         }
 
@@ -46,9 +46,9 @@ namespace System.ServiceModel.Description
         {
             get
             {
-                if (this.parameterTypes == null)
-                    this.parameterTypes = new Dictionary<MessagePartDescription, CodeTypeReference>();
-                return this.parameterTypes;
+                if (_parameterTypes == null)
+                    _parameterTypes = new Dictionary<MessagePartDescription, CodeTypeReference>();
+                return _parameterTypes;
             }
         }
 
@@ -56,9 +56,9 @@ namespace System.ServiceModel.Description
         {
             get
             {
-                if (specialPartName == null)
-                    this.specialPartName = new Dictionary<MessagePartDescription, string>();
-                return specialPartName;
+                if (_specialPartName == null)
+                    _specialPartName = new Dictionary<MessagePartDescription, string>();
+                return _specialPartName;
             }
         }
 
@@ -88,81 +88,81 @@ namespace System.ServiceModel.Description
             return CustomAttributeHelper.GenerateAttributeDeclaration(generator, attribute);
         }
 
-        class MethodSignatureGenerator
+        private class MethodSignatureGenerator
         {
-            readonly OperationGenerator Parent;
-            readonly OperationContractGenerationContext Context;
-            readonly OperationFormatStyle Style;
-            readonly bool IsEncoded;
-            readonly IWrappedBodyTypeGenerator WrappedBodyTypeGenerator;
-            readonly Dictionary<MessagePartDescription, ICollection<CodeTypeReference>> KnownTypes;
+            private readonly OperationGenerator _parent;
+            private readonly OperationContractGenerationContext _context;
+            private readonly OperationFormatStyle _style;
+            private readonly bool _isEncoded;
+            private readonly IWrappedBodyTypeGenerator _wrappedBodyTypeGenerator;
+            private readonly Dictionary<MessagePartDescription, ICollection<CodeTypeReference>> _knownTypes;
 
-            CodeMemberMethod Method;
-            CodeMemberMethod EndMethod;
+            private CodeMemberMethod _method;
+            private CodeMemberMethod _endMethod;
 
-            readonly string ContractName;
-            string DefaultName;
-            readonly string ContractNS;
-            readonly string DefaultNS;
+            private readonly string _contractName;
+            private string _defaultName;
+            private readonly string _contractNS;
+            private readonly string _defaultNS;
 
-            readonly bool Oneway;
+            private readonly bool _oneway;
 
-            readonly MessageDescription Request;
-            readonly MessageDescription Response;
+            private readonly MessageDescription _request;
+            private readonly MessageDescription _response;
 
-            bool IsNewRequest;
-            bool IsNewResponse;
-            bool IsTaskWithOutputParameters;
-            MessageContractType MessageContractType;
+            private bool _isNewRequest;
+            private bool _isNewResponse;
+            private bool _isTaskWithOutputParameters;
+            private MessageContractType _messageContractType;
 
-            IPartCodeGenerator BeginPartCodeGenerator;
-            IPartCodeGenerator EndPartCodeGenerator;
+            private IPartCodeGenerator _beginPartCodeGenerator;
+            private IPartCodeGenerator _endPartCodeGenerator;
 
             internal MethodSignatureGenerator(OperationGenerator parent, OperationContractGenerationContext context, OperationFormatStyle style, bool isEncoded, IWrappedBodyTypeGenerator wrappedBodyTypeGenerator, Dictionary<MessagePartDescription, ICollection<CodeTypeReference>> knownTypes)
             {
-                this.Parent = parent;
-                this.Context = context;
-                this.Style = style;
-                this.IsEncoded = isEncoded;
-                this.WrappedBodyTypeGenerator = wrappedBodyTypeGenerator;
-                this.KnownTypes = knownTypes;
-                this.MessageContractType = context.ServiceContractGenerator.OptionsInternal.IsSet(ServiceContractGenerationOptions.TypedMessages) ? MessageContractType.WrappedMessageContract : MessageContractType.None;
+                _parent = parent;
+                _context = context;
+                _style = style;
+                _isEncoded = isEncoded;
+                _wrappedBodyTypeGenerator = wrappedBodyTypeGenerator;
+                _knownTypes = knownTypes;
+                _messageContractType = context.ServiceContractGenerator.OptionsInternal.IsSet(ServiceContractGenerationOptions.TypedMessages) ? MessageContractType.WrappedMessageContract : MessageContractType.None;
 
-                this.ContractName = context.Contract.Contract.CodeName;
-                this.ContractNS = context.Operation.DeclaringContract.Namespace;
-                this.DefaultNS = (style == OperationFormatStyle.Rpc) ? string.Empty : this.ContractNS;
-                this.Oneway = (context.Operation.IsOneWay);
-                this.Request = context.Operation.Messages[0];
-                this.Response = this.Oneway ? null : context.Operation.Messages[1];
+                _contractName = context.Contract.Contract.CodeName;
+                _contractNS = context.Operation.DeclaringContract.Namespace;
+                _defaultNS = (style == OperationFormatStyle.Rpc) ? string.Empty : _contractNS;
+                _oneway = (context.Operation.IsOneWay);
+                _request = context.Operation.Messages[0];
+                _response = _oneway ? null : context.Operation.Messages[1];
 
-                this.IsNewRequest = true;
-                this.IsNewResponse = true;
-                this.BeginPartCodeGenerator = null;
-                this.EndPartCodeGenerator = null;
-                this.IsTaskWithOutputParameters = context.IsTask && context.Operation.HasOutputParameters;
+                _isNewRequest = true;
+                _isNewResponse = true;
+                _beginPartCodeGenerator = null;
+                _endPartCodeGenerator = null;
+                _isTaskWithOutputParameters = context.IsTask && context.Operation.HasOutputParameters;
 
-                Fx.Assert(this.Oneway == (this.Response == null), "OperationContractGenerationContext.Operation cannot contain a null response message when the operation is not one-way");
+                Fx.Assert(_oneway == (_response == null), "OperationContractGenerationContext.Operation cannot contain a null response message when the operation is not one-way");
             }
 
             internal void GenerateSyncSignature(ref OperationFormatStyle style)
             {
-                this.Method = this.Context.SyncMethod;
-                this.EndMethod = this.Context.SyncMethod;
-                this.DefaultName = this.Method.Name;
+                _method = _context.SyncMethod;
+                _endMethod = _context.SyncMethod;
+                _defaultName = _method.Name;
                 GenerateOperationSignatures(ref style);
             }
 
             internal void GenerateAsyncSignature(ref OperationFormatStyle style)
             {
-                this.Method = this.Context.BeginMethod;
-                this.EndMethod = this.Context.EndMethod;
-                this.DefaultName = this.Method.Name.Substring(5);
+                _method = _context.BeginMethod;
+                _endMethod = _context.EndMethod;
+                _defaultName = _method.Name.Substring(5);
                 GenerateOperationSignatures(ref style);
             }
 
-            void GenerateOperationSignatures(ref OperationFormatStyle style)
+            private void GenerateOperationSignatures(ref OperationFormatStyle style)
             {
-                if (this.MessageContractType != MessageContractType.None || this.GenerateTypedMessageForTaskWithOutputParameters())
+                if (_messageContractType != MessageContractType.None || this.GenerateTypedMessageForTaskWithOutputParameters())
                 {
                     CheckAndSetMessageContractTypeToBare();
                     this.GenerateTypedMessageOperation(false /*hideFromEditor*/, ref style);
@@ -173,13 +173,13 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            bool GenerateTypedMessageForTaskWithOutputParameters()
+            private bool GenerateTypedMessageForTaskWithOutputParameters()
             {
-                if (this.IsTaskWithOutputParameters)
+                if (_isTaskWithOutputParameters)
                 {
-                    if (this.Method == this.Context.TaskMethod)
+                    if (_method == _context.TaskMethod)
                     {
-                        this.Method.Comments.Add(new CodeCommentStatement(SRServiceModel.Format(SRServiceModel.SFxCodeGenWarning, SRServiceModel.SFxCannotImportAsParameters_OutputParameterAndTask)));
+                        _method.Comments.Add(new CodeCommentStatement(SRServiceModel.Format(SRServiceModel.SFxCodeGenWarning, SRServiceModel.SFxCannotImportAsParameters_OutputParameterAndTask)));
                     }
 
                     return true;
@@ -188,26 +188,26 @@ namespace System.ServiceModel.Description
                 return false;
             }
 
-            void CheckAndSetMessageContractTypeToBare()
+            private void CheckAndSetMessageContractTypeToBare()
             {
-                if (this.MessageContractType == MessageContractType.BareMessageContract)
+                if (_messageContractType == MessageContractType.BareMessageContract)
                     return;
                 try
                 {
-                    this.WrappedBodyTypeGenerator.ValidateForParameterMode(this.Context.Operation);
+                    _wrappedBodyTypeGenerator.ValidateForParameterMode(_context.Operation);
                 }
                 catch (ParameterModeException ex)
                 {
-                    this.MessageContractType = ex.MessageContractType;
+                    _messageContractType = ex.MessageContractType;
                 }
             }
 
-            bool TryGenerateParameterizedOperation()
+            private bool TryGenerateParameterizedOperation()
             {
                 CodeParameterDeclarationExpressionCollection methodParameters, endMethodParameters = null;
-                methodParameters = new CodeParameterDeclarationExpressionCollection(this.Method.Parameters);
-                if (this.EndMethod != null)
-                    endMethodParameters = new CodeParameterDeclarationExpressionCollection(this.EndMethod.Parameters);
+                methodParameters = new CodeParameterDeclarationExpressionCollection(_method.Parameters);
+                if (_endMethod != null)
+                    endMethodParameters = new CodeParameterDeclarationExpressionCollection(_endMethod.Parameters);
 
                 try
                 {
@@ -215,14 +215,14 @@ namespace System.ServiceModel.Description
                 }
                 catch (ParameterModeException ex)
                 {
-                    this.MessageContractType = ex.MessageContractType;
-                    CodeMemberMethod method = this.Method;
+                    _messageContractType = ex.MessageContractType;
+                    CodeMemberMethod method = _method;
                     method.Comments.Add(new CodeCommentStatement(SRServiceModel.Format(SRServiceModel.SFxCodeGenWarning, ex.Message)));
                     method.Parameters.Clear();
                     method.Parameters.AddRange(methodParameters);
-                    if (this.Context.IsAsync)
+                    if (_context.IsAsync)
                     {
-                        CodeMemberMethod endMethod = this.EndMethod;
+                        CodeMemberMethod endMethod = _endMethod;
                         endMethod.Parameters.Clear();
                         endMethod.Parameters.AddRange(endMethodParameters);
                     }
@@ -231,42 +231,40 @@ namespace System.ServiceModel.Description
                 return true;
             }
 
-            void GenerateParameterizedOperation()
+            private void GenerateParameterizedOperation()
             {
-
                 ParameterizedMessageHelper.ValidateProtectionLevel(this);
                 CreateOrOverrideActionProperties();
 
                 if (this.HasUntypedMessages)
                 {
                     if (!this.IsCompletelyUntyped)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_Message, this.Context.Operation.CodeName)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_Message, _context.Operation.CodeName)));
 
                     CreateUntypedMessages();
                 }
                 else
                 {
-
                     ParameterizedMessageHelper.ValidateWrapperSettings(this);
                     ParameterizedMessageHelper.ValidateNoHeaders(this);
-                    this.WrappedBodyTypeGenerator.ValidateForParameterMode(this.Context.Operation);
+                    _wrappedBodyTypeGenerator.ValidateForParameterMode(_context.Operation);
 
-                    ParameterizedMethodGenerator generator = new ParameterizedMethodGenerator(this.Method, this.EndMethod);
-                    this.BeginPartCodeGenerator = generator.InputGenerator;
-                    this.EndPartCodeGenerator = generator.OutputGenerator;
+                    ParameterizedMethodGenerator generator = new ParameterizedMethodGenerator(_method, _endMethod);
+                    _beginPartCodeGenerator = generator.InputGenerator;
+                    _endPartCodeGenerator = generator.OutputGenerator;
 
-                    if (!this.Oneway && this.Response.Body.ReturnValue != null)
+                    if (!_oneway && _response.Body.ReturnValue != null)
                     {
-                        this.EndMethod.ReturnType = GetParameterType(this.Response.Body.ReturnValue);
-                        ParameterizedMessageHelper.GenerateMessageParameterAttribute(this.Response.Body.ReturnValue, this.EndMethod.ReturnTypeCustomAttributes, TypeLoader.GetReturnValueName(this.DefaultName), this.DefaultNS);
-                        AddAdditionalAttributes(this.Response.Body.ReturnValue, this.EndMethod.ReturnTypeCustomAttributes, this.IsEncoded);
+                        _endMethod.ReturnType = GetParameterType(_response.Body.ReturnValue);
+                        ParameterizedMessageHelper.GenerateMessageParameterAttribute(_response.Body.ReturnValue, _endMethod.ReturnTypeCustomAttributes, TypeLoader.GetReturnValueName(_defaultName), _defaultNS);
+                        AddAdditionalAttributes(_response.Body.ReturnValue, _endMethod.ReturnTypeCustomAttributes, _isEncoded);
                     }
 
                     GenerateMessageBodyParts(false /*generateTypedMessages*/);
                 }
             }
 
-            void GenerateTypedMessageOperation(bool hideFromEditor, ref OperationFormatStyle style)
+            private void GenerateTypedMessageOperation(bool hideFromEditor, ref OperationFormatStyle style)
             {
                 CreateOrOverrideActionProperties();
 
@@ -277,30 +275,30 @@ namespace System.ServiceModel.Description
                         return;
                 }
 
-                CodeNamespace ns = this.Context.ServiceContractGenerator.NamespaceManager.EnsureNamespace(this.ContractNS);
+                CodeNamespace ns = _context.ServiceContractGenerator.NamespaceManager.EnsureNamespace(_contractNS);
 
-                if (!this.Request.IsUntypedMessage)
+                if (!_request.IsUntypedMessage)
                 {
-                    CodeTypeReference typedReqMessageRef = GenerateTypedMessageHeaderAndReturnValueParts(ns, this.DefaultName + "Request", this.Request, false /*isReply*/, hideFromEditor, ref this.IsNewRequest, out this.BeginPartCodeGenerator);
-                    this.Method.Parameters.Insert(0, new CodeParameterDeclarationExpression(typedReqMessageRef, "request"));
+                    CodeTypeReference typedReqMessageRef = GenerateTypedMessageHeaderAndReturnValueParts(ns, _defaultName + "Request", _request, false /*isReply*/, hideFromEditor, ref _isNewRequest, out _beginPartCodeGenerator);
+                    _method.Parameters.Insert(0, new CodeParameterDeclarationExpression(typedReqMessageRef, "request"));
                 }
 
-                if (!this.Oneway && !this.Response.IsUntypedMessage)
+                if (!_oneway && !_response.IsUntypedMessage)
                 {
-                    CodeTypeReference typedRespMessageRef = GenerateTypedMessageHeaderAndReturnValueParts(ns, this.DefaultName + "Response", this.Response, true /*isReply*/, hideFromEditor, ref this.IsNewResponse, out this.EndPartCodeGenerator);
-                    this.EndMethod.ReturnType = typedRespMessageRef;
+                    CodeTypeReference typedRespMessageRef = GenerateTypedMessageHeaderAndReturnValueParts(ns, _defaultName + "Response", _response, true /*isReply*/, hideFromEditor, ref _isNewResponse, out _endPartCodeGenerator);
+                    _endMethod.ReturnType = typedRespMessageRef;
                 }
 
                 GenerateMessageBodyParts(true /*generateTypedMessages*/);
 
-                if (!this.IsEncoded)
+                if (!_isEncoded)
                     style = OperationFormatStyle.Document;
             }
 
-            CodeTypeReference GenerateTypedMessageHeaderAndReturnValueParts(CodeNamespace ns, string defaultName, MessageDescription message, bool isReply, bool hideFromEditor, ref bool isNewMessage, out IPartCodeGenerator partCodeGenerator)
+            private CodeTypeReference GenerateTypedMessageHeaderAndReturnValueParts(CodeNamespace ns, string defaultName, MessageDescription message, bool isReply, bool hideFromEditor, ref bool isNewMessage, out IPartCodeGenerator partCodeGenerator)
             {
                 CodeTypeReference typedMessageRef;
-                if (TypedMessageHelper.FindGeneratedTypedMessage(this.Context.Contract, message, out typedMessageRef))
+                if (TypedMessageHelper.FindGeneratedTypedMessage(_context.Contract, message, out typedMessageRef))
                 {
                     partCodeGenerator = null;
                     isNewMessage = false;
@@ -309,14 +307,14 @@ namespace System.ServiceModel.Description
                 {
                     UniqueCodeNamespaceScope namespaceScope = new UniqueCodeNamespaceScope(ns);
 
-                    CodeTypeDeclaration typedMessageDecl = Context.Contract.TypeFactory.CreateClassType();
+                    CodeTypeDeclaration typedMessageDecl = _context.Contract.TypeFactory.CreateClassType();
                     string messageName = XmlName.IsNullOrEmpty(message.MessageName) ? null : message.MessageName.DecodedName;
                     typedMessageRef = namespaceScope.AddUnique(typedMessageDecl, messageName, defaultName);
 
-                    TypedMessageHelper.AddGeneratedTypedMessage(this.Context.Contract, message, typedMessageRef);
+                    TypedMessageHelper.AddGeneratedTypedMessage(_context.Contract, message, typedMessageRef);
 
-                    if (this.MessageContractType == MessageContractType.BareMessageContract && message.Body.WrapperName != null)
-                        WrapTypedMessage(ns, typedMessageDecl.Name, message, isReply, this.Context.IsInherited, hideFromEditor);
+                    if (_messageContractType == MessageContractType.BareMessageContract && message.Body.WrapperName != null)
+                        WrapTypedMessage(ns, typedMessageDecl.Name, message, isReply, _context.IsInherited, hideFromEditor);
 
                     partCodeGenerator = new TypedMessagePartCodeGenerator(typedMessageDecl);
 
@@ -332,102 +330,102 @@ namespace System.ServiceModel.Description
 
                     if (isReply && message.Body.ReturnValue != null)
                     {
-                        GenerateBodyPart(0, message.Body.ReturnValue, partCodeGenerator, true, this.IsEncoded, this.DefaultNS);
+                        GenerateBodyPart(0, message.Body.ReturnValue, partCodeGenerator, true, _isEncoded, _defaultNS);
                     }
                 }
                 return typedMessageRef;
             }
 
 
-            bool IsCompletelyUntyped
+            private bool IsCompletelyUntyped
             {
                 get
                 {
-                    bool isRequestMessage = this.Request != null && this.Request.IsUntypedMessage;
-                    bool isResponseMessage = this.Response != null && this.Response.IsUntypedMessage;
+                    bool isRequestMessage = _request != null && _request.IsUntypedMessage;
+                    bool isResponseMessage = _response != null && _response.IsUntypedMessage;
 
                     if (isRequestMessage && isResponseMessage)
                         return true;
-                    else if (isResponseMessage && Request == null || IsEmpty(Request))
+                    else if (isResponseMessage && _request == null || IsEmpty(_request))
                         return true;
-                    else if (isRequestMessage && Response == null || IsEmpty(Response))
+                    else if (isRequestMessage && _response == null || IsEmpty(_response))
                         return true;
                     else
                         return false;
                 }
             }
 
-            bool IsEmpty(MessageDescription message)
+            private bool IsEmpty(MessageDescription message)
             {
                 return (message.Body.Parts.Count == 0 && message.Headers.Count == 0);
             }
 
-            bool HasUntypedMessages
+            private bool HasUntypedMessages
             {
                 get
                 {
-                    bool isRequestMessage = this.Request != null && this.Request.IsUntypedMessage;
-                    bool isResponseMessage = this.Response != null && this.Response.IsUntypedMessage;
+                    bool isRequestMessage = _request != null && _request.IsUntypedMessage;
+                    bool isResponseMessage = _response != null && _response.IsUntypedMessage;
                     return (isRequestMessage || isResponseMessage);
                 }
             }
 
-            void CreateUntypedMessages()
+            private void CreateUntypedMessages()
             {
-                bool isRequestMessage = this.Request != null && this.Request.IsUntypedMessage;
-                bool isResponseMessage = this.Response != null && this.Response.IsUntypedMessage;
+                bool isRequestMessage = _request != null && _request.IsUntypedMessage;
+                bool isResponseMessage = _response != null && _response.IsUntypedMessage;
 
                 if (isRequestMessage)
-                    this.Method.Parameters.Insert(0, new CodeParameterDeclarationExpression(Context.ServiceContractGenerator.GetCodeTypeReference((typeof(Message))), "request"));
+                    _method.Parameters.Insert(0, new CodeParameterDeclarationExpression(_context.ServiceContractGenerator.GetCodeTypeReference((typeof(Message))), "request"));
                 if (isResponseMessage)
-                    this.EndMethod.ReturnType = Context.ServiceContractGenerator.GetCodeTypeReference(typeof(Message));
+                    _endMethod.ReturnType = _context.ServiceContractGenerator.GetCodeTypeReference(typeof(Message));
             }
 
-            void CreateOrOverrideActionProperties()
+            private void CreateOrOverrideActionProperties()
             {
-                if (this.Request != null)
+                if (_request != null)
                 {
                     CustomAttributeHelper.CreateOrOverridePropertyDeclaration(
-                        CustomAttributeHelper.FindOrCreateAttributeDeclaration<OperationContractAttribute>(this.Method.CustomAttributes), OperationContractAttribute.ActionPropertyName, this.Request.Action);
+                        CustomAttributeHelper.FindOrCreateAttributeDeclaration<OperationContractAttribute>(_method.CustomAttributes), OperationContractAttribute.ActionPropertyName, _request.Action);
                 }
-                if (this.Response != null)
+                if (_response != null)
                 {
                     CustomAttributeHelper.CreateOrOverridePropertyDeclaration(
-                        CustomAttributeHelper.FindOrCreateAttributeDeclaration<OperationContractAttribute>(this.Method.CustomAttributes), OperationContractAttribute.ReplyActionPropertyName, this.Response.Action);
+                        CustomAttributeHelper.FindOrCreateAttributeDeclaration<OperationContractAttribute>(_method.CustomAttributes), OperationContractAttribute.ReplyActionPropertyName, _response.Action);
                 }
             }
 
-            interface IPartCodeGenerator
+            private interface IPartCodeGenerator
             {
                 CodeAttributeDeclarationCollection AddPart(CodeTypeReference type, ref string name);
                 CodeAttributeDeclarationCollection MessageLevelAttributes { get; }
                 void EndCodeGeneration();
             }
 
-            class ParameterizedMethodGenerator
+            private class ParameterizedMethodGenerator
             {
-                ParametersPartCodeGenerator ins;
-                ParametersPartCodeGenerator outs;
-                bool isSync;
+                private ParametersPartCodeGenerator _ins;
+                private ParametersPartCodeGenerator _outs;
+                private bool _isSync;
 
                 internal ParameterizedMethodGenerator(CodeMemberMethod beginMethod, CodeMemberMethod endMethod)
                 {
-                    this.ins = new ParametersPartCodeGenerator(this, beginMethod.Name, beginMethod.Parameters, beginMethod.CustomAttributes, FieldDirection.In);
-                    this.outs = new ParametersPartCodeGenerator(this, beginMethod.Name, endMethod.Parameters, beginMethod.CustomAttributes, FieldDirection.Out);
-                    this.isSync = (beginMethod == endMethod);
+                    _ins = new ParametersPartCodeGenerator(this, beginMethod.Name, beginMethod.Parameters, beginMethod.CustomAttributes, FieldDirection.In);
+                    _outs = new ParametersPartCodeGenerator(this, beginMethod.Name, endMethod.Parameters, beginMethod.CustomAttributes, FieldDirection.Out);
+                    _isSync = (beginMethod == endMethod);
                 }
 
                 internal CodeParameterDeclarationExpression GetOrCreateParameter(CodeTypeReference type, string name, FieldDirection direction, ref int index, out bool createdNew)
                 {
                     Fx.Assert(Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name), String.Format(System.Globalization.CultureInfo.InvariantCulture, "Type name '{0}' is not ValidLanguageIndependentIdentifier!", name));
-                    ParametersPartCodeGenerator existingParams = direction != FieldDirection.In ? ins : outs;
+                    ParametersPartCodeGenerator existingParams = direction != FieldDirection.In ? _ins : _outs;
                     int i = index;
                     CodeParameterDeclarationExpression existing = existingParams.GetParameter(name, ref i);
                     bool isRef = existing != null && existing.Type.BaseType == type.BaseType;
                     if (isRef)
                     {
                         existing.Direction = FieldDirection.Ref;
-                        if (isSync)
+                        if (_isSync)
                         {
                             index = i + 1;
                             createdNew = false;
@@ -451,7 +449,7 @@ namespace System.ServiceModel.Description
                 {
                     get
                     {
-                        return this.ins;
+                        return _ins;
                     }
                 }
 
@@ -459,32 +457,32 @@ namespace System.ServiceModel.Description
                 {
                     get
                     {
-                        return this.outs;
+                        return _outs;
                     }
                 }
 
-                class ParametersPartCodeGenerator : IPartCodeGenerator
+                private class ParametersPartCodeGenerator : IPartCodeGenerator
                 {
-                    ParameterizedMethodGenerator parent;
-                    FieldDirection direction;
-                    CodeParameterDeclarationExpressionCollection parameters;
-                    CodeAttributeDeclarationCollection messageAttrs;
-                    string methodName;
-                    int index;
+                    private ParameterizedMethodGenerator _parent;
+                    private FieldDirection _direction;
+                    private CodeParameterDeclarationExpressionCollection _parameters;
+                    private CodeAttributeDeclarationCollection _messageAttrs;
+                    private string _methodName;
+                    private int _index;
 
                     internal ParametersPartCodeGenerator(ParameterizedMethodGenerator parent, string methodName, CodeParameterDeclarationExpressionCollection parameters, CodeAttributeDeclarationCollection messageAttrs, FieldDirection direction)
                     {
-                        this.parent = parent;
-                        this.methodName = methodName;
-                        this.parameters = parameters;
-                        this.messageAttrs = messageAttrs;
-                        this.direction = direction;
-                        this.index = 0;
+                        _parent = parent;
+                        _methodName = methodName;
+                        _parameters = parameters;
+                        _messageAttrs = messageAttrs;
+                        _direction = direction;
+                        _index = 0;
                     }
 
                     public bool NameExists(string name)
                     {
-                        if (String.Compare(name, methodName, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (String.Compare(name, _methodName, StringComparison.OrdinalIgnoreCase) == 0)
                             return true;
                         int index = 0;
                         return GetParameter(name, ref index) != null;
@@ -494,11 +492,11 @@ namespace System.ServiceModel.Description
                     {
                         bool createdNew;
                         name = UniqueCodeIdentifierScope.MakeValid(name, "param");
-                        CodeParameterDeclarationExpression paramDecl = parent.GetOrCreateParameter(type, name, this.direction, ref index, out createdNew);
+                        CodeParameterDeclarationExpression paramDecl = _parent.GetOrCreateParameter(type, name, _direction, ref _index, out createdNew);
                         if (createdNew)
                         {
                             paramDecl.Name = GetUniqueParameterName(paramDecl.Name, this);
-                            parameters.Insert(this.index++, paramDecl);
+                            _parameters.Insert(_index++, paramDecl);
                         }
 
                         name = paramDecl.Name;
@@ -510,9 +508,9 @@ namespace System.ServiceModel.Description
 
                     internal CodeParameterDeclarationExpression GetParameter(string name, ref int index)
                     {
-                        for (int i = index; i < parameters.Count; i++)
+                        for (int i = index; i < _parameters.Count; i++)
                         {
-                            CodeParameterDeclarationExpression parameter = parameters[i];
+                            CodeParameterDeclarationExpression parameter = _parameters[i];
                             if (String.Compare(parameter.Name, name, StringComparison.OrdinalIgnoreCase) == 0)
                             {
                                 index = i;
@@ -527,7 +525,7 @@ namespace System.ServiceModel.Description
                     {
                         get
                         {
-                            return messageAttrs;
+                            return _messageAttrs;
                         }
                     }
 
@@ -535,38 +533,37 @@ namespace System.ServiceModel.Description
                     {
                     }
 
-                    static string GetUniqueParameterName(string name, ParametersPartCodeGenerator parameters)
+                    private static string GetUniqueParameterName(string name, ParametersPartCodeGenerator parameters)
                     {
                         return NamingHelper.GetUniqueName(name, DoesParameterNameExist, parameters);
                     }
-                    static bool DoesParameterNameExist(string name, object parametersObject)
+                    private static bool DoesParameterNameExist(string name, object parametersObject)
                     {
                         return ((ParametersPartCodeGenerator)parametersObject).NameExists(name);
                     }
                 }
-
             }
 
 
-            class TypedMessagePartCodeGenerator : IPartCodeGenerator
+            private class TypedMessagePartCodeGenerator : IPartCodeGenerator
             {
-                CodeTypeDeclaration typeDecl;
-                UniqueCodeIdentifierScope memberScope;
+                private CodeTypeDeclaration _typeDecl;
+                private UniqueCodeIdentifierScope _memberScope;
 
                 internal TypedMessagePartCodeGenerator(CodeTypeDeclaration typeDecl)
                 {
-                    this.typeDecl = typeDecl;
-                    this.memberScope = new UniqueCodeIdentifierScope();
-                    this.memberScope.AddReserved(typeDecl.Name);
+                    _typeDecl = typeDecl;
+                    _memberScope = new UniqueCodeIdentifierScope();
+                    _memberScope.AddReserved(typeDecl.Name);
                 }
 
                 CodeAttributeDeclarationCollection IPartCodeGenerator.AddPart(CodeTypeReference type, ref string name)
                 {
                     CodeMemberField memberDecl = new CodeMemberField();
-                    memberDecl.Name = name = this.memberScope.AddUnique(name, "member");
+                    memberDecl.Name = name = _memberScope.AddUnique(name, "member");
                     memberDecl.Type = type;
                     memberDecl.Attributes = MemberAttributes.Public;
-                    typeDecl.Members.Add(memberDecl);
+                    _typeDecl.Members.Add(memberDecl);
                     return memberDecl.CustomAttributes;
                 }
 
@@ -574,21 +571,21 @@ namespace System.ServiceModel.Description
                 {
                     get
                     {
-                        return typeDecl.CustomAttributes;
+                        return _typeDecl.CustomAttributes;
                     }
                 }
 
                 void IPartCodeGenerator.EndCodeGeneration()
                 {
-                    TypedMessageHelper.GenerateConstructors(typeDecl);
+                    TypedMessageHelper.GenerateConstructors(_typeDecl);
                 }
             }
 
-            void WrapTypedMessage(CodeNamespace ns, string typeName, MessageDescription messageDescription, bool isReply, bool isInherited, bool hideFromEditor)
+            private void WrapTypedMessage(CodeNamespace ns, string typeName, MessageDescription messageDescription, bool isReply, bool isInherited, bool hideFromEditor)
             {
                 Fx.Assert(String.IsNullOrEmpty(typeName) || Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(typeName), String.Format(System.Globalization.CultureInfo.InvariantCulture, "Type name '{0}' is not ValidLanguageIndependentIdentifier!", typeName));
                 UniqueCodeNamespaceScope namespaceScope = new UniqueCodeNamespaceScope(ns);
-                CodeTypeDeclaration wrapperTypeDecl = Context.Contract.TypeFactory.CreateClassType();
+                CodeTypeDeclaration wrapperTypeDecl = _context.Contract.TypeFactory.CreateClassType();
                 CodeTypeReference wrapperTypeRef = namespaceScope.AddUnique(wrapperTypeDecl, typeName + "Body", "Body");
 
                 if (hideFromEditor)
@@ -598,7 +595,7 @@ namespace System.ServiceModel.Description
 
                 string defaultNS = GetWrapperNamespace(messageDescription);
                 string messageName = XmlName.IsNullOrEmpty(messageDescription.MessageName) ? null : messageDescription.MessageName.DecodedName;
-                this.WrappedBodyTypeGenerator.AddTypeAttributes(messageName, defaultNS, wrapperTypeDecl.CustomAttributes, this.IsEncoded);
+                _wrappedBodyTypeGenerator.AddTypeAttributes(messageName, defaultNS, wrapperTypeDecl.CustomAttributes, _isEncoded);
 
                 IPartCodeGenerator partGenerator = new TypedMessagePartCodeGenerator(wrapperTypeDecl);
                 System.Net.Security.ProtectionLevel protectionLevel = System.Net.Security.ProtectionLevel.None;
@@ -606,7 +603,7 @@ namespace System.ServiceModel.Description
 
                 if (messageDescription.Body.ReturnValue != null)
                 {
-                    AddWrapperPart(messageDescription.MessageName, this.WrappedBodyTypeGenerator, partGenerator, messageDescription.Body.ReturnValue, wrapperTypeDecl.CustomAttributes);
+                    AddWrapperPart(messageDescription.MessageName, _wrappedBodyTypeGenerator, partGenerator, messageDescription.Body.ReturnValue, wrapperTypeDecl.CustomAttributes);
                     protectionLevel = ProtectionLevelHelper.Max(protectionLevel, messageDescription.Body.ReturnValue.ProtectionLevel);
                     if (messageDescription.Body.ReturnValue.HasProtectionLevel)
                         isProtectionLevelSetExplicitly = true;
@@ -615,13 +612,13 @@ namespace System.ServiceModel.Description
                 List<CodeTypeReference> wrapperKnownTypes = new List<CodeTypeReference>();
                 foreach (MessagePartDescription part in messageDescription.Body.Parts)
                 {
-                    AddWrapperPart(messageDescription.MessageName, this.WrappedBodyTypeGenerator, partGenerator, part, wrapperTypeDecl.CustomAttributes);
+                    AddWrapperPart(messageDescription.MessageName, _wrappedBodyTypeGenerator, partGenerator, part, wrapperTypeDecl.CustomAttributes);
                     protectionLevel = ProtectionLevelHelper.Max(protectionLevel, part.ProtectionLevel);
                     if (part.HasProtectionLevel)
                         isProtectionLevelSetExplicitly = true;
 
                     ICollection<CodeTypeReference> knownTypesForPart = null;
-                    if (this.KnownTypes != null && this.KnownTypes.TryGetValue(part, out knownTypesForPart))
+                    if (_knownTypes != null && _knownTypes.TryGetValue(part, out knownTypesForPart))
                     {
                         foreach (CodeTypeReference typeReference in knownTypesForPart)
                             wrapperKnownTypes.Add(typeReference);
@@ -630,8 +627,8 @@ namespace System.ServiceModel.Description
                 messageDescription.Body.Parts.Clear();
 
                 MessagePartDescription wrapperPart = new MessagePartDescription(messageDescription.Body.WrapperName, messageDescription.Body.WrapperNamespace);
-                if (this.KnownTypes != null)
-                    this.KnownTypes.Add(wrapperPart, wrapperKnownTypes);
+                if (_knownTypes != null)
+                    _knownTypes.Add(wrapperPart, wrapperKnownTypes);
                 if (isProtectionLevelSetExplicitly)
                     wrapperPart.ProtectionLevel = protectionLevel;
                 messageDescription.Body.WrapperName = null;
@@ -641,14 +638,13 @@ namespace System.ServiceModel.Description
                 else
                     messageDescription.Body.Parts.Add(wrapperPart);
                 TypedMessageHelper.GenerateConstructors(wrapperTypeDecl);
-                this.Parent.ParameterTypes.Add(wrapperPart, wrapperTypeRef);
-                this.Parent.SpecialPartName.Add(wrapperPart, "Body");
-
+                _parent.ParameterTypes.Add(wrapperPart, wrapperTypeRef);
+                _parent.SpecialPartName.Add(wrapperPart, "Body");
             }
 
-            string GetWrapperNamespace(MessageDescription messageDescription)
+            private string GetWrapperNamespace(MessageDescription messageDescription)
             {
-                string defaultNS = this.DefaultNS;
+                string defaultNS = _defaultNS;
                 if (messageDescription.Body.ReturnValue != null)
                     defaultNS = messageDescription.Body.ReturnValue.Namespace;
                 else if (messageDescription.Body.Parts.Count > 0)
@@ -656,59 +652,59 @@ namespace System.ServiceModel.Description
                 return defaultNS;
             }
 
-            void GenerateMessageBodyParts(bool generateTypedMessages)
+            private void GenerateMessageBodyParts(bool generateTypedMessages)
             {
                 int order = 0;
-                if (this.IsNewRequest)
+                if (_isNewRequest)
                 {
-                    foreach (MessagePartDescription setting in this.Request.Body.Parts)
-                        GenerateBodyPart(order++, setting, this.BeginPartCodeGenerator, generateTypedMessages, this.IsEncoded, this.DefaultNS);
+                    foreach (MessagePartDescription setting in _request.Body.Parts)
+                        GenerateBodyPart(order++, setting, _beginPartCodeGenerator, generateTypedMessages, _isEncoded, _defaultNS);
                 }
 
-                if (!this.Oneway && IsNewResponse)
+                if (!_oneway && _isNewResponse)
                 {
-                    order = this.Response.Body.ReturnValue != null ? 1 : 0;
-                    foreach (MessagePartDescription setting in this.Response.Body.Parts)
-                        GenerateBodyPart(order++, setting, this.EndPartCodeGenerator, generateTypedMessages, this.IsEncoded, this.DefaultNS);
+                    order = _response.Body.ReturnValue != null ? 1 : 0;
+                    foreach (MessagePartDescription setting in _response.Body.Parts)
+                        GenerateBodyPart(order++, setting, _endPartCodeGenerator, generateTypedMessages, _isEncoded, _defaultNS);
                 }
-                if (IsNewRequest)
+                if (_isNewRequest)
                 {
-                    if (this.BeginPartCodeGenerator != null)
-                        this.BeginPartCodeGenerator.EndCodeGeneration();
+                    if (_beginPartCodeGenerator != null)
+                        _beginPartCodeGenerator.EndCodeGeneration();
                 }
-                if (IsNewResponse)
+                if (_isNewResponse)
                 {
-                    if (EndPartCodeGenerator != null)
-                        this.EndPartCodeGenerator.EndCodeGeneration();
+                    if (_endPartCodeGenerator != null)
+                        _endPartCodeGenerator.EndCodeGeneration();
                 }
             }
 
-            void AddWrapperPart(XmlName messageName, IWrappedBodyTypeGenerator wrappedBodyTypeGenerator, IPartCodeGenerator partGenerator, MessagePartDescription part, CodeAttributeDeclarationCollection typeAttributes)
+            private void AddWrapperPart(XmlName messageName, IWrappedBodyTypeGenerator wrappedBodyTypeGenerator, IPartCodeGenerator partGenerator, MessagePartDescription part, CodeAttributeDeclarationCollection typeAttributes)
             {
                 string fieldName = part.CodeName;
                 CodeTypeReference type;
                 if (part.Type == typeof(System.IO.Stream))
-                    type = Context.ServiceContractGenerator.GetCodeTypeReference(typeof(byte[]));
+                    type = _context.ServiceContractGenerator.GetCodeTypeReference(typeof(byte[]));
                 else
                     type = GetParameterType(part);
                 CodeAttributeDeclarationCollection fieldAttributes = partGenerator.AddPart(type, ref fieldName);
 
                 CodeAttributeDeclarationCollection importedAttributes = null;
 
-                bool hasAttributes = this.Parent.ParameterAttributes.TryGetValue(part, out importedAttributes);
+                bool hasAttributes = _parent.ParameterAttributes.TryGetValue(part, out importedAttributes);
 
                 wrappedBodyTypeGenerator.AddMemberAttributes(messageName, part, importedAttributes, typeAttributes, fieldAttributes);
-                this.Parent.ParameterTypes.Remove(part);
+                _parent.ParameterTypes.Remove(part);
                 if (hasAttributes)
-                    this.Parent.ParameterAttributes.Remove(part);
+                    _parent.ParameterAttributes.Remove(part);
             }
 
-            void GenerateBodyPart(int order, MessagePartDescription messagePart, IPartCodeGenerator partCodeGenerator, bool generateTypedMessage, bool isEncoded, string defaultNS)
+            private void GenerateBodyPart(int order, MessagePartDescription messagePart, IPartCodeGenerator partCodeGenerator, bool generateTypedMessage, bool isEncoded, string defaultNS)
             {
                 if (!generateTypedMessage) order = -1;
 
                 string partName;
-                if (!this.Parent.SpecialPartName.TryGetValue(messagePart, out partName))
+                if (!_parent.SpecialPartName.TryGetValue(messagePart, out partName))
                     partName = messagePart.CodeName;
 
                 CodeTypeReference partType = GetParameterType(messagePart);
@@ -726,10 +722,10 @@ namespace System.ServiceModel.Description
                 AddAdditionalAttributes(messagePart, partAttributes, generateTypedMessage || isEncoded);
             }
 
-            void GenerateHeaderPart(MessageHeaderDescription setting, IPartCodeGenerator parts)
+            private void GenerateHeaderPart(MessageHeaderDescription setting, IPartCodeGenerator parts)
             {
                 string partName;
-                if (!this.Parent.SpecialPartName.TryGetValue(setting, out partName))
+                if (!_parent.SpecialPartName.TryGetValue(setting, out partName))
                     partName = setting.CodeName;
                 CodeTypeReference partType = GetParameterType(setting);
                 CodeAttributeDeclarationCollection partAttributes = parts.AddPart(partType, ref partName);
@@ -737,34 +733,33 @@ namespace System.ServiceModel.Description
                 AddAdditionalAttributes(setting, partAttributes, true /*isAdditionalAttributesAllowed*/);
             }
 
-            CodeTypeReference GetParameterType(MessagePartDescription setting)
+            private CodeTypeReference GetParameterType(MessagePartDescription setting)
             {
                 if (setting.Type != null)
-                    return Context.ServiceContractGenerator.GetCodeTypeReference(setting.Type);
-                else if (this.Parent.parameterTypes.ContainsKey(setting))
-                    return this.Parent.parameterTypes[setting];
+                    return _context.ServiceContractGenerator.GetCodeTypeReference(setting.Type);
+                else if (_parent._parameterTypes.ContainsKey(setting))
+                    return _parent._parameterTypes[setting];
                 else
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SfxNoTypeSpecifiedForParameter, setting.Name)));
             }
 
-            void AddAdditionalAttributes(MessagePartDescription setting, CodeAttributeDeclarationCollection attributes, bool isAdditionalAttributesAllowed)
+            private void AddAdditionalAttributes(MessagePartDescription setting, CodeAttributeDeclarationCollection attributes, bool isAdditionalAttributesAllowed)
             {
-                if (this.Parent.parameterAttributes != null && this.Parent.parameterAttributes.ContainsKey(setting))
+                if (_parent._parameterAttributes != null && _parent._parameterAttributes.ContainsKey(setting))
                 {
-                    CodeAttributeDeclarationCollection localAttributes = this.Parent.parameterAttributes[setting];
+                    CodeAttributeDeclarationCollection localAttributes = _parent._parameterAttributes[setting];
                     if (localAttributes != null && localAttributes.Count > 0)
                     {
                         if (isAdditionalAttributesAllowed)
                             attributes.AddRange(localAttributes);
                         else
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SfxUseTypedMessageForCustomAttributes, setting.Name, localAttributes[0].AttributeType.BaseType)));
-
                     }
                 }
             }
 
 
-            static class TypedMessageHelper
+            private static class TypedMessageHelper
             {
                 internal static void GenerateProtectionLevelAttribute(MessageDescription message, IPartCodeGenerator partCodeGenerator)
                 {
@@ -851,7 +846,7 @@ namespace System.ServiceModel.Description
                         GenerateMessageContractMemberAttribute<MessageHeaderAttribute>(-1, setting, attributes, defaultName);
                 }
 
-                static void GenerateMessageContractMemberAttribute<T>(int order, MessagePartDescription setting, CodeAttributeDeclarationCollection attrs, XmlName defaultName)
+                private static void GenerateMessageContractMemberAttribute<T>(int order, MessagePartDescription setting, CodeAttributeDeclarationCollection attrs, XmlName defaultName)
                     where T : Attribute
                 {
                     CodeAttributeDeclaration decl = CustomAttributeHelper.FindOrCreateAttributeDeclaration<T>(attrs);
@@ -869,12 +864,10 @@ namespace System.ServiceModel.Description
                     if (order >= 0)
                         CustomAttributeHelper.CreateOrOverridePropertyDeclaration(decl, MessageBodyMemberAttribute.OrderPropertyName, order);
                 }
-
             }
 
-            static class ParameterizedMessageHelper
+            private static class ParameterizedMessageHelper
             {
-
                 internal static void GenerateMessageParameterAttribute(MessagePartDescription setting, CodeAttributeDeclarationCollection attributes, XmlName defaultName, string defaultNS)
                 {
                     if (setting.Name != defaultName.EncodedName)
@@ -890,61 +883,60 @@ namespace System.ServiceModel.Description
 
                 internal static void ValidateProtectionLevel(MethodSignatureGenerator parent)
                 {
-                    if (parent.Request != null && parent.Request.HasProtectionLevel)
+                    if (parent._request != null && parent._request.HasProtectionLevel)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent.Request.Action == null ? "" : parent.Request.Action)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent._request.Action == null ? "" : parent._request.Action)));
                     }
-                    if (parent.Response != null && parent.Response.HasProtectionLevel)
+                    if (parent._response != null && parent._response.HasProtectionLevel)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent.Response.Action == null ? "" : parent.Response.Action)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent._response.Action == null ? "" : parent._response.Action)));
                     }
                 }
 
                 internal static void ValidateWrapperSettings(MethodSignatureGenerator parent)
                 {
-                    if (parent.Request.Body.WrapperName == null || (parent.Response != null && parent.Response.Body.WrapperName == null))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_Bare, parent.Context.Operation.CodeName)));
+                    if (parent._request.Body.WrapperName == null || (parent._response != null && parent._response.Body.WrapperName == null))
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_Bare, parent._context.Operation.CodeName)));
 
-                    if (!StringEqualOrNull(parent.Request.Body.WrapperNamespace, parent.ContractNS))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent.Request.MessageName, parent.Request.Body.WrapperNamespace, parent.ContractNS)));
+                    if (!StringEqualOrNull(parent._request.Body.WrapperNamespace, parent._contractNS))
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent._request.MessageName, parent._request.Body.WrapperNamespace, parent._contractNS)));
 
-                    XmlName defaultName = new XmlName(parent.DefaultName);
-                    if (!String.Equals(parent.Request.Body.WrapperName, defaultName.EncodedName, StringComparison.Ordinal))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent.Request.MessageName, parent.Request.Body.WrapperName, defaultName.EncodedName)));
+                    XmlName defaultName = new XmlName(parent._defaultName);
+                    if (!String.Equals(parent._request.Body.WrapperName, defaultName.EncodedName, StringComparison.Ordinal))
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent._request.MessageName, parent._request.Body.WrapperName, defaultName.EncodedName)));
 
-                    if (parent.Response != null)
+                    if (parent._response != null)
                     {
-                        if (!StringEqualOrNull(parent.Response.Body.WrapperNamespace, parent.ContractNS))
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent.Response.MessageName, parent.Response.Body.WrapperNamespace, parent.ContractNS)));
+                        if (!StringEqualOrNull(parent._response.Body.WrapperNamespace, parent._contractNS))
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent._response.MessageName, parent._response.Body.WrapperNamespace, parent._contractNS)));
 
-                        if (!String.Equals(parent.Response.Body.WrapperName, TypeLoader.GetBodyWrapperResponseName(defaultName).EncodedName, StringComparison.Ordinal))
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent.Response.MessageName, parent.Response.Body.WrapperName, defaultName.EncodedName)));
+                        if (!String.Equals(parent._response.Body.WrapperName, TypeLoader.GetBodyWrapperResponseName(defaultName).EncodedName, StringComparison.Ordinal))
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent._response.MessageName, parent._response.Body.WrapperName, defaultName.EncodedName)));
                     }
                 }
 
                 internal static void ValidateNoHeaders(MethodSignatureGenerator parent)
                 {
-                    if (parent.Request.Headers.Count > 0)
+                    if (parent._request.Headers.Count > 0)
                     {
-                        if (parent.IsEncoded)
+                        if (parent._isEncoded)
                         {
-                            parent.Context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent.Request.MessageName), true/*isWarning*/));
+                            parent._context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent._request.MessageName), true/*isWarning*/));
                         }
                         else
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent.Request.MessageName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent._request.MessageName)));
                     }
 
-                    if (!parent.Oneway && parent.Response.Headers.Count > 0)
+                    if (!parent._oneway && parent._response.Headers.Count > 0)
                     {
-                        if (parent.IsEncoded)
-                            parent.Context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent.Response.MessageName), true/*isWarning*/));
+                        if (parent._isEncoded)
+                            parent._context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent._response.MessageName), true/*isWarning*/));
                         else
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent.Response.MessageName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent._response.MessageName)));
                     }
-
                 }
 
-                static bool StringEqualOrNull(string overrideValue, string defaultValue)
+                private static bool StringEqualOrNull(string overrideValue, string defaultValue)
                 {
                     return overrideValue == null || String.Equals(overrideValue, defaultValue, StringComparison.Ordinal);
                 }
@@ -952,12 +944,12 @@ namespace System.ServiceModel.Description
 
             internal void GenerateTaskSignature(ref OperationFormatStyle style)
             {
-                this.Method = this.Context.TaskMethod;
-                this.EndMethod = this.Context.TaskMethod;
-                this.DefaultName = this.Context.SyncMethod.Name;
+                _method = _context.TaskMethod;
+                _endMethod = _context.TaskMethod;
+                _defaultName = _context.SyncMethod.Name;
                 GenerateOperationSignatures(ref style);
 
-                CodeTypeReference resultType = this.Method.ReturnType;
+                CodeTypeReference resultType = _method.ReturnType;
                 CodeTypeReference taskReturnType;
                 if (resultType.BaseType == ServiceReflector.VoidType.FullName)
                 {
@@ -965,14 +957,14 @@ namespace System.ServiceModel.Description
                 }
                 else
                 {
-                    taskReturnType = new CodeTypeReference(this.Context.ServiceContractGenerator.GetCodeTypeReference(ServiceReflector.taskTResultType).BaseType, resultType);
+                    taskReturnType = new CodeTypeReference(_context.ServiceContractGenerator.GetCodeTypeReference(ServiceReflector.taskTResultType).BaseType, resultType);
                 }
 
-                this.Method.ReturnType = taskReturnType;
+                _method.ReturnType = taskReturnType;
             }
         }
 
-        static class CustomAttributeHelper
+        private static class CustomAttributeHelper
         {
             internal static void CreateOrOverridePropertyDeclaration<V>(CodeAttributeDeclaration attribute, string propertyName, V value)
             {
@@ -1025,7 +1017,7 @@ namespace System.ServiceModel.Description
                 return attr;
             }
 
-            static CodeExpression GetArgValue(object val)
+            private static CodeExpression GetArgValue(object val)
             {
                 Type type = val.GetType();
                 TypeInfo info = type.GetTypeInfo();
@@ -1040,15 +1032,15 @@ namespace System.ServiceModel.Description
         }
     }
 
-    class ParameterModeException : Exception
+    internal class ParameterModeException : Exception
     {
-        MessageContractType messageContractType = MessageContractType.WrappedMessageContract;
+        private MessageContractType _messageContractType = MessageContractType.WrappedMessageContract;
         public ParameterModeException() { }
         public ParameterModeException(string message) : base(message) { }
         public MessageContractType MessageContractType
         {
-            get { return messageContractType; }
-            set { messageContractType = value; }
+            get { return _messageContractType; }
+            set { _messageContractType = value; }
         }
     }
 }

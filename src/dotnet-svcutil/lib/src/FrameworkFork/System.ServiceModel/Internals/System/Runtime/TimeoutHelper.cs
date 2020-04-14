@@ -310,7 +310,7 @@ namespace System.Runtime
 
                     // Clean up cache when Token is canceled
                     token.Register(s_deregisterToken, Tuple.Create(targetTime, tokenSource));
-                    
+
                     // set the result so other thread may observe the token, and return
                     tcs.TrySetResult(token);
                     tokenTask = tcs.Task;

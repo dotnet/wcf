@@ -23,7 +23,5 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         }
 
         public abstract void Fixup(CommandProcessorOptions options);
-
     }
-
 }

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,36 +13,42 @@ namespace Microsoft.CodeDom {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeArgumentReferenceExpression : CodeExpression {
-        private string parameterName;
+    public class CodeArgumentReferenceExpression : CodeExpression
+    {
+        private string _parameterName;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArgumentReferenceExpression() {
+        public CodeArgumentReferenceExpression()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeArgumentReferenceExpression(string parameterName) {
-            this.parameterName = parameterName;
+        public CodeArgumentReferenceExpression(string parameterName)
+        {
+            _parameterName = parameterName;
         }
 
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string ParameterName {
-            get {
-                return (parameterName == null) ? string.Empty : parameterName;
+        public string ParameterName
+        {
+            get
+            {
+                return (_parameterName == null) ? string.Empty : _parameterName;
             }
-            set {
-                parameterName = value;
+            set
+            {
+                _parameterName = value;
             }
         }
     }

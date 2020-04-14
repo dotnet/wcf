@@ -153,7 +153,7 @@ namespace System.Runtime.Serialization
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName anytypeQualifiedName;
+        private static XmlQualifiedName s_anytypeQualifiedName;
         internal static XmlQualifiedName AnytypeQualifiedName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical anytypeQualifiedName field.",
@@ -161,16 +161,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (anytypeQualifiedName == null)
-                    anytypeQualifiedName = new XmlQualifiedName(Globals.AnyTypeLocalName, Globals.SchemaNamespace);
-                return anytypeQualifiedName;
+                if (s_anytypeQualifiedName == null)
+                    s_anytypeQualifiedName = new XmlQualifiedName(Globals.AnyTypeLocalName, Globals.SchemaNamespace);
+                return s_anytypeQualifiedName;
             }
         }
 
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName stringQualifiedName;
+        private static XmlQualifiedName s_stringQualifiedName;
         internal static XmlQualifiedName StringQualifiedName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical stringQualifiedName field.",
@@ -178,16 +178,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (stringQualifiedName == null)
-                    stringQualifiedName = new XmlQualifiedName(Globals.StringLocalName, Globals.SchemaNamespace);
-                return stringQualifiedName;
+                if (s_stringQualifiedName == null)
+                    s_stringQualifiedName = new XmlQualifiedName(Globals.StringLocalName, Globals.SchemaNamespace);
+                return s_stringQualifiedName;
             }
         }
 
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName defaultEnumBaseTypeName;
+        private static XmlQualifiedName s_defaultEnumBaseTypeName;
         internal static XmlQualifiedName DefaultEnumBaseTypeName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical defaultEnumBaseTypeName field.",
@@ -195,16 +195,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (defaultEnumBaseTypeName == null)
-                    defaultEnumBaseTypeName = new XmlQualifiedName(Globals.IntLocalName, Globals.SchemaNamespace);
-                return defaultEnumBaseTypeName;
+                if (s_defaultEnumBaseTypeName == null)
+                    s_defaultEnumBaseTypeName = new XmlQualifiedName(Globals.IntLocalName, Globals.SchemaNamespace);
+                return s_defaultEnumBaseTypeName;
             }
         }
 
-         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
+        // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName enumerationValueAnnotationName;
+        private static XmlQualifiedName s_enumerationValueAnnotationName;
         internal static XmlQualifiedName EnumerationValueAnnotationName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical enumerationValueAnnotationName field.",
@@ -212,16 +212,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (enumerationValueAnnotationName == null)
-                    enumerationValueAnnotationName = new XmlQualifiedName(Globals.EnumerationValueLocalName, Globals.SerializationNamespace);
-                return enumerationValueAnnotationName;
+                if (s_enumerationValueAnnotationName == null)
+                    s_enumerationValueAnnotationName = new XmlQualifiedName(Globals.EnumerationValueLocalName, Globals.SerializationNamespace);
+                return s_enumerationValueAnnotationName;
             }
         }
 
-         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
+        // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName surrogateDataAnnotationName;
+        private static XmlQualifiedName s_surrogateDataAnnotationName;
         internal static XmlQualifiedName SurrogateDataAnnotationName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical surrogateDataAnnotationName field.",
@@ -229,16 +229,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (surrogateDataAnnotationName == null)
-                    surrogateDataAnnotationName = new XmlQualifiedName(Globals.SurrogateDataLocalName, Globals.SerializationNamespace);
-                return surrogateDataAnnotationName;
+                if (s_surrogateDataAnnotationName == null)
+                    s_surrogateDataAnnotationName = new XmlQualifiedName(Globals.SurrogateDataLocalName, Globals.SerializationNamespace);
+                return s_surrogateDataAnnotationName;
             }
         }
 
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName defaultValueAnnotation;
+        private static XmlQualifiedName s_defaultValueAnnotation;
         internal static XmlQualifiedName DefaultValueAnnotation
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical defaultValueAnnotation field.",
@@ -246,16 +246,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (defaultValueAnnotation == null)
-                    defaultValueAnnotation = new XmlQualifiedName(Globals.DefaultValueLocalName, Globals.SerializationNamespace);
-                return defaultValueAnnotation;
+                if (s_defaultValueAnnotation == null)
+                    s_defaultValueAnnotation = new XmlQualifiedName(Globals.DefaultValueLocalName, Globals.SerializationNamespace);
+                return s_defaultValueAnnotation;
             }
         }
 
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName actualTypeAnnotationName;
+        private static XmlQualifiedName s_actualTypeAnnotationName;
         internal static XmlQualifiedName ActualTypeAnnotationName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical actualTypeAnnotationName field.",
@@ -263,16 +263,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (actualTypeAnnotationName == null)
-                    actualTypeAnnotationName = new XmlQualifiedName(Globals.ActualTypeLocalName, Globals.SerializationNamespace);
-                return actualTypeAnnotationName;
+                if (s_actualTypeAnnotationName == null)
+                    s_actualTypeAnnotationName = new XmlQualifiedName(Globals.ActualTypeLocalName, Globals.SerializationNamespace);
+                return s_actualTypeAnnotationName;
             }
         }
 
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName isDictionaryAnnotationName;
+        private static XmlQualifiedName s_isDictionaryAnnotationName;
         internal static XmlQualifiedName IsDictionaryAnnotationName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical isDictionaryAnnotationName field.",
@@ -280,16 +280,16 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (isDictionaryAnnotationName == null)
-                    isDictionaryAnnotationName = new XmlQualifiedName(Globals.IsDictionaryLocalName, Globals.SerializationNamespace);
-                return isDictionaryAnnotationName;
+                if (s_isDictionaryAnnotationName == null)
+                    s_isDictionaryAnnotationName = new XmlQualifiedName(Globals.IsDictionaryLocalName, Globals.SerializationNamespace);
+                return s_isDictionaryAnnotationName;
             }
         }
 
         // TODO:  [Fx.Tag.SecurityNote(Critical = "Static fields are marked SecurityCritical or readonly to prevent"
         //     + " data from being modified or leaked to other components in appdomain.")]
         [SecurityCritical]
-        static XmlQualifiedName isValueTypeName;
+        private static XmlQualifiedName s_isValueTypeName;
         internal static XmlQualifiedName IsValueTypeName
         {
             // TODO:  [Fx.Tag.SecurityNote(Critical = "Fetches the critical isValueTypeName field.",
@@ -297,9 +297,9 @@ namespace System.Runtime.Serialization
             [SecuritySafeCritical]
             get
             {
-                if (isValueTypeName == null)
-                    isValueTypeName = new XmlQualifiedName(Globals.IsValueTypeLocalName, Globals.SerializationNamespace);
-                return isValueTypeName;
+                if (s_isValueTypeName == null)
+                    s_isValueTypeName = new XmlQualifiedName(Globals.IsValueTypeLocalName, Globals.SerializationNamespace);
+                return s_isValueTypeName;
             }
         }
 
@@ -314,7 +314,6 @@ namespace System.Runtime.Serialization
                 return iSerializableFactoryTypeAttribute;
             }
         }
-
     }
 }
 

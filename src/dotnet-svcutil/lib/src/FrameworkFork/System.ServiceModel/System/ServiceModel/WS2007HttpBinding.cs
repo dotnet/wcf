@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System;
@@ -17,9 +18,9 @@ namespace System.ServiceModel
 
     public class WS2007HttpBinding : WSHttpBinding
     {
-        static readonly ReliableMessagingVersion WS2007ReliableMessagingVersion = ReliableMessagingVersion.WSReliableMessaging11;
-        static readonly TransactionProtocol WS2007TransactionProtocol = TransactionProtocol.WSAtomicTransaction11;
-        static readonly MessageSecurityVersion WS2007MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
+        private static readonly ReliableMessagingVersion s_WS2007ReliableMessagingVersion = ReliableMessagingVersion.WSReliableMessaging11;
+        private static readonly TransactionProtocol s_WS2007TransactionProtocol = TransactionProtocol.WSAtomicTransaction11;
+        private static readonly MessageSecurityVersion s_WS2007MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
 
         public WS2007HttpBinding(string configName)
             : this()
@@ -30,9 +31,9 @@ namespace System.ServiceModel
         public WS2007HttpBinding()
             : base()
         {
-            this.ReliableSessionBindingElement.ReliableMessagingVersion = WS2007ReliableMessagingVersion;
-            this.TransactionFlowBindingElement.TransactionProtocol = WS2007TransactionProtocol;
-            this.HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
+            this.ReliableSessionBindingElement.ReliableMessagingVersion = s_WS2007ReliableMessagingVersion;
+            this.TransactionFlowBindingElement.TransactionProtocol = s_WS2007TransactionProtocol;
+            this.HttpsTransport.MessageSecurityVersion = s_WS2007MessageSecurityVersion;
         }
 
         public WS2007HttpBinding(SecurityMode securityMode)
@@ -43,21 +44,21 @@ namespace System.ServiceModel
         public WS2007HttpBinding(SecurityMode securityMode, bool reliableSessionEnabled)
             : base(securityMode, reliableSessionEnabled)
         {
-            this.ReliableSessionBindingElement.ReliableMessagingVersion = WS2007ReliableMessagingVersion;
-            this.TransactionFlowBindingElement.TransactionProtocol = WS2007TransactionProtocol;
-            this.HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
+            this.ReliableSessionBindingElement.ReliableMessagingVersion = s_WS2007ReliableMessagingVersion;
+            this.TransactionFlowBindingElement.TransactionProtocol = s_WS2007TransactionProtocol;
+            this.HttpsTransport.MessageSecurityVersion = s_WS2007MessageSecurityVersion;
         }
 
         internal WS2007HttpBinding(WSHttpSecurity security, bool reliableSessionEnabled)
             : base(security, reliableSessionEnabled)
         {
-            this.ReliableSessionBindingElement.ReliableMessagingVersion = WS2007ReliableMessagingVersion;
-            this.TransactionFlowBindingElement.TransactionProtocol = WS2007TransactionProtocol;
-            this.HttpsTransport.MessageSecurityVersion = WS2007MessageSecurityVersion;
+            this.ReliableSessionBindingElement.ReliableMessagingVersion = s_WS2007ReliableMessagingVersion;
+            this.TransactionFlowBindingElement.TransactionProtocol = s_WS2007TransactionProtocol;
+            this.HttpsTransport.MessageSecurityVersion = s_WS2007MessageSecurityVersion;
         }
         protected override SecurityBindingElement CreateMessageSecurity()
         {
-            return this.Security.CreateMessageSecurity(this.ReliableSession.Enabled, WS2007MessageSecurityVersion);
+            return this.Security.CreateMessageSecurity(this.ReliableSession.Enabled, s_WS2007MessageSecurityVersion);
         }
 
         // This is effectively just a copy of WSHttpBinding.TryCreate(), only it news up the 2007 version
@@ -77,7 +78,7 @@ namespace System.ServiceModel
             HttpsTransportBindingElement httpsBinding = transport as HttpsTransportBindingElement;
             if (httpsBinding != null && httpsBinding.MessageSecurityVersion != null)
             {
-                if (httpsBinding.MessageSecurityVersion.SecurityPolicyVersion != WS2007MessageSecurityVersion.SecurityPolicyVersion)
+                if (httpsBinding.MessageSecurityVersion.SecurityPolicyVersion != s_WS2007MessageSecurityVersion.SecurityPolicyVersion)
                 {
                     return false;
                 }
@@ -112,13 +113,12 @@ namespace System.ServiceModel
         }
 
         // This is effectively just a copy of WSHttpBinding.TryCreateSecurity(), only it passes the 2007 security version
-        static bool TryCreateSecurity(SecurityBindingElement sbe, UnifiedSecurityMode mode, HttpTransportSecurity transportSecurity, bool isReliableSession, out WSHttpSecurity security)
+        private static bool TryCreateSecurity(SecurityBindingElement sbe, UnifiedSecurityMode mode, HttpTransportSecurity transportSecurity, bool isReliableSession, out WSHttpSecurity security)
         {
             if (!WSHttpSecurity.TryCreate(sbe, mode, transportSecurity, isReliableSession, out security))
                 return false;
             // the last check: make sure that security binding element match the incoming security
-            return System.ServiceModel.Configuration.SecurityElement.AreBindingsMatching(security.CreateMessageSecurity(isReliableSession, WS2007MessageSecurityVersion), sbe);
+            return System.ServiceModel.Configuration.SecurityElement.AreBindingsMatching(security.CreateMessageSecurity(isReliableSession, s_WS2007MessageSecurityVersion), sbe);
         }
-
     }
 }

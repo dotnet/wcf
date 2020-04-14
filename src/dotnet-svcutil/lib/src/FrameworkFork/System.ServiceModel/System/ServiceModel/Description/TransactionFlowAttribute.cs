@@ -13,12 +13,12 @@ namespace System.ServiceModel
     [AttributeUsage(ServiceModelAttributeTargets.OperationBehavior)]
     public sealed class TransactionFlowAttribute : Attribute, IOperationBehavior
     {
-        TransactionFlowOption transactions;
+        private TransactionFlowOption _transactions;
 
         public TransactionFlowAttribute(TransactionFlowOption transactions)
         {
             TransactionFlowBindingElement.ValidateOption(transactions);
-            this.transactions = transactions;
+            _transactions = transactions;
         }
 
 
@@ -26,7 +26,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.transactions;
+                return _transactions;
             }
         }
 
@@ -46,7 +46,7 @@ namespace System.ServiceModel
             }
         }
 
-        static Dictionary<DirectionalAction, TransactionFlowOption> EnsureDictionary(BindingParameterCollection parameters)
+        private static Dictionary<DirectionalAction, TransactionFlowOption> EnsureDictionary(BindingParameterCollection parameters)
         {
             Dictionary<DirectionalAction, TransactionFlowOption> dictionary =
                 parameters.Find<Dictionary<DirectionalAction, TransactionFlowOption>>();
@@ -58,10 +58,10 @@ namespace System.ServiceModel
             return dictionary;
         }
 
-        void ApplyBehavior(OperationDescription description, BindingParameterCollection parameters)
+        private void ApplyBehavior(OperationDescription description, BindingParameterCollection parameters)
         {
             Dictionary<DirectionalAction, TransactionFlowOption> dictionary = EnsureDictionary(parameters);
-            dictionary[new DirectionalAction(description.Messages[0].Direction, description.Messages[0].Action)] = this.transactions;
+            dictionary[new DirectionalAction(description.Messages[0].Direction, description.Messages[0].Action)] = _transactions;
         }
         void IOperationBehavior.Validate(OperationDescription description)
         {

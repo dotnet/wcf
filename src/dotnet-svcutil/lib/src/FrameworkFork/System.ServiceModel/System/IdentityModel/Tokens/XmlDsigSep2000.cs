@@ -12,17 +12,17 @@ namespace System.IdentityModel.Tokens
     using Microsoft.Xml;
     using KeyIdentifierEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.KeyIdentifierEntry;
 
-    class XmlDsigSep2000 : SecurityTokenSerializer.SerializerEntries
+    internal class XmlDsigSep2000 : SecurityTokenSerializer.SerializerEntries
     {
-        KeyInfoSerializer securityTokenSerializer;
+        private KeyInfoSerializer _securityTokenSerializer;
 
         public XmlDsigSep2000(KeyInfoSerializer securityTokenSerializer)
         {
-            this.securityTokenSerializer = securityTokenSerializer;
+            _securityTokenSerializer = securityTokenSerializer;
         }
         public override void PopulateKeyIdentifierEntries(IList<KeyIdentifierEntry> keyIdentifierEntries)
         {
-            keyIdentifierEntries.Add(new KeyInfoEntry(this.securityTokenSerializer));
+            keyIdentifierEntries.Add(new KeyInfoEntry(_securityTokenSerializer));
         }
 
         public override void PopulateKeyIdentifierClauseEntries(IList<SecurityTokenSerializer.KeyIdentifierClauseEntry> keyIdentifierClauseEntries)
@@ -34,11 +34,11 @@ namespace System.IdentityModel.Tokens
 
         internal class KeyInfoEntry : KeyIdentifierEntry
         {
-            KeyInfoSerializer securityTokenSerializer;
+            private KeyInfoSerializer _securityTokenSerializer;
 
             public KeyInfoEntry(KeyInfoSerializer securityTokenSerializer)
             {
-                this.securityTokenSerializer = securityTokenSerializer;
+                _securityTokenSerializer = securityTokenSerializer;
             }
 
             protected override XmlDictionaryString LocalName

@@ -16,12 +16,12 @@ namespace System.ServiceModel.Description
     [XmlRoot(ElementName = MetadataStrings.MetadataExchangeStrings.MetadataSection, Namespace = MetadataStrings.MetadataExchangeStrings.Namespace)]
     public class MetadataSection
     {
-        Collection<XmlAttribute> attributes = new Collection<XmlAttribute>();
-        string dialect;
-        string identifier;
-        object metadata;
-        string sourceUrl;
-        static XmlDocument xmlDocument = new XmlDocument();
+        private Collection<XmlAttribute> _attributes = new Collection<XmlAttribute>();
+        private string _dialect;
+        private string _identifier;
+        private object _metadata;
+        private string _sourceUrl;
+        private static XmlDocument s_xmlDocument = new XmlDocument();
 
         public MetadataSection()
             : this(null, null, null)
@@ -30,9 +30,9 @@ namespace System.ServiceModel.Description
 
         public MetadataSection(string dialect, string identifier, object metadata)
         {
-            this.dialect = dialect;
-            this.identifier = identifier;
-            this.metadata = metadata;
+            _dialect = dialect;
+            _identifier = identifier;
+            _metadata = metadata;
         }
 
         static public string ServiceDescriptionDialect { get { return System.Web.Services.Description.ServiceDescription.Namespace; } }
@@ -43,21 +43,21 @@ namespace System.ServiceModel.Description
         [XmlAnyAttribute]
         public Collection<XmlAttribute> Attributes
         {
-            get { return attributes; }
+            get { return _attributes; }
         }
 
         [XmlAttribute]
         public string Dialect
         {
-            get { return this.dialect; }
-            set { this.dialect = value; }
+            get { return _dialect; }
+            set { _dialect = value; }
         }
 
         [XmlAttribute]
         public string Identifier
         {
-            get { return this.identifier; }
-            set { this.identifier = value; }
+            get { return _identifier; }
+            set { _identifier = value; }
         }
 
         [XmlAnyElement]
@@ -71,14 +71,14 @@ namespace System.ServiceModel.Description
         [XmlElement(MetadataStrings.MetadataExchangeStrings.Metadata, typeof(MetadataSet), Namespace = MetadataStrings.MetadataExchangeStrings.Namespace)]
         public object Metadata
         {
-            get { return this.metadata; }
-            set { this.metadata = value; }
+            get { return _metadata; }
+            set { _metadata = value; }
         }
 
         internal string SourceUrl
         {
-            get { return sourceUrl; }
-            set { sourceUrl = value; }
+            get { return _sourceUrl; }
+            set { _sourceUrl = value; }
         }
 
         public static MetadataSection CreateFromPolicy(XmlElement policy, string identifier)
@@ -140,6 +140,5 @@ namespace System.ServiceModel.Description
                 || policy.NamespaceURI == MetadataStrings.WSPolicy.NamespaceUri15)
                 && policy.LocalName == MetadataStrings.WSPolicy.Elements.Policy;
         }
-
     }
 }

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Description
 {
     using System.Globalization;
@@ -10,24 +10,24 @@ namespace System.ServiceModel.Description
 
     public static class MetadataExchangeBindings
     {
-        static Binding httpBinding;
-        static Binding httpGetBinding;
-        static Binding httpsBinding;
-        static Binding httpsGetBinding;
-        static Binding tcpBinding;
-        static Binding pipeBinding;
+        private static Binding s_httpBinding;
+        private static Binding s_httpGetBinding;
+        private static Binding s_httpsBinding;
+        private static Binding s_httpsGetBinding;
+        private static Binding s_tcpBinding;
+        private static Binding s_pipeBinding;
 
         internal static Binding Http
         {
             get
             {
                 // don't need to lock because no guarantee of instance identity
-                if (httpBinding == null)
+                if (s_httpBinding == null)
                 {
-                    httpBinding = CreateHttpBinding();
+                    s_httpBinding = CreateHttpBinding();
                 }
 
-                return httpBinding;
+                return s_httpBinding;
             }
         }
 
@@ -36,12 +36,12 @@ namespace System.ServiceModel.Description
             get
             {
                 // don't need to lock because no guarantee of instance identity
-                if (httpGetBinding == null)
+                if (s_httpGetBinding == null)
                 {
-                    httpGetBinding = CreateHttpGetBinding();
+                    s_httpGetBinding = CreateHttpGetBinding();
                 }
 
-                return httpGetBinding;
+                return s_httpGetBinding;
             }
         }
 
@@ -50,12 +50,12 @@ namespace System.ServiceModel.Description
             get
             {
                 // don't need to lock because no guarantee of instance identity
-                if (httpsBinding == null)
+                if (s_httpsBinding == null)
                 {
-                    httpsBinding = CreateHttpsBinding();
+                    s_httpsBinding = CreateHttpsBinding();
                 }
 
-                return httpsBinding;
+                return s_httpsBinding;
             }
         }
 
@@ -64,12 +64,12 @@ namespace System.ServiceModel.Description
             get
             {
                 // don't need to lock because no guarantee of instance identity
-                if (httpsGetBinding == null)
+                if (s_httpsGetBinding == null)
                 {
-                    httpsGetBinding = CreateHttpsGetBinding();
+                    s_httpsGetBinding = CreateHttpsGetBinding();
                 }
 
-                return httpsGetBinding;
+                return s_httpsGetBinding;
             }
         }
 
@@ -78,12 +78,12 @@ namespace System.ServiceModel.Description
             get
             {
                 // don't need to lock because no guarantee of instance identity
-                if (tcpBinding == null)
+                if (s_tcpBinding == null)
                 {
-                    tcpBinding = CreateTcpBinding();
+                    s_tcpBinding = CreateTcpBinding();
                 }
 
-                return tcpBinding;
+                return s_tcpBinding;
             }
         }
 
@@ -92,12 +92,12 @@ namespace System.ServiceModel.Description
             get
             {
                 // don't need to lock because no guarantee of instance identity
-                if (pipeBinding == null)
+                if (s_pipeBinding == null)
                 {
-                    pipeBinding = CreateNamedPipeBinding();
+                    s_pipeBinding = CreateNamedPipeBinding();
                 }
 
-                return pipeBinding;
+                return s_pipeBinding;
             }
         }
 
@@ -154,7 +154,7 @@ namespace System.ServiceModel.Description
             return binding != null;
         }
 
-        static WSHttpBinding CreateHttpBinding()
+        private static WSHttpBinding CreateHttpBinding()
         {
             WSHttpBinding binding = new WSHttpBinding(SecurityMode.None, reliableSessionEnabled: false);
             binding.Name = MetadataStrings.MetadataExchangeStrings.HttpBindingName;
@@ -162,7 +162,7 @@ namespace System.ServiceModel.Description
             return binding;
         }
 
-        static WSHttpBinding CreateHttpsBinding()
+        private static WSHttpBinding CreateHttpsBinding()
         {
             WSHttpBinding binding = new WSHttpBinding(
                 new WSHttpSecurity(SecurityMode.Transport, new HttpTransportSecurity(), new NonDualMessageSecurityOverHttp()), reliableSessionEnabled: false);
@@ -172,17 +172,17 @@ namespace System.ServiceModel.Description
             return binding;
         }
 
-        static CustomBinding CreateHttpGetBinding()
+        private static CustomBinding CreateHttpGetBinding()
         {
             return CreateGetBinding(new HttpTransportBindingElement());
         }
 
-        static CustomBinding CreateHttpsGetBinding()
+        private static CustomBinding CreateHttpsGetBinding()
         {
             return CreateGetBinding(new HttpsTransportBindingElement());
         }
 
-        static CustomBinding CreateGetBinding(HttpTransportBindingElement httpTransport)
+        private static CustomBinding CreateGetBinding(HttpTransportBindingElement httpTransport)
         {
             TextMessageEncodingBindingElement textEncoding = new TextMessageEncodingBindingElement();
             textEncoding.MessageVersion = MessageVersion.None;
@@ -191,7 +191,7 @@ namespace System.ServiceModel.Description
             return new CustomBinding(textEncoding, httpTransport);
         }
 
-        static CustomBinding CreateTcpBinding()
+        private static CustomBinding CreateTcpBinding()
         {
             CustomBinding binding = new CustomBinding(MetadataStrings.MetadataExchangeStrings.TcpBindingName, MetadataStrings.MetadataExchangeStrings.BindingNamespace);
             TcpTransportBindingElement tcpTransport = new TcpTransportBindingElement();
@@ -199,7 +199,7 @@ namespace System.ServiceModel.Description
             return binding;
         }
 
-        static CustomBinding CreateNamedPipeBinding()
+        private static CustomBinding CreateNamedPipeBinding()
         {
             throw new NotImplementedException();
         }

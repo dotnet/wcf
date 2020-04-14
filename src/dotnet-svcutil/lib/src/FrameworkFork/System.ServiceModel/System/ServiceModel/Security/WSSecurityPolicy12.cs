@@ -14,7 +14,7 @@ namespace System.ServiceModel.Security
     using System.Text;
     using Microsoft.Xml;
 
-    class WSSecurityPolicy12 : WSSecurityPolicy
+    internal class WSSecurityPolicy12 : WSSecurityPolicy
     {
         public const string WsspNamespace = @"http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702";
 
@@ -156,13 +156,13 @@ namespace System.ServiceModel.Security
             return supportingTokenAssertions;
         }
 
-        XmlElement CreateWsspMustNotSendAmendAssertion()
+        private XmlElement CreateWsspMustNotSendAmendAssertion()
         {
             XmlElement result = CreateWsspAssertion(MustNotSendAmendName);
             return result;
         }
 
-        XmlElement CreateWsspMustNotSendRenewAssertion()
+        private XmlElement CreateWsspMustNotSendRenewAssertion()
         {
             XmlElement result = CreateWsspAssertion(MustNotSendRenewName);
             return result;
@@ -180,7 +180,7 @@ namespace System.ServiceModel.Security
             return true;
         }
 
-        XmlElement CreateWsspSignedSupportingTokensAssertion(MetadataExporter exporter, Collection<SecurityTokenParameters> signed, Collection<SecurityTokenParameters> optionalSigned)
+        private XmlElement CreateWsspSignedSupportingTokensAssertion(MetadataExporter exporter, Collection<SecurityTokenParameters> signed, Collection<SecurityTokenParameters> optionalSigned)
         {
             XmlElement result;
 
@@ -215,7 +215,7 @@ namespace System.ServiceModel.Security
             return result;
         }
 
-        XmlElement CreateWsspSignedEncryptedSupportingTokensAssertion(MetadataExporter exporter, Collection<SecurityTokenParameters> signedEncrypted, Collection<SecurityTokenParameters> optionalSignedEncrypted)
+        private XmlElement CreateWsspSignedEncryptedSupportingTokensAssertion(MetadataExporter exporter, Collection<SecurityTokenParameters> signedEncrypted, Collection<SecurityTokenParameters> optionalSignedEncrypted)
         {
             XmlElement result;
 
@@ -305,12 +305,12 @@ namespace System.ServiceModel.Security
             return true;
         }
 
-        bool TryImportWsspSignedSupportingTokensAssertion(MetadataImporter importer, PolicyConversionContext policyContext, ICollection<XmlElement> assertions, Collection<SecurityTokenParameters> signed, Collection<SecurityTokenParameters> optionalSigned, out XmlElement assertion)
+        private bool TryImportWsspSignedSupportingTokensAssertion(MetadataImporter importer, PolicyConversionContext policyContext, ICollection<XmlElement> assertions, Collection<SecurityTokenParameters> signed, Collection<SecurityTokenParameters> optionalSigned, out XmlElement assertion)
         {
             throw new NotImplementedException();
         }
 
-        bool TryImportWsspSignedEncryptedSupportingTokensAssertion(MetadataImporter importer, PolicyConversionContext policyContext, ICollection<XmlElement> assertions, Collection<SecurityTokenParameters> signedEncrypted, Collection<SecurityTokenParameters> optionalSignedEncrypted, out XmlElement assertion)
+        private bool TryImportWsspSignedEncryptedSupportingTokensAssertion(MetadataImporter importer, PolicyConversionContext policyContext, ICollection<XmlElement> assertions, Collection<SecurityTokenParameters> signedEncrypted, Collection<SecurityTokenParameters> optionalSignedEncrypted, out XmlElement assertion)
         {
             throw new NotImplementedException();
         }

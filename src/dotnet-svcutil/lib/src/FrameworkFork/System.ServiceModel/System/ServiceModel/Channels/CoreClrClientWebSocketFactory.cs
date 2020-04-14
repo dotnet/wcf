@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    class CoreClrClientWebSocketFactory : ClientWebSocketFactory
+    internal class CoreClrClientWebSocketFactory : ClientWebSocketFactory
     {
         public override async Task<WebSocket> CreateWebSocketAsync(Uri address, WebHeaderCollection headers, ICredentials credentials,
             WebSocketTransportSettings settings, TimeoutHelper timeoutHelper)
         {
             ClientWebSocket webSocket = new ClientWebSocket();
             webSocket.Options.Credentials = credentials;
-            if(!string.IsNullOrEmpty(settings.SubProtocol))
+            if (!string.IsNullOrEmpty(settings.SubProtocol))
             {
                 webSocket.Options.AddSubProtocol(settings.SubProtocol);
             }
-            
+
             webSocket.Options.KeepAliveInterval = settings.KeepAliveInterval;
             foreach (var headerObj in headers)
             {

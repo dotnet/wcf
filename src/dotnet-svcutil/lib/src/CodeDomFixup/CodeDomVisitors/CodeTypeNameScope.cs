@@ -9,26 +9,26 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class CodeTypeNameScope : NameScope
     {
-        Dictionary<string, CodeTypeMember> nameTable = new Dictionary<string, CodeTypeMember>();
+        private Dictionary<string, CodeTypeMember> _nameTable = new Dictionary<string, CodeTypeMember>();
         public CodeTypeNameScope(CodeTypeDeclaration type)
         {
             foreach (CodeTypeMember member in type.Members)
             {
-                nameTable[member.Name] = member;
+                _nameTable[member.Name] = member;
             }
         }
 
         public override bool Contains(string key)
         {
-            if (this.nameTable == null)
+            if (_nameTable == null)
                 throw new ObjectDisposedException(GetType().Name);
 
-            return this.nameTable.ContainsKey(key);
+            return _nameTable.ContainsKey(key);
         }
 
         protected override void OnDispose()
         {
-            this.nameTable = null;
+            _nameTable = null;
         }
     }
 }

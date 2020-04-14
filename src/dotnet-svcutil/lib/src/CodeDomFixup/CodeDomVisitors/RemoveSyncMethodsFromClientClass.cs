@@ -13,7 +13,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             CollectionHelpers.MapList<CodeMemberMethod>(
                 type.Members,
-                delegate(CodeMemberMethod method)
+                delegate (CodeMemberMethod method)
                 {
                     return method is CodeConstructor ||
                            CodeDomHelpers.IsBeginMethod(method) ||

@@ -542,7 +542,7 @@ namespace System.Runtime.Serialization
             private bool _isReference;
             private bool _isValueType;
             private XmlQualifiedName _stableName;
-            private GenericInfo genericInfo;
+            private GenericInfo _genericInfo;
             private XmlDictionaryString _name;
             private XmlDictionaryString _ns;
 
@@ -1163,8 +1163,8 @@ namespace System.Runtime.Serialization
 
             internal GenericInfo GenericInfo
             {
-                get { return genericInfo; }
-                set { genericInfo = value; }
+                get { return _genericInfo; }
+                set { _genericInfo = value; }
             }
 
             internal virtual DataContractDictionary KnownDataContracts
@@ -1595,14 +1595,17 @@ namespace System.Runtime.Serialization
             return arrayOfPrefix;
         }
 
-        internal XmlQualifiedName GetArrayTypeName(bool isNullable) {
+        internal XmlQualifiedName GetArrayTypeName(bool isNullable)
+        {
             XmlQualifiedName itemName;
-            if (this.IsValueType && isNullable) {
+            if (this.IsValueType && isNullable)
+            {
                 GenericInfo genericInfo = new GenericInfo(DataContract.GetStableName(Globals.TypeOfNullable), Globals.TypeOfNullable.FullName);
                 genericInfo.Add(new GenericInfo(this.StableName, null));
                 genericInfo.AddToLevel(0, 1);
                 itemName = genericInfo.GetExpandedStableName();
-            } else
+            }
+            else
                 itemName = this.StableName;
             string ns = GetCollectionNamespace(itemName.Namespace);
             string name = Globals.ArrayPrefix + itemName.Name;
@@ -2382,87 +2385,87 @@ namespace System.Runtime.Serialization
 
     internal class GenericInfo : IGenericNameProvider
     {
-        string genericTypeName;
-        XmlQualifiedName stableName;
-        List<GenericInfo> paramGenericInfos;
-        List<int> nestedParamCounts;
+        private string _genericTypeName;
+        private XmlQualifiedName _stableName;
+        private List<GenericInfo> _paramGenericInfos;
+        private List<int> _nestedParamCounts;
 
         internal GenericInfo(XmlQualifiedName stableName, string genericTypeName)
         {
-            this.stableName = stableName;
-            this.genericTypeName = genericTypeName;
-            this.nestedParamCounts = new List<int>();
-            this.nestedParamCounts.Add(0);
+            _stableName = stableName;
+            _genericTypeName = genericTypeName;
+            _nestedParamCounts = new List<int>();
+            _nestedParamCounts.Add(0);
         }
 
         internal void Add(GenericInfo actualParamInfo)
         {
-            if (paramGenericInfos == null)
-                paramGenericInfos = new List<GenericInfo>();
-            paramGenericInfos.Add(actualParamInfo);
+            if (_paramGenericInfos == null)
+                _paramGenericInfos = new List<GenericInfo>();
+            _paramGenericInfos.Add(actualParamInfo);
         }
 
         internal void AddToLevel(int level, int count)
         {
-            if (level >= nestedParamCounts.Count)
+            if (level >= _nestedParamCounts.Count)
             {
                 do
                 {
-                    nestedParamCounts.Add((level == nestedParamCounts.Count) ? count : 0);
-                } while (level >= nestedParamCounts.Count);
+                    _nestedParamCounts.Add((level == _nestedParamCounts.Count) ? count : 0);
+                } while (level >= _nestedParamCounts.Count);
             }
             else
-                nestedParamCounts[level] = nestedParamCounts[level] + count;
+                _nestedParamCounts[level] = _nestedParamCounts[level] + count;
         }
 
         internal XmlQualifiedName GetExpandedStableName()
         {
-            if (paramGenericInfos == null)
-                return stableName;
-            return new XmlQualifiedName(DataContract.EncodeLocalName(DataContract.ExpandGenericParameters(XmlConvert.DecodeName(stableName.Name), this)), stableName.Namespace);
+            if (_paramGenericInfos == null)
+                return _stableName;
+            return new XmlQualifiedName(DataContract.EncodeLocalName(DataContract.ExpandGenericParameters(XmlConvert.DecodeName(_stableName.Name), this)), _stableName.Namespace);
         }
 
         internal string GetStableNamespace()
         {
-            return stableName.Namespace;
+            return _stableName.Namespace;
         }
 
         internal XmlQualifiedName StableName
         {
-            get { return stableName; }
+            get { return _stableName; }
         }
 
         internal IList<GenericInfo> Parameters
         {
-            get { return paramGenericInfos; }
+            get { return _paramGenericInfos; }
         }
 
         public int GetParameterCount()
         {
-            return paramGenericInfos.Count;
+            return _paramGenericInfos.Count;
         }
 
         public IList<int> GetNestedParameterCounts()
         {
-            return nestedParamCounts;
+            return _nestedParamCounts;
         }
 
         public string GetParameterName(int paramIndex)
         {
-            return paramGenericInfos[paramIndex].GetExpandedStableName().Name;
+            return _paramGenericInfos[paramIndex].GetExpandedStableName().Name;
         }
 
         public string GetNamespaces()
         {
             StringBuilder namespaces = new StringBuilder();
-            for (int j = 0; j < paramGenericInfos.Count; j++)
-                namespaces.Append(" ").Append(paramGenericInfos[j].GetStableNamespace());
+            for (int j = 0; j < _paramGenericInfos.Count; j++)
+                namespaces.Append(" ").Append(_paramGenericInfos[j].GetStableNamespace());
             return namespaces.ToString();
         }
 
         public string GetGenericTypeName()
         {
-            return genericTypeName;
+            return _genericTypeName;
         }
 
         public bool ParametersFromBuiltInNamespaces
@@ -2470,10 +2473,10 @@ namespace System.Runtime.Serialization
             get
             {
                 bool parametersFromBuiltInNamespaces = true;
-                for (int j = 0; j < paramGenericInfos.Count; j++)
+                for (int j = 0; j < _paramGenericInfos.Count; j++)
                 {
                     if (parametersFromBuiltInNamespaces)
-                        parametersFromBuiltInNamespaces = DataContract.IsBuiltInNamespace(paramGenericInfos[j].GetStableNamespace());
+                        parametersFromBuiltInNamespaces = DataContract.IsBuiltInNamespace(_paramGenericInfos[j].GetStableNamespace());
                     else
                         break;
                 }
@@ -2484,13 +2487,13 @@ namespace System.Runtime.Serialization
 
     internal class DataContractPairKey
     {
-        object object1;
-        object object2;
+        private object _object1;
+        private object _object2;
 
         public DataContractPairKey(object object1, object object2)
         {
-            this.object1 = object1;
-            this.object2 = object2;
+            _object1 = object1;
+            _object2 = object2;
         }
 
         public override bool Equals(object other)
@@ -2498,12 +2501,12 @@ namespace System.Runtime.Serialization
             DataContractPairKey otherKey = other as DataContractPairKey;
             if (otherKey == null)
                 return false;
-            return ((otherKey.object1 == object1 && otherKey.object2 == object2) || (otherKey.object1 == object2 && otherKey.object2 == object1));
+            return ((otherKey._object1 == _object1 && otherKey._object2 == _object2) || (otherKey._object1 == _object2 && otherKey._object2 == _object1));
         }
 
         public override int GetHashCode()
         {
-            return object1.GetHashCode() ^ object2.GetHashCode();
+            return _object1.GetHashCode() ^ _object2.GetHashCode();
         }
     }
 

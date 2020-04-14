@@ -1,76 +1,89 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml {
+namespace Microsoft.Xml
+{
     using System;
 
-    internal class XmlUnspecifiedAttribute: XmlAttribute {
-        bool fSpecified = false;
+    internal class XmlUnspecifiedAttribute : XmlAttribute
+    {
+        private bool _fSpecified = false;
 
 
-        protected internal XmlUnspecifiedAttribute( string prefix, string localName, string namespaceURI, XmlDocument doc )
-        : base( prefix, localName, namespaceURI, doc ) {
+        protected internal XmlUnspecifiedAttribute(string prefix, string localName, string namespaceURI, XmlDocument doc)
+        : base(prefix, localName, namespaceURI, doc)
+        {
         }
 
         public override bool Specified
         {
-            get { return fSpecified;}
+            get { return _fSpecified; }
         }
 
 
-        public override XmlNode CloneNode(bool deep) {
+        public override XmlNode CloneNode(bool deep)
+        {
             //CloneNode is deep for attributes irrespective of parameter
             XmlDocument doc = OwnerDocument;
             XmlUnspecifiedAttribute attr = (XmlUnspecifiedAttribute)doc.CreateDefaultAttribute(Prefix, LocalName, NamespaceURI);
-            attr.CopyChildren( doc, this, true );
-            attr.fSpecified = true; //When clone, should return the specifed attribute as default
+            attr.CopyChildren(doc, this, true);
+            attr._fSpecified = true; //When clone, should return the specifed attribute as default
             return attr;
         }
 
-        public override string InnerText {
-            set {
+        public override string InnerText
+        {
+            set
+            {
                 base.InnerText = value;
-                fSpecified = true;
+                _fSpecified = true;
             }
         }
 
-        public override XmlNode InsertBefore(XmlNode newChild, XmlNode refChild) {
-            XmlNode node = base.InsertBefore( newChild, refChild );
-            fSpecified = true;
+        public override XmlNode InsertBefore(XmlNode newChild, XmlNode refChild)
+        {
+            XmlNode node = base.InsertBefore(newChild, refChild);
+            _fSpecified = true;
             return node;
         }
 
-        public override XmlNode InsertAfter(XmlNode newChild, XmlNode refChild) {
-            XmlNode node = base.InsertAfter( newChild, refChild );
-            fSpecified = true;
+        public override XmlNode InsertAfter(XmlNode newChild, XmlNode refChild)
+        {
+            XmlNode node = base.InsertAfter(newChild, refChild);
+            _fSpecified = true;
             return node;
         }
 
-        public override XmlNode ReplaceChild(XmlNode newChild, XmlNode oldChild) {
-            XmlNode node = base.ReplaceChild( newChild, oldChild );
-            fSpecified = true;
+        public override XmlNode ReplaceChild(XmlNode newChild, XmlNode oldChild)
+        {
+            XmlNode node = base.ReplaceChild(newChild, oldChild);
+            _fSpecified = true;
             return node;
         }
 
-        public override XmlNode RemoveChild(XmlNode oldChild) {
+        public override XmlNode RemoveChild(XmlNode oldChild)
+        {
             XmlNode node = base.RemoveChild(oldChild);
-            fSpecified = true;
+            _fSpecified = true;
             return node;
         }
 
-        public override XmlNode AppendChild(XmlNode newChild) {
+        public override XmlNode AppendChild(XmlNode newChild)
+        {
             XmlNode node = base.AppendChild(newChild);
-            fSpecified = true;
+            _fSpecified = true;
             return node;
         }
 
-        public override void WriteTo(XmlWriter w) {
-            if (fSpecified)
-                base.WriteTo( w );
+        public override void WriteTo(XmlWriter w)
+        {
+            if (_fSpecified)
+                base.WriteTo(w);
         }
 
-        internal void SetSpecified(bool f) {
-            fSpecified = f;
+        internal void SetSpecified(bool f)
+        {
+            _fSpecified = f;
         }
     }
 }

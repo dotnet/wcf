@@ -140,7 +140,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     if (MetadataFileNameManager.TryCreateUri(location, out Uri locationUri) && MetadataFileNameManager.TryResolveFiles(locationUri.LocalPath, out var files))
                     {
                         var missingRefs = files.Where(file => !this.MetadataFiles.Any(metaFile => MetadataFileNameManager.UriEqual(file.FullName, metaFile.SourceUri)));
-                        if(missingRefs.Count() == 0)
+                        if (missingRefs.Count() == 0)
                         {
                             var updatedLocation = Path.Combine(this.DirectoryPath, Path.GetFileName(location));
                             if (unresolvedRef.WsdlImport != null)
@@ -368,7 +368,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             public string WsdlFilePath { get; internal set; }
             public IEnumerable<string> MetadataFiles { get; internal set; }
             public IEnumerable<string> DocumentSaveErrors { get; internal set; }
-
         }
 
         private class UnresolvedUri

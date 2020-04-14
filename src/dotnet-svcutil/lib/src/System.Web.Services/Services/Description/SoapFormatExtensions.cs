@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.Web.Services.Description
 {
     using Microsoft.Xml;
@@ -16,9 +17,9 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPrefix("soapenc", "http://schemas.xmlsoap.org/soap/encoding/")]
     public class SoapBinding : ServiceDescriptionFormatExtension
     {
-        SoapBindingStyle style = SoapBindingStyle.Document;
-        string transport;
-        static XmlSchema schema = null;
+        private SoapBindingStyle _style = SoapBindingStyle.Document;
+        private string _transport;
+        private static XmlSchema s_schema = null;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapBinding.Namespace"]/*' />
         public const string Namespace = "http://schemas.xmlsoap.org/wsdl/soap/";
@@ -29,16 +30,16 @@ namespace System.Web.Services.Description
         [XmlAttribute("transport")]
         public string Transport
         {
-            get { return transport == null ? string.Empty : transport; }
-            set { transport = value; }
+            get { return _transport == null ? string.Empty : _transport; }
+            set { _transport = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapBinding.Style"]/*' />
         [XmlAttribute("style"), DefaultValue(SoapBindingStyle.Document)]
         public SoapBindingStyle Style
         {
-            get { return style; }
-            set { style = value; }
+            get { return _style; }
+            set { _style = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapFormatExtensions.Schema"]/*' />
@@ -49,11 +50,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (schema == null)
+                if (s_schema == null)
                 {
-                    schema = XmlSchema.Read(new StringReader(Schemas.Soap), null);
+                    s_schema = XmlSchema.Read(new StringReader(Schemas.Soap), null);
                 }
-                return schema;
+                return s_schema;
             }
         }
     }
@@ -76,23 +77,23 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("operation", SoapBinding.Namespace, typeof(OperationBinding))]
     public class SoapOperationBinding : ServiceDescriptionFormatExtension
     {
-        string soapAction;
-        SoapBindingStyle style;
+        private string _soapAction;
+        private SoapBindingStyle _style;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapOperationBinding.SoapAction"]/*' />
         [XmlAttribute("soapAction")]
         public string SoapAction
         {
-            get { return soapAction == null ? string.Empty : soapAction; }
-            set { soapAction = value; }
+            get { return _soapAction == null ? string.Empty : _soapAction; }
+            set { _soapAction = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapOperationBinding.Style"]/*' />
         [XmlAttribute("style"), DefaultValue(SoapBindingStyle.Default)]
         public SoapBindingStyle Style
         {
-            get { return style; }
-            set { style = value; }
+            get { return _style; }
+            set { _style = value; }
         }
     }
 
@@ -100,33 +101,33 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("body", SoapBinding.Namespace, typeof(InputBinding), typeof(OutputBinding), typeof(MimePart))]
     public class SoapBodyBinding : ServiceDescriptionFormatExtension
     {
-        SoapBindingUse use;
-        string ns;
-        string encoding;
-        string[] parts;
+        private SoapBindingUse _use;
+        private string _ns;
+        private string _encoding;
+        private string[] _parts;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapBodyBinding.Use"]/*' />
         [XmlAttribute("use"), DefaultValue(SoapBindingUse.Default)]
         public SoapBindingUse Use
         {
-            get { return use; }
-            set { use = value; }
+            get { return _use; }
+            set { _use = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapBodyBinding.Namespace"]/*' />
         [XmlAttribute("namespace"), DefaultValue("")]
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapBodyBinding.Encoding"]/*' />
         [XmlAttribute("encodingStyle"), DefaultValue("")]
         public string Encoding
         {
-            get { return encoding == null ? string.Empty : encoding; }
-            set { encoding = value; }
+            get { return _encoding == null ? string.Empty : _encoding; }
+            set { _encoding = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapBodyBinding.PartsString"]/*' />
@@ -135,22 +136,22 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (parts == null)
+                if (_parts == null)
                     return null;
                 StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < parts.Length; i++)
+                for (int i = 0; i < _parts.Length; i++)
                 {
                     if (i > 0) builder.Append(' ');
-                    builder.Append(parts[i]);
+                    builder.Append(_parts[i]);
                 }
                 return builder.ToString();
             }
             set
             {
                 if (value == null)
-                    parts = null;
+                    _parts = null;
                 else
-                    parts = value.Split(new char[] { ' ' });
+                    _parts = value.Split(new char[] { ' ' });
             }
         }
 
@@ -158,8 +159,8 @@ namespace System.Web.Services.Description
         [XmlIgnore]
         public string[] Parts
         {
-            get { return parts; }
-            set { parts = value; }
+            get { return _parts; }
+            set { _parts = value; }
         }
     }
 
@@ -181,40 +182,40 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("fault", SoapBinding.Namespace, typeof(FaultBinding))]
     public class SoapFaultBinding : ServiceDescriptionFormatExtension
     {
-        SoapBindingUse use;
-        string ns;
-        string encoding;
-        string name;
+        private SoapBindingUse _use;
+        private string _ns;
+        private string _encoding;
+        private string _name;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapFaultBinding.Use"]/*' />
         [XmlAttribute("use"), DefaultValue(SoapBindingUse.Default)]
         public SoapBindingUse Use
         {
-            get { return use; }
-            set { use = value; }
+            get { return _use; }
+            set { _use = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapFaultBinding.Use"]/*' />
         [XmlAttribute("name")]
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapFaultBinding.Namespace"]/*' />
         [XmlAttribute("namespace")]
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapFaultBinding.Encoding"]/*' />
         [XmlAttribute("encodingStyle"), DefaultValue("")]
         public string Encoding
         {
-            get { return encoding == null ? string.Empty : encoding; }
-            set { encoding = value; }
+            get { return _encoding == null ? string.Empty : _encoding; }
+            set { _encoding = value; }
         }
     }
 
@@ -222,118 +223,118 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("header", SoapBinding.Namespace, typeof(InputBinding), typeof(OutputBinding))]
     public class SoapHeaderBinding : ServiceDescriptionFormatExtension
     {
-        XmlQualifiedName message = XmlQualifiedName.Empty;
-        string part;
-        SoapBindingUse use;
-        string encoding;
-        string ns;
-        bool mapToProperty;
-        SoapHeaderFaultBinding fault;
+        private XmlQualifiedName _message = XmlQualifiedName.Empty;
+        private string _part;
+        private SoapBindingUse _use;
+        private string _encoding;
+        private string _ns;
+        private bool _mapToProperty;
+        private SoapHeaderFaultBinding _fault;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.MapToProperty"]/*' />
         [XmlIgnore]
         public bool MapToProperty
         {
-            get { return mapToProperty; }
-            set { mapToProperty = value; }
+            get { return _mapToProperty; }
+            set { _mapToProperty = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.Message"]/*' />
         [XmlAttribute("message")]
         public XmlQualifiedName Message
         {
-            get { return message; }
-            set { message = value; }
+            get { return _message; }
+            set { _message = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.Part"]/*' />
         [XmlAttribute("part")]
         public string Part
         {
-            get { return part; }
-            set { part = value; }
+            get { return _part; }
+            set { _part = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.Use"]/*' />
         [XmlAttribute("use"), DefaultValue(SoapBindingUse.Default)]
         public SoapBindingUse Use
         {
-            get { return use; }
-            set { use = value; }
+            get { return _use; }
+            set { _use = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.Encoding"]/*' />
         [XmlAttribute("encodingStyle"), DefaultValue("")]
         public string Encoding
         {
-            get { return encoding == null ? string.Empty : encoding; }
-            set { encoding = value; }
+            get { return _encoding == null ? string.Empty : _encoding; }
+            set { _encoding = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.Namespace"]/*' />
         [XmlAttribute("namespace"), DefaultValue("")]
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderBinding.Fault"]/*' />
         [XmlElement("headerfault")]
         public SoapHeaderFaultBinding Fault
         {
-            get { return fault; }
-            set { fault = value; }
+            get { return _fault; }
+            set { _fault = value; }
         }
     }
 
     /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderFaultBinding"]/*' />
     public class SoapHeaderFaultBinding : ServiceDescriptionFormatExtension
     {
-        XmlQualifiedName message = XmlQualifiedName.Empty;
-        string part;
-        SoapBindingUse use;
-        string encoding;
-        string ns;
+        private XmlQualifiedName _message = XmlQualifiedName.Empty;
+        private string _part;
+        private SoapBindingUse _use;
+        private string _encoding;
+        private string _ns;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderFaultBinding.Message"]/*' />
         [XmlAttribute("message")]
         public XmlQualifiedName Message
         {
-            get { return message; }
-            set { message = value; }
+            get { return _message; }
+            set { _message = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderFaultBinding.Part"]/*' />
         [XmlAttribute("part")]
         public string Part
         {
-            get { return part; }
-            set { part = value; }
+            get { return _part; }
+            set { _part = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderFaultBinding.Use"]/*' />
         [XmlAttribute("use"), DefaultValue(SoapBindingUse.Default)]
         public SoapBindingUse Use
         {
-            get { return use; }
-            set { use = value; }
+            get { return _use; }
+            set { _use = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderFaultBinding.Encoding"]/*' />
         [XmlAttribute("encodingStyle"), DefaultValue("")]
         public string Encoding
         {
-            get { return encoding == null ? string.Empty : encoding; }
-            set { encoding = value; }
+            get { return _encoding == null ? string.Empty : _encoding; }
+            set { _encoding = value; }
         }
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapHeaderFaultBinding.Namespace"]/*' />
         [XmlAttribute("namespace"), DefaultValue("")]
         public string Namespace
         {
-            get { return ns == null ? string.Empty : ns; }
-            set { ns = value; }
+            get { return _ns == null ? string.Empty : _ns; }
+            set { _ns = value; }
         }
     }
 
@@ -341,14 +342,14 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("address", SoapBinding.Namespace, typeof(Port))]
     public class SoapAddressBinding : ServiceDescriptionFormatExtension
     {
-        string location;
+        private string _location;
 
         /// <include file='doc\SoapFormatExtensions.uex' path='docs/doc[@for="SoapAddressBinding.Location"]/*' />
         [XmlAttribute("location")]
         public string Location
         {
-            get { return location == null ? string.Empty : location; }
-            set { location = value; }
+            get { return _location == null ? string.Empty : _location; }
+            set { _location = value; }
         }
     }
 }

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,21 +15,23 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeDelegateCreateExpression : CodeExpression {
-        private CodeTypeReference delegateType;
-        private CodeExpression targetObject;
-        private string methodName;
+    public class CodeDelegateCreateExpression : CodeExpression
+    {
+        private CodeTypeReference _delegateType;
+        private CodeExpression _targetObject;
+        private string _methodName;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeDelegateCreateExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeDelegateCreateExpression() {
+        public CodeDelegateCreateExpression()
+        {
         }
 
         /// <devdoc>
@@ -37,10 +39,11 @@ namespace Microsoft.CodeDom {
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeDelegateCreateExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodeDelegateCreateExpression(CodeTypeReference delegateType, CodeExpression targetObject, string methodName) {
-            this.delegateType = delegateType;
-            this.targetObject = targetObject;
-            this.methodName = methodName;
+        public CodeDelegateCreateExpression(CodeTypeReference delegateType, CodeExpression targetObject, string methodName)
+        {
+            _delegateType = delegateType;
+            _targetObject = targetObject;
+            _methodName = methodName;
         }
 
         /// <devdoc>
@@ -48,15 +51,19 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the delegate type.
         ///    </para>
         /// </devdoc>
-        public CodeTypeReference DelegateType {
-            get {
-                if (delegateType == null) {
-                    delegateType = new CodeTypeReference("");
+        public CodeTypeReference DelegateType
+        {
+            get
+            {
+                if (_delegateType == null)
+                {
+                    _delegateType = new CodeTypeReference("");
                 }
-                return delegateType;
+                return _delegateType;
             }
-            set {
-                delegateType = value;
+            set
+            {
+                _delegateType = value;
             }
         }
 
@@ -65,12 +72,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the target object.
         ///    </para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
@@ -79,12 +89,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the method name.
         ///    </para>
         /// </devdoc>
-        public string MethodName {
-            get {
-                return (methodName == null) ? string.Empty : methodName;
+        public string MethodName
+        {
+            get
+            {
+                return (_methodName == null) ? string.Empty : _methodName;
             }
-            set {
-                methodName = value;
+            set
+            {
+                _methodName = value;
             }
         }
     }

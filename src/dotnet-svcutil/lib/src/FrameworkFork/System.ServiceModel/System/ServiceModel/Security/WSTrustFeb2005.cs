@@ -30,7 +30,7 @@ namespace System.ServiceModel.Security
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
 
-    class WSTrustFeb2005 : WSTrust
+    internal class WSTrustFeb2005 : WSTrust
     {
         public WSTrustFeb2005(WSSecurityTokenSerializer tokenSerializer)
             : base(tokenSerializer)
@@ -250,11 +250,11 @@ namespace System.ServiceModel.Security
 
             public class RequestChannelFactory<TokenService> : ChannelFactoryBase, IChannelFactory<IRequestChannel>
             {
-                ChannelFactory<TokenService> innerChannelFactory;
+                private ChannelFactory<TokenService> _innerChannelFactory;
 
                 public RequestChannelFactory(ChannelFactory<TokenService> innerChannelFactory)
                 {
-                    this.innerChannelFactory = innerChannelFactory;
+                    _innerChannelFactory = innerChannelFactory;
                 }
 
                 public IRequestChannel CreateChannel(EndpointAddress address)
@@ -269,45 +269,44 @@ namespace System.ServiceModel.Security
 
                 protected override void OnAbort()
                 {
-                    this.innerChannelFactory.Abort();
+                    _innerChannelFactory.Abort();
                 }
 
                 protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this.innerChannelFactory.BeginOpen(timeout, callback, state);
+                    return _innerChannelFactory.BeginOpen(timeout, callback, state);
                 }
 
                 protected override void OnEndOpen(IAsyncResult result)
                 {
-                    this.innerChannelFactory.EndOpen(result);
+                    _innerChannelFactory.EndOpen(result);
                 }
 
                 protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
                 {
-                    return this.innerChannelFactory.BeginClose(timeout, callback, state);
+                    return _innerChannelFactory.BeginClose(timeout, callback, state);
                 }
 
                 protected override void OnEndClose(IAsyncResult result)
                 {
-                    this.innerChannelFactory.EndClose(result);
+                    _innerChannelFactory.EndClose(result);
                 }
 
                 protected override void OnClose(TimeSpan timeout)
                 {
-                    this.innerChannelFactory.Close(timeout);
+                    _innerChannelFactory.Close(timeout);
                 }
 
                 protected override void OnOpen(TimeSpan timeout)
                 {
-                    this.innerChannelFactory.Open(timeout);
+                    _innerChannelFactory.Open(timeout);
                 }
 
                 public override T GetProperty<T>()
                 {
-                    return this.innerChannelFactory.GetProperty<T>();
+                    return _innerChannelFactory.GetProperty<T>();
                 }
             }
         }
-
     }
 }

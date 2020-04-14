@@ -3,7 +3,6 @@
 
 namespace System.Web.Services.Configuration
 {
-
     using System;
 
     /// <include file='doc\XmlFormatExtensionPointAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPointAttribute"]/*' />
@@ -13,8 +12,8 @@ namespace System.Web.Services.Configuration
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class XmlFormatExtensionPointAttribute : Attribute
     {
-        string name;
-        bool allowElements = true;
+        private string _name;
+        private bool _allowElements = true;
 
         /// <include file='doc\XmlFormatExtensionPointAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPointAttribute.XmlFormatExtensionPointAttribute"]/*' />
         /// <devdoc>
@@ -22,7 +21,7 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public XmlFormatExtensionPointAttribute(string memberName)
         {
-            this.name = memberName;
+            _name = memberName;
         }
 
         /// <include file='doc\XmlFormatExtensionPointAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPointAttribute.MemberName"]/*' />
@@ -31,8 +30,8 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public string MemberName
         {
-            get { return name == null ? string.Empty : name; }
-            set { name = value; }
+            get { return _name == null ? string.Empty : _name; }
+            set { _name = value; }
         }
 
         /// <include file='doc\XmlFormatExtensionPointAttribute.uex' path='docs/doc[@for="XmlFormatExtensionPointAttribute.AllowElements"]/*' />
@@ -41,11 +40,9 @@ namespace System.Web.Services.Configuration
         /// </devdoc>
         public bool AllowElements
         {
-            get { return allowElements; }
-            set { allowElements = value; }
+            get { return _allowElements; }
+            set { _allowElements = value; }
         }
     }
-
-
 }
 

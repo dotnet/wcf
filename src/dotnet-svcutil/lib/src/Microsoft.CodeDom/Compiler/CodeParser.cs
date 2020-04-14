@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
+namespace Microsoft.CodeDom.Compiler
+{
     using System.Text;
 
     using System.Diagnostics;
@@ -11,17 +12,17 @@ namespace Microsoft.CodeDom.Compiler {
     using System.Collections;
     using System.Reflection;
     using Microsoft.CodeDom;
-    
+
 
     /// <devdoc>
     ///    <para>
     ///       Provides a code parsing abstract base class.
     ///    </para>
     /// </devdoc>
-    
-    
-    public abstract class CodeParser : ICodeParser {
-    
+
+
+    public abstract class CodeParser : ICodeParser
+    {
         /// <devdoc>
         ///    <para>
         ///       Compiles the given text stream into a CodeCompile unit.  
@@ -29,5 +30,4 @@ namespace Microsoft.CodeDom.Compiler {
         /// </devdoc>
         public abstract CodeCompileUnit Parse(TextReader codeStream);
     }
-
 }

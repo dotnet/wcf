@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Serialization
+{
+    using System;
+    using Microsoft.Xml;
 
     using Microsoft.Xml.Schema;
 
@@ -12,7 +13,8 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public interface IXmlSerializable {
+    public interface IXmlSerializable
+    {
         /// <include file='doc\IXmlSerializable.uex' path='docs/doc[@for="IXmlSerializable.GetSchema"]/*' />
         XmlSchema GetSchema();
         /// <include file='doc\IXmlSerializable.uex' path='docs/doc[@for="IXmlSerializable.ReadXml"]/*' />
@@ -20,5 +22,4 @@ namespace Microsoft.Xml.Serialization {
         /// <include file='doc\IXmlSerializable.uex' path='docs/doc[@for="IXmlSerializable.WriteXml"]/*' />
         void WriteXml(XmlWriter writer);
     }
-
 }

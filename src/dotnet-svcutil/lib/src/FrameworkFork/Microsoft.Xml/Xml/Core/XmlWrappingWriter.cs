@@ -40,177 +40,213 @@ using System.Diagnostics;
 
 
 
-namespace Microsoft.Xml {
-				using System;
-				
-
-    internal partial class XmlWrappingWriter : XmlWriter {
+namespace Microsoft.Xml
+{
+    using System;
 
 
-//
-// Fields
-//
+    internal partial class XmlWrappingWriter : XmlWriter
+    {
+        //
+        // Fields
+        //
         protected XmlWriter writer;
 
-// 
-// Constructor
-//
-        internal XmlWrappingWriter(XmlWriter baseWriter) {
+        // 
+        // Constructor
+        //
+        internal XmlWrappingWriter(XmlWriter baseWriter)
+        {
             Debug.Assert(baseWriter != null);
             this.writer = baseWriter;
         }
 
-//
-// XmlWriter implementation
-//
+        //
+        // XmlWriter implementation
+        //
         public override XmlWriterSettings Settings { get { return writer.Settings; } }
         public override WriteState WriteState { get { return writer.WriteState; } }
         public override XmlSpace XmlSpace { get { return writer.XmlSpace; } }
         public override string XmlLang { get { return writer.XmlLang; } }
 
 
-        public override void WriteStartDocument() {
+        public override void WriteStartDocument()
+        {
             writer.WriteStartDocument();
         }
 
-        public override void WriteStartDocument(bool standalone) {
+        public override void WriteStartDocument(bool standalone)
+        {
             writer.WriteStartDocument(standalone);
         }
 
-        public override void WriteEndDocument() {
+        public override void WriteEndDocument()
+        {
             writer.WriteEndDocument();
         }
 
-        public override void WriteDocType(string name, string pubid, string sysid, string subset) {
+        public override void WriteDocType(string name, string pubid, string sysid, string subset)
+        {
             writer.WriteDocType(name, pubid, sysid, subset);
         }
 
-        public override void WriteStartElement(string prefix, string localName, string ns) {
+        public override void WriteStartElement(string prefix, string localName, string ns)
+        {
             writer.WriteStartElement(prefix, localName, ns);
         }
 
-        public override void WriteEndElement() {
+        public override void WriteEndElement()
+        {
             writer.WriteEndElement();
         }
 
-        public override void WriteFullEndElement() {
+        public override void WriteFullEndElement()
+        {
             writer.WriteFullEndElement();
         }
 
-        public override void WriteStartAttribute(string prefix, string localName, string ns) {
+        public override void WriteStartAttribute(string prefix, string localName, string ns)
+        {
             writer.WriteStartAttribute(prefix, localName, ns);
         }
 
-        public override void WriteEndAttribute() {
+        public override void WriteEndAttribute()
+        {
             writer.WriteEndAttribute();
         }
 
-        public override void WriteCData(string text) {
+        public override void WriteCData(string text)
+        {
             writer.WriteCData(text);
         }
 
-        public override void WriteComment(string text) {
+        public override void WriteComment(string text)
+        {
             writer.WriteComment(text);
         }
 
-        public override void WriteProcessingInstruction(string name, string text) {
+        public override void WriteProcessingInstruction(string name, string text)
+        {
             writer.WriteProcessingInstruction(name, text);
         }
 
-        public override void WriteEntityRef(string name) {
+        public override void WriteEntityRef(string name)
+        {
             writer.WriteEntityRef(name);
         }
 
-        public override void WriteCharEntity(char ch) {
+        public override void WriteCharEntity(char ch)
+        {
             writer.WriteCharEntity(ch);
         }
 
-        public override void WriteWhitespace(string ws) {
+        public override void WriteWhitespace(string ws)
+        {
             writer.WriteWhitespace(ws);
         }
 
-        public override void WriteString(string text) {
+        public override void WriteString(string text)
+        {
             writer.WriteString(text);
         }
 
-        public override void WriteSurrogateCharEntity(char lowChar, char highChar) {
+        public override void WriteSurrogateCharEntity(char lowChar, char highChar)
+        {
             writer.WriteSurrogateCharEntity(lowChar, highChar);
         }
 
-        public override void WriteChars(char[] buffer, int index, int count) {
+        public override void WriteChars(char[] buffer, int index, int count)
+        {
             writer.WriteChars(buffer, index, count);
         }
 
-        public override void WriteRaw(char[] buffer, int index, int count) {
+        public override void WriteRaw(char[] buffer, int index, int count)
+        {
             writer.WriteRaw(buffer, index, count);
         }
 
-        public override void WriteRaw(string data) {
+        public override void WriteRaw(string data)
+        {
             writer.WriteRaw(data);
         }
 
-        public override void WriteBase64(byte[] buffer, int index, int count) {
+        public override void WriteBase64(byte[] buffer, int index, int count)
+        {
             writer.WriteBase64(buffer, index, count);
         }
 
-        public override void Close() {
+        public override void Close()
+        {
             writer.Close();
         }
 
-        public override void Flush() {
+        public override void Flush()
+        {
             writer.Flush();
         }
 
-        public override string LookupPrefix(string ns) {
+        public override string LookupPrefix(string ns)
+        {
             return writer.LookupPrefix(ns);
         }
 
-        public override void WriteValue(object value) {
+        public override void WriteValue(object value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(string value) {
+        public override void WriteValue(string value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(bool value) {
+        public override void WriteValue(bool value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(DateTime value) {
+        public override void WriteValue(DateTime value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(DateTimeOffset value) {
+        public override void WriteValue(DateTimeOffset value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(double value) {
+        public override void WriteValue(double value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(float value) {
+        public override void WriteValue(float value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(decimal value) {
+        public override void WriteValue(decimal value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(int value) {
+        public override void WriteValue(int value)
+        {
             writer.WriteValue(value);
         }
 
-        public override void WriteValue(long value) {
+        public override void WriteValue(long value)
+        {
             writer.WriteValue(value);
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 ((IDisposable)writer).Dispose();
             }
         }
-
     }
 }
 

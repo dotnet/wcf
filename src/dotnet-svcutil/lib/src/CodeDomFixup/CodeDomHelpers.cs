@@ -15,19 +15,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal static class CodeDomHelpers
     {
-        static object referenceKey = null;
+        private static object s_referenceKey = null;
 
-        static object ReferenceKey
+        private static object ReferenceKey
         {
             get
             {
-                if (referenceKey == null)
+                if (s_referenceKey == null)
                 {
                     Type namespaceHelper = typeof(ServiceContractGenerator).GetTypeInfo().Assembly.GetType(typeof(ServiceContractGenerator).FullName + "+NamespaceHelper");
                     FieldInfo referenceKeyField = namespaceHelper.GetField("referenceKey", BindingFlags.NonPublic | BindingFlags.Static);
-                    referenceKey = referenceKeyField.GetValue(null);
+                    s_referenceKey = referenceKeyField.GetValue(null);
                 }
-                return referenceKey;
+                return s_referenceKey;
             }
         }
 
@@ -35,7 +35,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             return CollectionHelpers.Find<CodeAttributeDeclaration>(
                 attrs,
-                delegate(CodeAttributeDeclaration attr)
+                delegate (CodeAttributeDeclaration attr)
                 {
                     return MatchType<T>(attr.AttributeType);
                 }
@@ -46,7 +46,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             return CollectionHelpers.Find<CodeMemberMethod>(
                 members,
-                delegate(CodeMemberMethod method)
+                delegate (CodeMemberMethod method)
                 {
                     return method.Name == methodName;
                 }
@@ -74,7 +74,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return m;
         }
 
-        static string GetMethodNameBase(CodeMemberMethod method)
+        private static string GetMethodNameBase(CodeMemberMethod method)
         {
             string methodName = method.Name;
             if (IsBeginMethod(method))
@@ -132,7 +132,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return MatchType(typeRef1, typeRef2, false/*ignoreArrayness*/, false/*ignoreGenericParameters*/);
         }
 
-        static bool MatchType(CodeTypeReference typeRef1, CodeTypeReference typeRef2, bool ignoreArrayness, bool ignoreGenericParameters)
+        private static bool MatchType(CodeTypeReference typeRef1, CodeTypeReference typeRef2, bool ignoreArrayness, bool ignoreGenericParameters)
         {
             if (typeRef1 == null && typeRef2 == null)
                 return true;
@@ -145,7 +145,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     (ignoreGenericParameters || MatchAllTypes(typeRef1.TypeArguments, typeRef2.TypeArguments));
         }
 
-        static bool MatchAllTypes(CodeTypeReferenceCollection types1, CodeTypeReferenceCollection types2)
+        private static bool MatchAllTypes(CodeTypeReferenceCollection types1, CodeTypeReferenceCollection types2)
         {
             if (types1.Count != types2.Count)
                 return false;

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System.Reflection;
     using System.Collections;
     using System.IO;
@@ -22,14 +22,16 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSerializerFactory {
-        static TempAssemblyCache cache = new TempAssemblyCache();
+    public class XmlSerializerFactory
+    {
+        private static TempAssemblyCache s_cache = new TempAssemblyCache();
 
         /// <include file='doc\XmlSerializerFactory.uex' path='docs/doc[@for="XmlSerializerFactory.CreateSerializer"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace) {
+        public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace)
+        {
             return CreateSerializer(type, overrides, extraTypes, root, defaultNamespace, null);
         }
 
@@ -37,7 +39,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(Type type, XmlRootAttribute root) {
+        public XmlSerializer CreateSerializer(Type type, XmlRootAttribute root)
+        {
             return CreateSerializer(type, null, new Type[0], root, null, null);
         }
 
@@ -45,7 +48,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(Type type, Type[] extraTypes) {
+        public XmlSerializer CreateSerializer(Type type, Type[] extraTypes)
+        {
             return CreateSerializer(type, null, extraTypes, null, null, null);
         }
 
@@ -53,7 +57,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides) {
+        public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides)
+        {
             return CreateSerializer(type, overrides, new Type[0], null, null, null);
         }
 
@@ -61,7 +66,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(XmlTypeMapping xmlTypeMapping) {
+        public XmlSerializer CreateSerializer(XmlTypeMapping xmlTypeMapping)
+        {
             TempAssembly tempAssembly = XmlSerializer.GenerateTempAssembly(xmlTypeMapping);
             return (XmlSerializer)tempAssembly.Contract.TypedSerializers[xmlTypeMapping.Key];
         }
@@ -70,7 +76,8 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(Type type) {
+        public XmlSerializer CreateSerializer(Type type)
+        {
             return CreateSerializer(type, (string)null);
         }
 
@@ -78,37 +85,45 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSerializer CreateSerializer(Type type, string defaultNamespace) {
+        public XmlSerializer CreateSerializer(Type type, string defaultNamespace)
+        {
             if (type == null)
                 throw new ArgumentNullException("type");
-            TempAssembly tempAssembly = cache[defaultNamespace, type];
+            TempAssembly tempAssembly = s_cache[defaultNamespace, type];
             XmlTypeMapping mapping = null;
-            if (tempAssembly == null) {
-                lock (cache) {
-                    tempAssembly = cache[defaultNamespace, type];
-                    if (tempAssembly == null) {
+            if (tempAssembly == null)
+            {
+                lock (s_cache)
+                {
+                    tempAssembly = s_cache[defaultNamespace, type];
+                    if (tempAssembly == null)
+                    {
                         XmlSerializerImplementation contract;
                         Assembly assembly = TempAssembly.LoadGeneratedAssembly(type, defaultNamespace, out contract);
-                        if (assembly == null) {
+                        if (assembly == null)
+                        {
                             // need to reflect and generate new serialization assembly
                             XmlReflectionImporter importer = new XmlReflectionImporter(defaultNamespace);
                             mapping = importer.ImportTypeMapping(type, null, defaultNamespace);
                             tempAssembly = XmlSerializer.GenerateTempAssembly(mapping, type, defaultNamespace);
                         }
-                        else {
+                        else
+                        {
                             tempAssembly = new TempAssembly(contract);
                         }
-                        cache.Add(defaultNamespace, type, tempAssembly);
+                        s_cache.Add(defaultNamespace, type, tempAssembly);
                     }
                 }
             }
-            if (mapping == null) {
+            if (mapping == null)
+            {
                 mapping = XmlReflectionImporter.GetTopLevelMapping(type, defaultNamespace);
             }
             return (XmlSerializer)tempAssembly.Contract.GetSerializer(type);
         }
 
-        public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace, string location) {
+        public XmlSerializer CreateSerializer(Type type, XmlAttributeOverrides overrides, Type[] extraTypes, XmlRootAttribute root, string defaultNamespace, string location)
+        {
             throw new NotImplementedException();
         }
     }

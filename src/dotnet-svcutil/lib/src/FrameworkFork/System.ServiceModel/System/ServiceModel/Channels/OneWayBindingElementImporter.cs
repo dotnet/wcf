@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Channels
 {
     using Microsoft.Xml;
@@ -53,7 +53,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    static class OneWayPolicyConstants
+    internal static class OneWayPolicyConstants
     {
         public const string OneWay = "OneWay";
         public const string PacketRoutable = "PacketRoutable";

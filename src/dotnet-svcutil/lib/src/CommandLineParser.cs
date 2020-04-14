@@ -23,8 +23,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public const OperationalContext DefaultSwitchLevel = OperationalContext.Project;
 
-        private static List<CommandSwitch> allSwitches = new List<CommandSwitch>();
-        public static IEnumerable<CommandSwitch> All { get { return allSwitches; } }
+        private static List<CommandSwitch> s_allSwitches = new List<CommandSwitch>();
+        public static IEnumerable<CommandSwitch> All { get { return s_allSwitches; } }
         public string Name { get; private set; }
         public string Abbreviation { get; private set; }
         public SwitchType SwitchType { get; private set; }
@@ -55,9 +55,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             this.SwitchType = switchType;
             this.SwitchLevel = switchLevel;
 
-            System.Diagnostics.Debug.Assert(!allSwitches.Any(s => s.Equals(this)), $"A switch with name or abbreviation '{name}+{abbreviation}' has already been crated!");
+            System.Diagnostics.Debug.Assert(!s_allSwitches.Any(s => s.Equals(this)), $"A switch with name or abbreviation '{name}+{abbreviation}' has already been crated!");
 
-            allSwitches.Add(this);
+            s_allSwitches.Add(this);
         }
 
         internal static CommandSwitch FindSwitch(string name)

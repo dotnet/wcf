@@ -12,8 +12,8 @@ namespace System.ServiceModel
 
     public class NetTcpContextBinding : NetTcpBinding
     {
-        bool contextManagementEnabled = ContextBindingElement.DefaultContextManagementEnabled;
-        ProtectionLevel contextProtectionLevel = ContextBindingElement.DefaultProtectionLevel;
+        private bool _contextManagementEnabled = ContextBindingElement.DefaultContextManagementEnabled;
+        private ProtectionLevel _contextProtectionLevel = ContextBindingElement.DefaultProtectionLevel;
 
         public NetTcpContextBinding()
             : base()
@@ -42,11 +42,11 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.contextManagementEnabled;
+                return _contextManagementEnabled;
             }
             set
             {
-                this.contextManagementEnabled = value;
+                _contextManagementEnabled = value;
             }
         }
 
@@ -55,7 +55,7 @@ namespace System.ServiceModel
         {
             get
             {
-                return this.contextProtectionLevel;
+                return _contextProtectionLevel;
             }
             set
             {
@@ -63,7 +63,7 @@ namespace System.ServiceModel
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
-                this.contextProtectionLevel = value;
+                _contextProtectionLevel = value;
             }
         }
 

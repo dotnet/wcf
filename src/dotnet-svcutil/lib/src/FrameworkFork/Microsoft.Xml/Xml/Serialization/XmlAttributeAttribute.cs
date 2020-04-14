@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using Microsoft.Xml.Schema;
 
@@ -11,88 +11,98 @@ namespace Microsoft.Xml.Serialization {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
-    public class XmlAttributeAttribute : System.Attribute {
-        string attributeName;
-        Type type;
-        string ns;
-        string dataType;
-        XmlSchemaForm form = XmlSchemaForm.None;
-        
+    public class XmlAttributeAttribute : System.Attribute
+    {
+        private string _attributeName;
+        private Type _type;
+        private string _ns;
+        private string _dataType;
+        private XmlSchemaForm _form = XmlSchemaForm.None;
+
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.XmlAttributeAttribute"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAttributeAttribute() {
+        public XmlAttributeAttribute()
+        {
         }
-        
+
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.XmlAttributeAttribute1"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAttributeAttribute(string attributeName) {
-            this.attributeName = attributeName;
+        public XmlAttributeAttribute(string attributeName)
+        {
+            _attributeName = attributeName;
         }
-        
+
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.XmlAttributeAttribute2"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAttributeAttribute(Type type) {
-            this.type = type;
+        public XmlAttributeAttribute(Type type)
+        {
+            _type = type;
         }
-        
+
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.XmlAttributeAttribute3"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAttributeAttribute(string attributeName, Type type) {
-            this.attributeName = attributeName;
-            this.type = type;
+        public XmlAttributeAttribute(string attributeName, Type type)
+        {
+            _attributeName = attributeName;
+            _type = type;
         }
 
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.Type"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public Type Type {
-            get { return type; }
-            set { type = value; }
+        public Type Type
+        {
+            get { return _type; }
+            set { _type = value; }
         }
-       
+
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.AttributeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string AttributeName {
-            get { return attributeName == null ? string.Empty : attributeName; }
-            set { attributeName = value; }
+        public string AttributeName
+        {
+            get { return _attributeName == null ? string.Empty : _attributeName; }
+            set { _attributeName = value; }
         }
-        
+
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.Namespace"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Namespace {
-            get { return ns; }
-            set { ns = value; }
+        public string Namespace
+        {
+            get { return _ns; }
+            set { _ns = value; }
         }
 
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.DataType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string DataType {
-            get { return dataType == null ? string.Empty : dataType; }
-            set { dataType = value; }
+        public string DataType
+        {
+            get { return _dataType == null ? string.Empty : _dataType; }
+            set { _dataType = value; }
         }
 
         /// <include file='doc\XmlAttributeAttribute.uex' path='docs/doc[@for="XmlAttributeAttribute.Form"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlSchemaForm Form {
-            get { return form; }
-            set { form = value; }
+        public XmlSchemaForm Form
+        {
+            get { return _form; }
+            set { _form = value; }
         }
     }
 }

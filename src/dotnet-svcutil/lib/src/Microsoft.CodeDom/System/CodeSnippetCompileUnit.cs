@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,18 +15,21 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeSnippetCompileUnit : CodeCompileUnit {
-        private string value;
-        private CodeLinePragma linePragma;
+    public class CodeSnippetCompileUnit : CodeCompileUnit
+    {
+        private string _value;
+        private CodeLinePragma _linePragma;
 
-        public CodeSnippetCompileUnit() {
+        public CodeSnippetCompileUnit()
+        {
         }
 
-        public CodeSnippetCompileUnit(string value) {
+        public CodeSnippetCompileUnit(string value)
+        {
             Value = value;
         }
 
@@ -37,12 +40,15 @@ namespace Microsoft.CodeDom {
         ///       text of the code block to represent.
         ///    </para>
         /// </devdoc>
-        public string Value {
-            get {
-                return (value == null) ? string.Empty : value;
+        public string Value
+        {
+            get
+            {
+                return (_value == null) ? string.Empty : _value;
             }
-            set {
-                this.value = value;
+            set
+            {
+                _value = value;
             }
         }
 
@@ -51,12 +57,15 @@ namespace Microsoft.CodeDom {
         ///       The line the code block starts on.
         ///    </para>
         /// </devdoc>
-        public CodeLinePragma LinePragma {
-            get {
-                return linePragma;
+        public CodeLinePragma LinePragma
+        {
+            get
+            {
+                return _linePragma;
             }
-            set {
-                linePragma = value;
+            set
+            {
+                _linePragma = value;
             }
         }
     }

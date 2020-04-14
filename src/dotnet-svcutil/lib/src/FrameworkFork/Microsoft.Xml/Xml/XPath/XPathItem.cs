@@ -1,17 +1,20 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System;
 using System.Collections;
 using Microsoft.Xml.Schema;
 
-namespace Microsoft.Xml.XPath {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.XPath
+{
+    using System;
+    using Microsoft.Xml;
 
     /// <summary>
     /// Base class for XPathNavigator and XmlAtomicValue.
     /// </summary>
-    public abstract class XPathItem {
+    public abstract class XPathItem
+    {
         /// <summary>
         /// True if this item is a node, and not an atomic value.
         /// </summary>

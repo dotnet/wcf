@@ -17,9 +17,9 @@ namespace System.ServiceModel.Security.Tokens
 
     public class IssuedSecurityTokenParameters : SecurityTokenParameters
     {
-        const string wsidPrefix = "wsid";
-        const string wsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
-        static readonly string wsidPPIClaim = String.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", wsidNamespace);
+        private const string wsidPrefix = "wsid";
+        private const string wsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
+        private static readonly string s_wsidPPIClaim = String.Format(CultureInfo.InvariantCulture, "{0}/claims/privatepersonalidentifier", wsidNamespace);
         internal const SecurityKeyType defaultKeyType = SecurityKeyType.SymmetricKey;
         internal const bool defaultUseStrTransform = false;
 
@@ -30,41 +30,41 @@ namespace System.ServiceModel.Security.Tokens
             public Binding IssuerBinding;
         }
 
-        Collection<XmlElement> additionalRequestParameters = new Collection<XmlElement>();
-        Collection<AlternativeIssuerEndpoint> alternativeIssuerEndpoints = new Collection<AlternativeIssuerEndpoint>();
-        MessageSecurityVersion defaultMessageSecurityVersion;
-        EndpointAddress issuerAddress;
-        EndpointAddress issuerMetadataAddress;
-        Binding issuerBinding;
-        int keySize;
-        SecurityKeyType keyType = defaultKeyType;
-        Collection<ClaimTypeRequirement> claimTypeRequirements = new Collection<ClaimTypeRequirement>();
-        bool useStrTransform = defaultUseStrTransform;
-        string tokenType;
+        private Collection<XmlElement> _additionalRequestParameters = new Collection<XmlElement>();
+        private Collection<AlternativeIssuerEndpoint> _alternativeIssuerEndpoints = new Collection<AlternativeIssuerEndpoint>();
+        private MessageSecurityVersion _defaultMessageSecurityVersion;
+        private EndpointAddress _issuerAddress;
+        private EndpointAddress _issuerMetadataAddress;
+        private Binding _issuerBinding;
+        private int _keySize;
+        private SecurityKeyType _keyType = defaultKeyType;
+        private Collection<ClaimTypeRequirement> _claimTypeRequirements = new Collection<ClaimTypeRequirement>();
+        private bool _useStrTransform = defaultUseStrTransform;
+        private string _tokenType;
 
         protected IssuedSecurityTokenParameters(IssuedSecurityTokenParameters other)
             : base(other)
         {
-            this.defaultMessageSecurityVersion = other.defaultMessageSecurityVersion;
-            this.issuerAddress = other.issuerAddress;
-            this.keyType = other.keyType;
-            this.tokenType = other.tokenType;
-            this.keySize = other.keySize;
-            this.useStrTransform = other.useStrTransform;
+            _defaultMessageSecurityVersion = other._defaultMessageSecurityVersion;
+            _issuerAddress = other._issuerAddress;
+            _keyType = other._keyType;
+            _tokenType = other._tokenType;
+            _keySize = other._keySize;
+            _useStrTransform = other._useStrTransform;
 
-            foreach (XmlElement parameter in other.additionalRequestParameters)
+            foreach (XmlElement parameter in other._additionalRequestParameters)
             {
-                this.additionalRequestParameters.Add((XmlElement)parameter.Clone());
+                _additionalRequestParameters.Add((XmlElement)parameter.Clone());
             }
-            foreach (ClaimTypeRequirement c in other.claimTypeRequirements)
+            foreach (ClaimTypeRequirement c in other._claimTypeRequirements)
             {
-                this.claimTypeRequirements.Add(c);
+                _claimTypeRequirements.Add(c);
             }
-            if (other.issuerBinding != null)
+            if (other._issuerBinding != null)
             {
-                this.issuerBinding = new CustomBinding(other.issuerBinding);
+                _issuerBinding = new CustomBinding(other._issuerBinding);
             }
-            this.issuerMetadataAddress = other.issuerMetadataAddress;
+            _issuerMetadataAddress = other._issuerMetadataAddress;
         }
 
         public IssuedSecurityTokenParameters()
@@ -88,9 +88,9 @@ namespace System.ServiceModel.Security.Tokens
         public IssuedSecurityTokenParameters(string tokenType, EndpointAddress issuerAddress, Binding issuerBinding)
             : base()
         {
-            this.tokenType = tokenType;
-            this.issuerAddress = issuerAddress;
-            this.issuerBinding = issuerBinding;
+            _tokenType = tokenType;
+            _issuerAddress = issuerAddress;
+            _issuerBinding = issuerBinding;
         }
 
         internal protected override bool HasAsymmetricKey { get { return this.KeyType == SecurityKeyType.AsymmetricKey; } }
@@ -99,7 +99,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.additionalRequestParameters;
+                return _additionalRequestParameters;
             }
         }
 
@@ -107,12 +107,12 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.defaultMessageSecurityVersion;
+                return _defaultMessageSecurityVersion;
             }
 
             set
             {
-                defaultMessageSecurityVersion = value;
+                _defaultMessageSecurityVersion = value;
             }
         }
 
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.alternativeIssuerEndpoints;
+                return _alternativeIssuerEndpoints;
             }
         }
 
@@ -128,11 +128,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerAddress;
+                return _issuerAddress;
             }
             set
             {
-                this.issuerAddress = value;
+                _issuerAddress = value;
             }
         }
 
@@ -140,11 +140,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerMetadataAddress;
+                return _issuerMetadataAddress;
             }
             set
             {
-                this.issuerMetadataAddress = value;
+                _issuerMetadataAddress = value;
             }
         }
 
@@ -152,11 +152,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.issuerBinding;
+                return _issuerBinding;
             }
             set
             {
-                this.issuerBinding = value;
+                _issuerBinding = value;
             }
         }
 
@@ -164,12 +164,12 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.keyType;
+                return _keyType;
             }
             set
             {
                 SecurityKeyTypeHelper.Validate(value);
-                this.keyType = value;
+                _keyType = value;
             }
         }
 
@@ -177,13 +177,13 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.keySize;
+                return _keySize;
             }
             set
             {
                 if (value < 0)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", SRServiceModel.ValueMustBeNonNegative));
-                this.keySize = value;
+                _keySize = value;
             }
         }
 
@@ -191,11 +191,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.useStrTransform;
+                return _useStrTransform;
             }
             set
             {
-                this.useStrTransform = value;
+                _useStrTransform = value;
             }
         }
 
@@ -203,7 +203,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.claimTypeRequirements;
+                return _claimTypeRequirements;
             }
         }
 
@@ -211,11 +211,11 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.tokenType;
+                return _tokenType;
             }
             set
             {
-                this.tokenType = value;
+                _tokenType = value;
             }
         }
 
@@ -244,7 +244,7 @@ namespace System.ServiceModel.Security.Tokens
                 SecurityKeyType keyType;
                 Collection<XmlElement> requiredClaims;
                 if (trustDriver.TryParseKeySizeElement(element, out keySize))
-                    this.keySize = keySize;
+                    _keySize = keySize;
                 else if (trustDriver.TryParseKeyTypeElement(element, out keyType))
                     this.KeyType = keyType;
                 else if (trustDriver.TryParseTokenTypeElement(element, out tokenType))
@@ -273,7 +273,7 @@ namespace System.ServiceModel.Security.Tokens
                                         claimTypeRequirement = new ClaimTypeRequirement(claimValue, XmlConvert.ToBoolean(optional));
                                     }
 
-                                    this.claimTypeRequirements.Add(claimTypeRequirement);
+                                    _claimTypeRequirements.Add(claimTypeRequirement);
                                 }
                             }
                             else
@@ -311,22 +311,22 @@ namespace System.ServiceModel.Security.Tokens
 
             Collection<XmlElement> result = new Collection<XmlElement>();
 
-            if (this.tokenType != null)
+            if (_tokenType != null)
             {
-                result.Add(driver.CreateTokenTypeElement(tokenType));
+                result.Add(driver.CreateTokenTypeElement(_tokenType));
             }
 
-            result.Add(driver.CreateKeyTypeElement(this.keyType));
+            result.Add(driver.CreateKeyTypeElement(_keyType));
 
-            if (this.keySize != 0)
+            if (_keySize != 0)
             {
-                result.Add(driver.CreateKeySizeElement(keySize));
+                result.Add(driver.CreateKeySizeElement(_keySize));
             }
-            if (this.claimTypeRequirements.Count > 0)
+            if (_claimTypeRequirements.Count > 0)
             {
                 Collection<XmlElement> claimsElements = new Collection<XmlElement>();
                 XmlDocument doc = new XmlDocument();
-                foreach (ClaimTypeRequirement claimType in this.claimTypeRequirements)
+                foreach (ClaimTypeRequirement claimType in _claimTypeRequirements)
                 {
                     XmlElement element = doc.CreateElement(wsidPrefix, "ClaimType", wsidNamespace);
                     XmlAttribute attr = doc.CreateAttribute("Uri");
@@ -343,11 +343,11 @@ namespace System.ServiceModel.Security.Tokens
                 result.Add(driver.CreateRequiredClaimsElement(claimsElements));
             }
 
-            if (this.additionalRequestParameters.Count > 0)
+            if (_additionalRequestParameters.Count > 0)
             {
-                Collection<XmlElement> trustNormalizedParameters = NormalizeAdditionalParameters(this.additionalRequestParameters,
+                Collection<XmlElement> trustNormalizedParameters = NormalizeAdditionalParameters(_additionalRequestParameters,
                                                                                                  driver,
-                                                                                                 (this.claimTypeRequirements.Count > 0));
+                                                                                                 (_claimTypeRequirements.Count > 0));
 
                 foreach (XmlElement parameter in trustNormalizedParameters)
                 {
@@ -386,7 +386,7 @@ namespace System.ServiceModel.Security.Tokens
         {
             IssuedSecurityTokenParameters result = new IssuedSecurityTokenParameters(SecurityXXX2005Strings.SamlTokenType);
             result.KeyType = SecurityKeyType.AsymmetricKey;
-            result.ClaimTypeRequirements.Add(new ClaimTypeRequirement(wsidPPIClaim));
+            result.ClaimTypeRequirements.Add(new ClaimTypeRequirement(s_wsidPPIClaim));
             result.IssuerAddress = null;
             result.AddAlgorithmParameters(algorithm, standardsManager, result.KeyType);
             return result;
@@ -406,7 +406,7 @@ namespace System.ServiceModel.Security.Tokens
                 ClaimTypeRequirement claimTypeRequirement = parameters.ClaimTypeRequirements[0] as ClaimTypeRequirement;
                 if (claimTypeRequirement == null)
                     return false;
-                if (claimTypeRequirement.ClaimType != wsidPPIClaim)
+                if (claimTypeRequirement.ClaimType != s_wsidPPIClaim)
                     return false;
             }
             else if ((parameters.AdditionalRequestParameters != null) && (parameters.AdditionalRequestParameters.Count > 0))
@@ -420,7 +420,7 @@ namespace System.ServiceModel.Security.Tokens
                     if (claimTypeElement != null)
                     {
                         XmlNode claimType = claimTypeElement.Attributes.GetNamedItem("Uri");
-                        if (claimType != null && claimType.Value == wsidPPIClaim)
+                        if (claimType != null && claimType.Value == s_wsidPPIClaim)
                         {
                             claimTypeRequirementMatched = true;
                         }
@@ -456,22 +456,22 @@ namespace System.ServiceModel.Security.Tokens
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "TokenType: {0}", this.tokenType == null ? "null" : this.tokenType));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeyType: {0}", this.keyType.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeySize: {0}", this.keySize.ToString(CultureInfo.InvariantCulture)));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerAddress: {0}", this.issuerAddress == null ? "null" : this.issuerAddress.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerMetadataAddress: {0}", this.issuerMetadataAddress == null ? "null" : this.issuerMetadataAddress.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "DefaultMessgeSecurityVersion: {0}", this.defaultMessageSecurityVersion == null ? "null" : this.defaultMessageSecurityVersion.ToString()));
-            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "UseStrTransform: {0}", this.useStrTransform.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "TokenType: {0}", _tokenType == null ? "null" : _tokenType));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeyType: {0}", _keyType.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "KeySize: {0}", _keySize.ToString(CultureInfo.InvariantCulture)));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerAddress: {0}", _issuerAddress == null ? "null" : _issuerAddress.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerMetadataAddress: {0}", _issuerMetadataAddress == null ? "null" : _issuerMetadataAddress.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "DefaultMessgeSecurityVersion: {0}", _defaultMessageSecurityVersion == null ? "null" : _defaultMessageSecurityVersion.ToString()));
+            sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "UseStrTransform: {0}", _useStrTransform.ToString()));
 
-            if (this.issuerBinding == null)
+            if (_issuerBinding == null)
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerBinding: null"));
             }
             else
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "IssuerBinding:"));
-                BindingElementCollection bindingElements = this.issuerBinding.CreateBindingElements();
+                BindingElementCollection bindingElements = _issuerBinding.CreateBindingElements();
                 for (int i = 0; i < bindingElements.Count; i++)
                 {
                     sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "  BindingElement[{0}]:", i.ToString(CultureInfo.InvariantCulture)));
@@ -479,16 +479,16 @@ namespace System.ServiceModel.Security.Tokens
                 }
             }
 
-            if (this.claimTypeRequirements.Count == 0)
+            if (_claimTypeRequirements.Count == 0)
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "ClaimTypeRequirements: none"));
             }
             else
             {
                 sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "ClaimTypeRequirements:"));
-                for (int i = 0; i < this.claimTypeRequirements.Count; i++)
+                for (int i = 0; i < _claimTypeRequirements.Count; i++)
                 {
-                    sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "  {0}, optional={1}", this.claimTypeRequirements[i].ClaimType, this.claimTypeRequirements[i].IsOptional));
+                    sb.AppendLine(String.Format(CultureInfo.InvariantCulture, "  {0}, optional={1}", _claimTypeRequirements[i].ClaimType, _claimTypeRequirements[i].IsOptional));
                 }
             }
 

@@ -15,7 +15,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // remove IExtensibleDataObject impl
             CollectionHelpers.MapList<CodeTypeReference>(
                 type.BaseTypes,
-                delegate(CodeTypeReference typeRef)
+                delegate (CodeTypeReference typeRef)
                 {
                     return !CodeDomHelpers.MatchType<IExtensibleDataObject>(typeRef);
                 },
@@ -25,7 +25,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // remove ExtensionData members
             CollectionHelpers.MapList<CodeTypeMember>(
                 type.Members,
-                delegate(CodeTypeMember member)
+                delegate (CodeTypeMember member)
                 {
                     return !IsExtensionDataMember(member);
                 },
@@ -33,7 +33,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             );
         }
 
-        static bool IsExtensionDataMember(CodeTypeMember member)
+        private static bool IsExtensionDataMember(CodeTypeMember member)
         {
             CodeTypeReference memberType = null;
             switch (member.Name)
@@ -48,5 +48,4 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return memberType != null && CodeDomHelpers.MatchType(memberType, typeof(ExtensionDataObject));
         }
     }
-
 }

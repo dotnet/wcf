@@ -14,20 +14,20 @@ namespace System.ServiceModel.Channels
     public sealed class OneWayBindingElement : BindingElement,
         IPolicyExportExtension
     {
-        bool packetRoutable;
-        int maxAcceptedChannels;
+        private bool _packetRoutable;
+        private int _maxAcceptedChannels;
 
         public OneWayBindingElement()
         {
-            this.packetRoutable = OneWayDefaults.PacketRoutable;
-            this.maxAcceptedChannels = OneWayDefaults.MaxAcceptedChannels;
+            _packetRoutable = OneWayDefaults.PacketRoutable;
+            _maxAcceptedChannels = OneWayDefaults.MaxAcceptedChannels;
         }
 
-        OneWayBindingElement(OneWayBindingElement elementToBeCloned)
+        private OneWayBindingElement(OneWayBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
-            this.packetRoutable = elementToBeCloned.PacketRoutable;
-            this.maxAcceptedChannels = elementToBeCloned.maxAcceptedChannels;
+            _packetRoutable = elementToBeCloned.PacketRoutable;
+            _maxAcceptedChannels = elementToBeCloned._maxAcceptedChannels;
         }
 
         // server
@@ -36,14 +36,14 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxAcceptedChannels;
+                return _maxAcceptedChannels;
             }
             set
             {
                 if (value <= 0)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBePositive));
 
-                this.maxAcceptedChannels = value;
+                _maxAcceptedChannels = value;
             }
         }
 
@@ -52,12 +52,12 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.packetRoutable;
+                return _packetRoutable;
             }
 
             set
             {
-                this.packetRoutable = value;
+                _packetRoutable = value;
             }
         }
 
@@ -104,22 +104,22 @@ namespace System.ServiceModel.Channels
             return false;
         }
 
-        static MessagePartSpecification oneWaySignedMessageParts;
+        private static MessagePartSpecification s_oneWaySignedMessageParts;
 
-        static MessagePartSpecification OneWaySignedMessageParts
+        private static MessagePartSpecification OneWaySignedMessageParts
         {
             get
             {
-                if (oneWaySignedMessageParts == null)
+                if (s_oneWaySignedMessageParts == null)
                 {
                     MessagePartSpecification tempSignedMessageParts = new MessagePartSpecification(
                         new XmlQualifiedName(DotNetOneWayStrings.HeaderName, DotNetOneWayStrings.Namespace)
                         );
                     tempSignedMessageParts.MakeReadOnly();
-                    oneWaySignedMessageParts = tempSignedMessageParts;
+                    s_oneWaySignedMessageParts = tempSignedMessageParts;
                 }
 
-                return oneWaySignedMessageParts;
+                return s_oneWaySignedMessageParts;
             }
         }
 

@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
+namespace Microsoft.Xml.Schema
+{
     using System;
     using System.Collections;
     using System.Globalization;
@@ -9,52 +10,57 @@ namespace Microsoft.Xml.Schema {
     using System.IO;
     using System.Diagnostics;
 
-        using System.Threading.Tasks;
-    
-    internal sealed partial class Parser {
+    using System.Threading.Tasks;
 
-        public async Task< SchemaType > ParseAsync(XmlReader reader, string targetNamespace) {
+    internal sealed partial class Parser
+    {
+        public async Task<SchemaType> ParseAsync(XmlReader reader, string targetNamespace)
+        {
             await StartParsingAsync(reader, targetNamespace).ConfigureAwait(false);
-            while(ParseReaderNode() && await reader.ReadAsync().ConfigureAwait(false)) {}
+            while (ParseReaderNode() && await reader.ReadAsync().ConfigureAwait(false)) { }
             return FinishParsing();
         }
 
-        public async Task StartParsingAsync(XmlReader reader, string targetNamespace) {
-            this.reader = reader;
-            positionInfo = PositionInfo.GetPositionInfo(reader);
-            namespaceManager = reader.NamespaceManager;
-            if (namespaceManager == null) {
-                namespaceManager = new XmlNamespaceManager(nameTable);
-                isProcessNamespaces = true;
-            } 
-            else {
-                isProcessNamespaces = false;
+        public async Task StartParsingAsync(XmlReader reader, string targetNamespace)
+        {
+            _reader = reader;
+            _positionInfo = PositionInfo.GetPositionInfo(reader);
+            _namespaceManager = reader.NamespaceManager;
+            if (_namespaceManager == null)
+            {
+                _namespaceManager = new XmlNamespaceManager(_nameTable);
+                _isProcessNamespaces = true;
             }
-            while (reader.NodeType != XmlNodeType.Element && await reader.ReadAsync().ConfigureAwait(false)) {}
+            else
+            {
+                _isProcessNamespaces = false;
+            }
+            while (reader.NodeType != XmlNodeType.Element && await reader.ReadAsync().ConfigureAwait(false)) { }
 
-            markupDepth = int.MaxValue;
-            schemaXmlDepth = reader.Depth;
-            SchemaType rootType = schemaNames.SchemaTypeFromRoot(reader.LocalName, reader.NamespaceURI);
-            
+            _markupDepth = int.MaxValue;
+            _schemaXmlDepth = reader.Depth;
+            SchemaType rootType = _schemaNames.SchemaTypeFromRoot(reader.LocalName, reader.NamespaceURI);
+
             string code;
-            if (!CheckSchemaRoot(rootType, out code)) {
-                throw new XmlSchemaException(code, reader.BaseURI, positionInfo.LineNumber, positionInfo.LinePosition);
+            if (!CheckSchemaRoot(rootType, out code))
+            {
+                throw new XmlSchemaException(code, reader.BaseURI, _positionInfo.LineNumber, _positionInfo.LinePosition);
             }
-            
-            if (schemaType == SchemaType.XSD) {
-                schema = new XmlSchema();
-                schema.BaseUri = new Uri(reader.BaseURI, UriKind.RelativeOrAbsolute);
-                builder = new XsdBuilder(reader, namespaceManager, schema, nameTable, schemaNames, eventHandler);
+
+            if (_schemaType == SchemaType.XSD)
+            {
+                _schema = new XmlSchema();
+                _schema.BaseUri = new Uri(reader.BaseURI, UriKind.RelativeOrAbsolute);
+                _builder = new XsdBuilder(reader, _namespaceManager, _schema, _nameTable, _schemaNames, _eventHandler);
             }
-            else {  
-                Debug.Assert(schemaType == SchemaType.XDR);
-                xdrSchema = new SchemaInfo();
-                xdrSchema.SchemaType = SchemaType.XDR;
-                builder = new XdrBuilder(reader, namespaceManager, xdrSchema, targetNamespace, nameTable, schemaNames, eventHandler);
-                ((XdrBuilder)builder).XmlResolver = xmlResolver;
+            else
+            {
+                Debug.Assert(_schemaType == SchemaType.XDR);
+                _xdrSchema = new SchemaInfo();
+                _xdrSchema.SchemaType = SchemaType.XDR;
+                _builder = new XdrBuilder(reader, _namespaceManager, _xdrSchema, targetNamespace, _nameTable, _schemaNames, _eventHandler);
+                ((XdrBuilder)_builder).XmlResolver = _xmlResolver;
             }
         }
-
     };
-
 } // namespace Microsoft.Xml

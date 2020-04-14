@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     public enum TransactionFlowOption
@@ -9,7 +10,7 @@ namespace System.ServiceModel
         Mandatory,
     }
 
-    static class TransactionFlowOptionHelper
+    internal static class TransactionFlowOptionHelper
     {
         public static bool IsDefined(TransactionFlowOption option)
         {

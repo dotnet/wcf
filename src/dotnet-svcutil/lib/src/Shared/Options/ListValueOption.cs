@@ -18,7 +18,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     /// </summary>
     internal class ListValueOption<TValue> : OptionBase
     {
-        ListValue<TValue> InnerList { get; }
+        private ListValue<TValue> InnerList { get; }
 
         public ListValueOption(string name) : base(name, new ListValue<TValue>())
         {

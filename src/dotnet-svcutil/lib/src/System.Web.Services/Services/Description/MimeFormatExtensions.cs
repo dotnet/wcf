@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.Web.Services.Description
 {
     using Microsoft.Xml.Serialization;
@@ -13,23 +14,23 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPrefix("mime", MimeContentBinding.Namespace)]
     public sealed class MimeContentBinding : ServiceDescriptionFormatExtension
     {
-        string type;
-        string part;
+        private string _type;
+        private string _part;
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeContentBinding.Part"]/*' />
         [XmlAttribute("part")]
         public string Part
         {
-            get { return part; }
-            set { part = value; }
+            get { return _part; }
+            set { _part = value; }
         }
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeContentBinding.Type"]/*' />
         [XmlAttribute("type")]
         public string Type
         {
-            get { return type == null ? string.Empty : type; }
-            set { type = value; }
+            get { return _type == null ? string.Empty : _type; }
+            set { _type = value; }
         }
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeContentBinding.Namespace"]/*' />
@@ -40,13 +41,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPoint("Extensions")]
     public sealed class MimePart : ServiceDescriptionFormatExtension
     {
-        ServiceDescriptionFormatExtensionCollection extensions;
+        private ServiceDescriptionFormatExtensionCollection _extensions;
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimePart.Extensions"]/*' />
         [XmlIgnore]
         public ServiceDescriptionFormatExtensionCollection Extensions
         {
-            get { if (extensions == null) extensions = new ServiceDescriptionFormatExtensionCollection(this); return extensions; }
+            get { if (_extensions == null) _extensions = new ServiceDescriptionFormatExtensionCollection(this); return _extensions; }
         }
     }
 
@@ -54,13 +55,13 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("multipartRelated", MimeContentBinding.Namespace, typeof(InputBinding), typeof(OutputBinding))]
     public sealed class MimeMultipartRelatedBinding : ServiceDescriptionFormatExtension
     {
-        MimePartCollection parts = new MimePartCollection();
+        private MimePartCollection _parts = new MimePartCollection();
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeMultipartRelatedBinding.Parts"]/*' />
         [XmlElement("part")]
         public MimePartCollection Parts
         {
-            get { return parts; }
+            get { return _parts; }
         }
     }
 
@@ -68,21 +69,20 @@ namespace System.Web.Services.Description
     [XmlFormatExtension("mimeXml", MimeContentBinding.Namespace, typeof(MimePart), typeof(InputBinding), typeof(OutputBinding))]
     public sealed class MimeXmlBinding : ServiceDescriptionFormatExtension
     {
-        string part;
+        private string _part;
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeXmlBinding.Part"]/*' />
         [XmlAttribute("part")]
         public string Part
         {
-            get { return part; }
-            set { part = value; }
+            get { return _part; }
+            set { _part = value; }
         }
     }
 
     /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimePartCollection"]/*' />
     public sealed class MimePartCollection : CollectionBase
     {
-
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimePartCollection.this"]/*' />
         public MimePart this[int index]
         {
@@ -132,7 +132,7 @@ namespace System.Web.Services.Description
     [XmlFormatExtensionPrefix("tm", MimeTextBinding.Namespace)]
     public sealed class MimeTextBinding : ServiceDescriptionFormatExtension
     {
-        MimeTextMatchCollection matches = new MimeTextMatchCollection();
+        private MimeTextMatchCollection _matches = new MimeTextMatchCollection();
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextBinding.Namespace"]/*' />
         public const string Namespace = "http://microsoft.com/wsdl/mime/textMatching/";
@@ -141,47 +141,47 @@ namespace System.Web.Services.Description
         [XmlElement("match", typeof(MimeTextMatch))]
         public MimeTextMatchCollection Matches
         {
-            get { return matches; }
+            get { return _matches; }
         }
     }
 
     /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatch"]/*' />
     public sealed class MimeTextMatch
     {
-        string name;
-        string type;
-        int repeats = 1;
-        string pattern;
-        int group = 1;
-        int capture = 0;
-        bool ignoreCase = false;
-        MimeTextMatchCollection matches = new MimeTextMatchCollection();
+        private string _name;
+        private string _type;
+        private int _repeats = 1;
+        private string _pattern;
+        private int _group = 1;
+        private int _capture = 0;
+        private bool _ignoreCase = false;
+        private MimeTextMatchCollection _matches = new MimeTextMatchCollection();
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatch.Name"]/*' />
         [XmlAttribute("name")]
         public string Name
         {
-            get { return name == null ? string.Empty : name; }
-            set { name = value; }
+            get { return _name == null ? string.Empty : _name; }
+            set { _name = value; }
         }
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatch.Type"]/*' />
         [XmlAttribute("type")]
         public string Type
         {
-            get { return type == null ? string.Empty : type; }
-            set { type = value; }
+            get { return _type == null ? string.Empty : _type; }
+            set { _type = value; }
         }
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatch.Group"]/*' />
         [XmlAttribute("group"), DefaultValue(1)]
         public int Group
         {
-            get { return group; }
+            get { return _group; }
             set
             {
                 if (value < 0) throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebNegativeValue, "group"));
-                group = value;
+                _group = value;
             }
         }
 
@@ -189,11 +189,11 @@ namespace System.Web.Services.Description
         [XmlAttribute("capture"), DefaultValue(0)]
         public int Capture
         {
-            get { return capture; }
+            get { return _capture; }
             set
             {
                 if (value < 0) throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebNegativeValue, "capture"));
-                capture = value;
+                _capture = value;
             }
         }
 
@@ -201,11 +201,11 @@ namespace System.Web.Services.Description
         [XmlIgnore()]
         public int Repeats
         {
-            get { return repeats; }
+            get { return _repeats; }
             set
             {
                 if (value < 0) throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebNegativeValue, "repeats"));
-                repeats = value;
+                _repeats = value;
             }
         }
 
@@ -213,11 +213,11 @@ namespace System.Web.Services.Description
         [XmlAttribute("repeats"), DefaultValue("1")]
         public string RepeatsString
         {
-            get { return repeats == int.MaxValue ? "*" : repeats.ToString(CultureInfo.InvariantCulture); }
+            get { return _repeats == int.MaxValue ? "*" : _repeats.ToString(CultureInfo.InvariantCulture); }
             set
             {
                 if (value == "*")
-                    repeats = int.MaxValue;
+                    _repeats = int.MaxValue;
                 else
                     Repeats = int.Parse(value, CultureInfo.InvariantCulture);  // pass through our setter for arg checking
             }
@@ -227,30 +227,29 @@ namespace System.Web.Services.Description
         [XmlAttribute("pattern")]
         public string Pattern
         {
-            get { return pattern == null ? string.Empty : pattern; }
-            set { this.pattern = value; }
+            get { return _pattern == null ? string.Empty : _pattern; }
+            set { _pattern = value; }
         }
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatch.IgnoreCase"]/*' />
         [XmlAttribute("ignoreCase")]
         public bool IgnoreCase
         {
-            get { return ignoreCase; }
-            set { ignoreCase = value; }
+            get { return _ignoreCase; }
+            set { _ignoreCase = value; }
         }
 
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatch.Matches"]/*' />   
         [XmlElement("match")]
         public MimeTextMatchCollection Matches
         {
-            get { return matches; }
+            get { return _matches; }
         }
     }
 
     /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatchCollection"]/*' />
     public sealed class MimeTextMatchCollection : CollectionBase
     {
-
         /// <include file='doc\MimeFormatExtensions.uex' path='docs/doc[@for="MimeTextMatchCollection.this"]/*' />
         public MimeTextMatch this[int index]
         {
@@ -293,7 +292,6 @@ namespace System.Web.Services.Description
         {
             List.CopyTo(array, index);
         }
-
     }
 }
 

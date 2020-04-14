@@ -1,39 +1,43 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using System.Collections;
     using System.Runtime.InteropServices;
     using System.Globalization;
-    
+
     /// <devdoc>
     ///    <para>
     ///       Manages a collection of <see cref='Microsoft.CodeDom.CodeNamespaceImport'/> objects.
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeNamespaceImportCollection : IList {
-        private ArrayList data = new ArrayList();
-        private Hashtable keys = new Hashtable(StringComparer.OrdinalIgnoreCase);
+    public class CodeNamespaceImportCollection : IList
+    {
+        private ArrayList _data = new ArrayList();
+        private Hashtable _keys = new Hashtable(StringComparer.OrdinalIgnoreCase);
 
         /// <devdoc>
         ///    <para>
         ///       Indexer method that provides collection access.
         ///    </para>
         /// </devdoc>
-        public CodeNamespaceImport this[int index] {
-            get {
-                return ((CodeNamespaceImport)data[index]);
+        public CodeNamespaceImport this[int index]
+        {
+            get
+            {
+                return ((CodeNamespaceImport)_data[index]);
             }
-            set {
-                data[index] = value;
+            set
+            {
+                _data[index] = value;
                 SyncKeys();
             }
         }
@@ -43,29 +47,31 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the number of namespaces in the collection.
         ///    </para>
         /// </devdoc>
-        public int Count {
-            get {
-                return data.Count;
+        public int Count
+        {
+            get
+            {
+                return _data.Count;
             }
         }
 
-		/// <internalonly/>
-		bool IList.IsReadOnly
-		{
-			get
-			{
-				return false;
-			}
-		}
+        /// <internalonly/>
+        bool IList.IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-		/// <internalonly/>
-		bool IList.IsFixedSize
-		{
-			get
-			{
-				return false;
-			}
-		}
+        /// <internalonly/>
+        bool IList.IsFixedSize
+        {
+            get
+            {
+                return false;
+            }
+        }
 
 
         /// <devdoc>
@@ -73,10 +79,12 @@ namespace Microsoft.CodeDom {
         ///       Adds a namespace import to the collection.
         ///    </para>
         /// </devdoc>
-        public void Add(CodeNamespaceImport value) {
-            if (!keys.ContainsKey(value.Namespace)) {
-                keys[value.Namespace] = value;
-                data.Add(value);
+        public void Add(CodeNamespaceImport value)
+        {
+            if (!_keys.ContainsKey(value.Namespace))
+            {
+                _keys[value.Namespace] = value;
+                _data.Add(value);
             }
         }
 
@@ -85,11 +93,14 @@ namespace Microsoft.CodeDom {
         ///       Adds a set of <see cref='Microsoft.CodeDom.CodeNamespaceImport'/> objects to the collection.
         ///    </para>
         /// </devdoc>
-        public void AddRange(CodeNamespaceImport[] value) {
-            if (value == null) {
+        public void AddRange(CodeNamespaceImport[] value)
+        {
+            if (value == null)
+            {
                 throw new ArgumentNullException("value");
             }
-            foreach (CodeNamespaceImport c in value) {
+            foreach (CodeNamespaceImport c in value)
+            {
                 Add(c);
             }
         }
@@ -99,9 +110,10 @@ namespace Microsoft.CodeDom {
         ///       Clears the collection of members.
         ///    </para>
         /// </devdoc>
-        public void Clear() {
-            data.Clear();
-            keys.Clear();
+        public void Clear()
+        {
+            _data.Clear();
+            _keys.Clear();
         }
 
         /// <devdoc>
@@ -109,10 +121,12 @@ namespace Microsoft.CodeDom {
         ///    Makes the collection of keys synchronised with the data.
         ///    </para>
         /// </devdoc>
-        private void SyncKeys() {
-            keys = new Hashtable(StringComparer.OrdinalIgnoreCase);
-            foreach(CodeNamespaceImport c in this) {
-                keys[c.Namespace] = c;
+        private void SyncKeys()
+        {
+            _keys = new Hashtable(StringComparer.OrdinalIgnoreCase);
+            foreach (CodeNamespaceImport c in this)
+            {
+                _keys[c.Namespace] = c;
             }
         }
 
@@ -121,87 +135,106 @@ namespace Microsoft.CodeDom {
         ///       Gets an enumerator that enumerates the collection members.
         ///    </para>
         /// </devdoc>
-        public IEnumerator GetEnumerator() {
-            return data.GetEnumerator();
+        public IEnumerator GetEnumerator()
+        {
+            return _data.GetEnumerator();
         }
 
         /// <internalonly/>
-        object IList.this[int index] {
-            get {
+        object IList.this[int index]
+        {
+            get
+            {
                 return this[index];
             }
-            set {
+            set
+            {
                 this[index] = (CodeNamespaceImport)value;
                 SyncKeys();
             }
         }
 
         /// <internalonly/>
-        int ICollection.Count {
-            get {
+        int ICollection.Count
+        {
+            get
+            {
                 return Count;
             }
         }
 
         /// <internalonly/>
-        bool ICollection.IsSynchronized {
-            get {
+        bool ICollection.IsSynchronized
+        {
+            get
+            {
                 return false;
             }
         }
 
         /// <internalonly/>
-        object ICollection.SyncRoot {
-            get {
+        object ICollection.SyncRoot
+        {
+            get
+            {
                 return null;
             }
         }
 
         /// <internalonly/>
-        void ICollection.CopyTo(Array array, int index) {
-            data.CopyTo(array, index);
+        void ICollection.CopyTo(Array array, int index)
+        {
+            _data.CopyTo(array, index);
         }
 
         /// <internalonly/>
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
         /// <internalonly/>
-        int IList.Add(object value) {
-            return data.Add((CodeNamespaceImport)value);
+        int IList.Add(object value)
+        {
+            return _data.Add((CodeNamespaceImport)value);
         }
 
         /// <internalonly/>
-        void IList.Clear() {
+        void IList.Clear()
+        {
             Clear();
         }
 
         /// <internalonly/>
-        bool IList.Contains(object value) {
-            return data.Contains(value);
+        bool IList.Contains(object value)
+        {
+            return _data.Contains(value);
         }
 
         /// <internalonly/>
-        int IList.IndexOf(object value) {
-            return data.IndexOf((CodeNamespaceImport)value);
+        int IList.IndexOf(object value)
+        {
+            return _data.IndexOf((CodeNamespaceImport)value);
         }
 
         /// <internalonly/>
-        void IList.Insert(int index, object value) {
-            data.Insert(index, (CodeNamespaceImport)value);
+        void IList.Insert(int index, object value)
+        {
+            _data.Insert(index, (CodeNamespaceImport)value);
             SyncKeys();
         }
 
         /// <internalonly/>
-        void IList.Remove(object value) {
-            data.Remove((CodeNamespaceImport)value);
+        void IList.Remove(object value)
+        {
+            _data.Remove((CodeNamespaceImport)value);
             SyncKeys();
         }
 
         /// <internalonly/>
-        void IList.RemoveAt(int index) {
-            data.RemoveAt(index);
+        void IList.RemoveAt(int index)
+        {
+            _data.RemoveAt(index);
             SyncKeys();
         }
     }

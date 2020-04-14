@@ -3,61 +3,77 @@
 
 using System;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-// This stack is designed to minimize object creation for the
-// objects being stored in the stack by allowing them to be
-// re-used over time.  It basically pushes the objects creating
-// a high water mark then as Pop() is called they are not removed
-// so that next time Push() is called it simply returns the last
-// object that was already on the stack.
 
-    internal class ByteStack {
-        private byte[] stack;
-        private int growthRate;
-        private int top;
-        private int size;
+    // This stack is designed to minimize object creation for the
+    // objects being stored in the stack by allowing them to be
+    // re-used over time.  It basically pushes the objects creating
+    // a high water mark then as Pop() is called they are not removed
+    // so that next time Push() is called it simply returns the last
+    // object that was already on the stack.
 
-        public ByteStack(int growthRate) {
-            this.growthRate = growthRate;
-            top = 0;
-            stack = new byte[growthRate];
-            size = growthRate; 
+    internal class ByteStack
+    {
+        private byte[] _stack;
+        private int _growthRate;
+        private int _top;
+        private int _size;
+
+        public ByteStack(int growthRate)
+        {
+            _growthRate = growthRate;
+            _top = 0;
+            _stack = new byte[growthRate];
+            _size = growthRate;
         }
 
-        public void Push(byte data) {
-            if (size == top) {
-                byte[] newstack = new byte[size + growthRate];
-                if (top > 0) {
-                    Buffer.BlockCopy(stack, 0, newstack, 0, top);
+        public void Push(byte data)
+        {
+            if (_size == _top)
+            {
+                byte[] newstack = new byte[_size + _growthRate];
+                if (_top > 0)
+                {
+                    Buffer.BlockCopy(_stack, 0, newstack, 0, _top);
                 }
-                stack = newstack;
-                size += growthRate;
+                _stack = newstack;
+                _size += _growthRate;
             }
-            stack[top++] = data;
+            _stack[_top++] = data;
         }
 
-        public byte Pop() {
-            if (top > 0) {
-                return stack[--top];
-            } else {
+        public byte Pop()
+        {
+            if (_top > 0)
+            {
+                return _stack[--_top];
+            }
+            else
+            {
                 return 0;
             }
         }
 
-        public byte Peek() {
-            if (top > 0) {
-                return stack[top - 1];
-            } else {
+        public byte Peek()
+        {
+            if (_top > 0)
+            {
+                return _stack[_top - 1];
+            }
+            else
+            {
                 return 0;
             }
         }
 
-        public int Length {
-            get { 
-                return top;
+        public int Length
+        {
+            get
+            {
+                return _top;
             }
         }
     }

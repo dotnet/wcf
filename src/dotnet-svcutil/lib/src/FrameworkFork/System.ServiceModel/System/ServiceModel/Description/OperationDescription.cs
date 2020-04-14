@@ -28,8 +28,8 @@ namespace System.ServiceModel.Description
         private MethodInfo _endMethod;
         private MethodInfo _syncMethod;
         private MethodInfo _taskMethod;
-        ProtectionLevel _protectionLevel;
-        bool _hasProtectionLevel;
+        private ProtectionLevel _protectionLevel;
+        private bool _hasProtectionLevel;
         private bool _validateRpcWrapperName = true;
         private bool _hasNoDisposableParameters;
 
@@ -77,13 +77,13 @@ namespace System.ServiceModel.Description
 
         public ProtectionLevel ProtectionLevel
         {
-            get { return this._protectionLevel; }
+            get { return _protectionLevel; }
             set
             {
-                if(!(value == ProtectionLevel.None || value == ProtectionLevel.Sign || value == ProtectionLevel.EncryptAndSign))
+                if (!(value == ProtectionLevel.None || value == ProtectionLevel.Sign || value == ProtectionLevel.EncryptAndSign))
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
-                this._protectionLevel = value;
-                this._hasProtectionLevel = true;
+                _protectionLevel = value;
+                _hasProtectionLevel = true;
             }
         }
 

@@ -45,4 +45,4 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public delegate bool Filter<T>(T t);
         public delegate void OnFiltered<T>(T t, int i);
     }
-}   
+}

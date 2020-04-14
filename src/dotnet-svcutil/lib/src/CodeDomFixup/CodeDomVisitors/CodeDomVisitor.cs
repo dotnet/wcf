@@ -6,7 +6,6 @@ using System.Collections;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-
     internal abstract class CodeDomVisitor
     {
         public static void Visit(CodeDomVisitor[] visitors, CodeCompileUnit code)
@@ -14,12 +13,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             new Enumerator(visitors).Enumerate(code);
         }
 
-        class Enumerator : CodeDomVisitor
+        private class Enumerator : CodeDomVisitor
         {
-            CodeDomVisitor[] visitors;
+            private CodeDomVisitor[] _visitors;
             public Enumerator(CodeDomVisitor[] visitors)
             {
-                this.visitors = visitors;
+                _visitors = visitors;
             }
 
             public void Enumerate(CodeCompileUnit code)
@@ -28,12 +27,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 CallFinishVisit(code);
             }
 
-            void Enumerate(object o)
+            private void Enumerate(object o)
             {
                 Visit(o);
             }
 
-            void Enumerate(IEnumerable coll)
+            private void Enumerate(IEnumerable coll)
             {
                 foreach (object o in coll)
                 {
@@ -41,19 +40,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            void CallVisitors(object obj)
+            private void CallVisitors(object obj)
             {
-                for (int i = 0; i < visitors.Length; i++)
+                for (int i = 0; i < _visitors.Length; i++)
                 {
-                    visitors[i].Visit(obj);
+                    _visitors[i].Visit(obj);
                 }
             }
 
-            void CallFinishVisit(CodeCompileUnit cu)
+            private void CallFinishVisit(CodeCompileUnit cu)
             {
-                for (int i = 0; i < visitors.Length; i++)
+                for (int i = 0; i < _visitors.Length; i++)
                 {
-                    visitors[i].FinishVisit(cu);
+                    _visitors[i].FinishVisit(cu);
                 }
             }
 
@@ -515,7 +514,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 base.Visit(expr);
             }
 
-
             #endregion // enumerating visitor overrides
         }
 
@@ -785,5 +783,4 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         protected virtual void FinishVisit(CodeCompileUnit cu) { }
     }
-
 }

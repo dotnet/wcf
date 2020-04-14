@@ -12,7 +12,7 @@ namespace System.ServiceModel.Channels
     {
         private int _connectionBufferSize;
         private bool _exposeConnectionProperty;
-        HostNameComparisonMode _hostNameComparisonMode;
+        private HostNameComparisonMode _hostNameComparisonMode;
         private TimeSpan _maxOutputDelay;
         private int _maxBufferSize;
         private bool _maxBufferSizeInitialized;

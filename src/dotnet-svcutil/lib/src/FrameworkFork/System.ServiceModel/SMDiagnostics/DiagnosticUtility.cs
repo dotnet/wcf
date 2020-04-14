@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 #pragma warning disable 1634, 1691
+
 using System.Diagnostics;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -70,10 +71,9 @@ namespace System
                 {
                     // Convert OOM into an exception that can be safely handled by higher layers.
                     throw Fx.Exception.AsError(new InvalidOperationException());
-                        // TODO: new InsufficientMemoryException(InternalSR.BufferAllocationFailed(size), exception));
+                    // TODO: new InsufficientMemoryException(InternalSR.BufferAllocationFailed(size), exception));
                 }
             }
-
         }
     }
 }

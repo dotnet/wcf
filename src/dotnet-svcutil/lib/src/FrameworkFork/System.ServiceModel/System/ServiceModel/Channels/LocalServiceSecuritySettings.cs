@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System;
@@ -10,50 +11,50 @@ namespace System.ServiceModel.Channels
 
     public sealed class LocalServiceSecuritySettings
     {
-        bool detectReplays;
-        int replayCacheSize;
-        TimeSpan replayWindow;
-        TimeSpan maxClockSkew;
-        TimeSpan issuedCookieLifetime;
-        int maxStatefulNegotiations;
-        TimeSpan negotiationTimeout;
-        int maxCachedCookies;
-        int maxPendingSessions;
-        TimeSpan inactivityTimeout;
-        TimeSpan sessionKeyRenewalInterval;
-        TimeSpan sessionKeyRolloverInterval;
-        bool reconnectTransportOnFailure;
-        TimeSpan timestampValidityDuration;
-        NonceCache nonceCache = null;
+        private bool _detectReplays;
+        private int _replayCacheSize;
+        private TimeSpan _replayWindow;
+        private TimeSpan _maxClockSkew;
+        private TimeSpan _issuedCookieLifetime;
+        private int _maxStatefulNegotiations;
+        private TimeSpan _negotiationTimeout;
+        private int _maxCachedCookies;
+        private int _maxPendingSessions;
+        private TimeSpan _inactivityTimeout;
+        private TimeSpan _sessionKeyRenewalInterval;
+        private TimeSpan _sessionKeyRolloverInterval;
+        private bool _reconnectTransportOnFailure;
+        private TimeSpan _timestampValidityDuration;
+        private NonceCache _nonceCache = null;
 
-        LocalServiceSecuritySettings(LocalServiceSecuritySettings other)
+        private LocalServiceSecuritySettings(LocalServiceSecuritySettings other)
         {
-            this.detectReplays = other.detectReplays;
-            this.replayCacheSize = other.replayCacheSize;
-            this.replayWindow = other.replayWindow;
-            this.maxClockSkew = other.maxClockSkew;
-            this.issuedCookieLifetime = other.issuedCookieLifetime;
-            this.maxStatefulNegotiations = other.maxStatefulNegotiations;
-            this.negotiationTimeout = other.negotiationTimeout;
-            this.maxPendingSessions = other.maxPendingSessions;
-            this.inactivityTimeout = other.inactivityTimeout;
-            this.sessionKeyRenewalInterval = other.sessionKeyRenewalInterval;
-            this.sessionKeyRolloverInterval = other.sessionKeyRolloverInterval;
-            this.reconnectTransportOnFailure = other.reconnectTransportOnFailure;
-            this.timestampValidityDuration = other.timestampValidityDuration;
-            this.maxCachedCookies = other.maxCachedCookies;
-            this.nonceCache = other.nonceCache;
+            _detectReplays = other._detectReplays;
+            _replayCacheSize = other._replayCacheSize;
+            _replayWindow = other._replayWindow;
+            _maxClockSkew = other._maxClockSkew;
+            _issuedCookieLifetime = other._issuedCookieLifetime;
+            _maxStatefulNegotiations = other._maxStatefulNegotiations;
+            _negotiationTimeout = other._negotiationTimeout;
+            _maxPendingSessions = other._maxPendingSessions;
+            _inactivityTimeout = other._inactivityTimeout;
+            _sessionKeyRenewalInterval = other._sessionKeyRenewalInterval;
+            _sessionKeyRolloverInterval = other._sessionKeyRolloverInterval;
+            _reconnectTransportOnFailure = other._reconnectTransportOnFailure;
+            _timestampValidityDuration = other._timestampValidityDuration;
+            _maxCachedCookies = other._maxCachedCookies;
+            _nonceCache = other._nonceCache;
         }
 
         public bool DetectReplays
         {
             get
             {
-                return this.detectReplays;
+                return _detectReplays;
             }
             set
             {
-                this.detectReplays = value;
+                _detectReplays = value;
             }
         }
 
@@ -61,7 +62,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.replayCacheSize;
+                return _replayCacheSize;
             }
             set
             {
@@ -69,7 +70,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBeNonNegative));
                 }
-                this.replayCacheSize = value;
+                _replayCacheSize = value;
             }
         }
 
@@ -77,7 +78,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.replayWindow;
+                return _replayWindow;
             }
             set
             {
@@ -91,7 +92,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.replayWindow = value;
+                _replayWindow = value;
             }
         }
 
@@ -99,7 +100,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxClockSkew;
+                return _maxClockSkew;
             }
             set
             {
@@ -113,7 +114,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.maxClockSkew = value;
+                _maxClockSkew = value;
             }
         }
 
@@ -122,11 +123,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.nonceCache;
+                return _nonceCache;
             }
             set
             {
-                this.nonceCache = value;
+                _nonceCache = value;
             }
         }
 
@@ -134,7 +135,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.issuedCookieLifetime;
+                return _issuedCookieLifetime;
             }
             set
             {
@@ -148,7 +149,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.issuedCookieLifetime = value;
+                _issuedCookieLifetime = value;
             }
         }
 
@@ -156,7 +157,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxStatefulNegotiations;
+                return _maxStatefulNegotiations;
             }
             set
             {
@@ -164,7 +165,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBeNonNegative));
                 }
-                this.maxStatefulNegotiations = value;
+                _maxStatefulNegotiations = value;
             }
         }
 
@@ -172,7 +173,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.negotiationTimeout;
+                return _negotiationTimeout;
             }
             set
             {
@@ -186,7 +187,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.negotiationTimeout = value;
+                _negotiationTimeout = value;
             }
         }
 
@@ -194,7 +195,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxPendingSessions;
+                return _maxPendingSessions;
             }
             set
             {
@@ -202,7 +203,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBeNonNegative));
                 }
-                this.maxPendingSessions = value;
+                _maxPendingSessions = value;
             }
         }
 
@@ -210,7 +211,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.inactivityTimeout;
+                return _inactivityTimeout;
             }
             set
             {
@@ -224,7 +225,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.inactivityTimeout = value;
+                _inactivityTimeout = value;
             }
         }
 
@@ -232,7 +233,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.sessionKeyRenewalInterval;
+                return _sessionKeyRenewalInterval;
             }
             set
             {
@@ -246,7 +247,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.sessionKeyRenewalInterval = value;
+                _sessionKeyRenewalInterval = value;
             }
         }
 
@@ -254,7 +255,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.sessionKeyRolloverInterval;
+                return _sessionKeyRolloverInterval;
             }
             set
             {
@@ -268,7 +269,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.sessionKeyRolloverInterval = value;
+                _sessionKeyRolloverInterval = value;
             }
         }
 
@@ -276,11 +277,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.reconnectTransportOnFailure;
+                return _reconnectTransportOnFailure;
             }
             set
             {
-                this.reconnectTransportOnFailure = value;
+                _reconnectTransportOnFailure = value;
             }
         }
 
@@ -288,7 +289,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.timestampValidityDuration;
+                return _timestampValidityDuration;
             }
             set
             {
@@ -302,7 +303,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.timestampValidityDuration = value;
+                _timestampValidityDuration = value;
             }
         }
 
@@ -310,7 +311,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxCachedCookies;
+                return _maxCachedCookies;
             }
             set
             {
@@ -318,7 +319,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBeNonNegative));
                 }
-                this.maxCachedCookies = value;
+                _maxCachedCookies = value;
             }
         }
 
@@ -351,18 +352,18 @@ namespace System.ServiceModel.Channels
             this.ReplayWindow = SecurityProtocolFactory.defaultReplayWindow;
             this.MaxClockSkew = SecurityProtocolFactory.defaultMaxClockSkew;
 
-// Replace with defaults we define that aren't in the original source.
+            // Replace with defaults we define that aren't in the original source.
             this.IssuedCookieLifetime = defaultServerIssuedTokenLifetime;
             this.MaxStatefulNegotiations = defaultServerMaxActiveNegotiations;
             this.NegotiationTimeout = defaultServerMaxNegotiationLifetime;
-            this.maxPendingSessions = defaultMaximumPendingSessions;
-            this.inactivityTimeout = defaultInactivityTimeout;
-            this.sessionKeyRenewalInterval = defaultKeyRenewalInterval;
-            this.sessionKeyRolloverInterval = defaultKeyRolloverInterval;
-            this.reconnectTransportOnFailure = defaultTolerateTransportFailures;
+            _maxPendingSessions = defaultMaximumPendingSessions;
+            _inactivityTimeout = defaultInactivityTimeout;
+            _sessionKeyRenewalInterval = defaultKeyRenewalInterval;
+            _sessionKeyRolloverInterval = defaultKeyRolloverInterval;
+            _reconnectTransportOnFailure = defaultTolerateTransportFailures;
             this.TimestampValidityDuration = SecurityProtocolFactory.defaultTimestampValidityDuration;
-            this.maxCachedCookies = defaultServerMaxCachedTokens;
-            this.nonceCache = null;
+            _maxCachedCookies = defaultServerMaxCachedTokens;
+            _nonceCache = null;
         }
 
         public LocalServiceSecuritySettings Clone()

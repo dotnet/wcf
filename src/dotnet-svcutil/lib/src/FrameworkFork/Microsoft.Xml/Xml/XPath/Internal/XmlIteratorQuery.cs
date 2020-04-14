@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -9,40 +10,48 @@ namespace MS.Internal.Xml.XPath {
     using System.Globalization;
     using System.Collections;
 
-    internal class XmlIteratorQuery: Query {
-        ResetableIterator it;
+    internal class XmlIteratorQuery : Query
+    {
+        private ResetableIterator _it;
 
-        public XmlIteratorQuery(XPathNodeIterator it) {
-            this.it = it as ResetableIterator;
-            if (this.it == null) {
-                this.it = new XPathArrayIterator(it);
+        public XmlIteratorQuery(XPathNodeIterator it)
+        {
+            _it = it as ResetableIterator;
+            if (_it == null)
+            {
+                _it = new XPathArrayIterator(it);
             }
         }
-        protected XmlIteratorQuery(XmlIteratorQuery other) : base(other) {
-            this.it = (ResetableIterator)other.it.Clone();
+        protected XmlIteratorQuery(XmlIteratorQuery other) : base(other)
+        {
+            _it = (ResetableIterator)other._it.Clone();
         }
 
-        public override XPathNavigator Current { get { return it.Current; } }
+        public override XPathNavigator Current { get { return _it.Current; } }
 
-        public override XPathNavigator Advance() {
-            if (it.MoveNext()) {
-                return it.Current;
+        public override XPathNavigator Advance()
+        {
+            if (_it.MoveNext())
+            {
+                return _it.Current;
             }
             return null;
         }
 
         public override XPathResultType StaticType { get { return XPathResultType.NodeSet; } }
 
-        public override void Reset() {
-            it.Reset();
+        public override void Reset()
+        {
+            _it.Reset();
         }
 
         public override XPathNodeIterator Clone() { return new XmlIteratorQuery(this); }
 
-        public override int CurrentPosition { get { return it.CurrentPosition; } }
+        public override int CurrentPosition { get { return _it.CurrentPosition; } }
 
-        public override object Evaluate(XPathNodeIterator nodeIterator) {
-            return it;
+        public override object Evaluate(XPathNodeIterator nodeIterator)
+        {
+            return _it;
         }
     }
 }

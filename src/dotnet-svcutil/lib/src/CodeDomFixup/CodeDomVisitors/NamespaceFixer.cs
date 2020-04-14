@@ -8,15 +8,14 @@ using Microsoft.CodeDom;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-
     internal class NamespaceFixup : CodeDomVisitor
     {
-        private static string MicrosoftXml = "Microsoft.Xml";
-        private static string SystemXml = "System.Xml";
-        private static string MicrosoftCodeDom = "Microsoft.CodeDom";
-        private static string SystemCodeDom = "System.CodeDom";
-        private Dictionary<string, Type> xmlTypes = new Dictionary<string, Type>();
-        private Dictionary<string, Type> codeDomTypes = new Dictionary<string, Type>();
+        private static string s_microsoftXml = "Microsoft.Xml";
+        private static string s_systemXml = "System.Xml";
+        private static string s_microsoftCodeDom = "Microsoft.CodeDom";
+        private static string s_systemCodeDom = "System.CodeDom";
+        private Dictionary<string, Type> _xmlTypes = new Dictionary<string, Type>();
+        private Dictionary<string, Type> _codeDomTypes = new Dictionary<string, Type>();
 
         public NamespaceFixup()
         {
@@ -24,9 +23,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             var msxmlTypes = TypeLoader.LoadTypes(typeof(Microsoft.Xml.XmlDocument).GetTypeInfo().Assembly, Verbosity.Silent);
             foreach (var type in msxmlTypes)
             {
-                if (type.FullName.Contains(MicrosoftXml))
+                if (type.FullName.Contains(s_microsoftXml))
                 {
-                    xmlTypes[type.FullName] = type;
+                    _xmlTypes[type.FullName] = type;
                 }
             }
 
@@ -34,9 +33,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             var mscodedomTypes = TypeLoader.LoadTypes(typeof(Microsoft.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent);
             foreach (var type in mscodedomTypes)
             {
-                if (type.FullName.Contains(MicrosoftCodeDom))
+                if (type.FullName.Contains(s_microsoftCodeDom))
                 {
-                    codeDomTypes[type.FullName] = type;
+                    _codeDomTypes[type.FullName] = type;
                 }
             }
         }
@@ -44,39 +43,39 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         protected override void Visit(CodeAttributeDeclaration attr)
         {
             base.Visit(attr);
-            if (attr.Name.Contains(MicrosoftXml) && xmlTypes.ContainsKey(attr.Name))
+            if (attr.Name.Contains(s_microsoftXml) && _xmlTypes.ContainsKey(attr.Name))
             {
-                attr.Name = attr.Name.Replace(MicrosoftXml, SystemXml);
+                attr.Name = attr.Name.Replace(s_microsoftXml, s_systemXml);
             }
-            if (attr.Name.Contains(MicrosoftCodeDom) && codeDomTypes.ContainsKey(attr.Name))
+            if (attr.Name.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(attr.Name))
             {
-                attr.Name = attr.Name.Replace(MicrosoftCodeDom, SystemCodeDom);
+                attr.Name = attr.Name.Replace(s_microsoftCodeDom, s_systemCodeDom);
             }
         }
 
         protected override void Visit(CodeComment comment)
         {
             base.Visit(comment);
-            if (comment.Text.Contains(MicrosoftXml) && xmlTypes.ContainsKey(comment.Text))
+            if (comment.Text.Contains(s_microsoftXml) && _xmlTypes.ContainsKey(comment.Text))
             {
-                comment.Text = comment.Text.Replace(MicrosoftXml, SystemXml);
+                comment.Text = comment.Text.Replace(s_microsoftXml, s_systemXml);
             }
-            if (comment.Text.Contains(MicrosoftCodeDom) && codeDomTypes.ContainsKey(comment.Text))
+            if (comment.Text.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(comment.Text))
             {
-                comment.Text = comment.Text.Replace(MicrosoftCodeDom, SystemCodeDom);
+                comment.Text = comment.Text.Replace(s_microsoftCodeDom, s_systemCodeDom);
             }
         }
 
         protected override void Visit(CodeTypeReference typeref)
         {
             base.Visit(typeref);
-            if (typeref.BaseType.Contains(MicrosoftXml) && xmlTypes.ContainsKey(typeref.BaseType))
+            if (typeref.BaseType.Contains(s_microsoftXml) && _xmlTypes.ContainsKey(typeref.BaseType))
             {
-                typeref.BaseType = typeref.BaseType.Replace(MicrosoftXml, SystemXml);
+                typeref.BaseType = typeref.BaseType.Replace(s_microsoftXml, s_systemXml);
             }
-            if (typeref.BaseType.Contains(MicrosoftCodeDom) && codeDomTypes.ContainsKey(typeref.BaseType))
+            if (typeref.BaseType.Contains(s_microsoftCodeDom) && _codeDomTypes.ContainsKey(typeref.BaseType))
             {
-                typeref.BaseType = typeref.BaseType.Replace(MicrosoftCodeDom, SystemCodeDom);
+                typeref.BaseType = typeref.BaseType.Replace(s_microsoftCodeDom, s_systemCodeDom);
             }
         }
     }

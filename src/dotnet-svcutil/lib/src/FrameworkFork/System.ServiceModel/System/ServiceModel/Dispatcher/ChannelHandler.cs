@@ -196,7 +196,7 @@ namespace System.ServiceModel.Dispatcher
                 WcfEventSource.Instance.ChannelReceiveStop(this.EventTraceActivity, this.GetHashCode());
             }
 
-            for (; ;)
+            for (; ; )
             {
                 RequestContext request;
 
@@ -1109,7 +1109,7 @@ namespace System.ServiceModel.Dispatcher
                 OperationContext currentOperationContext = new OperationContext();
                 OperationContext.Current = currentOperationContext;
 
-                for (; ;)
+                for (; ; )
                 {
                     RequestContext request;
 
@@ -1268,7 +1268,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        EventTraceActivity TraceDispatchMessageStart(Message message)
+        private EventTraceActivity TraceDispatchMessageStart(Message message)
         {
             if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled && message != null)
             {

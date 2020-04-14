@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-namespace Microsoft.Xml.Serialization {
 
+namespace Microsoft.Xml.Serialization
+{
     using System;
     using Microsoft.Xml;
     using System.Globalization;
@@ -13,77 +14,97 @@ namespace Microsoft.Xml.Serialization {
     /// <summary>
     ///   The <see cref="XmlCustomFormatter"/> class provides a set of static methods for converting
     ///   primitive type values to and from their XML string representations.</summary>
-    internal class XmlCustomFormatter {
-
-        private XmlCustomFormatter() {}
-        internal static string FromDefaultValue(object value, string formatter) {
+    internal class XmlCustomFormatter
+    {
+        private XmlCustomFormatter() { }
+        internal static string FromDefaultValue(object value, string formatter)
+        {
             if (value == null) return null;
             Type type = value.GetType();
-            if (type == typeof(DateTime)) {
-                if (formatter == "DateTime") {
+            if (type == typeof(DateTime))
+            {
+                if (formatter == "DateTime")
+                {
                     return FromDateTime((DateTime)value);
                 }
-                if (formatter == "Date") {
+                if (formatter == "Date")
+                {
                     return FromDate((DateTime)value);
                 }
-                if (formatter == "Time") {
+                if (formatter == "Time")
+                {
                     return FromTime((DateTime)value);
                 }
             }
-            else if (type == typeof(string)) {
-                if (formatter == "XmlName") {
+            else if (type == typeof(string))
+            {
+                if (formatter == "XmlName")
+                {
                     return FromXmlName((string)value);
                 }
-                if (formatter == "XmlNCName") {
+                if (formatter == "XmlNCName")
+                {
                     return FromXmlNCName((string)value);
                 }
-                if (formatter == "XmlNmToken") {
+                if (formatter == "XmlNmToken")
+                {
                     return FromXmlNmToken((string)value);
                 }
-                if (formatter == "XmlNmTokens") {
+                if (formatter == "XmlNmTokens")
+                {
                     return FromXmlNmTokens((string)value);
                 }
             }
             throw new Exception(ResXml.GetString(ResXml.XmlUnsupportedDefaultType, type.FullName));
         }
 
-        internal static string FromDate(DateTime value) {
+        internal static string FromDate(DateTime value)
+        {
             return XmlConvert.ToString(value, "yyyy-MM-dd");
         }
 
-        internal static string FromTime(DateTime value) {
+        internal static string FromTime(DateTime value)
+        {
             return XmlConvert.ToString(DateTime.MinValue + value.TimeOfDay, "HH:mm:ss.fffffffzzzzzz");
         }
 
-        internal static string FromDateTime(DateTime value) {
+        internal static string FromDateTime(DateTime value)
+        {
             return XmlConvert.ToString(value, XmlDateTimeSerializationMode.RoundtripKind);
         }
 
-        internal static string FromChar(char value) {
+        internal static string FromChar(char value)
+        {
             return XmlConvert.ToString((UInt16)value);
         }
 
-        internal static string FromXmlName(string name) {
+        internal static string FromXmlName(string name)
+        {
             return XmlConvert.EncodeName(name);
         }
 
-        internal static string FromXmlNCName(string ncName) {
+        internal static string FromXmlNCName(string ncName)
+        {
             return XmlConvert.EncodeLocalName(ncName);
         }
 
-        internal static string FromXmlNmToken(string nmToken) {
+        internal static string FromXmlNmToken(string nmToken)
+        {
             return XmlConvert.EncodeNmToken(nmToken);
         }
 
-        internal static string FromXmlNmTokens(string nmTokens) {
+        internal static string FromXmlNmTokens(string nmTokens)
+        {
             if (nmTokens == null)
                 return null;
-            if (nmTokens.IndexOf(' ') < 0) 
+            if (nmTokens.IndexOf(' ') < 0)
                 return FromXmlNmToken(nmTokens);
-            else {
+            else
+            {
                 string[] toks = nmTokens.Split(new char[] { ' ' });
                 StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < toks.Length; i++) {
+                for (int i = 0; i < toks.Length; i++)
+                {
                     if (i > 0) sb.Append(' ');
                     sb.Append(FromXmlNmToken(toks[i]));
                 }
@@ -91,14 +112,17 @@ namespace Microsoft.Xml.Serialization {
             }
         }
 
-        internal static void WriteArrayBase64(XmlWriter writer, byte[] inData, int start, int count) {
-            if (inData == null || count == 0) {
+        internal static void WriteArrayBase64(XmlWriter writer, byte[] inData, int start, int count)
+        {
+            if (inData == null || count == 0)
+            {
                 return;
             }
             writer.WriteBase64(inData, start, count);
         }
 
-        internal static string FromByteArrayHex(byte[] value) {
+        internal static string FromByteArrayHex(byte[] value)
+        {
             if (value == null)
                 return null;
             if (value.Length == 0)
@@ -106,7 +130,8 @@ namespace Microsoft.Xml.Serialization {
             return XmlConvert.ToBinHexString(value);
         }
 
-        internal static string FromEnum(long val, string[] vals, long[] ids, string typeName) {
+        internal static string FromEnum(long val, string[] vals, long[] ids, string typeName)
+        {
 #if DEBUG
                 // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
                 if (ids.Length != vals.Length) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Invalid enum"));
@@ -116,51 +141,65 @@ namespace Microsoft.Xml.Serialization {
             StringBuilder sb = new StringBuilder();
             int iZero = -1;
 
-            for (int i = 0; i < ids.Length; i++) {
-                if (ids[i] == 0) {
+            for (int i = 0; i < ids.Length; i++)
+            {
+                if (ids[i] == 0)
+                {
                     iZero = i;
                     continue;
                 }
-                if (val == 0) {
+                if (val == 0)
+                {
                     break;
                 }
-                if ((ids[i] & originalValue) == ids[i]) {
+                if ((ids[i] & originalValue) == ids[i])
+                {
                     if (sb.Length != 0)
                         sb.Append(" ");
                     sb.Append(vals[i]);
                     val &= ~ids[i];
                 }
             }
-            if (val != 0) {
+            if (val != 0)
+            {
                 // failed to parse the enum value
                 throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownConstant, originalValue, typeName == null ? "enum" : typeName));
             }
-            if (sb.Length == 0 && iZero >= 0) {
+            if (sb.Length == 0 && iZero >= 0)
+            {
                 sb.Append(vals[iZero]);
             }
             return sb.ToString();
         }
 
-        internal static object ToDefaultValue(string value, string formatter) {
-            if (formatter == "DateTime") {
+        internal static object ToDefaultValue(string value, string formatter)
+        {
+            if (formatter == "DateTime")
+            {
                 return ToDateTime(value);
             }
-            if (formatter == "Date") {
+            if (formatter == "Date")
+            {
                 return ToDate(value);
             }
-            if (formatter == "Time") {
+            if (formatter == "Time")
+            {
                 return ToTime(value);
             }
-            if (formatter == "XmlName") {
+            if (formatter == "XmlName")
+            {
                 return ToXmlName(value);
             }
-            if (formatter == "XmlNCName") {
+            if (formatter == "XmlNCName")
+            {
                 return ToXmlNCName(value);
             }
-            if (formatter == "XmlNmToken") {
+            if (formatter == "XmlNmToken")
+            {
                 return ToXmlNmToken(value);
             }
-            if (formatter == "XmlNmTokens") {
+            if (formatter == "XmlNmTokens")
+            {
                 return ToXmlNmTokens(value);
             }
             throw new Exception(ResXml.GetString(ResXml.XmlUnsupportedDefaultValue, formatter));
@@ -168,7 +207,7 @@ namespace Microsoft.Xml.Serialization {
             //            return DBNull.Value;
         }
 
-        static string[] allDateTimeFormats = new string[] {
+        private static string[] s_allDateTimeFormats = new string[] {
             "yyyy-MM-ddTHH:mm:ss.fffffffzzzzzz",
             "yyyy",
             "---dd",
@@ -237,7 +276,7 @@ namespace Microsoft.Xml.Serialization {
             "yyyy-MM-ddTHH:mm:ss.ffffffzzzzzz",
         };
 
-        static string[] allDateFormats = new string[] {
+        private static string[] s_allDateFormats = new string[] {
             "yyyy-MM-ddzzzzzz",
             "yyyy-MM-dd",
             "yyyy-MM-ddZ",
@@ -257,7 +296,7 @@ namespace Microsoft.Xml.Serialization {
             "yyyyzzzzzz",
         };
 
-        static string[] allTimeFormats = new string[] {
+        private static string[] s_allTimeFormats = new string[] {
             "HH:mm:ss.fffffffzzzzzz",
             "HH:mm:ss",
             "HH:mm:ss.f",
@@ -284,59 +323,72 @@ namespace Microsoft.Xml.Serialization {
             "HH:mm:ss.ffffffzzzzzz",
         };
 
-        internal static DateTime ToDateTime(string value) {
+        internal static DateTime ToDateTime(string value)
+        {
             return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
         }
 
-        internal static DateTime ToDateTime(string value, string[] formats) {
+        internal static DateTime ToDateTime(string value, string[] formats)
+        {
             return XmlConvert.ToDateTime(value, formats);
         }
 
-        internal static DateTime ToDate(string value) {
-            return ToDateTime(value, allDateFormats);
+        internal static DateTime ToDate(string value)
+        {
+            return ToDateTime(value, s_allDateFormats);
         }
 
-        internal static DateTime ToTime(string value) {
-            return DateTime.ParseExact(value, allTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowLeadingWhite|DateTimeStyles.AllowTrailingWhite|DateTimeStyles.NoCurrentDateDefault);
+        internal static DateTime ToTime(string value)
+        {
+            return DateTime.ParseExact(value, s_allTimeFormats, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.NoCurrentDateDefault);
         }
 
-        internal static char ToChar(string value) {
+        internal static char ToChar(string value)
+        {
             return (char)XmlConvert.ToUInt16(value);
         }
 
-        internal static string ToXmlName(string value) {
+        internal static string ToXmlName(string value)
+        {
             return XmlConvert.DecodeName(CollapseWhitespace(value));
         }
 
-        internal static string ToXmlNCName(string value) {
+        internal static string ToXmlNCName(string value)
+        {
             return XmlConvert.DecodeName(CollapseWhitespace(value));
         }
-        
-        internal static string ToXmlNmToken(string value) {
+
+        internal static string ToXmlNmToken(string value)
+        {
             return XmlConvert.DecodeName(CollapseWhitespace(value));
         }
-        
-        internal static string ToXmlNmTokens(string value) {
+
+        internal static string ToXmlNmTokens(string value)
+        {
             return XmlConvert.DecodeName(CollapseWhitespace(value));
         }
-        
-        internal static byte[] ToByteArrayBase64(string value) {
+
+        internal static byte[] ToByteArrayBase64(string value)
+        {
             if (value == null) return null;
             value = value.Trim();
             if (value.Length == 0)
-                return new byte[0];           
+                return new byte[0];
             return Convert.FromBase64String(value);
         }
-        internal static byte[] ToByteArrayHex(string value) {
+        internal static byte[] ToByteArrayHex(string value)
+        {
             if (value == null) return null;
             value = value.Trim();
             return XmlConvert.FromBinHexString(value);
         }
 
-        internal static long ToEnum(string val, Hashtable vals, string typeName, bool validate)     {
+        internal static long ToEnum(string val, Hashtable vals, string typeName, bool validate)
+        {
             long value = 0;
             string[] parts = val.Split(null);
-            for (int i = 0; i < parts.Length; i++) {
+            for (int i = 0; i < parts.Length; i++)
+            {
                 object id = vals[parts[i]];
                 if (id != null)
                     value |= (long)id;
@@ -346,7 +398,8 @@ namespace Microsoft.Xml.Serialization {
             return value;
         }
 
-        static string CollapseWhitespace(string value) {
+        private static string CollapseWhitespace(string value)
+        {
             if (value == null)
                 return null;
             return value.Trim();

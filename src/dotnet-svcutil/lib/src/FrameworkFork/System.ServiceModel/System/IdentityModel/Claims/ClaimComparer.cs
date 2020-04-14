@@ -271,4 +271,4 @@ namespace System.IdentityModel.Claims
         }
 #endif // SUPPORTS_WINDOWSIDENTITY
     }
- }
+}

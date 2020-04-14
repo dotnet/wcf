@@ -9,7 +9,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class SafeLogger : IDisposable, ILogger
     {
-        private DateTime startTime = DateTime.MinValue;
+        private DateTime _startTime = DateTime.MinValue;
 
         public ILogger logger { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public static async Task<SafeLogger> WriteStartOperationAsync(ILogger logger, string message, bool logToUI = false)
         {
             var safeLogger = new SafeLogger(logger);
-            safeLogger.startTime = await safeLogger.WriteStartOperationAsync(message, logToUI).ConfigureAwait(false);
+            safeLogger._startTime = await safeLogger.WriteStartOperationAsync(message, logToUI).ConfigureAwait(false);
             return safeLogger;
         }
 
@@ -85,18 +85,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         #endregion
 
         #region IDisposable Support
-        private bool disposedValue; // To detect redundant calls
+        private bool _disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
-                if (disposing && this.logger != null && this.startTime != DateTime.MinValue)
+                if (disposing && this.logger != null && _startTime != DateTime.MinValue)
                 {
-                    Task.WaitAny(this.logger.WriteEndOperationAsync(this.startTime));
+                    Task.WaitAny(this.logger.WriteEndOperationAsync(_startTime));
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

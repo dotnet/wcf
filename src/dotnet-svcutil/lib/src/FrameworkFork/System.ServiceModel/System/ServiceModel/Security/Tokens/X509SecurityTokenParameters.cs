@@ -15,12 +15,12 @@ namespace System.ServiceModel.Security.Tokens
     {
         internal const X509KeyIdentifierClauseType defaultX509ReferenceStyle = X509KeyIdentifierClauseType.Any;
 
-        X509KeyIdentifierClauseType x509ReferenceStyle;
+        private X509KeyIdentifierClauseType _x509ReferenceStyle;
 
         protected X509SecurityTokenParameters(X509SecurityTokenParameters other)
             : base(other)
         {
-            this.x509ReferenceStyle = other.x509ReferenceStyle;
+            _x509ReferenceStyle = other._x509ReferenceStyle;
         }
 
         public X509SecurityTokenParameters()
@@ -55,12 +55,12 @@ namespace System.ServiceModel.Security.Tokens
         {
             get
             {
-                return this.x509ReferenceStyle;
+                return _x509ReferenceStyle;
             }
             set
             {
                 X509SecurityTokenReferenceStyleHelper.Validate(value);
-                this.x509ReferenceStyle = value;
+                _x509ReferenceStyle = value;
             }
         }
 
@@ -78,7 +78,7 @@ namespace System.ServiceModel.Security.Tokens
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            sb.Append(String.Format(CultureInfo.InvariantCulture, "X509ReferenceStyle: {0}", this.x509ReferenceStyle.ToString()));
+            sb.Append(String.Format(CultureInfo.InvariantCulture, "X509ReferenceStyle: {0}", _x509ReferenceStyle.ToString()));
 
             return sb.ToString();
         }

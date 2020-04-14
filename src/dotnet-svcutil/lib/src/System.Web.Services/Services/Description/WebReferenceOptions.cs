@@ -22,11 +22,11 @@ namespace System.Web.Services.Description
     public class WebReferenceOptions
     {
         public const string TargetNamespace = "http://microsoft.com/webReference/";
-        static XmlSchema schema = null;
-        CodeGenerationOptions codeGenerationOptions = CodeGenerationOptions.GenerateOldAsync;
-        ServiceDescriptionImportStyle style = ServiceDescriptionImportStyle.Client;
-        StringCollection schemaImporterExtensions;
-        bool verbose;
+        private static XmlSchema s_schema = null;
+        private CodeGenerationOptions _codeGenerationOptions = CodeGenerationOptions.GenerateOldAsync;
+        private ServiceDescriptionImportStyle _style = ServiceDescriptionImportStyle.Client;
+        private StringCollection _schemaImporterExtensions;
+        private bool _verbose;
 
         /// <include file='doc\WebReferenceOptions.uex' path='docs/doc[@for="WebReferenceOptions.CodeGenerationOptions"]/*' />
         /// <devdoc>
@@ -38,11 +38,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                return codeGenerationOptions;
+                return _codeGenerationOptions;
             }
             set
             {
-                codeGenerationOptions = value;
+                _codeGenerationOptions = value;
             }
         }
 
@@ -56,9 +56,9 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (schemaImporterExtensions == null)
-                    schemaImporterExtensions = new StringCollection();
-                return schemaImporterExtensions;
+                if (_schemaImporterExtensions == null)
+                    _schemaImporterExtensions = new StringCollection();
+                return _schemaImporterExtensions;
             }
         }
 
@@ -72,11 +72,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                return style;
+                return _style;
             }
             set
             {
-                style = value;
+                _style = value;
             }
         }
 
@@ -89,11 +89,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                return verbose;
+                return _verbose;
             }
             set
             {
-                verbose = value;
+                _verbose = value;
             }
         }
 
@@ -105,11 +105,11 @@ namespace System.Web.Services.Description
         {
             get
             {
-                if (schema == null)
+                if (s_schema == null)
                 {
-                    schema = XmlSchema.Read(new StringReader(Schemas.WebRef), null);
+                    s_schema = XmlSchema.Read(new StringReader(Schemas.WebRef), null);
                 }
-                return schema;
+                return s_schema;
             }
         }
 
@@ -151,7 +151,8 @@ namespace System.Web.Services.Description
             {
                 validatingReader.ValidationEventHandler += validationEventHandler;
             }
-            else {
+            else
+            {
                 validatingReader.ValidationEventHandler += new ValidationEventHandler(SchemaValidationHandler);
             }
             validatingReader.Schemas.Add(Schema);
@@ -180,7 +181,7 @@ namespace System.Web.Services.Description
 
     internal class WebReferenceOptionsSerializationWriter : XmlSerializationWriter
     {
-        string Write1_CodeGenerationOptions(Microsoft.Xml.Serialization.CodeGenerationOptions v)
+        private string Write1_CodeGenerationOptions(Microsoft.Xml.Serialization.CodeGenerationOptions v)
         {
             string s = null;
             switch (v)
@@ -204,7 +205,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        string Write2_ServiceDescriptionImportStyle(System.Web.Services.Description.ServiceDescriptionImportStyle v)
+        private string Write2_ServiceDescriptionImportStyle(System.Web.Services.Description.ServiceDescriptionImportStyle v)
         {
             string s = null;
             switch (v)
@@ -217,7 +218,7 @@ namespace System.Web.Services.Description
             return s;
         }
 
-        void Write4_WebReferenceOptions(string n, string ns, WebReferenceOptions o, bool isNullable, bool needType)
+        private void Write4_WebReferenceOptions(string n, string ns, WebReferenceOptions o, bool isNullable, bool needType)
         {
             if ((object)o == null)
             {
@@ -230,7 +231,8 @@ namespace System.Web.Services.Description
                 if (t == typeof(WebReferenceOptions))
                 {
                 }
-                else {
+                else
+                {
                     throw CreateUnknownTypeException(o);
                 }
             }
@@ -280,7 +282,7 @@ namespace System.Web.Services.Description
 
     internal class WebReferenceOptionsSerializationReader : XmlSerializationReader
     {
-        System.Collections.Hashtable _CodeGenerationOptionsValues;
+        private System.Collections.Hashtable _CodeGenerationOptionsValues;
 
         internal System.Collections.Hashtable CodeGenerationOptionsValues
         {
@@ -300,12 +302,12 @@ namespace System.Web.Services.Description
             }
         }
 
-        Microsoft.Xml.Serialization.CodeGenerationOptions Read1_CodeGenerationOptions(string s)
+        private Microsoft.Xml.Serialization.CodeGenerationOptions Read1_CodeGenerationOptions(string s)
         {
             return (Microsoft.Xml.Serialization.CodeGenerationOptions)ToEnum(s, CodeGenerationOptionsValues, @"System.Xml.Serialization.CodeGenerationOptions");
         }
 
-        System.Web.Services.Description.ServiceDescriptionImportStyle Read2_ServiceDescriptionImportStyle(string s)
+        private System.Web.Services.Description.ServiceDescriptionImportStyle Read2_ServiceDescriptionImportStyle(string s)
         {
             switch (s)
             {
@@ -316,14 +318,14 @@ namespace System.Web.Services.Description
             }
         }
 
-        System.Web.Services.Description.WebReferenceOptions Read4_WebReferenceOptions(bool isNullable, bool checkType)
+        private System.Web.Services.Description.WebReferenceOptions Read4_WebReferenceOptions(bool isNullable, bool checkType)
         {
             Microsoft.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
             bool isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)id1_webReferenceOptions && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((Microsoft.Xml.XmlQualifiedName)xsiType).Name == (object)_id1_webReferenceOptions && (object)((Microsoft.Xml.XmlQualifiedName)xsiType).Namespace == (object)_id2_Item))
                 {
                 }
                 else
@@ -355,18 +357,19 @@ namespace System.Web.Services.Description
             {
                 if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id3_codeGenerationOptions && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)_id3_codeGenerationOptions && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if (Reader.IsEmptyElement)
                         {
                             Reader.Skip();
                         }
-                        else {
+                        else
+                        {
                             o.@CodeGenerationOptions = Read1_CodeGenerationOptions(Reader.ReadElementString());
                         }
                         paramsRead[0] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id4_schemaImporterExtensions && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)_id4_schemaImporterExtensions && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if (!ReadNull())
                         {
@@ -375,7 +378,8 @@ namespace System.Web.Services.Description
                             {
                                 Reader.Skip();
                             }
-                            else {
+                            else
+                            {
                                 Reader.ReadStartElement();
                                 Reader.MoveToContent();
                                 int whileIterations1 = 0;
@@ -384,21 +388,24 @@ namespace System.Web.Services.Description
                                 {
                                     if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
                                     {
-                                        if (((object)Reader.LocalName == (object)id5_type && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        if (((object)Reader.LocalName == (object)_id5_type && (object)Reader.NamespaceURI == (object)_id2_Item))
                                         {
                                             if (ReadNull())
                                             {
                                                 a_1_0.Add(null);
                                             }
-                                            else {
+                                            else
+                                            {
                                                 a_1_0.Add(Reader.ReadElementString());
                                             }
                                         }
-                                        else {
+                                        else
+                                        {
                                             UnknownNode(null, @"http://microsoft.com/webReference/:type");
                                         }
                                     }
-                                    else {
+                                    else
+                                    {
                                         UnknownNode(null, @"http://microsoft.com/webReference/:type");
                                     }
                                     Reader.MoveToContent();
@@ -408,29 +415,32 @@ namespace System.Web.Services.Description
                             }
                         }
                     }
-                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id6_style && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)_id6_style && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         if (Reader.IsEmptyElement)
                         {
                             Reader.Skip();
                         }
-                        else {
+                        else
+                        {
                             o.@Style = Read2_ServiceDescriptionImportStyle(Reader.ReadElementString());
                         }
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id7_verbose && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)_id7_verbose && (object)Reader.NamespaceURI == (object)_id2_Item))
                     {
                         {
                             o.@Verbose = Microsoft.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
                         }
                         paramsRead[3] = true;
                     }
-                    else {
+                    else
+                    {
                         UnknownNode((object)o, @"http://microsoft.com/webReference/:codeGenerationOptions, http://microsoft.com/webReference/:schemaImporterExtensions, http://microsoft.com/webReference/:style, http://microsoft.com/webReference/:verbose");
                     }
                 }
-                else {
+                else
+                {
                     UnknownNode((object)o, @"http://microsoft.com/webReference/:codeGenerationOptions, http://microsoft.com/webReference/:schemaImporterExtensions, http://microsoft.com/webReference/:style, http://microsoft.com/webReference/:verbose");
                 }
                 Reader.MoveToContent();
@@ -450,37 +460,39 @@ namespace System.Web.Services.Description
             Reader.MoveToContent();
             if (Reader.NodeType == Microsoft.Xml.XmlNodeType.Element)
             {
-                if (((object)Reader.LocalName == (object)id1_webReferenceOptions && (object)Reader.NamespaceURI == (object)id2_Item))
+                if (((object)Reader.LocalName == (object)_id1_webReferenceOptions && (object)Reader.NamespaceURI == (object)_id2_Item))
                 {
                     o = Read4_WebReferenceOptions(true, true);
                 }
-                else {
+                else
+                {
                     throw CreateUnknownNodeException();
                 }
             }
-            else {
+            else
+            {
                 UnknownNode(null, @"http://microsoft.com/webReference/:webReferenceOptions");
             }
             return (object)o;
         }
 
-        string id2_Item;
-        string id5_type;
-        string id4_schemaImporterExtensions;
-        string id3_codeGenerationOptions;
-        string id6_style;
-        string id7_verbose;
-        string id1_webReferenceOptions;
+        private string _id2_Item;
+        private string _id5_type;
+        private string _id4_schemaImporterExtensions;
+        private string _id3_codeGenerationOptions;
+        private string _id6_style;
+        private string _id7_verbose;
+        private string _id1_webReferenceOptions;
 
         protected override void InitIDs()
         {
-            id2_Item = Reader.NameTable.Add(@"http://microsoft.com/webReference/");
-            id5_type = Reader.NameTable.Add(@"type");
-            id4_schemaImporterExtensions = Reader.NameTable.Add(@"schemaImporterExtensions");
-            id3_codeGenerationOptions = Reader.NameTable.Add(@"codeGenerationOptions");
-            id6_style = Reader.NameTable.Add(@"style");
-            id7_verbose = Reader.NameTable.Add(@"verbose");
-            id1_webReferenceOptions = Reader.NameTable.Add(@"webReferenceOptions");
+            _id2_Item = Reader.NameTable.Add(@"http://microsoft.com/webReference/");
+            _id5_type = Reader.NameTable.Add(@"type");
+            _id4_schemaImporterExtensions = Reader.NameTable.Add(@"schemaImporterExtensions");
+            _id3_codeGenerationOptions = Reader.NameTable.Add(@"codeGenerationOptions");
+            _id6_style = Reader.NameTable.Add(@"style");
+            _id7_verbose = Reader.NameTable.Add(@"verbose");
+            _id1_webReferenceOptions = Reader.NameTable.Add(@"webReferenceOptions");
         }
     }
 

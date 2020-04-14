@@ -10,28 +10,28 @@ namespace System.ServiceModel.Channels
     using System.ServiceModel.Description;
     using System.Net.Security;
 
-    static class ContextBindingElementPolicy
+    internal static class ContextBindingElementPolicy
     {
-        const string EncryptAndSignName = "EncryptAndSign";
-        const string HttpNamespace = "http://schemas.xmlsoap.org/soap/http";
-        const string HttpUseCookieName = "HttpUseCookie";
-        const string IncludeContextName = "IncludeContext";
-        const string NoneName = "None";
-        const string ProtectionLevelName = "ProtectionLevel";
-        const string SignName = "Sign";
-        const string WscNamespace = "http://schemas.microsoft.com/ws/2006/05/context";
-        static XmlDocument document;
+        private const string EncryptAndSignName = "EncryptAndSign";
+        private const string HttpNamespace = "http://schemas.xmlsoap.org/soap/http";
+        private const string HttpUseCookieName = "HttpUseCookie";
+        private const string IncludeContextName = "IncludeContext";
+        private const string NoneName = "None";
+        private const string ProtectionLevelName = "ProtectionLevel";
+        private const string SignName = "Sign";
+        private const string WscNamespace = "http://schemas.microsoft.com/ws/2006/05/context";
+        private static XmlDocument s_document;
 
-        static XmlDocument Document
+        private static XmlDocument Document
         {
             get
             {
-                if (document == null)
+                if (s_document == null)
                 {
-                    document = new XmlDocument();
+                    s_document = new XmlDocument();
                 }
 
-                return document;
+                return s_document;
             }
         }
 
@@ -58,7 +58,7 @@ namespace System.ServiceModel.Channels
             return httpUseCookieAssertion != null;
         }
 
-        static bool ContainOnlyWhitespaceChild(XmlElement parent)
+        private static bool ContainOnlyWhitespaceChild(XmlElement parent)
         {
             if (parent.ChildNodes.Count == 0)
             {

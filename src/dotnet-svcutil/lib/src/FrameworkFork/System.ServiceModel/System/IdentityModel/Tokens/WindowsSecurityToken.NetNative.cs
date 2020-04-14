@@ -9,14 +9,13 @@ using System.ServiceModel;
 
 namespace System.IdentityModel.Tokens
 {
-
     public class WindowsSecurityToken : SecurityToken, IDisposable
-    {   
+    {
         public override string Id
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
             }
         }
 
@@ -24,7 +23,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
             }
         }
 
@@ -32,7 +31,7 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
             }
         }
 
@@ -40,15 +39,15 @@ namespace System.IdentityModel.Tokens
         {
             get
             {
-                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+                throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
             }
         }
 
         public void Dispose()
         {
-            throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet"); 
+            throw ExceptionHelper.PlatformNotSupported("Windows Stream Security is not supported on UWP yet");
         }
     }
 }
 #endif // !SUPPORTS_WINDOWSIDENTITY
- 
+

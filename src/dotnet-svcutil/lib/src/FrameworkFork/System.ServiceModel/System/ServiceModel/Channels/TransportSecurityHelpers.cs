@@ -20,11 +20,11 @@ namespace System.ServiceModel.Channels
     internal static class TransportSecurityHelpers
     {
         // used for HTTP (from HttpChannelUtilities.GetCredential)
-        public static async Task<NetworkCredential> GetSspiCredentialAsync(SecurityTokenProviderContainer tokenProvider, 
-            OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper, 
+        public static async Task<NetworkCredential> GetSspiCredentialAsync(SecurityTokenProviderContainer tokenProvider,
+            OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper, OutWrapper<AuthenticationLevel> authenticationLevelWrapper,
             CancellationToken cancellationToken)
         {
-            OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>(); 
+            OutWrapper<bool> dummyExtractWindowsGroupClaimsWrapper = new OutWrapper<bool>();
             OutWrapper<bool> allowNtlmWrapper = new OutWrapper<bool>();
             NetworkCredential result = await GetSspiCredentialAsync(tokenProvider.TokenProvider as SspiSecurityTokenProvider,
                 dummyExtractWindowsGroupClaimsWrapper, impersonationLevelWrapper, allowNtlmWrapper, cancellationToken);
@@ -86,7 +86,7 @@ namespace System.ServiceModel.Channels
         public static async Task<NetworkCredential> GetSspiCredentialAsync(SspiSecurityTokenProvider tokenProvider,
             OutWrapper<bool> extractGroupsForWindowsAccounts,
             OutWrapper<TokenImpersonationLevel> impersonationLevelWrapper,
-            OutWrapper<bool> allowNtlmWrapper,  
+            OutWrapper<bool> allowNtlmWrapper,
             CancellationToken cancellationToken)
         {
             NetworkCredential credential = null;
@@ -223,7 +223,7 @@ namespace System.ServiceModel.Channels
             return null;
         }
 
-        static async Task<T> GetTokenAsync<T>(SecurityTokenProvider tokenProvider, CancellationToken cancellationToken)
+        private static async Task<T> GetTokenAsync<T>(SecurityTokenProvider tokenProvider, CancellationToken cancellationToken)
             where T : SecurityToken
         {
             SecurityToken result = await tokenProvider.GetTokenAsync(cancellationToken);
@@ -295,7 +295,7 @@ namespace System.ServiceModel.Channels
             return fullUri;
         }
 
-        static InitiatorServiceModelSecurityTokenRequirement CreateUserNameTokenRequirement(
+        private static InitiatorServiceModelSecurityTokenRequirement CreateUserNameTokenRequirement(
             EndpointAddress target, Uri via, string transportScheme)
         {
             InitiatorServiceModelSecurityTokenRequirement usernameRequirement = new InitiatorServiceModelSecurityTokenRequirement();
@@ -316,12 +316,11 @@ namespace System.ServiceModel.Channels
                 uriBuilder.Host = string.Concat("[", ipv6Host, "]");
             }
         }
-
     }
 
-    static class HttpTransportSecurityHelpers
+    internal static class HttpTransportSecurityHelpers
     {
-        static Dictionary<string, int> s_targetNameCounter = new Dictionary<string, int>();
+        private static Dictionary<string, int> s_targetNameCounter = new Dictionary<string, int>();
 
         public static bool AddIdentityMapping(Uri via, EndpointAddress target)
         {
@@ -336,7 +335,7 @@ namespace System.ServiceModel.Channels
             // support from HttpClient before any functionality can be added here. 
         }
 
-        static Dictionary<HttpRequestMessage, string> serverCertMap = new Dictionary<HttpRequestMessage, string>();
+        private static Dictionary<HttpRequestMessage, string> s_serverCertMap = new Dictionary<HttpRequestMessage, string>();
 
         public static void AddServerCertMapping(HttpRequestMessage request, EndpointAddress to)
         {
@@ -352,13 +351,12 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void AddServerCertMapping(HttpRequestMessage request, string thumbprint)
+        private static void AddServerCertMapping(HttpRequestMessage request, string thumbprint)
         {
-            lock (serverCertMap)
+            lock (s_serverCertMap)
             {
-                serverCertMap.Add(request, thumbprint);
+                s_serverCertMap.Add(request, thumbprint);
             }
-
         }
 
         public static void SetServerCertificateValidationCallback(ServiceModelHttpMessageHandler handler)
@@ -371,7 +369,7 @@ namespace System.ServiceModel.Channels
                 ChainValidator(handler.ServerCertificateValidationCallback);
         }
 
-        static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator)
+        private static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator)
         {
             if (previousValidator == null)
             {
@@ -391,15 +389,15 @@ namespace System.ServiceModel.Channels
             return chained;
         }
 
-        static bool OnValidateServerCertificate(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain,
+        private static bool OnValidateServerCertificate(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain,
             SslPolicyErrors sslPolicyErrors)
         {
             if (request != null)
             {
                 string thumbprint;
-                lock (serverCertMap)
+                lock (s_serverCertMap)
                 {
-                    serverCertMap.TryGetValue(request, out thumbprint);
+                    s_serverCertMap.TryGetValue(request, out thumbprint);
                 }
                 if (thumbprint != null)
                 {
@@ -419,13 +417,13 @@ namespace System.ServiceModel.Channels
 
         public static void RemoveServerCertMapping(HttpRequestMessage request)
         {
-            lock (serverCertMap)
+            lock (s_serverCertMap)
             {
-                serverCertMap.Remove(request);
+                s_serverCertMap.Remove(request);
             }
         }
 
-        static void ValidateServerCertificate(X509Certificate2 certificate, string thumbprint)
+        private static void ValidateServerCertificate(X509Certificate2 certificate, string thumbprint)
         {
             string certHashString = certificate.Thumbprint;
             if (!thumbprint.Equals(certHashString))
@@ -437,7 +435,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    static class AuthenticationLevelHelper
+    internal static class AuthenticationLevelHelper
     {
         internal static string ToString(AuthenticationLevel authenticationLevel)
         {

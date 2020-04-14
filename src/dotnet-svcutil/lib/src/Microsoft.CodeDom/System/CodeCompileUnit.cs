@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -17,27 +17,29 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeCompileUnit: CodeObject {
-        private CodeNamespaceCollection namespaces = new CodeNamespaceCollection();
-        private StringCollection assemblies = null;
-        private CodeAttributeDeclarationCollection attributes = null;        
-        
+    public class CodeCompileUnit : CodeObject
+    {
+        private CodeNamespaceCollection _namespaces = new CodeNamespaceCollection();
+        private StringCollection _assemblies = null;
+        private CodeAttributeDeclarationCollection _attributes = null;
+
         // Optionally Serializable
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeDirectiveCollection startDirectives = null;
+        private CodeDirectiveCollection _startDirectives = null;
         // [OptionalField]  // Not available in DNX (NetCore)
-        private CodeDirectiveCollection endDirectives = null;
+        private CodeDirectiveCollection _endDirectives = null;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeCompileUnit'/>.
         ///    </para>
         /// </devdoc>
-        public CodeCompileUnit() {
+        public CodeCompileUnit()
+        {
         }
 
         /// <devdoc>
@@ -45,9 +47,11 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the collection of namespaces.
         ///    </para>
         /// </devdoc>
-        public CodeNamespaceCollection Namespaces {
-            get {
-                return namespaces;
+        public CodeNamespaceCollection Namespaces
+        {
+            get
+            {
+                return _namespaces;
             }
         }
 
@@ -59,12 +63,15 @@ namespace Microsoft.CodeDom {
         ///       and the compiler assemblies are specified, the compiler assemblies should win.
         ///    </para>
         /// </devdoc>
-        public StringCollection ReferencedAssemblies {
-            get {
-                if (assemblies == null) {
-                    assemblies = new StringCollection();
+        public StringCollection ReferencedAssemblies
+        {
+            get
+            {
+                if (_assemblies == null)
+                {
+                    _assemblies = new StringCollection();
                 }
-                return assemblies;
+                return _assemblies;
             }
         }
 
@@ -73,30 +80,39 @@ namespace Microsoft.CodeDom {
         ///       Gets the collection of assembly level attributes.
         ///    </para>
         /// </devdoc>
-        public CodeAttributeDeclarationCollection AssemblyCustomAttributes {
-            get {
-                if (attributes == null) {
-                    attributes = new CodeAttributeDeclarationCollection();
+        public CodeAttributeDeclarationCollection AssemblyCustomAttributes
+        {
+            get
+            {
+                if (_attributes == null)
+                {
+                    _attributes = new CodeAttributeDeclarationCollection();
                 }
-                return attributes;
-            }
-        }
-        
-        public CodeDirectiveCollection StartDirectives {
-            get {
-                if (startDirectives == null) {
-                    startDirectives = new CodeDirectiveCollection();
-                }
-                return startDirectives;                
+                return _attributes;
             }
         }
 
-        public CodeDirectiveCollection EndDirectives {
-            get {
-                if (endDirectives == null) {
-                    endDirectives = new CodeDirectiveCollection();
+        public CodeDirectiveCollection StartDirectives
+        {
+            get
+            {
+                if (_startDirectives == null)
+                {
+                    _startDirectives = new CodeDirectiveCollection();
                 }
-                return endDirectives ;                
+                return _startDirectives;
+            }
+        }
+
+        public CodeDirectiveCollection EndDirectives
+        {
+            get
+            {
+                if (_endDirectives == null)
+                {
+                    _endDirectives = new CodeDirectiveCollection();
+                }
+                return _endDirectives;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace System.IdentityModel.Selectors
 {
     public class UserNameSecurityTokenProvider : SecurityTokenProvider
     {
-        readonly UserNameSecurityToken _userNameToken;
+        private readonly UserNameSecurityToken _userNameToken;
 
         public UserNameSecurityTokenProvider(string userName, string password)
         {

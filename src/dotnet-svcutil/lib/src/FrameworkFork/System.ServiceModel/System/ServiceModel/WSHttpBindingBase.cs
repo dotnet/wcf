@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel
 {
     using System;
@@ -18,15 +19,15 @@ namespace System.ServiceModel
 
     public abstract class WSHttpBindingBase : Binding, IBindingRuntimePreferences
     {
-        WSMessageEncoding messageEncoding;
-        OptionalReliableSession reliableSession;
+        private WSMessageEncoding _messageEncoding;
+        private OptionalReliableSession _reliableSession;
         // private BindingElements
-        HttpTransportBindingElement httpTransport;
-        HttpsTransportBindingElement httpsTransport;
-        TextMessageEncodingBindingElement textEncoding;
-        MtomMessageEncodingBindingElement mtomEncoding;
-        TransactionFlowBindingElement txFlow;
-        ReliableSessionBindingElement session;
+        private HttpTransportBindingElement _httpTransport;
+        private HttpsTransportBindingElement _httpsTransport;
+        private TextMessageEncodingBindingElement _textEncoding;
+        private MtomMessageEncodingBindingElement _mtomEncoding;
+        private TransactionFlowBindingElement _txFlow;
+        private ReliableSessionBindingElement _session;
 
         protected WSHttpBindingBase()
             : base()
@@ -43,36 +44,36 @@ namespace System.ServiceModel
         [DefaultValue(false)]
         public bool TransactionFlow
         {
-            get { return this.txFlow.Transactions; }
-            set { this.txFlow.Transactions = value; }
+            get { return _txFlow.Transactions; }
+            set { _txFlow.Transactions = value; }
         }
 
         [DefaultValue(HttpTransportDefaults.HostNameComparisonMode)]
         public HostNameComparisonMode HostNameComparisonMode
         {
-            get { return httpTransport.HostNameComparisonMode; }
+            get { return _httpTransport.HostNameComparisonMode; }
             set
             {
-                httpTransport.HostNameComparisonMode = value;
-                httpsTransport.HostNameComparisonMode = value;
+                _httpTransport.HostNameComparisonMode = value;
+                _httpsTransport.HostNameComparisonMode = value;
             }
         }
 
         [DefaultValue(TransportDefaults.MaxBufferPoolSize)]
         public long MaxBufferPoolSize
         {
-            get { return httpTransport.MaxBufferPoolSize; }
+            get { return _httpTransport.MaxBufferPoolSize; }
             set
             {
-                httpTransport.MaxBufferPoolSize = value;
-                httpsTransport.MaxBufferPoolSize = value;
+                _httpTransport.MaxBufferPoolSize = value;
+                _httpsTransport.MaxBufferPoolSize = value;
             }
         }
 
         [DefaultValue(TransportDefaults.MaxReceivedMessageSize)]
         public long MaxReceivedMessageSize
         {
-            get { return httpTransport.MaxReceivedMessageSize; }
+            get { return _httpTransport.MaxReceivedMessageSize; }
             set
             {
                 if (value > int.MaxValue)
@@ -81,41 +82,41 @@ namespace System.ServiceModel
                         new ArgumentOutOfRangeException("value.MaxReceivedMessageSize",
                         SRServiceModel.MaxReceivedMessageSizeMustBeInIntegerRange));
                 }
-                httpTransport.MaxReceivedMessageSize = value;
-                httpsTransport.MaxReceivedMessageSize = value;
-                mtomEncoding.MaxBufferSize = (int)value;
+                _httpTransport.MaxReceivedMessageSize = value;
+                _httpsTransport.MaxReceivedMessageSize = value;
+                _mtomEncoding.MaxBufferSize = (int)value;
             }
         }
 
         [DefaultValue(WSHttpBindingDefaults.MessageEncoding)]
         public WSMessageEncoding MessageEncoding
         {
-            get { return messageEncoding; }
-            set { messageEncoding = value; }
+            get { return _messageEncoding; }
+            set { _messageEncoding = value; }
         }
 
         public XmlDictionaryReaderQuotas ReaderQuotas
         {
-            get { return textEncoding.ReaderQuotas; }
+            get { return _textEncoding.ReaderQuotas; }
             set
             {
                 if (value == null)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
-                value.CopyTo(textEncoding.ReaderQuotas);
-                value.CopyTo(mtomEncoding.ReaderQuotas);
+                value.CopyTo(_textEncoding.ReaderQuotas);
+                value.CopyTo(_mtomEncoding.ReaderQuotas);
             }
         }
 
         public OptionalReliableSession ReliableSession
         {
-            get { return reliableSession; }
+            get { return _reliableSession; }
             set
             {
                 if (value == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
                 }
-                this.reliableSession.CopySettings(value);
+                _reliableSession.CopySettings(value);
             }
         }
 
@@ -129,11 +130,11 @@ namespace System.ServiceModel
         // TODO: [TypeConverter(typeof(EncodingConverter))]
         public System.Text.Encoding TextEncoding
         {
-            get { return textEncoding.WriteEncoding; }
+            get { return _textEncoding.WriteEncoding; }
             set
             {
-                textEncoding.WriteEncoding = value;
-                mtomEncoding.WriteEncoding = value;
+                _textEncoding.WriteEncoding = value;
+                _mtomEncoding.WriteEncoding = value;
             }
         }
         bool IBindingRuntimePreferences.ReceiveSynchronously
@@ -143,51 +144,51 @@ namespace System.ServiceModel
 
         internal HttpTransportBindingElement HttpTransport
         {
-            get { return httpTransport; }
+            get { return _httpTransport; }
         }
 
         internal HttpsTransportBindingElement HttpsTransport
         {
-            get { return httpsTransport; }
+            get { return _httpsTransport; }
         }
 
         internal ReliableSessionBindingElement ReliableSessionBindingElement
         {
-            get { return session; }
+            get { return _session; }
         }
 
         internal TransactionFlowBindingElement TransactionFlowBindingElement
         {
-            get { return txFlow; }
+            get { return _txFlow; }
         }
 
-        static TransactionFlowBindingElement GetDefaultTransactionFlowBindingElement()
+        private static TransactionFlowBindingElement GetDefaultTransactionFlowBindingElement()
         {
             TransactionFlowBindingElement tfbe = new TransactionFlowBindingElement(false);
             tfbe.TransactionProtocol = TransactionProtocol.WSAtomicTransactionOctober2004;
             return tfbe;
         }
 
-        void Initialize()
+        private void Initialize()
         {
-            httpTransport = new HttpTransportBindingElement();
-            httpsTransport = new HttpsTransportBindingElement();
-            messageEncoding = WSHttpBindingDefaults.MessageEncoding;
-            txFlow = GetDefaultTransactionFlowBindingElement();
-            session = new ReliableSessionBindingElement(true);
-            textEncoding = new TextMessageEncodingBindingElement();
-            textEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
-            mtomEncoding = new MtomMessageEncodingBindingElement();
-            mtomEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
-            reliableSession = new OptionalReliableSession(session);
+            _httpTransport = new HttpTransportBindingElement();
+            _httpsTransport = new HttpsTransportBindingElement();
+            _messageEncoding = WSHttpBindingDefaults.MessageEncoding;
+            _txFlow = GetDefaultTransactionFlowBindingElement();
+            _session = new ReliableSessionBindingElement(true);
+            _textEncoding = new TextMessageEncodingBindingElement();
+            _textEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            _mtomEncoding = new MtomMessageEncodingBindingElement();
+            _mtomEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            _reliableSession = new OptionalReliableSession(_session);
         }
 
-        void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, TransactionFlowBindingElement txFlow, ReliableSessionBindingElement session)
+        private void InitializeFrom(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, TransactionFlowBindingElement txFlow, ReliableSessionBindingElement session)
         {
             this.HostNameComparisonMode = transport.HostNameComparisonMode;
             this.MaxBufferPoolSize = transport.MaxBufferPoolSize;
             this.MaxReceivedMessageSize = transport.MaxReceivedMessageSize;
-            
+
             // this binding only supports Text and Mtom encoding
             if (encoding is TextMessageEncodingBindingElement)
             {
@@ -195,51 +196,49 @@ namespace System.ServiceModel
                 TextMessageEncodingBindingElement text = (TextMessageEncodingBindingElement)encoding;
                 this.TextEncoding = text.WriteEncoding;
                 this.ReaderQuotas = text.ReaderQuotas;
-
             }
             else if (encoding is MtomMessageEncodingBindingElement)
             {
-                messageEncoding = WSMessageEncoding.Mtom;
+                _messageEncoding = WSMessageEncoding.Mtom;
                 MtomMessageEncodingBindingElement mtom = (MtomMessageEncodingBindingElement)encoding;
                 this.TextEncoding = mtom.WriteEncoding;
                 this.ReaderQuotas = mtom.ReaderQuotas;
             }
             this.TransactionFlow = txFlow.Transactions;
-            this.reliableSession.Enabled = session != null;
+            _reliableSession.Enabled = session != null;
 
             //session
             if (session != null)
             {
                 // only set properties that have standard binding manifestations
-                this.session.InactivityTimeout = session.InactivityTimeout;
-                this.session.Ordered = session.Ordered;
+                _session.InactivityTimeout = session.InactivityTimeout;
+                _session.Ordered = session.Ordered;
             }
         }
 
         // check that properties of the HttpTransportBindingElement and 
         // MessageEncodingBindingElement not exposed as properties on BasicHttpBinding 
         // match default values of the binding elements
-        bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, TransactionFlowBindingElement txFlow, ReliableSessionBindingElement session)
+        private bool IsBindingElementsMatch(HttpTransportBindingElement transport, MessageEncodingBindingElement encoding, TransactionFlowBindingElement txFlow, ReliableSessionBindingElement session)
         {
-
             if (!this.GetTransport().IsMatch(transport))
                 return false;
             if (this.MessageEncoding == WSMessageEncoding.Text)
             {
-                if (!this.textEncoding.IsMatch(encoding))
+                if (!_textEncoding.IsMatch(encoding))
                     return false;
             }
             else if (this.MessageEncoding == WSMessageEncoding.Mtom)
             {
-                if (!this.mtomEncoding.IsMatch(encoding))
+                if (!_mtomEncoding.IsMatch(encoding))
                     return false;
             }
-            if (!this.txFlow.IsMatch(txFlow))
+            if (!_txFlow.IsMatch(txFlow))
                 return false;
 
-            if (reliableSession.Enabled)
+            if (_reliableSession.Enabled)
             {
-                if (!this.session.IsMatch(session))
+                if (!_session.IsMatch(session))
                     return false;
             }
             else if (session != null)
@@ -256,11 +255,11 @@ namespace System.ServiceModel
             // order of BindingElements is important
             // context
 
-            bindingElements.Add(txFlow);
+            bindingElements.Add(_txFlow);
             // reliable
-            if (reliableSession.Enabled)
+            if (_reliableSession.Enabled)
             {
-                bindingElements.Add(session);
+                bindingElements.Add(_session);
             }
 
             // add security (*optional)
@@ -271,11 +270,11 @@ namespace System.ServiceModel
             }
 
             // add encoding (text or mtom)
-            WSMessageEncodingHelper.SyncUpEncodingBindingElementProperties(textEncoding, mtomEncoding);
+            WSMessageEncodingHelper.SyncUpEncodingBindingElementProperties(_textEncoding, _mtomEncoding);
             if (this.MessageEncoding == WSMessageEncoding.Text)
-                bindingElements.Add(textEncoding);
+                bindingElements.Add(_textEncoding);
             else if (this.MessageEncoding == WSMessageEncoding.Mtom)
-                bindingElements.Add(mtomEncoding);
+                bindingElements.Add(_mtomEncoding);
 
             // add transport (http or https)
             bindingElements.Add(GetTransport());

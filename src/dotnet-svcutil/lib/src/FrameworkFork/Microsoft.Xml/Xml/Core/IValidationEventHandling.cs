@@ -4,11 +4,12 @@
 using System;
 using Microsoft.Xml.Schema;
 
-namespace Microsoft.Xml {
-				using System;
-				
-    internal interface IValidationEventHandling {
+namespace Microsoft.Xml
+{
+    using System;
 
+    internal interface IValidationEventHandling
+    {
         // This is a ValidationEventHandler, but it is not strongly typed due to dependencies on Microsoft.Xml.Schema
         object EventHandler { get; }
 

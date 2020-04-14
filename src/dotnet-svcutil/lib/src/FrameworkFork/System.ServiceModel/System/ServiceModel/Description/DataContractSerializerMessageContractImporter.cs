@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System;
@@ -17,11 +18,11 @@ namespace System.ServiceModel.Description
 
     public class DataContractSerializerMessageContractImporter : IWsdlImportExtension
     {
-        bool enabled = true;
+        private bool _enabled = true;
         internal const string GenericMessageSchemaTypeName = "MessageBody";
         internal const string GenericMessageSchemaTypeNamespace = "http://schemas.microsoft.com/Message";
-        const string StreamBodySchemaTypeName = "StreamBody";
-        const string StreamBodySchemaTypeNamespace = GenericMessageSchemaTypeNamespace;
+        private const string StreamBodySchemaTypeName = "StreamBody";
+        private const string StreamBodySchemaTypeNamespace = GenericMessageSchemaTypeNamespace;
 
         static internal XmlQualifiedName GenericMessageTypeName = new XmlQualifiedName(GenericMessageSchemaTypeName, GenericMessageSchemaTypeNamespace);
         static internal XmlQualifiedName StreamBodyTypeName = new XmlQualifiedName(StreamBodySchemaTypeName, StreamBodySchemaTypeNamespace);
@@ -31,7 +32,7 @@ namespace System.ServiceModel.Description
             if (endpointContext == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("endpointContext"));
 
-            if (enabled)
+            if (_enabled)
                 MessageContractImporter.ImportMessageBinding(importer, endpointContext, typeof(MessageContractImporter.DataContractSerializerSchemaImporter));
         }
 
@@ -40,7 +41,7 @@ namespace System.ServiceModel.Description
             if (contractContext == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("contractContext"));
 
-            if (enabled)
+            if (_enabled)
                 MessageContractImporter.ImportMessageContract(importer, contractContext, MessageContractImporter.DataContractSerializerSchemaImporter.Get(importer));
         }
 
@@ -48,15 +49,13 @@ namespace System.ServiceModel.Description
 
         public bool Enabled
         {
-            get { return this.enabled; }
-            set { this.enabled = value; }
-
+            get { return _enabled; }
+            set { _enabled = value; }
         }
     }
 
     public class XmlSerializerMessageContractImporter : IWsdlImportExtension
     {
-
         void IWsdlImportExtension.ImportEndpoint(WsdlImporter importer, WsdlEndpointConversionContext endpointContext)
         {
             if (endpointContext == null)
@@ -74,7 +73,5 @@ namespace System.ServiceModel.Description
         }
 
         void IWsdlImportExtension.BeforeImport(WsdlNS.ServiceDescriptionCollection wsdlDocuments, XmlSchemaSet xmlSchemas, ICollection<XmlElement> policy) { }
-
     }
-
 }

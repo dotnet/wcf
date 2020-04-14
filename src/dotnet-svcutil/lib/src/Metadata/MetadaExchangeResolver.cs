@@ -20,21 +20,21 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 {
     public class MetadataExchangeResolver : MetadataExchangeClient
     {
-        const int MaximumResolvedReferencesDefault = 2000; // Arbitrary big-enough number.
-        const int MaxNameTableCharCount = 1024 * 1024; //1MB
-        const long MaxRecievedMexMessageSize = (long)(520 * 1024 * 1024); // 520MB
-        const int MaxDepth = 320; // Arbitrary big-enough number, the default is 32
-        const int MaxBytesPerRead = 900 * 1024; // 900KB, 1MB default stack size
-        const string mexUri = "/mex";
-        const string wsdlQuery = "?wsdl";
-        const string singleWsdlQuery = "?singlewsdl";
+        private const int MaximumResolvedReferencesDefault = 2000; // Arbitrary big-enough number.
+        private const int MaxNameTableCharCount = 1024 * 1024; //1MB
+        private const long MaxRecievedMexMessageSize = (long)(520 * 1024 * 1024); // 520MB
+        private const int MaxDepth = 320; // Arbitrary big-enough number, the default is 32
+        private const int MaxBytesPerRead = 900 * 1024; // 900KB, 1MB default stack size
+        private const string mexUri = "/mex";
+        private const string wsdlQuery = "?wsdl";
+        private const string singleWsdlQuery = "?singlewsdl";
 
-        private X509Certificate clientCertificate;
-        private NetworkCredential userCredentials;
-        private HttpWebRequest currentRequest;
-        private MetadataSet metadataSet;
-        private Exception metadataException;
-        private bool clientAuthenticated;
+        private X509Certificate _clientCertificate;
+        private NetworkCredential _userCredentials;
+        private HttpWebRequest _currentRequest;
+        private MetadataSet _metadataSet;
+        private Exception _metadataException;
+        private bool _clientAuthenticated;
 
         private MetadataExchangeResolver(Binding binding) : base(binding)
         {
@@ -53,7 +53,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             get
             {
                 // success when there's at least one endpoint in the metadata docs which can be also xml/xsd describing types used.
-                return this.metadataSet != null && this.metadataSet.MetadataSections.Any((section) => section.Metadata is XmlSchema || section.Metadata is WsdlNS.ServiceDescription);
+                return _metadataSet != null && _metadataSet.MetadataSections.Any((section) => section.Metadata is XmlSchema || section.Metadata is WsdlNS.ServiceDescription);
             }
         }
 
@@ -157,14 +157,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
             if (!metadataResolved)
             {
-                if (metadataException == null)
+                if (_metadataException == null)
                 {
-                    metadataException = new MetadataExchangeException(Resources.ErrUnableToConnectToUriFormat, this.EndpointAddress.Uri.AbsoluteUri, Resources.EnableMetadataHelpMessage);
+                    _metadataException = new MetadataExchangeException(Resources.ErrUnableToConnectToUriFormat, this.EndpointAddress.Uri.AbsoluteUri, Resources.EnableMetadataHelpMessage);
                 }
-                throw metadataException;
+                throw _metadataException;
             }
 
-            return metadataSet.MetadataSections;
+            return _metadataSet.MetadataSections;
         }
 
         private async Task<bool> ResolveMetadataAsync(Uri serviceUri, MetadataExchangeClientMode metadataExchangeMode, bool captureException, CancellationToken cancellationToken)
@@ -176,7 +176,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 try
                 {
                     authenticateUser = false;
-                    this.currentRequest = null;
+                    _currentRequest = null;
                     cancellationToken.ThrowIfCancellationRequested();
 
                     IAsyncResult result = this.BeginGetMetadata(serviceUri, metadataExchangeMode, null, null);
@@ -185,15 +185,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     {
                         if (cancellationToken.IsCancellationRequested)
                         {
-                            this.currentRequest?.Abort();
+                            _currentRequest?.Abort();
                             cancellationToken.ThrowIfCancellationRequested();
                         }
                         await Task.Delay(100);
                     }
 
-                    this.metadataSet = this.EndGetMetadata(result);
-                    this.metadataException = null;
-                    this.clientAuthenticated = true;
+                    _metadataSet = this.EndGetMetadata(result);
+                    _metadataException = null;
+                    _clientAuthenticated = true;
                 }
                 catch (Exception ex)
                 {
@@ -209,7 +209,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
                     if (captureException)
                     {
-                        this.metadataException = ex;
+                        _metadataException = ex;
                     }
                 }
             }
@@ -225,7 +225,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             try
             {
                 await loader.LoadFromStreamAsync(stream, baseUri, string.Empty, cancellationToken).ConfigureAwait(false);
-                this.metadataSet = new MetadataSet(loader.MetadataSections);
+                _metadataSet = new MetadataSet(loader.MetadataSections);
             }
             catch
             {
@@ -249,22 +249,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                     authenticateUser = false;
 
                     this.GetWebRequest(this.EndpointAddress.Uri, null, null);
-                    IAsyncResult result = this.currentRequest.BeginGetResponse(null, null);
+                    IAsyncResult result = _currentRequest.BeginGetResponse(null, null);
 
                     while (!result.IsCompleted)
                     {
                         if (cancellationToken.IsCancellationRequested)
                         {
-                            this.currentRequest?.Abort();
+                            _currentRequest?.Abort();
                             cancellationToken.ThrowIfCancellationRequested();
                         }
                         await Task.Delay(100);
                     }
 
-                    webResponse = (HttpWebResponse)this.currentRequest.EndGetResponse(result);
+                    webResponse = (HttpWebResponse)_currentRequest.EndGetResponse(result);
                     memoryStream = HttpWebRequestHelper.ResponseToMemoryStream(webResponse);
 
-                    this.clientAuthenticated = true;
+                    _clientAuthenticated = true;
 
                     if (webResponse.StatusCode != HttpStatusCode.OK)
                     {
@@ -300,7 +300,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             bool authRequired = false;
             isAuthenticationError = false;
 
-            if (!this.clientAuthenticated)
+            if (!_clientAuthenticated)
             {
                 WebException webException = HttpAuthenticationHelper.GetException<WebException>(exception);
 
@@ -317,8 +317,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                         {
                             if (this.HttpCredentialsProvider != null)
                             {
-                                this.userCredentials = this.HttpCredentialsProvider.GetCredentials(serviceUri, webException);
-                                isAuthenticationError = this.userCredentials == null;
+                                _userCredentials = this.HttpCredentialsProvider.GetCredentials(serviceUri, webException);
+                                isAuthenticationError = _userCredentials == null;
                                 authRequired = !isAuthenticationError;
                             }
                         }
@@ -326,8 +326,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                         {
                             if (this.ClientCertificatesProvider != null)
                             {
-                                this.clientCertificate = this.ClientCertificatesProvider.GetCertificate(serviceUri);
-                                isAuthenticationError = this.clientCertificate == null;
+                                _clientCertificate = this.ClientCertificatesProvider.GetCertificate(serviceUri);
+                                isAuthenticationError = _clientCertificate == null;
                                 authRequired = !isAuthenticationError;
                             }
                         }
@@ -341,21 +341,21 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         internal protected override HttpWebRequest GetWebRequest(Uri location, string dialect, string identifier)
         {
             HttpWebRequest request = base.GetWebRequest(location, dialect, identifier);
-            this.currentRequest = request;
+            _currentRequest = request;
 #if !NETCORE10
-            this.currentRequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; MS Web Services Client Protocol " + System.Environment.Version.ToString() + ")";
+            _currentRequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; MS Web Services Client Protocol " + System.Environment.Version.ToString() + ")";
 #endif
-            if (this.userCredentials != null)
+            if (_userCredentials != null)
             {
-                request.Credentials = this.userCredentials;
+                request.Credentials = _userCredentials;
             }
 
 #if !NETCORE10
-            if (this.clientCertificate != null)
+            if (_clientCertificate != null)
             {
                 // When the user has been authenticated IIS will require a client cert for a subsequent request but it will not fail authentication (401) 
                 // if it is not provided, instead it fails with Forbidden (403) status. Always set cert (if available).
-                request.ClientCertificates.Add(this.clientCertificate);
+                request.ClientCertificates.Add(_clientCertificate);
             }
 #endif
             return request;

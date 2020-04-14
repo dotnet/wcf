@@ -19,35 +19,35 @@ namespace System.IdentityModel.Tokens
 
     public class SamlAssertion // TODO: ICanonicalWriterEndRootElementCallback
     {
-        string assertionId = /*TODO: SamlConstants.AssertionIdPrefix*/ "SamlSecurityToken-" + Guid.NewGuid().ToString();
-        bool isReadOnly = false;
-        ReadOnlyCollection<SecurityKey> cryptoList;
+        private string _assertionId = /*TODO: SamlConstants.AssertionIdPrefix*/ "SamlSecurityToken-" + Guid.NewGuid().ToString();
+        private bool _isReadOnly = false;
+        private ReadOnlyCollection<SecurityKey> _cryptoList;
 
         public string AssertionId
         {
-            get { return this.assertionId; }
+            get { return _assertionId; }
             set
             {
-                if (isReadOnly)
+                if (_isReadOnly)
                     throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.ObjectIsReadOnly));
 
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentNullException("value"); // TODO: DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SR.SAMLAssertionIdRequired);
 
-                this.assertionId = value;
+                _assertionId = value;
             }
         }
 
         public bool IsReadOnly
         {
-            get { return this.isReadOnly; }
+            get { return _isReadOnly; }
         }
 
         internal ReadOnlyCollection<SecurityKey> SecurityKeys
         {
             get
             {
-                return this.cryptoList;
+                return _cryptoList;
             }
         }
     }

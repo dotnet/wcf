@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Dispatcher
 {
-    class ImmutableDispatchRuntime
+    internal class ImmutableDispatchRuntime
     {
         readonly private int _correlationCount;
         readonly private ConcurrencyBehavior _concurrency;
@@ -43,7 +43,7 @@ namespace System.ServiceModel.Dispatcher
         private readonly MessageRpcProcessor _processMessageCleanup;
         private readonly MessageRpcProcessor _processMessageCleanupError;
 
-        static AsyncCallback onReplyCompleted = Fx.ThunkCallback(new AsyncCallback(OnReplyCompletedCallback));
+        private static AsyncCallback s_onReplyCompleted = Fx.ThunkCallback(new AsyncCallback(OnReplyCompletedCallback));
 
         internal ImmutableDispatchRuntime(DispatchRuntime dispatch)
         {
@@ -110,7 +110,7 @@ namespace System.ServiceModel.Dispatcher
             // IDispatchMessageInspector would normally be called here. That interface isn't in contract.
         }
 
-        void Reply(ref MessageRpc rpc)
+        private void Reply(ref MessageRpc rpc)
         {
             rpc.RequestContextThrewOnReply = true;
             rpc.SuccessfullySendReply = false;
@@ -149,7 +149,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void BeginReply(ref MessageRpc rpc)
+        private void BeginReply(ref MessageRpc rpc)
         {
             bool success = false;
 
@@ -158,7 +158,7 @@ namespace System.ServiceModel.Dispatcher
                 IResumeMessageRpc resume = rpc.Pause();
 
                 rpc.AsyncResult = rpc.RequestContext.BeginReply(rpc.Reply, rpc.ReplyTimeoutHelper.RemainingTime(),
-                    onReplyCompleted, resume);
+                    s_onReplyCompleted, resume);
                 success = true;
 
                 if (rpc.AsyncResult.CompletedSynchronously)
@@ -203,7 +203,7 @@ namespace System.ServiceModel.Dispatcher
             return rpc.Process(isOperationContextSet);
         }
 
-        bool EndReply(ref MessageRpc rpc)
+        private bool EndReply(ref MessageRpc rpc)
         {
             bool success = false;
 
@@ -231,7 +231,7 @@ namespace System.ServiceModel.Dispatcher
             return success;
         }
 
-        void SetActivityIdOnThread(ref MessageRpc rpc)
+        private void SetActivityIdOnThread(ref MessageRpc rpc)
         {
             if (FxTrace.Trace.IsEnd2EndActivityTracingEnabled && rpc.EventTraceActivity != null)
             {
@@ -240,7 +240,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void TransferChannelFromPendingList(ref MessageRpc rpc)
+        private void TransferChannelFromPendingList(ref MessageRpc rpc)
         {
             if (rpc.Channel.IsPending)
             {
@@ -263,7 +263,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void AddMessageProperties(Message message, OperationContext context, ServiceChannel replyChannel)
+        private void AddMessageProperties(Message message, OperationContext context, ServiceChannel replyChannel)
         {
             if (context.InternalServiceChannel == replyChannel)
             {
@@ -279,7 +279,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        static void OnReplyCompletedCallback(IAsyncResult result)
+        private static void OnReplyCompletedCallback(IAsyncResult result)
         {
             if (result.CompletedSynchronously)
             {
@@ -296,7 +296,7 @@ namespace System.ServiceModel.Dispatcher
             resume.Resume(result);
         }
 
-        void PrepareReply(ref MessageRpc rpc)
+        private void PrepareReply(ref MessageRpc rpc)
         {
             RequestContext context = rpc.OperationContext.RequestContext;
             Exception exception = null;
@@ -358,7 +358,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        bool PrepareAndAddressReply(ref MessageRpc rpc)
+        private bool PrepareAndAddressReply(ref MessageRpc rpc)
         {
             bool canSendReply = true;
 
@@ -389,7 +389,7 @@ namespace System.ServiceModel.Dispatcher
             return _demuxer.GetOperation(ref message);
         }
 
-        interface IDemuxer
+        private interface IDemuxer
         {
             DispatchOperationRuntime GetOperation(ref Message request);
         }
@@ -452,7 +452,6 @@ namespace System.ServiceModel.Dispatcher
             {
                 this.ProcessMessage2(ref rpc);
             }
-
         }
 
         private void ProcessMessage2(ref MessageRpc rpc)
@@ -471,7 +470,7 @@ namespace System.ServiceModel.Dispatcher
         }
 
 
-        void ProcessMessage3(ref MessageRpc rpc)
+        private void ProcessMessage3(ref MessageRpc rpc)
         {
             // Manage transactions, can likely go away
 
@@ -485,7 +484,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProcessMessage31(ref MessageRpc rpc)
+        private void ProcessMessage31(ref MessageRpc rpc)
         {
             // More transaction stuff, can likely go away
             rpc.NextProcessor = _processMessage4;
@@ -496,7 +495,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProcessMessage4(ref MessageRpc rpc)
+        private void ProcessMessage4(ref MessageRpc rpc)
         {
             // Bind request to synchronization context if needed
 
@@ -522,7 +521,7 @@ namespace System.ServiceModel.Dispatcher
         }
 
 
-        void ProcessMessage41(ref MessageRpc rpc)
+        private void ProcessMessage41(ref MessageRpc rpc)
         {
             rpc.NextProcessor = _processMessage5;
 
@@ -598,7 +597,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProcessMessage6(ref MessageRpc rpc)
+        private void ProcessMessage6(ref MessageRpc rpc)
         {
             rpc.NextProcessor = _processMessage7;
 
@@ -621,7 +620,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProcessMessage7(ref MessageRpc rpc)
+        private void ProcessMessage7(ref MessageRpc rpc)
         {
             rpc.NextProcessor = null;
 
@@ -631,7 +630,7 @@ namespace System.ServiceModel.Dispatcher
             this.ProcessMessage8(ref rpc);
         }
 
-        void ProcessMessage8(ref MessageRpc rpc)
+        private void ProcessMessage8(ref MessageRpc rpc)
         {
             rpc.NextProcessor = _processMessage9;
 
@@ -662,7 +661,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProcessMessage9(ref MessageRpc rpc)
+        private void ProcessMessage9(ref MessageRpc rpc)
         {
             rpc.NextProcessor = _processMessageCleanup;
 
@@ -689,7 +688,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void ProcessMessageCleanup(ref MessageRpc rpc)
+        private void ProcessMessageCleanup(ref MessageRpc rpc)
         {
             Fx.Assert(
                 !object.ReferenceEquals(rpc.ErrorProcessor, _processMessageCleanupError),
@@ -853,15 +852,15 @@ namespace System.ServiceModel.Dispatcher
             _error.HandleError(ref rpc);
         }
 
-        void ProcessMessageCleanupError(ref MessageRpc rpc)
+        private void ProcessMessageCleanupError(ref MessageRpc rpc)
         {
             _error.HandleError(ref rpc);
         }
 
-        class ActionDemuxer : IDemuxer
+        private class ActionDemuxer : IDemuxer
         {
-            readonly HybridDictionary _map;
-            DispatchOperationRuntime _unhandled;
+            private readonly HybridDictionary _map;
+            private DispatchOperationRuntime _unhandled;
 
             internal ActionDemuxer()
             {

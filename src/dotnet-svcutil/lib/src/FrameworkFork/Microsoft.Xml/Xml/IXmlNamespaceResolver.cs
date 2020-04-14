@@ -5,18 +5,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
+
 
     // Provides read-only access to a set of (prefix, namespace) mappings.  Each distinct prefix is mapped to exactly
     // one namespace, but multiple prefixes may be mapped to the same namespace (e.g. xmlns:foo="ns" xmlns:bar="ns").
-    public interface IXmlNamespaceResolver {
-
-// This pragma disables a warning that the return type is not CLS-compliant, but generics are part of CLS in Whidbey. 
+    public interface IXmlNamespaceResolver
+    {
+        // This pragma disables a warning that the return type is not CLS-compliant, but generics are part of CLS in Whidbey. 
 #pragma warning disable 3002
         // Returns a collection of defined prefix-namespace mappings.
-        IDictionary<string,string> GetNamespacesInScope( XmlNamespaceScope scope );
+        IDictionary<string, string> GetNamespacesInScope(XmlNamespaceScope scope);
 #pragma warning restore 3002
 
         // Return the namespace to which the specified prefix is mapped.  Returns null if the prefix isn't mapped to

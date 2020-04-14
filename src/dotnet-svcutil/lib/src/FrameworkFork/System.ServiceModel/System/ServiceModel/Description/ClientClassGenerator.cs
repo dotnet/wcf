@@ -14,10 +14,10 @@ namespace System.ServiceModel.Description
     using System.ServiceModel.Channels;
     using System.Threading;
 
-    class ClientClassGenerator : IServiceContractGenerationExtension
+    internal class ClientClassGenerator : IServiceContractGenerationExtension
     {
-        bool tryAddHelperMethod = false;
-        bool generateEventAsyncMethods = false;
+        private bool _tryAddHelperMethod = false;
+        private bool _generateEventAsyncMethods = false;
 
         internal ClientClassGenerator(bool tryAddHelperMethod)
             : this(tryAddHelperMethod, false)
@@ -26,52 +26,52 @@ namespace System.ServiceModel.Description
 
         internal ClientClassGenerator(bool tryAddHelperMethod, bool generateEventAsyncMethods)
         {
-            this.tryAddHelperMethod = tryAddHelperMethod;
-            this.generateEventAsyncMethods = generateEventAsyncMethods;
+            _tryAddHelperMethod = tryAddHelperMethod;
+            _generateEventAsyncMethods = generateEventAsyncMethods;
         }
 
-        static Type clientBaseType = typeof(ClientBase<>);
-        static Type duplexClientBaseType = typeof(DuplexClientBase<>);
-        static Type instanceContextType = typeof(InstanceContext);
-        static Type objectType = typeof(object);
-        static Type objectArrayType = typeof(object[]);
-        static Type exceptionType = typeof(Exception);
-        static Type boolType = typeof(bool);
-        static Type stringType = typeof(string);
-        static Type endpointAddressType = typeof(EndpointAddress);
-        static Type uriType = typeof(Uri);
-        static Type bindingType = typeof(Binding);
-        static Type sendOrPostCallbackType = typeof(SendOrPostCallback);
-        static Type asyncCompletedEventArgsType = typeof(AsyncCompletedEventArgs);
-        static Type eventHandlerType = typeof(EventHandler<>);
-        static Type voidType = typeof(void);
-        static Type asyncResultType = typeof(IAsyncResult);
-        static Type asyncCallbackType = typeof(AsyncCallback);
+        private static Type s_clientBaseType = typeof(ClientBase<>);
+        private static Type s_duplexClientBaseType = typeof(DuplexClientBase<>);
+        private static Type s_instanceContextType = typeof(InstanceContext);
+        private static Type s_objectType = typeof(object);
+        private static Type s_objectArrayType = typeof(object[]);
+        private static Type s_exceptionType = typeof(Exception);
+        private static Type s_boolType = typeof(bool);
+        private static Type s_stringType = typeof(string);
+        private static Type s_endpointAddressType = typeof(EndpointAddress);
+        private static Type s_uriType = typeof(Uri);
+        private static Type s_bindingType = typeof(Binding);
+        private static Type s_sendOrPostCallbackType = typeof(SendOrPostCallback);
+        private static Type s_asyncCompletedEventArgsType = typeof(AsyncCompletedEventArgs);
+        private static Type s_eventHandlerType = typeof(EventHandler<>);
+        private static Type s_voidType = typeof(void);
+        private static Type s_asyncResultType = typeof(IAsyncResult);
+        private static Type s_asyncCallbackType = typeof(AsyncCallback);
 
-        static CodeTypeReference voidTypeRef = new CodeTypeReference(typeof(void));
-        static CodeTypeReference asyncResultTypeRef = new CodeTypeReference(typeof(IAsyncResult));
+        private static CodeTypeReference s_voidTypeRef = new CodeTypeReference(typeof(void));
+        private static CodeTypeReference s_asyncResultTypeRef = new CodeTypeReference(typeof(IAsyncResult));
 
-        static string inputInstanceName = "callbackInstance";
-        static string invokeAsyncCompletedEventArgsTypeName = "InvokeAsyncCompletedEventArgs";
-        static string invokeAsyncMethodName = "InvokeAsync";
-        static string raiseExceptionIfNecessaryMethodName = "RaiseExceptionIfNecessary";
-        static string beginOperationDelegateTypeName = "BeginOperationDelegate";
-        static string endOperationDelegateTypeName = "EndOperationDelegate";
-        static string getDefaultValueForInitializationMethodName = "GetDefaultValueForInitialization";
+        private static string s_inputInstanceName = "callbackInstance";
+        private static string s_invokeAsyncCompletedEventArgsTypeName = "InvokeAsyncCompletedEventArgs";
+        private static string s_invokeAsyncMethodName = "InvokeAsync";
+        private static string s_raiseExceptionIfNecessaryMethodName = "RaiseExceptionIfNecessary";
+        private static string s_beginOperationDelegateTypeName = "BeginOperationDelegate";
+        private static string s_endOperationDelegateTypeName = "EndOperationDelegate";
+        private static string s_getDefaultValueForInitializationMethodName = "GetDefaultValueForInitialization";
 
         // IMPORTANT: this table tracks the set of .ctors in ClientBase and DuplexClientBase. 
         // This table must be kept in sync
         // for DuplexClientBase, the initial InstanceContext param is assumed; ctor overloads must match between ClientBase and DuplexClientBase
-        static Type[][] ClientCtorParamTypes = new Type[][]
+        private static Type[][] s_clientCtorParamTypes = new Type[][]
             {
                 new Type[] { },
-                new Type[] { stringType, },
-                new Type[] { stringType, stringType, },
-                new Type[] { stringType, endpointAddressType, },
-                new Type[] { bindingType, endpointAddressType, },
+                new Type[] { s_stringType, },
+                new Type[] { s_stringType, s_stringType, },
+                new Type[] { s_stringType, s_endpointAddressType, },
+                new Type[] { s_bindingType, s_endpointAddressType, },
             };
 
-        static string[][] ClientCtorParamNames = new string[][]
+        private static string[][] s_clientCtorParamNames = new string[][]
             {
                 new string[] { },
                 new string[] { "endpointConfigurationName", },
@@ -80,15 +80,15 @@ namespace System.ServiceModel.Description
                 new string[] { "binding", "remoteAddress", },
             };
 
-        static Type[] EventArgsCtorParamTypes = new Type[]
+        private static Type[] s_eventArgsCtorParamTypes = new Type[]
         {
-            objectArrayType,
-            exceptionType,
-            boolType,
-            objectType
+            s_objectArrayType,
+            s_exceptionType,
+            s_boolType,
+            s_objectType
         };
 
-        static string[] EventArgsCtorParamNames = new string[]
+        private static string[] s_eventArgsCtorParamNames = new string[]
         {
             "results",
             "exception",
@@ -96,7 +96,7 @@ namespace System.ServiceModel.Description
             "userState"
         };
 
-        static string[] EventArgsPropertyNames = new string[]
+        private static string[] s_eventArgsPropertyNames = new string[]
         {
             "Results",
             "Error",
@@ -170,15 +170,15 @@ namespace System.ServiceModel.Description
 
             clientType.BaseTypes.Add(context.ContractTypeReference);
 
-            if (!(ClientCtorParamNames.Length == ClientCtorParamTypes.Length))
+            if (!(s_clientCtorParamNames.Length == s_clientCtorParamTypes.Length))
             {
                 Fx.Assert("Invalid client generation constructor table initialization");
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Invalid client generation constructor table initialization")));
             }
 
-            for (int i = 0; i < ClientCtorParamNames.Length; i++)
+            for (int i = 0; i < s_clientCtorParamNames.Length; i++)
             {
-                if (!(ClientCtorParamNames[i].Length == ClientCtorParamTypes[i].Length))
+                if (!(s_clientCtorParamNames[i].Length == s_clientCtorParamTypes[i].Length))
                 {
                     Fx.Assert("Invalid client generation constructor table initialization");
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Invalid client generation constructor table initialization")));
@@ -188,13 +188,13 @@ namespace System.ServiceModel.Description
                 ctor.Attributes = MemberAttributes.Public;
                 if (context.DuplexCallbackType != null)
                 {
-                    ctor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(InstanceContext), inputInstanceName));
-                    ctor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(inputInstanceName));
+                    ctor.Parameters.Add(new CodeParameterDeclarationExpression(typeof(InstanceContext), s_inputInstanceName));
+                    ctor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(s_inputInstanceName));
                 }
-                for (int j = 0; j < ClientCtorParamNames[i].Length; j++)
+                for (int j = 0; j < s_clientCtorParamNames[i].Length; j++)
                 {
-                    ctor.Parameters.Add(new CodeParameterDeclarationExpression(ClientCtorParamTypes[i][j], ClientCtorParamNames[i][j]));
-                    ctor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(ClientCtorParamNames[i][j]));
+                    ctor.Parameters.Add(new CodeParameterDeclarationExpression(s_clientCtorParamTypes[i][j], s_clientCtorParamNames[i][j]));
+                    ctor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(s_clientCtorParamNames[i][j]));
                 }
                 clientType.Members.Add(ctor);
             }
@@ -204,14 +204,14 @@ namespace System.ServiceModel.Description
                 // Note that we generate all the client-side methods, even inherited ones.
                 if (operationContext.Operation.IsServerInitiated()) continue;
                 CodeTypeReference declaringContractTypeRef = operationContext.DeclaringTypeReference;
-                GenerateClientClassMethod(clientType, contractTypeRef, operationContext.SyncMethod, this.tryAddHelperMethod, declaringContractTypeRef);
+                GenerateClientClassMethod(clientType, contractTypeRef, operationContext.SyncMethod, _tryAddHelperMethod, declaringContractTypeRef);
 
                 if (operationContext.IsAsync)
                 {
-                    CodeMemberMethod beginMethod = GenerateClientClassMethod(clientType, contractTypeRef, operationContext.BeginMethod, this.tryAddHelperMethod, declaringContractTypeRef);
-                    CodeMemberMethod endMethod = GenerateClientClassMethod(clientType, contractTypeRef, operationContext.EndMethod, this.tryAddHelperMethod, declaringContractTypeRef);
+                    CodeMemberMethod beginMethod = GenerateClientClassMethod(clientType, contractTypeRef, operationContext.BeginMethod, _tryAddHelperMethod, declaringContractTypeRef);
+                    CodeMemberMethod endMethod = GenerateClientClassMethod(clientType, contractTypeRef, operationContext.EndMethod, _tryAddHelperMethod, declaringContractTypeRef);
 
-                    if (this.generateEventAsyncMethods)
+                    if (_generateEventAsyncMethods)
                     {
                         GenerateEventAsyncMethods(context, clientType, operationContext.SyncMethod.Name, beginMethod, endMethod);
                     }
@@ -219,7 +219,7 @@ namespace System.ServiceModel.Description
 
                 if (operationContext.IsTask)
                 {
-                    GenerateClientClassMethod(clientType, contractTypeRef, operationContext.TaskMethod, !operationContext.Operation.HasOutputParameters && this.tryAddHelperMethod, declaringContractTypeRef);
+                    GenerateClientClassMethod(clientType, contractTypeRef, operationContext.TaskMethod, !operationContext.Operation.HasOutputParameters && _tryAddHelperMethod, declaringContractTypeRef);
                 }
             }
 
@@ -228,7 +228,7 @@ namespace System.ServiceModel.Description
             context.ClientTypeReference = ServiceContractGenerator.NamespaceHelper.GetCodeTypeReference(context.Namespace, clientType);
         }
 
-        static CodeMemberMethod GenerateClientClassMethod(CodeTypeDeclaration clientType, CodeTypeReference contractTypeRef, CodeMemberMethod method, bool addHelperMethod, CodeTypeReference declaringContractTypeRef)
+        private static CodeMemberMethod GenerateClientClassMethod(CodeTypeDeclaration clientType, CodeTypeReference contractTypeRef, CodeMemberMethod method, bool addHelperMethod, CodeTypeReference declaringContractTypeRef)
         {
             CodeMemberMethod methodImpl = GetImplementationOfMethod(contractTypeRef, method);
             AddMethodImpl(methodImpl);
@@ -282,7 +282,7 @@ namespace System.ServiceModel.Description
                     invokeMethod.Parameters.Add(new CodeArgumentReferenceExpression(param.Name));
                 }
             }
-            if (method.ReturnType.BaseType == voidTypeRef.BaseType)
+            if (method.ReturnType.BaseType == s_voidTypeRef.BaseType)
                 helperMethod.Statements.Add(invokeMethod);
             else
             {
@@ -326,7 +326,7 @@ namespace System.ServiceModel.Description
                     continue;
                 }
                 CodeParameterDeclarationExpression param = GetRefParameter(helperMethod.Parameters, dir, field);
-                if (param == null && dir == FieldDirection.Out && helperMethod.ReturnType.BaseType == voidTypeRef.BaseType)
+                if (param == null && dir == FieldDirection.Out && helperMethod.ReturnType.BaseType == s_voidTypeRef.BaseType)
                 {
                     helperMethod.ReturnType = field.Type;
                     returnStatement = new CodeMethodReturnStatement(fieldRef);
@@ -452,7 +452,7 @@ namespace System.ServiceModel.Description
             return false;
         }
 
-        static void AddMethodImpl(CodeMemberMethod method)
+        private static void AddMethodImpl(CodeMemberMethod method)
         {
             CodeMethodInvokeExpression methodInvoke = new CodeMethodInvokeExpression(GetChannelReference(), method.Name);
             foreach (CodeParameterDeclarationExpression parameter in method.Parameters)
@@ -465,7 +465,7 @@ namespace System.ServiceModel.Description
                 method.Statements.Add(new CodeMethodReturnStatement(methodInvoke));
         }
 
-        static CodeMemberMethod GetImplementationOfMethod(CodeTypeReference ifaceType, CodeMemberMethod method)
+        private static CodeMemberMethod GetImplementationOfMethod(CodeTypeReference ifaceType, CodeMemberMethod method)
         {
             CodeMemberMethod m = new CodeMemberMethod();
             m.Name = method.Name;
@@ -481,7 +481,7 @@ namespace System.ServiceModel.Description
             return m;
         }
 
-        static void GenerateEventAsyncMethods(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
+        private static void GenerateEventAsyncMethods(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
             string syncMethodName, CodeMemberMethod beginMethod, CodeMemberMethod endMethod)
         {
             CodeTypeDeclaration operationCompletedEventArgsType = CreateOperationCompletedEventArgsType(context, syncMethodName, endMethod);
@@ -506,21 +506,21 @@ namespace System.ServiceModel.Description
             endMethod.CustomAttributes.Add(CreateEditorBrowsableAttribute(EditorBrowsableState.Advanced));
         }
 
-        static CodeTypeDeclaration CreateOperationCompletedEventArgsType(ServiceContractGenerationContext context,
+        private static CodeTypeDeclaration CreateOperationCompletedEventArgsType(ServiceContractGenerationContext context,
             string syncMethodName, CodeMemberMethod endMethod)
         {
-            if ((endMethod.Parameters.Count == 1) && (endMethod.ReturnType.BaseType == voidTypeRef.BaseType))
+            if ((endMethod.Parameters.Count == 1) && (endMethod.ReturnType.BaseType == s_voidTypeRef.BaseType))
             {
                 // no need to create new event args type, use AsyncCompletedEventArgs
                 return null;
             }
 
             CodeTypeDeclaration argsType = context.TypeFactory.CreateClassType();
-            argsType.BaseTypes.Add(new CodeTypeReference(asyncCompletedEventArgsType));
+            argsType.BaseTypes.Add(new CodeTypeReference(s_asyncCompletedEventArgsType));
 
             // define object[] results field.
             CodeMemberField resultsField = new CodeMemberField();
-            resultsField.Type = new CodeTypeReference(objectArrayType);
+            resultsField.Type = new CodeTypeReference(s_objectArrayType);
 
             CodeFieldReferenceExpression resultsFieldReference = new CodeFieldReferenceExpression();
             resultsFieldReference.TargetObject = new CodeThisReferenceExpression();
@@ -528,16 +528,16 @@ namespace System.ServiceModel.Description
             // create constructor, that assigns the results field.
             CodeConstructor ctor = new CodeConstructor();
             ctor.Attributes = MemberAttributes.Public;
-            for (int i = 0; i < EventArgsCtorParamTypes.Length; i++)
+            for (int i = 0; i < s_eventArgsCtorParamTypes.Length; i++)
             {
-                ctor.Parameters.Add(new CodeParameterDeclarationExpression(EventArgsCtorParamTypes[i], EventArgsCtorParamNames[i]));
+                ctor.Parameters.Add(new CodeParameterDeclarationExpression(s_eventArgsCtorParamTypes[i], s_eventArgsCtorParamNames[i]));
                 if (i > 0)
                 {
-                    ctor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(EventArgsCtorParamNames[i]));
+                    ctor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(s_eventArgsCtorParamNames[i]));
                 }
             }
             argsType.Members.Add(ctor);
-            ctor.Statements.Add(new CodeAssignStatement(resultsFieldReference, new CodeVariableReferenceExpression(EventArgsCtorParamNames[0])));
+            ctor.Statements.Add(new CodeAssignStatement(resultsFieldReference, new CodeVariableReferenceExpression(s_eventArgsCtorParamNames[0])));
 
             // create properties for the out parameters
             int asyncResultParamIndex = GetAsyncResultParamIndex(endMethod);
@@ -554,7 +554,7 @@ namespace System.ServiceModel.Description
             }
 
             // create the property for the return type
-            if (endMethod.ReturnType.BaseType != voidTypeRef.BaseType)
+            if (endMethod.ReturnType.BaseType != s_voidTypeRef.BaseType)
             {
                 CreateEventAsyncCompletedArgsTypeProperty(
                     argsType,
@@ -562,7 +562,6 @@ namespace System.ServiceModel.Description
                     NamingHelper.GetUniqueName("Result", DoesMemberNameExist, argsType),
                     new CodeArrayIndexerExpression(resultsFieldReference,
                         new CodePrimitiveExpression(count)));
-
             }
 
             // Name the "results" field after generating the properties to make sure it does 
@@ -580,10 +579,10 @@ namespace System.ServiceModel.Description
             return argsType;
         }
 
-        static int GetAsyncResultParamIndex(CodeMemberMethod endMethod)
+        private static int GetAsyncResultParamIndex(CodeMemberMethod endMethod)
         {
             int index = endMethod.Parameters.Count - 1;
-            if (endMethod.Parameters[index].Type.BaseType != asyncResultTypeRef.BaseType)
+            if (endMethod.Parameters[index].Type.BaseType != s_asyncResultTypeRef.BaseType)
             {
                 // workaround for CSD Dev Framework:10826, the unwrapped end method has IAsyncResult as first param. 
                 index = 0;
@@ -592,7 +591,7 @@ namespace System.ServiceModel.Description
             return index;
         }
 
-        static CodeMemberProperty CreateEventAsyncCompletedArgsTypeProperty(CodeTypeDeclaration ownerTypeDecl,
+        private static CodeMemberProperty CreateEventAsyncCompletedArgsTypeProperty(CodeTypeDeclaration ownerTypeDecl,
             CodeTypeReference propertyType, string propertyName, CodeExpression propertyValueExpr)
         {
             CodeMemberProperty property = new CodeMemberProperty();
@@ -605,23 +604,23 @@ namespace System.ServiceModel.Description
             CodeCastExpression castExpr = new CodeCastExpression(propertyType, propertyValueExpr);
             CodeMethodReturnStatement returnStmt = new CodeMethodReturnStatement(castExpr);
 
-            property.GetStatements.Add(new CodeMethodInvokeExpression(new CodeBaseReferenceExpression(), raiseExceptionIfNecessaryMethodName));
+            property.GetStatements.Add(new CodeMethodInvokeExpression(new CodeBaseReferenceExpression(), s_raiseExceptionIfNecessaryMethodName));
             property.GetStatements.Add(returnStmt);
             ownerTypeDecl.Members.Add(property);
 
             return property;
         }
 
-        static CodeMemberEvent CreateOperationCompletedEvent(ServiceContractGenerationContext context,
+        private static CodeMemberEvent CreateOperationCompletedEvent(ServiceContractGenerationContext context,
             CodeTypeDeclaration clientType, string syncMethodName, CodeTypeDeclaration operationCompletedEventArgsType)
         {
             CodeMemberEvent operationCompletedEvent = new CodeMemberEvent();
             operationCompletedEvent.Attributes = MemberAttributes.Public;
-            operationCompletedEvent.Type = new CodeTypeReference(eventHandlerType);
+            operationCompletedEvent.Type = new CodeTypeReference(s_eventHandlerType);
 
             if (operationCompletedEventArgsType == null)
             {
-                operationCompletedEvent.Type.TypeArguments.Add(asyncCompletedEventArgsType);
+                operationCompletedEvent.Type.TypeArguments.Add(s_asyncCompletedEventArgsType);
             }
             else
             {
@@ -635,12 +634,12 @@ namespace System.ServiceModel.Description
             return operationCompletedEvent;
         }
 
-        static CodeMemberField CreateBeginOperationDelegate(ServiceContractGenerationContext context,
+        private static CodeMemberField CreateBeginOperationDelegate(ServiceContractGenerationContext context,
             CodeTypeDeclaration clientType, string syncMethodName)
         {
             CodeMemberField beginOperationDelegate = new CodeMemberField();
             beginOperationDelegate.Attributes = MemberAttributes.Private;
-            beginOperationDelegate.Type = new CodeTypeReference(beginOperationDelegateTypeName);
+            beginOperationDelegate.Type = new CodeTypeReference(s_beginOperationDelegateTypeName);
             beginOperationDelegate.Name = NamingHelper.GetUniqueName(GetBeginOperationDelegateName(syncMethodName),
                 DoesMethodNameExist, context.Operations);
 
@@ -648,17 +647,17 @@ namespace System.ServiceModel.Description
             return beginOperationDelegate;
         }
 
-        static CodeMemberMethod CreateBeginOperationMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
+        private static CodeMemberMethod CreateBeginOperationMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
             string syncMethodName, CodeMemberMethod beginMethod)
         {
             CodeMemberMethod onBeginOperationMethod = new CodeMemberMethod();
             onBeginOperationMethod.Attributes = MemberAttributes.Private;
-            onBeginOperationMethod.ReturnType = new CodeTypeReference(asyncResultType);
+            onBeginOperationMethod.ReturnType = new CodeTypeReference(s_asyncResultType);
             onBeginOperationMethod.Name = NamingHelper.GetUniqueName(GetBeginOperationMethodName(syncMethodName),
                 DoesMethodNameExist, context.Operations);
 
             CodeParameterDeclarationExpression inValuesParam = new CodeParameterDeclarationExpression();
-            inValuesParam.Type = new CodeTypeReference(objectArrayType);
+            inValuesParam.Type = new CodeTypeReference(s_objectArrayType);
             inValuesParam.Name = NamingHelper.GetUniqueName("inValues", DoesParameterNameExist, beginMethod);
             onBeginOperationMethod.Parameters.Add(inValuesParam);
 
@@ -690,12 +689,12 @@ namespace System.ServiceModel.Description
             return onBeginOperationMethod;
         }
 
-        static CodeMemberField CreateEndOperationDelegate(ServiceContractGenerationContext context,
+        private static CodeMemberField CreateEndOperationDelegate(ServiceContractGenerationContext context,
             CodeTypeDeclaration clientType, string syncMethodName)
         {
             CodeMemberField endOperationDelegate = new CodeMemberField();
             endOperationDelegate.Attributes = MemberAttributes.Private;
-            endOperationDelegate.Type = new CodeTypeReference(endOperationDelegateTypeName);
+            endOperationDelegate.Type = new CodeTypeReference(s_endOperationDelegateTypeName);
             endOperationDelegate.Name = NamingHelper.GetUniqueName(GetEndOperationDelegateName(syncMethodName),
                 DoesMethodNameExist, context.Operations);
 
@@ -703,17 +702,17 @@ namespace System.ServiceModel.Description
             return endOperationDelegate;
         }
 
-        static CodeMemberMethod CreateEndOperationMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType, string syncMethodName, CodeMemberMethod endMethod)
+        private static CodeMemberMethod CreateEndOperationMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType, string syncMethodName, CodeMemberMethod endMethod)
         {
             CodeMemberMethod onEndOperationMethod = new CodeMemberMethod();
             onEndOperationMethod.Attributes = MemberAttributes.Private;
-            onEndOperationMethod.ReturnType = new CodeTypeReference(objectArrayType);
+            onEndOperationMethod.ReturnType = new CodeTypeReference(s_objectArrayType);
             onEndOperationMethod.Name = NamingHelper.GetUniqueName(GetEndOperationMethodName(syncMethodName), DoesMethodNameExist, context.Operations);
 
             int asyncResultParamIndex = GetAsyncResultParamIndex(endMethod);
             CodeMethodInvokeExpression invokeEnd = new CodeMethodInvokeExpression(new CodeThisReferenceExpression(), endMethod.Name);
             CodeArrayCreateExpression retArray = new CodeArrayCreateExpression();
-            retArray.CreateType = new CodeTypeReference(objectArrayType);
+            retArray.CreateType = new CodeTypeReference(s_objectArrayType);
             for (int i = 0; i < endMethod.Parameters.Count; i++)
             {
                 if (i == asyncResultParamIndex)
@@ -726,7 +725,7 @@ namespace System.ServiceModel.Description
                 {
                     CodeVariableDeclarationStatement variableDecl = new CodeVariableDeclarationStatement(
                         endMethod.Parameters[i].Type, endMethod.Parameters[i].Name);
-                    CodeMethodReferenceExpression getDefaultValueMethodRef = new CodeMethodReferenceExpression(new CodeThisReferenceExpression(), getDefaultValueForInitializationMethodName, endMethod.Parameters[i].Type);
+                    CodeMethodReferenceExpression getDefaultValueMethodRef = new CodeMethodReferenceExpression(new CodeThisReferenceExpression(), s_getDefaultValueForInitializationMethodName, endMethod.Parameters[i].Type);
                     variableDecl.InitExpression = new CodeMethodInvokeExpression(getDefaultValueMethodRef);
                     onEndOperationMethod.Statements.Add(variableDecl);
 
@@ -737,7 +736,7 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            if (endMethod.ReturnType.BaseType != voidTypeRef.BaseType)
+            if (endMethod.ReturnType.BaseType != s_voidTypeRef.BaseType)
             {
                 CodeVariableDeclarationStatement retValDecl = new CodeVariableDeclarationStatement();
                 retValDecl.Type = endMethod.ReturnType;
@@ -765,12 +764,12 @@ namespace System.ServiceModel.Description
             return onEndOperationMethod;
         }
 
-        static CodeMemberField CreateOperationCompletedDelegate(ServiceContractGenerationContext context,
+        private static CodeMemberField CreateOperationCompletedDelegate(ServiceContractGenerationContext context,
             CodeTypeDeclaration clientType, string syncMethodName)
         {
             CodeMemberField operationCompletedDelegate = new CodeMemberField();
             operationCompletedDelegate.Attributes = MemberAttributes.Private;
-            operationCompletedDelegate.Type = new CodeTypeReference(sendOrPostCallbackType);
+            operationCompletedDelegate.Type = new CodeTypeReference(s_sendOrPostCallbackType);
             operationCompletedDelegate.Name = NamingHelper.GetUniqueName(GetOperationCompletedDelegateName(syncMethodName),
                 DoesMethodNameExist, context.Operations);
 
@@ -778,7 +777,7 @@ namespace System.ServiceModel.Description
             return operationCompletedDelegate;
         }
 
-        static CodeMemberMethod CreateOperationCompletedMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
+        private static CodeMemberMethod CreateOperationCompletedMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
             string syncMethodName, CodeTypeDeclaration operationCompletedEventArgsType, CodeMemberEvent operationCompletedEvent)
         {
             CodeMemberMethod operationCompletedMethod = new CodeMemberMethod();
@@ -786,13 +785,13 @@ namespace System.ServiceModel.Description
             operationCompletedMethod.Name = NamingHelper.GetUniqueName(GetOperationCompletedMethodName(syncMethodName),
                 DoesMethodNameExist, context.Operations);
 
-            operationCompletedMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(objectType), "state"));
-            operationCompletedMethod.ReturnType = new CodeTypeReference(voidType);
+            operationCompletedMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(s_objectType), "state"));
+            operationCompletedMethod.ReturnType = new CodeTypeReference(s_voidType);
 
             CodeVariableDeclarationStatement eventArgsDecl =
-                new CodeVariableDeclarationStatement(invokeAsyncCompletedEventArgsTypeName, "e");
+                new CodeVariableDeclarationStatement(s_invokeAsyncCompletedEventArgsTypeName, "e");
 
-            eventArgsDecl.InitExpression = new CodeCastExpression(invokeAsyncCompletedEventArgsTypeName,
+            eventArgsDecl.InitExpression = new CodeCastExpression(s_invokeAsyncCompletedEventArgsTypeName,
                 new CodeArgumentReferenceExpression(operationCompletedMethod.Parameters[0].Name));
 
             CodeObjectCreateExpression newEventArgsExpr;
@@ -800,17 +799,17 @@ namespace System.ServiceModel.Description
             if (operationCompletedEventArgsType != null)
             {
                 newEventArgsExpr = new CodeObjectCreateExpression(operationCompletedEventArgsType.Name,
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[0]),
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[1]),
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[2]),
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[3]));
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[0]),
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[1]),
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[2]),
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[3]));
             }
             else
             {
-                newEventArgsExpr = new CodeObjectCreateExpression(asyncCompletedEventArgsType,
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[1]),
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[2]),
-                    new CodePropertyReferenceExpression(eventArgsRef, EventArgsPropertyNames[3]));
+                newEventArgsExpr = new CodeObjectCreateExpression(s_asyncCompletedEventArgsType,
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[1]),
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[2]),
+                    new CodePropertyReferenceExpression(eventArgsRef, s_eventArgsPropertyNames[3]));
             }
 
             CodeEventReferenceExpression completedEvent = new CodeEventReferenceExpression(new CodeThisReferenceExpression(), operationCompletedEvent.Name);
@@ -834,7 +833,7 @@ namespace System.ServiceModel.Description
             return operationCompletedMethod;
         }
 
-        static CodeMemberMethod CreateEventAsyncMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
+        private static CodeMemberMethod CreateEventAsyncMethod(ServiceContractGenerationContext context, CodeTypeDeclaration clientType,
             string syncMethodName, CodeMemberMethod beginMethod,
             CodeMemberField beginOperationDelegate, CodeMemberMethod beginOperationMethod,
             CodeMemberField endOperationDelegate, CodeMemberMethod endOperationMethod,
@@ -844,9 +843,9 @@ namespace System.ServiceModel.Description
             eventAsyncMethod.Name = NamingHelper.GetUniqueName(GetEventAsyncMethodName(syncMethodName),
                 DoesMethodNameExist, context.Operations);
             eventAsyncMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            eventAsyncMethod.ReturnType = new CodeTypeReference(voidType);
+            eventAsyncMethod.ReturnType = new CodeTypeReference(s_voidType);
 
-            CodeArrayCreateExpression invokeAsyncInValues = new CodeArrayCreateExpression(new CodeTypeReference(objectArrayType));
+            CodeArrayCreateExpression invokeAsyncInValues = new CodeArrayCreateExpression(new CodeTypeReference(s_objectArrayType));
             for (int i = 0; i < beginMethod.Parameters.Count - 2; i++)
             {
                 CodeParameterDeclarationExpression beginMethodParameter = beginMethod.Parameters[i];
@@ -859,13 +858,13 @@ namespace System.ServiceModel.Description
             }
 
             string userStateParamName = NamingHelper.GetUniqueName("userState", DoesParameterNameExist, eventAsyncMethod);
-            eventAsyncMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(objectType), userStateParamName));
+            eventAsyncMethod.Parameters.Add(new CodeParameterDeclarationExpression(new CodeTypeReference(s_objectType), userStateParamName));
 
             eventAsyncMethod.Statements.Add(CreateDelegateIfNotNull(beginOperationDelegate, beginOperationMethod));
             eventAsyncMethod.Statements.Add(CreateDelegateIfNotNull(endOperationDelegate, endOperationMethod));
             eventAsyncMethod.Statements.Add(CreateDelegateIfNotNull(operationCompletedDelegate, operationCompletedMethod));
 
-            CodeMethodInvokeExpression invokeAsync = new CodeMethodInvokeExpression(new CodeBaseReferenceExpression(), invokeAsyncMethodName);
+            CodeMethodInvokeExpression invokeAsync = new CodeMethodInvokeExpression(new CodeBaseReferenceExpression(), s_invokeAsyncMethodName);
             invokeAsync.Parameters.Add(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), beginOperationDelegate.Name));
             if (invokeAsyncInValues.Initializers.Count > 0)
             {
@@ -885,7 +884,7 @@ namespace System.ServiceModel.Description
             return eventAsyncMethod;
         }
 
-        static CodeMemberMethod CreateEventAsyncMethodOverload(CodeTypeDeclaration clientType, CodeMemberMethod eventAsyncMethod)
+        private static CodeMemberMethod CreateEventAsyncMethodOverload(CodeTypeDeclaration clientType, CodeMemberMethod eventAsyncMethod)
         {
             CodeMemberMethod eventAsyncMethodOverload = new CodeMemberMethod();
             eventAsyncMethodOverload.Attributes = eventAsyncMethod.Attributes;
@@ -916,7 +915,7 @@ namespace System.ServiceModel.Description
             return eventAsyncMethodOverload;
         }
 
-        static CodeStatement CreateDelegateIfNotNull(CodeMemberField delegateField, CodeMemberMethod delegateMethod)
+        private static CodeStatement CreateDelegateIfNotNull(CodeMemberField delegateField, CodeMemberMethod delegateMethod)
         {
             return new CodeConditionStatement(
                 new CodeBinaryOperatorExpression(
@@ -929,7 +928,7 @@ namespace System.ServiceModel.Description
                         new CodeThisReferenceExpression(), delegateMethod.Name)));
         }
 
-        static string GetClassName(string interfaceName)
+        private static string GetClassName(string interfaceName)
         {
             // maybe strip a leading 'I'
             if (interfaceName.Length >= 2 &&
@@ -940,47 +939,47 @@ namespace System.ServiceModel.Description
                 return interfaceName;
         }
 
-        static string GetEventAsyncMethodName(string syncMethodName)
+        private static string GetEventAsyncMethodName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0}Async", syncMethodName);
         }
 
-        static string GetBeginOperationDelegateName(string syncMethodName)
+        private static string GetBeginOperationDelegateName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "onBegin{0}Delegate", syncMethodName);
         }
 
-        static string GetBeginOperationMethodName(string syncMethodName)
+        private static string GetBeginOperationMethodName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "OnBegin{0}", syncMethodName);
         }
 
-        static string GetEndOperationDelegateName(string syncMethodName)
+        private static string GetEndOperationDelegateName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "onEnd{0}Delegate", syncMethodName);
         }
 
-        static string GetEndOperationMethodName(string syncMethodName)
+        private static string GetEndOperationMethodName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "OnEnd{0}", syncMethodName);
         }
 
-        static string GetOperationCompletedDelegateName(string syncMethodName)
+        private static string GetOperationCompletedDelegateName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "on{0}CompletedDelegate", syncMethodName);
         }
 
-        static string GetOperationCompletedMethodName(string syncMethodName)
+        private static string GetOperationCompletedMethodName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "On{0}Completed", syncMethodName);
         }
 
-        static string GetOperationCompletedEventName(string syncMethodName)
+        private static string GetOperationCompletedEventName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0}Completed", syncMethodName);
         }
 
-        static string GetOperationCompletedEventArgsTypeName(string syncMethodName)
+        private static string GetOperationCompletedEventArgsTypeName(string syncMethodName)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0}CompletedEventArgs", syncMethodName);
         }
@@ -990,17 +989,17 @@ namespace System.ServiceModel.Description
             return GetClassName(interfaceName) + Strings.ClientTypeSuffix;
         }
 
-        static bool IsVoid(CodeMemberMethod method)
+        private static bool IsVoid(CodeMemberMethod method)
         {
             return method.ReturnType == null || String.Compare(method.ReturnType.BaseType, typeof(void).FullName, StringComparison.Ordinal) == 0;
         }
 
-        static CodeExpression GetChannelReference()
+        private static CodeExpression GetChannelReference()
         {
             return new CodePropertyReferenceExpression(new CodeBaseReferenceExpression(), Strings.ClientBaseChannelProperty);
         }
 
-        static class Strings
+        private static class Strings
         {
             public const string ClientBaseChannelProperty = "Channel";
             public const string ClientTypeSuffix = "Client";

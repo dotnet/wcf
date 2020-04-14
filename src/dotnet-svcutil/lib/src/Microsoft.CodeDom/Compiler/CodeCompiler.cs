@@ -25,7 +25,6 @@ namespace Microsoft.CodeDom.Compiler
 
     public abstract class CodeCompiler : CodeGenerator, ICodeCompiler
     {
-
         /// <internalonly/>
         CompilerResults ICodeCompiler.CompileAssemblyFromDom(CompilerParameters options, CodeCompileUnit e)
         {
@@ -336,7 +335,6 @@ namespace Microsoft.CodeDom.Compiler
 
         protected virtual string GetResponseFileCmdArgs(CompilerParameters options, string cmdArgs)
         {
-
             string responseFileName = options.TempFiles.AddExtension("cmdline");
 
             Stream temp = new FileStream(responseFileName, FileMode.Create, FileAccess.Write, FileShare.Read);

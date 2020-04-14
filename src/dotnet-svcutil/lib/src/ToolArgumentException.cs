@@ -6,9 +6,8 @@ using System.Runtime.Serialization;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    class ToolArgumentException : ArgumentException 
+    internal class ToolArgumentException : ArgumentException
     {
-
         internal virtual ToolExitCode ExitCode
         {
             get
@@ -25,10 +24,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
         }
 
-        internal ToolArgumentException(String message, Exception innerException) : base (message, innerException) 
+        internal ToolArgumentException(String message, Exception innerException) : base(message, innerException)
         {
         }
     }
-
 }
 

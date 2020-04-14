@@ -28,7 +28,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private bool? ReuseTypesinAllReferencedAssemblies { get { return GetValue<bool?>(ReuseTypesinAllReferencedAssembliesKey); } }
         #endregion
 
-        private List<string> deserializedCollectionAssemblies = new List<string>();
+        private List<string> _deserializedCollectionAssemblies = new List<string>();
 
         public WCFCSUpdateOptions()
         {
@@ -97,7 +97,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             // The collections supported by the WCF CS are all part of .NET Core.
-            foreach (var packageName in deserializedCollectionAssemblies.Select(an => ProjectDependency.FromPackage(an, ProjectDependency.NetCoreAppPackageID, "*")))
+            foreach (var packageName in _deserializedCollectionAssemblies.Select(an => ProjectDependency.FromPackage(an, ProjectDependency.NetCoreAppPackageID, "*")))
             {
                 if (!this.References.Contains(packageName))
                 {
@@ -128,7 +128,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var item2 = properties.FirstOrDefault(p => p.Name == "Item2")?.Value.Value<string>();
                     if (item2 != null)
                     {
-                        deserializedCollectionAssemblies.Add(System.IO.Path.GetFileNameWithoutExtension(item2.Trim()));
+                        _deserializedCollectionAssemblies.Add(System.IO.Path.GetFileNameWithoutExtension(item2.Trim()));
                     }
                 }
             }
@@ -167,7 +167,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                 {
                                     name = prop.Value.Value<string>();
                                 }
-                                else if(prop.Name == "IsChecked")
+                                else if (prop.Name == "IsChecked")
                                 {
                                     isChecked = prop.Value.Value<bool>();
                                 }

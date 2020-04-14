@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -10,46 +11,62 @@ namespace MS.Internal.Xml.XPath {
     using Microsoft.Xml.Xsl;
     using System.Collections;
 
-    internal  class ChildrenQuery : BaseAxisQuery {
-        XPathNodeIterator iterator = XPathEmptyIterator.Instance;
-        
-        public ChildrenQuery(Query qyInput, string name, string prefix, XPathNodeType type) : base (qyInput, name, prefix, type) {}
-        protected ChildrenQuery(ChildrenQuery other) : base(other) {
-            this.iterator = Clone(other.iterator);
+    internal class ChildrenQuery : BaseAxisQuery
+    {
+        private XPathNodeIterator _iterator = XPathEmptyIterator.Instance;
+
+        public ChildrenQuery(Query qyInput, string name, string prefix, XPathNodeType type) : base(qyInput, name, prefix, type) { }
+        protected ChildrenQuery(ChildrenQuery other) : base(other)
+        {
+            _iterator = Clone(other._iterator);
         }
 
-        public override void Reset() {
-            iterator = XPathEmptyIterator.Instance;
+        public override void Reset()
+        {
+            _iterator = XPathEmptyIterator.Instance;
             base.Reset();
         }
-        
-        public override XPathNavigator Advance() {
-            while (!iterator.MoveNext()) {
+
+        public override XPathNavigator Advance()
+        {
+            while (!_iterator.MoveNext())
+            {
                 XPathNavigator input = qyInput.Advance();
-                if (input == null) {
+                if (input == null)
+                {
                     return null;
                 }
-                if (NameTest) {
-                    if (TypeTest == XPathNodeType.ProcessingInstruction) {
-                        iterator = new IteratorFilter(input.SelectChildren(TypeTest), Name);
-                    } else {
-                        iterator = input.SelectChildren(Name, Namespace);
+                if (NameTest)
+                {
+                    if (TypeTest == XPathNodeType.ProcessingInstruction)
+                    {
+                        _iterator = new IteratorFilter(input.SelectChildren(TypeTest), Name);
                     }
-                } else {
-                    iterator = input.SelectChildren(TypeTest);
+                    else
+                    {
+                        _iterator = input.SelectChildren(Name, Namespace);
+                    }
+                }
+                else
+                {
+                    _iterator = input.SelectChildren(TypeTest);
                 }
                 position = 0;
             }
-            position ++;
-            currentNode = iterator.Current;
+            position++;
+            currentNode = _iterator.Current;
             return currentNode;
         } // Advance
 
-        public sealed override XPathNavigator MatchNode(XPathNavigator context) {
-            if (context != null) {
-                if (matches(context)) {
+        public sealed override XPathNavigator MatchNode(XPathNavigator context)
+        {
+            if (context != null)
+            {
+                if (matches(context))
+                {
                     XPathNavigator temp = context.Clone();
-                    if (temp.NodeType != XPathNodeType.Attribute && temp.MoveToParent()) {
+                    if (temp.NodeType != XPathNodeType.Attribute && temp.MoveToParent())
+                    {
                         return qyInput.MatchNode(temp);
                     }
                     return null;

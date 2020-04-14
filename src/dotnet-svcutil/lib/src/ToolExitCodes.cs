@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
-    enum ToolExitCode : int
+    internal enum ToolExitCode : int
     {
         Success = 0,
         ValidationError = 1,

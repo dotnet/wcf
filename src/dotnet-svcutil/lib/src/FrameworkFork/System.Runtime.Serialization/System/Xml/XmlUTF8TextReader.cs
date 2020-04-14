@@ -1262,11 +1262,11 @@ namespace Microsoft.Xml
                 buffer = BufferReader.GetBuffer(out offset, out offsetMax);
                 if (hasLeadingByteOf0xEF)
                 {
-                    length = ReadTextAndWatchForInvalidCharacters(buffer, offset, offsetMax); 
+                    length = ReadTextAndWatchForInvalidCharacters(buffer, offset, offsetMax);
                 }
                 else
                 {
-                    length = ReadText(buffer, offset, offsetMax); 
+                    length = ReadText(buffer, offset, offsetMax);
                 }
             }
             else
@@ -1274,7 +1274,7 @@ namespace Microsoft.Xml
                 buffer = BufferReader.GetBuffer(MaxTextChunk, out offset, out offsetMax);
                 if (hasLeadingByteOf0xEF)
                 {
-                    length = ReadTextAndWatchForInvalidCharacters(buffer, offset, offsetMax); 
+                    length = ReadTextAndWatchForInvalidCharacters(buffer, offset, offsetMax);
                 }
                 else
                 {

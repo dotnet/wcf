@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace MS.Internal.Xml.XPath {
+namespace MS.Internal.Xml.XPath
+{
     using System;
     using Microsoft.Xml;
     using Microsoft.Xml.XPath;
@@ -11,20 +12,22 @@ namespace MS.Internal.Xml.XPath {
 
     // See comments to QueryBuilder.Props
     // Not all of them are used currently
-    internal enum QueryProps {
-        None     = 0x00,
+    internal enum QueryProps
+    {
+        None = 0x00,
         Position = 0x01,
-        Count    = 0x02,
-        Cached   = 0x04,
-        Reverse  = 0x08,
-        Merge    = 0x10,
+        Count = 0x02,
+        Cached = 0x04,
+        Reverse = 0x08,
+        Merge = 0x10,
     };
 
 
     // Turn off DebuggerDisplayAttribute. in subclasses of Query.
     // Calls to Current in the XPathNavigator.DebuggerDisplayProxy may change state or throw
-    [DebuggerDisplay("{ToString()}")] 
-    internal abstract class Query : ResetableIterator {
+    [DebuggerDisplay("{ToString()}")]
+    internal abstract class Query : ResetableIterator
+    {
         public Query() { }
         protected Query(Query other) : base(other) { }
 
@@ -33,17 +36,20 @@ namespace MS.Internal.Xml.XPath {
         //public abstract XPathNavigator Current { get; }
         //public abstract int CurrentPosition { get; }
         public override bool MoveNext() { return Advance() != null; }
-        public override int Count {
-            get { 
+        public override int Count
+        {
+            get
+            {
                 // Query can be ordered in reverse order. So we can't assume like base.Count that last node has greatest position.
-                if (count == -1) {
+                if (count == -1)
+                {
                     Query clone = (Query)this.Clone();
                     clone.Reset();
                     count = 0;
-                    while (clone.MoveNext()) count ++;
+                    while (clone.MoveNext()) count++;
                 }
                 return count;
-            } 
+            }
         }
 
         // ------------- ResetableIterator -----------
@@ -60,7 +66,8 @@ namespace MS.Internal.Xml.XPath {
         public abstract object Evaluate(XPathNodeIterator nodeIterator);
         public abstract XPathNavigator Advance();
 
-        public virtual  XPathNavigator MatchNode(XPathNavigator current) {
+        public virtual XPathNavigator MatchNode(XPathNavigator current)
+        {
             throw XPathException.Create(ResXml.Xp_InvalidPattern);
         }
 
@@ -69,22 +76,28 @@ namespace MS.Internal.Xml.XPath {
         public virtual QueryProps Properties { get { return QueryProps.Merge; } }
 
         // ----------------- Helper methods -------------
-        public static Query Clone(Query input) {
-            if (input != null) {
+        public static Query Clone(Query input)
+        {
+            if (input != null)
+            {
                 return (Query)input.Clone();
             }
             return null;
         }
 
-        protected static XPathNodeIterator Clone(XPathNodeIterator input) {
-            if (input != null) {
+        protected static XPathNodeIterator Clone(XPathNodeIterator input)
+        {
+            if (input != null)
+            {
                 return input.Clone();
             }
             return null;
         }
 
-        protected static XPathNavigator Clone(XPathNavigator input) {
-            if (input != null) {
+        protected static XPathNavigator Clone(XPathNavigator input)
+        {
+            if (input != null)
+            {
                 return input.Clone();
             }
             return null;
@@ -94,37 +107,42 @@ namespace MS.Internal.Xml.XPath {
         // Set of methods to support insertion to sorted buffer.
         // buffer is always sorted here
 
-        public bool Insert(List<XPathNavigator> buffer, XPathNavigator nav) {
+        public bool Insert(List<XPathNavigator> buffer, XPathNavigator nav)
+        {
             int l = 0;
             int r = buffer.Count;
 
             // In most cases nodes are already sorted. 
             // This means that nav often will be equal or after then last item in the buffer
             // So let's check this first.
-            if (r != 0) {
-                switch (CompareNodes(buffer[r - 1], nav)) {
-                case XmlNodeOrder.Same:
-                    return false;
-                case XmlNodeOrder.Before:
-                    buffer.Add(nav.Clone());
-                    return true;
-                default:
-                    r --;
-                    break;
+            if (r != 0)
+            {
+                switch (CompareNodes(buffer[r - 1], nav))
+                {
+                    case XmlNodeOrder.Same:
+                        return false;
+                    case XmlNodeOrder.Before:
+                        buffer.Add(nav.Clone());
+                        return true;
+                    default:
+                        r--;
+                        break;
                 }
             }
 
-            while (l < r) {
+            while (l < r)
+            {
                 int m = GetMedian(l, r);
-                switch (CompareNodes(buffer[m], nav)) {
-                case XmlNodeOrder.Same:
-                    return false;
-                case XmlNodeOrder.Before: 
-                    l = m + 1;
-                    break;
-                default:
-                    r = m;
-                    break;
+                switch (CompareNodes(buffer[m], nav))
+                {
+                    case XmlNodeOrder.Same:
+                        return false;
+                    case XmlNodeOrder.Before:
+                        l = m + 1;
+                        break;
+                    default:
+                        r = m;
+                        break;
                 }
             }
             AssertDOD(buffer, nav, l);
@@ -132,18 +150,22 @@ namespace MS.Internal.Xml.XPath {
             return true;
         }
 
-        private static int GetMedian(int l, int r) {
+        private static int GetMedian(int l, int r)
+        {
             Debug.Assert(0 <= l && l < r);
-            return (int) (((uint) l + (uint) r) >> 1);
+            return (int)(((uint)l + (uint)r) >> 1);
         }
 
-        public static XmlNodeOrder CompareNodes(XPathNavigator l, XPathNavigator r) {
+        public static XmlNodeOrder CompareNodes(XPathNavigator l, XPathNavigator r)
+        {
             XmlNodeOrder cmp = l.ComparePosition(r);
-            if (cmp == XmlNodeOrder.Unknown) {
+            if (cmp == XmlNodeOrder.Unknown)
+            {
                 XPathNavigator copy = l.Clone();
                 copy.MoveToRoot();
                 string baseUriL = copy.BaseURI;
-                if (! copy.MoveTo(r)) {
+                if (!copy.MoveTo(r))
+                {
                     copy = r.Clone();
                 }
                 copy.MoveToRoot();
@@ -151,7 +173,7 @@ namespace MS.Internal.Xml.XPath {
                 int cmpBase = string.CompareOrdinal(baseUriL, baseUriR);
                 cmp = (
                     cmpBase < 0 ? XmlNodeOrder.Before :
-                    cmpBase > 0 ? XmlNodeOrder.After  :
+                    cmpBase > 0 ? XmlNodeOrder.After :
                     /*default*/   XmlNodeOrder.Unknown
                 );
             }
@@ -159,23 +181,27 @@ namespace MS.Internal.Xml.XPath {
         }
 
         [Conditional("DEBUG")]
-        private void AssertDOD(List<XPathNavigator> buffer, XPathNavigator nav, int pos) {
+        private void AssertDOD(List<XPathNavigator> buffer, XPathNavigator nav, int pos)
+        {
             if (nav.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") return;
             if (nav.GetType().ToString() == "Microsoft.Xml.DataDocumentXPathNavigator") return;
             Debug.Assert(0 <= pos && pos <= buffer.Count, "Algorithm error: Insert()");
             XmlNodeOrder cmp;
-            if (0 < pos) {
+            if (0 < pos)
+            {
                 cmp = CompareNodes(buffer[pos - 1], nav);
                 Debug.Assert(cmp == XmlNodeOrder.Before, "Algorithm error: Insert()");
             }
-            if (pos < buffer.Count) {
+            if (pos < buffer.Count)
+            {
                 cmp = CompareNodes(nav, buffer[pos]);
                 Debug.Assert(cmp == XmlNodeOrder.Before, "Algorithm error: Insert()");
             }
         }
 
         [Conditional("DEBUG")]
-        public static void AssertQuery(Query query) {
+        public static void AssertQuery(Query query)
+        {
             Debug.Assert(query != null, "AssertQuery(): query == null");
             if (query is FunctionQuery) return; // Temp Fix. Functions (as document()) return now unordered sequences
             query = Clone(query);
@@ -183,16 +209,21 @@ namespace MS.Internal.Xml.XPath {
             XPathNavigator curr;
             int querySize = query.Clone().Count;
             int actualSize = 0;
-            while ((curr = query.Advance()) != null) {
+            while ((curr = query.Advance()) != null)
+            {
                 if (curr.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") return;
                 if (curr.GetType().ToString() == "Microsoft.Xml.DataDocumentXPathNavigator") return;
                 Debug.Assert(curr == query.Current, "AssertQuery(): query.Advance() != query.Current");
-                if (last != null) {
-                    if (last.NodeType == XPathNodeType.Namespace && curr.NodeType == XPathNodeType.Namespace) {
+                if (last != null)
+                {
+                    if (last.NodeType == XPathNodeType.Namespace && curr.NodeType == XPathNodeType.Namespace)
+                    {
                         // NamespaceQuery reports namsespaces in mixed order.
                         // Ignore this for now. 
                         // It seams that this doesn't breake other queries becasue NS can't have children
-                    } else {
+                    }
+                    else
+                    {
                         XmlNodeOrder cmp = CompareNodes(last, curr);
                         Debug.Assert(cmp == XmlNodeOrder.Before, "AssertQuery(): Wrong node order");
                     }
@@ -207,23 +238,25 @@ namespace MS.Internal.Xml.XPath {
         // In v.1.0 and v.1.1 XPathResultType.Navigator is defined == to XPathResultType.String
         // This is source for multiple bugs or additional type casts.
         // To fix all of them in one change in v.2 we internaly use one more value:
-        public const XPathResultType XPathResultType_Navigator = (XPathResultType) 4;
+        public const XPathResultType XPathResultType_Navigator = (XPathResultType)4;
         // The biggest challenge in this change is preserve backward compatibility with v.1.1
         // To achive this in all places where we accept from or report to user XPathResultType.
         // On my best knowledge this happens only in XsltContext.ResolveFunction() / IXsltContextFunction.ReturnType
 
 
-        protected XPathResultType GetXPathType(object value) {
+        protected XPathResultType GetXPathType(object value)
+        {
             if (value is XPathNodeIterator) return XPathResultType.NodeSet;
-            if (value is string           ) return XPathResultType.String;
-            if (value is double           ) return XPathResultType.Number;
-            if (value is bool             ) return XPathResultType.Boolean;
+            if (value is string) return XPathResultType.String;
+            if (value is double) return XPathResultType.Number;
+            if (value is bool) return XPathResultType.Boolean;
             Debug.Assert(value is XPathNavigator, "Unknown value type");
             return XPathResultType_Navigator;
         }
 
         // =================== Serialization ======================
-        public virtual void PrintQuery(XmlWriter w) {
+        public virtual void PrintQuery(XmlWriter w)
+        {
             w.WriteElementString(this.GetType().Name, string.Empty);
         }
     }

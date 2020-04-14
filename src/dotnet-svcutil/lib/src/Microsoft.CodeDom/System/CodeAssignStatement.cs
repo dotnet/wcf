@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,20 +15,22 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeAssignStatement : CodeStatement {
-        private CodeExpression left;
-        private CodeExpression right;
+    public class CodeAssignStatement : CodeStatement
+    {
+        private CodeExpression _left;
+        private CodeExpression _right;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodeAssignStatement'/>.
         ///    </para>
         /// </devdoc>
-        public CodeAssignStatement() {
+        public CodeAssignStatement()
+        {
         }
 
         /// <devdoc>
@@ -37,7 +39,8 @@ namespace Microsoft.CodeDom {
         ///       specified assignment values.
         ///    </para>
         /// </devdoc>
-        public CodeAssignStatement(CodeExpression left, CodeExpression right) {
+        public CodeAssignStatement(CodeExpression left, CodeExpression right)
+        {
             Left = left;
             Right = right;
         }
@@ -48,12 +51,15 @@ namespace Microsoft.CodeDom {
         ///       the variable to be assigned to.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Left {
-            get {
-                return left;
+        public CodeExpression Left
+        {
+            get
+            {
+                return _left;
             }
-            set {
-                left = value;
+            set
+            {
+                _left = value;
             }
         }
 
@@ -63,12 +69,15 @@ namespace Microsoft.CodeDom {
         ///       the value to assign.
         ///    </para>
         /// </devdoc>
-        public CodeExpression Right {
-            get {
-                return right;
+        public CodeExpression Right
+        {
+            get
+            {
+                return _right;
             }
-            set {
-                right = value;
+            set
+            {
+                _right = value;
             }
         }
     }

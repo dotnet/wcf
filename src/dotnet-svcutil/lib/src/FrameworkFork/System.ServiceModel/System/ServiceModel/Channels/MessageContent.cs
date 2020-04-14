@@ -167,7 +167,7 @@ namespace System.ServiceModel.Channels
     {
         // Using the BufferedWriteStream default buffer size which is 4K. HttpWebRequest uses a 4K buffer internally,
         // so using the same size to have the same performance characteristics.
-        private const int WriteBufferSize = BufferedWriteStream.DefaultBufferSize; 
+        private const int WriteBufferSize = BufferedWriteStream.DefaultBufferSize;
 
         public StreamedMessageContent(Message message, MessageEncoder messageEncoder) : base(message, messageEncoder)
         {

@@ -8,9 +8,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class MakeOldAsyncMethodsPrivate : ClientClassVisitor
     {
-        Dictionary<string, PrivateInterfaceMethod> privateIfaceMethods;
+        private Dictionary<string, PrivateInterfaceMethod> _privateIfaceMethods;
 
-        class PrivateInterfaceMethod
+        private class PrivateInterfaceMethod
         {
             internal PrivateInterfaceMethod(CodeTypeReference ifaceType)
             {
@@ -23,14 +23,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             base.VisitClientClass(type);
 
-            privateIfaceMethods = new Dictionary<string, PrivateInterfaceMethod>();
+            _privateIfaceMethods = new Dictionary<string, PrivateInterfaceMethod>();
             CollectionHelpers.MapList<CodeMemberMethod>(type.Members, MapMethodFirstPass, null);
         }
 
         // first-pass looks at each public BeginFoo or EndFoo method and makes it private.
         // for methods that are interface implementations, we need to remember them so that we can update
         // the calling code in the second pass
-        bool MapMethodFirstPass(CodeMemberMethod method)
+        private bool MapMethodFirstPass(CodeMemberMethod method)
         {
             if (method != null && (CodeDomHelpers.IsBeginMethod(method) || CodeDomHelpers.IsEndMethod(method)) && IsPublic(method.Attributes))
             {
@@ -40,7 +40,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     method.Attributes = MakePrivate(method.Attributes);
 
                     // clobber existing entries -- non iface-methods take precedence
-                    privateIfaceMethods[method.Name] = new PrivateInterfaceMethod(null);
+                    _privateIfaceMethods[method.Name] = new PrivateInterfaceMethod(null);
                 }
                 else
                 {
@@ -49,10 +49,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     method.ImplementationTypes.Clear();
                     method.PrivateImplementationType = ifaceType;
 
-                    if (!privateIfaceMethods.ContainsKey(method.Name))
+                    if (!_privateIfaceMethods.ContainsKey(method.Name))
                     {
                         // only add it if it wasn't already there -- non-iface methods take precedence
-                        privateIfaceMethods.Add(method.Name, new PrivateInterfaceMethod(ifaceType));
+                        _privateIfaceMethods.Add(method.Name, new PrivateInterfaceMethod(ifaceType));
                     }
                 }
             }
@@ -63,14 +63,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             base.OnExitSpecificType();
 
-            this.privateIfaceMethods = null;
+            _privateIfaceMethods = null;
         }
 
         protected override void Visit(CodeMethodInvokeExpression methodInvoke)
         {
             base.Visit(methodInvoke);
 
-            if (this.privateIfaceMethods != null)
+            if (_privateIfaceMethods != null)
             {
                 // we got a method call, let's see if it's one of the private impls we need to update
                 // few criteria:
@@ -79,7 +79,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 //   c) PrivateInterfaceMethod.InterfaceType will be set
                 PrivateInterfaceMethod targetMethod = null;
                 if (methodInvoke.Method.TargetObject is CodeThisReferenceExpression &&
-                    this.privateIfaceMethods.TryGetValue(methodInvoke.Method.MethodName, out targetMethod))
+                    _privateIfaceMethods.TryGetValue(methodInvoke.Method.MethodName, out targetMethod))
                 {
                     if (targetMethod.InterfaceType != null)
                     {
@@ -89,12 +89,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static bool IsPublic(MemberAttributes attrs)
+        private static bool IsPublic(MemberAttributes attrs)
         {
             return (attrs & MemberAttributes.Public) == MemberAttributes.Public;
         }
 
-        static MemberAttributes MakePrivate(MemberAttributes attrs)
+        private static MemberAttributes MakePrivate(MemberAttributes attrs)
         {
             return (attrs & ~MemberAttributes.AccessMask) | MemberAttributes.Private;
         }

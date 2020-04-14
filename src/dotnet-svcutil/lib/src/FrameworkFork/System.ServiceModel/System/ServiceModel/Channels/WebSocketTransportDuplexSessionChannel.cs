@@ -10,21 +10,21 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
 {
-    abstract class WebSocketTransportDuplexSessionChannel : TransportDuplexSessionChannel
+    internal abstract class WebSocketTransportDuplexSessionChannel : TransportDuplexSessionChannel
     {
-        static readonly AsyncCallback s_streamedWriteCallback = Fx.ThunkCallback(StreamWriteCallback);
-        readonly WebSocketTransportSettings _webSocketSettings;
-        readonly TransferMode _transferMode;
-        readonly int _maxBufferSize;
-        readonly ITransportFactorySettings _transportFactorySettings;
-        readonly WebSocketCloseDetails _webSocketCloseDetails = new WebSocketCloseDetails();
-        Action<object> _waitCallback;
-        WebSocket _webSocket;
-        WebSocketStream _webSocketStream;
-        object _state;
-        int _cleanupStatus = WebSocketHelper.OperationNotStarted;
-        bool _shouldDisposeWebSocketAfterClosed = true;
-        Exception _pendingWritingMessageException;
+        private static readonly AsyncCallback s_streamedWriteCallback = Fx.ThunkCallback(StreamWriteCallback);
+        private readonly WebSocketTransportSettings _webSocketSettings;
+        private readonly TransferMode _transferMode;
+        private readonly int _maxBufferSize;
+        private readonly ITransportFactorySettings _transportFactorySettings;
+        private readonly WebSocketCloseDetails _webSocketCloseDetails = new WebSocketCloseDetails();
+        private Action<object> _waitCallback;
+        private WebSocket _webSocket;
+        private WebSocketStream _webSocketStream;
+        private object _state;
+        private int _cleanupStatus = WebSocketHelper.OperationNotStarted;
+        private bool _shouldDisposeWebSocketAfterClosed = true;
+        private Exception _pendingWritingMessageException;
 
         public WebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, EndpointAddress remoteAddresss, Uri via)
             : base(channelFactory, channelFactory, EndpointAddress.AnonymousAddress, channelFactory.MessageVersion.Addressing.AnonymousUri, remoteAddresss, via)
@@ -387,7 +387,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static WebSocketMessageType GetWebSocketMessageType(Message message)
+        private static WebSocketMessageType GetWebSocketMessageType(Message message)
         {
             return WebSocketDefaults.DefaultWebSocketMessageType;
         }
@@ -430,7 +430,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static void StreamWriteCallback(IAsyncResult ar)
+        private static void StreamWriteCallback(IAsyncResult ar)
         {
             if (ar.CompletedSynchronously)
             {
@@ -456,23 +456,23 @@ namespace System.ServiceModel.Channels
 
         protected class WebSocketMessageSource : IMessageSource
         {
-            MessageEncoder _encoder;
-            BufferManager _bufferManager;
-            EndpointAddress _localAddress;
-            Message _pendingMessage;
-            Exception _pendingException;
-            WebSocket _webSocket;
-            bool _closureReceived;
-            bool _useStreaming;
-            int _receiveBufferSize;
-            int _maxBufferSize;
-            long _maxReceivedMessageSize;
-            TaskCompletionSource<object> _streamWaitTask;
-            IDefaultCommunicationTimeouts _defaultTimeouts;
-            WebSocketCloseDetails _closeDetails;
-            TimeSpan _asyncReceiveTimeout;
-            TaskCompletionSource<object> _receiveTask;
-            int _asyncReceiveState;
+            private MessageEncoder _encoder;
+            private BufferManager _bufferManager;
+            private EndpointAddress _localAddress;
+            private Message _pendingMessage;
+            private Exception _pendingException;
+            private WebSocket _webSocket;
+            private bool _closureReceived;
+            private bool _useStreaming;
+            private int _receiveBufferSize;
+            private int _maxBufferSize;
+            private long _maxReceivedMessageSize;
+            private TaskCompletionSource<object> _streamWaitTask;
+            private IDefaultCommunicationTimeouts _defaultTimeouts;
+            private WebSocketCloseDetails _closeDetails;
+            private TimeSpan _asyncReceiveTimeout;
+            private TaskCompletionSource<object> _receiveTask;
+            private int _asyncReceiveState;
 
             public WebSocketMessageSource(WebSocketTransportDuplexSessionChannel webSocketTransportDuplexSessionChannel, WebSocket webSocket,
                     bool useStreaming, IDefaultCommunicationTimeouts defaultTimeouts)
@@ -482,7 +482,7 @@ namespace System.ServiceModel.Channels
                 StartNextReceiveAsync();
             }
 
-            void Initialize(WebSocketTransportDuplexSessionChannel webSocketTransportDuplexSessionChannel, WebSocket webSocket, bool useStreaming, IDefaultCommunicationTimeouts defaultTimeouts)
+            private void Initialize(WebSocketTransportDuplexSessionChannel webSocketTransportDuplexSessionChannel, WebSocket webSocket, bool useStreaming, IDefaultCommunicationTimeouts defaultTimeouts)
             {
                 _webSocket = webSocket;
                 _encoder = webSocketTransportDuplexSessionChannel.MessageEncoder;
@@ -494,17 +494,17 @@ namespace System.ServiceModel.Channels
                 _useStreaming = useStreaming;
                 _defaultTimeouts = defaultTimeouts;
                 _closeDetails = webSocketTransportDuplexSessionChannel._webSocketCloseDetails;
-                _asyncReceiveTimeout = _defaultTimeouts.ReceiveTimeout; 
+                _asyncReceiveTimeout = _defaultTimeouts.ReceiveTimeout;
                 _asyncReceiveState = AsyncReceiveState.Finished;
             }
 
-            static void OnAsyncReceiveCancelled(object target)
+            private static void OnAsyncReceiveCancelled(object target)
             {
                 WebSocketMessageSource messageSource = (WebSocketMessageSource)target;
                 messageSource.AsyncReceiveCancelled();
             }
 
-            void AsyncReceiveCancelled()
+            private void AsyncReceiveCancelled()
             {
                 if (Interlocked.CompareExchange(ref _asyncReceiveState, AsyncReceiveState.Cancelled, AsyncReceiveState.Started) == AsyncReceiveState.Started)
                 {
@@ -532,7 +532,6 @@ namespace System.ServiceModel.Channels
                 }
 
                 return message;
-
             }
 
             // TODO: As we're waiting blocking on a task anyway, should just call ReceiveAsync and block on that task.
@@ -558,7 +557,7 @@ namespace System.ServiceModel.Channels
                 return message;
             }
 
-            async Task ReadBufferedMessageAsync()
+            private async Task ReadBufferedMessageAsync()
             {
                 byte[] internalBuffer = null;
                 try
@@ -572,7 +571,6 @@ namespace System.ServiceModel.Channels
                     {
                         try
                         {
-
                             if (WcfEventSource.Instance.WebSocketAsyncReadStartIsEnabled())
                             {
                                 WcfEventSource.Instance.WebSocketAsyncReadStart(_webSocket.GetHashCode());
@@ -614,7 +612,6 @@ namespace System.ServiceModel.Channels
                         {
                             WebSocketHelper.ThrowCorrectException(ex, TimeSpan.MaxValue, WebSocketHelper.ReceiveOperation);
                         }
-
                     }
                     while (!endOfMessage && !_closureReceived);
 
@@ -720,7 +717,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            async void StartNextReceiveAsync()
+            private async void StartNextReceiveAsync()
             {
                 Fx.Assert(_receiveTask == null || _receiveTask.Task.IsCompleted, "this.receiveTask is not completed.");
                 _receiveTask = new TaskCompletionSource<object>();
@@ -812,7 +809,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            Message GetPendingMessage()
+            private Message GetPendingMessage()
             {
                 ThrowOnPendingException(ref _pendingException);
 
@@ -826,7 +823,7 @@ namespace System.ServiceModel.Channels
                 return null;
             }
 
-            Message PrepareMessage(WebSocketReceiveResult result, byte[] buffer, int count)
+            private Message PrepareMessage(WebSocketReceiveResult result, byte[] buffer, int count)
             {
                 if (result.MessageType != WebSocketMessageType.Close)
                 {
@@ -877,7 +874,7 @@ namespace System.ServiceModel.Channels
                 return null;
             }
 
-            static class AsyncReceiveState
+            private static class AsyncReceiveState
             {
                 internal const int Started = 0;
                 internal const int Finished = 1;
@@ -885,23 +882,23 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        class WebSocketStream : Stream
+        private class WebSocketStream : Stream
         {
-            readonly WebSocket _webSocket;
-            readonly WebSocketMessageSource _messageSource;
-            readonly TimeSpan _closeTimeout;
-            ArraySegment<byte> _initialReadBuffer;
-            bool _endOfMessageReached;
-            readonly bool _isForRead;
-            bool _endofMessageReceived;
-            readonly WebSocketMessageType _outgoingMessageType;
-            readonly BufferManager _bufferManager;
-            int _messageSourceCleanState;
-            int _endOfMessageWritten;
-            int _readTimeout;
-            int _writeTimeout;
-            TimeoutHelper _readTimeoutHelper;
-            TimeoutHelper _writeTimeoutHelper;
+            private readonly WebSocket _webSocket;
+            private readonly WebSocketMessageSource _messageSource;
+            private readonly TimeSpan _closeTimeout;
+            private ArraySegment<byte> _initialReadBuffer;
+            private bool _endOfMessageReached;
+            private readonly bool _isForRead;
+            private bool _endofMessageReceived;
+            private readonly WebSocketMessageType _outgoingMessageType;
+            private readonly BufferManager _bufferManager;
+            private int _messageSourceCleanState;
+            private int _endOfMessageWritten;
+            private int _readTimeout;
+            private int _writeTimeout;
+            private TimeoutHelper _readTimeoutHelper;
+            private TimeoutHelper _writeTimeoutHelper;
 
             public WebSocketStream(
                         WebSocketMessageSource messageSource,
@@ -1230,7 +1227,6 @@ namespace System.ServiceModel.Channels
 
                     throw WebSocketHelper.ConvertAndTraceException(ex, timeoutHelper.OriginalTimeout,
                         WebSocketHelper.SendOperation);
-
                 }
                 finally
                 {
@@ -1238,7 +1234,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            static void CheckResultAndEnsureNotCloseMessage(WebSocketMessageSource messageSource, WebSocketReceiveResult result)
+            private static void CheckResultAndEnsureNotCloseMessage(WebSocketMessageSource messageSource, WebSocketReceiveResult result)
             {
                 messageSource.CheckCloseStatus(result);
                 if (result.MessageType == WebSocketMessageType.Close)
@@ -1247,7 +1243,7 @@ namespace System.ServiceModel.Channels
                 }
             }
 
-            int GetBytesFromInitialReadBuffer(byte[] buffer, int offset, int count)
+            private int GetBytesFromInitialReadBuffer(byte[] buffer, int offset, int count)
             {
                 int bytesToCopy = _initialReadBuffer.Count > count ? count : _initialReadBuffer.Count;
                 Buffer.BlockCopy(_initialReadBuffer.Array, _initialReadBuffer.Offset, buffer, offset, bytesToCopy);
@@ -1255,7 +1251,7 @@ namespace System.ServiceModel.Channels
                 return bytesToCopy;
             }
 
-            void Cleanup()
+            private void Cleanup()
             {
                 if (_isForRead)
                 {
@@ -1309,10 +1305,10 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        class WebSocketCloseDetails
+        private class WebSocketCloseDetails
         {
-            WebSocketCloseStatus _outputCloseStatus = WebSocketCloseStatus.NormalClosure;
-            string _outputCloseStatusDescription;
+            private WebSocketCloseStatus _outputCloseStatus = WebSocketCloseStatus.NormalClosure;
+            private string _outputCloseStatusDescription;
 
             public WebSocketCloseStatus? InputCloseStatus { get; internal set; }
 

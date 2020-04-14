@@ -10,14 +10,14 @@ namespace System.ServiceModel.Channels
 
     public sealed class UdpRetransmissionSettings
     {
-        int maxUnicastRetransmitCount;
-        int maxMulticastRetransmitCount;
-        TimeSpan delayLowerBound;
-        TimeSpan delayUpperBound;
-        TimeSpan maxDelayPerRetransmission;
-        int delayLowerBoundMilliseconds;
-        int delayUpperBoundMilliseconds;
-        int maxDelayMilliseconds;
+        private int _maxUnicastRetransmitCount;
+        private int _maxMulticastRetransmitCount;
+        private TimeSpan _delayLowerBound;
+        private TimeSpan _delayUpperBound;
+        private TimeSpan _maxDelayPerRetransmission;
+        private int _delayLowerBoundMilliseconds;
+        private int _delayUpperBoundMilliseconds;
+        private int _maxDelayMilliseconds;
 
         //this constructor disables retransmission
         public UdpRetransmissionSettings()
@@ -62,21 +62,21 @@ namespace System.ServiceModel.Channels
                      SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
             }
 
-            this.maxUnicastRetransmitCount = maxUnicastRetransmitCount;
-            this.maxMulticastRetransmitCount = maxMulticastRetransmitCount;
-            this.delayLowerBound = delayLowerBound;
-            this.delayUpperBound = delayUpperBound;
-            this.maxDelayPerRetransmission = maxDelayPerRetransmission;
+            _maxUnicastRetransmitCount = maxUnicastRetransmitCount;
+            _maxMulticastRetransmitCount = maxMulticastRetransmitCount;
+            _delayLowerBound = delayLowerBound;
+            _delayUpperBound = delayUpperBound;
+            _maxDelayPerRetransmission = maxDelayPerRetransmission;
 
-            this.delayLowerBoundMilliseconds = TimeoutHelper.ToMilliseconds(this.delayLowerBound);
-            this.delayUpperBoundMilliseconds = TimeoutHelper.ToMilliseconds(this.delayUpperBound);
-            this.maxDelayMilliseconds = TimeoutHelper.ToMilliseconds(this.maxDelayPerRetransmission);
+            _delayLowerBoundMilliseconds = TimeoutHelper.ToMilliseconds(_delayLowerBound);
+            _delayUpperBoundMilliseconds = TimeoutHelper.ToMilliseconds(_delayUpperBound);
+            _maxDelayMilliseconds = TimeoutHelper.ToMilliseconds(_maxDelayPerRetransmission);
 
             ValidateSettings();
         }
 
-        UdpRetransmissionSettings(UdpRetransmissionSettings other)
-            : this(other.maxUnicastRetransmitCount, other.maxMulticastRetransmitCount, other.delayLowerBound, other.delayUpperBound, other.maxDelayPerRetransmission)
+        private UdpRetransmissionSettings(UdpRetransmissionSettings other)
+            : this(other._maxUnicastRetransmitCount, other._maxMulticastRetransmitCount, other._delayLowerBound, other._delayUpperBound, other._maxDelayPerRetransmission)
         {
         }
 
@@ -85,7 +85,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxUnicastRetransmitCount;
+                return _maxUnicastRetransmitCount;
             }
             set
             {
@@ -94,7 +94,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
-                this.maxUnicastRetransmitCount = value;
+                _maxUnicastRetransmitCount = value;
             }
         }
 
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxMulticastRetransmitCount;
+                return _maxMulticastRetransmitCount;
             }
             set
             {
@@ -112,7 +112,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
-                this.maxMulticastRetransmitCount = value;
+                _maxMulticastRetransmitCount = value;
             }
         }
 
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.delayLowerBound;
+                return _delayLowerBound;
             }
             set
             {
@@ -129,8 +129,8 @@ namespace System.ServiceModel.Channels
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
                 }
 
-                this.delayLowerBound = value;
-                this.delayLowerBoundMilliseconds = TimeoutHelper.ToMilliseconds(this.delayLowerBound);
+                _delayLowerBound = value;
+                _delayLowerBoundMilliseconds = TimeoutHelper.ToMilliseconds(_delayLowerBound);
             }
         }
 
@@ -138,7 +138,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.delayUpperBound;
+                return _delayUpperBound;
             }
             set
             {
@@ -147,8 +147,8 @@ namespace System.ServiceModel.Channels
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
                 }
 
-                this.delayUpperBound = value;
-                this.delayUpperBoundMilliseconds = TimeoutHelper.ToMilliseconds(this.delayUpperBound);
+                _delayUpperBound = value;
+                _delayUpperBoundMilliseconds = TimeoutHelper.ToMilliseconds(_delayUpperBound);
             }
         }
 
@@ -156,7 +156,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxDelayPerRetransmission;
+                return _maxDelayPerRetransmission;
             }
             set
             {
@@ -165,64 +165,64 @@ namespace System.ServiceModel.Channels
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
                 }
 
-                this.maxDelayPerRetransmission = value;
-                this.maxDelayMilliseconds = TimeoutHelper.ToMilliseconds(this.maxDelayPerRetransmission);
+                _maxDelayPerRetransmission = value;
+                _maxDelayMilliseconds = TimeoutHelper.ToMilliseconds(_maxDelayPerRetransmission);
             }
         }
 
         public bool ShouldSerializeDelayLowerBound()
         {
-            return !TimeSpansEqual(this.delayLowerBound, UdpConstants.Defaults.DelayLowerBoundTimeSpan);
+            return !TimeSpansEqual(_delayLowerBound, UdpConstants.Defaults.DelayLowerBoundTimeSpan);
         }
 
         public bool ShouldSerializeDelayUpperBound()
         {
-            return !TimeSpansEqual(this.delayUpperBound, UdpConstants.Defaults.DelayUpperBoundTimeSpan);
+            return !TimeSpansEqual(_delayUpperBound, UdpConstants.Defaults.DelayUpperBoundTimeSpan);
         }
 
         public bool ShouldSerializeMaxDelayPerRetransmission()
         {
-            return !TimeSpansEqual(this.maxDelayPerRetransmission, UdpConstants.Defaults.MaxDelayPerRetransmissionTimeSpan);
+            return !TimeSpansEqual(_maxDelayPerRetransmission, UdpConstants.Defaults.MaxDelayPerRetransmissionTimeSpan);
         }
 
 
         //called at send time to avoid repeated rounding and casting
         internal int GetDelayLowerBound()
         {
-            return this.delayLowerBoundMilliseconds;
+            return _delayLowerBoundMilliseconds;
         }
 
         //called at send time to avoid repeated rounding and casting
         internal int GetDelayUpperBound()
         {
-            return this.delayUpperBoundMilliseconds;
+            return _delayUpperBoundMilliseconds;
         }
 
         //called at send time to avoid repeated rounding and casting
         internal int GetMaxDelayPerRetransmission()
         {
-            return this.maxDelayMilliseconds;
+            return _maxDelayMilliseconds;
         }
 
         internal bool Enabled
         {
             get
             {
-                return this.maxUnicastRetransmitCount > 0 || this.maxMulticastRetransmitCount > 0;
+                return _maxUnicastRetransmitCount > 0 || _maxMulticastRetransmitCount > 0;
             }
         }
 
         internal void ValidateSettings()
         {
-            if (this.delayLowerBound > this.delayUpperBound)
+            if (_delayLowerBound > _delayUpperBound)
             {
-                throw FxTrace.Exception.ArgumentOutOfRange("DelayLowerBound", this.delayLowerBound, "TODO: "); // SR.Property1LessThanOrEqualToProperty2("DelayLowerBound", this.delayLowerBound, "DelayUpperBound", this.delayUpperBound));
+                throw FxTrace.Exception.ArgumentOutOfRange("DelayLowerBound", _delayLowerBound, "TODO: "); // SR.Property1LessThanOrEqualToProperty2("DelayLowerBound", this.delayLowerBound, "DelayUpperBound", this.delayUpperBound));
             }
 
 
-            if (this.delayUpperBound > this.maxDelayPerRetransmission)
+            if (_delayUpperBound > _maxDelayPerRetransmission)
             {
-                throw FxTrace.Exception.ArgumentOutOfRange("DelayUpperBound", this.delayUpperBound, "TODO: "); //  SR.Property1LessThanOrEqualToProperty2("DelayUpperBound", this.delayUpperBound, "MaxDelayPerRetransmission", this.maxDelayPerRetransmission));
+                throw FxTrace.Exception.ArgumentOutOfRange("DelayUpperBound", _delayUpperBound, "TODO: "); //  SR.Property1LessThanOrEqualToProperty2("DelayUpperBound", this.delayUpperBound, "MaxDelayPerRetransmission", this.maxDelayPerRetransmission));
             }
         }
 
@@ -261,7 +261,7 @@ namespace System.ServiceModel.Channels
             return true;
         }
 
-        bool TimeSpansEqual(TimeSpan ts1, TimeSpan ts2)
+        private bool TimeSpansEqual(TimeSpan ts1, TimeSpan ts2)
         {
             long diff = Math.Abs(ts1.Ticks - ts2.Ticks);
             long max = Math.Max(Math.Abs(ts1.Ticks), Math.Abs(ts2.Ticks));

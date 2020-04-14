@@ -27,10 +27,10 @@ namespace System.ServiceModel.Security
     using StrEntry = WSSecurityTokenSerializer.StrEntry;
     using TokenEntry = WSSecurityTokenSerializer.TokenEntry;
 
-    class WSSecureConversationFeb2005 : WSSecureConversation
+    internal class WSSecureConversationFeb2005 : WSSecureConversation
     {
-        SecurityStateEncoder securityStateEncoder;
-        IList<Type> knownClaimTypes;
+        private SecurityStateEncoder _securityStateEncoder;
+        private IList<Type> _knownClaimTypes;
 
         public WSSecureConversationFeb2005(WSSecurityTokenSerializer tokenSerializer, SecurityStateEncoder securityStateEncoder, IEnumerable<Type> knownTypes,
             int maxKeyDerivationOffset, int maxKeyDerivationLabelLength, int maxKeyDerivationNonceLength)
@@ -38,20 +38,20 @@ namespace System.ServiceModel.Security
         {
             if (securityStateEncoder != null)
             {
-                this.securityStateEncoder = securityStateEncoder;
+                _securityStateEncoder = securityStateEncoder;
             }
             else
             {
-                this.securityStateEncoder = new DataProtectionSecurityStateEncoder();
+                _securityStateEncoder = new DataProtectionSecurityStateEncoder();
             }
 
-            this.knownClaimTypes = new List<Type>();
+            _knownClaimTypes = new List<Type>();
             if (knownTypes != null)
             {
                 // Clone this collection.
                 foreach (Type knownType in knownTypes)
                 {
-                    this.knownClaimTypes.Add(knownType);
+                    _knownClaimTypes.Add(knownType);
                 }
             }
         }
@@ -64,10 +64,10 @@ namespace System.ServiceModel.Security
         public override void PopulateTokenEntries(IList<TokenEntry> tokenEntryList)
         {
             base.PopulateTokenEntries(tokenEntryList);
-            tokenEntryList.Add(new SecurityContextTokenEntryFeb2005(this, this.securityStateEncoder, this.knownClaimTypes));
+            tokenEntryList.Add(new SecurityContextTokenEntryFeb2005(this, _securityStateEncoder, _knownClaimTypes));
         }
 
-        class SecurityContextTokenEntryFeb2005 : SecurityContextTokenEntry
+        private class SecurityContextTokenEntryFeb2005 : SecurityContextTokenEntry
         {
             public SecurityContextTokenEntryFeb2005(WSSecureConversationFeb2005 parent, SecurityStateEncoder securityStateEncoder, IList<Type> knownClaimTypes)
                 : base(parent, securityStateEncoder, knownClaimTypes)

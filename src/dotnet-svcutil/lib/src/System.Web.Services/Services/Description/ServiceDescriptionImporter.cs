@@ -3,7 +3,6 @@
 
 namespace System.Web.Services.Description
 {
-
     using System.Web.Services;
     using System.Web.Services.Protocols;
     using Microsoft.Xml.Serialization;

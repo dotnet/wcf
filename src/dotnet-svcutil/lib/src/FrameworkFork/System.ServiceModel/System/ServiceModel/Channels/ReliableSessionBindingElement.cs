@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Channels
 {
     using System.ComponentModel;
@@ -12,16 +13,16 @@ namespace System.ServiceModel.Channels
 
     public sealed class ReliableSessionBindingElement : BindingElement, IPolicyExportExtension
     {
-        TimeSpan acknowledgementInterval = ReliableSessionDefaults.AcknowledgementInterval;
-        bool flowControlEnabled = ReliableSessionDefaults.FlowControlEnabled;
-        TimeSpan inactivityTimeout = ReliableSessionDefaults.InactivityTimeout;
-        int maxPendingChannels = ReliableSessionDefaults.MaxPendingChannels;
-        int maxRetryCount = ReliableSessionDefaults.MaxRetryCount;
-        int maxTransferWindowSize = ReliableSessionDefaults.MaxTransferWindowSize;
-        bool ordered = ReliableSessionDefaults.Ordered;
-        ReliableMessagingVersion reliableMessagingVersion = ReliableMessagingVersion.Default;
+        private TimeSpan _acknowledgementInterval = ReliableSessionDefaults.AcknowledgementInterval;
+        private bool _flowControlEnabled = ReliableSessionDefaults.FlowControlEnabled;
+        private TimeSpan _inactivityTimeout = ReliableSessionDefaults.InactivityTimeout;
+        private int _maxPendingChannels = ReliableSessionDefaults.MaxPendingChannels;
+        private int _maxRetryCount = ReliableSessionDefaults.MaxRetryCount;
+        private int _maxTransferWindowSize = ReliableSessionDefaults.MaxTransferWindowSize;
+        private bool _ordered = ReliableSessionDefaults.Ordered;
+        private ReliableMessagingVersion _reliableMessagingVersion = ReliableMessagingVersion.Default;
 
-        static MessagePartSpecification bodyOnly;
+        private static MessagePartSpecification s_bodyOnly;
 
         public ReliableSessionBindingElement()
         {
@@ -42,7 +43,7 @@ namespace System.ServiceModel.Channels
 
         public ReliableSessionBindingElement(bool ordered)
         {
-            this.ordered = ordered;
+            _ordered = ordered;
         }
 
         [DefaultValue(typeof(TimeSpan), ReliableSessionDefaults.AcknowledgementIntervalString)]
@@ -50,7 +51,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.acknowledgementInterval;
+                return _acknowledgementInterval;
             }
             set
             {
@@ -64,7 +65,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.acknowledgementInterval = value;
+                _acknowledgementInterval = value;
             }
         }
 
@@ -73,11 +74,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.flowControlEnabled;
+                return _flowControlEnabled;
             }
             set
             {
-                this.flowControlEnabled = value;
+                _flowControlEnabled = value;
             }
         }
 
@@ -86,7 +87,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.inactivityTimeout;
+                return _inactivityTimeout;
             }
             set
             {
@@ -100,7 +101,7 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.SFxTimeoutOutOfRangeTooBig));
                 }
 
-                this.inactivityTimeout = value;
+                _inactivityTimeout = value;
             }
         }
 
@@ -109,14 +110,14 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxPendingChannels;
+                return _maxPendingChannels;
             }
             set
             {
                 if (value <= 0 || value > 16384)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
                                                     SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 16384)));
-                this.maxPendingChannels = value;
+                _maxPendingChannels = value;
             }
         }
 
@@ -125,13 +126,13 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxRetryCount;
+                return _maxRetryCount;
             }
             set
             {
                 if (value <= 0)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value, SRServiceModel.ValueMustBePositive));
-                this.maxRetryCount = value;
+                _maxRetryCount = value;
             }
         }
 
@@ -140,14 +141,14 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.maxTransferWindowSize;
+                return _maxTransferWindowSize;
             }
             set
             {
                 if (value <= 0 || value > 4096)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
                                                     SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 4096)));
-                this.maxTransferWindowSize = value;
+                _maxTransferWindowSize = value;
             }
         }
 
@@ -156,11 +157,11 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.ordered;
+                return _ordered;
             }
             set
             {
-                this.ordered = value;
+                _ordered = value;
             }
         }
 
@@ -169,7 +170,7 @@ namespace System.ServiceModel.Channels
         {
             get
             {
-                return this.reliableMessagingVersion;
+                return _reliableMessagingVersion;
             }
             set
             {
@@ -183,22 +184,22 @@ namespace System.ServiceModel.Channels
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
                 }
 
-                this.reliableMessagingVersion = value;
+                _reliableMessagingVersion = value;
             }
         }
 
-        static MessagePartSpecification BodyOnly
+        private static MessagePartSpecification BodyOnly
         {
             get
             {
-                if (bodyOnly == null)
+                if (s_bodyOnly == null)
                 {
                     MessagePartSpecification temp = new MessagePartSpecification(true);
                     temp.MakeReadOnly();
-                    bodyOnly = temp;
+                    s_bodyOnly = temp;
                 }
 
-                return bodyOnly;
+                return s_bodyOnly;
             }
         }
 
@@ -220,7 +221,7 @@ namespace System.ServiceModel.Channels
 
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)
         {
-             throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         internal override bool IsMatch(BindingElement b)
@@ -230,27 +231,27 @@ namespace System.ServiceModel.Channels
             ReliableSessionBindingElement session = b as ReliableSessionBindingElement;
             if (session == null)
                 return false;
-            if (this.acknowledgementInterval != session.acknowledgementInterval)
+            if (_acknowledgementInterval != session._acknowledgementInterval)
                 return false;
-            if (this.flowControlEnabled != session.flowControlEnabled)
+            if (_flowControlEnabled != session._flowControlEnabled)
                 return false;
-            if (this.inactivityTimeout != session.inactivityTimeout)
+            if (_inactivityTimeout != session._inactivityTimeout)
                 return false;
-            if (this.maxPendingChannels != session.maxPendingChannels)
+            if (_maxPendingChannels != session._maxPendingChannels)
                 return false;
-            if (this.maxRetryCount != session.maxRetryCount)
+            if (_maxRetryCount != session._maxRetryCount)
                 return false;
-            if (this.maxTransferWindowSize != session.maxTransferWindowSize)
+            if (_maxTransferWindowSize != session._maxTransferWindowSize)
                 return false;
-            if (this.ordered != session.ordered)
+            if (_ordered != session._ordered)
                 return false;
-            if (this.reliableMessagingVersion != session.reliableMessagingVersion)
+            if (_reliableMessagingVersion != session._reliableMessagingVersion)
                 return false;
 
             return true;
         }
 
-        static void ProtectProtocolMessage(
+        private static void ProtectProtocolMessage(
             ScopedMessagePartSpecification signaturePart,
             ScopedMessagePartSpecification encryptionPart,
             string action)
@@ -260,7 +261,7 @@ namespace System.ServiceModel.Channels
             //encryptionPart.AddParts(BodyOnly, action);
         }
 
-        void SetSecuritySettings(BindingContext context)
+        private void SetSecuritySettings(BindingContext context)
         {
             SecurityBindingElement element = context.RemainingBindingElements.Find<SecurityBindingElement>();
 
@@ -270,7 +271,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        void VerifyTransportMode(BindingContext context)
+        private void VerifyTransportMode(BindingContext context)
         {
             TransportBindingElement transportElement = context.RemainingBindingElements.Find<TransportBindingElement>();
 
@@ -331,7 +332,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        static XmlElement CreatePolicyElement(PolicyVersion policyVersion, XmlDocument doc)
+        private static XmlElement CreatePolicyElement(PolicyVersion policyVersion, XmlDocument doc)
         {
             string policy = MetadataStrings.WSPolicy.Elements.Policy;
             string policyNs = policyVersion.Namespace;
@@ -340,7 +341,7 @@ namespace System.ServiceModel.Channels
             return doc.CreateElement(policyPrefix, policy, policyNs);
         }
 
-        XmlElement CreateReliabilityAssertion(PolicyVersion policyVersion, BindingElementCollection bindingElements)
+        private XmlElement CreateReliabilityAssertion(PolicyVersion policyVersion, BindingElementCollection bindingElements)
         {
             XmlDocument doc = new XmlDocument();
             XmlElement child = null;
@@ -389,7 +390,7 @@ namespace System.ServiceModel.Channels
                 XmlElement exactlyOnce = doc.CreateElement(reliableSessionPrefix, ReliableSessionPolicyStrings.ExactlyOnce, reliableSessionNs);
                 nestedPolicy.AppendChild(exactlyOnce);
 
-                if (this.ordered)
+                if (_ordered)
                 {
                     // InOrder
                     XmlElement inOrder = doc.CreateElement(reliableSessionPrefix, ReliableSessionPolicyStrings.InOrder, reliableSessionNs);
@@ -414,7 +415,7 @@ namespace System.ServiceModel.Channels
             return assertion;
         }
 
-        static bool IsSecureConversationEnabled(BindingElementCollection bindingElements)
+        private static bool IsSecureConversationEnabled(BindingElementCollection bindingElements)
         {
             bool foundRM = false;
 
@@ -446,30 +447,30 @@ namespace System.ServiceModel.Channels
             return false;
         }
 
-        static void WriteMillisecondsAttribute(XmlElement childElement, TimeSpan timeSpan)
+        private static void WriteMillisecondsAttribute(XmlElement childElement, TimeSpan timeSpan)
         {
             UInt64 milliseconds = Convert.ToUInt64(timeSpan.TotalMilliseconds);
             childElement.SetAttribute(ReliableSessionPolicyStrings.Milliseconds, XmlConvert.ToString(milliseconds));
         }
 
-        class BindingDeliveryCapabilitiesHelper : IBindingDeliveryCapabilities
+        private class BindingDeliveryCapabilitiesHelper : IBindingDeliveryCapabilities
         {
-            ReliableSessionBindingElement element;
-            IBindingDeliveryCapabilities inner;
+            private ReliableSessionBindingElement _element;
+            private IBindingDeliveryCapabilities _inner;
 
             internal BindingDeliveryCapabilitiesHelper(ReliableSessionBindingElement element, IBindingDeliveryCapabilities inner)
             {
-                this.element = element;
-                this.inner = inner;
+                _element = element;
+                _inner = inner;
             }
             bool IBindingDeliveryCapabilities.AssuresOrderedDelivery
             {
-                get { return element.Ordered; }
+                get { return _element.Ordered; }
             }
 
             bool IBindingDeliveryCapabilities.QueuedDelivery
             {
-                get { return inner != null ? inner.QueuedDelivery : false; }
+                get { return _inner != null ? _inner.QueuedDelivery : false; }
             }
         }
     }

@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -15,7 +16,8 @@ namespace Microsoft.Xml.Schema {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [Flags]
-    public enum XmlSchemaDerivationMethod {
+    public enum XmlSchemaDerivationMethod
+    {
         /// <include file='doc\XmlSchemaDerivationMethod.uex' path='docs/doc[@for="XmlSchemaDerivationMethod.Empty"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -65,5 +67,4 @@ namespace Microsoft.Xml.Schema {
         [XmlIgnore]
         None = 0x0100
     }
-    
 }

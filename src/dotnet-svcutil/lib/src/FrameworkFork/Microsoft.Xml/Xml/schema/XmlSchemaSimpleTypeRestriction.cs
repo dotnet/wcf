@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using System.Collections;
@@ -13,19 +14,21 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaSimpleTypeRestriction : XmlSchemaSimpleTypeContent {
-        XmlQualifiedName baseTypeName = XmlQualifiedName.Empty;
-        XmlSchemaSimpleType baseType;
-        XmlSchemaObjectCollection facets = new XmlSchemaObjectCollection();
+    public class XmlSchemaSimpleTypeRestriction : XmlSchemaSimpleTypeContent
+    {
+        private XmlQualifiedName _baseTypeName = XmlQualifiedName.Empty;
+        private XmlSchemaSimpleType _baseType;
+        private XmlSchemaObjectCollection _facets = new XmlSchemaObjectCollection();
 
         /// <include file='doc\XmlSchemaSimpleTypeRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleTypeRestriction.BaseTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("base")]
-        public XmlQualifiedName BaseTypeName {
-            get { return baseTypeName; }
-            set { baseTypeName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName BaseTypeName
+        {
+            get { return _baseTypeName; }
+            set { _baseTypeName = (value == null ? XmlQualifiedName.Empty : value); }
         }
 
         /// <include file='doc\XmlSchemaSimpleTypeRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleTypeRestriction.BaseType"]/*' />
@@ -33,9 +36,10 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("simpleType", typeof(XmlSchemaSimpleType))]
-        public XmlSchemaSimpleType BaseType {
-            get { return baseType; }
-            set { baseType = value; }
+        public XmlSchemaSimpleType BaseType
+        {
+            get { return _baseType; }
+            set { _baseType = value; }
         }
 
         /// <include file='doc\XmlSchemaSimpleTypeRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleTypeRestriction.Facets"]/*' />
@@ -54,13 +58,15 @@ namespace Microsoft.Xml.Schema {
          XmlElement("totalDigits", typeof(XmlSchemaTotalDigitsFacet)),
          XmlElement("fractionDigits", typeof(XmlSchemaFractionDigitsFacet)),
          XmlElement("whiteSpace", typeof(XmlSchemaWhiteSpaceFacet))]
-        public XmlSchemaObjectCollection Facets {
-            get { return facets; }
+        public XmlSchemaObjectCollection Facets
+        {
+            get { return _facets; }
         }
 
-        internal override XmlSchemaObject Clone() {
+        internal override XmlSchemaObject Clone()
+        {
             XmlSchemaSimpleTypeRestriction newRestriction = (XmlSchemaSimpleTypeRestriction)MemberwiseClone();
-            newRestriction.BaseTypeName = baseTypeName.Clone();
+            newRestriction.BaseTypeName = _baseTypeName.Clone();
             return newRestriction;
         }
     }

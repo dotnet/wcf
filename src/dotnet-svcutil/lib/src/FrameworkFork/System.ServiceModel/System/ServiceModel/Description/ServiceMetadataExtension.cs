@@ -19,7 +19,7 @@ namespace System.ServiceModel.Description
     // the description/metadata "mix-in"
     public class ServiceMetadataExtension
     {
-        const string BaseAddressPattern = "{%BaseAddress%}";
+        private const string BaseAddressPattern = "{%BaseAddress%}";
 
         internal abstract class WriteFilter : XmlDictionaryWriter
         {
@@ -151,88 +151,88 @@ namespace System.ServiceModel.Description
             }
         }
 
-        class LocationUpdatingWriter : WriteFilter
+        private class LocationUpdatingWriter : WriteFilter
         {
-            readonly string oldValue;
-            readonly string newValue;
+            private readonly string _oldValue;
+            private readonly string _newValue;
 
             // passing null for newValue filters any string with oldValue as a prefix rather than replacing
             internal LocationUpdatingWriter(string oldValue, string newValue)
             {
-                this.oldValue = oldValue;
+                _oldValue = oldValue;
 
-                this.newValue = newValue;
+                _newValue = newValue;
             }
 
             public override WriteFilter CloneWriteFilter()
             {
-                return new LocationUpdatingWriter(oldValue, newValue);
+                return new LocationUpdatingWriter(_oldValue, _newValue);
             }
 
             public override void WriteString(string text)
             {
-                if (this.newValue != null)
-                    text = text.Replace(this.oldValue, this.newValue);
-                else if (text.StartsWith(this.oldValue, StringComparison.Ordinal))
+                if (_newValue != null)
+                    text = text.Replace(_oldValue, _newValue);
+                else if (text.StartsWith(_oldValue, StringComparison.Ordinal))
                     text = String.Empty;
 
                 base.WriteString(text);
             }
         }
 
-        class DynamicAddressUpdateWriter : WriteFilter
+        private class DynamicAddressUpdateWriter : WriteFilter
         {
-            readonly string oldHostName;
-            readonly string newHostName;
-            readonly string newBaseAddress;
-            readonly bool removeBaseAddress;
-            readonly string requestScheme;
-            readonly int requestPort;
-            readonly IDictionary<string, int> updatePortsByScheme;
+            private readonly string _oldHostName;
+            private readonly string _newHostName;
+            private readonly string _newBaseAddress;
+            private readonly bool _removeBaseAddress;
+            private readonly string _requestScheme;
+            private readonly int _requestPort;
+            private readonly IDictionary<string, int> _updatePortsByScheme;
 
             internal DynamicAddressUpdateWriter(Uri listenUri, string requestHost, int requestPort,
                 IDictionary<string, int> updatePortsByScheme, bool removeBaseAddress)
                 : this(listenUri.Host, requestHost, removeBaseAddress, listenUri.Scheme, requestPort, updatePortsByScheme)
             {
-                this.newBaseAddress = UpdateUri(listenUri).ToString();
+                _newBaseAddress = UpdateUri(listenUri).ToString();
             }
 
-            DynamicAddressUpdateWriter(string oldHostName, string newHostName, string newBaseAddress, bool removeBaseAddress, string requestScheme,
+            private DynamicAddressUpdateWriter(string oldHostName, string newHostName, string newBaseAddress, bool removeBaseAddress, string requestScheme,
                 int requestPort, IDictionary<string, int> updatePortsByScheme)
                 : this(oldHostName, newHostName, removeBaseAddress, requestScheme, requestPort, updatePortsByScheme)
             {
-                this.newBaseAddress = newBaseAddress;
+                _newBaseAddress = newBaseAddress;
             }
 
-            DynamicAddressUpdateWriter(string oldHostName, string newHostName, bool removeBaseAddress, string requestScheme,
+            private DynamicAddressUpdateWriter(string oldHostName, string newHostName, bool removeBaseAddress, string requestScheme,
                 int requestPort, IDictionary<string, int> updatePortsByScheme)
             {
-                this.oldHostName = oldHostName;
-                this.newHostName = newHostName;
-                this.removeBaseAddress = removeBaseAddress;
-                this.requestScheme = requestScheme;
-                this.requestPort = requestPort;
-                this.updatePortsByScheme = updatePortsByScheme;
+                _oldHostName = oldHostName;
+                _newHostName = newHostName;
+                _removeBaseAddress = removeBaseAddress;
+                _requestScheme = requestScheme;
+                _requestPort = requestPort;
+                _updatePortsByScheme = updatePortsByScheme;
             }
 
             public override WriteFilter CloneWriteFilter()
             {
-                return new DynamicAddressUpdateWriter(this.oldHostName, this.newHostName, this.newBaseAddress, this.removeBaseAddress,
-                    this.requestScheme, this.requestPort, this.updatePortsByScheme);
+                return new DynamicAddressUpdateWriter(_oldHostName, _newHostName, _newBaseAddress, _removeBaseAddress,
+                    _requestScheme, _requestPort, _updatePortsByScheme);
             }
 
             public override void WriteString(string text)
             {
                 Uri uri;
-                if (this.removeBaseAddress &&
+                if (_removeBaseAddress &&
                     text.StartsWith(ServiceMetadataExtension.BaseAddressPattern, StringComparison.Ordinal))
                 {
                     text = string.Empty;
                 }
-                else if (!this.removeBaseAddress &&
+                else if (!_removeBaseAddress &&
                     text.Contains(ServiceMetadataExtension.BaseAddressPattern))
                 {
-                    text = text.Replace(ServiceMetadataExtension.BaseAddressPattern, this.newBaseAddress);
+                    text = text.Replace(ServiceMetadataExtension.BaseAddressPattern, _newBaseAddress);
                 }
                 else if (Uri.TryCreate(text, UriKind.Absolute, out uri))
                 {
@@ -254,26 +254,26 @@ namespace System.ServiceModel.Description
                 }
             }
 
-            Uri UpdateUri(Uri uri, bool updateBaseAddressOnly = false)
+            private Uri UpdateUri(Uri uri, bool updateBaseAddressOnly = false)
             {
                 // Ordinal comparison okay: we're filtering for auto-generated URIs which will
                 // always be based off the listenURI, so always match in case
-                if (uri.Host != oldHostName)
+                if (uri.Host != _oldHostName)
                 {
                     return null;
                 }
 
                 UriBuilder result = new UriBuilder(uri);
-                result.Host = this.newHostName;
+                result.Host = _newHostName;
 
                 if (!updateBaseAddressOnly)
                 {
                     int port;
-                    if (uri.Scheme == this.requestScheme)
+                    if (uri.Scheme == _requestScheme)
                     {
-                        port = requestPort;
+                        port = _requestPort;
                     }
-                    else if (!this.updatePortsByScheme.TryGetValue(uri.Scheme, out port))
+                    else if (!_updatePortsByScheme.TryGetValue(uri.Scheme, out port))
                     {
                         return null;
                     }

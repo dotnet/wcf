@@ -1439,7 +1439,7 @@ namespace System.ServiceModel.Description
             return partDescription;
         }
 
-        MessageHeaderDescription CreateMessageHeaderDescription(Type headerParameterType,
+        private MessageHeaderDescription CreateMessageHeaderDescription(Type headerParameterType,
                                                                     CustomAttributeProvider attrProvider,
                                                                     XmlName defaultName,
                                                                     string defaultNS,

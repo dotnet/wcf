@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom.Compiler {
+namespace Microsoft.CodeDom.Compiler
+{
     using System;
     using Microsoft.CodeDom;
     using System.Collections;
     using System.Collections.Specialized;
-    
+
 
 
     /// <devdoc>
@@ -14,89 +15,109 @@ namespace Microsoft.CodeDom.Compiler {
     ///       Represents options used in code generation
     ///    </para>
     /// </devdoc>
-    
-    
-    public class CodeGeneratorOptions {
-        private IDictionary options = new ListDictionary();
+
+
+    public class CodeGeneratorOptions
+    {
+        private IDictionary _options = new ListDictionary();
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeGeneratorOptions() {
+        public CodeGeneratorOptions()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public object this[string index] {
-            get {
-                return options[index];
+        public object this[string index]
+        {
+            get
+            {
+                return _options[index];
             }
-            set {
-                options[index] = value;
+            set
+            {
+                _options[index] = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string IndentString {
-            get {
-                object o = options["IndentString"];
+        public string IndentString
+        {
+            get
+            {
+                object o = _options["IndentString"];
                 return ((o == null) ? "    " : (string)o);
             }
-            set {
-                options["IndentString"] = value;
+            set
+            {
+                _options["IndentString"] = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string BracingStyle {
-            get {
-                object o = options["BracingStyle"];
+        public string BracingStyle
+        {
+            get
+            {
+                object o = _options["BracingStyle"];
                 return ((o == null) ? "Block" : (string)o);
             }
-            set {
-                options["BracingStyle"] = value;
+            set
+            {
+                _options["BracingStyle"] = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool ElseOnClosing {
-            get {
-                object o = options["ElseOnClosing"];
+        public bool ElseOnClosing
+        {
+            get
+            {
+                object o = _options["ElseOnClosing"];
                 return ((o == null) ? false : (bool)o);
             }
-            set {
-                options["ElseOnClosing"] = value;
+            set
+            {
+                _options["ElseOnClosing"] = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public bool BlankLinesBetweenMembers {
-            get {
-                object o = options["BlankLinesBetweenMembers"];
+        public bool BlankLinesBetweenMembers
+        {
+            get
+            {
+                object o = _options["BlankLinesBetweenMembers"];
                 return ((o == null) ? true : (bool)o);
             }
-            set {
-                options["BlankLinesBetweenMembers"] = value;
+            set
+            {
+                _options["BlankLinesBetweenMembers"] = value;
             }
         }
 
         [System.Runtime.InteropServices.ComVisible(false)]
-        public bool VerbatimOrder {
-            get {
-                object o = options["VerbatimOrder"];
+        public bool VerbatimOrder
+        {
+            get
+            {
+                object o = _options["VerbatimOrder"];
                 return ((o == null) ? false : (bool)o);
             }
-            set {
-                options["VerbatimOrder"] = value;
+            set
+            {
+                _options["VerbatimOrder"] = value;
             }
         }
     }

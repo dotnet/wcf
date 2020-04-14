@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 using System.Diagnostics;
 // using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -9,20 +10,23 @@ using System.Security;
 using Microsoft.Xml.XPath;
 // using Microsoft.Xml.Xsl.Runtime;
 
-namespace Microsoft.Xml.Xsl {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Xsl
+{
+    using System;
+    using Microsoft.Xml;
 
     /// <summary>
     /// Helper class implementing multiple overloads
     /// </summary>
-    public abstract class XsltCommand {
-        private static XmlReaderSettings ReaderSettings;
+    public abstract class XsltCommand
+    {
+        private static XmlReaderSettings s_readerSettings;
 
-        static XsltCommand() {
-            ReaderSettings = new XmlReaderSettings();
-            ReaderSettings.DtdProcessing = DtdProcessing.Prohibit;
-            ReaderSettings.ReadOnly = true;
+        static XsltCommand()
+        {
+            s_readerSettings = new XmlReaderSettings();
+            s_readerSettings.DtdProcessing = DtdProcessing.Prohibit;
+            s_readerSettings.ReadOnly = true;
         }
 
         /// <summary>
@@ -34,26 +38,32 @@ namespace Microsoft.Xml.Xsl {
         // Transform methods which take an IXPathNavigable
         //------------------------------------------------
 
-        public void Transform(IXPathNavigable input, XmlWriter results) {
+        public void Transform(IXPathNavigable input, XmlWriter results)
+        {
             CheckArguments(input, results);
             Transform(input, (XsltArgumentList)null, results, new XmlUrlResolver());
         }
 
-        public void Transform(IXPathNavigable input, XsltArgumentList arguments, XmlWriter results) {
+        public void Transform(IXPathNavigable input, XsltArgumentList arguments, XmlWriter results)
+        {
             CheckArguments(input, results);
             Transform(input, arguments, results, new XmlUrlResolver());
         }
 
-        public void Transform(IXPathNavigable input, XsltArgumentList arguments, TextWriter results) {
+        public void Transform(IXPathNavigable input, XsltArgumentList arguments, TextWriter results)
+        {
             CheckArguments(input, results);
-            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings)) {
+            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings))
+            {
                 Transform(input, arguments, writer, new XmlUrlResolver());
             }
         }
 
-        public void Transform(IXPathNavigable input, XsltArgumentList arguments, Stream results) {
+        public void Transform(IXPathNavigable input, XsltArgumentList arguments, Stream results)
+        {
             CheckArguments(input, results);
-            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings)) {
+            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings))
+            {
                 Transform(input, arguments, writer, new XmlUrlResolver());
             }
         }
@@ -62,26 +72,32 @@ namespace Microsoft.Xml.Xsl {
         // Transform methods which take an XmlReader
         //------------------------------------------------
 
-        public void Transform(XmlReader input, XmlWriter results) {
+        public void Transform(XmlReader input, XmlWriter results)
+        {
             CheckArguments(input, results);
             Transform(input, (XsltArgumentList)null, results, new XmlUrlResolver());
         }
 
-        public void Transform(XmlReader input, XsltArgumentList arguments, XmlWriter results) {
+        public void Transform(XmlReader input, XsltArgumentList arguments, XmlWriter results)
+        {
             CheckArguments(input, results);
             Transform(input, arguments, results, new XmlUrlResolver());
         }
 
-        public void Transform(XmlReader input, XsltArgumentList arguments, TextWriter results) {
+        public void Transform(XmlReader input, XsltArgumentList arguments, TextWriter results)
+        {
             CheckArguments(input, results);
-            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings)) {
+            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings))
+            {
                 Transform(input, arguments, writer, new XmlUrlResolver());
             }
         }
 
-        public void Transform(XmlReader input, XsltArgumentList arguments, Stream results) {
+        public void Transform(XmlReader input, XsltArgumentList arguments, Stream results)
+        {
             CheckArguments(input, results);
-            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings)) {
+            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings))
+            {
                 Transform(input, arguments, writer, new XmlUrlResolver());
             }
         }
@@ -91,41 +107,50 @@ namespace Microsoft.Xml.Xsl {
         //------------------------------------------------
 
         // [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        public void Transform(string inputUri, XmlWriter results) {
+        public void Transform(string inputUri, XmlWriter results)
+        {
             CheckArguments(inputUri, results);
-            using (XmlReader reader = XmlReader.Create(inputUri, ReaderSettings)) {
+            using (XmlReader reader = XmlReader.Create(inputUri, s_readerSettings))
+            {
                 Transform(reader, (XsltArgumentList)null, results, new XmlUrlResolver());
             }
         }
 
         // [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        public void Transform(string inputUri, XsltArgumentList arguments, XmlWriter results) {
+        public void Transform(string inputUri, XsltArgumentList arguments, XmlWriter results)
+        {
             CheckArguments(inputUri, results);
-            using (XmlReader reader = XmlReader.Create(inputUri, ReaderSettings)) {
+            using (XmlReader reader = XmlReader.Create(inputUri, s_readerSettings))
+            {
                 Transform(reader, arguments, results, new XmlUrlResolver());
             }
         }
 
         // [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        public void Transform(string inputUri, XsltArgumentList arguments, TextWriter results) {
+        public void Transform(string inputUri, XsltArgumentList arguments, TextWriter results)
+        {
             CheckArguments(inputUri, results);
-            using (XmlReader reader = XmlReader.Create(inputUri, ReaderSettings))
-            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings)) {
+            using (XmlReader reader = XmlReader.Create(inputUri, s_readerSettings))
+            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings))
+            {
                 Transform(reader, arguments, writer, new XmlUrlResolver());
             }
         }
 
         // [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        public void Transform(string inputUri, XsltArgumentList arguments, Stream results) {
+        public void Transform(string inputUri, XsltArgumentList arguments, Stream results)
+        {
             CheckArguments(inputUri, results);
-            using (XmlReader reader = XmlReader.Create(inputUri, ReaderSettings))
-            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings)) {
+            using (XmlReader reader = XmlReader.Create(inputUri, s_readerSettings))
+            using (XmlWriter writer = XmlWriter.Create(results, OutputSettings))
+            {
                 Transform(reader, arguments, writer, new XmlUrlResolver());
             }
         }
 
         // [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        public void Transform(string inputUri, string resultsFile) {
+        public void Transform(string inputUri, string resultsFile)
+        {
             if (inputUri == null)
                 throw new ArgumentNullException("inputUri");
 
@@ -133,8 +158,9 @@ namespace Microsoft.Xml.Xsl {
                 throw new ArgumentNullException("resultsFile");
 
             // SQLBUDT 276415: Prevent wiping out the content of the input file if the output file is the same
-            using (XmlReader reader = XmlReader.Create(inputUri, ReaderSettings))
-            using (XmlWriter writer = XmlWriter.Create(resultsFile, OutputSettings)) {
+            using (XmlReader reader = XmlReader.Create(inputUri, s_readerSettings))
+            using (XmlWriter writer = XmlWriter.Create(resultsFile, OutputSettings))
+            {
                 Transform(reader, (XsltArgumentList)null, writer, new XmlUrlResolver());
             }
         }
@@ -151,7 +177,8 @@ namespace Microsoft.Xml.Xsl {
         // Helper methods
         //------------------------------------------------
 
-        private static void CheckArguments(object input, object results) {
+        private static void CheckArguments(object input, object results)
+        {
             if (input == null)
                 throw new ArgumentNullException("input");
 
@@ -159,7 +186,8 @@ namespace Microsoft.Xml.Xsl {
                 throw new ArgumentNullException("results");
         }
 
-        private static void CheckArguments(string inputUri, object results) {
+        private static void CheckArguments(string inputUri, object results)
+        {
             if (inputUri == null)
                 throw new ArgumentNullException("inputUri");
 

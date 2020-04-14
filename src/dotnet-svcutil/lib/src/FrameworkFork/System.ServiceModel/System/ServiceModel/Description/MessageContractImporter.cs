@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
 namespace System.ServiceModel.Description
 {
     using System;
@@ -21,27 +22,27 @@ namespace System.ServiceModel.Description
     using Microsoft.Xml.Serialization;
     using WsdlNS = System.Web.Services.Description;
 
-    class MessageContractImporter
+    internal class MessageContractImporter
     {
-        static readonly XmlQualifiedName AnyType = new XmlQualifiedName("anyType", XmlSchema.Namespace);
+        private static readonly XmlQualifiedName s_anyType = new XmlQualifiedName("anyType", XmlSchema.Namespace);
 
-        readonly XmlSchemaSet allSchemas;
-        readonly WsdlContractConversionContext contractContext;
-        readonly WsdlImporter importer;
-        SchemaImporter schemaImporter;
-        readonly FaultImportOptions faultImportOptions;
+        private readonly XmlSchemaSet _allSchemas;
+        private readonly WsdlContractConversionContext _contractContext;
+        private readonly WsdlImporter _importer;
+        private SchemaImporter _schemaImporter;
+        private readonly FaultImportOptions _faultImportOptions;
 
-        static object schemaImporterLock = new object();
+        private static object s_schemaImporterLock = new object();
 
-        Dictionary<WsdlNS.Message, IList<string>> bodyPartsTable;
+        private Dictionary<WsdlNS.Message, IList<string>> _bodyPartsTable;
 
-        Dictionary<WsdlNS.Message, IList<string>> BodyPartsTable
+        private Dictionary<WsdlNS.Message, IList<string>> BodyPartsTable
         {
             get
             {
-                if (bodyPartsTable == null)
-                    bodyPartsTable = new Dictionary<WsdlNS.Message, IList<string>>();
-                return bodyPartsTable;
+                if (_bodyPartsTable == null)
+                    _bodyPartsTable = new Dictionary<WsdlNS.Message, IList<string>>();
+                return _bodyPartsTable;
             }
         }
 
@@ -75,20 +76,19 @@ namespace System.ServiceModel.Description
                     }
                 }
             }
-
         }
 
-        static bool OperationHasBeenHandled(OperationDescription operation)
+        private static bool OperationHasBeenHandled(OperationDescription operation)
         {
             return (operation.Behaviors.Find<IOperationContractGenerationExtension>() != null);
         }
 
-        static bool IsReferencedContract(WsdlImporter importer, WsdlEndpointConversionContext endpointContext)
+        private static bool IsReferencedContract(WsdlImporter importer, WsdlEndpointConversionContext endpointContext)
         {
             return importer.KnownContracts.ContainsValue(endpointContext.Endpoint.Contract);
         }
 
-        static void MarkSoapExtensionsAsHandled(WsdlNS.NamedItem item)
+        private static void MarkSoapExtensionsAsHandled(WsdlNS.NamedItem item)
         {
             foreach (object o in item.Extensions)
             {
@@ -100,7 +100,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static bool IsSoapBindingExtension(WsdlNS.ServiceDescriptionFormatExtension ext)
+        private static bool IsSoapBindingExtension(WsdlNS.ServiceDescriptionFormatExtension ext)
         {
             if (ext is WsdlNS.SoapBinding
                 || ext is WsdlNS.SoapBodyBinding
@@ -114,7 +114,6 @@ namespace System.ServiceModel.Description
             }
 
             return false;
-
         }
 
         static internal void ImportMessageContract(WsdlImporter importer, WsdlContractConversionContext contractContext, SchemaImporter schemaImporter)
@@ -122,28 +121,28 @@ namespace System.ServiceModel.Description
             new MessageContractImporter(importer, contractContext, schemaImporter).ImportMessageContract();
         }
 
-        MessageContractImporter(WsdlImporter importer, WsdlContractConversionContext contractContext, SchemaImporter schemaImporter)
+        private MessageContractImporter(WsdlImporter importer, WsdlContractConversionContext contractContext, SchemaImporter schemaImporter)
         {
-            this.contractContext = contractContext;
-            this.importer = importer;
-            this.allSchemas = GatherSchemas(importer);
-            this.schemaImporter = schemaImporter;
+            _contractContext = contractContext;
+            _importer = importer;
+            _allSchemas = GatherSchemas(importer);
+            _schemaImporter = schemaImporter;
 
             object faultImportOptions;
-            if (this.importer.State.TryGetValue(typeof(FaultImportOptions), out faultImportOptions))
-                this.faultImportOptions = (FaultImportOptions)faultImportOptions;
+            if (_importer.State.TryGetValue(typeof(FaultImportOptions), out faultImportOptions))
+                _faultImportOptions = (FaultImportOptions)faultImportOptions;
             else
-                this.faultImportOptions = new FaultImportOptions();
+                _faultImportOptions = new FaultImportOptions();
         }
 
-        XmlSchemaSet AllSchemas
+        private XmlSchemaSet AllSchemas
         {
-            get { return this.allSchemas; }
+            get { return _allSchemas; }
         }
 
-        SchemaImporter CurrentSchemaImporter
+        private SchemaImporter CurrentSchemaImporter
         {
-            get { return schemaImporter; }
+            get { return _schemaImporter; }
         }
 
         internal void AddWarning(string message)
@@ -151,34 +150,33 @@ namespace System.ServiceModel.Description
             AddError(message, true);
         }
 
-        void AddError(string message)
+        private void AddError(string message)
         {
             AddError(message, false);
         }
 
-        void AddError(string message, bool isWarning)
+        private void AddError(string message, bool isWarning)
         {
             MetadataConversionError warning = new MetadataConversionError(message, isWarning);
-            if (!importer.Errors.Contains(warning))
-                importer.Errors.Add(warning);
+            if (!_importer.Errors.Contains(warning))
+                _importer.Errors.Add(warning);
         }
 
-        void TraceImportInformation(OperationDescription operation)
+        private void TraceImportInformation(OperationDescription operation)
         {
-
         }
 
-        void ImportMessageContract()
+        private void ImportMessageContract()
         {
-            if (contractContext.Contract.Operations.Count <= 0)
+            if (_contractContext.Contract.Operations.Count <= 0)
                 return;
             CurrentSchemaImporter.PreprocessSchema();
 
             bool importerUsed = true;
 
-            OperationInfo[] infos = new OperationInfo[contractContext.Contract.Operations.Count];
+            OperationInfo[] infos = new OperationInfo[_contractContext.Contract.Operations.Count];
             int i = 0;
-            foreach (OperationDescription operation in contractContext.Contract.Operations)
+            foreach (OperationDescription operation in _contractContext.Contract.Operations)
             {
                 OperationInfo operationInfo;
                 if (!CanImportOperation(operation, out operationInfo))
@@ -193,7 +191,7 @@ namespace System.ServiceModel.Description
             if (importerUsed)
             {
                 i = 0;
-                foreach (OperationDescription operation in contractContext.Contract.Operations)
+                foreach (OperationDescription operation in _contractContext.Contract.Operations)
                 {
                     ImportOperationContract(operation, infos[i++]);
                 }
@@ -201,24 +199,24 @@ namespace System.ServiceModel.Description
             CurrentSchemaImporter.PostprocessSchema(importerUsed);
         }
 
-        bool CanImportOperation(OperationDescription operation, out OperationInfo operationInfo)
+        private bool CanImportOperation(OperationDescription operation, out OperationInfo operationInfo)
         {
             operationInfo = null;
             if (OperationHasBeenHandled(operation))
                 return false;
 
-            WsdlNS.Operation wsdlOperation = contractContext.GetOperation(operation);
-            Collection<WsdlNS.OperationBinding> wsdlOperationBindings = contractContext.GetOperationBindings(wsdlOperation);
+            WsdlNS.Operation wsdlOperation = _contractContext.GetOperation(operation);
+            Collection<WsdlNS.OperationBinding> wsdlOperationBindings = _contractContext.GetOperationBindings(wsdlOperation);
 
             return CanImportOperation(operation, wsdlOperation, wsdlOperationBindings, out operationInfo)
                 && CanImportFaults(wsdlOperation, operation);
         }
 
-        bool CanImportFaults(WsdlNS.Operation operation, OperationDescription description)
+        private bool CanImportFaults(WsdlNS.Operation operation, OperationDescription description)
         {
             // When this.faultImportOptions.UseMessageFormat is false, we fall back to the V1 behavior of using DataContractSerializer to import all faults.
             // We can, therefore, return true in those cases without actually doing the checks involved in CanImportFaults.
-            if (!this.faultImportOptions.UseMessageFormat)
+            if (!_faultImportOptions.UseMessageFormat)
                 return true;
 
             foreach (WsdlNS.OperationFault fault in operation.Faults)
@@ -229,7 +227,7 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        bool CanImportFault(WsdlNS.OperationFault fault, OperationDescription description)
+        private bool CanImportFault(WsdlNS.OperationFault fault, OperationDescription description)
         {
             XmlSchemaElement detailElement;
             XmlQualifiedName detailElementTypeName;
@@ -241,13 +239,13 @@ namespace System.ServiceModel.Description
             return this.CurrentSchemaImporter.CanImportFault(detailElement, detailElementTypeName);
         }
 
-        void ImportOperationContract(OperationDescription operation, OperationInfo operationInfo)
+        private void ImportOperationContract(OperationDescription operation, OperationInfo operationInfo)
         {
             Fx.Assert(!OperationHasBeenHandled(operation), "");
             Fx.Assert(operationInfo != null, "");
 
-            WsdlNS.Operation wsdlOperation = contractContext.GetOperation(operation);
-            Collection<WsdlNS.OperationBinding> wsdlOperationBindings = contractContext.GetOperationBindings(wsdlOperation);
+            WsdlNS.Operation wsdlOperation = _contractContext.GetOperation(operation);
+            Collection<WsdlNS.OperationBinding> wsdlOperationBindings = _contractContext.GetOperationBindings(wsdlOperation);
 
             bool isReply = false;
             foreach (WsdlNS.OperationMessage operationMessage in wsdlOperation.Messages)
@@ -261,7 +259,7 @@ namespace System.ServiceModel.Description
             this.CurrentSchemaImporter.SetOperationStyle(operation, operationInfo.Style);
             this.CurrentSchemaImporter.SetOperationIsEncoded(operation, operationInfo.IsEncoded);
             this.CurrentSchemaImporter.SetOperationSupportFaults(operation,
-                this.faultImportOptions.UseMessageFormat);
+                _faultImportOptions.UseMessageFormat);
 
             ImportFaults(wsdlOperation, operation, operationInfo.IsEncoded);
 
@@ -269,7 +267,7 @@ namespace System.ServiceModel.Description
             {
                 foreach (MessageDescription message in operation.Messages)
                 {
-                    WsdlNS.OperationMessage wsdlOperationMessage = contractContext.GetOperationMessage(message);
+                    WsdlNS.OperationMessage wsdlOperationMessage = _contractContext.GetOperationMessage(message);
                     WsdlNS.ServiceDescriptionCollection wsdlDocuments = wsdlOperationMessage.Operation.PortType.ServiceDescription.ServiceDescriptions;
                     WsdlNS.Message wsdlMessage = wsdlDocuments.GetMessage(wsdlOperationMessage.Message);
 
@@ -285,7 +283,7 @@ namespace System.ServiceModel.Description
             operation.Behaviors.Add(CurrentSchemaImporter.GetOperationGenerator());
         }
 
-        bool CanImportOperation(OperationDescription operation, WsdlNS.Operation wsdlOperation, Collection<WsdlNS.OperationBinding> operationBindings,
+        private bool CanImportOperation(OperationDescription operation, WsdlNS.Operation wsdlOperation, Collection<WsdlNS.OperationBinding> operationBindings,
             out OperationInfo operationInfo)
         {
             operationInfo = null;
@@ -304,7 +302,7 @@ namespace System.ServiceModel.Description
                 bool? isOperationEncoded = null;
                 foreach (MessageDescription message in operation.Messages)
                 {
-                    WsdlNS.OperationMessage operationMessage = contractContext.GetOperationMessage(message);
+                    WsdlNS.OperationMessage operationMessage = _contractContext.GetOperationMessage(message);
 
                     if (operationMessage.Message.IsEmpty)
                     {
@@ -413,7 +411,7 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        bool CanImportMessage(WsdlNS.Message wsdlMessage, string operationName, out OperationFormatStyle? inferredStyle, ref bool areAllMessagesWrapped)
+        private bool CanImportMessage(WsdlNS.Message wsdlMessage, string operationName, out OperationFormatStyle? inferredStyle, ref bool areAllMessagesWrapped)
         {
             WsdlNS.MessagePartCollection messageParts = wsdlMessage.Parts;
             // try the special cases: wrapped and Message
@@ -456,10 +454,10 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        void ImportMessage(WsdlNS.OperationMessage wsdlOperationMessage, bool isReply, bool isEncoded, bool areAllMessagesWrapped)
+        private void ImportMessage(WsdlNS.OperationMessage wsdlOperationMessage, bool isReply, bool isEncoded, bool areAllMessagesWrapped)
         {
-            MessageDescription messageDescription = contractContext.GetMessageDescription(wsdlOperationMessage);
-            OperationDescription operation = contractContext.GetOperationDescription(wsdlOperationMessage.Operation);
+            MessageDescription messageDescription = _contractContext.GetMessageDescription(wsdlOperationMessage);
+            OperationDescription operation = _contractContext.GetOperationDescription(wsdlOperationMessage.Operation);
             WsdlNS.ServiceDescriptionCollection wsdlDocuments = wsdlOperationMessage.Operation.PortType.ServiceDescription.ServiceDescriptions;
             WsdlNS.Message wsdlMessage = wsdlDocuments.GetMessage(wsdlOperationMessage.Message);
 
@@ -508,7 +506,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        enum StyleAndUse
+        private enum StyleAndUse
         {
             DocumentLiteral,
             RpcLiteral,
@@ -516,7 +514,7 @@ namespace System.ServiceModel.Description
             DocumentEncoded,
         }
 
-        static StyleAndUse GetStyleAndUse(OperationFormatStyle style, bool isEncoded)
+        private static StyleAndUse GetStyleAndUse(OperationFormatStyle style, bool isEncoded)
         {
             if (style == OperationFormatStyle.Document)
             {
@@ -528,17 +526,17 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static string GetStyle(StyleAndUse styleAndUse)
+        private static string GetStyle(StyleAndUse styleAndUse)
         {
             return (styleAndUse == StyleAndUse.RpcLiteral || styleAndUse == StyleAndUse.RpcEncoded) ? "rpc" : "document";
         }
 
-        static string GetUse(StyleAndUse styleAndUse)
+        private static string GetUse(StyleAndUse styleAndUse)
         {
             return (styleAndUse == StyleAndUse.RpcEncoded || styleAndUse == StyleAndUse.DocumentEncoded) ? "encoded" : "literal";
         }
 
-        static void SetWrapperName(OperationDescription operation)
+        private static void SetWrapperName(OperationDescription operation)
         {
             MessageDescriptionCollection messages = operation.Messages;
             if (messages != null && messages.Count > 0)
@@ -561,7 +559,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void ImportFaults(WsdlNS.Operation operation, OperationDescription description, bool isEncoded)
+        private void ImportFaults(WsdlNS.Operation operation, OperationDescription description, bool isEncoded)
         {
             foreach (WsdlNS.OperationFault fault in operation.Faults)
             {
@@ -569,7 +567,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void ImportFault(WsdlNS.OperationFault fault, OperationDescription description, bool isEncoded)
+        private void ImportFault(WsdlNS.OperationFault fault, OperationDescription description, bool isEncoded)
         {
             XmlSchemaElement detailElement;
             XmlQualifiedName detailElementTypeName;
@@ -579,22 +577,22 @@ namespace System.ServiceModel.Description
                 return;
 
             SchemaImporter faultImporter;
-            if (this.faultImportOptions.UseMessageFormat)
+            if (_faultImportOptions.UseMessageFormat)
                 faultImporter = this.CurrentSchemaImporter;
             else
-                faultImporter = DataContractSerializerSchemaImporter.Get(this.importer);
+                faultImporter = DataContractSerializerSchemaImporter.Get(_importer);
             CodeTypeReference detailElementTypeRef;
             if (IsNullOrEmpty(detailElementTypeName))
                 detailElementTypeRef = faultImporter.ImportFaultElement(detailElementQname, detailElement, isEncoded);
             else
                 detailElementTypeRef = faultImporter.ImportFaultType(detailElementQname, detailElementTypeName, isEncoded);
-            FaultDescription faultDescription = contractContext.GetFaultDescription(fault);
+            FaultDescription faultDescription = _contractContext.GetFaultDescription(fault);
             faultDescription.DetailTypeReference = detailElementTypeRef;
             faultDescription.ElementName = new XmlName(detailElementQname.Name, true /*isEncoded*/);
             faultDescription.Namespace = detailElementQname.Namespace;
         }
 
-        bool ValidateFault(WsdlNS.OperationFault fault, OperationDescription description, out XmlSchemaElement detailElement,
+        private bool ValidateFault(WsdlNS.OperationFault fault, OperationDescription description, out XmlSchemaElement detailElement,
             out XmlQualifiedName detailElementTypeName, out XmlQualifiedName detailElementQname)
         {
             detailElement = null;
@@ -607,7 +605,7 @@ namespace System.ServiceModel.Description
             if (fault.Message.IsEmpty)
             {
                 TraceFaultCannotBeImported(fault.Name, description.Name, SRServiceModel.Format(SRServiceModel.SFxWsdlOperationFaultNeedsMessageAttribute2, fault.Name, fault.Operation.PortType.Name));
-                description.Faults.Remove(contractContext.GetFaultDescription(fault));
+                description.Faults.Remove(_contractContext.GetFaultDescription(fault));
                 return false;
             }
             WsdlNS.Message faultMessage = wsdlDocuments.GetMessage(fault.Message);
@@ -616,7 +614,7 @@ namespace System.ServiceModel.Description
             if (faultMessage.Parts.Count != 1)
             {
                 TraceFaultCannotBeImported(fault.Name, description.Name, SRServiceModel.UnsupportedWSDLOnlyOneMessage);
-                description.Faults.Remove(contractContext.GetFaultDescription(fault));
+                description.Faults.Remove(_contractContext.GetFaultDescription(fault));
                 return false;
             }
 
@@ -626,7 +624,7 @@ namespace System.ServiceModel.Description
             if (IsNullOrEmpty(detailElementQname) || !IsNullOrEmpty(faultMessageDetail.Type))
             {
                 TraceFaultCannotBeImported(fault.Name, description.Name, SRServiceModel.UnsupportedWSDLTheFault);
-                description.Faults.Remove(contractContext.GetFaultDescription(fault));
+                description.Faults.Remove(_contractContext.GetFaultDescription(fault));
                 return false;
             }
 
@@ -635,24 +633,24 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        bool CanImportAnyMessage(WsdlNS.MessagePart part)
+        private bool CanImportAnyMessage(WsdlNS.MessagePart part)
         {
             return CheckPart(part.Type, DataContractSerializerMessageContractImporter.GenericMessageTypeName);
         }
 
-        bool TryImportAnyMessage(WsdlNS.MessagePart part, MessageDescription description, bool isReply)
+        private bool TryImportAnyMessage(WsdlNS.MessagePart part, MessageDescription description, bool isReply)
         {
             return CheckAndAddPart(part.Type, DataContractSerializerMessageContractImporter.GenericMessageTypeName, part.Name, string.Empty, typeof(Message), description, isReply);
         }
 
-        bool CanImportStream(WsdlNS.MessagePart part, out OperationFormatStyle? style, ref bool areAllMessagesWrapped)
+        private bool CanImportStream(WsdlNS.MessagePart part, out OperationFormatStyle? style, ref bool areAllMessagesWrapped)
         {
             style = OperationFormatStyle.Document;
             string ns;
             XmlSchemaForm elementFormDefault;
             if (areAllMessagesWrapped && IsWrapperPart(part))
             {
-                XmlSchemaComplexType complexType = GetElementComplexType(part.Element, allSchemas, out ns, out elementFormDefault);
+                XmlSchemaComplexType complexType = GetElementComplexType(part.Element, _allSchemas, out ns, out elementFormDefault);
                 if (complexType != null)
                 {
                     XmlSchemaSequence rootSequence = GetRootSequence(complexType);
@@ -669,18 +667,18 @@ namespace System.ServiceModel.Description
                 if (IsNullOrEmpty(part.Element))
                     return false;
                 style = OperationFormatStyle.Document;
-                typeName = GetTypeName(FindSchemaElement(allSchemas, part.Element));
+                typeName = GetTypeName(FindSchemaElement(_allSchemas, part.Element));
             }
             return CheckPart(typeName, DataContractSerializerMessageContractImporter.StreamBodyTypeName);
         }
 
-        bool TryImportStream(WsdlNS.MessagePart part, MessageDescription description, bool isReply, bool areAllMessagesWrapped)
+        private bool TryImportStream(WsdlNS.MessagePart part, MessageDescription description, bool isReply, bool areAllMessagesWrapped)
         {
             string ns = string.Empty;
             XmlSchemaForm elementFormDefault;
             if (areAllMessagesWrapped && IsWrapperPart(part))
             {
-                XmlSchemaSequence rootSequence = GetRootSequence(GetElementComplexType(part.Element, allSchemas, out ns, out elementFormDefault));
+                XmlSchemaSequence rootSequence = GetRootSequence(GetElementComplexType(part.Element, _allSchemas, out ns, out elementFormDefault));
                 if (rootSequence != null && rootSequence.Items.Count == 1 && rootSequence.Items[0] is XmlSchemaElement)
                 {
                     XmlSchemaElement element = (XmlSchemaElement)rootSequence.Items[0];
@@ -704,19 +702,18 @@ namespace System.ServiceModel.Description
                 if (IsNullOrEmpty(part.Element))
                     return false;
                 ns = part.Element.Namespace;
-                typeName = GetTypeName(FindSchemaElement(allSchemas, part.Element));
+                typeName = GetTypeName(FindSchemaElement(_allSchemas, part.Element));
             }
             return CheckAndAddPart(typeName, DataContractSerializerMessageContractImporter.StreamBodyTypeName, part.Name, ns, typeof(Stream), description, isReply);
         }
 
-        bool CanImportWrappedMessage(WsdlNS.MessagePart wsdlPart)
+        private bool CanImportWrappedMessage(WsdlNS.MessagePart wsdlPart)
         {
             return (IsWrapperPart(wsdlPart)) ? CurrentSchemaImporter.CanImportWrapperElement(wsdlPart.Element) : false;
         }
 
-        bool TryImportWrappedMessage(MessageDescription messageDescription, MessageDescription requestMessage, WsdlNS.Message wsdlMessage, bool isReply)
+        private bool TryImportWrappedMessage(MessageDescription messageDescription, MessageDescription requestMessage, WsdlNS.Message wsdlMessage, bool isReply)
         {
-
             WsdlNS.MessagePart wsdlPart = wsdlMessage.Parts[0];
             if (CanImportWrappedMessage(wsdlPart))
             {
@@ -750,14 +747,14 @@ namespace System.ServiceModel.Description
         {
             bool wrapFlag = false; // turn off special-casing for partname="parameters" if "wrapped" flag was set by user
             object wrappedOptions = null;
-            if (this.importer.State.TryGetValue(typeof(WrappedOptions), out wrappedOptions))
+            if (_importer.State.TryGetValue(typeof(WrappedOptions), out wrappedOptions))
             {
                 wrapFlag = ((WrappedOptions)wrappedOptions).WrappedFlag;
             }
             return wsdlPart.Name == "parameters" && !IsNullOrEmpty(wsdlPart.Element) && !wrapFlag;
         }
 
-        bool CheckIsRef(MessageDescription requestMessage, MessagePartDescription part)
+        private bool CheckIsRef(MessageDescription requestMessage, MessagePartDescription part)
         {
             foreach (MessagePartDescription requestPart in requestMessage.Body.Parts)
             {
@@ -767,12 +764,12 @@ namespace System.ServiceModel.Description
             return false;
         }
 
-        bool CompareMessageParts(MessagePartDescription x, MessagePartDescription y)
+        private bool CompareMessageParts(MessagePartDescription x, MessagePartDescription y)
         {
             return (x.Name == y.Name && x.Namespace == y.Namespace);
         }
 
-        static WsdlNS.MessagePart FindPartByName(WsdlNS.Message message, string name)
+        private static WsdlNS.MessagePart FindPartByName(WsdlNS.Message message, string name)
         {
             Fx.Assert(message != null, "Should not attempt to look for a part in an null message.");
             foreach (WsdlNS.MessagePart part in message.Parts)
@@ -782,13 +779,13 @@ namespace System.ServiceModel.Description
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlMessageDoesNotContainPart3, name, message.Name, message.ServiceDescription.TargetNamespace)));
         }
 
-        static XmlSchemaElement FindSchemaElement(XmlSchemaSet schemaSet, XmlQualifiedName elementName)
+        private static XmlSchemaElement FindSchemaElement(XmlSchemaSet schemaSet, XmlQualifiedName elementName)
         {
             XmlSchema schema;
             return FindSchemaElement(schemaSet, elementName, out schema);
         }
 
-        static XmlSchemaElement FindSchemaElement(XmlSchemaSet schemaSet, XmlQualifiedName elementName, out XmlSchema containingSchema)
+        private static XmlSchemaElement FindSchemaElement(XmlSchemaSet schemaSet, XmlQualifiedName elementName, out XmlSchema containingSchema)
         {
             XmlSchemaElement element = null;
             containingSchema = null;
@@ -806,7 +803,7 @@ namespace System.ServiceModel.Description
             return element;
         }
 
-        static XmlSchemaType FindSchemaType(XmlSchemaSet schemaSet, XmlQualifiedName typeName)
+        private static XmlSchemaType FindSchemaType(XmlSchemaSet schemaSet, XmlQualifiedName typeName)
         {
             if (typeName.Namespace == XmlSchema.Namespace)
                 return null;
@@ -814,7 +811,7 @@ namespace System.ServiceModel.Description
             return FindSchemaType(schemaSet, typeName, out schema);
         }
 
-        static XmlSchemaType FindSchemaType(XmlSchemaSet schemaSet, XmlQualifiedName typeName, out XmlSchema containingSchema)
+        private static XmlSchemaType FindSchemaType(XmlSchemaSet schemaSet, XmlQualifiedName typeName, out XmlSchema containingSchema)
         {
             containingSchema = null;
             if (StockSchemas.IsKnownSchema(typeName.Namespace))
@@ -835,7 +832,7 @@ namespace System.ServiceModel.Description
             return type;
         }
 
-        static XmlSchemaSet GatherSchemas(WsdlImporter importer)
+        private static XmlSchemaSet GatherSchemas(WsdlImporter importer)
         {
             XmlSchemaSet schemaSet = new XmlSchemaSet();
             schemaSet.XmlResolver = null;
@@ -886,7 +883,7 @@ namespace System.ServiceModel.Description
         // don't want the RPC-based types leaking over into the XML-based
         // element definitions or literal types in the encoded schemas,
         // beacase it can cause schema coimpilation falure. 
-        static void CollectEncodedAndLiteralSchemas(WsdlNS.ServiceDescriptionCollection serviceDescriptions, XmlSchemas encodedSchemas, XmlSchemas literalSchemas, XmlSchemaSet allSchemas)
+        private static void CollectEncodedAndLiteralSchemas(WsdlNS.ServiceDescriptionCollection serviceDescriptions, XmlSchemas encodedSchemas, XmlSchemas literalSchemas, XmlSchemaSet allSchemas)
         {
             XmlSchema wsdl = StockSchemas.CreateWsdl();
             XmlSchema soap = StockSchemas.CreateSoap();
@@ -1004,7 +1001,7 @@ namespace System.ServiceModel.Description
             AddSoapEncodingSchemaIfNeeded(literalSchemas);
         }
 
-        static void AddSoapEncodingSchemaIfNeeded(XmlSchemas schemas)
+        private static void AddSoapEncodingSchemaIfNeeded(XmlSchemas schemas)
         {
             XmlSchema fakeXsdSchema = StockSchemas.CreateFakeXsdSchema();
 
@@ -1022,7 +1019,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static void AddImport(XmlSchema schema, Hashtable imports, XmlSchemaSet allSchemas)
+        private static void AddImport(XmlSchema schema, Hashtable imports, XmlSchemaSet allSchemas)
         {
             if (schema == null || imports[schema] != null)
                 return;
@@ -1040,7 +1037,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static void AddSchema(XmlSchema schema, bool isEncoded, bool isLiteral, XmlSchemas encodedSchemas, XmlSchemas literalSchemas, Hashtable references)
+        private static void AddSchema(XmlSchema schema, bool isEncoded, bool isLiteral, XmlSchemas encodedSchemas, XmlSchemas literalSchemas, Hashtable references)
         {
             if (schema != null)
             {
@@ -1069,7 +1066,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static void FindUse(WsdlNS.MessagePart part, out bool isEncoded, out bool isLiteral)
+        private static void FindUse(WsdlNS.MessagePart part, out bool isEncoded, out bool isLiteral)
         {
             isEncoded = false;
             isLiteral = false;
@@ -1094,7 +1091,7 @@ namespace System.ServiceModel.Description
                 FindUse(null, description, messageName, ref isEncoded, ref isLiteral);
         }
 
-        static void FindUse(WsdlNS.Operation operation, WsdlNS.ServiceDescription description, string messageName, ref bool isEncoded, ref bool isLiteral)
+        private static void FindUse(WsdlNS.Operation operation, WsdlNS.ServiceDescription description, string messageName, ref bool isEncoded, ref bool isLiteral)
         {
             string targetNamespace = description.TargetNamespace;
             foreach (WsdlNS.Binding binding in description.Bindings)
@@ -1162,7 +1159,7 @@ namespace System.ServiceModel.Description
             }
         }
 
-        static string GetLocalElementNamespace(string ns, XmlSchemaElement element, XmlSchemaForm elementFormDefault)
+        private static string GetLocalElementNamespace(string ns, XmlSchemaElement element, XmlSchemaForm elementFormDefault)
         {
             XmlSchemaForm elementForm = (element.Form != XmlSchemaForm.None) ? element.Form : elementFormDefault;
             if (elementForm != XmlSchemaForm.Qualified)
@@ -1170,7 +1167,7 @@ namespace System.ServiceModel.Description
             return ns;
         }
 
-        static IEnumerable GetSchema(XmlSchemaSet schemaSet, string ns)
+        private static IEnumerable GetSchema(XmlSchemaSet schemaSet, string ns)
         {
             ICollection schemas = schemaSet.Schemas(ns);
             if (schemas == null || schemas.Count == 0)
@@ -1178,7 +1175,7 @@ namespace System.ServiceModel.Description
             return schemas;
         }
 
-        static WsdlNS.SoapBindingStyle GetStyle(WsdlNS.Binding binding)
+        private static WsdlNS.SoapBindingStyle GetStyle(WsdlNS.Binding binding)
         {
             WsdlNS.SoapBindingStyle style = WsdlNS.SoapBindingStyle.Default;
             if (binding != null)
@@ -1190,7 +1187,7 @@ namespace System.ServiceModel.Description
             return style;
         }
 
-        static OperationFormatStyle GetStyle(WsdlNS.OperationBinding operationBinding)
+        private static OperationFormatStyle GetStyle(WsdlNS.OperationBinding operationBinding)
         {
             WsdlNS.SoapBindingStyle style = GetStyle(operationBinding.Binding);
             if (operationBinding != null)
@@ -1205,27 +1202,27 @@ namespace System.ServiceModel.Description
             return (style == WsdlNS.SoapBindingStyle.Rpc) ? OperationFormatStyle.Rpc : OperationFormatStyle.Document;
         }
 
-        static XmlQualifiedName GetTypeName(XmlSchemaElement element)
+        private static XmlQualifiedName GetTypeName(XmlSchemaElement element)
         {
             if (element.SchemaType != null)
                 return XmlQualifiedName.Empty;
             else if (IsNullOrEmpty(element.SchemaTypeName))
-                return AnyType;
+                return s_anyType;
             else
                 return element.SchemaTypeName;
         }
 
-        static bool IsNullOrEmpty(XmlQualifiedName qname)
+        private static bool IsNullOrEmpty(XmlQualifiedName qname)
         {
             return qname == null || qname.IsEmpty;
         }
 
-        void TraceFaultCannotBeImported(string faultName, string operationName, string message)
+        private void TraceFaultCannotBeImported(string faultName, string operationName, string message)
         {
             AddWarning(SRServiceModel.Format(SRServiceModel.SFxFaultCannotBeImported, faultName, operationName, message));
         }
 
-        static bool CheckAndAddPart(XmlQualifiedName typeNameFound, XmlQualifiedName typeNameRequired, string name, string ns, Type type, MessageDescription description, bool isReply)
+        private static bool CheckAndAddPart(XmlQualifiedName typeNameFound, XmlQualifiedName typeNameRequired, string name, string ns, Type type, MessageDescription description, bool isReply)
         {
             if (IsNullOrEmpty(typeNameFound) || typeNameFound != typeNameRequired)
                 return false;
@@ -1238,12 +1235,12 @@ namespace System.ServiceModel.Description
             return true;
         }
 
-        static bool CheckPart(XmlQualifiedName typeNameFound, XmlQualifiedName typeNameRequired)
+        private static bool CheckPart(XmlQualifiedName typeNameFound, XmlQualifiedName typeNameRequired)
         {
             return !IsNullOrEmpty(typeNameFound) && typeNameFound == typeNameRequired;
         }
 
-        static XmlSchemaComplexType GetElementComplexType(XmlQualifiedName elementName, XmlSchemaSet schemaSet, out string ns, out XmlSchemaForm elementFormDefault)
+        private static XmlSchemaComplexType GetElementComplexType(XmlQualifiedName elementName, XmlSchemaSet schemaSet, out string ns, out XmlSchemaForm elementFormDefault)
         {
             XmlSchema schema;
             XmlSchemaElement schemaElement = FindSchemaElement(schemaSet, elementName, out schema);
@@ -1271,14 +1268,14 @@ namespace System.ServiceModel.Description
             return schemaType as XmlSchemaComplexType;
         }
 
-        static XmlSchemaSequence GetRootSequence(XmlSchemaComplexType complexType)
+        private static XmlSchemaSequence GetRootSequence(XmlSchemaComplexType complexType)
         {
             if (complexType == null)
                 return null;
             return complexType.Particle != null ? complexType.Particle as XmlSchemaSequence : null;
         }
 
-        bool CanImportMessageBinding(WsdlNS.MessageBinding messageBinding, WsdlNS.Message wsdlMessage, OperationFormatStyle style, out bool isEncoded)
+        private bool CanImportMessageBinding(WsdlNS.MessageBinding messageBinding, WsdlNS.Message wsdlMessage, OperationFormatStyle style, out bool isEncoded)
         {
             isEncoded = false;
 
@@ -1378,13 +1375,13 @@ namespace System.ServiceModel.Description
         }
 
 
-        bool CanImportMessageBodyBinding(WsdlNS.SoapBodyBinding bodyBinding, OperationFormatStyle style, out bool isEncoded)
+        private bool CanImportMessageBodyBinding(WsdlNS.SoapBodyBinding bodyBinding, OperationFormatStyle style, out bool isEncoded)
         {
             isEncoded = (bodyBinding.Use == WsdlNS.SoapBindingUse.Encoded);
             return CurrentSchemaImporter.CanImportStyleAndUse(style, isEncoded);
         }
 
-        bool CanImportMessageHeaderBinding(WsdlNS.SoapHeaderBinding headerBinding, WsdlNS.Message wsdlMessage, OperationFormatStyle style, out bool isEncoded)
+        private bool CanImportMessageHeaderBinding(WsdlNS.SoapHeaderBinding headerBinding, WsdlNS.Message wsdlMessage, OperationFormatStyle style, out bool isEncoded)
         {
             isEncoded = (headerBinding.Use == WsdlNS.SoapBindingUse.Encoded);
             WsdlNS.Message wsdlHeaderMessage = wsdlMessage.ServiceDescription.ServiceDescriptions.GetMessage(headerBinding.Message);
@@ -1398,9 +1395,9 @@ namespace System.ServiceModel.Description
             return CurrentSchemaImporter.CanImportStyleAndUse(style, isEncoded);
         }
 
-        void ImportMessageBinding(WsdlNS.MessageBinding messageBinding, WsdlNS.Message wsdlMessage, MessageDescription description, OperationFormatStyle style, bool isEncoded)
+        private void ImportMessageBinding(WsdlNS.MessageBinding messageBinding, WsdlNS.Message wsdlMessage, MessageDescription description, OperationFormatStyle style, bool isEncoded)
         {
-            WsdlNS.OperationMessage wsdlOperationMessage = contractContext.GetOperationMessage(description);
+            WsdlNS.OperationMessage wsdlOperationMessage = _contractContext.GetOperationMessage(description);
             foreach (object extension in messageBinding.Extensions)
             {
                 WsdlNS.SoapHeaderBinding soapHeaderBinding = extension as WsdlNS.SoapHeaderBinding;
@@ -1419,20 +1416,20 @@ namespace System.ServiceModel.Description
             }
         }
 
-        void ImportMessageBodyBinding(WsdlNS.SoapBodyBinding bodyBinding, WsdlNS.Message wsdlMessage, MessageDescription description, OperationFormatStyle style, bool isEncoded, string operationName)
+        private void ImportMessageBodyBinding(WsdlNS.SoapBodyBinding bodyBinding, WsdlNS.Message wsdlMessage, MessageDescription description, OperationFormatStyle style, bool isEncoded, string operationName)
         {
             if (style == OperationFormatStyle.Rpc && bodyBinding.Namespace != null)
                 description.Body.WrapperNamespace = bodyBinding.Namespace;
             this.CurrentSchemaImporter.ValidateStyleAndUse(style, isEncoded, operationName);
         }
 
-        void ImportMessageHeaderBinding(WsdlNS.SoapHeaderBinding headerBinding, WsdlNS.Message wsdlMessage, MessageDescription description, OperationFormatStyle style, bool isEncoded, string operationName)
+        private void ImportMessageHeaderBinding(WsdlNS.SoapHeaderBinding headerBinding, WsdlNS.Message wsdlMessage, MessageDescription description, OperationFormatStyle style, bool isEncoded, string operationName)
         {
             WsdlNS.Message wsdlHeaderMessage = wsdlMessage.ServiceDescription.ServiceDescriptions.GetMessage(headerBinding.Message);
             WsdlNS.MessagePart part = FindPartByName(wsdlHeaderMessage, headerBinding.Part);
             if (!description.Headers.Contains(this.CurrentSchemaImporter.GetPartName(part)))
             {
-                description.Headers.Add((MessageHeaderDescription)schemaImporter.ImportMessagePart(part, true/*isHeader*/, isEncoded));
+                description.Headers.Add((MessageHeaderDescription)_schemaImporter.ImportMessagePart(part, true/*isHeader*/, isEncoded));
                 this.CurrentSchemaImporter.ValidateStyleAndUse(style, isEncoded, operationName);
             }
         }
@@ -1546,16 +1543,16 @@ namespace System.ServiceModel.Description
             // Same string used in DataContractSet of System.Runtime.Serialization.dll
             internal const String FailedReferenceTypeExceptionKey = "System.Runtime.Serialization.FailedReferenceType";
 
-            DataContractSerializerOperationGenerator DataContractSerializerOperationGenerator;
-            ValidationEventHandler compileValidationEventHandler;
-            Collection<MetadataConversionError> errors;
+            private DataContractSerializerOperationGenerator _dataContractSerializerOperationGenerator;
+            private ValidationEventHandler _compileValidationEventHandler;
+            private Collection<MetadataConversionError> _errors;
             public DataContractSerializerSchemaImporter(WsdlImporter importer)
                 : base(importer)
             {
-                DataContractSerializerOperationGenerator = new DataContractSerializerOperationGenerator(DataContractImporter.CodeCompileUnit);
+                _dataContractSerializerOperationGenerator = new DataContractSerializerOperationGenerator(DataContractImporter.CodeCompileUnit);
             }
 
-            XsdDataContractImporter DataContractImporter
+            private XsdDataContractImporter DataContractImporter
             {
                 get
                 {
@@ -1672,7 +1669,7 @@ namespace System.ServiceModel.Description
                 DataContractImporter.Import(schemaSet, typeName);
                 CodeTypeReference typeRef = DataContractImporter.GetCodeTypeReference(typeName);
                 ICollection<CodeTypeReference> knownTypeRefs = DataContractImporter.GetKnownTypeReferences(typeName);
-                DataContractSerializerOperationGenerator.Add(part, typeRef, knownTypeRefs, false/*IsNonNillableReferenceType*/);
+                _dataContractSerializerOperationGenerator.Add(part, typeRef, knownTypeRefs, false/*IsNonNillableReferenceType*/);
                 if (typeRef.ArrayRank == 0)
                     return typeRef.BaseType;
                 else
@@ -1732,7 +1729,7 @@ namespace System.ServiceModel.Description
 
                 CodeTypeReference typeRef = DataContractImporter.GetCodeTypeReference(typeName, element);
                 ICollection<CodeTypeReference> knownTypeRefs = DataContractImporter.GetKnownTypeReferences(typeName);
-                DataContractSerializerOperationGenerator.Add(part, typeRef, knownTypeRefs, !element.IsNillable && !IsValueType(typeName));
+                _dataContractSerializerOperationGenerator.Add(part, typeRef, knownTypeRefs, !element.IsNillable && !IsValueType(typeName));
                 if (typeRef.ArrayRank == 0)
                     return typeRef.BaseType;
                 else
@@ -1747,7 +1744,7 @@ namespace System.ServiceModel.Description
                 return typeRef.BaseType == typeof(Nullable<>).FullName;
             }
 
-            int SetImportXmlType(bool value)
+            private int SetImportXmlType(bool value)
             {
                 if (DataContractImporter.Options == null)
                 {
@@ -1763,7 +1760,7 @@ namespace System.ServiceModel.Description
                 return 1;
             }
 
-            void RestoreImportXmlType(int oldValue)
+            private void RestoreImportXmlType(int oldValue)
             {
                 if (oldValue == 1)
                     return;
@@ -1831,29 +1828,29 @@ namespace System.ServiceModel.Description
 
             internal override void PreprocessSchema()
             {
-                errors = new Collection<MetadataConversionError>();
-                compileValidationEventHandler = new ValidationEventHandler(delegate (object sender, ValidationEventArgs args)
+                _errors = new Collection<MetadataConversionError>();
+                _compileValidationEventHandler = new ValidationEventHandler(delegate (object sender, ValidationEventArgs args)
                 {
-                    SchemaHelper.HandleSchemaValidationError(sender, args, errors);
+                    SchemaHelper.HandleSchemaValidationError(sender, args, _errors);
                 }
                 );
-                schemaSet.ValidationEventHandler += compileValidationEventHandler;
+                schemaSet.ValidationEventHandler += _compileValidationEventHandler;
             }
 
             internal override void PostprocessSchema(bool used)
             {
-                if (used && errors != null)
+                if (used && _errors != null)
                 {
-                    foreach (MetadataConversionError error in errors)
+                    foreach (MetadataConversionError error in _errors)
                         importer.Errors.Add(error);
-                    errors.Clear();
+                    _errors.Clear();
                 }
-                schemaSet.ValidationEventHandler -= compileValidationEventHandler;
+                schemaSet.ValidationEventHandler -= _compileValidationEventHandler;
             }
 
             internal override IOperationBehavior GetOperationGenerator()
             {
-                return DataContractSerializerOperationGenerator;
+                return _dataContractSerializerOperationGenerator;
             }
 
             internal override bool CanImportStyleAndUse(OperationFormatStyle style, bool isEncoded)
@@ -1902,15 +1899,14 @@ namespace System.ServiceModel.Description
 
         internal class XmlSerializerSchemaImporter : SchemaImporter
         {
-            XmlSerializerOperationGenerator xmlSerializerOperationGenerator;
-            XmlSchemaImporter xmlImporter;
-            SoapSchemaImporter soapImporter;
-            CodeDomProvider codeProvider;
-            XmlSchemas literalSchemas, encodedSchemas;
+            private XmlSerializerOperationGenerator _xmlSerializerOperationGenerator;
+            private XmlSchemaImporter _xmlImporter;
+            private SoapSchemaImporter _soapImporter;
+            private CodeDomProvider _codeProvider;
+            private XmlSchemas _literalSchemas,_encodedSchemas;
             public XmlSerializerSchemaImporter(WsdlImporter importer)
                 : base(importer)
             {
-
                 XmlSerializerImportOptions options;
                 if (importer.State.ContainsKey(typeof(XmlSerializerImportOptions)))
                 {
@@ -1928,33 +1924,33 @@ namespace System.ServiceModel.Description
                     importer.State.Add(typeof(XmlSerializerImportOptions), options);
                 }
                 WsdlNS.WebReferenceOptions webReferenceOptions = options.WebReferenceOptions;
-                codeProvider = options.CodeProvider;
+                _codeProvider = options.CodeProvider;
 
-                encodedSchemas = new XmlSchemas();
-                literalSchemas = new XmlSchemas();
-                CollectEncodedAndLiteralSchemas(importer.WsdlDocuments, encodedSchemas, literalSchemas, schemaSet);
+                _encodedSchemas = new XmlSchemas();
+                _literalSchemas = new XmlSchemas();
+                CollectEncodedAndLiteralSchemas(importer.WsdlDocuments, _encodedSchemas, _literalSchemas, schemaSet);
 
                 CodeIdentifiers codeIdentifiers = new CodeIdentifiers();
 
                 //SchemaImporter.ctor is not thread safe: MB49115, VSWhidbey580396
-                lock (schemaImporterLock)
+                lock (s_schemaImporterLock)
                 {
-                    xmlImporter = new XmlSchemaImporter(literalSchemas, webReferenceOptions.CodeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
+                    _xmlImporter = new XmlSchemaImporter(_literalSchemas, webReferenceOptions.CodeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
                 }
 
                 if (webReferenceOptions != null)
                 {
                     foreach (string extTypeName in webReferenceOptions.SchemaImporterExtensions)
                     {
-                        xmlImporter.Extensions.Add(extTypeName, Type.GetType(extTypeName, true /*throwOnError*/));
+                        _xmlImporter.Extensions.Add(extTypeName, Type.GetType(extTypeName, true /*throwOnError*/));
                     }
                 }
                 //SchemaImporter.ctor is not thread safe: MB49115, VSWhidbey580396
-                lock (schemaImporterLock)
+                lock (s_schemaImporterLock)
                 {
-                    soapImporter = new SoapSchemaImporter(encodedSchemas, webReferenceOptions.CodeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
+                    _soapImporter = new SoapSchemaImporter(_encodedSchemas, webReferenceOptions.CodeGenerationOptions, options.CodeProvider, new ImportContext(codeIdentifiers, false));
                 }
-                xmlSerializerOperationGenerator = new XmlSerializerOperationGenerator(options);
+                _xmlSerializerOperationGenerator = new XmlSerializerOperationGenerator(options);
             }
 
             internal override bool CanImportElement(XmlSchemaElement element)
@@ -1998,15 +1994,15 @@ namespace System.ServiceModel.Description
 
             internal override MessagePartDescription[] ImportWrapperElement(XmlQualifiedName elementName)
             {
-                XmlMembersMapping membersMapping = xmlImporter.ImportMembersMapping(elementName);
+                XmlMembersMapping membersMapping = _xmlImporter.ImportMembersMapping(elementName);
                 ArrayList parts = new ArrayList();
                 for (int i = 0; i < membersMapping.Count; i++)
                 {
                     XmlMemberMapping member = membersMapping[i];
                     string xmlName = NamingHelper.XmlName(member.MemberName);
                     MessagePartDescription part = new MessagePartDescription(xmlName, member.Namespace == null ? string.Empty : member.Namespace);
-                    xmlSerializerOperationGenerator.Add(part, member, membersMapping, false/*isEncoded*/);
-                    part.BaseType = member.GenerateTypeName(codeProvider);
+                    _xmlSerializerOperationGenerator.Add(part, member, membersMapping, false/*isEncoded*/);
+                    part.BaseType = member.GenerateTypeName(_codeProvider);
                     parts.Add(part);
                 }
                 return (MessagePartDescription[])parts.ToArray(typeof(MessagePartDescription));
@@ -2016,9 +2012,9 @@ namespace System.ServiceModel.Description
             {
                 if (isEncoded)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.SFxDocEncodedFaultNotSupported));
-                XmlMembersMapping membersMapping = xmlImporter.ImportMembersMapping(new XmlQualifiedName[] { elementName });
-                this.xmlSerializerOperationGenerator.XmlExporter.ExportMembersMapping(membersMapping);
-                return new CodeTypeReference(this.xmlSerializerOperationGenerator.GetTypeName(membersMapping[0]));
+                XmlMembersMapping membersMapping = _xmlImporter.ImportMembersMapping(new XmlQualifiedName[] { elementName });
+                _xmlSerializerOperationGenerator.XmlExporter.ExportMembersMapping(membersMapping);
+                return new CodeTypeReference(_xmlSerializerOperationGenerator.GetTypeName(membersMapping[0]));
             }
 
             internal override CodeTypeReference ImportFaultType(XmlQualifiedName elementName, XmlQualifiedName typeName, bool isEncoded)
@@ -2031,15 +2027,15 @@ namespace System.ServiceModel.Description
                 schemaMember.MemberType = typeName;
                 if (isEncoded)
                 {
-                    membersMapping = soapImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
-                    this.xmlSerializerOperationGenerator.SoapExporter.ExportMembersMapping(membersMapping);
+                    membersMapping = _soapImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
+                    _xmlSerializerOperationGenerator.SoapExporter.ExportMembersMapping(membersMapping);
                 }
                 else
                 {
-                    membersMapping = xmlImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
-                    this.xmlSerializerOperationGenerator.XmlExporter.ExportMembersMapping(membersMapping);
+                    membersMapping = _xmlImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
+                    _xmlSerializerOperationGenerator.XmlExporter.ExportMembersMapping(membersMapping);
                 }
-                return new CodeTypeReference(this.xmlSerializerOperationGenerator.GetTypeName(membersMapping[0]));
+                return new CodeTypeReference(_xmlSerializerOperationGenerator.GetTypeName(membersMapping[0]));
             }
 
             internal override string ImportType(MessagePartDescription part, XmlQualifiedName typeName, bool isEncoded)
@@ -2051,9 +2047,9 @@ namespace System.ServiceModel.Description
                 schemaMember.MemberName = memberName.EncodedName;
                 schemaMember.MemberType = typeName;
                 if (isEncoded)
-                    membersMapping = soapImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
+                    membersMapping = _soapImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
                 else
-                    membersMapping = xmlImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
+                    membersMapping = _xmlImporter.ImportMembersMapping(memberName.DecodedName, memberNs, new SoapSchemaMember[] { schemaMember });
                 return AddPartType(part, membersMapping, isEncoded);
             }
 
@@ -2061,14 +2057,14 @@ namespace System.ServiceModel.Description
             {
                 if (isEncoded)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDocEncodedNotSupported, part.Name)));
-                XmlMembersMapping membersMapping = xmlImporter.ImportMembersMapping(new XmlQualifiedName[] { element.QualifiedName });
+                XmlMembersMapping membersMapping = _xmlImporter.ImportMembersMapping(new XmlQualifiedName[] { element.QualifiedName });
                 return AddPartType(part, membersMapping, isEncoded);
             }
 
             private string AddPartType(MessagePartDescription part, XmlMembersMapping membersMapping, bool isEncoded)
             {
-                xmlSerializerOperationGenerator.Add(part, membersMapping[0], membersMapping, isEncoded);
-                return membersMapping[0].GenerateTypeName(codeProvider);
+                _xmlSerializerOperationGenerator.Add(part, membersMapping[0], membersMapping, isEncoded);
+                return membersMapping[0].GenerateTypeName(_codeProvider);
             }
 
             internal override void PreprocessSchema()
@@ -2098,7 +2094,7 @@ namespace System.ServiceModel.Description
 
             internal override IOperationBehavior GetOperationGenerator()
             {
-                return xmlSerializerOperationGenerator;
+                return _xmlSerializerOperationGenerator;
             }
 
             internal override bool CanImportStyleAndUse(OperationFormatStyle style, bool isEncoded)
@@ -2158,27 +2154,27 @@ namespace System.ServiceModel.Description
             }
         }
 
-        class OperationInfo
+        private class OperationInfo
         {
-            OperationFormatStyle style;
-            bool isEncoded;
-            bool areAllMessagesWrapped;
+            private OperationFormatStyle _style;
+            private bool _isEncoded;
+            private bool _areAllMessagesWrapped;
 
             internal OperationInfo(OperationFormatStyle style, bool isEncoded, bool areAllMessagesWrapped)
             {
-                this.style = style;
-                this.isEncoded = isEncoded;
-                this.areAllMessagesWrapped = areAllMessagesWrapped;
+                _style = style;
+                _isEncoded = isEncoded;
+                _areAllMessagesWrapped = areAllMessagesWrapped;
             }
-            internal OperationFormatStyle Style { get { return style; } }
-            internal bool IsEncoded { get { return isEncoded; } }
-            internal bool AreAllMessagesWrapped { get { return areAllMessagesWrapped; } }
+            internal OperationFormatStyle Style { get { return _style; } }
+            internal bool IsEncoded { get { return _isEncoded; } }
+            internal bool AreAllMessagesWrapped { get { return _areAllMessagesWrapped; } }
         }
     }
 
     internal delegate void WsdlWarningHandler(string warning);
 
-    static class ValidWsdl
+    internal static class ValidWsdl
     {
         internal static bool Check(WsdlNS.SoapHeaderBinding soapHeaderBinding, WsdlNS.MessageBinding messageBinding, WsdlWarningHandler warningHandler)
         {

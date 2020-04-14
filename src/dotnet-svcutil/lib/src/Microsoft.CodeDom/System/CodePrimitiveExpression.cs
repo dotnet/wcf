@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -15,19 +15,21 @@ namespace Microsoft.CodeDom {
     ///    </para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodePrimitiveExpression : CodeExpression {
-        private object value;
+    public class CodePrimitiveExpression : CodeExpression
+    {
+        private object _value;
 
         /// <devdoc>
         ///    <para>
         ///       Initializes a new instance of <see cref='Microsoft.CodeDom.CodePrimitiveExpression'/>.
         ///    </para>
         /// </devdoc>
-        public CodePrimitiveExpression() {
+        public CodePrimitiveExpression()
+        {
         }
 
         /// <devdoc>
@@ -36,7 +38,8 @@ namespace Microsoft.CodeDom {
         ///       object.
         ///    </para>
         /// </devdoc>
-        public CodePrimitiveExpression(object value) {
+        public CodePrimitiveExpression(object value)
+        {
             Value = value;
         }
 
@@ -45,12 +48,15 @@ namespace Microsoft.CodeDom {
         ///       Gets or sets the object to represent.
         ///    </para>
         /// </devdoc>
-        public object Value {
-            get {
-                return value;
+        public object Value
+        {
+            get
+            {
+                return _value;
             }
-            set {
-                this.value = value;
+            set
+            {
+                _value = value;
             }
         }
     }

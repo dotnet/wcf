@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
- 
+
 namespace System.ServiceModel.Channels
 {
     using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace System.ServiceModel.Channels
 
     public class UdpTransportImporter : IPolicyImportExtension, IWsdlImportExtension
     {
-        string udpTransportUriKey = "SoapUdpTransportImporter.udpTransportUriKey";
+        private string _udpTransportUriKey = "SoapUdpTransportImporter.udpTransportUriKey";
 
         public UdpTransportImporter() { }
 
@@ -31,7 +31,7 @@ namespace System.ServiceModel.Channels
                                 string transportUri = soapBinding.Transport;
                                 if (!string.IsNullOrEmpty(transportUri) && transportUri.Equals(UdpConstants.WsdlSoapUdpTransportUri, StringComparison.Ordinal))
                                 {
-                                    WsdlImporter.SoapInPolicyWorkaroundHelper.InsertAdHocPolicy(wsdlBinding, soapBinding.Transport, this.udpTransportUriKey);
+                                    WsdlImporter.SoapInPolicyWorkaroundHelper.InsertAdHocPolicy(wsdlBinding, soapBinding.Transport, _udpTransportUriKey);
                                 }
                             }
                         }
@@ -43,7 +43,7 @@ namespace System.ServiceModel.Channels
         public void ImportPolicy(MetadataImporter importer, PolicyConversionContext context)
         {
             XmlQualifiedName wsdlBindingQName;
-            string transportUri = WsdlImporter.SoapInPolicyWorkaroundHelper.FindAdHocPolicy(context, this.udpTransportUriKey, out wsdlBindingQName);
+            string transportUri = WsdlImporter.SoapInPolicyWorkaroundHelper.FindAdHocPolicy(context, _udpTransportUriKey, out wsdlBindingQName);
 
             if (transportUri != null && transportUri.Equals(UdpConstants.WsdlSoapUdpTransportUri, StringComparison.Ordinal) && !context.BindingElements.Contains(typeof(TransportBindingElement)))
             {
@@ -99,7 +99,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        void ImportEndpointAddress(WsdlEndpointConversionContext context)
+        private void ImportEndpointAddress(WsdlEndpointConversionContext context)
         {
             EndpointAddress address = null;
 

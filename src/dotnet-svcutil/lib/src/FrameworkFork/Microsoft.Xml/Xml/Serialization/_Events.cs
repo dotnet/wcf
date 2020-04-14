@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Serialization {
-
+namespace Microsoft.Xml.Serialization
+{
     using System.IO;
     using System;
     using System.Collections;
@@ -18,37 +18,41 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlAttributeEventArgs : EventArgs {
-        object o;
-        XmlAttribute attr;
-        string qnames;
-        int lineNumber;
-        int linePosition;
+    public class XmlAttributeEventArgs : EventArgs
+    {
+        private object _o;
+        private XmlAttribute _attr;
+        private string _qnames;
+        private int _lineNumber;
+        private int _linePosition;
 
 
-        internal XmlAttributeEventArgs(XmlAttribute attr, int lineNumber, int linePosition, object o, string qnames) {
-            this.attr = attr;
-            this.o = o;
-            this.qnames = qnames;
-            this.lineNumber = lineNumber;
-            this.linePosition = linePosition;
+        internal XmlAttributeEventArgs(XmlAttribute attr, int lineNumber, int linePosition, object o, string qnames)
+        {
+            _attr = attr;
+            _o = o;
+            _qnames = qnames;
+            _lineNumber = lineNumber;
+            _linePosition = linePosition;
         }
-        
+
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.ObjectBeingDeserialized"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public object ObjectBeingDeserialized {
-            get { return o; }
+        public object ObjectBeingDeserialized
+        {
+            get { return _o; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.Attr"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlAttribute Attr {
-            get { return attr; }
+        public XmlAttribute Attr
+        {
+            get { return _attr; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.LineNumber"]/*' />
@@ -57,8 +61,9 @@ namespace Microsoft.Xml.Serialization {
         ///       Gets the current line number.
         ///    </para>
         /// </devdoc>
-        public int LineNumber {
-            get { return lineNumber; }
+        public int LineNumber
+        {
+            get { return _lineNumber; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.LinePosition"]/*' />
@@ -67,8 +72,9 @@ namespace Microsoft.Xml.Serialization {
         ///       Gets the current line position.
         ///    </para>
         /// </devdoc>
-        public int LinePosition {
-            get { return linePosition; }
+        public int LinePosition
+        {
+            get { return _linePosition; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.Attributes"]/*' />
@@ -77,8 +83,9 @@ namespace Microsoft.Xml.Serialization {
         ///       List the qnames of attributes expected in the current context.
         ///    </para>
         /// </devdoc>
-        public string ExpectedAttributes {
-            get { return qnames == null ? string.Empty : qnames; }
+        public string ExpectedAttributes
+        {
+            get { return _qnames == null ? string.Empty : _qnames; }
         }
     }
 
@@ -86,39 +93,45 @@ namespace Microsoft.Xml.Serialization {
     public delegate void XmlElementEventHandler(object sender, XmlElementEventArgs e);
 
     /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs"]/*' />
-    public class XmlElementEventArgs : EventArgs {
-        object o;
-        XmlElement elem;
-        string qnames;
-        int lineNumber;
-        int linePosition;
+    public class XmlElementEventArgs : EventArgs
+    {
+        private object _o;
+        private XmlElement _elem;
+        private string _qnames;
+        private int _lineNumber;
+        private int _linePosition;
 
-        internal XmlElementEventArgs(XmlElement elem, int lineNumber, int linePosition, object o, string qnames) {
-            this.elem = elem;
-            this.o = o;
-            this.qnames = qnames;
-            this.lineNumber = lineNumber;
-            this.linePosition = linePosition;
+        internal XmlElementEventArgs(XmlElement elem, int lineNumber, int linePosition, object o, string qnames)
+        {
+            _elem = elem;
+            _o = o;
+            _qnames = qnames;
+            _lineNumber = lineNumber;
+            _linePosition = linePosition;
         }
-        
+
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.ObjectBeingDeserialized"]/*' />
-        public object ObjectBeingDeserialized {
-            get { return o; }
+        public object ObjectBeingDeserialized
+        {
+            get { return _o; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.Attr"]/*' />
-        public XmlElement Element {
-            get { return elem; }
+        public XmlElement Element
+        {
+            get { return _elem; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.LineNumber"]/*' />
-        public int LineNumber {
-            get { return lineNumber; }
+        public int LineNumber
+        {
+            get { return _lineNumber; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlElementEventArgs.LinePosition"]/*' />
-        public int LinePosition {
-            get { return linePosition; }
+        public int LinePosition
+        {
+            get { return _linePosition; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlAttributeEventArgs.ExpectedElements"]/*' />
@@ -127,8 +140,9 @@ namespace Microsoft.Xml.Serialization {
         ///       List of qnames of elements expected in the current context.
         ///    </para>
         /// </devdoc>
-        public string ExpectedElements {
-            get { return qnames == null ? string.Empty : qnames; }
+        public string ExpectedElements
+        {
+            get { return _qnames == null ? string.Empty : _qnames; }
         }
     }
 
@@ -142,26 +156,29 @@ namespace Microsoft.Xml.Serialization {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlNodeEventArgs : EventArgs {
-        object o;
-        XmlNode xmlNode;
-        int lineNumber;
-        int linePosition;
-        
+    public class XmlNodeEventArgs : EventArgs
+    {
+        private object _o;
+        private XmlNode _xmlNode;
+        private int _lineNumber;
+        private int _linePosition;
 
-        internal XmlNodeEventArgs(XmlNode xmlNode, int lineNumber, int linePosition, object o) {
-            this.o = o;
-            this.xmlNode = xmlNode;
-            this.lineNumber = lineNumber;
-            this.linePosition = linePosition;
+
+        internal XmlNodeEventArgs(XmlNode xmlNode, int lineNumber, int linePosition, object o)
+        {
+            _o = o;
+            _xmlNode = xmlNode;
+            _lineNumber = lineNumber;
+            _linePosition = linePosition;
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.ObjectBeingDeserialized"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public object ObjectBeingDeserialized {
-            get { return o; }
+        public object ObjectBeingDeserialized
+        {
+            get { return _o; }
         }
 
 
@@ -169,40 +186,45 @@ namespace Microsoft.Xml.Serialization {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public XmlNodeType NodeType {
-            get { return xmlNode.NodeType; }
+        public XmlNodeType NodeType
+        {
+            get { return _xmlNode.NodeType; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.Name"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Name {
-            get { return xmlNode.Name; }
+        public string Name
+        {
+            get { return _xmlNode.Name; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.LocalName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string LocalName {
-            get { return xmlNode.LocalName; }
+        public string LocalName
+        {
+            get { return _xmlNode.LocalName; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.NamespaceURI"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string NamespaceURI {
-            get { return xmlNode.NamespaceURI; }
+        public string NamespaceURI
+        {
+            get { return _xmlNode.NamespaceURI; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.Text"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string Text {
-            get { return xmlNode.Value; }
+        public string Text
+        {
+            get { return _xmlNode.Value; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.LineNumber"]/*' />
@@ -211,8 +233,9 @@ namespace Microsoft.Xml.Serialization {
         ///       Gets the current line number.
         ///    </para>
         /// </devdoc>
-        public int LineNumber {
-            get { return lineNumber; }
+        public int LineNumber
+        {
+            get { return _lineNumber; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="XmlNodeEventArgs.LinePosition"]/*' />
@@ -221,8 +244,9 @@ namespace Microsoft.Xml.Serialization {
         ///       Gets the current line position.
         ///    </para>
         /// </devdoc>
-        public int LinePosition {
-            get { return linePosition; }
+        public int LinePosition
+        {
+            get { return _linePosition; }
         }
     }
 
@@ -230,24 +254,28 @@ namespace Microsoft.Xml.Serialization {
     public delegate void UnreferencedObjectEventHandler(object sender, UnreferencedObjectEventArgs e);
 
     /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs"]/*' />
-    public class UnreferencedObjectEventArgs : EventArgs {
-        object o;
-        string id;
+    public class UnreferencedObjectEventArgs : EventArgs
+    {
+        private object _o;
+        private string _id;
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs.UnreferencedObjectEventArgs"]/*' />
-        public UnreferencedObjectEventArgs(object o, string id) {
-            this.o = o;
-            this.id = id;
+        public UnreferencedObjectEventArgs(object o, string id)
+        {
+            _o = o;
+            _id = id;
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs.UnreferencedObject"]/*' />
-        public object UnreferencedObject {
-            get { return o; }
+        public object UnreferencedObject
+        {
+            get { return _o; }
         }
 
         /// <include file='doc\_Events.uex' path='docs/doc[@for="UnreferencedObjectEventArgs.UnreferencedId"]/*' />
-        public string UnreferencedId {
-            get { return id; }
+        public string UnreferencedId
+        {
+            get { return _id; }
         }
     }
 }

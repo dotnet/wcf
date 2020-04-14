@@ -17,7 +17,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
     {
         #region IHttpCredentialProvider
 
-        private bool authMessageShown;
+        private bool _authMessageShown;
 
         public NetworkCredential GetCredentials(Uri serviceUri, WebException webException)
         {
@@ -39,9 +39,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void ShowAuthenticationConsent()
         {
-            if (!authMessageShown)
+            if (!_authMessageShown)
             {
-                authMessageShown = true;
+                _authMessageShown = true;
 
                 Console.WriteLine();
                 Console.WriteLine(SR.WrnUserBasicCredentialsInClearText);
@@ -54,16 +54,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         #region IClientCertificateProvider
         private const string OidClientAuthValue = "1.3.6.1.5.5.7.3.2";
 
-        private X509Certificate2Collection certificates;
+        private X509Certificate2Collection _certificates;
         private X509Certificate2Collection Certificates
         {
             get
             {
-                if (this.certificates == null)
+                if (_certificates == null)
                 {
-                    this.certificates = GetCertificates();
+                    _certificates = GetCertificates();
                 }
-                return this.certificates;
+                return _certificates;
             }
         }
 
@@ -133,7 +133,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return cert;
         }
 
-        Dictionary<string, X509Certificate> validatedClientCerts = new Dictionary<string, X509Certificate>();
+        private Dictionary<string, X509Certificate> _validatedClientCerts = new Dictionary<string, X509Certificate>();
 
         private X509Certificate2 SelectCertificateFromCollection(X509Certificate2Collection selectedCerts, Uri serviceUri)
         {
@@ -145,7 +145,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             foreach (var cert in selectedCerts)
             {
                 var certhash = cert.GetCertHashString();
-                if (!validatedClientCerts.Keys.Contains(certhash))
+                if (!_validatedClientCerts.Keys.Contains(certhash))
                 {
                     candidateCerts.Add(cert);
                     var certId = counter++ + ".";
@@ -163,7 +163,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             while (!int.TryParse(idxString, out idx) || idx < 1 || idx > candidateCerts.Count);
 
             var selectedCert = candidateCerts[idx - 1];
-            validatedClientCerts[selectedCert.GetCertHashString()] = selectedCert;
+            _validatedClientCerts[selectedCert.GetCertHashString()] = selectedCert;
 
             return selectedCert;
         }
@@ -172,15 +172,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         #region IServerCertificateValidationProvider
 
-        private Uri serviceUri;
+        private Uri _serviceUri;
 
         public void BeforeServerCertificateValidation(Uri serviceUri)
         {
 #if NETCORE10
             // NOOP
 #else
-            System.Diagnostics.Debug.Assert(this.serviceUri == null, "provider already started for the specified service URI");
-            this.serviceUri = serviceUri;
+            System.Diagnostics.Debug.Assert(_serviceUri == null, "provider already started for the specified service URI");
+            _serviceUri = serviceUri;
             ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(this.ValidateServerCertificate);
 #endif
         }
@@ -190,8 +190,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 #if NETCORE10
             // NOOP
 #else
-            System.Diagnostics.Debug.Assert(this.serviceUri == serviceUri, "provider not statrted for the specified service URI");
-            this.serviceUri = null;
+            System.Diagnostics.Debug.Assert(_serviceUri == serviceUri, "provider not statrted for the specified service URI");
+            _serviceUri = null;
             ServicePointManager.ServerCertificateValidationCallback -= new RemoteCertificateValidationCallback(this.ValidateServerCertificate);
 #endif
         }
@@ -202,7 +202,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             bool result = true;
 
             HttpWebRequest request = sender as HttpWebRequest;
-            if (request != null && this.serviceUri != null && this.serviceUri.Authority == request.RequestUri.Authority)
+            if (request != null && _serviceUri != null && _serviceUri.Authority == request.RequestUri.Authority)
             {
                 result = sslPolicyErrors == SslPolicyErrors.None ? true : PromptUserOnInvalidCert(cert, sslPolicyErrors);
             }
@@ -210,19 +210,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return result;
         }
 
-        Dictionary<string, bool> validatedServerCerts = new Dictionary<string, bool>();
+        private Dictionary<string, bool> _validatedServerCerts = new Dictionary<string, bool>();
 
         private bool PromptUserOnInvalidCert(X509Certificate cert, SslPolicyErrors sslPolicyErrors)
         {
             var certhash = cert.GetCertHashString();
 
-            if (!validatedServerCerts.Keys.Contains(certhash))
+            if (!_validatedServerCerts.Keys.Contains(certhash))
             {
                 Console.WriteLine(string.Format(CultureInfo.InvariantCulture, SR.ErrServerCertFailedValidationFormat, sslPolicyErrors, FormatCertificate(cert)));
-                validatedServerCerts[certhash] = PromptEnterOrEscape(throwOnEscape: false);
+                _validatedServerCerts[certhash] = PromptEnterOrEscape(throwOnEscape: false);
             }
 
-            return validatedServerCerts[certhash];
+            return _validatedServerCerts[certhash];
         }
 
         #endregion
@@ -295,7 +295,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return userInput.ToString();
         }
 
-
         #endregion
     }
 
@@ -306,5 +305,4 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return Encoding.Unicode.GetString(cert.GetCertHash());
         }
     }
-
 }

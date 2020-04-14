@@ -12,7 +12,7 @@ namespace System.IdentityModel.Tokens
     using StrEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.StrEntry;
     using TokenEntry = System.IdentityModel.Selectors.SecurityTokenSerializer.TokenEntry;
 
-    class WSSecurityXXX2005 : WSSecurityJan2004
+    internal class WSSecurityXXX2005 : WSSecurityJan2004
     {
         public WSSecurityXXX2005(KeyInfoSerializer securityTokenSerializer)
             : base(securityTokenSerializer)
@@ -42,17 +42,17 @@ namespace System.IdentityModel.Tokens
             clauseEntries.Add(strClause);
         }
 
-        new class SamlTokenEntry : WSSecurityJan2004.SamlTokenEntry
+        private new class SamlTokenEntry : WSSecurityJan2004.SamlTokenEntry
         {
             public override string TokenTypeUri { get { return SecurityXXX2005Strings.SamlTokenType; } }
         }
 
-        new class WrappedKeyTokenEntry : WSSecurityJan2004.WrappedKeyTokenEntry
+        private new class WrappedKeyTokenEntry : WSSecurityJan2004.WrappedKeyTokenEntry
         {
             public override string TokenTypeUri { get { return SecurityXXX2005Strings.EncryptedKeyTokenType; } }
         }
 
-        class SecurityTokenReferenceXXX2005ClauseEntry : SecurityTokenReferenceJan2004ClauseEntry
+        private class SecurityTokenReferenceXXX2005ClauseEntry : SecurityTokenReferenceJan2004ClauseEntry
         {
             public SecurityTokenReferenceXXX2005ClauseEntry(bool emitBspRequiredAttributes, IList<StrEntry> strEntries)
                 : base(emitBspRequiredAttributes, strEntries)
@@ -126,7 +126,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
-        class EncryptedKeyHashStrEntry : WSSecurityJan2004.KeyIdentifierStrEntry
+        private class EncryptedKeyHashStrEntry : WSSecurityJan2004.KeyIdentifierStrEntry
         {
             protected override Type ClauseType { get { throw new NotImplementedException(); } }
 
@@ -159,7 +159,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
-        class X509ThumbprintStrEntry : WSSecurityJan2004.KeyIdentifierStrEntry
+        private class X509ThumbprintStrEntry : WSSecurityJan2004.KeyIdentifierStrEntry
         {
             protected override Type ClauseType { get { throw new NotImplementedException(); } }
 
@@ -181,7 +181,7 @@ namespace System.IdentityModel.Tokens
             }
         }
 
-        class SamlDirectStrEntry : StrEntry
+        private class SamlDirectStrEntry : StrEntry
         {
             public override bool CanReadClause(XmlDictionaryReader reader, string tokenType)
             {

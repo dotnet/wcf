@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.Xml.Schema {
-				using System;
-				using Microsoft.Xml;
+namespace Microsoft.Xml.Schema
+{
+    using System;
+    using Microsoft.Xml;
 
 
     using Microsoft.Xml.Serialization;
@@ -12,33 +13,36 @@ namespace Microsoft.Xml.Schema {
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-    public class XmlSchemaSimpleContentRestriction : XmlSchemaContent {
-        XmlQualifiedName baseTypeName = XmlQualifiedName.Empty; 
-        XmlSchemaSimpleType baseType;
-        XmlSchemaObjectCollection facets = new XmlSchemaObjectCollection();
-        XmlSchemaObjectCollection attributes = new XmlSchemaObjectCollection();
-        XmlSchemaAnyAttribute anyAttribute;
+    public class XmlSchemaSimpleContentRestriction : XmlSchemaContent
+    {
+        private XmlQualifiedName _baseTypeName = XmlQualifiedName.Empty;
+        private XmlSchemaSimpleType _baseType;
+        private XmlSchemaObjectCollection _facets = new XmlSchemaObjectCollection();
+        private XmlSchemaObjectCollection _attributes = new XmlSchemaObjectCollection();
+        private XmlSchemaAnyAttribute _anyAttribute;
 
         /// <include file='doc\XmlSchemaSimpleContentRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleContentRestriction.BaseTypeName"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlAttribute("base")]
-        public XmlQualifiedName BaseTypeName { 
-            get { return baseTypeName; }
-            set { baseTypeName = (value == null ? XmlQualifiedName.Empty : value); }
+        public XmlQualifiedName BaseTypeName
+        {
+            get { return _baseTypeName; }
+            set { _baseTypeName = (value == null ? XmlQualifiedName.Empty : value); }
         }
-        
+
         /// <include file='doc\XmlSchemaSimpleContentRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleContentRestriction.BaseType"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("simpleType", typeof(XmlSchemaSimpleType))]
-        public XmlSchemaSimpleType BaseType { 
-            get { return baseType; }
-            set { baseType = value; }
+        public XmlSchemaSimpleType BaseType
+        {
+            get { return _baseType; }
+            set { _baseType = value; }
         }
-        
+
         /// <include file='doc\XmlSchemaSimpleContentRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleContentRestriction.Facets"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -55,8 +59,9 @@ namespace Microsoft.Xml.Schema {
          XmlElement("totalDigits", typeof(XmlSchemaTotalDigitsFacet)),
          XmlElement("fractionDigits", typeof(XmlSchemaFractionDigitsFacet)),
          XmlElement("whiteSpace", typeof(XmlSchemaWhiteSpaceFacet))]
-        public XmlSchemaObjectCollection Facets {
-            get { return facets; }
+        public XmlSchemaObjectCollection Facets
+        {
+            get { return _facets; }
         }
 
         /// <include file='doc\XmlSchemaSimpleContentRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleContentRestriction.Attributes"]/*' />
@@ -65,8 +70,9 @@ namespace Microsoft.Xml.Schema {
         /// </devdoc>
         [XmlElement("attribute", typeof(XmlSchemaAttribute)),
          XmlElement("attributeGroup", typeof(XmlSchemaAttributeGroupRef))]
-        public XmlSchemaObjectCollection Attributes {
-            get { return attributes; }
+        public XmlSchemaObjectCollection Attributes
+        {
+            get { return _attributes; }
         }
 
         /// <include file='doc\XmlSchemaSimpleContentRestriction.uex' path='docs/doc[@for="XmlSchemaSimpleContentRestriction.AnyAttribute"]/*' />
@@ -74,13 +80,15 @@ namespace Microsoft.Xml.Schema {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         [XmlElement("anyAttribute")]
-        public XmlSchemaAnyAttribute AnyAttribute {
-            get { return anyAttribute; }
-            set { anyAttribute = value; }
+        public XmlSchemaAnyAttribute AnyAttribute
+        {
+            get { return _anyAttribute; }
+            set { _anyAttribute = value; }
         }
 
-        internal void SetAttributes(XmlSchemaObjectCollection newAttributes) {
-            attributes = newAttributes;
+        internal void SetAttributes(XmlSchemaObjectCollection newAttributes)
+        {
+            _attributes = newAttributes;
         }
     }
 }

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.CodeDom {
-
+namespace Microsoft.CodeDom
+{
     using System.Diagnostics;
     using System;
     using Microsoft.Win32;
@@ -13,49 +13,58 @@ namespace Microsoft.CodeDom {
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
     [
-       //  ClassInterface(ClassInterfaceType.AutoDispatch),
+        //  ClassInterface(ClassInterfaceType.AutoDispatch),
         ComVisible(true),
-        // Serializable,
+    // Serializable,
     ]
-    public class CodeEventReferenceExpression : CodeExpression {
-        private CodeExpression targetObject;
-        private string eventName;
+    public class CodeEventReferenceExpression : CodeExpression
+    {
+        private CodeExpression _targetObject;
+        private string _eventName;
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeEventReferenceExpression() {
+        public CodeEventReferenceExpression()
+        {
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeEventReferenceExpression(CodeExpression targetObject, string eventName) {
-            this.targetObject = targetObject;
-            this.eventName = eventName;
+        public CodeEventReferenceExpression(CodeExpression targetObject, string eventName)
+        {
+            _targetObject = targetObject;
+            _eventName = eventName;
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public CodeExpression TargetObject {
-            get {
-                return targetObject;
+        public CodeExpression TargetObject
+        {
+            get
+            {
+                return _targetObject;
             }
-            set {
-                this.targetObject = value;
+            set
+            {
+                _targetObject = value;
             }
         }
 
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public string EventName {
-            get {
-                return (eventName == null) ? string.Empty : eventName;
+        public string EventName
+        {
+            get
+            {
+                return (_eventName == null) ? string.Empty : _eventName;
             }
-            set {
-                eventName = value;
+            set
+            {
+                _eventName = value;
             }
         }
     }

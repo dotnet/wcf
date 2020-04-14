@@ -5,98 +5,115 @@ using System;
 using System.Diagnostics;
 using Microsoft.Xml.Schema;
 
-namespace Microsoft.Xml {
-				using System;
-				
+namespace Microsoft.Xml
+{
+    using System;
 
-    internal class DomNameTable {
-        XmlName[]    entries;
-        int          count;
-        int          mask;
-        XmlDocument  ownerDocument;
-        XmlNameTable nameTable;
 
-        const int InitialSize = 64; // must be a power of two
+    internal class DomNameTable
+    {
+        private XmlName[] _entries;
+        private int _count;
+        private int _mask;
+        private XmlDocument _ownerDocument;
+        private XmlNameTable _nameTable;
 
-        public DomNameTable( XmlDocument document ) {
-            ownerDocument = document;
-            nameTable = document.NameTable;
-            entries = new XmlName[InitialSize];
-            mask = InitialSize - 1;
-            Debug.Assert( ( entries.Length & mask ) == 0 );  // entries.Length must be a power of two
+        private const int InitialSize = 64; // must be a power of two
+
+        public DomNameTable(XmlDocument document)
+        {
+            _ownerDocument = document;
+            _nameTable = document.NameTable;
+            _entries = new XmlName[InitialSize];
+            _mask = InitialSize - 1;
+            Debug.Assert((_entries.Length & _mask) == 0);  // entries.Length must be a power of two
         }
 
-        public XmlName GetName(string prefix, string localName, string ns, IXmlSchemaInfo schemaInfo) { 
-            if (prefix == null) {
+        public XmlName GetName(string prefix, string localName, string ns, IXmlSchemaInfo schemaInfo)
+        {
+            if (prefix == null)
+            {
                 prefix = string.Empty;
             }
-            if (ns == null) {
+            if (ns == null)
+            {
                 ns = string.Empty;
             }
 
             int hashCode = XmlName.GetHashCode(localName);
 
-            for (XmlName e = entries[hashCode & mask]; e != null; e = e.next) {
-                if (e.HashCode == hashCode 
-                    && ((object)e.LocalName == (object)localName 
-                        || e.LocalName.Equals(localName)) 
-                    && ((object)e.Prefix == (object)prefix 
-                        || e.Prefix.Equals(prefix)) 
-                    && ((object)e.NamespaceURI == (object)ns 
+            for (XmlName e = _entries[hashCode & _mask]; e != null; e = e.next)
+            {
+                if (e.HashCode == hashCode
+                    && ((object)e.LocalName == (object)localName
+                        || e.LocalName.Equals(localName))
+                    && ((object)e.Prefix == (object)prefix
+                        || e.Prefix.Equals(prefix))
+                    && ((object)e.NamespaceURI == (object)ns
                         || e.NamespaceURI.Equals(ns))
-                    && e.Equals(schemaInfo)) {
+                    && e.Equals(schemaInfo))
+                {
                     return e;
                 }
             }
             return null;
         }
 
-        public XmlName AddName(string prefix, string localName, string ns, IXmlSchemaInfo schemaInfo) { 
-            if (prefix == null) {
+        public XmlName AddName(string prefix, string localName, string ns, IXmlSchemaInfo schemaInfo)
+        {
+            if (prefix == null)
+            {
                 prefix = string.Empty;
             }
-            if (ns == null) {
+            if (ns == null)
+            {
                 ns = string.Empty;
             }
 
             int hashCode = XmlName.GetHashCode(localName);
 
-            for (XmlName e = entries[hashCode & mask]; e != null; e = e.next) {
-                if (e.HashCode == hashCode 
-                    && ((object)e.LocalName == (object)localName 
-                        || e.LocalName.Equals(localName)) 
-                    && ((object)e.Prefix == (object)prefix 
-                        || e.Prefix.Equals(prefix)) 
-                    && ((object)e.NamespaceURI == (object)ns 
+            for (XmlName e = _entries[hashCode & _mask]; e != null; e = e.next)
+            {
+                if (e.HashCode == hashCode
+                    && ((object)e.LocalName == (object)localName
+                        || e.LocalName.Equals(localName))
+                    && ((object)e.Prefix == (object)prefix
+                        || e.Prefix.Equals(prefix))
+                    && ((object)e.NamespaceURI == (object)ns
                         || e.NamespaceURI.Equals(ns))
-                    && e.Equals(schemaInfo)) {
+                    && e.Equals(schemaInfo))
+                {
                     return e;
                 }
             }
 
-            prefix = nameTable.Add(prefix);
-            localName = nameTable.Add(localName);
-            ns = nameTable.Add(ns);
-            int index = hashCode & mask;
-            XmlName name = XmlName.Create(prefix, localName, ns, hashCode, ownerDocument, entries[index], schemaInfo);
-            entries[index] = name;
+            prefix = _nameTable.Add(prefix);
+            localName = _nameTable.Add(localName);
+            ns = _nameTable.Add(ns);
+            int index = hashCode & _mask;
+            XmlName name = XmlName.Create(prefix, localName, ns, hashCode, _ownerDocument, _entries[index], schemaInfo);
+            _entries[index] = name;
 
-            if (count++ == mask) {
+            if (_count++ == _mask)
+            {
                 Grow();
             }
 
             return name;
         }
 
-        private void Grow() {
-            int newMask = mask * 2 + 1;
-            XmlName[] oldEntries = entries;
-            XmlName[] newEntries = new XmlName[newMask+1];
+        private void Grow()
+        {
+            int newMask = _mask * 2 + 1;
+            XmlName[] oldEntries = _entries;
+            XmlName[] newEntries = new XmlName[newMask + 1];
 
             // use oldEntries.Length to eliminate the rangecheck            
-            for ( int i = 0; i < oldEntries.Length; i++ ) {
+            for (int i = 0; i < oldEntries.Length; i++)
+            {
                 XmlName name = oldEntries[i];
-                while ( name != null ) {
+                while (name != null)
+                {
                     int newIndex = name.HashCode & newMask;
                     XmlName tmp = name.next;
                     name.next = newEntries[newIndex];
@@ -104,8 +121,8 @@ namespace Microsoft.Xml {
                     name = tmp;
                 }
             }
-            entries = newEntries;
-            mask = newMask;
+            _entries = newEntries;
+            _mask = newMask;
         }
     }
 }

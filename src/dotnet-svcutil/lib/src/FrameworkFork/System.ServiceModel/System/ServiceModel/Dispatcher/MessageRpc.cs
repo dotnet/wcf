@@ -368,7 +368,7 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        void DisposeParameterList(object[] parameters)
+        private void DisposeParameterList(object[] parameters)
         {
             IDisposable disposableParameter = null;
             if (parameters != null)

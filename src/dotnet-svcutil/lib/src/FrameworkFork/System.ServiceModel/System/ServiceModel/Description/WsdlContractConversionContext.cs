@@ -3,7 +3,6 @@
 
 namespace System.ServiceModel.Description
 {
-
     using Microsoft.Xml;
 
     using System.ServiceModel.Channels;
@@ -19,43 +18,41 @@ namespace System.ServiceModel.Description
     // in the conversion process.    
     public class WsdlContractConversionContext
     {
+        private readonly ContractDescription _contract;
+        private readonly WsdlNS.PortType _wsdlPortType;
 
-        readonly ContractDescription contract;
-        readonly WsdlNS.PortType wsdlPortType;
-
-        readonly Dictionary<OperationDescription, WsdlNS.Operation> wsdlOperations;
-        readonly Dictionary<WsdlNS.Operation, OperationDescription> operationDescriptions;
-        readonly Dictionary<MessageDescription, WsdlNS.OperationMessage> wsdlOperationMessages;
-        readonly Dictionary<FaultDescription, WsdlNS.OperationFault> wsdlOperationFaults;
-        readonly Dictionary<WsdlNS.OperationMessage, MessageDescription> messageDescriptions;
-        readonly Dictionary<WsdlNS.OperationFault, FaultDescription> faultDescriptions;
-        readonly Dictionary<WsdlNS.Operation, Collection<WsdlNS.OperationBinding>> operationBindings;
+        private readonly Dictionary<OperationDescription, WsdlNS.Operation> _wsdlOperations;
+        private readonly Dictionary<WsdlNS.Operation, OperationDescription> _operationDescriptions;
+        private readonly Dictionary<MessageDescription, WsdlNS.OperationMessage> _wsdlOperationMessages;
+        private readonly Dictionary<FaultDescription, WsdlNS.OperationFault> _wsdlOperationFaults;
+        private readonly Dictionary<WsdlNS.OperationMessage, MessageDescription> _messageDescriptions;
+        private readonly Dictionary<WsdlNS.OperationFault, FaultDescription> _faultDescriptions;
+        private readonly Dictionary<WsdlNS.Operation, Collection<WsdlNS.OperationBinding>> _operationBindings;
 
         internal WsdlContractConversionContext(ContractDescription contract, WsdlNS.PortType wsdlPortType)
         {
+            _contract = contract;
+            _wsdlPortType = wsdlPortType;
 
-            this.contract = contract;
-            this.wsdlPortType = wsdlPortType;
-
-            this.wsdlOperations = new Dictionary<OperationDescription, WsdlNS.Operation>();
-            this.operationDescriptions = new Dictionary<WsdlNS.Operation, OperationDescription>();
-            this.wsdlOperationMessages = new Dictionary<MessageDescription, WsdlNS.OperationMessage>();
-            this.messageDescriptions = new Dictionary<WsdlNS.OperationMessage, MessageDescription>();
-            this.wsdlOperationFaults = new Dictionary<FaultDescription, WsdlNS.OperationFault>();
-            this.faultDescriptions = new Dictionary<WsdlNS.OperationFault, FaultDescription>();
-            this.operationBindings = new Dictionary<WsdlNS.Operation, Collection<WsdlNS.OperationBinding>>();
+            _wsdlOperations = new Dictionary<OperationDescription, WsdlNS.Operation>();
+            _operationDescriptions = new Dictionary<WsdlNS.Operation, OperationDescription>();
+            _wsdlOperationMessages = new Dictionary<MessageDescription, WsdlNS.OperationMessage>();
+            _messageDescriptions = new Dictionary<WsdlNS.OperationMessage, MessageDescription>();
+            _wsdlOperationFaults = new Dictionary<FaultDescription, WsdlNS.OperationFault>();
+            _faultDescriptions = new Dictionary<WsdlNS.OperationFault, FaultDescription>();
+            _operationBindings = new Dictionary<WsdlNS.Operation, Collection<WsdlNS.OperationBinding>>();
         }
 
         internal IEnumerable<IWsdlExportExtension> ExportExtensions
         {
             get
             {
-                foreach (IWsdlExportExtension extension in contract.Behaviors.FindAll<IWsdlExportExtension>())
+                foreach (IWsdlExportExtension extension in _contract.Behaviors.FindAll<IWsdlExportExtension>())
                 {
                     yield return extension;
                 }
 
-                foreach (OperationDescription operation in contract.Operations)
+                foreach (OperationDescription operation in _contract.Operations)
                 {
                     if (!WsdlExporter.OperationIsExportable(operation))
                     {
@@ -87,63 +84,63 @@ namespace System.ServiceModel.Description
         }
 
 
-        public ContractDescription Contract { get { return contract; } }
-        public WsdlNS.PortType WsdlPortType { get { return wsdlPortType; } }
+        public ContractDescription Contract { get { return _contract; } }
+        public WsdlNS.PortType WsdlPortType { get { return _wsdlPortType; } }
 
         public WsdlNS.Operation GetOperation(OperationDescription operation)
         {
-            return this.wsdlOperations[operation];
+            return _wsdlOperations[operation];
         }
 
         public WsdlNS.OperationMessage GetOperationMessage(MessageDescription message)
         {
-            return this.wsdlOperationMessages[message];
+            return _wsdlOperationMessages[message];
         }
 
         public WsdlNS.OperationFault GetOperationFault(FaultDescription fault)
         {
-            return this.wsdlOperationFaults[fault];
+            return _wsdlOperationFaults[fault];
         }
 
         public OperationDescription GetOperationDescription(WsdlNS.Operation operation)
         {
-            return this.operationDescriptions[operation];
+            return _operationDescriptions[operation];
         }
 
         public MessageDescription GetMessageDescription(WsdlNS.OperationMessage operationMessage)
         {
-            return this.messageDescriptions[operationMessage];
+            return _messageDescriptions[operationMessage];
         }
 
         public FaultDescription GetFaultDescription(WsdlNS.OperationFault operationFault)
         {
-            return this.faultDescriptions[operationFault];
+            return _faultDescriptions[operationFault];
         }
 
         // --------------------------------------------------------------------------------------------------
 
         internal void AddOperation(OperationDescription operationDescription, WsdlNS.Operation wsdlOperation)
         {
-            this.wsdlOperations.Add(operationDescription, wsdlOperation);
-            this.operationDescriptions.Add(wsdlOperation, operationDescription);
+            _wsdlOperations.Add(operationDescription, wsdlOperation);
+            _operationDescriptions.Add(wsdlOperation, operationDescription);
         }
 
         internal void AddMessage(MessageDescription messageDescription, WsdlNS.OperationMessage wsdlOperationMessage)
         {
-            this.wsdlOperationMessages.Add(messageDescription, wsdlOperationMessage);
-            this.messageDescriptions.Add(wsdlOperationMessage, messageDescription);
+            _wsdlOperationMessages.Add(messageDescription, wsdlOperationMessage);
+            _messageDescriptions.Add(wsdlOperationMessage, messageDescription);
         }
 
         internal void AddFault(FaultDescription faultDescription, WsdlNS.OperationFault wsdlOperationFault)
         {
-            this.wsdlOperationFaults.Add(faultDescription, wsdlOperationFault);
-            this.faultDescriptions.Add(wsdlOperationFault, faultDescription);
+            _wsdlOperationFaults.Add(faultDescription, wsdlOperationFault);
+            _faultDescriptions.Add(wsdlOperationFault, faultDescription);
         }
 
         internal Collection<WsdlNS.OperationBinding> GetOperationBindings(WsdlNS.Operation operation)
         {
             Collection<WsdlNS.OperationBinding> bindings;
-            if (!this.operationBindings.TryGetValue(operation, out bindings))
+            if (!_operationBindings.TryGetValue(operation, out bindings))
             {
                 bindings = new Collection<WsdlNS.OperationBinding>();
                 WsdlNS.ServiceDescriptionCollection wsdlDocuments = WsdlPortType.ServiceDescription.ServiceDescriptions;
@@ -164,10 +161,9 @@ namespace System.ServiceModel.Description
                         }
                     }
                 }
-                this.operationBindings.Add(operation, bindings);
+                _operationBindings.Add(operation, bindings);
             }
             return bindings;
         }
-
     }
 }

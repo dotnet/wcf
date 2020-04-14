@@ -103,7 +103,7 @@ namespace System.Web.Services.Description
             return ns;
         }
 
-        Exception ItemNotFound(XmlQualifiedName name, string type)
+        private Exception ItemNotFound(XmlQualifiedName name, string type)
         {
             return new Exception(ResWebServices.GetString(ResWebServices.WebDescriptionMissingItem, type, name.Name, name.Namespace));
         }
@@ -176,7 +176,7 @@ namespace System.Web.Services.Description
             return binding;
         }
 
-        ServiceDescription GetServiceDescription(XmlQualifiedName name)
+        private ServiceDescription GetServiceDescription(XmlQualifiedName name)
         {
             ServiceDescription serviceDescription = this[name.Namespace];
             if (serviceDescription == null)
