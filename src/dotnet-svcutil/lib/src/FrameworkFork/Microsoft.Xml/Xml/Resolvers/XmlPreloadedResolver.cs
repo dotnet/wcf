@@ -5,9 +5,7 @@
 using System;
 using System.IO;
 using Microsoft.Xml;
-#if !SILVERLIGHT
 using System.Net;
-#endif
 using System.Text;
 //using Microsoft.Xml.Utils;
 using System.Reflection;
@@ -190,10 +188,6 @@ namespace Microsoft.Xml.Resolvers
             }
         }
 
-#if !SILVERLIGHT
-        // [ResourceExposure(ResourceScope.Machine)]
-        // [ResourceConsumption(ResourceScope.Machine)]
-#endif
         public override Uri ResolveUri(Uri baseUri, string relativeUri)
         {
             // 1) special-case well-known public IDs
@@ -258,7 +252,6 @@ namespace Microsoft.Xml.Resolvers
             }
         }
 
-#if !SILVERLIGHT
         public override ICredentials Credentials
         {
             set
@@ -269,7 +262,6 @@ namespace Microsoft.Xml.Resolvers
                 }
             }
         }
-#endif
 
         public override bool SupportsType(Uri absoluteUri, Type type)
         {

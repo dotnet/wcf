@@ -7,10 +7,6 @@ namespace Microsoft.Xml.Schema
     using System;
     using Microsoft.Xml;
 
-#if SILVERLIGHT
-    //Empty parent class for XmlSchema
-    public abstract class XmlSchemaObject {}
-#else    
     using System.Diagnostics;
     using Microsoft.Xml.Serialization;
     // using System.Security.Permissions;
@@ -124,5 +120,4 @@ namespace Microsoft.Xml.Schema
             return (XmlSchemaObject)MemberwiseClone();
         }
     }
-#endif
 }

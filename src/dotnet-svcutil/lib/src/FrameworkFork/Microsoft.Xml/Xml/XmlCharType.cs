@@ -27,11 +27,6 @@ namespace Microsoft.Xml
     ///  The XmlCharType class is used for quick character type recognition
     ///  which is optimized for the first 127 ascii characters.
     /// </devdoc>
-#if SILVERLIGHT
-#if !SILVERLIGHT_XPATH
-    [System.Runtime.CompilerServices.FriendAccessAllowed] // Used by System.ServiceModel.dll and System.Runtime.Serialization.dll
-#endif
-#endif
 #if XMLCHARTYPE_USE_RESOURCE
     unsafe internal struct XmlCharType {
 #else
@@ -410,19 +405,10 @@ namespace Microsoft.Xml
 
 #if XMLCHARTYPE_USE_RESOURCE
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         private static volatile byte*   s_CharProperties;
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         internal byte*                  charProperties;
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         static void InitInstance() {
             lock ( StaticLock ) {
                 if ( s_CharProperties != null ) {
@@ -478,9 +464,6 @@ namespace Microsoft.Xml
 #endif
 
 #if XMLCHARTYPE_USE_RESOURCE
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         private XmlCharType( byte* charProperties ) {
 #else
         private XmlCharType(byte[] charProperties)
@@ -492,9 +475,6 @@ namespace Microsoft.Xml
 
         public static XmlCharType Instance
         {
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-            [System.Security.SecuritySafeCritical]
-#endif
             get
             {
                 if (s_CharProperties == null)
@@ -506,25 +486,17 @@ namespace Microsoft.Xml
         }
 
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsWhiteSpace(char ch)
         {
             return (charProperties[ch] & fWhitespace) != 0;
         }
 
-#if !SILVERLIGHT
         public bool IsExtender(char ch)
         {
             return (ch == 0xb7);
         }
-#endif
 
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsNCNameSingleChar(char ch)
         {
             return (charProperties[ch] & fNCNameSC) != 0;
@@ -556,9 +528,6 @@ namespace Microsoft.Xml
 #endif
 
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsStartNCNameSingleChar(char ch)
         {
             return (charProperties[ch] & fNCStartNameSC) != 0;
@@ -586,18 +555,12 @@ namespace Microsoft.Xml
         }
 
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsCharData(char ch)
         {
             return (charProperties[ch] & fCharData) != 0;
         }
 
         // [13] PubidChar ::=  #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%] Section 2.3 of spec
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsPubidChar(char ch)
         {
             if (ch < (char)0x80)
@@ -609,9 +572,6 @@ namespace Microsoft.Xml
 
         // TextChar = CharData - { 0xA, 0xD, '<', '&', ']' }
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         internal bool IsTextChar(char ch)
         {
             return (charProperties[ch] & fText) != 0;
@@ -619,9 +579,6 @@ namespace Microsoft.Xml
 
         // AttrValueChar = CharData - { 0xA, 0xD, 0x9, '<', '>', '&', '\'', '"' }
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         internal bool IsAttributeValueChar(char ch)
         {
             return (charProperties[ch] & fAttrValue) != 0;
@@ -630,9 +587,6 @@ namespace Microsoft.Xml
         // XML 1.0 Fourth Edition definitions
         //
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsLetter(char ch)
         {
             return (charProperties[ch] & fLetter) != 0;
@@ -640,9 +594,6 @@ namespace Microsoft.Xml
 
         // NOTE: This method will not be inlined (because it uses byte* charProperties)
         // This method uses the XML 4th edition name character ranges
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         public bool IsNCNameCharXml4e(char ch)
         {
             return (charProperties[ch] & fNCNameXml4e) != 0;
@@ -672,12 +623,10 @@ namespace Microsoft.Xml
             return InRange(ch, 0x30, 0x39);
         }
 
-#if !SILVERLIGHT
         public static bool IsHexDigit(char ch)
         {
             return InRange(ch, 0x30, 0x39) || InRange(ch, 'a', 'f') || InRange(ch, 'A', 'F');
         }
-#endif
 
         // Surrogate methods
         internal static bool IsHighSurrogate(int ch)
@@ -713,9 +662,6 @@ namespace Microsoft.Xml
         }
 
         // Character checking on strings
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         internal int IsOnlyWhitespaceWithPos(string str)
         {
             if (str != null)
@@ -731,9 +677,6 @@ namespace Microsoft.Xml
             return -1;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         internal int IsOnlyCharData(string str)
         {
             if (str != null)

@@ -5,15 +5,9 @@
 
 using System;
 using System.Text;
-#if !SILVERLIGHT
 using Microsoft.Xml.Schema;
-#endif
 
-#if SILVERLIGHT
-using BufferBuilder=Microsoft.Xml.BufferBuilder;
-#else
 using BufferBuilder = System.Text.StringBuilder;
-#endif
 
 namespace Microsoft.Xml
 {
@@ -58,7 +52,6 @@ namespace Microsoft.Xml
         void Throw(Exception e);
     }
 
-#if !SILVERLIGHT
     internal interface IDtdParserAdapterWithValidation : IDtdParserAdapter
     {
         bool DtdValidation { get; }
@@ -71,5 +64,4 @@ namespace Microsoft.Xml
         bool Normalization { get; }
         bool Namespaces { get; }
     }
-#endif
 }

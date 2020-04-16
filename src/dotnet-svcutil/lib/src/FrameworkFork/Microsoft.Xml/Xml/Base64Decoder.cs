@@ -47,9 +47,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         internal override unsafe int Decode(char[] chars, int startPos, int len)
         {
             if (chars == null)
@@ -85,9 +82,6 @@ namespace Microsoft.Xml
             return charsDecoded;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         internal override unsafe int Decode(string str, int startPos, int len)
         {
             if (str == null)
@@ -160,9 +154,6 @@ namespace Microsoft.Xml
             return mapBase64;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         private unsafe void Decode(char* pChars, char* pCharsEndPos,
                              byte* pBytes, byte* pBytesEndPos,
                              out int charsDecoded, out int bytesDecoded)

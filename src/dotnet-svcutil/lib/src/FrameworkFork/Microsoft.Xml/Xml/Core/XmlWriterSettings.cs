@@ -9,11 +9,6 @@ using System.Text;
 // using System.Security.Permissions;
 using System.Runtime.Versioning;
 
-#if !SILVERLIGHT
-#if !HIDE_XSL
-// using Microsoft.Xml.Xsl.Runtime;
-#endif
-#endif
 
 namespace Microsoft.Xml
 {

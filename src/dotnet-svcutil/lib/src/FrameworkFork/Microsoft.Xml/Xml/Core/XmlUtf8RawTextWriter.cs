@@ -73,9 +73,7 @@ namespace Microsoft.Xml
         protected bool checkCharacters;
 
         protected XmlStandalone standalone;
-#if !SILVERLIGHT
         protected XmlOutputMethod outputMethod;
-#endif
 
         protected bool autoXmlDeclaration;
         protected bool mergeCDataSections;
@@ -105,11 +103,9 @@ namespace Microsoft.Xml
             checkCharacters = settings.CheckCharacters;
             closeOutput = settings.CloseOutput;
 
-#if !SILVERLIGHT
             standalone = settings.Standalone;
             outputMethod = settings.OutputMethod;
             mergeCDataSections = settings.MergeCDataSections;
-#endif
 
             if (checkCharacters && newLineHandling == NewLineHandling.Replace)
             {
@@ -139,14 +135,12 @@ namespace Microsoft.Xml
                 }
             }
 
-#if !SILVERLIGHT
             // Write the xml declaration
             if (settings.AutoXmlDeclaration)
             {
                 WriteXmlDeclaration(standalone);
                 autoXmlDeclaration = true;
             }
-#endif
         }
 
         //
@@ -167,11 +161,9 @@ namespace Microsoft.Xml
                 settings.ConformanceLevel = ConformanceLevel.Auto;
                 settings.CheckCharacters = checkCharacters;
 
-#if !SILVERLIGHT
                 settings.AutoXmlDeclaration = autoXmlDeclaration;
                 settings.Standalone = standalone;
                 settings.OutputMethod = outputMethod;
-#endif
 
                 settings.ReadOnly = true;
                 return settings;

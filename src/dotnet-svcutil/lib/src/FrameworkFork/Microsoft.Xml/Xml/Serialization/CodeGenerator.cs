@@ -19,9 +19,7 @@ namespace Microsoft.Xml.Serialization
 
     internal class CodeGenerator
     {
-        // [SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "Method does validation only without any user input")]
         internal static bool IsValidLanguageIndependentIdentifier(string ident) { return Microsoft.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(ident); }
-        // [SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands", Justification = "Method does validation only without any user input")]
         internal static void ValidateIdentifiers(Microsoft.CodeDom.CodeObject e) { Microsoft.CodeDom.Compiler.CodeGenerator.ValidateIdentifiers(e); }
         internal static BindingFlags InstancePublicBindingFlags = BindingFlags.Instance | BindingFlags.Public;
         internal static BindingFlags InstanceBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -1702,12 +1700,10 @@ namespace Microsoft.Xml.Serialization
             _ilGen.Emit(OpCodes.Dup);
         }
 
-#if !SILVERLIGHT // Not in SL
         internal void Ldftn(MethodInfo methodInfo)
         {
             _ilGen.Emit(OpCodes.Ldftn, methodInfo);
         }
-#endif
 
 #if NotUsed
         void LoadThis(object thisObj, MethodInfo methodInfo)

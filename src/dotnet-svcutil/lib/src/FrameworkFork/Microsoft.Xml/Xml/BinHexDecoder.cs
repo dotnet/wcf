@@ -40,9 +40,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         internal override unsafe int Decode(char[] chars, int startPos, int len)
         {
             if (chars == null)
@@ -79,9 +76,6 @@ namespace Microsoft.Xml
             return charsDecoded;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         internal override unsafe int Decode(string str, int startPos, int len)
         {
             if (str == null)
@@ -141,9 +135,6 @@ namespace Microsoft.Xml
         //
         // Static methods
         //
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         public static unsafe byte[] Decode(char[] chars, bool allowOddChars)
         {
             if (chars == null)
@@ -189,9 +180,6 @@ namespace Microsoft.Xml
         // Private methods
         //
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         private static unsafe void Decode(char* pChars, char* pCharsEndPos,
                                     byte* pBytes, byte* pBytesEndPos,
                                     ref bool hasHalfByteCached, ref byte cachedHalfByte,

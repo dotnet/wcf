@@ -174,31 +174,8 @@ namespace Microsoft.Xml
                     string lineNumberStr = lineNumber.ToString();
                     string linePositionStr = linePosition.ToString();
 
-#if SILVERLIGHT
-                    // get the error message from resources
-                    bool fallbackUsed;
-                    message = Res.GetString(res, out fallbackUsed, args);
-
-                    // If debug resources are available, append the line information
-                    if (!fallbackUsed) {
-                        message = Res.GetString(Res.Xml_MessageWithErrorPosition, new string[] { message, lineNumberStr, linePositionStr } );
-                    }
-                    // Debug resources are not available -> add line information to the args and call the GetString to get the default 
-                    // fallback message with the updated arguments. We need to handle the the case when the debug resources are not 
-                    // available like this; otherwise we would end up with two fallback messages in the final string.
-                    else {
-                        int origArgCount = args.Length;
-                        Array.Resize<string>(ref args, origArgCount + 2);
-
-                        args[origArgCount] = lineNumberStr;
-                        args[origArgCount + 1] = linePositionStr;
-                        
-                        message = Res.GetString(res, args);
-                    }
-#else
                     message = ResXml.GetString(res, args);
                     message = ResXml.GetString(ResXml.Xml_MessageWithErrorPosition, new string[] { message, lineNumberStr, linePositionStr });
-#endif
                 }
                 return message;
             }
@@ -285,7 +262,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         internal static bool IsCatchableException(Exception e)
         {
             Debug.Assert(e != null, "Unexpected null exception");
@@ -294,6 +270,5 @@ namespace Microsoft.Xml
                 e is NullReferenceException
             );
         }
-#endif
     };
 } // namespace Microsoft.Xml

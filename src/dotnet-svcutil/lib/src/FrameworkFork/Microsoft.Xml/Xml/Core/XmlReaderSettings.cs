@@ -5,13 +5,11 @@
 using System.IO;
 using System.Diagnostics;
 // using System.Security.Permissions;
-#if !SILVERLIGHT
 using Microsoft.Win32;
 using System.Globalization;
 using System.Security;
 using Microsoft.Xml.Schema;
 // using Microsoft.Xml.XmlConfiguration;
-#endif
 using System.Runtime.Versioning;
 
 namespace Microsoft.Xml
@@ -20,9 +18,7 @@ namespace Microsoft.Xml
 
 
     // XmlReaderSettings class specifies basic features of an XmlReader.
-#if !SILVERLIGHT
     // [PermissionSetAttribute(SecurityAction.InheritanceDemand, Name = "FullTrust")]
-#endif
     public sealed class XmlReaderSettings
     {
         //
@@ -59,13 +55,11 @@ namespace Microsoft.Xml
         // security settings
         private DtdProcessing _dtdProcessing;
 
-#if !SILVERLIGHT
         //Validation settings
         private ValidationType _validationType;
         private XmlSchemaValidationFlags _validationFlags;
         private XmlSchemaSet _schemas;
         private ValidationEventHandler _valEventHandler;
-#endif
 
         // other settings
         private bool _closeInput;
@@ -121,14 +115,12 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         // XmlResolver
         internal bool IsXmlResolverSet
         {
             get;
             set; // keep set internal as we need to call it from the schema validation code
         }
-#endif
 
         public XmlResolver XmlResolver
         {
@@ -136,9 +128,7 @@ namespace Microsoft.Xml
             {
                 CheckReadOnly("XmlResolver");
                 _xmlResolver = value;
-#if !SILVERLIGHT
                 IsXmlResolverSet = true;
-#endif
             }
         }
 
@@ -147,7 +137,6 @@ namespace Microsoft.Xml
             return _xmlResolver;
         }
 
-#if !SILVERLIGHT
         //This is used by get XmlResolver in Xsd.
         //Check if the config set to prohibit default resovler
         //notice we must keep GetXmlResolver() to avoid dead lock when init System.Config.ConfigurationManager
@@ -155,7 +144,6 @@ namespace Microsoft.Xml
         {
             return _xmlResolver;
         }
-#endif
 
         // Text settings
         public int LineNumberOffset
@@ -290,7 +278,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         [Obsolete("Use XmlReaderSettings.DtdProcessing property instead.")]
         public bool ProhibitDtd
         {
@@ -304,7 +291,6 @@ namespace Microsoft.Xml
                 _dtdProcessing = value ? DtdProcessing.Prohibit : DtdProcessing.Parse;
             }
         }
-#endif
 
         public DtdProcessing DtdProcessing
         {
@@ -337,7 +323,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         public ValidationType ValidationType
         {
             get
@@ -406,7 +391,6 @@ namespace Microsoft.Xml
                 _valEventHandler -= value;
             }
         }
-#endif
 
         //
         // Public methods
@@ -427,18 +411,14 @@ namespace Microsoft.Xml
         //
         // Internal methods
         //
-#if !SILVERLIGHT
         internal ValidationEventHandler GetEventHandler()
         {
             return _valEventHandler;
         }
-#endif
 
 
-#if !SILVERLIGHT
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
-#endif
         internal XmlReader CreateReader(String inputUri, XmlParserContext inputContext)
         {
             if (inputUri == null)
@@ -460,13 +440,11 @@ namespace Microsoft.Xml
             // create text XML reader
             XmlReader reader = new XmlTextReaderImpl(inputUri, this, inputContext, tmpResolver);
 
-#if !SILVERLIGHT
             // wrap with validating reader
             if (this.ValidationType != ValidationType.None)
             {
                 reader = AddValidation(reader);
             }
-#endif
 
 #if ASYNC
             if (useAsync) {
@@ -497,13 +475,11 @@ namespace Microsoft.Xml
             // create text XML reader
             XmlReader reader = new XmlTextReaderImpl(input, null, 0, this, baseUri, baseUriString, inputContext, _closeInput);
 
-#if !SILVERLIGHT
             // wrap with validating reader
             if (this.ValidationType != ValidationType.None)
             {
                 reader = AddValidation(reader);
             }
-#endif
 
 #if ASYNC
             if (useAsync) {
@@ -528,13 +504,11 @@ namespace Microsoft.Xml
             // create xml text reader
             XmlReader reader = new XmlTextReaderImpl(input, this, baseUriString, inputContext);
 
-#if !SILVERLIGHT
             // wrap with validating reader
             if (this.ValidationType != ValidationType.None)
             {
                 reader = AddValidation(reader);
             }
-#endif
 
 #if ASYNC
             if (useAsync) {
@@ -590,7 +564,6 @@ namespace Microsoft.Xml
         private void Initialize(XmlResolver resolver)
         {
             _nameTable = null;
-#if !SILVERLIGHT
             if (!EnableLegacyXmlSettings())
             {
                 _xmlResolver = resolver;
@@ -599,7 +572,6 @@ namespace Microsoft.Xml
                 _maxCharactersFromEntities = (long)1e7;
             }
             else
-#endif            
             {
                 _xmlResolver = (resolver == null ? CreateDefaultResolver() : resolver);
                 _maxCharactersFromEntities = 0;
@@ -617,35 +589,24 @@ namespace Microsoft.Xml
 
             _maxCharactersInDocument = 0;
 
-#if !SILVERLIGHT
             _schemas = null;
             _validationType = ValidationType.None;
             _validationFlags = XmlSchemaValidationFlags.ProcessIdentityConstraints;
             _validationFlags |= XmlSchemaValidationFlags.AllowXmlAttributes;
-#endif
 
 #if ASYNC || FEATURE_NETCORE
             useAsync = false;
 #endif
 
             _isReadOnly = false;
-#if !SILVERLIGHT
             IsXmlResolverSet = false;
-#endif
         }
 
         private static XmlResolver CreateDefaultResolver()
         {
-#if SILVERLIGHT
-            if (BinaryCompatibility.TargetsAtLeast_Desktop_V4_5_1)
-                return new XmlSystemPathResolver();
-            return new XmlXapResolver();
-#else
             return new XmlUrlResolver();
-#endif
         }
 
-#if !SILVERLIGHT
         internal XmlReader AddValidation(XmlReader reader)
         {
             if (_validationType == ValidationType.Schema)
@@ -689,7 +650,6 @@ namespace Microsoft.Xml
         {
             return new XmlValidatingReaderImpl(baseReader, this.GetEventHandler(), (this.ValidationFlags & XmlSchemaValidationFlags.ProcessIdentityConstraints) != 0);
         }
-#endif // !SILVERLIGHT
 
         internal XmlReader AddConformanceWrapper(XmlReader baseReader)
         {
@@ -705,24 +665,11 @@ namespace Microsoft.Xml
             {
 #pragma warning disable 618
 
-#if SILVERLIGHT
-                // Starting from Windows phone 8.1 (TargetsAtLeast_Desktop_V4_5_1) we converge with the desktop behavior so we'll let the reader 
-                // not throw exception if has different conformance level than Auto.
-                if (BinaryCompatibility.TargetsAtLeast_Desktop_V4_5_1) {
-                    if (this.conformanceLevel != ConformanceLevel.Auto && this.conformanceLevel != XmlReader.GetV1ConformanceLevel(baseReader)) {
-                        throw new InvalidOperationException(Res.GetString(Res.Xml_IncompatibleConformanceLevel, this.conformanceLevel.ToString()));
-                    }
-                } else if (this.conformanceLevel != ConformanceLevel.Auto) {
-                    throw new InvalidOperationException(Res.GetString(Res.Xml_IncompatibleConformanceLevel, this.conformanceLevel.ToString()));
-                }
-#else
                 if (_conformanceLevel != ConformanceLevel.Auto && _conformanceLevel != XmlReader.GetV1ConformanceLevel(baseReader))
                 {
                     throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_IncompatibleConformanceLevel, _conformanceLevel.ToString()));
                 }
-#endif
 
-#if !SILVERLIGHT
                 // get the V1 XmlTextReader ref
                 XmlTextReader v1XmlTextReader = baseReader as XmlTextReader;
                 if (v1XmlTextReader == null)
@@ -733,20 +680,17 @@ namespace Microsoft.Xml
                         v1XmlTextReader = (XmlTextReader)vr.Reader;
                     }
                 }
-#endif
 
                 // assume the V1 readers already do all conformance checking; 
                 // wrap only if IgnoreWhitespace, IgnoreComments, IgnoreProcessingInstructions or ProhibitDtd is true;
                 if (_ignoreWhitespace)
                 {
                     WhitespaceHandling wh = WhitespaceHandling.All;
-#if !SILVERLIGHT
                     // special-case our V1 readers to see if whey already filter whitespaces
                     if (v1XmlTextReader != null)
                     {
                         wh = v1XmlTextReader.WhitespaceHandling;
                     }
-#endif
                     if (wh == WhitespaceHandling.All)
                     {
                         noWhitespace = true;
@@ -765,12 +709,10 @@ namespace Microsoft.Xml
                 }
                 // DTD processing
                 DtdProcessing baseDtdProcessing = DtdProcessing.Parse;
-#if !SILVERLIGHT
                 if (v1XmlTextReader != null)
                 {
                     baseDtdProcessing = v1XmlTextReader.DtdProcessing;
                 }
-#endif
                 if ((_dtdProcessing == DtdProcessing.Prohibit && baseDtdProcessing != DtdProcessing.Prohibit) ||
                     (_dtdProcessing == DtdProcessing.Ignore && baseDtdProcessing == DtdProcessing.Parse))
                 {

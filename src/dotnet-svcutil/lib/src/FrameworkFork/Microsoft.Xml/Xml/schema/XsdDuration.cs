@@ -12,9 +12,6 @@ namespace Microsoft.Xml.Schema
     /// This structure holds components of an Xsd Duration.  It is used internally to support Xsd durations without loss
     /// of fidelity.  XsdDuration structures are immutable once they've been created.
     /// </summary>
-#if SILVERLIGHT
-    [System.Runtime.CompilerServices.FriendAccessAllowed] // used by System.Runtime.Serialization.dll
-#endif
     internal struct XsdDuration
     {
         private int _years;
@@ -229,7 +226,6 @@ namespace Microsoft.Xml.Schema
             get { return (int)(_nanoseconds & ~NegativeBit); }
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Return number of microseconds in this duration.
         /// </summary>
@@ -294,7 +290,6 @@ namespace Microsoft.Xml.Schema
 
             return new XsdDuration(IsNegative, years, months, days, hours, minutes, seconds, Nanoseconds);
         }
-#endif
 
         /// <summary>
         /// Internal helper method that converts an Xsd duration to a TimeSpan value.  This code uses the estimate
@@ -320,12 +315,10 @@ namespace Microsoft.Xml.Schema
             return result;
         }
 
-#if !SILVERLIGHT
         internal Exception TryToTimeSpan(out TimeSpan result)
         {
             return TryToTimeSpan(DurationType.Duration, out result);
         }
-#endif
 
         internal Exception TryToTimeSpan(DurationType durationType, out TimeSpan result)
         {
@@ -498,12 +491,10 @@ namespace Microsoft.Xml.Schema
             return sb.ToString();
         }
 
-#if !SILVERLIGHT
         internal static Exception TryParse(string s, out XsdDuration result)
         {
             return TryParse(s, DurationType.Duration, out result);
         }
-#endif
 
         internal static Exception TryParse(string s, DurationType durationType, out XsdDuration result)
         {

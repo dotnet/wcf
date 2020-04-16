@@ -164,9 +164,6 @@ namespace Microsoft.Xml
             _length++;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         public void Append(char[] value, int start, int count)
         {
 #if BUFFER_BUILDER_TRACING
@@ -222,9 +219,6 @@ namespace Microsoft.Xml
             Append(value, 0, value.Length);
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         public void Append(string value, int start, int count)
         {
 #if BUFFER_BUILDER_TRACING
@@ -361,7 +355,6 @@ namespace Microsoft.Xml
             return returnString;
         }
 
-#if !SILVERLIGHT
         public string ToString(int startIndex, int len)
         {
 #if BUFFER_BUILDER_TRACING
@@ -430,7 +423,6 @@ namespace Microsoft.Xml
                 return sb.ToString();
             }
         }
-#endif
 
 
         //
@@ -452,9 +444,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         unsafe private void AppendHelper(char* pSource, int count)
         {
             if (_lastBuffer == null)
@@ -578,9 +567,6 @@ namespace Microsoft.Xml
             _length = newLength;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecurityCritical]
-#endif
         internal static unsafe void wstrcpy(char* dmem, char* smem, int charCount)
         {
             if (charCount > 0)

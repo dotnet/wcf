@@ -6,9 +6,7 @@
 using System;
 using System.IO;
 using System.Text;
-#if !SILVERLIGHT
 using Microsoft.Xml.XPath;
-#endif
 using Microsoft.Xml.Schema;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -106,8 +104,6 @@ namespace Microsoft.Xml
         public abstract void WriteFullEndElement();
 
         // Writes out the attribute with the specified LocalName, value, and NamespaceURI.
-#if !SILVERLIGHT
-#endif
         public void WriteAttributeString(string localName, string ns, string value)
         {
             WriteStartAttribute(null, localName, ns);
@@ -279,11 +275,7 @@ namespace Microsoft.Xml
             {
                 throw new ArgumentNullException("value");
             }
-#if SILVERLIGHT
-            WriteString(XmlUntypedStringConverter.Instance.ToString(value, null));
-#else
             WriteString(XmlUntypedConverter.Untyped.ToString(value, null));
-#endif
         }
 
         // Writes out the specified value.
@@ -475,7 +467,6 @@ namespace Microsoft.Xml
             } while (reader.Read() && (d < reader.Depth || (d == reader.Depth && reader.NodeType == XmlNodeType.EndElement)));
         }
 
-#if !SILVERLIGHT // Removing dependency on XPathNavigator
         // Copies the current node from the given XPathNavigator to the writer (including child nodes).
         public virtual void WriteNode(XPathNavigator navigator, bool defattr)
         {
@@ -599,7 +590,6 @@ namespace Microsoft.Xml
                 }
             }
         }
-#endif
 
         // Element Helper Methods
 
@@ -645,7 +635,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT // Removing dependency on XPathNavigator
         // Copy local namespaces on the navigator's current node to the raw writer. The namespaces are returned by the navigator in reversed order. 
         // The recursive call reverses them back.
         private void WriteLocalNamespaces(XPathNavigator nsNav)
@@ -667,12 +656,10 @@ namespace Microsoft.Xml
                 WriteAttributeString("xmlns", prefix, XmlReservedNs.NsXmlNs, ns);
             }
         }
-#endif
 
         //
         // Static methods for creating writers
         //
-#if !SILVERLIGHT
         // Creates an XmlWriter for writing into the provided file.
         // [ResourceConsumption(ResourceScope.Machine)]
         // [ResourceExposure(ResourceScope.Machine)]
@@ -692,7 +679,6 @@ namespace Microsoft.Xml
             }
             return settings.CreateWriter(outputFileName);
         }
-#endif
 
         // Creates an XmlWriter for writing into the provided stream.
         public static XmlWriter Create(Stream output)

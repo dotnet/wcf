@@ -210,7 +210,6 @@ namespace Microsoft.Xml
         }
     }
 
-#if !SILVERLIGHT
     internal class Ucs4Encoding : Encoding
     {
         internal Ucs4Decoder ucs4Decoder;
@@ -692,5 +691,4 @@ namespace Microsoft.Xml
             return j - charIndex;
         }
     }
-#endif
 }

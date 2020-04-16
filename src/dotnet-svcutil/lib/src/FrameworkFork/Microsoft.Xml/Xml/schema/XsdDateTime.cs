@@ -23,11 +23,9 @@ namespace Microsoft.Xml.Schema
         GMonthDay = 0x20,
         GDay = 0x40,
         GMonth = 0x80,
-#if !SILVERLIGHT // XDR is not supported in Silverlight
         XdrDateTimeNoTz = 0x100,
         XdrDateTime = 0x200,
         XdrTimeNoTz = 0x400,  //XDRTime with tz is the same as xsd:time  
-#endif
         AllXsd = 0xFF //All still does not include the XDR formats
     }
 
@@ -62,9 +60,7 @@ namespace Microsoft.Xml.Schema
             GMonthDay,
             GDay,
             GMonth,
-#if !SILVERLIGHT // XDR is not supported in Silverlight
             XdrDateTime,
-#endif
         }
 
         // Internal representation of DateTimeKind
@@ -112,14 +108,12 @@ namespace Microsoft.Xml.Schema
         private static readonly int s_lz___dd = "---dd".Length;
 
 
-#if !SILVERLIGHT
         /// <summary>
         /// Constructs an XsdDateTime from a string trying all possible formats.
         /// </summary>
         public XsdDateTime(string text) : this(text, XsdDateTimeFlags.AllXsd)
         {
         }
-#endif
 
         /// <summary>
         /// Constructs an XsdDateTime from a string using specific format.
@@ -134,12 +128,10 @@ namespace Microsoft.Xml.Schema
             InitiateXsdDateTime(parser);
         }
 
-#if !SILVERLIGHT
         private XsdDateTime(Parser parser) : this()
         {
             InitiateXsdDateTime(parser);
         }
-#endif
 
         private void InitiateXsdDateTime(Parser parser)
         {
@@ -151,7 +143,6 @@ namespace Microsoft.Xml.Schema
             _extra = (uint)(((int)parser.typeCode << TypeShift) | ((int)parser.kind << KindShift) | (parser.zoneHour << ZoneHourShift) | parser.zoneMinute);
         }
 
-#if !SILVERLIGHT
         internal static bool TryParse(string text, XsdDateTimeFlags kinds, out XsdDateTime result)
         {
             Parser parser = new Parser();
@@ -163,7 +154,6 @@ namespace Microsoft.Xml.Schema
             result = new XsdDateTime(parser);
             return true;
         }
-#endif
 
         /// <summary>
         /// Constructs an XsdDateTime from a DateTime.
@@ -254,7 +244,6 @@ namespace Microsoft.Xml.Schema
             get { return (XsdDateTimeKind)((_extra & KindMask) >> KindShift); }
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Returns XmlTypeCode of the value being stored
         /// </summary>
@@ -283,7 +272,6 @@ namespace Microsoft.Xml.Schema
                 }
             }
         }
-#endif
 
         /// <summary>
         /// Returns the year part of XsdDateTime
@@ -374,7 +362,6 @@ namespace Microsoft.Xml.Schema
             }
         }
 
-#if !SILVERLIGHT
         public DateTime ToZulu()
         {
             switch (InternalKind)
@@ -392,7 +379,6 @@ namespace Microsoft.Xml.Schema
                     return _dt;
             }
         }
-#endif
 
         /// <summary>
         /// Cast to DateTime
@@ -514,7 +500,6 @@ namespace Microsoft.Xml.Schema
             return result;
         }
 
-#if !SILVERLIGHT
         /// <summary>
         /// Compares two DateTime values, returning an integer that indicates
         /// their relationship.
@@ -549,7 +534,6 @@ namespace Microsoft.Xml.Schema
             if (value == null) return 1;
             return Compare(this, (XsdDateTime)value);
         }
-#endif
 
         /// <summary>
         /// Serialization to a string
@@ -701,7 +685,6 @@ namespace Microsoft.Xml.Schema
             text[start + 1] = (char)(value % 10 + '0');
         }
 
-#if !SILVERLIGHT
         // Auxiliary for compare. 
         // Returns UTC DateTime
         private DateTime GetZuluDateTime()
@@ -718,7 +701,6 @@ namespace Microsoft.Xml.Schema
                     return _dt.ToUniversalTime();
             }
         }
-#endif
 
         private static readonly XmlTypeCode[] s_typeCodes = {
             XmlTypeCode.DateTime,
@@ -767,12 +749,8 @@ namespace Microsoft.Xml.Schema
                 }
                 // Choose format starting from the most common and trying not to reparse the same thing too many times
 
-#if !SILVERLIGHT // XDR is not supported in Silverlight
                 if (Test(kinds, XsdDateTimeFlags.DateTime | XsdDateTimeFlags.Date | XsdDateTimeFlags.XdrDateTime | XsdDateTimeFlags.XdrDateTimeNoTz))
                 {
-#else
-                if (Test(kinds, XsdDateTimeFlags.DateTime | XsdDateTimeFlags.Date)) {
-#endif
                     if (ParseDate(start))
                     {
                         if (Test(kinds, XsdDateTimeFlags.DateTime))
@@ -791,7 +769,6 @@ namespace Microsoft.Xml.Schema
                                 return true;
                             }
                         }
-#if !SILVERLIGHT // XDR is not supported in Silverlight
                         if (Test(kinds, XsdDateTimeFlags.XdrDateTime))
                         {
                             if (ParseZoneAndWhitespace(start + s_lzyyyy_MM_dd) || (ParseChar(start + s_lzyyyy_MM_dd, 'T') && ParseTimeAndZoneAndWhitespace(start + s_lzyyyy_MM_ddT)))
@@ -816,7 +793,6 @@ namespace Microsoft.Xml.Schema
                                 return true;
                             }
                         }
-#endif
                     }
                 }
 
@@ -832,7 +808,6 @@ namespace Microsoft.Xml.Schema
                     }
                 }
 
-#if !SILVERLIGHT // XDR is not supported in Silverlight
                 if (Test(kinds, XsdDateTimeFlags.XdrTimeNoTz))
                 {
                     if (ParseTimeAndWhitespace(start))
@@ -844,7 +819,6 @@ namespace Microsoft.Xml.Schema
                         return true;
                     }
                 }
-#endif
 
                 if (Test(kinds, XsdDateTimeFlags.GYearMonth | XsdDateTimeFlags.GYear))
                 {
@@ -950,7 +924,6 @@ namespace Microsoft.Xml.Schema
                 return false;
             }
 
-#if !SILVERLIGHT // XDR is not supported in Silverlight
             private bool ParseTimeAndWhitespace(int start)
             {
                 if (ParseTime(ref start))
@@ -963,7 +936,6 @@ namespace Microsoft.Xml.Schema
                 }
                 return false;
             }
-#endif
 
             private static int[] s_power10 = new int[maxFractionDigits] { -1, 10, 100, 1000, 10000, 100000, 1000000 };
             private bool ParseTime(ref int start)

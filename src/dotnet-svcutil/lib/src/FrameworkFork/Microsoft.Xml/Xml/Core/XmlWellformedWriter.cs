@@ -1588,7 +1588,6 @@ namespace Microsoft.Xml
         //
         // Internal methods
         //
-#if !SILVERLIGHT
         internal XmlWriter InnerWriter
         {
             get
@@ -1604,7 +1603,6 @@ namespace Microsoft.Xml
                 return _rawWriter;
             }
         }
-#endif
 
         //
         // Private methods
@@ -2141,9 +2139,6 @@ namespace Microsoft.Xml
             return s;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY && XMLCHARTYPE_USE_RESOURCE
-        [System.Security.SecuritySafeCritical]
-#endif
         private unsafe void CheckNCName(string ncname)
         {
             Debug.Assert(ncname != null && ncname.Length > 0);

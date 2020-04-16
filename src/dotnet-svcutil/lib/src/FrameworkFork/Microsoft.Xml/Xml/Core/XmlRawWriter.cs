@@ -6,9 +6,7 @@
 using System;
 using System.IO;
 using System.Diagnostics;
-#if !SILVERLIGHT
 using Microsoft.Xml.XPath;
-#endif
 using Microsoft.Xml.Schema;
 using System.Collections;
 
@@ -74,11 +72,9 @@ namespace Microsoft.Xml
             throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
         }
 
-#if !SILVERLIGHT // This code is not being hit in Silverlight
         public override void WriteDocType(string name, string pubid, string sysid, string subset)
         {
         }
-#endif
 
         // Raw writers do not have to keep a stack of element names.
         public override void WriteEndElement()
@@ -148,7 +144,6 @@ namespace Microsoft.Xml
             throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
         }
 
-#if !SILVERLIGHT // This code is not being hit in Silverlight
         // Forward call to WriteString(string).
         public override void WriteCData(string text)
         {
@@ -190,7 +185,6 @@ namespace Microsoft.Xml
         {
             WriteString(data);
         }
-#endif
 
         // Override in order to handle Xml simple typed values and to pass resolver for QName values
         public override void WriteValue(object value)
@@ -199,11 +193,7 @@ namespace Microsoft.Xml
             {
                 throw new ArgumentNullException("value");
             }
-#if SILVERLIGHT // TODO
-            WriteString(XmlUntypedStringConverter.Instance.ToString( value, resolver ) );
-#else
             WriteString(XmlUntypedConverter.Untyped.ToString(value, resolver));
-#endif
         }
 
         // Override in order to handle Xml simple typed values and to pass resolver for QName values
@@ -230,12 +220,10 @@ namespace Microsoft.Xml
             throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
         }
 
-#if !SILVERLIGHT  // Removing dependency on XPathNavigator
         public override void WriteNode(Microsoft.Xml.XPath.XPathNavigator navigator, bool defattr)
         {
             throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
         }
-#endif
 
         //
         // XmlRawWriter methods and properties
@@ -255,20 +243,12 @@ namespace Microsoft.Xml
         }
 
         // Write the xml declaration.  This must be the first call.
-#if !SILVERLIGHT // This code is not being hit in Silverlight
         internal virtual void WriteXmlDeclaration(XmlStandalone standalone)
         {
         }
         internal virtual void WriteXmlDeclaration(string xmldecl)
         {
         }
-#else
-
-        internal abstract void WriteXmlDeclaration(XmlStandalone standalone);
-
-        internal abstract void WriteXmlDeclaration(string xmldecl);
-
-#endif
 
         // Called after an element's attributes have been enumerated, but before any children have been
         // enumerated.  This method must always be called, even for empty elements.
@@ -285,16 +265,10 @@ namespace Microsoft.Xml
 
         internal abstract void WriteEndElement(string prefix, string localName, string ns);
 
-#if !SILVERLIGHT // This code is not being hit in Silverlight
         internal virtual void WriteFullEndElement(string prefix, string localName, string ns)
         {
             WriteEndElement(prefix, localName, ns);
         }
-#else
-
-        internal abstract void WriteFullEndElement(string prefix, string localName, string ns);
-
-#endif
 
         internal virtual void WriteQualifiedName(string prefix, string localName, string ns)
         {

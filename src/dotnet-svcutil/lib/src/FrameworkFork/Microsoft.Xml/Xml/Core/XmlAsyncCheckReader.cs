@@ -190,7 +190,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         public override char QuoteChar
         {
             get
@@ -199,7 +198,6 @@ namespace Microsoft.Xml
                 return _coreReader.QuoteChar;
             }
         }
-#endif // !SILVERLIGHT
 
         public override XmlSpace XmlSpace
         {
@@ -635,13 +633,11 @@ namespace Microsoft.Xml
             return _coreReader.ReadValueChunk(buffer, index, count);
         }
 
-#if !SILVERLIGHT
         public override string ReadString()
         {
             CheckAsync();
             return _coreReader.ReadString();
         }
-#endif // !SILVERLIGHT
 
         public override XmlNodeType MoveToContent()
         {
@@ -667,7 +663,6 @@ namespace Microsoft.Xml
             _coreReader.ReadStartElement(localname, ns);
         }
 
-#if !SILVERLIGHT
         public override string ReadElementString()
         {
             CheckAsync();
@@ -685,7 +680,6 @@ namespace Microsoft.Xml
             CheckAsync();
             return _coreReader.ReadElementString(localname, ns);
         }
-#endif // !SILVERLIGHT
 
         public override void ReadEndElement()
         {
@@ -783,7 +777,6 @@ namespace Microsoft.Xml
             _coreReader.Dispose();
         }
 
-#if !SILVERLIGHT
         internal override XmlNamespaceManager NamespaceManager
         {
             get
@@ -801,7 +794,6 @@ namespace Microsoft.Xml
                 return _coreReader.DtdInfo;
             }
         }
-#endif
 
         #endregion
 

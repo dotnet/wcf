@@ -7,9 +7,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Security;
-#if !SILVERLIGHT
-// using System.Security.Permissions;
-#endif
 
 namespace Microsoft.Xml
 {
@@ -86,9 +83,6 @@ namespace Microsoft.Xml
         }
 
         [SecuritySafeCritical]
-#if !SILVERLIGHT
-        // [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
-#endif
         private void GetHashCodeDelegate()
         {
             // If we find the Marvin hash method, we use that

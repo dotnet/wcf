@@ -7,20 +7,14 @@ using System;
 using System.IO;
 using System.Text;
 using System.Security;
-#if !SILVERLIGHT
 using Microsoft.Xml.Schema;
-#endif
 using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 
-#if SILVERLIGHT
-using BufferBuilder=Microsoft.Xml.BufferBuilder;
-#else
 using BufferBuilder = System.Text.StringBuilder;
-#endif
 
 namespace Microsoft.Xml
 {
@@ -71,10 +65,8 @@ namespace Microsoft.Xml
             // normalization
             internal bool eolNormalized;
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
             // EndEntity reporting
             internal bool entityResolvedManually;
-#endif
 
             internal void Clear()
             {
@@ -95,9 +87,7 @@ namespace Microsoft.Xml
                 isEof = false;
                 isStreamEof = false;
                 eolNormalized = true;
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
                 entityResolvedManually = false;
-#endif
             }
 
             internal void Close(bool closeInput)
@@ -159,7 +149,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader
         //
         // NoNamespaceManager
         //
@@ -177,17 +166,12 @@ namespace Microsoft.Xml
             public override string LookupPrefix(string uri) { return null; }
             public override bool HasNamespace(string prefix) { return false; }
         }
-#endif
 
         //
         // DtdParserProxy: IDtdParserAdapter proxy for XmlTextReaderImpl
         //
-#if SILVERLIGHT
-        internal partial class DtdParserProxy : IDtdParserAdapter {
-#else
         internal partial class DtdParserProxy : IDtdParserAdapterV1
         {
-#endif
 
             // Fields
             private XmlTextReaderImpl _reader;
@@ -213,10 +197,8 @@ namespace Microsoft.Xml
             {
                 // SxS: DtdParserProxy_BaseUri property on the reader may expose machine scope resources. This property
                 // is just returning the value of the other property, so it may expose machine scope resource as well.
-#if !SILVERLIGHT
                 // [ResourceConsumption(ResourceScope.Machine)]
                 // [ResourceExposure(ResourceScope.Machine)]
-#endif
                 get { return _reader.DtdParserProxy_BaseUri; }
             }
 
@@ -327,7 +309,6 @@ namespace Microsoft.Xml
                 _reader.DtdParserProxy_OnPublicId(publicId, keywordLineInfo, publicLiteralLineInfo);
             }
 
-#if !SILVERLIGHT
             bool IDtdParserAdapterWithValidation.DtdValidation
             {
                 get { return _reader.DtdParserProxy_DtdValidation; }
@@ -352,7 +333,6 @@ namespace Microsoft.Xml
             {
                 get { return _reader.DtdParserProxy_V1CompatibilityMode; }
             }
-#endif
 
         }
 
@@ -415,10 +395,8 @@ namespace Microsoft.Xml
             // helper members
             internal bool xmlContextPushed;
 
-#if !SILVERLIGHT // Needed only for XmlTextReader (reporting of entities)
             // attribute value chunks
             internal NodeData nextAttrValueChunk;
-#endif
 
             // type info
             internal object schemaType;
@@ -815,12 +793,10 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         //
         // OnDefaultAttributeUse delegate
         //
         internal delegate void OnDefaultAttributeUseDelegate(IDtdDefaultAttributeInfo defaultAttribute, XmlTextReaderImpl coreReader);
-#endif
 
     }
 }

@@ -42,9 +42,7 @@ namespace Microsoft.Xml
         //
         private static XmlCharType s_xmlCharType = XmlCharType.Instance;
 
-#if !SILVERLIGHT
         internal static char[] crt = new char[] { '\n', '\r', '\t' };
-#endif
 
         /// <include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.EncodeName"]/*' />
         /// <devdoc>
@@ -376,7 +374,6 @@ namespace Microsoft.Xml
         }
 
 
-#if !SILVERLIGHT
         internal static Exception TryVerifyName(string name)
         {
             if (name == null || name.Length == 0)
@@ -396,14 +393,9 @@ namespace Microsoft.Xml
         {
             return VerifyQName(name, ExceptionType.XmlException);
         }
-#endif
 
-#if SILVERLIGHT
-        internal static string VerifyQName(string name, ExceptionType exceptionType) {
-#else
         internal static unsafe string VerifyQName(string name, ExceptionType exceptionType)
         {
-#endif
             if (name == null || name.Length == 0)
             {
                 throw new ArgumentNullException("name");
@@ -451,7 +443,6 @@ namespace Microsoft.Xml
             return name;
         }
 
-#if !SILVERLIGHT
         internal static Exception TryVerifyNCName(string name)
         {
             int len = ValidateNames.ParseNCName(name);
@@ -493,7 +484,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         /// <include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.VerifyNMTOKEN"]/*' />
         /// <devdoc>
@@ -525,7 +515,6 @@ namespace Microsoft.Xml
             return name;
         }
 
-#if !SILVERLIGHT
         internal static Exception TryVerifyNMTOKEN(string name)
         {
             if (name == null || name.Length == 0)
@@ -558,7 +547,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         // Verification method for XML characters as defined in XML spec production [2] Char.
         // Throws XmlException if invalid character is found, otherwise returns the input string.
@@ -620,11 +608,7 @@ namespace Microsoft.Xml
         //                              combined with the production [4] NameStartChar of XML 1.0 spec
         public static unsafe bool IsStartNCNameChar(char ch)
         {
-#if SILVERLIGHT
-            return xmlCharType.IsStartNCNameSingleChar(ch);
-#else
             return (s_xmlCharType.charProperties[ch] & XmlCharType.fNCStartNameSC) != 0;
-#endif
         }
 
 #if XML10_FIFTH_EDITION
@@ -637,11 +621,7 @@ namespace Microsoft.Xml
         //                        combined with the production [4] NameChar of XML 1.0 spec
         public static unsafe bool IsNCNameChar(char ch)
         {
-#if SILVERLIGHT
-            return xmlCharType.IsNCNameSingleChar(ch);
-#else
             return (s_xmlCharType.charProperties[ch] & XmlCharType.fNCNameSC) != 0;
-#endif
         }
 
 #if XML10_FIFTH_EDITION
@@ -653,11 +633,7 @@ namespace Microsoft.Xml
         // Valid XML character � as defined in XML 1.0 spec (fifth edition) production [2] Char
         public static unsafe bool IsXmlChar(char ch)
         {
-#if SILVERLIGHT
-            return xmlCharType.IsCharData(ch);
-#else
             return (s_xmlCharType.charProperties[ch] & XmlCharType.fCharData) != 0;
-#endif
         }
 
         public static bool IsXmlSurrogatePair(char lowChar, char highChar)
@@ -674,11 +650,7 @@ namespace Microsoft.Xml
         // Valid Xml white space � as defined in XML 1.0 spec (fifth edition) production [3] S
         public static unsafe bool IsWhitespaceChar(char ch)
         {
-#if SILVERLIGHT
-            return xmlCharType.IsWhiteSpace(ch);
-#else
             return (s_xmlCharType.charProperties[ch] & XmlCharType.fWhitespace) != 0;
-#endif
         }
 
         // Value convertors:
@@ -850,7 +822,6 @@ namespace Microsoft.Xml
             return new XsdDuration(value).ToString();
         }
 
-#if !SILVERLIGHT
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString12"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -869,7 +840,6 @@ namespace Microsoft.Xml
         {
             return value.ToString(format, DateTimeFormatInfo.InvariantInfo);
         }
-#endif
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToString14"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -932,7 +902,6 @@ namespace Microsoft.Xml
             throw new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Boolean"));
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToBoolean(string s, out Boolean result)
         {
             s = TrimString(s);
@@ -949,7 +918,6 @@ namespace Microsoft.Xml
             result = false;
             return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Boolean"));
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToChar"]/*' />
         /// <devdoc>
@@ -968,7 +936,6 @@ namespace Microsoft.Xml
             return s[0];
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToChar(string s, out Char result)
         {
             if (!Char.TryParse(s, out result))
@@ -977,7 +944,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDecimal"]/*' />
         /// <devdoc>
@@ -988,7 +954,6 @@ namespace Microsoft.Xml
             return Decimal.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToDecimal(string s, out Decimal result)
         {
             if (!Decimal.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1011,7 +976,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToSByte"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -1022,7 +986,6 @@ namespace Microsoft.Xml
             return SByte.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToSByte(string s, out SByte result)
         {
             if (!SByte.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1031,7 +994,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt16"]/*' />
         /// <devdoc>
@@ -1042,7 +1004,6 @@ namespace Microsoft.Xml
             return Int16.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToInt16(string s, out Int16 result)
         {
             if (!Int16.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1051,7 +1012,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt32"]/*' />
         /// <devdoc>
@@ -1062,7 +1022,6 @@ namespace Microsoft.Xml
             return Int32.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToInt32(string s, out Int32 result)
         {
             if (!Int32.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1071,7 +1030,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToInt64"]/*' />
         /// <devdoc>
@@ -1082,7 +1040,6 @@ namespace Microsoft.Xml
             return Int64.Parse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToInt64(string s, out Int64 result)
         {
             if (!Int64.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1092,7 +1049,6 @@ namespace Microsoft.Xml
             return null;
         }
 
-#endif
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToByte"]/*' />
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
@@ -1102,7 +1058,6 @@ namespace Microsoft.Xml
             return Byte.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToByte(string s, out Byte result)
         {
             if (!Byte.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1111,7 +1066,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt16"]/*' />
         /// <devdoc>
@@ -1123,7 +1077,6 @@ namespace Microsoft.Xml
             return UInt16.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToUInt16(string s, out UInt16 result)
         {
             if (!UInt16.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1132,7 +1085,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt32"]/*' />
         /// <devdoc>
@@ -1145,7 +1097,6 @@ namespace Microsoft.Xml
         }
 
 
-#if !SILVERLIGHT
         internal static Exception TryToUInt32(string s, out UInt32 result)
         {
             if (!UInt32.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1154,7 +1105,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToUInt64"]/*' />
         /// <devdoc>
@@ -1166,7 +1116,6 @@ namespace Microsoft.Xml
             return UInt64.Parse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToUInt64(string s, out UInt64 result)
         {
             if (!UInt64.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
@@ -1175,7 +1124,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToSingle"]/*' />
         /// <devdoc>
@@ -1194,7 +1142,6 @@ namespace Microsoft.Xml
             return f;
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToSingle(string s, out Single result)
         {
             s = TrimString(s);
@@ -1218,7 +1165,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDouble"]/*' />
         /// <devdoc>
@@ -1237,7 +1183,6 @@ namespace Microsoft.Xml
             return dVal;
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToDouble(string s, out double result)
         {
             s = TrimString(s);
@@ -1261,9 +1206,7 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
-#if !SILVERLIGHT
         internal static Double ToXPathDouble(Object o)
         {
             string str = o as string;
@@ -1328,7 +1271,6 @@ namespace Microsoft.Xml
             double temp = Math.Round(value);
             return (value - temp == 0.5) ? temp + 1 : temp;
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToTimeSpan"]/*' />
         /// <devdoc>
@@ -1354,7 +1296,6 @@ namespace Microsoft.Xml
             return timeSpan;
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToTimeSpan(string s, out TimeSpan result)
         {
             XsdDuration duration;
@@ -1371,9 +1312,7 @@ namespace Microsoft.Xml
                 return duration.TryToTimeSpan(out result);
             }
         }
-#endif
 
-#if !SILVERLIGHT
         // use AllDateTimeFormats property to access the formats
         private static volatile string[] s_allDateTimeFormats;
 
@@ -1433,7 +1372,6 @@ namespace Microsoft.Xml
         {
             return ToDateTime(s, AllDateTimeFormats);
         }
-#endif
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToDateTime1"]/*' />
         /// <devdoc>
@@ -1523,7 +1461,6 @@ namespace Microsoft.Xml
             return new Guid(s);
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToGuid(string s, out Guid result)
         {
             Exception exception = null;
@@ -1544,7 +1481,6 @@ namespace Microsoft.Xml
             }
             return exception;
         }
-#endif
 
         private static DateTime SwitchToLocalTime(DateTime value)
         {
@@ -1596,7 +1532,6 @@ namespace Microsoft.Xml
             return uri;
         }
 
-#if !SILVERLIGHT
         internal static Exception TryToUri(string s, out Uri result)
         {
             result = null;
@@ -1615,7 +1550,6 @@ namespace Microsoft.Xml
             }
             return null;
         }
-#endif
 
         // Compares the given character interval and string and returns true if the characters are identical
         internal static bool StrEqual(char[] chars, int strPos1, int strLen1, string str2)
@@ -1675,9 +1609,6 @@ namespace Microsoft.Xml
             return false;
         }
 
-#if SILVERLIGHT && !SILVERLIGHT_DISABLE_SECURITY
-        [System.Security.SecuritySafeCritical]
-#endif
         private static unsafe long DoubleToInt64Bits(double value)
         {
             // NOTE: BitConverter.DoubleToInt64Bits is missing in Silverlight
@@ -1689,12 +1620,8 @@ namespace Microsoft.Xml
             VerifyCharData(data, exceptionType, exceptionType);
         }
 
-#if SILVERLIGHT
-        internal static void VerifyCharData( string data, ExceptionType invCharExceptionType, ExceptionType invSurrogateExceptionType ) {
-#else
         internal static unsafe void VerifyCharData(string data, ExceptionType invCharExceptionType, ExceptionType invSurrogateExceptionType)
         {
-#endif
             if (data == null || data.Length == 0)
             {
                 return;
@@ -1704,12 +1631,8 @@ namespace Microsoft.Xml
             int len = data.Length;
             for (; ; )
             {
-#if SILVERLIGHT
-                while (i < len && xmlCharType.IsCharData(data[i])) {
-#else
                 while (i < len && (s_xmlCharType.charProperties[data[i]] & XmlCharType.fCharData) != 0)
                 {
-#endif
                     i++;
                 }
                 if (i == len)
@@ -1739,12 +1662,8 @@ namespace Microsoft.Xml
             }
         }
 
-#if SILVERLIGHT
-        internal static void VerifyCharData(char[] data, int offset, int len, ExceptionType exceptionType) {
-#else
         internal static unsafe void VerifyCharData(char[] data, int offset, int len, ExceptionType exceptionType)
         {
-#endif
             if (data == null || len == 0)
             {
                 return;
@@ -1754,12 +1673,8 @@ namespace Microsoft.Xml
             int endPos = offset + len;
             for (; ; )
             {
-#if SILVERLIGHT
-                while ( i < endPos && xmlCharType.IsCharData(data[i])) {
-#else
                 while (i < endPos && (s_xmlCharType.charProperties[data[i]] & XmlCharType.fCharData) != 0)
                 {
-#endif
                     i++;
                 }
                 if (i == endPos)
@@ -1789,7 +1704,6 @@ namespace Microsoft.Xml
             }
         }
 
-#if !SILVERLIGHT
         internal static string EscapeValueForDebuggerDisplay(string value)
         {
             StringBuilder sb = null;
@@ -1840,7 +1754,6 @@ namespace Microsoft.Xml
             }
             return sb.ToString();
         }
-#endif
 
         internal static Exception CreateException(string res, ExceptionType exceptionType)
         {

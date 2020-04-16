@@ -13,7 +13,6 @@ namespace Microsoft.Xml.Schema
     using Microsoft.Xml;
 
 
-#if !SILVERLIGHT
     internal enum AttributeMatchState
     {
         AttributeFound,
@@ -27,7 +26,6 @@ namespace Microsoft.Xml.Schema
         AttributeNameMismatch,
         ValidateAttributeInvalidCall,
     }
-#endif
 
     internal class SchemaInfo : IDtdInfo
     {
@@ -42,21 +40,17 @@ namespace Microsoft.Xml.Schema
         private bool _hasNonCDataAttributes = false;
         private bool _hasDefaultAttributes = false;
 
-#if !SILVERLIGHT
         private Dictionary<string, bool> _targetNamespaces = new Dictionary<string, bool>();
         private Dictionary<XmlQualifiedName, SchemaAttDef> _attributeDecls = new Dictionary<XmlQualifiedName, SchemaAttDef>();
         private int _errorCount;
         private SchemaType _schemaType;
         private Dictionary<XmlQualifiedName, SchemaElementDecl> _elementDeclsByType = new Dictionary<XmlQualifiedName, SchemaElementDecl>();
         private Dictionary<string, SchemaNotation> _notations;
-#endif
 
 
         internal SchemaInfo()
         {
-#if !SILVERLIGHT
             _schemaType = SchemaType.None;
-#endif
         }
 
         public XmlQualifiedName DocTypeName
@@ -105,7 +99,6 @@ namespace Microsoft.Xml.Schema
             }
         }
 
-#if !SILVERLIGHT
         internal SchemaType SchemaType
         {
             get { return _schemaType; }
@@ -392,7 +385,6 @@ namespace Microsoft.Xml.Schema
                 }
             }
         }
-#endif
 
         internal void Finish()
         {

@@ -12,9 +12,7 @@ namespace Microsoft.Xml
 
     public class XmlNamespaceManager : IXmlNamespaceResolver, IEnumerable
     {
-#if !SILVERLIGHT // EmptyResolver is not used in Silverlight
         private static volatile IXmlNamespaceResolver s_EmptyResolver;
-#endif
 
         private struct NamespaceDeclaration
         {
@@ -55,7 +53,6 @@ namespace Microsoft.Xml
         // Constants
         private const int MinDeclsCountForHashtable = 16;
 
-#if !SILVERLIGHT // EmptyResolver is not used in Silverlight
         internal static IXmlNamespaceResolver EmptyResolver
         {
             get
@@ -68,13 +65,10 @@ namespace Microsoft.Xml
                 return s_EmptyResolver;
             }
         }
-#endif
 
-#if !SILVERLIGHT // This constructor is not used in Silverlight
         internal XmlNamespaceManager()
         {
         }
-#endif
 
         public XmlNamespaceManager(XmlNameTable nameTable)
         {
@@ -361,7 +355,6 @@ namespace Microsoft.Xml
             return false;
         }
 
-#if !SILVERLIGHT // This method is not used in Silverlight
         internal bool GetNamespaceDeclaration(int idx, out string prefix, out string uri)
         {
             idx = _lastDecl - idx;
@@ -376,6 +369,5 @@ namespace Microsoft.Xml
 
             return true;
         }
-#endif
     } //XmlNamespaceManager
 }

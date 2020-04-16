@@ -12,11 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 
-#if SILVERLIGHT
-using BufferBuilder=Microsoft.Xml.BufferBuilder;
-#else
 using BufferBuilder = System.Text.StringBuilder;
-#endif
 
 namespace Microsoft.Xml
 {
@@ -125,7 +121,6 @@ namespace Microsoft.Xml
             SystemOrPublicID
         }
 
-#if !SILVERLIGHT
         private class UndeclaredNotation
         {
             internal string name;
@@ -141,16 +136,13 @@ namespace Microsoft.Xml
                 this.next = null;
             }
         }
-#endif
 
         //
         // Fields
         //
         // connector to reader
         private IDtdParserAdapter _readerAdapter;
-#if !SILVERLIGHT
         private IDtdParserAdapterWithValidation _readerAdapterWithValidation;
-#endif
 
         // name table
         private XmlNameTable _nameTable;
@@ -166,12 +158,10 @@ namespace Microsoft.Xml
         private string _publicId = string.Empty;
 
         // flags
-#if !SILVERLIGHT
         private bool _normalize = true;
         private bool _validate = false;
         private bool _supportNamespaces = true;
         private bool _v1Compat = false;
-#endif
 
         // cached character buffer
         private char[] _chars;
@@ -211,10 +201,8 @@ namespace Microsoft.Xml
         private string _documentBaseUri = string.Empty;
         private string _externalDtdBaseUri = string.Empty;
 
-#if !SILVERLIGHT
         private Dictionary<string, UndeclaredNotation> _undeclaredNotations = null;
         private int[] _condSectionEntityIds = null;
-#endif
 
         private const int CondSectionEntityIdsInitialSize = 2;
 
@@ -255,13 +243,10 @@ namespace Microsoft.Xml
         {
             Debug.Assert(readerAdapter != null);
             _readerAdapter = readerAdapter;
-#if !SILVERLIGHT
             _readerAdapterWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
-#endif
 
             _nameTable = readerAdapter.NameTable;
 
-#if !SILVERLIGHT
             IDtdParserAdapterWithValidation raWithValidation = readerAdapter as IDtdParserAdapterWithValidation;
             if (raWithValidation != null)
             {
@@ -274,12 +259,9 @@ namespace Microsoft.Xml
                 _normalize = raV1.Normalization;
                 _supportNamespaces = raV1.Namespaces;
             }
-#endif
 
             _schemaInfo = new SchemaInfo();
-#if !SILVERLIGHT
             _schemaInfo.SchemaType = SchemaType.DTD;
-#endif
 
             _stringBuilder = new BufferBuilder();
 
@@ -411,11 +393,7 @@ namespace Microsoft.Xml
         {
             get
             {
-#if SILVERLIGHT
-            return true;
-#else
                 return _supportNamespaces;
-#endif
             }
         }
 
@@ -423,11 +401,7 @@ namespace Microsoft.Xml
         {
             get
             {
-#if SILVERLIGHT
-            return true;
-#else
                 return _normalize;
-#endif
             }
         }
 
@@ -448,7 +422,6 @@ namespace Microsoft.Xml
 
             _schemaInfo.Finish();
 
-#if !SILVERLIGHT
             // check undeclared forward references
             if (_validate && _undeclaredNotations != null)
             {
@@ -462,7 +435,6 @@ namespace Microsoft.Xml
                     }
                 }
             }
-#endif
         }
 
         private void ParseInDocumentDtd(bool saveInternalSubset)
@@ -606,12 +578,10 @@ namespace Microsoft.Xml
                         if (_condSectionDepth > 0)
                         {
                             _condSectionDepth--;
-#if !SILVERLIGHT
                             if (_validate && _currentEntityId != _condSectionEntityIds[_condSectionDepth])
                             {
                                 SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                             }
-#endif
                         }
                         else
                         {
@@ -668,9 +638,6 @@ namespace Microsoft.Xml
 
                 if (_currentEntityId != startTagEntityId)
                 {
-#if SILVERLIGHT
-                    Throw(curPos, Res.Sch_ParEntityRefNesting);
-#else
                     if (_validate)
                     {
                         SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
@@ -682,7 +649,6 @@ namespace Microsoft.Xml
                             Throw(_curPos, ResXml.Sch_ParEntityRefNesting);
                         }
                     }
-#endif
                 }
             }
         }
@@ -719,7 +685,6 @@ namespace Microsoft.Xml
                         attrDef.LinePosition = (int)LinePos - (_curPos - _tokenStartPos);
                         break;
                     case Token.GreaterThan:
-#if !SILVERLIGHT
                         if (_v1Compat)
                         {
                             // check xml:space and xml:lang
@@ -739,7 +704,6 @@ namespace Microsoft.Xml
                                 }
                             }
                         }
-#endif
                         return;
                     default:
                         goto UnexpectedError;
@@ -755,7 +719,6 @@ namespace Microsoft.Xml
                 {
                     if (attrDef.Name.Name == "space")
                     {
-#if !SILVERLIGHT
                         if (_v1Compat)
                         {
                             // BUG BUG: For backward compatibility, we check the correct type and values of the
@@ -770,19 +733,16 @@ namespace Microsoft.Xml
                         }
                         else
                         {
-#endif
                             attrDef.Reserved = SchemaAttDef.Reserve.XmlSpace;
                             if (attrDef.TokenizedType != XmlTokenizedType.ENUMERATION)
                             {
                                 Throw(ResXml.Xml_EnumerationRequired, string.Empty, attrDef.LineNumber, attrDef.LinePosition);
                             }
-#if !SILVERLIGHT
                             if (_validate)
                             {
                                 attrDef.CheckXmlSpace(_readerAdapterWithValidation.ValidationEventHandling);
                             }
                         }
-#endif
                     }
                     else if (attrDef.Name.Name == "lang")
                     {
@@ -813,16 +773,13 @@ namespace Microsoft.Xml
             if (IsAttributeValueType(token))
             {
                 attrDef.TokenizedType = (XmlTokenizedType)(int)token;
-#if !SILVERLIGHT
                 attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType(attrDef.Datatype.TypeCode);
-#endif
 
                 switch (token)
                 {
                     case Token.NOTATION:
                         break;
                     case Token.ID:
-#if !SILVERLIGHT
                         if (_validate && elementDecl.IsIdDeclared)
                         {
                             SchemaAttDef idAttrDef = elementDecl.GetAttDef(attrDef.Name);
@@ -831,13 +788,11 @@ namespace Microsoft.Xml
                                 SendValidationEvent(XmlSeverityType.Error, ResXml.Sch_IdAttrDeclared, elementDecl.Name.ToString());
                             }
                         }
-#endif
                         elementDecl.IsIdDeclared = true;
                         return;
                     default:
                         return;
                 }
-#if !SILVERLIGHT
                 // check notation constrains
                 if (_validate)
                 {
@@ -856,7 +811,6 @@ namespace Microsoft.Xml
                         elementDecl.IsNotationDeclared = true;
                     }
                 }
-#endif
 
                 if (GetToken(true) != Token.LeftParen)
                 {
@@ -871,7 +825,6 @@ namespace Microsoft.Xml
                 for (; ; )
                 {
                     string notationName = GetNameString();
-#if !SILVERLIGHT
                     if (!_schemaInfo.Notations.ContainsKey(notationName))
                     {
                         AddUndeclaredNotation(notationName);
@@ -881,7 +834,6 @@ namespace Microsoft.Xml
                         SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(ResXml.Xml_AttlistDuplNotationValue, notationName, BaseUriStr, (int)LineNo, (int)LinePos));
                     }
                     attrDef.AddValue(notationName);
-#endif
 
                     switch (GetToken(false))
                     {
@@ -901,16 +853,12 @@ namespace Microsoft.Xml
             else if (token == Token.LeftParen)
             {
                 attrDef.TokenizedType = XmlTokenizedType.ENUMERATION;
-#if !SILVERLIGHT
                 attrDef.SchemaType = XmlSchemaType.GetBuiltInSimpleType(attrDef.Datatype.TypeCode);
-#endif
 
                 // parse nmtoken list
                 if (GetToken(false) != Token.Nmtoken)
                     goto UnexpectedError;
-#if !SILVERLIGHT
                 attrDef.AddValue(GetNameString());
-#endif
 
                 for (; ; )
                 {
@@ -920,13 +868,11 @@ namespace Microsoft.Xml
                             if (GetToken(false) != Token.Nmtoken)
                                 goto UnexpectedError;
                             string nmtoken = GetNmtokenString();
-#if !SILVERLIGHT
                             if (_validate && !_v1Compat && attrDef.Values != null && attrDef.Values.Contains(nmtoken) && !ignoreErrors)
                             {
                                 SendValidationEvent(XmlSeverityType.Error, new XmlSchemaException(ResXml.Xml_AttlistDuplEnumValue, nmtoken, BaseUriStr, (int)LineNo, (int)LinePos));
                             }
                             attrDef.AddValue(nmtoken);
-#endif
                             break;
                         case Token.RightParen:
                             return;
@@ -967,12 +913,10 @@ namespace Microsoft.Xml
                     goto UnexpectedError;
             }
 
-#if !SILVERLIGHT
             if (_validate && attrDef.Datatype.TokenizedType == XmlTokenizedType.ID && !ignoreErrors)
             {
                 SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_AttListPresence, string.Empty);
             }
-#endif
 
             if (attrDef.TokenizedType != XmlTokenizedType.CDATA)
             {
@@ -986,9 +930,7 @@ namespace Microsoft.Xml
             attrDef.ValueLineNumber = (int)_literalLineInfo.lineNo;
             attrDef.ValueLinePosition = (int)_literalLineInfo.linePos + 1;
 
-#if !SILVERLIGHT
             DtdValidator.SetDefaultTypedValue(attrDef, _readerAdapter);
-#endif
             return;
 
         UnexpectedError:
@@ -1009,12 +951,10 @@ namespace Microsoft.Xml
 
             if (_schemaInfo.ElementDecls.TryGetValue(name, out elementDecl))
             {
-#if !SILVERLIGHT
                 if (_validate)
                 {
                     SendValidationEvent(_curPos - name.Name.Length, XmlSeverityType.Error, ResXml.Sch_DupElementDecl, GetNameString());
                 }
-#endif
             }
             else
             {
@@ -1031,27 +971,6 @@ namespace Microsoft.Xml
             elementDecl.IsDeclaredInExternal = !ParsingInternalSubset;
 
             // content spec
-#if SILVERLIGHT
-            switch ( GetToken( true ) ) {
-                case Token.EMPTY:
-                case Token.ANY:
-                    break;
-                case Token.LeftParen:
-                    switch ( GetToken( false ) ) {
-                        case Token.PCDATA:
-                            ParseElementMixedContentNoValidation();
-                            break;
-                        case Token.None:
-                            ParseElementOnlyContentNoValidation();
-                            break;
-                        default:
-                            goto UnexpectedError;
-                    }
-                    break;
-                default:
-                    goto UnexpectedError;
-            }
-#else
             switch (GetToken(true))
             {
                 case Token.EMPTY:
@@ -1094,7 +1013,6 @@ namespace Microsoft.Xml
                 default:
                     goto UnexpectedError;
             }
-#endif
             if (GetToken(false) != Token.GreaterThan)
             {
                 ThrowUnexpectedToken(_curPos, ">");
@@ -1105,126 +1023,6 @@ namespace Microsoft.Xml
             OnUnexpectedError();
         }
 
-#if SILVERLIGHT // Element content model parsing methods without validation
-
-        private class ParseElementOnlyContentNoValidation_LocalFrame
-        {
-            public ParseElementOnlyContentNoValidation_LocalFrame() {
-                parsingSchema = Token.None;
-            }
-
-            public Token parsingSchema;
-        }
-
-        private void ParseElementOnlyContentNoValidation() {
-            Stack<ParseElementOnlyContentNoValidation_LocalFrame> localFrames = 
-                new Stack<ParseElementOnlyContentNoValidation_LocalFrame>();
-            ParseElementOnlyContentNoValidation_LocalFrame currentFrame =
-                new ParseElementOnlyContentNoValidation_LocalFrame();
-            localFrames.Push(currentFrame);
-
-        RecursiveCall:
-            
-        Loop:
-
-            switch ( GetToken( false ) ) {
-                case Token.QName:
-                    GetNameQualified(true);
-                    ParseHowManyNoValidation();
-                    break;
-                case Token.LeftParen:
-                    // We could just do this:
-                    // ParseElementOnlyContentNoValidation();
-                    //
-                    // But that would be a recursion - so we will simulate the call using our localFrames stack
-                    //   instead.
-                    currentFrame =
-                        new ParseElementOnlyContentNoValidation_LocalFrame();
-                    localFrames.Push(currentFrame);
-                    goto RecursiveCall;
-                    // And we should return here when we return from the recursion
-                    //   but it's the samea s returning after the switch statement
-
-                case Token.GreaterThan:
-                    Throw( curPos, Res.Xml_InvalidContentModel );
-                    goto Return;
-                default:
-                    goto UnexpectedError;
-            }
-
-        ReturnFromRecursiveCall:
-
-            switch ( GetToken( false ) ) {
-                case Token.Comma:
-                    if ( currentFrame.parsingSchema == Token.Or ) {
-                        Throw( curPos, Res.Xml_InvalidContentModel );
-                    }
-                    currentFrame.parsingSchema = Token.Comma;
-                    break;
-                case Token.Or:
-                    if ( currentFrame.parsingSchema == Token.Comma ) {
-                        Throw( curPos, Res.Xml_InvalidContentModel );
-                    }
-                    currentFrame.parsingSchema = Token.Or;
-                    break;
-                case Token.RightParen:
-                    ParseHowManyNoValidation();
-                    goto Return;
-                case Token.GreaterThan:
-                    Throw( curPos, Res.Xml_InvalidContentModel );
-                    goto Return;
-                default:
-                    goto UnexpectedError;
-            }
-            goto Loop;
-
-        UnexpectedError:
-            OnUnexpectedError();
-
-        Return:
-            // This is equivalent to return; statement
-            //   we simulate it using our localFrames stack
-            localFrames.Pop();
-            if (localFrames.Count > 0) {
-                currentFrame = localFrames.Peek();
-                goto ReturnFromRecursiveCall;
-            }
-            else {
-                return;
-            }
-        }
-
-        private void ParseHowManyNoValidation() {
-            GetToken( false );
-        }
-
-        private void ParseElementMixedContentNoValidation() {
-            bool hasNames = false;
-
-            for (;;) {
-                switch ( GetToken( false ) ) {
-                    case Token.RightParen:
-                        if ( GetToken( false ) != Token.Star && hasNames ) {
-                            ThrowUnexpectedToken( curPos, "*" );
-                        }
-                        return;
-                    case Token.Or:
-                        if ( !hasNames ) {
-                            hasNames = true;
-                        }
-                        if ( GetToken( false ) != Token.QName ) {
-                            goto default;
-                        }
-                        GetNameQualified( true );
-                        continue;
-                    default:
-                        OnUnexpectedError();
-                        break;
-                }
-            }
-        }
-
-#else // Element content model parsing methods with validation support
 
         private class ParseElementOnlyContent_LocalFrame
         {
@@ -1417,7 +1215,6 @@ namespace Microsoft.Xml
                 }
             }
         }
-#endif // Element content model parsing methods with validation support
 
         private void ParseEntityDecl()
         {
@@ -1494,13 +1291,11 @@ namespace Microsoft.Xml
                         }
 
                         entity.NData = GetNameQualified(false);
-#if !SILVERLIGHT
                         string notationName = entity.NData.Name;
                         if (!_schemaInfo.Notations.ContainsKey(notationName))
                         {
                             AddUndeclaredNotation(notationName);
                         }
-#endif
                     }
                     break;
                 case Token.Literal:
@@ -1531,7 +1326,6 @@ namespace Microsoft.Xml
             }
 
             XmlQualifiedName notationName = GetNameQualified(false);
-#if !SILVERLIGHT
             SchemaNotation notation = null;
             if (!_schemaInfo.Notations.ContainsKey(notationName.Name))
             {
@@ -1550,7 +1344,6 @@ namespace Microsoft.Xml
                     SendValidationEvent(_curPos - notationName.Name.Length, XmlSeverityType.Error, ResXml.Sch_DupNotation, notationName.Name);
                 }
             }
-#endif
 
             // public / system id
             Token token = GetToken(true);
@@ -1560,13 +1353,11 @@ namespace Microsoft.Xml
 
                 ParseExternalId(token, Token.NOTATION, out notationPublicId, out notationSystemId);
 
-#if !SILVERLIGHT
                 if (notation != null)
                 {
                     notation.SystemLiteral = notationSystemId;
                     notation.Pubid = notationPublicId;
                 }
-#endif
             }
             else
             {
@@ -1577,7 +1368,6 @@ namespace Microsoft.Xml
                 OnUnexpectedError();
         }
 
-#if !SILVERLIGHT
         private void AddUndeclaredNotation(string notationName)
         {
             if (_undeclaredNotations == null)
@@ -1596,15 +1386,12 @@ namespace Microsoft.Xml
                 _undeclaredNotations.Add(notationName, un);
             }
         }
-#endif
 
         private void ParseComment()
         {
             SaveParsingBuffer();
-#if !SILVERLIGHT
             try
             {
-#endif
                 if (SaveInternalSubsetValue)
                 {
                     _readerAdapter.ParseComment(_internalSubsetValueSb);
@@ -1614,7 +1401,6 @@ namespace Microsoft.Xml
                 {
                     _readerAdapter.ParseComment(null);
                 }
-#if !SILVERLIGHT
             }
             catch (XmlException e)
             {
@@ -1627,7 +1413,6 @@ namespace Microsoft.Xml
                     throw;
                 }
             }
-#endif
             LoadParsingBuffer();
         }
 
@@ -1657,7 +1442,6 @@ namespace Microsoft.Xml
                     {
                         goto default;
                     }
-#if !SILVERLIGHT
                     if (_validate && csEntityId != _currentEntityId)
                     {
                         SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
@@ -1676,7 +1460,6 @@ namespace Microsoft.Xml
                         }
                         _condSectionEntityIds[_condSectionDepth] = csEntityId;
                     }
-#endif
                     _condSectionDepth++;
                     break;
                 case Token.IGNORE:
@@ -1684,23 +1467,19 @@ namespace Microsoft.Xml
                     {
                         goto default;
                     }
-#if !SILVERLIGHT
                     if (_validate && csEntityId != _currentEntityId)
                     {
                         SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
-#endif
                     // the content of the ignore section is parsed & skipped by scanning function
                     if (GetToken(false) != Token.CondSectionEnd)
                     {
                         goto default;
                     }
-#if !SILVERLIGHT
                     if (_validate && csEntityId != _currentEntityId)
                     {
                         SendValidationEvent(_curPos, XmlSeverityType.Error, ResXml.Sch_ParEntityRefNesting, string.Empty);
                     }
-#endif
                     break;
                 default:
                     OnUnexpectedError();
@@ -2647,19 +2426,10 @@ namespace Microsoft.Xml
             _curPos++;
             _tokenStartPos = _curPos;
 
-#if SILVERLIGHT
-            stringBuilder.Clear();
-#else
             _stringBuilder.Length = 0;
-#endif
 
             for (; ; )
             {
-#if SILVERLIGHT
-                while ( xmlCharType.IsAttributeValueChar( chars[curPos] ) && chars[curPos] != '%' ) {
-                    curPos++;
-                }
-#else
                 unsafe
                 {
                     while ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fAttrValue) != 0 && _chars[_curPos] != '%')
@@ -2667,7 +2437,6 @@ namespace Microsoft.Xml
                         _curPos++;
                     }
                 }
-#endif
 
                 if (_chars[_curPos] == quoteChar && _currentEntityId == startQuoteEntityId)
                 {
@@ -3120,11 +2889,6 @@ namespace Microsoft.Xml
             // skip ignored part
             for (; ; )
             {
-#if SILVERLIGHT
-                while ( xmlCharType.IsTextChar(chars[curPos]) && chars[curPos] != ']' ) {
-                    curPos++;
-                }
-#else
                 unsafe
                 {
                     while ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fText) != 0 && _chars[_curPos] != ']')
@@ -3132,7 +2896,6 @@ namespace Microsoft.Xml
                         _curPos++;
                     }
                 }
-#endif
 
                 switch (_chars[_curPos])
                 {
@@ -3258,12 +3021,8 @@ namespace Microsoft.Xml
             {
                 unsafe
                 {
-#if SILVERLIGHT
-                    if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
-#else
                     if ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fNCStartNameSC) != 0 || _chars[_curPos] == ':')
                     { // if ( xmlCharType.IsStartNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
-#endif
 
                         _curPos++;
                     }
@@ -3295,12 +3054,8 @@ namespace Microsoft.Xml
                 {
                     for (; ; )
                     {
-#if SILVERLIGHT
-                        if ( xmlCharType.IsNCNameSingleChar( chars[curPos] ) ) {
-#else
                         if ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fNCNameSC) != 0)
                         { // while ( xmlCharType.IsNCNameSingleChar(chars[curPos]) ) {
-#endif
 
                             _curPos++;
                         }
@@ -3376,12 +3131,8 @@ namespace Microsoft.Xml
                 {
                     for (; ; )
                     {
-#if SILVERLIGHT
-                        if ( xmlCharType.IsNCNameSingleChar(chars[curPos]) || chars[curPos] == ':' ) {
-#else
                         if ((_xmlCharType.charProperties[_chars[_curPos]] & XmlCharType.fNCNameSC) != 0 || _chars[_curPos] == ':')
                         {  // if ( xmlCharType.IsNCNameChar(chars[curPos]) || chars[curPos] == ':' ) {
-#endif
 
                             _curPos++;
                         }
@@ -3680,23 +3431,19 @@ namespace Microsoft.Xml
             {
                 if (paramEntity)
                 {
-#if !SILVERLIGHT
                     if (_validate)
                     {
                         SendValidationEvent(_curPos - entityName.Name.Length - 1, XmlSeverityType.Error, ResXml.Xml_UndeclaredParEntity, entityName.Name);
                     }
-#endif
                 }
                 else if (mustBeDeclared)
                 {
                     if (!ParsingInternalSubset)
                     {
-#if !SILVERLIGHT
                         if (_validate)
                         {
                             SendValidationEvent(_curPos - entityName.Name.Length - 1, XmlSeverityType.Error, ResXml.Xml_UndeclaredEntity, entityName.Name);
                         }
-#endif
                     }
                     else
                     {
@@ -3722,7 +3469,6 @@ namespace Microsoft.Xml
         //
         // Helper methods and properties
         //
-#if !SILVERLIGHT
         private void SendValidationEvent(int pos, XmlSeverityType severity, string code, string arg)
         {
             Debug.Assert(_validate);
@@ -3744,7 +3490,6 @@ namespace Microsoft.Xml
                 eventHandling.SendEvent(e, severity);
             }
         }
-#endif
 
         private bool IsAttributeValueType(Token token)
         {

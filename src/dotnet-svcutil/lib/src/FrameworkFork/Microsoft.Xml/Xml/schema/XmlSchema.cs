@@ -7,14 +7,6 @@ namespace Microsoft.Xml.Schema
     using System;
     using Microsoft.Xml;
 
-#if SILVERLIGHT
-    public class XmlSchema : XmlSchemaObject
-    {
-        //Empty XmlSchema class to enable backward compatibility of interface method IXmlSerializable.GetSchema()        
-        //Add private ctor to prevent constructing of this class
-        XmlSchema() { }
-    }
-#else
     using System.IO;
     using System.Collections;
     using System.ComponentModel;
@@ -759,8 +751,6 @@ namespace Microsoft.Xml.Schema
                 }
             }
         }
-#endif//TRUST_COMPILE_STATE
+        #endif//TRUST_COMPILE_STATE
     }
-
-#endif//!SILVERLIGHT
 }

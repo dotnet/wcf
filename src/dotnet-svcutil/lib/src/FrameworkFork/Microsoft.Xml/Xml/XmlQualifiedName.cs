@@ -8,32 +8,24 @@ namespace Microsoft.Xml
 
     using System.Collections;
     using System.Diagnostics;
-#if !SILVERLIGHT
     using Microsoft.Win32;
     using System.Reflection;
     using System.Security;
     // using System.Security.Permissions;
-#endif
 
     /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName"]/*' />
     /// <devdoc>
     ///    <para>[To be supplied.]</para>
     /// </devdoc>
-#if !SILVERLIGHT
     // [Serializable],
-#endif
     public class XmlQualifiedName
     {
-#if !SILVERLIGHT
         private delegate int HashCodeOfStringDelegate(string s, int sLen, long additionalEntropy);
         private static HashCodeOfStringDelegate s_hashCodeDelegate = null;
-#endif
         private string _name;
         private string _ns;
 
-#if !SILVERLIGHT
         [NonSerialized]
-#endif
         private Int32 _hash;
 
         /// <include file='doc\XmlQualifiedName.uex' path='docs/doc[@for="XmlQualifiedName.Empty"]/*' />
@@ -168,7 +160,6 @@ namespace Microsoft.Xml
             return ns == null || ns.Length == 0 ? name : ns + ":" + name;
         }
 
-#if !SILVERLIGHT // These methods are not used in Silverlight
         [SecuritySafeCritical]
         // [ReflectionPermission(SecurityAction.Assert, Unrestricted = true)]
 
@@ -251,6 +242,5 @@ namespace Microsoft.Xml
             }
             return i;
         }
-#endif
     }
 }

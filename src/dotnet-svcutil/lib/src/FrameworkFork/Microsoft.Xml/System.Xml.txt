@@ -29,12 +29,10 @@ Xml_UserException={0}
 Xml_DefaultException=An XML error has occurred.
 Xml_InvalidOperation=Operation is not valid due to the current state of the object.
 Xml_ErrorFilePosition=An error occurred at {0}, ({1}, {2}).
-#if !SILVERLIGHT
 Xml_StackOverflow=Stack overflow.
 Xslt_NoStylesheetLoaded=No stylesheet was loaded.
 Xslt_NotCompiledStylesheet=Type '{0}' is not a compiled stylesheet class.
 Xslt_IncompatibleCompiledStylesheetVersion=Executing a stylesheet that was compiled using a later version of the framework is not supported. Stylesheet Version: {0}. Current Framework Version: {1}.
-#endif
 
 ;
 ; XmlReader errors
@@ -131,7 +129,6 @@ Xml_LimitExceeded=The input document has exceeded a limit set by {0}.
 Xml_ClosedOrErrorReader=The XmlReader is closed or in error state.
 Xml_CharEntityOverflow=Invalid value of a character entity reference.
 
-#if !SILVERLIGHT
 Xml_BadNameCharWithPos=The '{0}' character, hexadecimal value {1}, at position {2} within the name, cannot be included in a name.
 Xml_XmlnsBelongsToReservedNs=The 'xmlns' attribute is bound to the reserved namespace 'http://www.w3.org/2000/xmlns/'.
 Xml_UndeclaredParEntity=Reference to undeclared parameter entity '{0}'.
@@ -146,7 +143,6 @@ Xml_AttlistDuplEnumValue='{0}' is a duplicate enumeration value.
 Xml_AttlistDuplNotationValue='{0}' is a duplicate notation value.
 Xml_EncodingSwitchAfterResetState='{0}' is an invalid value for the 'encoding' attribute. The encoding cannot be switched after a call to ResetState.
 Xml_UnexpectedNodeType=Unexpected XmlNodeType: '{0}'.
-#endif // !SILVERLIGHT
 
 ;
 ; DTD parser errors
@@ -179,9 +175,7 @@ Xml_UnsupportedClass=Object type is not supported.
 Xml_NullResolver=Resolving of external URIs was prohibited.
 Xml_RelativeUriNotSupported=Relative URIs are not supported.
 
-#if !SILVERLIGHT
 Xml_UntrustedCodeSettingResolver=XmlResolver can be set only by fully trusted code.
-#endif // !SILVERLIGHT
 
 ;
 ; XmlWriter errors
@@ -214,7 +208,6 @@ Xml_InvalidCharsInIndent=XmlWriterSettings.{0} can contain only valid XML text c
 Xml_IndentCharsNotWhitespace=XmlWriterSettings.{0} can contain only valid XML white space characters when XmlWriterSettings.CheckCharacters and XmlWriterSettings.NewLineOnAttributes are true.
 Xml_ConformanceLevelFragment=Make sure that the ConformanceLevel setting is set to ConformanceLevel.Fragment or ConformanceLevel.Auto if you want to write an XML fragment. 
 
-#if !SILVERLIGHT
 Xml_InvalidQuote=Invalid XML attribute quote character. Valid attribute quote characters are ' and ".
 Xml_UndefPrefix=An undefined prefix is in use.
 Xml_NoNamespaces=Cannot set the namespace if Namespaces is 'false'.
@@ -230,7 +223,6 @@ Xml_SurrogatePairSplit=The second character surrogate pair is not in the input b
 Xml_NoMultipleRoots=Document cannot have multiple document elements.
 XmlBadName=A node of type '{0}' cannot have the name '{1}'.
 XmlNoNameAllowed=A node of type '{0}' cannot have a name.
-#endif // !SILVERLIGHT
 
 ;
 ; XmlConvert Errors
@@ -259,7 +251,6 @@ Sch_InvalidDateTimeOption=The '{0}' value for the 'dateTimeOption' parameter is 
 Sch_StandAloneNormalization=StandAlone is 'yes' and the value of the attribute '{0}' contains a definition in an external document that changes on normalization.
 Sch_UnSpecifiedDefaultAttributeInExternalStandalone=Markup for unspecified default attribute '{0}' is external and standalone='yes'.
 
-#if !SILVERLIGHT
 Sch_DefaultException=A schema error occurred.
 Sch_DupElementDecl=The '{0}' element has already been declared.
 Sch_IdAttrDeclared=The attribute of type ID is already declared on the '{0}' element.
@@ -646,22 +637,18 @@ Sch_ComponentAlreadySeenForNS=An element or attribute information item has alrea
 Sch_DefaultAttributeNotApplied=Default attribute '{0}' for element '{1}' could not be applied as the attribute namespace is not mapped to a prefix in the instance document.
 Sch_NotXsiAttribute=The attribute '{0}' does not match one of the four allowed attributes in the 'xsi' namespace.
 Sch_SchemaDoesNotExist=Schema does not exist in the set.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Document validation errors
 ;
-#if !SILVERLIGHT
 XmlDocument_ValidateInvalidNodeType=Validate method can be called only on nodes of type Document, DocumentFragment, Element, or Attribute.
 XmlDocument_NodeNotFromDocument=Cannot validate '{0}' because its owner document is not the current document. 
 XmlDocument_NoNodeSchemaInfo=Schema information could not be found for the node passed into Validate. The node may be invalid in its current position. Navigate to the ancestor that has schema information, then call Validate again.
 XmlDocument_NoSchemaInfo=The XmlSchemaSet on the document is either null or has no schemas in it. Provide schema information before calling Validate.
-#endif // !SILVERLIGHT
 
 ;
 ; XmlSchemaValidator messages
 ;
-#if !SILVERLIGHT
 Sch_InvalidStartTransition=It is invalid to call the '{0}' method in the current state of the validator. The '{1}' method must be called before proceeding with validation.
 Sch_InvalidStateTransition=The transition from the '{0}' method to the '{1}' method is not allowed.
 Sch_InvalidEndValidation=The 'EndValidation' method cannot not be called when all the elements have not been validated. 'ValidateEndElement' calls corresponding to 'ValidateElement' calls might be missing.
@@ -674,20 +661,16 @@ Sch_SchemaElementNameMismatch=The element name '{0}' does not match the name '{1
 Sch_SchemaAttributeNameMismatch=The attribute name '{0}' does not match the name '{1}' of the 'XmlSchemaAttribute' set as a partial validation type. 
 Sch_ValidateAttributeInvalidCall=If the partial validation type is 'XmlSchemaElement' or 'XmlSchemaType', the 'ValidateAttribute' method cannot be called.
 Sch_ValidateElementInvalidCall=If the partial validation type is 'XmlSchemaAttribute', the 'ValidateElement' method cannot be called.
-#endif // !SILVERLIGHT
 
 ;
 ; Object table
 ;
-#if !SILVERLIGHT
 Sch_EnumNotStarted=Enumeration has not started. Call MoveNext.
 Sch_EnumFinished=Enumeration has already finished.
-#endif // !SILVERLIGHT
 
 ;
 ; Schema Inference errors
 ;
-#if !SILVERLIGHT
 SchInf_schema=The supplied xml instance is a schema or contains an inline schema. This class cannot infer a schema for a schema.
 SchInf_entity=Inference cannot handle entity references. Pass in an 'XmlReader' that expands entities.
 SchInf_simplecontent=Expected simple content. Schema was not created using this tool.
@@ -700,12 +683,10 @@ SchInf_noct=Expected ComplexType. Schema was not generated using this tool.
 SchInf_UnknownParticle=Expected Element. Schema was not generated using this tool.
 SchInf_schematype=Inference can only handle simple built-in types for 'SchemaType'.
 SchInf_NoElement=There is no element to infer schema.
-#endif // !SILVERLIGHT
 
 ;
 ; Old XPath errors
 ;
-#if !SILVERLIGHT
 Xp_UnclosedString=This is an unclosed string.
 Xp_ExprExpected='{0}' is an invalid expression.
 Xp_InvalidArgumentType=The argument to function '{0}' in '{1}' cannot be converted to a node-set.
@@ -724,12 +705,10 @@ Xp_UndefFunc=The function '{0}()' is undefined.
 Xp_FunctionFailed=Function '{0}()' has failed.
 Xp_CurrentNotAllowed=The 'current()' function cannot be used in a pattern.
 Xp_QueryTooComplex=The xpath query is too complex.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml DOM errors
 ;
-#if !SILVERLIGHT
 Xdom_DualDocumentTypeNode=This document already has a 'DocumentType' node.
 Xdom_DualDocumentElementNode=This document already has a 'DocumentElement' node.
 Xdom_DualDeclarationNode=This document already has an 'XmlDeclaration' node.
@@ -755,29 +734,23 @@ Xdom_Invalid_NT_String='{0}' does not represent any 'XmlNodeType'.
 Xdom_InvalidCharacter_EntityReference=Cannot create an 'EntityReference' node with a name starting with '#'.
 Xdom_IndexOutOfRange=The index being passed in is out of range.
 Xdom_Document_Innertext=The 'InnerText' of a 'Document' node is read-only and cannot be set.
-#endif // !SILVERLIGHT
 
 ;
 ; XPathNavigator errors
 ;
-#if !SILVERLIGHT
 Xpn_BadPosition=Operation is not valid due to the current position of the navigator.
 Xpn_MissingParent=The current position of the navigator is missing a valid parent.
 Xpn_NoContent=No content generated as the result of the operation.
-#endif // !SILVERLIGHT
 
 ;
 ; XmlLoader errors
 ;
-#if !SILVERLIGHT
 Xdom_Load_NoDocument=The document to be loaded could not be found.
 Xdom_Load_NoReader=There is no reader from which to load the document.
-#endif // !SILVERLIGHT
 
 ;
 ; XmlNode operations
 ;
-#if !SILVERLIGHT
 Xdom_Node_Null_Doc=Cannot create a node without an owner document.
 Xdom_Node_Insert_Child=Cannot insert a node or any ancestor of that node as a child of itself.
 Xdom_Node_Insert_Contain=The current node cannot contain other nodes.
@@ -791,40 +764,32 @@ Xdom_Node_Modify_ReadOnly=This node is read-only. It cannot be modified.
 Xdom_TextNode_SplitText=The 'Text' node is not connected in the DOM live tree. No 'SplitText' operation could be performed.
 Xdom_Attr_Reserved_XmlNS=The namespace declaration attribute has an incorrect 'namespaceURI': '{0}'.
 Xdom_Node_Cloning='Entity' and 'Notation' nodes cannot be cloned.
-#endif // !SILVERLIGHT
 
 ;
 ; XmlNodeReader errors
 ;
-#if !SILVERLIGHT
 Xnr_ResolveEntity=The node is not an expandable 'EntityReference' node.
-#endif // !SILVERLIGHT
 
 ;
 ; XPathDocument errors
 ;
-#if !SILVERLIGHT
 XPathDocument_MissingSchemas=An XmlSchemaSet must be provided to validate the document.
 XPathDocument_NotEnoughSchemaInfo=Element should have prior schema information to call this method.
 XPathDocument_ValidateInvalidNodeType=Validate and CheckValidity are only allowed on Root or Element nodes.
 XPathDocument_SchemaSetNotAllowed=An XmlSchemaSet is only allowed as a parameter on the Root node.
-#endif // !SILVERLIGHT
 
 ;
 ; DataBinding errors
 ;
-#if !SILVERLIGHT
 ;XmlDataBinding_NoSchemaType=Unable to derive SchemaType from source document and XPath.
 ;XmlDataBinding_XPathEnd=Invalid XPath: Unexpected end of XPath.
 ;XmlDataBinding_XPathRequireSlash=Invalid XPath: Expecting '/'.
 ;XmlDataBinding_XPathAttrNotFirst=Invalid XPath: Attribute pattern must follow Element pattern.
 ;XmlDataBinding_XPathAttrLast=Invalid XPath: Attributes must be the last match.
-#endif // !SILVERLIGHT
 
 ;
 ; SQL BinaryXml Reader errors
 ;
-#if !SILVERLIGHT
 XmlBin_MissingEndCDATA=CDATA end token is missing.
 XmlBin_InvalidQNameID=Invalid QName ID.
 XmlBinary_UnexpectedToken=Unexpected BinaryXml token.
@@ -839,22 +804,18 @@ XmlBinary_CastNotSupported=Token '{0}' does not support a conversion to Clr type
 XmlBinary_NoRemapPrefix=Prefix '{0}' is already assigned to namespace '{1}' and cannot be reassigned to '{2}' on this tag.
 XmlBinary_AttrWithNsNoPrefix=Attribute '{0}' has namespace '{1}' but no prefix.
 XmlBinary_ValueTooBig=The value is too big to fit into an Int32. The arithmetic operation resulted in an overflow.
-#endif // !SILVERLIGHT
 
 ;
 ; SQL BinaryXml Reader errors
 ; Copied SqlTypes code messages
 ;
-#if !SILVERLIGHT
 SqlTypes_ArithOverflow=Arithmetic Overflow.
 SqlTypes_ArithTruncation=Numeric arithmetic causes truncation.
 SqlTypes_DivideByZero=Divide by zero error encountered.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization errors
 ;
-#if !SILVERLIGHT
 XmlMissingType=Invalid serialization assembly: Required type {0} cannot be found in the generated assembly '{1}'.
 XmlUnsupportedType={0} is an unsupported type.
 XmlSerializerUnsupportedType={0} is an unsupported type. Please use [XmlIgnore] attribute to exclude members of this type from serialization graph.
@@ -1055,13 +1016,11 @@ XmlRpcLitXmlns=Input or output values of an rpc\\literal method cannot have an X
 XmlDuplicateNs=Illegal namespace declaration xmlns:{0}='{1}'. Namespace alias '{0}' already defined in the current scope.
 XmlAnonymousInclude=Cannot include anonymous type '{0}'.
 RefSyntaxNotSupportedForElements0=Element reference syntax not supported with encoded SOAP. Replace element reference '{0}' from namespace '{1}' with a local element declaration.
-#endif // !SILVERLIGHT
 
 ; 
 ; Xml Serialization
 ; new IXmlSerializable exceptions
 ;
-#if !SILVERLIGHT
 XmlSchemaIncludeLocation=Schema attribute schemaLocation='{1}' is not supported on objects of type {0}.  Please set {0}.Schema property.
 XmlSerializableSchemaError=Schema type information provided by {0} is invalid: {1}
 XmlGetSchemaMethodName='{0}' is an invalid language identifier.
@@ -1076,16 +1035,14 @@ XmlSerializableMergeItem=Cannot merge schemas with targetNamespace='{0}'. Severa
 XmlSerializableBadDerivation=Type '{0}' from namespace '{1}' declared as derivation of type '{2}' from namespace '{3}, but corresponding CLR types are not compatible.  Cannot convert type '{4}' to '{5}'.
 XmlSerializableMissingClrType=Type '{0}' from namespace '{1}' does not have corresponding IXmlSerializable type. Please consider adding {2} to '{3}'.
 XmlCircularDerivation=Circular reference in derivation of IXmlSerializable type '{0}'.
-XmlSerializerAccessDenied=Access to the temp directory is denied.  The process under which XmlSerializer is running does not have sufficient permission to access the temp directory.  CodeDom will use the user account the process is using to do the compilation, so if the user doesn’t have access to system temp directory, you will not be able to compile.  Use Path.GetTempPath() API to find out the temp directory location.
-XmlIdentityAccessDenied=Access to the temp directory is denied.  Identity '{0}' under which XmlSerializer is running does not have sufficient permission to access the temp directory.  CodeDom will use the user account the process is using to do the compilation, so if the user doesn’t have access to system temp directory, you will not be able to compile.  Use Path.GetTempPath() API to find out the temp directory location.
+XmlSerializerAccessDenied=Access to the temp directory is denied.  The process under which XmlSerializer is running does not have sufficient permission to access the temp directory.  CodeDom will use the user account the process is using to do the compilation, so if the user doesnï¿½t have access to system temp directory, you will not be able to compile.  Use Path.GetTempPath() API to find out the temp directory location.
+XmlIdentityAccessDenied=Access to the temp directory is denied.  Identity '{0}' under which XmlSerializer is running does not have sufficient permission to access the temp directory.  CodeDom will use the user account the process is using to do the compilation, so if the user doesnï¿½t have access to system temp directory, you will not be able to compile.  Use Path.GetTempPath() API to find out the temp directory location.
 XmlMelformMapping=This mapping was not crated by reflection importer and cannot be used in this context.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization
 ; Simple validation
 ;
-#if !SILVERLIGHT
 XmlSchemaSyntaxErrorDetails=Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.
 XmlSchemaElementReference=Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.
 XmlSchemaAttributeReference=Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.
@@ -1095,13 +1052,11 @@ XmlSchemaContentDef=Check content definition of schema type '{0}' from namespace
 XmlSchema=Schema with targetNamespace='{0}' has invalid syntax. {1}
 XmlSerializerCompileFailed=Cannot load dynamically generated serialization assembly. In some hosting environments assembly load functionality is restricted, consider using pre-generated serializer. Please see inner exception for more information.
 XmlSerializableRootDupName=Cannot reconcile schema for '{0}'. Please use [XmlRoot] attribute to change default name or namespace of the top-level element to avoid duplicate element declarations: element name='{1}' namespace='{2}'.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization
 ; CodeExporter
 ;
-#if !SILVERLIGHT
 XmlDropDefaultAttribute=DefaultValue attribute on members of type {0} is not supported in this version of the .Net Framework.
 XmlDropAttributeValue='{0}' attribute on items of type '{1}' is not supported in this version of the .Net Framework.  Ignoring {0}='{2}' attribute.
 XmlDropArrayAttributeValue='{0}' attribute on array-like elements is not supported in this version of the .Net Framework.  Ignoring {0}='{1}' attribute on element name='{2}'.
@@ -1109,32 +1064,26 @@ XmlDropNonPrimitiveAttributeValue='{0}' attribute supported only for primitive t
 XmlNotKnownDefaultValue=Schema importer extension {0} failed to parse '{1}'='{2}' attribute of type {3} from namespace='{4}'.
 XmlRemarks=<remarks/>
 XmlCodegenWarningDetails=CODEGEN Warning: {0}
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization
 ; SchemaImporterExtension
 ;
-#if !SILVERLIGHT
 XmlExtensionComment=This type definition was generated by {0} schema importer extension.
 XmlExtensionDuplicateDefinition=Schema importer extension {0} generated duplicate type definitions: {1}.
 XmlImporterExtensionBadLocalTypeName=Schema importer extension {0} returned invalid type information: '{1}' is not a valid type name.
 XmlImporterExtensionBadTypeName=Schema importer extension {0} returned invalid type information for xsd type {1} from namespace='{2}': '{3}' is not a valid type name.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization
 ; Configuration errors
 ;
-#if !SILVERLIGHT
 XmlConfigurationDuplicateExtension=Duplicate extension name.  schemaImporterExtension with name '{0}' already been added.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization
 ; Assembly Pregeneration
 ;
-#if !SILVERLIGHT
 XmlPregenMissingDirectory=Could not find directory to save XmlSerializer generated assembly: {0}.
 XmlPregenMissingTempDirectory=Could not find TEMP directory to save XmlSerializer generated assemblies.
 XmlPregenTypeDynamic=Cannot pre-generate serialization assembly for type '{0}'. Pre-generation of serialization assemblies is not supported for dynamic types. Save the assembly and load it from disk to use it with XmlSerialization.
@@ -1145,24 +1094,20 @@ XmlNotSerializable=Type '{0}' is not serializable.
 XmlPregenOrphanType=Cannot pre-generate serializer for multiple assemblies. Type '{0}' does not belong to assembly {1}.
 XmlPregenCannotLoad=Could not load file or assembly '{0}' or one of its dependencies. The system cannot find the file specified.
 XmlPregenInvalidXmlSerializerAssemblyAttribute=Invalid XmlSerializerAssemblyAttribute usage. Please use {0} property or {1} property.
-#endif // !SILVERLIGHT
 
 ;
 ; Xml Serialization
 ; xs:sequence support
 ;
-#if !SILVERLIGHT
 XmlSequenceInconsistent=Inconsistent sequencing: if used on one of the class's members, the '{0}' property is required on all particle-like members, please explicitly set '{0}' using XmlElement, XmlAnyElement or XmlArray custom attribute on class member '{1}'.
 XmlSequenceUnique='{1}' values must be unique within the same scope. Value '{0}' is in use. Please change '{1}' property on '{2}'.
 XmlSequenceHierarchy=There was an error processing type '{0}'. Type member '{1}' declared in '{2}' is missing required '{3}' property. If one class in the class hierarchy uses explicit sequencing feature ({3}), then its base class and all derived classes have to do the same.
 XmlSequenceMatch=If multiple custom attributes specified on a single member only one of them have to have explicit '{0}' property, however if more that one attribute has the explicit '{0}', all values have to match.
-#endif // !SILVERLIGHT
 XmlDisallowNegativeValues=Negative values are prohibited.
 
 ;
 ; Everett resources IDs - do not remove!
 ;
-#if !SILVERLIGHT
 Xml_BadComment=This is an invalid comment syntax.  Expected '-->'.
 Xml_NumEntityOverflow=The numeric entity value is too large.
 Xml_UnexpectedCharacter='{0}', hexadecimal value {1}, is an unexpected character.
@@ -1217,35 +1162,23 @@ Sch_XsiTypeBlocked=The element '{0}' has xsi:type derivation blocked.
 Sch_InvalidElementInEmpty=The element cannot contain child element. Content model is empty.
 Sch_InvalidElementInTextOnly=The element cannot contain a child element. Content model is text only.
 Sch_InvalidNameAttribute=Invalid 'name' attribute value: {0}.
-#endif // !SILVERLIGHT
 
 ;
 ; Internal errors
 ;
-#if !SILVERLIGHT
 XmlInternalError=Internal error.
 XmlInternalErrorDetails=Internal error: {0}.
 XmlInternalErrorMethod=Internal error: missing generated method for {0}.
 XmlInternalErrorReaderAdvance=Internal error: deserialization failed to advance over underlying stream.
-#endif // !SILVERLIGHT
 
 ;
 ; Misc messages
 ;
 Enc_InvalidByteInEncoding=Invalid byte was found at index {0}.
-#if !SILVERLIGHT
 Arg_ExpectingXmlTextReader=The XmlReader passed in to construct this XmlValidatingReaderImpl must be an instance of a Microsoft.Xml.XmlTextReader.
 Arg_CannotCreateNode=Cannot create node of type {0}.
 Arg_IncompatibleParamType=Type is incompatible.
 XmlNonCLSCompliantException=Non-CLS Compliant Exception.
-#endif // !SILVERLIGHT
-
-;
-; Silverlight-only errors
-;
-#if SILVERLIGHT
-Xml_CannotFindFileInXapPackage=Cannot find file '{0}' in the application xap package.
-#endif // SILVERLIGHT
 
 ;
 ; XapResolver

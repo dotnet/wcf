@@ -9,10 +9,8 @@ namespace Microsoft.Xml
     using System.Text;
     using System.Security;
     // using System.Security.Permissions;
-#if !SILVERLIGHT
     using System.Net;
     using System.Threading.Tasks;
-#endif
     using System.Runtime.Versioning;
 
     /// <include file='doc\XmlResolver.uex' path='docs/doc[@for="XmlResolver"]/*' />
@@ -39,21 +37,17 @@ namespace Microsoft.Xml
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-#if !SILVERLIGHT
         // [ResourceExposure(ResourceScope.Machine)]
         // [ResourceConsumption(ResourceScope.Machine)]
-#endif
         public virtual Uri ResolveUri(Uri baseUri, string relativeUri)
         {
             if (baseUri == null || (!baseUri.IsAbsoluteUri && baseUri.OriginalString.Length == 0))
             {
                 Uri uri = new Uri(relativeUri, UriKind.RelativeOrAbsolute);
-#if !SILVERLIGHT // Path.GetFullPath is SecurityCritical
                 if (!uri.IsAbsoluteUri && uri.OriginalString.Length > 0)
                 {
                     uri = new Uri(Path.GetFullPath(relativeUri));
                 }
-#endif
                 return uri;
             }
             else
@@ -65,29 +59,12 @@ namespace Microsoft.Xml
                 // relative base Uri
                 if (!baseUri.IsAbsoluteUri)
                 {
-#if SILVERLIGHT
-                    // create temporary base for the relative URIs
-                    Uri tmpBaseUri = new Uri("tmp:///");
-
-                    // create absolute base URI with the temporary base
-                    Uri absBaseUri = new Uri(tmpBaseUri, baseUri.OriginalString);
-
-                    // resolve the relative Uri into a new absolute URI
-                    Uri resolvedAbsUri = new Uri(absBaseUri, relativeUri);
-
-                    // make it relative by removing temporary base
-                    Uri resolvedRelUri = tmpBaseUri.MakeRelativeUri(resolvedAbsUri);
-
-                    return resolvedRelUri;
-#else
                     throw new NotSupportedException(ResXml.GetString(ResXml.Xml_RelativeUriNotSupported));
-#endif
                 }
                 return new Uri(baseUri, relativeUri);
             }
         }
 
-#if !SILVERLIGHT
         //UE attension
         /// <include file='doc\XmlResolver.uex' path='docs/doc[@for="XmlResolver.Credentials"]/*' />
         /// <devdoc>
@@ -97,7 +74,6 @@ namespace Microsoft.Xml
         {
             set { }
         }
-#endif
 
         public virtual bool SupportsType(Uri absoluteUri, Type type)
         {

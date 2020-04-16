@@ -22,7 +22,6 @@ namespace Microsoft.Xml
         internal abstract void Reset();
     }
 
-#if !SILVERLIGHT // Needed only for XmlTextReader
     //
     //  Dummy IncrementalReadDecoder
     //
@@ -124,5 +123,4 @@ namespace Microsoft.Xml
             _endIndex = index + count;
         }
     }
-#endif
 }

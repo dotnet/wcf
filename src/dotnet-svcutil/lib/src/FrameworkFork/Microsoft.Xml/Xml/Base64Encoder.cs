@@ -125,7 +125,6 @@ namespace Microsoft.Xml
         }
     }
 
-#if !SILVERLIGHT || FEATURE_NETCORE
     internal partial class XmlTextWriterBase64Encoder : Base64Encoder
     {
         private XmlTextEncoder _xmlTextEncoder;
@@ -140,5 +139,4 @@ namespace Microsoft.Xml
             _xmlTextEncoder.WriteRaw(chars, index, count);
         }
     }
-#endif
 }
