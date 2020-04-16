@@ -1,5 +1,6 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
 // <code>DocumentFragment</code> is a "lightweight" or "minimal" 
 // <code>Document</code> object. It is very common to want to be able to 
