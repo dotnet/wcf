@@ -32,7 +32,7 @@ namespace System.IdentityModel.Selectors
             }
             if (!CanValidateToken(token))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenValidationException(SRServiceModel.Format(SRServiceModel.CannotValidateSecurityTokenType, this, token.GetType())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenValidationException(string.Format(SRServiceModel.CannotValidateSecurityTokenType, this, token.GetType())));
             }
 
             EventTraceActivity eventTraceActivity = null;
@@ -48,7 +48,7 @@ namespace System.IdentityModel.Selectors
             ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies = ValidateTokenCore(token);
             if (authorizationPolicies == null)
             {
-                string errorMsg = SRServiceModel.Format(SRServiceModel.CannotValidateSecurityTokenType, this, token.GetType());
+                string errorMsg = string.Format(SRServiceModel.CannotValidateSecurityTokenType, this, token.GetType());
                 if (WcfEventSource.Instance.TokenValidationFailureIsEnabled())
                 {
                     eventTraceActivity = eventTraceActivity ?? EventTraceActivity.GetFromThreadOrCreate();

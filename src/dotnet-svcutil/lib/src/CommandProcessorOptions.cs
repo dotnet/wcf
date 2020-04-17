@@ -821,7 +821,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (specifiedTypes.ContainsKey(typeArg))
                 {
-                    throw new ToolArgumentException(SR.GetString(SR.ErrDuplicateValuePassedToTypeArgFormat, cmd, typeArg));
+                    throw new ToolArgumentException(string.Format(SR.ErrDuplicateValuePassedToTypeArgFormat, cmd, typeArg));
                 }
                 specifiedTypes.Add(typeArg, null);
             }
@@ -887,7 +887,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (foundType != null && foundType != type)
                 {
-                    throw new ToolArgumentException(SR.GetString(SR.ErrCannotDisambiguateSpecifiedTypesFormat,
+                    throw new ToolArgumentException(string.Format(SR.ErrCannotDisambiguateSpecifiedTypesFormat,
                         cmd, type.AssemblyQualifiedName, foundType.AssemblyQualifiedName));
                 }
                 else
@@ -935,7 +935,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     if (foundType == null)
                     {
-                        throw new ToolArgumentException(SR.GetString(SR.ErrCannotLoadSpecifiedTypeFormat, Switches.CollectionType.Name, collectionType, Switches.Reference.Name));
+                        throw new ToolArgumentException(string.Format(SR.ErrCannotLoadSpecifiedTypeFormat, Switches.CollectionType.Name, collectionType, Switches.Reference.Name));
                     }
                     else
                     {

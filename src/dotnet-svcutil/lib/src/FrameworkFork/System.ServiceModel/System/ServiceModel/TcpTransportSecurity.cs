@@ -70,7 +70,7 @@ namespace System.ServiceModel
         {
             if (_protectionLevel != ProtectionLevel.EncryptAndSign)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(
                     SRServiceModel.UnsupportedSslProtectionLevel, _protectionLevel)));
             }
 

@@ -20,7 +20,7 @@ namespace System.IdentityModel.Selectors
             SecurityToken token;
             if (!this.TryResolveTokenCore(keyIdentifier, out token))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(System.SRServiceModel.Format(System.SRServiceModel.UnableToResolveTokenReference, keyIdentifier)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(string.Format(SRServiceModel.UnableToResolveTokenReference, keyIdentifier)));
             }
             return token;
         }
@@ -43,7 +43,7 @@ namespace System.IdentityModel.Selectors
             SecurityToken token;
             if (!this.TryResolveTokenCore(keyIdentifierClause, out token))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(System.SRServiceModel.Format(System.SRServiceModel.UnableToResolveTokenReference, keyIdentifierClause)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(string.Format(SRServiceModel.UnableToResolveTokenReference, keyIdentifierClause)));
             }
             return token;
         }
@@ -66,7 +66,7 @@ namespace System.IdentityModel.Selectors
             SecurityKey key;
             if (!this.TryResolveSecurityKeyCore(keyIdentifierClause, out key))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(System.SRServiceModel.Format(System.SRServiceModel.UnableToResolveKeyReference, keyIdentifierClause)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(string.Format(SRServiceModel.UnableToResolveKeyReference, keyIdentifierClause)));
             }
             return key;
         }
@@ -86,7 +86,7 @@ namespace System.IdentityModel.Selectors
         /// <param name="nodelist">Custom configuration elements</param>
         public virtual void LoadCustomConfiguration(XmlNodeList nodelist)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException(System.SRServiceModel.Format(System.SRServiceModel.ID0023, this.GetType().AssemblyQualifiedName)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotImplementedException(string.Format(SRServiceModel.ID0023, this.GetType().AssemblyQualifiedName)));
         }
 
         // protected methods

@@ -101,7 +101,7 @@ namespace Microsoft.Xml.Schema
         {
             try
             {
-                return ResXml.GetString(res, args);
+                return string.Format(res, args);
             }
             catch (MissingManifestResourceException)
             {

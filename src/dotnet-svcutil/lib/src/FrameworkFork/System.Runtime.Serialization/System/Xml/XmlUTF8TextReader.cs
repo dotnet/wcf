@@ -564,13 +564,13 @@ namespace Microsoft.Xml
             if (buffer == null)
                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("buffer"));
             if (offset < 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SRSerialization.Format(SRSerialization.ValueMustBeNonNegative)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", string.Format(SRSerialization.ValueMustBeNonNegative)));
             if (offset > buffer.Length)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SRSerialization.Format(SRSerialization.OffsetExceedsBufferSize, buffer.Length)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", string.Format(SRSerialization.OffsetExceedsBufferSize, buffer.Length)));
             if (count < 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SRSerialization.Format(SRSerialization.ValueMustBeNonNegative)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", string.Format(SRSerialization.ValueMustBeNonNegative)));
             if (count > buffer.Length - offset)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SRSerialization.Format(SRSerialization.SizeExceedsRemainingBufferSpace, buffer.Length - offset)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", string.Format(SRSerialization.SizeExceedsRemainingBufferSpace, buffer.Length - offset)));
             MoveToInitial(quotas, onClose);
             ArraySegment<byte> seg = EncodingStreamWrapper.ProcessBuffer(buffer, offset, count, encoding);
             BufferReader.SetBuffer(seg.Array, seg.Offset, seg.Count, null, null);
@@ -884,7 +884,7 @@ namespace Microsoft.Xml
                     break;
 
                 if (!space)
-                    XmlExceptionHelper.ThrowXmlException(this, new XmlException(SRSerialization.Format(SRSerialization.XmlSpaceBetweenAttributes)));
+                    XmlExceptionHelper.ThrowXmlException(this, new XmlException(string.Format(SRSerialization.XmlSpaceBetweenAttributes)));
             }
 
             if (_buffered && (BufferReader.Offset - startOffset) > _maxBytesPerRead)
@@ -917,7 +917,7 @@ namespace Microsoft.Xml
             byte[] buff = BufferReader.GetBuffer(3, out off);
             if (buff[off + 1] == 0xBF && (buff[off + 2] == 0xBE || buff[off + 2] == 0xBF))
             {
-                XmlExceptionHelper.ThrowXmlException(this, new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidFFFE)));
+                XmlExceptionHelper.ThrowXmlException(this, new XmlException(string.Format(SRSerialization.XmlInvalidFFFE)));
             }
             BufferReader.Advance(3);
         }
@@ -1053,7 +1053,7 @@ namespace Microsoft.Xml
                 {
                     if (buffer[offset + 2] == (byte)'>')
                         break;
-                    XmlExceptionHelper.ThrowXmlException(this, new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidCommentChars)));
+                    XmlExceptionHelper.ThrowXmlException(this, new XmlException(string.Format(SRSerialization.XmlInvalidCommentChars)));
                 }
                 BufferReader.SkipByte();
             }
@@ -1186,7 +1186,7 @@ namespace Microsoft.Xml
                         }
                         else
                         {
-                            XmlExceptionHelper.ThrowXmlException(this, new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidFFFE)));
+                            XmlExceptionHelper.ThrowXmlException(this, new XmlException(string.Format(SRSerialization.XmlInvalidFFFE)));
                         }
                     }
                     else
@@ -1346,7 +1346,7 @@ namespace Microsoft.Xml
                     else
                     {
                         if (OutsideRootElement)
-                            XmlExceptionHelper.ThrowXmlException(this, new XmlException(SRSerialization.Format(SRSerialization.XmlCDATAInvalidAtTopLevel)));
+                            XmlExceptionHelper.ThrowXmlException(this, new XmlException(string.Format(SRSerialization.XmlCDATAInvalidAtTopLevel)));
 
                         ReadCData();
                     }
@@ -1389,7 +1389,7 @@ namespace Microsoft.Xml
                     buffer[offset + 1] == (byte)']' &&
                     buffer[offset + 2] == (byte)'>')
                 {
-                    XmlExceptionHelper.ThrowXmlException(this, new XmlException(SRSerialization.Format(SRSerialization.XmlCloseCData)));
+                    XmlExceptionHelper.ThrowXmlException(this, new XmlException(string.Format(SRSerialization.XmlCloseCData)));
                 }
 
                 BufferReader.SkipByte();

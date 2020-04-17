@@ -15,7 +15,7 @@ namespace Microsoft.Xml
         protected internal XmlWhitespace(string strData, XmlDocument doc) : base(strData, doc)
         {
             if (!doc.IsLoading && !base.CheckOnData(strData))
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_WS_Char));
+                throw new ArgumentException(ResXml.Xdom_WS_Char);
         }
 
         // Gets the name of the node.
@@ -81,7 +81,7 @@ namespace Microsoft.Xml
                 if (CheckOnData(value))
                     Data = value;
                 else
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xdom_WS_Char));
+                    throw new ArgumentException(ResXml.Xdom_WS_Char);
             }
         }
 

@@ -246,7 +246,7 @@ namespace System.ServiceModel.Description
         {
             if (this.Messages.Count != 1 && this.Messages.Count != 2)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new System.InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxOperationMustHaveOneOrTwoMessages, this.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new System.InvalidOperationException(string.Format(SRServiceModel.SFxOperationMustHaveOneOrTwoMessages, this.Name)));
             }
         }
 

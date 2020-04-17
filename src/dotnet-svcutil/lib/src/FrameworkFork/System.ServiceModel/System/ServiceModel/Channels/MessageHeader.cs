@@ -390,7 +390,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.EnvelopeVersionUnknown, messageVersion.Envelope.ToString())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.EnvelopeVersionUnknown, messageVersion.Envelope.ToString())));
             }
         }
 
@@ -441,7 +441,7 @@ namespace System.ServiceModel.Channels
         protected override void OnWriteStartHeader(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             if (!IsMessageVersionSupported(messageVersion))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MessageHeaderVersionNotSupported, this.GetType().FullName, messageVersion.ToString()), "version"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.MessageHeaderVersionNotSupported, this.GetType().FullName, messageVersion.ToString()), "version"));
             XmlDictionaryReader reader = GetHeaderReader();
             writer.WriteStartElement(reader.Prefix, reader.LocalName, reader.NamespaceURI);
             writer.WriteAttributes(reader, false);

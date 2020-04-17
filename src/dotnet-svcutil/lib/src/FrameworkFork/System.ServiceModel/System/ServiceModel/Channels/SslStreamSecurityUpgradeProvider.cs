@@ -167,12 +167,12 @@ namespace System.ServiceModel.Channels
 
             if (sslUpgradeInitiator == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("upgradeInitiator", SRServiceModel.Format(SRServiceModel.UnsupportedUpgradeInitiator, upgradeInitiator.GetType()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("upgradeInitiator", string.Format(SRServiceModel.UnsupportedUpgradeInitiator, upgradeInitiator.GetType()));
             }
 
             if (kind != ChannelBindingKind.Endpoint)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("kind", SRServiceModel.Format(SRServiceModel.StreamUpgradeUnsupportedChannelBindingKind, this.GetType(), kind));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("kind", string.Format(SRServiceModel.StreamUpgradeUnsupportedChannelBindingKind, this.GetType(), kind));
             }
 
             return sslUpgradeInitiator.ChannelBinding;
@@ -189,12 +189,12 @@ namespace System.ServiceModel.Channels
 
             if (sslupgradeAcceptor == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("upgradeAcceptor", SRServiceModel.Format(SRServiceModel.UnsupportedUpgradeAcceptor, upgradeAcceptor.GetType()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("upgradeAcceptor", string.Format(SRServiceModel.UnsupportedUpgradeAcceptor, upgradeAcceptor.GetType()));
             }
 
             if (kind != ChannelBindingKind.Endpoint)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("kind", SRServiceModel.Format(SRServiceModel.StreamUpgradeUnsupportedChannelBindingKind, this.GetType(), kind));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("kind", string.Format(SRServiceModel.StreamUpgradeUnsupportedChannelBindingKind, this.GetType(), kind));
             }
 
             return sslupgradeAcceptor.ChannelBinding;
@@ -260,7 +260,7 @@ namespace System.ServiceModel.Channels
             if (x509Token == null)
             {
                 SecurityUtils.AbortTokenProviderIfRequired(_serverTokenProvider);
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(
                     SRServiceModel.InvalidTokenProvided, _serverTokenProvider.GetType(), typeof(X509SecurityToken))));
             }
             _serverCertificate = new X509Certificate2(x509Token.Certificate.Handle);
@@ -363,7 +363,7 @@ namespace System.ServiceModel.Channels
             catch (IOException ioException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(
-                    SRServiceModel.Format(SRServiceModel.NegotiationFailedIO, ioException.Message), ioException));
+                    string.Format(SRServiceModel.NegotiationFailedIO, ioException.Message), ioException));
             }
 
             remoteSecurity = _clientSecurity;
@@ -478,7 +478,7 @@ namespace System.ServiceModel.Channels
                 _clientCertificateProvider = parent.ClientSecurityTokenManager.CreateSecurityTokenProvider(clientCertRequirement);
                 if (_clientCertificateProvider == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ClientCredentialsUnableToCreateLocalTokenProvider, clientCertRequirement)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ClientCredentialsUnableToCreateLocalTokenProvider, clientCertRequirement)));
                 }
             }
         }
@@ -613,7 +613,7 @@ namespace System.ServiceModel.Channels
             catch (IOException ioException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(
-                    SRServiceModel.Format(SRServiceModel.NegotiationFailedIO, ioException.Message), ioException));
+                    string.Format(SRServiceModel.NegotiationFailedIO, ioException.Message), ioException));
             }
 
             remoteSecurityWrapper.Value = _serverSecurity;

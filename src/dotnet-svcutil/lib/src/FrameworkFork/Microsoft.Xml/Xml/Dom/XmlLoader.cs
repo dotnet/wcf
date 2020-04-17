@@ -38,9 +38,9 @@ namespace Microsoft.Xml
             }
             _preserveWhitespace = preserveWhitespace;
             if (doc == null)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Load_NoDocument));
+                throw new ArgumentException(ResXml.Xdom_Load_NoDocument);
             if (reader == null)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Load_NoReader));
+                throw new ArgumentException(ResXml.Xdom_Load_NoReader);
             doc.SetBaseURI(reader.BaseURI);
             if (reader.Settings != null
                 && reader.Settings.ValidationType == ValidationType.Schema)
@@ -76,9 +76,9 @@ namespace Microsoft.Xml
             // WS are optional only for loading (see XmlDocument.PreserveWhitespace)
             _preserveWhitespace = true;
             if (doc == null)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Load_NoDocument));
+                throw new ArgumentException(ResXml.Xdom_Load_NoDocument);
             if (reader == null)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Load_NoReader));
+                throw new ArgumentException(ResXml.Xdom_Load_NoReader);
 
             if (reader.ReadState == ReadState.Initial)
             {
@@ -1004,7 +1004,7 @@ namespace Microsoft.Xml
 
         static internal Exception UnexpectedNodeType(XmlNodeType nodetype)
         {
-            return new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResXml.GetString(ResXml.Xml_UnexpectedNodeType), nodetype.ToString()));
+            return new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResXml.Xml_UnexpectedNodeType, nodetype.ToString()));
         }
     }
 }

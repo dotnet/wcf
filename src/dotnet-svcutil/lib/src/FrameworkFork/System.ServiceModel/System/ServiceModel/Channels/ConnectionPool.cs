@@ -569,7 +569,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (WcfEventSource.Instance.MaxOutboundConnectionsPerEndpointExceededIsEnabled())
                         {
-                            WcfEventSource.Instance.MaxOutboundConnectionsPerEndpointExceeded(SRServiceModel.Format(SRServiceModel.TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached, _maxCount));
+                            WcfEventSource.Instance.MaxOutboundConnectionsPerEndpointExceeded(string.Format(SRServiceModel.TraceCodeConnectionPoolMaxOutboundConnectionsPerEndpointQuotaReached, _maxCount));
                         }
                     }
                     else if (WcfEventSource.Instance.OutboundConnectionsPerEndpointRatioIsEnabled())

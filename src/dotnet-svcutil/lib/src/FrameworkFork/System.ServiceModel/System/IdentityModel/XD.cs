@@ -186,7 +186,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -378,7 +378,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -428,7 +428,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -498,7 +498,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -566,7 +566,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -662,7 +662,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -686,7 +686,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -797,7 +797,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -854,7 +854,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -943,7 +943,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -1091,7 +1091,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -1213,7 +1213,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -1252,7 +1252,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -1333,7 +1333,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }
@@ -1438,7 +1438,7 @@ namespace System.IdentityModel
         {
             XmlDictionaryString expectedValue;
             if (!dictionary.TryLookup(value, out expectedValue))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.XDCannotFindValueInDictionaryString, value));
 
             return expectedValue;
         }

@@ -16,7 +16,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         internal Uri ServiceUri { get { return _serviceUri; } }
 
         internal ToolMexException(ToolInputException wsMexException, Uri serviceUri)
-            : base(SR.GetString(SR.ErrUnableToRetrieveMetadataFromUriFormat, serviceUri.AbsoluteUri, SR.EnableMetadataHelpMessage))
+            : base(string.Format(SR.ErrUnableToRetrieveMetadataFromUriFormat, serviceUri.AbsoluteUri, SR.EnableMetadataHelpMessage))
         {
             _wsMexException = wsMexException;
             _serviceUri = serviceUri;

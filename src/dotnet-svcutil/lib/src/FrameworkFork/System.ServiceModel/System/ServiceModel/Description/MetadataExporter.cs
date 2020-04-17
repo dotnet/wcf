@@ -143,7 +143,7 @@ namespace System.ServiceModel.Description
 
         private Exception CreateExtensionException(IPolicyExportExtension exporter, Exception e)
         {
-            string errorMessage = SRServiceModel.Format(SRServiceModel.PolicyExtensionExportError, exporter.GetType(), e.Message);
+            string errorMessage = string.Format(SRServiceModel.PolicyExtensionExportError, exporter.GetType(), e.Message);
             return new InvalidOperationException(errorMessage, e);
         }
     }

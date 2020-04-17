@@ -521,7 +521,7 @@ namespace System.ServiceModel.Channels
                 if (!waitingResult)
                 {
                     throw FxTrace.Exception.AsError(new TimeoutException(
-                               SRServiceModel.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
+                               string.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
                                TimeoutHelper.CreateEnterTimedOutException(timeout)));
                 }
 
@@ -544,7 +544,7 @@ namespace System.ServiceModel.Channels
                 if (!waitingResult)
                 {
                     throw FxTrace.Exception.AsError(new TimeoutException(
-                               SRServiceModel.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
+                               string.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
                                TimeoutHelper.CreateEnterTimedOutException(timeout)));
                 }
 
@@ -589,7 +589,7 @@ namespace System.ServiceModel.Channels
                             {
                                 if (internalBuffer.Length >= _maxBufferSize)
                                 {
-                                    _pendingException = FxTrace.Exception.AsError(new QuotaExceededException(SRServiceModel.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, _maxBufferSize)));
+                                    _pendingException = FxTrace.Exception.AsError(new QuotaExceededException(string.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, _maxBufferSize)));
                                     return;
                                 }
 
@@ -682,7 +682,7 @@ namespace System.ServiceModel.Channels
                 }
                 if (WcfEventSource.Instance.ReceiveTimeoutIsEnabled())
                 {
-                    WcfEventSource.Instance.ReceiveTimeout(SRServiceModel.Format(SRServiceModel.WaitForMessageTimedOut, timeout));
+                    WcfEventSource.Instance.ReceiveTimeout(string.Format(SRServiceModel.WaitForMessageTimedOut, timeout));
                 }
                 return false;
             }

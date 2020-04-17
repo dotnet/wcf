@@ -470,7 +470,7 @@ namespace System.ServiceModel.Channels
                         }
                         catch (XmlException e)
                         {
-                            return SRServiceModel.Format(SRServiceModel.MessageBodyToStringError, e.GetType().ToString(), e.Message);
+                            return string.Format(SRServiceModel.MessageBodyToStringError, e.GetType().ToString(), e.Message);
                         }
                     }
                 }
@@ -1175,7 +1175,7 @@ namespace System.ServiceModel.Channels
                 using (XmlDictionaryReader bodyReader = OnGetReaderAtBodyContents())
                 {
                     if (bodyReader.ReadState == ReadState.Error || bodyReader.ReadState == ReadState.Closed)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.MessageBodyReaderInvalidReadState, bodyReader.ReadState.ToString())));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.MessageBodyReaderInvalidReadState, bodyReader.ReadState.ToString())));
 
                     while (bodyReader.NodeType != XmlNodeType.EndElement && !bodyReader.EOF)
                     {
@@ -1247,7 +1247,7 @@ namespace System.ServiceModel.Channels
                 EnvelopeVersion envelopeVersion = ReadStartEnvelope(reader);
                 if (desiredVersion.Envelope != envelopeVersion)
                 {
-                    Exception versionMismatchException = new ArgumentException(SRServiceModel.Format(SRServiceModel.EncoderEnvelopeVersionMismatch, envelopeVersion, desiredVersion.Envelope), "reader");
+                    Exception versionMismatchException = new ArgumentException(string.Format(SRServiceModel.EncoderEnvelopeVersionMismatch, envelopeVersion, desiredVersion.Envelope), "reader");
                     throw TraceUtility.ThrowHelperError(
                         new CommunicationException(versionMismatchException.Message, versionMismatchException),
                         this);
@@ -1449,7 +1449,7 @@ namespace System.ServiceModel.Channels
                     EnvelopeVersion envelopeVersion = ReadStartEnvelope(reader);
                     if (desiredVersion.Envelope != envelopeVersion)
                     {
-                        Exception versionMismatchException = new ArgumentException(SRServiceModel.Format(SRServiceModel.EncoderEnvelopeVersionMismatch, envelopeVersion, desiredVersion.Envelope), "reader");
+                        Exception versionMismatchException = new ArgumentException(string.Format(SRServiceModel.EncoderEnvelopeVersionMismatch, envelopeVersion, desiredVersion.Envelope), "reader");
                         throw TraceUtility.ThrowHelperError(
                             new CommunicationException(versionMismatchException.Message, versionMismatchException),
                             this);

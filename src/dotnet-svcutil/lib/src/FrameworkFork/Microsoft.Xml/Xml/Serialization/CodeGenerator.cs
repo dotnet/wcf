@@ -564,7 +564,7 @@ namespace Microsoft.Xml.Serialization
         internal void VerifyParameterCount(MethodInfo methodInfo, int expectedCount)
         {
             if (methodInfo.GetParameters().Length != expectedCount)
-                throw Utility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.ParameterCountMismatch, methodInfo.Name, methodInfo.GetParameters().Length, expectedCount)));
+                throw Utility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.ParameterCountMismatch, methodInfo.Name, methodInfo.GetParameters().Length, expectedCount)));
         }
 
         internal void Call(object thisObj, MethodInfo methodInfo)
@@ -1197,7 +1197,7 @@ namespace Microsoft.Xml.Serialization
                     //case TypeCode.DBNull:
                     default:
                         Debug.Assert(false, "UnknownConstantType");
-                        throw new NotSupportedException("UnknownConstantType"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.UnknownConstantType, DataContract.GetClrTypeFullName(valueType))));
+                        throw new NotSupportedException("UnknownConstantType"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.UnknownConstantType, DataContract.GetClrTypeFullName(valueType))));
                 }
             }
         }
@@ -1535,7 +1535,7 @@ namespace Microsoft.Xml.Serialization
                 OpCode opCode = GetLdelemOpCode(Type.GetTypeCode(arrayElementType));
                 Debug.Assert(!opCode.Equals(OpCodes.Nop));
                 if (opCode.Equals(OpCodes.Nop))
-                    throw new InvalidOperationException("ArrayTypeIsNotSupported"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.ArrayTypeIsNotSupported, DataContract.GetClrTypeFullName(arrayElementType))));
+                    throw new InvalidOperationException("ArrayTypeIsNotSupported"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.ArrayTypeIsNotSupported, DataContract.GetClrTypeFullName(arrayElementType))));
                 _ilGen.Emit(opCode);
             }
         }
@@ -1614,7 +1614,7 @@ namespace Microsoft.Xml.Serialization
             {
                 OpCode opCode = GetStelemOpCode(Type.GetTypeCode(arrayElementType));
                 if (opCode.Equals(OpCodes.Nop))
-                    throw new InvalidOperationException("ArrayTypeIsNotSupported"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.ArrayTypeIsNotSupported, DataContract.GetClrTypeFullName(arrayElementType))));
+                    throw new InvalidOperationException("ArrayTypeIsNotSupported"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.ArrayTypeIsNotSupported, DataContract.GetClrTypeFullName(arrayElementType))));
                 _ilGen.Emit(opCode);
             }
         }
@@ -1804,7 +1804,7 @@ namespace Microsoft.Xml.Serialization
                     OpCode opCode = GetConvOpCode(Type.GetTypeCode(target));
                     if (opCode.Equals(OpCodes.Nop))
                     {
-                        //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.NoConversionPossibleTo, DataContract.GetClrTypeFullName(target))));
+                        //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.NoConversionPossibleTo, DataContract.GetClrTypeFullName(target))));
                         throw new CodeGeneratorConversionException(source, target, isAddress, "NoConversionPossibleTo");
                     }
                     else
@@ -1820,7 +1820,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 else
                 {
-                    //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.IsNotAssignableFrom, DataContract.GetClrTypeFullName(target), DataContract.GetClrTypeFullName(source))));
+                    //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.IsNotAssignableFrom, DataContract.GetClrTypeFullName(target), DataContract.GetClrTypeFullName(source))));
                     throw new CodeGeneratorConversionException(source, target, isAddress, "IsNotAssignableFrom");
                 }
             }
@@ -1844,7 +1844,7 @@ namespace Microsoft.Xml.Serialization
             }
             else
             {
-                //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.IsNotAssignableFrom, DataContract.GetClrTypeFullName(target), DataContract.GetClrTypeFullName(source))));
+                //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.IsNotAssignableFrom, DataContract.GetClrTypeFullName(target), DataContract.GetClrTypeFullName(source))));
                 throw new CodeGeneratorConversionException(source, target, isAddress, "IsNotAssignableFrom");
             }
         }
@@ -2458,7 +2458,7 @@ namespace Microsoft.Xml.Serialization
         {
             Type destType = arg.ArgType;
             if (!destType.IsByRef)
-                throw new InvalidOperationException("OutParametersMustBeByRefTypeReceived"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SR.GetString(SR.OutParametersMustBeByRefTypeReceived, DataContract.GetClrTypeFullName(destType))));
+                throw new InvalidOperationException("OutParametersMustBeByRefTypeReceived"); //.Serialization.DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SR.OutParametersMustBeByRefTypeReceived, DataContract.GetClrTypeFullName(destType))));
             destType = destType.GetElementType();
 
             Type sourceType;

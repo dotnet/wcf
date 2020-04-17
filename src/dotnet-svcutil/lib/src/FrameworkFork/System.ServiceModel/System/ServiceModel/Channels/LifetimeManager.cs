@@ -227,7 +227,7 @@ namespace System.ServiceModel.Channels
             switch (CloseCore(timeout, false))
             {
                 case CommunicationWaitResult.Expired:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SRServiceModel.Format(SRServiceModel.SFxCloseTimedOut1, timeout)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(string.Format(SRServiceModel.SFxCloseTimedOut1, timeout)));
                 case CommunicationWaitResult.Aborted:
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(this.GetType().ToString()));
             }
@@ -283,7 +283,7 @@ namespace System.ServiceModel.Channels
             _mutex = mutex;
 
             if (timeout < TimeSpan.Zero)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SRServiceModel.Format(SRServiceModel.SFxCloseTimedOut1, timeout)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(string.Format(SRServiceModel.SFxCloseTimedOut1, timeout)));
 
             _timer = new Timer(new TimerCallback(new Action<object>(TimeoutCallback)), this, timeout, TimeSpan.FromMilliseconds(-1));
         }
@@ -322,7 +322,7 @@ namespace System.ServiceModel.Channels
                     return;
                 _result = CommunicationWaitResult.Expired;
             }
-            this.Complete(false, new TimeoutException(SRServiceModel.Format(SRServiceModel.SFxCloseTimedOut1, _timeout)));
+            this.Complete(false, new TimeoutException(string.Format(SRServiceModel.SFxCloseTimedOut1, _timeout)));
         }
 
         private static void TimeoutCallback(object state)

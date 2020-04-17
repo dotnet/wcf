@@ -96,9 +96,9 @@ namespace System.Runtime.Serialization
                 if (dataContract == null)
                 {
                     if (assembly == null)
-                        throw XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.AssemblyNotFound, assemblyName));
+                        throw XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.AssemblyNotFound, assemblyName));
                     if (type == null)
-                        throw XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ClrTypeNotFound, assembly.FullName, typeName));
+                        throw XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ClrTypeNotFound, assembly.FullName, typeName));
                 }
                 //Array covariance is not supported in XSD. If declared type is array, data is sent in format of base array
                 if (declaredType != null && declaredType.IsArray)
@@ -107,11 +107,11 @@ namespace System.Runtime.Serialization
             else
             {
                 if (assemblyName != null)
-                    throw XmlObjectSerializer.CreateSerializationException(XmlObjectSerializer.TryAddLineInfo(xmlReader, SRSerialization.Format(SRSerialization.AttributeNotFound, Globals.SerializationNamespace, Globals.ClrTypeLocalName, xmlReader.NodeType, xmlReader.NamespaceURI, xmlReader.LocalName)));
+                    throw XmlObjectSerializer.CreateSerializationException(XmlObjectSerializer.TryAddLineInfo(xmlReader, string.Format(SRSerialization.AttributeNotFound, Globals.SerializationNamespace, Globals.ClrTypeLocalName, xmlReader.NodeType, xmlReader.NamespaceURI, xmlReader.LocalName)));
                 else if (typeName != null)
-                    throw XmlObjectSerializer.CreateSerializationException(XmlObjectSerializer.TryAddLineInfo(xmlReader, SRSerialization.Format(SRSerialization.AttributeNotFound, Globals.SerializationNamespace, Globals.ClrAssemblyLocalName, xmlReader.NodeType, xmlReader.NamespaceURI, xmlReader.LocalName)));
+                    throw XmlObjectSerializer.CreateSerializationException(XmlObjectSerializer.TryAddLineInfo(xmlReader, string.Format(SRSerialization.AttributeNotFound, Globals.SerializationNamespace, Globals.ClrAssemblyLocalName, xmlReader.NodeType, xmlReader.NamespaceURI, xmlReader.LocalName)));
                 else if (declaredType == null)
-                    throw XmlObjectSerializer.CreateSerializationException(XmlObjectSerializer.TryAddLineInfo(xmlReader, SRSerialization.Format(SRSerialization.AttributeNotFound, Globals.SerializationNamespace, Globals.ClrTypeLocalName, xmlReader.NodeType, xmlReader.NamespaceURI, xmlReader.LocalName)));
+                    throw XmlObjectSerializer.CreateSerializationException(XmlObjectSerializer.TryAddLineInfo(xmlReader, string.Format(SRSerialization.AttributeNotFound, Globals.SerializationNamespace, Globals.ClrTypeLocalName, xmlReader.NodeType, xmlReader.NamespaceURI, xmlReader.LocalName)));
                 dataContract = (declaredTypeID < 0) ? GetDataContract(declaredType) : GetDataContract(declaredTypeID, declaredType.TypeHandle);
             }
             return ReadDataContractValue(dataContract, xmlReader);
@@ -123,7 +123,7 @@ namespace System.Runtime.Serialization
                 GetDataContract(DataContractSurrogateCaller.GetDataContractType(_serializationSurrogateProvider, declaredType));
             if (this.IsGetOnlyCollection && dataContract.UnderlyingType != declaredType)
             {
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser, DataContract.GetClrTypeFullName(declaredType))));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser, DataContract.GetClrTypeFullName(declaredType))));
             }
             ReadAttributes(xmlReader);
             string objectId = GetObjectId();
@@ -176,7 +176,7 @@ namespace System.Runtime.Serialization
                     memberType = memberType.GetElementType();
                 memberType = DataContractSurrogateCaller.GetDataContractType(_serializationSurrogateProvider, memberType);
                 if (!DataContract.IsTypeSerializable(memberType))
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.TypeNotSerializable, memberType)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TypeNotSerializable, memberType)));
                 return;
             }
 
@@ -195,7 +195,7 @@ namespace System.Runtime.Serialization
                 Type surrogateType = DataContractSerializer.GetSurrogatedType(_serializationSurrogateProvider, type);
                 if (this.IsGetOnlyCollection && surrogateType != type)
                 {
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser,
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser,
                         DataContract.GetClrTypeFullName(type))));
                 }
                 else

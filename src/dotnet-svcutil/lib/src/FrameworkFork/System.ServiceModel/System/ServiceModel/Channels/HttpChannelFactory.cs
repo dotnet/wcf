@@ -93,7 +93,7 @@ namespace System.ServiceModel.Channels
 
             if (!bindingElement.AuthenticationScheme.IsSingleton())
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SRServiceModel.Format(SRServiceModel.HttpRequiresSingleAuthScheme,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", string.Format(SRServiceModel.HttpRequiresSingleAuthScheme,
                     bindingElement.AuthenticationScheme));
             }
             _authenticationScheme = bindingElement.AuthenticationScheme;
@@ -350,7 +350,7 @@ namespace System.ServiceModel.Channels
 
         internal Exception CreateToMustEqualViaException(Uri to, Uri via)
         {
-            return new ArgumentException(SRServiceModel.Format(SRServiceModel.HttpToMustEqualVia, to, via));
+            return new ArgumentException(string.Format(SRServiceModel.HttpToMustEqualVia, to, via));
         }
 
 
@@ -440,7 +440,7 @@ namespace System.ServiceModel.Channels
             Type channelType = typeof(TChannel);
             if (channelType == typeof(IRequestChannel) && WebSocketSettings.TransportUsage == WebSocketTransportUsage.Always)
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(
                             SRServiceModel.WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage,
                             typeof(TChannel),
                             WebSocketTransportSettings.TransportUsageMethodName,
@@ -452,7 +452,7 @@ namespace System.ServiceModel.Channels
             {
                 if (WebSocketSettings.TransportUsage == WebSocketTransportUsage.Never)
                 {
-                    throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(
+                    throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(
                                 SRServiceModel.WebSocketCannotCreateRequestClientChannelWithCertainWebSocketTransportUsage,
                                 typeof(TChannel),
                                 WebSocketTransportSettings.TransportUsageMethodName,
@@ -951,7 +951,7 @@ namespace System.ServiceModel.Channels
                         {
                             if (cancelTokenTask.Result.IsCancellationRequested)
                             {
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SRServiceModel.Format(
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(string.Format(
                                     SRServiceModel.HttpRequestTimedOut, _httpRequestMessage.RequestUri, _timeoutHelper.OriginalTimeout)));
                             }
                             else
@@ -1016,7 +1016,7 @@ namespace System.ServiceModel.Channels
                         var cancelToken = _timeoutHelper.GetCancellationToken();
                         if (cancelToken.IsCancellationRequested)
                         {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(SRServiceModel.Format(
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(string.Format(
                                 SRServiceModel.HttpResponseTimedOut, _httpRequestMessage.RequestUri, timeoutHelper.OriginalTimeout)));
                         }
                         else
@@ -1083,7 +1083,7 @@ namespace System.ServiceModel.Channels
                                     if (!String.IsNullOrEmpty(value) && string.Compare(value, action, StringComparison.Ordinal) != 0)
                                     {
                                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                            new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpSoapActionMismatch, action, value)));
+                                            new ProtocolException(string.Format(SRServiceModel.HttpSoapActionMismatch, action, value)));
                                     }
                                 }
                             }
@@ -1141,7 +1141,7 @@ namespace System.ServiceModel.Channels
                                 else
                                 {
                                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                        new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpIfModifiedSinceParseError, value)));
+                                        new ProtocolException(string.Format(SRServiceModel.HttpIfModifiedSinceParseError, value)));
                                 }
                             }
                             else if (string.Compare(name, "date", StringComparison.OrdinalIgnoreCase) == 0)
@@ -1164,7 +1164,7 @@ namespace System.ServiceModel.Channels
                                 }
                                 catch (Exception addHeaderException)
                                 {
-                                    throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(
+                                    throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(
                                                     SRServiceModel.CopyHttpHeaderFailed,
                                                     name,
                                                     value,
@@ -1188,7 +1188,7 @@ namespace System.ServiceModel.Channels
                         else if (message.Version.Envelope != EnvelopeVersion.None)
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                new ProtocolException(SRServiceModel.Format(SRServiceModel.EnvelopeVersionUnknown,
+                                new ProtocolException(string.Format(SRServiceModel.EnvelopeVersionUnknown,
                                 message.Version.Envelope.ToString())));
                         }
                     }

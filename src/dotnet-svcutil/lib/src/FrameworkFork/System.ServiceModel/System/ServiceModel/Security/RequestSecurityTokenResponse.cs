@@ -316,7 +316,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "EntropyToken")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "EntropyToken")));
                 }
                 return null;
             }
@@ -328,7 +328,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "IssuedToken")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "IssuedToken")));
                 }
                 return _issuedToken;
             }
@@ -346,7 +346,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "ProofToken")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "ProofToken")));
                 }
                 return _proofToken;
             }
@@ -364,7 +364,7 @@ namespace System.ServiceModel.Security
             {
                 if (!_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemAvailableInDeserializedRSTROnly, "RequestSecurityTokenXml")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemAvailableInDeserializedRSTROnly, "RequestSecurityTokenXml")));
                 }
                 return _rstrXml;
             }
@@ -376,7 +376,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRST, "AppliesTo")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRST, "AppliesTo")));
                 }
                 return _appliesTo;
             }
@@ -388,7 +388,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRST, "AppliesToSerializer")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRST, "AppliesToSerializer")));
                 }
                 return _appliesToSerializer;
             }
@@ -400,7 +400,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRST, "AppliesToType")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRST, "AppliesToType")));
                 }
                 return _appliesToType;
             }
@@ -412,7 +412,7 @@ namespace System.ServiceModel.Security
             {
                 if (_isReceiver)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "IsLifetimeSet")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemNotAvailableInDeserializedRSTR, "IsLifetimeSet")));
                 }
                 return _isLifetimeSet;
             }
@@ -458,7 +458,7 @@ namespace System.ServiceModel.Security
         public void GetAppliesToQName(out string localName, out string namespaceUri)
         {
             if (!_isReceiver)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ItemAvailableInDeserializedRSTOnly, "MatchesAppliesTo")));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ItemAvailableInDeserializedRSTOnly, "MatchesAppliesTo")));
             _standardsManager.TrustDriver.GetAppliesToQName(this, out localName, out namespaceUri);
         }
 

@@ -93,7 +93,7 @@ namespace System.ServiceModel.Description
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("policy",
 #pragma warning disable 56506 // chiomaos, policy cannot be null at this point since it has been validated above.
- SRServiceModel.Format(SRServiceModel.SFxBadMetadataMustBePolicy, MetadataStrings.WSPolicy.NamespaceUri, MetadataStrings.WSPolicy.Elements.Policy, policy.NamespaceURI, policy.LocalName));
+ string.Format(SRServiceModel.SFxBadMetadataMustBePolicy, MetadataStrings.WSPolicy.NamespaceUri, MetadataStrings.WSPolicy.Elements.Policy, policy.NamespaceURI, policy.LocalName));
             }
 
             MetadataSection section = new MetadataSection();

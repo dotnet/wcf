@@ -305,7 +305,7 @@ namespace System.ServiceModel.Description
                 TransportBindingElement transport = binding.CreateBindingElements().Find<TransportBindingElement>();
                 if (transport == null)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.SFxBindingMustContainTransport2, binding.Name, binding.Namespace);
+                    string text = string.Format(SRServiceModel.SFxBindingMustContainTransport2, binding.Name, binding.Namespace);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }

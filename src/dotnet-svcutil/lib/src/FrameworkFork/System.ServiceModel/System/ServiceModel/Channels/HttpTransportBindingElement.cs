@@ -248,7 +248,7 @@ namespace System.ServiceModel.Channels
                 if (value > HttpTransportDefaults.MaxPendingAcceptsUpperLimit)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        SRServiceModel.Format(SRServiceModel.HttpMaxPendingAcceptsTooLargeError, HttpTransportDefaults.MaxPendingAcceptsUpperLimit)));
+                        string.Format(SRServiceModel.HttpMaxPendingAcceptsTooLargeError, HttpTransportDefaults.MaxPendingAcceptsUpperLimit)));
                 }
 
                 _maxPendingAccepts = value;
@@ -465,23 +465,23 @@ namespace System.ServiceModel.Channels
 
             if (this.MessageHandlerFactory != null)
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.HttpPipelineNotSupportedOnClientSide, "MessageHandlerFactory")));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.HttpPipelineNotSupportedOnClientSide, "MessageHandlerFactory")));
             }
 
             if (!this.CanBuildChannelFactory<TChannel>(context))
             {
                 Contract.Assert(context.Binding != null);
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SRServiceModel.Format(SRServiceModel.CouldnTCreateChannelForChannelType2, context.Binding.Name, typeof(TChannel)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", string.Format(SRServiceModel.CouldnTCreateChannelForChannelType2, context.Binding.Name, typeof(TChannel)));
             }
 
             if (_authenticationScheme == AuthenticationSchemes.None)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SRServiceModel.Format(SRServiceModel.HttpAuthSchemeCannotBeNone,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", string.Format(SRServiceModel.HttpAuthSchemeCannotBeNone,
                     _authenticationScheme));
             }
             else if (!_authenticationScheme.IsSingleton())
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SRServiceModel.Format(SRServiceModel.HttpRequiresSingleAuthScheme,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", string.Format(SRServiceModel.HttpRequiresSingleAuthScheme,
                     _authenticationScheme));
             }
 
@@ -526,7 +526,7 @@ namespace System.ServiceModel.Channels
                 if (foundAssertion)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(
-                        SRServiceModel.Format(SRServiceModel.HttpTransportCannotHaveMultipleAuthenticationSchemes, policyContext.Contract.Namespace, policyContext.Contract.Name)));
+                        string.Format(SRServiceModel.HttpTransportCannotHaveMultipleAuthenticationSchemes, policyContext.Contract.Namespace, policyContext.Contract.Name)));
                 }
 
                 foundAssertion = true;
@@ -549,7 +549,7 @@ namespace System.ServiceModel.Channels
                     TransferMode result;
                     if (!Enum.TryParse<TransferMode>(transferMode, true, out result) || !TransferModeHelper.IsDefined(result) || result == TransferMode.Buffered)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(
                                 SRServiceModel.WebSocketTransportPolicyAssertionInvalid,
                                 policyContext.Contract.Namespace,
                                 policyContext.Contract.Name,

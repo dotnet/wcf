@@ -51,7 +51,7 @@ namespace System.ServiceModel
 
             reader.MoveToContent();
             if (reader.IsEmptyElement)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.X509v3Certificate.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.X509v3Certificate.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
 
             reader.ReadStartElement(XD.XmlSignatureDictionary.X509Data, XD.XmlSignatureDictionary.Namespace);
             while (reader.IsStartElement(XD.XmlSignatureDictionary.X509Certificate, XD.XmlSignatureDictionary.Namespace))
@@ -70,7 +70,7 @@ namespace System.ServiceModel
             reader.ReadEndElement();
 
             if (_certificateCollection.Count == 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.X509v3Certificate.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.X509v3Certificate.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
         }
 
         public X509Certificate2Collection Certificates

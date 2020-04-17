@@ -28,7 +28,7 @@ namespace System.IdentityModel.Selectors
             SecurityToken token = await this.GetTokenCoreAsync(cancellationToken);
             if (token == null)
             {
-                throw Fx.Exception.AsError(new SecurityTokenException(SRServiceModel.Format(SRServiceModel.TokenProviderUnableToGetToken, this)));
+                throw Fx.Exception.AsError(new SecurityTokenException(string.Format(SRServiceModel.TokenProviderUnableToGetToken, this)));
             }
             return token;
         }
@@ -42,7 +42,7 @@ namespace System.IdentityModel.Selectors
             SecurityToken token = await this.RenewTokenCoreAsync(cancellationToken, tokenToBeRenewed);
             if (token == null)
             {
-                throw Fx.Exception.AsError(new SecurityTokenException(SRServiceModel.Format(SRServiceModel.TokenProviderUnableToRenewToken, this)));
+                throw Fx.Exception.AsError(new SecurityTokenException(string.Format(SRServiceModel.TokenProviderUnableToRenewToken, this)));
             }
             return token;
         }
@@ -61,12 +61,12 @@ namespace System.IdentityModel.Selectors
 
         protected virtual Task<SecurityToken> RenewTokenCoreAsync(CancellationToken cancellationToken, SecurityToken tokenToBeRenewed)
         {
-            throw Fx.Exception.AsError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.TokenRenewalNotSupported, this)));
+            throw Fx.Exception.AsError(new NotSupportedException(string.Format(SRServiceModel.TokenRenewalNotSupported, this)));
         }
 
         protected virtual Task CancelTokenCoreAsync(CancellationToken cancellationToken, SecurityToken token)
         {
-            throw Fx.Exception.AsError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.TokenCancellationNotSupported, this)));
+            throw Fx.Exception.AsError(new NotSupportedException(string.Format(SRServiceModel.TokenCancellationNotSupported, this)));
         }
     }
 }

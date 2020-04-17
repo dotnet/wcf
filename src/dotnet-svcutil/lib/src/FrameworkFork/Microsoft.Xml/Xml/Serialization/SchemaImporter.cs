@@ -165,7 +165,7 @@ namespace Microsoft.Xml.Serialization
                             typeDescToChange = typeDescToChange.BaseTypeDesc;
                     }
                     if (typeDescToChange.BaseTypeDesc != null && typeDescToChange.BaseTypeDesc != baseTypeDesc)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidBaseType, structMapping.TypeDesc.FullName, baseType.FullName, typeDescToChange.BaseTypeDesc.FullName));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlInvalidBaseType, structMapping.TypeDesc.FullName, baseType.FullName, typeDescToChange.BaseTypeDesc.FullName));
                     typeDescToChange.BaseTypeDesc = baseTypeDesc;
                 }
             }
@@ -215,7 +215,7 @@ namespace Microsoft.Xml.Serialization
                 return;
             if (references[name] != null)
             {
-                throw new InvalidOperationException(ResXml.GetString(error, name.Name, name.Namespace));
+                throw new InvalidOperationException(string.Format(error, name.Name, name.Namespace));
             }
             references[name] = name;
         }

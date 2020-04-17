@@ -58,7 +58,7 @@ namespace System.Web.Services.Configuration
                 object[] attrs = new List<object>(extensionType.GetTypeInfo().GetCustomAttributes(typeof(XmlFormatExtensionAttribute), false)).ToArray();
                 if (attrs.Length == 0)
                 {
-                    throw new ArgumentException(ResWebServices.GetString(ResWebServices.RequiredXmlFormatExtensionAttributeIsMissing1, extensionType.FullName), "extensionTypes");
+                    throw new ArgumentException(string.Format(ResWebServices.RequiredXmlFormatExtensionAttributeIsMissing1, extensionType.FullName), "extensionTypes");
                 }
                 XmlFormatExtensionAttribute extensionAttr = (XmlFormatExtensionAttribute)attrs[0];
                 foreach (Type extensionPointType in extensionAttr.ExtensionPoints)
@@ -110,7 +110,7 @@ namespace System.Web.Services.Configuration
         {
             object[] attrs = new List<object>(type.GetTypeInfo().GetCustomAttributes(typeof(XmlFormatExtensionPointAttribute), false)).ToArray();
             if (attrs.Length == 0)
-                throw new ArgumentException(ResWebServices.GetString(ResWebServices.TheSyntaxOfTypeMayNotBeExtended1, type.FullName), "type");
+                throw new ArgumentException(string.Format(ResWebServices.TheSyntaxOfTypeMayNotBeExtended1, type.FullName), "type");
             return (XmlFormatExtensionPointAttribute)attrs[0];
         }
 

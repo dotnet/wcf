@@ -52,7 +52,7 @@ namespace System.Runtime.Serialization
                 StringReader reader = new StringReader(Globals.SerializationSchema);
                 XmlSchema schema = XmlSchema.Read(reader, null);
                 if (schema == null)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.CouldNotReadSerializationSchema, Globals.SerializationNamespace)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.CouldNotReadSerializationSchema, Globals.SerializationNamespace)));
                 _schemaSet.Add(schema);
             }
 
@@ -67,7 +67,7 @@ namespace System.Runtime.Serialization
                 {
                     throw;
                 }
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.CannotImportInvalidSchemas), ex));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.CannotImportInvalidSchemas), ex));
             }
 
             if (_typeNames == null)
@@ -76,7 +76,7 @@ namespace System.Runtime.Serialization
                 foreach (object schemaObj in schemaList)
                 {
                     if (schemaObj == null)
-                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.CannotImportNullSchema)));
+                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.CannotImportNullSchema)));
 
                     XmlSchema schema = (XmlSchema)schemaObj;
                     if (schema.TargetNamespace != Globals.SerializationNamespace
@@ -99,7 +99,7 @@ namespace System.Runtime.Serialization
                 foreach (XmlQualifiedName typeName in _typeNames)
                 {
                     if (typeName == null)
-                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.CannotImportNullDataContractName)));
+                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.CannotImportNullDataContractName)));
                     ImportType(typeName);
                 }
 
@@ -377,7 +377,7 @@ namespace System.Runtime.Serialization
                     if (SchemaHelper.GetSchemaType(SchemaObjects, typeQName) == null)
                         break;
                     if (i == Int32.MaxValue)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.CannotComputeUniqueName, element.Name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.CannotComputeUniqueName, element.Name)));
                 }
             }
             if (element.SchemaType == null)
@@ -393,7 +393,7 @@ namespace System.Runtime.Serialization
             {
                 XmlSchemaType type = SchemaHelper.GetSchemaType(SchemaObjects, typeName);
                 if (type == null)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.SpecifiedTypeNotFoundInSchema, typeName.Name, typeName.Namespace)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.SpecifiedTypeNotFoundInSchema, typeName.Name, typeName.Namespace)));
                 dataContract = ImportType(type);
             }
             if (IsObjectContract(dataContract))
@@ -419,7 +419,7 @@ namespace System.Runtime.Serialization
                 foreach (XmlSchemaRedefine redefine in RedefineList)
                 {
                     if (redefine.SchemaTypes[typeName] != null)
-                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.RedefineNotSupported));
+                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.RedefineNotSupported));
                 }
 
                 if (type is XmlSchemaSimpleType)
@@ -427,7 +427,7 @@ namespace System.Runtime.Serialization
                     XmlSchemaSimpleType simpleType = (XmlSchemaSimpleType)type;
                     XmlSchemaSimpleTypeContent content = simpleType.Content;
                     if (content is XmlSchemaSimpleTypeUnion)
-                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.SimpleTypeUnionNotSupported));
+                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.SimpleTypeUnionNotSupported));
                     else if (content is XmlSchemaSimpleTypeList)
                         dataContract = ImportFlagsEnum(typeName, (XmlSchemaSimpleTypeList)content, simpleType.Annotation);
                     else if (content is XmlSchemaSimpleTypeRestriction)
@@ -459,12 +459,12 @@ namespace System.Runtime.Serialization
                     {
                         XmlSchemaContentModel contentModel = complexType.ContentModel;
                         if (contentModel is XmlSchemaSimpleContent)
-                            ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.SimpleContentNotSupported));
+                            ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.SimpleContentNotSupported));
                         else if (contentModel is XmlSchemaComplexContent)
                         {
                             XmlSchemaComplexContent complexContent = (XmlSchemaComplexContent)contentModel;
                             if (complexContent.IsMixed)
-                                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.MixedContentNotSupported));
+                                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.MixedContentNotSupported));
 
                             if (complexContent.Content is XmlSchemaComplexContentExtension)
                             {
@@ -478,7 +478,7 @@ namespace System.Runtime.Serialization
                                 if (baseTypeName == SchemaExporter.AnytypeQualifiedName)
                                     dataContract = ImportType(typeName, restriction.Particle, restriction.Attributes, restriction.AnyAttribute, null /* baseTypeName */, complexType.Annotation);
                                 else
-                                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ComplexTypeRestrictionNotSupported));
+                                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ComplexTypeRestrictionNotSupported));
                             }
                         }
                     }
@@ -636,14 +636,14 @@ namespace System.Runtime.Serialization
             if (rootParticle == null)
                 dataContract = ImportClass(typeName, new XmlSchemaSequence(), baseTypeName, annotation, isReference);
             else if (!(rootParticle is XmlSchemaSequence))
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.RootParticleMustBeSequence));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.RootParticleMustBeSequence));
             else
             {
                 XmlSchemaSequence rootSequence = (XmlSchemaSequence)rootParticle;
                 if (rootSequence.MinOccurs != 1)
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.RootSequenceMustBeRequired));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.RootSequenceMustBeRequired));
                 if (rootSequence.MaxOccurs != 1)
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.RootSequenceMaxOccursMustBe));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.RootSequenceMaxOccursMustBe));
 
                 if (!isDerived && CheckIfCollection(rootSequence))
                     dataContract = ImportCollection(typeName, rootSequence, attributes, annotation, isReference);
@@ -674,7 +674,7 @@ namespace System.Runtime.Serialization
                     if (IsISerializableDerived(typeName, rootSequence))
                         dataContract.IsISerializable = true;
                     else
-                        ThrowTypeCannotBeImportedException(dataContract.StableName.Name, dataContract.StableName.Namespace, SRSerialization.Format(SRSerialization.DerivedTypeNotISerializable, baseTypeName.Name, baseTypeName.Namespace));
+                        ThrowTypeCannotBeImportedException(dataContract.StableName.Name, dataContract.StableName.Namespace, string.Format(SRSerialization.DerivedTypeNotISerializable, baseTypeName.Name, baseTypeName.Namespace));
                 }
                 if (dataContract.BaseContract.IsReference)
                 {
@@ -690,7 +690,7 @@ namespace System.Runtime.Serialization
                 {
                     XmlSchemaElement element = rootSequence.Items[memberIndex] as XmlSchemaElement;
                     if (element == null)
-                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.MustContainOnlyLocalElements));
+                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.MustContainOnlyLocalElements));
                     ImportClassMember(element, dataContract);
                 }
             }
@@ -824,7 +824,7 @@ namespace System.Runtime.Serialization
                 }
                 catch (FormatException fe)
                 {
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.IsValueTypeFormattedIncorrectly, isValueTypeInnerText, fe.Message));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.IsValueTypeFormattedIncorrectly, isValueTypeInnerText, fe.Message));
                 }
             }
             return false;
@@ -847,9 +847,9 @@ namespace System.Runtime.Serialization
             {
                 ImportBaseContract(baseTypeName, dataContract);
                 if (!dataContract.BaseContract.IsISerializable)
-                    ThrowISerializableTypeCannotBeImportedException(dataContract.StableName.Name, dataContract.StableName.Namespace, SRSerialization.Format(SRSerialization.BaseTypeNotISerializable, baseTypeName.Name, baseTypeName.Namespace));
+                    ThrowISerializableTypeCannotBeImportedException(dataContract.StableName.Name, dataContract.StableName.Namespace, string.Format(SRSerialization.BaseTypeNotISerializable, baseTypeName.Name, baseTypeName.Namespace));
                 if (!IsISerializableDerived(typeName, rootSequence))
-                    ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableDerivedContainsOneOrMoreItems));
+                    ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableDerivedContainsOneOrMoreItems));
             }
 
             return dataContract;
@@ -858,27 +858,27 @@ namespace System.Runtime.Serialization
         private void CheckISerializableBase(XmlQualifiedName typeName, XmlSchemaSequence rootSequence, XmlSchemaObjectCollection attributes)
         {
             if (rootSequence == null)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableDoesNotContainAny));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableDoesNotContainAny));
 
             if (rootSequence.Items == null || rootSequence.Items.Count < 1)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableDoesNotContainAny));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableDoesNotContainAny));
             else if (rootSequence.Items.Count > 1)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableContainsMoreThanOneItems));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableContainsMoreThanOneItems));
 
             XmlSchemaObject o = rootSequence.Items[0];
             if (!(o is XmlSchemaAny))
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableDoesNotContainAny));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableDoesNotContainAny));
 
             XmlSchemaAny wildcard = (XmlSchemaAny)o;
             XmlSchemaAny iSerializableWildcardElement = SchemaExporter.ISerializableWildcardElement;
             if (wildcard.MinOccurs != iSerializableWildcardElement.MinOccurs)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableWildcardMinOccursMustBe, iSerializableWildcardElement.MinOccurs));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableWildcardMinOccursMustBe, iSerializableWildcardElement.MinOccurs));
             if (wildcard.MaxOccursString != iSerializableWildcardElement.MaxOccursString)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableWildcardMaxOccursMustBe, iSerializableWildcardElement.MaxOccursString));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableWildcardMaxOccursMustBe, iSerializableWildcardElement.MaxOccursString));
             if (wildcard.Namespace != iSerializableWildcardElement.Namespace)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableWildcardNamespaceInvalid, iSerializableWildcardElement.Namespace));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableWildcardNamespaceInvalid, iSerializableWildcardElement.Namespace));
             if (wildcard.ProcessContents != iSerializableWildcardElement.ProcessContents)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableWildcardProcessContentsInvalid, iSerializableWildcardElement.ProcessContents));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableWildcardProcessContentsInvalid, iSerializableWildcardElement.ProcessContents));
 
             XmlQualifiedName factoryTypeAttributeRefName = SchemaExporter.ISerializableFactoryTypeAttribute.RefName;
             bool containsFactoryTypeAttribute = false;
@@ -898,7 +898,7 @@ namespace System.Runtime.Serialization
                 }
             }
             if (!containsFactoryTypeAttribute)
-                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ISerializableMustRefFactoryTypeAttribute, factoryTypeAttributeRefName.Name, factoryTypeAttributeRefName.Namespace));
+                ThrowISerializableTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ISerializableMustRefFactoryTypeAttribute, factoryTypeAttributeRefName.Name, factoryTypeAttributeRefName.Namespace));
         }
 
         private bool IsISerializableDerived(XmlQualifiedName typeName, XmlSchemaSequence rootSequence)
@@ -913,7 +913,7 @@ namespace System.Runtime.Serialization
         {
             ClassDataContract baseContract = ImportType(baseTypeName) as ClassDataContract;
             if (baseContract == null)
-                ThrowTypeCannotBeImportedException(dataContract.StableName.Name, dataContract.StableName.Namespace, SRSerialization.Format(dataContract.IsISerializable ? SRSerialization.InvalidISerializableDerivation : SRSerialization.InvalidClassDerivation, baseTypeName.Name, baseTypeName.Namespace));
+                ThrowTypeCannotBeImportedException(dataContract.StableName.Name, dataContract.StableName.Namespace, string.Format(dataContract.IsISerializable ? SRSerialization.InvalidISerializableDerivation : SRSerialization.InvalidClassDerivation, baseTypeName.Name, baseTypeName.Namespace));
 
             // Note: code ignores IsValueType annotation if derived type exists
             if (baseContract.IsValueType)
@@ -947,12 +947,12 @@ namespace System.Runtime.Serialization
                 if (elementTypeName.IsEmpty)
                 {
                     if (topLevelElement.SchemaType != null)
-                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.AnonymousTypeNotSupported, typeName.Name, typeName.Namespace));
+                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.AnonymousTypeNotSupported, typeName.Name, typeName.Namespace));
                     else
                         elementTypeName = SchemaExporter.AnytypeQualifiedName;
                 }
                 if (elementTypeName != typeName)
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.TopLevelElementRepresentsDifferentType, topLevelElement.SchemaTypeName.Name, topLevelElement.SchemaTypeName.Namespace));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.TopLevelElementRepresentsDifferentType, topLevelElement.SchemaTypeName.Name, topLevelElement.SchemaTypeName.Namespace));
                 CheckIfElementUsesUnsupportedConstructs(typeName, topLevelElement);
             }
         }
@@ -962,9 +962,9 @@ namespace System.Runtime.Serialization
             XmlQualifiedName typeName = dataContract.StableName;
 
             if (element.MinOccurs > 1)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ElementMinOccursMustBe, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ElementMinOccursMustBe, element.Name));
             if (element.MaxOccurs != 1)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ElementMaxOccursMustBe, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ElementMaxOccursMustBe, element.Name));
 
             DataContract memberTypeContract = null;
             string memberName = element.Name;
@@ -975,7 +975,7 @@ namespace System.Runtime.Serialization
 
             XmlSchemaForm? elementForm = (element.Form == XmlSchemaForm.None) ? SchemaHelper.GetSchemaWithType(SchemaObjects, _schemaSet, typeName)?.ElementFormDefault : element.Form;
             if (elementForm != XmlSchemaForm.Qualified)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.FormMustBeQualified, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.FormMustBeQualified, element.Name));
             CheckIfElementUsesUnsupportedConstructs(typeName, element);
 
             if (element.SchemaTypeName.IsEmpty)
@@ -983,7 +983,7 @@ namespace System.Runtime.Serialization
                 if (element.SchemaType != null)
                     memberTypeContract = ImportAnonymousElement(element, new XmlQualifiedName(String.Format(CultureInfo.InvariantCulture, "{0}.{1}Type", typeName.Name, element.Name), typeName.Namespace));
                 else if (!element.RefName.IsEmpty)
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ElementRefOnLocalElementNotSupported, element.RefName.Name, element.RefName.Namespace));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ElementRefOnLocalElementNotSupported, element.RefName.Name, element.RefName.Namespace));
                 else
                     memberTypeContract = ImportType(SchemaExporter.AnytypeQualifiedName);
             }
@@ -998,7 +998,7 @@ namespace System.Runtime.Serialization
             if (!memberTypeContract.IsValueType && !memberIsNullable)
             {
                 if (emitDefaultValueFromAnnotation != null && emitDefaultValueFromAnnotation.Value)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidEmitDefaultAnnotation, memberName, typeName.Name, typeName.Namespace)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.InvalidEmitDefaultAnnotation, memberName, typeName.Name, typeName.Namespace)));
                 memberEmitDefaultValue = false;
             }
             else
@@ -1013,7 +1013,7 @@ namespace System.Runtime.Serialization
                 DataMember currentMember = new DataMember(memberTypeContract, memberName, memberIsNullable, memberIsRequired, memberEmitDefaultValue, memberOrder);
                 int compare = ClassDataContract.DataMemberComparer.Singleton.Compare(prevMember, currentMember);
                 if (compare == 0)
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.CannotHaveDuplicateElementNames, memberName));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.CannotHaveDuplicateElementNames, memberName));
                 else if (compare > 0)
                     memberOrder = dataContract.Members.Count;
             }
@@ -1033,7 +1033,7 @@ namespace System.Runtime.Serialization
             XmlNode emitDefaultValueAttribute = defaultValueElement.Attributes.GetNamedItem(Globals.EmitDefaultValueAttribute);
             string emitDefaultValueString = (emitDefaultValueAttribute == null) ? null : emitDefaultValueAttribute.Value;
             if (emitDefaultValueString == null)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.AnnotationAttributeNotFound, SchemaExporter.DefaultValueAnnotation.Name, typeName.Name, typeName.Namespace, Globals.EmitDefaultValueAttribute)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.AnnotationAttributeNotFound, SchemaExporter.DefaultValueAnnotation.Name, typeName.Name, typeName.Namespace, Globals.EmitDefaultValueAttribute)));
             return XmlConvert.ToBoolean(emitDefaultValueString);
         }
 
@@ -1046,11 +1046,11 @@ namespace System.Runtime.Serialization
             XmlNode nameAttribute = actualTypeElement.Attributes.GetNamedItem(Globals.ActualTypeNameAttribute);
             string name = (nameAttribute == null) ? null : nameAttribute.Value;
             if (name == null)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.AnnotationAttributeNotFound, SchemaExporter.ActualTypeAnnotationName.Name, typeName.Name, typeName.Namespace, Globals.ActualTypeNameAttribute)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.AnnotationAttributeNotFound, SchemaExporter.ActualTypeAnnotationName.Name, typeName.Name, typeName.Namespace, Globals.ActualTypeNameAttribute)));
             XmlNode nsAttribute = actualTypeElement.Attributes.GetNamedItem(Globals.ActualTypeNamespaceAttribute);
             string ns = (nsAttribute == null) ? null : nsAttribute.Value;
             if (ns == null)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.AnnotationAttributeNotFound, SchemaExporter.ActualTypeAnnotationName.Name, typeName.Name, typeName.Namespace, Globals.ActualTypeNamespaceAttribute)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.AnnotationAttributeNotFound, SchemaExporter.ActualTypeAnnotationName.Name, typeName.Name, typeName.Namespace, Globals.ActualTypeNamespaceAttribute)));
             return new XmlQualifiedName(name, ns);
         }
 
@@ -1073,7 +1073,7 @@ namespace System.Runtime.Serialization
 
             XmlSchemaForm? elementForm = (element.Form == XmlSchemaForm.None) ? SchemaHelper.GetSchemaWithType(SchemaObjects, _schemaSet, typeName)?.ElementFormDefault : element.Form;
             if (elementForm != XmlSchemaForm.Qualified)
-                ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ArrayItemFormMustBe, element.Name));
+                ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ArrayItemFormMustBe, element.Name));
             CheckIfElementUsesUnsupportedConstructs(typeName, element);
 
             if (element.SchemaTypeName.IsEmpty)
@@ -1093,7 +1093,7 @@ namespace System.Runtime.Serialization
                     }
                 }
                 else if (!element.RefName.IsEmpty)
-                    ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.ElementRefOnLocalElementNotSupported, element.RefName.Name, element.RefName.Namespace));
+                    ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.ElementRefOnLocalElementNotSupported, element.RefName.Name, element.RefName.Namespace));
                 else
                     dataContract.ItemContract = ImportType(SchemaExporter.AnytypeQualifiedName);
             }
@@ -1109,11 +1109,11 @@ namespace System.Runtime.Serialization
                 if (keyValueContract == null || keyValueContract.Members == null || keyValueContract.Members.Count != 2
                     || !(key = keyValueContract.Members[0]).IsRequired || !(value = keyValueContract.Members[1]).IsRequired)
                 {
-                    ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.InvalidKeyValueType, element.Name));
+                    ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.InvalidKeyValueType, element.Name));
                 }
                 if (keyValueContract.Namespace != dataContract.Namespace)
                 {
-                    ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.InvalidKeyValueTypeNamespace, element.Name, keyValueContract.Namespace));
+                    ThrowArrayTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.InvalidKeyValueTypeNamespace, element.Name, keyValueContract.Namespace));
                 }
                 keyValueContract.IsValueType = true;
                 dataContract.KeyName = key.Name;
@@ -1160,7 +1160,7 @@ namespace System.Runtime.Serialization
                 }
                 catch (FormatException fe)
                 {
-                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.IsDictionaryFormattedIncorrectly, isDictionaryInnerText, fe.Message));
+                    ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.IsDictionaryFormattedIncorrectly, isDictionaryInnerText, fe.Message));
                 }
             }
             return false;
@@ -1170,20 +1170,20 @@ namespace System.Runtime.Serialization
         {
             XmlSchemaSimpleType anonymousType = list.ItemType;
             if (anonymousType == null)
-                ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.EnumListMustContainAnonymousType));
+                ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.EnumListMustContainAnonymousType));
 
             XmlSchemaSimpleTypeContent content = anonymousType.Content;
             if (content is XmlSchemaSimpleTypeUnion)
-                ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.EnumUnionInAnonymousTypeNotSupported));
+                ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.EnumUnionInAnonymousTypeNotSupported));
             else if (content is XmlSchemaSimpleTypeList)
-                ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.EnumListInAnonymousTypeNotSupported));
+                ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.EnumListInAnonymousTypeNotSupported));
             else if (content is XmlSchemaSimpleTypeRestriction)
             {
                 XmlSchemaSimpleTypeRestriction restriction = (XmlSchemaSimpleTypeRestriction)content;
                 if (CheckIfEnum(restriction))
                     return ImportEnum(typeName, restriction, true /*isFlags*/, annotation);
                 else
-                    ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.EnumRestrictionInvalid));
+                    ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.EnumRestrictionInvalid));
             }
             return null;
         }
@@ -1206,9 +1206,9 @@ namespace System.Runtime.Serialization
             {
                 XmlSchemaEnumerationFacet enumFacet = facet as XmlSchemaEnumerationFacet;
                 if (enumFacet == null)
-                    ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.EnumOnlyEnumerationFacetsSupported));
+                    ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.EnumOnlyEnumerationFacetsSupported));
                 if (enumFacet.Value == null)
-                    ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.EnumEnumerationFacetsMustHaveValue));
+                    ThrowEnumTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.EnumEnumerationFacetsMustHaveValue));
 
                 string valueInnerText = GetInnerText(typeName, ImportAnnotation(enumFacet.Annotation, SchemaExporter.EnumerationValueAnnotationName));
                 if (valueInnerText == null)
@@ -1230,7 +1230,7 @@ namespace System.Runtime.Serialization
             else if (restriction.BaseType != null)
                 dataContract = ImportType(restriction.BaseType);
             else
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.SimpleTypeRestrictionDoesNotSpecifyBase));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.SimpleTypeRestrictionDoesNotSpecifyBase));
 
             return dataContract;
         }
@@ -1292,11 +1292,11 @@ namespace System.Runtime.Serialization
             XmlNode nameAttribute = typeElement.Attributes.GetNamedItem(Globals.GenericNameAttribute);
             string name = (nameAttribute == null) ? null : nameAttribute.Value;
             if (name == null)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.GenericAnnotationAttributeNotFound, type.Name, Globals.GenericNameAttribute)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.GenericAnnotationAttributeNotFound, type.Name, Globals.GenericNameAttribute)));
             XmlNode nsAttribute = typeElement.Attributes.GetNamedItem(Globals.GenericNamespaceAttribute);
             string ns = (nsAttribute == null) ? null : nsAttribute.Value;
             if (ns == null)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.GenericAnnotationAttributeNotFound, type.Name, Globals.GenericNamespaceAttribute)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.GenericAnnotationAttributeNotFound, type.Name, Globals.GenericNamespaceAttribute)));
             if (typeElement.ChildNodes.Count > 0) //Generic Type
                 name = DataContract.EncodeLocalName(name);
 
@@ -1309,16 +1309,16 @@ namespace System.Runtime.Serialization
                     continue;
                 if (argumentElement.LocalName != Globals.GenericParameterLocalName ||
                     argumentElement.NamespaceURI != Globals.SerializationNamespace)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.GenericAnnotationHasInvalidElement, argumentElement.LocalName, argumentElement.NamespaceURI, type.Name)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.GenericAnnotationHasInvalidElement, argumentElement.LocalName, argumentElement.NamespaceURI, type.Name)));
                 XmlNode nestedLevelAttribute = argumentElement.Attributes.GetNamedItem(Globals.GenericParameterNestedLevelAttribute);
                 int argumentLevel = 0;
                 if (nestedLevelAttribute != null)
                 {
                     if (!Int32.TryParse(nestedLevelAttribute.Value, out argumentLevel))
-                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.GenericAnnotationHasInvalidAttributeValue, argumentElement.LocalName, argumentElement.NamespaceURI, type.Name, nestedLevelAttribute.Value, nestedLevelAttribute.LocalName, Globals.TypeOfInt.Name)));
+                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.GenericAnnotationHasInvalidAttributeValue, argumentElement.LocalName, argumentElement.NamespaceURI, type.Name, nestedLevelAttribute.Value, nestedLevelAttribute.LocalName, Globals.TypeOfInt.Name)));
                 }
                 if (argumentLevel < currentLevel)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.GenericAnnotationForNestedLevelMustBeIncreasing, argumentElement.LocalName, argumentElement.NamespaceURI, type.Name)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.GenericAnnotationForNestedLevelMustBeIncreasing, argumentElement.LocalName, argumentElement.NamespaceURI, type.Name)));
                 genInfo.Add(ImportGenericInfo(argumentElement, type));
                 genInfo.AddToLevel(argumentLevel, 1);
                 currentLevel = argumentLevel;
@@ -1329,7 +1329,7 @@ namespace System.Runtime.Serialization
             {
                 int nestedLevels = 0;
                 if (!Int32.TryParse(typeNestedLevelsAttribute.Value, out nestedLevels))
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.GenericAnnotationHasInvalidAttributeValue, typeElement.LocalName, typeElement.NamespaceURI, type.Name, typeNestedLevelsAttribute.Value, typeNestedLevelsAttribute.LocalName, Globals.TypeOfInt.Name)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.GenericAnnotationHasInvalidAttributeValue, typeElement.LocalName, typeElement.NamespaceURI, type.Name, typeNestedLevelsAttribute.Value, typeNestedLevelsAttribute.LocalName, Globals.TypeOfInt.Name)));
                 if ((nestedLevels - 1) > currentLevel)
                     genInfo.AddToLevel(nestedLevels - 1, 0);
             }
@@ -1353,27 +1353,27 @@ namespace System.Runtime.Serialization
         private void CheckComplexType(XmlQualifiedName typeName, XmlSchemaComplexType type)
         {
             if (type.IsAbstract)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.AbstractTypeNotSupported));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.AbstractTypeNotSupported));
             if (type.IsMixed)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.MixedContentNotSupported));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.MixedContentNotSupported));
         }
 
         private void CheckIfElementUsesUnsupportedConstructs(XmlQualifiedName typeName, XmlSchemaElement element)
         {
             if (element.IsAbstract)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.AbstractElementNotSupported, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.AbstractElementNotSupported, element.Name));
             if (element.DefaultValue != null)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.DefaultOnElementNotSupported, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.DefaultOnElementNotSupported, element.Name));
             if (element.FixedValue != null)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.FixedOnElementNotSupported, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.FixedOnElementNotSupported, element.Name));
             if (!element.SubstitutionGroup.IsEmpty)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.SubstitutionGroupOnElementNotSupported, element.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.SubstitutionGroupOnElementNotSupported, element.Name));
         }
 
         private void ImportAttributes(XmlQualifiedName typeName, XmlSchemaObjectCollection attributes, XmlSchemaAnyAttribute anyAttribute, out bool isReference)
         {
             if (anyAttribute != null)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.AnyAttributeNotSupported));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.AnyAttributeNotSupported));
 
             isReference = false;
             if (attributes != null)
@@ -1392,7 +1392,7 @@ namespace System.Runtime.Serialization
                         if (TryCheckIfAttribute(typeName, attribute, Globals.RefQualifiedName, ref foundRef))
                             continue;
                         if (attribute.RefName.IsEmpty || attribute.RefName.Namespace != Globals.SerializationNamespace || attribute.Use == XmlSchemaUse.Required)
-                            ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.TypeShouldNotContainAttributes, Globals.SerializationNamespace));
+                            ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.TypeShouldNotContainAttributes, Globals.SerializationNamespace));
                     }
                 }
                 isReference = (foundId && foundRef);
@@ -1404,7 +1404,7 @@ namespace System.Runtime.Serialization
             if (attribute.RefName != refName)
                 return false;
             if (foundAttribute)
-                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.CannotHaveDuplicateAttributeNames, refName.Name));
+                ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.CannotHaveDuplicateAttributeNames, refName.Name));
             foundAttribute = true;
             return true;
         }
@@ -1422,7 +1422,7 @@ namespace System.Runtime.Serialization
                 while (child != null)
                 {
                     if (child.NodeType == XmlNodeType.Element)
-                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, SRSerialization.Format(SRSerialization.InvalidAnnotationExpectingText, xmlElement.LocalName, xmlElement.NamespaceURI, child.LocalName, child.NamespaceURI));
+                        ThrowTypeCannotBeImportedException(typeName.Name, typeName.Namespace, string.Format(SRSerialization.InvalidAnnotationExpectingText, xmlElement.LocalName, xmlElement.NamespaceURI, child.LocalName, child.NamespaceURI));
                     child = child.NextSibling;
                 }
                 return xmlElement.InnerText;
@@ -1451,27 +1451,27 @@ namespace System.Runtime.Serialization
 
         private static void ThrowTypeCannotBeImportedException(string name, string ns, string message)
         {
-            ThrowTypeCannotBeImportedException(SRSerialization.Format(SRSerialization.TypeCannotBeImported, name, ns, message));
+            ThrowTypeCannotBeImportedException(string.Format(SRSerialization.TypeCannotBeImported, name, ns, message));
         }
 
         private static void ThrowArrayTypeCannotBeImportedException(string name, string ns, string message)
         {
-            ThrowTypeCannotBeImportedException(SRSerialization.Format(SRSerialization.ArrayTypeCannotBeImported, name, ns, message));
+            ThrowTypeCannotBeImportedException(string.Format(SRSerialization.ArrayTypeCannotBeImported, name, ns, message));
         }
 
         private static void ThrowEnumTypeCannotBeImportedException(string name, string ns, string message)
         {
-            ThrowTypeCannotBeImportedException(SRSerialization.Format(SRSerialization.EnumTypeCannotBeImported, name, ns, message));
+            ThrowTypeCannotBeImportedException(string.Format(SRSerialization.EnumTypeCannotBeImported, name, ns, message));
         }
 
         private static void ThrowISerializableTypeCannotBeImportedException(string name, string ns, string message)
         {
-            ThrowTypeCannotBeImportedException(SRSerialization.Format(SRSerialization.ISerializableTypeCannotBeImported, name, ns, message));
+            ThrowTypeCannotBeImportedException(string.Format(SRSerialization.ISerializableTypeCannotBeImported, name, ns, message));
         }
 
         private static void ThrowTypeCannotBeImportedException(string message)
         {
-            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.TypeCannotBeImportedHowToFix, message)));
+            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TypeCannotBeImportedHowToFix, message)));
         }
     }
 }

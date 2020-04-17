@@ -563,7 +563,7 @@ namespace System.ServiceModel.Channels
 
             if ((State == CommunicationState.Created) && !operation.IsInitiating)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxNonInitiatingOperation1, operation.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxNonInitiatingOperation1, operation.Name)));
             }
 
             if (_hasChannelStartedAutoClosing)
@@ -592,7 +592,7 @@ namespace System.ServiceModel.Channels
 
                     if ((replyTo != null) && !replyTo.IsAnonymous && (localUri != replyTo.Uri))
                     {
-                        string text = SRServiceModel.Format(SRServiceModel.SFxRequestHasInvalidReplyToOnClient, replyTo.Uri, localUri);
+                        string text = string.Format(SRServiceModel.SFxRequestHasInvalidReplyToOnClient, replyTo.Uri, localUri);
                         Exception error = new InvalidOperationException(text);
                         throw TraceUtility.ThrowHelperError(error, rpc.Request);
                     }
@@ -600,7 +600,7 @@ namespace System.ServiceModel.Channels
                     EndpointAddress faultTo = headers.FaultTo;
                     if ((faultTo != null) && !faultTo.IsAnonymous && (localUri != faultTo.Uri))
                     {
-                        string text = SRServiceModel.Format(SRServiceModel.SFxRequestHasInvalidFaultToOnClient, faultTo.Uri, localUri);
+                        string text = string.Format(SRServiceModel.SFxRequestHasInvalidFaultToOnClient, faultTo.Uri, localUri);
                         Exception error = new InvalidOperationException(text);
                         throw TraceUtility.ThrowHelperError(error, rpc.Request);
                     }
@@ -700,7 +700,7 @@ namespace System.ServiceModel.Channels
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(serviceModelActivity, SRServiceModel.Format(SRServiceModel.ActivityProcessAction, action), ActivityType.ProcessAction);
+                    ServiceModelActivity.Start(serviceModelActivity, string.Format(SRServiceModel.ActivityProcessAction, action), ActivityType.ProcessAction);
                 }
 
                 result = new SendAsyncResult(this, operation, action, ins, oneway, timeout, callback, asyncState);
@@ -736,7 +736,7 @@ namespace System.ServiceModel.Channels
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(rpc.Activity, SRServiceModel.Format(SRServiceModel.ActivityProcessAction, action), ActivityType.ProcessAction);
+                    ServiceModelActivity.Start(rpc.Activity, string.Format(SRServiceModel.ActivityProcessAction, action), ActivityType.ProcessAction);
                 }
 
                 PrepareCall(operation, oneway, ref rpc);
@@ -879,11 +879,11 @@ namespace System.ServiceModel.Channels
             EndpointAddress address = RemoteAddress ?? LocalAddress;
             if (address != null)
             {
-                return new TimeoutException(SRServiceModel.Format(SRServiceModel.TimeoutServiceChannelConcurrentOpen2, address, timeout));
+                return new TimeoutException(string.Format(SRServiceModel.TimeoutServiceChannelConcurrentOpen2, address, timeout));
             }
             else
             {
-                return new TimeoutException(SRServiceModel.Format(SRServiceModel.TimeoutServiceChannelConcurrentOpen1, timeout));
+                return new TimeoutException(string.Format(SRServiceModel.TimeoutServiceChannelConcurrentOpen1, timeout));
             }
         }
 
@@ -930,7 +930,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (String.CompareOrdinal(operation.ReplyAction, rpc.Reply.Headers.Action) != 0)
                         {
-                            Exception error = new ProtocolException(SRServiceModel.Format(SRServiceModel.SFxReplyActionMismatch3,
+                            Exception error = new ProtocolException(string.Format(SRServiceModel.SFxReplyActionMismatch3,
                                                                                   operation.Name,
                                                                                   rpc.Reply.Headers.Action,
                                                                                   operation.ReplyAction));
@@ -1081,7 +1081,7 @@ namespace System.ServiceModel.Channels
         {
             if (_idleManager != null && _idleManager.DidIdleAbort)
             {
-                string text = SRServiceModel.Format(SRServiceModel.SFxServiceChannelIdleAborted, operation.Name);
+                string text = string.Format(SRServiceModel.SFxServiceChannelIdleAborted, operation.Name);
                 Exception error = new CommunicationObjectAbortedException(text);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
             }
@@ -1092,7 +1092,7 @@ namespace System.ServiceModel.Channels
             if (operation.IsSessionOpenNotificationEnabled)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.SFxServiceChannelCannotBeCalledBecauseIsSessionOpenNotificationEnabled, operation.Name, "Action", OperationDescription.SessionOpenedAction, "Open")));
+                    string.Format(SRServiceModel.SFxServiceChannelCannotBeCalledBecauseIsSessionOpenNotificationEnabled, operation.Name, "Action", OperationDescription.SessionOpenedAction, "Open")));
             }
         }
 
@@ -1101,7 +1101,7 @@ namespace System.ServiceModel.Channels
             if (!_didInteractiveInitialization && (ClientRuntime.InteractiveChannelInitializers.Count > 0))
             {
                 IInteractiveChannelInitializer example = ClientRuntime.InteractiveChannelInitializers[0];
-                string text = SRServiceModel.Format(SRServiceModel.SFxInitializationUINotCalled, example.GetType().ToString());
+                string text = string.Format(SRServiceModel.SFxInitializationUINotCalled, example.GetType().ToString());
                 Exception error = new InvalidOperationException(text);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
             }
@@ -1120,7 +1120,7 @@ namespace System.ServiceModel.Channels
             if (ClientRuntime.InteractiveChannelInitializers.Count > 0)
             {
                 IInteractiveChannelInitializer example = ClientRuntime.InteractiveChannelInitializers[0];
-                string text = SRServiceModel.Format(SRServiceModel.SFxInitializationUIDisallowed, example.GetType().ToString());
+                string text = string.Format(SRServiceModel.SFxInitializationUIDisallowed, example.GetType().ToString());
                 Exception error = new InvalidOperationException(text);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
             }
@@ -1166,7 +1166,7 @@ namespace System.ServiceModel.Channels
                 if (!context.OutgoingMessageVersion.IsMatch(message.Headers.MessageVersion))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SRServiceModel.Format(SRServiceModel.SFxVersionMismatchInOperationContextAndMessage2, context.OutgoingMessageVersion, message.Headers.MessageVersion)
+                        string.Format(SRServiceModel.SFxVersionMismatchInOperationContextAndMessage2, context.OutgoingMessageVersion, message.Headers.MessageVersion)
                         ));
                 }
 

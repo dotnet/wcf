@@ -126,7 +126,7 @@ namespace System.ServiceModel
                  || methodInfo.GetParameters().Length > 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SRServiceModel.Format(SRServiceModel.ContractIsNotSelfConsistentWhenIsSessionOpenNotificationEnabled, operationName, "Action", OperationDescription.SessionOpenedAction, "IsOneWay", "IsInitiating")));
+                        string.Format(SRServiceModel.ContractIsNotSelfConsistentWhenIsSessionOpenNotificationEnabled, operationName, "Action", OperationDescription.SessionOpenedAction, "IsOneWay", "IsInitiating")));
                 }
             }
         }

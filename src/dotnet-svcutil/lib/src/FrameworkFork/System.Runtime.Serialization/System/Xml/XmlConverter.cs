@@ -490,7 +490,7 @@ namespace Microsoft.Xml
             else
             {
                 if (index == qname.Length - 1)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidQualifiedName, qname)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRSerialization.XmlInvalidQualifiedName, qname)));
                 prefix = Trim(qname.Substring(0, index));
                 localName = Trim(qname.Substring(index + 1));
             }

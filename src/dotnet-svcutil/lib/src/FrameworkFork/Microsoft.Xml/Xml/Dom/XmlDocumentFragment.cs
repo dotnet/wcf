@@ -53,7 +53,7 @@ namespace Microsoft.Xml
         protected internal XmlDocumentFragment(XmlDocument ownerDocument) : base()
         {
             if (ownerDocument == null)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Node_Null_Doc));
+                throw new ArgumentException(ResXml.Xdom_Node_Null_Doc);
             parentNode = ownerDocument;
         }
 

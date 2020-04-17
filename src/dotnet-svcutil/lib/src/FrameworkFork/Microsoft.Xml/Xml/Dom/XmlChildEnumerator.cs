@@ -60,7 +60,7 @@ namespace Microsoft.Xml
             get
             {
                 if (isFirst || child == null)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                    throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
 
                 return child;
             }

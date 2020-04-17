@@ -181,7 +181,7 @@ namespace System.Web.Services.Description
             get { return _group; }
             set
             {
-                if (value < 0) throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebNegativeValue, "group"));
+                if (value < 0) throw new ArgumentException(string.Format(ResWebServices.WebNegativeValue, "group"));
                 _group = value;
             }
         }
@@ -193,7 +193,7 @@ namespace System.Web.Services.Description
             get { return _capture; }
             set
             {
-                if (value < 0) throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebNegativeValue, "capture"));
+                if (value < 0) throw new ArgumentException(string.Format(ResWebServices.WebNegativeValue, "capture"));
                 _capture = value;
             }
         }
@@ -205,7 +205,7 @@ namespace System.Web.Services.Description
             get { return _repeats; }
             set
             {
-                if (value < 0) throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebNegativeValue, "repeats"));
+                if (value < 0) throw new ArgumentException(string.Format(ResWebServices.WebNegativeValue, "repeats"));
                 _repeats = value;
             }
         }

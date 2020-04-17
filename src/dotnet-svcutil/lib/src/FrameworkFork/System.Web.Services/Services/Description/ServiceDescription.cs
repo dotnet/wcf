@@ -59,7 +59,7 @@ namespace System.Web.Services.Description
 
         private static void InstanceValidation(object sender, ValidationEventArgs args)
         {
-            s_warnings.Add(ResWebServices.GetString(ResWebServices.WsdlInstanceValidationDetails, args.Message, args.Exception.LineNumber.ToString(CultureInfo.InvariantCulture), args.Exception.LinePosition.ToString(CultureInfo.InvariantCulture)));
+            s_warnings.Add(string.Format(ResWebServices.WsdlInstanceValidationDetails, args.Message, args.Exception.LineNumber.ToString(CultureInfo.InvariantCulture), args.Exception.LinePosition.ToString(CultureInfo.InvariantCulture)));
         }
 
         /// <include file='doc\ServiceDescription.uex' path='docs/doc[@for="ServiceDescription.RetrievalUrl"]/*' />
@@ -1448,7 +1448,7 @@ namespace System.Web.Services.Description
                 MessagePart part = _parts[i];
                 if (part.Name == partName) return part;
             }
-            throw new ArgumentException(ResWebServices.GetString(ResWebServices.MissingMessagePartForMessageFromNamespace3, partName, Name, ServiceDescription.TargetNamespace), "partName");
+            throw new ArgumentException(string.Format(ResWebServices.MissingMessagePartForMessageFromNamespace3, partName, Name, ServiceDescription.TargetNamespace), "partName");
         }
     }
 
@@ -1769,7 +1769,7 @@ namespace System.Web.Services.Description
         protected override void OnValidate(object value)
         {
             if (!(value is XmlElement || value is ServiceDescriptionFormatExtension))
-                throw new ArgumentException(ResWebServices.GetString(ResWebServices.OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0), "value");
+                throw new ArgumentException(string.Format(ResWebServices.OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0), "value");
             base.OnValidate(value);
         }
     }
@@ -2019,7 +2019,7 @@ namespace System.Web.Services.Description
         protected override void OnInsert(int index, object value)
         {
             if (Count > 1 || (Count == 1 && value.GetType() == List[0].GetType()))
-                throw new InvalidOperationException(ResWebServices.GetString(ResWebServices.WebDescriptionTooManyMessages));
+                throw new InvalidOperationException(string.Format(ResWebServices.WebDescriptionTooManyMessages));
 
             base.OnInsert(index, value);
         }
@@ -2030,7 +2030,7 @@ namespace System.Web.Services.Description
         /// </devdoc>
         protected override void OnSet(int index, object oldValue, object newValue)
         {
-            if (oldValue.GetType() != newValue.GetType()) throw new InvalidOperationException(ResWebServices.GetString(ResWebServices.WebDescriptionTooManyMessages));
+            if (oldValue.GetType() != newValue.GetType()) throw new InvalidOperationException(string.Format(ResWebServices.WebDescriptionTooManyMessages));
             base.OnSet(index, oldValue, newValue);
         }
 
@@ -2041,7 +2041,7 @@ namespace System.Web.Services.Description
         protected override void OnValidate(object value)
         {
             if (!(value is OperationInput || value is OperationOutput))
-                throw new ArgumentException(ResWebServices.GetString(ResWebServices.OnlyOperationInputOrOperationOutputTypes), "value");
+                throw new ArgumentException(string.Format(ResWebServices.OnlyOperationInputOrOperationOutputTypes), "value");
             base.OnValidate(value);
         }
     }
@@ -3212,33 +3212,33 @@ namespace System.Web.Services.Description
         {
             string message = null;
             if (type == typeof(ServiceDescriptionFormatExtension))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateFormatExtension, elemName);
+                message = string.Format(ResWebServices.WebDuplicateFormatExtension, elemName);
             else if (type == typeof(OperationMessage))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateOperationMessage, elemName);
+                message = string.Format(ResWebServices.WebDuplicateOperationMessage, elemName);
             else if (type == typeof(Import))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateImport, elemName);
+                message = string.Format(ResWebServices.WebDuplicateImport, elemName);
             else if (type == typeof(Message))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateMessage, elemName);
+                message = string.Format(ResWebServices.WebDuplicateMessage, elemName);
             else if (type == typeof(Port))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicatePort, elemName);
+                message = string.Format(ResWebServices.WebDuplicatePort, elemName);
             else if (type == typeof(PortType))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicatePortType, elemName);
+                message = string.Format(ResWebServices.WebDuplicatePortType, elemName);
             else if (type == typeof(Binding))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateBinding, elemName);
+                message = string.Format(ResWebServices.WebDuplicateBinding, elemName);
             else if (type == typeof(Service))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateService, elemName);
+                message = string.Format(ResWebServices.WebDuplicateService, elemName);
             else if (type == typeof(MessagePart))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateMessagePart, elemName);
+                message = string.Format(ResWebServices.WebDuplicateMessagePart, elemName);
             else if (type == typeof(OperationBinding))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateOperationBinding, elemName);
+                message = string.Format(ResWebServices.WebDuplicateOperationBinding, elemName);
             else if (type == typeof(FaultBinding))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateFaultBinding, elemName);
+                message = string.Format(ResWebServices.WebDuplicateFaultBinding, elemName);
             else if (type == typeof(Operation))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateOperation, elemName);
+                message = string.Format(ResWebServices.WebDuplicateOperation, elemName);
             else if (type == typeof(OperationFault))
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateOperationFault, elemName);
+                message = string.Format(ResWebServices.WebDuplicateOperationFault, elemName);
             else
-                message = ResWebServices.GetString(ResWebServices.WebDuplicateUnknownElement, type, elemName);
+                message = string.Format(ResWebServices.WebDuplicateUnknownElement, type, elemName);
 
             return message;
         }

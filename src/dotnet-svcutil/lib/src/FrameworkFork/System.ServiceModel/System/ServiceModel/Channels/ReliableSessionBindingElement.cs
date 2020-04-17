@@ -117,7 +117,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0 || value > 16384)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 16384)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, 16384)));
                 _maxPendingChannels = value;
             }
         }
@@ -148,7 +148,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value <= 0 || value > 4096)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 4096)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, 4096)));
                 _maxTransferWindowSize = value;
             }
         }
@@ -306,7 +306,7 @@ namespace System.ServiceModel.Channels
             if (transportTransferMode != TransferMode.Buffered)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SRServiceModel.Format(SRServiceModel.TransferModeNotSupported,
+                    new InvalidOperationException(string.Format(SRServiceModel.TransferModeNotSupported,
                     transportTransferMode, this.GetType().Name)));
             }
         }

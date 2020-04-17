@@ -160,7 +160,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             {
                 if (_metadataException == null)
                 {
-                    _metadataException = new MetadataExchangeException(Resources.ErrUnableToConnectToUriFormat, this.EndpointAddress.Uri.AbsoluteUri, Resources.EnableMetadataHelpMessage);
+                    _metadataException = new MetadataExchangeException(MetadataResources.ErrUnableToConnectToUriFormat, this.EndpointAddress.Uri.AbsoluteUri, MetadataResources.EnableMetadataHelpMessage);
                 }
                 throw _metadataException;
             }
@@ -400,7 +400,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             }
             else
             {
-                throw new MetadataExchangeException(Resources.ErrCannotCreateAMetadataExchangeClientFormat, endpointAddress.Uri.OriginalString, scheme);
+                throw new MetadataExchangeException(MetadataResources.ErrCannotCreateAMetadataExchangeClientFormat, endpointAddress.Uri.OriginalString, scheme);
             }
 
             return metadataExchangeClient;

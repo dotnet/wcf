@@ -822,7 +822,7 @@ namespace Microsoft.Xml.XPath
 
         public override void ResolveEntity()
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override bool ReadAttributeValue()

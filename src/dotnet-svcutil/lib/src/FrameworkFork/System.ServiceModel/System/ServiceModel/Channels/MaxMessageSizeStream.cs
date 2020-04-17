@@ -63,7 +63,7 @@ namespace System.ServiceModel.Channels
 
         public static Exception CreateMaxReceivedMessageSizeExceededException(long maxMessageSize)
         {
-            string message = SRServiceModel.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, maxMessageSize);
+            string message = string.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, maxMessageSize);
             Exception inner = new QuotaExceededException(message);
 
             if (WcfEventSource.Instance.MaxReceivedMessageSizeExceededIsEnabled())
@@ -76,7 +76,7 @@ namespace System.ServiceModel.Channels
 
         internal static Exception CreateMaxSentMessageSizeExceededException(long maxMessageSize)
         {
-            string message = SRServiceModel.Format(SRServiceModel.MaxSentMessageSizeExceeded, maxMessageSize);
+            string message = string.Format(SRServiceModel.MaxSentMessageSizeExceeded, maxMessageSize);
             Exception inner = new QuotaExceededException(message);
 
             if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())

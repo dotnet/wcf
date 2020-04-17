@@ -69,7 +69,7 @@ namespace Microsoft.Xml.XPath
         {
             try
             {
-                string message = ResXml.GetString(res, args);
+                string message = string.Format(res, args);
                 if (message == null)
                     message = "UNKNOWN(" + res + ")";
                 return message;

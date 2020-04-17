@@ -59,7 +59,7 @@ namespace System.ServiceModel.Channels
                 if (value < min)
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value,
-                        SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
+                        string.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
                 _duplicateMessageHistoryLength = value;
             }
@@ -79,7 +79,7 @@ namespace System.ServiceModel.Channels
                 if (value < min)
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value,
-                        SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
+                        string.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
 
                 _maxPendingMessagesTotalSize = value;
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Channels
                 if (value < UdpConstants.MinReceiveBufferSize)
                 {
                     throw FxTrace.Exception.ArgumentOutOfRange("value", value,
-                        SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, UdpConstants.MinReceiveBufferSize));
+                        string.Format(SRServiceModel.ArgumentOutOfMinRange, UdpConstants.MinReceiveBufferSize));
                 }
 
                 _socketReceiveBufferSize = value;

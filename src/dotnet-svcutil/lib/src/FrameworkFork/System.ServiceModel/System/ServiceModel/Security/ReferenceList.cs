@@ -76,7 +76,7 @@ namespace System.ServiceModel.Security
                 if (_referredIds.Contains(id))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityMessageSerializationException(System.SRServiceModel.Format(SR_IdentityModel.InvalidDataReferenceInReferenceList, "#" + id)));
+                        new SecurityMessageSerializationException(string.Format(SR_IdentityModel.InvalidDataReferenceInReferenceList, "#" + id)));
                 }
                 _referredIds.Add(id);
             }
@@ -122,7 +122,7 @@ namespace System.ServiceModel.Security
                 if (uri.Length < 2 || uri[0] != '#')
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityMessageSerializationException(System.SRServiceModel.Format(SR_IdentityModel.InvalidDataReferenceInReferenceList, uri)));
+                        new SecurityMessageSerializationException(string.Format(SR_IdentityModel.InvalidDataReferenceInReferenceList, uri)));
                 }
                 return uri.Substring(1);
             }

@@ -241,7 +241,7 @@ namespace System.ServiceModel.Security
                     }
                 }
             }
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null))));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.CannotReadToken, reader.LocalName, reader.NamespaceURI, localReader.GetAttribute(XD.SecurityJan2004Dictionary.ValueType, null))));
         }
 
         protected override bool CanWriteTokenCore(SecurityToken token)
@@ -430,14 +430,14 @@ namespace System.ServiceModel.Security
                         {
                             throw;
                         }
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.ErrorDeserializingKeyIdentifierClauseFromTokenXml), e));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.ErrorDeserializingKeyIdentifierClauseFromTokenXml), e));
                     }
                 }
             }
 
             // PreSharp Bug: Parameter 'element' to this public method must be validated: A null-dereference can occur here.
 #pragma warning disable 56506
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.CannotReadToken, element.LocalName, element.NamespaceURI, element.GetAttribute(SecurityJan2004Strings.ValueType, null))));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.CannotReadToken, element.LocalName, element.NamespaceURI, element.GetAttribute(SecurityJan2004Strings.ValueType, null))));
         }
 
         internal abstract new class TokenEntry
@@ -486,7 +486,7 @@ namespace System.ServiceModel.Security
                 string id = issuedTokenXml.GetAttribute(idAttributeLocalName, idAttributeNamespace);
                 if (id == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.RequiredAttributeMissing, idAttributeLocalName, issuedTokenXml.LocalName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.RequiredAttributeMissing, idAttributeLocalName, issuedTokenXml.LocalName)));
                 }
                 return new LocalIdKeyIdentifierClause(id, tokenType);
             }

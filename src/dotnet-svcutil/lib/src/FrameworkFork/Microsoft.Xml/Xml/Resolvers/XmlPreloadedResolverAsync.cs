@@ -32,7 +32,7 @@ namespace Microsoft.Xml.Resolvers
                 {
                     return _fallbackResolver.GetEntityAsync(absoluteUri, role, ofObjectToReturn);
                 }
-                throw new XmlException(ResXml.GetString(ResXml.Xml_CannotResolveUrl, absoluteUri.ToString()));
+                throw new XmlException(string.Format(ResXml.Xml_CannotResolveUrl, absoluteUri.ToString()));
             }
 
             if (ofObjectToReturn == null || ofObjectToReturn == typeof(Stream) || ofObjectToReturn == typeof(Object))
@@ -45,7 +45,7 @@ namespace Microsoft.Xml.Resolvers
             }
             else
             {
-                throw new XmlException(ResXml.GetString(ResXml.Xml_UnsupportedClass));
+                throw new XmlException(ResXml.Xml_UnsupportedClass);
             }
         }
     }

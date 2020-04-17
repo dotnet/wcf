@@ -137,11 +137,11 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (_inputParameterCount > 0)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInputParametersToServiceNull, _inputParameterCount)));
+                        new InvalidOperationException(string.Format(SRServiceModel.SFxInputParametersToServiceNull, _inputParameterCount)));
             }
             else if (inputs.Length != _inputParameterCount)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInputParametersToServiceInvalid, _inputParameterCount,
+                    new InvalidOperationException(string.Format(SRServiceModel.SFxInputParametersToServiceInvalid, _inputParameterCount,
                         inputs.Length)));
 
             var outputs = EmptyArray<object>.Allocate(_outputParameterCount);
@@ -196,7 +196,7 @@ namespace System.ServiceModel.Dispatcher
                     if (DiagnosticUtility.ShouldUseActivity)
                     {
                         ServiceModelActivity.Start(activity,
-                            SRServiceModel.Format(SRServiceModel.ActivityExecuteMethod, _taskMethod.DeclaringType.FullName, _taskMethod.Name),
+                            string.Format(SRServiceModel.ActivityExecuteMethod, _taskMethod.DeclaringType.FullName, _taskMethod.Name),
                             ActivityType.ExecuteUserCode);
                     }
                     if (WcfEventSource.Instance.OperationInvokedIsEnabled())

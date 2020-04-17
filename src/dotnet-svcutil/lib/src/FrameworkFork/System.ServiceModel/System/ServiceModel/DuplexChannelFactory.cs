@@ -64,7 +64,7 @@ namespace System.ServiceModel
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
+                    ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
                 }
                 if (callbackObject == null)
                 {
@@ -90,7 +90,7 @@ namespace System.ServiceModel
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
+                    ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
                 }
                 if (callbackObject == null)
                 {
@@ -126,7 +126,7 @@ namespace System.ServiceModel
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
+                    ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
                 }
                 if (callbackObject == null)
                 {
@@ -151,7 +151,7 @@ namespace System.ServiceModel
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
+                    ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityConstructChannelFactory, TraceUtility.CreateSourceString(this)), ActivityType.Construct);
                 }
                 if (callbackObject == null)
                 {
@@ -227,14 +227,14 @@ namespace System.ServiceModel
 
             if (!this.HasDuplexOperations())
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxCreateDuplexChannel1, this.Endpoint.Contract.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxCreateDuplexChannel1, this.Endpoint.Contract.Name)));
             }
 
             Type userObjectType = callbackInstance.UserObject.GetType();
             Type callbackType = this.Endpoint.Contract.CallbackContractType;
             if (callbackType != null && !callbackType.IsAssignableFrom(userObjectType))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(
                     SRServiceModel.SFxCreateDuplexChannelBadCallbackUserObject, callbackType)));
             }
 

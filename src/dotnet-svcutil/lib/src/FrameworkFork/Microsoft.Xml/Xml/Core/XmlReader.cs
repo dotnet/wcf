@@ -733,25 +733,25 @@ namespace Microsoft.Xml
         // Returns decoded bytes of the current base64 text content. Call this methods until it returns 0 to get all the data.
         public virtual int ReadContentAsBase64(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBase64"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBase64"));
         }
 
         // Returns decoded bytes of the current base64 element content. Call this methods until it returns 0 to get all the data.
         public virtual int ReadElementContentAsBase64(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBase64"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBase64"));
         }
 
         // Returns decoded bytes of the current binhex text content. Call this methods until it returns 0 to get all the data.
         public virtual int ReadContentAsBinHex(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBinHex"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBinHex"));
         }
 
         // Returns decoded bytes of the current binhex element content. Call this methods until it returns 0 to get all the data.
         public virtual int ReadElementContentAsBinHex(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBinHex"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBinHex"));
         }
 
         // Text streaming methods
@@ -769,7 +769,7 @@ namespace Microsoft.Xml
         // Use this method to get a streaming access to the value of the current node.
         public virtual int ReadValueChunk(char[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadValueChunkNotSupported));
+            throw new NotSupportedException(ResXml.Xml_ReadValueChunkNotSupported);
         }
 
         // Virtual helper methods
@@ -790,7 +790,7 @@ namespace Microsoft.Xml
                 }
                 else if (!this.Read())
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                    throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
                 }
                 if (this.NodeType == XmlNodeType.EndElement)
                 {
@@ -1392,7 +1392,7 @@ namespace Microsoft.Xml
         {
             if (NodeType != XmlNodeType.Element)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_ReadSubtreeNotOnElement));
+                throw new InvalidOperationException(ResXml.Xml_ReadSubtreeNotOnElement);
             }
             return new XmlSubtreeReader(this);
         }
@@ -1580,12 +1580,12 @@ namespace Microsoft.Xml
 
         static internal Exception CreateReadContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
         {
-            return new InvalidOperationException(AddLineInfo(ResXml.GetString(ResXml.Xml_InvalidReadContentAs, new string[] { methodName, nodeType.ToString() }), lineInfo));
+            return new InvalidOperationException(AddLineInfo(string.Format(ResXml.Xml_InvalidReadContentAs, new string[] { methodName, nodeType.ToString() }), lineInfo));
         }
 
         static internal Exception CreateReadElementContentAsException(string methodName, XmlNodeType nodeType, IXmlLineInfo lineInfo)
         {
-            return new InvalidOperationException(AddLineInfo(ResXml.GetString(ResXml.Xml_InvalidReadElementContentAs, new string[] { methodName, nodeType.ToString() }), lineInfo));
+            return new InvalidOperationException(AddLineInfo(string.Format(ResXml.Xml_InvalidReadElementContentAs, new string[] { methodName, nodeType.ToString() }), lineInfo));
         }
 
         private static string AddLineInfo(string message, IXmlLineInfo lineInfo)
@@ -1595,7 +1595,7 @@ namespace Microsoft.Xml
                 string[] lineArgs = new string[2];
                 lineArgs[0] = lineInfo.LineNumber.ToString();
                 lineArgs[1] = lineInfo.LinePosition.ToString();
-                message += " " + ResXml.GetString(ResXml.Xml_ErrorPosition, lineArgs);
+                message += " " + string.Format(ResXml.Xml_ErrorPosition, lineArgs);
             }
             return message;
         }
@@ -1923,7 +1923,7 @@ namespace Microsoft.Xml
             if (byteCount >= 2 && (bytes[0] == 0xdf && bytes[1] == 0xff))
             {
                 if (inputContext != null)
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlBinary_NoParserContext), "inputContext");
+                    throw new ArgumentException(ResXml.XmlBinary_NoParserContext, "inputContext");
                 reader = new XmlSqlBinaryReader(input, bytes, byteCount, string.Empty, settings.CloseInput, settings);
             }
             else

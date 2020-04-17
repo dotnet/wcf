@@ -33,7 +33,7 @@ namespace Microsoft.Xml.Resolvers
             // Returns preloaded data as TextReader, or throws when not supported
             internal virtual TextReader AsTextReader()
             {
-                throw new XmlException(ResXml.GetString(ResXml.Xml_UnsupportedClass));
+                throw new XmlException(ResXml.Xml_UnsupportedClass);
             }
 
             // Returns true for types that are supported for this preloaded data; Stream must always be supported
@@ -235,7 +235,7 @@ namespace Microsoft.Xml.Resolvers
                 {
                     return _fallbackResolver.GetEntity(absoluteUri, role, ofObjectToReturn);
                 }
-                throw new XmlException(ResXml.GetString(ResXml.Xml_CannotResolveUrl, absoluteUri.ToString()));
+                throw new XmlException(string.Format(ResXml.Xml_CannotResolveUrl, absoluteUri.ToString()));
             }
 
             if (ofObjectToReturn == null || ofObjectToReturn == typeof(Stream) || ofObjectToReturn == typeof(Object))
@@ -248,7 +248,7 @@ namespace Microsoft.Xml.Resolvers
             }
             else
             {
-                throw new XmlException(ResXml.GetString(ResXml.Xml_UnsupportedClass));
+                throw new XmlException(ResXml.Xml_UnsupportedClass);
             }
         }
 

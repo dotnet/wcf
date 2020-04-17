@@ -116,7 +116,7 @@ namespace System.ServiceModel.Channels
                 if (string.IsNullOrEmpty(protectionLevelString))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(
-                        SRServiceModel.Format(SRServiceModel.ExpectedElementMissing, TransportPolicyConstants.ProtectionLevelName, TransportPolicyConstants.DotNetFramingNamespace)));
+                        string.Format(SRServiceModel.ExpectedElementMissing, TransportPolicyConstants.ProtectionLevelName, TransportPolicyConstants.DotNetFramingNamespace)));
                 }
                 windowsBindingElement.ProtectionLevel = (ProtectionLevel)Enum.Parse(typeof(ProtectionLevel), protectionLevelString);
                 policyContext.BindingElements.Add(windowsBindingElement);

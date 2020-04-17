@@ -115,7 +115,7 @@ namespace System.ServiceModel.Channels
                 if (serializer.IsStartObject(reader))
                     return (T)serializer.ReadObject(reader);
                 else
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.ExpectedElementMissing, Name, Namespace)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.ExpectedElementMissing, Name, Namespace)));
             }
         }
 

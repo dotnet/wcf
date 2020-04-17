@@ -86,7 +86,7 @@ namespace System.ServiceModel.Channels
                 }
                 if (value.Envelope != BinaryEncoderDefaults.EnvelopeVersion)
                 {
-                    string errorMsg = SRServiceModel.Format(SRServiceModel.UnsupportedEnvelopeVersion, this.GetType().FullName, BinaryEncoderDefaults.EnvelopeVersion, value.Envelope);
+                    string errorMsg = string.Format(SRServiceModel.UnsupportedEnvelopeVersion, this.GetType().FullName, BinaryEncoderDefaults.EnvelopeVersion, value.Envelope);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(errorMsg));
                 }
 
@@ -170,7 +170,7 @@ namespace System.ServiceModel.Channels
                 ITransportCompressionSupport compressionSupport = context.GetInnerProperty<ITransportCompressionSupport>();
                 if (compressionSupport == null || !compressionSupport.IsCompressionFormatSupported(_compressionFormat))
                 {
-                    throw FxTrace.Exception.AsError(new NotSupportedException(SRServiceModel.Format(
+                    throw FxTrace.Exception.AsError(new NotSupportedException(string.Format(
                         SRServiceModel.TransportDoesNotSupportCompression,
                         _compressionFormat.ToString(),
                         this.GetType().Name,

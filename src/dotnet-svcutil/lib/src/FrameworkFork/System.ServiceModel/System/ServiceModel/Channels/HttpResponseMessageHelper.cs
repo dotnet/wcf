@@ -89,7 +89,7 @@ namespace System.ServiceModel.Channels
                 }
                 if (!actionAbsent)
                 {
-                    result = new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpAddressingNoneHeaderOnWire,
+                    result = new ProtocolException(string.Format(SRServiceModel.HttpAddressingNoneHeaderOnWire,
                         XD.AddressingDictionary.Action.Value));
                 }
 
@@ -108,7 +108,7 @@ namespace System.ServiceModel.Channels
 
                 if (!toAbsent)
                 {
-                    result = new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpAddressingNoneHeaderOnWire,
+                    result = new ProtocolException(string.Format(SRServiceModel.HttpAddressingNoneHeaderOnWire,
                         XD.AddressingDictionary.To.Value));
                 }
                 message.Headers.To = message.Properties.Via;
@@ -152,7 +152,7 @@ namespace System.ServiceModel.Channels
                     string responseExcerpt = HttpChannelUtilities.GetResponseStreamExcerptString(contentStream, ref bytesToRead);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(HttpChannelUtilities.TraceResponseException(
                         new ProtocolException(
-                            SRServiceModel.Format(
+                            string.Format(
                                 SRServiceModel.ResponseContentTypeMismatch,
                                 _contentType,
                                 _encoder.ContentType,
@@ -247,10 +247,10 @@ namespace System.ServiceModel.Channels
         {
             if (WcfEventSource.Instance.MaxReceivedMessageSizeExceededIsEnabled())
             {
-                WcfEventSource.Instance.MaxReceivedMessageSizeExceeded(SRServiceModel.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize));
+                WcfEventSource.Instance.MaxReceivedMessageSizeExceeded(string.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize));
             }
 
-            string message = SRServiceModel.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize);
+            string message = string.Format(SRServiceModel.MaxReceivedMessageSizeExceeded, _factory.MaxReceivedMessageSize);
             Exception inner = new QuotaExceededException(message);
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(message, inner));
         }
@@ -320,12 +320,12 @@ namespace System.ServiceModel.Channels
             {
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.EndpointNotFound, _httpRequestMessage.RequestUri.AbsoluteUri)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new EndpointNotFoundException(string.Format(SRServiceModel.EndpointNotFound, _httpRequestMessage.RequestUri.AbsoluteUri)));
                 }
 
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.ServiceUnavailable)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ServerTooBusyException(SRServiceModel.Format(SRServiceModel.HttpServerTooBusy, _httpRequestMessage.RequestUri.AbsoluteUri)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ServerTooBusyException(string.Format(SRServiceModel.HttpServerTooBusy, _httpRequestMessage.RequestUri.AbsoluteUri)));
                 }
 
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.UnsupportedMediaType)
@@ -335,10 +335,10 @@ namespace System.ServiceModel.Channels
                     {
                         if (string.Compare(statusDescription, HttpChannelUtilities.StatusDescriptionStrings.HttpContentTypeMissing, StringComparison.OrdinalIgnoreCase) == 0)
                         {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SRServiceModel.Format(SRServiceModel.MissingContentType, _httpRequestMessage.RequestUri)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(string.Format(SRServiceModel.MissingContentType, _httpRequestMessage.RequestUri)));
                         }
                     }
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingContentTypeMismatch, _httpRequestMessage.Content.Headers.ContentType.ToString(), _httpRequestMessage.RequestUri)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(string.Format(SRServiceModel.FramingContentTypeMismatch, _httpRequestMessage.Content.Headers.ContentType.ToString(), _httpRequestMessage.RequestUri)));
                 }
 
                 if (_httpResponseMessage.StatusCode == HttpStatusCode.GatewayTimeout)
@@ -354,7 +354,7 @@ namespace System.ServiceModel.Channels
         {
             if (_httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
             {
-                string message = SRServiceModel.Format(SRServiceModel.HttpAuthorizationFailed, _factory.AuthenticationScheme,
+                string message = string.Format(SRServiceModel.HttpAuthorizationFailed, _factory.AuthenticationScheme,
                     _httpResponseMessage.Headers.WwwAuthenticate.ToString());
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     HttpChannelUtilities.TraceResponseException(new MessageSecurityException(message)));
@@ -362,7 +362,7 @@ namespace System.ServiceModel.Channels
 
             if (_httpResponseMessage.StatusCode == HttpStatusCode.Forbidden)
             {
-                string message = SRServiceModel.Format(SRServiceModel.HttpAuthorizationForbidden, _factory.AuthenticationScheme);
+                string message = string.Format(SRServiceModel.HttpAuthorizationForbidden, _factory.AuthenticationScheme);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     HttpChannelUtilities.TraceResponseException(new MessageSecurityException(message)));
             }

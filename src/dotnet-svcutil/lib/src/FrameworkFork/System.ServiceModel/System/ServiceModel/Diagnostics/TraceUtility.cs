@@ -482,7 +482,7 @@ namespace System.ServiceModel.Diagnostics
                         {
                             FxTrace.Trace.TraceTransfer(guid);
                         }
-                        ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityProcessAction, message.Headers.Action), ActivityType.ProcessAction);
+                        ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityProcessAction, message.Headers.Action), ActivityType.ProcessAction);
                     }
                 }
                 message.Properties[TraceUtility.ActivityIdKey] = activity;

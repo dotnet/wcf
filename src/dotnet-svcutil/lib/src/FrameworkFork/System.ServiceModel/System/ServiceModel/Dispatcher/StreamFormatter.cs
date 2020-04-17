@@ -174,11 +174,11 @@ namespace System.ServiceModel.Dispatcher
             if (HasStream(messageDescription))
             {
                 if (messageDescription.IsTypedMessage)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidStreamInTypedMessage, messageDescription.MessageName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidStreamInTypedMessage, messageDescription.MessageName)));
                 else if (isRequest)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidStreamInRequest, operationName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidStreamInRequest, operationName)));
                 else
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidStreamInResponse, operationName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidStreamInResponse, operationName)));
             }
             return null;
         }
@@ -248,7 +248,7 @@ namespace System.ServiceModel.Dispatcher
                     throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", count,
                                                     SRServiceModel.ValueMustBeNonNegative), _message);
                 if (buffer.Length - offset < count)
-                    throw TraceUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.SFxInvalidStreamOffsetLength, offset + count)), _message);
+                    throw TraceUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.SFxInvalidStreamOffsetLength, offset + count)), _message);
 
                 try
                 {
@@ -292,7 +292,7 @@ namespace System.ServiceModel.Dispatcher
             private void EnsureStreamIsOpen()
             {
                 if (_message.State == MessageState.Closed)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(SRServiceModel.Format(
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(string.Format(
                         _isRequest ? SRServiceModel.SFxStreamRequestMessageClosed : SRServiceModel.SFxStreamResponseMessageClosed)));
             }
 

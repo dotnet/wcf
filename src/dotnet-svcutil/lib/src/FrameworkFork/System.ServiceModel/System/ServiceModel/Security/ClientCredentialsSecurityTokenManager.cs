@@ -39,7 +39,7 @@ namespace System.ServiceModel
             EndpointAddress targetAddress = initiatorRequirement.TargetAddress;
             if (targetAddress == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.TokenRequirementDoesNotSpecifyTargetAddress, initiatorRequirement));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.TokenRequirementDoesNotSpecifyTargetAddress, initiatorRequirement));
             }
             IdentityVerifier identityVerifier;
             SecurityBindingElement securityBindingElement = initiatorRequirement.SecurityBindingElement;
@@ -167,7 +167,7 @@ namespace System.ServiceModel
 
             if ((result == null) && !tokenRequirement.IsOptionalToken)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.SecurityTokenManagerCannotCreateProviderForRequirement, tokenRequirement)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.SecurityTokenManagerCannotCreateProviderForRequirement, tokenRequirement)));
             }
 
             return result;
@@ -253,7 +253,7 @@ namespace System.ServiceModel
 
             if (result == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.SecurityTokenManagerCannotCreateAuthenticatorForRequirement, tokenRequirement)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.SecurityTokenManagerCannotCreateAuthenticatorForRequirement, tokenRequirement)));
             }
 
             return result;

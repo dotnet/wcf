@@ -52,7 +52,7 @@ namespace System.ServiceModel
             // PreSharp Bug: Parameter 'identity.ResourceType' to this public method must be validated: A null-dereference can occur here.
 #pragma warning disable 56506 // Claim.ClaimType will never return null
             if (!identity.ClaimType.Equals(ClaimTypes.Spn))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.UnrecognizedClaimTypeForIdentity, identity.ClaimType, ClaimTypes.Spn));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.UnrecognizedClaimTypeForIdentity, identity.ClaimType, ClaimTypes.Spn));
 
             base.Initialize(identity);
         }

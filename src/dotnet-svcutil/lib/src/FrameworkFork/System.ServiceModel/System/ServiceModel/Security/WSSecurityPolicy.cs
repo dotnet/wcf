@@ -1056,7 +1056,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             if (!TryImportWsspEndorsingSupportingTokensAssertion(
@@ -1068,7 +1068,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             if (!TryImportWsspSignedEndorsingSupportingTokensAssertion(
@@ -1080,7 +1080,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             return true;
@@ -1189,7 +1189,7 @@ namespace System.ServiceModel.Security
                     MessagePartSpecification signedParts;
                     if (!TryImportWsspSignedPartsAssertion(alternative, out signedParts, out assertion) && assertion != null)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                     }
 
                     Collection<SecurityTokenParameters> supportingTokens = new Collection<SecurityTokenParameters>();
@@ -1253,7 +1253,7 @@ namespace System.ServiceModel.Security
                     MessagePartSpecification signedParts;
                     if (!TryImportWsspSignedPartsAssertion(alternative, out signedParts, out assertion) && assertion != null)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                     }
 
                     Collection<SecurityTokenParameters> supportingTokens = new Collection<SecurityTokenParameters>();
@@ -1943,7 +1943,7 @@ namespace System.ServiceModel.Security
                         if (e is NullReferenceException)
                             throw;
 
-                        importer.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.UnsupportedBooleanAttribute, OptionalName, e.Message), false));
+                        importer.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.UnsupportedBooleanAttribute, OptionalName, e.Message), false));
                         return false;
                     }
 
@@ -2918,7 +2918,7 @@ namespace System.ServiceModel.Security
                     // we could not retrieve the metadata from the issuer for some reason
                     //
                     if (mexException != null)
-                        importer.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.UnableToObtainIssuerMetadata, mexAddress, mexException), false));
+                        importer.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.UnableToObtainIssuerMetadata, mexAddress, mexException), false));
 
                     return;
                 }
@@ -2952,7 +2952,7 @@ namespace System.ServiceModel.Security
                 for (int i = 0; i < wsdlImporter.Errors.Count; ++i)
                 {
                     MetadataConversionError error = wsdlImporter.Errors[i];
-                    importer.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.ErrorImportingIssuerMetadata, mexAddress, InsertEllipsisIfTooLong(error.Message)), error.IsWarning));
+                    importer.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.ErrorImportingIssuerMetadata, mexAddress, InsertEllipsisIfTooLong(error.Message)), error.IsWarning));
                 }
 
                 if (federationEndpoints != null)
@@ -2960,7 +2960,7 @@ namespace System.ServiceModel.Security
                     AddCompatibleFederationEndpoints(federationEndpoints, parameters);
                     if (parameters.AlternativeIssuerEndpoints != null && parameters.AlternativeIssuerEndpoints.Count > 0)
                     {
-                        importer.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.MultipleIssuerEndpointsFound, mexAddress)));
+                        importer.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.MultipleIssuerEndpointsFound, mexAddress)));
                     }
                 }
             }

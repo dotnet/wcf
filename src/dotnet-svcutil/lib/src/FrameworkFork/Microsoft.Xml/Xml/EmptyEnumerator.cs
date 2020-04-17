@@ -25,7 +25,7 @@ namespace Microsoft.Xml
         {
             get
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
             }
         }
     }

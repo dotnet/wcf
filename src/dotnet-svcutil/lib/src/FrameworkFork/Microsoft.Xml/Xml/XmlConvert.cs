@@ -359,7 +359,7 @@ namespace Microsoft.Xml
             }
             if (name.Length == 0)
             {
-                throw new ArgumentNullException("name", ResXml.GetString(ResXml.Xml_EmptyName));
+                throw new ArgumentNullException("name", ResXml.Xml_EmptyName);
             }
 
             // parse name
@@ -429,7 +429,7 @@ namespace Microsoft.Xml
             }
             if (name.Length == 0)
             {
-                throw new ArgumentNullException("name", ResXml.GetString(ResXml.Xml_EmptyLocalName));
+                throw new ArgumentNullException("name", ResXml.Xml_EmptyLocalName);
             }
 
             int end = ValidateNames.ParseNCName(name, 0);
@@ -864,7 +864,7 @@ namespace Microsoft.Xml
                     break;
 
                 default:
-                    throw new ArgumentException(ResXml.GetString(ResXml.Sch_InvalidDateTimeOption, dateTimeOption, "dateTimeOption"));
+                    throw new ArgumentException(string.Format(ResXml.Sch_InvalidDateTimeOption, dateTimeOption, "dateTimeOption"));
             }
             XsdDateTime xsdDateTime = new XsdDateTime(value, XsdDateTimeFlags.DateTime);
             return xsdDateTime.ToString();
@@ -899,7 +899,7 @@ namespace Microsoft.Xml
             s = TrimString(s);
             if (s == "1" || s == "true") return true;
             if (s == "0" || s == "false") return false;
-            throw new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Boolean"));
+            throw new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Boolean"));
         }
 
         internal static Exception TryToBoolean(string s, out Boolean result)
@@ -916,7 +916,7 @@ namespace Microsoft.Xml
                 return null;
             }
             result = false;
-            return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Boolean"));
+            return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Boolean"));
         }
 
         ///<include file='doc\XmlConvert.uex' path='docs/doc[@for="XmlConvert.ToChar"]/*' />
@@ -931,7 +931,7 @@ namespace Microsoft.Xml
             }
             if (s.Length != 1)
             {
-                throw new FormatException(ResXml.GetString(ResXml.XmlConvert_NotOneCharString));
+                throw new FormatException(ResXml.XmlConvert_NotOneCharString);
             }
             return s[0];
         }
@@ -940,7 +940,7 @@ namespace Microsoft.Xml
         {
             if (!Char.TryParse(s, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Char"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Char"));
             }
             return null;
         }
@@ -958,7 +958,7 @@ namespace Microsoft.Xml
         {
             if (!Decimal.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Decimal"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Decimal"));
             }
             return null;
         }
@@ -972,7 +972,7 @@ namespace Microsoft.Xml
         {
             if (!Decimal.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Integer"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Integer"));
             }
             return null;
         }
@@ -990,7 +990,7 @@ namespace Microsoft.Xml
         {
             if (!SByte.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "SByte"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "SByte"));
             }
             return null;
         }
@@ -1008,7 +1008,7 @@ namespace Microsoft.Xml
         {
             if (!Int16.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Int16"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Int16"));
             }
             return null;
         }
@@ -1026,7 +1026,7 @@ namespace Microsoft.Xml
         {
             if (!Int32.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Int32"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Int32"));
             }
             return null;
         }
@@ -1044,7 +1044,7 @@ namespace Microsoft.Xml
         {
             if (!Int64.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Int64"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Int64"));
             }
             return null;
         }
@@ -1062,7 +1062,7 @@ namespace Microsoft.Xml
         {
             if (!Byte.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Byte"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Byte"));
             }
             return null;
         }
@@ -1081,7 +1081,7 @@ namespace Microsoft.Xml
         {
             if (!UInt16.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "UInt16"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "UInt16"));
             }
             return null;
         }
@@ -1101,7 +1101,7 @@ namespace Microsoft.Xml
         {
             if (!UInt32.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "UInt32"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "UInt32"));
             }
             return null;
         }
@@ -1120,7 +1120,7 @@ namespace Microsoft.Xml
         {
             if (!UInt64.TryParse(s, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "UInt64"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "UInt64"));
             }
             return null;
         }
@@ -1157,7 +1157,7 @@ namespace Microsoft.Xml
             }
             else if (!Single.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Single"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Single"));
             }
             if (result == 0 && s[0] == '-')
             {
@@ -1198,7 +1198,7 @@ namespace Microsoft.Xml
             }
             else if (!Double.TryParse(s, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Double"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Double"));
             }
             if (result == 0 && s[0] == '-')
             {
@@ -1288,7 +1288,7 @@ namespace Microsoft.Xml
             catch (Exception)
             {
                 // Remap exception for v1 compatibility
-                throw new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "TimeSpan"));
+                throw new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "TimeSpan"));
             }
 
             timeSpan = duration.ToTimeSpan();
@@ -1418,7 +1418,7 @@ namespace Microsoft.Xml
                     break;
 
                 default:
-                    throw new ArgumentException(ResXml.GetString(ResXml.Sch_InvalidDateTimeOption, dateTimeOption, "dateTimeOption"));
+                    throw new ArgumentException(string.Format(ResXml.Sch_InvalidDateTimeOption, dateTimeOption, "dateTimeOption"));
             }
             return dt;
         }
@@ -1473,11 +1473,11 @@ namespace Microsoft.Xml
             }
             catch (ArgumentException)
             {
-                exception = new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Guid"));
+                exception = new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Guid"));
             }
             catch (FormatException)
             {
-                exception = new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Guid"));
+                exception = new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Guid"));
             }
             return exception;
         }
@@ -1521,13 +1521,13 @@ namespace Microsoft.Xml
                 s = TrimString(s);
                 if (s.Length == 0 || s.IndexOf("##", StringComparison.Ordinal) != -1)
                 {
-                    throw new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Uri"));
+                    throw new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Uri"));
                 }
             }
             Uri uri;
             if (!Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out uri))
             {
-                throw new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Uri"));
+                throw new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Uri"));
             }
             return uri;
         }
@@ -1541,12 +1541,12 @@ namespace Microsoft.Xml
                 s = TrimString(s);
                 if (s.Length == 0 || s.IndexOf("##", StringComparison.Ordinal) != -1)
                 {
-                    return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Uri"));
+                    return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Uri"));
                 }
             }
             if (!Uri.TryCreate(s, UriKind.RelativeOrAbsolute, out result))
             {
-                return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, "Uri"));
+                return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, "Uri"));
             }
             return null;
         }
@@ -1765,7 +1765,7 @@ namespace Microsoft.Xml
             switch (exceptionType)
             {
                 case ExceptionType.ArgumentException:
-                    return new ArgumentException(ResXml.GetString(res));
+                    return new ArgumentException(res);
                 case ExceptionType.XmlException:
                 default:
                     return new XmlException(res, string.Empty, lineNo, linePos);
@@ -1782,7 +1782,7 @@ namespace Microsoft.Xml
             switch (exceptionType)
             {
                 case ExceptionType.ArgumentException:
-                    return new ArgumentException(ResXml.GetString(res, arg));
+                    return new ArgumentException(string.Format(res, arg));
                 case ExceptionType.XmlException:
                 default:
                     return new XmlException(res, arg, lineNo, linePos);
@@ -1799,7 +1799,7 @@ namespace Microsoft.Xml
             switch (exceptionType)
             {
                 case ExceptionType.ArgumentException:
-                    return new ArgumentException(ResXml.GetString(res, args));
+                    return new ArgumentException(string.Format(res, args));
                 case ExceptionType.XmlException:
                 default:
                     return new XmlException(res, args, lineNo, linePos);
@@ -1877,7 +1877,7 @@ namespace Microsoft.Xml
 
         internal static ArgumentException CreateInvalidNameArgumentException(string name, string argumentName)
         {
-            return (name == null) ? new ArgumentNullException(argumentName) : new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName), argumentName);
+            return (name == null) ? new ArgumentNullException(argumentName) : new ArgumentException(ResXml.Xml_EmptyName, argumentName);
         }
     }
 }

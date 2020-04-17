@@ -86,7 +86,7 @@ namespace System.ServiceModel.Channels
                     }
                     else
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CannotImportSupportingTokensForOperationWithoutRequestAction)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.CannotImportSupportingTokensForOperationWithoutRequestAction)));
                     }
                 }
             }
@@ -105,13 +105,13 @@ namespace System.ServiceModel.Channels
                 if (!securityPolicy.TryImportWsspEncryptedPartsAssertion(assertions, out encryptedParts, out assertion)
                     && assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
 
                 if (!securityPolicy.TryImportWsspSignedPartsAssertion(assertions, out signedParts, out assertion)
                     && assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
             }
 
@@ -166,7 +166,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.CannotImportProtectionLevelForContract, contract.Name, contract.Namespace)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.CannotImportProtectionLevelForContract, contract.Name, contract.Namespace)));
                 }
             }
         }
@@ -370,7 +370,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (fault.ProtectionLevel != newProtectionLevel)
                         {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.CannotImportProtectionLevelForContract, policyContext.Contract.Name, policyContext.Contract.Namespace)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.CannotImportProtectionLevelForContract, policyContext.Contract.Name, policyContext.Contract.Namespace)));
                         }
                     }
                     else
@@ -398,7 +398,7 @@ namespace System.ServiceModel.Channels
                     || isContractProtectionLevelUniform != otherBindingProtectionLevel.HasUniformProtectionLevel
                     || contractProtectionLevel != otherBindingProtectionLevel.UniformProtectionLevel)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.CannotImportProtectionLevelForContract, policyContext.Contract.Name, policyContext.Contract.Namespace)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.CannotImportProtectionLevelForContract, policyContext.Contract.Name, policyContext.Contract.Namespace)));
                 }
             }
             else
@@ -453,7 +453,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidChannelBindingException(SRServiceModel.Format(SRServiceModel.PolicyRequiresConfidentialityWithoutIntegrity, action)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidChannelBindingException(string.Format(SRServiceModel.PolicyRequiresConfidentialityWithoutIntegrity, action)));
                 }
             }
             else if (signed)
@@ -500,13 +500,13 @@ namespace System.ServiceModel.Channels
                 if (!securityPolicy.TryImportWsspWssAssertion(importer, policyContext.GetBindingAssertions(), binding, out assertion)
                     && assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
 
                 if (!securityPolicy.TryImportWsspTrustAssertion(importer, policyContext.GetBindingAssertions(), binding, out assertion)
                     && assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
             }
 
@@ -536,7 +536,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
             }
 
@@ -560,7 +560,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
             }
 
@@ -600,7 +600,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (assertion != null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
                 }
             }
 

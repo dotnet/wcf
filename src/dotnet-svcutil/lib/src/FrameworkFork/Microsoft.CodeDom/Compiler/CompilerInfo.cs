@@ -47,7 +47,7 @@ namespace Microsoft.CodeDom.Compiler
                             _type = Type.GetType(_codeDomProviderTypeName);
                             if (_type == null)
                             {
-                                throw new ConfigurationErrorsException(SRCodeDom.GetString(SRCodeDom.Unable_To_Locate_Type, _codeDomProviderTypeName));
+                                throw new ConfigurationErrorsException(string.Format(SRCodeDom.Unable_To_Locate_Type, _codeDomProviderTypeName));
                             }
                         }
                     }
@@ -97,7 +97,7 @@ namespace Microsoft.CodeDom.Compiler
                 return (CodeDomProvider)constructor.Invoke(new object[] { providerOptions });
             }
             else
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.Provider_does_not_support_options, CodeDomProviderType.ToString()));
+                throw new InvalidOperationException(string.Format(SRCodeDom.Provider_does_not_support_options, CodeDomProviderType.ToString()));
         }
 
         public CompilerParameters CreateDefaultCompilerParameters()

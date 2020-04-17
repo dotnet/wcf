@@ -27,7 +27,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
             catch (Exception ex)
             {
-                ToolConsole.WriteWarning(SR.GetString(SR.ErrUnableToLoadReferenceFormat, path, ex.Message));
+                ToolConsole.WriteWarning(string.Format(SR.ErrUnableToLoadReferenceFormat, path, ex.Message));
                 return null;
             }
         }
@@ -59,7 +59,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     if (types.Length == 0)
                     {
-                        warning = SR.GetString(SR.ErrCouldNotLoadTypesFromAssemblyAtFormat, assembly.Location);
+                        warning = string.Format(SR.ErrCouldNotLoadTypesFromAssemblyAtFormat, assembly.Location);
                         if (!s_loadTypesWarnings.Contains(warning))
                         {
                             s_loadTypesWarnings.Add(warning);
@@ -68,7 +68,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        warning = SR.GetString(SR.WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat, assembly.Location);
+                        warning = string.Format(SR.WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat, assembly.Location);
 
                         if (!s_loadTypesWarnings.Contains(warning))
                         {

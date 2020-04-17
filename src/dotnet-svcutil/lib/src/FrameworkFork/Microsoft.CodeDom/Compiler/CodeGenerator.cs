@@ -449,7 +449,7 @@ namespace Microsoft.CodeDom.Compiler
             bool setLocal = false;
             if (_output != null && w != _output.InnerWriter)
             {
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
+                throw new InvalidOperationException(SRCodeDom.CodeGenOutputWriter);
             }
             if (_output == null)
             {
@@ -478,7 +478,7 @@ namespace Microsoft.CodeDom.Compiler
             bool setLocal = false;
             if (_output != null && w != _output.InnerWriter)
             {
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
+                throw new InvalidOperationException(SRCodeDom.CodeGenOutputWriter);
             }
             if (_output == null)
             {
@@ -507,7 +507,7 @@ namespace Microsoft.CodeDom.Compiler
             bool setLocal = false;
             if (_output != null && w != _output.InnerWriter)
             {
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
+                throw new InvalidOperationException(SRCodeDom.CodeGenOutputWriter);
             }
             if (_output == null)
             {
@@ -543,7 +543,7 @@ namespace Microsoft.CodeDom.Compiler
             bool setLocal = false;
             if (_output != null && w != _output.InnerWriter)
             {
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
+                throw new InvalidOperationException(SRCodeDom.CodeGenOutputWriter);
             }
             if (_output == null)
             {
@@ -572,7 +572,7 @@ namespace Microsoft.CodeDom.Compiler
             bool setLocal = false;
             if (_output != null && w != _output.InnerWriter)
             {
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenOutputWriter));
+                throw new InvalidOperationException(SRCodeDom.CodeGenOutputWriter);
             }
             if (_output == null)
             {
@@ -599,7 +599,7 @@ namespace Microsoft.CodeDom.Compiler
         {
             if (_output != null)
             {
-                throw new InvalidOperationException(SRCodeDom.GetString(SRCodeDom.CodeGenReentrance));
+                throw new InvalidOperationException(SRCodeDom.CodeGenReentrance);
             }
             _options = (options == null) ? new CodeGeneratorOptions() : options;
             _output = new IndentedTextWriter(writer, _options.IndentString);
@@ -821,7 +821,7 @@ namespace Microsoft.CodeDom.Compiler
                 }
                 else
                 {
-                    throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                    throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
                 }
             }
         }
@@ -1140,7 +1140,7 @@ namespace Microsoft.CodeDom.Compiler
             }
             else
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
             }
 
             if (e.LinePragma != null)
@@ -1800,7 +1800,7 @@ namespace Microsoft.CodeDom.Compiler
             }
             else
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidPrimitiveType, e.Value.GetType().ToString()));
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidPrimitiveType, e.Value.GetType().ToString()));
             }
         }
 
@@ -1908,7 +1908,7 @@ namespace Microsoft.CodeDom.Compiler
         protected virtual void GenerateCommentStatement(CodeCommentStatement e)
         {
             if (e.Comment == null)
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.Argument_NullComment, "e"), "e");
+                throw new ArgumentException(string.Format(SRCodeDom.Argument_NullComment, "e"), "e");
             GenerateComment(e.Comment);
         }
 
@@ -2162,7 +2162,7 @@ namespace Microsoft.CodeDom.Compiler
         {
             if (!IsValidIdentifier(value))
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidIdentifier, value));
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidIdentifier, value));
             }
         }
 

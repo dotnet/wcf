@@ -225,7 +225,7 @@ namespace System.Runtime
 
         internal static TimeoutException CreateEnterTimedOutException(TimeSpan timeout)
         {
-            return new TimeoutException(SRServiceModel.Format(SRServiceModel.LockTimeoutExceptionMessage, timeout));
+            return new TimeoutException(string.Format(SRServiceModel.LockTimeoutExceptionMessage, timeout));
         }
     }
 

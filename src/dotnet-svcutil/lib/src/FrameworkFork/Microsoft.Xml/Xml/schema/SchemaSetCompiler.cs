@@ -1089,14 +1089,14 @@ namespace Microsoft.Xml.Schema
                 case XmlSchemaContentType.Empty:
                     if (baseType.ElementDecl != null && !baseType.ElementDecl.ContentValidator.IsEmptiable)
                     { //base is either TextOnly or its ElementOnly/Mixed and not emptiable 
-                        SendValidationEvent(ResXml.Sch_InvalidContentRestrictionDetailed, ResXml.GetString(ResXml.Sch_InvalidBaseToEmpty), complexType);
+                        SendValidationEvent(ResXml.Sch_InvalidContentRestrictionDetailed, ResXml.Sch_InvalidBaseToEmpty, complexType);
                     }
                     break;
 
                 case XmlSchemaContentType.Mixed:
                     if (baseType.ContentType != XmlSchemaContentType.Mixed)
                     {
-                        SendValidationEvent(ResXml.Sch_InvalidContentRestrictionDetailed, ResXml.GetString(ResXml.Sch_InvalidBaseToMixed), complexType);
+                        SendValidationEvent(ResXml.Sch_InvalidContentRestrictionDetailed, ResXml.Sch_InvalidBaseToMixed, complexType);
                     }
                     break;
             }
@@ -1524,7 +1524,7 @@ namespace Microsoft.Xml.Schema
                 }
                 else
                 {
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ForbiddenDerivedParticleForElem);
+                    _restrictionErrorMsg = ResXml.Sch_ForbiddenDerivedParticleForElem;
                     return false;
                 }
             }
@@ -1562,11 +1562,11 @@ namespace Microsoft.Xml.Schema
                     {
                         return true;
                     }
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_SeqFromAll, derivedParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
+                    _restrictionErrorMsg = string.Format(ResXml.Sch_SeqFromAll, derivedParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
                 }
                 else if (derivedParticle is XmlSchemaChoice || derivedParticle is XmlSchemaAny)
                 {
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ForbiddenDerivedParticleForAll);
+                    _restrictionErrorMsg = ResXml.Sch_ForbiddenDerivedParticleForAll;
                 }
                 return false;
             }
@@ -1596,11 +1596,11 @@ namespace Microsoft.Xml.Schema
                     {
                         return true;
                     }
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_SeqFromChoice, derivedParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
+                    _restrictionErrorMsg = string.Format(ResXml.Sch_SeqFromChoice, derivedParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseParticle.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
                 }
                 else
                 {
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ForbiddenDerivedParticleForChoice);
+                    _restrictionErrorMsg = ResXml.Sch_ForbiddenDerivedParticleForChoice;
                 }
                 return false;
             }
@@ -1619,7 +1619,7 @@ namespace Microsoft.Xml.Schema
                 }
                 else
                 {
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ForbiddenDerivedParticleForSeq);
+                    _restrictionErrorMsg = ResXml.Sch_ForbiddenDerivedParticleForSeq;
                 }
                 return false;
             }
@@ -1654,7 +1654,7 @@ namespace Microsoft.Xml.Schema
                  (derivedElement.ElementSchemaType != null) && (baseElement.ElementSchemaType != null) &&
                  XmlSchemaType.IsDerivedFrom(derivedElement.ElementSchemaType, baseElement.ElementSchemaType, ~(XmlSchemaDerivationMethod.Restriction | XmlSchemaDerivationMethod.List | XmlSchemaDerivationMethod.Union))))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ElementFromElement, derivedElement.QualifiedName, baseElement.QualifiedName);
+                _restrictionErrorMsg = string.Format(ResXml.Sch_ElementFromElement, derivedElement.QualifiedName, baseElement.QualifiedName);
                 return false;
             }
             return true;
@@ -1664,12 +1664,12 @@ namespace Microsoft.Xml.Schema
         {
             if (!baseAny.Allows(derivedElement.QualifiedName))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ElementFromAnyRule1, derivedElement.QualifiedName.ToString());
+                _restrictionErrorMsg = string.Format(ResXml.Sch_ElementFromAnyRule1, derivedElement.QualifiedName.ToString());
                 return false;
             }
             if (!IsValidOccurrenceRangeRestriction(derivedElement, baseAny))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ElementFromAnyRule2, derivedElement.QualifiedName.ToString());
+                _restrictionErrorMsg = string.Format(ResXml.Sch_ElementFromAnyRule2, derivedElement.QualifiedName.ToString());
                 return false;
             }
             return true;
@@ -1679,17 +1679,17 @@ namespace Microsoft.Xml.Schema
         {
             if (!IsValidOccurrenceRangeRestriction(derivedAny, baseAny))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_AnyFromAnyRule1);
+                _restrictionErrorMsg = ResXml.Sch_AnyFromAnyRule1;
                 return false;
             }
             if (!NamespaceList.IsSubset(derivedAny.NamespaceList, baseAny.NamespaceList))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_AnyFromAnyRule2);
+                _restrictionErrorMsg = ResXml.Sch_AnyFromAnyRule2;
                 return false;
             }
             if ((int)derivedAny.ProcessContentsCorrect < (int)baseAny.ProcessContentsCorrect)
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_AnyFromAnyRule3);
+                _restrictionErrorMsg = ResXml.Sch_AnyFromAnyRule3;
                 return false;
             }
             return true;
@@ -1701,7 +1701,7 @@ namespace Microsoft.Xml.Schema
             CalculateEffectiveTotalRange(derivedGroupBase, out minOccurs, out maxOccurs);
             if (!IsValidOccurrenceRangeRestriction(minOccurs, maxOccurs, baseAny.MinOccurs, baseAny.MaxOccurs))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_GroupBaseFromAny2, derivedGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseAny.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseAny.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
+                _restrictionErrorMsg = string.Format(ResXml.Sch_GroupBaseFromAny2, derivedGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseAny.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseAny.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
                 return false;
             }
             // eliminate occurrance range check
@@ -1711,7 +1711,7 @@ namespace Microsoft.Xml.Schema
             {
                 if (!IsValidRestriction((XmlSchemaParticle)derivedGroupBase.Items[i], baseAny))
                 {
-                    _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_GroupBaseFromAny1);
+                    _restrictionErrorMsg = ResXml.Sch_GroupBaseFromAny1;
                     baseAny.MinOccursString = minOccursAny;
                     return false;
                 }
@@ -1776,7 +1776,7 @@ namespace Microsoft.Xml.Schema
                 {
                     return true;
                 }
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ElementFromGroupBase1, derivedElement.QualifiedName.ToString(), derivedElement.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedElement.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
+                _restrictionErrorMsg = string.Format(ResXml.Sch_ElementFromGroupBase1, derivedElement.QualifiedName.ToString(), derivedElement.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedElement.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
             }
             else if (baseGroupBase is XmlSchemaChoice)
             {
@@ -1788,7 +1788,7 @@ namespace Microsoft.Xml.Schema
                 {
                     return true;
                 }
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ElementFromGroupBase2, derivedElement.QualifiedName.ToString(), derivedElement.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedElement.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
+                _restrictionErrorMsg = string.Format(ResXml.Sch_ElementFromGroupBase2, derivedElement.QualifiedName.ToString(), derivedElement.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedElement.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
             }
             else if (baseGroupBase is XmlSchemaAll)
             {
@@ -1800,7 +1800,7 @@ namespace Microsoft.Xml.Schema
                 {
                     return true;
                 }
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_ElementFromGroupBase3, derivedElement.QualifiedName.ToString(), derivedElement.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedElement.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
+                _restrictionErrorMsg = string.Format(ResXml.Sch_ElementFromGroupBase3, derivedElement.QualifiedName.ToString(), derivedElement.LineNumber.ToString(NumberFormatInfo.InvariantInfo), derivedElement.LinePosition.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LineNumber.ToString(NumberFormatInfo.InvariantInfo), baseGroupBase.LinePosition.ToString(NumberFormatInfo.InvariantInfo));
             }
             return false;
         }
@@ -1809,7 +1809,7 @@ namespace Microsoft.Xml.Schema
         {
             if (!IsValidOccurrenceRangeRestriction(derivedChoice, baseChoice))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_GroupBaseRestRangeInvalid);
+                _restrictionErrorMsg = ResXml.Sch_GroupBaseRestRangeInvalid;
                 return false;
             }
             for (int i = 0; i < derivedChoice.Items.Count; ++i)
@@ -1826,12 +1826,12 @@ namespace Microsoft.Xml.Schema
         {
             if (!IsValidOccurrenceRangeRestriction(derivedGroupBase, baseGroupBase))
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_GroupBaseRestRangeInvalid);
+                _restrictionErrorMsg = ResXml.Sch_GroupBaseRestRangeInvalid;
                 return false;
             }
             if (derivedGroupBase.Items.Count > baseGroupBase.Items.Count)
             {
-                _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_GroupBaseRestNoMap);
+                _restrictionErrorMsg = ResXml.Sch_GroupBaseRestNoMap;
                 return false;
             }
             int count = 0;
@@ -1847,7 +1847,7 @@ namespace Microsoft.Xml.Schema
                 {
                     if (_restrictionErrorMsg == null)
                     { //If restriction failed on previous check, do not overwrite error 
-                        _restrictionErrorMsg = ResXml.GetString(ResXml.Sch_GroupBaseRestNotEmptiable);
+                        _restrictionErrorMsg = ResXml.Sch_GroupBaseRestNotEmptiable;
                     }
                     return false;
                 }

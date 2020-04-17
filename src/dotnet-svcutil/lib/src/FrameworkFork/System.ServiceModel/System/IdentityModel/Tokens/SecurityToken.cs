@@ -25,7 +25,7 @@ namespace System.IdentityModel.Tokens
                 return new LocalIdKeyIdentifierClause(this.Id, this.GetType()) as T;
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(
-                System.SRServiceModel.Format(System.SRServiceModel.TokenDoesNotSupportKeyIdentifierClauseCreation, GetType().Name, typeof(T).Name)));
+                string.Format(SRServiceModel.TokenDoesNotSupportKeyIdentifierClauseCreation, GetType().Name, typeof(T).Name)));
         }
 
         public virtual bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause)

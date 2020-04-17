@@ -28,7 +28,7 @@ namespace Microsoft.Xml
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    throw new IndexOutOfRangeException(ResXml.GetString(ResXml.Xdom_IndexOutOfRange));
+                    throw new IndexOutOfRangeException(ResXml.Xdom_IndexOutOfRange);
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace Microsoft.Xml
         public override XmlNode SetNamedItem(XmlNode node)
         {
             if (node != null && !(node is XmlAttribute))
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_AttrCol_Object));
+                throw new ArgumentException(ResXml.Xdom_AttrCol_Object);
 
             int offset = FindNodeOffset(node.LocalName, node.NamespaceURI);
             if (offset == -1)
@@ -134,7 +134,7 @@ namespace Microsoft.Xml
         public XmlAttribute Prepend(XmlAttribute node)
         {
             if (node.OwnerDocument != null && node.OwnerDocument != parent.OwnerDocument)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_NamedNode_Context));
+                throw new ArgumentException(ResXml.Xdom_NamedNode_Context);
 
             if (node.OwnerElement != null)
                 Detach(node);
@@ -153,7 +153,7 @@ namespace Microsoft.Xml
             {
                 if (doc != null && doc != parent.OwnerDocument)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xdom_NamedNode_Context));
+                    throw new ArgumentException(ResXml.Xdom_NamedNode_Context);
                 }
                 if (node.OwnerElement != null)
                 {
@@ -179,10 +179,10 @@ namespace Microsoft.Xml
                 return Append(newNode);
 
             if (refNode.OwnerElement != parent)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_AttrCol_Insert));
+                throw new ArgumentException(ResXml.Xdom_AttrCol_Insert);
 
             if (newNode.OwnerDocument != null && newNode.OwnerDocument != parent.OwnerDocument)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_NamedNode_Context));
+                throw new ArgumentException(ResXml.Xdom_NamedNode_Context);
 
             if (newNode.OwnerElement != null)
                 Detach(newNode);
@@ -208,10 +208,10 @@ namespace Microsoft.Xml
                 return Prepend(newNode);
 
             if (refNode.OwnerElement != parent)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_AttrCol_Insert));
+                throw new ArgumentException(ResXml.Xdom_AttrCol_Insert);
 
             if (newNode.OwnerDocument != null && newNode.OwnerDocument != parent.OwnerDocument)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_NamedNode_Context));
+                throw new ArgumentException(ResXml.Xdom_NamedNode_Context);
 
             if (newNode.OwnerElement != null)
                 Detach(newNode);

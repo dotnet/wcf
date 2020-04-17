@@ -29,7 +29,7 @@ namespace Microsoft.Xml
             if (value == null)
                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("value"));
             if (key < MinKey || key > MaxKey)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("key", SRSerialization.Format(SRSerialization.ValueMustBeInRange, MinKey, MaxKey)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("key", string.Format(SRSerialization.ValueMustBeInRange, MinKey, MaxKey)));
             _dictionary = dictionary;
             _value = value;
             _key = key;

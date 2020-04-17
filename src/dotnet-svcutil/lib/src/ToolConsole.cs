@@ -42,7 +42,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (ex is ToolMexException me)
             {
-                toolError.AppendLine(SR.GetString(SR.WrnWSMExFailedFormat, me.ServiceUri?.AbsoluteUri));
+                toolError.AppendLine(string.Format(SR.WrnWSMExFailedFormat, me.ServiceUri?.AbsoluteUri));
                 toolError.AppendLine();
                 toolError.AppendLine(Utils.GetExceptionMessage(me.WSMexException));
             }
@@ -50,7 +50,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (ToolConsole.Verbosity > Verbosity.Minimal && ToolConsole.ToolModeLevel != OperationalContext.Infrastructure)
             {
                 toolError.AppendLine();
-                toolError.AppendLine(SR.GetString(SR.MoreHelpFormat, CommandProcessorOptions.Switches.Help.Abbreviation));
+                toolError.AppendLine(string.Format(SR.MoreHelpFormat, CommandProcessorOptions.Switches.Help.Abbreviation));
             }
 
             MarkupTelemetryHelper.TelemetryPostFault(ex);
@@ -200,7 +200,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             if (condition && ToolConsole.Verbosity > Verbosity.Minimal && ToolConsole.ToolModeLevel != OperationalContext.Infrastructure)
             {
-                ToolConsole.WriteLine(SR.GetString(SR.LogoFormat, Tool.ToolName, Tool.PackageVersion, SR.Microsoft_Copyright_CommandLine_Logo), LogTag.Important);
+                ToolConsole.WriteLine(string.Format(SR.LogoFormat, Tool.ToolName, Tool.PackageVersion, SR.Microsoft_Copyright_CommandLine_Logo), LogTag.Important);
 
                 if (AppInsightsTelemetryClient.IsUserOptedIn)
                 {

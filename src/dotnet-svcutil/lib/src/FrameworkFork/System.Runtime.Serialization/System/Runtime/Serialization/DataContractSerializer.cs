@@ -117,7 +117,7 @@ namespace System.Runtime.Serialization
             }
 
             if (maxItemsInObjectGraph < 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxItemsInObjectGraph", SRSerialization.Format(SRSerialization.ValueMustBeNonNegative)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("maxItemsInObjectGraph", string.Format(SRSerialization.ValueMustBeNonNegative)));
             _maxItemsInObjectGraph = maxItemsInObjectGraph;
 
             _ignoreExtensionDataObject = ignoreExtensionDataObject;
@@ -305,7 +305,7 @@ namespace System.Runtime.Serialization
         internal void InternalWriteObjectContent(XmlWriterDelegator writer, object graph, DataContractResolver dataContractResolver)
         {
             if (MaxItemsInObjectGraph == 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ExceededMaxItemsQuota, MaxItemsInObjectGraph)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ExceededMaxItemsQuota, MaxItemsInObjectGraph)));
 
             DataContract contract = RootContract;
             Type declaredType = contract.UnderlyingType;
@@ -322,7 +322,7 @@ namespace System.Runtime.Serialization
             if (graph == null)
             {
                 if (IsRootXmlAny(_rootName, contract))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.IsAnyCannotBeNull, declaredType)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.IsAnyCannotBeNull, declaredType)));
                 WriteNull(writer);
             }
             else
@@ -346,7 +346,7 @@ namespace System.Runtime.Serialization
                 {
                     XmlObjectSerializerWriteContext context = null;
                     if (IsRootXmlAny(_rootName, contract))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.IsAnyCannotBeSerializedAsDerivedType, graphType, contract.UnderlyingType)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.IsAnyCannotBeSerializedAsDerivedType, graphType, contract.UnderlyingType)));
 
                     contract = GetDataContract(contract, declaredType, graphType);
                     context = XmlObjectSerializerWriteContext.CreateContext(this, RootContract
@@ -394,7 +394,7 @@ namespace System.Runtime.Serialization
         internal override object InternalReadObject(XmlReaderDelegator xmlReader, bool verifyObjectName, DataContractResolver dataContractResolver)
         {
             if (MaxItemsInObjectGraph == 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ExceededMaxItemsQuota, MaxItemsInObjectGraph)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ExceededMaxItemsQuota, MaxItemsInObjectGraph)));
 
             if (dataContractResolver == null)
                 dataContractResolver = this.DataContractResolver;
@@ -419,12 +419,12 @@ namespace System.Runtime.Serialization
                         expectedName = _rootName;
                         expectedNs = _rootNamespace;
                     }
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationExceptionWithReaderDetails(SRSerialization.Format(SRSerialization.ExpectingElement, expectedNs, expectedName), xmlReader));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationExceptionWithReaderDetails(string.Format(SRSerialization.ExpectingElement, expectedNs, expectedName), xmlReader));
                 }
             }
             else if (!IsStartElement(xmlReader))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationExceptionWithReaderDetails(SRSerialization.Format(SRSerialization.ExpectingElementAtDeserialize, XmlNodeType.Element), xmlReader));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationExceptionWithReaderDetails(string.Format(SRSerialization.ExpectingElementAtDeserialize, XmlNodeType.Element), xmlReader));
             }
 
             DataContract contract = RootContract;

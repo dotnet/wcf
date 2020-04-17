@@ -172,7 +172,7 @@ namespace System.ServiceModel.Channels
                 // URI schemes are case-insensitive, so try a case insensitive compare now
                 if (string.Compare(via.Scheme, this.Scheme, StringComparison.OrdinalIgnoreCase) != 0)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("via", SRServiceModel.Format(SRServiceModel.InvalidUriScheme,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("via", string.Format(SRServiceModel.InvalidUriScheme,
                         via.Scheme, this.Scheme));
                 }
             }

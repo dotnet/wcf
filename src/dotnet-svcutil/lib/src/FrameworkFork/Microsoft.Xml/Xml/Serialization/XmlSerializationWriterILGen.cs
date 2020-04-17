@@ -72,13 +72,13 @@ namespace Microsoft.Xml.Serialization
             if (!xmlMapping.IsWriteable)
                 return null;
             if (!xmlMapping.GenerateSerializer)
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "xmlMapping");
+                throw new ArgumentException(ResXml.XmlInternalError, "xmlMapping");
             if (xmlMapping is XmlTypeMapping)
                 return GenerateTypeElement((XmlTypeMapping)xmlMapping);
             else if (xmlMapping is XmlMembersMapping)
                 return GenerateMembersElement((XmlMembersMapping)xmlMapping);
             else
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "xmlMapping");
+                throw new ArgumentException(ResXml.XmlInternalError, "xmlMapping");
         }
 
         private void GenerateInitCallbacksMethod()
@@ -129,7 +129,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
             // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-            if (methodName == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+            if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
 
             // For enum, its write method (eg. Write1_Gender) could be called multiple times
@@ -201,7 +201,7 @@ namespace Microsoft.Xml.Serialization
                 {
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (defaultValue.GetType() != typeof(string)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, name + " has invalid default type " + defaultValue.GetType().Name));
+                    if (defaultValue.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, name + " has invalid default type " + defaultValue.GetType().Name));
 #endif
 
                     source.Load(mapping.TypeDesc.Type);
@@ -527,7 +527,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (enumSource == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
+                    if (enumSource == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
 #endif
                 }
 
@@ -768,7 +768,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                 // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (methodName == null) throw new InvalidOperationException("deriaved from " + mapping.TypeDesc.FullName + ", " + ResXml.GetString(ResXml.XmlInternalErrorMethod, derived.TypeDesc.Name) + Environment.StackTrace);
+                if (methodName == null) throw new InvalidOperationException("deriaved from " + mapping.TypeDesc.FullName + ", " + string.Format(ResXml.XmlInternalErrorMethod, derived.TypeDesc.Name) + Environment.StackTrace);
 #endif
 
                 List<Type> argTypes = new List<Type>();
@@ -819,7 +819,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                         // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (methodName == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                        if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
                         MethodInfo XmlSerializationWriter_get_Writer = typeof(XmlSerializationWriter).GetMethod(
                             "get_Writer",
@@ -1455,7 +1455,7 @@ namespace Microsoft.Xml.Serialization
                     ilg.Call(XmlSerializationWriter_WriteXmlAttribute);
                 }
                 else
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                    throw new InvalidOperationException(ResXml.XmlInternalError);
             }
             else
             {
@@ -1999,7 +1999,7 @@ namespace Microsoft.Xml.Serialization
                         ilg.Call(WriteTo);
                         break;
                     default:
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                        throw new InvalidOperationException(ResXml.XmlInternalError);
                 }
             }
         }
@@ -2107,7 +2107,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                 // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (methodName == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
                 List<Type> argTypes = new List<Type>();
                 ilg.Ldarg(0);
@@ -2180,7 +2180,7 @@ namespace Microsoft.Xml.Serialization
             }
             else
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                throw new InvalidOperationException(ResXml.XmlInternalError);
             }
         }
 
@@ -2408,10 +2408,10 @@ namespace Microsoft.Xml.Serialization
                 if (element.Any && element.Name.Length == 0)
                 {
                     // Type {0} is missing enumeration value '##any' for XmlAnyElementAttribute.
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlChoiceMissingAnyValue, choiceMapping.TypeDesc.FullName));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlChoiceMissingAnyValue, choiceMapping.TypeDesc.FullName));
                 }
                 // Type {0} is missing value for '{1}'.
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlChoiceMissingValue, choiceMapping.TypeDesc.FullName, element.Namespace + ":" + element.Name, element.Name, element.Namespace));
+                throw new InvalidOperationException(string.Format(ResXml.XmlChoiceMissingValue, choiceMapping.TypeDesc.FullName, element.Namespace + ":" + element.Name, element.Name, element.Namespace));
             }
             CodeIdentifier.CheckValidIdentifier(enumValue);
             return enumValue;

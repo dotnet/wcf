@@ -51,7 +51,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (e is ToolRuntimeException || Utils.IsFatalOrUnexpected(e))
                     throw;
 
-                throw new ToolRuntimeException(SR.GetString(SR.ErrCannotWriteFile), e);
+                throw new ToolRuntimeException(SR.ErrCannotWriteFile, e);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                     }
 
-                    throw new ToolRuntimeException(SR.GetString(SR.ErrCodegenError), e);
+                    throw new ToolRuntimeException(SR.ErrCodegenError, e);
                 }
                 filePath = _outputFilePath.Contains(" ") ? string.Format(CultureInfo.InvariantCulture, "\"{0}\"", _outputFilePath) : _outputFilePath;
             }
@@ -104,7 +104,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             catch (Exception e)
             {
                 if (Utils.IsFatalOrUnexpected(e)) throw;
-                throw new ToolRuntimeException(SR.GetString(SR.ErrCannotCreateFileFormat, _outputFilePath), e);
+                throw new ToolRuntimeException(string.Format(SR.ErrCannotCreateFileFormat, _outputFilePath), e);
             }
         }
 

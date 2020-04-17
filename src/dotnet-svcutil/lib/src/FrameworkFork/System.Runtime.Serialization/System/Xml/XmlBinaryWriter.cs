@@ -58,7 +58,7 @@ namespace Microsoft.Xml
         private void WroteAttributeValue()
         {
             if (_wroteAttributeValue && !_inList)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.XmlOnlySingleValue)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.XmlOnlySingleValue)));
             _wroteAttributeValue = true;
         }
 
@@ -1269,13 +1269,13 @@ namespace Microsoft.Xml
             if (array == null)
                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("array"));
             if (offset < 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SRSerialization.Format(SRSerialization.ValueMustBeNonNegative)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", string.Format(SRSerialization.ValueMustBeNonNegative)));
             if (offset > array.Length)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", SRSerialization.Format(SRSerialization.OffsetExceedsBufferSize, array.Length)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", string.Format(SRSerialization.OffsetExceedsBufferSize, array.Length)));
             if (count < 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SRSerialization.Format(SRSerialization.ValueMustBeNonNegative)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", string.Format(SRSerialization.ValueMustBeNonNegative)));
             if (count > array.Length - offset)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", SRSerialization.Format(SRSerialization.SizeExceedsRemainingBufferSpace, array.Length - offset)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("count", string.Format(SRSerialization.SizeExceedsRemainingBufferSpace, array.Length - offset)));
         }
 
         // bool

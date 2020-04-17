@@ -985,10 +985,10 @@ namespace Microsoft.Xml.Serialization
             if (GetNullAttr()) return 0;
             string arrayType = _r.GetAttribute(_arrayTypeID, _soapNsID);
             SoapArrayInfo arrayInfo = ParseArrayType(arrayType);
-            if (arrayInfo.dimensions != 1) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayDimentions, CurrentTag()));
+            if (arrayInfo.dimensions != 1) throw new InvalidOperationException(string.Format(ResXml.XmlInvalidArrayDimentions, CurrentTag()));
             XmlQualifiedName qname = ToXmlQualifiedName(arrayInfo.qname, false);
-            if (qname.Name != name) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayTypeName, qname.Name, name, CurrentTag()));
-            if (qname.Namespace != ns) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayTypeNamespace, qname.Namespace, ns, CurrentTag()));
+            if (qname.Name != name) throw new InvalidOperationException(string.Format(ResXml.XmlInvalidArrayTypeName, qname.Name, name, CurrentTag()));
+            if (qname.Namespace != ns) throw new InvalidOperationException(string.Format(ResXml.XmlInvalidArrayTypeNamespace, qname.Namespace, ns, CurrentTag()));
             return arrayInfo.length;
         }
 
@@ -1007,12 +1007,12 @@ namespace Microsoft.Xml.Serialization
         {
             if (value == null)
             {
-                throw new ArgumentNullException(ResXml.GetString(ResXml.XmlMissingArrayType, CurrentTag()));
+                throw new ArgumentNullException(string.Format(ResXml.XmlMissingArrayType, CurrentTag()));
             }
 
             if (value.Length == 0)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlEmptyArrayType, CurrentTag()), "value");
+                throw new ArgumentException(string.Format(ResXml.XmlEmptyArrayType, CurrentTag()), "value");
             }
 
             char[] chars = value.ToCharArray();
@@ -1026,7 +1026,7 @@ namespace Microsoft.Xml.Serialization
             // Must end with ]
             if (chars[pos] != ']')
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidArraySyntax), "value");
+                throw new ArgumentException(ResXml.XmlInvalidArraySyntax, "value");
             }
             pos--;
 
@@ -1034,12 +1034,12 @@ namespace Microsoft.Xml.Serialization
             while (pos != -1 && chars[pos] != '[')
             {
                 if (chars[pos] == ',')
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidArrayDimentions, CurrentTag()), "value");
+                    throw new ArgumentException(string.Format(ResXml.XmlInvalidArrayDimentions, CurrentTag()), "value");
                 pos--;
             }
             if (pos == -1)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlMismatchedArrayBrackets), "value");
+                throw new ArgumentException(ResXml.XmlMismatchedArrayBrackets, "value");
             }
 
             int len = charsLength - pos - 2;
@@ -1056,7 +1056,7 @@ namespace Microsoft.Xml.Serialization
                     {
                         throw;
                     }
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidArrayLength, lengthString), "value");
+                    throw new ArgumentException(string.Format(ResXml.XmlInvalidArrayLength, lengthString), "value");
                 }
             }
             else
@@ -1071,11 +1071,11 @@ namespace Microsoft.Xml.Serialization
             {
                 pos--;
                 if (pos < 0)
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlMismatchedArrayBrackets), "value");
+                    throw new ArgumentException(ResXml.XmlMismatchedArrayBrackets, "value");
                 if (chars[pos] == ',')
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidArrayDimentions, CurrentTag()), "value");
+                    throw new ArgumentException(string.Format(ResXml.XmlInvalidArrayDimentions, CurrentTag()), "value");
                 else if (chars[pos] != '[')
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidArraySyntax), "value");
+                    throw new ArgumentException(ResXml.XmlInvalidArraySyntax, "value");
                 pos--;
                 soapArrayInfo.jaggedDimensions++;
             }
@@ -1125,7 +1125,7 @@ namespace Microsoft.Xml.Serialization
                             {
                                 throw;
                             }
-                            throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidArrayLength, dimensions[i]), "value");
+                            throw new ArgumentException(string.Format(ResXml.XmlInvalidArrayLength, dimensions[i]), "value");
                         }
                     }
                 }
@@ -1217,7 +1217,7 @@ namespace Microsoft.Xml.Serialization
                 if (ns == null)
                 {
                     // Namespace prefix '{0}' is not defined.
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUndefinedAlias, prefix));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlUndefinedAlias, prefix));
                 }
                 return new XmlQualifiedName(_r.NameTable.Add(localName), ns);
             }
@@ -1362,43 +1362,43 @@ namespace Microsoft.Xml.Serialization
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateUnknownTypeException"]/*' />
         protected Exception CreateUnknownTypeException(XmlQualifiedName type)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownType, type.Name, type.Namespace, CurrentTag()));
+            return new InvalidOperationException(string.Format(ResXml.XmlUnknownType, type.Name, type.Namespace, CurrentTag()));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateReadOnlyCollectionException"]/*' />
         protected Exception CreateReadOnlyCollectionException(string name)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlReadOnlyCollection, name));
+            return new InvalidOperationException(string.Format(ResXml.XmlReadOnlyCollection, name));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateAbstractTypeException"]/*' />
         protected Exception CreateAbstractTypeException(string name, string ns)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlAbstractType, name, ns, CurrentTag()));
+            return new InvalidOperationException(string.Format(ResXml.XmlAbstractType, name, ns, CurrentTag()));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateInaccessibleConstructorException"]/*' />
         protected Exception CreateInaccessibleConstructorException(string typeName)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlConstructorInaccessible, typeName));
+            return new InvalidOperationException(string.Format(ResXml.XmlConstructorInaccessible, typeName));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateCtorHasSecurityException"]/*' />
         protected Exception CreateCtorHasSecurityException(string typeName)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlConstructorHasSecurityAttributes, typeName));
+            return new InvalidOperationException(string.Format(ResXml.XmlConstructorHasSecurityAttributes, typeName));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateUnknownNodeException"]/*' />
         protected Exception CreateUnknownNodeException()
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownNode, CurrentTag()));
+            return new InvalidOperationException(string.Format(ResXml.XmlUnknownNode, CurrentTag()));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateUnknownConstantException"]/*' />
         protected Exception CreateUnknownConstantException(string value, Type enumType)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownConstant, value, enumType.Name));
+            return new InvalidOperationException(string.Format(ResXml.XmlUnknownConstant, value, enumType.Name));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateInvalidCastException"]/*' />
@@ -1411,23 +1411,23 @@ namespace Microsoft.Xml.Serialization
         protected Exception CreateInvalidCastException(Type type, object value, string id)
         {
             if (value == null)
-                return new InvalidCastException(ResXml.GetString(ResXml.XmlInvalidNullCast, type.FullName));
+                return new InvalidCastException(string.Format(ResXml.XmlInvalidNullCast, type.FullName));
             else if (id == null)
-                return new InvalidCastException(ResXml.GetString(ResXml.XmlInvalidCast, value.GetType().FullName, type.FullName));
+                return new InvalidCastException(string.Format(ResXml.XmlInvalidCast, value.GetType().FullName, type.FullName));
             else
-                return new InvalidCastException(ResXml.GetString(ResXml.XmlInvalidCastWithId, value.GetType().FullName, type.FullName, id));
+                return new InvalidCastException(string.Format(ResXml.XmlInvalidCastWithId, value.GetType().FullName, type.FullName, id));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateBadDerivationException"]/*' />
         protected Exception CreateBadDerivationException(string xsdDerived, string nsDerived, string xsdBase, string nsBase, string clrDerived, string clrBase)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializableBadDerivation, xsdDerived, nsDerived, xsdBase, nsBase, clrDerived, clrBase));
+            return new InvalidOperationException(string.Format(ResXml.XmlSerializableBadDerivation, xsdDerived, nsDerived, xsdBase, nsBase, clrDerived, clrBase));
         }
 
         /// <include file='doc\XmlSerializationReader.uex' path='docs/doc[@for="XmlSerializationReader.CreateMissingIXmlSerializableType"]/*' />
         protected Exception CreateMissingIXmlSerializableType(string name, string ns, string clrType)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializableMissingClrType, name, ns, typeof(XmlIncludeAttribute).Name, clrType));
+            return new InvalidOperationException(string.Format(ResXml.XmlSerializableMissingClrType, name, ns, typeof(XmlIncludeAttribute).Name, clrType));
             //XmlSerializableMissingClrType= Type '{0}' from namespace '{1}' doesnot have corresponding IXmlSerializable type. Please consider adding {2} to '{3}'.
         }
 
@@ -1517,7 +1517,7 @@ namespace Microsoft.Xml.Serialization
             if (!_soap12)
             {
                 // soap 1.1 href starts with '#'; soap 1.2 ref does not
-                if (!href.StartsWith("#", StringComparison.Ordinal)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingHref, href));
+                if (!href.StartsWith("#", StringComparison.Ordinal)) throw new InvalidOperationException(string.Format(ResXml.XmlMissingHref, href));
                 fixupReference = href.Substring(1);
             }
             else
@@ -1575,7 +1575,7 @@ namespace Microsoft.Xml.Serialization
             object target = _targets != null ? _targets[id] : null;
             if (target == null)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidHref, id));
+                throw new InvalidOperationException(string.Format(ResXml.XmlInvalidHref, id));
             }
             Referenced(target);
             return target;
@@ -1646,7 +1646,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 catch (InvalidCastException)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayRef, id, o.GetType().FullName, i.ToString()));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlInvalidArrayRef, id, o.GetType().FullName, i.ToString()));
                 }
             }
         }
@@ -1677,7 +1677,7 @@ namespace Microsoft.Xml.Serialization
                 arrayInfo = ParseArrayType(arrayType);
             }
 
-            if (arrayInfo.dimensions != 1) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayDimentions, CurrentTag()));
+            if (arrayInfo.dimensions != 1) throw new InvalidOperationException(string.Format(ResXml.XmlInvalidArrayDimentions, CurrentTag()));
 
             // NOTE: don't use the array size that is specified since an evil client might pass
             // a number larger than the actual number of items in an attempt to harm the server.
@@ -1763,7 +1763,7 @@ namespace Microsoft.Xml.Serialization
             {
                 if (!isPrimitive && !elementType.GetTypeInfo().IsEnum)
                 {
-                    throw new NotSupportedException(ResXml.GetString(ResXml.XmlRpcArrayOfValueTypes, elementType.FullName));
+                    throw new NotSupportedException(string.Format(ResXml.XmlRpcArrayOfValueTypes, elementType.FullName));
                 }
                 // CONSIDER, erikc, we could have specialized read functions here
                 // for primitives, which would avoid boxing.
@@ -2071,7 +2071,7 @@ namespace Microsoft.Xml.Serialization
                 if ((whileIterations & 0x80) == 0x80)
                 {
                     if (readerCount == ReaderCount)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorReaderAdvance));
+                        throw new InvalidOperationException(ResXml.XmlInternalErrorReaderAdvance);
                     readerCount = ReaderCount;
                 }
             }

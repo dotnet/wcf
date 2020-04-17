@@ -60,7 +60,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             {
                 WsdlFilePath = mainWsdl?.FilePath,
                 MetadataFiles = metadataDocumentSaver.MetadataFiles.Select(mf => mf.FilePath),
-                DocumentSaveErrors = metadataDocumentSaver.UnresolvedReferences.Distinct().OrderBy(ur => ur.Uri).Select(ur => string.Format(CultureInfo.CurrentCulture, Resources.ErrUnableToResolveSchemaReferenceFormat, ur.Uri))
+                DocumentSaveErrors = metadataDocumentSaver.UnresolvedReferences.Distinct().OrderBy(ur => ur.Uri).Select(ur => string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrUnableToResolveSchemaReferenceFormat, ur.Uri))
             };
         }
 
@@ -71,7 +71,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 var fileInfo = this.MetadataFiles.FirstOrDefault(fi => File.Exists(fi.FilePath));
                 if (fileInfo != null)
                 {
-                    throw new IOException(string.Format(CultureInfo.CurrentCulture, Resources.ErrFileAlreadyExistsFormat, fileInfo.FilePath));
+                    throw new IOException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrFileAlreadyExistsFormat, fileInfo.FilePath));
                 }
             }
 

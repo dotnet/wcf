@@ -141,17 +141,17 @@ namespace System.ServiceModel.Dispatcher
             catch (XmlException xe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operationName, xe.Message), xe));
+                    string.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operationName, xe.Message), xe));
             }
             catch (FormatException fe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operationName, fe.Message), fe));
+                    string.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operationName, fe.Message), fe));
             }
             catch (SerializationException se)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operationName, se.Message), se));
+                    string.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operationName, se.Message), se));
             }
         }
 
@@ -164,7 +164,7 @@ namespace System.ServiceModel.Dispatcher
             }
             catch (MissingMethodException mme)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxMessageContractRequiresDefaultConstructor, messageContractType.FullName), mme));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxMessageContractRequiresDefaultConstructor, messageContractType.FullName), mme));
             }
         }
 
@@ -204,20 +204,20 @@ namespace System.ServiceModel.Dispatcher
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     OperationFormatter.CreateDeserializationFailedFault(
-                        SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operationName, xe.Message),
+                        string.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operationName, xe.Message),
                         xe));
             }
             catch (FormatException fe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     OperationFormatter.CreateDeserializationFailedFault(
-                        SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operationName, fe.Message),
+                        string.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operationName, fe.Message),
                         fe));
             }
             catch (SerializationException se)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operationName, se.Message),
+                    string.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operationName, se.Message),
                     se));
             }
         }
@@ -501,7 +501,7 @@ namespace System.ServiceModel.Dispatcher
         {
             if (isEncoded && !isRpc)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDocEncodedNotSupported, operation.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDocEncodedNotSupported, operation.Name)));
             }
 
             bool hasVoid = false;
@@ -515,7 +515,7 @@ namespace System.ServiceModel.Dispatcher
                     if (isRpc && operation.IsValidateRpcWrapperName)
                     {
                         if (!isEncoded)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxTypedMessageCannotBeRpcLiteral, operation.Name)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxTypedMessageCannotBeRpcLiteral, operation.Name)));
                     }
                     hasTypedOrUntypedMessage = true;
                 }
@@ -525,9 +525,9 @@ namespace System.ServiceModel.Dispatcher
                     hasParameter = true;
             }
             if (hasParameter && hasTypedOrUntypedMessage)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxTypedOrUntypedMessageCannotBeMixedWithParameters, operation.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxTypedOrUntypedMessageCannotBeMixedWithParameters, operation.Name)));
             if (isRpc && hasTypedOrUntypedMessage && hasVoid)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxTypedOrUntypedMessageCannotBeMixedWithVoidInRpc, operation.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxTypedOrUntypedMessageCannotBeMixedWithVoidInRpc, operation.Name)));
         }
 
         internal static void GetActions(OperationDescription description, XmlDictionary dictionary, out XmlDictionaryString action, out XmlDictionaryString replyAction)
@@ -551,7 +551,7 @@ namespace System.ServiceModel.Dispatcher
 
         internal static NetDispatcherFaultException CreateDeserializationFailedFault(string reason, Exception innerException)
         {
-            reason = SRServiceModel.Format(SRServiceModel.SFxDeserializationFailed1, reason);
+            reason = string.Format(SRServiceModel.SFxDeserializationFailed1, reason);
             FaultCode code = new FaultCode(FaultCodeConstants.Codes.DeserializationFailed, FaultCodeConstants.Namespaces.NetDispatch);
             code = FaultCode.CreateSenderFaultCode(code);
             return new NetDispatcherFaultException(reason, code, innerException);
@@ -576,7 +576,7 @@ namespace System.ServiceModel.Dispatcher
 
                 if (instance == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(SRServiceModel.Format(SRServiceModel.SFxTypedMessageCannotBeNull, description.Action)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(string.Format(SRServiceModel.SFxTypedMessageCannotBeNull, description.Action)));
                 }
 
                 _members = new MemberInfo[description.Body.Parts.Count + description.Properties.Count + description.Headers.Count];

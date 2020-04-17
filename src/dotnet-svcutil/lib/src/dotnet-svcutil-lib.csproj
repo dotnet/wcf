@@ -33,6 +33,8 @@
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!-- For debug builds we include the full value string so that we get actual resources, even in the case the toolchain strips the resources file -->
+    <GenerateResxSourceIncludeDefaultValues Condition="'$(ConfigurationGroup)' == 'Debug'">true</GenerateResxSourceIncludeDefaultValues>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,5 +62,59 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Reflection.DispatchProxy" Version="4.4.0" />
     <PackageReference Include="XliffTasks" Version="1.0.0-beta.19480.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Include resx files here so that arcade will handle them correctly. -->
+  <ItemGroup>
+    <EmbeddedResource Update="Bootstrapper\Resource.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>Resource</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrameworkFork\System.Runtime.Serialization\Resources\SRSerialization.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>SRSerialization</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrameworkFork\Microsoft.Xml\ResXml.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>ResXml</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrameworkFork\System.ServiceModel\Resources\SRServiceModel.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>SRServiceModel</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrameworkFork\System.ServiceModel\Resources\SR_IdentityModel.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>SR_IdentityModel</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Metadata\MetadataResources.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>Microsoft.Tools.ServiceModel.Svcutil.Metadata.MetadataResources</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrameworkFork\Microsoft.CodeDom\SRCodeDom.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>true</GenerateResourcesCodeAsConstants>
+      <ClassName>SRCodeDom</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Shared\Resources.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>Microsoft.Tools.ServiceModel.Svcutil.Shared.Resources</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SR.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>Microsoft.Tools.ServiceModel.Svcutil.SR</ClassName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FrameworkFork\System.Web.Services\ResWebServices.resx">
+      <GenerateSource>true</GenerateSource>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>System.Web.Services.ResWebServices</ClassName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

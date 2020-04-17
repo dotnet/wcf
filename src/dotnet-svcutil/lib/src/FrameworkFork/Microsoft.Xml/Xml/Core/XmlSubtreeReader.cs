@@ -887,7 +887,7 @@ namespace Microsoft.Xml
                 case State.ReadContentAsBinHex:
                 case State.ReadElementContentAsBase64:
                 case State.ReadElementContentAsBinHex:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
 
                 default:
                     Debug.Assert(false);
@@ -944,7 +944,7 @@ namespace Microsoft.Xml
                 case State.ReadContentAsBase64:
                 case State.ReadContentAsBinHex:
                 case State.ReadElementContentAsBinHex:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
 
                 default:
                     Debug.Assert(false);
@@ -1023,7 +1023,7 @@ namespace Microsoft.Xml
                 case State.ReadContentAsBase64:
                 case State.ReadElementContentAsBase64:
                 case State.ReadElementContentAsBinHex:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
 
                 default:
                     Debug.Assert(false);
@@ -1079,7 +1079,7 @@ namespace Microsoft.Xml
                 case State.ReadContentAsBase64:
                 case State.ReadContentAsBinHex:
                 case State.ReadElementContentAsBase64:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
 
                 default:
                     Debug.Assert(false);
@@ -1138,7 +1138,7 @@ namespace Microsoft.Xml
                 case State.ReadElementContentAsBinHex:
                 case State.ReadContentAsBase64:
                 case State.ReadContentAsBinHex:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingReadValueChunkWithBinary));
+                    throw new InvalidOperationException(ResXml.Xml_MixingReadValueChunkWithBinary);
 
                 default:
                     Debug.Assert(false);
@@ -1509,7 +1509,7 @@ namespace Microsoft.Xml
                 case State.EndOfFile:
                 case State.Closed:
                 case State.Error:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_ClosedOrErrorReader));
+                    throw new InvalidOperationException(ResXml.Xml_ClosedOrErrorReader);
 
                 case State.Interactive:
                     return;
@@ -1527,7 +1527,7 @@ namespace Microsoft.Xml
                 case State.ReadElementContentAsBinHex:
                 case State.ReadContentAsBase64:
                 case State.ReadContentAsBinHex:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingReadValueChunkWithBinary));
+                    throw new InvalidOperationException(ResXml.Xml_MixingReadValueChunkWithBinary);
 
                 default:
                     Debug.Assert(false);

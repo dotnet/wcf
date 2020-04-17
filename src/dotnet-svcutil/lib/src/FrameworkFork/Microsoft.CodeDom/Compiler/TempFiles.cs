@@ -101,7 +101,7 @@ namespace Microsoft.CodeDom.Compiler
         public string AddExtension(string fileExtension, bool keepFile)
         {
             if (fileExtension == null || fileExtension.Length == 0)
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidNullEmptyArgument, "fileExtension"), "fileExtension");  // fileExtension not specified
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidNullEmptyArgument, "fileExtension"), "fileExtension");  // fileExtension not specified
             string fileName = BasePath + "." + fileExtension;
             AddFile(fileName, keepFile);
             return fileName;
@@ -113,10 +113,10 @@ namespace Microsoft.CodeDom.Compiler
         public void AddFile(string fileName, bool keepFile)
         {
             if (fileName == null || fileName.Length == 0)
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidNullEmptyArgument, "fileName"), "fileName");  // fileName not specified
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidNullEmptyArgument, "fileName"), "fileName");  // fileName not specified
 
             if (_files[fileName] != null)
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.DuplicateFileName, fileName), "fileName");  // duplicate fileName
+                throw new ArgumentException(string.Format(SRCodeDom.DuplicateFileName, fileName), "fileName");  // duplicate fileName
             _files.Add(fileName, (object)keepFile);
         }
 

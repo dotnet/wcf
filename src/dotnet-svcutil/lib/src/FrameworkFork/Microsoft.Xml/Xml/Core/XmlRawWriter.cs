@@ -59,17 +59,17 @@ namespace Microsoft.Xml
         // Raw writers do not have to track whether this is a well-formed document.
         public override void WriteStartDocument()
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteStartDocument(bool standalone)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteEndDocument()
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteDocType(string name, string pubid, string sysid, string subset)
@@ -79,13 +79,13 @@ namespace Microsoft.Xml
         // Raw writers do not have to keep a stack of element names.
         public override void WriteEndElement()
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         // Raw writers do not have to keep a stack of element names.
         public override void WriteFullEndElement()
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         // By default, convert base64 value to string and call WriteString.
@@ -102,7 +102,7 @@ namespace Microsoft.Xml
         // Raw writers do not have to keep track of namespaces.
         public override string LookupPrefix(string ns)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         // Raw writers do not have to keep track of write states.
@@ -110,38 +110,38 @@ namespace Microsoft.Xml
         {
             get
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
             }
         }
 
         // Raw writers do not have to keep track of xml:space.
         public override XmlSpace XmlSpace
         {
-            get { throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation)); }
+            get { throw new InvalidOperationException(ResXml.Xml_InvalidOperation); }
         }
 
         // Raw writers do not have to keep track of xml:lang.
         public override string XmlLang
         {
-            get { throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation)); }
+            get { throw new InvalidOperationException(ResXml.Xml_InvalidOperation); }
         }
 
         // Raw writers do not have to verify NmToken values.
         public override void WriteNmToken(string name)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         // Raw writers do not have to verify Name values.
         public override void WriteName(string name)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         // Raw writers do not have to verify QName values.
         public override void WriteQualifiedName(string localName, string ns)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         // Forward call to WriteString(string).
@@ -212,17 +212,17 @@ namespace Microsoft.Xml
         // Copying to XmlRawWriter is not currently supported.
         public override void WriteAttributes(XmlReader reader, bool defattr)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteNode(XmlReader reader, bool defattr)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteNode(Microsoft.Xml.XPath.XPathNavigator navigator, bool defattr)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         //

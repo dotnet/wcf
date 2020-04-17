@@ -106,7 +106,7 @@ namespace System.Web.Services.Description
 
         private Exception ItemNotFound(XmlQualifiedName name, string type)
         {
-            return new Exception(ResWebServices.GetString(ResWebServices.WebDescriptionMissingItem, type, name.Name, name.Namespace));
+            return new Exception(string.Format(ResWebServices.WebDescriptionMissingItem, type, name.Name, name.Namespace));
         }
 
         /// <include file='doc\ServiceDescriptions.uex' path='docs/doc[@for="ServiceDescriptionCollection.GetMessage"]/*' />
@@ -182,7 +182,7 @@ namespace System.Web.Services.Description
             ServiceDescription serviceDescription = this[name.Namespace];
             if (serviceDescription == null)
             {
-                throw new ArgumentException(ResWebServices.GetString(ResWebServices.WebDescriptionMissing, name.ToString(), name.Namespace), "name");
+                throw new ArgumentException(string.Format(ResWebServices.WebDescriptionMissing, name.ToString(), name.Namespace), "name");
             }
             return serviceDescription;
         }

@@ -66,7 +66,7 @@ namespace Microsoft.Xml
         {
             if (!_lastTask.IsCompleted)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_AsyncIsRunningException));
+                throw new InvalidOperationException(ResXml.Xml_AsyncIsRunningException);
             }
         }
 

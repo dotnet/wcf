@@ -26,7 +26,7 @@ namespace System.ServiceModel.Description
             {
                 if (element.SchemaType == existingElement.SchemaType && element.SchemaTypeName == existingElement.SchemaTypeName)
                     return;
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxConflictingGlobalElement, element.Name, schema.TargetNamespace, GetTypeName(element), GetTypeName(existingElement))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxConflictingGlobalElement, element.Name, schema.TargetNamespace, GetTypeName(element), GetTypeName(existingElement))));
             }
 
             schema.Items.Add(element);
@@ -63,7 +63,7 @@ namespace System.ServiceModel.Description
                 if (existingType == type)
                     return;
 
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxConflictingGlobalType, type.Name, schema.TargetNamespace)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxConflictingGlobalType, type.Name, schema.TargetNamespace)));
             }
 
             schema.Items.Add(type);
@@ -145,11 +145,11 @@ namespace System.ServiceModel.Description
             if (args.Exception != null && args.Exception.SourceUri != null)
             {
                 XmlSchemaException ex = args.Exception;
-                warning = new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SchemaValidationError, ex.SourceUri, ex.LineNumber, ex.LinePosition, ex.Message));
+                warning = new MetadataConversionError(string.Format(SRServiceModel.SchemaValidationError, ex.SourceUri, ex.LineNumber, ex.LinePosition, ex.Message));
             }
             else
             {
-                warning = new MetadataConversionError(SRServiceModel.Format(SRServiceModel.GeneralSchemaValidationError, args.Message));
+                warning = new MetadataConversionError(string.Format(SRServiceModel.GeneralSchemaValidationError, args.Message));
             }
 
             if (!errors.Contains(warning))

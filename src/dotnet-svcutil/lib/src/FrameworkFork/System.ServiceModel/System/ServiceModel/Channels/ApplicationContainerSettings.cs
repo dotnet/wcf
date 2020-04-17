@@ -43,7 +43,7 @@ namespace System.ServiceModel.Channels
                 // non-negative windows session Id.
                 if (value < ApplicationContainerSettingsDefaults.CurrentSession)
                 {
-                    throw FxTrace.Exception.Argument("value", SRServiceModel.Format(SRServiceModel.SessionValueInvalid, value));
+                    throw FxTrace.Exception.Argument("value", string.Format(SRServiceModel.SessionValueInvalid, value));
                 }
 
                 _sessionId = value;

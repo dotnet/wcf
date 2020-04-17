@@ -255,7 +255,7 @@ namespace System.ServiceModel.Channels
                 if (value < -1)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, -1, int.MaxValue)));
+                        string.Format(SRServiceModel.ValueMustBeInRange, -1, int.MaxValue)));
                 }
 
                 _readTimeout = value;
@@ -270,7 +270,7 @@ namespace System.ServiceModel.Channels
                 if (value < -1)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, -1, int.MaxValue)));
+                        string.Format(SRServiceModel.ValueMustBeInRange, -1, int.MaxValue)));
                 }
 
                 _writeTimeout = value;
@@ -788,7 +788,7 @@ namespace System.ServiceModel.Channels
 
             if (offset > bufferSize)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", offset, SRServiceModel.Format(SRServiceModel.OffsetExceedsBufferSize, bufferSize)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", offset, string.Format(SRServiceModel.OffsetExceedsBufferSize, bufferSize)));
             }
 
             if (size <= 0)
@@ -799,7 +799,7 @@ namespace System.ServiceModel.Channels
             int remainingBufferSpace = bufferSize - offset;
             if (size > remainingBufferSpace)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size, SRServiceModel.Format(
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size, string.Format(
                     SRServiceModel.SizeExceedsRemainingBufferSpace, remainingBufferSpace)));
             }
         }

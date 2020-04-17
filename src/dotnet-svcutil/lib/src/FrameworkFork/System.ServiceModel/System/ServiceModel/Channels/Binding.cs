@@ -184,7 +184,7 @@ namespace System.ServiceModel.Channels
             if (!SecurityCapabilities.IsEqual(bindingSecurityCapabilities, runtimeSecurityCapabilities))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SecurityCapabilitiesMismatched, this)));
+                    new InvalidOperationException(string.Format(SRServiceModel.SecurityCapabilitiesMismatched, this)));
             }
         }
 
@@ -231,29 +231,29 @@ namespace System.ServiceModel.Channels
                 if (contractName == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SRServiceModel.Format(SRServiceModel.CustomBindingRequiresTransport, this.Name)));
+                        string.Format(SRServiceModel.CustomBindingRequiresTransport, this.Name)));
                 }
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SRServiceModel.Format(SRServiceModel.SFxCustomBindingNeedsTransport1, contractName)));
+                        string.Format(SRServiceModel.SFxCustomBindingNeedsTransport1, contractName)));
                 }
             }
             if (index != elements.Count - 1)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.TransportBindingElementMustBeLast, this.Name, transport.GetType().Name)));
+                    string.Format(SRServiceModel.TransportBindingElementMustBeLast, this.Name, transport.GetType().Name)));
             }
             if (string.IsNullOrEmpty(transport.Scheme))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.InvalidBindingScheme, transport.GetType().Name)));
+                    string.Format(SRServiceModel.InvalidBindingScheme, transport.GetType().Name)));
             }
 
             if (this.MessageVersion == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.MessageVersionMissingFromBinding, this.Name)));
+                    string.Format(SRServiceModel.MessageVersionMissingFromBinding, this.Name)));
             }
         }
 

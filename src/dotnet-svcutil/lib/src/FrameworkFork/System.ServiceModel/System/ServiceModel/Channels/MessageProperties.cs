@@ -50,7 +50,7 @@ namespace System.ServiceModel.Channels
 
         private void ThrowDisposed()
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(string.Empty, SRServiceModel.Format(SRServiceModel.ObjectDisposed, this.GetType().ToString())));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ObjectDisposedException(string.Empty, string.Format(SRServiceModel.ObjectDisposed, this.GetType().ToString())));
         }
 
         public object this[string name]
@@ -64,7 +64,7 @@ namespace System.ServiceModel.Channels
 
                 if (!TryGetValue(name, out value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MessagePropertyNotFound, name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.MessagePropertyNotFound, name)));
                 }
 
                 return value;
@@ -633,7 +633,7 @@ namespace System.ServiceModel.Channels
                     }
                     if (exists)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.DuplicateMessageProperty, name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.DuplicateMessageProperty, name)));
                     }
                 }
 
@@ -728,7 +728,7 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.MessagePropertiesArraySize0));
             if (index < 0 || index > array.Length - _propertyCount)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, array.Length - _propertyCount)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, array.Length - _propertyCount)));
 
             if (_via != null)
                 array[index++] = new KeyValuePair<string, object>(ViaKey, _via);

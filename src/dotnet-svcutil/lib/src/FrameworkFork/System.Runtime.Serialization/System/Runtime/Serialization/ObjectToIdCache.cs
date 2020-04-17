@@ -85,7 +85,7 @@ namespace System.Runtime.Serialization
             }
             // m_obj must ALWAYS have atleast one slot empty (null).
             DiagnosticUtility.DebugAssert("Object table overflow");
-            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ObjectTableOverflow)));
+            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ObjectTableOverflow)));
         }
 
         private void RemoveAt(int pos)
@@ -105,7 +105,7 @@ namespace System.Runtime.Serialization
             }
             // m_obj must ALWAYS have atleast one slot empty (null).
             DiagnosticUtility.DebugAssert("Object table overflow");
-            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ObjectTableOverflow)));
+            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ObjectTableOverflow)));
         }
 
         private void Rehash()

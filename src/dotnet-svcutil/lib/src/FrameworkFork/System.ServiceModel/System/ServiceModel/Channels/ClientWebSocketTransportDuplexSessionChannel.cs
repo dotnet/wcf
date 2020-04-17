@@ -156,9 +156,9 @@ namespace System.ServiceModel.Channels
                 //case WebSocketError.NativeError:
                 //case WebSocketError.NotAWebSocket:
                 case WebSocketError.UnsupportedVersion:
-                    throw FxTrace.Exception.AsError(new CommunicationException(SRServiceModel.Format(SRServiceModel.WebSocketVersionMismatchFromServer, ""), ex));
+                    throw FxTrace.Exception.AsError(new CommunicationException(string.Format(SRServiceModel.WebSocketVersionMismatchFromServer, ""), ex));
                 case WebSocketError.UnsupportedProtocol:
-                    throw FxTrace.Exception.AsError(new CommunicationException(SRServiceModel.Format(SRServiceModel.WebSocketSubProtocolMismatchFromServer, ""), ex));
+                    throw FxTrace.Exception.AsError(new CommunicationException(string.Format(SRServiceModel.WebSocketSubProtocolMismatchFromServer, ""), ex));
                 //case WebSocketError.HeaderError:
                 //case WebSocketError.ConnectionClosedPrematurely:
                 //case WebSocketError.InvalidState:
@@ -221,19 +221,19 @@ namespace System.ServiceModel.Channels
                     throw;
                 }
 
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ClientWebSocketFactory_CreateWebSocketFailed, _connectionFactory.GetType().Name), e));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.ClientWebSocketFactory_CreateWebSocketFailed, _connectionFactory.GetType().Name), e));
             }
 
             // The returned WebSocket should be valid (non-null), in an opened state and with the same SubProtocol that we requested.
             if (ws == null)
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ClientWebSocketFactory_InvalidWebSocket, _connectionFactory.GetType().Name)));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.ClientWebSocketFactory_InvalidWebSocket, _connectionFactory.GetType().Name)));
             }
 
             if (ws.State != WebSocketState.Open)
             {
                 ws.Dispose();
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ClientWebSocketFactory_InvalidWebSocket, _connectionFactory.GetType().Name)));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.ClientWebSocketFactory_InvalidWebSocket, _connectionFactory.GetType().Name)));
             }
 
             string requested = WebSocketSettings.SubProtocol;
@@ -241,7 +241,7 @@ namespace System.ServiceModel.Channels
             if (!(requested == null ? string.IsNullOrWhiteSpace(obtained) : requested.Equals(obtained, StringComparison.OrdinalIgnoreCase)))
             {
                 ws.Dispose();
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ClientWebSocketFactory_InvalidSubProtocol, _connectionFactory.GetType().Name, obtained, requested)));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.ClientWebSocketFactory_InvalidSubProtocol, _connectionFactory.GetType().Name, obtained, requested)));
             }
 
             return ws;

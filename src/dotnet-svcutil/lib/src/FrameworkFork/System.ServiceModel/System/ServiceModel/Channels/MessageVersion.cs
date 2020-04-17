@@ -63,7 +63,7 @@ namespace System.ServiceModel.Channels
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
-                        SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
+                        string.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
                 }
             }
             else if (envelopeVersion == EnvelopeVersion.Soap11)
@@ -79,7 +79,7 @@ namespace System.ServiceModel.Channels
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
-                        SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
+                        string.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
                 }
             }
             else if (envelopeVersion == EnvelopeVersion.None)
@@ -91,13 +91,13 @@ namespace System.ServiceModel.Channels
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
-                        SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
+                        string.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
                 }
             }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("envelopeVersion",
-                    SRServiceModel.Format(SRServiceModel.EnvelopeVersionNotSupported, envelopeVersion));
+                    string.Format(SRServiceModel.EnvelopeVersionNotSupported, envelopeVersion));
             }
         }
 

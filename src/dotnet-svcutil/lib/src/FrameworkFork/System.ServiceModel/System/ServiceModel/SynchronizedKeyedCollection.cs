@@ -49,7 +49,7 @@ namespace System.Collections.Generic
 
             if (dictionaryCreationThreshold < -1)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("dictionaryCreationThreshold", dictionaryCreationThreshold,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, -1, int.MaxValue)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, -1, int.MaxValue)));
             else if (dictionaryCreationThreshold == -1)
                 _threshold = int.MaxValue;
             else

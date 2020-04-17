@@ -158,7 +158,7 @@ namespace System.Runtime.Serialization
             Attributes attributes = new Attributes();
             attributes.Read(reader);
             if (attributes.Ref != Globals.NewObjectId)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.CannotDeserializeRefAtTopLevel, attributes.Ref)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.CannotDeserializeRefAtTopLevel, attributes.Ref)));
             if (attributes.XsiNil)
             {
                 reader.Skip();
@@ -668,7 +668,7 @@ namespace System.Runtime.Serialization
                 }
                 catch (XmlException xes)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.XmlForObjectCannotHaveContent, localName, ns), xes));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.XmlForObjectCannotHaveContent, localName, ns), xes));
                 }
             }
             return (context == null) ? obj : HandleReadValue(obj, context);

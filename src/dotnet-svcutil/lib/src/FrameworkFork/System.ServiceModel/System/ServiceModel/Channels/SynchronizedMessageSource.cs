@@ -31,7 +31,7 @@ namespace System.ServiceModel.Channels
             if (!await _sourceLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new TimeoutException(SRServiceModel.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
+                    new TimeoutException(string.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
                     TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
             try
@@ -55,7 +55,7 @@ namespace System.ServiceModel.Channels
             if (!_sourceLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new TimeoutException(SRServiceModel.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
+                    new TimeoutException(string.Format(SRServiceModel.WaitForMessageTimedOut, timeout),
                     TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 
@@ -80,7 +80,7 @@ namespace System.ServiceModel.Channels
             if (!await _sourceLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new TimeoutException(SRServiceModel.Format(SRServiceModel.ReceiveTimedOut2, timeout),
+                    new TimeoutException(string.Format(SRServiceModel.ReceiveTimedOut2, timeout),
                     TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 
@@ -105,7 +105,7 @@ namespace System.ServiceModel.Channels
             if (!_sourceLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new TimeoutException(SRServiceModel.Format(SRServiceModel.ReceiveTimedOut2, timeout),
+                    new TimeoutException(string.Format(SRServiceModel.ReceiveTimedOut2, timeout),
                     TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 

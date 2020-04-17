@@ -37,7 +37,7 @@ namespace System.Text
             if (charCount < 0)
                 throw new ArgumentOutOfRangeException("charCount", SRSerialization.ValueMustBeNonNegative);
             if ((charCount % 2) != 0)
-                throw new FormatException(SRSerialization.Format(SRSerialization.XmlInvalidBinHexLength, charCount.ToString(NumberFormatInfo.CurrentInfo)));
+                throw new FormatException(string.Format(SRSerialization.XmlInvalidBinHexLength, charCount.ToString(NumberFormatInfo.CurrentInfo)));
             return charCount / 2;
         }
 
@@ -54,17 +54,17 @@ namespace System.Text
             if (charIndex < 0)
                 throw new ArgumentOutOfRangeException("charIndex", SRSerialization.ValueMustBeNonNegative);
             if (charIndex > chars.Length)
-                throw new ArgumentOutOfRangeException("charIndex", SRSerialization.Format(SRSerialization.OffsetExceedsBufferSize, chars.Length));
+                throw new ArgumentOutOfRangeException("charIndex", string.Format(SRSerialization.OffsetExceedsBufferSize, chars.Length));
             if (charCount < 0)
                 throw new ArgumentOutOfRangeException("charCount", SRSerialization.ValueMustBeNonNegative);
             if (charCount > chars.Length - charIndex)
-                throw new ArgumentOutOfRangeException("charCount", SRSerialization.Format(SRSerialization.SizeExceedsRemainingBufferSpace, chars.Length - charIndex));
+                throw new ArgumentOutOfRangeException("charCount", string.Format(SRSerialization.SizeExceedsRemainingBufferSpace, chars.Length - charIndex));
             if (bytes == null)
                 throw new ArgumentNullException("bytes");
             if (byteIndex < 0)
                 throw new ArgumentOutOfRangeException("byteIndex", SRSerialization.ValueMustBeNonNegative);
             if (byteIndex > bytes.Length)
-                throw new ArgumentOutOfRangeException("byteIndex", SRSerialization.Format(SRSerialization.OffsetExceedsBufferSize, bytes.Length));
+                throw new ArgumentOutOfRangeException("byteIndex", string.Format(SRSerialization.OffsetExceedsBufferSize, bytes.Length));
             int byteCount = GetByteCount(chars, charIndex, charCount);
             if (byteCount < 0 || byteCount > bytes.Length - byteIndex)
                 throw new ArgumentException(SRSerialization.XmlArrayTooSmall, "bytes");
@@ -84,11 +84,11 @@ namespace System.Text
                                 char pch0 = pch[0];
                                 char pch1 = pch[1];
                                 if ((pch0 | pch1) >= 128)
-                                    throw new FormatException(SRSerialization.Format(SRSerialization.XmlInvalidBinHexSequence, new string(pch, 0, 2), charIndex + (int)(pch - _chars)));
+                                    throw new FormatException(string.Format(SRSerialization.XmlInvalidBinHexSequence, new string(pch, 0, 2), charIndex + (int)(pch - _chars)));
                                 byte d1 = _char2val[pch0];
                                 byte d2 = _char2val[pch1];
                                 if ((d1 | d2) == 0xFF)
-                                    throw new FormatException(SRSerialization.Format(SRSerialization.XmlInvalidBinHexSequence, new string(pch, 0, 2), charIndex + (int)(pch - _chars)));
+                                    throw new FormatException(string.Format(SRSerialization.XmlInvalidBinHexSequence, new string(pch, 0, 2), charIndex + (int)(pch - _chars)));
                                 pb[0] = (byte)((d1 << 4) + d2);
                                 pch += 2;
                                 pb++;
@@ -108,7 +108,7 @@ namespace System.Text
         public override int GetMaxCharCount(int byteCount)
         {
             if (byteCount < 0 || byteCount > int.MaxValue / 2)
-                throw new ArgumentOutOfRangeException("byteCount", SRSerialization.Format(SRSerialization.ValueMustBeInRange, 0, int.MaxValue / 2));
+                throw new ArgumentOutOfRangeException("byteCount", string.Format(SRSerialization.ValueMustBeInRange, 0, int.MaxValue / 2));
             return byteCount * 2;
         }
 
@@ -125,18 +125,18 @@ namespace System.Text
             if (byteIndex < 0)
                 throw new ArgumentOutOfRangeException("byteIndex", SRSerialization.ValueMustBeNonNegative);
             if (byteIndex > bytes.Length)
-                throw new ArgumentOutOfRangeException("byteIndex", SRSerialization.Format(SRSerialization.OffsetExceedsBufferSize, bytes.Length));
+                throw new ArgumentOutOfRangeException("byteIndex", string.Format(SRSerialization.OffsetExceedsBufferSize, bytes.Length));
             if (byteCount < 0)
                 throw new ArgumentOutOfRangeException("byteCount", SRSerialization.ValueMustBeNonNegative);
             if (byteCount > bytes.Length - byteIndex)
-                throw new ArgumentOutOfRangeException("byteCount", SRSerialization.Format(SRSerialization.SizeExceedsRemainingBufferSpace, bytes.Length - byteIndex));
+                throw new ArgumentOutOfRangeException("byteCount", string.Format(SRSerialization.SizeExceedsRemainingBufferSpace, bytes.Length - byteIndex));
             int charCount = GetCharCount(bytes, byteIndex, byteCount);
             if (chars == null)
                 throw new ArgumentNullException("chars");
             if (charIndex < 0)
                 throw new ArgumentOutOfRangeException("charIndex", SRSerialization.ValueMustBeNonNegative);
             if (charIndex > chars.Length)
-                throw new ArgumentOutOfRangeException("charIndex", SRSerialization.Format(SRSerialization.OffsetExceedsBufferSize, chars.Length));
+                throw new ArgumentOutOfRangeException("charIndex", string.Format(SRSerialization.OffsetExceedsBufferSize, chars.Length));
             if (charCount < 0 || charCount > chars.Length - charIndex)
                 throw new ArgumentException(SRSerialization.XmlArrayTooSmall, "chars");
             if (byteCount > 0)

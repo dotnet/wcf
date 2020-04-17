@@ -33,7 +33,7 @@ namespace System.ServiceModel.Channels
             {
                 if (exception == null)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.FaultConverterDidNotCreateException, this.GetType().Name);
+                    string text = string.Format(SRServiceModel.FaultConverterDidNotCreateException, this.GetType().Name);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }
@@ -42,7 +42,7 @@ namespace System.ServiceModel.Channels
             {
                 if (exception != null)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.FaultConverterCreatedException, this.GetType().Name);
+                    string text = string.Format(SRServiceModel.FaultConverterCreatedException, this.GetType().Name);
                     Exception error = new InvalidOperationException(text, exception);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }
@@ -59,7 +59,7 @@ namespace System.ServiceModel.Channels
             {
                 if (message == null)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.FaultConverterDidNotCreateFaultMessage, this.GetType().Name);
+                    string text = string.Format(SRServiceModel.FaultConverterDidNotCreateFaultMessage, this.GetType().Name);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }
@@ -68,7 +68,7 @@ namespace System.ServiceModel.Channels
             {
                 if (message != null)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.FaultConverterCreatedFaultMessage, this.GetType().Name);
+                    string text = string.Format(SRServiceModel.FaultConverterCreatedFaultMessage, this.GetType().Name);
                     Exception error = new InvalidOperationException(text);
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);
                 }

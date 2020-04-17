@@ -112,13 +112,13 @@ namespace System.ServiceModel
             else
             {
                 if (index == qname.Length - 1)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.InvalidXmlQualifiedName, qname)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.InvalidXmlQualifiedName, qname)));
                 prefix = TrimStart(qname.Substring(0, index));
                 localName = TrimEnd(qname.Substring(index + 1));
             }
             ns = reader.LookupNamespace(prefix);
             if (ns == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.UnboundPrefixInQName, qname)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.UnboundPrefixInQName, qname)));
         }
 
         // This code was copied from XmlDictionaryReader.ReadElementContentAsDateTime which is an internal method
@@ -136,11 +136,11 @@ namespace System.ServiceModel
                 }
                 catch (ArgumentException exception)
                 {
-                    throw new XmlException(SRServiceModel.Format(SRServiceModel.XmlInvalidConversion, string.Empty, "DateTime"), exception);
+                    throw new XmlException(string.Format(SRServiceModel.XmlInvalidConversion, string.Empty, "DateTime"), exception);
                 }
                 catch (FormatException exception)
                 {
-                    throw new XmlException(SRServiceModel.Format(SRServiceModel.XmlInvalidConversion, string.Empty, "DateTime"), exception);
+                    throw new XmlException(string.Format(SRServiceModel.XmlInvalidConversion, string.Empty, "DateTime"), exception);
                 }
             }
             else

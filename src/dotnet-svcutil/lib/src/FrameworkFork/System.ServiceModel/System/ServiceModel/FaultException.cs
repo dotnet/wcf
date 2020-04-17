@@ -224,7 +224,7 @@ namespace System.ServiceModel
                 }
                 else
                 {
-                    return SRServiceModel.Format(SRServiceModel.SFxUnknownFaultNoMatchingTranslation1, reason.Translations[0].Text);
+                    return string.Format(SRServiceModel.SFxUnknownFaultNoMatchingTranslation1, reason.Translations[0].Text);
                 }
             }
         }
@@ -381,7 +381,7 @@ namespace System.ServiceModel
 
         public override string ToString()
         {
-            return SRServiceModel.Format(SRServiceModel.SFxFaultExceptionToString3, this.GetType(), this.Message, _detail != null ? _detail.ToString() : String.Empty);
+            return string.Format(SRServiceModel.SFxFaultExceptionToString3, this.GetType(), this.Message, _detail != null ? _detail.ToString() : String.Empty);
         }
     }
 }

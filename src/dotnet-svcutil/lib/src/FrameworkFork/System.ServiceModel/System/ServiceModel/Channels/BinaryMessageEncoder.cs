@@ -396,7 +396,7 @@ namespace System.ServiceModel.Channels
                     int remainingMessageSize = maxMessageSize - messageSize;
                     if (remainingMessageSize - dictionarySize < 0)
                     {
-                        string excMsg = SRServiceModel.Format(SRServiceModel.MaxSentMessageSizeExceeded, maxMessageSize);
+                        string excMsg = string.Format(SRServiceModel.MaxSentMessageSizeExceeded, maxMessageSize);
                         if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
                         {
                             WcfEventSource.Instance.MaxSentMessageSizeExceeded(excMsg);
@@ -466,7 +466,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (dictionarySize > _remainingReaderSessionSize)
                         {
-                            string message = SRServiceModel.Format(SRServiceModel.BinaryEncoderSessionTooLarge, _maxSessionSize);
+                            string message = string.Format(SRServiceModel.BinaryEncoderSessionTooLarge, _maxSessionSize);
                             if (WcfEventSource.Instance.MaxSessionSizeReachedIsEnabled())
                             {
                                 WcfEventSource.Instance.MaxSessionSizeReached(message);
@@ -661,7 +661,7 @@ namespace System.ServiceModel.Channels
 
                 if (messageOffset > maxMessageSize)
                 {
-                    string excMsg = SRServiceModel.Format(SRServiceModel.MaxSentMessageSizeExceeded, maxMessageSize);
+                    string excMsg = string.Format(SRServiceModel.MaxSentMessageSizeExceeded, maxMessageSize);
                     if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
                     {
                         WcfEventSource.Instance.MaxSentMessageSizeExceeded(excMsg);
@@ -829,7 +829,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (!ContentTypeEqualsOrStartsWith(contentType, this.ContentType))
                         {
-                            throw FxTrace.Exception.AsError(new ProtocolException(SRServiceModel.Format(SRServiceModel.EncoderUnrecognizedContentType, contentType, this.ContentType)));
+                            throw FxTrace.Exception.AsError(new ProtocolException(string.Format(SRServiceModel.EncoderUnrecognizedContentType, contentType, this.ContentType)));
                         }
                     }
                     else
@@ -848,7 +848,7 @@ namespace System.ServiceModel.Channels
                         }
                         else
                         {
-                            throw FxTrace.Exception.AsError(new ProtocolException(SRServiceModel.Format(SRServiceModel.EncoderUnrecognizedContentType, contentType, this.ContentType)));
+                            throw FxTrace.Exception.AsError(new ProtocolException(string.Format(SRServiceModel.EncoderUnrecognizedContentType, contentType, this.ContentType)));
                         }
                     }
                 }
@@ -1017,7 +1017,7 @@ namespace System.ServiceModel.Channels
             if (key < 0 || key >= 0x4000)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("key", key,
-                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 0x4000)));
+                    string.Format(SRServiceModel.ValueMustBeInRange, 0, 0x4000)));
             }
             if (key >= 0x80)
             {
@@ -1040,7 +1040,7 @@ namespace System.ServiceModel.Channels
             if (value < 0 || value > 0xFF)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 0xFF)));
+                    string.Format(SRServiceModel.ValueMustBeInRange, 0, 0xFF)));
             }
             _bytes.Add((byte)value);
         }
@@ -1066,7 +1066,7 @@ namespace System.ServiceModel.Channels
             if (prefix < 'a' && prefix > 'z')
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("prefix", prefix,
-                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 'a', 'z')));
+                    string.Format(SRServiceModel.ValueMustBeInRange, 'a', 'z')));
             }
             return prefix - 'a';
         }
@@ -1110,7 +1110,7 @@ namespace System.ServiceModel.Channels
                     return (buffer[offset] & 0x7f) + ((buffer[offset + 1] & 0x7f) << 7) + ((buffer[offset + 2] & 0x7f) << 14) + (buffer[offset + 3] << 21);
                 default:
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("size", size,
-                        SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 1, 4)));
+                        string.Format(SRServiceModel.ValueMustBeInRange, 1, 4)));
             }
         }
 

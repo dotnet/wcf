@@ -407,7 +407,7 @@ namespace System.ServiceModel.Security
 
         private void ThrowQuotaReachedException()
         {
-            string message = SRServiceModel.Format(SRServiceModel.CacheQuotaReached, _maxCacheItems);
+            string message = string.Format(SRServiceModel.CacheQuotaReached, _maxCacheItems);
             Exception inner = new QuotaExceededException(message);
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(message, inner));
         }

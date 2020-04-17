@@ -128,7 +128,7 @@ namespace System.ServiceModel.Description
             ClientCredentials result = CloneCore();
             if (result == null || result.GetType() != GetType())
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesignWithMessage(SRServiceModel.Format(SRServiceModel.CloneNotImplementedCorrectly, GetType(), (result != null) ? result.ToString() : "null")));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(NotImplemented.ByDesignWithMessage(string.Format(SRServiceModel.CloneNotImplementedCorrectly, GetType(), (result != null) ? result.ToString() : "null")));
             }
             return result;
         }
@@ -147,7 +147,7 @@ namespace System.ServiceModel.Description
             SecurityCredentialsManager otherCredentialsManager = bindingParameters.Find<SecurityCredentialsManager>();
             if (otherCredentialsManager != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.MultipleSecurityCredentialsManagersInChannelBindingParameters, otherCredentialsManager)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.MultipleSecurityCredentialsManagersInChannelBindingParameters, otherCredentialsManager)));
             }
             bindingParameters.Add(this);
         }
@@ -155,7 +155,7 @@ namespace System.ServiceModel.Description
         void IEndpointBehavior.ApplyDispatchBehavior(ServiceEndpoint serviceEndpoint, EndpointDispatcher endpointDispatcher)
         {
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                SRServiceModel.Format(SRServiceModel.SFXEndpointBehaviorUsedOnWrongSide, typeof(ClientCredentials).Name)));
+                string.Format(SRServiceModel.SFXEndpointBehaviorUsedOnWrongSide, typeof(ClientCredentials).Name)));
         }
 
 

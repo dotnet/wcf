@@ -308,9 +308,9 @@ namespace System.ServiceModel.Description
                     if (operationMessage.Message.IsEmpty)
                     {
                         if (operationMessage is WsdlNS.OperationInput)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlOperationInputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlOperationInputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
                         if (operationMessage is WsdlNS.OperationOutput)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlOperationOutputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlOperationOutputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
                     }
                     WsdlNS.Message wsdlMessage = documents.GetMessage(operationMessage.Message);
 
@@ -329,7 +329,7 @@ namespace System.ServiceModel.Description
                             if (isOperationEncoded == null)
                                 isOperationEncoded = isMessageEncoded;
                             else if (isOperationEncoded != isMessageEncoded)
-                                AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingMessages, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name));
+                                AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingMessages, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name));
                         }
                     }
                 }
@@ -341,7 +341,7 @@ namespace System.ServiceModel.Description
                     if (isOperationEncoded == null)
                         isOperationEncoded = isFaultEncoded;
                     else if (isOperationEncoded != isFaultEncoded)
-                        AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingFaults, faultBinding.OperationBinding.Name, faultBinding.OperationBinding.Binding.Name));
+                        AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingFaults, faultBinding.OperationBinding.Name, faultBinding.OperationBinding.Binding.Name));
                 }
                 isOperationEncoded = isOperationEncoded ?? false;
 
@@ -357,7 +357,7 @@ namespace System.ServiceModel.Description
                     StyleAndUse operationStyleAndUse = GetStyleAndUse(operationStyle, isOperationEncoded.Value);
                     if (operationStyleAndUse != styleAndUse)
                     {
-                        AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationUseAndStyleInBinding,
+                        AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationUseAndStyleInBinding,
                             operation.Name, operationBinding.Binding.Name, GetUse(operationStyleAndUse), GetStyle(operationStyleAndUse),
                             prevOperationBinding.Binding.Name, GetUse(styleAndUse.Value), GetStyle(styleAndUse.Value)));
                     }
@@ -378,9 +378,9 @@ namespace System.ServiceModel.Description
                 if (wsdlOperationMessage.Message.IsEmpty)
                 {
                     if (wsdlOperationMessage is WsdlNS.OperationInput)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlOperationInputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlOperationInputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
                     if (wsdlOperationMessage is WsdlNS.OperationOutput)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlOperationOutputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlOperationOutputNeedsMessageAttribute2, wsdlOperation.Name, wsdlOperation.PortType.Name)));
                 }
                 WsdlNS.Message wsdlMessage = documents.GetMessage(wsdlOperationMessage.Message);
 
@@ -406,7 +406,7 @@ namespace System.ServiceModel.Description
             else if (inferredOperationStyle != null)
             {
                 if (inferredOperationStyle.Value != style && inferredOperationStyle.Value == OperationFormatStyle.Document)
-                    AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationStyleInOperationMessages, operation.Name, inferredOperationStyle, style));
+                    AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationStyleInOperationMessages, operation.Name, inferredOperationStyle, style));
             }
             operationInfo = new OperationInfo(style, isEncoded, areAllMessagesWrapped);
             return true;
@@ -450,7 +450,7 @@ namespace System.ServiceModel.Description
                 if (inferredStyle == null)
                     inferredStyle = style;
                 else if (style != inferredStyle.Value)
-                    AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationStyleInMessageParts, operationName));
+                    AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationStyleInMessageParts, operationName));
             }
             return true;
         }
@@ -605,7 +605,7 @@ namespace System.ServiceModel.Description
 
             if (fault.Message.IsEmpty)
             {
-                TraceFaultCannotBeImported(fault.Name, description.Name, SRServiceModel.Format(SRServiceModel.SFxWsdlOperationFaultNeedsMessageAttribute2, fault.Name, fault.Operation.PortType.Name));
+                TraceFaultCannotBeImported(fault.Name, description.Name, string.Format(SRServiceModel.SFxWsdlOperationFaultNeedsMessageAttribute2, fault.Name, fault.Operation.PortType.Name));
                 description.Faults.Remove(_contractContext.GetFaultDescription(fault));
                 return false;
             }
@@ -777,7 +777,7 @@ namespace System.ServiceModel.Description
                 if (part.Name == name)
                     return part;
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlMessageDoesNotContainPart3, name, message.Name, message.ServiceDescription.TargetNamespace)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlMessageDoesNotContainPart3, name, message.Name, message.ServiceDescription.TargetNamespace)));
         }
 
         private static XmlSchemaElement FindSchemaElement(XmlSchemaSet schemaSet, XmlQualifiedName elementName)
@@ -800,7 +800,7 @@ namespace System.ServiceModel.Description
                 }
             }
             if (element == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxSchemaDoesNotContainElement, elementName.Name, elementName.Namespace)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxSchemaDoesNotContainElement, elementName.Name, elementName.Namespace)));
             return element;
         }
 
@@ -829,7 +829,7 @@ namespace System.ServiceModel.Description
                 }
             }
             if (type == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxSchemaDoesNotContainType, typeName.Name, typeName.Namespace)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxSchemaDoesNotContainType, typeName.Name, typeName.Namespace)));
             return type;
         }
 
@@ -1172,7 +1172,7 @@ namespace System.ServiceModel.Description
         {
             ICollection schemas = schemaSet.Schemas(ns);
             if (schemas == null || schemas.Count == 0)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxSchemaNotFound, ns)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxSchemaNotFound, ns)));
             return schemas;
         }
 
@@ -1220,7 +1220,7 @@ namespace System.ServiceModel.Description
 
         private void TraceFaultCannotBeImported(string faultName, string operationName, string message)
         {
-            AddWarning(SRServiceModel.Format(SRServiceModel.SFxFaultCannotBeImported, faultName, operationName, message));
+            AddWarning(string.Format(SRServiceModel.SFxFaultCannotBeImported, faultName, operationName, message));
         }
 
         private static bool CheckAndAddPart(XmlQualifiedName typeNameFound, XmlQualifiedName typeNameRequired, string name, string ns, Type type, MessageDescription description, bool isReply)
@@ -1296,7 +1296,7 @@ namespace System.ServiceModel.Description
                     if (isMessageEncoded == null)
                         isMessageEncoded = currentIsEncoded;
                     else if (isMessageEncoded.Value != currentIsEncoded)
-                        AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingExtensions, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name));
+                        AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingExtensions, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name));
                 }
                 else
                 {
@@ -1308,7 +1308,7 @@ namespace System.ServiceModel.Description
                         if (isMessageEncoded == null)
                             isMessageEncoded = currentIsEncoded;
                         else if (isMessageEncoded.Value != currentIsEncoded)
-                            AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingExtensions, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name));
+                            AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingExtensions, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name));
                         string[] messageParts = soapBodyBinding.Parts;
                         if (messageParts == null)
                         {
@@ -1332,7 +1332,7 @@ namespace System.ServiceModel.Description
                                 bodyPartsFromBindings.Add(partName);
                             else if (!bodyPartsFromBindings.Contains(partName))
                             {
-                                AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentBindingBodyParts, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name, partName));
+                                AddError(string.Format(SRServiceModel.SFxInconsistentBindingBodyParts, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.Name, partName));
                                 bodyPartsFromBindings.Add(partName);
                             }
                         }
@@ -1369,7 +1369,7 @@ namespace System.ServiceModel.Description
                 if (isEncoded == null)
                     isEncoded = currentIsEncoded;
                 else if (isEncoded.Value != currentIsEncoded)
-                    AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingExtensions, faultBinding.OperationBinding.Name, faultBinding.OperationBinding.Binding.Name));
+                    AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationUseInBindingExtensions, faultBinding.OperationBinding.Name, faultBinding.OperationBinding.Binding.Name));
             }
             isFaultEncoded = isEncoded ?? false;
             return this.CurrentSchemaImporter.CanImportStyleAndUse(style, isFaultEncoded);
@@ -1392,7 +1392,7 @@ namespace System.ServiceModel.Description
             if (!CurrentSchemaImporter.CanImportMessagePart(part, out headerStyle))
                 return false;
             if (headerStyle != style)
-                AddError(SRServiceModel.Format(SRServiceModel.SFxInconsistentWsdlOperationStyleInHeader, part.Name, headerStyle, style));
+                AddError(string.Format(SRServiceModel.SFxInconsistentWsdlOperationStyleInHeader, part.Name, headerStyle, style));
             return CurrentSchemaImporter.CanImportStyleAndUse(style, isEncoded);
         }
 
@@ -1453,7 +1453,7 @@ namespace System.ServiceModel.Description
                     return part.Element;
                 if (!IsNullOrEmpty(part.Type))
                     return new XmlQualifiedName(part.Name, String.Empty);
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlPartMustHaveElementOrType, part.Name, part.Message.Name, part.Message.Namespaces)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlPartMustHaveElementOrType, part.Name, part.Message.Name, part.Message.Namespaces)));
             }
 
             internal bool CanImportMessagePart(WsdlNS.MessagePart part, out OperationFormatStyle style)
@@ -1480,7 +1480,7 @@ namespace System.ServiceModel.Description
                     bodyPart.BaseType = ImportType(bodyPart, part.Type, isEncoded);
                     return bodyPart;
                 }
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWsdlPartMustHaveElementOrType, part.Name, part.Message.Name, part.Message.Namespaces)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWsdlPartMustHaveElementOrType, part.Name, part.Message.Name, part.Message.Namespaces)));
             }
 
 
@@ -1666,7 +1666,7 @@ namespace System.ServiceModel.Description
             internal override string ImportType(MessagePartDescription part, XmlQualifiedName typeName, bool isEncoded)
             {
                 if (isEncoded)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportEncoded, part.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportEncoded, part.Name)));
                 DataContractImporter.Import(schemaSet, typeName);
                 CodeTypeReference typeRef = DataContractImporter.GetCodeTypeReference(typeName);
                 ICollection<CodeTypeReference> knownTypeRefs = DataContractImporter.GetKnownTypeReferences(typeName);
@@ -1697,7 +1697,7 @@ namespace System.ServiceModel.Description
             internal override string ImportElement(MessagePartDescription part, XmlSchemaElement element, bool isEncoded)
             {
                 if (part.Multiple)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportBareArray, part.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportBareArray, part.Name)));
                 XmlQualifiedName typeName = null;
                 Type failedReferenceType;
 
@@ -1862,7 +1862,7 @@ namespace System.ServiceModel.Description
             internal override void ValidateStyleAndUse(OperationFormatStyle style, bool isEncoded, string operationName)
             {
                 if (isEncoded)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportEncoded, operationName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportEncoded, operationName)));
             }
 
             internal override void SetOperationStyle(OperationDescription operation, OperationFormatStyle style)
@@ -1884,7 +1884,7 @@ namespace System.ServiceModel.Description
             internal override void SetOperationIsEncoded(OperationDescription operation, bool isEncoded)
             {
                 if (isEncoded)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportEncoded, operation.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDataContractSerializerDoesNotSupportEncoded, operation.Name)));
             }
 
             internal override void SetOperationSupportFaults(OperationDescription operation, bool supportFaults)
@@ -2057,7 +2057,7 @@ namespace System.ServiceModel.Description
             internal override string ImportElement(MessagePartDescription part, XmlSchemaElement element, bool isEncoded)
             {
                 if (isEncoded)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDocEncodedNotSupported, part.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDocEncodedNotSupported, part.Name)));
                 XmlMembersMapping membersMapping = _xmlImporter.ImportMembersMapping(new XmlQualifiedName[] { element.QualifiedName });
                 return AddPartType(part, membersMapping, isEncoded);
             }
@@ -2107,7 +2107,7 @@ namespace System.ServiceModel.Description
             internal override void ValidateStyleAndUse(OperationFormatStyle style, bool isEncoded, string operationName)
             {
                 if (isEncoded && style != OperationFormatStyle.Rpc)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxDocEncodedNotSupported, operationName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxDocEncodedNotSupported, operationName)));
             }
 
             internal static XmlSerializerFormatAttribute GetFormatAttribute(OperationDescription operation, bool createNew)
@@ -2181,16 +2181,16 @@ namespace System.ServiceModel.Description
         {
             if (soapHeaderBinding.Message == null || soapHeaderBinding.Message.IsEmpty)
             {
-                string reason = SRServiceModel.Format(SRServiceModel.XsdMissingRequiredAttribute1, "message");
-                string warning = SRServiceModel.Format(SRServiceModel.IgnoreSoapHeaderBinding3, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.ServiceDescription.TargetNamespace, reason);
+                string reason = string.Format(SRServiceModel.XsdMissingRequiredAttribute1, "message");
+                string warning = string.Format(SRServiceModel.IgnoreSoapHeaderBinding3, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.ServiceDescription.TargetNamespace, reason);
                 warningHandler(warning);
                 return false;
             }
 
             if (string.IsNullOrEmpty(soapHeaderBinding.Part))
             {
-                string reason = SRServiceModel.Format(SRServiceModel.XsdMissingRequiredAttribute1, "part");
-                string warning = SRServiceModel.Format(SRServiceModel.IgnoreSoapHeaderBinding3, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.ServiceDescription.TargetNamespace, reason);
+                string reason = string.Format(SRServiceModel.XsdMissingRequiredAttribute1, "part");
+                string warning = string.Format(SRServiceModel.IgnoreSoapHeaderBinding3, messageBinding.OperationBinding.Name, messageBinding.OperationBinding.Binding.ServiceDescription.TargetNamespace, reason);
                 warningHandler(warning);
                 return false;
             }
@@ -2201,8 +2201,8 @@ namespace System.ServiceModel.Description
         {
             if (string.IsNullOrEmpty(soapFaultBinding.Name))
             {
-                string reason = SRServiceModel.Format(SRServiceModel.XsdMissingRequiredAttribute1, "name");
-                string warning = SRServiceModel.Format(SRServiceModel.IgnoreSoapFaultBinding3, faultBinding.OperationBinding.Name, faultBinding.OperationBinding.Binding.ServiceDescription.TargetNamespace, reason);
+                string reason = string.Format(SRServiceModel.XsdMissingRequiredAttribute1, "name");
+                string warning = string.Format(SRServiceModel.IgnoreSoapFaultBinding3, faultBinding.OperationBinding.Name, faultBinding.OperationBinding.Binding.ServiceDescription.TargetNamespace, reason);
                 warningHandler(warning);
                 return false;
             }
@@ -2214,8 +2214,8 @@ namespace System.ServiceModel.Description
             // check required name attribute, do not check NCName validity
             if (string.IsNullOrEmpty(part.Name))
             {
-                string reason = SRServiceModel.Format(SRServiceModel.XsdMissingRequiredAttribute1, "name");
-                string warning = SRServiceModel.Format(SRServiceModel.IgnoreMessagePart3, message.Name, message.ServiceDescription.TargetNamespace, reason);
+                string reason = string.Format(SRServiceModel.XsdMissingRequiredAttribute1, "name");
+                string warning = string.Format(SRServiceModel.IgnoreMessagePart3, message.Name, message.ServiceDescription.TargetNamespace, reason);
                 warningHandler(warning);
                 return false;
             }

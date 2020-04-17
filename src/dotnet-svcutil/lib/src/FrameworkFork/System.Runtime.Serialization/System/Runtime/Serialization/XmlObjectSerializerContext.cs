@@ -91,7 +91,7 @@ namespace System.Runtime.Serialization
 #endif
         {
             if (count > _maxItemsInObjectGraph - _itemCount)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ExceededMaxItemsQuota, _maxItemsInObjectGraph)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ExceededMaxItemsQuota, _maxItemsInObjectGraph)));
             _itemCount += count;
         }
 
@@ -167,7 +167,7 @@ namespace System.Runtime.Serialization
         internal virtual void CheckIfTypeSerializable(Type memberType, bool isMemberTypeSerializable)
         {
             if (!isMemberTypeSerializable)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.TypeNotSerializable, memberType)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TypeNotSerializable, memberType)));
         }
 
         internal virtual Type GetSurrogatedType(Type type)
@@ -206,7 +206,7 @@ namespace System.Runtime.Serialization
             {
                 Type knownType = knownTypeList[i];
                 if (knownType == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.NullKnownType, "knownTypes")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.NullKnownType, "knownTypes")));
 
                 DataContract.CheckAndAdd(knownType, typesChecked, ref dataContracts);
             }

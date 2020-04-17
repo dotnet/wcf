@@ -30,7 +30,7 @@ namespace Microsoft.Xml
                 XmlDocument.CheckName(name.LocalName);
             }
             if (name.LocalName.Length == 0)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Empty_LocalName));
+                throw new ArgumentException(ResXml.Xdom_Empty_LocalName);
             _name = name;
             if (empty)
             {
@@ -309,7 +309,7 @@ namespace Microsoft.Xml
         public virtual XmlAttribute SetAttributeNode(XmlAttribute newAttr)
         {
             if (newAttr.OwnerElement != null)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_Attr_InUse));
+                throw new InvalidOperationException(ResXml.Xdom_Attr_InUse);
             return (XmlAttribute)Attributes.SetNamedItem(newAttr);
         }
 

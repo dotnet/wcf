@@ -27,7 +27,7 @@ namespace System.IdentityModel.Tokens
 
             if (symmetricKey.Length == 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.SymmetricKeyLengthTooShort, symmetricKey.Length)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.SymmetricKeyLengthTooShort, symmetricKey.Length)));
             }
             _keySize = symmetricKey.Length * 8;
 

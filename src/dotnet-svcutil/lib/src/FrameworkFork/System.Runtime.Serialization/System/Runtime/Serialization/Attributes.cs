@@ -135,7 +135,7 @@ namespace System.Runtime.Serialization
             Id = reader.ReadContentAsString();
             if (string.IsNullOrEmpty(Id))
             {
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidXsIdDefinition, Id)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidXsIdDefinition, Id)));
             }
         }
 
@@ -144,7 +144,7 @@ namespace System.Runtime.Serialization
             Ref = reader.ReadContentAsString();
             if (string.IsNullOrEmpty(Ref))
             {
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidXsRefDefinition, Ref)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidXsRefDefinition, Ref)));
             }
         }
 
@@ -157,7 +157,7 @@ namespace System.Runtime.Serialization
         {
             ArraySZSize = reader.ReadContentAsInt();
             if (ArraySZSize < 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidSizeDefinition, ArraySZSize)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidSizeDefinition, ArraySZSize)));
         }
 
         private void ReadXsiType(XmlReaderDelegator reader)

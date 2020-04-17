@@ -89,7 +89,7 @@ namespace System.IdentityModel.Selectors
 
                 if (!chain.Build(certificate))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenValidationException(SRServiceModel.Format(SRServiceModel.X509ChainBuildFail,
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenValidationException(string.Format(SRServiceModel.X509ChainBuildFail,
                         SecurityUtils.GetCertificateId(certificate), GetChainStatusInformation(chain.ChainStatus))));
                 }
             }

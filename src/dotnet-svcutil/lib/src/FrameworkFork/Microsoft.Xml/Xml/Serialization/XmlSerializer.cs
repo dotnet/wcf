@@ -367,7 +367,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (encodingStyle != null && encodingStyle.Length > 0)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidEncodingNotEncoded1, encodingStyle));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEncodingNotEncoded1, encodingStyle));
                     }
                     SerializePrimitive(xmlWriter, o, namespaces);
                 }
@@ -395,7 +395,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 if (e is TargetInvocationException)
                     e = e.InnerException;
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlGenError), e);
+                throw new InvalidOperationException(ResXml.XmlGenError, e);
             }
             xmlWriter.Flush();
         }
@@ -457,7 +457,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (encodingStyle != null && encodingStyle.Length > 0)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidEncodingNotEncoded1, encodingStyle));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEncodingNotEncoded1, encodingStyle));
                     }
                     return DeserializePrimitive(xmlReader, events);
                 }
@@ -491,11 +491,11 @@ namespace Microsoft.Xml.Serialization
                 if (xmlReader is IXmlLineInfo)
                 {
                     IXmlLineInfo lineInfo = (IXmlLineInfo)xmlReader;
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializeErrorDetails, lineInfo.LineNumber.ToString(), lineInfo.LinePosition.ToString()), e);
+                    throw new InvalidOperationException(string.Format(ResXml.XmlSerializeErrorDetails, lineInfo.LineNumber.ToString(), lineInfo.LinePosition.ToString()), e);
                 }
                 else
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializeError), e);
+                    throw new InvalidOperationException(ResXml.XmlSerializeError, e);
                 }
             }
         }
@@ -836,7 +836,7 @@ namespace Microsoft.Xml.Serialization
                     }
                     else
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnxpectedType, _primitiveType.FullName));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlUnxpectedType, _primitiveType.FullName));
                     }
                     break;
             }
@@ -910,7 +910,7 @@ namespace Microsoft.Xml.Serialization
                     }
                     else
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnxpectedType, _primitiveType.FullName));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlUnxpectedType, _primitiveType.FullName));
                     }
                     break;
             }

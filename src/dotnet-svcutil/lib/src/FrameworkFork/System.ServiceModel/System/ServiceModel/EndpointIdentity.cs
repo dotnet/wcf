@@ -118,7 +118,7 @@ namespace System.ServiceModel
 
             reader.MoveToContent();
             if (reader.IsEmptyElement)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.UnexpectedEmptyElementExpectingClaim, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
 
             reader.ReadStartElement(XD.AddressingDictionary.Identity, XD.AddressingDictionary.IdentityExtensionNamespace);
 
@@ -141,7 +141,7 @@ namespace System.ServiceModel
                 }
                 else
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.UnrecognizedIdentityType, reader.Name, reader.NamespaceURI)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.UnrecognizedIdentityType, reader.Name, reader.NamespaceURI)));
                 }
                 reader.ReadEndElement();
             }
@@ -150,7 +150,7 @@ namespace System.ServiceModel
                 //
                 // Something unknown
                 // 
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.UnrecognizedIdentityType, reader.Name, reader.NamespaceURI)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.UnrecognizedIdentityType, reader.Name, reader.NamespaceURI)));
             }
             else
             {
@@ -179,7 +179,7 @@ namespace System.ServiceModel
 
         internal virtual void WriteContentsTo(XmlDictionaryWriter writer)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnrecognizedIdentityPropertyType, this.IdentityClaim.GetType().ToString())));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnrecognizedIdentityPropertyType, this.IdentityClaim.GetType().ToString())));
         }
     }
 }

@@ -230,7 +230,7 @@ namespace System.ServiceModel.Channels
             SecurityToken result = await tokenProvider.GetTokenAsync(cancellationToken);
             if ((result != null) && !(result is T))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(
                     SRServiceModel.InvalidTokenProvided, tokenProvider.GetType(), typeof(T))));
             }
             return result as T;
@@ -430,7 +430,7 @@ namespace System.ServiceModel.Channels
             if (!thumbprint.Equals(certHashString))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new SecurityNegotiationException(SRServiceModel.Format(SRServiceModel.HttpsServerCertThumbprintMismatch,
+                    new SecurityNegotiationException(string.Format(SRServiceModel.HttpsServerCertThumbprintMismatch,
                     certificate.Subject, certHashString, thumbprint)));
             }
         }

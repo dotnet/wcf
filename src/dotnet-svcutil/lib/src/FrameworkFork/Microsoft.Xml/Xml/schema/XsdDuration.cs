@@ -285,7 +285,7 @@ namespace Microsoft.Xml.Schema
             }
             catch (OverflowException)
             {
-                throw new OverflowException(ResXml.GetString(ResXml.XmlConvert_Overflow, ToString(), "Duration"));
+                throw new OverflowException(string.Format(ResXml.XmlConvert_Overflow, ToString(), "Duration"));
             }
 
             return new XsdDuration(IsNegative, years, months, days, hours, minutes, seconds, Nanoseconds);
@@ -383,7 +383,7 @@ namespace Microsoft.Xml.Schema
             catch (OverflowException)
             {
                 result = TimeSpan.MinValue;
-                exception = new OverflowException(ResXml.GetString(ResXml.XmlConvert_Overflow, durationType, "TimeSpan"));
+                exception = new OverflowException(string.Format(ResXml.XmlConvert_Overflow, durationType, "TimeSpan"));
             }
             return exception;
         }
@@ -673,10 +673,10 @@ namespace Microsoft.Xml.Schema
             return null;
 
         InvalidFormat:
-            return new FormatException(ResXml.GetString(ResXml.XmlConvert_BadFormat, s, durationType));
+            return new FormatException(string.Format(ResXml.XmlConvert_BadFormat, s, durationType));
 
         Error:
-            return new OverflowException(ResXml.GetString(ResXml.XmlConvert_Overflow, s, durationType));
+            return new OverflowException(string.Format(ResXml.XmlConvert_Overflow, s, durationType));
         }
 
         /// Helper method that constructs an integer from leading digits starting at s[offset].  "offset" is

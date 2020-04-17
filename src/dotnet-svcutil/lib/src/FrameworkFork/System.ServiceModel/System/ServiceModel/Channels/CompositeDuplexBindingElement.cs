@@ -56,7 +56,7 @@ namespace System.ServiceModel.Channels
             if (typeof(TChannel) != typeof(IOutputChannel))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel",
-                    SRServiceModel.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
+                    string.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
             }
 
             return context.BuildInnerChannelFactory<TChannel>();

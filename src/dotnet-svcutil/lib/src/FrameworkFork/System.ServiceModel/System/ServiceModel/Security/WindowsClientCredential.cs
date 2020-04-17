@@ -41,7 +41,7 @@ namespace System.ServiceModel.Security
                 if (((value == TokenImpersonationLevel.None) || (value == TokenImpersonationLevel.Anonymous))
                     )
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.UnsupportedTokenImpersonationLevel, "AllowedImpersonationLevel", value.ToString())));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.UnsupportedTokenImpersonationLevel, "AllowedImpersonationLevel", value.ToString())));
                 }
 
                 _allowedImpersonationLevel = value;

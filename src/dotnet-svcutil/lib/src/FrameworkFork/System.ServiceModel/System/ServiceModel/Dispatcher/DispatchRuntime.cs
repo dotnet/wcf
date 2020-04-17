@@ -374,7 +374,7 @@ namespace System.ServiceModel.Dispatcher
 
                 FaultCode code = FaultCode.CreateSenderFaultCode(AddressingStrings.ActionNotSupported,
                     message.Version.Addressing.Namespace);
-                string reasonText = SRServiceModel.Format(SRServiceModel.SFxNoEndpointMatchingContract, action);
+                string reasonText = string.Format(SRServiceModel.SFxNoEndpointMatchingContract, action);
                 FaultReason reason = new FaultReason(reasonText);
 
                 FaultException exception = new FaultException(reason, code);

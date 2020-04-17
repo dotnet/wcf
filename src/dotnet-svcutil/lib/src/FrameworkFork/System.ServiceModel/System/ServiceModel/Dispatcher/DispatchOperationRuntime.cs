@@ -63,7 +63,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (_formatter == null && (_deserializeRequest || _serializeReply))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.DispatchRuntimeRequiresFormatter0, _name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.DispatchRuntimeRequiresFormatter0, _name)));
             }
         }
 
@@ -297,7 +297,7 @@ namespace System.ServiceModel.Dispatcher
 
                     if (reply == null)
                     {
-                        string message = SRServiceModel.Format(SRServiceModel.SFxNullReplyFromFormatter2, this.Formatter.GetType().ToString(), (_name ?? ""));
+                        string message = string.Format(SRServiceModel.SFxNullReplyFromFormatter2, this.Formatter.GetType().ToString(), (_name ?? ""));
                         ErrorBehavior.ThrowAndCatch(new InvalidOperationException(message));
                     }
                 }
@@ -305,7 +305,7 @@ namespace System.ServiceModel.Dispatcher
                 {
                     if ((rpc.ReturnParameter == null) && (rpc.OperationContext.RequestContext != null))
                     {
-                        string message = SRServiceModel.Format(SRServiceModel.SFxDispatchRuntimeMessageCannotBeNull, _name);
+                        string message = string.Format(SRServiceModel.SFxDispatchRuntimeMessageCannotBeNull, _name);
                         ErrorBehavior.ThrowAndCatch(new InvalidOperationException(message));
                     }
 
@@ -313,7 +313,7 @@ namespace System.ServiceModel.Dispatcher
 
                     if ((reply != null) && (!ProxyOperationRuntime.IsValidAction(reply, this.ReplyAction)))
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidReplyAction, this.Name, reply.Headers.Action ?? "{NULL}", this.ReplyAction)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidReplyAction, this.Name, reply.Headers.Action ?? "{NULL}", this.ReplyAction)));
                     }
                 }
 

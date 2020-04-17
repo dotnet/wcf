@@ -77,7 +77,7 @@ namespace Microsoft.Xml
             }
             catch (ArgumentOutOfRangeException)
             {
-                throw new IndexOutOfRangeException(ResXml.GetString(ResXml.Xdom_IndexOutOfRange));
+                throw new IndexOutOfRangeException(ResXml.Xdom_IndexOutOfRange);
             }
         }
 

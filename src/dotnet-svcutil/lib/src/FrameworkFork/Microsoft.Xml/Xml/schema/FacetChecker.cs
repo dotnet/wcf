@@ -331,7 +331,7 @@ namespace Microsoft.Xml.Schema
 
                 if ((_derivedRestriction.FractionDigits != 0) && (_datatype.TypeCode != XmlTypeCode.Decimal))
                 {
-                    throw new XmlSchemaException(ResXml.Sch_FractionDigitsFacetInvalid, ResXml.GetString(ResXml.Sch_FractionDigitsNotOnDecimal), facet);
+                    throw new XmlSchemaException(ResXml.Sch_FractionDigitsFacetInvalid, ResXml.Sch_FractionDigitsNotOnDecimal, facet);
                 }
                 if ((_baseFlags & RestrictionFlags.FractionDigits) != 0)
                 {
@@ -1017,7 +1017,7 @@ namespace Microsoft.Xml.Schema
             //Check built-in facets
             if (value > _maxValue || value < _minValue)
             {
-                return new OverflowException(ResXml.GetString(ResXml.XmlConvert_Overflow, value.ToString(), datatype.TypeCodeString));
+                return new OverflowException(string.Format(ResXml.XmlConvert_Overflow, value.ToString(), datatype.TypeCodeString));
             }
             //Check user-defined facets
             if (flags != 0)

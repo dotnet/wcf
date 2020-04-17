@@ -402,7 +402,7 @@ namespace System.Runtime.Serialization
                         _ilg.InitObj(value.LocalType);
                     }
                     else if (type.GetTypeInfo().IsValueType)
-                        ThrowValidationException(SRSerialization.Format(SRSerialization.ValueTypeCannotBeNull, DataContract.GetClrTypeFullName(type)));
+                        ThrowValidationException(string.Format(SRSerialization.ValueTypeCannotBeNull, DataContract.GetClrTypeFullName(type)));
                     else
                     {
                         _ilg.Load(null);
@@ -418,7 +418,7 @@ namespace System.Runtime.Serialization
                     if (type.GetTypeInfo().IsValueType)
                     {
                         _ilg.IfNotIsEmptyString(objectId);
-                        ThrowValidationException(SRSerialization.Format(SRSerialization.ValueTypeCannotHaveId, DataContract.GetClrTypeFullName(type)));
+                        ThrowValidationException(string.Format(SRSerialization.ValueTypeCannotHaveId, DataContract.GetClrTypeFullName(type)));
                         _ilg.EndIf();
                     }
                     if (nullables != 0)
@@ -441,7 +441,7 @@ namespace System.Runtime.Serialization
                     // Deserialize ref
                     _ilg.Else();
                     if (type.GetTypeInfo().IsValueType)
-                        ThrowValidationException(SRSerialization.Format(SRSerialization.ValueTypeCannotHaveRef, DataContract.GetClrTypeFullName(type)));
+                        ThrowValidationException(string.Format(SRSerialization.ValueTypeCannotHaveRef, DataContract.GetClrTypeFullName(type)));
                     else
                     {
                         _ilg.Call(_contextArg, XmlFormatGeneratorStatics.GetExistingObjectMethod, objectId, type, name, ns);

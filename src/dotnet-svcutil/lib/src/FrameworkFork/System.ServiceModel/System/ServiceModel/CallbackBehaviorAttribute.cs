@@ -41,7 +41,7 @@ namespace System.ServiceModel
             if (!serviceEndpoint.Contract.IsDuplex())
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.SFxCallbackBehaviorAttributeOnlyOnDuplex, serviceEndpoint.Contract.Name)));
+                    string.Format(SRServiceModel.SFxCallbackBehaviorAttributeOnlyOnDuplex, serviceEndpoint.Contract.Name)));
             }
             DispatchRuntime dispatchRuntime = clientRuntime.DispatchRuntime;
 
@@ -58,7 +58,7 @@ namespace System.ServiceModel
         void IEndpointBehavior.ApplyDispatchBehavior(ServiceEndpoint serviceEndpoint, EndpointDispatcher endpointDispatcher)
         {
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                SRServiceModel.Format(SRServiceModel.SFXEndpointBehaviorUsedOnWrongSide, typeof(CallbackBehaviorAttribute).Name)));
+                string.Format(SRServiceModel.SFXEndpointBehaviorUsedOnWrongSide, typeof(CallbackBehaviorAttribute).Name)));
         }
     }
 }

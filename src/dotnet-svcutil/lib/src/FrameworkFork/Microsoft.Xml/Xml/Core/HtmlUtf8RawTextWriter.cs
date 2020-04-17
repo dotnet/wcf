@@ -421,17 +421,17 @@ namespace Microsoft.Xml
 
         public override void WriteEntityRef(string name)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteCharEntity(char ch)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override void WriteSurrogateCharEntity(char lowChar, char highChar)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
         }
 
         public override unsafe void WriteChars(char[] buffer, int index, int count)

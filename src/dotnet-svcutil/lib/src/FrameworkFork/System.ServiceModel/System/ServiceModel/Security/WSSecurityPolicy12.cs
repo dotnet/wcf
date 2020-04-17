@@ -264,7 +264,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             if (!TryImportWsspSignedEncryptedSupportingTokensAssertion(
@@ -276,7 +276,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             if (!TryImportWsspEndorsingSupportingTokensAssertion(
@@ -288,7 +288,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             if (!TryImportWsspSignedEndorsingSupportingTokensAssertion(
@@ -300,7 +300,7 @@ namespace System.ServiceModel.Security
                 out assertion)
                 && assertion != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
             }
 
             return true;

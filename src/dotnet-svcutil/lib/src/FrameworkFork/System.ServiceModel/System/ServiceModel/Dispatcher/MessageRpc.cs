@@ -589,7 +589,7 @@ namespace System.ServiceModel.Dispatcher
                     this.Resume(out alreadyResumedNoLock);
                     if (alreadyResumedNoLock)
                     {
-                        string text = SRServiceModel.Format(SRServiceModel.SFxMultipleCallbackFromAsyncOperation,
+                        string text = string.Format(SRServiceModel.SFxMultipleCallbackFromAsyncOperation,
                             String.Empty);
                         Exception error = new InvalidOperationException(text);
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(error);

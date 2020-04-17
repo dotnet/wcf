@@ -33,7 +33,7 @@ namespace Microsoft.CodeDom.Compiler
         {
             CompilerInfo compilerInfo = (CompilerInfo)GetCompilerInfoForExtensionNoThrow(extension);
             if (compilerInfo == null)
-                throw new ConfigurationErrorsException(SRCodeDom.GetString(SRCodeDom.CodeDomProvider_NotDefined));
+                throw new ConfigurationErrorsException(SRCodeDom.CodeDomProvider_NotDefined);
             return compilerInfo._compilerLanguages[0]; // Return the first language name. There has to be one.
         }
         [ComVisible(false)]
@@ -54,7 +54,7 @@ namespace Microsoft.CodeDom.Compiler
         {
             CompilerInfo compilerInfo = GetCompilerInfoForLanguageNoThrow(language);
             if (compilerInfo == null)
-                throw new ConfigurationErrorsException(SRCodeDom.GetString(SRCodeDom.CodeDomProvider_NotDefined));
+                throw new ConfigurationErrorsException(SRCodeDom.CodeDomProvider_NotDefined);
             return compilerInfo;
         }
 
@@ -273,7 +273,7 @@ namespace Microsoft.CodeDom.Compiler
 
         public virtual void GenerateCodeFromMember(CodeTypeMember member, TextWriter writer, CodeGeneratorOptions options)
         {
-            throw new NotImplementedException(SRCodeDom.GetString(SRCodeDom.NotSupported_CodeDomAPI));
+            throw new NotImplementedException(SRCodeDom.NotSupported_CodeDomAPI);
         }
 
         /// <devdoc>
@@ -292,7 +292,7 @@ namespace Microsoft.CodeDom.Compiler
             ICodeCompiler compiler = CreateCompiler();
             if (compiler == null)
             {
-                throw new NotImplementedException(SRCodeDom.GetString(SRCodeDom.NotSupported_CodeDomAPI));
+                throw new NotImplementedException(SRCodeDom.NotSupported_CodeDomAPI);
             }
             return compiler;
         }
@@ -302,7 +302,7 @@ namespace Microsoft.CodeDom.Compiler
             ICodeGenerator generator = CreateGenerator();
             if (generator == null)
             {
-                throw new NotImplementedException(SRCodeDom.GetString(SRCodeDom.NotSupported_CodeDomAPI));
+                throw new NotImplementedException(SRCodeDom.NotSupported_CodeDomAPI);
             }
             return generator;
         }
@@ -312,7 +312,7 @@ namespace Microsoft.CodeDom.Compiler
             ICodeParser parser = CreateParser();
             if (parser == null)
             {
-                throw new NotImplementedException(SRCodeDom.GetString(SRCodeDom.NotSupported_CodeDomAPI));
+                throw new NotImplementedException(SRCodeDom.NotSupported_CodeDomAPI);
             }
             return parser;
         }

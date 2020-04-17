@@ -94,7 +94,7 @@ namespace System.IdentityModel.Tokens
             TClause clause;
             if (!TryFind<TClause>(out clause))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.NoKeyIdentifierClauseFound, typeof(TClause)), "TClause"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.NoKeyIdentifierClauseFound, typeof(TClause)), "TClause"));
             }
             return clause;
         }

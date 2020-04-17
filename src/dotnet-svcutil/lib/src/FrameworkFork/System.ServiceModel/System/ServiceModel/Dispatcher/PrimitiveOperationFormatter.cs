@@ -176,7 +176,7 @@ namespace System.ServiceModel.Dispatcher
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressing)));
+                    new InvalidOperationException(string.Format(SRServiceModel.AddressingVersionNotSupported, addressing)));
             }
         }
 
@@ -198,7 +198,7 @@ namespace System.ServiceModel.Dispatcher
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new InvalidOperationException(SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressing)));
+                    new InvalidOperationException(string.Format(SRServiceModel.AddressingVersionNotSupported, addressing)));
             }
         }
 
@@ -294,7 +294,7 @@ namespace System.ServiceModel.Dispatcher
             Fx.Assert(bodyDescription != null, "");
             Type type = bodyDescription.Type;
             if (type == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxMessagePartDescriptionMissingType, bodyDescription.Name, bodyDescription.Namespace)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxMessagePartDescriptionMissingType, bodyDescription.Name, bodyDescription.Namespace)));
 
             if (bodyDescription.Multiple)
                 return false;
@@ -392,17 +392,17 @@ namespace System.ServiceModel.Dispatcher
             catch (XmlException xe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operation.Name, xe.Message), xe));
+                    string.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operation.Name, xe.Message), xe));
             }
             catch (FormatException fe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operation.Name, fe.Message), fe));
+                    string.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operation.Name, fe.Message), fe));
             }
             catch (SerializationException se)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operation.Name, se.Message), se));
+                    string.Format(SRServiceModel.SFxErrorDeserializingReplyBodyMore, _operation.Name, se.Message), se));
             }
         }
 
@@ -432,20 +432,20 @@ namespace System.ServiceModel.Dispatcher
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     OperationFormatter.CreateDeserializationFailedFault(
-                        SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operation.Name, xe.Message),
+                        string.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operation.Name, xe.Message),
                         xe));
             }
             catch (FormatException fe)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     OperationFormatter.CreateDeserializationFailedFault(
-                        SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operation.Name, fe.Message),
+                        string.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operation.Name, fe.Message),
                         fe));
             }
             catch (SerializationException se)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operation.Name, se.Message),
+                    string.Format(SRServiceModel.SFxErrorDeserializingRequestBodyMore, _operation.Name, se.Message),
                     se));
             }
         }
@@ -455,7 +455,7 @@ namespace System.ServiceModel.Dispatcher
             if (_requestWrapperName != null)
             {
                 if (!reader.IsStartElement(_requestWrapperName, _requestWrapperNamespace))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBody, _requestWrapperName, _requestWrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(string.Format(SRServiceModel.SFxInvalidMessageBody, _requestWrapperName, _requestWrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
                 bool isEmptyElement = reader.IsEmptyElement;
                 reader.Read();
                 if (isEmptyElement)
@@ -477,7 +477,7 @@ namespace System.ServiceModel.Dispatcher
             if (_responseWrapperName != null)
             {
                 if (!reader.IsStartElement(_responseWrapperName, _responseWrapperNamespace))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBody, _responseWrapperName, _responseWrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(string.Format(SRServiceModel.SFxInvalidMessageBody, _responseWrapperName, _responseWrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
                 bool isEmptyElement = reader.IsEmptyElement;
                 reader.Read();
                 if (isEmptyElement)
@@ -518,7 +518,7 @@ namespace System.ServiceModel.Dispatcher
         {
             if (parts.Length != parameters.Length)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentException(SRServiceModel.Format(SRServiceModel.SFxParameterCountMismatch, "parts", parts.Length, "parameters", parameters.Length), "parameters"));
+                    new ArgumentException(string.Format(SRServiceModel.SFxParameterCountMismatch, "parts", parts.Length, "parameters", parameters.Length), "parameters"));
 
             int nextPartIndex = 0;
             while (reader.IsStartElement())
@@ -583,7 +583,7 @@ namespace System.ServiceModel.Dispatcher
         {
             if (parts.Length != parameters.Length)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ArgumentException(SRServiceModel.Format(SRServiceModel.SFxParameterCountMismatch, "parts", parts.Length, "parameters", parameters.Length), "parameters"));
+                    new ArgumentException(string.Format(SRServiceModel.SFxParameterCountMismatch, "parts", parts.Length, "parameters", parameters.Length), "parameters"));
 
 
             for (int i = 0; i < parts.Length; i++)

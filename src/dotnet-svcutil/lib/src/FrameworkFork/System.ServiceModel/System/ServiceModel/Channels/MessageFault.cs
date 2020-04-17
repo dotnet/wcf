@@ -81,7 +81,7 @@ namespace System.ServiceModel.Channels
                     }
                     else
                     {
-                        throw TraceUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.EnvelopeVersionUnknown, envelopeVersion.ToString())), message);
+                        throw TraceUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.EnvelopeVersionUnknown, envelopeVersion.ToString())), message);
                     }
                     message.ReadFromBodyContentsToEnd(reader);
                     return fault;
@@ -282,7 +282,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.EnvelopeVersionUnknown, version.ToString())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.EnvelopeVersionUnknown, version.ToString())));
             }
         }
 

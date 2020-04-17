@@ -452,7 +452,7 @@ namespace System.Runtime.Serialization
             {
                 Type declaringType = memberContract.MemberInfo.DeclaringType;
                 DataContract.ThrowInvalidDataContractException(
-                    SRSerialization.Format(SRSerialization.DupMemberName,
+                    string.Format(SRSerialization.DupMemberName,
                         existingMemberContract.MemberInfo.Name,
                         memberContract.MemberInfo.Name,
                         DataContract.GetClrTypeFullName(declaringType),

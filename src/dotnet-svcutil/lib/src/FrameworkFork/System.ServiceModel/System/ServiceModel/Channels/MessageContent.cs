@@ -70,7 +70,7 @@ namespace System.ServiceModel.Channels
                             if (!String.IsNullOrEmpty(value) && string.Compare(value, action, StringComparison.Ordinal) != 0)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                    new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpSoapActionMismatch, action, value)));
+                                    new ProtocolException(string.Format(SRServiceModel.HttpSoapActionMismatch, action, value)));
                             }
                         }
                     }
@@ -103,14 +103,14 @@ namespace System.ServiceModel.Channels
                                     if (string.Compare(value, action, StringComparison.Ordinal) != 0)
                                     {
                                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                            new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpSoapActionMismatchContentType, action, value)));
+                                            new ProtocolException(string.Format(SRServiceModel.HttpSoapActionMismatchContentType, action, value)));
                                     }
                                     shouldSetContentType = false;
                                 }
                                 catch (FormatException formatException)
                                 {
                                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                        new ProtocolException(SRServiceModel.Format(SRServiceModel.HttpContentTypeFormatException, formatException.Message, Headers.ContentType.ToString()), formatException));
+                                        new ProtocolException(string.Format(SRServiceModel.HttpContentTypeFormatException, formatException.Message, Headers.ContentType.ToString()), formatException));
                                 }
                             }
                         }

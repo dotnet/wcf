@@ -570,7 +570,7 @@ namespace Microsoft.Xml.Schema
 
         internal override void ProcessMarkup(XmlNode[] markup)
         {
-            throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation)); // should never be called
+            throw new InvalidOperationException(ResXml.Xml_InvalidOperation); // should never be called
         }
 
         internal override void ProcessCData(string value)

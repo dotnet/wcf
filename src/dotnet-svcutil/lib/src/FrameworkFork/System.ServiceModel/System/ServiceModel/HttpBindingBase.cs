@@ -317,7 +317,7 @@ namespace System.ServiceModel
             }
             else if (mode == BasicHttpSecurityMode.Message || mode == BasicHttpSecurityMode.TransportWithMessageCredential)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", mode)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", mode)));
             }
 
             // Transport.ClientCredentialType = InheritedFromHost is not supported.
@@ -327,7 +327,7 @@ namespace System.ServiceModel
             HttpTransportSecurity transport = security.Transport;
             if (transport?.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.UnsupportedSecuritySetting, "Transport.ClientCredentialType", transport.ClientCredentialType)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Transport.ClientCredentialType", transport.ClientCredentialType)));
             }
         }
     }

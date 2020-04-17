@@ -64,7 +64,7 @@ namespace System.ServiceModel.Channels
                 if (valueInt < 100 || valueInt > 599)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                        SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 100, 599)));
+                        string.Format(SRServiceModel.ValueMustBeInRange, 100, 599)));
                 }
 
                 if (_useHttpBackedProperty)

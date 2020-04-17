@@ -219,7 +219,7 @@ namespace System.Runtime.Serialization
                     memberType = memberType.GetElementType();
                 memberType = DataContractSurrogateCaller.GetDataContractType(_serializationSurrogateProvider, memberType);
                 if (!DataContract.IsTypeSerializable(memberType))
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.TypeNotSerializable, memberType)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TypeNotSerializable, memberType)));
                 return;
             }
 
@@ -238,7 +238,7 @@ namespace System.Runtime.Serialization
                 Type surrogateType = DataContractSerializer.GetSurrogatedType(_serializationSurrogateProvider, type);
                 if (this.IsGetOnlyCollection && surrogateType != type)
                 {
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser,
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser,
                         DataContract.GetClrTypeFullName(type))));
                 }
                 else

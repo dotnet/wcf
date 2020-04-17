@@ -25,12 +25,12 @@ namespace Microsoft.Xml
         public XmlDictionaryString Add(int id, string value)
         {
             if (id < 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(SRSerialization.Format(SRSerialization.XmlInvalidID)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(string.Format(SRSerialization.XmlInvalidID)));
             if (value == null)
                 throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("value");
             XmlDictionaryString xmlString;
             if (TryLookup(id, out xmlString))
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.XmlIDDefined)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.XmlIDDefined)));
 
             xmlString = new XmlDictionaryString(this, value, id);
             if (id >= MaxArrayEntries)

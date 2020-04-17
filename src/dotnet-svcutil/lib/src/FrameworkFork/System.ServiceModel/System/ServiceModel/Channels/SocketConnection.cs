@@ -76,14 +76,14 @@ namespace System.ServiceModel.Channels
         protected static void OnReceiveTimeout(object state)
         {
             SocketConnection thisPtr = (SocketConnection)state;
-            thisPtr.Abort(SRServiceModel.Format(SRServiceModel.SocketAbortedReceiveTimedOut, thisPtr._receiveTimeout), TransferOperation.Read);
+            thisPtr.Abort(string.Format(SRServiceModel.SocketAbortedReceiveTimedOut, thisPtr._receiveTimeout), TransferOperation.Read);
         }
 
         protected static void OnSendTimeout(object state)
         {
             SocketConnection thisPtr = (SocketConnection)state;
             thisPtr.Abort(4,	// TraceEventType.Warning
-                SRServiceModel.Format(SRServiceModel.SocketAbortedSendTimedOut, thisPtr._sendTimeout), TransferOperation.Write);
+                string.Format(SRServiceModel.SocketAbortedSendTimedOut, thisPtr._sendTimeout), TransferOperation.Write);
         }
 
         public void Abort()
@@ -219,7 +219,7 @@ namespace System.ServiceModel.Channels
             if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAECONNABORTED &&
                 remainingTime <= TimeSpan.Zero)
             {
-                TimeoutException timeoutException = new TimeoutException(SRServiceModel.Format(SRServiceModel.TcpConnectionTimedOut, timeout), originalException);
+                TimeoutException timeoutException = new TimeoutException(string.Format(SRServiceModel.TcpConnectionTimedOut, timeout), originalException);
                 return timeoutException;
             }
 
@@ -233,24 +233,24 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    CommunicationException communicationException = new CommunicationException(SRServiceModel.Format(SRServiceModel.TcpConnectionResetError, timeout), originalException);
+                    CommunicationException communicationException = new CommunicationException(string.Format(SRServiceModel.TcpConnectionResetError, timeout), originalException);
                     return communicationException;
                 }
             }
             else if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAETIMEDOUT)
             {
-                TimeoutException timeoutException = new TimeoutException(SRServiceModel.Format(SRServiceModel.TcpConnectionTimedOut, timeout), originalException);
+                TimeoutException timeoutException = new TimeoutException(string.Format(SRServiceModel.TcpConnectionTimedOut, timeout), originalException);
                 return timeoutException;
             }
             else
             {
                 if (aborted)
                 {
-                    return new CommunicationObjectAbortedException(SRServiceModel.Format(SRServiceModel.TcpTransferError, (int)socketException.SocketErrorCode, socketException.Message), originalException);
+                    return new CommunicationObjectAbortedException(string.Format(SRServiceModel.TcpTransferError, (int)socketException.SocketErrorCode, socketException.Message), originalException);
                 }
                 else
                 {
-                    CommunicationException communicationException = new CommunicationException(SRServiceModel.Format(SRServiceModel.TcpTransferError, (int)socketException.SocketErrorCode, socketException.Message), originalException);
+                    CommunicationException communicationException = new CommunicationException(string.Format(SRServiceModel.TcpTransferError, (int)socketException.SocketErrorCode, socketException.Message), originalException);
                     return communicationException;
                 }
             }
@@ -449,11 +449,11 @@ namespace System.ServiceModel.Channels
             {
                 if (timeSpent == TimeSpan.MaxValue)
                 {
-                    return new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.TcpConnectError, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message), innerException);
+                    return new EndpointNotFoundException(string.Format(SRServiceModel.TcpConnectError, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message), innerException);
                 }
                 else
                 {
-                    return new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.TcpConnectErrorWithTimeSpan, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message, timeSpent), innerException);
+                    return new EndpointNotFoundException(string.Format(SRServiceModel.TcpConnectErrorWithTimeSpan, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message, timeSpent), innerException);
                 }
             }
             else if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAENOBUFS)
@@ -470,11 +470,11 @@ namespace System.ServiceModel.Channels
             {
                 if (timeSpent == TimeSpan.MaxValue)
                 {
-                    return new CommunicationException(SRServiceModel.Format(SRServiceModel.TcpConnectError, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message), innerException);
+                    return new CommunicationException(string.Format(SRServiceModel.TcpConnectError, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message), innerException);
                 }
                 else
                 {
-                    return new CommunicationException(SRServiceModel.Format(SRServiceModel.TcpConnectErrorWithTimeSpan, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message, timeSpent), innerException);
+                    return new CommunicationException(string.Format(SRServiceModel.TcpConnectErrorWithTimeSpan, remoteUri.AbsoluteUri, (int)socketException.SocketErrorCode, socketException.Message, timeSpent), innerException);
                 }
             }
         }
@@ -497,13 +497,13 @@ namespace System.ServiceModel.Channels
             catch (SocketException socketException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.UnableToResolveHost, uri.Host), socketException));
+                    new EndpointNotFoundException(string.Format(SRServiceModel.UnableToResolveHost, uri.Host), socketException));
             }
 
             if (addresses.Length == 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.UnableToResolveHost, uri.Host)));
+                    new EndpointNotFoundException(string.Format(SRServiceModel.UnableToResolveHost, uri.Host)));
             }
 
             return addresses;
@@ -528,7 +528,7 @@ namespace System.ServiceModel.Channels
             }
 
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                SRServiceModel.Format(SRServiceModel.TcpConnectingToViaTimedOut, uri.AbsoluteUri, timeout.ToString(),
+                string.Format(SRServiceModel.TcpConnectingToViaTimedOut, uri.AbsoluteUri, timeout.ToString(),
                 invalidAddressCount, addresses.Length, addressStringBuilder.ToString()), innerException));
         }
 
@@ -571,7 +571,7 @@ namespace System.ServiceModel.Channels
             if (socketConnection == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.NoIPEndpointsFoundForHost, uri.Host)));
+                    new EndpointNotFoundException(string.Format(SRServiceModel.NoIPEndpointsFoundForHost, uri.Host)));
             }
 
             if (lastException != null)
@@ -623,7 +623,7 @@ namespace System.ServiceModel.Channels
             if (socketConnection == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.NoIPEndpointsFoundForHost, uri.Host)));
+                    new EndpointNotFoundException(string.Format(SRServiceModel.NoIPEndpointsFoundForHost, uri.Host)));
             }
 
             if (lastException != null)

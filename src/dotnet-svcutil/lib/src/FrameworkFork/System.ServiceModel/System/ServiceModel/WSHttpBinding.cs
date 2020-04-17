@@ -81,7 +81,7 @@ namespace System.ServiceModel
             if ((_security.Mode == SecurityMode.Transport) &&
                 _security.Transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.HttpClientCredentialTypeInvalid, _security.Transport.ClientCredentialType)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.HttpClientCredentialTypeInvalid, _security.Transport.ClientCredentialType)));
             }
 
             return base.BuildChannelFactory<TChannel>(parameters);

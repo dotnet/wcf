@@ -208,7 +208,7 @@ namespace System.Runtime.Serialization
                     if (dataContractAttribute.IsReference)
                     {
                         DataContract.ThrowInvalidDataContractException(
-                                SRSerialization.Format(SRSerialization.EnumTypeCannotHaveIsReference,
+                                string.Format(SRSerialization.EnumTypeCannotHaveIsReference,
                                     DataContract.GetClrTypeFullName(type),
                                     dataContractAttribute.IsReference,
                                     false),
@@ -228,7 +228,7 @@ namespace System.Runtime.Serialization
                     _baseContractName = value;
                     Type baseType = GetBaseType(_baseContractName);
                     if (baseType == null)
-                        ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidEnumBaseType, value.Name, value.Namespace, StableName.Name, StableName.Namespace));
+                        ThrowInvalidDataContractException(string.Format(SRSerialization.InvalidEnumBaseType, value.Name, value.Namespace, StableName.Name, StableName.Namespace));
                     ImportBaseType(baseType);
                 }
             }
@@ -286,14 +286,14 @@ namespace System.Runtime.Serialization
                         if (memberAttributes != null && memberAttributes.Length > 0)
                         {
                             if (memberAttributes.Length > 1)
-                                ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.TooManyEnumMembers, DataContract.GetClrTypeFullName(field.DeclaringType), field.Name));
+                                ThrowInvalidDataContractException(string.Format(SRSerialization.TooManyEnumMembers, DataContract.GetClrTypeFullName(field.DeclaringType), field.Name));
                             EnumMemberAttribute memberAttribute = (EnumMemberAttribute)memberAttributes[0];
 
                             DataMember memberContract = new DataMember(field);
                             if (memberAttribute.IsValueSetExplicitly)
                             {
                                 if (memberAttribute.Value == null || memberAttribute.Value.Length == 0)
-                                    ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidEnumMemberValue, field.Name, DataContract.GetClrTypeFullName(type)));
+                                    ThrowInvalidDataContractException(string.Format(SRSerialization.InvalidEnumMemberValue, field.Name, DataContract.GetClrTypeFullName(type)));
                                 memberContract.Name = memberAttribute.Value;
                             }
                             else
@@ -304,7 +304,7 @@ namespace System.Runtime.Serialization
 
                         object[] dataMemberAttributes = field.GetCustomAttributes(Globals.TypeOfDataMemberAttribute, false).ToArray();
                         if (dataMemberAttributes != null && dataMemberAttributes.Length > 0)
-                            ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.DataMemberOnEnumField, DataContract.GetClrTypeFullName(field.DeclaringType), field.Name));
+                            ThrowInvalidDataContractException(string.Format(SRSerialization.DataMemberOnEnumField, DataContract.GetClrTypeFullName(field.DeclaringType), field.Name));
                     }
                     else
                     {
@@ -368,13 +368,13 @@ namespace System.Runtime.Serialization
                 }
                 // enforce that enum value was completely parsed
                 if (longValue != 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidEnumValueOnWrite, value, DataContract.GetClrTypeFullName(UnderlyingType))));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidEnumValueOnWrite, value, DataContract.GetClrTypeFullName(UnderlyingType))));
 
                 if (noneWritten && zeroIndex >= 0)
                     writer.WriteString(ChildElementNames[zeroIndex].Value);
             }
             else
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidEnumValueOnWrite, value, DataContract.GetClrTypeFullName(UnderlyingType))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidEnumValueOnWrite, value, DataContract.GetClrTypeFullName(UnderlyingType))));
         }
 
         internal object ReadEnumValue(XmlReaderDelegator reader)
@@ -414,7 +414,7 @@ namespace System.Runtime.Serialization
             else
             {
                 if (stringValue.Length == 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidEnumValueOnRead, stringValue, DataContract.GetClrTypeFullName(UnderlyingType))));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidEnumValueOnRead, stringValue, DataContract.GetClrTypeFullName(UnderlyingType))));
                 longValue = ReadEnumValue(stringValue, 0, stringValue.Length);
             }
 
@@ -433,7 +433,7 @@ namespace System.Runtime.Serialization
                     return Values[i];
                 }
             }
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.InvalidEnumValueOnRead, value.Substring(index, count), DataContract.GetClrTypeFullName(UnderlyingType))));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.InvalidEnumValueOnRead, value.Substring(index, count), DataContract.GetClrTypeFullName(UnderlyingType))));
         }
         public override void WriteXmlValue(XmlWriterDelegator xmlWriter, object obj, XmlObjectSerializerWriteContext context)
         {

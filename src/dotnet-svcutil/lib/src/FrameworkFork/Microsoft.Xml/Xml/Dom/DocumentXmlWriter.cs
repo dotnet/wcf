@@ -373,7 +373,7 @@ namespace Microsoft.Xml
                         XmlNode parent = _start.ParentNode;
                         if (parent == null)
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.Xpn_MissingParent));
+                            throw new InvalidOperationException(ResXml.Xpn_MissingParent);
                         }
                         for (int i = _fragment.Count - 1; i >= 0; i--)
                         {
@@ -384,7 +384,7 @@ namespace Microsoft.Xml
                         parent = _start.ParentNode;
                         if (parent == null)
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.Xpn_MissingParent));
+                            throw new InvalidOperationException(ResXml.Xpn_MissingParent);
                         }
                         for (int i = 0; i < _fragment.Count; i++)
                         {
@@ -409,7 +409,7 @@ namespace Microsoft.Xml
                     case DocumentXmlWriterType.ReplaceToFollowingSibling:
                         if (_fragment.Count == 0)
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.Xpn_NoContent));
+                            throw new InvalidOperationException(ResXml.Xpn_NoContent);
                         }
                         CloseWithReplaceToFollowingSibling();
                         break;
@@ -450,17 +450,17 @@ namespace Microsoft.Xml
             XmlNode parent = _start.ParentNode;
             if (parent == null)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xpn_MissingParent));
+                throw new InvalidOperationException(ResXml.Xpn_MissingParent);
             }
             if (_start != _end)
             {
                 if (!DocumentXPathNavigator.IsFollowingSibling(_start, _end))
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xpn_BadPosition));
+                    throw new InvalidOperationException(ResXml.Xpn_BadPosition);
                 }
                 if (_start.IsReadOnly)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_Node_Modify_ReadOnly));
+                    throw new InvalidOperationException(ResXml.Xdom_Node_Modify_ReadOnly);
                 }
                 DocumentXPathNavigator.DeleteToFollowingSibling(_start.NextSibling, _end);
             }
@@ -608,7 +608,7 @@ namespace Microsoft.Xml
             _state = s_changeState[(int)method * (int)State.Last + (int)_state];
             if (_state == State.Error)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_ClosedOrError));
+                throw new InvalidOperationException(ResXml.Xml_ClosedOrError);
             }
         }
     }

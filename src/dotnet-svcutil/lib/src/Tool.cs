@@ -209,12 +209,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (serviceDescriptor.MetadataUrl != null)
                 {
-                    ToolConsole.WriteLine(SR.GetString(SR.RetreivingMetadataMsgFormat, serviceDescriptor.MetadataUrl.AbsoluteUri));
+                    ToolConsole.WriteLine(string.Format(SR.RetreivingMetadataMsgFormat, serviceDescriptor.MetadataUrl.AbsoluteUri));
                 }
                 else
                 {
                     var displayUri = serviceDescriptor.MetadataFiles.Count() == 1 ? serviceDescriptor.MetadataFiles.First().LocalPath : SR.WsdlOrSchemaFilesMsg;
-                    ToolConsole.WriteLine(SR.GetString(SR.ReadingMetadataMessageFormat, displayUri));
+                    ToolConsole.WriteLine(string.Format(SR.ReadingMetadataMessageFormat, displayUri));
                 }
             }
 

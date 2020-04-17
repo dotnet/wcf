@@ -76,7 +76,7 @@ namespace Microsoft.Xml.Serialization.Advanced
             }
             else
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInvalidSchemaExtension, type));
+                throw new ArgumentException(string.Format(ResXml.XmlInvalidSchemaExtension, type));
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.Xml.Serialization.Advanced
             {
                 if (Names[name].GetType() != extension.GetType())
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlConfigurationDuplicateExtension, name));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlConfigurationDuplicateExtension, name));
                 }
                 return -1;
             }
@@ -200,13 +200,13 @@ namespace Microsoft.Xml.Serialization.Advanced
                 codeNamespace.Imports.Add(import);
             }
             CodeTypeDeclaration codeClass = null;
-            string comment = ResXml.GetString(ResXml.XmlExtensionComment, _extension.GetType().FullName);
+            string comment = string.Format(ResXml.XmlExtensionComment, _extension.GetType().FullName);
             foreach (CodeTypeDeclaration type in _code.Types)
             {
                 if (_clrType == type.Name)
                 {
                     if (codeClass != null)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlExtensionDuplicateDefinition, _extension.GetType().FullName, _clrType));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlExtensionDuplicateDefinition, _extension.GetType().FullName, _clrType));
                     codeClass = type;
                 }
                 type.Comments.Add(new CodeCommentStatement(comment, false));

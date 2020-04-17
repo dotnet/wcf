@@ -265,7 +265,7 @@ namespace System.Collections.Generic
                 return;
 
             Type type = (value == null) ? typeof(Object) : value.GetType();
-            string message = SRServiceModel.Format(SRServiceModel.SFxCollectionWrongType2, type.ToString(), typeof(T).ToString());
+            string message = string.Format(SRServiceModel.SFxCollectionWrongType2, type.ToString(), typeof(T).ToString());
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(message));
         }
 

@@ -218,17 +218,17 @@ namespace System.ServiceModel.Channels
 
         private Exception CreateNotOpenException()
         {
-            return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CommunicationObjectCannotBeUsed, this.GetCommunicationObjectType().ToString(), _state.ToString()));
+            return new InvalidOperationException(string.Format(SRServiceModel.CommunicationObjectCannotBeUsed, this.GetCommunicationObjectType().ToString(), _state.ToString()));
         }
 
         private Exception CreateImmutableException()
         {
-            return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CommunicationObjectCannotBeModifiedInState, this.GetCommunicationObjectType().ToString(), _state.ToString()));
+            return new InvalidOperationException(string.Format(SRServiceModel.CommunicationObjectCannotBeModifiedInState, this.GetCommunicationObjectType().ToString(), _state.ToString()));
         }
 
         private Exception CreateBaseClassMethodNotCalledException(string method)
         {
-            return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CommunicationObjectBaseClassMethodNotCalled, this.GetCommunicationObjectType().ToString(), method));
+            return new InvalidOperationException(string.Format(SRServiceModel.CommunicationObjectBaseClassMethodNotCalled, this.GetCommunicationObjectType().ToString(), method));
         }
 
         internal Exception CreateClosedException()
@@ -245,13 +245,13 @@ namespace System.ServiceModel.Channels
 
         internal Exception CreateFaultedException()
         {
-            string message = SRServiceModel.Format(SRServiceModel.CommunicationObjectFaulted1, this.GetCommunicationObjectType().ToString());
+            string message = string.Format(SRServiceModel.CommunicationObjectFaulted1, this.GetCommunicationObjectType().ToString());
             return new CommunicationObjectFaultedException(message);
         }
 
         internal Exception CreateAbortedException()
         {
-            return new CommunicationObjectAbortedException(SRServiceModel.Format(SRServiceModel.CommunicationObjectAborted1, this.GetCommunicationObjectType().ToString()));
+            return new CommunicationObjectAbortedException(string.Format(SRServiceModel.CommunicationObjectAborted1, this.GetCommunicationObjectType().ToString()));
         }
 
         internal bool DoneReceivingInCurrentState()

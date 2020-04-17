@@ -358,7 +358,7 @@ namespace Microsoft.Xml
 
                 if (prevState != State.AfterRootEle)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_NoRoot));
+                    throw new ArgumentException(ResXml.Xml_NoRoot);
                 }
                 if (_rawWriter == null)
                 {
@@ -378,20 +378,20 @@ namespace Microsoft.Xml
             {
                 if (name == null || name.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                    throw new ArgumentException(ResXml.Xml_EmptyName);
                 }
                 XmlConvert.VerifyQName(name, ExceptionType.XmlException);
 
                 if (_conformanceLevel == ConformanceLevel.Fragment)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_DtdNotAllowedInFragment));
+                    throw new InvalidOperationException(ResXml.Xml_DtdNotAllowedInFragment);
                 }
 
                 AdvanceState(Token.Dtd);
                 if (_dtdWritten)
                 {
                     _currentState = State.Error;
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_DtdAlreadyWritten));
+                    throw new InvalidOperationException(ResXml.Xml_DtdAlreadyWritten);
                 }
 
                 if (_conformanceLevel == ConformanceLevel.Auto)
@@ -409,21 +409,21 @@ namespace Microsoft.Xml
                     {
                         if ((i = _xmlCharType.IsPublicId(pubid)) >= 0)
                         {
-                            throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(pubid, i)), "pubid");
+                            throw new ArgumentException(string.Format(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(pubid, i)), "pubid");
                         }
                     }
                     if (sysid != null)
                     {
                         if ((i = _xmlCharType.IsOnlyCharData(sysid)) >= 0)
                         {
-                            throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(sysid, i)), "sysid");
+                            throw new ArgumentException(string.Format(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(sysid, i)), "sysid");
                         }
                     }
                     if (subset != null)
                     {
                         if ((i = _xmlCharType.IsOnlyCharData(subset)) >= 0)
                         {
-                            throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(subset, i)), "subset");
+                            throw new ArgumentException(string.Format(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(subset, i)), "subset");
                         }
                     }
                 }
@@ -446,7 +446,7 @@ namespace Microsoft.Xml
                 // check local name
                 if (localName == null || localName.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
+                    throw new ArgumentException(ResXml.Xml_EmptyLocalName);
                 }
                 CheckNCName(localName);
 
@@ -473,7 +473,7 @@ namespace Microsoft.Xml
                     }
                     if (ns == null || (ns != null && ns.Length == 0))
                     {
-                        throw new ArgumentException(ResXml.GetString(ResXml.Xml_PrefixForEmptyNs));
+                        throw new ArgumentException(ResXml.Xml_PrefixForEmptyNs);
                     }
                 }
                 if (ns == null)
@@ -637,7 +637,7 @@ namespace Microsoft.Xml
                     }
                     else
                     {
-                        throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
+                        throw new ArgumentException(ResXml.Xml_EmptyLocalName);
                     }
                 }
                 CheckNCName(localName);
@@ -676,7 +676,7 @@ namespace Microsoft.Xml
                     {
                         if (namespaceName.Length > 0 && namespaceName != XmlReservedNs.NsXmlNs)
                         {
-                            throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlnsPrefix));
+                            throw new ArgumentException(ResXml.Xml_XmlnsPrefix);
                         }
                         _curDeclPrefix = String.Empty;
                         SetSpecialAttribute(SpecialAttribute.DefaultXmlns);
@@ -699,7 +699,7 @@ namespace Microsoft.Xml
                         {
                             if (namespaceName.Length > 0 && namespaceName != XmlReservedNs.NsXmlNs)
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlnsPrefix));
+                                throw new ArgumentException(ResXml.Xml_XmlnsPrefix);
                             }
                             _curDeclPrefix = localName;
                             SetSpecialAttribute(SpecialAttribute.PrefixedXmlns);
@@ -709,7 +709,7 @@ namespace Microsoft.Xml
                         {
                             if (namespaceName.Length > 0 && namespaceName != XmlReservedNs.NsXml)
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlPrefix));
+                                throw new ArgumentException(ResXml.Xml_XmlPrefix);
                             }
                             switch (localName)
                             {
@@ -805,11 +805,11 @@ namespace Microsoft.Xml
                             value = _attrValueCache.StringValue;
                             if (value.Length == 0)
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_PrefixForEmptyNs));
+                                throw new ArgumentException(ResXml.Xml_PrefixForEmptyNs);
                             }
                             if (value == XmlReservedNs.NsXmlNs || (value == XmlReservedNs.NsXml && _curDeclPrefix != "xml"))
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_CanNotBindToReservedNamespace));
+                                throw new ArgumentException(ResXml.Xml_CanNotBindToReservedNamespace);
                             }
                             if (PushNamespaceExplicit(_curDeclPrefix, value))
                             { // returns true if the namespace declaration should be written out
@@ -849,7 +849,7 @@ namespace Microsoft.Xml
                             }
                             else
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidXmlSpace, value));
+                                throw new ArgumentException(string.Format(ResXml.Xml_InvalidXmlSpace, value));
                             }
                             _writer.WriteStartAttribute("xml", "space", XmlReservedNs.NsXml);
                             _attrValueCache.Replay(_writer);
@@ -921,7 +921,7 @@ namespace Microsoft.Xml
                 // check name
                 if (name == null || name.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                    throw new ArgumentException(ResXml.Xml_EmptyName);
                 }
                 CheckNCName(name);
 
@@ -936,7 +936,7 @@ namespace Microsoft.Xml
                 {
                     if (_currentState != State.Start)
                     {
-                        throw new ArgumentException(ResXml.GetString(_conformanceLevel == ConformanceLevel.Document ? ResXml.Xml_DupXmlDecl : ResXml.Xml_CannotWriteXmlDecl));
+                        throw new ArgumentException(_conformanceLevel == ConformanceLevel.Document ? ResXml.Xml_DupXmlDecl : ResXml.Xml_CannotWriteXmlDecl);
                     }
 
                     _xmlDeclFollows = true;
@@ -972,7 +972,7 @@ namespace Microsoft.Xml
                 // check name
                 if (name == null || name.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                    throw new ArgumentException(ResXml.Xml_EmptyName);
                 }
                 CheckNCName(name);
 
@@ -999,7 +999,7 @@ namespace Microsoft.Xml
             {
                 if (Char.IsSurrogate(ch))
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidSurrogateMissingLowChar));
+                    throw new ArgumentException(ResXml.Xml_InvalidSurrogateMissingLowChar);
                 }
 
                 AdvanceState(Token.Text);
@@ -1055,7 +1055,7 @@ namespace Microsoft.Xml
                 }
                 if (!XmlCharType.Instance.IsOnlyWhitespace(ws))
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_NonWhitespace));
+                    throw new ArgumentException(ResXml.Xml_NonWhitespace);
                 }
 
                 AdvanceState(Token.Whitespace);
@@ -1365,7 +1365,7 @@ namespace Microsoft.Xml
             {
                 if (localName == null || localName.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
+                    throw new ArgumentException(ResXml.Xml_EmptyLocalName);
                 }
                 CheckNCName(localName);
 
@@ -1378,7 +1378,7 @@ namespace Microsoft.Xml
                     {
                         if (_currentState != State.Attribute)
                         {
-                            throw new ArgumentException(ResXml.GetString(ResXml.Xml_UndefNamespace, ns));
+                            throw new ArgumentException(string.Format(ResXml.Xml_UndefNamespace, ns));
                         }
                         prefix = GeneratePrefix();
                         PushNamespaceImplicit(prefix, ns);
@@ -1571,7 +1571,7 @@ namespace Microsoft.Xml
         {
             if (IsClosedOrErrorState)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_ClosedOrError));
+                throw new InvalidOperationException(ResXml.Xml_ClosedOrError);
             }
             try
             {
@@ -1652,7 +1652,7 @@ namespace Microsoft.Xml
                 }
                 else if (_conformanceLevel == ConformanceLevel.Fragment)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_CannotStartDocumentOnFragment));
+                    throw new InvalidOperationException(ResXml.Xml_CannotStartDocumentOnFragment);
                 }
 
                 if (_rawWriter != null)
@@ -1713,7 +1713,7 @@ namespace Microsoft.Xml
                         {
                             if (ns != _nsStack[existingNsIndex].namespaceUri)
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlPrefix));
+                                throw new ArgumentException(ResXml.Xml_XmlPrefix);
                             }
                             else
                             {
@@ -1723,7 +1723,7 @@ namespace Microsoft.Xml
                         else
                         {
                             Debug.Assert(prefix == "xmlns");
-                            throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlnsPrefix));
+                            throw new ArgumentException(ResXml.Xml_XmlnsPrefix);
                         }
                     }
                     // regular namespace declaration -> compare the namespace Uris to decide if the prefix is redefined
@@ -1740,7 +1740,7 @@ namespace Microsoft.Xml
                 if ((ns == XmlReservedNs.NsXml && prefix != "xml") ||
                      (ns == XmlReservedNs.NsXmlNs && prefix != "xmlns"))
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_NamespaceDeclXmlXmlns, prefix));
+                    throw new ArgumentException(string.Format(ResXml.Xml_NamespaceDeclXmlXmlns, prefix));
                 }
 
                 // check if it can be found in the predefinedNamespaces (which are provided by the user)
@@ -1824,7 +1824,7 @@ namespace Microsoft.Xml
             if ((ns == XmlReservedNs.NsXml && prefix != "xml") ||
                  (ns == XmlReservedNs.NsXmlNs && prefix != "xmlns"))
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_NamespaceDeclXmlXmlns, prefix));
+                throw new ArgumentException(string.Format(ResXml.Xml_NamespaceDeclXmlXmlns, prefix));
             }
             if (prefix.Length > 0 && prefix[0] == 'x')
             {
@@ -1832,12 +1832,12 @@ namespace Microsoft.Xml
                 {
                     if (ns != XmlReservedNs.NsXml)
                     {
-                        throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlPrefix));
+                        throw new ArgumentException(ResXml.Xml_XmlPrefix);
                     }
                 }
                 else if (prefix == "xmlns")
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlnsPrefix));
+                    throw new ArgumentException(ResXml.Xml_XmlnsPrefix);
                 }
             }
 
@@ -1945,11 +1945,11 @@ namespace Microsoft.Xml
             {
                 if (_currentState == State.Closed || _currentState == State.Error)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_ClosedOrError));
+                    throw new InvalidOperationException(ResXml.Xml_ClosedOrError);
                 }
                 else
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_WrongToken, tokenName[(int)token], GetStateName(_currentState)));
+                    throw new InvalidOperationException(string.Format(ResXml.Xml_WrongToken, tokenName[(int)token], GetStateName(_currentState)));
                 }
             }
 
@@ -2187,20 +2187,20 @@ namespace Microsoft.Xml
             args[0] = name;
             args[1] = badCharArgs[0];
             args[2] = badCharArgs[1];
-            return new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidNameCharsDetail, args));
+            return new ArgumentException(string.Format(ResXml.Xml_InvalidNameCharsDetail, args));
         }
 
         // This method translates speficic state transition errors in more friendly error messages
         private void ThrowInvalidStateTransition(Token token, State currentState)
         {
-            string wrongTokenMessage = ResXml.GetString(ResXml.Xml_WrongToken, tokenName[(int)token], GetStateName(currentState));
+            string wrongTokenMessage = string.Format(ResXml.Xml_WrongToken, tokenName[(int)token], GetStateName(currentState));
             switch (currentState)
             {
                 case State.AfterRootEle:
                 case State.Start:
                     if (_conformanceLevel == ConformanceLevel.Document)
                     {
-                        throw new InvalidOperationException(wrongTokenMessage + ' ' + ResXml.GetString(ResXml.Xml_ConformanceLevelFragment));
+                        throw new InvalidOperationException(wrongTokenMessage + ' ' + ResXml.Xml_ConformanceLevelFragment);
                     }
                     break;
             }

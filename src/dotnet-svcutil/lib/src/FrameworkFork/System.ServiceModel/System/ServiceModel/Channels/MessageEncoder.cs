@@ -225,7 +225,7 @@ namespace System.ServiceModel.Channels
             if (message.Version != MessageVersion)
             {
                 throw TraceUtility.ThrowHelperError(
-                    new ProtocolException(SRServiceModel.Format(SRServiceModel.EncoderMessageVersionMismatch, message.Version, MessageVersion)),
+                    new ProtocolException(string.Format(SRServiceModel.EncoderMessageVersionMismatch, message.Version, MessageVersion)),
                     message);
             }
         }

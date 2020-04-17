@@ -33,7 +33,7 @@ namespace System.ServiceModel
         {
             ValidateBaseAddress(item, "item");
             if (this.Contains(item.Scheme))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", SRServiceModel.Format(SRServiceModel.BaseAddressDuplicateScheme, item.Scheme));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", string.Format(SRServiceModel.BaseAddressDuplicateScheme, item.Scheme));
 
             base.InsertItem(index, item);
         }
@@ -44,7 +44,7 @@ namespace System.ServiceModel
             if (this[index].Scheme != item.Scheme)
             {
                 if (this.Contains(item.Scheme))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", SRServiceModel.Format(SRServiceModel.BaseAddressDuplicateScheme, item.Scheme));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", string.Format(SRServiceModel.BaseAddressDuplicateScheme, item.Scheme));
             }
             base.SetItem(index, item);
         }

@@ -281,7 +281,7 @@ namespace System.ServiceModel.Channels
                 }
                 catch (TimeoutException timeoutException)
                 {
-                    throw TraceUtility.ThrowHelperError(new TimeoutException(SRServiceModel.Format(SRServiceModel.RequestChannelSendTimedOut, savedTimeout),
+                    throw TraceUtility.ThrowHelperError(new TimeoutException(string.Format(SRServiceModel.RequestChannelSendTimedOut, savedTimeout),
                         timeoutException), message);
                 }
 
@@ -293,7 +293,7 @@ namespace System.ServiceModel.Channels
                 }
                 catch (TimeoutException timeoutException)
                 {
-                    throw TraceUtility.ThrowHelperError(new TimeoutException(SRServiceModel.Format(SRServiceModel.RequestChannelWaitForReplyTimedOut, savedTimeout),
+                    throw TraceUtility.ThrowHelperError(new TimeoutException(string.Format(SRServiceModel.RequestChannelWaitForReplyTimedOut, savedTimeout),
                         timeoutException), message);
                 }
 

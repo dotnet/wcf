@@ -177,7 +177,7 @@ namespace System.ServiceModel.Channels
             catch (FormatException e)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(
-                    SRServiceModel.Format(SRServiceModel.UnsupportedBooleanAttribute, TransactionPolicyStrings.OptionalLocal, e.Message)));
+                    string.Format(SRServiceModel.UnsupportedBooleanAttribute, TransactionPolicyStrings.OptionalLocal, e.Message)));
             }
         }
 

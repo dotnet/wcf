@@ -220,16 +220,16 @@ namespace System.ServiceModel.Channels
                 switch (operation)
                 {
                     case WebSocketHelper.CloseOperation:
-                        errorMsg = SRServiceModel.Format(SRServiceModel.CloseTimedOut, timeout);
+                        errorMsg = string.Format(SRServiceModel.CloseTimedOut, timeout);
                         break;
                     case WebSocketHelper.SendOperation:
-                        errorMsg = SRServiceModel.Format(SRServiceModel.WebSocketSendTimedOut, timeout);
+                        errorMsg = string.Format(SRServiceModel.WebSocketSendTimedOut, timeout);
                         break;
                     case WebSocketHelper.ReceiveOperation:
-                        errorMsg = SRServiceModel.Format(SRServiceModel.WebSocketReceiveTimedOut, timeout);
+                        errorMsg = string.Format(SRServiceModel.WebSocketReceiveTimedOut, timeout);
                         break;
                     default:
-                        errorMsg = SRServiceModel.Format(SRServiceModel.WebSocketOperationTimedOut, operation, timeout);
+                        errorMsg = string.Format(SRServiceModel.WebSocketOperationTimedOut, operation, timeout);
                         break;
                 }
             }

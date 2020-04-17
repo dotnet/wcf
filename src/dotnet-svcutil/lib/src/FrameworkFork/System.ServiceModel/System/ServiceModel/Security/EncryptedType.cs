@@ -55,7 +55,7 @@ namespace System.ServiceModel.Security
         {
             if (this.State == EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(System.SRServiceModel.BadEncryptionState));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.BadEncryptionState));
             }
             return _wrappedKey;
         }
@@ -64,7 +64,7 @@ namespace System.ServiceModel.Security
         {
             if (this.State != EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(System.SRServiceModel.BadEncryptionState));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.BadEncryptionState));
             }
             if (wrappedKey == null)
             {

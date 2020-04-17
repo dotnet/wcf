@@ -42,7 +42,7 @@ namespace System.ServiceModel.Channels
 
             if (!TransactionProtocol.IsDefined(transactionProtocol))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, transactionProtocol.ToString()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, transactionProtocol.ToString()));
             }
 
             _transactionProtocol = transactionProtocol;
@@ -56,7 +56,7 @@ namespace System.ServiceModel.Channels
 
             if (!TransactionProtocol.IsDefined(elementToBeCloned._transactionProtocol))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(SRServiceModel.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, elementToBeCloned._transactionProtocol.ToString()));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(string.Format(SRServiceModel.ConfigInvalidTransactionFlowProtocolValue, elementToBeCloned._transactionProtocol.ToString()));
             }
 
             _transactionProtocol = elementToBeCloned._transactionProtocol;
@@ -168,7 +168,7 @@ namespace System.ServiceModel.Channels
         internal static void ValidateOption(TransactionFlowOption opt)
         {
             if (!TransactionFlowOptionHelper.IsDefined(opt))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.TransactionFlowBadOption)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.TransactionFlowBadOption)));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -214,7 +214,7 @@ namespace System.ServiceModel.Channels
                 result = new MessagePartSpecification(new XmlQualifiedName(standardsManager.TrustDriver.IssuedTokensHeaderName, standardsManager.TrustDriver.IssuedTokensHeaderNamespace));
             else
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.TrustDriverVersionDoesNotSupportIssuedTokens)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.TrustDriverVersionDoesNotSupportIssuedTokens)));
             }
 
             return result;

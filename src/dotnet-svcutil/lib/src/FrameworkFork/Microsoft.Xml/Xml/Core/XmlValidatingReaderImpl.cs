@@ -141,7 +141,7 @@ namespace Microsoft.Xml
             }
             if (_coreReaderImpl == null)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Arg_ExpectingXmlTextReader), "reader");
+                throw new ArgumentException(ResXml.Arg_ExpectingXmlTextReader, "reader");
             }
             _coreReaderImpl.EntityHandling = EntityHandling.ExpandEntities;
             _coreReaderImpl.XmlValidatingReaderCompatibilityMode = true;
@@ -223,7 +223,7 @@ namespace Microsoft.Xml
             }
             if (_coreReaderImpl == null)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Arg_ExpectingXmlTextReader), "reader");
+                throw new ArgumentException(ResXml.Arg_ExpectingXmlTextReader, "reader");
             }
             _coreReaderImpl.XmlValidatingReaderCompatibilityMode = true;
             _coreReaderNSResolver = reader as IXmlNamespaceResolver;
@@ -756,7 +756,7 @@ namespace Microsoft.Xml
             {
                 if (!_outerReader.Read())
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                    throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
                 }
             }
         }
@@ -886,7 +886,7 @@ namespace Microsoft.Xml
             {
                 if (ReadState != ReadState.Initial)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                    throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
                 }
                 _validationType = value;
                 SetupValidation(value);
@@ -967,7 +967,7 @@ namespace Microsoft.Xml
                             {
                                 if (!_outerReader.Read())
                                 {
-                                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidOperation));
+                                    throw new InvalidOperationException(ResXml.Xml_InvalidOperation);
                                 }
                                 XmlNodeType type = _outerReader.NodeType;
                                 if (type != XmlNodeType.CDATA && type != XmlNodeType.Text &&

@@ -59,7 +59,7 @@ namespace Microsoft.Xml
                 // relative base Uri
                 if (!baseUri.IsAbsoluteUri)
                 {
-                    throw new NotSupportedException(ResXml.GetString(ResXml.Xml_RelativeUriNotSupported));
+                    throw new NotSupportedException(ResXml.Xml_RelativeUriNotSupported);
                 }
                 return new Uri(baseUri, relativeUri);
             }

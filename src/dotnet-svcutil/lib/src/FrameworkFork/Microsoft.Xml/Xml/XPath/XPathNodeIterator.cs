@@ -67,13 +67,13 @@ namespace Microsoft.Xml.XPath
                     {
                         // Current is null if iterator is positioned after the last node
                         if (_current == null)
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumFinished, string.Empty));
+                            throw new InvalidOperationException(string.Format(ResXml.Sch_EnumFinished, string.Empty));
 
                         return _current.Current.Clone();
                     }
 
                     // User must call MoveNext before accessing Current property
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumNotStarted, string.Empty));
+                    throw new InvalidOperationException(string.Format(ResXml.Sch_EnumNotStarted, string.Empty));
                 }
             }
 

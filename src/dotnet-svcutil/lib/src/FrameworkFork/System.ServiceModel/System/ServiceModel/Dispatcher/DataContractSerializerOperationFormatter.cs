@@ -83,7 +83,7 @@ namespace System.ServiceModel.Dispatcher
                 if (_knownTypes == null)
                     _knownTypes = new List<Type>();
                 if (type == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxKnownTypeNull, description.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxKnownTypeNull, description.Name)));
                 ValidateDataContractType(type);
                 _knownTypes.Add(type);
             }
@@ -237,7 +237,7 @@ namespace System.ServiceModel.Dispatcher
             catch (SerializationException sx)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBodyErrorSerializingParameter, part.Description.Namespace, part.Description.Name, sx.Message), sx));
+                    string.Format(SRServiceModel.SFxInvalidMessageBodyErrorSerializingParameter, part.Description.Namespace, part.Description.Name, sx.Message), sx));
             }
         }
 
@@ -348,7 +348,7 @@ namespace System.ServiceModel.Dispatcher
             if (messageInfo.WrapperName != null)
             {
                 if (!reader.IsStartElement(messageInfo.WrapperName, messageInfo.WrapperNamespace))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBody, messageInfo.WrapperName, messageInfo.WrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SerializationException(string.Format(SRServiceModel.SFxInvalidMessageBody, messageInfo.WrapperName, messageInfo.WrapperNamespace, reader.NodeType, reader.Name, reader.NamespaceURI)));
                 bool isEmptyElement = reader.IsEmptyElement;
                 reader.Read();
                 if (isEmptyElement)
@@ -421,18 +421,18 @@ namespace System.ServiceModel.Dispatcher
             catch (System.InvalidOperationException e)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameter, part.Description.Namespace, part.Description.Name), e));
+                    string.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameter, part.Description.Namespace, part.Description.Name), e));
             }
             catch (System.Runtime.Serialization.InvalidDataContractException e)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(
-                    SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameter, part.Description.Namespace, part.Description.Name), e));
+                    string.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameter, part.Description.Namespace, part.Description.Name), e));
             }
             catch (System.FormatException e)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     OperationFormatter.CreateDeserializationFailedFault(
-                        SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameterMore,
+                        string.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameterMore,
                                      part.Description.Namespace, part.Description.Name, e.Message),
                                      e));
             }
@@ -440,7 +440,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     OperationFormatter.CreateDeserializationFailedFault(
-                        SRServiceModel.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameterMore,
+                        string.Format(SRServiceModel.SFxInvalidMessageBodyErrorDeserializingParameterMore,
                                      part.Description.Namespace, part.Description.Name, e.Message),
                                      e));
             }

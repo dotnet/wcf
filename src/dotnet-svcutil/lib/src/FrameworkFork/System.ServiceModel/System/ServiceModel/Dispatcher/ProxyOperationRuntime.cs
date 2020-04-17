@@ -81,7 +81,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (_formatter == null && (_serializeRequest || _deserializeReply))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ClientRuntimeRequiresFormatter0, _name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ClientRuntimeRequiresFormatter0, _name)));
             }
         }
 
@@ -199,7 +199,7 @@ namespace System.ServiceModel.Dispatcher
                     Collection<MessageHeaderInfo> headersNotUnderstood = reply.Headers.GetHeadersNotUnderstood();
                     if (headersNotUnderstood != null && headersNotUnderstood.Count > 0)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SRServiceModel.Format(SRServiceModel.SFxHeaderNotUnderstood, headersNotUnderstood[0].Name, headersNotUnderstood[0].Namespace)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(string.Format(SRServiceModel.SFxHeaderNotUnderstood, headersNotUnderstood[0].Name, headersNotUnderstood[0].Namespace)));
                     }
                 }
             }
@@ -252,12 +252,12 @@ namespace System.ServiceModel.Dispatcher
             {
                 if (rpc.InputParameters[0] == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxProxyRuntimeMessageCannotBeNull, _name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxProxyRuntimeMessageCannotBeNull, _name)));
                 }
 
                 rpc.Request = (Message)rpc.InputParameters[0];
                 if (!IsValidAction(rpc.Request, Action))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidRequestAction, this.Name, rpc.Request.Headers.Action ?? "{NULL}", this.Action)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidRequestAction, this.Name, rpc.Request.Headers.Action ?? "{NULL}", this.Action)));
             }
         }
 

@@ -84,7 +84,7 @@ namespace System.ServiceModel.Channels
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.EnvelopeVersionNotSupported, version.Envelope)));
+                    string.Format(SRServiceModel.EnvelopeVersionNotSupported, version.Envelope)));
             }
             return mediaType;
         }
@@ -223,7 +223,7 @@ namespace System.ServiceModel.Channels
             if (TryGetEncodingFromCharSet(charSet, out enc))
                 return enc;
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(SRServiceModel.Format(SRServiceModel.EncoderUnrecognizedCharSet, charSet)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ProtocolException(string.Format(SRServiceModel.EncoderUnrecognizedCharSet, charSet)));
         }
 
         internal static bool TryGetEncodingFromCharSet(string charSet, out Encoding encoding)
@@ -302,7 +302,7 @@ namespace System.ServiceModel.Channels
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SRServiceModel.Format(SRServiceModel.EnvelopeVersionNotSupported, version.Envelope)));
+                        string.Format(SRServiceModel.EnvelopeVersionNotSupported, version.Envelope)));
                 }
             }
 
@@ -479,7 +479,7 @@ namespace System.ServiceModel.Channels
                                                                 SRServiceModel.ValueMustBeNonNegative), message);
                 if (messageOffset < 0 || messageOffset > maxMessageSize)
                     throw TraceUtility.ThrowHelperError(new ArgumentOutOfRangeException("messageOffset", messageOffset,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, maxMessageSize)), message);
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, maxMessageSize)), message);
 
                 ThrowIfMismatchedMessageVersion(message);
 

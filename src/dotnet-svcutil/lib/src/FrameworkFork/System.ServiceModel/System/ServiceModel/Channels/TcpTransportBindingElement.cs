@@ -63,7 +63,7 @@ namespace System.ServiceModel.Channels
 
             if (!this.CanBuildChannelFactory<TChannel>(context))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SRServiceModel.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", string.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
             }
 
             return (IChannelFactory<TChannel>)(object)new TcpChannelFactory<TChannel>(this, context);

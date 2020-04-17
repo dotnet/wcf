@@ -169,7 +169,7 @@ namespace System.ServiceModel.Description
             {
                 if (_dataContractSerializerOperationGenerator._isNonNillableReferenceTypes.ContainsKey(part))
                 {
-                    ParameterModeException parameterModeException = new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_ElementIsNotNillable, part.Name, part.Namespace));
+                    ParameterModeException parameterModeException = new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_ElementIsNotNillable, part.Name, part.Namespace));
                     parameterModeException.MessageContractType = MessageContractType.BareMessageContract;
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(parameterModeException);
                 }
@@ -207,7 +207,7 @@ namespace System.ServiceModel.Description
                         nsAttrFound = true;
                         string nsValue = ((CodePrimitiveExpression)attrArg.Value).Value.ToString();
                         if (nsValue != part.Namespace)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxWrapperTypeHasMultipleNamespaces, messageName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxWrapperTypeHasMultipleNamespaces, messageName)));
                     }
                 }
                 if (!nsAttrFound)

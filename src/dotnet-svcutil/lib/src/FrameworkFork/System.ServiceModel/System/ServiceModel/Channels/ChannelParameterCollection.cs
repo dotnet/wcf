@@ -85,12 +85,12 @@ namespace System.ServiceModel.Channels
                     case CommunicationState.Closing:
                     case CommunicationState.Closed:
                     case CommunicationState.Faulted:
-                        text = SRServiceModel.Format(SRServiceModel.ChannelParametersCannotBeModified,
+                        text = string.Format(SRServiceModel.ChannelParametersCannotBeModified,
                                             channel.GetType().ToString(), state.ToString());
                         break;
 
                     default:
-                        text = SRServiceModel.Format(SRServiceModel.CommunicationObjectInInvalidState,
+                        text = string.Format(SRServiceModel.CommunicationObjectInInvalidState,
                                             channel.GetType().ToString(), state.ToString());
                         break;
                 }
@@ -113,7 +113,7 @@ namespace System.ServiceModel.Channels
                 switch (state)
                 {
                     case CommunicationState.Created:
-                        text = SRServiceModel.Format(SRServiceModel.ChannelParametersCannotBePropagated,
+                        text = string.Format(SRServiceModel.ChannelParametersCannotBePropagated,
                                             channel.GetType().ToString(), state.ToString());
                         break;
 
@@ -125,7 +125,7 @@ namespace System.ServiceModel.Channels
                         break;
 
                     default:
-                        text = SRServiceModel.Format(SRServiceModel.CommunicationObjectInInvalidState,
+                        text = string.Format(SRServiceModel.CommunicationObjectInInvalidState,
                                             channel.GetType().ToString(), state.ToString());
                         break;
                 }

@@ -42,7 +42,7 @@ namespace Microsoft.Xml
             {
                 if (name.Length > 0 && name[0] == '#')
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xdom_InvalidCharacter_EntityReference));
+                    throw new ArgumentException(ResXml.Xdom_InvalidCharacter_EntityReference);
                 }
             }
             _name = doc.NameTable.Add(name);
@@ -71,7 +71,7 @@ namespace Microsoft.Xml
 
             set
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_EntRef_SetVal));
+                throw new InvalidOperationException(ResXml.Xdom_EntRef_SetVal);
             }
         }
 

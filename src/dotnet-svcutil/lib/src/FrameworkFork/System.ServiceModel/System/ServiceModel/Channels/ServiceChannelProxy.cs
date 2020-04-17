@@ -31,7 +31,7 @@ namespace System.ServiceModel.Channels
             TChannel proxy = DispatchProxy.Create<TChannel, ServiceChannelProxy>();
             if (proxy == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.FailedToCreateTypedProxy, typeof(TChannel))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.FailedToCreateTypedProxy, typeof(TChannel))));
             }
 
             ServiceChannelProxy channelProxy = (ServiceChannelProxy)(object)proxy;
@@ -79,9 +79,9 @@ namespace System.ServiceModel.Channels
                 if (operation == null)
                 {
                     if (_serviceChannel.Factory != null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.SFxMethodNotSupported1, method.Name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.SFxMethodNotSupported1, method.Name)));
                     else
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.SFxMethodNotSupportedOnCallback1, method.Name)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.SFxMethodNotSupportedOnCallback1, method.Name)));
                 }
 
                 MethodType methodType;
@@ -128,7 +128,7 @@ namespace System.ServiceModel.Channels
 
             if (targetMethod == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.InvalidTypedProxyMethodHandle, _proxiedType.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.InvalidTypedProxyMethodHandle, _proxiedType.Name)));
             }
 
             MethodCall methodCall = new MethodCall(targetMethod, args);
@@ -325,7 +325,7 @@ namespace System.ServiceModel.Channels
                     if (methodData.MethodBase.DeclaringType == typeof(System.ServiceModel.ICommunicationObject)
                         && methodData.MethodBase.Name.Equals("Close", StringComparison.Ordinal))
                     {
-                        activityName = SRServiceModel.Format(SRServiceModel.ActivityClose, _serviceChannel.GetType().FullName);
+                        activityName = string.Format(SRServiceModel.ActivityClose, _serviceChannel.GetType().FullName);
                         activityType = ActivityType.Close;
                     }
                 }

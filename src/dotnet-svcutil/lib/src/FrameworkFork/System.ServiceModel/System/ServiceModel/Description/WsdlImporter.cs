@@ -635,7 +635,7 @@ namespace System.ServiceModel.Description
             catch (InvalidCastException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(
-                    SRServiceModel.Format(SRServiceModel.SFxBadMetadataDialect, doc.Identifier, doc.Dialect, typeof(T).FullName, doc.GetType().FullName)));
+                    string.Format(SRServiceModel.SFxBadMetadataDialect, doc.Identifier, doc.Dialect, typeof(T).FullName, doc.GetType().FullName)));
             }
         }
 
@@ -771,14 +771,14 @@ namespace System.ServiceModel.Description
 
                 if (item.Extensions.IsRequired(ext) || IsNonSoapWsdl11BindingExtension(ext))
                 {
-                    string errorMsg = SRServiceModel.Format(SRServiceModel.RequiredWSDLExtensionIgnored, qName.Name, qName.Namespace);
+                    string errorMsg = string.Format(SRServiceModel.RequiredWSDLExtensionIgnored, qName.Name, qName.Namespace);
                     WsdlImportException wie = WsdlImportException.Create(item, new InvalidOperationException(errorMsg));
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(wie);
                 }
                 else
                 {
                     string xPath = CreateXPathString(item);
-                    string errorMsg = SRServiceModel.Format(SRServiceModel.OptionalWSDLExtensionIgnored, qName.Name, qName.Namespace, xPath);
+                    string errorMsg = string.Format(SRServiceModel.OptionalWSDLExtensionIgnored, qName.Name, qName.Namespace, xPath);
                     this.Errors.Add(new MetadataConversionError(errorMsg, true));
                 }
             }
@@ -823,7 +823,7 @@ namespace System.ServiceModel.Description
                     }
                 }
             }
-            WsdlImportException wie = WsdlImportException.Create(item, new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnknownWSDLExtensionIgnored, extension.GetType().AssemblyQualifiedName)));
+            WsdlImportException wie = WsdlImportException.Create(item, new InvalidOperationException(string.Format(SRServiceModel.UnknownWSDLExtensionIgnored, extension.GetType().AssemblyQualifiedName)));
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(wie);
         }
 
@@ -874,7 +874,7 @@ namespace System.ServiceModel.Description
 
                 if (wsdlOperationBindingName == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidWsdlBindingOpNoName, wsdlOperationBinding.Binding.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidWsdlBindingOpNoName, wsdlOperationBinding.Binding.Name)));
                 }
 
                 WsdlNS.Operation partialMatchResult = null;
@@ -903,7 +903,7 @@ namespace System.ServiceModel.Description
                 else
                 {
                     //unable to find wsdloperation for wsdlOperationBinding, invalid wsdl binding
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxInvalidWsdlBindingOpMismatch2, wsdlOperationBinding.Binding.Name, wsdlOperationBinding.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxInvalidWsdlBindingOpMismatch2, wsdlOperationBinding.Binding.Name, wsdlOperationBinding.Name)));
                 }
             }
 
@@ -986,7 +986,7 @@ namespace System.ServiceModel.Description
                         return operationDescription;
                 }
 
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnableToLocateOperation2, wsdlOperationBinding.Name, contract.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnableToLocateOperation2, wsdlOperationBinding.Name, contract.Name)));
             }
 
             private static bool CompareOperations(OperationDescription operationDescription, ContractDescription parentContractDescription, WsdlNS.OperationBinding wsdlOperationBinding)
@@ -1141,7 +1141,7 @@ namespace System.ServiceModel.Description
 
                     if (policyElement == null)
                     {
-                        string message = SRServiceModel.Format(SRServiceModel.ElementRequired, MetadataStrings.Addressing10.MetadataPolicy.Prefix,
+                        string message = string.Format(SRServiceModel.ElementRequired, MetadataStrings.Addressing10.MetadataPolicy.Prefix,
                             MetadataStrings.Addressing10.MetadataPolicy.Addressing, MetadataStrings.WSPolicy.Prefix,
                             MetadataStrings.WSPolicy.Elements.Policy);
 
@@ -1683,7 +1683,7 @@ namespace System.ServiceModel.Description
 
         private static void AddUnImportedPolicyString(StringBuilder stringBuilder, WsdlNS.NamedItem item, IEnumerable<XmlElement> unimportdPolicy)
         {
-            stringBuilder.AppendLine(SRServiceModel.Format(SRServiceModel.UnImportedAssertionList, CreateXPathString(item)));
+            stringBuilder.AppendLine(string.Format(SRServiceModel.UnImportedAssertionList, CreateXPathString(item)));
             // do not putput duplicated assetions
             Dictionary<XmlElement, XmlElement> unique = new Dictionary<XmlElement, XmlElement>();
             int uniqueAsserions = 0;
@@ -1879,12 +1879,12 @@ namespace System.ServiceModel.Description
             if (wie.InnerException != null && (wie.InnerException is WsdlImportException))
             {
                 WsdlImportException wieInner = wie.InnerException as WsdlImportException;
-                string dependencyMessage = SRServiceModel.Format(SRServiceModel.WsdlImportErrorDependencyDetail, GetElementName(wieInner.SourceItem), GetElementName(item), CreateXPathString(wieInner.SourceItem));
-                errormessage = SRServiceModel.Format(SRServiceModel.WsdlImportErrorMessageDetail, GetElementName(item), CreateXPathString(wie.SourceItem), dependencyMessage);
+                string dependencyMessage = string.Format(SRServiceModel.WsdlImportErrorDependencyDetail, GetElementName(wieInner.SourceItem), GetElementName(item), CreateXPathString(wieInner.SourceItem));
+                errormessage = string.Format(SRServiceModel.WsdlImportErrorMessageDetail, GetElementName(item), CreateXPathString(wie.SourceItem), dependencyMessage);
             }
             else
             {
-                errormessage = SRServiceModel.Format(SRServiceModel.WsdlImportErrorMessageDetail, GetElementName(item), CreateXPathString(wie.SourceItem), wie.Message);
+                errormessage = string.Format(SRServiceModel.WsdlImportErrorMessageDetail, GetElementName(item), CreateXPathString(wie.SourceItem), wie.Message);
             }
 
             _importErrors.Add(item, wie);
@@ -1893,20 +1893,20 @@ namespace System.ServiceModel.Description
 
         private static Exception CreateBeforeImportExtensionException(IWsdlImportExtension importer, Exception e)
         {
-            string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionBeforeImportError, importer.GetType().AssemblyQualifiedName, e.Message);
+            string errorMessage = string.Format(SRServiceModel.WsdlExtensionBeforeImportError, importer.GetType().AssemblyQualifiedName, e.Message);
             return new InvalidOperationException(errorMessage, e);
         }
 
         private Exception CreateAlreadyFaultedException(WsdlNS.NamedItem item)
         {
             WsdlImportException innerException = _importErrors[item];
-            string warningMsg = SRServiceModel.Format(SRServiceModel.WsdlItemAlreadyFaulted, GetElementName(item));
+            string warningMsg = string.Format(SRServiceModel.WsdlItemAlreadyFaulted, GetElementName(item));
             return new AlreadyFaultedException(warningMsg, innerException);
         }
 
         private static Exception CreateExtensionException(IWsdlImportExtension importer, Exception e)
         {
-            string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionImportError, importer.GetType().FullName, e.Message);
+            string errorMessage = string.Format(SRServiceModel.WsdlExtensionImportError, importer.GetType().FullName, e.Message);
             //consider hsomu, allow internal exceptions to throw WsdlImportException and handle it in some special way?
             return new InvalidOperationException(errorMessage, e);
         }
@@ -2018,14 +2018,14 @@ namespace System.ServiceModel.Description
 
                 if (!string.IsNullOrEmpty(xPath))
                 {
-                    warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.XPathPointer, xPath));
+                    warningMsg.AppendLine(string.Format(SRServiceModel.XPathPointer, xPath));
                 }
                 else
                 {
                     //
                     // We were given a context assertion that we couldn't get an XPath for
                     //
-                    warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.XPathPointer, SRServiceModel.XPathUnavailable));
+                    warningMsg.AppendLine(string.Format(SRServiceModel.XPathPointer, SRServiceModel.XPathUnavailable));
                 }
                 _importer.LogImportWarning(warningMsg.ToString());
             }
@@ -2086,8 +2086,8 @@ namespace System.ServiceModel.Description
                     if (policy == null)
                     {
                         StringBuilder warningMsg = new StringBuilder();
-                        warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.UnableToFindPolicyWithId, policyRef));
-                        warningMsg.AppendLine(SRServiceModel.Format(SRServiceModel.XPathPointer, xPath));
+                        warningMsg.AppendLine(string.Format(SRServiceModel.UnableToFindPolicyWithId, policyRef));
+                        warningMsg.AppendLine(string.Format(SRServiceModel.XPathPointer, xPath));
                         _importer.LogImportWarning(warningMsg.ToString());
                         continue;
                     }
@@ -2124,7 +2124,7 @@ namespace System.ServiceModel.Description
 
                     if (idRef == null)
                     {
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.PolicyReferenceMissingURI, MetadataStrings.WSPolicy.Attributes.URI);
+                        string warningMsg = string.Format(SRServiceModel.PolicyReferenceMissingURI, MetadataStrings.WSPolicy.Attributes.URI);
                         _importer.LogImportWarning(warningMsg);
                     }
                     else if (idRef == string.Empty)
@@ -2323,7 +2323,7 @@ namespace System.ServiceModel.Description
                     if (String.IsNullOrEmpty(key))
                     {
                         string xPath = CreateXPathString(wsdl);
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.PolicyInWsdlMustHaveFragmentId, xPath);
+                        string warningMsg = string.Format(SRServiceModel.PolicyInWsdlMustHaveFragmentId, xPath);
                         importer.LogImportWarning(warningMsg);
                         return;
                     }
@@ -2337,7 +2337,7 @@ namespace System.ServiceModel.Description
                     else if (wsdlPolicyDictionary.ContainsKey(key))
                     {
                         string xPath = CreateIdXPath(wsdl, element, key);
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.DuplicatePolicyInWsdlSkipped, xPath);
+                        string warningMsg = string.Format(SRServiceModel.DuplicatePolicyInWsdlSkipped, xPath);
                         importer.LogImportWarning(warningMsg);
                         return;
                     }
@@ -2351,14 +2351,14 @@ namespace System.ServiceModel.Description
                     if (policyDocument.Value.NamespaceURI != MetadataStrings.WSPolicy.NamespaceUri
                         && policyDocument.Value.NamespaceURI != MetadataStrings.WSPolicy.NamespaceUri15)
                     {
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.UnrecognizedPolicyDocumentNamespace, policyDocument.Value.NamespaceURI);
+                        string warningMsg = string.Format(SRServiceModel.UnrecognizedPolicyDocumentNamespace, policyDocument.Value.NamespaceURI);
                         importer.LogImportWarning(warningMsg);
                         return;
                     }
 
                     if (PolicyHelper.GetNodeType(policyDocument.Value) != PolicyHelper.NodeType.Policy)
                     {
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.UnsupportedPolicyDocumentRoot, policyDocument.Value.Name);
+                        string warningMsg = string.Format(SRServiceModel.UnsupportedPolicyDocumentRoot, policyDocument.Value.Name);
                         importer.LogImportWarning(warningMsg);
                         return;
                     }
@@ -2366,7 +2366,7 @@ namespace System.ServiceModel.Description
                     string key = CreateKeyFromPolicy(policyDocument.Key, policyDocument.Value);
                     if (_externalPolicyDictionary.ContainsKey(key))
                     {
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.DuplicatePolicyDocumentSkipped, key);
+                        string warningMsg = string.Format(SRServiceModel.DuplicatePolicyDocumentSkipped, key);
                         importer.LogImportWarning(warningMsg);
                         return;
                     }

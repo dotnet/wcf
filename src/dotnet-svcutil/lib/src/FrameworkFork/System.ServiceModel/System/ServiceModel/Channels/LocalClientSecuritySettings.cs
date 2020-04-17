@@ -200,7 +200,7 @@ namespace System.ServiceModel.Channels
                 if (value < 0 || value > 100)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value", value,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, 100)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, 100)));
                 }
                 _cookieRenewalThresholdPercentage = value;
             }

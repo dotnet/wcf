@@ -141,11 +141,11 @@ namespace Microsoft.Xml
 
             if ((Ref.Equal(_xml, prefix) && !uri.Equals(XmlReservedNs.NsXml)))
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlPrefix));
+                throw new ArgumentException(ResXml.Xml_XmlPrefix);
             }
             if (Ref.Equal(_xmlNs, prefix))
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_XmlnsPrefix));
+                throw new ArgumentException(ResXml.Xml_XmlnsPrefix);
             }
 
             int declIndex = LookupNamespaceDecl(prefix);

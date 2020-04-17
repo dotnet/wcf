@@ -488,11 +488,11 @@ namespace System.ServiceModel.Dispatcher
 
             if (String.IsNullOrEmpty(endpointContractNames))
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxChannelDispatcherUnableToOpen1, _listener.Uri), e);
+                return new InvalidOperationException(string.Format(SRServiceModel.SFxChannelDispatcherUnableToOpen1, _listener.Uri), e);
             }
             else
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxChannelDispatcherUnableToOpen2, _listener.Uri, endpointContractNames), e);
+                return new InvalidOperationException(string.Format(SRServiceModel.SFxChannelDispatcherUnableToOpen2, _listener.Uri, endpointContractNames), e);
             }
         }
 

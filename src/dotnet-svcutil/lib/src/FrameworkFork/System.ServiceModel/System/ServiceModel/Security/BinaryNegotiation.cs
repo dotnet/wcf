@@ -50,7 +50,7 @@ namespace System.ServiceModel.Security
         {
             if (_valueTypeUri != valueTypeUriDictionaryString.Value)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(SRServiceModel.Format(SRServiceModel.IncorrectBinaryNegotiationValueType, _valueTypeUri)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityNegotiationException(string.Format(SRServiceModel.IncorrectBinaryNegotiationValueType, _valueTypeUri)));
             }
             _valueTypeUriDictionaryString = valueTypeUriDictionaryString;
         }

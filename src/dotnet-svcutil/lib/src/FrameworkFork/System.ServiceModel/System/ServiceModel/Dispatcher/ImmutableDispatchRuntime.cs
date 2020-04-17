@@ -873,7 +873,7 @@ namespace System.ServiceModel.Dispatcher
                 if (_map.Contains(action))
                 {
                     DispatchOperationRuntime existingOperation = (DispatchOperationRuntime)_map[action];
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxActionDemuxerDuplicate, existingOperation.Name, operation.Name, action)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxActionDemuxerDuplicate, existingOperation.Name, operation.Name, action)));
                 }
                 _map.Add(action, operation);
             }

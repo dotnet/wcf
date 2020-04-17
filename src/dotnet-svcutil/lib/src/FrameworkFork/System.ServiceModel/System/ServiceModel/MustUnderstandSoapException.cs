@@ -31,7 +31,7 @@ namespace System.ServiceModel
             string name = _notUnderstoodHeaders[0].Name;
             string ns = _notUnderstoodHeaders[0].Namespace;
             FaultCode code = new FaultCode(MessageStrings.MustUnderstandFault, _envelopeVersion.Namespace);
-            FaultReason reason = new FaultReason(SRServiceModel.Format(SRServiceModel.SFxHeaderNotUnderstood, name, ns), CultureInfo.CurrentCulture);
+            FaultReason reason = new FaultReason(string.Format(SRServiceModel.SFxHeaderNotUnderstood, name, ns), CultureInfo.CurrentCulture);
             MessageFault fault = MessageFault.CreateFault(code, reason);
             string faultAction = messageVersion.Addressing.DefaultFaultAction;
             Message message = System.ServiceModel.Channels.Message.CreateMessage(messageVersion, fault, faultAction);

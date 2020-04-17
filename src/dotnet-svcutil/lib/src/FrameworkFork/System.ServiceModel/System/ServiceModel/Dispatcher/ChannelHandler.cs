@@ -270,7 +270,7 @@ namespace System.ServiceModel.Dispatcher
 
                 if (_shouldRejectMessageWithOnOpenActionHeader && message.Headers.Action == OperationDescription.SessionOpenedAction)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxNoEndpointMatchingAddressForConnectionOpeningMessage, message.Headers.Action, "Open")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxNoEndpointMatchingAddressForConnectionOpeningMessage, message.Headers.Action, "Open")));
                 }
 
                 if (MessageLogger.LoggingEnabled)
@@ -823,7 +823,7 @@ namespace System.ServiceModel.Dispatcher
         {
             FaultCode code = FaultCode.CreateSenderFaultCode(AddressingStrings.DestinationUnreachable,
                 _messageVersion.Addressing.Namespace);
-            string reason = SRServiceModel.Format(SRServiceModel.SFxNoEndpointMatchingAddress, request.RequestMessage.Headers.To);
+            string reason = string.Format(SRServiceModel.SFxNoEndpointMatchingAddress, request.RequestMessage.Headers.To);
 
             ReplyFailure(request, code, reason);
         }
@@ -837,7 +837,7 @@ namespace System.ServiceModel.Dispatcher
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new MessageHeaderException(
-                    SRServiceModel.Format(SRServiceModel.SFxMissingActionHeader, addressingVersion.Namespace), AddressingStrings.Action, addressingVersion.Namespace));
+                    string.Format(SRServiceModel.SFxMissingActionHeader, addressingVersion.Namespace), AddressingStrings.Action, addressingVersion.Namespace));
             }
             else
             {
@@ -845,7 +845,7 @@ namespace System.ServiceModel.Dispatcher
                 // ideally both places would use FaultConverter and ActionNotSupportedException
                 FaultCode code = FaultCode.CreateSenderFaultCode(AddressingStrings.ActionNotSupported,
                     _messageVersion.Addressing.Namespace);
-                string reason = SRServiceModel.Format(SRServiceModel.SFxNoEndpointMatchingContract, request.RequestMessage.Headers.Action);
+                string reason = string.Format(SRServiceModel.SFxNoEndpointMatchingContract, request.RequestMessage.Headers.Action);
                 ReplyFailure(request, code, reason, _messageVersion.Addressing.FaultAction);
             }
         }

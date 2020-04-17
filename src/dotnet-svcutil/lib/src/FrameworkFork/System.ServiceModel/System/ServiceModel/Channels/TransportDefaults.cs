@@ -76,7 +76,7 @@ namespace System.ServiceModel.Channels
                 if (charSet == supportedEncodings[i].WebName)
                     return;
             }
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MessageTextEncodingNotSupported, charSet), "encoding"));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.MessageTextEncodingNotSupported, charSet), "encoding"));
         }
 
         public static string EncodingToCharSet(Encoding encoding)

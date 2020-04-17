@@ -59,7 +59,7 @@ namespace Microsoft.CodeDom.Compiler
             }
             else
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
             }
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.CodeDom.Compiler
             }
             else
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
             }
         }
 
@@ -497,7 +497,7 @@ namespace Microsoft.CodeDom.Compiler
             }
             else
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
             }
         }
 
@@ -698,7 +698,7 @@ namespace Microsoft.CodeDom.Compiler
             // Check if we have zero type args for open types.
             if ((totalTypeArgs != e.TypeArguments.Count) && (e.TypeArguments.Count != 0))
             {
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.ArityDoesntMatch, baseType, e.TypeArguments.Count));
+                throw new ArgumentException(string.Format(SRCodeDom.ArityDoesntMatch, baseType, e.TypeArguments.Count));
             }
         }
 
@@ -706,7 +706,7 @@ namespace Microsoft.CodeDom.Compiler
         {
             if (!CodeGenerator.IsValidLanguageIndependentTypeName(typeName))
             {
-                String message = SRCodeDom.GetString(SRCodeDom.InvalidTypeName, typeName, propertyName, e.GetType().FullName);
+                String message = string.Format(SRCodeDom.InvalidTypeName, typeName, propertyName, e.GetType().FullName);
                 throw new ArgumentException(message, "typeName");
             }
         }
@@ -715,7 +715,7 @@ namespace Microsoft.CodeDom.Compiler
         {
             if (!CodeGenerator.IsValidLanguageIndependentIdentifier(identifier))
             {
-                String message = SRCodeDom.GetString(SRCodeDom.InvalidLanguageIdentifier, identifier, propertyName, e.GetType().FullName);
+                String message = string.Format(SRCodeDom.InvalidLanguageIdentifier, identifier, propertyName, e.GetType().FullName);
                 throw new ArgumentException(message, "identifier");
             }
         }
@@ -830,7 +830,7 @@ namespace Microsoft.CodeDom.Compiler
                 }
                 else
                 {
-                    throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                    throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
                 }
             }
         }
@@ -1016,19 +1016,19 @@ namespace Microsoft.CodeDom.Compiler
             else if (e is CodeRegionDirective)
                 ValidateRegionDirective((CodeRegionDirective)e);
             else
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidElementType, e.GetType().FullName), "e");
         }
 
         private static void ValidateChecksumPragma(CodeChecksumPragma e)
         {
             if (e.FileName.IndexOfAny(Path.GetInvalidPathChars()) != -1)
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidPathCharsInChecksum, e.FileName));
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidPathCharsInChecksum, e.FileName));
         }
 
         private static void ValidateRegionDirective(CodeRegionDirective e)
         {
             if (e.RegionText.IndexOfAny(s_newLineChars) != -1)
-                throw new ArgumentException(SRCodeDom.GetString(SRCodeDom.InvalidRegion, e.RegionText));
+                throw new ArgumentException(string.Format(SRCodeDom.InvalidRegion, e.RegionText));
         }
 
         private bool IsCurrentInterface

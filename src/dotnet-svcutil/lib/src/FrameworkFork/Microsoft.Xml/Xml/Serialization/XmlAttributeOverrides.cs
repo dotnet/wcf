@@ -42,7 +42,7 @@ namespace Microsoft.Xml.Serialization
             }
             else if (members[member] != null)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlAttributeSetAgain, type.FullName, member));
+                throw new InvalidOperationException(string.Format(ResXml.XmlAttributeSetAgain, type.FullName, member));
             }
             members.Add(member, attributes);
         }

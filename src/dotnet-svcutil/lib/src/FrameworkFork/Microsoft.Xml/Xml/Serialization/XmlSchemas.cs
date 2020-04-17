@@ -62,7 +62,7 @@ namespace Microsoft.Xml.Serialization
                 if (values.Count == 1)
                     return (XmlSchema)values[0];
 
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSchemaDuplicateNamespace, ns));
+                throw new InvalidOperationException(string.Format(ResXml.XmlSchemaDuplicateNamespace, ns));
             }
         }
 
@@ -270,7 +270,7 @@ namespace Microsoft.Xml.Serialization
 
         private void AddName(XmlSchema schema)
         {
-            if (_isCompiled) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSchemaCompiled));
+            if (_isCompiled) throw new InvalidOperationException(ResXml.XmlSchemaCompiled);
             if (SchemaSet.Contains(schema))
                 SchemaSet.Reprocess(schema);
             else
@@ -362,7 +362,7 @@ namespace Microsoft.Xml.Serialization
 #if DEBUG
             else {
                 // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "XmlSchemas.Find: Invalid object type " + type.FullName));
+                throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "XmlSchemas.Find: Invalid object type " + type.FullName));
             }
 #endif
 
@@ -496,7 +496,7 @@ namespace Microsoft.Xml.Serialization
                         // we do not process includes or redefines by the schemaLocation
                         if (external.SchemaLocation != null)
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSchemaIncludeLocation, this.GetType().Name, external.SchemaLocation));
+                            throw new InvalidOperationException(string.Format(ResXml.XmlSchemaIncludeLocation, this.GetType().Name, external.SchemaLocation));
                         }
                     }
                     else
@@ -613,11 +613,11 @@ namespace Microsoft.Xml.Serialization
             string item = null;
             if (o is XmlSchemaNotation)
             {
-                item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, "notation", ((XmlSchemaNotation)o).Name, details);
+                item = string.Format(ResXml.XmlSchemaNamedItem, ns, "notation", ((XmlSchemaNotation)o).Name, details);
             }
             else if (o is XmlSchemaGroup)
             {
-                item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, "group", ((XmlSchemaGroup)o).Name, details);
+                item = string.Format(ResXml.XmlSchemaNamedItem, ns, "group", ((XmlSchemaGroup)o).Name, details);
             }
             else if (o is XmlSchemaElement)
             {
@@ -626,20 +626,20 @@ namespace Microsoft.Xml.Serialization
                 {
                     XmlQualifiedName parentName = XmlSchemas.GetParentName(o);
                     // Element reference '{0}' declared in schema type '{1}' from namespace '{2}'
-                    item = ResXml.GetString(ResXml.XmlSchemaElementReference, e.RefName.ToString(), parentName.Name, parentName.Namespace);
+                    item = string.Format(ResXml.XmlSchemaElementReference, e.RefName.ToString(), parentName.Name, parentName.Namespace);
                 }
                 else
                 {
-                    item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, "element", e.Name, details);
+                    item = string.Format(ResXml.XmlSchemaNamedItem, ns, "element", e.Name, details);
                 }
             }
             else if (o is XmlSchemaType)
             {
-                item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, o.GetType() == typeof(XmlSchemaSimpleType) ? "simpleType" : "complexType", ((XmlSchemaType)o).Name, null);
+                item = string.Format(ResXml.XmlSchemaNamedItem, ns, o.GetType() == typeof(XmlSchemaSimpleType) ? "simpleType" : "complexType", ((XmlSchemaType)o).Name, null);
             }
             else if (o is XmlSchemaAttributeGroup)
             {
-                item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, "attributeGroup", ((XmlSchemaAttributeGroup)o).Name, details);
+                item = string.Format(ResXml.XmlSchemaNamedItem, ns, "attributeGroup", ((XmlSchemaAttributeGroup)o).Name, details);
             }
             else if (o is XmlSchemaAttribute)
             {
@@ -648,31 +648,31 @@ namespace Microsoft.Xml.Serialization
                 {
                     XmlQualifiedName parentName = XmlSchemas.GetParentName(o);
                     // Attribure reference '{0}' declared in schema type '{1}' from namespace '{2}'
-                    return ResXml.GetString(ResXml.XmlSchemaAttributeReference, a.RefName.ToString(), parentName.Name, parentName.Namespace);
+                    return string.Format(ResXml.XmlSchemaAttributeReference, a.RefName.ToString(), parentName.Name, parentName.Namespace);
                 }
                 else
                 {
-                    item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, "attribute", a.Name, details);
+                    item = string.Format(ResXml.XmlSchemaNamedItem, ns, "attribute", a.Name, details);
                 }
             }
             else if (o is XmlSchemaContent)
             {
                 XmlQualifiedName parentName = XmlSchemas.GetParentName(o);
                 // Check content definition of schema type '{0}' from namespace '{1}'. {2}
-                item = ResXml.GetString(ResXml.XmlSchemaContentDef, parentName.Name, parentName.Namespace, null);
+                item = string.Format(ResXml.XmlSchemaContentDef, parentName.Name, parentName.Namespace, null);
             }
             else if (o is XmlSchemaExternal)
             {
                 string itemType = o is XmlSchemaImport ? "import" : o is XmlSchemaInclude ? "include" : o is XmlSchemaRedefine ? "redefine" : o.GetType().Name;
-                item = ResXml.GetString(ResXml.XmlSchemaItem, ns, itemType, details);
+                item = string.Format(ResXml.XmlSchemaItem, ns, itemType, details);
             }
             else if (o is XmlSchema)
             {
-                item = ResXml.GetString(ResXml.XmlSchema, ns, details);
+                item = string.Format(ResXml.XmlSchema, ns, details);
             }
             else
             {
-                item = ResXml.GetString(ResXml.XmlSchemaNamedItem, ns, o.GetType().Name, null, details);
+                item = string.Format(ResXml.XmlSchemaNamedItem, ns, o.GetType().Name, null, details);
             }
 
             return item;
@@ -693,7 +693,7 @@ namespace Microsoft.Xml.Serialization
         }
         private static string MergeFailedMessage(XmlSchemaObject src, XmlSchemaObject dest, string ns)
         {
-            string err = ResXml.GetString(ResXml.XmlSerializableMergeItem, ns, GetSchemaItem(src, ns, null));
+            string err = string.Format(ResXml.XmlSerializableMergeItem, ns, GetSchemaItem(src, ns, null));
             err += "\r\n" + Dump(src);
             err += "\r\n" + Dump(dest);
             return err;
@@ -814,7 +814,7 @@ namespace Microsoft.Xml.Serialization
                         ns = ((XmlSchema)source).TargetNamespace;
                     }
                 }
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSchemaSyntaxErrorDetails, ns, message, exception.LineNumber, exception.LinePosition), exception);
+                throw new InvalidOperationException(string.Format(ResXml.XmlSchemaSyntaxErrorDetails, ns, message, exception.LineNumber, exception.LinePosition), exception);
             }
         }
 

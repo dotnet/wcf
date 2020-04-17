@@ -100,14 +100,14 @@ namespace Microsoft.Xml.Serialization
                 foreach (MemberMapping member in mapping.Members)
                 {
                     if (member.Attribute != null)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlBareAttributeMember, member.Attribute.Name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlBareAttributeMember, member.Attribute.Name));
                     else if (member.Text != null)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlBareTextMember, member.Text.Name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlBareTextMember, member.Text.Name));
                     else if (member.Elements == null || member.Elements.Length == 0)
                         continue;
 
                     if (member.TypeDesc.IsArrayLike && !(member.Elements[0].Mapping is ArrayMapping))
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalArrayElement, member.Elements[0].Name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlIllegalArrayElement, member.Elements[0].Name));
 
                     if (exportEnclosingType)
                     {
@@ -249,7 +249,7 @@ namespace Microsoft.Xml.Serialization
             }
             else if (_scope != scope)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMappingsScopeMismatch));
+                throw new InvalidOperationException(ResXml.XmlMappingsScopeMismatch);
             }
         }
 
@@ -260,7 +260,7 @@ namespace Microsoft.Xml.Serialization
                 return null;
             }
             if (accessor.Any && accessor.Name.Length == 0)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalWildcard));
+                throw new InvalidOperationException(ResXml.XmlIllegalWildcard);
             XmlSchemaElement element = (XmlSchemaElement)_elements[accessor];
             if (element != null) return element;
             element = new XmlSchemaElement();
@@ -285,7 +285,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     XmlSchemaType type = o as XmlSchemaType;
                     if (type != null && type.Name == newTypeName)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlDuplicateTypeName, newTypeName, newNamespace));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlDuplicateTypeName, newTypeName, newNamespace));
                 }
             }
         }
@@ -316,14 +316,14 @@ namespace Microsoft.Xml.Serialization
             {
                 XmlSchemaElement e = (XmlSchemaElement)item;
                 if (e.Form == XmlSchemaForm.Unqualified)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalForm, e.Name));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlIllegalForm, e.Name));
                 e.Form = XmlSchemaForm.None;
             }
             else if (item is XmlSchemaAttribute)
             {
                 XmlSchemaAttribute a = (XmlSchemaAttribute)item;
                 if (a.Form == XmlSchemaForm.Unqualified)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalForm, a.Name));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlIllegalForm, a.Name));
                 a.Form = XmlSchemaForm.None;
             }
             schema.Items.Add(item);
@@ -399,7 +399,7 @@ namespace Microsoft.Xml.Serialization
             else if (mapping is NullableMapping)
                 ExportMapping(((NullableMapping)mapping).BaseMapping, ns, isAny);
             else
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "mapping");
+                throw new ArgumentException(ResXml.XmlInternalError, "mapping");
         }
 
         private void ExportElementMapping(XmlSchemaElement element, Mapping mapping, string ns, bool isAny)
@@ -431,7 +431,7 @@ namespace Microsoft.Xml.Serialization
                 ExportElementMapping(element, ((NullableMapping)mapping).BaseMapping, ns, isAny);
             }
             else
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "mapping");
+                throw new ArgumentException(ResXml.XmlInternalError, "mapping");
         }
 
         private XmlQualifiedName ExportNonXsdPrimitiveMapping(PrimitiveMapping mapping, string ns)
@@ -547,7 +547,7 @@ namespace Microsoft.Xml.Serialization
                             }
                             else if (existingSchema != serializableMapping.Schema)
                             {
-                                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlDuplicateNamespace, anyNs));
+                                throw new InvalidOperationException(string.Format(ResXml.XmlDuplicateNamespace, anyNs));
                             }
                             if (element != null)
                                 element.SchemaType = type;
@@ -573,7 +573,7 @@ namespace Microsoft.Xml.Serialization
                         }
                     }
                 default:
-                    throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "mapping");
+                    throw new ArgumentException(ResXml.XmlInternalError, "mapping");
             }
         }
 
@@ -598,7 +598,7 @@ namespace Microsoft.Xml.Serialization
             }
             else
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Unsuported anonymous mapping type: " + mapping.ToString()));
+                throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Unsuported anonymous mapping type: " + mapping.ToString()));
             }
         }
 
@@ -655,7 +655,7 @@ namespace Microsoft.Xml.Serialization
 #if DEBUG
                         // we can have only one item for the array mapping
                         if (seq.Items.Count != 1) 
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Type " + mapping.TypeName + " from namespace '" + ns + "' is an invalid array mapping"));
+                            throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Type " + mapping.TypeName + " from namespace '" + ns + "' is an invalid array mapping"));
 #endif
                     if (seq.Items[0] is XmlSchemaChoice)
                     {
@@ -717,7 +717,7 @@ namespace Microsoft.Xml.Serialization
                 else if (type.ContentModel.Content is XmlSchemaSimpleContentExtension)
                     attributes = ((XmlSchemaSimpleContentExtension)type.ContentModel.Content).Attributes;
                 else
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidContent, type.ContentModel.Content.GetType().Name));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlInvalidContent, type.ContentModel.Content.GetType().Name));
             }
             else
             {
@@ -830,7 +830,7 @@ namespace Microsoft.Xml.Serialization
                     }
                 }
                 else if (!(accessor.Mapping is SpecialMapping))
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                    throw new InvalidOperationException(ResXml.XmlInternalError);
 
                 if (accessor.HasDefault)
                 {
@@ -916,7 +916,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (value.GetType() != typeof(string)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, ResXml.GetString(ResXml.XmlInvalidDefaultValue, value.ToString(), value.GetType().FullName)));
+                    if (value.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, string.Format(ResXml.XmlInvalidDefaultValue, value.ToString(), value.GetType().FullName)));
 #endif
 
                 // check the validity of the value
@@ -955,7 +955,7 @@ namespace Microsoft.Xml.Serialization
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
                     if (pm.TypeDesc.Type == null) {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Mapping for " + pm.TypeDesc.Name + " missing type property"));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Mapping for " + pm.TypeDesc.Name + " missing type property"));
                     }
 #endif
 
@@ -971,10 +971,10 @@ namespace Microsoft.Xml.Serialization
             {
                 string defaultValue = XmlCustomFormatter.FromDefaultValue(value, pm.TypeDesc.FormatterName);
                 if (defaultValue == null)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidDefaultValue, value.ToString(), pm.TypeDesc.Name));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlInvalidDefaultValue, value.ToString(), pm.TypeDesc.Name));
                 return defaultValue;
             }
-            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidDefaultValue, value.ToString(), pm.TypeDesc.Name));
+            throw new InvalidOperationException(string.Format(ResXml.XmlInvalidDefaultValue, value.ToString(), pm.TypeDesc.Name));
         }
 
         private void ExportRootIfNecessary(TypeScope typeScope)
@@ -1008,13 +1008,13 @@ namespace Microsoft.Xml.Serialization
             if (mapping.IsAnonymousType)
             {
                 if (_references[mapping] != null)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlCircularReference2, mapping.TypeDesc.Name, "AnonymousType", "false"));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlCircularReference2, mapping.TypeDesc.Name, "AnonymousType", "false"));
                 _references[mapping] = mapping;
             }
             XmlSchemaComplexType type = (XmlSchemaComplexType)_types[mapping];
             if (type == null)
             {
-                if (!mapping.IncludeInSchema) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlCannotIncludeInSchema, mapping.TypeDesc.Name));
+                if (!mapping.IncludeInSchema) throw new InvalidOperationException(string.Format(ResXml.XmlCannotIncludeInSchema, mapping.TypeDesc.Name));
                 CheckForDuplicateType(mapping, mapping.Namespace);
                 type = new XmlSchemaComplexType();
                 if (!mapping.IsAnonymousType)
@@ -1029,7 +1029,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (mapping.BaseMapping.IsAnonymousType)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlAnonymousBaseType, mapping.TypeDesc.Name, mapping.BaseMapping.TypeDesc.Name, "AnonymousType", "false"));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlAnonymousBaseType, mapping.TypeDesc.Name, mapping.BaseMapping.TypeDesc.Name, "AnonymousType", "false"));
                     }
                     if (mapping.HasSimpleContent)
                     {
@@ -1090,7 +1090,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (textMapping != null)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalMultipleText, name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlIllegalMultipleText, name));
                     }
                     textMapping = member.Text.Mapping;
                 }
@@ -1113,7 +1113,7 @@ namespace Microsoft.Xml.Serialization
                     else if (type.ContentModel.Content is XmlSchemaComplexContentExtension)
                         ((XmlSchemaComplexContentExtension)type.ContentModel.Content).Particle = seq;
                     else
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidContent, type.ContentModel.Content.GetType().Name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlInvalidContent, type.ContentModel.Content.GetType().Name));
                 }
                 else
                 {
@@ -1135,7 +1135,7 @@ namespace Microsoft.Xml.Serialization
                         {
                             if (pm.IsAnonymousType)
                             {
-                                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlAnonymousBaseType, textMapping.TypeDesc.Name, pm.TypeDesc.Name, "AnonymousType", "false"));
+                                throw new InvalidOperationException(string.Format(ResXml.XmlAnonymousBaseType, textMapping.TypeDesc.Name, pm.TypeDesc.Name, "AnonymousType", "false"));
                             }
                             // Create simpleContent
                             XmlSchemaSimpleContent model = new XmlSchemaSimpleContent();
@@ -1182,7 +1182,7 @@ namespace Microsoft.Xml.Serialization
 
         private XmlSchemaType ExportEnumMapping(EnumMapping mapping, string ns)
         {
-            if (!mapping.IncludeInSchema) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlCannotIncludeInSchema, mapping.TypeDesc.Name));
+            if (!mapping.IncludeInSchema) throw new InvalidOperationException(string.Format(ResXml.XmlCannotIncludeInSchema, mapping.TypeDesc.Name));
             XmlSchemaSimpleType dataType = (XmlSchemaSimpleType)_types[mapping];
             if (dataType == null)
             {

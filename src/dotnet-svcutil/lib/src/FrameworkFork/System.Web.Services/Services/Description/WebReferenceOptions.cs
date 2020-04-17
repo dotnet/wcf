@@ -176,7 +176,7 @@ namespace System.Web.Services.Description
         {
             if (args.Severity != XmlSeverityType.Error)
                 return;
-            throw new InvalidOperationException(ResWebServices.GetString(ResWebServices.WsdlInstanceValidationDetails, args.Message, args.Exception.LineNumber.ToString(CultureInfo.InvariantCulture), args.Exception.LinePosition.ToString(CultureInfo.InvariantCulture)));
+            throw new InvalidOperationException(string.Format(ResWebServices.WsdlInstanceValidationDetails, args.Message, args.Exception.LineNumber.ToString(CultureInfo.InvariantCulture), args.Exception.LinePosition.ToString(CultureInfo.InvariantCulture)));
         }
     }
 

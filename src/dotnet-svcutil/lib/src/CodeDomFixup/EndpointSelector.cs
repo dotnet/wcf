@@ -42,7 +42,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (!(binding is BasicHttpBinding || binding is NetHttpBinding || binding is WSHttpBinding || binding is NetTcpBinding || binding is CustomBinding))
             {
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTypeNotSupportedFormat, binding.GetType().FullName,
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTypeNotSupportedFormat, binding.GetType().FullName,
                     typeof(BasicHttpBinding).FullName, typeof(NetHttpBinding).FullName, typeof(WSHttpBinding).FullName, typeof(NetTcpBinding).FullName, typeof(CustomBinding).FullName));
             }
             else
@@ -60,7 +60,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     if (wsHttpBinding.MessageEncoding != WSMessageEncoding.Text)
                     {
-                        s_bindingValidationErrors.Add(SR.GetString(SR.BindingMessageEncodingNotSupportedFormat, wsHttpBinding.MessageEncoding, WSMessageEncoding.Text));
+                        s_bindingValidationErrors.Add(string.Format(SR.BindingMessageEncodingNotSupportedFormat, wsHttpBinding.MessageEncoding, WSMessageEncoding.Text));
                     }
                 }
                 else
@@ -103,7 +103,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     if (!(bindingElement is HttpTransportBindingElement || bindingElement is HttpsTransportBindingElement || bindingElement is TcpTransportBindingElement))
                     {
-                        s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportTypeNotSupportedFormat, bindingElement.GetType().FullName,
+                        s_bindingValidationErrors.Add(string.Format(SR.BindingTransportTypeNotSupportedFormat, bindingElement.GetType().FullName,
                             typeof(HttpTransportBindingElement).FullName, typeof(HttpsTransportBindingElement).FullName, typeof(TcpTransportBindingElement).FullName));
                     }
                 }
@@ -111,7 +111,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     if (!(bindingElement is BinaryMessageEncodingBindingElement || bindingElement is TextMessageEncodingBindingElement))
                     {
-                        s_bindingValidationErrors.Add(SR.GetString(SR.BindingMessageEncodingElementNotSupportedFormat, bindingElement.GetType().FullName,
+                        s_bindingValidationErrors.Add(string.Format(SR.BindingMessageEncodingElementNotSupportedFormat, bindingElement.GetType().FullName,
                             typeof(BinaryMessageEncodingBindingElement).FullName, typeof(TextMessageEncodingBindingElement).FullName));
                     }
                     else
@@ -121,7 +121,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         {
                             if (binMsgEncodingElement.MessageVersion != MessageVersion.Soap12WSAddressing10)
                             {
-                                s_bindingValidationErrors.Add(SR.GetString(SR.BindingBinaryMessageEncodingVersionNotSupportedFormat,
+                                s_bindingValidationErrors.Add(string.Format(SR.BindingBinaryMessageEncodingVersionNotSupportedFormat,
                                     binMsgEncodingElement.MessageVersion, MessageVersion.Soap12WSAddressing10));
                             }
                         }
@@ -135,7 +135,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                 txtMsgEncodingElement.MessageVersion != MessageVersion.Soap11WSAddressing10 &&
                                 txtMsgEncodingElement.MessageVersion != MessageVersion.Soap12WSAddressing10)
                             {
-                                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTextMessageEncodingVersionNotSupportedFormat,
+                                s_bindingValidationErrors.Add(string.Format(SR.BindingTextMessageEncodingVersionNotSupportedFormat,
                                     txtMsgEncodingElement.MessageVersion,
                                     MessageVersion.None,
                                     MessageVersion.Soap11,
@@ -171,7 +171,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
                 else
                 {
-                    s_bindingValidationErrors.Add(SR.GetString(SR.BindingElementTypeNotSupportedFormat, bindingElement.GetType().FullName));
+                    s_bindingValidationErrors.Add(string.Format(SR.BindingElementTypeNotSupportedFormat, bindingElement.GetType().FullName));
                 }
             }
         }
@@ -199,7 +199,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (endorsingTokenParams == null)
                 {
-                    s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityTokenEndorsingParamsTypeFormat,
+                    s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityTokenEndorsingParamsTypeFormat,
                         transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing[0].GetType().FullName, typeof(SecureConversationSecurityTokenParameters).FullName));
                 }
                 else
@@ -213,7 +213,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     if (bootstrapElement == null)
                     {
-                        s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityElementTypeNotSupportedFormat,
+                        s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityElementTypeNotSupportedFormat,
                                             endorsingTokenParams.BootstrapSecurityBindingElement.GetType().FullName, typeof(TransportSecurityBindingElement).FullName));
                     }
                     else
@@ -230,7 +230,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10,
                     MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10);
 
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportMessageSecurityVersionNotSupportedFormat, transportSecurityBindingElement.MessageSecurityVersion, values));
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportMessageSecurityVersionNotSupportedFormat, transportSecurityBindingElement.MessageSecurityVersion, values));
             }
 
             if (!transportSecurityBindingElement.IncludeTimestamp)
@@ -240,13 +240,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (transportSecurityBindingElement.DefaultAlgorithmSuite != SecurityAlgorithmSuite.Default)
             {
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat,
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat,
                     transportSecurityBindingElement.DefaultAlgorithmSuite.GetType().FullName, SecurityAlgorithmSuite.Default.GetType().FullName));
             }
 
             if (transportSecurityBindingElement.SecurityHeaderLayout != SecurityHeaderLayout.Strict)
             {
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityHeaderLayoutValueNotSupportedFormat,
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityHeaderLayoutValueNotSupportedFormat,
                             transportSecurityBindingElement.SecurityHeaderLayout, SecurityHeaderLayout.Strict));
             }
 
@@ -275,12 +275,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10,
                     MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11);
 
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportMessageSecurityVersionNotSupportedFormat, transportSecurityBindingElement.MessageSecurityVersion, values));
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportMessageSecurityVersionNotSupportedFormat, transportSecurityBindingElement.MessageSecurityVersion, values));
             }
 
             if (transportSecurityBindingElement.DefaultAlgorithmSuite != SecurityAlgorithmSuite.Default)
             {
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat,
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat,
                     transportSecurityBindingElement.DefaultAlgorithmSuite.GetType().FullName, SecurityAlgorithmSuite.Default.GetType().FullName));
             }
 
@@ -290,12 +290,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (userNameParams.InclusionMode != SecurityTokenInclusionMode.AlwaysToRecipient)
                 {
-                    s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat,
+                    s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat,
                         userNameParams.InclusionMode, SecurityTokenInclusionMode.AlwaysToRecipient));
                 }
                 if (userNameParams.ReferenceStyle != SecurityTokenReferenceStyle.Internal)
                 {
-                    s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat,
+                    s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat,
                         userNameParams.ReferenceStyle, SecurityTokenReferenceStyle.Internal));
                 }
                 if (userNameParams.RequireDerivedKeys != false)
@@ -305,7 +305,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
             else
             {
-                s_bindingValidationErrors.Add(SR.GetString(SR.BindingTransportSecurityTokenParamsTypeNotSupportedFormat,
+                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityTokenParamsTypeNotSupportedFormat,
                     transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted[0].GetType().FullName, typeof(UserNameSecurityTokenParameters).FullName));
             }
         }

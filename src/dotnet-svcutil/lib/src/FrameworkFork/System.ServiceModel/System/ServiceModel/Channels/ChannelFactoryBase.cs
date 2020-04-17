@@ -151,7 +151,7 @@ namespace System.ServiceModel.Channels
             ThrowIfDisposed();
             if (this.State != CommunicationState.Opened)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.ChannelFactoryCannotBeUsedToCreateChannels, this.GetType().ToString())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.ChannelFactoryCannotBeUsedToCreateChannels, this.GetType().ToString())));
             }
         }
 

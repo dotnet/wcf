@@ -104,7 +104,7 @@ namespace System.Collections.Generic
 
             if (this.Contains(item.GetType()))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", SRServiceModel.Format(SRServiceModel.DuplicateBehavior1, item.GetType().FullName));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("item", string.Format(SRServiceModel.DuplicateBehavior1, item.GetType().FullName));
             }
 
             base.InsertItem(index, item);

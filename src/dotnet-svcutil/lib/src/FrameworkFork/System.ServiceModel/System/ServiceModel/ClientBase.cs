@@ -94,7 +94,7 @@ namespace System.ServiceModel
                             {
                                 if (DiagnosticUtility.ShouldUseActivity)
                                 {
-                                    ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityOpenClientBase, typeof(TChannel).FullName), ActivityType.OpenClient);
+                                    ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityOpenClientBase, typeof(TChannel).FullName), ActivityType.OpenClient);
                                 }
 
                                 CreateChannelInternal();
@@ -203,7 +203,7 @@ namespace System.ServiceModel
             {
                 if (DiagnosticUtility.ShouldUseActivity)
                 {
-                    ServiceModelActivity.Start(activity, SRServiceModel.Format(SRServiceModel.ActivityCloseClientBase, typeof(TChannel).FullName), ActivityType.Close);
+                    ServiceModelActivity.Start(activity, string.Format(SRServiceModel.ActivityCloseClientBase, typeof(TChannel).FullName), ActivityType.Close);
                 }
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
@@ -574,7 +574,7 @@ namespace System.ServiceModel
                 ProxyOperationRuntime op = _runtime.GetOperationByName(methodName);
                 if (op == null)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.SFxMethodNotSupported1, methodName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.SFxMethodNotSupported1, methodName)));
                 }
                 return op;
             }

@@ -55,7 +55,7 @@ namespace Microsoft.Xml
                     }
                     break;
                 case State.InReadElementContent:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
                 default:
                     Debug.Assert(false);
                     return 0;
@@ -111,7 +111,7 @@ namespace Microsoft.Xml
                     }
                     break;
                 case State.InReadElementContent:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
                 default:
                     Debug.Assert(false);
                     return 0;
@@ -159,7 +159,7 @@ namespace Microsoft.Xml
                     }
                     break;
                 case State.InReadContent:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
                 case State.InReadElementContent:
                     // if we have a correct decoder, go read
                     if (_decoder == _base64Decoder)
@@ -215,7 +215,7 @@ namespace Microsoft.Xml
                     }
                     break;
                 case State.InReadContent:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_MixingBinaryContentMethods));
+                    throw new InvalidOperationException(ResXml.Xml_MixingBinaryContentMethods);
                 case State.InReadElementContent:
                     // if we have a correct decoder, go read
                     if (_decoder == _binHexDecoder)

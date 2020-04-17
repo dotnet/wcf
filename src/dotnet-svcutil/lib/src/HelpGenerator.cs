@@ -30,45 +30,45 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private static void WriteUsage()
         {
-            s_helpBuilder.AppendLine(SR.GetString(SR.HelpUsage1));
+            s_helpBuilder.AppendLine(SR.HelpUsage1);
             s_helpBuilder.AppendLine();
-            s_helpBuilder.AppendLine(SR.GetString(SR.HelpUsage2));
+            s_helpBuilder.AppendLine(SR.HelpUsage2);
         }
 
         private static void WriteCodeGenerationHelp()
         {
-            HelpCategory helpCategory = new HelpCategory(SR.GetString(SR.HelpUsageCategory))
+            HelpCategory helpCategory = new HelpCategory(SR.HelpUsageCategory)
             {
                 Inputs = new ArgumentInfo[] {
-                    ArgumentInfo.CreateInputHelpInfo(SR.GetString(SR.HelpInputMetadataDocumentPath), SR.GetString(SR.HelpCodeGenerationSyntaxInput1)),
-                    ArgumentInfo.CreateInputHelpInfo(SR.GetString(SR.HelpInputUrl),                  SR.GetString(SR.HelpCodeGenerationSyntaxInput2)),
-                    ArgumentInfo.CreateInputHelpInfo(SR.GetString(SR.HelpInputEpr),                  SR.GetString(SR.HelpCodeGenerationSyntaxInput3))
+                    ArgumentInfo.CreateInputHelpInfo(SR.HelpInputMetadataDocumentPath, SR.HelpCodeGenerationSyntaxInput1),
+                    ArgumentInfo.CreateInputHelpInfo(SR.HelpInputUrl,                  SR.HelpCodeGenerationSyntaxInput2),
+                    ArgumentInfo.CreateInputHelpInfo(SR.HelpInputEpr,                  SR.HelpCodeGenerationSyntaxInput3)
                 },
 
                 Options = new ArgumentInfo[] {
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.OutputDirectory.Name,   SR.ParametersDirectory,                           SR.GetString(SR.HelpDirectoryFormat, CommandProcessorOptions.Switches.OutputDirectory.Abbreviation)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoLogo.Name,                                                              SR.GetString(SR.HelpNologoFormat, CommandProcessorOptions.Switches.NoLogo.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Verbosity.Name,         SR.ParametersVerbosity,                           SR.GetString(SR.HelpVerbosityFormat, string.Join(", ", System.Enum.GetNames(typeof(Verbosity))), CommandProcessorOptions.Switches.Verbosity.Abbreviation)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Help.Name,                                                                SR.GetString(SR.HelpHelpFormat, CommandProcessorOptions.Switches.Help.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.ProjectFile.Name,       SR.ParametersProjectFile,                         SR.GetString(SR.HelpProjectFileFormat, CommandProcessorOptions.Switches.ProjectFile.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.OutputFile.Name,        SR.ParametersOut,                                 SR.GetString(SR.HelpOutFormat, CommandProcessorOptions.Switches.OutputFile.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Namespace.Name,         SR.ParametersNamespace,                           SR.GetString(SR.HelpNamespaceFormat, CommandProcessorOptions.Switches.Namespace.Abbreviation), true),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.MessageContract.Name,                                                     SR.GetString(SR.HelpMessageContractFormat, CommandProcessorOptions.Switches.MessageContract.Abbreviation), true),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.EnableDataBinding.Name,                                                   SR.GetString(SR.HelpEnableDataBindingFormat, CommandProcessorOptions.Switches.EnableDataBinding.Abbreviation)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Internal.Name,                                                            SR.GetString(SR.HelpInternalFormat, CommandProcessorOptions.Switches.Internal.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Reference.Name,         SR.ParametersReference,                           SR.GetString(SR.HelpReferenceCodeGenerationFormat, CommandProcessorOptions.Switches.Reference.Abbreviation), true),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoTypeReuse.Name,                                                         SR.GetString(SR.HelpNoTypeReuseFormat, CommandProcessorOptions.Switches.NoTypeReuse.Abbreviation, CommandProcessorOptions.Switches.Reference.Name, CommandProcessorOptions.Switches.CollectionType.Name)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.CollectionType.Name,    SR.ParametersCollectionType,                      SR.GetString(SR.HelpCollectionTypeFormat, CommandProcessorOptions.Switches.CollectionType.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.ExcludeType.Name,       SR.ParametersExcludeType,                         SR.GetString(SR.HelpExcludeTypeCodeGenerationFormat, CommandProcessorOptions.Switches.ExcludeType.Abbreviation)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoStdlib.Name,                                                            SR.GetString(SR.HelpNostdlibFormat, CommandProcessorOptions.Switches.NoStdlib.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Serializer.Name,        SerializerMode.Auto.ToString(),                   SR.GetString(SR.HelpAutoSerializerFormat, CommandProcessorOptions.Switches.Serializer.Abbreviation), true),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Serializer.Name,        SerializerMode.DataContractSerializer.ToString(), SR.GetString(SR.HelpDataContractSerializer)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Serializer.Name,        SerializerMode.XmlSerializer.ToString(),          SR.GetString(SR.HelpXmlSerializer)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Sync.Name,                                                                SR.GetString(SR.HelpSyncFormat, CommandProcessorOptions.Switches.Sync.Abbreviation)),
-                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Wrapped.Name,                                                             SR.GetString(SR.HelpWrappedFormat, CommandProcessorOptions.Switches.Wrapped.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Update.Name,            SR.ParametersWebServiceReferenceName,             SR.GetString(SR.HelpUpdateWebServiceReferenceFormat, CommandProcessorOptions.Switches.Update.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.RuntimeIdentifier.Name, SR.ParametersRuntimeIdentifier,                   SR.GetString(SR.HelpRuntimeIdentifierFormat, CommandProcessorOptions.Switches.RuntimeIdentifier.Abbreviation)),
-                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.TargetFramework.Name,   SR.ParametersTargetFramework,                     SR.GetString(SR.HelpTargetFrameworkFormat, CommandProcessorOptions.Switches.TargetFramework.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.OutputDirectory.Name,   SR.ParametersDirectory,                           string.Format(SR.HelpDirectoryFormat, CommandProcessorOptions.Switches.OutputDirectory.Abbreviation)),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoLogo.Name,                                                              string.Format(SR.HelpNologoFormat, CommandProcessorOptions.Switches.NoLogo.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Verbosity.Name,         SR.ParametersVerbosity,                           string.Format(SR.HelpVerbosityFormat, string.Join(", ", System.Enum.GetNames(typeof(Verbosity))), CommandProcessorOptions.Switches.Verbosity.Abbreviation)),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Help.Name,                                                                string.Format(SR.HelpHelpFormat, CommandProcessorOptions.Switches.Help.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.ProjectFile.Name,       SR.ParametersProjectFile,                         string.Format(SR.HelpProjectFileFormat, CommandProcessorOptions.Switches.ProjectFile.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.OutputFile.Name,        SR.ParametersOut,                                 string.Format(SR.HelpOutFormat, CommandProcessorOptions.Switches.OutputFile.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Namespace.Name,         SR.ParametersNamespace,                           string.Format(SR.HelpNamespaceFormat, CommandProcessorOptions.Switches.Namespace.Abbreviation), true),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.MessageContract.Name,                                                     string.Format(SR.HelpMessageContractFormat, CommandProcessorOptions.Switches.MessageContract.Abbreviation), true),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.EnableDataBinding.Name,                                                   string.Format(SR.HelpEnableDataBindingFormat, CommandProcessorOptions.Switches.EnableDataBinding.Abbreviation)),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Internal.Name,                                                            string.Format(SR.HelpInternalFormat, CommandProcessorOptions.Switches.Internal.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Reference.Name,         SR.ParametersReference,                           string.Format(SR.HelpReferenceCodeGenerationFormat, CommandProcessorOptions.Switches.Reference.Abbreviation), true),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoTypeReuse.Name,                                                         string.Format(SR.HelpNoTypeReuseFormat, CommandProcessorOptions.Switches.NoTypeReuse.Abbreviation, CommandProcessorOptions.Switches.Reference.Name, CommandProcessorOptions.Switches.CollectionType.Name)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.CollectionType.Name,    SR.ParametersCollectionType,                      string.Format(SR.HelpCollectionTypeFormat, CommandProcessorOptions.Switches.CollectionType.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.ExcludeType.Name,       SR.ParametersExcludeType,                         string.Format(SR.HelpExcludeTypeCodeGenerationFormat, CommandProcessorOptions.Switches.ExcludeType.Abbreviation)),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.NoStdlib.Name,                                                            string.Format(SR.HelpNostdlibFormat, CommandProcessorOptions.Switches.NoStdlib.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Serializer.Name,        SerializerMode.Auto.ToString(),                   string.Format(SR.HelpAutoSerializerFormat, CommandProcessorOptions.Switches.Serializer.Abbreviation), true),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Serializer.Name,        SerializerMode.DataContractSerializer.ToString(), SR.HelpDataContractSerializer),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Serializer.Name,        SerializerMode.XmlSerializer.ToString(),          SR.HelpXmlSerializer),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Sync.Name,                                                                string.Format(SR.HelpSyncFormat, CommandProcessorOptions.Switches.Sync.Abbreviation)),
+                    ArgumentInfo.CreateFlagHelpInfo(     CommandProcessorOptions.Switches.Wrapped.Name,                                                             string.Format(SR.HelpWrappedFormat, CommandProcessorOptions.Switches.Wrapped.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.Update.Name,            SR.ParametersWebServiceReferenceName,             string.Format(SR.HelpUpdateWebServiceReferenceFormat, CommandProcessorOptions.Switches.Update.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.RuntimeIdentifier.Name, SR.ParametersRuntimeIdentifier,                   string.Format(SR.HelpRuntimeIdentifierFormat, CommandProcessorOptions.Switches.RuntimeIdentifier.Abbreviation)),
+                    ArgumentInfo.CreateParameterHelpInfo(CommandProcessorOptions.Switches.TargetFramework.Name,   SR.ParametersTargetFramework,                     string.Format(SR.HelpTargetFrameworkFormat, CommandProcessorOptions.Switches.TargetFramework.Abbreviation)),
                 }
             };
 
@@ -77,11 +77,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private static void WriteExamples()
         {
-            HelpCategory helpCategory = new HelpCategory(SR.GetString(SR.HelpExamples));
+            HelpCategory helpCategory = new HelpCategory(SR.HelpExamples);
             helpCategory.WriteHelp();
 
-            WriteExample(SR.GetString(SR.HelpExamples2), SR.GetString(SR.HelpExamples3));
-            WriteExample(SR.GetString(SR.HelpExamples8), SR.GetString(SR.HelpExamples9));
+            WriteExample(SR.HelpExamples2, SR.HelpExamples3);
+            WriteExample(SR.HelpExamples8, SR.HelpExamples9);
         }
 
         private static void WriteExample(string syntax, string explanation)
@@ -245,7 +245,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 if (_options != null)
                 {
-                    s_helpBuilder.AppendLine(SR.GetString(SR.HelpOptions));
+                    s_helpBuilder.AppendLine(SR.HelpOptions);
                     s_helpBuilder.AppendLine();
                     ArgumentInfo.WriteArguments(_options);
                     s_helpBuilder.AppendLine();

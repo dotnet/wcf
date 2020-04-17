@@ -94,7 +94,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
 
             if (!CanLoad(uri, string.Empty, Directory.GetCurrentDirectory(), out Uri metadataUri))
             {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ErrInvalidUriFormat, uri));
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrInvalidUriFormat, uri));
             }
 
             if (metadataUri.IsFile)
@@ -135,12 +135,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             {
                 if (!CanLoad(uri, string.Empty, Directory.GetCurrentDirectory(), out Uri metadataUri))
                 {
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ErrInvalidUriFormat, uri));
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrInvalidUriFormat, uri));
                 }
 
                 if (!metadataUri.IsFile)
                 {
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ErrUrlNotAllowedOnMultipleInputsFormat, metadataUri));
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrUrlNotAllowedOnMultipleInputsFormat, metadataUri));
                 }
 
                 var fileInfoList = MetadataFileNameManager.ResolveFiles(metadataUri.LocalPath);
@@ -242,7 +242,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             }
             else
             {
-                throw new MetadataExchangeException(Resources.ErrInvalidUriFormat, uri);
+                throw new MetadataExchangeException(MetadataResources.ErrInvalidUriFormat, uri);
             }
         }
 
@@ -306,7 +306,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                         LoadAsUnknownXml(reader);
                         break;
                     default:
-                        throw new MetadataExchangeException(Resources.ErrNotXmlMetadataFileFormat, uri);
+                        throw new MetadataExchangeException(MetadataResources.ErrNotXmlMetadataFileFormat, uri);
                 }
             }
         }
@@ -391,7 +391,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 }
                 else
                 {
-                    throw new MetadataExchangeException(Resources.ErrInvalidUriFormat, schemaLocation);
+                    throw new MetadataExchangeException(MetadataResources.ErrInvalidUriFormat, schemaLocation);
                 }
             }
             catch (Exception ex)

@@ -71,7 +71,7 @@ namespace System.ServiceModel.Security
             if (!TryGetIdentity(serviceReference, out identity))
             {
                 SecurityTraceRecordHelper.TraceIdentityVerificationFailure(identity, authorizationContext, this.GetType());
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRServiceModel.Format(errorString, identity, serviceReference)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(string.Format(errorString, identity, serviceReference)));
             }
             else
             {
@@ -115,32 +115,32 @@ namespace System.ServiceModel.Security
                 {
                     if (actualDnsName == null)
                     {
-                        result = new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DnsIdentityCheckFailedForIncomingMessageLackOfDnsClaim, expectedDnsName));
+                        result = new MessageSecurityException(string.Format(SRServiceModel.DnsIdentityCheckFailedForIncomingMessageLackOfDnsClaim, expectedDnsName));
                     }
                     else
                     {
-                        result = new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DnsIdentityCheckFailedForIncomingMessage, expectedDnsName, actualDnsName));
+                        result = new MessageSecurityException(string.Format(SRServiceModel.DnsIdentityCheckFailedForIncomingMessage, expectedDnsName, actualDnsName));
                     }
                 }
                 else if (SRServiceModel.IdentityCheckFailedForOutgoingMessage.Equals(errorString))
                 {
                     if (actualDnsName == null)
                     {
-                        result = new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim, expectedDnsName));
+                        result = new MessageSecurityException(string.Format(SRServiceModel.DnsIdentityCheckFailedForOutgoingMessageLackOfDnsClaim, expectedDnsName));
                     }
                     else
                     {
-                        result = new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DnsIdentityCheckFailedForOutgoingMessage, expectedDnsName, actualDnsName));
+                        result = new MessageSecurityException(string.Format(SRServiceModel.DnsIdentityCheckFailedForOutgoingMessage, expectedDnsName, actualDnsName));
                     }
                 }
                 else
                 {
-                    result = new MessageSecurityException(SRServiceModel.Format(errorString, identity, serviceReference));
+                    result = new MessageSecurityException(string.Format(errorString, identity, serviceReference));
                 }
             }
             else
             {
-                result = new MessageSecurityException(SRServiceModel.Format(errorString, identity, serviceReference));
+                result = new MessageSecurityException(string.Format(errorString, identity, serviceReference));
             }
 
             return result;

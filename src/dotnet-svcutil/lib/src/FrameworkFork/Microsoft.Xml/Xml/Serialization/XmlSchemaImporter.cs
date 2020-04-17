@@ -107,7 +107,7 @@ namespace Microsoft.Xml.Serialization
                 else
                 {
                     // Element '{0}' from namespace '{1}' is not a complex type and cannot be used as a {2}.
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlBadBaseElement, name.Name, name.Namespace, baseType.FullName));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlBadBaseElement, name.Name, name.Namespace, baseType.FullName));
                 }
             }
             return new XmlTypeMapping(Scope, element);
@@ -167,7 +167,7 @@ namespace Microsoft.Xml.Serialization
                 else
                 {
                     // Type '{0}' from namespace '{1}' is not a complex type and cannot be used as a {2}.
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlBadBaseType, typeName.Name, typeName.Namespace, baseType.FullName));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlBadBaseType, typeName.Name, typeName.Namespace, baseType.FullName));
                 }
             }
             return new XmlTypeMapping(Scope, accessor);
@@ -329,7 +329,7 @@ namespace Microsoft.Xml.Serialization
             if (element.Name.Length == 0)
             {
                 XmlQualifiedName parentType = XmlSchemas.GetParentName(element);
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlElementHasNoName, parentType.Name, parentType.Namespace));
+                throw new InvalidOperationException(string.Format(ResXml.XmlElementHasNoName, parentType.Name, parentType.Namespace));
             }
             string unescapedName = Accessor.UnescapeName(element.Name);
             if (identifier.Length == 0)
@@ -407,7 +407,7 @@ namespace Microsoft.Xml.Serialization
                 }
             }
             if (!(desiredMappingType.IsAssignableFrom(mapping.GetType())))
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlElementImportedTwice, element.Name, ns, mapping.GetType().Name, desiredMappingType.Name));
+                throw new InvalidOperationException(string.Format(ResXml.XmlElementImportedTwice, element.Name, ns, mapping.GetType().Name, desiredMappingType.Name));
 
             // let the extensions to run
             if (!mapping.TypeDesc.IsMappedType)
@@ -450,11 +450,11 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (qname.IsEmpty)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlImporterExtensionBadLocalTypeName, typeOwner.GetType().FullName, typeName));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlImporterExtensionBadLocalTypeName, typeOwner.GetType().FullName, typeName));
                     }
                     else
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlImporterExtensionBadTypeName, typeOwner.GetType().FullName, qname.Name, qname.Namespace, typeName));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlImporterExtensionBadTypeName, typeOwner.GetType().FullName, qname.Name, qname.Namespace, typeName));
                     }
                 }
                 // UNDONE: check if it in use
@@ -542,7 +542,7 @@ namespace Microsoft.Xml.Serialization
             else if (type is XmlSchemaSimpleType)
                 mapping = ImportDataType((XmlSchemaSimpleType)type, name.Namespace, name.Name, baseType, flags, false);
             else
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                throw new InvalidOperationException(ResXml.XmlInternalError);
 
             if (addref && name.Namespace != XmlSchema.Namespace)
                 RemoveReference(name, TypesInUse);
@@ -555,7 +555,7 @@ namespace Microsoft.Xml.Serialization
             if (type.Redefined != null)
             {
                 // we do not support redefine in the current version
-                throw new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedRedefine, type.Name, typeNs));
+                throw new NotSupportedException(string.Format(ResXml.XmlUnsupportedRedefine, type.Name, typeNs));
             }
             if (desiredMappingType == typeof(TypeMapping))
             {
@@ -580,12 +580,12 @@ namespace Microsoft.Xml.Serialization
             else if (desiredMappingType == typeof(MembersMapping))
                 return ImportMembersType(type, typeNs, identifier);
             else
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "desiredMappingType");
+                throw new ArgumentException(ResXml.XmlInternalError, "desiredMappingType");
         }
 
         private MembersMapping ImportMembersType(XmlSchemaType type, string typeNs, string identifier)
         {
-            if (!type.DerivedFrom.IsEmpty) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMembersDeriveError));
+            if (!type.DerivedFrom.IsEmpty) throw new InvalidOperationException(ResXml.XmlMembersDeriveError);
             CodeIdentifiers memberScope = new CodeIdentifiers();
             memberScope.UseCamelCasing = true;
             bool needExplicitOrder = false;
@@ -646,7 +646,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 else
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlTypeUsedTwice, type.QualifiedName.Name, type.QualifiedName.Namespace));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlTypeUsedTwice, type.QualifiedName.Name, type.QualifiedName.Namespace));
                 }
             }
             StructMapping structMapping = new StructMapping();
@@ -693,7 +693,7 @@ namespace Microsoft.Xml.Serialization
                 StructMapping declaringMapping;
                 MemberMapping baseMember = ((StructMapping)baseMapping).FindDeclaringMapping(structMapping.Members[i], out declaringMapping, structMapping.TypeName);
                 if (baseMember != null && baseMember.TypeDesc != structMapping.Members[i].TypeDesc)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalOverride, type.Name, baseMember.Name, baseMember.TypeDesc.FullName, structMapping.Members[i].TypeDesc.FullName, declaringMapping.TypeDesc.FullName));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlIllegalOverride, type.Name, baseMember.Name, baseMember.TypeDesc.FullName, structMapping.Members[i].TypeDesc.FullName, declaringMapping.TypeDesc.FullName));
             }
             structMapping.Scope = membersScope;
             Scope.AddTypeMapping(structMapping);
@@ -1094,11 +1094,11 @@ namespace Microsoft.Xml.Serialization
             {
                 if (!allowDuplicates)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlDuplicateElementInScope, element.Name, element.Namespace));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlDuplicateElementInScope, element.Name, element.Namespace));
                 }
                 if (scopeElement.Mapping.TypeDesc != element.Mapping.TypeDesc)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlDuplicateElementInScope1, element.Name, element.Namespace));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlDuplicateElementInScope1, element.Name, element.Namespace));
                 }
                 duplicateElements = true;
             }
@@ -1710,7 +1710,7 @@ namespace Microsoft.Xml.Serialization
                     return ImportAttribute(FindAttribute(attribute.RefName), identifier, attribute.RefName.Namespace, defaultValueProvider);
             }
             TypeMapping mapping;
-            if (attribute.Name.Length == 0) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlAttributeHasNoName));
+            if (attribute.Name.Length == 0) throw new InvalidOperationException(ResXml.XmlAttributeHasNoName);
             if (identifier.Length == 0)
                 identifier = CodeIdentifier.MakeValid(attribute.Name);
             else
@@ -1956,7 +1956,7 @@ namespace Microsoft.Xml.Serialization
         {
             XmlSchemaGroup group = (XmlSchemaGroup)Schemas.Find(name, typeof(XmlSchemaGroup));
             if (group == null)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingGroup, name.Name));
+                throw new InvalidOperationException(string.Format(ResXml.XmlMissingGroup, name.Name));
 
             return group;
         }
@@ -1965,7 +1965,7 @@ namespace Microsoft.Xml.Serialization
         {
             XmlSchemaAttributeGroup group = (XmlSchemaAttributeGroup)Schemas.Find(name, typeof(XmlSchemaAttributeGroup));
             if (group == null)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingAttributeGroup, name.Name));
+                throw new InvalidOperationException(string.Format(ResXml.XmlMissingAttributeGroup, name.Name));
 
             return group;
         }
@@ -2027,11 +2027,11 @@ namespace Microsoft.Xml.Serialization
             {
                 if (name.Name == Soap.Array && name.Namespace == Soap.Encoding)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidEncoding, name.ToString()));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEncoding, name.ToString()));
                 }
                 else
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingDataType, name.ToString()));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlMissingDataType, name.ToString()));
                 }
             }
         }
@@ -2054,7 +2054,7 @@ namespace Microsoft.Xml.Serialization
         {
             XmlSchemaElement element = (XmlSchemaElement)Schemas.Find(name, typeof(XmlSchemaElement));
             if (element == null)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingElement, name.ToString()));
+                throw new InvalidOperationException(string.Format(ResXml.XmlMissingElement, name.ToString()));
             return element;
         }
 
@@ -2062,7 +2062,7 @@ namespace Microsoft.Xml.Serialization
         {
             XmlSchemaAttribute attribute = (XmlSchemaAttribute)Schemas.Find(name, typeof(XmlSchemaAttribute));
             if (attribute == null)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingAttribute, name.Name));
+                throw new InvalidOperationException(string.Format(ResXml.XmlMissingAttribute, name.Name));
 
             return attribute;
         }

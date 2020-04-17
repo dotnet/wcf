@@ -465,7 +465,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (o != null && _objectsInUse != null)
             {
-                if (_objectsInUse.ContainsKey(o)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlCircularReference, o.GetType().FullName));
+                if (_objectsInUse.ContainsKey(o)) throw new InvalidOperationException(string.Format(ResXml.XmlCircularReference, o.GetType().FullName));
                 _objectsInUse.Add(o, o);
             }
 
@@ -514,7 +514,7 @@ namespace Microsoft.Xml.Serialization
                     if (aliasNs == null || aliasNs.Length == 0)
                     {
                         if (alias.Length > 0)
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidXmlns, alias));
+                            throw new InvalidOperationException(string.Format(ResXml.XmlInvalidXmlns, alias));
                         WriteAttribute("xmlns", alias, null, aliasNs);
                     }
                     else
@@ -639,7 +639,7 @@ namespace Microsoft.Xml.Serialization
             {
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (!objectsInUse.ContainsKey(o)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "missing stack object of type " + o.GetType().FullName));
+                    if (!objectsInUse.ContainsKey(o)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "missing stack object of type " + o.GetType().FullName));
 #endif
 
                 _objectsInUse.Remove(o);
@@ -776,7 +776,7 @@ namespace Microsoft.Xml.Serialization
         private void WriteElement(XmlNode node, string name, string ns, bool isNullable, bool any)
         {
             if (typeof(XmlAttribute).IsAssignableFrom(node.GetType()))
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoAttributeHere));
+                throw new InvalidOperationException(ResXml.XmlNoAttributeHere);
             if (node is XmlDocument)
             {
                 node = ((XmlDocument)node).DocumentElement;
@@ -792,7 +792,7 @@ namespace Microsoft.Xml.Serialization
                 {
                     // need to check against schema
                     if (node.LocalName != name || node.NamespaceURI != ns)
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlElementNameMismatch, node.LocalName, node.NamespaceURI, name, ns));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlElementNameMismatch, node.LocalName, node.NamespaceURI, name, ns));
                 }
             }
             else
@@ -813,42 +813,42 @@ namespace Microsoft.Xml.Serialization
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateUnknownTypeException1"]/*' />
         protected Exception CreateUnknownTypeException(Type type)
         {
-            if (typeof(IXmlSerializable).IsAssignableFrom(type)) return new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidSerializable, type.FullName));
+            if (typeof(IXmlSerializable).IsAssignableFrom(type)) return new InvalidOperationException(string.Format(ResXml.XmlInvalidSerializable, type.FullName));
             TypeDesc typeDesc = new TypeScope().GetTypeDesc(type);
-            if (!typeDesc.IsStructLike) return new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidUseOfType, type.FullName));
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlUnxpectedType, type.FullName));
+            if (!typeDesc.IsStructLike) return new InvalidOperationException(string.Format(ResXml.XmlInvalidUseOfType, type.FullName));
+            return new InvalidOperationException(string.Format(ResXml.XmlUnxpectedType, type.FullName));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateMismatchChoiceException"]/*' />
         protected Exception CreateMismatchChoiceException(string value, string elementName, string enumValue)
         {
             // Value of {0} mismatches the type of {1}, you need to set it to {2}.
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlChoiceMismatchChoiceException, elementName, value, enumValue));
+            return new InvalidOperationException(string.Format(ResXml.XmlChoiceMismatchChoiceException, elementName, value, enumValue));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateUnknownAnyElementException"]/*' />
         protected Exception CreateUnknownAnyElementException(string name, string ns)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownAnyElement, name, ns));
+            return new InvalidOperationException(string.Format(ResXml.XmlUnknownAnyElement, name, ns));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateInvalidChoiceIdentifierValueException"]/*' />
         protected Exception CreateInvalidChoiceIdentifierValueException(string type, string identifier)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidChoiceIdentifierValue, type, identifier));
+            return new InvalidOperationException(string.Format(ResXml.XmlInvalidChoiceIdentifierValue, type, identifier));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateChoiceIdentifierValueException"]/*' />
         protected Exception CreateChoiceIdentifierValueException(string value, string identifier, string name, string ns)
         {
             // XmlChoiceIdentifierMismatch=Value '{0}' of the choice identifier '{1}' does not match element '{2}' from namespace '{3}'.
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlChoiceIdentifierMismatch, value, identifier, name, ns));
+            return new InvalidOperationException(string.Format(ResXml.XmlChoiceIdentifierMismatch, value, identifier, name, ns));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateInvalidEnumValueException"]/*' />
         protected Exception CreateInvalidEnumValueException(object value, string typeName)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownConstant, value, typeName));
+            return new InvalidOperationException(string.Format(ResXml.XmlUnknownConstant, value, typeName));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateInvalidAnyTypeException"]/*' />
@@ -860,7 +860,7 @@ namespace Microsoft.Xml.Serialization
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.CreateInvalidAnyTypeException1"]/*' />
         protected Exception CreateInvalidAnyTypeException(Type type)
         {
-            return new InvalidOperationException(ResXml.GetString(ResXml.XmlIllegalAnyElement, type.FullName));
+            return new InvalidOperationException(string.Format(ResXml.XmlIllegalAnyElement, type.FullName));
         }
 
         /// <include file='doc\XmlSerializationWriter.uex' path='docs/doc[@for="XmlSerializationWriter.WriteReferencingElement"]/*' />
@@ -932,7 +932,7 @@ namespace Microsoft.Xml.Serialization
         protected void WriteXmlAttribute(XmlNode node, object container)
         {
             XmlAttribute attr = node as XmlAttribute;
-            if (attr == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNeedAttributeHere));
+            if (attr == null) throw new InvalidOperationException(ResXml.XmlNeedAttributeHere);
             if (attr.Value != null)
             {
                 if (attr.NamespaceURI == Wsdl.Namespace && attr.LocalName == Wsdl.ArrayType)
@@ -1316,7 +1316,7 @@ namespace Microsoft.Xml.Serialization
             {
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (!typeof(IEnumerable).IsAssignableFrom(type)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "not array like type " + type.FullName));
+                    if (!typeof(IEnumerable).IsAssignableFrom(type)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "not array like type " + type.FullName));
 #endif
 
                 int arrayLength = typeof(ICollection).IsAssignableFrom(type) ? ((ICollection)o).Count : -1;
@@ -1480,7 +1480,7 @@ namespace Microsoft.Xml.Serialization
                         string oldNs = _namespaces.Namespaces[prefix] as string;
                         if (oldNs != null && oldNs != ns)
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlDuplicateNs, prefix, ns));
+                            throw new InvalidOperationException(string.Format(ResXml.XmlDuplicateNs, prefix, ns));
                         }
                     }
                     string oldPrefix = (ns == null || ns.Length == 0) ? null : Writer.LookupPrefix(ns);
@@ -1590,13 +1590,13 @@ namespace Microsoft.Xml.Serialization
             if (!xmlMapping.IsWriteable)
                 return null;
             if (!xmlMapping.GenerateSerializer)
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "xmlMapping");
+                throw new ArgumentException(ResXml.XmlInternalError, "xmlMapping");
             if (xmlMapping is XmlTypeMapping)
                 return GenerateTypeElement((XmlTypeMapping)xmlMapping);
             else if (xmlMapping is XmlMembersMapping)
                 return GenerateMembersElement((XmlMembersMapping)xmlMapping);
             else
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlInternalError), "xmlMapping");
+                throw new ArgumentException(ResXml.XmlInternalError, "xmlMapping");
         }
 
         private void GenerateInitCallbacksMethod()
@@ -1677,7 +1677,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                 // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (methodName == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
 
             Writer.Write(methodName);
@@ -1724,7 +1724,7 @@ namespace Microsoft.Xml.Serialization
                 {
 #if DEBUG
                         // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (defaultValue.GetType() != typeof(string)) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, name + " has invalid default type " + defaultValue.GetType().Name));
+                        if (defaultValue.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, name + " has invalid default type " + defaultValue.GetType().Name));
 #endif
 
                     Writer.Write("if (");
@@ -2023,7 +2023,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                         // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (enumSource == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
+                        if (enumSource == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
 #endif
                 }
 
@@ -2250,7 +2250,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (methodName == null) throw new InvalidOperationException("deriaved from " + mapping.TypeDesc.FullName + ", " + ResXml.GetString(ResXml.XmlInternalErrorMethod, derived.TypeDesc.Name) + Environment.StackTrace);
+                    if (methodName == null) throw new InvalidOperationException("deriaved from " + mapping.TypeDesc.FullName + ", " + string.Format(ResXml.XmlInternalErrorMethod, derived.TypeDesc.Name) + Environment.StackTrace);
 #endif
 
                 Writer.Write(methodName);
@@ -2288,7 +2288,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                             // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                            if (methodName == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                            if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
                         Writer.WriteLine("Writer.WriteStartElement(n, ns);");
                         Writer.Write("WriteXsiType(");
@@ -2733,7 +2733,7 @@ namespace Microsoft.Xml.Serialization
                     Writer.WriteLine(");");
                 }
                 else
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                    throw new InvalidOperationException(ResXml.XmlInternalError);
             }
             else
             {
@@ -3160,7 +3160,7 @@ namespace Microsoft.Xml.Serialization
                         Writer.WriteLine(".WriteTo(Writer);");
                         break;
                     default:
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                        throw new InvalidOperationException(ResXml.XmlInternalError);
                 }
             }
         }
@@ -3372,7 +3372,7 @@ namespace Microsoft.Xml.Serialization
 
 #if DEBUG
                         // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (methodName == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                        if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
                     Writer.Write(methodName);
                     Writer.Write("(");
@@ -3437,7 +3437,7 @@ namespace Microsoft.Xml.Serialization
             }
             else
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalError));
+                throw new InvalidOperationException(ResXml.XmlInternalError);
             }
         }
 
@@ -3586,7 +3586,7 @@ namespace Microsoft.Xml.Serialization
                         }
                         else
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnsupportedDefaultType, type.FullName));
+                            throw new InvalidOperationException(string.Format(ResXml.XmlUnsupportedDefaultType, type.FullName));
                         }
                         break;
                 }
@@ -3696,10 +3696,10 @@ namespace Microsoft.Xml.Serialization
                 if (element.Any && element.Name.Length == 0)
                 {
                     // Type {0} is missing enumeration value '##any' for XmlAnyElementAttribute.
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlChoiceMissingAnyValue, choiceMapping.TypeDesc.FullName));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlChoiceMissingAnyValue, choiceMapping.TypeDesc.FullName));
                 }
                 // Type {0} is missing value for '{1}'.
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlChoiceMissingValue, choiceMapping.TypeDesc.FullName, element.Namespace + ":" + element.Name, element.Name, element.Namespace));
+                throw new InvalidOperationException(string.Format(ResXml.XmlChoiceMissingValue, choiceMapping.TypeDesc.FullName, element.Namespace + ":" + element.Name, element.Name, element.Namespace));
             }
             if (!useReflection)
                 CodeIdentifier.CheckValidIdentifier(enumValue);
@@ -4014,7 +4014,7 @@ namespace Microsoft.Xml.Serialization
                     return fieldVariable;
                 }
             }
-            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, memberInfos[0].ToString()));
+            throw new InvalidOperationException(string.Format(ResXml.XmlSerializerUnsupportedType, memberInfos[0].ToString()));
         }
 
         private string WriteMethodInfo(string escapedName, string typeVariable, string memberName, bool isNonPublic, params string[] paramTypes)

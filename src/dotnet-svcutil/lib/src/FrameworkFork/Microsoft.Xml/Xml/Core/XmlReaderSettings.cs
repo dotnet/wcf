@@ -427,7 +427,7 @@ namespace Microsoft.Xml
             }
             if (inputUri.Length == 0)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.XmlConvert_BadUri), "inputUri");
+                throw new ArgumentException(ResXml.XmlConvert_BadUri, "inputUri");
             }
 
             // resolve and open the url
@@ -667,7 +667,7 @@ namespace Microsoft.Xml
 
                 if (_conformanceLevel != ConformanceLevel.Auto && _conformanceLevel != XmlReader.GetV1ConformanceLevel(baseReader))
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_IncompatibleConformanceLevel, _conformanceLevel.ToString()));
+                    throw new InvalidOperationException(string.Format(ResXml.Xml_IncompatibleConformanceLevel, _conformanceLevel.ToString()));
                 }
 
                 // get the V1 XmlTextReader ref
@@ -725,7 +725,7 @@ namespace Microsoft.Xml
             {
                 if (_conformanceLevel != baseReaderSettings.ConformanceLevel && _conformanceLevel != ConformanceLevel.Auto)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_IncompatibleConformanceLevel, _conformanceLevel.ToString()));
+                    throw new InvalidOperationException(string.Format(ResXml.Xml_IncompatibleConformanceLevel, _conformanceLevel.ToString()));
                 }
                 if (_checkCharacters && !baseReaderSettings.CheckCharacters)
                 {

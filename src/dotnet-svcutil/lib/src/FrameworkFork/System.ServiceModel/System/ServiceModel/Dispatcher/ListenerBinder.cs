@@ -35,7 +35,7 @@ namespace System.ServiceModel.Dispatcher
             if (duplexSession != null)
                 return new DuplexSessionListenerBinder(duplexSession, messageVersion);
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnknownListenerType1, listener.Uri.AbsoluteUri)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnknownListenerType1, listener.Uri.AbsoluteUri)));
         }
 
         // ------------------------------------------------------------------------------------------------------------

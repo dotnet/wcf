@@ -39,11 +39,11 @@ namespace System.IdentityModel.Selectors
                 certificates = store.Certificates.Find(findType, findValue, false);
                 if (certificates.Count < 1)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SRServiceModel.Format(SRServiceModel.CannotFindCert, storeName, storeLocation, findType, findValue)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(string.Format(SRServiceModel.CannotFindCert, storeName, storeLocation, findType, findValue)));
                 }
                 if (certificates.Count > 1)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(SRServiceModel.Format(SRServiceModel.FoundMultipleCerts, storeName, storeLocation, findType, findValue)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityTokenException(string.Format(SRServiceModel.FoundMultipleCerts, storeName, storeLocation, findType, findValue)));
                 }
 
                 _certificate = new X509Certificate2(certificates[0].Handle);

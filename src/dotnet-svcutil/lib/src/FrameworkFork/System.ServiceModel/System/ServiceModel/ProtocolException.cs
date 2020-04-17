@@ -21,18 +21,18 @@ namespace System.ServiceModel
                 {
                     MessageFault fault = MessageFault.CreateFault(message, 64 * 1024);
                     FaultReasonText reason = fault.Reason.GetMatchingTranslation(CultureInfo.CurrentCulture);
-                    string text = SRServiceModel.Format(SRServiceModel.ReceiveShutdownReturnedFault, reason.Text);
+                    string text = string.Format(SRServiceModel.ReceiveShutdownReturnedFault, reason.Text);
                     return new ProtocolException(text);
                 }
                 catch (QuotaExceededException)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.ReceiveShutdownReturnedLargeFault, message.Headers.Action);
+                    string text = string.Format(SRServiceModel.ReceiveShutdownReturnedLargeFault, message.Headers.Action);
                     return new ProtocolException(text);
                 }
             }
             else
             {
-                string text = SRServiceModel.Format(SRServiceModel.ReceiveShutdownReturnedMessage, message.Headers.Action);
+                string text = string.Format(SRServiceModel.ReceiveShutdownReturnedMessage, message.Headers.Action);
                 return new ProtocolException(text);
             }
         }
@@ -45,18 +45,18 @@ namespace System.ServiceModel
                 {
                     MessageFault fault = MessageFault.CreateFault(message, 64 * 1024);
                     FaultReasonText reason = fault.Reason.GetMatchingTranslation(CultureInfo.CurrentCulture);
-                    string text = SRServiceModel.Format(SRServiceModel.OneWayOperationReturnedFault, reason.Text);
+                    string text = string.Format(SRServiceModel.OneWayOperationReturnedFault, reason.Text);
                     return new ProtocolException(text);
                 }
                 catch (QuotaExceededException)
                 {
-                    string text = SRServiceModel.Format(SRServiceModel.OneWayOperationReturnedLargeFault, message.Headers.Action);
+                    string text = string.Format(SRServiceModel.OneWayOperationReturnedLargeFault, message.Headers.Action);
                     return new ProtocolException(text);
                 }
             }
             else
             {
-                string text = SRServiceModel.Format(SRServiceModel.OneWayOperationReturnedMessage, message.Headers.Action);
+                string text = string.Format(SRServiceModel.OneWayOperationReturnedMessage, message.Headers.Action);
                 return new ProtocolException(text);
             }
         }

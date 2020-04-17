@@ -25,7 +25,7 @@ namespace System.Runtime.Serialization
             set
             {
                 if (ReferencedTypeExists)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.CannotSetNamespaceForReferencedType, TypeReference.BaseType)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.CannotSetNamespaceForReferencedType, TypeReference.BaseType)));
                 else
                     _clrNamespace = value;
             }
@@ -34,7 +34,7 @@ namespace System.Runtime.Serialization
         internal Dictionary<string, object> GetMemberNames()
         {
             if (ReferencedTypeExists)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.CannotSetMembersForReferencedType, TypeReference.BaseType)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.CannotSetMembersForReferencedType, TypeReference.BaseType)));
             else
             {
                 if (_memberNames == null)

@@ -369,7 +369,7 @@ namespace System.Runtime.Serialization
             {
                 Type declaringType = memberContract.MemberInfo.DeclaringType;
                 DataContract.ThrowInvalidDataContractException(
-                    SRSerialization.Format((declaringType.GetTypeInfo().IsEnum ? SRSerialization.DupEnumMemberValue : SRSerialization.DupMemberName),
+                    string.Format((declaringType.GetTypeInfo().IsEnum ? SRSerialization.DupEnumMemberValue : SRSerialization.DupMemberName),
                         existingMemberContract.MemberInfo.Name,
                         memberContract.MemberInfo.Name,
                         DataContract.GetClrTypeFullName(declaringType),
@@ -529,7 +529,7 @@ namespace System.Runtime.Serialization
         {
             if (_isScriptObject)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.UnexpectedContractType, DataContract.GetClrTypeFullName(this.GetType()), DataContract.GetClrTypeFullName(UnderlyingType))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.UnexpectedContractType, DataContract.GetClrTypeFullName(this.GetType()), DataContract.GetClrTypeFullName(UnderlyingType))));
             }
             XmlFormatWriterDelegate(xmlWriter, obj, context, this);
         }
@@ -538,7 +538,7 @@ namespace System.Runtime.Serialization
         {
             if (_isScriptObject)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.UnexpectedContractType, DataContract.GetClrTypeFullName(this.GetType()), DataContract.GetClrTypeFullName(UnderlyingType))));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.UnexpectedContractType, DataContract.GetClrTypeFullName(this.GetType()), DataContract.GetClrTypeFullName(UnderlyingType))));
             }
             xmlReader.Read();
             object o = XmlFormatReaderDelegate(xmlReader, context, MemberNames, MemberNamespaces);
@@ -559,7 +559,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustDataContractTypeNotPublic,
                                 DataContract.GetClrTypeFullName(UnderlyingType)),
                             securityException));
@@ -578,7 +578,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustNonAttributedSerializableTypeNoPublicConstructor,
                                 DataContract.GetClrTypeFullName(UnderlyingType)),
                             securityException));
@@ -591,7 +591,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustDataContractOnDeserializingNotPublic,
                                 DataContract.GetClrTypeFullName(UnderlyingType),
                                 this.OnDeserializing.Name),
@@ -605,7 +605,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustDataContractOnDeserializedNotPublic,
                                 DataContract.GetClrTypeFullName(UnderlyingType),
                                 this.OnDeserialized.Name),
@@ -625,7 +625,7 @@ namespace System.Runtime.Serialization
                             if (this.Members[i].MemberInfo is FieldInfo)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                    new SecurityException(SRSerialization.Format(
+                                    new SecurityException(string.Format(
                                             SRSerialization.PartialTrustDataContractFieldSetNotPublic,
                                             DataContract.GetClrTypeFullName(UnderlyingType),
                                             this.Members[i].MemberInfo.Name),
@@ -634,7 +634,7 @@ namespace System.Runtime.Serialization
                             else
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                    new SecurityException(SRSerialization.Format(
+                                    new SecurityException(string.Format(
                                             SRSerialization.PartialTrustDataContractPropertySetNotPublic,
                                             DataContract.GetClrTypeFullName(UnderlyingType),
                                             this.Members[i].MemberInfo.Name),
@@ -663,7 +663,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustDataContractTypeNotPublic,
                                 DataContract.GetClrTypeFullName(UnderlyingType)),
                             securityException));
@@ -679,7 +679,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustDataContractOnSerializingNotPublic,
                                 DataContract.GetClrTypeFullName(this.UnderlyingType),
                                 this.OnSerializing.Name),
@@ -693,7 +693,7 @@ namespace System.Runtime.Serialization
                 if (securityException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new SecurityException(SRSerialization.Format(
+                        new SecurityException(string.Format(
                                 SRSerialization.PartialTrustDataContractOnSerializedNotPublic,
                                 DataContract.GetClrTypeFullName(UnderlyingType),
                                 this.OnSerialized.Name),
@@ -713,7 +713,7 @@ namespace System.Runtime.Serialization
                             if (this.Members[i].MemberInfo is FieldInfo)
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                    new SecurityException(SRSerialization.Format(
+                                    new SecurityException(string.Format(
                                             SRSerialization.PartialTrustDataContractFieldGetNotPublic,
                                             DataContract.GetClrTypeFullName(UnderlyingType),
                                             this.Members[i].MemberInfo.Name),
@@ -722,7 +722,7 @@ namespace System.Runtime.Serialization
                             else
                             {
                                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                    new SecurityException(SRSerialization.Format(
+                                    new SecurityException(string.Format(
                                             SRSerialization.PartialTrustDataContractPropertyGetNotPublic,
                                             DataContract.GetClrTypeFullName(UnderlyingType),
                                             this.Members[i].MemberInfo.Name),
@@ -807,7 +807,7 @@ namespace System.Runtime.Serialization
                     if (this.BaseContract != null && this.BaseContract.IsNonAttributedType && !_isNonAttributedType)
                     {
                         throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError
-                            (new InvalidDataContractException(SRSerialization.Format(SRSerialization.AttributedTypesCannotInheritFromNonAttributedSerializableTypes,
+                            (new InvalidDataContractException(string.Format(SRSerialization.AttributedTypesCannotInheritFromNonAttributedSerializableTypes,
                             DataContract.GetClrTypeFullName(type), DataContract.GetClrTypeFullName(baseType))));
                     }
                 }
@@ -885,7 +885,7 @@ namespace System.Runtime.Serialization
                             (!baseIsReference && dataContractAttribute.IsReference))
                         {
                             DataContract.ThrowInvalidDataContractException(
-                                    SRSerialization.Format(SRSerialization.InconsistentIsReference,
+                                    string.Format(SRSerialization.InconsistentIsReference,
                                         DataContract.GetClrTypeFullName(type),
                                         dataContractAttribute.IsReference,
                                         DataContract.GetClrTypeFullName(this.BaseContract.UnderlyingType),
@@ -911,7 +911,7 @@ namespace System.Runtime.Serialization
                 if (isReference && type.GetTypeInfo().IsValueType)
                 {
                     DataContract.ThrowInvalidDataContractException(
-                            SRSerialization.Format(SRSerialization.ValueTypeCannotHaveIsReference,
+                            string.Format(SRSerialization.ValueTypeCannotHaveIsReference,
                                 DataContract.GetClrTypeFullName(type),
                                 true,
                                 false),
@@ -951,7 +951,7 @@ namespace System.Runtime.Serialization
                         if (memberAttributes != null && memberAttributes.Length > 0)
                         {
                             if (memberAttributes.Length > 1)
-                                ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.TooManyDataMembers, DataContract.GetClrTypeFullName(member.DeclaringType), member.Name));
+                                ThrowInvalidDataContractException(string.Format(SRSerialization.TooManyDataMembers, DataContract.GetClrTypeFullName(member.DeclaringType), member.Name));
 
                             DataMember memberContract = new DataMember(member);
 
@@ -966,25 +966,25 @@ namespace System.Runtime.Serialization
                                 if (setMethod != null && IsMethodOverriding(setMethod))
                                     continue;
                                 if (getMethod == null)
-                                    ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.NoGetMethodForProperty, property.DeclaringType, property.Name));
+                                    ThrowInvalidDataContractException(string.Format(SRSerialization.NoGetMethodForProperty, property.DeclaringType, property.Name));
                                 if (setMethod == null)
                                 {
                                     if (!SetIfGetOnlyCollection(memberContract))
                                     {
-                                        ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.NoSetMethodForProperty, property.DeclaringType, property.Name));
+                                        ThrowInvalidDataContractException(string.Format(SRSerialization.NoSetMethodForProperty, property.DeclaringType, property.Name));
                                     }
                                 }
                                 if (getMethod.GetParameters().Length > 0)
-                                    ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.IndexedPropertyCannotBeSerialized, property.DeclaringType, property.Name));
+                                    ThrowInvalidDataContractException(string.Format(SRSerialization.IndexedPropertyCannotBeSerialized, property.DeclaringType, property.Name));
                             }
                             else if (!(member is FieldInfo))
-                                ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidMember, DataContract.GetClrTypeFullName(type), member.Name));
+                                ThrowInvalidDataContractException(string.Format(SRSerialization.InvalidMember, DataContract.GetClrTypeFullName(type), member.Name));
 
                             DataMemberAttribute memberAttribute = (DataMemberAttribute)memberAttributes[0];
                             if (memberAttribute.IsNameSetExplicitly)
                             {
                                 if (memberAttribute.Name == null || memberAttribute.Name.Length == 0)
-                                    ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidDataMemberName, member.Name, DataContract.GetClrTypeFullName(type)));
+                                    ThrowInvalidDataContractException(string.Format(SRSerialization.InvalidDataMemberName, member.Name, DataContract.GetClrTypeFullName(type)));
                                 memberContract.Name = memberAttribute.Name;
                             }
                             else
@@ -996,7 +996,7 @@ namespace System.Runtime.Serialization
                             if (memberAttribute.IsRequired && this.IsReference)
                             {
                                 ThrowInvalidDataContractException(
-                                    SRSerialization.Format(SRSerialization.IsRequiredDataMemberOnIsReferenceDataContractType,
+                                    string.Format(SRSerialization.IsRequiredDataMemberOnIsReferenceDataContractType,
                                     DataContract.GetClrTypeFullName(member.DeclaringType),
                                     member.Name, true), type);
                             }
@@ -1016,7 +1016,7 @@ namespace System.Runtime.Serialization
                         if (memberAttributes != null && memberAttributes.Length > 0)
                         {
                             if (memberAttributes.Length > 1)
-                                ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.TooManyIgnoreDataMemberAttributes, DataContract.GetClrTypeFullName(member.DeclaringType), member.Name));
+                                ThrowInvalidDataContractException(string.Format(SRSerialization.TooManyIgnoreDataMemberAttributes, DataContract.GetClrTypeFullName(member.DeclaringType), member.Name));
                             else
                                 continue;
                         }
@@ -1062,7 +1062,7 @@ namespace System.Runtime.Serialization
                                 if (this.IsReference)
                                 {
                                     ThrowInvalidDataContractException(
-                                        SRSerialization.Format(SRSerialization.NonOptionalFieldMemberOnIsReferenceSerializableType,
+                                        string.Format(SRSerialization.NonOptionalFieldMemberOnIsReferenceSerializableType,
                                         DataContract.GetClrTypeFullName(member.DeclaringType),
                                         member.Name, true), type);
                                 }
@@ -1227,17 +1227,17 @@ namespace System.Runtime.Serialization
                 if (method.IsDefined(attributeType, false))
                 {
                     if (currentCallback != null)
-                        DataContract.ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.DuplicateCallback, method, currentCallback, DataContract.GetClrTypeFullName(method.DeclaringType), attributeType), method.DeclaringType);
+                        DataContract.ThrowInvalidDataContractException(string.Format(SRSerialization.DuplicateCallback, method, currentCallback, DataContract.GetClrTypeFullName(method.DeclaringType), attributeType), method.DeclaringType);
                     else if (prevAttributeType != null)
-                        DataContract.ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.DuplicateAttribute, prevAttributeType, attributeType, DataContract.GetClrTypeFullName(method.DeclaringType), method), method.DeclaringType);
+                        DataContract.ThrowInvalidDataContractException(string.Format(SRSerialization.DuplicateAttribute, prevAttributeType, attributeType, DataContract.GetClrTypeFullName(method.DeclaringType), method), method.DeclaringType);
                     else if (method.IsVirtual)
-                        DataContract.ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.CallbacksCannotBeVirtualMethods, method, DataContract.GetClrTypeFullName(method.DeclaringType), attributeType), method.DeclaringType);
+                        DataContract.ThrowInvalidDataContractException(string.Format(SRSerialization.CallbacksCannotBeVirtualMethods, method, DataContract.GetClrTypeFullName(method.DeclaringType), attributeType), method.DeclaringType);
                     else
                     {
                         if (method.ReturnType != Globals.TypeOfVoid)
-                            DataContract.ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.CallbackMustReturnVoid, DataContract.GetClrTypeFullName(method.DeclaringType), method), method.DeclaringType);
+                            DataContract.ThrowInvalidDataContractException(string.Format(SRSerialization.CallbackMustReturnVoid, DataContract.GetClrTypeFullName(method.DeclaringType), method), method.DeclaringType);
                         if (parameters == null || parameters.Length != 1 || parameters[0].ParameterType != Globals.TypeOfStreamingContext)
-                            DataContract.ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.CallbackParameterInvalid, DataContract.GetClrTypeFullName(method.DeclaringType), method, Globals.TypeOfStreamingContext), method.DeclaringType);
+                            DataContract.ThrowInvalidDataContractException(string.Format(SRSerialization.CallbackParameterInvalid, DataContract.GetClrTypeFullName(method.DeclaringType), method, Globals.TypeOfStreamingContext), method.DeclaringType);
 
                         prevAttributeType = attributeType;
                     }
@@ -1253,7 +1253,7 @@ namespace System.Runtime.Serialization
                 {
                     _baseContract = value;
                     if (_baseContract != null && IsValueType)
-                        ThrowInvalidDataContractException(SRSerialization.Format(SRSerialization.ValueTypeCannotHaveBaseType, StableName.Name, StableName.Namespace, _baseContract.StableName.Name, _baseContract.StableName.Namespace));
+                        ThrowInvalidDataContractException(string.Format(SRSerialization.ValueTypeCannotHaveBaseType, StableName.Name, StableName.Namespace, _baseContract.StableName.Name, _baseContract.StableName.Namespace));
                 }
             }
 
@@ -1398,7 +1398,7 @@ namespace System.Runtime.Serialization
 
                 ConstructorInfo ctor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, Array.Empty<Type>());
                 if (ctor == null)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.NonAttributedSerializableTypesMustHaveDefaultConstructor, DataContract.GetClrTypeFullName(type))));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.NonAttributedSerializableTypesMustHaveDefaultConstructor, DataContract.GetClrTypeFullName(type))));
 
                 return ctor;
             }

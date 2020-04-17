@@ -166,7 +166,7 @@ namespace System.ServiceModel.Security
                     generation = reader.ReadContentAsInt();
                     reader.ReadEndElement();
                     if (generation < 0)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.DerivedKeyInvalidGenerationSpecified, generation)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.DerivedKeyInvalidGenerationSpecified, generation)));
                 }
 
                 offset = -1;
@@ -176,7 +176,7 @@ namespace System.ServiceModel.Security
                     offset = reader.ReadContentAsInt();
                     reader.ReadEndElement();
                     if (offset < 0)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.DerivedKeyInvalidOffsetSpecified, offset)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.DerivedKeyInvalidOffsetSpecified, offset)));
                 }
 
                 length = DerivedKeySecurityToken.DefaultDerivedKeyLength;
@@ -202,7 +202,7 @@ namespace System.ServiceModel.Security
                 }
                 if (label != null && label.Length > _maxKeyDerivationLabelLength)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DerivedKeyTokenLabelTooLong, label.Length, _maxKeyDerivationLabelLength)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(string.Format(SRServiceModel.DerivedKeyTokenLabelTooLong, label.Length, _maxKeyDerivationLabelLength)));
                 }
 
                 nonce = null;
@@ -212,7 +212,7 @@ namespace System.ServiceModel.Security
 
                 if (nonce != null && nonce.Length > _maxKeyDerivationNonceLength)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DerivedKeyTokenNonceTooLong, nonce.Length, _maxKeyDerivationNonceLength)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(string.Format(SRServiceModel.DerivedKeyTokenNonceTooLong, nonce.Length, _maxKeyDerivationNonceLength)));
                 }
 
                 reader.ReadEndElement();
@@ -253,7 +253,7 @@ namespace System.ServiceModel.Security
                 }
                 if (derivedKeyToken.KeyDerivationAlgorithm != _parent.DerivationAlgorithm)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.UnsupportedKeyDerivationAlgorithm, derivedKeyToken.KeyDerivationAlgorithm)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(string.Format(SRServiceModel.UnsupportedKeyDerivationAlgorithm, derivedKeyToken.KeyDerivationAlgorithm)));
                 }
                 _parent.WSSecurityTokenSerializer.WriteKeyIdentifierClause(writer, derivedKeyToken.TokenToDeriveIdentifier);
 

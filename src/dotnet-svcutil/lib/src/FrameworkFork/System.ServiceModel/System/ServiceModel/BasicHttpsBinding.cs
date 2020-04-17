@@ -17,7 +17,7 @@ namespace System.ServiceModel
         {
             if (securityMode == BasicHttpsSecurityMode.TransportWithMessageCredential)
             {
-                throw ExceptionHelper.PlatformNotSupported(SRServiceModel.Format(SRServiceModel.UnsupportedSecuritySetting, "securityMode", securityMode));
+                throw ExceptionHelper.PlatformNotSupported(string.Format(SRServiceModel.UnsupportedSecuritySetting, "securityMode", securityMode));
             }
 
             _basicHttpsSecurity = new BasicHttpsSecurity();
@@ -67,7 +67,7 @@ namespace System.ServiceModel
                 BasicHttpSecurity.Mode == BasicHttpSecurityMode.TransportCredentialOnly) &&
                 BasicHttpSecurity.Transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.HttpClientCredentialTypeInvalid, BasicHttpSecurity.Transport.ClientCredentialType)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.HttpClientCredentialTypeInvalid, BasicHttpSecurity.Transport.ClientCredentialType)));
             }
 
             return base.BuildChannelFactory<TChannel>(parameters);

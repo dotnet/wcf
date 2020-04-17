@@ -49,7 +49,7 @@ namespace System.Runtime.Serialization
         internal string GetAttribute(int i)
         {
             if (isEndOfEmptyElement)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("i", SRSerialization.Format(SRSerialization.XmlElementAttributes)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("i", string.Format(SRSerialization.XmlElementAttributes)));
             return reader.GetAttribute(i);
         }
 
@@ -149,7 +149,7 @@ namespace System.Runtime.Serialization
         internal void MoveToAttribute(int i)
         {
             if (isEndOfEmptyElement)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("i", SRSerialization.Format(SRSerialization.XmlElementAttributes)));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("i", string.Format(SRSerialization.XmlElementAttributes)));
             reader.MoveToAttribute(i);
         }
 
@@ -220,12 +220,12 @@ namespace System.Runtime.Serialization
 
         private void ThrowConversionException(string value, string type)
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(XmlObjectSerializer.TryAddLineInfo(this, SRSerialization.Format(SRSerialization.XmlInvalidConversion, value, type))));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(XmlObjectSerializer.TryAddLineInfo(this, string.Format(SRSerialization.XmlInvalidConversion, value, type))));
         }
 
         private void ThrowNotAtElement()
         {
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRSerialization.Format(SRSerialization.XmlStartElementExpected, "EndElement")));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRSerialization.XmlStartElementExpected, "EndElement")));
         }
 
 #if USE_REFEMIT
@@ -629,7 +629,7 @@ namespace System.Runtime.Serialization
         private void CheckActualArrayLength(int expectedLength, int actualLength, XmlDictionaryString itemName, XmlDictionaryString itemNamespace)
         {
             if (expectedLength != actualLength)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.ArrayExceededSizeAttribute, expectedLength, itemName.Value, itemNamespace.Value)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.ArrayExceededSizeAttribute, expectedLength, itemName.Value, itemNamespace.Value)));
         }
 
 #if USE_REFEMIT

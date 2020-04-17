@@ -129,13 +129,13 @@ namespace System.ServiceModel.Channels
                     if (bytesRead > 0)
                     {
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                            new CommunicationException(SRServiceModel.Format(SRServiceModel.SocketCloseReadReceivedData, thisPtr.RemoteEndPoint)));
+                            new CommunicationException(string.Format(SRServiceModel.SocketCloseReadReceivedData, thisPtr.RemoteEndPoint)));
                     }
                 }
                 catch (TimeoutException timeoutException)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                        SRServiceModel.Format(SRServiceModel.SocketCloseReadTimeout, thisPtr.RemoteEndPoint, thisPtr._readFinTimeout),
+                        string.Format(SRServiceModel.SocketCloseReadTimeout, thisPtr.RemoteEndPoint, thisPtr._readFinTimeout),
                         timeoutException));
                 }
 
@@ -251,13 +251,13 @@ namespace System.ServiceModel.Channels
                 if (bytesRead > 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new CommunicationException(SRServiceModel.Format(SRServiceModel.SocketCloseReadReceivedData, RemoteEndPoint)));
+                        new CommunicationException(string.Format(SRServiceModel.SocketCloseReadReceivedData, RemoteEndPoint)));
                 }
             }
             catch (TimeoutException timeoutException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                    SRServiceModel.Format(SRServiceModel.SocketCloseReadTimeout, RemoteEndPoint, _readFinTimeout), timeoutException));
+                    string.Format(SRServiceModel.SocketCloseReadTimeout, RemoteEndPoint, _readFinTimeout), timeoutException));
             }
 
             ContinueClose(_closeTimeoutHelper.RemainingTime());
@@ -295,13 +295,13 @@ namespace System.ServiceModel.Channels
                 if (bytesRead > 0)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new CommunicationException(SRServiceModel.Format(SRServiceModel.SocketCloseReadReceivedData, RemoteEndPoint)));
+                        new CommunicationException(string.Format(SRServiceModel.SocketCloseReadReceivedData, RemoteEndPoint)));
                 }
             }
             catch (TimeoutException timeoutException)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                    SRServiceModel.Format(SRServiceModel.SocketCloseReadTimeout, RemoteEndPoint, _readFinTimeout), timeoutException));
+                    string.Format(SRServiceModel.SocketCloseReadTimeout, RemoteEndPoint, _readFinTimeout), timeoutException));
             }
 
             // finally we call Close with whatever time is remaining
@@ -800,7 +800,7 @@ namespace System.ServiceModel.Channels
                 if (timeout <= TimeSpan.Zero)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new TimeoutException(SRServiceModel.Format(SRServiceModel.TcpConnectionTimedOut, timeout)));
+                        new TimeoutException(string.Format(SRServiceModel.TcpConnectionTimedOut, timeout)));
                 }
 
                 if (UpdateTimeout(_receiveTimeout, timeout))
@@ -840,7 +840,7 @@ namespace System.ServiceModel.Channels
                 if (timeout <= TimeSpan.Zero)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new TimeoutException(SRServiceModel.Format(SRServiceModel.TcpConnectionTimedOut, timeout)));
+                        new TimeoutException(string.Format(SRServiceModel.TcpConnectionTimedOut, timeout)));
                 }
 
                 if (UpdateTimeout(_sendTimeout, timeout))

@@ -66,7 +66,7 @@ namespace System.ServiceModel.Description
                     if (_nodesRead == _metadataImporter.Quotas.MaxPolicyNodes)
                     {
                         // add wirning once
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.ExceededMaxPolicyComplexity, node.Name, PolicyHelper.GetFragmentIdentifier((XmlElement)node));
+                        string warningMsg = string.Format(SRServiceModel.ExceededMaxPolicyComplexity, node.Name, PolicyHelper.GetFragmentIdentifier((XmlElement)node));
                         _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
                         _nodesRead++;
                     }
@@ -90,7 +90,7 @@ namespace System.ServiceModel.Description
                         nodes = ReadNode_PolicyReference((XmlElement)node, contextAssertion, yieldLimiter);
                         break;
                     case PolicyHelper.NodeType.UnrecognizedWSPolicy:
-                        string warningMsg = SRServiceModel.Format(SRServiceModel.UnrecognizedPolicyElementInNamespace, node.Name, node.NamespaceURI);
+                        string warningMsg = string.Format(SRServiceModel.UnrecognizedPolicyElementInNamespace, node.Name, node.NamespaceURI);
                         _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
                         break;
                         //consider hsomu, add more error handling here. default?
@@ -103,7 +103,7 @@ namespace System.ServiceModel.Description
                 string idRef = element.GetAttribute(MetadataStrings.WSPolicy.Attributes.URI);
                 if (idRef == null)
                 {
-                    string warningMsg = SRServiceModel.Format(SRServiceModel.PolicyReferenceMissingURI, MetadataStrings.WSPolicy.Attributes.URI);
+                    string warningMsg = string.Format(SRServiceModel.PolicyReferenceMissingURI, MetadataStrings.WSPolicy.Attributes.URI);
                     _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
                     return s_emptyEmpty;
                 }
@@ -117,7 +117,7 @@ namespace System.ServiceModel.Description
                 XmlElement policy = _metadataImporter.ResolvePolicyReference(idRef, contextAssertion);
                 if (policy == null)
                 {
-                    string warningMsg = SRServiceModel.Format(SRServiceModel.UnableToFindPolicyWithId, idRef);
+                    string warningMsg = string.Format(SRServiceModel.UnableToFindPolicyWithId, idRef);
                     _metadataImporter.PolicyWarningOccured.Invoke(contextAssertion, warningMsg);
                     return s_emptyEmpty;
                 }

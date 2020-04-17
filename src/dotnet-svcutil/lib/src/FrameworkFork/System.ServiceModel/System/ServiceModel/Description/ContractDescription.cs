@@ -218,7 +218,7 @@ namespace System.ServiceModel.Description
             if (this.Operations.Count == 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.SFxContractHasZeroOperations, this.Name)));
+                    string.Format(SRServiceModel.SFxContractHasZeroOperations, this.Name)));
             }
             bool thereIsAtLeastOneInitiatingOperation = false;
             for (int i = 0; i < this.Operations.Count; i++)
@@ -231,13 +231,13 @@ namespace System.ServiceModel.Description
                     && (this.SessionMode != SessionMode.Required))
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                        SRServiceModel.Format(SRServiceModel.ContractIsNotSelfConsistentItHasOneOrMore2, this.Name)));
+                        string.Format(SRServiceModel.ContractIsNotSelfConsistentItHasOneOrMore2, this.Name)));
                 }
             }
             if (!thereIsAtLeastOneInitiatingOperation)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
-                    SRServiceModel.Format(SRServiceModel.SFxContractHasZeroInitiatingOperations, this.Name)));
+                    string.Format(SRServiceModel.SFxContractHasZeroInitiatingOperations, this.Name)));
             }
         }
 

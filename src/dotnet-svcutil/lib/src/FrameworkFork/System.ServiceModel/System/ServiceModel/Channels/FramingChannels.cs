@@ -322,7 +322,7 @@ namespace System.ServiceModel.Channels
             catch (TimeoutException exception)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new TimeoutException(SRServiceModel.Format(SRServiceModel.TimeoutOnOpen, timeout), exception));
+                    new TimeoutException(string.Format(SRServiceModel.TimeoutOnOpen, timeout), exception));
             }
 
             bool connectionAccepted = false;
@@ -350,7 +350,7 @@ namespace System.ServiceModel.Channels
             catch (TimeoutException exception)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new TimeoutException(SRServiceModel.Format(SRServiceModel.TimeoutOnOpen, timeout), exception));
+                    new TimeoutException(string.Format(SRServiceModel.TimeoutOnOpen, timeout), exception));
             }
 
             bool connectionAccepted = false;
@@ -392,7 +392,7 @@ namespace System.ServiceModel.Channels
                 if (this.State != CommunicationState.Opening)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new CommunicationObjectAbortedException(SRServiceModel.Format(SRServiceModel.DuplexChannelAbortedDuringOpen, this.Via)));
+                        new CommunicationObjectAbortedException(string.Format(SRServiceModel.DuplexChannelAbortedDuringOpen, this.Via)));
                 }
 
                 this.Connection = connection;
@@ -424,7 +424,7 @@ namespace System.ServiceModel.Channels
 
             protected override TimeoutException CreateNewConnectionTimeoutException(TimeSpan timeout, TimeoutException innerException)
             {
-                return new TimeoutException(SRServiceModel.Format(SRServiceModel.OpenTimedOutEstablishingTransportSession,
+                return new TimeoutException(string.Format(SRServiceModel.OpenTimedOutEstablishingTransportSession,
                         timeout, _channel.Via.AbsoluteUri), innerException);
             }
 
@@ -605,7 +605,7 @@ namespace System.ServiceModel.Channels
             if (count == 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                    new ProtocolException(SRServiceModel.Format(SRServiceModel.ServerRejectedSessionPreamble, via),
+                    new ProtocolException(string.Format(SRServiceModel.ServerRejectedSessionPreamble, via),
                     decoder.CreatePrematureEOFException()));
             }
 

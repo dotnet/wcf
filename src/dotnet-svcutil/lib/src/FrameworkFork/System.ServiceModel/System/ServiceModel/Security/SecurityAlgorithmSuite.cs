@@ -263,7 +263,7 @@ namespace System.ServiceModel.Security
             if (SecurityUtils.IsSupportedAlgorithm(derivationAlgorithm, token))
             {
                 if (this.DefaultEncryptionKeyDerivationLength % 8 != 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.Psha1KeyLengthInvalid, this.DefaultEncryptionKeyDerivationLength)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.Psha1KeyLengthInvalid, this.DefaultEncryptionKeyDerivationLength)));
 
                 return this.DefaultEncryptionKeyDerivationLength / 8;
             }
@@ -293,7 +293,7 @@ namespace System.ServiceModel.Security
             ReadOnlyCollection<SecurityKey> keys = token.SecurityKeys;
             if (keys == null || keys.Count == 0)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SigningTokenHasNoKeys, token)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SigningTokenHasNoKeys, token)));
             }
 
             for (int i = 0; i < keys.Count; i++)
@@ -314,7 +314,7 @@ namespace System.ServiceModel.Security
                 }
             }
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SigningTokenHasNoKeysSupportingTheAlgorithmSuite, token, this)));
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SigningTokenHasNoKeysSupportingTheAlgorithmSuite, token, this)));
         }
 
         internal string GetSignatureKeyDerivationAlgorithm(SecurityToken token, SecureConversationVersion version)
@@ -338,7 +338,7 @@ namespace System.ServiceModel.Security
             if (SecurityUtils.IsSupportedAlgorithm(derivationAlgorithm, token))
             {
                 if (this.DefaultSignatureKeyDerivationLength % 8 != 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.Psha1KeyLengthInvalid, this.DefaultSignatureKeyDerivationLength)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.Psha1KeyLengthInvalid, this.DefaultSignatureKeyDerivationLength)));
 
                 return this.DefaultSignatureKeyDerivationLength / 8;
             }
@@ -350,7 +350,7 @@ namespace System.ServiceModel.Security
         {
             if (!IsSymmetricSignatureAlgorithmSupported(algorithm))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.SuiteDoesNotAcceptAlgorithm,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(string.Format(SRServiceModel.SuiteDoesNotAcceptAlgorithm,
                     algorithm, "SymmetricSignature", this)));
             }
         }

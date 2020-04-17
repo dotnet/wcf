@@ -21,7 +21,7 @@ namespace System.Runtime.Serialization
             XmlSchemaSet schemas = null;
             InvokeSchemaProviderMethod(type, schemas, out stableName, out xsdType, out hasRoot);
             if (stableName.Name == null || stableName.Name.Length == 0)
-                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidXmlDataContractName, DataContract.GetClrTypeFullName(type))));
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.InvalidXmlDataContractName, DataContract.GetClrTypeFullName(type))));
         }
 
         internal static long GetDefaultEnumValue(bool isFlags, int index)
@@ -50,24 +50,24 @@ namespace System.Runtime.Serialization
             if (methodName == null || methodName.Length == 0)
             {
                 if (!provider.IsAny)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidGetSchemaMethod, DataContract.GetClrTypeFullName(clrType))));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.InvalidGetSchemaMethod, DataContract.GetClrTypeFullName(clrType))));
                 stableName = DataContract.GetDefaultStableName(clrType);
             }
             else
             {
                 MethodInfo getMethod = clrType.GetMethod(methodName,  /*BindingFlags.DeclaredOnly |*/ BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, new Type[] { typeof(XmlSchemaSet) });
                 if (getMethod == null)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.MissingGetSchemaMethod, DataContract.GetClrTypeFullName(clrType), methodName)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.MissingGetSchemaMethod, DataContract.GetClrTypeFullName(clrType), methodName)));
 
                 if (!(Globals.TypeOfXmlQualifiedName.IsAssignableFrom(getMethod.ReturnType)))
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidReturnTypeOnGetSchemaMethod, DataContract.GetClrTypeFullName(clrType), methodName, DataContract.GetClrTypeFullName(getMethod.ReturnType), DataContract.GetClrTypeFullName(Globals.TypeOfXmlQualifiedName))));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.InvalidReturnTypeOnGetSchemaMethod, DataContract.GetClrTypeFullName(clrType), methodName, DataContract.GetClrTypeFullName(getMethod.ReturnType), DataContract.GetClrTypeFullName(Globals.TypeOfXmlQualifiedName))));
 
                 object typeInfo = getMethod.Invoke(null, new object[] { schemas });
 
                 if (provider.IsAny)
                 {
                     if (typeInfo != null)
-                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(SRSerialization.Format(SRSerialization.InvalidNonNullReturnValueByIsAny, DataContract.GetClrTypeFullName(clrType), methodName)));
+                        throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.InvalidNonNullReturnValueByIsAny, DataContract.GetClrTypeFullName(clrType), methodName)));
                     stableName = DataContract.GetDefaultStableName(clrType);
                 }
                 else if (typeInfo == null)

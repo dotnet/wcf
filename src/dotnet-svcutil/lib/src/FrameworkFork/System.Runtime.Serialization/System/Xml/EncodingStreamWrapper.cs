@@ -534,7 +534,7 @@ namespace Microsoft.Xml
 
         private static void ThrowExpectedEncodingMismatch(SupportedEncoding expEnc, SupportedEncoding actualEnc)
         {
-            throw new XmlException(SRSerialization.Format(SRSerialization.XmlExpectedEncoding, GetEncodingName(expEnc), GetEncodingName(actualEnc)));
+            throw new XmlException(string.Format(SRSerialization.XmlExpectedEncoding, GetEncodingName(expEnc), GetEncodingName(actualEnc)));
         }
 
         private static void ThrowEncodingMismatch(string declEnc, SupportedEncoding enc)
@@ -544,7 +544,7 @@ namespace Microsoft.Xml
 
         private static void ThrowEncodingMismatch(string declEnc, string docEnc)
         {
-            throw new XmlException(SRSerialization.Format(SRSerialization.XmlEncodingMismatch, declEnc, docEnc));
+            throw new XmlException(string.Format(SRSerialization.XmlEncodingMismatch, declEnc, docEnc));
         }
 
         // This stream wrapper does not support duplex

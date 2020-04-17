@@ -53,7 +53,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
                 filePath = Path.IsPathRooted(uniqueFileNameWithExtension) ? uniqueFileNameWithExtension : Path.Combine(basePath, uniqueFileNameWithExtension);
             }
 
-            throw new InvalidOperationException(string.Format(Resources.Culture, Resources.ErrUnableToCreateUniqueFileNameFormat, GetFileNameWithExtension(fileName, extension)));
+            throw new InvalidOperationException(string.Format(MetadataResources.Culture, MetadataResources.ErrUnableToCreateUniqueFileNameFormat, GetFileNameWithExtension(fileName, extension)));
         }
 
         public string AddFromNamespace(string basePath, string schemaNamespace, string extension)
@@ -245,20 +245,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
             // Verify that the directory exists
             if (!dirInfo.Exists)
             {
-                throw new DirectoryNotFoundException(string.Format(CultureInfo.CurrentCulture, Resources.ErrDirectoryNotFoundFormat, dirInfo.FullName));
+                throw new DirectoryNotFoundException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrDirectoryNotFoundFormat, dirInfo.FullName));
             }
 
             // Verify that the File exists
             string filename = Path.GetFileName(path);
             if (string.IsNullOrEmpty(filename))
             {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.ErrDirectoryInsteadOfFileFormat, path));
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrDirectoryInsteadOfFileFormat, path));
             }
 
             FileInfo[] fileInfoList = dirInfo.GetFiles(filename);
             if (fileInfoList.Length == 0)
             {
-                throw new FileNotFoundException(string.Format(CultureInfo.CurrentCulture, Resources.ErrNoFilesFoundFormat, path));
+                throw new FileNotFoundException(string.Format(CultureInfo.CurrentCulture, MetadataResources.ErrNoFilesFoundFormat, path));
             }
 
             return fileInfoList;

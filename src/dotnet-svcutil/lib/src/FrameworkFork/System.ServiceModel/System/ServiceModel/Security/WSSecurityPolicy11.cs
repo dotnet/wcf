@@ -95,7 +95,7 @@ namespace System.ServiceModel.Security
                     if (e is NullReferenceException)
                         throw;
 
-                    importer.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.UnsupportedBooleanAttribute, RequireClientCertificateName, e.Message), false));
+                    importer.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.UnsupportedBooleanAttribute, RequireClientCertificateName, e.Message), false));
                     result = false;
                 }
             }

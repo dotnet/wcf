@@ -139,7 +139,7 @@ namespace System.ServiceModel.Security.Tokens
             {
                 if (offset > maxOffset)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DerivedKeyTokenOffsetTooHigh, offset, maxOffset)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(string.Format(SRServiceModel.DerivedKeyTokenOffsetTooHigh, offset, maxOffset)));
                 }
             }
             else
@@ -147,7 +147,7 @@ namespace System.ServiceModel.Security.Tokens
                 int effectiveOffset = generation * length;
                 if ((effectiveOffset < generation && effectiveOffset < length) || effectiveOffset > maxOffset)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.DerivedKeyTokenGenerationAndLengthTooHigh, generation, length, maxOffset)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new MessageSecurityException(string.Format(SRServiceModel.DerivedKeyTokenGenerationAndLengthTooHigh, generation, length, maxOffset)));
                 }
             }
         }

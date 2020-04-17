@@ -341,7 +341,7 @@ namespace System.ServiceModel.Description
                         foreach (Type knownType in Operation.KnownTypes)
                         {
                             if (knownType == null)
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxKnownTypeNull, Operation.Name)));
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxKnownTypeNull, Operation.Name)));
                             _parent._importer.IncludeType(knownType);
                         }
                         _request = CreateMessageInfo(this.Operation.Messages[0], ":Request");
@@ -352,13 +352,13 @@ namespace System.ServiceModel.Description
                         skipVerifyXsdElementName = GeneratedXmlSerializers.IsInitialized;
 #endif
                         if (_request != null && this.IsRpc && this.Operation.IsValidateRpcWrapperName && !skipVerifyXsdElementName && _request.BodyMapping.XsdElementName != this.Operation.Name)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxRpcMessageBodyPartNameInvalid, Operation.Name, this.Operation.Messages[0].MessageName, _request.BodyMapping.XsdElementName, this.Operation.Name)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxRpcMessageBodyPartNameInvalid, Operation.Name, this.Operation.Messages[0].MessageName, _request.BodyMapping.XsdElementName, this.Operation.Name)));
                         if (!this.IsOneWay)
                         {
                             _reply = CreateMessageInfo(this.Operation.Messages[1], ":Response");
                             XmlName responseName = TypeLoader.GetBodyWrapperResponseName(this.Operation.Name);
                             if (_reply != null && this.IsRpc && this.Operation.IsValidateRpcWrapperName && !skipVerifyXsdElementName && _reply.BodyMapping.XsdElementName != responseName.EncodedName)
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxRpcMessageBodyPartNameInvalid, Operation.Name, this.Operation.Messages[1].MessageName, _reply.BodyMapping.XsdElementName, responseName.EncodedName)));
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxRpcMessageBodyPartNameInvalid, Operation.Name, this.Operation.Messages[1].MessageName, _reply.BodyMapping.XsdElementName, responseName.EncodedName)));
                         }
                         if (this.Attribute.SupportFaults)
                         {
@@ -418,16 +418,16 @@ namespace System.ServiceModel.Description
                             if (headerName != header.Name)
                             {
                                 if (message.MessageType != null)
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxHeaderNameMismatchInMessageContract, message.MessageType, header.MemberInfo.Name, header.Name, headerName)));
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxHeaderNameMismatchInMessageContract, message.MessageType, header.MemberInfo.Name, header.Name, headerName)));
                                 else
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxHeaderNameMismatchInOperation, this.Operation.Name, this.Operation.DeclaringContract.Name, this.Operation.DeclaringContract.Namespace, header.Name, headerName)));
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxHeaderNameMismatchInOperation, this.Operation.Name, this.Operation.DeclaringContract.Name, this.Operation.DeclaringContract.Namespace, header.Name, headerName)));
                             }
                             if (headerNs != header.Namespace)
                             {
                                 if (message.MessageType != null)
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxHeaderNamespaceMismatchInMessageContract, message.MessageType, header.MemberInfo.Name, header.Namespace, headerNs)));
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxHeaderNamespaceMismatchInMessageContract, message.MessageType, header.MemberInfo.Name, header.Namespace, headerNs)));
                                 else
-                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxHeaderNamespaceMismatchInOperation, this.Operation.Name, this.Operation.DeclaringContract.Name, this.Operation.DeclaringContract.Namespace, header.Namespace, headerNs)));
+                                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxHeaderNamespaceMismatchInOperation, this.Operation.Name, this.Operation.DeclaringContract.Name, this.Operation.DeclaringContract.Namespace, header.Namespace, headerNs)));
                             }
 
                             headerDescriptionTable.Add(headerName, headerNs, header);
@@ -522,7 +522,7 @@ namespace System.ServiceModel.Description
                         faultElementName = new XmlName(mapping.ElementName, false /*isEncoded*/);
                         faultNamespace = mapping.Namespace;
                         if (faultElementName == null)
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxFaultTypeAnonymous, this.Operation.Name, fault.DetailType.FullName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxFaultTypeAnonymous, this.Operation.Name, fault.DetailType.FullName)));
                     }
 
                     elementName = new XmlQualifiedName(faultElementName.DecodedName, faultNamespace);
@@ -857,9 +857,9 @@ namespace System.ServiceModel.Description
                 else if (member.XmlAttributes.XmlEnum != null)
                     invalidAttributeType = typeof(XmlEnumAttribute);
                 if (invalidAttributeType != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(isWrapped ? SRServiceModel.SFxInvalidXmlAttributeInWrapped : SRServiceModel.SFxInvalidXmlAttributeInBare, invalidAttributeType, elementName.DecodedName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(isWrapped ? SRServiceModel.SFxInvalidXmlAttributeInWrapped : SRServiceModel.SFxInvalidXmlAttributeInBare, invalidAttributeType, elementName.DecodedName)));
                 if (member.XmlAttributes.XmlArray != null && isMultiple)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxXmlArrayNotAllowedForMultiple, elementName.DecodedName, ns)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxXmlArrayNotAllowedForMultiple, elementName.DecodedName, ns)));
             }
 
 

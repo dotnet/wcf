@@ -134,11 +134,11 @@ namespace System.ServiceModel.Channels
                 case WININET_E_INCORRECT_HANDLE_STATE:
                     goto case WININET_E_CONNECTION_RESET;
                 case WININET_E_CONNECTION_RESET:
-                    return new CommunicationException(SRServiceModel.Format(SRServiceModel.HttpReceiveFailure, request.RequestUri), exception);
+                    return new CommunicationException(string.Format(SRServiceModel.HttpReceiveFailure, request.RequestUri), exception);
                 case WININET_E_NAME_NOT_RESOLVED:
-                    return new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
+                    return new EndpointNotFoundException(string.Format(SRServiceModel.EndpointNotFound, request.RequestUri.AbsoluteUri), exception);
                 case ERROR_WINHTTP_SECURE_FAILURE:
-                    return new SecurityNegotiationException(SRServiceModel.Format(SRServiceModel.TrustFailure, request.RequestUri.Authority), exception);
+                    return new SecurityNegotiationException(string.Format(SRServiceModel.TrustFailure, request.RequestUri.Authority), exception);
                 default:
                     return new CommunicationException(exception.Message, exception);
             }
@@ -151,7 +151,7 @@ namespace System.ServiceModel.Channels
                 statusDescription = response.StatusCode.ToString();
 
             return TraceResponseException(
-                new ProtocolException(SRServiceModel.Format(SRServiceModel.UnexpectedHttpResponseCode,
+                new ProtocolException(string.Format(SRServiceModel.UnexpectedHttpResponseCode,
                 (int)response.StatusCode, statusDescription)));
         }
 
@@ -211,7 +211,7 @@ namespace System.ServiceModel.Channels
                 if (offset >= buffer.Length)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("offset", offset,
-                        SRServiceModel.Format(SRServiceModel.OffsetExceedsBufferBound, buffer.Length - 1)));
+                        string.Format(SRServiceModel.OffsetExceedsBufferBound, buffer.Length - 1)));
                 }
 
                 if (count < 0)

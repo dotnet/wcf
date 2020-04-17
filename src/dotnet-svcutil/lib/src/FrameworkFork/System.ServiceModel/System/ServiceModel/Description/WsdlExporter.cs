@@ -53,8 +53,8 @@ namespace System.ServiceModel.Description
                         bool isWildcardAction;
                         if (!OperationIsExportable(operation, out isWildcardAction))
                         {
-                            string warningMsg = isWildcardAction ? SRServiceModel.Format(SRServiceModel.WarnSkippingOpertationWithWildcardAction, contract.Name, contract.Namespace, operation.Name)
-                                : SRServiceModel.Format(SRServiceModel.WarnSkippingOpertationWithSessionOpenNotificationEnabled, "Action", OperationDescription.SessionOpenedAction, contract.Name, contract.Namespace, operation.Name);
+                            string warningMsg = isWildcardAction ? string.Format(SRServiceModel.WarnSkippingOpertationWithWildcardAction, contract.Name, contract.Namespace, operation.Name)
+                                : string.Format(SRServiceModel.WarnSkippingOpertationWithSessionOpenNotificationEnabled, "Action", OperationDescription.SessionOpenedAction, contract.Name, contract.Namespace, operation.Name);
 
                             LogExportWarning(warningMsg);
                             continue;
@@ -145,7 +145,7 @@ namespace System.ServiceModel.Description
         private void ExportEndpoint(ServiceEndpoint endpoint, XmlQualifiedName wsdlServiceQName, BindingParameterCollection bindingParameters)
         {
             if (endpoint.Binding == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.EndpointsMustHaveAValidBinding1, endpoint.Name)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.EndpointsMustHaveAValidBinding1, endpoint.Name)));
 
             EndpointDictionaryKey endpointKey = new EndpointDictionaryKey(endpoint, wsdlServiceQName);
 
@@ -226,7 +226,7 @@ namespace System.ServiceModel.Description
                 CallExportEndpoint(endpointContext);
                 _exportedEndpoints.Add(endpointKey, endpoint);
                 if (bindingNameWasUniquified)
-                    Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.WarnDuplicateBindingQNameNameOnExport, endpoint.Binding.Name, endpoint.Binding.Namespace, endpoint.Contract.Name), true /*isWarning*/));
+                    Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.WarnDuplicateBindingQNameNameOnExport, endpoint.Binding.Name, endpoint.Binding.Namespace, endpoint.Contract.Name), true /*isWarning*/));
             }
             catch
             {
@@ -259,7 +259,7 @@ namespace System.ServiceModel.Description
             WsdlNS.PortType wsdlPortType = new WsdlNS.PortType();
             wsdlPortType.Name = wsdlPortTypeQName.Name;
             if (wsdl.PortTypes[wsdlPortType.Name] != null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.DuplicateContractQNameNameOnExport, contract.Name, contract.Namespace)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.DuplicateContractQNameNameOnExport, contract.Name, contract.Namespace)));
             NetSessionHelper.AddUsingSessionAttributeIfNeeded(wsdlPortType, contract);
             wsdl.PortTypes.Add(wsdlPortType);
 
@@ -614,7 +614,7 @@ namespace System.ServiceModel.Description
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new InvalidOperationException(SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressing)));
+                        new InvalidOperationException(string.Format(SRServiceModel.AddressingVersionNotSupported, addressing)));
                 }
 
                 addr.WriteTo(addressing, xw);
@@ -661,7 +661,7 @@ namespace System.ServiceModel.Description
                         {
                             mode = (SupportedAddressingMode)exporter.State[key];
                             if (!SupportedAddressingModeHelper.IsDefined(mode))
-                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SupportedAddressingModeNotSupported, mode)));
+                                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SupportedAddressingModeNotSupported, mode)));
                         }
 
                         if (mode != SupportedAddressingMode.Mixed)
@@ -697,7 +697,7 @@ namespace System.ServiceModel.Description
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new InvalidOperationException(SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressVersion)));
+                        new InvalidOperationException(string.Format(SRServiceModel.AddressingVersionNotSupported, addressVersion)));
                 }
 
                 if (addressingAssertion != null)
@@ -1200,7 +1200,7 @@ namespace System.ServiceModel.Description
         private Exception ThrowExtensionException(ContractDescription contract, IWsdlExportExtension exporter, Exception e)
         {
             string contractIdentifier = new XmlQualifiedName(contract.Name, contract.Namespace).ToString();
-            string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionContractExportError, exporter.GetType(), contractIdentifier);
+            string errorMessage = string.Format(SRServiceModel.WsdlExtensionContractExportError, exporter.GetType(), contractIdentifier);
 
             return new InvalidOperationException(errorMessage, e);
         }
@@ -1218,7 +1218,7 @@ namespace System.ServiceModel.Description
                     endpoint.Binding.Name,
                     endpoint.Binding.Namespace);
 
-            string errorMessage = SRServiceModel.Format(SRServiceModel.WsdlExtensionEndpointExportError, exporter.GetType(), endpointIdentifier);
+            string errorMessage = string.Format(SRServiceModel.WsdlExtensionEndpointExportError, exporter.GetType(), endpointIdentifier);
 
             return new InvalidOperationException(errorMessage, e);
         }

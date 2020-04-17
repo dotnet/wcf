@@ -77,7 +77,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             catch (Exception e)
             {
                 if (Utils.IsFatalOrUnexpected(e)) throw;
-                throw new ToolRuntimeException(SR.GetString(SR.ErrCannotCreateDirectoryFormat, directoryPath), e);
+                throw new ToolRuntimeException(string.Format(SR.ErrCannotCreateDirectoryFormat, directoryPath), e);
             }
         }
 
@@ -91,17 +91,17 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 if (!string.IsNullOrEmpty(option))
                 {
-                    throw new ToolArgumentException(SR.GetString(SR.ErrPathTooLongFormat, path, CommandProcessorOptions.Switches.OutputDirectory.Name, option), ptle);
+                    throw new ToolArgumentException(string.Format(SR.ErrPathTooLongFormat, path, CommandProcessorOptions.Switches.OutputDirectory.Name, option), ptle);
                 }
                 else
                 {
-                    throw new ToolArgumentException(SR.GetString(SR.ErrPathTooLongDirOnlyFormat, path, CommandProcessorOptions.Switches.OutputDirectory.Name), ptle);
+                    throw new ToolArgumentException(string.Format(SR.ErrPathTooLongDirOnlyFormat, path, CommandProcessorOptions.Switches.OutputDirectory.Name), ptle);
                 }
             }
             catch (Exception e)
             {
                 if (Utils.IsFatalOrUnexpected(e)) throw;
-                throw new ToolArgumentException(SR.GetString(SR.ErrInvalidPathFormat, path, option), e);
+                throw new ToolArgumentException(string.Format(SR.ErrInvalidPathFormat, path, option), e);
             }
         }
 

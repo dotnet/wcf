@@ -746,14 +746,14 @@ namespace System.ServiceModel.Security
                     {
                         if (numSkipped > 0)
                         {
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MultipleSupportingAuthenticatorsOfSameType, spec.TokenParameters.GetType())));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.MultipleSupportingAuthenticatorsOfSameType, spec.TokenParameters.GetType())));
                         }
                         ++numSkipped;
                         continue;
                     }
                     else if (authenticatorType.IsAssignableFrom(spec2AuthenticatorType) || spec2AuthenticatorType.IsAssignableFrom(authenticatorType))
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MultipleSupportingAuthenticatorsOfSameType, spec.TokenParameters.GetType())));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.MultipleSupportingAuthenticatorsOfSameType, spec.TokenParameters.GetType())));
                     }
                 }
             }
@@ -1016,7 +1016,7 @@ namespace System.ServiceModel.Security
             {
                 if (!this.SupportsReplayDetection)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("DetectReplays", SRServiceModel.Format(SRServiceModel.SecurityProtocolCannotDoReplayDetection, this));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("DetectReplays", string.Format(SRServiceModel.SecurityProtocolCannotDoReplayDetection, this));
                 }
                 if (this.MaxClockSkew == TimeSpan.MaxValue || this.ReplayWindow == TimeSpan.MaxValue)
                 {
@@ -1102,7 +1102,7 @@ namespace System.ServiceModel.Security
             if (requiredForForwardDirection)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(
-                    SRServiceModel.Format(SRServiceModel.PropertySettingErrorOnProtocolFactory, propertyName, this),
+                    string.Format(SRServiceModel.PropertySettingErrorOnProtocolFactory, propertyName, this),
                     propertyName));
             }
             else if (_requestReplyErrorPropertyName == null)
@@ -1116,7 +1116,7 @@ namespace System.ServiceModel.Security
             if (_requestReplyErrorPropertyName != null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(
-                    SRServiceModel.Format(SRServiceModel.PropertySettingErrorOnProtocolFactory, _requestReplyErrorPropertyName, this),
+                    string.Format(SRServiceModel.PropertySettingErrorOnProtocolFactory, _requestReplyErrorPropertyName, this),
                     _requestReplyErrorPropertyName));
             }
         }

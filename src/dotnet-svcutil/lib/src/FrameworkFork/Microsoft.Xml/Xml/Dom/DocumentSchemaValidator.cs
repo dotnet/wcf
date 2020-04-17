@@ -157,7 +157,7 @@ namespace Microsoft.Xml
                     break;
 
                 default:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlDocument_ValidateInvalidNodeType, null));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlDocument_ValidateInvalidNodeType, null));
             }
             _isValid = true;
             CreateValidator(partialValidationType, validationFlags);
@@ -286,7 +286,7 @@ namespace Microsoft.Xml
                     XmlElement docElem = ((XmlDocument)node).DocumentElement;
                     if (docElem == null)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_InvalidXmlDocument, ResXml.GetString(ResXml.Xdom_NoRootEle)));
+                        throw new InvalidOperationException(string.Format(ResXml.Xml_InvalidXmlDocument, string.Format(ResXml.Xdom_NoRootEle)));
                     }
                     ValidateNode(docElem);
                     break;
@@ -330,7 +330,7 @@ namespace Microsoft.Xml
                     break;
 
                 default:
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_UnexpectedNodeType, new string[] { _currentNode.NodeType.ToString() }));
+                    throw new InvalidOperationException(string.Format(ResXml.Xml_UnexpectedNodeType, new string[] { _currentNode.NodeType.ToString() }));
             }
         }
 
@@ -777,7 +777,7 @@ namespace Microsoft.Xml
                         break;
 
                     default:
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Xml_UnexpectedNodeType, new string[] { _currentNode.NodeType.ToString() }));
+                        throw new InvalidOperationException(string.Format(ResXml.Xml_UnexpectedNodeType, new string[] { _currentNode.NodeType.ToString() }));
                 }
             }
             Debug.Assert(child == childToStopAt);

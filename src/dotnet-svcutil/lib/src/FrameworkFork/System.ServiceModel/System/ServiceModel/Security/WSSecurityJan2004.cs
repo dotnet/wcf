@@ -359,7 +359,7 @@ namespace System.ServiceModel.Security
                 string type = reader.GetAttribute(XD.SecurityJan2004Dictionary.TypeAttribute, null);
                 if (type != null && type.Length > 0 && type != SecurityJan2004Strings.UPTokenPasswordTextValue)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.UnsupportedPasswordType, type)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.UnsupportedPasswordType, type)));
                 }
 
                 return reader.ReadElementString();
@@ -432,7 +432,7 @@ namespace System.ServiceModel.Security
                     case SecurityTokenReferenceStyle.Internal:
                         return CreateDirectReference(issuedTokenXml, XmlEncryptionStrings.Id, null, null);
                     case SecurityTokenReferenceStyle.External:
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.CantInferReferenceForToken, EncryptedKey.ElementName.Value)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.CantInferReferenceForToken, EncryptedKey.ElementName.Value)));
                     default:
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenReferenceStyle"));
                 }
@@ -477,7 +477,7 @@ namespace System.ServiceModel.Security
 
             public override SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromBinaryCore(byte[] rawData)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.CantInferReferenceForToken, ValueTypeAbsoluteUri)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.CantInferReferenceForToken, ValueTypeAbsoluteUri)));
             }
 
             public override SecurityToken ReadBinaryCore(string id, string valueTypeUri, byte[] rawData)
@@ -485,7 +485,7 @@ namespace System.ServiceModel.Security
                 X509Certificate2 certificate;
                 if (!SecurityUtils.TryCreateX509CertificateFromRawData(rawData, out certificate))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.InvalidX509RawData)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(string.Format(SRServiceModel.InvalidX509RawData)));
                 }
                 return new X509SecurityToken(certificate, id, false);
             }

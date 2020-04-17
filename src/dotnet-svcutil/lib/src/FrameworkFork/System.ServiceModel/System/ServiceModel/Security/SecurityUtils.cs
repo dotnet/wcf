@@ -401,7 +401,7 @@ namespace System.ServiceModel.Security
             }
             if (!foundSpn)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.CannotDetermineSPNBasedOnAddress, target)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(string.Format(SRServiceModel.CannotDetermineSPNBasedOnAddress, target)));
             }
             return spn;
         }
@@ -441,7 +441,7 @@ namespace System.ServiceModel.Security
                     read += actual;
                 }
                 if (totalRead > maxBufferSize - read)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new QuotaExceededException(SRServiceModel.Format(SRServiceModel.BufferQuotaExceededReadingBase64, maxBufferSize)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new QuotaExceededException(string.Format(SRServiceModel.BufferQuotaExceededReadingBase64, maxBufferSize)));
                 totalRead += read;
                 if (read < buffer.Length)
                     break;
@@ -884,7 +884,7 @@ namespace System.ServiceModel.Security
         {
             X509Certificate2 certificate = GetCertificateFromStoreCore(storeName, storeLocation, findType, findValue, target, true);
             if (certificate == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CannotFindCert, storeName, storeLocation, findType, findValue)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.CannotFindCert, storeName, storeLocation, findType, findValue)));
 
             return certificate;
         }
@@ -938,15 +938,15 @@ namespace System.ServiceModel.Security
             {
                 if (target == null)
                 {
-                    return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CannotFindCert, storeName, storeLocation, findType, findValue));
+                    return new InvalidOperationException(string.Format(SRServiceModel.CannotFindCert, storeName, storeLocation, findType, findValue));
                 }
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CannotFindCertForTarget, storeName, storeLocation, findType, findValue, target));
+                return new InvalidOperationException(string.Format(SRServiceModel.CannotFindCertForTarget, storeName, storeLocation, findType, findValue, target));
             }
             if (target == null)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.FoundMultipleCerts, storeName, storeLocation, findType, findValue));
+                return new InvalidOperationException(string.Format(SRServiceModel.FoundMultipleCerts, storeName, storeLocation, findType, findValue));
             }
-            return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.FoundMultipleCertsForTarget, storeName, storeLocation, findType, findValue, target));
+            return new InvalidOperationException(string.Format(SRServiceModel.FoundMultipleCertsForTarget, storeName, storeLocation, findType, findValue, target));
         }
 
         internal static void FixNetworkCredential(ref NetworkCredential credential)

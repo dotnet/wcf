@@ -232,7 +232,7 @@ namespace System.ServiceModel.Channels
             if (exception == null)
             {
                 // none of the obvious speculations about the failure holds, so we fall back to the generic error message
-                exception = new InvalidOperationException(SRServiceModel.Format(SRServiceModel.EndpointListenerRequirementsCannotBeMetBy3,
+                exception = new InvalidOperationException(string.Format(SRServiceModel.EndpointListenerRequirementsCannotBeMetBy3,
                         bindingName, contractChannelTypesString, bindingChannelTypesString));
             }
 
@@ -250,7 +250,7 @@ namespace System.ServiceModel.Channels
             if (exception == null)
             {
                 // none of the obvious speculations about the failure holds, so we fall back to the generic error message
-                exception = new InvalidOperationException(SRServiceModel.Format(SRServiceModel.CouldnTCreateChannelForType2, bindingName, contractChannelTypesString));
+                exception = new InvalidOperationException(string.Format(SRServiceModel.CouldnTCreateChannelForType2, bindingName, contractChannelTypesString));
             }
 
             return exception;
@@ -345,31 +345,31 @@ namespace System.ServiceModel.Channels
 
             if (!bindingSupportsAtLeastOneChannelType)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesnTSupportAnyChannelTypes1, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesnTSupportAnyChannelTypes1, bindingName));
             }
             if (contractRequiresSession && !bindingSupportsSession)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesnTSupportSessionButContractRequires1, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesnTSupportSessionButContractRequires1, bindingName));
             }
             if (contractRequiresDatagram && !bindingSupportsDatagram)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesntSupportDatagramButContractRequires, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesntSupportDatagramButContractRequires, bindingName));
             }
             if (contractRequiresDuplex && !bindingSupportsDuplex)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesnTSupportDuplexButContractRequires1, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesnTSupportDuplexButContractRequires1, bindingName));
             }
             if (contractRequiresRequestReply && !bindingSupportsRequestReply)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesnTSupportRequestReplyButContract1, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesnTSupportRequestReplyButContract1, bindingName));
             }
             if (contractRequiresOneWay && !bindingSupportsOneWay)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesnTSupportOneWayButContractRequires1, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesnTSupportOneWayButContractRequires1, bindingName));
             }
             if (contractRequiresTwoWay && !bindingSupportsTwoWay)
             {
-                return new InvalidOperationException(SRServiceModel.Format(SRServiceModel.BindingDoesnTSupportTwoWayButContractRequires1, bindingName));
+                return new InvalidOperationException(string.Format(SRServiceModel.BindingDoesnTSupportTwoWayButContractRequires1, bindingName));
             }
 
             contractChannelTypesString = contractChannelTypes.ToString();

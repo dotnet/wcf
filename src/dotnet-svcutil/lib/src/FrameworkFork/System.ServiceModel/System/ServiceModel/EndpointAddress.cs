@@ -320,7 +320,7 @@ namespace System.ServiceModel
                 else
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new ProtocolException(SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, message.Version.Addressing)));
+                        new ProtocolException(string.Format(SRServiceModel.AddressingVersionNotSupported, message.Version.Addressing)));
                 }
             }
             else if (IsNone)
@@ -564,7 +564,7 @@ namespace System.ServiceModel
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(
-                    "reader", SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, reader.NamespaceURI));
+                    "reader", string.Format(SRServiceModel.AddressingVersionNotSupported, reader.NamespaceURI));
             }
 
             EndpointAddress ea = ReadFromDriver(version, reader);
@@ -597,12 +597,12 @@ namespace System.ServiceModel
             else if (reader.NodeType != XmlNodeType.Element)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(
-                    "reader", SRServiceModel.Format(SRServiceModel.CannotDetectAddressingVersion));
+                    "reader", string.Format(SRServiceModel.CannotDetectAddressingVersion));
             }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(
-                    "reader", SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, reader.NamespaceURI));
+                    "reader", string.Format(SRServiceModel.AddressingVersionNotSupported, reader.NamespaceURI));
             }
 
             EndpointAddress ea = ReadFromDriver(version, reader);
@@ -677,7 +677,7 @@ namespace System.ServiceModel
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
-                    SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
+                    string.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
             }
 
             if (isAnonymous && headers == null && identity == null && buffer == null)
@@ -708,12 +708,12 @@ namespace System.ServiceModel
                 if (reader.IsStartElement(XD.AddressingDictionary.Identity, XD.AddressingDictionary.IdentityExtensionNamespace))
                 {
                     if (identity != null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SRServiceModel.Format(SRServiceModel.UnexpectedDuplicateElement, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, string.Format(SRServiceModel.UnexpectedDuplicateElement, XD.AddressingDictionary.Identity.Value, XD.AddressingDictionary.IdentityExtensionNamespace.Value)));
                     identity = EndpointIdentity.ReadIdentity(reader);
                 }
                 else if (version != null && reader.NamespaceURI == version.Namespace)
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SRServiceModel.Format(SRServiceModel.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, string.Format(SRServiceModel.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
                 }
                 else
                 {
@@ -756,7 +756,7 @@ namespace System.ServiceModel
             reader.MoveToContent();
             if (!reader.IsStartElement(XD.AddressingDictionary.Address, AddressingVersion.WSAddressingAugust2004.DictionaryNamespace))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SRServiceModel.Format(SRServiceModel.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing200408Dictionary.Namespace.Value)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, string.Format(SRServiceModel.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing200408Dictionary.Namespace.Value)));
             }
             string address = reader.ReadElementContentAsString();
 
@@ -895,7 +895,7 @@ namespace System.ServiceModel
             else
             {
                 if (!Uri.TryCreate(address, UriKind.Absolute, out uri))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.InvalidUriValue, address, XD.AddressingDictionary.Address.Value, AddressingVersion.WSAddressingAugust2004.Namespace)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.InvalidUriValue, address, XD.AddressingDictionary.Address.Value, AddressingVersion.WSAddressingAugust2004.Namespace)));
             }
             return false;
         }
@@ -908,7 +908,7 @@ namespace System.ServiceModel
 
             // Cache address string
             if (!reader.IsStartElement(XD.AddressingDictionary.Address, XD.Addressing10Dictionary.Namespace))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SRServiceModel.Format(SRServiceModel.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing10Dictionary.Namespace.Value)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, string.Format(SRServiceModel.UnexpectedElementExpectingElement, reader.LocalName, reader.NamespaceURI, XD.AddressingDictionary.Address.Value, XD.Addressing10Dictionary.Namespace.Value)));
             string address = reader.ReadElementContentAsString();
 
             // Headers
@@ -963,7 +963,7 @@ namespace System.ServiceModel
             {
                 if (!Uri.TryCreate(address, UriKind.Absolute, out uri))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.InvalidUriValue, address, XD.AddressingDictionary.Address.Value, XD.Addressing10Dictionary.Namespace.Value)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.InvalidUriValue, address, XD.AddressingDictionary.Address.Value, XD.Addressing10Dictionary.Namespace.Value)));
                 }
             }
             return false;
@@ -1028,7 +1028,7 @@ namespace System.ServiceModel
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
-                    SRServiceModel.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
+                    string.Format(SRServiceModel.AddressingVersionNotSupported, addressingVersion));
             }
         }
 
@@ -1047,7 +1047,7 @@ namespace System.ServiceModel
             }
             else if (_isNone)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion", SRServiceModel.Format(SRServiceModel.SFxNone2004));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion", string.Format(SRServiceModel.SFxNone2004));
             }
             else
             {
@@ -1101,7 +1101,7 @@ namespace System.ServiceModel
                 {
                     if (reader.NamespaceURI == AddressingVersion.WSAddressingAugust2004.Namespace)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SRServiceModel.Format(SRServiceModel.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, string.Format(SRServiceModel.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
                     }
 
                     writer.WriteNode(reader, true);
@@ -1158,7 +1158,7 @@ namespace System.ServiceModel
                 {
                     if (reader.NamespaceURI == AddressingVersion.WSAddressing10.Namespace)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, SRServiceModel.Format(SRServiceModel.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateXmlException(reader, string.Format(SRServiceModel.AddressingExtensionInBadNS, reader.LocalName, reader.NamespaceURI)));
                     }
 
                     writer.WriteNode(reader, true);

@@ -180,7 +180,7 @@ namespace System.ServiceModel.Description
                 {
                     if (_method == _context.TaskMethod)
                     {
-                        _method.Comments.Add(new CodeCommentStatement(SRServiceModel.Format(SRServiceModel.SFxCodeGenWarning, SRServiceModel.SFxCannotImportAsParameters_OutputParameterAndTask)));
+                        _method.Comments.Add(new CodeCommentStatement(string.Format(SRServiceModel.SFxCodeGenWarning, SRServiceModel.SFxCannotImportAsParameters_OutputParameterAndTask)));
                     }
 
                     return true;
@@ -218,7 +218,7 @@ namespace System.ServiceModel.Description
                 {
                     _messageContractType = ex.MessageContractType;
                     CodeMemberMethod method = _method;
-                    method.Comments.Add(new CodeCommentStatement(SRServiceModel.Format(SRServiceModel.SFxCodeGenWarning, ex.Message)));
+                    method.Comments.Add(new CodeCommentStatement(string.Format(SRServiceModel.SFxCodeGenWarning, ex.Message)));
                     method.Parameters.Clear();
                     method.Parameters.AddRange(methodParameters);
                     if (_context.IsAsync)
@@ -240,7 +240,7 @@ namespace System.ServiceModel.Description
                 if (this.HasUntypedMessages)
                 {
                     if (!this.IsCompletelyUntyped)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_Message, _context.Operation.CodeName)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_Message, _context.Operation.CodeName)));
 
                     CreateUntypedMessages();
                 }
@@ -741,7 +741,7 @@ namespace System.ServiceModel.Description
                 else if (_parent._parameterTypes.ContainsKey(setting))
                     return _parent._parameterTypes[setting];
                 else
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SfxNoTypeSpecifiedForParameter, setting.Name)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SfxNoTypeSpecifiedForParameter, setting.Name)));
             }
 
             private void AddAdditionalAttributes(MessagePartDescription setting, CodeAttributeDeclarationCollection attributes, bool isAdditionalAttributesAllowed)
@@ -754,7 +754,7 @@ namespace System.ServiceModel.Description
                         if (isAdditionalAttributesAllowed)
                             attributes.AddRange(localAttributes);
                         else
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SfxUseTypedMessageForCustomAttributes, setting.Name, localAttributes[0].AttributeType.BaseType)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SfxUseTypedMessageForCustomAttributes, setting.Name, localAttributes[0].AttributeType.BaseType)));
                     }
                 }
             }
@@ -879,40 +879,40 @@ namespace System.ServiceModel.Description
                             CustomAttributeHelper.FindOrCreateAttributeDeclaration<MessageParameterAttribute>(attributes), MessageParameterAttribute.NamePropertyName, setting.Name);
                     }
                     if (setting.Namespace != defaultNS)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_NamespaceMismatch, setting.Namespace, defaultNS)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_NamespaceMismatch, setting.Namespace, defaultNS)));
                 }
 
                 internal static void ValidateProtectionLevel(MethodSignatureGenerator parent)
                 {
                     if (parent._request != null && parent._request.HasProtectionLevel)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent._request.Action == null ? "" : parent._request.Action)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent._request.Action == null ? "" : parent._request.Action)));
                     }
                     if (parent._response != null && parent._response.HasProtectionLevel)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent._response.Action == null ? "" : parent._response.Action)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_MessageHasProtectionLevel, parent._response.Action == null ? "" : parent._response.Action)));
                     }
                 }
 
                 internal static void ValidateWrapperSettings(MethodSignatureGenerator parent)
                 {
                     if (parent._request.Body.WrapperName == null || (parent._response != null && parent._response.Body.WrapperName == null))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_Bare, parent._context.Operation.CodeName)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_Bare, parent._context.Operation.CodeName)));
 
                     if (!StringEqualOrNull(parent._request.Body.WrapperNamespace, parent._contractNS))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent._request.MessageName, parent._request.Body.WrapperNamespace, parent._contractNS)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent._request.MessageName, parent._request.Body.WrapperNamespace, parent._contractNS)));
 
                     XmlName defaultName = new XmlName(parent._defaultName);
                     if (!String.Equals(parent._request.Body.WrapperName, defaultName.EncodedName, StringComparison.Ordinal))
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent._request.MessageName, parent._request.Body.WrapperName, defaultName.EncodedName)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent._request.MessageName, parent._request.Body.WrapperName, defaultName.EncodedName)));
 
                     if (parent._response != null)
                     {
                         if (!StringEqualOrNull(parent._response.Body.WrapperNamespace, parent._contractNS))
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent._response.MessageName, parent._response.Body.WrapperNamespace, parent._contractNS)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperNs, parent._response.MessageName, parent._response.Body.WrapperNamespace, parent._contractNS)));
 
                         if (!String.Equals(parent._response.Body.WrapperName, TypeLoader.GetBodyWrapperResponseName(defaultName).EncodedName, StringComparison.Ordinal))
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent._response.MessageName, parent._response.Body.WrapperName, defaultName.EncodedName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_DifferentWrapperName, parent._response.MessageName, parent._response.Body.WrapperName, defaultName.EncodedName)));
                     }
                 }
 
@@ -922,18 +922,18 @@ namespace System.ServiceModel.Description
                     {
                         if (parent._isEncoded)
                         {
-                            parent._context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent._request.MessageName), true/*isWarning*/));
+                            parent._context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent._request.MessageName), true/*isWarning*/));
                         }
                         else
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent._request.MessageName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent._request.MessageName)));
                     }
 
                     if (!parent._oneway && parent._response.Headers.Count > 0)
                     {
                         if (parent._isEncoded)
-                            parent._context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent._response.MessageName), true/*isWarning*/));
+                            parent._context.Contract.ServiceContractGenerator.Errors.Add(new MetadataConversionError(string.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreIgnoredInEncoded, parent._response.MessageName), true/*isWarning*/));
                         else
-                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(SRServiceModel.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent._response.MessageName)));
+                            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ParameterModeException(string.Format(SRServiceModel.SFxCannotImportAsParameters_HeadersAreUnsupported, parent._response.MessageName)));
                     }
                 }
 

@@ -186,7 +186,7 @@ namespace System.Runtime.Serialization
             {
                 dataContract = DataContractSet[typeName];
                 if (dataContract == null)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.TypeHasNotBeenImported, typeName.Name, typeName.Namespace)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.TypeHasNotBeenImported, typeName.Name, typeName.Namespace)));
             }
             return dataContract;
         }
@@ -201,7 +201,7 @@ namespace System.Runtime.Serialization
             {
                 dataContract = DataContractSet[typeName];
                 if (dataContract == null)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.TypeHasNotBeenImported, typeName.Name, typeName.Namespace)));
+                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.TypeHasNotBeenImported, typeName.Name, typeName.Namespace)));
             }
 
             CodeExporter codeExporter = new CodeExporter(DataContractSet, Options, GetCodeCompileUnit());

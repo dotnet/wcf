@@ -166,7 +166,7 @@ namespace Microsoft.Xml
                 // No line information -> get resource string and return
                 if (lineNumber == 0)
                 {
-                    message = ResXml.GetString(res, args);
+                    message = string.Format(res, args);
                 }
                 // Line information is available -> we need to append it to the error message
                 else
@@ -174,8 +174,8 @@ namespace Microsoft.Xml
                     string lineNumberStr = lineNumber.ToString();
                     string linePositionStr = linePosition.ToString();
 
-                    message = ResXml.GetString(res, args);
-                    message = ResXml.GetString(ResXml.Xml_MessageWithErrorPosition, new string[] { message, lineNumberStr, linePositionStr });
+                    message = string.Format(res, args);
+                    message = string.Format(ResXml.Xml_MessageWithErrorPosition, new string[] { message, lineNumberStr, linePositionStr });
                 }
                 return message;
             }

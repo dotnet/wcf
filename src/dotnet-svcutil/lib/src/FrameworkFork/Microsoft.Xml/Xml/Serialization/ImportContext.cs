@@ -169,7 +169,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 else
                 {
-                    Warnings.Add(ResXml.GetString(ResXml.XmlMismatchSchemaObjects, item.GetType().Name, qname.Name, qname.Namespace));
+                    Warnings.Add(string.Format(ResXml.XmlMismatchSchemaObjects, item.GetType().Name, qname.Name, qname.Namespace));
                     Warnings.Add("DEBUG:Cached item key:\r\n" + (string)looks[cachedItem] + "\r\nnew item key:\r\n" + (string)looks[item]);
                 }
             }

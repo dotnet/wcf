@@ -1117,7 +1117,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Boolean"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "Boolean"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1207,7 +1207,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "DateTime"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "DateTime"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1302,7 +1302,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Double"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "Double"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1397,7 +1397,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_UNSIGNEDINT:
                             case BinXmlToken.XSD_UNSIGNEDLONG:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Float"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "Float"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1492,7 +1492,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_DATETIME:
                             case BinXmlToken.XSD_DATE:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Decimal"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "Decimal"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1587,7 +1587,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_DATETIME:
                             case BinXmlToken.XSD_DATE:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Int32"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "Int32"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -1682,7 +1682,7 @@ namespace Microsoft.Xml
                             case BinXmlToken.XSD_DATETIME:
                             case BinXmlToken.XSD_DATE:
                             case BinXmlToken.XSD_QNAME:
-                                throw new InvalidCastException(ResXml.GetString(ResXml.XmlBinary_CastNotSupported, _token, "Int64"));
+                                throw new InvalidCastException(string.Format(ResXml.XmlBinary_CastNotSupported, _token, "Int64"));
 
                             case BinXmlToken.SQL_CHAR:
                             case BinXmlToken.SQL_VARCHAR:
@@ -4503,7 +4503,7 @@ namespace Microsoft.Xml
         private Exception ThrowNotSupported(string res)
         {
             _state = ScanState.Error;
-            return new NotSupportedException(ResXml.GetString(res));
+            return new NotSupportedException(res);
         }
     }
 }

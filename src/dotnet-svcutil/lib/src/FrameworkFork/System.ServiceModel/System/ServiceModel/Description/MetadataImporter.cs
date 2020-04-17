@@ -138,7 +138,7 @@ namespace System.ServiceModel.Description
 
         private Exception CreateExtensionException(IPolicyImportExtension importer, Exception e)
         {
-            string errorMessage = SRServiceModel.Format(SRServiceModel.PolicyExtensionImportError, importer.GetType(), e.Message);
+            string errorMessage = string.Format(SRServiceModel.PolicyExtensionImportError, importer.GetType(), e.Message);
             return new InvalidOperationException(errorMessage, e);
         }
 

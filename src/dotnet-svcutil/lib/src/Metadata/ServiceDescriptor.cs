@@ -200,7 +200,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil.Metadata
         {
             if (!this.MetadataImported)
             {
-                throw new InvalidOperationException(Resources.ErrServiceMetadataNotImported);
+                throw new InvalidOperationException(MetadataResources.ErrServiceMetadataNotImported);
             }
         }
 

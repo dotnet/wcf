@@ -222,7 +222,7 @@ namespace System.ServiceModel.Channels
             if (offset < 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("messageFrame.Offset",
-                    messageFrame.Offset, SRServiceModel.Format(SRServiceModel.SpaceNeededExceedsMessageFrameOffset, spaceNeeded)));
+                    messageFrame.Offset, string.Format(SRServiceModel.SpaceNeededExceedsMessageFrameOffset, spaceNeeded)));
             }
 
             byte[] buffer = messageFrame.Array;
@@ -307,7 +307,7 @@ namespace System.ServiceModel.Channels
             if (offset < 0)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("messageFrame.Offset",
-                    messageFrame.Offset, SRServiceModel.Format(SRServiceModel.SpaceNeededExceedsMessageFrameOffset, spaceNeeded)));
+                    messageFrame.Offset, string.Format(SRServiceModel.SpaceNeededExceedsMessageFrameOffset, spaceNeeded)));
             }
 
             byte[] buffer = messageFrame.Array;

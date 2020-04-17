@@ -35,7 +35,7 @@ namespace System.ServiceModel.Channels
             Contract.Assert(httpHeaders != null, "httpHeaders should not be null.");
             if (!httpHeaders.TryAddWithoutValidation(header.Key, header.Value))
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(
                                 SRServiceModel.CopyHttpHeaderFailed,
                                 header.Key,
                                 header.Value,

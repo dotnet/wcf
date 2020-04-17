@@ -140,32 +140,32 @@ namespace Microsoft.Xml
         // Returns decoded bytes of the current base64 text content. Call this methods until it returns 0 to get all the data.
         public virtual Task<int> ReadContentAsBase64Async(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBase64"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBase64"));
         }
 
         // Returns decoded bytes of the current base64 element content. Call this methods until it returns 0 to get all the data.
         public virtual Task<int> ReadElementContentAsBase64Async(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBase64"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBase64"));
         }
 
         // Returns decoded bytes of the current binhex text content. Call this methods until it returns 0 to get all the data.
         public virtual Task<int> ReadContentAsBinHexAsync(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBinHex"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadContentAsBinHex"));
         }
 
         // Returns decoded bytes of the current binhex element content. Call this methods until it returns 0 to get all the data.
         public virtual Task<int> ReadElementContentAsBinHexAsync(byte[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBinHex"));
+            throw new NotSupportedException(string.Format(ResXml.Xml_ReadBinaryContentNotSupported, "ReadElementContentAsBinHex"));
         }
 
         // Returns a chunk of the value of the current node. Call this method in a loop to get all the data. 
         // Use this method to get a streaming access to the value of the current node.
         public virtual Task<int> ReadValueChunkAsync(char[] buffer, int index, int count)
         {
-            throw new NotSupportedException(ResXml.GetString(ResXml.Xml_ReadValueChunkNotSupported));
+            throw new NotSupportedException(ResXml.Xml_ReadValueChunkNotSupported);
         }
 
         // Checks whether the current node is a content (non-whitespace text, CDATA, Element, EndElement, EntityReference

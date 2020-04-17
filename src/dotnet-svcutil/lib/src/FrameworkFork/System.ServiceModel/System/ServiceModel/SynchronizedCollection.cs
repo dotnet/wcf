@@ -83,7 +83,7 @@ namespace System.Collections.Generic
                 {
                     if (index < 0 || index >= _items.Count)
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, _items.Count - 1)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, _items.Count - 1)));
 
                     this.SetItem(index, value);
                 }
@@ -145,7 +145,7 @@ namespace System.Collections.Generic
             {
                 if (index < 0 || index > _items.Count)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, _items.Count)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, _items.Count)));
 
                 this.InsertItem(index, item);
             }
@@ -184,7 +184,7 @@ namespace System.Collections.Generic
             {
                 if (index < 0 || index >= _items.Count)
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("index", index,
-                                                    SRServiceModel.Format(SRServiceModel.ValueMustBeInRange, 0, _items.Count - 1)));
+                                                    string.Format(SRServiceModel.ValueMustBeInRange, 0, _items.Count - 1)));
 
 
                 this.RemoveItem(index);
@@ -308,7 +308,7 @@ namespace System.Collections.Generic
             }
             else if (!(value is T))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.SynchronizedCollectionWrongType1, value.GetType().FullName)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.SynchronizedCollectionWrongType1, value.GetType().FullName)));
             }
         }
     }

@@ -81,7 +81,7 @@ namespace System.ServiceModel.Security.Tokens
             SecurityTokenParameters result = this.CloneCore();
 
             if (result == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SecurityTokenParametersCloneInvalidResult, this.GetType().ToString())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SecurityTokenParametersCloneInvalidResult, this.GetType().ToString())));
 
             return result;
         }

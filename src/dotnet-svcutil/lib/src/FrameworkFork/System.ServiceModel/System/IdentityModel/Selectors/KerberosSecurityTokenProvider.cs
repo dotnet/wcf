@@ -35,7 +35,7 @@ namespace System.IdentityModel.Selectors
             if (tokenImpersonationLevel != TokenImpersonationLevel.Identification && tokenImpersonationLevel != TokenImpersonationLevel.Impersonation)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("tokenImpersonationLevel",
-                    SRServiceModel.Format(SRServiceModel.ImpersonationLevelNotSupported, tokenImpersonationLevel)));
+                    string.Format(SRServiceModel.ImpersonationLevelNotSupported, tokenImpersonationLevel)));
             }
 
             _servicePrincipalName = servicePrincipalName;

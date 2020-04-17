@@ -175,7 +175,7 @@ namespace System.IdentityModel.Tokens
             }
             if (keyIdentifier.Count == 0)
             {
-                throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SR_IdentityModel.ErrorDeserializingKeyIdentifierClause)));
+                throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SR_IdentityModel.ErrorDeserializingKeyIdentifierClause)));
             }
             localReader.ReadEndElement();
 
@@ -217,7 +217,7 @@ namespace System.IdentityModel.Tokens
                             throw;
                         }
 
-                        throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SR_IdentityModel.ErrorSerializingKeyIdentifier), e));
+                        throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SR_IdentityModel.ErrorSerializingKeyIdentifier), e));
                     }
                     wroteKeyIdentifier = true;
                     break;
@@ -265,11 +265,11 @@ namespace System.IdentityModel.Tokens
                         {
                             throw;
                         }
-                        throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SR_IdentityModel.ErrorDeserializingKeyIdentifierClause), e));
+                        throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SR_IdentityModel.ErrorDeserializingKeyIdentifierClause), e));
                     }
                 }
             }
-            throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SR_IdentityModel.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
+            throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SR_IdentityModel.CannotReadKeyIdentifierClause, reader.LocalName, reader.NamespaceURI)));
         }
 
         protected override bool CanWriteKeyIdentifierClauseCore(SecurityKeyIdentifierClause keyIdentifierClause)
@@ -307,7 +307,7 @@ namespace System.IdentityModel.Tokens
                             throw;
                         }
 
-                        throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SR_IdentityModel.ErrorSerializingKeyIdentifierClause), e));
+                        throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SR_IdentityModel.ErrorSerializingKeyIdentifierClause), e));
                     }
                     wroteKeyIdentifierClause = true;
                     break;
@@ -315,7 +315,7 @@ namespace System.IdentityModel.Tokens
             }
 
             if (!wroteKeyIdentifierClause)
-                throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
+                throw /*System.ServiceModel.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.StandardsManagerCannotWriteObject, keyIdentifierClause.GetType())));
 
             localWriter.Flush();
         }

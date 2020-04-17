@@ -65,7 +65,7 @@ namespace System.Runtime.Serialization
 
         public override void Close()
         {
-            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.IXmlSerializableIllegalOperation)));
+            throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.IXmlSerializableIllegalOperation)));
         }
 
         public override XmlReaderSettings Settings { get { return InnerReader.Settings; } }

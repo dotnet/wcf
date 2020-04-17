@@ -102,13 +102,13 @@ namespace System.ServiceModel.Channels
 
                     if (value.Split(WebSocketHelper.ProtocolSeparators).Length > 1)
                     {
-                        throw FxTrace.Exception.Argument("value", SRServiceModel.Format(SRServiceModel.WebSocketInvalidProtocolContainsMultipleSubProtocolString, value));
+                        throw FxTrace.Exception.Argument("value", string.Format(SRServiceModel.WebSocketInvalidProtocolContainsMultipleSubProtocolString, value));
                     }
 
                     string invalidChar;
                     if (WebSocketHelper.IsSubProtocolInvalid(value, out invalidChar))
                     {
-                        throw FxTrace.Exception.Argument("value", SRServiceModel.Format(SRServiceModel.WebSocketInvalidProtocolInvalidCharInProtocolString, value, invalidChar));
+                        throw FxTrace.Exception.Argument("value", string.Format(SRServiceModel.WebSocketInvalidProtocolInvalidCharInProtocolString, value, invalidChar));
                     }
                 }
 

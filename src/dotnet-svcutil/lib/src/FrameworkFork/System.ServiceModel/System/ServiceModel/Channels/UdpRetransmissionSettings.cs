@@ -37,30 +37,30 @@ namespace System.ServiceModel.Channels
             if (maxUnicastRetransmitCount < 0)
             {
                 throw FxTrace.Exception.ArgumentOutOfRange("maxUnicastRetransmitCount", maxUnicastRetransmitCount,
-                    SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, 0));
+                    string.Format(SRServiceModel.ArgumentOutOfMinRange, 0));
             }
 
             if (maxMulticastRetransmitCount < 0)
             {
                 throw FxTrace.Exception.ArgumentOutOfRange("maxMulticastRetransmitCount", maxMulticastRetransmitCount,
-                    SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, 0));
+                    string.Format(SRServiceModel.ArgumentOutOfMinRange, 0));
             }
 
 
             if (delayLowerBound < TimeSpan.Zero)
             {
-                throw FxTrace.Exception.ArgumentOutOfRange("delayLowerBound", delayLowerBound, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
+                throw FxTrace.Exception.ArgumentOutOfRange("delayLowerBound", delayLowerBound, string.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
             }
 
             if (delayUpperBound < TimeSpan.Zero)
             {
-                throw FxTrace.Exception.ArgumentOutOfRange("delayUpperBound", delayUpperBound, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
+                throw FxTrace.Exception.ArgumentOutOfRange("delayUpperBound", delayUpperBound, string.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
             }
 
             if (maxDelayPerRetransmission < TimeSpan.Zero)
             {
                 throw FxTrace.Exception.ArgumentOutOfRange("maxDelayPerRetransmission", maxDelayPerRetransmission,
-                     SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
+                     string.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
             }
 
             _maxUnicastRetransmitCount = maxUnicastRetransmitCount;
@@ -93,7 +93,7 @@ namespace System.ServiceModel.Channels
                 const int min = 0;
                 if (value < min)
                 {
-                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
+                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, string.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
                 _maxUnicastRetransmitCount = value;
             }
@@ -111,7 +111,7 @@ namespace System.ServiceModel.Channels
                 const int min = 0;
                 if (value < min)
                 {
-                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, min));
+                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, string.Format(SRServiceModel.ArgumentOutOfMinRange, min));
                 }
                 _maxMulticastRetransmitCount = value;
             }
@@ -127,7 +127,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
+                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, string.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
                 }
 
                 _delayLowerBound = value;
@@ -145,7 +145,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
+                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, string.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
                 }
 
                 _delayUpperBound = value;
@@ -163,7 +163,7 @@ namespace System.ServiceModel.Channels
             {
                 if (value < TimeSpan.Zero)
                 {
-                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, SRServiceModel.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
+                    throw FxTrace.Exception.ArgumentOutOfRange("value", value, string.Format(SRServiceModel.ArgumentOutOfMinRange, TimeSpan.Zero));
                 }
 
                 _maxDelayPerRetransmission = value;

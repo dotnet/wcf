@@ -164,7 +164,7 @@ namespace Microsoft.Xml.Serialization
             }
             else if (_scope != scope)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMappingsScopeMismatch));
+                throw new InvalidOperationException(ResXml.XmlMappingsScopeMismatch);
             }
         }
 
@@ -174,7 +174,7 @@ namespace Microsoft.Xml.Serialization
         internal static void AddWarningComment(CodeCommentStatementCollection comments, string text)
         {
             Debug.Assert(comments != null);
-            comments.Add(new CodeCommentStatement(ResXml.GetString(ResXml.XmlCodegenWarningDetails, text), false));
+            comments.Add(new CodeCommentStatement(string.Format(ResXml.XmlCodegenWarningDetails, text), false));
         }
 
         internal void ExportRoot(StructMapping mapping, Type includeType)
@@ -240,7 +240,7 @@ namespace Microsoft.Xml.Serialization
         {
             CodeTypeDeclaration codeClass = new CodeTypeDeclaration(mapping.TypeDesc.Name);
 
-            codeClass.Comments.Add(new CodeCommentStatement(ResXml.GetString(ResXml.XmlRemarks), true));
+            codeClass.Comments.Add(new CodeCommentStatement(ResXml.XmlRemarks, true));
             codeClass.IsEnum = true;
             if (mapping.IsFlags && mapping.Constants.Length > 31)
             {
@@ -306,7 +306,7 @@ namespace Microsoft.Xml.Serialization
         internal static void ExportConstant(CodeTypeDeclaration codeClass, ConstantMapping constant, Type type, bool init, long enumValue)
         {
             CodeMemberField field = new CodeMemberField(typeof(int).FullName, constant.Name);
-            field.Comments.Add(new CodeCommentStatement(ResXml.GetString(ResXml.XmlRemarks), true));
+            field.Comments.Add(new CodeCommentStatement(ResXml.XmlRemarks, true));
             if (init)
                 field.InitExpression = new CodePrimitiveExpression(enumValue);
             codeClass.Members.Add(field);

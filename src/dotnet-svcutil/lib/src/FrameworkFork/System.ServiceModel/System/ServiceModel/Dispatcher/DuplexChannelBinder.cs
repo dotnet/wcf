@@ -247,11 +247,11 @@ namespace System.ServiceModel.Dispatcher
             EndpointAddress address = _channel.RemoteAddress ?? _channel.LocalAddress;
             if (address != null)
             {
-                return new TimeoutException(SRServiceModel.Format(SRServiceModel.SFxRequestTimedOut2, address, timeout));
+                return new TimeoutException(string.Format(SRServiceModel.SFxRequestTimedOut2, address, timeout));
             }
             else
             {
-                return new TimeoutException(SRServiceModel.Format(SRServiceModel.SFxRequestTimedOut1, timeout));
+                return new TimeoutException(string.Format(SRServiceModel.SFxRequestTimedOut1, timeout));
             }
         }
 

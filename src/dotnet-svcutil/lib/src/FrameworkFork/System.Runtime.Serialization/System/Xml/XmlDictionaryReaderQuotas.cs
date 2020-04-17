@@ -70,7 +70,7 @@ namespace Microsoft.Xml
             if (quotas == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException("quotas"));
             if (quotas._readOnly)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.QuotaCopyReadOnly)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.QuotaCopyReadOnly)));
 
             InternalCopyTo(quotas);
         }
@@ -95,9 +95,9 @@ namespace Microsoft.Xml
             set
             {
                 if (_readOnly)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.QuotaIsReadOnly, "MaxStringContentLength")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.QuotaIsReadOnly, "MaxStringContentLength")));
                 if (value <= 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.QuotaMustBePositive), "value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.QuotaMustBePositive), "value"));
                 _maxStringContentLength = value;
                 _modifiedQuotas |= XmlDictionaryReaderQuotaTypes.MaxStringContentLength;
             }
@@ -113,9 +113,9 @@ namespace Microsoft.Xml
             set
             {
                 if (_readOnly)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.QuotaIsReadOnly, "MaxArrayLength")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.QuotaIsReadOnly, "MaxArrayLength")));
                 if (value <= 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.QuotaMustBePositive), "value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.QuotaMustBePositive), "value"));
                 _maxArrayLength = value;
                 _modifiedQuotas |= XmlDictionaryReaderQuotaTypes.MaxArrayLength;
             }
@@ -131,9 +131,9 @@ namespace Microsoft.Xml
             set
             {
                 if (_readOnly)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.QuotaIsReadOnly, "MaxBytesPerRead")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.QuotaIsReadOnly, "MaxBytesPerRead")));
                 if (value <= 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.QuotaMustBePositive), "value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.QuotaMustBePositive), "value"));
 
                 _maxBytesPerRead = value;
                 _modifiedQuotas |= XmlDictionaryReaderQuotaTypes.MaxBytesPerRead;
@@ -150,9 +150,9 @@ namespace Microsoft.Xml
             set
             {
                 if (_readOnly)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.QuotaIsReadOnly, "MaxDepth")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.QuotaIsReadOnly, "MaxDepth")));
                 if (value <= 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.QuotaMustBePositive), "value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.QuotaMustBePositive), "value"));
 
                 _maxDepth = value;
                 _modifiedQuotas |= XmlDictionaryReaderQuotaTypes.MaxDepth;
@@ -169,9 +169,9 @@ namespace Microsoft.Xml
             set
             {
                 if (_readOnly)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRSerialization.Format(SRSerialization.QuotaIsReadOnly, "MaxNameTableCharCount")));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRSerialization.QuotaIsReadOnly, "MaxNameTableCharCount")));
                 if (value <= 0)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRSerialization.Format(SRSerialization.QuotaMustBePositive), "value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRSerialization.QuotaMustBePositive), "value"));
 
                 _maxNameTableCharCount = value;
                 _modifiedQuotas |= XmlDictionaryReaderQuotaTypes.MaxNameTableCharCount;

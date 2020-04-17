@@ -314,11 +314,11 @@ namespace Microsoft.Xml.Schema
                 {
                     if (currentIndex == -1)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumNotStarted, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumNotStarted, string.Empty));
                     }
                     if (currentIndex >= size)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumFinished, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumFinished, string.Empty));
                     }
                     switch (_enumType)
                     {
@@ -373,11 +373,11 @@ namespace Microsoft.Xml.Schema
                 {
                     if (currentIndex == -1)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumNotStarted, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumNotStarted, string.Empty));
                     }
                     if (currentIndex >= size)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumFinished, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumFinished, string.Empty));
                     }
                     return new DictionaryEntry(currentKey, currentValue);
                 }
@@ -389,11 +389,11 @@ namespace Microsoft.Xml.Schema
                 {
                     if (currentIndex == -1)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumNotStarted, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumNotStarted, string.Empty));
                     }
                     if (currentIndex >= size)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumFinished, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumFinished, string.Empty));
                     }
                     return currentKey;
                 }
@@ -405,11 +405,11 @@ namespace Microsoft.Xml.Schema
                 {
                     if (currentIndex == -1)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumNotStarted, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumNotStarted, string.Empty));
                     }
                     if (currentIndex >= size)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_EnumFinished, string.Empty));
+                        throw new InvalidOperationException(string.Format(ResXml.Sch_EnumFinished, string.Empty));
                     }
                     return currentValue;
                 }

@@ -124,7 +124,7 @@ namespace System.ServiceModel.Dispatcher
             catch (InvalidOperationException e)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorSerializingHeader, messageDescription.MessageName, e.Message), e));
+                    string.Format(SRServiceModel.SFxErrorSerializingHeader, messageDescription.MessageName, e.Message), e));
             }
         }
 
@@ -237,7 +237,7 @@ namespace System.ServiceModel.Dispatcher
                 // all exceptions from XmlSerializer get wrapped in InvalidOperationException,
                 // so we must be conservative and never turn this into a fault
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorDeserializingHeader, messageDescription.MessageName), e));
+                    string.Format(SRServiceModel.SFxErrorDeserializingHeader, messageDescription.MessageName), e));
             }
         }
 
@@ -278,7 +278,7 @@ namespace System.ServiceModel.Dispatcher
                 object[] bodyPartValues = new object[messageInfo.RpcEncodedTypedMessageBodyParts.Count];
                 object bodyObject = parameters[messageDescription.Body.Parts[0].Index];
                 if (bodyObject == null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.SFxBodyCannotBeNull, messageDescription.MessageName)));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.SFxBodyCannotBeNull, messageDescription.MessageName)));
                 int i = 0;
                 foreach (MessagePartDescription bodyPart in messageInfo.RpcEncodedTypedMessageBodyParts)
                 {
@@ -298,7 +298,7 @@ namespace System.ServiceModel.Dispatcher
             catch (InvalidOperationException e)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(SRServiceModel.SFxErrorSerializingBody, messageDescription.MessageName, e.Message), e));
+                    string.Format(SRServiceModel.SFxErrorSerializingBody, messageDescription.MessageName, e.Message), e));
             }
         }
 
@@ -384,7 +384,7 @@ namespace System.ServiceModel.Dispatcher
                 string resourceKey = isRequest ? SRServiceModel.SFxErrorDeserializingRequestBody : SRServiceModel.SFxErrorDeserializingReplyBody;
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new CommunicationException(
-                    SRServiceModel.Format(resourceKey, OperationName), e));
+                    string.Format(resourceKey, OperationName), e));
             }
         }
 
@@ -401,7 +401,7 @@ namespace System.ServiceModel.Dispatcher
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("version",
-                    SRServiceModel.Format(SRServiceModel.EnvelopeVersionNotSupported, version));
+                    string.Format(SRServiceModel.EnvelopeVersionNotSupported, version));
             }
         }
 

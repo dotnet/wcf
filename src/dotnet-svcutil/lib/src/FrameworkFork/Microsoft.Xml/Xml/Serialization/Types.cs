@@ -385,7 +385,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 else
                 {
-                    throw new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, FullName));
+                    throw new NotSupportedException(string.Format(ResXml.XmlSerializerUnsupportedType, FullName));
                 }
             }
             if (_baseTypeDesc != null)
@@ -399,7 +399,7 @@ namespace Microsoft.Xml.Serialization
             if (!IsValueType && !IsAbstract && !HasDefaultConstructor)
             {
                 _flags |= TypeFlags.Unsupported;
-                _exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlConstructorInaccessible, FullName));
+                _exception = new InvalidOperationException(string.Format(ResXml.XmlConstructorInaccessible, FullName));
             }
         }
 
@@ -726,7 +726,7 @@ namespace Microsoft.Xml.Serialization
         {
             if (type.GetTypeInfo().ContainsGenericParameters)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnsupportedOpenGenericType, type.ToString()));
+                throw new InvalidOperationException(string.Format(ResXml.XmlUnsupportedOpenGenericType, type.ToString()));
             }
             TypeDesc typeDesc = (TypeDesc)s_primitiveTypes[type];
             if (typeDesc == null)
@@ -794,12 +794,12 @@ namespace Microsoft.Xml.Serialization
             if (!info.IsPublic && !info.IsNestedPublic)
             {
                 flags |= TypeFlags.Unsupported;
-                exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlTypeInaccessible, type.FullName));
+                exception = new InvalidOperationException(string.Format(ResXml.XmlTypeInaccessible, type.FullName));
             }
             else if (directReference && (info.IsAbstract && info.IsSealed))
             {
                 flags |= TypeFlags.Unsupported;
-                exception = new InvalidOperationException(ResXml.GetString(ResXml.XmlTypeStatic, type.FullName));
+                exception = new InvalidOperationException(string.Format(ResXml.XmlTypeStatic, type.FullName));
             }
 
             if (DynamicAssemblies.IsTypeDynamic(type))
@@ -820,7 +820,7 @@ namespace Microsoft.Xml.Serialization
                 flags |= TypeFlags.Unsupported;
                 if (exception == null)
                 {
-                    exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, type.FullName));
+                    exception = new NotSupportedException(string.Format(ResXml.XmlSerializerUnsupportedType, type.FullName));
                 }
             }
             else if (type == typeof(void))
@@ -842,7 +842,7 @@ namespace Microsoft.Xml.Serialization
                     flags |= TypeFlags.Unsupported;
                     if (exception == null)
                     {
-                        exception = new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedRank, type.FullName));
+                        exception = new NotSupportedException(string.Format(ResXml.XmlUnsupportedRank, type.FullName));
                     }
                 }
                 arrayElementType = type.GetElementType();
@@ -864,7 +864,7 @@ namespace Microsoft.Xml.Serialization
                 flags |= TypeFlags.Unsupported;
                 if (exception == null)
                 {
-                    exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, type.FullName));
+                    exception = new NotSupportedException(string.Format(ResXml.XmlSerializerUnsupportedType, type.FullName));
                 }
             }
             else if (info.IsEnum)
@@ -920,11 +920,11 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (memberInfo == null)
                     {
-                        exception = new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedInterface, type.FullName));
+                        exception = new NotSupportedException(string.Format(ResXml.XmlUnsupportedInterface, type.FullName));
                     }
                     else
                     {
-                        exception = new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedInterfaceDetails, memberInfo.DeclaringType.FullName + "." + memberInfo.Name, type.FullName));
+                        exception = new NotSupportedException(string.Format(ResXml.XmlUnsupportedInterfaceDetails, memberInfo.DeclaringType.FullName + "." + memberInfo.Name, type.FullName));
                     }
                 }
             }
@@ -934,7 +934,7 @@ namespace Microsoft.Xml.Serialization
                 flags |= TypeFlags.Unsupported;
                 if (exception == null)
                 {
-                    exception = new NotSupportedException(ResXml.GetString(ResXml.XmlSerializerUnsupportedType, type.FullName));
+                    exception = new NotSupportedException(string.Format(ResXml.XmlSerializerUnsupportedType, type.FullName));
                 }
             }
 
@@ -1123,7 +1123,7 @@ namespace Microsoft.Xml.Serialization
                     {
                         if (propertyInfo != null && !CanWriteProperty(propertyInfo, memberMapping.TypeDesc))
                         {
-                            throw new InvalidOperationException(ResXml.GetString(ResXml.XmlReadOnlyPropertyError, propertyInfo.DeclaringType, propertyInfo.Name));
+                            throw new InvalidOperationException(string.Format(ResXml.XmlReadOnlyPropertyError, propertyInfo.DeclaringType, propertyInfo.Name));
                         }
                     }
                     list.Add(memberMapping);
@@ -1327,7 +1327,7 @@ namespace Microsoft.Xml.Serialization
                 }
                 if (addMethod == null)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoAddMethod, type.FullName, currentType, "IEnumerable"));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlNoAddMethod, type.FullName, currentType, "IEnumerable"));
                 }
                 return currentType;
             }
@@ -1343,11 +1343,11 @@ namespace Microsoft.Xml.Serialization
             {
                 if (memberInfo == null)
                 {
-                    throw new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedIDictionary, type.FullName));
+                    throw new NotSupportedException(string.Format(ResXml.XmlUnsupportedIDictionary, type.FullName));
                 }
                 else
                 {
-                    throw new NotSupportedException(ResXml.GetString(ResXml.XmlUnsupportedIDictionaryDetails, memberInfo, type.FullName));
+                    throw new NotSupportedException(string.Format(ResXml.XmlUnsupportedIDictionaryDetails, memberInfo, type.FullName));
                 }
             }
 
@@ -1378,12 +1378,12 @@ namespace Microsoft.Xml.Serialization
             }
             if (indexer == null)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoDefaultAccessors, type.FullName));
+                throw new InvalidOperationException(string.Format(ResXml.XmlNoDefaultAccessors, type.FullName));
             }
             MethodInfo addMethod = type.GetMethod("Add", new Type[] { indexer.PropertyType });
             if (addMethod == null)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoAddMethod, type.FullName, indexer.PropertyType, "ICollection"));
+                throw new InvalidOperationException(string.Format(ResXml.XmlNoAddMethod, type.FullName, indexer.PropertyType, "ICollection"));
             }
             return indexer;
         }
@@ -1411,7 +1411,7 @@ namespace Microsoft.Xml.Serialization
 
             if (nameLen <= nsLen)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidArrayTypeSyntax, type));
+                throw new InvalidOperationException(string.Format(ResXml.XmlInvalidArrayTypeSyntax, type));
             }
             name = type.Substring(nsLen + 1, nameLen - nsLen - 1);
             dims = type.Substring(nameLen);

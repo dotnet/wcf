@@ -2089,7 +2089,7 @@ namespace Microsoft.Xml.Schema
                 }
                 catch (ArgumentNullException)
                 {
-                    SendValidationEvent(ResXml.Sch_InvalidIdAttribute, ResXml.GetString(ResXml.Sch_NullValue), xso);
+                    SendValidationEvent(ResXml.Sch_InvalidIdAttribute, ResXml.Sch_NullValue, xso);
                     return;
                 }
                 try
@@ -2108,7 +2108,7 @@ namespace Microsoft.Xml.Schema
             string name = xso.NameAttribute;
             if (name == null || name.Length == 0)
             {
-                SendValidationEvent(ResXml.Sch_InvalidNameAttributeEx, null, ResXml.GetString(ResXml.Sch_NullValue), xso);
+                SendValidationEvent(ResXml.Sch_InvalidNameAttributeEx, null, ResXml.Sch_NullValue, xso);
             }
             //Normalize whitespace since NCName has whitespace facet="collapse"
             name = XmlComplianceUtil.NonCDataNormalize(name);
@@ -2116,7 +2116,7 @@ namespace Microsoft.Xml.Schema
             if (len != name.Length)
             { // If the string is not a valid NCName, then throw or return false
                 string[] invCharArgs = XmlException.BuildCharExceptionArgs(name, len);
-                string innerStr = ResXml.GetString(ResXml.Xml_BadNameCharWithPos, invCharArgs[0], invCharArgs[1], len);
+                string innerStr = string.Format(ResXml.Xml_BadNameCharWithPos, invCharArgs[0], invCharArgs[1], len);
                 SendValidationEvent(ResXml.Sch_InvalidNameAttributeEx, name, innerStr, xso);
             }
             else

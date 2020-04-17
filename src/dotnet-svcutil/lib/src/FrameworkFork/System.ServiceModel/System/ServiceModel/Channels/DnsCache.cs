@@ -93,7 +93,7 @@ namespace System.ServiceModel.Channels
                         if (cacheEntry.AddressList == null)
                         {
                             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                                new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.DnsResolveFailed, hostName)));
+                                new EndpointNotFoundException(string.Format(SRServiceModel.DnsResolveFailed, hostName)));
                         }
                         hostAddresses = cacheEntry.AddressList;
                     }
@@ -122,7 +122,7 @@ namespace System.ServiceModel.Channels
                 if (dnsException != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
-                        new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.DnsResolveFailed, hostName), dnsException));
+                        new EndpointNotFoundException(string.Format(SRServiceModel.DnsResolveFailed, hostName), dnsException));
                 }
             }
 

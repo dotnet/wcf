@@ -56,14 +56,14 @@ namespace System.ServiceModel.Channels
                 {
                     throw FxTrace.Exception.Argument(
                         string.Format(CultureInfo.InvariantCulture, "handlers[<<{0}>>]", cnt),
-                        SRServiceModel.Format(SRServiceModel.HttpMessageHandlerTypeNotSupported, "null", s_delegatingHandlerType.Name));
+                        string.Format(SRServiceModel.HttpMessageHandlerTypeNotSupported, "null", s_delegatingHandlerType.Name));
                 }
 
                 if (!s_delegatingHandlerType.IsAssignableFrom(handler) || handler.IsAbstract())
                 {
                     throw FxTrace.Exception.Argument(
                         string.Format(CultureInfo.InvariantCulture, "handlers[<<{0}>>]", cnt),
-                        SRServiceModel.Format(SRServiceModel.HttpMessageHandlerTypeNotSupported, handler.Name, s_delegatingHandlerType.Name));
+                        string.Format(SRServiceModel.HttpMessageHandlerTypeNotSupported, handler.Name, s_delegatingHandlerType.Name));
                 }
 
                 ConstructorInfo ctorInfo = handler.GetConstructor(Array.Empty<Type>());
@@ -71,7 +71,7 @@ namespace System.ServiceModel.Channels
                 {
                     throw FxTrace.Exception.Argument(
                         string.Format(CultureInfo.InvariantCulture, "handlers[<<{0}>>]", cnt),
-                        SRServiceModel.Format(SRServiceModel.HttpMessageHandlerTypeNotSupported, handler.Name, s_delegatingHandlerType.Name));
+                        string.Format(SRServiceModel.HttpMessageHandlerTypeNotSupported, handler.Name, s_delegatingHandlerType.Name));
                 }
 
                 _handlerCtors[cnt] = ctorInfo;
@@ -151,7 +151,7 @@ namespace System.ServiceModel.Channels
                         {
                             if (handler == null)
                             {
-                                throw FxTrace.Exception.Argument("handlers", SRServiceModel.Format(SRServiceModel.DelegatingHandlerArrayFromFuncContainsNullItem, s_delegatingHandlerType.Name, GetFuncDetails(_handlerFunc)));
+                                throw FxTrace.Exception.Argument("handlers", string.Format(SRServiceModel.DelegatingHandlerArrayFromFuncContainsNullItem, s_delegatingHandlerType.Name, GetFuncDetails(_handlerFunc)));
                             }
                         }
                     }
@@ -180,7 +180,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (handler.InnerHandler != null)
                     {
-                        throw FxTrace.Exception.Argument("handlers", SRServiceModel.Format(SRServiceModel.DelegatingHandlerArrayHasNonNullInnerHandler, s_delegatingHandlerType.Name, "InnerHandler", handler.GetType().Name));
+                        throw FxTrace.Exception.Argument("handlers", string.Format(SRServiceModel.DelegatingHandlerArrayHasNonNullInnerHandler, s_delegatingHandlerType.Name, "InnerHandler", handler.GetType().Name));
                     }
 
                     handler.InnerHandler = pipeline;

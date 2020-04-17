@@ -285,11 +285,11 @@ namespace System.ServiceModel.Channels
             {
                 if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
-                    WcfEventSource.Instance.CloseTimeout(SRServiceModel.Format(SRServiceModel.CloseTimedOut, timeout));
+                    WcfEventSource.Instance.CloseTimeout(string.Format(SRServiceModel.CloseTimedOut, timeout));
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                                                SRServiceModel.Format(SRServiceModel.CloseTimedOut, timeout),
+                                                string.Format(SRServiceModel.CloseTimedOut, timeout),
                                                 TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 
@@ -340,11 +340,11 @@ namespace System.ServiceModel.Channels
             {
                 if (WcfEventSource.Instance.CloseTimeoutIsEnabled())
                 {
-                    WcfEventSource.Instance.CloseTimeout(SRServiceModel.Format(SRServiceModel.CloseTimedOut, timeout));
+                    WcfEventSource.Instance.CloseTimeout(string.Format(SRServiceModel.CloseTimedOut, timeout));
                 }
 
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                                                SRServiceModel.Format(SRServiceModel.CloseTimedOut, timeout),
+                                                string.Format(SRServiceModel.CloseTimedOut, timeout),
                                                 TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 
@@ -512,7 +512,7 @@ namespace System.ServiceModel.Channels
             if (!await _sendLock.WaitAsync(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                                            SRServiceModel.Format(SRServiceModel.SendToViaTimedOut, Via, timeout),
+                                            string.Format(SRServiceModel.SendToViaTimedOut, Via, timeout),
                                             TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 
@@ -617,7 +617,7 @@ namespace System.ServiceModel.Channels
             if (!_sendLock.Wait(TimeoutHelper.ToMilliseconds(timeout)))
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new TimeoutException(
-                                            SRServiceModel.Format(SRServiceModel.SendToViaTimedOut, Via, timeout),
+                                            string.Format(SRServiceModel.SendToViaTimedOut, Via, timeout),
                                             TimeoutHelper.CreateEnterTimedOutException(timeout)));
             }
 

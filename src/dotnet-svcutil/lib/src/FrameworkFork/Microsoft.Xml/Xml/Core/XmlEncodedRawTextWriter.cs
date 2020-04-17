@@ -1524,7 +1524,7 @@ namespace Microsoft.Xml
                     }
                     throw XmlConvert.CreateInvalidSurrogatePairException((char)lowChar, (char)ch);
                 }
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidSurrogateMissingLowChar));
+                throw new ArgumentException(ResXml.Xml_InvalidSurrogateMissingLowChar);
             }
             throw XmlConvert.CreateInvalidHighSurrogateCharException((char)ch);
         }
@@ -1730,7 +1730,7 @@ namespace Microsoft.Xml
             {
                 if (!xmlCharType.IsOnlyWhitespace(chars))
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_IndentCharsNotWhitespace, propertyName));
+                    throw new ArgumentException(string.Format(ResXml.Xml_IndentCharsNotWhitespace, propertyName));
                 }
             }
             else
@@ -1749,7 +1749,7 @@ namespace Microsoft.Xml
                             case '<':
                             case '&':
                             case ']':
-                                error = ResXml.GetString(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(chars, i));
+                                error = string.Format(ResXml.Xml_InvalidCharacter, XmlException.BuildCharExceptionArgs(chars, i));
                                 goto Error;
                             default:
                                 if (XmlCharType.IsHighSurrogate(chars[i]))
@@ -1762,12 +1762,12 @@ namespace Microsoft.Xml
                                             continue;
                                         }
                                     }
-                                    error = ResXml.GetString(ResXml.Xml_InvalidSurrogateMissingLowChar);
+                                    error = ResXml.Xml_InvalidSurrogateMissingLowChar;
                                     goto Error;
                                 }
                                 else if (XmlCharType.IsLowSurrogate(chars[i]))
                                 {
-                                    error = ResXml.GetString(ResXml.Xml_InvalidSurrogateHighChar, ((uint)chars[i]).ToString("X", CultureInfo.InvariantCulture));
+                                    error = string.Format(ResXml.Xml_InvalidSurrogateHighChar, ((uint)chars[i]).ToString("X", CultureInfo.InvariantCulture));
                                     goto Error;
                                 }
                                 continue;
@@ -1777,7 +1777,7 @@ namespace Microsoft.Xml
                 return;
 
             Error:
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidCharsInIndent, new string[] { propertyName, error }));
+                throw new ArgumentException(string.Format(ResXml.Xml_InvalidCharsInIndent, new string[] { propertyName, error }));
             }
         }
     }

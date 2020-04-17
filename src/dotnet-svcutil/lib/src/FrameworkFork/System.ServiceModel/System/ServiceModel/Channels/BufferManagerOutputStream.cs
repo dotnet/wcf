@@ -40,7 +40,7 @@ namespace System.ServiceModel.Channels
 
         protected override Exception CreateQuotaExceededException(int maxSizeQuota)
         {
-            string excMsg = SRServiceModel.Format(_quotaExceededString, maxSizeQuota);
+            string excMsg = string.Format(_quotaExceededString, maxSizeQuota);
             if (WcfEventSource.Instance.MaxSentMessageSizeExceededIsEnabled())
             {
                 WcfEventSource.Instance.MaxSentMessageSizeExceeded(excMsg);

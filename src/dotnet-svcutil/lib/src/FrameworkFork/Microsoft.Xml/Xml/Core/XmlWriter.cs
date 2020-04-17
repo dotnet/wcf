@@ -240,7 +240,7 @@ namespace Microsoft.Xml
         {
             if (name == null || name.Length == 0)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                throw new ArgumentException(ResXml.Xml_EmptyName);
             }
             WriteString(XmlConvert.VerifyNMTOKEN(name, ExceptionType.ArgumentException));
         }
@@ -260,7 +260,7 @@ namespace Microsoft.Xml
                 string prefix = LookupPrefix(ns);
                 if (prefix == null)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_UndefNamespace, ns));
+                    throw new ArgumentException(string.Format(ResXml.Xml_UndefNamespace, ns));
                 }
                 WriteString(prefix);
                 WriteString(":");

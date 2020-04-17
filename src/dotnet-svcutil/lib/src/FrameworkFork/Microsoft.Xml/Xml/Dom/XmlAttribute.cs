@@ -27,7 +27,7 @@ namespace Microsoft.Xml
                 XmlDocument.CheckName(name.LocalName);
             }
             if (name.LocalName.Length == 0)
-                throw new ArgumentException(ResXml.GetString(ResXml.Xdom_Attr_Name));
+                throw new ArgumentException(ResXml.Xdom_Attr_Name);
             _name = name;
         }
 

@@ -95,12 +95,12 @@ namespace System.ServiceModel.Channels
 
             if (this.MessageHandlerFactory != null)
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.HttpPipelineNotSupportedOnClientSide, "MessageHandlerFactory")));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.HttpPipelineNotSupportedOnClientSide, "MessageHandlerFactory")));
             }
 
             if (!this.CanBuildChannelFactory<TChannel>(context))
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", SRServiceModel.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("TChannel", string.Format(SRServiceModel.ChannelTypeNotSupported, typeof(TChannel)));
             }
 
             return (IChannelFactory<TChannel>)(object)new HttpsChannelFactory<TChannel>(this, context);

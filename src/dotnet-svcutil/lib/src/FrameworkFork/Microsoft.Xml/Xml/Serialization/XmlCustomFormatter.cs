@@ -56,7 +56,7 @@ namespace Microsoft.Xml.Serialization
                     return FromXmlNmTokens((string)value);
                 }
             }
-            throw new Exception(ResXml.GetString(ResXml.XmlUnsupportedDefaultType, type.FullName));
+            throw new Exception(string.Format(ResXml.XmlUnsupportedDefaultType, type.FullName));
         }
 
         internal static string FromDate(DateTime value)
@@ -135,7 +135,7 @@ namespace Microsoft.Xml.Serialization
         {
 #if DEBUG
                 // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (ids.Length != vals.Length) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInternalErrorDetails, "Invalid enum"));
+                if (ids.Length != vals.Length) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Invalid enum"));
 #endif
 
             long originalValue = val;
@@ -164,7 +164,7 @@ namespace Microsoft.Xml.Serialization
             if (val != 0)
             {
                 // failed to parse the enum value
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownConstant, originalValue, typeName == null ? "enum" : typeName));
+                throw new InvalidOperationException(string.Format(ResXml.XmlUnknownConstant, originalValue, typeName == null ? "enum" : typeName));
             }
             if (sb.Length == 0 && iZero >= 0)
             {
@@ -203,7 +203,7 @@ namespace Microsoft.Xml.Serialization
             {
                 return ToXmlNmTokens(value);
             }
-            throw new Exception(ResXml.GetString(ResXml.XmlUnsupportedDefaultValue, formatter));
+            throw new Exception(string.Format(ResXml.XmlUnsupportedDefaultValue, formatter));
             //            Debug.WriteLineIf(CompModSwitches.XmlSerialization.TraceVerbose, "XmlSerialization::Unhandled default value " + value + " formatter " + formatter);
             //            return DBNull.Value;
         }
@@ -394,7 +394,7 @@ namespace Microsoft.Xml.Serialization
                 if (id != null)
                     value |= (long)id;
                 else if (validate && parts[i].Length > 0)
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlUnknownConstant, parts[i], typeName));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlUnknownConstant, parts[i], typeName));
             }
             return value;
         }

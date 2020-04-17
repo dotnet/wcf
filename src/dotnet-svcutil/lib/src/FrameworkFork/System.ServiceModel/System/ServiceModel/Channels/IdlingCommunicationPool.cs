@@ -329,7 +329,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (WcfEventSource.Instance.LeaseTimeoutIsEnabled())
                     {
-                        WcfEventSource.Instance.LeaseTimeout(SRServiceModel.Format(SRServiceModel.TraceCodeConnectionPoolLeaseTimeoutReached, _leaseTimeout), _parent.Key.ToString());
+                        WcfEventSource.Instance.LeaseTimeout(string.Format(SRServiceModel.TraceCodeConnectionPoolLeaseTimeoutReached, _leaseTimeout), _parent.Key.ToString());
                     }
                 }
 
@@ -337,7 +337,7 @@ namespace System.ServiceModel.Channels
                 {
                     if (WcfEventSource.Instance.IdleTimeoutIsEnabled())
                     {
-                        WcfEventSource.Instance.IdleTimeout(SRServiceModel.Format(SRServiceModel.TraceCodeConnectionPoolIdleTimeoutReached, _idleTimeout), _parent.Key.ToString());
+                        WcfEventSource.Instance.IdleTimeout(string.Format(SRServiceModel.TraceCodeConnectionPoolIdleTimeoutReached, _idleTimeout), _parent.Key.ToString());
                     }
                 }
 

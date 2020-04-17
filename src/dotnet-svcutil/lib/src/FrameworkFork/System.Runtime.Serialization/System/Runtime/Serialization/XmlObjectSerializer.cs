@@ -141,7 +141,7 @@ namespace System.Runtime.Serialization
                 CheckNull(writer, "writer");
                 {
                     if (writer.WriteState != WriteState.Element)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(SRSerialization.Format(SRSerialization.XmlWriterMustBeInElement, writer.WriteState)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(XmlObjectSerializer.CreateSerializationException(string.Format(SRSerialization.XmlWriterMustBeInElement, writer.WriteState)));
                     InternalWriteObjectContent(writer, graph);
                 }
             }
@@ -359,13 +359,13 @@ namespace System.Runtime.Serialization
         internal static string TryAddLineInfo(XmlReaderDelegator reader, string errorMessage)
         {
             if (reader.HasLineInfo())
-                return String.Format(CultureInfo.InvariantCulture, "{0} {1}", SRSerialization.Format(SRSerialization.ErrorInLine, reader.LineNumber, reader.LinePosition), errorMessage);
+                return String.Format(CultureInfo.InvariantCulture, "{0} {1}", string.Format(SRSerialization.ErrorInLine, reader.LineNumber, reader.LinePosition), errorMessage);
             return errorMessage;
         }
 
         internal static Exception CreateSerializationExceptionWithReaderDetails(string errorMessage, XmlReaderDelegator reader)
         {
-            return XmlObjectSerializer.CreateSerializationException(TryAddLineInfo(reader, SRSerialization.Format(SRSerialization.EncounteredWithNameNamespace, errorMessage, reader.NodeType, reader.LocalName, reader.NamespaceURI)));
+            return XmlObjectSerializer.CreateSerializationException(TryAddLineInfo(reader, string.Format(SRSerialization.EncounteredWithNameNamespace, errorMessage, reader.NodeType, reader.LocalName, reader.NamespaceURI)));
         }
 
         static internal SerializationException CreateSerializationException(string errorMessage)
@@ -380,9 +380,9 @@ namespace System.Runtime.Serialization
         }
         internal static string GetTypeInfoError(string errorMessage, Type type, Exception innerException)
         {
-            string typeInfo = (type == null) ? string.Empty : SRSerialization.Format(SRSerialization.ErrorTypeInfo, DataContract.GetClrTypeFullName(type));
+            string typeInfo = (type == null) ? string.Empty : string.Format(SRSerialization.ErrorTypeInfo, DataContract.GetClrTypeFullName(type));
             string innerExceptionMessage = (innerException == null) ? string.Empty : innerException.Message;
-            return SRSerialization.Format(errorMessage, typeInfo, innerExceptionMessage);
+            return string.Format(errorMessage, typeInfo, innerExceptionMessage);
         }
 
         internal virtual Type GetSerializeType(object graph)

@@ -213,7 +213,7 @@ namespace System.ServiceModel.Channels
 
         protected override Exception OnSizeQuotaExceeded(int size)
         {
-            Exception result = new InvalidDataException(SRServiceModel.Format(SRServiceModel.FramingViaTooLong, size));
+            Exception result = new InvalidDataException(string.Format(SRServiceModel.FramingViaTooLong, size));
             FramingEncodingString.AddFaultString(result, FramingEncodingString.ViaTooLongFault);
             return result;
         }
@@ -227,7 +227,7 @@ namespace System.ServiceModel.Channels
             }
             catch (UriFormatException exception)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataException(SRServiceModel.Format(SRServiceModel.FramingViaNotUri, value), exception));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataException(string.Format(SRServiceModel.FramingViaNotUri, value), exception));
             }
         }
 
@@ -253,30 +253,30 @@ namespace System.ServiceModel.Channels
 
         protected override Exception OnSizeQuotaExceeded(int size)
         {
-            return new InvalidDataException(SRServiceModel.Format(SRServiceModel.FramingFaultTooLong, size));
+            return new InvalidDataException(string.Format(SRServiceModel.FramingFaultTooLong, size));
         }
 
         public static Exception GetFaultException(string faultString, string via, string contentType)
         {
             if (faultString == FramingEncodingString.EndpointNotFoundFault)
             {
-                return new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.EndpointNotFound, via));
+                return new EndpointNotFoundException(string.Format(SRServiceModel.EndpointNotFound, via));
             }
             else if (faultString == FramingEncodingString.ContentTypeInvalidFault)
             {
-                return new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingContentTypeMismatch, contentType, via));
+                return new ProtocolException(string.Format(SRServiceModel.FramingContentTypeMismatch, contentType, via));
             }
             else if (faultString == FramingEncodingString.ServiceActivationFailedFault)
             {
-                return new ServiceActivationException(SRServiceModel.Format(SRServiceModel.Hosting_ServiceActivationFailed, via));
+                return new ServiceActivationException(string.Format(SRServiceModel.Hosting_ServiceActivationFailed, via));
             }
             else if (faultString == FramingEncodingString.ConnectionDispatchFailedFault)
             {
-                return new CommunicationException(SRServiceModel.Format(SRServiceModel.Sharing_ConnectionDispatchFailed, via));
+                return new CommunicationException(string.Format(SRServiceModel.Sharing_ConnectionDispatchFailed, via));
             }
             else if (faultString == FramingEncodingString.EndpointUnavailableFault)
             {
-                return new EndpointNotFoundException(SRServiceModel.Format(SRServiceModel.Sharing_EndpointUnavailable, via));
+                return new EndpointNotFoundException(string.Format(SRServiceModel.Sharing_EndpointUnavailable, via));
             }
             else if (faultString == FramingEncodingString.MaxMessageSizeExceededFault)
             {
@@ -285,33 +285,33 @@ namespace System.ServiceModel.Channels
             }
             else if (faultString == FramingEncodingString.UnsupportedModeFault)
             {
-                return new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingModeNotSupportedFault, via));
+                return new ProtocolException(string.Format(SRServiceModel.FramingModeNotSupportedFault, via));
             }
             else if (faultString == FramingEncodingString.UnsupportedVersionFault)
             {
-                return new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingVersionNotSupportedFault, via));
+                return new ProtocolException(string.Format(SRServiceModel.FramingVersionNotSupportedFault, via));
             }
             else if (faultString == FramingEncodingString.ContentTypeTooLongFault)
             {
-                Exception inner = new QuotaExceededException(SRServiceModel.Format(SRServiceModel.FramingContentTypeTooLongFault, contentType));
+                Exception inner = new QuotaExceededException(string.Format(SRServiceModel.FramingContentTypeTooLongFault, contentType));
                 return new CommunicationException(inner.Message, inner);
             }
             else if (faultString == FramingEncodingString.ViaTooLongFault)
             {
-                Exception inner = new QuotaExceededException(SRServiceModel.Format(SRServiceModel.FramingViaTooLongFault, via));
+                Exception inner = new QuotaExceededException(string.Format(SRServiceModel.FramingViaTooLongFault, via));
                 return new CommunicationException(inner.Message, inner);
             }
             else if (faultString == FramingEncodingString.ServerTooBusyFault)
             {
-                return new ServerTooBusyException(SRServiceModel.Format(SRServiceModel.ServerTooBusy, via));
+                return new ServerTooBusyException(string.Format(SRServiceModel.ServerTooBusy, via));
             }
             else if (faultString == FramingEncodingString.UpgradeInvalidFault)
             {
-                return new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingUpgradeInvalid, via));
+                return new ProtocolException(string.Format(SRServiceModel.FramingUpgradeInvalid, via));
             }
             else
             {
-                return new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingFaultUnrecognized, faultString));
+                return new ProtocolException(string.Format(SRServiceModel.FramingFaultUnrecognized, faultString));
             }
         }
     }
@@ -325,7 +325,7 @@ namespace System.ServiceModel.Channels
 
         protected override Exception OnSizeQuotaExceeded(int size)
         {
-            Exception result = new InvalidDataException(SRServiceModel.Format(SRServiceModel.FramingContentTypeTooLong, size));
+            Exception result = new InvalidDataException(string.Format(SRServiceModel.FramingContentTypeTooLong, size));
             FramingEncodingString.AddFaultString(result, FramingEncodingString.ContentTypeTooLongFault);
             return result;
         }
@@ -390,7 +390,7 @@ namespace System.ServiceModel.Channels
                     break;
                 default:
                     {
-                        Exception exception = CreateException(new InvalidDataException(SRServiceModel.Format(
+                        Exception exception = CreateException(new InvalidDataException(string.Format(
                             SRServiceModel.FramingModeNotSupported, mode.ToString())), FramingEncodingString.UnsupportedModeFault);
                         throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
                     }
@@ -426,14 +426,14 @@ namespace System.ServiceModel.Channels
 
         private Exception CreateInvalidRecordTypeException(FramingRecordType expectedType, FramingRecordType foundType)
         {
-            return new InvalidDataException(SRServiceModel.Format(SRServiceModel.FramingRecordTypeMismatch, expectedType.ToString(), foundType.ToString()));
+            return new InvalidDataException(string.Format(SRServiceModel.FramingRecordTypeMismatch, expectedType.ToString(), foundType.ToString()));
         }
 
         protected void ValidateMajorVersion(int majorVersion)
         {
             if (majorVersion != FramingVersion.Major)
             {
-                Exception exception = CreateException(new InvalidDataException(SRServiceModel.Format(
+                Exception exception = CreateException(new InvalidDataException(string.Format(
                     SRServiceModel.FramingVersionNotSupported, majorVersion)), FramingEncodingString.UnsupportedVersionFault);
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
             }
@@ -453,7 +453,7 @@ namespace System.ServiceModel.Channels
 
         protected Exception CreateException(InvalidDataException innerException)
         {
-            return new ProtocolException(SRServiceModel.Format(SRServiceModel.FramingError, StreamPosition, CurrentStateAsString),
+            return new ProtocolException(string.Format(SRServiceModel.FramingError, StreamPosition, CurrentStateAsString),
                 innerException);
         }
     }

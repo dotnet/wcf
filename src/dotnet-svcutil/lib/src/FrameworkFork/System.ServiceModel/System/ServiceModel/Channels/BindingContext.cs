@@ -112,7 +112,7 @@ namespace System.ServiceModel.Channels
             BindingElement element = _remainingBindingElements.Remove<BindingElement>();
             if (element != null)
                 return element;
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(
                 SRServiceModel.NoChannelBuilderAvailable, _binding.Name, _binding.Namespace)));
         }
 
@@ -131,7 +131,7 @@ namespace System.ServiceModel.Channels
                     string typeString = bindingElement.GetType().ToString();
                     builder.Append(typeString.Substring(typeString.LastIndexOf('.') + 1));
                 }
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.NotAllBindingElementsBuilt, builder.ToString())));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.NotAllBindingElementsBuilt, builder.ToString())));
             }
         }
     }

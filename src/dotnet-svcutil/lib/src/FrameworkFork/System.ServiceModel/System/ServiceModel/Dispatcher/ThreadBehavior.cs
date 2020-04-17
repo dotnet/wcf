@@ -118,7 +118,7 @@ namespace System.ServiceModel.Dispatcher
 
             if (alreadyResumedNoLock)
             {
-                string text = SRServiceModel.Format(SRServiceModel.SFxMultipleCallbackFromSynchronizationContext, _context.GetType().ToString());
+                string text = string.Format(SRServiceModel.SFxMultipleCallbackFromSynchronizationContext, _context.GetType().ToString());
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(text));
             }
         }

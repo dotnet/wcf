@@ -115,7 +115,7 @@ namespace System.ServiceModel
                 this.BasicHttpSecurity.Mode == BasicHttpSecurityMode.TransportCredentialOnly) &&
                 this.BasicHttpSecurity.Transport.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)
             {
-                throw FxTrace.Exception.AsError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.HttpClientCredentialTypeInvalid, this.BasicHttpSecurity.Transport.ClientCredentialType)));
+                throw FxTrace.Exception.AsError(new InvalidOperationException(string.Format(SRServiceModel.HttpClientCredentialTypeInvalid, this.BasicHttpSecurity.Transport.ClientCredentialType)));
             }
 
             return base.BuildChannelFactory<TChannel>(parameters);
@@ -144,7 +144,7 @@ namespace System.ServiceModel
                     bindingElements.Add(this.TextMessageEncodingBindingElement);
                     break;
                 case NetHttpMessageEncoding.Mtom:
-                    throw ExceptionHelper.PlatformNotSupported(SRServiceModel.Format(SRServiceModel.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding));
+                    throw ExceptionHelper.PlatformNotSupported(string.Format(SRServiceModel.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding));
                 default:
                     bindingElements.Add(_binaryMessageEncodingBindingElement);
                     break;
@@ -264,7 +264,7 @@ namespace System.ServiceModel
             // Mtom is not supported.
             if (this.MessageEncoding == NetHttpMessageEncoding.Mtom)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SRServiceModel.Format(SRServiceModel.UnsupportedBindingProperty, "MessageEncoding", this.MessageEncoding)));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.UnsupportedBindingProperty, "MessageEncoding", this.MessageEncoding)));
             }
         }
 

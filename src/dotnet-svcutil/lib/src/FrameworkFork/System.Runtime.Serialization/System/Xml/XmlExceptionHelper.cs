@@ -28,11 +28,11 @@ namespace Microsoft.Xml
 
         private static void ThrowXmlException(XmlDictionaryReader reader, string res, string arg1, string arg2, string arg3)
         {
-            string s = SRSerialization.Format(res, arg1, arg2, arg3);
+            string s = string.Format(res, arg1, arg2, arg3);
             IXmlLineInfo lineInfo = reader as IXmlLineInfo;
             if (lineInfo != null && lineInfo.HasLineInfo())
             {
-                s += " " + SRSerialization.Format(SRSerialization.XmlLineInfo, lineInfo.LineNumber, lineInfo.LinePosition);
+                s += " " + string.Format(SRSerialization.XmlLineInfo, lineInfo.LineNumber, lineInfo.LinePosition);
             }
 
             throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(s));
@@ -44,7 +44,7 @@ namespace Microsoft.Xml
             IXmlLineInfo lineInfo = reader as IXmlLineInfo;
             if (lineInfo != null && lineInfo.HasLineInfo())
             {
-                s += " " + SRSerialization.Format(SRSerialization.XmlLineInfo, lineInfo.LineNumber, lineInfo.LinePosition);
+                s += " " + string.Format(SRSerialization.XmlLineInfo, lineInfo.LineNumber, lineInfo.LinePosition);
             }
             throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(s));
         }
@@ -60,23 +60,23 @@ namespace Microsoft.Xml
         private static string GetWhatWasFound(XmlDictionaryReader reader)
         {
             if (reader.EOF)
-                return SRSerialization.Format(SRSerialization.XmlFoundEndOfFile);
+                return string.Format(SRSerialization.XmlFoundEndOfFile);
             switch (reader.NodeType)
             {
                 case XmlNodeType.Element:
-                    return SRSerialization.Format(SRSerialization.XmlFoundElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
+                    return string.Format(SRSerialization.XmlFoundElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
                 case XmlNodeType.EndElement:
-                    return SRSerialization.Format(SRSerialization.XmlFoundEndElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
+                    return string.Format(SRSerialization.XmlFoundEndElement, GetName(reader.Prefix, reader.LocalName), reader.NamespaceURI);
                 case XmlNodeType.Text:
                 case XmlNodeType.Whitespace:
                 case XmlNodeType.SignificantWhitespace:
-                    return SRSerialization.Format(SRSerialization.XmlFoundText, reader.Value);
+                    return string.Format(SRSerialization.XmlFoundText, reader.Value);
                 case XmlNodeType.Comment:
-                    return SRSerialization.Format(SRSerialization.XmlFoundComment, reader.Value);
+                    return string.Format(SRSerialization.XmlFoundComment, reader.Value);
                 case XmlNodeType.CDATA:
-                    return SRSerialization.Format(SRSerialization.XmlFoundCData, reader.Value);
+                    return string.Format(SRSerialization.XmlFoundCData, reader.Value);
             }
-            return SRSerialization.Format(SRSerialization.XmlFoundNodeType, reader.NodeType);
+            return string.Format(SRSerialization.XmlFoundNodeType, reader.NodeType);
         }
 
         static public void ThrowStartElementExpected(XmlDictionaryReader reader)
@@ -261,12 +261,12 @@ namespace Microsoft.Xml
 
         static public XmlException CreateConversionException(string type, Exception exception)
         {
-            return new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidConversionWithoutValue, type), exception);
+            return new XmlException(string.Format(SRSerialization.XmlInvalidConversionWithoutValue, type), exception);
         }
 
         static public XmlException CreateConversionException(string value, string type, Exception exception)
         {
-            return new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidConversion, value, type), exception);
+            return new XmlException(string.Format(SRSerialization.XmlInvalidConversion, value, type), exception);
         }
 
         static public XmlException CreateEncodingException(byte[] buffer, int offset, int count, Exception exception)
@@ -276,7 +276,7 @@ namespace Microsoft.Xml
 
         static public XmlException CreateEncodingException(string value, Exception exception)
         {
-            return new XmlException(SRSerialization.Format(SRSerialization.XmlInvalidUTF8Bytes, value), exception);
+            return new XmlException(string.Format(SRSerialization.XmlInvalidUTF8Bytes, value), exception);
         }
     }
 }

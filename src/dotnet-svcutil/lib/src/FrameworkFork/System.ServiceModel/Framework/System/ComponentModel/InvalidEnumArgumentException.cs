@@ -43,7 +43,7 @@ namespace System.ComponentModel
         ///    class.</para>
         /// </devdoc>
         public InvalidEnumArgumentException(string argumentName, int invalidValue, Type enumClass)
-            : base(SRServiceModel.Format(SRServiceModel.InvalidEnumArgument,
+            : base(string.Format(SRServiceModel.InvalidEnumArgument,
                                 argumentName,
                                 invalidValue.ToString(CultureInfo.CurrentCulture),
                                 enumClass.Name), argumentName)

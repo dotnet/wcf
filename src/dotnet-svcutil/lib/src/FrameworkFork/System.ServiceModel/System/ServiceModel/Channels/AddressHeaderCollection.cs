@@ -102,7 +102,7 @@ namespace System.ServiceModel.Channels
                 if (header.Name == name && header.Namespace == ns)
                 {
                     if (matchingHeader != null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SRServiceModel.Format(SRServiceModel.MultipleMessageHeaders, name, ns)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(string.Format(SRServiceModel.MultipleMessageHeaders, name, ns)));
                     matchingHeader = header;
                 }
             }

@@ -230,7 +230,7 @@ namespace System.ServiceModel.Channels
 
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                         new CommunicationObjectAbortedException(
-                        SRServiceModel.Format(SRServiceModel.OperationAbortedDuringConnectionEstablishment, _via)));
+                        string.Format(SRServiceModel.OperationAbortedDuringConnectionEstablishment, _via)));
                 }
                 else
                 {

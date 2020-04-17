@@ -221,7 +221,7 @@ namespace Microsoft.Xml
                             }
                             else
                             {
-                                throw new ArgumentException(ResXml.GetString(ResXml.Xml_SurrogatePairSplit));
+                                throw new ArgumentException(ResXml.Xml_SurrogatePairSplit);
                             }
                         }
                         else if (XmlCharType.IsLowSurrogate(ch))
@@ -454,7 +454,7 @@ namespace Microsoft.Xml
                             throw XmlConvert.CreateInvalidSurrogatePairException(lowChar, ch);
                         }
                     }
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidSurrogateMissingLowChar));
+                    throw new ArgumentException(ResXml.Xml_InvalidSurrogateMissingLowChar);
                 }
                 else if (XmlCharType.IsLowSurrogate(ch))
                 {
@@ -514,7 +514,7 @@ namespace Microsoft.Xml
         {
             if (XmlCharType.IsSurrogate(ch))
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidSurrogateMissingLowChar));
+                throw new ArgumentException(ResXml.Xml_InvalidSurrogateMissingLowChar);
             }
 
             string strVal = ((int)ch).ToString("X", NumberFormatInfo.InvariantInfo);

@@ -110,7 +110,7 @@ namespace Microsoft.Xml
                 throw new ArgumentOutOfRangeException("offset");
             //if the text node is out of the living tree, throw exception.
             if (parentNode == null)
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Xdom_TextNode_SplitText));
+                throw new InvalidOperationException(ResXml.Xdom_TextNode_SplitText);
 
             int count = length - offset;
             String splitData = Substring(offset, count);

@@ -380,7 +380,7 @@ namespace Microsoft.Xml.Schema
         {
             if (_currentState != ValidatorState.None && _currentState != ValidatorState.Finish)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], s_methodNames[(int)ValidatorState.Start] }));
+                throw new InvalidOperationException(string.Format(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], s_methodNames[(int)ValidatorState.Start] }));
             }
             _currentState = ValidatorState.Start;
             Reset();
@@ -390,7 +390,7 @@ namespace Microsoft.Xml.Schema
         {
             if (_currentState != ValidatorState.None && _currentState != ValidatorState.Finish)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], s_methodNames[(int)ValidatorState.Start] }));
+                throw new InvalidOperationException(string.Format(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], s_methodNames[(int)ValidatorState.Start] }));
             }
             if (partialValidationType == null)
             {
@@ -398,7 +398,7 @@ namespace Microsoft.Xml.Schema
             }
             if (!(partialValidationType is XmlSchemaElement || partialValidationType is XmlSchemaAttribute || partialValidationType is XmlSchemaType))
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Sch_InvalidPartialValidationType));
+                throw new ArgumentException(ResXml.Sch_InvalidPartialValidationType);
             }
             _currentState = ValidatorState.Start;
             Reset();
@@ -928,7 +928,7 @@ namespace Microsoft.Xml.Schema
             }
             if (_textValue.Length > 0)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementCall));
+                throw new InvalidOperationException(ResXml.Sch_InvalidEndElementCall);
             }
             return InternalValidateEndElement(schemaInfo, typedValue);
         }
@@ -937,7 +937,7 @@ namespace Microsoft.Xml.Schema
         {
             if (_validationStack.Length <= 1)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementMultiple, s_methodNames[(int)ValidatorState.SkipToEndElement]));
+                throw new InvalidOperationException(string.Format(ResXml.Sch_InvalidEndElementMultiple, s_methodNames[(int)ValidatorState.SkipToEndElement]));
             }
             CheckStateTransition(ValidatorState.SkipToEndElement, s_methodNames[(int)ValidatorState.SkipToEndElement]);
 
@@ -969,7 +969,7 @@ namespace Microsoft.Xml.Schema
         {
             if (_validationStack.Length > 1)
             { //We have pending elements in the stack to call ValidateEndElement
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndValidation));
+                throw new InvalidOperationException(ResXml.Sch_InvalidEndValidation);
             }
             CheckStateTransition(ValidatorState.Finish, s_methodNames[(int)ValidatorState.Finish]);
             CheckForwardRefs();
@@ -1198,7 +1198,7 @@ namespace Microsoft.Xml.Schema
         {
             if (_validationStack.Length <= 1)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementMultiple, s_methodNames[(int)ValidatorState.EndElement]));
+                throw new InvalidOperationException(string.Format(ResXml.Sch_InvalidEndElementMultiple, s_methodNames[(int)ValidatorState.EndElement]));
             }
             CheckStateTransition(ValidatorState.EndElement, s_methodNames[(int)ValidatorState.EndElement]);
 
@@ -1248,7 +1248,7 @@ namespace Microsoft.Xml.Schema
                             case XmlSchemaContentType.ElementOnly:
                                 if (typedValue != null)
                                 { //Cannot pass in typedValue for complex content
-                                    throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidEndElementCallTyped));
+                                    throw new InvalidOperationException(ResXml.Sch_InvalidEndElementCallTyped);
                                 }
                                 break;
 
@@ -2108,9 +2108,9 @@ namespace Microsoft.Xml.Schema
             {
                 if (_currentState == ValidatorState.None)
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStartTransition, new string[] { methodName, s_methodNames[(int)ValidatorState.Start] }));
+                    throw new InvalidOperationException(string.Format(ResXml.Sch_InvalidStartTransition, new string[] { methodName, s_methodNames[(int)ValidatorState.Start] }));
                 }
-                throw new InvalidOperationException(ResXml.GetString(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], methodName }));
+                throw new InvalidOperationException(string.Format(ResXml.Sch_InvalidStateTransition, new string[] { s_methodNames[(int)_currentState], methodName }));
             }
             _currentState = toState;
         }
@@ -2546,7 +2546,7 @@ namespace Microsoft.Xml.Schema
                     {
                         if (context.TooComplex)
                         {
-                            SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
+                            SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), ResXml.Sch_ComplexContentModel }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                         }
                         else
                         {
@@ -2558,7 +2558,7 @@ namespace Microsoft.Xml.Schema
                         Debug.Assert(names.Count > 0);
                         if (context.TooComplex)
                         {
-                            SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), PrintExpectedElements(names, getParticles), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
+                            SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_InvalidElementContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), BuildElementName(name), PrintExpectedElements(names, getParticles), ResXml.Sch_ComplexContentModel }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                         }
                         else
                         {
@@ -2599,7 +2599,7 @@ namespace Microsoft.Xml.Schema
             {
                 if (context.TooComplex)
                 {
-                    SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
+                    SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), ResXml.Sch_ComplexContentModel }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                 }
                 SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContent, BuildElementName(context.LocalName, context.Namespace), sourceUri, lineNo, linePos), XmlSeverityType.Error);
             }
@@ -2608,7 +2608,7 @@ namespace Microsoft.Xml.Schema
                 Debug.Assert(names.Count > 0);
                 if (context.TooComplex)
                 {
-                    SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), PrintExpectedElements(names, getParticles), ResXml.GetString(ResXml.Sch_ComplexContentModel) }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
+                    SendValidationEvent(eventHandler, sender, new XmlSchemaValidationException(ResXml.Sch_IncompleteContentExpectingComplex, new string[] { BuildElementName(context.LocalName, context.Namespace), PrintExpectedElements(names, getParticles), ResXml.Sch_ComplexContentModel }, sourceUri, lineNo, linePos), XmlSeverityType.Error);
                 }
                 else
                 {
@@ -2621,7 +2621,7 @@ namespace Microsoft.Xml.Schema
         {
             if (getParticles)
             {
-                string ContinuationString = ResXml.GetString(ResXml.Sch_ContinuationString, new string[] { " " });
+                string ContinuationString = string.Format(ResXml.Sch_ContinuationString, new string[] { " " });
                 XmlSchemaParticle currentParticle = null;
                 XmlSchemaParticle nextParticle = null;
                 XmlQualifiedName currentQName;
@@ -2693,11 +2693,11 @@ namespace Microsoft.Xml.Schema
                 {
                     if (name.Namespace.Length != 0)
                     {
-                        builder.Append(ResXml.GetString(ResXml.Sch_ElementNameAndNamespace, name.Name, name.Namespace));
+                        builder.Append(string.Format(ResXml.Sch_ElementNameAndNamespace, name.Name, name.Namespace));
                     }
                     else
                     {
-                        builder.Append(ResXml.GetString(ResXml.Sch_ElementName, name.Name));
+                        builder.Append(string.Format(ResXml.Sch_ElementName, name.Name));
                     }
                 }
             }
@@ -2727,17 +2727,17 @@ namespace Microsoft.Xml.Schema
                 if (foundAny)
                 {
                     subBuilder.Append(", ");
-                    subBuilder.Append(ResXml.GetString(ResXml.Sch_AnyElement));
+                    subBuilder.Append(ResXml.Sch_AnyElement);
                 }
                 else
                 {
                     if (name.Namespace.Length != 0)
                     {
-                        builder.Append(ResXml.GetString(ResXml.Sch_ElementNameAndNamespace, subBuilder.ToString(), name.Namespace));
+                        builder.Append(string.Format(ResXml.Sch_ElementNameAndNamespace, subBuilder.ToString(), name.Namespace));
                     }
                     else
                     {
-                        builder.Append(ResXml.GetString(ResXml.Sch_ElementName, subBuilder.ToString()));
+                        builder.Append(string.Format(ResXml.Sch_ElementName, subBuilder.ToString()));
                     }
                 }
             }
@@ -2761,7 +2761,7 @@ namespace Microsoft.Xml.Schema
                     subBuilder.Append(nsList[i]);
                 }
             }
-            builder.Append(ResXml.GetString(ResXml.Sch_AnyElementNS, subBuilder.ToString()));
+            builder.Append(string.Format(ResXml.Sch_AnyElementNS, subBuilder.ToString()));
         }
 
         internal static string QNameString(string localName, string ns)
@@ -2778,11 +2778,11 @@ namespace Microsoft.Xml.Schema
         {
             if (ns.Length != 0)
             {
-                return ResXml.GetString(ResXml.Sch_ElementNameAndNamespace, localName, ns);
+                return string.Format(ResXml.Sch_ElementNameAndNamespace, localName, ns);
             }
             else
             {
-                return ResXml.GetString(ResXml.Sch_ElementName, localName);
+                return string.Format(ResXml.Sch_ElementName, localName);
             }
         }
 

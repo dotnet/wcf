@@ -111,7 +111,7 @@ namespace Microsoft.Xml.Serialization
             MissingMethodException missingMethod = new MissingMethodException(string.Format("{0}:{1}", type.FullName, methodName));
             if (assembly != null)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlSerializerExpired, assembly.FullName, /*assembly.CodeBase*/ null), missingMethod);
+                throw new InvalidOperationException(string.Format(ResXml.XmlSerializerExpired, assembly.FullName, /*assembly.CodeBase*/ null), missingMethod);
             }
             throw missingMethod;
         }
@@ -120,7 +120,7 @@ namespace Microsoft.Xml.Serialization
         {
             typeName = GeneratedAssemblyNamespace + "." + typeName;
             Type type = assembly.GetType(typeName);
-            if (type == null) throw new InvalidOperationException(ResXml.GetString(ResXml.XmlMissingType, typeName, assembly.FullName));
+            if (type == null) throw new InvalidOperationException(string.Format(ResXml.XmlMissingType, typeName, assembly.FullName));
             return type;
         }
 
@@ -145,12 +145,12 @@ namespace Microsoft.Xml.Serialization
                 {
                     if (encodingStyle != Soap.Encoding && encodingStyle != Soap12.Encoding)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidEncoding3, encodingStyle, Soap.Encoding, Soap12.Encoding));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEncoding3, encodingStyle, Soap.Encoding, Soap12.Encoding));
                     }
                 }
                 else
                 {
-                    throw new InvalidOperationException(ResXml.GetString(ResXml.XmlInvalidEncodingNotEncoded1, encodingStyle));
+                    throw new InvalidOperationException(string.Format(ResXml.XmlInvalidEncodingNotEncoded1, encodingStyle));
                 }
             }
             else
@@ -180,7 +180,7 @@ namespace Microsoft.Xml.Serialization
                     string methodName = (string)_readerMethods[mapping.Key];
                     if (methodName == null)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNotSerializable, mapping.Accessor.Name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlNotSerializable, mapping.Accessor.Name));
                     }
                     _methods[mapping.Key].readMethod = GetMethodFromType(reader.GetType(), methodName, _pregeneratedAssmbly ? _assembly : null);
                 }
@@ -188,7 +188,7 @@ namespace Microsoft.Xml.Serialization
             }
             catch (SecurityException e)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoPartialTrust), e);
+                throw new InvalidOperationException(ResXml.XmlNoPartialTrust, e);
             }
             finally
             {
@@ -214,7 +214,7 @@ namespace Microsoft.Xml.Serialization
                     string methodName = (string)_writerMethods[mapping.Key];
                     if (methodName == null)
                     {
-                        throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNotSerializable, mapping.Accessor.Name));
+                        throw new InvalidOperationException(string.Format(ResXml.XmlNotSerializable, mapping.Accessor.Name));
                     }
                     _methods[mapping.Key].writeMethod = GetMethodFromType(writer.GetType(), methodName, _pregeneratedAssmbly ? _assembly : null);
                 }
@@ -222,7 +222,7 @@ namespace Microsoft.Xml.Serialization
             }
             catch (SecurityException e)
             {
-                throw new InvalidOperationException(ResXml.GetString(ResXml.XmlNoPartialTrust), e);
+                throw new InvalidOperationException(ResXml.XmlNoPartialTrust, e);
             }
             finally
             {

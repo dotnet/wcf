@@ -140,7 +140,7 @@ namespace Microsoft.Xml
             {
                 if (localName == null || localName.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
+                    throw new ArgumentException(ResXml.Xml_EmptyLocalName);
                 }
                 ValidateNCName(localName);
 
@@ -158,7 +158,7 @@ namespace Microsoft.Xml
             {
                 if (localName == null || localName.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyLocalName));
+                    throw new ArgumentException(ResXml.Xml_EmptyLocalName);
                 }
                 ValidateNCName(localName);
 
@@ -251,7 +251,7 @@ namespace Microsoft.Xml
                 int i;
                 if ((i = _xmlCharType.IsOnlyWhitespaceWithPos(ws)) != -1)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_InvalidWhitespaceCharacter, XmlException.BuildCharExceptionArgs(ws, i)));
+                    throw new ArgumentException(string.Format(ResXml.Xml_InvalidWhitespaceCharacter, XmlException.BuildCharExceptionArgs(ws, i)));
                 }
             }
             if (_replaceNewLines)
@@ -323,7 +323,7 @@ namespace Microsoft.Xml
             {
                 if (name == null || name.Length == 0)
                 {
-                    throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                    throw new ArgumentException(ResXml.Xml_EmptyName);
                 }
                 XmlConvert.VerifyNMTOKEN(name);
             }
@@ -366,12 +366,12 @@ namespace Microsoft.Xml
         {
             if (ncname.Length == 0)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                throw new ArgumentException(ResXml.Xml_EmptyName);
             }
             int len = ValidateNames.ParseNCName(ncname, 0);
             if (len != ncname.Length)
             {
-                throw new ArgumentException(ResXml.GetString(len == 0 ? ResXml.Xml_BadStartNameChar : ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(ncname, len)));
+                throw new ArgumentException(string.Format(len == 0 ? ResXml.Xml_BadStartNameChar : ResXml.Xml_BadNameChar, XmlException.BuildCharExceptionArgs(ncname, len)));
             }
         }
 
@@ -379,14 +379,14 @@ namespace Microsoft.Xml
         {
             if (name.Length == 0)
             {
-                throw new ArgumentException(ResXml.GetString(ResXml.Xml_EmptyName));
+                throw new ArgumentException(ResXml.Xml_EmptyName);
             }
             int colonPos;
             int len = ValidateNames.ParseQName(name, 0, out colonPos);
             if (len != name.Length)
             {
                 string res = (len == 0 || (colonPos > -1 && len == colonPos + 1)) ? ResXml.Xml_BadStartNameChar : ResXml.Xml_BadNameChar;
-                throw new ArgumentException(ResXml.GetString(res, XmlException.BuildCharExceptionArgs(name, len)));
+                throw new ArgumentException(string.Format(res, XmlException.BuildCharExceptionArgs(name, len)));
             }
         }
 

@@ -139,7 +139,7 @@ namespace System.ServiceModel.Security
                     }
                     else if (secretType != _parent.SerializerDictionary.SymmetricKeyBinarySecret.Value && secretType != _otherDictionary.SymmetricKeyBinarySecret.Value)
                     {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(SRServiceModel.Format(SRServiceModel.UnexpectedBinarySecretType, _parent.SerializerDictionary.SymmetricKeyBinarySecret.Value, secretType)));
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new MessageSecurityException(string.Format(SRServiceModel.UnexpectedBinarySecretType, _parent.SerializerDictionary.SymmetricKeyBinarySecret.Value, secretType)));
                     }
                 }
 
@@ -596,7 +596,7 @@ namespace System.ServiceModel.Security
 
             public override void OnRSTRorRSTRCMissingException()
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(SRServiceModel.Format(SRServiceModel.ExpectedOneOfTwoElementsFromNamespace,
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new XmlException(string.Format(SRServiceModel.ExpectedOneOfTwoElementsFromNamespace,
                     DriverDictionary.RequestSecurityTokenResponse, DriverDictionary.RequestSecurityTokenResponseCollection,
                     DriverDictionary.Namespace)));
             }
@@ -701,7 +701,7 @@ namespace System.ServiceModel.Security
                 else if (keyType == SecurityKeyType.AsymmetricKey)
                     return CreatePublicKeyTypeElement();
                 else
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SRServiceModel.Format(SRServiceModel.UnableToCreateKeyTypeElementForUnknownKeyType, keyType.ToString())));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnableToCreateKeyTypeElementForUnknownKeyType, keyType.ToString())));
             }
 
             public override bool TryParseKeyTypeElement(XmlElement element, out SecurityKeyType keyType)

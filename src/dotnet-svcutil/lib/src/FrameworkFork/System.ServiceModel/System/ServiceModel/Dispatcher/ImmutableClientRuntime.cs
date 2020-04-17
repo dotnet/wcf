@@ -184,7 +184,7 @@ namespace System.ServiceModel.Dispatcher
             if (_operationSelector == null)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException
-                                                        (SRServiceModel.Format(SRServiceModel.SFxNeedProxyBehaviorOperationSelector2,
+                                                        (string.Format(SRServiceModel.SFxNeedProxyBehaviorOperationSelector2,
                                                                       methodBase.Name,
                                                                       methodBase.DeclaringType.Name)));
             }

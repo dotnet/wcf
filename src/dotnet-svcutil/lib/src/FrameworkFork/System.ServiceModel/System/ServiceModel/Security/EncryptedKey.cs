@@ -333,7 +333,7 @@ namespace System.ServiceModel.Security
         {
             if (this.State != EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(System.SRServiceModel.BadEncryptionState));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SRServiceModel.BadEncryptionState));
             }
         }
 
@@ -345,7 +345,7 @@ namespace System.ServiceModel.Security
             }
             else if (this.State == EncryptionState.New)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(System.SRServiceModel.BadEncryptionState));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(SRServiceModel.BadEncryptionState));
             }
         }
 
@@ -378,7 +378,7 @@ namespace System.ServiceModel.Security
                 if (this.algorithm == null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new SecurityMessageSerializationException(
-                        System.SRServiceModel.Format(System.SRServiceModel.RequiredAttributeMissing, XD.XmlSignatureDictionary.Algorithm.Value, ElementName.Value)));
+                        string.Format(SRServiceModel.RequiredAttributeMissing, XD.XmlSignatureDictionary.Algorithm.Value, ElementName.Value)));
                 }
                 reader.Read();
                 if (!isEmptyElement)

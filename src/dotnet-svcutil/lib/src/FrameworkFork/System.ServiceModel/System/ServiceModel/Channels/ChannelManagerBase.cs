@@ -45,7 +45,7 @@ namespace System.ServiceModel.Channels
 
         internal Exception CreateChannelTypeNotSupportedException(Type type)
         {
-            return new ArgumentException(SRServiceModel.Format(SRServiceModel.ChannelTypeNotSupported, type), "TChannel");
+            return new ArgumentException(string.Format(SRServiceModel.ChannelTypeNotSupported, type), "TChannel");
         }
     }
 }
