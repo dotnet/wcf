@@ -78,7 +78,7 @@ namespace MS.Internal.Xml.Cache
                     return value;
 
 #if DEBUG
-                switch (this.pageCurrent[this.idxCurrent].NodeType) {
+                switch (_pageCurrent[_idxCurrent].NodeType) {
                     case XPathNodeType.Namespace:
                     case XPathNodeType.Attribute:
                     case XPathNodeType.Comment:
@@ -87,7 +87,7 @@ namespace MS.Internal.Xml.Cache
                         break;
 
                     case XPathNodeType.Text:
-                        Debug.Assert(this.idxParent != 0 && this.pageParent[this.idxParent].HasCollapsedText,
+                        Debug.Assert(_idxParent != 0 && _pageParent[_idxParent].HasCollapsedText,
                                      "ReadStringValue() should have taken care of anything but collapsed text.");
                         break;
                 }
