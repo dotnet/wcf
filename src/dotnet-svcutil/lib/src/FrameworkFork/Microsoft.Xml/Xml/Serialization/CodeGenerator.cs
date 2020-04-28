@@ -55,14 +55,7 @@ namespace Microsoft.Xml.Serialization
 
         internal static void AssertHasInterface(Type type, Type iType)
         {
-#if DEBUG && disabled
-            Debug.Assert(iType.IsInterface);
-            foreach (Type iFace in type.GetInterfaces()) {
-                if (iFace == iType)
-                    return;
-            }
-            Debug.Assert(false);
-#endif
+
         }
 
         internal void BeginMethod(Type returnType, string methodName, Type[] argTypes, string[] argNames, MethodAttributes methodAttributes)
@@ -2885,7 +2878,8 @@ namespace Microsoft.Xml.Serialization
             Debug.Assert(this.MethodBuilder.ReturnType == returnType);
             Debug.Assert(this.MethodBuilder.Attributes == attributes);
             Debug.Assert(this.ParameterTypes.Length == parameterTypes.Length);
-            for (int i = 0; i < parameterTypes.Length; ++i) {
+            for (int i = 0; i < parameterTypes.Length; ++i)
+            {
                 Debug.Assert(this.ParameterTypes[i] == parameterTypes[i]);
             }
 #endif

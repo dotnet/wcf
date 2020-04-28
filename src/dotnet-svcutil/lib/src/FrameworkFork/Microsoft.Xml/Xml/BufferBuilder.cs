@@ -77,7 +77,7 @@ namespace Microsoft.Xml
         //
 #if DEBUG
         // make it easier to catch buffer-related bugs on debug builds
-        const int BufferSize = 4*1024;
+        private const int BufferSize = 4 * 1024;
 #else
         private const int BufferSize = 64 * 1024;
 #endif
@@ -519,7 +519,8 @@ namespace Microsoft.Xml
                 buf.recycledBuffer.Target = buf.buffer;
             }
 #if DEBUG
-            for ( int i = 0; i < buf.buffer.Length; i++ ) {
+            for (int i = 0; i < buf.buffer.Length; i++)
+            {
                 buf.buffer[i] = (char)0xCC;
             }
 #endif

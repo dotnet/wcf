@@ -25,7 +25,7 @@ namespace MS.Internal.Xml.XPath
         private StackInt _positionStk;
         private bool _needInput;
 #if DEBUG
-        XPathNavigator lastNode = null;
+        private XPathNavigator _lastNode = null;
 #endif
 
         public CacheChildrenQuery(Query qyInput, string name, string prefix, XPathNodeType type) : base(qyInput, name, prefix, type)
@@ -41,7 +41,7 @@ namespace MS.Internal.Xml.XPath
             _positionStk = other._positionStk.Clone();
             _needInput = other._needInput;
 #if DEBUG
-            this.lastNode    = Clone(other.lastNode);
+            _lastNode = Clone(other._lastNode);
 #endif
         }
 
@@ -53,7 +53,7 @@ namespace MS.Internal.Xml.XPath
             _needInput = true;
             base.Reset();
 #if DEBUG
-            lastNode = null;
+            _lastNode = null;
 #endif
         }
 
@@ -96,13 +96,15 @@ namespace MS.Internal.Xml.XPath
                     }
                 }
 #if DEBUG
-                if (lastNode != null) {
-                    if (currentNode.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator") {
-                        XmlNodeOrder order = CompareNodes(lastNode, currentNode);
+                if (_lastNode != null)
+                {
+                    if (currentNode.GetType().ToString() == "Microsoft.VisualStudio.Modeling.StoreNavigator")
+                    {
+                        XmlNodeOrder order = CompareNodes(_lastNode, currentNode);
                         Debug.Assert(order == XmlNodeOrder.Before, "Algorith error. Nodes expected to be DocOrderDistinct");
                     }
                 }
-                lastNode = currentNode.Clone();
+                _lastNode = currentNode.Clone();
 #endif
                 if (matches(currentNode))
                 {

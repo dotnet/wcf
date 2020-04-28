@@ -3216,9 +3216,9 @@ namespace Microsoft.Xml
                 if (decl.scope > 0)
                 {
 #if DEBUG
-                    if ((object)decl.prefix != (object)this.xnt.Get(decl.prefix))
+                    if ((object)decl.prefix != (object)_xnt.Get(decl.prefix))
                         throw new Exception("Prefix not interned: \'" + decl.prefix + "\'");
-                    if ((object)decl.uri != (object)this.xnt.Get(decl.uri))
+                    if ((object)decl.uri != (object)_xnt.Get(decl.uri))
                         throw new Exception("Uri not interned: \'" + decl.uri + "\'");
 #endif
                     xnm.AddNamespace(decl.prefix, decl.uri);

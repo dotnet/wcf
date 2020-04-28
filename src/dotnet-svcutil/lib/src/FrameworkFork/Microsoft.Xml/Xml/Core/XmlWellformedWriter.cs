@@ -83,8 +83,8 @@ namespace Microsoft.Xml
         private const int NamespaceStackInitialSize = 8;
         private const int AttributeArrayInitialSize = 8;
 #if DEBUG
-        const int MaxAttrDuplWalkCount = 2;
-        const int MaxNamespacesWalkCount = 3;
+        private const int MaxAttrDuplWalkCount = 2;
+        private const int MaxNamespacesWalkCount = 3;
 #else
         private const int MaxAttrDuplWalkCount = 14;
         private const int MaxNamespacesWalkCount = 16;

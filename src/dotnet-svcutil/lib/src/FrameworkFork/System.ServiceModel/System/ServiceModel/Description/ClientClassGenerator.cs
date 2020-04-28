@@ -106,35 +106,35 @@ namespace System.ServiceModel.Description
         };
 
 #if DEBUG
-        static BindingFlags ctorBindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
-        static string DebugCheckTable_errorString = "Client code generation table out of sync with ClientBase and DuplexClientBase ctors. Please investigate.";
+        private static BindingFlags s_ctorBindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
+        private static string s_debugCheckTable_errorString = "Client code generation table out of sync with ClientBase and DuplexClientBase ctors. Please investigate.";
 
         // check the table against what we would get from reflection
-        static void DebugCheckTable()
+        private static void DebugCheckTable()
         {
-            Fx.Assert(ClientCtorParamNames.Length == ClientCtorParamTypes.Length, DebugCheckTable_errorString);
+            Fx.Assert(s_clientCtorParamNames.Length == s_clientCtorParamTypes.Length, s_debugCheckTable_errorString);
 
-            for (int i = 0; i < ClientCtorParamTypes.Length; i++)
+            for (int i = 0; i < s_clientCtorParamTypes.Length; i++)
             {
-                DebugCheckTable_ValidateCtor(clientBaseType.GetConstructor(ctorBindingFlags, null, ClientCtorParamTypes[i], null), ClientCtorParamNames[i]);
+                DebugCheckTable_ValidateCtor(s_clientBaseType.GetConstructor(s_ctorBindingFlags, null, s_clientCtorParamTypes[i], null), s_clientCtorParamNames[i]);
 
-                Type[] duplexCtorTypes1 = DebugCheckTable_InsertAtStart(ClientCtorParamTypes[i], objectType);
-                Type[] duplexCtorTypes2 = DebugCheckTable_InsertAtStart(ClientCtorParamTypes[i], instanceContextType);
-                string[] duplexCtorNames = DebugCheckTable_InsertAtStart(ClientCtorParamNames[i], inputInstanceName);
+                Type[] duplexCtorTypes1 = DebugCheckTable_InsertAtStart(s_clientCtorParamTypes[i], s_objectType);
+                Type[] duplexCtorTypes2 = DebugCheckTable_InsertAtStart(s_clientCtorParamTypes[i], s_instanceContextType);
+                string[] duplexCtorNames = DebugCheckTable_InsertAtStart(s_clientCtorParamNames[i], s_inputInstanceName);
 
-                DebugCheckTable_ValidateCtor(duplexClientBaseType.GetConstructor(ctorBindingFlags, null, duplexCtorTypes1, null), duplexCtorNames);
-                DebugCheckTable_ValidateCtor(duplexClientBaseType.GetConstructor(ctorBindingFlags, null, duplexCtorTypes2, null), duplexCtorNames);
+                DebugCheckTable_ValidateCtor(s_duplexClientBaseType.GetConstructor(s_ctorBindingFlags, null, duplexCtorTypes1, null), duplexCtorNames);
+                DebugCheckTable_ValidateCtor(s_duplexClientBaseType.GetConstructor(s_ctorBindingFlags, null, duplexCtorTypes2, null), duplexCtorNames);
             }
 
             // ClientBase<> has extra InstanceContext overloads that we do not call directly from the generated code, but which we 
             // need to account for in this assert
-            Fx.Assert(clientBaseType.GetConstructors(ctorBindingFlags).Length == ClientCtorParamTypes.Length * 2, DebugCheckTable_errorString);
+            Fx.Assert(s_clientBaseType.GetConstructors(s_ctorBindingFlags).Length == s_clientCtorParamTypes.Length * 2, s_debugCheckTable_errorString);
 
             // DuplexClientBase<> also has extra object/InstanceContext overloads (but we call these)
-            Fx.Assert(duplexClientBaseType.GetConstructors(ctorBindingFlags).Length == ClientCtorParamTypes.Length * 2, DebugCheckTable_errorString);
+            Fx.Assert(s_duplexClientBaseType.GetConstructors(s_ctorBindingFlags).Length == s_clientCtorParamTypes.Length * 2, s_debugCheckTable_errorString);
         }
 
-        static T[] DebugCheckTable_InsertAtStart<T>(T[] arr, T item)
+        private static T[] DebugCheckTable_InsertAtStart<T>(T[] arr, T item)
         {
             T[] newArr = new T[arr.Length + 1];
             newArr[0] = item;
@@ -142,15 +142,15 @@ namespace System.ServiceModel.Description
             return newArr;
         }
 
-        static void DebugCheckTable_ValidateCtor(ConstructorInfo ctor, string[] paramNames)
+        private static void DebugCheckTable_ValidateCtor(ConstructorInfo ctor, string[] paramNames)
         {
-            Fx.Assert(ctor != null, DebugCheckTable_errorString);
+            Fx.Assert(ctor != null, s_debugCheckTable_errorString);
 
             ParameterInfo[] parameters = ctor.GetParameters();
-            Fx.Assert(parameters.Length == paramNames.Length, DebugCheckTable_errorString);
+            Fx.Assert(parameters.Length == paramNames.Length, s_debugCheckTable_errorString);
             for (int i = 0; i < paramNames.Length; i++)
             {
-                Fx.Assert(parameters[i].Name == paramNames[i], DebugCheckTable_errorString);
+                Fx.Assert(parameters[i].Name == paramNames[i], s_debugCheckTable_errorString);
             }
         }
 #endif

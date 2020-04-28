@@ -177,7 +177,7 @@ namespace Microsoft.Xml
         //
         private const int NamespaceStackInitialSize = 8;
 #if DEBUG
-        const int MaxNamespacesWalkCount = 3;
+        private const int MaxNamespacesWalkCount = 3;
 #else
         private const int MaxNamespacesWalkCount = 16;
 #endif

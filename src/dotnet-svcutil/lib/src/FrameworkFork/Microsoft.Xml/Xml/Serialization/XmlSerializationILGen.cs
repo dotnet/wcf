@@ -94,9 +94,9 @@ namespace Microsoft.Xml.Serialization
                 _methodBuilders.Add(methodName, methodBuilderInfo);
             }
 #if DEBUG
-            else {
+            else
+            {
                 methodBuilderInfo.Validate(returnType, parameterTypes, attributes);
-
             }
 #endif
             return methodBuilderInfo.MethodBuilder;

@@ -159,8 +159,8 @@ namespace Microsoft.Xml
                              out int charsDecoded, out int bytesDecoded)
         {
 #if DEBUG
-            Debug.Assert( pCharsEndPos - pChars >= 0 );
-            Debug.Assert( pBytesEndPos - pBytes >= 0 );
+            Debug.Assert(pCharsEndPos - pChars >= 0);
+            Debug.Assert(pBytesEndPos - pBytes >= 0);
 #endif
 
             // walk hex digits pairing them up and shoving the value of each pair into a byte

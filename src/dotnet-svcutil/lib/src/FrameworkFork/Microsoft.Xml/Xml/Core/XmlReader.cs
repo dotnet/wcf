@@ -1439,24 +1439,24 @@ namespace Microsoft.Xml
 #if DEBUG
             // This code verifies IsTextualNodeBitmap mapping of XmlNodeType to a bool specifying
             // whether the node is 'textual' = Text, CDATA, Whitespace or SignificantWhitespace.
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.None)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Element)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Attribute)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Text)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.CDATA)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.EntityReference)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Entity)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Comment)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Document)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.DocumentType)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Notation)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.Whitespace)));
-            Debug.Assert(0 != (IsTextualNodeBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.EndElement)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.EndEntity)));
-            Debug.Assert(0 == (IsTextualNodeBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.None)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Element)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Attribute)));
+            Debug.Assert(0 != (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Text)));
+            Debug.Assert(0 != (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.CDATA)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.EntityReference)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Entity)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Comment)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Document)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.DocumentType)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Notation)));
+            Debug.Assert(0 != (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.Whitespace)));
+            Debug.Assert(0 != (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.EndElement)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.EndEntity)));
+            Debug.Assert(0 == (s_isTextualNodeBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
 #endif
             return 0 != (s_isTextualNodeBitmap & (1 << (int)nodeType));
         }
@@ -1466,24 +1466,24 @@ namespace Microsoft.Xml
 #if DEBUG
             // This code verifies IsTextualNodeBitmap mapping of XmlNodeType to a bool specifying
             // whether ReadContentAsXxx calls are allowed on his node type
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.None)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Element)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Attribute)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Text)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.CDATA)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.EntityReference)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Entity)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Comment)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Document)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.DocumentType)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Notation)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.Whitespace)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.EndElement)));
-            Debug.Assert(0 != (CanReadContentAsBitmap & (1 << (int)XmlNodeType.EndEntity)));
-            Debug.Assert(0 == (CanReadContentAsBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.None)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Element)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Attribute)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Text)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.CDATA)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.EntityReference)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Entity)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Comment)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Document)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.DocumentType)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Notation)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.Whitespace)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.EndElement)));
+            Debug.Assert(0 != (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.EndEntity)));
+            Debug.Assert(0 == (s_canReadContentAsBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
 #endif
             return 0 != (s_canReadContentAsBitmap & (1 << (int)nodeType));
         }
@@ -1493,24 +1493,24 @@ namespace Microsoft.Xml
 #if DEBUG
             // This code verifies HasValueBitmap mapping of XmlNodeType to a bool specifying
             // whether the node can have a non-empty Value
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.None)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Element)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Attribute)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Text)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.CDATA)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.EntityReference)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Entity)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Comment)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Document)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.DocumentType)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.Notation)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.Whitespace)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.EndElement)));
-            Debug.Assert(0 == (HasValueBitmap & (1 << (int)XmlNodeType.EndEntity)));
-            Debug.Assert(0 != (HasValueBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.None)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.Element)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.Attribute)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.Text)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.CDATA)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.EntityReference)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.Entity)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.ProcessingInstruction)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.Comment)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.Document)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.DocumentType)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.DocumentFragment)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.Notation)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.Whitespace)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.SignificantWhitespace)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.EndElement)));
+            Debug.Assert(0 == (s_hasValueBitmap & (1 << (int)XmlNodeType.EndEntity)));
+            Debug.Assert(0 != (s_hasValueBitmap & (1 << (int)XmlNodeType.XmlDeclaration)));
 #endif
             return 0 != (s_hasValueBitmap & (1 << (int)nodeType));
         }

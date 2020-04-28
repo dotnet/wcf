@@ -773,11 +773,11 @@ namespace Microsoft.Xml.Serialization
                         // if InitializeStructMembers returns true, then there were *no* chages to the DeferredWorkItems
                         //
 #if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (index != limiter.DeferredWorkItems.Count - 1)
-                        throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "DeferredWorkItems.Count have changed"));
-                    if (item != limiter.DeferredWorkItems[index])
-                        throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "DeferredWorkItems.Top have changed"));
+                        // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                        if (index != limiter.DeferredWorkItems.Count - 1)
+                            throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "DeferredWorkItems.Count have changed"));
+                        if (item != limiter.DeferredWorkItems[index])
+                            throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "DeferredWorkItems.Top have changed"));
 #endif
                         // Remove the last work item
                         limiter.DeferredWorkItems.RemoveAt(index);

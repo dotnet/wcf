@@ -214,15 +214,15 @@ namespace Microsoft.Xml
         {
 #if DEBUG
             //  The absolute numbering is utilized in attribute type parsing
-            Debug.Assert( (int)Token.CDATA    == (int)XmlTokenizedType.CDATA    && (int)XmlTokenizedType.CDATA    == 0 );
-            Debug.Assert( (int)Token.ID       == (int)XmlTokenizedType.ID       && (int)XmlTokenizedType.ID       == 1 );
-            Debug.Assert( (int)Token.IDREF    == (int)XmlTokenizedType.IDREF    && (int)XmlTokenizedType.IDREF    == 2 );
-            Debug.Assert( (int)Token.IDREFS   == (int)XmlTokenizedType.IDREFS   && (int)XmlTokenizedType.IDREFS   == 3 );
-            Debug.Assert( (int)Token.ENTITY   == (int)XmlTokenizedType.ENTITY   && (int)XmlTokenizedType.ENTITY   == 4 );
-            Debug.Assert( (int)Token.ENTITIES == (int)XmlTokenizedType.ENTITIES && (int)XmlTokenizedType.ENTITIES == 5 );
-            Debug.Assert( (int)Token.NMTOKEN  == (int)XmlTokenizedType.NMTOKEN  && (int)XmlTokenizedType.NMTOKEN  == 6 );
-            Debug.Assert( (int)Token.NMTOKENS == (int)XmlTokenizedType.NMTOKENS && (int)XmlTokenizedType.NMTOKENS == 7 );
-            Debug.Assert( (int)Token.NOTATION == (int)XmlTokenizedType.NOTATION && (int)XmlTokenizedType.NOTATION == 8 );
+            Debug.Assert((int)Token.CDATA == (int)XmlTokenizedType.CDATA && (int)XmlTokenizedType.CDATA == 0);
+            Debug.Assert((int)Token.ID == (int)XmlTokenizedType.ID && (int)XmlTokenizedType.ID == 1);
+            Debug.Assert((int)Token.IDREF == (int)XmlTokenizedType.IDREF && (int)XmlTokenizedType.IDREF == 2);
+            Debug.Assert((int)Token.IDREFS == (int)XmlTokenizedType.IDREFS && (int)XmlTokenizedType.IDREFS == 3);
+            Debug.Assert((int)Token.ENTITY == (int)XmlTokenizedType.ENTITY && (int)XmlTokenizedType.ENTITY == 4);
+            Debug.Assert((int)Token.ENTITIES == (int)XmlTokenizedType.ENTITIES && (int)XmlTokenizedType.ENTITIES == 5);
+            Debug.Assert((int)Token.NMTOKEN == (int)XmlTokenizedType.NMTOKEN && (int)XmlTokenizedType.NMTOKEN == 6);
+            Debug.Assert((int)Token.NMTOKENS == (int)XmlTokenizedType.NMTOKENS && (int)XmlTokenizedType.NMTOKENS == 7);
+            Debug.Assert((int)Token.NOTATION == (int)XmlTokenizedType.NOTATION && (int)XmlTokenizedType.NOTATION == 8);
 #endif
         }
 
@@ -528,8 +528,8 @@ namespace Microsoft.Xml
             ParseSubset();
 
 #if DEBUG
-            Debug.Assert( readerAdapter.EntityStackLength == 0 ||
-                         ( freeFloatingDtd && readerAdapter.EntityStackLength == 1 ) );
+            Debug.Assert(_readerAdapter.EntityStackLength == 0 ||
+                         (_freeFloatingDtd && _readerAdapter.EntityStackLength == 1));
 #endif
         }
 
@@ -610,8 +610,8 @@ namespace Microsoft.Xml
                             }
 #if DEBUG
                             // check entity nesting
-                            Debug.Assert( readerAdapter.EntityStackLength == 0 || 
-                                          ( freeFloatingDtd && readerAdapter.EntityStackLength == 1 ) );
+                            Debug.Assert(_readerAdapter.EntityStackLength == 0 ||
+                                          (_freeFloatingDtd && _readerAdapter.EntityStackLength == 1));
 #endif
                         }
                         else

@@ -360,10 +360,11 @@ namespace Microsoft.Xml.Serialization
                     ret = schema.Notations[name];
                 }
 #if DEBUG
-            else {
-                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "XmlSchemas.Find: Invalid object type " + type.FullName));
-            }
+                else
+                {
+                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                    throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "XmlSchemas.Find: Invalid object type " + type.FullName));
+                }
 #endif
 
                 if (ret != null && _shareTypes && checkCache && !IsReference(ret))

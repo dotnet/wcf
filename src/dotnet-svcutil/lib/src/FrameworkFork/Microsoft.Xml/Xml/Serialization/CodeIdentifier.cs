@@ -96,8 +96,8 @@ namespace Microsoft.Xml.Serialization
         {
             // the given char is already a valid name character
 #if DEBUG
-                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (!IsValid(c)) throw new ArgumentException(string.Format(ResXml.XmlInternalErrorDetails, "Invalid identifier character " + ((Int16)c).ToString()), "c");
+            // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+            if (!IsValid(c)) throw new ArgumentException(string.Format(ResXml.XmlInternalErrorDetails, "Invalid identifier character " + ((Int16)c).ToString()), "c");
 #endif
             // First char cannot be a number
             //if (Char.GetUnicodeCategory(c) == UnicodeCategory.DecimalDigitNumber)
@@ -149,8 +149,8 @@ namespace Microsoft.Xml.Serialization
                     return false;
                 default:
 #if DEBUG
-                        // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        throw new ArgumentException(string.Format(ResXml.XmlInternalErrorDetails, "Unhandled category " + uc), "c");
+                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                    throw new ArgumentException(string.Format(ResXml.XmlInternalErrorDetails, "Unhandled category " + uc), "c");
 #else
                     return false;
 #endif

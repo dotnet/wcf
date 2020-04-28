@@ -529,6 +529,7 @@ namespace Microsoft.Xml.Serialization
                     // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
                     if (enumSource == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
 #endif
+
                 }
 
                 // override writeAccessors choice when we've written a wrapper element

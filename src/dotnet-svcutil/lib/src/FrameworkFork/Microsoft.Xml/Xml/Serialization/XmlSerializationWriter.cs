@@ -638,8 +638,8 @@ namespace Microsoft.Xml.Serialization
             if (o != null && _objectsInUse != null)
             {
 #if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (!objectsInUse.ContainsKey(o)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "missing stack object of type " + o.GetType().FullName));
+                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                if (!_objectsInUse.ContainsKey(o)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "missing stack object of type " + o.GetType().FullName));
 #endif
 
                 _objectsInUse.Remove(o);
@@ -1315,8 +1315,8 @@ namespace Microsoft.Xml.Serialization
             else
             {
 #if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (!typeof(IEnumerable).IsAssignableFrom(type)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "not array like type " + type.FullName));
+                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                if (!typeof(IEnumerable).IsAssignableFrom(type)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "not array like type " + type.FullName));
 #endif
 
                 int arrayLength = typeof(ICollection).IsAssignableFrom(type) ? ((ICollection)o).Count : -1;
@@ -1676,8 +1676,8 @@ namespace Microsoft.Xml.Serialization
             string methodName = ReferenceMapping(mapping);
 
 #if DEBUG
-                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+            // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+            if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
 
             Writer.Write(methodName);
@@ -1723,8 +1723,8 @@ namespace Microsoft.Xml.Serialization
                 if (mapping is EnumMapping)
                 {
 #if DEBUG
-                        // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (defaultValue.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, name + " has invalid default type " + defaultValue.GetType().Name));
+                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                    if (defaultValue.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, name + " has invalid default type " + defaultValue.GetType().Name));
 #endif
 
                     Writer.Write("if (");
@@ -2022,9 +2022,10 @@ namespace Microsoft.Xml.Serialization
                     }
 
 #if DEBUG
-                        // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (enumSource == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
+                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                    if (enumSource == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Can not find " + member.ChoiceIdentifier.MemberName + " in the members mapping."));
 #endif
+
                 }
 
                 if (isRpc && member.IsReturnValue && member.Elements.Length > 0)
@@ -2249,8 +2250,8 @@ namespace Microsoft.Xml.Serialization
                 string methodName = ReferenceMapping(derived);
 
 #if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (methodName == null) throw new InvalidOperationException("deriaved from " + mapping.TypeDesc.FullName + ", " + string.Format(ResXml.XmlInternalErrorMethod, derived.TypeDesc.Name) + Environment.StackTrace);
+                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                if (methodName == null) throw new InvalidOperationException("deriaved from " + mapping.TypeDesc.FullName + ", " + string.Format(ResXml.XmlInternalErrorMethod, derived.TypeDesc.Name) + Environment.StackTrace);
 #endif
 
                 Writer.Write(methodName);
@@ -2287,8 +2288,8 @@ namespace Microsoft.Xml.Serialization
                         string methodName = ReferenceMapping(mapping);
 
 #if DEBUG
-                            // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                            if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                        // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                        if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
                         Writer.WriteLine("Writer.WriteStartElement(n, ns);");
                         Writer.Write("WriteXsiType(");
@@ -3371,8 +3372,8 @@ namespace Microsoft.Xml.Serialization
                     string methodName = ReferenceMapping(mapping);
 
 #if DEBUG
-                        // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                        if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
+                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                    if (methodName == null) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorMethod, mapping.TypeDesc.Name) + Environment.StackTrace);
 #endif
                     Writer.Write(methodName);
                     Writer.Write("(");

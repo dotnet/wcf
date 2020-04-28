@@ -516,22 +516,25 @@ namespace Microsoft.Xml.Schema
 
         // only for debug
 #if DEBUG
-        public void PrintTree (StreamWriter msw) {
-            for (int i = 0; i < fAxisArray.Count; ++i) {
-                ForwardAxis axis = (ForwardAxis)fAxisArray[i];
+        public void PrintTree(StreamWriter msw)
+        {
+            for (int i = 0; i < _fAxisArray.Count; ++i)
+            {
+                ForwardAxis axis = (ForwardAxis)_fAxisArray[i];
                 msw.WriteLine("<Tree IsDss=\"{0}\" IsAttribute=\"{1}\">", axis.IsDss, axis.IsAttribute);
                 DoubleLinkAxis printaxis = axis.TopNode;
-                while ( printaxis != null ) {
-                    msw.WriteLine (" <node>");
-                    msw.WriteLine ("  <URN> {0} </URN>", printaxis.Urn);
-                    msw.WriteLine ("  <Prefix> {0} </Prefix>", printaxis.Prefix);
-                    msw.WriteLine ("  <Name> {0} </Name>", printaxis.Name);
-                    msw.WriteLine ("  <NodeType> {0} </NodeType>", printaxis.NodeType);
-                    msw.WriteLine ("  <AxisType> {0} </AxisType>", printaxis.TypeOfAxis);
-                    msw.WriteLine (" </node>");
-                    printaxis = (DoubleLinkAxis) (printaxis.Input);
+                while (printaxis != null)
+                {
+                    msw.WriteLine(" <node>");
+                    msw.WriteLine("  <URN> {0} </URN>", printaxis.Urn);
+                    msw.WriteLine("  <Prefix> {0} </Prefix>", printaxis.Prefix);
+                    msw.WriteLine("  <Name> {0} </Name>", printaxis.Name);
+                    msw.WriteLine("  <NodeType> {0} </NodeType>", printaxis.NodeType);
+                    msw.WriteLine("  <AxisType> {0} </AxisType>", printaxis.TypeOfAxis);
+                    msw.WriteLine(" </node>");
+                    printaxis = (DoubleLinkAxis)(printaxis.Input);
                 }
-                msw.WriteLine ("</Tree>");
+                msw.WriteLine("</Tree>");
             }
         }
 #endif

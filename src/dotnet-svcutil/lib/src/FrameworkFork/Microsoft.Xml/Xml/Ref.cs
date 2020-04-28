@@ -17,7 +17,7 @@ namespace Microsoft.Xml
         public static bool Equal(string strA, string strB)
         {
 #if DEBUG
-            if (((object) strA != (object) strB) && string.Equals(strA, strB))
+            if (((object)strA != (object)strB) && string.Equals(strA, strB))
                 Debug.Assert(false, "Ref.Equal: Object comparison used for non-atomized string '" + strA + "'");
 #endif
             return (object)strA == (object)strB;

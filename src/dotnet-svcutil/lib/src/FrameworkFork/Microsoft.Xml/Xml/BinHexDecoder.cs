@@ -186,8 +186,8 @@ namespace Microsoft.Xml
                                     out int charsDecoded, out int bytesDecoded)
         {
 #if DEBUG
-            Debug.Assert( pCharsEndPos - pChars >= 0 );
-            Debug.Assert( pBytesEndPos - pBytes >= 0 );
+            Debug.Assert(pCharsEndPos - pChars >= 0);
+            Debug.Assert(pBytesEndPos - pBytes >= 0);
 #endif
 
             char* pChar = pChars;

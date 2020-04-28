@@ -221,8 +221,8 @@ namespace Microsoft.Xml.Serialization
             if (mapping is EnumMapping)
             {
 #if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (value.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Invalid enumeration type " + value.GetType().Name));
+                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                if (value.GetType() != typeof(string)) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Invalid enumeration type " + value.GetType().Name));
 #endif
 
                 if (((EnumMapping)mapping).IsFlags)
@@ -404,9 +404,6 @@ namespace Microsoft.Xml.Serialization
                 {
                     return format.Invoke(formatter, new Object[] { defaultValue });
                 }
-#if DEBUG
-                // Debug.WriteLineIf(DiagnosticsSwitches.XmlSerialization.TraceVerbose, "XmlSerialization::Failed to GetMethod " + formatter.Name + ".To" + pm.TypeDesc.FormatterName);
-#endif
             }
             else
             {
@@ -504,8 +501,8 @@ namespace Microsoft.Xml.Serialization
             if (pm.IsList)
             {
 #if DEBUG
-                    // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
-                    if (value.GetType() != typeof(object[])) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Default value for list should be object[], not " + value.GetType().Name));
+                // use exception in the place of Debug.Assert to avoid throwing asserts from a server process such as aspnet_ewp.exe
+                if (value.GetType() != typeof(object[])) throw new InvalidOperationException(string.Format(ResXml.XmlInternalErrorDetails, "Default value for list should be object[], not " + value.GetType().Name));
 #endif
 
                 object[] vals = (object[])value;
