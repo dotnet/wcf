@@ -32,7 +32,6 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             issuerAddress = new EndpointAddress(new Uri(Endpoints.WSFederationAuthorityLocalSTS));
-            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2;
             serviceEndpointAddress = new EndpointAddress(new Uri(tokenTargetAddress));
             var issuerBinding = new WSHttpBinding(SecurityMode.Transport);
             issuerBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
@@ -43,10 +42,8 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
                     IssuerAddress = issuerAddress,
                     IssuerBinding = issuerBinding,
                     KeyType = SecurityKeyType.BearerKey,
-                    Target = tokenTargetAddress,
                     TokenType = Saml2Constants.OasisWssSaml2TokenProfile11
                 });
-            //federationBinding.Security.Message.EstablishSecurityContext = false;
             var customBinding = new CustomBinding(federationBinding);
             var sbe = customBinding.Elements.Find<SecurityBindingElement>();
             sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity10WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;

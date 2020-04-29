@@ -2,11 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#pragma warning disable 1591
-
 using System.IdentityModel.Selectors;
 using System.ServiceModel.Security.Tokens;
-using Microsoft.IdentityModel.Logging;
 
 namespace System.ServiceModel.Federation
 {
@@ -21,13 +18,13 @@ namespace System.ServiceModel.Federation
         private WSTrustChannelClientCredentials _wsTrustChannelClientCredentials;
 
         /// <summary>
-        ///
+        /// Instaintiates a <see cref="WSTrustChannelSecurityTokenManager"/>.
         /// </summary>
-        /// <param name="wsTrustChannelClientCredentials"></param>
+        /// <param name="wsTrustChannelClientCredentials"> the WSTrustChannelClientCredentials that can serve up a SecurityTokenProvider to use.</param>
         public WSTrustChannelSecurityTokenManager(WSTrustChannelClientCredentials wsTrustChannelClientCredentials)
             : base(wsTrustChannelClientCredentials)
         {
-            _wsTrustChannelClientCredentials = wsTrustChannelClientCredentials ?? throw LogHelper.LogArgumentNullException(nameof(wsTrustChannelClientCredentials));
+            _wsTrustChannelClientCredentials = wsTrustChannelClientCredentials ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(wsTrustChannelClientCredentials)), System.Diagnostics.Tracing.EventLevel.Error);
         }
 
         /// <summary>
@@ -38,7 +35,7 @@ namespace System.ServiceModel.Federation
         public override SecurityTokenProvider CreateSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
             if (tokenRequirement == null)
-                throw LogHelper.LogArgumentNullException(nameof(tokenRequirement));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
 
             // If the token requirement includes an issued security token parameter of type
             // WSTrustTokenParameters, then tokens should be provided by a WSTrustChannelSecurityTokenProvider.
