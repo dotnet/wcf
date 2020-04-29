@@ -47,6 +47,7 @@ namespace System.ServiceModel.Channels
     public sealed partial class LocalClientSecuritySettings
     {
         public LocalClientSecuritySettings() { }
+        public bool DetectReplays { get { return default; } set { } }
         public System.TimeSpan MaxClockSkew { get { return default; } set { } }
         public System.TimeSpan ReplayWindow { get { return default; } set { } }
         public System.TimeSpan TimestampValidityDuration { get { return default; } set { } }
