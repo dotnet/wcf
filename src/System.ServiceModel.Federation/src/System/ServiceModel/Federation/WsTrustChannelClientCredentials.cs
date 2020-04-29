@@ -2,21 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#pragma warning disable 1591
-
 using System.IdentityModel.Selectors;
 using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Federation
 {
     /// <summary>
-    /// These client credentials class that will serve up a SecurityTokenManager that will use a TrustChannel to get a token from an STS
+    /// <see cref="WSTrustChannelClientCredentials"/> are designed to work with <see cref="WSFederationHttpBinding"/> to that will send a WsTrust message to obtain a token from an STS and add the token as
+    /// an issued token when communicating with a WCF relying party.
     /// </summary>
     public class WSTrustChannelClientCredentials : ClientCredentials
     {
         /// <summary>
         /// Default constructor
-        /// TODO - do we need this ctor
         /// </summary>
         public WSTrustChannelClientCredentials()
             : base()
@@ -24,9 +22,9 @@ namespace System.ServiceModel.Federation
         }
 
         /// <summary>
-        /// Copy constructor
+        /// Creates a shallow copy of 'other'.
         /// </summary>
-        /// <param name="other">The WSTrustChannelClientCredentials to create a copy of</param>
+        /// <param name="other">The WSTrustChannelClientCredentials to copy.</param>
         protected WSTrustChannelClientCredentials(WSTrustChannelClientCredentials other)
             : base(other)
         {
@@ -35,13 +33,13 @@ namespace System.ServiceModel.Federation
         }
 
         /// <summary>
-        ///
+        /// Crates an instance of <see cref="WSTrustChannelClientCredentials"/> with specifying a <see cref="ClientCredentials"/>
         /// </summary>
-        /// <param name="clientCredentials"></param>
+        /// <param name="clientCredentials">The <see cref="SecurityTokenManager"/> from this parameter will be used to
+        /// create the <see cref="SecurityTokenProvider"/> in the case the <see cref="SecurityTokenParameters"/> in the channel are not a <see cref="WSTrustTokenParameters"/></para></remarks>
         public WSTrustChannelClientCredentials(ClientCredentials clientCredentials)
             : base(clientCredentials)
         {
-            // TODO - throw on null
             ClientCredentials = clientCredentials;
         }
 
@@ -51,15 +49,21 @@ namespace System.ServiceModel.Federation
         /// </summary>
         public ClientCredentials ClientCredentials { get; private set; }
 
+        /// <summary>
+        /// Creates a shallow clone of this.
+        /// </summary>
         protected override ClientCredentials CloneCore()
         {
             return new WSTrustChannelClientCredentials(this);
         }
 
         /// <summary>
-        /// Extensibility point for serving up the WSTrustChannelSecurityTokenManager
+        /// Returns a <see cref="SecurityTokenManager"/> to use on this channel.
         /// </summary>
-        /// <returns>WSTrustChannelSecurityTokenManager</returns>
+        /// <remarks>The <see cref="SecurityTokenManager"/> is responsible to return the <see cref="SecurityTokenProvider"/> to obtain the issued token.
+        /// <para>If <see cref="ClientCredentials"/> was passed to the constructor, then that <see cref="SecurityTokenManager"/> will be used to
+        /// create the <see cref="SecurityTokenProvider"/> in the case the <see cref="SecurityTokenParameters"/> in the channel are not a <see cref="WSTrustTokenParameters"/></para></remarks>
+        /// <returns>An instance of <see cref="WSTrustChannelSecurityTokenManager" />.</returns>
         public override SecurityTokenManager CreateSecurityTokenManager()
         {
             if (ClientCredentials != null)
