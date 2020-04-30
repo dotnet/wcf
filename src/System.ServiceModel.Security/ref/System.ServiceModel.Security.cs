@@ -244,6 +244,8 @@ namespace System.IdentityModel.Tokens
         {
         }
 
+        public System.Xml.XmlElement ReferenceXml { get { return default; } }
+
         public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause){ return default; }
     }
 }
