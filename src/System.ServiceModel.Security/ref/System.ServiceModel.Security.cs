@@ -5,8 +5,6 @@
 // ------------------------------------------------------------------------------
 
 
-using System.Xml;
-
 namespace System.ServiceModel
 {
     public partial class DnsEndpointIdentity : System.ServiceModel.EndpointIdentity
@@ -236,14 +234,16 @@ namespace System.IdentityModel.Tokens
     }
     public partial class GenericXmlSecurityKeyIdentifierClause : SecurityKeyIdentifierClause
     {
-        public GenericXmlSecurityKeyIdentifierClause(XmlElement referenceXml)
+        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml)
             : this(referenceXml, null, 0)
         {
         }
 
-        public GenericXmlSecurityKeyIdentifierClause(XmlElement referenceXml, byte[] derivationNonce, int derivationLength)
+        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml, byte[] derivationNonce, int derivationLength)
             : base(null, derivationNonce, derivationLength)
         {
         }
+
+        public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause){ return default; }
     }
 }
