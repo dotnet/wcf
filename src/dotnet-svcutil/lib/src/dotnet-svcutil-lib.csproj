@@ -98,7 +98,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="FrameworkFork\Microsoft.CodeDom\SRCodeDom.resx">
       <GenerateSource>true</GenerateSource>
-      <GenerateResourcesCodeAsConstants>true</GenerateResourcesCodeAsConstants>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
       <ClassName>SRCodeDom</ClassName>
     </EmbeddedResource>
     <EmbeddedResource Update="Shared\Resources.resx">
