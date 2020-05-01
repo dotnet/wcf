@@ -76,7 +76,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                 var paramsFilePath = await GenerateParamsFileAsync(logger, cancellationToken).ConfigureAwait(false);
 
-                await AddNugetConfigAsync(logger, cancellationToken).ConfigureAwait(false);
                 await BuildBootstrapProjectAsync(logger, cancellationToken).ConfigureAwait(false);
 
                 ToolConsole.WriteLineIf(ToolConsole.Verbosity >= Verbosity.Verbose, Resource.InvokingProjectMsg);
@@ -109,7 +108,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             using (await SafeLogger.WriteStartOperationAsync(logger, $"Creating project file: \"{projectFullPath}\"").ConfigureAwait(false))
             {
-                var svcutilPkgRef = ProjectDependency.FromPackage(Tool.AssemblyName, Tool.PackageVersion);
+                var svcutilPkgRef = ProjectDependency.FromAssembly(Path.Combine(Path.GetDirectoryName(Tool.FullPath), Tool.AssemblyName + ".dll"));
 
                 this.MSBuildProj = await MSBuildProj.DotNetNewAsync(projectFullPath, logger, cancellationToken).ConfigureAwait(false);
                 this.MSBuildProj.AddDependency(svcutilPkgRef);
@@ -171,37 +170,6 @@ namespace SvcutilBootstrap {
             {
                 await AsyncHelper.RunAsync(() => this.Options.Save(paramsFilePath), cancellationToken).ConfigureAwait(false);
                 return paramsFilePath;
-            }
-        }
-
-        private async Task AddNugetConfigAsync(ILogger logger, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Generating nuget.config ...").ConfigureAwait(false))
-            {
-                var svcutilPkgName = $"{Tool.AssemblyName}.{Tool.PackageVersion}.nupkg";
-                var svcutilPkgDir = Path.GetDirectoryName(Tool.FullPath);
-
-                // This is the case with an installed NuGet package where the package itself is at the root
-                // of the extracted directory and the executing assembly is under the lib subfolder.
-                var svcutilPkgPath = await PathHelper.TryFindFileAsync(svcutilPkgName, svcutilPkgDir, logger, cancellationToken).ConfigureAwait(false);
-
-                if (File.Exists(svcutilPkgPath))
-                {
-                    var nugetConfigFilePath = Path.Combine(this.MSBuildProj.DirectoryPath, "nuget.config");
-                    var packageFeed = Path.GetDirectoryName(svcutilPkgPath);
-
-                    if (!await RuntimeEnvironmentHelper.TryAddSvcutilNuGetFeedAsync(nugetConfigFilePath, packageFeed, logger, cancellationToken).ConfigureAwait(false))
-                    {
-                        string nugetConfigText = string.Format(CultureInfo.InvariantCulture, RuntimeEnvironmentHelper.NugetConfigFormat, Path.GetDirectoryName(svcutilPkgPath));
-                        File.WriteAllText(nugetConfigFilePath, nugetConfigText);
-                    }
-                }
-                else
-                {
-                    await safeLogger.WriteWarningAsync(string.Format(CultureInfo.CurrentCulture, Resource.ErrCannotFindNuGetPackageFormat, Path.Combine(svcutilPkgDir, svcutilPkgName)), logToUI: true).ConfigureAwait(false);
-                }
             }
         }
 
