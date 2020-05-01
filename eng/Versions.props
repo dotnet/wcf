@@ -7,7 +7,8 @@
     <!-- We need to move to 4.7 as part of our versioning change when we switch to arcade to avoid downgrading versions -->
     <!-- [todo:arcade] Do not understand this. -->
     <MajorVersion>4</MajorVersion>
-    <MinorVersion>7</MinorVersion>
+    <MinorVersion>8</MinorVersion>
+    <WcfAssemblyVersion>4.8.0.0</WcfAssemblyVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
