@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsPublic)' == 'true'" >
-    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS4.ES.Open" />
-    <HelixTargetQueue Include="Windows.10.Amd64.ServerRS4.Open" />
+    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS5.Open" />
+    <HelixTargetQueue Include="Windows.10.Amd64.ServerRS5.Open" />
   </ItemGroup>
 
   <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsInternal)'" >
