@@ -19,6 +19,7 @@ namespace System.ServiceModel
         private static Addressing10Dictionary s_addressing10Dictionary;
         private static Addressing200408Dictionary s_addressing200408Dictionary;
         private static AddressingNoneDictionary s_addressingNoneDictionary;
+        private static DotNetSecurityDictionary s_dotNetSecurityDictionary;
         private static MessageDictionary s_messageDictionary;
         private static Message11Dictionary s_message11Dictionary;
         private static Message12Dictionary s_message12Dictionary;
@@ -92,6 +93,16 @@ namespace System.ServiceModel
                 }
 
                 return s_addressingNoneDictionary;
+            }
+        }
+
+        static public DotNetSecurityDictionary DotNetSecurityDictionary
+        {
+            get
+            {
+                if (s_dotNetSecurityDictionary == null)
+                    s_dotNetSecurityDictionary = new DotNetSecurityDictionary(Dictionary);
+                return s_dotNetSecurityDictionary;
             }
         }
 
@@ -1068,6 +1079,18 @@ namespace System.ServiceModel
         public const string SecurityServerTooBusyFault = "ServerTooBusy";
         public const string SecuritySessionFaultAction = "http://schemas.microsoft.com/ws/2006/05/security/SecureConversationFault";
         public const string SecureConversationCancelNotAllowedFault = "SecureConversationCancellationNotAllowed";
+    }
+
+    class DotNetSecurityDictionary
+    {
+        public XmlDictionaryString Namespace;
+        public XmlDictionaryString Prefix;
+
+        public DotNetSecurityDictionary(ServiceModelDictionary dictionary)
+        {
+            Namespace = dictionary.CreateString(ServiceModelStringsVersion1.String162, 162);
+            Prefix = dictionary.CreateString(ServiceModelStringsVersion1.String163, 163);
+        }
     }
 
     internal static class ExclusiveC14NStrings
