@@ -23,7 +23,8 @@
     </ItemGroup>
   </Target>
   
-  <PropertyGroup>
+  <!-- This property will break if we're packing a global tool, so skip it in that case. -->
+  <PropertyGroup Condition="'$(PackAsTool)' != 'true'">
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 

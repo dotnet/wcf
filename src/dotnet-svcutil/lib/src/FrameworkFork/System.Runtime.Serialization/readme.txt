@@ -1,0 +1,1 @@
+Open source location: https://github.com/dotnet/corefx/tree/release/1.0.0/src
