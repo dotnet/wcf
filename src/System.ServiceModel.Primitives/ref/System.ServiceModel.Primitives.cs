@@ -503,6 +503,7 @@ namespace System.ServiceModel
     public partial class FaultException : System.ServiceModel.CommunicationException
     {
         public FaultException() { }
+        public FaultException(string reason) { }
         public FaultException(System.ServiceModel.Channels.MessageFault fault, string action) { }
         public FaultException(System.ServiceModel.FaultReason reason, System.ServiceModel.FaultCode code, string action) { }
         protected FaultException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }

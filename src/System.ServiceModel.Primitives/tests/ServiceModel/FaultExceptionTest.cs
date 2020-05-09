@@ -47,4 +47,15 @@ public static class FaultExceptionTest
             Assert.Equal(netfxBsl, sr.ReadToEnd());
         }            
     }
+
+    [WcfFact]
+    public static void Ctor_StringReason()
+    {
+        string reason = "Fault reason";
+        var exception = new FaultException(reason);
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Reason);
+        Assert.NotNull(exception.Code);
+        Assert.Equal(reason, exception.Reason.ToString());
+    }
 }
