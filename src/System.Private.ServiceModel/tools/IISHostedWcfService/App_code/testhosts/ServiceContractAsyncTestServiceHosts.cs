@@ -2,22 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class ServiceContractAsyncIntOutTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ServiceContractAsyncIntOutTestServiceHost serviceHost = new ServiceContractAsyncIntOutTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ServiceContractAsyncIntOut.svc")]
     public class ServiceContractAsyncIntOutTestServiceHost : TestServiceHostBase<IServiceContractIntOutService>
     {
         protected override string Address { get { return "ServiceContractIntOut"; } }
@@ -27,21 +18,13 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public ServiceContractAsyncIntOutTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ServiceContractAsyncIntOutTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServiceContractIntOutService), baseAddresses)
         {
         }
     }
 
-    public class ServiceContractAsyncUniqueTypeOutTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ServiceContractAsyncUniqueTypeOutTestServiceHost serviceHost = new ServiceContractAsyncUniqueTypeOutTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
-
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ServiceContractAsyncUniqueTypeOut.svc")]
     public class ServiceContractAsyncUniqueTypeOutTestServiceHost : TestServiceHostBase<IServiceContractUniqueTypeOutService>
     {
         protected override string Address { get { return "ServiceContractUniqueTypeOut"; } }
@@ -51,20 +34,13 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public ServiceContractAsyncUniqueTypeOutTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ServiceContractAsyncUniqueTypeOutTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServiceContractUniqueTypeOutService), baseAddresses)
         {
         }
     }
 
-    public class ServiceContractAsyncIntRefTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ServiceContractAsyncIntRefTestServiceHost serviceHost = new ServiceContractAsyncIntRefTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ServiceContractAsyncIntRef.svc")]
     public class ServiceContractAsyncIntRefTestServiceHost : TestServiceHostBase<IServiceContractIntRefService>
     {
         protected override string Address { get { return "ServiceContractIntRef"; } }
@@ -74,21 +50,14 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public ServiceContractAsyncIntRefTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ServiceContractAsyncIntRefTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServiceContractIntRefService), baseAddresses)
         {
         }
     }
 
-    public class ServiceContractAsyncUniqueTypeRefTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ServiceContractAsyncUniqueTypeRefTestServiceHost serviceHost = new ServiceContractAsyncUniqueTypeRefTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ServiceContractAsyncUniqueTypeRef.svc")]
     public class ServiceContractAsyncUniqueTypeRefTestServiceHost : TestServiceHostBase<IServiceContractUniqueTypeRefService>
     {
         protected override string Address { get { return "ServiceContractAsyncUniqueTypeRef"; } }
@@ -98,21 +67,14 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public ServiceContractAsyncUniqueTypeRefTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ServiceContractAsyncUniqueTypeRefTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServiceContractUniqueTypeRefService), baseAddresses)
         {
         }
     }
 
-    public class ServiceContractSyncUniqueTypeOutTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ServiceContractSyncUniqueTypeOutTestServiceHost serviceHost = new ServiceContractSyncUniqueTypeOutTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ServiceContractSyncUniqueTypeOut.svc")]
     public class ServiceContractSyncUniqueTypeOutTestServiceHost : TestServiceHostBase<IServiceContractUniqueTypeOutSyncService>
     {
         protected override string Address { get { return "ServiceContractUniqueTypeOutSync"; } }
@@ -121,21 +83,14 @@ namespace WcfService
         {
             return new BasicHttpBinding();
         }
-        public ServiceContractSyncUniqueTypeOutTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ServiceContractSyncUniqueTypeOutTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServiceContractUniqueTypeOutSyncService), baseAddresses)
         {
         }
     }
 
-    public class ServiceContractSyncUniqueTypeRefTestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ServiceContractSyncUniqueTypeRefTestServiceHost serviceHost = new ServiceContractSyncUniqueTypeRefTestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
 
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ServiceContractSyncUniqueTypeRef.svc")]
     public class ServiceContractSyncUniqueTypeRefTestServiceHost : TestServiceHostBase<IServiceContractUniqueTypeRefSyncService>
     {
         protected override string Address { get { return "ServiceContractUniqueTypeRefSync"; } }
@@ -145,8 +100,8 @@ namespace WcfService
             return new BasicHttpBinding();
         }
 
-        public ServiceContractSyncUniqueTypeRefTestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ServiceContractSyncUniqueTypeRefTestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(ServiceContractUniqueTypeRefSyncService), baseAddresses)
         {
         }
     }

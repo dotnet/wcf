@@ -179,6 +179,16 @@ namespace CertUtil
             };
             CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
 
+            //STSMetaData
+            certificateCreationSettings = new CertificateCreationSettings()
+            {
+                FriendlyName = "WCF Bridge - STSMetaData",
+                ValidityType = CertificateValidityType.Valid,
+                Subject = "STSMetaData",
+                EKU = new List<Org.BouncyCastle.Asn1.X509.KeyPurposeID>()
+            };
+            CreateAndInstallMachineCertificate(certificateGenerate, certificateCreationSettings);
+
             //Create and install client cert
             certificateCreationSettings = new CertificateCreationSettings()
             {

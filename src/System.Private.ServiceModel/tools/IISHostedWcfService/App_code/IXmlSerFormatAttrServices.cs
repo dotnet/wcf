@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
 
@@ -144,5 +143,34 @@ namespace WcfService
     {
         public byte P1;
         public byte P2;
+    }
+
+    [ServiceContract]
+    public interface IEchoRpcEncWithHeadersService
+    {
+
+        [OperationContract(Action = "http://tempuri.org/Echo", ReplyAction = "*")]
+        [XmlSerializerFormat(Style = OperationFormatStyle.Rpc, Use = OperationFormatUse.Encoded)]
+        EchoResponse Echo(EchoRequest request);
+    }
+
+    [System.Xml.Serialization.SoapType(Namespace = "http://tempuri.org/")]
+    public partial class StringHeader
+    {
+        public string HeaderValue { get; set; }
+    }
+
+    [MessageContract(WrapperName = "Echo", WrapperNamespace = "http://contoso.com/", IsWrapped = true)]
+    public partial class EchoRequest
+    {
+        [MessageBodyMember(Namespace = "", Order = 0)]
+        public string message;
+    }
+
+    [MessageContract(WrapperName = "EchoResponse", WrapperNamespace = "http://tempuri.org/", IsWrapped = true)]
+    public partial class EchoResponse
+    {
+        [MessageBodyMember(Namespace = "", Order = 0)]
+        public string EchoResult;
     }
 }

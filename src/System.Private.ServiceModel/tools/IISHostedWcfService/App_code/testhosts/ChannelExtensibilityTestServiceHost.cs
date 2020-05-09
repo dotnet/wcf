@@ -4,20 +4,11 @@
 
 using Microsoft.Samples.MessageInterceptor;
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    public class ChannelExtensibilityServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            ChannelExtensibilityServiceHost serviceHost = new ChannelExtensibilityServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "ChannelExtensibility.svc")]
     public class ChannelExtensibilityServiceHost : TestServiceHostBase<IWcfChannelExtensibilityContract>
     {
         protected override string Address { get { return "ChannelExtensibility"; } }
@@ -27,8 +18,8 @@ namespace WcfService
             return new CustomBinding(new InterceptingBindingElement(new DroppingServerInterceptor()), new HttpTransportBindingElement());
         }
 
-        public ChannelExtensibilityServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public ChannelExtensibilityServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfChannelExtensiblityService), baseAddresses)
         {
         }
     }

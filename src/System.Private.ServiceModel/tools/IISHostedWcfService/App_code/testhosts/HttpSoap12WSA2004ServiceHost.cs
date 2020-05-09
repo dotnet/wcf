@@ -3,21 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
 using System.ServiceModel.Channels;
 using System.Text;
 
 namespace WcfService
 {
-    public class HttpSoap12WSA2004TestServiceHostFactory : ServiceHostFactory
-    {
-        protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
-        {
-            HttpSoap12WSA2004TestServiceHost serviceHost = new HttpSoap12WSA2004TestServiceHost(serviceType, baseAddresses);
-            return serviceHost;
-        }
-    }
+    [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "HttpSoap12WSA2004.svc")]
     public class HttpSoap12WSA2004TestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override string Address { get { return "http-soap12WSA2004"; } }
@@ -27,8 +18,8 @@ namespace WcfService
             return new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap12WSAddressingAugust2004, Encoding.UTF8), new HttpTransportBindingElement());
         }
 
-        public HttpSoap12WSA2004TestServiceHost(Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
+        public HttpSoap12WSA2004TestServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfService), baseAddresses)
         {
         }
     }

@@ -33,7 +33,7 @@ public static partial class Endpoints
     {
         get { return GetEndpointAddress("BasicHttp_4_4_0.svc//Basic"); }
     }
-    
+
     public static string HttpBaseAddress_Basic_Soap
     {
         get { return GetEndpointAddress("BasicHttpSoap.svc//Basic"); }
@@ -42,11 +42,6 @@ public static partial class Endpoints
     public static string HttpBaseAddress_NetHttp
     {
         get { return GetEndpointAddress("NetHttp.svc//NetHttp"); }
-    }
-
-    public static string HttpBaseAddress_NetHttpWebSockets
-    {
-        get { return GetEndpointAddress("NetHttpWebSockets.svc//NetHttpWebSockets"); }
     }
 
     public static string HttpSoap11_Address
@@ -78,7 +73,7 @@ public static partial class Endpoints
 	{
 		get { return GetEndpointAddress("HttpSoap12WSA2004.svc//http-Soap12WSA2004"); }
 	}
-	
+
     public static string HttpBinary_Address
     {
         get { return GetEndpointAddress("HttpBinary.svc//http-binary"); }
@@ -134,7 +129,22 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicHttpDocLitDualNs.svc//Basic"); }
     }
 
+    public static string BasicHttpRpcEncWithHeaders_Address
+    {
+        get { return GetEndpointAddress("BasicHttpRpcEncWithHeaders.svc//Basic"); }
+    }
+
     #region WebSocket Addresses
+    public static string HttpBaseAddress_NetHttpWebSockets
+    {
+        get { return GetEndpointAddress("NetHttpWebSockets.svc//NetHttpWebSockets", "ws"); }
+    }
+
+    public static string HttpBaseAddress_NetHttpsWebSockets
+    {
+        get { return GetEndpointAddress("NetHttpsWebSockets.svc//NetHttpsWebSockets", protocol: "wss"); }
+    }
+
     public static string NetHttpWebSocketTransport_Address
     {
         get { return GetEndpointAddress("WebSocketTransport.svc//http-requestreplywebsockets-transportusagealways", protocol: "ws"); }
@@ -330,14 +340,6 @@ public static partial class Endpoints
         get
         {
             return GetEndpointAddress("NetHttps.svc//NetHttps", protocol: "https");
-        }
-    }
-
-    public static string HttpBaseAddress_NetHttpsWebSockets
-    {
-        get
-        {
-            return GetEndpointAddress("NetHttpsWebSockets.svc//NetHttpsWebSockets", protocol: "https");
         }
     }
 
