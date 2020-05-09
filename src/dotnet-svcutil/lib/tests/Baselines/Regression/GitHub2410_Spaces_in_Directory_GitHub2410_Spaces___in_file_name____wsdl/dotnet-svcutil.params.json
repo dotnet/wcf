@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/regression/GitHub2410 Spaces in Directory/GitHub2410 Spaces - in file name - .wsdl"
+    ],
+    "namespaceMappings": [
+      "*, GitHub2410_Spaces_in_Directory_GitHub2410_Spaces___in_file_name____wsdl_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp1.1",
+    "typeReuseMode": "None"
+  }
+}

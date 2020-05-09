@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/regression/VSGallery259915_702294_SOAPEncoded_tsp_demo_sk.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, VSGallery259915_702294_SOAPEncoded_tsp_demo_sk_wsdl_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp2.0",
+    "typeReuseMode": "None"
+  }
+}

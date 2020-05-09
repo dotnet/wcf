@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/regression/GitHub3149/cyclical-deps.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, GitHub3149_cyclical_deps_wsdl_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp1.1",
+    "typeReuseMode": "None"
+  }
+}

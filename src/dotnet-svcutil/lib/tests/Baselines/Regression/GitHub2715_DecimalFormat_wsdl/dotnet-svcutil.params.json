@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/regression/GitHub2715_DecimalFormat.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, GitHub2715_DecimalFormat_wsdl_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp1.1",
+    "typeReuseMode": "None"
+  }
+}
