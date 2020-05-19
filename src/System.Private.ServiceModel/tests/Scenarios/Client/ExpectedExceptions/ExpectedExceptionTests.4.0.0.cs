@@ -216,6 +216,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: unstable test, skip only applies to UWP.")]
     public static void Abort_During_Implicit_Open_Closes_Async_Waiters()
     {
         // This test is a regression test of an issue with CallOnceManager.

@@ -270,6 +270,7 @@ public partial class HttpsTests : ConditionalWcfTest
            nameof(Server_Accepts_Certificates),
            nameof(SSL_Available))]
     [OuterLoop]
+    [SkipOnTargetFramework(TargetFrameworkMonikers.Uap, "Issue: Expect100Continue header is not supported in UWP.")]
     public static void HttpExpect100Continue_ClientCertificate_True()
     {
         string clientCertThumb = null;
