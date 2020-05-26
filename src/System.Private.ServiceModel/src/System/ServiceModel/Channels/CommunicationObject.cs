@@ -979,33 +979,33 @@ namespace System.ServiceModel.Channels
 
         // Helper used to open another CommunicationObject "owned" by the current one.
         // It is used to propagate the use of either the synchronous or asynchronous methods
-        internal async Task OpenOtherAsync(ICommunicationObject other, TimeSpan timeout)
+        internal Task OpenOtherAsync(ICommunicationObject other, TimeSpan timeout)
         {
             // If the current object is being opened synchronously, use the synchronous
             // open path for the other object.
             if (_isSynchronousOpen)
             {
-                await TaskHelpers.CallActionAsync(other.Open, timeout);
+                return TaskHelpers.CallActionAsync(other.Open, timeout);
             }
             else
             {
-                await Task.Factory.FromAsync(other.BeginOpen(timeout, callback: null, state: null), other.EndOpen);
+                return Task.Factory.FromAsync(other.BeginOpen, other.EndOpen, timeout, null);
             }
         }
 
         // Helper used to close another CommunicationObject "owned" by the current one.
         // It is used to propagate the use of either the synchronous or asynchronous methods
-        internal async Task CloseOtherAsync(ICommunicationObject other, TimeSpan timeout)
+        internal Task CloseOtherAsync(ICommunicationObject other, TimeSpan timeout)
         {
             // If the current object is being closed synchronously, use the synchronous
             // close path for the other object.
             if (_isSynchronousClose)
             {
-                await TaskHelpers.CallActionAsync(other.Close, timeout);
+                return TaskHelpers.CallActionAsync(other.Close, timeout);
             }
             else
             {
-                await Task.Factory.FromAsync(other.BeginClose(timeout, callback: null, state: null), other.EndClose);
+                return Task.Factory.FromAsync(other.BeginClose, other.EndClose, timeout, null);
             }
         }
 

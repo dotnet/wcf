@@ -13,6 +13,7 @@ using System.Runtime.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security;
+using System.Threading;
 
 namespace System.Runtime
 {
@@ -295,6 +296,16 @@ namespace System.Runtime
             return (new ActionThunk<T1>(callback)).ThunkFrame;
         }
 
+#pragma warning disable CS3002 // Return type is not CLS-compliant
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
+        public static IOCompletionCallback ThunkCallback(IOCompletionCallback callback)
+#pragma warning restore CS3001 // Argument type is not CLS-compliant
+#pragma warning restore CS3002 // Return type is not CLS-compliant
+        {
+            Fx.Assert(callback != null, "Trying to create a ThunkCallback with a null callback method");
+            return (new IOCompletionThunk(callback)).ThunkFrame;
+        }
+
         [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
             Justification = "These are the core methods that should be used for all other Guid(string) calls.")]
         public static Guid CreateGuid(string guidString)
@@ -446,6 +457,41 @@ namespace System.Runtime
         {
             [Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
             public abstract bool HandleException(Exception exception);
+        }
+
+        // This can't derive from Thunk since T would be unsafe.
+        unsafe sealed class IOCompletionThunk
+        {
+            IOCompletionCallback callback;
+
+            public IOCompletionThunk(IOCompletionCallback callback)
+            {
+                this.callback = callback;
+            }
+
+            public IOCompletionCallback ThunkFrame
+            {
+                get
+                {
+                    return new IOCompletionCallback(UnhandledExceptionFrame);
+                }
+            }
+
+            void UnhandledExceptionFrame(uint error, uint bytesRead, NativeOverlapped* nativeOverlapped)
+            {
+                RuntimeHelpers.PrepareConstrainedRegions();
+                try
+                {
+                    callback(error, bytesRead, nativeOverlapped);
+                }
+                catch (Exception exception)
+                {
+                    if (!Fx.HandleAtThreadBase(exception))
+                    {
+                        throw;
+                    }
+                }
+            }
         }
 
         public static class Tag
