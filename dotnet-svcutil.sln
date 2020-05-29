@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil-lib", "src\d
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil", "src\dotnet-svcutil\src\dotnet-svcutil.csproj", "{E4006BB6-E8C1-44AA-B7BE-16D1CEB05EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-svcutil-lib.Tests", "src\dotnet-svcutil\lib\tests\dotnet-svcutil-lib.Tests.csproj", "{407ABA68-F5C5-4447-8905-5EFECED768D7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{FE6BA252-6D80-4A08-9DC8-C6E065F320C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE6BA252-6D80-4A08-9DC8-C6E065F320C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE6BA252-6D80-4A08-9DC8-C6E065F320C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{407ABA68-F5C5-4447-8905-5EFECED768D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{407ABA68-F5C5-4447-8905-5EFECED768D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{407ABA68-F5C5-4447-8905-5EFECED768D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{407ABA68-F5C5-4447-8905-5EFECED768D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
