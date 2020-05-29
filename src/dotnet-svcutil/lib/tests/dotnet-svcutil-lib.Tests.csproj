@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <!--[todo:arcade] Re-enable these warnings and fix them.-->
+    <!-- https://xunit.github.io/xunit.analyzers/rules/ -->
+    <NoWarn>$(NoWarn)</NoWarn>
+    <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\dotnet-svcutil-lib.csproj" />
+  </ItemGroup>
+</Project>
