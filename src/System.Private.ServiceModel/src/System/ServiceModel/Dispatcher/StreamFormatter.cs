@@ -344,6 +344,11 @@ namespace System.ServiceModel.Dispatcher
                     throw TraceUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.SFxInvalidStreamOffsetLength, offset + count)), _message);
                 }
 
+                if (count == 0)
+                {
+                    return 0;
+                }
+
                 try
                 {
                     if (_reader == null)
