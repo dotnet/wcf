@@ -194,7 +194,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 IEnumerable<XElement> packageReferenceElements = GetSubGroupValues(msbuildProj.ProjectNode, msbuildNS, "ItemGroup", "PackageReference");
                 foreach (XElement reference in packageReferenceElements)
                 {
-                    string packageName = GetItemIdentity(reference);
+                    if(!TryGetItemIdentity(reference, out var packageName))
+                        continue;
+
                     string version = GetItemValue(reference, "Version");
 
                     ProjectDependency packageDep = ProjectDependency.FromPackage(packageName, version);
@@ -205,7 +207,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 IEnumerable<XElement> toolReferenceElements = GetSubGroupValues(msbuildProj.ProjectNode, msbuildNS, "ItemGroup", "DotNetCliToolReference");
                 foreach (XElement reference in toolReferenceElements)
                 {
-                    string packageName = GetItemIdentity(reference);
+                    if (!TryGetItemIdentity(reference, out var packageName))
+                        continue;
+
                     string version = GetItemValue(reference, "Version");
 
                     ProjectDependency packageDep = ProjectDependency.FromCliTool(packageName, version);
@@ -394,12 +398,26 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return null;
         }
 
+        public static bool TryGetItemIdentity(XElement itemName, out string itemIdentity)
+        {
+            var itemAttribute = itemName.Attributes().FirstOrDefault(item => item.Name == "Include");
+
+            if (itemAttribute != null)
+            {
+                itemIdentity = itemAttribute.Value;
+                return true;
+            }
+
+            itemIdentity = default;
+            return false;
+        }
+
         private static string GetItemIdentity(XElement itemName)
         {
-            var itemAttribue = itemName.Attributes().FirstOrDefault(item => item.Name == "Include");
-            if (itemAttribue != null)
+            var itemAttribute = itemName.Attributes().FirstOrDefault(item => item.Name == "Include");
+            if (itemAttribute != null)
             {
-                return itemAttribue.Value;
+                return itemAttribute.Value;
             }
 
             throw new Exception(Shared.Resources.ErrorInvalidProjectFormat);
