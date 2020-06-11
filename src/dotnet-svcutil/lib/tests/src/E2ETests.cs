@@ -77,7 +77,6 @@ namespace SvcutilTest
         [Theory]
         [InlineData("tfmDefault", null)]
         [InlineData("tfmCoreapp20", "netcoreapp2.0")]
-        //[InlineData("tfmCoreapp10", "netcoreapp1.0")]
         [InlineData("tfmNetstd20", "netstandard2.0")]
         [InlineData("tfm100", "netcoreapp100.0")]
         public void TFMBootstrap(string testCaseName, string targetFramework)
@@ -203,7 +202,6 @@ namespace SvcutilTest
         [Trait("Category", "BVT")]
         [Theory]
         [InlineData("TypeReuse20", "netcoreapp2.0")]
-        //[InlineData("TypeReuse10", "netcoreapp1.0")]
         public void TypeReuse(string testCaseName, string targetFramework)
         {
             this_TestCaseName = "TypeReuse";
@@ -381,10 +379,6 @@ namespace SvcutilTest
 
             WcfRuntimeSvcs(serviceName, expectSuccess);
         }
-
-        // TODO: enable WCF Runtime services: some of these tests take forever, we need to investigate
-        // and determine what services to use as part of the tests or whether these tests should be 
-        // run as a separate suite like nightly build. Use the Basic and NetHttp tests as guidance.
 
         [Trait("Category", "Test")]
         [Theory]

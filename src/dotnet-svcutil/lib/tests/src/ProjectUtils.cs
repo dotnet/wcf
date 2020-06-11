@@ -96,27 +96,7 @@ namespace SvcutilTest
                 }
 
                 using (var sw = new StreamWriter(srcPath))
-                {
-                    /*
-                    if(!csStr.Contains("using Microsoft.Tools.ServiceModel.Svcutil;"))
-                    {
-                        csStr = csStr.Replace("static void Main", "static int Main");
-                        csStr = csStr.Replace("using System;", "using System;\r\nusing Microsoft.Tools.ServiceModel.Svcutil;");
-                        csStr = csStr.Replace("Console.WriteLine(\"Hello World!\");", "string[] opts = @\""+ options + "\".Split(new[] { ' ' });\r\n"
-                            + new string(' ', 12) + "return Tool.Main(opts);");
-                        sw.Write(csStr);
-                        sw.Flush();
-                    }
-                    else
-                    {
-                        int start = csStr.IndexOf("string[] opts");
-                        int end = csStr.IndexOf(".Split");
-                        csStr = csStr.Replace(csStr.Substring(start, end-start), "string[] opts = @\"" + options + "\"");
-                        sw.Write(csStr);
-                        sw.Flush();
-                    }  
-                    */
-                    
+                {                    
                     if (!csStr.Contains("using Microsoft.Tools.ServiceModel.Svcutil;"))
                     {
                         string indent = new string(' ', 12);

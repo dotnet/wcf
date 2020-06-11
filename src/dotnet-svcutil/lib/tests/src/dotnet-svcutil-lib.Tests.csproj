@@ -52,17 +52,6 @@
     <SignAssembly>true</SignAssembly> 
     <DelaySign>true</DelaySign>
   </PropertyGroup>
-  <!--<ItemGroup>
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.console" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>-->
   
   <ItemGroup>
     <ProjectReference Include="..\..\src\dotnet-svcutil-lib.csproj" />

@@ -103,8 +103,6 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        //[InlineData("netstandard1.4", "3.1.101", "-v Normal")]
-        //[InlineData("netcoreapp1.0", "3.1.101", "-nl")]
         [InlineData("netcoreapp2.0", "3.1.101", "-edb")]
         [InlineData("netcoreapp2.1", "3.1.101", "-elm")]
         public void ParamsFiles_SDK_TFM(string targetFramework, string sdkVersion, string extraOptions)

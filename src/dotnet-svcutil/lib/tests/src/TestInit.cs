@@ -214,7 +214,6 @@ namespace SvcutilTest
         {
             Assert.False(string.IsNullOrWhiteSpace(testCaseName), $"{nameof(testCaseName)} is not initialized!");
 
-            //this_TestCaseName = testCaseName;
             this_TestCaseOutputDir = Path.Combine(this_TestGroupOutputDir, testCaseName);
             FileUtil.TryDeleteDirectory(this_TestCaseOutputDir);
             Directory.CreateDirectory(this_TestCaseOutputDir);
