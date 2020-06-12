@@ -92,6 +92,16 @@ public interface IWcfService
 }
 
 [ServiceContract]
+public interface IService1
+{
+    [OperationContract]
+    string GetData(int value);
+
+    [OperationContract]
+    CompositeType GetDataUsingDataContract(CompositeType composite);
+}
+
+[ServiceContract]
 public interface IWcfProjectNRestartService
 {
     [OperationContract]
