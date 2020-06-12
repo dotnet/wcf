@@ -24,19 +24,22 @@ namespace SvcutilTest
                 Directory.SetCurrentDirectory(this_TestCaseProject.DirectoryPath);
 
                 var exitCode = 0;
-                var outputText = string.Empty;                
-                var stream = new MemoryStream();
-                var writer = new StreamWriter(stream) { AutoFlush = true };
-                Console.SetOut(writer);//problem line
+                var outputText = string.Empty;
+                var writer = new StringWriter();
+                var originalOutput = Console.Out;
+
+                Console.SetOut(writer);
                 var args = options.Split(' ');
                 exitCode = Tool.MainAsync(args, this_TestCaseLogger, CancellationToken.None).Result;
-                stream.Position = 0;
-                outputText = new StreamReader(stream).ReadToEnd();
-                //stream.Close();
-                //writer.Close();
+
+                outputText = writer.ToString();
+                Console.SetOut(originalOutput);
+                writer.Close();
+
                 ValidateTest(options, this_TestCaseProject.DirectoryPath, exitCode, outputText, expectSuccess);
             }
         }
+
 
         [Trait("Category", "UnitTest")]
         [Theory]
