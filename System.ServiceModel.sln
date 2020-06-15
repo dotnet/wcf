@@ -82,8 +82,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer", "src\svcutilcore\src\dotnet-svcutil.xmlserializer.csproj", "{EAB2959D-0A16-4F60-A453-765491E1C069}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer.IntegrationTests", "src\svcutilcore\tests\dotnet-svcutil.xmlserializer.IntegrationTests.csproj", "{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1290FD2C-8148-43C3-817B-6D799EDD7E03} = {1290FD2C-8148-43C3-817B-6D799EDD7E03}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.WS.FederationHttp.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\FederationHttp\Binding.WS.FederationHttp.IntegrationTests.csproj", "{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Federation", "src\System.ServiceModel.Federation\src\System.ServiceModel.Federation.csproj", "{B0A6F127-700A-4535-939E-CD7EB22C5E24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Federation.Ref", "src\System.ServiceModel.Federation\ref\System.ServiceModel.Federation.Ref.csproj", "{A8912C86-BDEF-4E69-92E5-AE065DCE198C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Federation.Tests", "src\System.ServiceModel.Federation\tests\System.ServiceModel.Federation.Tests.csproj", "{A3F8C509-AAE7-4391-9272-2221055CC17E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -255,6 +264,18 @@ Global
 		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1BBCAA9-06A0-4419-98A8-85BB8E945B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0A6F127-700A-4535-939E-CD7EB22C5E24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0A6F127-700A-4535-939E-CD7EB22C5E24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0A6F127-700A-4535-939E-CD7EB22C5E24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0A6F127-700A-4535-939E-CD7EB22C5E24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8912C86-BDEF-4E69-92E5-AE065DCE198C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8912C86-BDEF-4E69-92E5-AE065DCE198C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8912C86-BDEF-4E69-92E5-AE065DCE198C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8912C86-BDEF-4E69-92E5-AE065DCE198C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F8C509-AAE7-4391-9272-2221055CC17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F8C509-AAE7-4391-9272-2221055CC17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F8C509-AAE7-4391-9272-2221055CC17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F8C509-AAE7-4391-9272-2221055CC17E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
