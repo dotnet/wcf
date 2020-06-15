@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Federation;
 using System.Text;
@@ -45,16 +46,15 @@ public class WSFederationHttpBindingTestsTests : ConditionalWcfTest
                     Target = tokenTargetAddress,
                     TokenType = Saml2Constants.OasisWssSaml2TokenProfile11
                 });
+            //federationBinding.Security.Message.EstablishSecurityContext = false;
+            var customBinding = new CustomBinding(federationBinding);
+            var sbe = customBinding.Elements.Find<SecurityBindingElement>();
+            sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity10WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
 
-            factory = new ChannelFactory<IWcfService>(federationBinding, serviceEndpointAddress);
+            factory = new ChannelFactory<IWcfService>(customBinding, serviceEndpointAddress);
             // TODO: Fix the need for this
-            var credentials = new WsTrustChannelClientCredentials();
-            credentials.UserName.UserName = "AUser";
-            credentials.UserName.Password = "MyPassword";
-
-            factory.Endpoint.EndpointBehaviors.Remove(typeof(ClientCredentials));
-            factory.Endpoint.EndpointBehaviors.Add(credentials);
-
+            factory.Credentials.UserName.UserName = "AUser";
+            factory.Credentials.UserName.Password = "MyPassword";
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
