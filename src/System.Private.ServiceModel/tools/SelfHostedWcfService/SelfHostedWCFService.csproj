@@ -22,6 +22,7 @@
     <Reference Include="System.ServiceModel.Activities" />
     <Reference Include="System.ServiceModel.Channels" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -30,9 +31,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\IISHostedWcfService\**\*.cs">
-	  <Visible>true</Visible>
+      <Visible>true</Visible>
       <Link>IIS/%(RecursiveDir)%(Filename)%(Extension)</Link>
-	</Compile>
+    </Compile>
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>

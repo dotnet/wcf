@@ -428,7 +428,7 @@ public static partial class Endpoints
         }
     }
 
-#region Secure WebSocket Addresses
+    #region Secure WebSocket Addresses
     public static string WebSocketHttpsDuplexBinaryStreamed_Address
     {
         get

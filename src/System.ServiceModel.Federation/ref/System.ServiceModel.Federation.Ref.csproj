@@ -5,7 +5,6 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Federation</AssemblyName>
     <RootNamespace>System.ServiceModel.Federation</RootNamespace>
-    <IdentityModelVersion>6.6.1-preview-10605041306</IdentityModelVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +13,6 @@
     <ProjectReference Include="..\..\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(IdentityModelVersion)" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+using System.Web.Hosting;
 
 namespace WcfService
 {
@@ -28,8 +29,18 @@ namespace WcfService
         private Binding GetBinding()
         {
             var binding = new WS2007HttpBinding(SecurityMode.Transport);
-            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-            return binding;
+            if (HostingEnvironment.IsHosted)
+            {
+                binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+                var customBinding = new CustomBinding(binding);
+                customBinding.Elements.Insert(2, new BasicAuthenticationBindingElement());
+                return customBinding;
+            }
+            else
+            {
+                binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
+                return binding;
+            }
         }
 
         protected void ConfigureService()

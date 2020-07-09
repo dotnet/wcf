@@ -8,7 +8,6 @@
     <IsBuilding>true</IsBuilding>
     <IsHarvesting>false</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <IdentityModelVersion>6.6.1-preview-10605041306</IdentityModelVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
@@ -18,7 +17,7 @@
     <ProjectReference Include="..\..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(IdentityModelVersion)" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
   </ItemGroup>
   <!-- the following represent dependencies copied from the old package -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">

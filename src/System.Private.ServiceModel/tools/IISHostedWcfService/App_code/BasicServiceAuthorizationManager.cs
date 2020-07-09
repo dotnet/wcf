@@ -113,7 +113,7 @@ namespace WcfService
         private struct BasicAuthenticationState
         {
             private const string BasicAuthenticationMechanism = "Basic ";
-            private const int BasicAuthenticationMechanismLength = 6; // DigestAuthenticationMechanism.Length;
+            private const int BasicAuthenticationMechanismLength = 6; // BasicAuthenticationMechanism.Length;
             private const string RealmAuthenticationParameter = "realm";
             private const string AuthenticationChallengeHeaderName = "WWW-Authenticate";
             private const string AuthorizationHeaderName = "Authorization";

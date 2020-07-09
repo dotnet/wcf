@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.IdentityModel.Tokens;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 using System.ServiceModel.Federation;
-using System.Text;
 using Infrastructure.Common;
-using Microsoft.IdentityModel.Protocols.WsTrust;
 using Microsoft.IdentityModel.Tokens.Saml2;
 using Xunit;
 
-public class WSFederationHttpBindingTestsTests : ConditionalWcfTest
+public class WSFederationHttpBindingTests : ConditionalWcfTest
 {
     [WcfFact]
     [Issue(2870, OS = OSID.AnyOSX)]
