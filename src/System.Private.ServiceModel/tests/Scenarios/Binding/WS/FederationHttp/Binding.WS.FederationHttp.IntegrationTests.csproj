@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <!--[todo:arcade] Re-enable these warnings and fix them.-->
+    <!-- https://xunit.github.io/xunit.analyzers/rules/ -->
+    <NoWarn>$(NoWarn)</NoWarn>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <ProjectReference Include="..\..\..\..\..\src\System.Private.ServiceModel.csproj" /> -->
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.Facade.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.Facade.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Security\src\System.ServiceModel.Security.Facade.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Federation\src\System.ServiceModel.Federation.csproj" />
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+</Project>

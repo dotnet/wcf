@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>System.ServiceModel.Federation</AssemblyName>
+    <RootNamespace>System.ServiceModel.Federation</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
+  </ItemGroup>
+</Project>

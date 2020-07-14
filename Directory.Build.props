@@ -23,6 +23,10 @@
     <IsReferenceAssembly Condition="'$(IsReferenceAssembly)'=='' AND ($(MSBuildProjectName.EndsWith('.Ref')))">true</IsReferenceAssembly>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.6.1-preview-10617201806</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Include license and third party files to packages -->
     <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />

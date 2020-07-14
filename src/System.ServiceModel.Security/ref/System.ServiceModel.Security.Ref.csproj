@@ -5,6 +5,7 @@
     <TargetFrameworks>netstandard2.0;net461;</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Security</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
     <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
   </PropertyGroup>
 
