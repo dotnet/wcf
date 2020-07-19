@@ -994,7 +994,7 @@ namespace Microsoft.Xml
 
         // Do setup work for ReadContentAsXXX methods
         // If ready for a typed value read, returns true, otherwise returns
-        //  false to indicate caller should ball back to XmlReader.ReadContentAsXXX
+        //  false to indicate caller should go back to XmlReader.ReadContentAsXXX
         // Special-Case: returns true and positioned on Element or EndElem to force parse of empty-string
         private bool SetupContentAsXXX(string name)
         {

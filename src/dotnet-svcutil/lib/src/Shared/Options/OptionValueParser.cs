@@ -170,7 +170,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 var newValue = GetSerializationValue(value);
                 if (newValue is List<object> list)
                 {
-                    value = list.Select(item => $"'{item}'").Aggregate((cum, s) => cum + ", " + s).ToString();
+                    value = list.Select(item => $"'{item}'").Aggregate((num, s) => num + ", " + s).ToString();
                 }
             }
             else
