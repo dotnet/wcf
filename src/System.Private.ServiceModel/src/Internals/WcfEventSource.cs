@@ -11,6 +11,18 @@ namespace System.Runtime
     internal sealed class WcfEventSource : EventSource
     {
         public static WcfEventSource Instance = new WcfEventSource();
+        private bool _canTransferActivityId = false;
+
+        internal WcfEventSource()
+#if DEBUG
+             : base(throwOnEventWriteErrors: true)
+#endif // DEBUG
+        {
+            if (Environment.Version.Major >= 5)
+            {
+                _canTransferActivityId = true;
+            }
+        }
 
         public bool BufferPoolAllocationIsEnabled()
         {
@@ -284,16 +296,24 @@ namespace System.Runtime
 
         [Event(EventIds.MessageReceivedByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive, Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral | ChannelKeywords.Analytic, ActivityOptions = EventActivityOptions.Disable,
             Message = "The transport received a message from '{0}'.")]
-        public void MessageReceivedByTransport(string ListenAddress, string HostReference, string AppDomain)
+        public void MessageReceivedByTransport(Guid relatedActivityId, string ListenAddress, string HostReference, string AppDomain)
         {
-            WriteEvent(EventIds.MessageReceivedByTransport, ListenAddress, HostReference, AppDomain);
+            if (_canTransferActivityId)
+            {
+                WriteEventWithRelatedActivityId(EventIds.MessageReceivedByTransport, relatedActivityId, ListenAddress, HostReference, AppDomain);
+            }
+            else
+            {
+                WriteEvent(EventIds.MessageReceivedByTransport, ListenAddress, HostReference, AppDomain);
+            }
         }
 
         [NonEvent]
         public void MessageReceivedByTransport(EventTraceActivity eventTraceActivity, string ListenAddress, Guid relatedActivityId)
         {
             TransferActivityId(eventTraceActivity);
-            MessageReceivedByTransport(ListenAddress, "", "");
+            MessageReceivedByTransport(relatedActivityId, ListenAddress, "", "");
+
         }
 
         public bool MessageSentByTransportIsEnabled()
@@ -322,16 +342,23 @@ namespace System.Runtime
 
         [Event(EventIds.ClientOperationPrepared, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ClientRuntimeOperationPrepared, Task = Tasks.ClientRuntime, Keywords = Keywords.Troubleshooting | Keywords.ServiceModel | ChannelKeywords.Debug,
             Message = "The Client is executing Action '{0}' associated with the '{1}' contract. The message will be sent to '{2}'.")]
-        public void ClientOperationPrepared(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
+        public void ClientOperationPrepared(Guid relatedActivityId, string Action, string ContractName, string Destination, string HostReference, string AppDomain)
         {
-            WriteEvent(EventIds.ClientOperationPrepared, Action, ContractName, Destination, HostReference, AppDomain);
+            if (_canTransferActivityId)
+            {
+                WriteEventWithRelatedActivityId(EventIds.ClientOperationPrepared, relatedActivityId, Action, ContractName, Destination, HostReference, AppDomain);
+            }
+            else
+            {
+                WriteEvent(EventIds.ClientOperationPrepared, Action, ContractName, Destination, HostReference, AppDomain);
+            }
         }
 
         [NonEvent]
         public void ClientOperationPrepared(EventTraceActivity eventTraceActivity, string Action, string ContractName, string Destination, Guid relatedActivityId)
         {
             TransferActivityId(eventTraceActivity);
-            ClientOperationPrepared(Action, ContractName, Destination, "", "");
+            ClientOperationPrepared(relatedActivityId, Action, ContractName, Destination, "", "");
         }
 
         public bool ServiceChannelCallStopIsEnabled()

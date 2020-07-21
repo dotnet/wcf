@@ -27,6 +27,13 @@
     <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.6.1-preview-10617201806</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ScenarioTestTargetFrameworks>netcoreapp3.1;net5.0</ScenarioTestTargetFrameworks>
+	<UnitTestTargetFrameworks>netcoreapp3.1;net5.0</UnitTestTargetFrameworks>
+	<!-- This is the target framework version of the built tests picked up to send to Helix -->
+    <XUnitPublishTargetFramework>netcoreapp3.1</XUnitPublishTargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Include license and third party files to packages -->
     <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
