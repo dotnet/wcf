@@ -1433,6 +1433,8 @@ namespace System.ServiceModel.Channels
         public virtual bool ManualAddressing { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((long)65536)]
         public virtual long MaxReceivedMessageSize { get { return default; } set { } }
+        [System.ComponentModel.DefaultValueAttribute((long)512 * 1024)]
+        public virtual long MaxBufferPoolSize { get { return default; } set { } }
         public abstract string Scheme { get; }
         public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
     }
