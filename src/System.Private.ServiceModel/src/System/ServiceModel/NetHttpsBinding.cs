@@ -11,6 +11,8 @@ namespace System.ServiceModel
     public class NetHttpsBinding : HttpBindingBase
     {
         private BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
+        private ReliableSessionBindingElement _session;
+        private OptionalReliableSession _reliableSession;
         private BasicHttpsSecurity _basicHttpsSecurity;
 
         public NetHttpsBinding() : this(BasicHttpsSecurity.DefaultMode) { }
@@ -37,7 +39,7 @@ namespace System.ServiceModel
 
             set
             {
-                _basicHttpsSecurity = value ?? throw FxTrace.Exception.ArgumentNull("value");
+                _basicHttpsSecurity = value ?? throw FxTrace.Exception.ArgumentNull(nameof(value));
             }
         }
 
@@ -46,6 +48,23 @@ namespace System.ServiceModel
             get
             {
                 return _basicHttpsSecurity.BasicHttpSecurity;
+            }
+        }
+
+        public OptionalReliableSession ReliableSession
+        {
+            get
+            {
+                return _reliableSession;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw FxTrace.Exception.ArgumentNull(nameof(value));
+                }
+
+                _reliableSession.CopySettings(value);
             }
         }
 
@@ -76,6 +95,13 @@ namespace System.ServiceModel
 
             // return collection of BindingElements
             BindingElementCollection bindingElements = new BindingElementCollection();
+
+            // order of BindingElements is important
+            // add session
+            if (_reliableSession.Enabled)
+            {
+                bindingElements.Add(_session);
+            }
 
             // add security (*optional)
             SecurityBindingElement messageSecurity = BasicHttpSecurity.CreateMessageSecurity();
@@ -129,6 +155,8 @@ namespace System.ServiceModel
             MessageEncoding = NetHttpBindingDefaults.MessageEncoding;
             _binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement() { MessageVersion = MessageVersion.Soap12WSAddressing10 };
             TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            _session = new ReliableSessionBindingElement();
+            _reliableSession = new OptionalReliableSession(_session);
             InternalWebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;
             InternalWebSocketSettings.SubProtocol = WebSocketTransportSettings.SoapSubProtocol;
             _basicHttpsSecurity = new BasicHttpsSecurity();

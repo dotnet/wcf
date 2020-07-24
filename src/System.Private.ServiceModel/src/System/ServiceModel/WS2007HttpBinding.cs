@@ -34,7 +34,7 @@ namespace System.ServiceModel
 
         protected override SecurityBindingElement CreateMessageSecurity()
         {
-            return Security.CreateMessageSecurity(false, WS2007MessageSecurityVersion);
+            return Security.CreateMessageSecurity(ReliableSession.Enabled, WS2007MessageSecurityVersion);
         }
     }
 }

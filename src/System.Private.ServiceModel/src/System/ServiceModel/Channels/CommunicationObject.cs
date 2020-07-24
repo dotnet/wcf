@@ -400,6 +400,12 @@ namespace System.ServiceModel.Channels
 
         internal void Fault(Exception exception)
         {
+            AddPendingException(exception);
+            Fault();
+        }
+
+        internal void AddPendingException(Exception exception)
+        {
             lock (ThisLock)
             {
                 if (_exceptionQueue == null)
@@ -409,7 +415,6 @@ namespace System.ServiceModel.Channels
             }
 
             _exceptionQueue.AddException(exception);
-            Fault();
         }
 
         internal Exception GetPendingException()

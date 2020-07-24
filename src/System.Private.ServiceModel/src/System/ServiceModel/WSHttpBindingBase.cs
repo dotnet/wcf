@@ -10,7 +10,9 @@ namespace System.ServiceModel
 {
     public abstract class WSHttpBindingBase : Binding
     {
+        private OptionalReliableSession _reliableSession;
         private TextMessageEncodingBindingElement _textEncoding;
+        private ReliableSessionBindingElement _session;
 
         protected WSHttpBindingBase()
             : base()
@@ -103,6 +105,20 @@ namespace System.ServiceModel
             }
         }
 
+        public OptionalReliableSession ReliableSession
+        {
+            get { return _reliableSession; }
+            set
+            {
+                if (value == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
+                }
+
+                _reliableSession.CopySettings(value);
+            }
+        }
+
         public override string Scheme { get { return GetTransport().Scheme; } }
 
         public EnvelopeVersion EnvelopeVersion
@@ -138,8 +154,10 @@ namespace System.ServiceModel
         {
             HttpTransport = new HttpTransportBindingElement();
             HttpsTransport = new HttpsTransportBindingElement();
+            _session = new ReliableSessionBindingElement(true);
             _textEncoding = new TextMessageEncodingBindingElement();
             _textEncoding.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            _reliableSession = new OptionalReliableSession(_session);
         }
 
         public override BindingElementCollection CreateBindingElements()
@@ -147,6 +165,12 @@ namespace System.ServiceModel
             BindingElementCollection bindingElements = new BindingElementCollection();
             // order of BindingElements is important
             // context
+
+            // reliable
+            if (_reliableSession.Enabled)
+            {
+                bindingElements.Add(_session);
+            }
 
             // add security (*optional)
             SecurityBindingElement wsSecurity = CreateMessageSecurity();

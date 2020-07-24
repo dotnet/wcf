@@ -700,6 +700,24 @@ namespace System.Runtime
             ReceiveTimeout(data1, "");
         }
 
+        public bool InactivityTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.InactivityTimeout, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException, Keywords = Keywords.ServiceModel,
+            Message = "{0}")]
+        public void InactivityTimeout(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.InactivityTimeout, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void InactivityTimeout(string data1)
+        {
+            InactivityTimeout(data1, "");
+        }
+
         public bool MaxReceivedMessageSizeExceededIsEnabled()
         {
             return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
@@ -716,6 +734,18 @@ namespace System.Runtime
         public void MaxReceivedMessageSizeExceeded(string data1)
         {
             MaxReceivedMessageSizeExceeded(data1, "");
+        }
+
+        public bool MaxRetryCyclesExceededIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MaxRetryCyclesExceeded, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas, Keywords = Keywords.Quota,
+            Message = "{0}")]
+        public void MaxRetryCyclesExceeded(string data1)
+        {
+            WriteEvent(EventIds.MaxRetryCyclesExceeded, data1);
         }
 
         public bool MaxSentMessageSizeExceededIsEnabled()
@@ -1387,6 +1417,60 @@ namespace System.Runtime
         public void SocketAsyncWriteStart(int SocketId, int Size, string Endpoint)
         {
             SocketAsyncWriteStart(SocketId, Size, Endpoint, "");
+        }
+
+        public bool SequenceAcknowledgementSentIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.SequenceAcknowledgementSent, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.ReliableSessionSequenceAck, Task = Tasks.ReliableSession, Keywords = Keywords.Channel,
+            Message = "SessionId:{0} acknowledgement sent.")]
+        public void SequenceAcknowledgementSent(string SessionId, string AppDomain)
+        {
+            WriteEvent(EventIds.SequenceAcknowledgementSent, SessionId, AppDomain);
+        }
+
+        [NonEvent]
+        public void SequenceAcknowledgementSent(string SessionId)
+        {
+            SequenceAcknowledgementSent(SessionId, "");
+        }
+
+        public bool ClientReliableSessionReconnectIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientReliableSessionReconnect, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ReliableSessionReconnect, Task = Tasks.ReliableSession, Keywords = Keywords.Channel,
+            Message = "SessionId:{0} reconnecting.")]
+        public void ClientReliableSessionReconnect(string SessionId, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientReliableSessionReconnect, SessionId, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientReliableSessionReconnect(string SessionId)
+        {
+            ClientReliableSessionReconnect(SessionId, "");
+        }
+
+        public bool ReliableSessionChannelFaultedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ReliableSessionChannelFaulted, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ReliableSessionFaulted, Task = Tasks.ReliableSession, Keywords = Keywords.Channel,
+            Message = "SessionId:{0} faulted.")]
+        public void ReliableSessionChannelFaulted(string SessionId, string AppDomain)
+        {
+            WriteEvent(EventIds.ReliableSessionChannelFaulted, SessionId, AppDomain);
+        }
+
+        [NonEvent]
+        public void ReliableSessionChannelFaulted(string SessionId)
+        {
+            ReliableSessionChannelFaulted(SessionId, "");
         }
 
         public bool WindowsStreamSecurityOnInitiateUpgradeIsEnabled()

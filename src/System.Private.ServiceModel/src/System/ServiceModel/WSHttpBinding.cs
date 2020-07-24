@@ -79,7 +79,7 @@ namespace System.ServiceModel
 
         protected override SecurityBindingElement CreateMessageSecurity()
         {
-            return _security.CreateMessageSecurity(false, s_WSMessageSecurityVersion);
+            return _security.CreateMessageSecurity(ReliableSession.Enabled, s_WSMessageSecurityVersion);
         }
     }
 }
