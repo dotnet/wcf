@@ -26,7 +26,7 @@ namespace System.ServiceModel
 
         public NetTcpBinding(SecurityMode securityMode, bool reliableSessionEnabled) : this(securityMode)
         {
-            this.ReliableSession.Enabled = reliableSessionEnabled;
+            ReliableSession.Enabled = reliableSessionEnabled;
         }
 
         public NetTcpBinding(string configurationName)

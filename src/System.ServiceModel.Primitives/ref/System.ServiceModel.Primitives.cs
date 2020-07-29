@@ -4,6 +4,10 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+
 namespace System.Collections.Generic {
       public partial class SynchronizedCollection<T> : IList<T>, IList
       {
@@ -396,6 +400,15 @@ namespace System.ServiceModel
         public DataContractFormatAttribute() { }
         public System.ServiceModel.OperationFormatStyle Style { get { return default; } set { } }
     }
+    public sealed class DeliveryRequirementsAttribute : System.Attribute, System.ServiceModel.Description.IContractBehavior
+    {
+        public QueuedDeliveryRequirementsMode QueuedDeliveryRequirements { get; set; }
+        public bool RequireOrderedDelivery { get; set; }
+        void IContractBehavior.AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
+        void IContractBehavior.ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime) { }
+        void IContractBehavior.ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) { }
+        void IContractBehavior.Validate(ContractDescription contractDescription, ServiceEndpoint endpoint) { }
+    }
     public partial class EndpointAddress
     {
         public EndpointAddress(string uri) { }
@@ -729,17 +742,41 @@ namespace System.ServiceModel
         Literal,
         Encoded,
     }
+    public class OptionalReliableSession : System.ServiceModel.ReliableSession
+    {
+        public OptionalReliableSession() { }
+        public bool Enabled { get; set; }
+    }
     public partial class ProtocolException : System.ServiceModel.CommunicationException
     {
         public ProtocolException(string message) { }
         public ProtocolException(string message, System.Exception innerException) { }
         protected ProtocolException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
+    public enum QueuedDeliveryRequirementsMode
+    {
+        Allowed,
+        Required,
+        NotAllowed,
+    }
     public partial class QuotaExceededException : System.Exception
     {
         public QuotaExceededException(string message) { }
         public QuotaExceededException(string message, System.Exception innerException) { }
         protected QuotaExceededException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    public abstract class ReliableMessagingVersion
+    {
+        public static ReliableMessagingVersion Default { get { return default; } }
+        public static ReliableMessagingVersion WSReliableMessaging11 { get { return default; } }
+        public static ReliableMessagingVersion WSReliableMessagingFebruary2005 { get { return default; } }
+    }
+    public class ReliableSession
+    {
+        public ReliableSession() { }
+        public ReliableSession(System.ServiceModel.Channels.ReliableSessionBindingElement reliableSessionBindingElement) { }
+        public bool Ordered { get; set; }
+        public System.TimeSpan InactivityTimeout { get; set; }
     }
     public enum SecurityMode
     {
@@ -1397,6 +1434,23 @@ namespace System.ServiceModel.Channels
         public override bool Equals(object obj) { return default; }
         public override int GetHashCode() { return default; }
         public override string ToString() { return default; }
+    }
+    public sealed class ReliableSessionBindingElement : System.ServiceModel.Channels.BindingElement
+    {
+        public ReliableSessionBindingElement() { }
+        public ReliableSessionBindingElement(bool ordered) { }
+        public System.TimeSpan AcknowledgementInterval { get; set; }
+        public bool FlowControlEnabled { get; set; }
+        public System.TimeSpan InactivityTimeout { get; set; }
+        public int MaxPendingChannels { get; set; }
+        public int MaxRetryCount { get; set; }
+        public int MaxTransferWindowSize { get; set; }
+        public bool Ordered { get; set; }
+        public System.ServiceModel.ReliableMessagingVersion ReliableMessagingVersion { get; set; }
+        public override System.ServiceModel.Channels.BindingElement Clone() { return default; }
+        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
     }
     public abstract partial class RequestContext : System.IDisposable
     {

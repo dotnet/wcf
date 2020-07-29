@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
+    <CLSCompliant>false</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../Http/HttpBindingTestHelpers.cs">
+      <Visible>true</Visible>
+      <Link>External/%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+</Project>

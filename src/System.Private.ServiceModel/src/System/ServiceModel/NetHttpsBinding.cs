@@ -28,6 +28,11 @@ namespace System.ServiceModel
             _basicHttpsSecurity.Mode = securityMode;
         }
 
+        public NetHttpsBinding(BasicHttpsSecurityMode securityMode, bool reliableSessionEnabled) : this(securityMode)
+        {
+            ReliableSession.Enabled = reliableSessionEnabled;
+        }
+
         public NetHttpMessageEncoding MessageEncoding { get; set; }
 
         public BasicHttpsSecurity Security

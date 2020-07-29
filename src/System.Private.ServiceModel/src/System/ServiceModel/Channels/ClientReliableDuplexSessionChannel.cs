@@ -56,7 +56,7 @@ namespace System.ServiceModel.Channels
 
         private void AddPendingAcknowledgements(Message message)
         {
-            lock (ThisLock)
+            using(ThisAsyncLock.TakeLock())
             {
                 if (_pendingAcknowledgements > 0)
                 {
@@ -94,7 +94,7 @@ namespace System.ServiceModel.Channels
 
         private Message CreateAcknowledgmentMessage()
         {
-            lock (ThisLock)
+            using(ThisAsyncLock.TakeLock())
                 _ackVersion++;
 
             int bufferRemaining = GetBufferRemaining();
@@ -121,7 +121,7 @@ namespace System.ServiceModel.Channels
                 Settings.MessageVersion.Addressing);
             temp.MessageBody = new CloseSequence(ReliableSession.OutputID, OutputConnection.Last);
 
-            lock (ThisLock)
+            using(ThisAsyncLock.TakeLock())
             {
                 ThrowIfClosed();
                 _closeRequestor = temp;
@@ -139,7 +139,7 @@ namespace System.ServiceModel.Channels
             temp.MessageBody = new TerminateSequence(reliableMessagingVersion, ReliableSession.OutputID,
                 OutputConnection.Last);
 
-            lock (ThisLock)
+            using(ThisAsyncLock.TakeLock())
             {
                 ThrowIfClosed();
                 _terminateRequestor = temp;
@@ -270,7 +270,7 @@ namespace System.ServiceModel.Channels
                 {
                     bool needDispatch = false;
 
-                    lock (ThisLock)
+                    using (ThisAsyncLock.TakeLock())
                     {
                         if (Aborted || State == CommunicationState.Faulted)
                         {
@@ -382,7 +382,7 @@ namespace System.ServiceModel.Channels
                 {
                     bool isTerminateEarly;
 
-                    lock (ThisLock)
+                    using (ThisAsyncLock.TakeLock())
                     {
                         isTerminateEarly = !_inputConnection.Terminate();
                     }
@@ -413,7 +413,7 @@ namespace System.ServiceModel.Channels
                         bool isLastLargeEnough = true;
                         bool isLastConsistent = true;
 
-                        lock (ThisLock)
+                        using (ThisAsyncLock.TakeLock())
                         {
                             if (!_inputConnection.IsLastKnown)
                             {
@@ -554,7 +554,7 @@ namespace System.ServiceModel.Channels
                 }
                 else if (tryAckNow)
                 {
-                    lock (ThisLock)
+                    using (ThisAsyncLock.TakeLock())
                     {
                         if (oldAckVersion != 0 && oldAckVersion != _ackVersion)
                             return;
@@ -590,7 +590,7 @@ namespace System.ServiceModel.Channels
 
                 if (terminate)
                 {
-                    lock (ThisLock)
+                    using (ThisAsyncLock.TakeLock())
                     {
                         _inputConnection.Terminate();
                     }
@@ -645,7 +645,7 @@ namespace System.ServiceModel.Channels
 
         private async void OnAcknowledgementTimeoutElapsedAsync(object state)
         {
-            lock (ThisLock)
+            using (ThisAsyncLock.TakeLock())
             {
                 _acknowledgementScheduled = false;
                 _pendingAcknowledgements = 0;
@@ -748,7 +748,7 @@ namespace System.ServiceModel.Channels
 
         protected async Task OnCloseOutputSessionAsync(TimeSpan timeout)
         {
-            lock (ThisLock)
+            using (ThisAsyncLock.TakeLock())
             {
                 ThrowIfNotOpened();
                 ThrowIfFaulted();
@@ -931,7 +931,7 @@ namespace System.ServiceModel.Channels
                     {
                         bool terminated = false;
 
-                        lock (ThisLock)
+                        using (ThisAsyncLock.TakeLock())
                         {
                             terminated = _inputConnection.Terminate();
                         }
@@ -1107,10 +1107,9 @@ namespace System.ServiceModel.Channels
             TaskHelpers.WaitForCompletion(OnCloseAsync(timeout));
         }
 
-        private void OnConnectionLost(object sender, EventArgs args)
+        private async void OnConnectionLost(object sender, EventArgs args)
         {
-            // TODO: Investigate ramifications of ReconnectAsync continuing outside the lock. Consider replacing with async lock.
-            lock (ThisLock)
+            using (await ThisAsyncLock.TakeLockAsync())
             {
                 if ((State == CommunicationState.Opened || State == CommunicationState.Closing) &&
                     !Binder.Connected && _clientSession.StopPolling())
@@ -1121,7 +1120,7 @@ namespace System.ServiceModel.Channels
                         WcfEventSource.Instance.ClientReliableSessionReconnect(_clientSession.Id);
                     }
 
-                    ReconnectAsync();
+                    await ReconnectAsync();
                 }
             }
         }
@@ -1174,17 +1173,15 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private static void OnReconnectTimerElapsed(object state)
+        private static async void OnReconnectTimerElapsed(object state)
         {
             ClientReliableDuplexSessionChannel channel = (ClientReliableDuplexSessionChannel)state;
-
-            // TODO: Investigate ramifications of ReconnectAsync continuing outside the lock. Consider replacing with async lock.
-            lock (channel.ThisLock)
+            using (await channel.ThisAsyncLock.TakeLockAsync())
             {
                 if ((channel.State == CommunicationState.Opened || channel.State == CommunicationState.Closing) &&
                     !channel.Binder.Connected)
                 {
-                    channel.ReconnectAsync();
+                    await channel.ReconnectAsync();
                 }
                 else
                 {
@@ -1230,7 +1227,7 @@ namespace System.ServiceModel.Channels
                 await Binder.SendAsync(message, timeout);
                 handleException = false;
 
-                lock (ThisLock)
+                using (ThisAsyncLock.TakeLock())
                 {
                     if (Binder.Connected)
                         _clientSession.ResumePolling(OutputConnection.Strategy.QuotaRemaining == 0);

@@ -22,10 +22,7 @@ namespace System.ServiceModel
 
         protected WSHttpBindingBase(bool reliableSessionEnabled) : this()
         {
-            if (reliableSessionEnabled)
-            {
-                throw ExceptionHelper.PlatformNotSupported();
-            }
+            ReliableSession.Enabled = reliableSessionEnabled;
         }
 
         [DefaultValue(HttpTransportDefaults.BypassProxyOnLocal)]

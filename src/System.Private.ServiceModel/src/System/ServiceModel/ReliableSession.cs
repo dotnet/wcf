@@ -58,21 +58,12 @@ namespace System.ServiceModel
 
     public class OptionalReliableSession : ReliableSession
     {
-        bool enabled;
-
         public OptionalReliableSession() : base() { }
 
         public OptionalReliableSession(ReliableSessionBindingElement reliableSessionBindingElement) : base(reliableSessionBindingElement) { }
 
         // We don't include DefaultValue here because this defaults to false, so omitting it would make the XAML somewhat misleading
-        public bool Enabled
-        {
-            get { return enabled; }
-            set
-            {
-                enabled = value;
-            }
-        }
+        public bool Enabled { get; set; }
 
         internal void CopySettings(OptionalReliableSession copyFrom)
         {

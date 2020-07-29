@@ -2805,4 +2805,19 @@
   <data name="WsrmRequiredFaultString" xml:space="preserve">
     <value>The RM server requires the use of WS-ReliableMessaging 1.1 protocol. This is likely caused by a binding mismatch.</value>
   </data>
+  <data name="BindingRequirementsAttributeDisallowsQueuedDelivery1" xml:space="preserve">
+    <value>DeliveryRequirementsAttribute disallows QueuedDelivery, but binding for the endpoint with contract '{0}' supports it.</value>
+  </data>
+  <data name="BindingRequirementsAttributeRequiresQueuedDelivery1" xml:space="preserve">
+    <value>DeliveryRequirementsAttribute requires QueuedDelivery, but binding for the endpoint with contract '{0}' doesn't support it or isn't configured properly to support it.</value>
+  </data>
+  <data name="SinceTheBindingForDoesnTSupportIBindingCapabilities1_1" xml:space="preserve">
+    <value>The DeliveryRequirementsAttribute on contract '{0}' specifies that the binding must support ordered delivery (RequireOrderedDelivery).  This condition could not be verified because the configured binding does not implement IBindingDeliveryCapabilities.  The DeliveryRequirementsAttribute may only be used with bindings that implement the IBindingDeliveryCapabilities interface.</value>
+  </data>
+  <data name="SinceTheBindingForDoesnTSupportIBindingCapabilities2_1" xml:space="preserve">
+    <value>The DeliveryRequirementsAttribute on contract '{0}' specifies a QueuedDeliveryRequirements constraint.  This condition could not be verified because the configured binding does not implement IBindingDeliveryCapabilities.  The DeliveryRequirementsAttribute may only be used with bindings that implement the IBindingDeliveryCapabilities interface.</value>
+  </data>
+  <data name="TheBindingForDoesnTSupportOrderedDelivery1" xml:space="preserve">
+    <value>The DeliveryRequirementsAttribute on contract '{0}' specifies a QueuedDeliveryRequirements value of NotAllowed.  However, the configured binding for this contract specifies that it does support queued delivery.  A queued binding may not be used with this contract.</value>
+  </data>
 </root>

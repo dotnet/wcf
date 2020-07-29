@@ -139,6 +139,16 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicHttpRpcEncWithHeaders.svc//Basic"); }
     }
 
+    public static string ReliableSession_NetHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionService.svc/NetHttp"); }
+    }
+
+    public static string ReliableSession_WSHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionService.svc/WSHttp"); }
+    }
+
     #region WebSocket Addresses
     public static string HttpBaseAddress_NetHttpWebSockets
     {
@@ -716,10 +726,17 @@ public static partial class Endpoints
 
     public static string Tcp_SecModeTransWithMessCred_ClientCredTypeUserName
     {
-        get
-        {
-            return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp");
-        }
+        get { return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp"); }
+    }
+
+    public static string ReliableSession_NetTcp
+    {
+        get { return GetEndpointAddress("ReliableSessionService.svc/NetTcp", protocol: "net.tcp"); }
+    }
+
+    public static string ReliableDuplexSession_NetTcp
+    {
+        get { return GetEndpointAddress("ReliableSessionDuplexService.svc/NetTcp", protocol: "net.tcp"); }
     }
     #endregion net.tcp Addresses
 }

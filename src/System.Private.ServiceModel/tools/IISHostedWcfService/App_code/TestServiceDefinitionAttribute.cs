@@ -6,18 +6,20 @@ using System;
 
 namespace WcfService
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class TestServiceDefinitionAttribute : Attribute
     {
         public string BasePath { get; set; }
         public ServiceSchema Schema { get; set; }
     }
 
+    [Flags]
     public enum ServiceSchema
     {
-        HTTP,
-        HTTPS,
-        NETTCP,
-        WS,
-        WSS
+        HTTP = 1,
+        HTTPS = 2,
+        NETTCP = 4,
+        WS = 8,
+        WSS = 16
     }
 }

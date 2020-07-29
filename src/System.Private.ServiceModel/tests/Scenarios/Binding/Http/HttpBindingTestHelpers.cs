@@ -27,8 +27,8 @@ public class HttpMessageHandlerBehavior : IEndpointBehavior
         return new InterceptingHttpMessageHandler(httpClientHandler, this);
     }
 
-    public Func<HttpRequestMessage, CancellationToken, HttpResponseMessage> OnSending { get; set; }
-    public Func<HttpResponseMessage, CancellationToken, HttpResponseMessage> OnSent { get; set; }
+    public Func<HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> OnSendingAsync { get; set; }
+    public Func<HttpResponseMessage, CancellationToken, Task<HttpResponseMessage>> OnSentAsync { get; set; }
 
 }
 
@@ -45,18 +45,18 @@ public class InterceptingHttpMessageHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         HttpResponseMessage response;
-        if (_parent.OnSending != null)
+        if (_parent.OnSendingAsync != null)
         {
-            response = _parent.OnSending(request, cancellationToken);
+            response = await _parent.OnSendingAsync(request, cancellationToken);
             if (response != null)
                 return response;
         }
 
         response = await base.SendAsync(request, cancellationToken);
 
-        if (_parent.OnSent != null)
+        if (_parent.OnSentAsync != null)
         {
-            return _parent.OnSent(response, cancellationToken);
+            return await _parent.OnSentAsync(response, cancellationToken);
         }
 
         return response;

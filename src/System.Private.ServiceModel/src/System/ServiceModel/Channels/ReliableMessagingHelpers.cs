@@ -1057,7 +1057,6 @@ namespace System.ServiceModel.Channels
         private bool replied = false;
         private InterruptibleWaitObject replyHandle = new InterruptibleWaitObject(false, true);
         private WsrmMessageInfo replyInfo;
-        private Message request;
         private object thisLock = new object();
 
         private object ThisLock
