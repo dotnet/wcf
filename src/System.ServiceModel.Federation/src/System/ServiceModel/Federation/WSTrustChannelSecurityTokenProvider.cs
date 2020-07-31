@@ -165,6 +165,7 @@ namespace System.ServiceModel.Federation
             if (entropy != null)
             {
                 trustRequest.Entropy = entropy;
+                trustRequest.ComputedKeyAlgorithm = _requestSerializationContext.TrustKeyTypes.PSHA1;
             }
 
             return trustRequest;
