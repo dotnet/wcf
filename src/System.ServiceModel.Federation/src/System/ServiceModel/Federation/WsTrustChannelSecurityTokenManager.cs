@@ -41,7 +41,8 @@ namespace System.ServiceModel.Federation
             // TODO - we should check the value of the IssuedTokenType on WsTrustTokenParameters
             if (Saml2Constants.OasisWssSaml2TokenProfile11.Equals(tokenRequirement.TokenType) ||
                 Saml2Constants.Saml2TokenProfile11.Equals(tokenRequirement.TokenType) ||
-                SamlConstants.OasisWssSamlTokenProfile11.Equals(tokenRequirement.TokenType))
+                SamlConstants.OasisWssSamlTokenProfile11.Equals(tokenRequirement.TokenType) ||
+                tokenRequirement.TokenType is null) // Treat unspecified token types as being SAML
             {
                 // pass issuedtokenRequirements
                 return new WsTrustChannelSecurityTokenProvider(tokenRequirement)
