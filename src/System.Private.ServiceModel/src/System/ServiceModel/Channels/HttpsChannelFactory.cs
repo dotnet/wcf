@@ -17,10 +17,10 @@ using System.Threading.Tasks;
 namespace System.ServiceModel.Channels
 {
     internal class HttpsChannelFactory<TChannel> : HttpChannelFactory<TChannel>
-    {
+    {		
         private X509CertificateValidator _sslCertificateValidator;
         private Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> _remoteCertificateValidationCallback;
-
+        
         internal HttpsChannelFactory(HttpsTransportBindingElement httpsBindingElement, BindingContext context)
             : base(httpsBindingElement, context)
         {
@@ -130,8 +130,8 @@ namespace System.ServiceModel.Channels
             return certificateProvider;
         }
 
-        internal SecurityTokenContainer GetCertificateSecurityToken(SecurityTokenProvider certificateProvider,
-            EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, ref TimeoutHelper timeoutHelper)
+        internal async Task<SecurityTokenContainer> GetCertificateSecurityToken(SecurityTokenProvider certificateProvider,
+            EndpointAddress to, Uri via, ChannelParameterCollection channelParameters, TimeoutHelper timeoutHelper)
         {
             SecurityToken token = null;
             SecurityTokenContainer tokenContainer = null;
@@ -147,7 +147,7 @@ namespace System.ServiceModel.Channels
 
             if (requestCertificateProvider != null)
             {
-                token = requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                token = await requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime());
             }
 
             if (ManualAddressing && RequireClientCertificate)
@@ -328,7 +328,7 @@ namespace System.ServiceModel.Channels
 
             internal override async Task<HttpClient> GetHttpClientAsync(EndpointAddress to, Uri via, TimeoutHelper timeoutHelper)
             {
-                SecurityTokenContainer clientCertificateToken = Factory.GetCertificateSecurityToken(_certificateProvider, to, via, ChannelParameters, ref timeoutHelper);
+                SecurityTokenContainer clientCertificateToken = await Factory.GetCertificateSecurityToken(_certificateProvider, to, via, ChannelParameters, timeoutHelper);
                 HttpClient httpClient = await base.GetHttpClientAsync(to, via, clientCertificateToken, timeoutHelper);
                 return httpClient;
             }

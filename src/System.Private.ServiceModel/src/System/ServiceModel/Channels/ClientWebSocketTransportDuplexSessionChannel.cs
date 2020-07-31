@@ -80,7 +80,7 @@ namespace System.ServiceModel.Channels
                 if (httpsChannelFactory != null && httpsChannelFactory.RequireClientCertificate)
                 {
                     var certificateProvider = httpsChannelFactory.CreateAndOpenCertificateTokenProvider(RemoteAddress, Via, channelParameterCollection, helper.RemainingTime());
-                    var clientCertificateToken = httpsChannelFactory.GetCertificateSecurityToken(certificateProvider, RemoteAddress, Via, channelParameterCollection, ref helper);
+                    var clientCertificateToken = await httpsChannelFactory.GetCertificateSecurityToken(certificateProvider, RemoteAddress, Via, channelParameterCollection, helper);
                     var x509Token = (X509SecurityToken)clientCertificateToken.Token;
                     clientCertificate = x509Token.Certificate;
                 }
