@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.6.1-preview-10617201806</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
+    <MicrosoftIdentityModelProtocolsWsTrustPackageVersion>6.7.2-preview-10803222715</MicrosoftIdentityModelProtocolsWsTrustPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
