@@ -154,12 +154,19 @@ namespace System.ServiceModel.Federation
                 Context = RequestContext,
                 KeySizeInBits = keySize,
                 KeyType = keyType,
-                TokenType = SecurityTokenRequirement.TokenType,
                 WsTrustVersion = _requestSerializationContext.TrustVersion
             };
 
+            if (SecurityTokenRequirement.TokenType != null)
+            {
+                trustRequest.TokenType = SecurityTokenRequirement.TokenType;
+            }
+
             if (entropy != null)
+            {
                 trustRequest.Entropy = entropy;
+                trustRequest.ComputedKeyAlgorithm = _requestSerializationContext.TrustKeyTypes.PSHA1;
+            }
 
             return trustRequest;
         }

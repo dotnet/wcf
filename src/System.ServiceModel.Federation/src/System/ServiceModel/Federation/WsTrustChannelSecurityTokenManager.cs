@@ -5,9 +5,8 @@
 #pragma warning disable 1591
 
 using System.IdentityModel.Selectors;
+using System.ServiceModel.Security.Tokens;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens.Saml;
-using Microsoft.IdentityModel.Tokens.Saml2;
 
 namespace System.ServiceModel.Federation
 {
@@ -16,6 +15,9 @@ namespace System.ServiceModel.Federation
     /// </summary>
     public class WsTrustChannelSecurityTokenManager : ClientCredentialsSecurityTokenManager
     {
+        private const string Namespace = "http://schemas.microsoft.com/ws/2006/05/servicemodel/securitytokenrequirement";
+        private const string IssuedSecurityTokenParametersProperty = Namespace + "/IssuedSecurityTokenParameters";
+
         private WsTrustChannelClientCredentials _wsTrustChannelClientCredentials;
 
         /// <summary>
@@ -38,10 +40,10 @@ namespace System.ServiceModel.Federation
             if (tokenRequirement == null)
                 throw LogHelper.LogArgumentNullException(nameof(tokenRequirement));
 
-            // TODO - we should check the value of the IssuedTokenType on WsTrustTokenParameters
-            if (Saml2Constants.OasisWssSaml2TokenProfile11.Equals(tokenRequirement.TokenType) ||
-                Saml2Constants.Saml2TokenProfile11.Equals(tokenRequirement.TokenType) ||
-                SamlConstants.OasisWssSamlTokenProfile11.Equals(tokenRequirement.TokenType))
+            // If the token requirement includes an issued security token parameter of type
+            // WsTrustTokenParameters, then tokens should be provided by a WsTrustChannelSecurityTokenProvider.
+            if (tokenRequirement.TryGetProperty(IssuedSecurityTokenParametersProperty, out SecurityTokenParameters issuedSecurityTokenParameters) &&
+                issuedSecurityTokenParameters is WsTrustTokenParameters)
             {
                 // pass issuedtokenRequirements
                 return new WsTrustChannelSecurityTokenProvider(tokenRequirement)
