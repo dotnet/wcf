@@ -1,0 +1,18 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/WcfProjectNService/tempuri.org.wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.SortedList,System.Collections.NonGeneric"
+    ],
+    "namespaceMappings": [
+      "*, sortedListNonGeneric_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "N.N",
+    "typeReuseMode": "None"
+  }
+}

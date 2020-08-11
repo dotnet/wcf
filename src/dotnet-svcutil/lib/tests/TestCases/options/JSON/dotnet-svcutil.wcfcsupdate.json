@@ -1,0 +1,23 @@
+{
+  "providerId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "version": "15.0.20628.921",
+  "ExtendedData": {
+    "Uri": [
+      "http://miguell-main/wcfforsvctuil/service1.svc"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.List`1",
+      "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    ],
+    "GenerateMessageContract": true,
+    "internalTypeAccess": true,
+    "Namespace": [
+      "Microsoft*, MyNamespace1"
+    ],
+    "outputFile": "Reference.cs",
+    "references": [
+      "System.ServiceModel, {System.ServiceModel.Primitives, 4.1.0}",
+      "System.Collections, {Microsoft.NETCore.App, *}"
+    ]
+  }
+}

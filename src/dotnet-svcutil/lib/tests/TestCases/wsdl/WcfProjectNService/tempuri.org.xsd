@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd6" namespace="http://schemas.wcf.projectn.com/wcfnamespace" />
+  <xs:element name="EchoWithTimeout">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EchoWithTimeoutResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="EchoWithTimeoutResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Echo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EchoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="EchoResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EchoComplex">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfProjectNService" minOccurs="0" name="message" nillable="true" type="q1:ComplexCompositeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EchoComplexResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WcfProjectNService" minOccurs="0" name="EchoComplexResult" nillable="true" type="q2:ComplexCompositeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestFault">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="faultMsg" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestFaultResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ThrowInvalidOperationException">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ThrowInvalidOperationExceptionResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDataUsingDataContract">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfProjectNService" minOccurs="0" name="composite" nillable="true" type="q3:CompositeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDataUsingDataContractResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/WcfProjectNService" minOccurs="0" name="GetDataUsingDataContractResult" nillable="true" type="q4:CompositeType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ValidateMessagePropertyHeaders">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ValidateMessagePropertyHeadersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ValidateMessagePropertyHeadersResult" nillable="true" type="q5:ArrayOfKeyValueOfstringstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UserGetAuthToken">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="liveId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UserGetAuthTokenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.wcf.projectn.com/wcfnamespace" minOccurs="0" name="UserGetAuthTokenResult" nillable="true" type="q6:ResultOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UserGamePlayGetList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="gameKey" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="keys" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UserGamePlayGetListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.wcf.projectn.com/wcfnamespace" minOccurs="0" name="UserGamePlayGetListResult" nillable="true" type="q7:ResultOfArrayOfUserGamePlay" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Date_of_Request" type="xs:dateTime" />
+  <xs:element name="Transaction_Amount" type="xs:int" />
+  <xs:element name="EchoHttpRequestMessageProperty">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EchoHttpRequestMessagePropertyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WcfProjectNService" minOccurs="0" name="EchoHttpRequestMessagePropertyResult" nillable="true" type="q8:TestHttpRequestMessageProperty" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

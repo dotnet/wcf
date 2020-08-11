@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.wcf.projectn.com/wcfnamespace" elementFormDefault="qualified" targetNamespace="http://schemas.wcf.projectn.com/wcfnamespace" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/System.Net" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService" />
+  <xs:complexType name="FaultDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FaultDetail" nillable="true" type="tns:FaultDetail" />
+  <xs:complexType name="ResultOfstring">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ResultOf{0}" Namespace="http://schemas.wcf.projectn.com/wcfnamespace" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" NestedLevel="1" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorCode" type="xs:int" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Net" minOccurs="0" name="HttpStatusCode" type="q1:HttpStatusCode" />
+      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResultOfstring" nillable="true" type="tns:ResultOfstring" />
+  <xs:complexType name="ResultOfArrayOfUserGamePlay">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ResultOf{0}" Namespace="http://schemas.wcf.projectn.com/wcfnamespace" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ArrayOfUserGamePlay" Namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService" NestedLevel="1" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorCode" type="xs:int" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Net" minOccurs="0" name="HttpStatusCode" type="q2:HttpStatusCode" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfProjectNService" minOccurs="0" name="Result" nillable="true" type="q3:ArrayOfUserGamePlay" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResultOfArrayOfUserGamePlay" nillable="true" type="tns:ResultOfArrayOfUserGamePlay" />
+</xs:schema>

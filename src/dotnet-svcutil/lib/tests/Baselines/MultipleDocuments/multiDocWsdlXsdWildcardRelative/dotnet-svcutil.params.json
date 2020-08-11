@@ -1,0 +1,26 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../wsdl/CustomNamespace.xsd",
+      "../wsdl/mycustomcustomernamespace.com.xsd",
+      "../wsdl/mycustomwrappernamespace.com.xsd",
+      "../wsdl/schemas.microsoft.com.2003.10.Serialization.Arrays.xsd",
+      "../wsdl/schemas.microsoft.com.2003.10.Serialization.xsd",
+      "../wsdl/schemas.microsoft.com.Message.xsd",
+      "../wsdl/schemas.wcf.projectn.com.wcfnamespace.xsd",
+      "../wsdl/System.Net.xsd",
+      "../wsdl/System.xsd",
+      "../wsdl/tempuri.org.wsdl",
+      "../wsdl/tempuri.org.xsd",
+      "../wsdl/WcfProjectNService.xsd"
+    ],
+    "namespaceMappings": [
+      "*, multiDocWsdlXsdWildcardRelative_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "N.N",
+    "typeReuseMode": "None"
+  }
+}

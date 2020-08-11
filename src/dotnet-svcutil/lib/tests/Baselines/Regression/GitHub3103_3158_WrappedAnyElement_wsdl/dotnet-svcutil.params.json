@@ -1,0 +1,16 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/regression/GitHub3103_3158_WrappedAnyElement.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, GitHub3103_3158_WrappedAnyElement_wsdl_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp1.1",
+    "typeReuseMode": "None",
+    "wrapped": true
+  }
+}
