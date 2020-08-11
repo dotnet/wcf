@@ -7,14 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace singleWsdlQuery_NS
+namespace wsdlQuery_NS
 {
     using System.Runtime.Serialization;
     
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfForSvcUtil")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class CompositeType : object
     {
         
@@ -50,7 +50,7 @@ namespace singleWsdlQuery_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="singleWsdlQuery_NS.IService1")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="wsdlQuery_NS.IService1")]
     public interface IService1
     {
         
@@ -58,17 +58,17 @@ namespace singleWsdlQuery_NS
         System.Threading.Tasks.Task<string> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IService1/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<singleWsdlQuery_NS.CompositeType> GetDataUsingDataContractAsync(singleWsdlQuery_NS.CompositeType composite);
+        System.Threading.Tasks.Task<wsdlQuery_NS.CompositeType> GetDataUsingDataContractAsync(wsdlQuery_NS.CompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IService1Channel : singleWsdlQuery_NS.IService1, System.ServiceModel.IClientChannel
+    public interface IService1Channel : wsdlQuery_NS.IService1, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class Service1Client : System.ServiceModel.ClientBase<singleWsdlQuery_NS.IService1>, singleWsdlQuery_NS.IService1
+    public partial class Service1Client : System.ServiceModel.ClientBase<wsdlQuery_NS.IService1>, wsdlQuery_NS.IService1
     {
         
         /// <summary>
@@ -81,7 +81,7 @@ namespace singleWsdlQuery_NS
         public Service1Client() : 
                 base(Service1Client.GetDefaultBinding(), Service1Client.GetDefaultEndpointAddress())
         {
-            this.Endpoint.Name = EndpointConfiguration.BasicHttpBinding_IService1.ToString();
+            this.Endpoint.Name = EndpointConfiguration.Service1_IService1.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
@@ -116,7 +116,7 @@ namespace singleWsdlQuery_NS
             return base.Channel.GetDataAsync(value);
         }
         
-        public System.Threading.Tasks.Task<singleWsdlQuery_NS.CompositeType> GetDataUsingDataContractAsync(singleWsdlQuery_NS.CompositeType composite)
+        public System.Threading.Tasks.Task<wsdlQuery_NS.CompositeType> GetDataUsingDataContractAsync(wsdlQuery_NS.CompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
@@ -133,7 +133,7 @@ namespace singleWsdlQuery_NS
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService1))
+            if ((endpointConfiguration == EndpointConfiguration.Service1_IService1))
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
@@ -147,27 +147,27 @@ namespace singleWsdlQuery_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService1))
+            if ((endpointConfiguration == EndpointConfiguration.Service1_IService1))
             {
-                return new System.ServiceModel.EndpointAddress("http://$serviceUrl$/WcfForSvcUtil/Service1.svc/Service1.svc");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicService1.svc/Service1");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
         private static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
-            return Service1Client.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IService1);
+            return Service1Client.GetBindingForEndpoint(EndpointConfiguration.Service1_IService1);
         }
         
         private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
-            return Service1Client.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IService1);
+            return Service1Client.GetEndpointAddress(EndpointConfiguration.Service1_IService1);
         }
         
         public enum EndpointConfiguration
         {
             
-            BasicHttpBinding_IService1,
+            Service1_IService1,
         }
     }
 }

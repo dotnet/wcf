@@ -39,8 +39,7 @@ namespace SvcutilTest
                 ValidateTest(options, this_TestCaseProject.DirectoryPath, exitCode, outputText, expectSuccess);
             }
         }
-
-
+        
         [Trait("Category", "UnitTest")]
         [Theory]
         [InlineData(null)]
@@ -82,7 +81,7 @@ namespace SvcutilTest
 
             var uri = $"{g_ServiceUrl}/{uriPart}";
             var options = $"{uri} -nl";
-
+            this_TestCaseName = testCaseName;
             UnitTestSvcutil(AppendCommonOptions(options));
         }
 
@@ -331,7 +330,7 @@ namespace SvcutilTest
 
             ValidateTest(options.ToString(), this_TestCaseProject.DirectoryPath, 0, string.Empty, true);
         }
-
+        
         private bool ValidateJson(ApplicationOptions options, string jsonFileSrcPath, out string errorMessage)
         {
             errorMessage = string.Empty;

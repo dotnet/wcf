@@ -82,7 +82,7 @@
       "System.Xml.ReaderWriter, {System.Xml.ReaderWriter, 99.99.99}",
       "System.Xml.XDocument, {System.Xml.XDocument, 99.99.99}"
     ],
-    "targetFramework": "netcoreapp1.1",
+    "targetFramework": "N.N",
     "typeReuseMode": "All"
   }
 }

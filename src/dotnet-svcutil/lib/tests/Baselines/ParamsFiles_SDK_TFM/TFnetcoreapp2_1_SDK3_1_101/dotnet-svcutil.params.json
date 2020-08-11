@@ -12,7 +12,7 @@
     "references": [
       "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}"
     ],
-    "targetFramework": "netcoreapp2.1",
+    "targetFramework": "N.N",
     "typeReuseMode": "Specified"
   }
 }

@@ -16,7 +16,7 @@
     "namespaceMappings": [
       "*, UpdateServiceRefOptionsDefaultOnMultipleRefs_2"
     ],
-    "targetFramework": "netcoreapp2.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "None"
   }
 }

@@ -19,6 +19,6 @@
     "references": [
       "Newtonsoft.Json, {Newtonsoft.Json, *}"
     ],
-    "targetFramework": "netcoreapp2.0"
+    "targetFramework": "N.N"
   }
 }

@@ -9,7 +9,7 @@
       "*, tfm100_NS"
     ],
     "outputFile": "Reference.cs",
-    "targetFramework": "netcoreapp100.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "None"
   }
 }

@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Tools.ServiceModel.Svcutil;
@@ -11,6 +12,20 @@ namespace SvcutilTest
 {
     public class MSBuildProjTests
     {
+        private readonly string _testDir = ClassFixture.FindRepositoryRoot() + "/artifacts/TestOutput";
+        public string TestDir
+        {
+            get
+            {
+                if (!Directory.Exists(_testDir))
+                {
+                    Directory.CreateDirectory(_testDir);
+                }
+
+                return _testDir;
+            }
+        }
+
         [Fact]
         public async Task ParseAsync_ValidProjectWithPackageReference_ShouldParseSuccessfully()
         {
@@ -23,7 +38,7 @@ namespace SvcutilTest
   </ItemGroup>
 </Project>";
 
-            var build = await MSBuildProj.ParseAsync(projectText, "/MSBuildProjTests/Sample", null, CancellationToken.None);
+            var build = await MSBuildProj.ParseAsync(projectText, TestDir + "/MSBuildProjTests/Sample", null, CancellationToken.None);
 
             Assert.NotNull(build);
             Assert.NotEmpty(build.Dependencies);
@@ -43,7 +58,7 @@ namespace SvcutilTest
   </ItemGroup>
 </Project>";
 
-            var build = await MSBuildProj.ParseAsync(projectText, "/MSBuildProjTests/Sample", null, CancellationToken.None);
+            var build = await MSBuildProj.ParseAsync(projectText, TestDir + "/MSBuildProjTests/Sample", null, CancellationToken.None);
 
             Assert.NotNull(build);
             Assert.NotEmpty(build.Dependencies);
@@ -62,7 +77,7 @@ namespace SvcutilTest
   </ItemGroup>
 </Project>";
 
-            var build = await MSBuildProj.ParseAsync(projectText, "/MSBuildProjTests/Sample", null, CancellationToken.None);
+            var build = await MSBuildProj.ParseAsync(projectText, TestDir + "/MSBuildProjTests/Sample", null, CancellationToken.None);
 
             Assert.NotNull(build);
             Assert.NotEmpty(build.Dependencies);
@@ -82,7 +97,7 @@ namespace SvcutilTest
   </ItemGroup>
 </Project>";
 
-            var build = await MSBuildProj.ParseAsync(projectText, "/MSBuildProjTests/Sample", null, CancellationToken.None);
+            var build = await MSBuildProj.ParseAsync(projectText, TestDir + "/MSBuildProjTests/Sample", null, CancellationToken.None);
 
             Assert.NotNull(build);
             Assert.NotEmpty(build.Dependencies);

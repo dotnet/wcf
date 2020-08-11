@@ -16,7 +16,7 @@
     "namespaceMappings": [
       "*, UpdateServiceRefOptions_Folder_With_Spaces"
     ],
-    "targetFramework": "netcoreapp2.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "None"
   }
 }

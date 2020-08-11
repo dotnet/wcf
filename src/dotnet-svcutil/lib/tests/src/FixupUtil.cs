@@ -12,14 +12,14 @@ namespace SvcutilTest
 {
     internal class FixupUtil
     {
-        static readonly string programFilesx64 = Environment.GetEnvironmentVariable("ProgramW6432")?.Replace('\\', '/');
+        static readonly string s_programFilesx64 = Environment.GetEnvironmentVariable("ProgramW6432")?.Replace('\\', '/');
 
-        private List<ReplaceInfo> replacements;
+        private List<ReplaceInfo> _replacements;
 
         public void Init(string resultsPath, string testCasesPath, string projectPath, string serviceUrl, string serviceId, string repositoryRoot)
         {
             // Set versions to a valid fixed value to allow for compiling the generated sources.
-            this.replacements = new List<ReplaceInfo>
+            _replacements = new List<ReplaceInfo>
             {
                 //new ReplaceInfo(serviceUrl, "$serviceUrl$"),
                 new ReplaceInfo(@"\[\d+\.\d+\]", "$LOGENTRY$") { UseRegex = true },
@@ -45,8 +45,8 @@ namespace SvcutilTest
                 new ReplaceInfo(Environment.GetEnvironmentVariable("USERPROFILE"), "$USERPROFILE$"),
                 new ReplaceInfo("/root", "$USERPROFILE$"),
                 new ReplaceInfo(@"targetFramework:\[netcoreapp\d+\.\d+\]", "targetFramework:[N.N]") { UseRegex = true },
-                new ReplaceInfo(@"""targetFramework"": ""netcoreapp3.1""", "\"targetFramework\": \"netcoreapp1.1\"") { UseRegex = true }, //new    
-                new ReplaceInfo(@"<TargetFramework>netcoreapp3.1</TargetFramework>", "<TargetFramework>netcoreapp1.1</TargetFramework>") { UseRegex = true } //new    
+                new ReplaceInfo(@"""targetFramework"": ""netcoreapp\d+\.\d+""", "\"targetFramework\": \"N.N\"") { UseRegex = true }, //new    
+                new ReplaceInfo(@"<TargetFramework>netcoreapp\d+\.\d+</TargetFramework>", "<TargetFramework>N.N</TargetFramework>") { UseRegex = true } //new    
             };
 
             // The result path passed in includes the directory name. Instead replace the parent.
@@ -54,36 +54,35 @@ namespace SvcutilTest
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                this.replacements.Add(new ReplaceInfo($"{programFilesx64}/dotnet/sdk.*.targets", "$sdkTarget$") { UseRegex = true });
+                _replacements.Add(new ReplaceInfo($"{s_programFilesx64}/dotnet/sdk.*.targets", "$sdkTarget$") { UseRegex = true });
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                this.replacements.Add(new ReplaceInfo(@"/usr/share/dotnet/sdk.*.targets", "$sdkTarget$") { UseRegex = true });
+                _replacements.Add(new ReplaceInfo(@"/usr/share/dotnet/sdk.*.targets", "$sdkTarget$") { UseRegex = true });
             }
 
             // Replace paths both with backslashes and forward slashes.
-            this.replacements.Add(new ReplaceInfo(resultPathReplacement, "$resultPath$"));
-            this.replacements.Add(new ReplaceInfo(resultPathReplacement.Replace('\\', '/'), "$resultPath$"));
-            this.replacements.Add(new ReplaceInfo(resultPathReplacement.Replace("\\", "\\\\"), "$resultPath$"));
-            this.replacements.Add(new ReplaceInfo(testCasesPath, "$testCasesPath$"));
-            this.replacements.Add(new ReplaceInfo(testCasesPath.Replace('\\', '/'), "$testCasesPath$"));
-            this.replacements.Add(new ReplaceInfo(testCasesPath.Replace("\\", "\\\\"), "$testCasesPath$"));
-            this.replacements.Add(new ReplaceInfo(projectPath, "$projectPath$"));
-            this.replacements.Add(new ReplaceInfo(projectPath.Replace('\\', '/'), "$projectPath$"));
-            this.replacements.Add(new ReplaceInfo(projectPath.Replace("\\", "\\\\"), "$projectPath$"));
-            this.replacements.Add(new ReplaceInfo(repositoryRoot, "$repositoryRoot$"));
-            this.replacements.Add(new ReplaceInfo(repositoryRoot.Replace("\\", "/"), "$repositoryRoot$"));
-            this.replacements.Add(new ReplaceInfo(repositoryRoot.Replace("\\", "\\\\"), "$repositoryRoot$"));
-            this.replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Debug", "$binDir$"));
-            this.replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Debug", "$binDir$"));
-            this.replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Release", "$binDir$"));
-            this.replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Release", "$binDir$"));
-
+            _replacements.Add(new ReplaceInfo(resultPathReplacement, "$resultPath$"));
+            _replacements.Add(new ReplaceInfo(resultPathReplacement.Replace('\\', '/'), "$resultPath$"));
+            _replacements.Add(new ReplaceInfo(resultPathReplacement.Replace("\\", "\\\\"), "$resultPath$"));
+            _replacements.Add(new ReplaceInfo(testCasesPath, "$testCasesPath$"));
+            _replacements.Add(new ReplaceInfo(testCasesPath.Replace('\\', '/'), "$testCasesPath$"));
+            _replacements.Add(new ReplaceInfo(testCasesPath.Replace("\\", "\\\\"), "$testCasesPath$"));
+            _replacements.Add(new ReplaceInfo(projectPath, "$projectPath$"));
+            _replacements.Add(new ReplaceInfo(projectPath.Replace('\\', '/'), "$projectPath$"));
+            _replacements.Add(new ReplaceInfo(projectPath.Replace("\\", "\\\\"), "$projectPath$"));
+            _replacements.Add(new ReplaceInfo(repositoryRoot, "$repositoryRoot$"));
+            _replacements.Add(new ReplaceInfo(repositoryRoot.Replace("\\", "/"), "$repositoryRoot$"));
+            _replacements.Add(new ReplaceInfo(repositoryRoot.Replace("\\", "\\\\"), "$repositoryRoot$"));
+            _replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Debug", "$binDir$"));
+            _replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Debug", "$binDir$"));
+            _replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Release", "$binDir$"));
+            _replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Release", "$binDir$"));
         }
 
         public string FixupFile(string fileName)
         {
-            var replacements = new List<ReplaceInfo>(this.replacements);
+            var replacements = new List<ReplaceInfo>(_replacements);
 
             // Skip replacing backslashes for source code files.
             if (Path.GetExtension(fileName) != ".cs")
@@ -106,7 +105,7 @@ namespace SvcutilTest
         {
             if (replacements == null)
             {
-                replacements = this.replacements;
+                replacements = _replacements;
             }
 
             originalText = originalText.Replace("\0", "");

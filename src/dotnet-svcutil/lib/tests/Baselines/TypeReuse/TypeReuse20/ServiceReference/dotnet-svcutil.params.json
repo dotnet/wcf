@@ -10,9 +10,9 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
       "$resultPath$//TestResults//TypeReuse//TypeReuse20//bin//Debug//netcoreapp2.0//binlib.dll",
       "$resultPath$//TestResults//TypeReuse//TypeReuse20//bin//Debug//netcoreapp2.0//TypesLib.dll",
+      "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
@@ -32,7 +32,7 @@
       "NuGet.RuntimeModel, {NuGet.RuntimeModel, 99.99.99}",
       "NuGet.Versioning, {NuGet.Versioning, 99.99.99}"
     ],
-    "targetFramework": "netcoreapp2.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "All"
   }
 }

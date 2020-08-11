@@ -39,7 +39,7 @@
     ],
     "runtimeIdentifier": "ubuntu.14.04-x64",
     "serializerMode": "XmlSerializer",
-    "targetFramework": "netcoreapp2.0",
+    "targetFramework": "N.N",
     "toolContext": "Project",
     "typeReuseMode": "None",
     "verbosity": "Minimal",

@@ -14,7 +14,7 @@ namespace mexParam_NS
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/WcfForSvcUtil")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://www.contoso.com/wcfnamespace")]
     public partial class CompositeType : object
     {
         
@@ -81,7 +81,7 @@ namespace mexParam_NS
         public Service1Client() : 
                 base(Service1Client.GetDefaultBinding(), Service1Client.GetDefaultEndpointAddress())
         {
-            this.Endpoint.Name = EndpointConfiguration.BasicHttpBinding_IService1.ToString();
+            this.Endpoint.Name = EndpointConfiguration.Service1_IService1.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
@@ -133,7 +133,7 @@ namespace mexParam_NS
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService1))
+            if ((endpointConfiguration == EndpointConfiguration.Service1_IService1))
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
@@ -147,27 +147,27 @@ namespace mexParam_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_IService1))
+            if ((endpointConfiguration == EndpointConfiguration.Service1_IService1))
             {
-                return new System.ServiceModel.EndpointAddress("http://$serviceUrl$/WcfForSvcUtil/Service1.svc/Service1.svc");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicService1.svc/Service1");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
         private static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
-            return Service1Client.GetBindingForEndpoint(EndpointConfiguration.BasicHttpBinding_IService1);
+            return Service1Client.GetBindingForEndpoint(EndpointConfiguration.Service1_IService1);
         }
         
         private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
         {
-            return Service1Client.GetEndpointAddress(EndpointConfiguration.BasicHttpBinding_IService1);
+            return Service1Client.GetEndpointAddress(EndpointConfiguration.Service1_IService1);
         }
         
         public enum EndpointConfiguration
         {
             
-            BasicHttpBinding_IService1,
+            Service1_IService1,
         }
     }
 }

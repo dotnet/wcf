@@ -10,7 +10,7 @@
     ],
     "outputFile": "Reference.cs",
     "sync": true,
-    "targetFramework": "netcoreapp1.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "None"
   }
 }

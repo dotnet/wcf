@@ -12,7 +12,7 @@
       "*, ExcludeType_NS"
     ],
     "outputFile": "Reference.cs",
-    "targetFramework": "netcoreapp1.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "None"
   }
 }

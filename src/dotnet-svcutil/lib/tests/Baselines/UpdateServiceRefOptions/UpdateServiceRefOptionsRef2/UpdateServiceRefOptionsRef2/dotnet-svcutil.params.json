@@ -16,6 +16,6 @@
     "namespaceMappings": [
       "*, UpdateServiceRefOptionsRef2"
     ],
-    "targetFramework": "netcoreapp2.0"
+    "targetFramework": "N.N"
   }
 }
