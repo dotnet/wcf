@@ -71,7 +71,6 @@ namespace System.Runtime.Diagnostics
             }
         }
 
-
         public bool IsEnd2EndActivityTracingEnabled
         {
             [Fx.Tag.SecurityNote(Critical = "Access critical etwProvider field",
@@ -79,7 +78,8 @@ namespace System.Runtime.Diagnostics
             [SecuritySafeCritical]
             get
             {
-                return false;
+                return WcfEventSource.Instance.IsEnabled() && 
+                    (WcfEventSource.Instance.ActionItemScheduledIsEnabled() || WcfEventSource.Instance.ActionItemCallbackInvokedIsEnabled());
             }
         }
 
