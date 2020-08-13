@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
+    <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
   </PropertyGroup>
   
   <PropertyGroup>
