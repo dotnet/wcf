@@ -147,7 +147,7 @@ namespace System.ServiceModel.Channels
 
             if (requestCertificateProvider != null)
             {
-                token = requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                token = requestCertificateProvider.GetToken(timeoutHelper.RemainingTime());
             }
 
             if (ManualAddressing && RequireClientCertificate)
