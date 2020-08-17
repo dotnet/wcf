@@ -83,7 +83,8 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrap";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
             this_TestCaseBootstrapDir = this_TestCaseOutputDir;
@@ -206,7 +207,7 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TypeReuse";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: g_SdkVersion);
 
             var uri = SetupProjectDependencies();
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
@@ -260,7 +261,7 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefBasic";
             TestFixture();
             var testCaseName = referenceFolderName;
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName);
 
@@ -296,7 +297,8 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefOptions";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             cmdOptions = cmdOptions?.Replace("$testCaseOutputDir$", this_TestCaseOutputDir);
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName, refCount, addNamespace: true);
@@ -319,7 +321,8 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefWCFCS";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("ConnectedService.json", referenceFolderName, refCount: 1, addNamespace: false);
 

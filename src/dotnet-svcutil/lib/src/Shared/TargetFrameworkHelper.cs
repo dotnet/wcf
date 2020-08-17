@@ -45,6 +45,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "4.4.*"    ),
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.4.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.4.*"),
+            } },
+            {new Version("5.0"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.7.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.7.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.7.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.7.*"),
             } }
         };
 

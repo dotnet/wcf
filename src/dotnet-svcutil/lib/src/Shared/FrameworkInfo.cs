@@ -36,11 +36,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             // framework spec form: 'netcore1.5' or 'net452'
-
+            // framework spec form: 'net5.0'
             for (int i = 0; i < fullFrameworkName.Length; i++)
             {
                 char c = fullFrameworkName[i];
-                if (Char.IsNumber(c))
+                if (char.IsNumber(c))
                 {
                     name = fullFrameworkName.Substring(0, i);
 

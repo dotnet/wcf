@@ -67,7 +67,8 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrapGlobal";
             TestFixture();
-            InitializeGlobal(testCaseName, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            //InitializeGlobal(testCaseName, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeGlobal(testCaseName, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
             this_TestCaseBootstrapDir = this_TestCaseOutputDir;
@@ -107,6 +108,7 @@ namespace SvcutilTest
         [InlineData("netcoreapp2.1", "3.1.101", "-elm")]
         public void ParamsFiles_SDK_TFM(string targetFramework, string sdkVersion, string extraOptions)
         {
+            sdkVersion = g_SdkVersion;
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
             var testCaseName = $"TF{targetFramework}_SDK{sdkVersion}".Replace(".", "_");

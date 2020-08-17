@@ -1,6 +1,6 @@
 {
   "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
-  "version": "99.99.99.1313",
+  "version": "99.99.99",
   "options": {
     "inputs": [
       "$testCasesPath$/wsdl/simple.wsdl"

@@ -143,7 +143,8 @@ namespace SvcutilTest
             this_TestCaseName = "TFM";
             TestFixture();
 
-            InitializeUnitTest(testCaseName, createProject: true, sdkVersion: "3.1.101");
+            //InitializeUnitTest(testCaseName, createProject: true, sdkVersion: "3.1.101");
+            InitializeUnitTest(testCaseName, createProject: true, sdkVersion: g_SdkVersion);
 
             var uri = Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl");
             var tf = targetFramework == null ? string.Empty : $"-tf {targetFramework}";
@@ -276,7 +277,8 @@ namespace SvcutilTest
             this_TestCaseName = "CommandOptionsTelemetryString";
             TestFixture();
 
-            InitializeUnitTest(testCaseName, createProject: false, sdkVersion: "3.1.101");
+            //InitializeUnitTest(testCaseName, createProject: false, sdkVersion: "3.1.101");
+            InitializeUnitTest(testCaseName, createProject: false, sdkVersion: g_SdkVersion);
             options = $"{options} -tc Infrastructure";
 
             var args = options.Split(' ');
