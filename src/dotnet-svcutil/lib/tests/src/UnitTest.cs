@@ -146,7 +146,7 @@ namespace SvcutilTest
             //InitializeUnitTest(testCaseName, createProject: true, sdkVersion: "3.1.101");
             InitializeUnitTest(testCaseName, createProject: true, sdkVersion: g_SdkVersion);
 
-            var uri = Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl");
+            var uri = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
             var tf = targetFramework == null ? string.Empty : $"-tf {targetFramework}";
             var options = $"{uri} {tf}";
             this_TestCaseName = testCaseName;
@@ -179,10 +179,10 @@ namespace SvcutilTest
 
         [Trait("Category", "UnitTest")]
         [Theory]
-        [InlineData("basicOptions1", "$testCasesDir$/wsdl/simple.wsdl -tc global")]
-        [InlineData("basicOptions2", "$testCasesDir$/wsdl/simple.wsdl -pf $projectPath$ -nb ")]
-        [InlineData("basicOptions3", "$testCasesDir$/wsdl/simple.wsdl -pf $projectPath$ -d OutputDir -o Reference.cs")]
-        [InlineData("basicOptions4", "$testCasesDir$/wsdl/simple.wsdl -pf $projectPath$ -d OutputDir -o Reference.cs -bd $bootstrapDir$")]
+        [InlineData("basicOptions1", "$testCasesDir$/wsdl/Simple.wsdl -tc global")]
+        [InlineData("basicOptions2", "$testCasesDir$/wsdl/Simple.wsdl -pf $projectPath$ -nb ")]
+        [InlineData("basicOptions3", "$testCasesDir$/wsdl/Simple.wsdl -pf $projectPath$ -d OutputDir -o Reference.cs")]
+        [InlineData("basicOptions4", "$testCasesDir$/wsdl/Simple.wsdl -pf $projectPath$ -d OutputDir -o Reference.cs -bd $bootstrapDir$")]
         [InlineData("basicOptions5", "$testCasesDir$/wsdl/WcfProjectNService/* -pf $projectPath$ -d OutputDir -o Reference.cs -bd $bootstrapDir$")]
         public void CommandOptionsBasic(string testCaseName, string options)
         {
@@ -198,7 +198,7 @@ namespace SvcutilTest
         [InlineData("fwdWild", "../wsdl/* -o ServiceReference/Reference.cs")]
         [InlineData("fwdWildExt", "../wsdl/*.wsdl -d ServiceReference")]
         [InlineData("bckWild", "..\\wsdl\\* -d OutputDir/ServiceReference -o Reference.cs")]
-        [InlineData("backFull", "..\\wsdl\\simple.wsdl -d ..\\backFull\\OutputDir/ServiceReference -o OutputDir\\Reference.cs")]
+        [InlineData("backFull", "..\\wsdl\\Simple.wsdl -d ..\\backFull\\OutputDir/ServiceReference -o OutputDir\\Reference.cs")]
         [InlineData("fwdMultiWild", "../wsdl/WcfProjectNService/* -d ..\\..\\CommandOptionsRelativePaths\\OutputDir")]
         [InlineData("fwdMultiWildExt", "../wsdl/WcfProjectNService/*.wsdl -d ../../CommandOptionsRelativePaths/OutputDir")]
         public void CommandOptionsFilePaths(string testCaseName, string options)
@@ -213,7 +213,7 @@ namespace SvcutilTest
                 FileUtil.CopyDirectory(wsdlFilesSrcDir.Replace("$testCasesDir$", g_TestCasesDir), Path.Combine(wsdlFilesDstDir, "WcfProjectNService"), overwrite: true);
 
                 Directory.CreateDirectory(Path.Combine(this_TestGroupOutputDir, "wsdl"));
-                File.Copy(Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl"), Path.Combine(this_TestGroupOutputDir, "wsdl/simple.wsdl"));
+                File.Copy(Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl"), Path.Combine(this_TestGroupOutputDir, "wsdl", "Simple.wsdl"));
             }
 
             options = $"-tc global -pf $projectPath$ -ntr {options}";

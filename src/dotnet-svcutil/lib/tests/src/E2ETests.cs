@@ -91,7 +91,7 @@ namespace SvcutilTest
             // the boostrapper won't delete the folder if not created by it or with the -v Debug option 
             Directory.CreateDirectory(Path.Combine(this_TestCaseOutputDir, "SvcutilBootstrapper"));
 
-            var uri = $"\"\"{Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl")}\"\"";
+            var uri = $"\"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
             var tr = $"-r \"\"{{Newtonsoft.Json,*}}\"\" -bd {this_TestCaseBootstrapDir}";
             var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ..\\{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";

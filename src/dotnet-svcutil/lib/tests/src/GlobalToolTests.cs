@@ -75,7 +75,7 @@ namespace SvcutilTest
             // the boostrapper won't delete the folder if not created by it or with the -v Debug option 
             Directory.CreateDirectory(Path.Combine(this_TestCaseOutputDir, "SvcutilBootstrapper"));
 
-            var uri = $"\"{Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl")}\"";
+            var uri = $"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
             var tr = $"-r \"{{Newtonsoft.Json, *}}\" -bd {this_TestCaseBootstrapDir}";
             var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ..\\{testCaseName} -n \"*, {testCaseName}_NS\"";
@@ -104,15 +104,14 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("netcoreapp2.0", "3.1.101", "-edb")]
-        [InlineData("netcoreapp2.1", "3.1.101", "-elm")]
-        public void ParamsFiles_SDK_TFM(string targetFramework, string sdkVersion, string extraOptions)
+        [InlineData("netcoreapp2.0", "-edb")]
+        [InlineData("netcoreapp2.1", "-elm")]
+        public void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
         {
-            sdkVersion = g_SdkVersion;
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
-            var testCaseName = $"TF{targetFramework}_SDK{sdkVersion}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework, sdkVersion);
+            var testCaseName = $"TF{targetFramework}".Replace(".", "_");
+            InitializeGlobal(testCaseName, targetFramework, g_SdkVersion);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";
