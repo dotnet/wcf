@@ -47,7 +47,7 @@ namespace SvcutilTest
             Assert.False(string.IsNullOrWhiteSpace(this_TestCaseName), $"{nameof(this_TestCaseName)} not initialized!");
             Assert.False(options == null, $"{nameof(options)} not initialized!");
 
-            // thi sets the current directory to the project's.
+            // this sets the current directory to the project's.
             ProcessRunner.ProcessResult processResult = this_TestCaseProject.RunSvcutil(options, expectSuccess, this_TestCaseLogger);
 
             _ = $"{processResult.OutputText}{Environment.NewLine}{((TestLogger)this_TestCaseLogger)}";
@@ -83,7 +83,6 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrap";
             TestFixture();
-            //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
             InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
@@ -94,7 +93,7 @@ namespace SvcutilTest
             var uri = $"\"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
             var tr = $"-r \"\"{{Newtonsoft.Json,*}}\"\" -bd {this_TestCaseBootstrapDir}";
-            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ..\\{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";
+            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";
 
             TestSvcutil(options);
         }
@@ -195,7 +194,7 @@ namespace SvcutilTest
             InitializeE2E(testCaseName);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl")}";
-            var dir = $"-d ..\\{ testCaseName}";
+            var dir = $"-d ../{ testCaseName}";
 
             TestSvcutil(dir + " " + url + " " + options, expectSuccess);
         }

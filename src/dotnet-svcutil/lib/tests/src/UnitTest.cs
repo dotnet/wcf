@@ -61,7 +61,7 @@ namespace SvcutilTest
             var verbosityOption = string.IsNullOrWhiteSpace(verbosity) ? string.Empty : $" -v {verbosity}";
 
             // use options that would make the tool show the incorrect tool operational context warning!
-            var options = $"{uri} {verbosityOption} -tc project -d ..\\{testCaseName} -ntr";
+            var options = $"{uri} {verbosityOption} -tc project -d ../{testCaseName} -ntr";
 
             UnitTestSvcutil(options, expectSuccess: false);
         }

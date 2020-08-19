@@ -67,7 +67,6 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrapGlobal";
             TestFixture();
-            //InitializeGlobal(testCaseName, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
             InitializeGlobal(testCaseName, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
@@ -78,7 +77,7 @@ namespace SvcutilTest
             var uri = $"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
             var tr = $"-r \"{{Newtonsoft.Json, *}}\" -bd {this_TestCaseBootstrapDir}";
-            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ..\\{testCaseName} -n \"*, {testCaseName}_NS\"";
+            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"*, {testCaseName}_NS\"";
 
             TestGlobalSvcutil(options);
         }
@@ -113,7 +112,7 @@ namespace SvcutilTest
             var testCaseName = $"TF{targetFramework}".Replace(".", "_");
             InitializeGlobal(testCaseName, targetFramework, g_SdkVersion);
 
-            var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "simple.wsdl")}";
+            var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";
 
             // generate params file from options

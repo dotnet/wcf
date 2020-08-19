@@ -277,7 +277,7 @@ namespace SvcutilTest
         protected string AppendCommonOptions(string options)
         {
             // add the namespace option to avoid type clashing in the generated code and be able to compile the project when more than one service ref is added.
-            options = $"{options} -v Minimal -d ..\\{this_TestCaseName} -n \"\"*,{this_TestCaseName}_NS\"\" -ntr";
+            options = $"{options} -v Minimal -d ../{this_TestCaseName} -n \"\"*,{this_TestCaseName}_NS\"\" -ntr";
             return options;
         }
 
