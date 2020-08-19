@@ -3,7 +3,7 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "$testCasesPath$/wsdl/simple.wsdl"
+      "$testCasesPath$/wsdl/Simple.wsdl"
     ],
     "bootstrapPath": "$resultPath$/TestBootstrap/ParamsFiles_SDK_TFM/TFnetcoreapp2_0",
     "namespaceMappings": [
