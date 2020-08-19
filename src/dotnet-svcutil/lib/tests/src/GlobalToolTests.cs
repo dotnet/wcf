@@ -77,7 +77,7 @@ namespace SvcutilTest
             var uri = $"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
             var tr = $"-r \"{{Newtonsoft.Json, *}}\" -bd {this_TestCaseBootstrapDir.Replace("\\", "/")}";
-            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"*, {testCaseName}_NS\"";
+            var options = $"{uri.Replace("\\", "/")} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"*, {testCaseName}_NS\"";
 
             TestGlobalSvcutil(options);
         }

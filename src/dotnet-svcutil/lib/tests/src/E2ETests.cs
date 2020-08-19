@@ -219,7 +219,7 @@ namespace SvcutilTest
         {
             var libProjPath = Path.Combine(this_TestGroupOutputDir, "TypesLib", "TypesLib.csproj");
             var binProjPath = Path.Combine(this_TestGroupOutputDir, "BinLib", "BinLib.csproj");
-            var assemblyPath = Path.Combine(Path.GetDirectoryName(binProjPath), "bin/debug/netstandard1.3/binlib.dll");
+            var assemblyPath = Path.Combine(Path.GetDirectoryName(binProjPath), "bin", "debug", "netstandard1.3", "binlib.dll");
 
             if (!File.Exists(assemblyPath))
             {
@@ -320,7 +320,6 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefWCFCS";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
             InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("ConnectedService.json", referenceFolderName, refCount: 1, addNamespace: false);
