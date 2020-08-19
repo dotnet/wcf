@@ -3,7 +3,7 @@
   "version": "99.99.99",
   "ExtendedData": {
     "inputs": [
-      "$testCasesPath$/wsdl/simple.wsdl"
+      "$testCasesPath$/wsdl/Simple.wsdl"
     ],
     "collectionTypes": [
       "System.Array",

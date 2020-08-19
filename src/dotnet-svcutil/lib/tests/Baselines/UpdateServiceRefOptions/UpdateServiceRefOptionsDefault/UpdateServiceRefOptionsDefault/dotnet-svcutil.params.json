@@ -3,7 +3,7 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "$testCasesPath$/wsdl/simple.wsdl"
+      "$testCasesPath$/wsdl/Simple.wsdl"
     ],
     "collectionTypes": [
       "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",

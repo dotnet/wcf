@@ -5,7 +5,7 @@
     "Uri": "http://www.msn.com"
   },
   "ExtendedData": {
-    "Uri": "$testCasesPath$/wsdl/simple.wsdl",
+    "Uri": "$testCasesPath$/wsdl/Simple.wsdl",
     "Namespace": "ServiceReference1",
     "SelectedAccessLevelForGeneratedClass": "Public",
     "GenerateMessageContract": false,

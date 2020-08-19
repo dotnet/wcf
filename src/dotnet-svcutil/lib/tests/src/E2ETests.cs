@@ -210,7 +210,7 @@ namespace SvcutilTest
 
             var uri = SetupProjectDependencies();
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
-            var options = $"{uri} -nl -v minimal -d {outDir} -n \"\"*,{testCaseName}_NS\"\" -bd {this_TestCaseBootstrapDir}";
+            var options = $"{uri} -nl -v minimal -d {outDir.Replace("\\", "/")} -n \"\"*,{testCaseName}_NS\"\" -bd {this_TestCaseBootstrapDir.Replace("\\", "/")}";
 
             TestSvcutil(options, expectSuccess: true);
         }
