@@ -174,7 +174,8 @@ namespace SvcutilTest
             // Uninstall the global tool and install the current version.
             var currentDirectory = Directory.GetCurrentDirectory();
             var ret = ProcessRunner.TryRunAsync("dotnet", "tool uninstall -g dotnet-svcutil", currentDirectory, null, CancellationToken.None).Result;
-            ret = ProcessRunner.TryRunAsync("dotnet", $"tool install --global --add-source {g_RepositoryRoot}\\artifacts\\packages\\{buildType}\\Shipping dotnet-svcutil --version {g_SvcutilPkgVersion}", currentDirectory, null, CancellationToken.None).Result;
+            string pkgPath = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "Shipping");
+            ret = ProcessRunner.TryRunAsync("dotnet", $"tool install --global --add-source {pkgPath} dotnet-svcutil --version {g_SvcutilPkgVersion}", currentDirectory, null, CancellationToken.None).Result;
             Assert.True(ret.ExitCode == 0, "Could not install the global tool." + Environment.NewLine + ret.OutputText);
         }
 
