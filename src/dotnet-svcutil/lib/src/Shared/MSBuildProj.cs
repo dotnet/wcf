@@ -669,7 +669,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     try
                     {
-                        var assetsFile = new FileInfo(Path.Combine(this.DirectoryPath, $"obj/project.assets.json")).FullName;
+                        var assetsFile = new FileInfo(Path.Combine(this.DirectoryPath, "obj", "project.assets.json")).FullName;
                         if (File.Exists(assetsFile))
                         {
                             LockFile lockFile = LockFileUtilities.GetLockFile(assetsFile, logger as NuGet.Common.ILogger);

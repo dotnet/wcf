@@ -92,8 +92,8 @@ namespace SvcutilTest
 
             var uri = $"\"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
-            var tr = $"-r \"\"{{Newtonsoft.Json,*}}\"\" -bd {this_TestCaseBootstrapDir}";
-            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";
+            var tr = $"-r \"\"{{Newtonsoft.Json,*}}\"\" -bd {this_TestCaseBootstrapDir.Replace("\\", "/")}";
+            var options = $"{uri.Replace("\\", "/")} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";
 
             TestSvcutil(options);
         }
@@ -299,7 +299,7 @@ namespace SvcutilTest
             //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
             InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
 
-            cmdOptions = cmdOptions?.Replace("$testCaseOutputDir$", this_TestCaseOutputDir);
+            cmdOptions = cmdOptions?.Replace("$testCaseOutputDir$", this_TestCaseOutputDir.Replace("\\", "/"));
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName, refCount, addNamespace: true);
 
             // disable type reuse (bootstrapping) to speed up test.
