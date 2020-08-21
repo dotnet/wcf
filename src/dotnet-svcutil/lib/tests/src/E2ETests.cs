@@ -83,7 +83,7 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrap";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
             this_TestCaseBootstrapDir = this_TestCaseOutputDir;
@@ -260,7 +260,7 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefBasic";
             TestFixture();
             var testCaseName = referenceFolderName;
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName);
 
@@ -296,8 +296,7 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefOptions";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            //InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             cmdOptions = cmdOptions?.Replace("$testCaseOutputDir$", this_TestCaseOutputDir.Replace("\\", "/"));
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName, refCount, addNamespace: true);
@@ -320,7 +319,7 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefWCFCS";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("ConnectedService.json", referenceFolderName, refCount: 1, addNamespace: false);
 
