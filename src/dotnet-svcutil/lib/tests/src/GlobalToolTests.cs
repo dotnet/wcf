@@ -67,7 +67,7 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrapGlobal";
             TestFixture();
-            InitializeGlobal(testCaseName, targetFramework: "net5.0", sdkVersion: g_SdkVersion);
+            InitializeGlobal(testCaseName, sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
             this_TestCaseBootstrapDir = this_TestCaseOutputDir;
