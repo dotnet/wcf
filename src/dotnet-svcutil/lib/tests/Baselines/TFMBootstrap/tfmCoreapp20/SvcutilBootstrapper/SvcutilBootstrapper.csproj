@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotnet-svcutil-lib">
-      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmCoreapp20/bin/Debug/net5.0/dotnet-svcutil-lib.dll</HintPath>
+      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmCoreapp20/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
     <PackageReference Include="Newtonsoft.Json" Version="*" />
   </ItemGroup>

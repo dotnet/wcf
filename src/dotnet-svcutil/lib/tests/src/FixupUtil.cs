@@ -32,9 +32,7 @@ namespace SvcutilTest
                 new ReplaceInfo(@"line \d+", "line NNN") { UseRegex = true },
                 new ReplaceInfo(@"Elapsed (\d+\:)+\d+\.\d+", "Elapsed HH:MM:SS.ms") { UseRegex = true },
                 new ReplaceInfo(@"elapsed: \d+:\d+:(\d+.)+", "elapsed HH:MM:SS.ms") { UseRegex = true },
-                new ReplaceInfo(@"\d+\.\d+\.\d+(\.\d+)*(-\w+)*(\.\d+)*", "99.99.99") { UseRegex = true }, // new, valid version value to be able to compile projects, sample: 5.0.100-preview.7.20366.6
-                //new ReplaceInfo(@"\d+\.\d+\.\d+(\.\d+)*(-\w+)*", "99.99.99") { UseRegex = true }, // valid version value to be able to compile projects.
-                //new ReplaceInfo(@"\d+\.\d+\.\d+\.\d+\.\d+", "99.99.99") { UseRegex = true }, // new
+                new ReplaceInfo(@"\d+\.\d+\.\d+(\.\d+)*(-\w+)*(\.\d+)*", "99.99.99") { UseRegex = true }, // new, valid version value to be able to compile projects, sample: 5.0.100-preview.7.20366.6                
                 new ReplaceInfo(@"targets\(\d+,\d+\)", "targets(NN, NN)") { UseRegex = true },
                 new ReplaceInfo(@"\[(.*.csproj?)\]", "[$ProjectFile$.csproj]") { UseRegex = true },
                 new ReplaceInfo(@"Found conflicts between different versions of (.*) that could not be resolved.", "Found conflicts between different versions of the same dependent assembly that could not be resolved.") { UseRegex = true },
@@ -83,6 +81,7 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Release", "$binDir$"));
             _replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Release", "$binDir$"));
             _replacements.Add(new ReplaceInfo(Environment.GetEnvironmentVariable("HOME"), "$USERPROFILE$"));
+            _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/dotnet-svcutil-lib.dll", "DOTNET_VERSION/dotnet-svcutil-lib.dll") { UseRegex = true });
         }
 
         public string FixupFile(string fileName)
