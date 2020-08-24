@@ -44,7 +44,6 @@ namespace SvcutilTest
                 new ReplaceInfo(Path.GetTempPath().Replace("\\", "\\\\"), "$TEMP$"),
                 new ReplaceInfo(Path.GetTempPath().Replace("\\", "/"), "$TEMP$"),
                 new ReplaceInfo(Environment.GetEnvironmentVariable("USERPROFILE"), "$USERPROFILE$"),
-                new ReplaceInfo(Environment.GetEnvironmentVariable("HOME"), "$USERPROFILE$"),
                 new ReplaceInfo("/root", "$USERPROFILE$"),
                 new ReplaceInfo(@"targetFramework:\[netcoreapp\d+\.\d+\]", "targetFramework:[N.N]") { UseRegex = true },
                 new ReplaceInfo(@"""targetFramework"": ""netcoreapp\d+\.\d+""", "\"targetFramework\": \"N.N\"") { UseRegex = true }, //new    
@@ -83,6 +82,7 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Debug", "$binDir$"));
             _replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Release", "$binDir$"));
             _replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Release", "$binDir$"));
+            _replacements.Add(new ReplaceInfo(Environment.GetEnvironmentVariable("HOME"), "$USERPROFILE$"));
         }
 
         public string FixupFile(string fileName)

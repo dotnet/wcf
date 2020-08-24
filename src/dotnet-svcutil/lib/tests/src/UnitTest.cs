@@ -97,7 +97,7 @@ namespace SvcutilTest
 
             var uri = Path.Combine(g_TestCasesDir, "metadataEpr", "epr", "http___WcfProjectNServer_WcfProjectNService_WcfProjectNService.svc.xml");
             var options = $"{uri} -nl";
-
+            this_TestCaseName = testCaseName;
             UnitTestSvcutil(AppendCommonOptions(options));
         }
 
