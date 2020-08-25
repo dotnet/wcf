@@ -81,7 +81,8 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo("$repositoryRoot$\\bin\\Release", "$binDir$"));
             _replacements.Add(new ReplaceInfo("$repositoryRoot$/bin/Release", "$binDir$"));
             _replacements.Add(new ReplaceInfo(Environment.GetEnvironmentVariable("HOME"), "$USERPROFILE$"));
-            _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/dotnet-svcutil-lib.dll", "DOTNET_VERSION/dotnet-svcutil-lib.dll") { UseRegex = true });
+            _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/dotnet-svcutil-lib.dll", "DOTNET_VERSION/dotnet-svcutil-lib.dll") { UseRegex = true }); //for linux
+            _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
         }
 
         public string FixupFile(string fileName)
