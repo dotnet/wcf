@@ -67,6 +67,8 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo(resultPathReplacement, "$resultPath$"));
             _replacements.Add(new ReplaceInfo(resultPathReplacement.Replace('\\', '/'), "$resultPath$"));
             _replacements.Add(new ReplaceInfo(resultPathReplacement.Replace("\\", "\\\\"), "$resultPath$"));
+            _replacements.Add(new ReplaceInfo(@"$resultPath$\\TestResults\\TypeReuse\\TypeReuse20\\bin\\Debug\\netcoreapp2.0\\BinLib.dll", @"$resultPath$\TestResults\TypeReuse\TypeReuse20\bin\Debug\netcoreapp2.0\BinLib.dll"));
+            _replacements.Add(new ReplaceInfo(@"$resultPath$\\TestResults\\TypeReuse\\TypeReuse20\\bin\\Debug\\netcoreapp2.0\\TypesLib.dll", @"$resultPath$\TestResults\TypeReuse\TypeReuse20\bin\Debug\netcoreapp2.0\TypesLib.dll"));
             _replacements.Add(new ReplaceInfo(testCasesPath, "$testCasesPath$"));
             _replacements.Add(new ReplaceInfo(testCasesPath.Replace('\\', '/'), "$testCasesPath$"));
             _replacements.Add(new ReplaceInfo(testCasesPath.Replace("\\", "\\\\"), "$testCasesPath$"));
