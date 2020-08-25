@@ -54,7 +54,7 @@ namespace SvcutilTest
 
             ValidateTest(options, this_TestCaseProject.DirectoryPath, processResult.ExitCode, processResult.OutputText, expectSuccess);
         }
-        
+
         [Theory]
         [Trait("Category", "BVT")]
         [InlineData("silent")]
@@ -139,7 +139,7 @@ namespace SvcutilTest
             this_TestCaseName = "ErrorScenarios";
             TestFixture();
             InitializeE2E(testCaseName);
-            
+
             options = options
                 .Replace("$serviceUrl$", g_ServiceUrl)
                 .Replace("$testCaseBootstratDir$", $"\"\"{this_TestCaseBootstrapDir}\"\"")
@@ -219,7 +219,7 @@ namespace SvcutilTest
         {
             var libProjPath = Path.Combine(this_TestGroupOutputDir, "TypesLib", "TypesLib.csproj");
             var binProjPath = Path.Combine(this_TestGroupOutputDir, "BinLib", "BinLib.csproj");
-            var assemblyPath = Path.Combine(Path.GetDirectoryName(binProjPath), "bin", "debug", "netstandard1.3", "binlib.dll");
+            var assemblyPath = Path.Combine(Path.GetDirectoryName(binProjPath), "bin", "Debug", "netstandard1.3", "BinLib.dll");
 
             if (!File.Exists(assemblyPath))
             {
