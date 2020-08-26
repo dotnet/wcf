@@ -87,6 +87,11 @@ namespace SvcutilTest
         [InlineData("FullFramework")]
         public void FullFramework(string testCaseName)
         {
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
+            {
+                return;
+            }
+
             this_TestCaseName = "FullFramework";
             TestFixture();
             InitializeGlobal(testCaseName, targetFramework: "net46");

@@ -203,6 +203,14 @@ namespace SvcutilTest
         [InlineData("fwdMultiWildExt", "../wsdl/WcfProjectNService/*.wsdl -d ../../CommandOptionsRelativePaths/OutputDir")]
         public void CommandOptionsFilePaths(string testCaseName, string options)
         {
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
+            {
+                if(testCaseName == "bckWild" || testCaseName == "backFull")
+                {
+                    return; //Linux doesn't support back slash as path separator
+                }
+            }
+
             this_TestCaseName = "CommandOptionsFilePaths";
             TestFixture();
 
