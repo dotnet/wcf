@@ -353,7 +353,7 @@ namespace System.ServiceModel.Channels
             Connection.SendAckRequestedAsyncHandler = OnConnectionSendAckRequestedAsyncHandler;
         }
 
-        private async void PollingAsyncCallback()
+        private async Task PollingAsyncCallback()
         {
             using (Message request = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                 Settings.ReliableMessagingVersion, ReliableSession.OutputID))
@@ -756,7 +756,7 @@ namespace System.ServiceModel.Channels
             {
                 try
                 {
-                    StartReceivingAsync();
+                    _ = StartReceivingAsync();
                 }
                 catch (Exception e)
                 {
@@ -768,7 +768,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                ActionItem.Schedule(new Action<object>(StartReceiving), this);
+                ActionItem.Schedule(new Func<object, Task>(StartReceivingAsync), this);
             }
         }
 
@@ -787,54 +787,52 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private async void StartReceivingAsync()
+        private async Task StartReceivingAsync()
         {
-            while (true)
+            try
             {
-                (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue);
-                if (success)
+                while (true)
                 {
-                    if (context != null)
+                    (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue);
+                    if (success)
                     {
-                        using (context)
+                        if (context != null)
                         {
-                            Message requestMessage = context.RequestMessage;
-                            await ProcessMessageAsync(requestMessage);
-                            context.Close(DefaultCloseTimeout);
+                            using (context)
+                            {
+                                Message requestMessage = context.RequestMessage;
+                                await ProcessMessageAsync(requestMessage);
+                                context.Close(DefaultCloseTimeout);
+                            }
                         }
-                    }
-                    else
-                    {
-                        if (!Connection.Closed && (Binder.State == CommunicationState.Opened))
+                        else
                         {
-                            Exception e = new CommunicationException(SR.EarlySecurityClose);
-                            ReliableSession.OnLocalFault(e, (Message)null, null);
-                        }
+                            if (!Connection.Closed && (Binder.State == CommunicationState.Opened))
+                            {
+                                Exception e = new CommunicationException(SR.EarlySecurityClose);
+                                ReliableSession.OnLocalFault(e, (Message)null, null);
+                            }
 
-                        // Null context means channel is closing
-                        break;
+                            // Null context means channel is closing
+                            break;
+                        }
                     }
                 }
             }
-        }
-
-        static void StartReceiving(object state)
-        {
-            ReliableOutputSessionChannelOverDuplex channel =
-                (ReliableOutputSessionChannelOverDuplex)state;
-
-            try
-            {
-                channel.StartReceivingAsync();
-            }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
                     throw;
 
-                channel.ReliableSession.OnUnknownException(e);
+                ReliableSession.OnUnknownException(e);
             }
+        }
+
+        private static Task StartReceivingAsync(object state)
+        {
+            ReliableOutputSessionChannelOverDuplex channel =
+                (ReliableOutputSessionChannelOverDuplex)state;
+            return channel.StartReceivingAsync();
         }
     }
 }

@@ -395,7 +395,7 @@ namespace System.ServiceModel.Channels
             connection.SendAckRequestedAsyncHandler = OnConnectionSendAckAsyncRequested;
         }
 
-        private async void PollingCallback()
+        private async Task PollingCallback()
         {
             var message = CreateAckRequestedMessage();
             var reply = await binder.RequestAsync(message, DefaultSendTimeout, MaskingMode.All);
@@ -715,7 +715,8 @@ namespace System.ServiceModel.Channels
                     {
                         _aborted = true;
                         _completed = true;
-                        _tcs?.TrySetResult(null);
+                        Fx.Assert(_tcs?.Task == null || !_tcs.Task.IsCompleted, "Task should be null or not already be completed");
+                        _tcs?.SetResult(null);
                     }
                 }
             }
@@ -728,7 +729,8 @@ namespace System.ServiceModel.Channels
                     {
                         _faulted = true;
                         _completed = true;
-                        _tcs?.TrySetResult(null);
+                        Fx.Assert(_tcs?.Task == null || !_tcs.Task.IsCompleted, "Task should be null or not already be completed");
+                        _tcs?.SetResult(null);
                     }
                 }
             }
@@ -752,7 +754,8 @@ namespace System.ServiceModel.Channels
                     {
                         _reply = reply;
                         _completed = true;
-                        _tcs?.TrySetResult(null);
+                        Fx.Assert(_tcs?.Task == null || !_tcs.Task.IsCompleted, "Task should be null or not already be completed");
+                        _tcs?.SetResult(null);
                         return;
                     }
                 }
@@ -779,7 +782,7 @@ namespace System.ServiceModel.Channels
                             if (!_completed)
                             {
                                 wait = true;
-                                _tcs = new TaskCompletionSource<object>();
+                                _tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
                             }
                         }
 
@@ -798,8 +801,6 @@ namespace System.ServiceModel.Channels
                                     expired = false;
                                 }
                             }
-
-                            _tcs.TrySetResult(null);
                         }
                     }
 
@@ -828,10 +829,8 @@ namespace System.ServiceModel.Channels
                         WsrmFault fault = SequenceTerminatedFault.CreateCommunicationFault(_parent.session.InputID,
                             SR.SequenceTerminatedReliableRequestThrew, null);
                         _parent.session.OnLocalFault(null, fault, null);
-                        _tcs?.TrySetResult(null);
                     }
                 }
-
             }
 
             public void OnReleaseRequest()

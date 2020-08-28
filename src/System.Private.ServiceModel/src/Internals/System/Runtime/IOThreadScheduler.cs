@@ -98,6 +98,16 @@ namespace System.Runtime
             }
         }
 
+        public static void ScheduleCallbackLowPriNoFlow(Action<object> callback, object state)
+        {
+            if (callback == null)
+            {
+                throw Fx.Exception.ArgumentNull(nameof(callback));
+            }
+
+            Task.Factory.StartNew(callback, state, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+        }
+
         // Returns true if successfully scheduled, false otherwise.
         private bool ScheduleCallbackHelper(Action<object> callback, object state)
         {
@@ -490,5 +500,6 @@ namespace System.Runtime
                 Overlapped.Free(_nativeOverlapped);
             }
         }
+
     }
 }

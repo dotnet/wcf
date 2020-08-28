@@ -23,13 +23,14 @@ namespace System.ServiceModel.Channels
         private int _pendingAcknowledgements = 0;
         private SendWaitReliableRequestor _terminateRequestor;
         private static Action<object> s_processMessageStatic = new Action<object>(ProcessMessageStatic);
+        protected static Func<object, Task> s_startReceivingAsyncStatic = new Func<object, Task>(StartReceivingAsyncStatic);
 
         protected ReliableDuplexSessionChannel(ChannelManagerBase manager, IReliableFactorySettings settings, IReliableChannelBinder binder)
             : base(manager, binder.LocalAddress)
         {
             Binder = binder;
             Settings = settings;
-            _acknowledgementTimer = new IOThreadTimer(new Action<object>(OnAcknowledgementTimeoutElapsedAsync), null, true);
+            _acknowledgementTimer = new IOThreadTimer(new Func<object, Task>(OnAcknowledgementTimeoutElapsedAsync), null, true);
             Binder.Faulted += OnBinderFaulted;
             Binder.OnException += OnBinderException;
         }
@@ -643,9 +644,9 @@ namespace System.ServiceModel.Channels
             ReliableSession.Abort();
         }
 
-        private async void OnAcknowledgementTimeoutElapsedAsync(object state)
+        private async Task OnAcknowledgementTimeoutElapsedAsync(object state)
         {
-            using (ThisAsyncLock.TakeLock())
+            using (await ThisAsyncLock.TakeLockAsync())
             {
                 _acknowledgementScheduled = false;
                 _pendingAcknowledgements = 0;
@@ -916,44 +917,59 @@ namespace System.ServiceModel.Channels
         private void OnDeliveryStrategyItemDequeued()
         {
             if (_advertisedZero)
-                OnAcknowledgementTimeoutElapsedAsync(null);
+                _ = OnAcknowledgementTimeoutElapsedAsync(null);
         }
 
-        protected async void StartReceivingAsync()
+        private static Task StartReceivingAsyncStatic(object state)
         {
-            await TaskHelpers.EnsureDefaultTaskScheduler();
-            while (true)
+            var thisPtr = (ReliableDuplexSessionChannel)state;
+            return thisPtr.StartReceivingAsync();
+        }
+
+        protected async Task StartReceivingAsync()
+        {
+            try
             {
-                (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue);
-                if (success)
+                while (true)
                 {
-                    if (context == null)
+                    (bool success, RequestContext context) = await Binder.TryReceiveAsync(TimeSpan.MaxValue);
+                    if (success)
                     {
-                        bool terminated = false;
-
-                        using (ThisAsyncLock.TakeLock())
+                        if (context == null)
                         {
-                            terminated = _inputConnection.Terminate();
+                            bool terminated = false;
+
+                            using (ThisAsyncLock.TakeLock())
+                            {
+                                terminated = _inputConnection.Terminate();
+                            }
+
+                            if (!terminated && (Binder.State == CommunicationState.Opened))
+                            {
+                                Exception e = new CommunicationException(SR.EarlySecurityClose);
+                                ReliableSession.OnLocalFault(e, (Message)null, null);
+                            }
+
+                            break; // End receive loop
                         }
 
-                        if (!terminated && (Binder.State == CommunicationState.Opened))
-                        {
-                            Exception e = new CommunicationException(SR.EarlySecurityClose);
-                            ReliableSession.OnLocalFault(e, (Message)null, null);
-                        }
+                        Message message = context.RequestMessage;
+                        context.Close();
 
-                        break; // End receive loop
+                        WsrmMessageInfo info = WsrmMessageInfo.Get(Settings.MessageVersion,
+                            Settings.ReliableMessagingVersion, Binder.Channel, Binder.GetInnerSession(),
+                            message);
+
+                        ActionItem.Schedule(s_processMessageStatic, (this, info));
                     }
-
-                    Message message = context.RequestMessage;
-                    context.Close();
-
-                    WsrmMessageInfo info = WsrmMessageInfo.Get(Settings.MessageVersion,
-                        Settings.ReliableMessagingVersion, Binder.Channel, Binder.GetInnerSession(),
-                        message);
-
-                    ActionItem.Schedule(s_processMessageStatic, (this, info));
                 }
+            }
+            catch (Exception e)
+            {
+                if (Fx.IsFatal(e))
+                    throw;
+
+                ReliableSession.OnUnknownException(e);
             }
         }
 
@@ -1059,7 +1075,7 @@ namespace System.ServiceModel.Channels
         private DuplexClientReliableSession _clientSession;
         private TimeoutHelper _closeTimeoutHelper;
         private bool _closing;
-        private static Action<object> s_onReconnectTimerElapsed = new Action<object>(OnReconnectTimerElapsed);
+        private static Func<object, Task> s_onReconnectTimerElapsed = new Func<object, Task>(OnReconnectTimerElapsed);
 
         public ClientReliableDuplexSessionChannel(ChannelManagerBase factory, IReliableFactorySettings settings,
             IReliableChannelBinder binder, FaultHelper faultHelper,
@@ -1159,21 +1175,10 @@ namespace System.ServiceModel.Channels
         {
             base.OnOpened();
             SetConnections();
-
-            try
-            {
-                StartReceivingAsync();
-            }
-            catch (Exception e)
-            {
-                if (Fx.IsFatal(e))
-                    throw;
-
-                ReliableSession.OnUnknownException(e);
-            }
+            ActionItem.Schedule(s_startReceivingAsyncStatic, this);
         }
 
-        private static async void OnReconnectTimerElapsed(object state)
+        private static async Task OnReconnectTimerElapsed(object state)
         {
             ClientReliableDuplexSessionChannel channel = (ClientReliableDuplexSessionChannel)state;
             using (await channel.ThisAsyncLock.TakeLockAsync())
@@ -1195,7 +1200,7 @@ namespace System.ServiceModel.Channels
             ReliableSession.OnRemoteActivity(OutputConnection.Strategy.QuotaRemaining == 0);
         }
 
-        private async void PollingAsyncCallback()
+        private async Task PollingAsyncCallback()
         {
             using (Message message = WsrmUtilities.CreateAckRequestedMessage(Settings.MessageVersion,
                 Settings.ReliableMessagingVersion, ReliableSession.OutputID))

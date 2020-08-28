@@ -483,12 +483,7 @@ namespace System.ServiceModel.Channels
                 return;
             }
 
-            EventHandler handler = ConnectionLost;
-
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            ConnectionLost?.Invoke(this, EventArgs.Empty);
         }
 
         protected abstract Task OnOpenAsync(TimeSpan timeout);

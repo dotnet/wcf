@@ -541,7 +541,7 @@ namespace System.ServiceModel.Channels
         private InterruptibleTimer _pollingTimer;
         private ReliableRequestor _requestor;
 
-        public delegate void PollingHandler();
+        public delegate Task PollingHandler();
 
         public ClientReliableSession(ChannelBase channel, IReliableFactorySettings factory, IClientReliableChannelBinder binder, FaultHelper faultHelper, UniqueId inputID) :
             base(channel, factory, binder, faultHelper)
@@ -669,7 +669,7 @@ namespace System.ServiceModel.Channels
                 _requestor.Fault(Channel);
         }
 
-        private void OnPollingTimerElapsed(object state)
+        private async Task OnPollingTimerElapsed(object state)
         {
             if (Guard.Enter())
             {
@@ -684,7 +684,7 @@ namespace System.ServiceModel.Channels
                             _pollingMode = PollingMode.KeepAlive;
                     }
 
-                    _pollingHandler();
+                    await _pollingHandler();
                     _pollingTimer.Set(GetPollingInterval());
                 }
                 finally

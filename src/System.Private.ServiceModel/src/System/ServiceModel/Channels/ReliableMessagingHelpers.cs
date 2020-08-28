@@ -45,7 +45,7 @@ namespace System.ServiceModel.Channels
                 _closed = true;
 
                 if (_currentCount > 0)
-                    _tcs = new TaskCompletionSource<object>();
+                    _tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
             }
 
             if (_tcs != null)
@@ -95,7 +95,10 @@ namespace System.ServiceModel.Channels
                 if (_currentCount == 0)
                 {
                     if (_tcs != null)
+                    {
+                        Fx.AssertAndThrow(!_tcs.Task.IsCompleted, "TCS should not have already been completed");
                         _tcs.TrySetResult(null);
+                    }
                 }
             }
         }
@@ -103,25 +106,46 @@ namespace System.ServiceModel.Channels
 
     internal class InterruptibleTimer
     {
+        public delegate Task AsyncWaitCallback(object state);
         private WaitCallback _callback;
+        private AsyncWaitCallback _asyncCallback;
         private bool _aborted = false;
         private TimeSpan _defaultInterval;
         private static Action<object> s_onTimerElapsed = new Action<object>(OnTimerElapsed);
+        private static Func<object, Task> s_onTimerElapsedAsync = new Func<object, Task>(OnTimerElapsedAsync);
         private bool _set = false;
         private object _state;
         private IOThreadTimer _timer;
+        private bool _isAsync;
 
-        public InterruptibleTimer(TimeSpan defaultInterval, WaitCallback callback, object state)
+        public InterruptibleTimer(TimeSpan defaultInterval, WaitCallback callback, object state) : this(defaultInterval, callback, null, state)
         {
             if (callback == null)
             {
                 throw Fx.AssertAndThrow("Argument callback cannot be null.");
             }
 
+            _isAsync = false;
+        }
+
+        public InterruptibleTimer(TimeSpan defaultInterval, AsyncWaitCallback callback, object state) : this(defaultInterval, null, callback, state)
+        {
+            if (callback == null)
+            {
+                throw Fx.AssertAndThrow("Argument callback cannot be null.");
+            }
+
+            _isAsync = true;
+        }
+
+        private InterruptibleTimer(TimeSpan defaultInterval, WaitCallback callback, AsyncWaitCallback asyncCallback, object state)
+        {
             _defaultInterval = defaultInterval;
             _callback = callback;
+            _asyncCallback = asyncCallback;
             _state = state;
         }
+
 
         private object ThisLock { get; } = new object();
 
@@ -174,10 +198,29 @@ namespace System.ServiceModel.Channels
             _callback(_state);
         }
 
+        private Task OnTimerElapsedAsync()
+        {
+            lock (ThisLock)
+            {
+                if (_aborted)
+                    return Task.CompletedTask;
+
+                _set = false;
+            }
+
+            return _asyncCallback(_state);
+        }
+
         private static void OnTimerElapsed(object state)
         {
             InterruptibleTimer interruptibleTimer = (InterruptibleTimer)state;
             interruptibleTimer.OnTimerElapsed();
+        }
+
+        private static Task OnTimerElapsedAsync(object state)
+        {
+            InterruptibleTimer interruptibleTimer = (InterruptibleTimer)state;
+            return interruptibleTimer.OnTimerElapsedAsync();
         }
 
         public void Set()
@@ -203,7 +246,12 @@ namespace System.ServiceModel.Channels
                     return;
 
                 if (_timer == null)
-                    _timer = new IOThreadTimer(s_onTimerElapsed, this, true);
+                {
+                    if (_isAsync)
+                        _timer = new IOThreadTimer(s_onTimerElapsedAsync, this, true);
+                    else
+                        _timer = new IOThreadTimer(s_onTimerElapsed, this, true);
+                }
 
                 _timer.Set(interval);
                 _set = true;

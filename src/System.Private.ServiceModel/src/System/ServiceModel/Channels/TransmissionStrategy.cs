@@ -53,7 +53,7 @@ namespace System.ServiceModel.Channels
         private ComponentExceptionHandler _onException;
         private readonly ReliableMessagingVersion _reliableMessagingVersion;
         private readonly List<long> _retransmissionWindow = new List<long>();
-        private readonly IOThreadTimer retryTimer;
+        private readonly IOThreadTimer _retryTimer;
         private RetryHandler _retryTimeoutElapsedHandler;
         private readonly bool _requestAcks;
         private long _serrRtt;
@@ -92,7 +92,7 @@ namespace System.ServiceModel.Channels
             _slowStartThreshold = maxWindowSize;
             _timeout = Math.Max(((200 << Constants.TimeMultiplier) * 2) + _meanRtt, _meanRtt + (_serrRtt << Constants.ChebychevFactor));
             QuotaRemaining = int.MaxValue;
-            retryTimer = new IOThreadTimer(new Action<object>(OnRetryElapsed), null, true);
+            _retryTimer = new IOThreadTimer(new Func<object, Task>(OnRetryElapsed), null, true);
             _requestAcks = requestAcks;
             _reliableMessagingVersion = reliableMessagingVersion;
         }
@@ -164,7 +164,7 @@ namespace System.ServiceModel.Channels
 
                 _closed = true;
 
-                retryTimer.Cancel();
+                _retryTimer.Cancel();
 
                 while (_waitQueue.Count > 0)
                     _waitQueue.Dequeue().Abort(channel);
@@ -206,7 +206,7 @@ namespace System.ServiceModel.Channels
 
             if (_window.Count == 0)
             {
-                retryTimer.Set(Timeout);
+                _retryTimer.Set(Timeout);
             }
 
             _window.Add(message, Now, state);
@@ -236,7 +236,7 @@ namespace System.ServiceModel.Channels
 
                 _closed = true;
 
-                retryTimer.Cancel();
+                _retryTimer.Cancel();
 
                 if (_waitQueue.Count != 0)
                 {
@@ -280,7 +280,10 @@ namespace System.ServiceModel.Channels
             return (!_aborted && !_closed);
         }
 
-        public void OnRetryElapsed(object state)
+        // Although this method does no async work itself, it does call an async method which continues
+        // in the background. Because of this we need to use the async varient of IOThreadTimer to use
+        // the IOThreadScheduler for Task continuations.
+        public Task OnRetryElapsed(object state)
         {
             try
             {
@@ -288,11 +291,8 @@ namespace System.ServiceModel.Channels
 
                 lock (ThisLock)
                 {
-                    if (_closed)
-                        return;
-
-                    if (_window.Count == 0)
-                        return;
+                    if (_closed || _window.Count == 0)
+                        return Task.CompletedTask;
 
                     _window.RecordRetry(0, Now);
                     _congestionControlModeAcks = 0;
@@ -305,17 +305,18 @@ namespace System.ServiceModel.Channels
                     attemptInfo = new MessageAttemptInfo(_window.GetMessage(0), _windowStart, _window.GetRetryCount(0), _window.GetState(0));
                 }
 
-                _retryTimeoutElapsedHandler(attemptInfo);
+                // We specifically do not want to wait for the retry to complete before setting the timer for the next retry
+                // The retry timeout elapsed handler continues asynchronously in the background
+                _ = _retryTimeoutElapsedHandler(attemptInfo);
 
                 lock (ThisLock)
                 {
                     if (!_closed && (_window.Count > 0))
                     {
-                        retryTimer.Set(Timeout);
+                        _retryTimer.Set(Timeout);
                     }
                 }
             }
-#pragma warning suppress 56500 // covered by FxCOP
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
@@ -323,6 +324,8 @@ namespace System.ServiceModel.Channels
 
                 _onException(e);
             }
+
+            return Task.CompletedTask;
         }
 
         public void Fault(ChannelBase channel)
@@ -334,7 +337,7 @@ namespace System.ServiceModel.Channels
 
                 _closed = true;
 
-                retryTimer.Cancel();
+                _retryTimer.Cancel();
 
                 while (_waitQueue.Count > 0)
                     _waitQueue.Dequeue().Fault(channel);
@@ -594,7 +597,7 @@ namespace System.ServiceModel.Channels
             {
                 bool send = false;
 
-                retryTimer.Cancel();
+                _retryTimer.Cancel();
 
                 long slide = range.Upper - _windowStart + 1;
 
@@ -681,7 +684,7 @@ namespace System.ServiceModel.Channels
 
                 if (_window.Count > 0)
                 {
-                    retryTimer.Set(Timeout);
+                    _retryTimer.Set(Timeout);
                 }
 
                 return send;

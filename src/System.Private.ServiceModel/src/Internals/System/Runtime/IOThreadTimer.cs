@@ -4,6 +4,7 @@
 
 using System.Threading;
 using System.Diagnostics.Contracts;
+using System.Threading.Tasks;
 
 namespace System.Runtime
 {
@@ -30,23 +31,31 @@ namespace System.Runtime
 
     internal class IOThreadTimer
     {
-        const int maxSkewInMillisecondsDefault = 100;
-        Action<object> callback;
-        object callbackState;
-        long dueTime;
+        private const int maxSkewInMillisecondsDefault = 100;
+        private Action<object> callback;
+        private Func<object, Task> asyncCallback;
+        private object callbackState;
+        private long dueTime;
+        private int index;
+        private long maxSkew;
+        private TimerGroup timerGroup;
+        private bool isAsyncCallback;
 
-        int index;
-        long maxSkew;
-        TimerGroup timerGroup;
+        public IOThreadTimer(Func<object, Task> asyncCallback, object callbackState, bool isTypicallyCanceledShortlyAfterBeingSet)
+            : this(null, asyncCallback, callbackState, isTypicallyCanceledShortlyAfterBeingSet, maxSkewInMillisecondsDefault)
+        {
+            isAsyncCallback = true;
+        }
 
         public IOThreadTimer(Action<object> callback, object callbackState, bool isTypicallyCanceledShortlyAfterBeingSet)
-            : this(callback, callbackState, isTypicallyCanceledShortlyAfterBeingSet, maxSkewInMillisecondsDefault)
+            : this(callback, null, callbackState, isTypicallyCanceledShortlyAfterBeingSet, maxSkewInMillisecondsDefault)
         {
         }
 
-        public IOThreadTimer(Action<object> callback, object callbackState, bool isTypicallyCanceledShortlyAfterBeingSet, int maxSkewInMilliseconds)
+        public IOThreadTimer(Action<object> callback, Func<object, Task> asyncCallback, object callbackState, bool isTypicallyCanceledShortlyAfterBeingSet, int maxSkewInMilliseconds)
         {
             this.callback = callback;
+            this.asyncCallback = asyncCallback;
             this.callbackState = callbackState;
             maxSkew = Ticks.FromMilliseconds(maxSkewInMilliseconds);
             timerGroup =
@@ -79,6 +88,7 @@ namespace System.Runtime
         protected void Reinitialize(Action<object> callback, object callbackState)
         {
             this.callback = callback;
+            this.isAsyncCallback = false;
             this.callbackState = callbackState;
         }
 
@@ -87,18 +97,15 @@ namespace System.Runtime
             TimerManager.Value.Kill();
         }
 
-        class TimerManager
+        private class TimerManager
         {
-            const long maxTimeToWaitForMoreTimers = 1000 * TimeSpan.TicksPerMillisecond;
-
-            static TimerManager value = new TimerManager();
-
-            Action<object> onWaitCallback;
-            TimerGroup stableTimerGroup;
-            TimerGroup volatileTimerGroup;
-            WaitableTimer[] waitableTimers;
-
-            bool waitScheduled;
+            private const long maxTimeToWaitForMoreTimers = 1000 * TimeSpan.TicksPerMillisecond;
+            private static TimerManager value = new TimerManager();
+            private Action<object> onWaitCallback;
+            private TimerGroup stableTimerGroup;
+            private TimerGroup volatileTimerGroup;
+            private WaitableTimer[] waitableTimers;
+            private bool waitScheduled;
 
             public TimerManager()
             {
@@ -108,7 +115,7 @@ namespace System.Runtime
                 waitableTimers = new WaitableTimer[] { stableTimerGroup.WaitableTimer, volatileTimerGroup.WaitableTimer };
             }
 
-            object ThisLock
+            private object ThisLock
             {
                 get { return this; }
             }
@@ -220,7 +227,7 @@ namespace System.Runtime
                 }
             }
 
-            void EnsureWaitScheduled()
+            private void EnsureWaitScheduled()
             {
                 if (!waitScheduled)
                 {
@@ -228,7 +235,7 @@ namespace System.Runtime
                 }
             }
 
-            TimerGroup GetOtherTimerGroup(TimerGroup timerGroup)
+            private TimerGroup GetOtherTimerGroup(TimerGroup timerGroup)
             {
                 if (object.ReferenceEquals(timerGroup, volatileTimerGroup))
                 {
@@ -240,7 +247,7 @@ namespace System.Runtime
                 }
             }
 
-            void OnWaitCallback(object state)
+            private void OnWaitCallback(object state)
             {
                 WaitableTimer.WaitAny(waitableTimers);
                 long now = Ticks.Now;
@@ -253,13 +260,13 @@ namespace System.Runtime
                 }
             }
 
-            void ReactivateWaitableTimers()
+            private void ReactivateWaitableTimers()
             {
                 ReactivateWaitableTimer(stableTimerGroup);
                 ReactivateWaitableTimer(volatileTimerGroup);
             }
 
-            void ReactivateWaitableTimer(TimerGroup timerGroup)
+            private void ReactivateWaitableTimer(TimerGroup timerGroup)
             {
                 TimerQueue timerQueue = timerGroup.TimerQueue;
 
@@ -276,13 +283,13 @@ namespace System.Runtime
                 }
             }
 
-            void ScheduleElapsedTimers(long now)
+            private void ScheduleElapsedTimers(long now)
             {
                 ScheduleElapsedTimers(stableTimerGroup, now);
                 ScheduleElapsedTimers(volatileTimerGroup, now);
             }
 
-            void ScheduleElapsedTimers(TimerGroup timerGroup, long now)
+            private void ScheduleElapsedTimers(TimerGroup timerGroup, long now)
             {
                 TimerQueue timerQueue = timerGroup.TimerQueue;
                 while (timerQueue.Count > 0)
@@ -292,7 +299,14 @@ namespace System.Runtime
                     if (timeDiff <= timer.maxSkew)
                     {
                         timerQueue.DeleteMinTimer();
-                        ActionItem.Schedule(timer.callback, timer.callbackState);
+                        if (timer.isAsyncCallback)
+                        {
+                            ActionItem.Schedule(timer.asyncCallback, timer.callbackState);
+                        }
+                        else
+                        {
+                            ActionItem.Schedule(timer.callback, timer.callbackState);
+                        }
                     }
                     else
                     {
@@ -301,13 +315,13 @@ namespace System.Runtime
                 }
             }
 
-            void ScheduleWait()
+            private void ScheduleWait()
             {
                 ActionItem.Schedule(onWaitCallback, null);
                 waitScheduled = true;
             }
 
-            void ScheduleWaitIfAnyTimersLeft()
+            private void ScheduleWaitIfAnyTimersLeft()
             {
                 if (this.stableTimerGroup.WaitableTimer.dead &&
                     this.volatileTimerGroup.WaitableTimer.dead)
@@ -320,7 +334,7 @@ namespace System.Runtime
                 }
             }
 
-            void UpdateWaitableTimer(TimerGroup timerGroup)
+            private void UpdateWaitableTimer(TimerGroup timerGroup)
             {
                 WaitableTimer waitableTimer = timerGroup.WaitableTimer;
                 IOThreadTimer minTimer = timerGroup.TimerQueue.MinTimer;
@@ -336,10 +350,10 @@ namespace System.Runtime
             }
         }
 
-        class TimerGroup
+        private class TimerGroup
         {
-            TimerQueue timerQueue;
-            WaitableTimer waitableTimer;
+            private TimerQueue timerQueue;
+            private WaitableTimer waitableTimer;
 
             public TimerGroup()
             {
@@ -363,10 +377,10 @@ namespace System.Runtime
             }
         }
 
-        class TimerQueue
+        private class TimerQueue
         {
-            int count;
-            IOThreadTimer[] timers;
+            private int count;
+            private IOThreadTimer[] timers;
 
             public TimerQueue()
             {
@@ -507,7 +521,7 @@ namespace System.Runtime
                 return true;
             }
 
-            void DeleteMinTimerCore()
+            private void DeleteMinTimerCore()
             {
                 int count = this.count;
 
@@ -585,7 +599,7 @@ namespace System.Runtime
 
         public class WaitableTimer : EventWaitHandle
         {
-            long dueTime; // Ticks
+            private long dueTime; // Ticks
             public bool dead;
 
             public WaitableTimer() : base(false, EventResetMode.AutoReset)

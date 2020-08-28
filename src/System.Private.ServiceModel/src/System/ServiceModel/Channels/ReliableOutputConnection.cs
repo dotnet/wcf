@@ -10,16 +10,13 @@ using System.Xml;
 namespace System.ServiceModel.Channels
 {
     internal delegate Task SendAsyncHandler(MessageAttemptInfo attemptInfo, TimeSpan timeout, bool maskUnhandledException);
-
     internal delegate void ComponentFaultedHandler(Exception faultException, WsrmFault fault);
-
     internal delegate void ComponentExceptionHandler(Exception exception);
-
-    internal delegate void RetryHandler(MessageAttemptInfo attemptInfo);
+    internal delegate Task RetryHandler(MessageAttemptInfo attemptInfo);
 
     internal sealed class ReliableOutputConnection
     {
-        private static Action<object> s_sendRetries = new Action<object>(SendRetries);
+        private static Func<object, Task> s_sendRetries = new Func<object, Task>(SendRetries);
 
         private UniqueId _id;
         private ReliableMessagingVersion _reliableMessagingVersion;
@@ -200,7 +197,7 @@ namespace System.ServiceModel.Channels
             return Strategy.IsFinalAckConsistent(ranges);
         }
 
-        private async void OnRetryTimeoutElapsed(MessageAttemptInfo attemptInfo)
+        private async Task OnRetryTimeoutElapsed(MessageAttemptInfo attemptInfo)
         {
             if (_sendGuard.Enter())
             {
@@ -292,58 +289,54 @@ namespace System.ServiceModel.Channels
 
         private void RaiseOnException(Exception exception)
         {
-            ComponentExceptionHandler handler = OnException;
-
-            if (handler != null)
-                handler(exception);
+            OnException?.Invoke(exception);
         }
 
-        private async void SendRetries()
+        private async Task SendRetries()
         {
-            while (true)
-            {
-                if (_sendGuard.Enter())
-                {
-                    try
-                    {
-                        MessageAttemptInfo attemptInfo = Strategy.GetMessageInfoForRetry(false);
-                        if (attemptInfo.Message == null)
-                        {
-                            break;
-                        }
-
-                        await _sendAsyncHandler(attemptInfo, _sendTimeout, true);
-                    }
-                    finally
-                    {
-                        _sendGuard.Exit();
-                    }
-
-                    Strategy.DequeuePending();
-                    OnTransferComplete();
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
-
-        private static void SendRetries(object state)
-        {
-            ReliableOutputConnection outputConnection = (ReliableOutputConnection)state;
-
             try
             {
-                outputConnection.SendRetries();
+                while (true)
+                {
+                    if (_sendGuard.Enter())
+                    {
+                        try
+                        {
+                            MessageAttemptInfo attemptInfo = Strategy.GetMessageInfoForRetry(false);
+                            if (attemptInfo.Message == null)
+                            {
+                                break;
+                            }
+
+                            await _sendAsyncHandler(attemptInfo, _sendTimeout, true);
+                        }
+                        finally
+                        {
+                            _sendGuard.Exit();
+                        }
+
+                        Strategy.DequeuePending();
+                        OnTransferComplete();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
             }
             catch (Exception e)
             {
                 if (Fx.IsFatal(e))
                     throw;
 
-                outputConnection.RaiseOnException(e);
+                RaiseOnException(e);
             }
+        }
+
+        private static Task SendRetries(object state)
+        {
+            ReliableOutputConnection outputConnection = (ReliableOutputConnection)state;
+            return outputConnection.SendRetries();
         }
 
         public void Terminate()

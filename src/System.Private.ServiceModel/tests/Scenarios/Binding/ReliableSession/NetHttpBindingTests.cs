@@ -197,8 +197,8 @@ public static class Binding_ReliableSession_NetHttpBindingTests
             Assert.Equal(2, httpRequestCount);
             // ReliableSessions doubles the wait time between each retry. We know the first retry time. The second retry
             // will be 2X this, then the request will fail after another wait of 4X this delay. We need to wait at LEAST 6X
-            // this initial delay for the channel to fault. 8X should be sufficient
-            await Task.Delay((int)sw.ElapsedMilliseconds * 8);
+            // this initial delay for the channel to fault. 10X should be sufficient
+            await Task.Delay((int)sw.ElapsedMilliseconds * 10);
             // There should now be the second retry (3 attempts to send the request) as well as the SequenceTerminated fault 
             // making a total of 4 requests
             Assert.Equal(4, httpRequestCount);
