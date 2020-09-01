@@ -36,4 +36,15 @@ public static class CallbackBehaviorAttributeTest
         cba.UseSynchronizationContext = value;
         Assert.Equal(value, cba.UseSynchronizationContext);
     }
+
+    [WcfTheory]
+    [InlineData(ConcurrencyMode.Single)]
+    [InlineData(ConcurrencyMode.Multiple)]
+    [InlineData(ConcurrencyMode.Reentrant)]
+    public static void ConcurrencyMode_Property_Is_Settable(ConcurrencyMode value)
+    {
+        CallbackBehaviorAttribute cba = new CallbackBehaviorAttribute();
+        cba.ConcurrencyMode = value;       
+        Assert.Equal(value, cba.ConcurrencyMode);
+    }
 }
