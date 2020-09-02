@@ -594,8 +594,14 @@ namespace System.ServiceModel.Description
         {
             foreach (IEndpointBehavior behaviorAttribute in ServiceReflector.GetCustomAttributes(implementationType, typeof(IEndpointBehavior), false))
             {
-                // 
-                throw ExceptionHelper.PlatformNotSupported();
+                if(behaviorAttribute is CallbackBehaviorAttribute)
+                {
+                    serviceEndpoint.Behaviors.Insert(0, behaviorAttribute);
+                }
+                else
+                {
+                    serviceEndpoint.Behaviors.Add(behaviorAttribute);
+                }
             }
             foreach (IContractBehavior behaviorAttribute in ServiceReflector.GetCustomAttributes(implementationType, typeof(IContractBehavior), false))
             {

@@ -379,6 +379,19 @@ public interface IWcfDuplexService_Xml_Callback
     void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType);
 }
 
+[ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackConcurrencyMode_Callback))]
+public interface IWcfDuplexService_CallbackConcurrencyMode
+{
+    [OperationContract(IsOneWay = true)]
+    Task DoWork();
+}
+
+public interface IWcfDuplexService_CallbackConcurrencyMode_Callback
+{
+    [OperationContract(IsOneWay = true)]
+    Task CallWithWaitAsync(int delayTime);
+}
+
 // WebSocket Interfaces
 
 [ServiceContract]
