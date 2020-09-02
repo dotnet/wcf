@@ -144,7 +144,6 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         // *** SETUP *** \\
         binding = new NetTcpBinding(SecurityMode.None);
         instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Single());
-        Assert.Equal("net.tcp://localhost:809/DuplexCallbackConcurrencyMode.svc/tcp", Endpoints.DuplexCallbackConcurrencyMode_Address);
         factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
         // *** EXECUTE *** \\
@@ -172,7 +171,6 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         // *** SETUP *** \\
         binding = new NetTcpBinding(SecurityMode.None);
         instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Multiple());
-        Assert.Equal("net.tcp://localhost:809/DuplexCallbackConcurrencyMode.svc/tcp", Endpoints.DuplexCallbackConcurrencyMode_Address);
         factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
         // *** EXECUTE *** \\
