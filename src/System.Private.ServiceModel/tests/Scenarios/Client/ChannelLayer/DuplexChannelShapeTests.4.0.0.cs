@@ -140,30 +140,22 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         InstanceContext instanceContext;
         DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory = null;
         IWcfDuplexService_CallbackConcurrencyMode channel = null;
-        try
-        {
-            // *** SETUP *** \\
-            binding = new NetTcpBinding(SecurityMode.None);
-            instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Single());
-            factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
-            // *** EXECUTE *** \\
-            channel = factory.CreateChannel();
-            channel.DoWork();
+        // *** SETUP *** \\
+        binding = new NetTcpBinding(SecurityMode.None);
+        instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Single());
+        factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
-            // *** VALIDATE *** \\
-            Assert.True(CallbackHandler_ConcurrencyMode_Single.s_manualResetEvent.WaitOne(20000));
-            Assert.Equal(1, CallbackHandler_ConcurrencyMode_Single.s_counter);
+        // *** EXECUTE *** \\
+        channel = factory.CreateChannel();
+        channel.DoWork();
 
-            // *** CLEANUP *** \\
-            factory.Close();
-            ((ICommunicationObject)channel).Close();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
-        }
+        // *** VALIDATE *** \\
+        Assert.True(CallbackHandler_ConcurrencyMode_Single.s_manualResetEvent.WaitOne(20000));
+        Assert.Equal(1, CallbackHandler_ConcurrencyMode_Single.s_counter);
+
+        // *** ENSURE CLEANUP *** \\
+        ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
     }
 
     [WcfFact]
@@ -174,30 +166,22 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         InstanceContext instanceContext;
         DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory = null;
         IWcfDuplexService_CallbackConcurrencyMode channel = null;
-        try
-        {           
-            // *** SETUP *** \\
-            binding = new NetTcpBinding(SecurityMode.None);
-            instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Multiple());
-            factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
-            // *** EXECUTE *** \\
-            channel = factory.CreateChannel();
-            channel.DoWork();
+        // *** SETUP *** \\
+        binding = new NetTcpBinding(SecurityMode.None);
+        instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Multiple());
+        factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
-            // *** VALIDATE *** \\
-            Assert.True(CallbackHandler_ConcurrencyMode_Multiple.s_manualResetEvent.WaitOne(20000));
-            Assert.Equal(2, CallbackHandler_ConcurrencyMode_Multiple.s_counter);
+        // *** EXECUTE *** \\
+        channel = factory.CreateChannel();
+        channel.DoWork();
 
-            // *** CLEANUP *** \\
-            factory.Close();
-            ((ICommunicationObject)channel).Close();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
-        }
+        // *** VALIDATE *** \\
+        Assert.True(CallbackHandler_ConcurrencyMode_Multiple.s_manualResetEvent.WaitOne(20000));
+        Assert.Equal(2, CallbackHandler_ConcurrencyMode_Multiple.s_counter);
+
+        // *** ENSURE CLEANUP *** \\
+        ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
     }
 
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single)]
