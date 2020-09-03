@@ -82,6 +82,7 @@ namespace System.ServiceModel
                     result = HttpClientCredentialType.Ntlm;
                     break;
                 case AuthenticationSchemes.Negotiate:
+                case AuthenticationSchemes.IntegratedWindowsAuthentication:
                     result = HttpClientCredentialType.Windows;
                     break;
                 default:

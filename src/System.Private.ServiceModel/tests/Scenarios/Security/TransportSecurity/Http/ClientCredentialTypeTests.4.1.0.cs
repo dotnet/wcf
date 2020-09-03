@@ -2,18 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-// 
-
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Infrastructure.Common;
-
 using Xunit;
 
-public static class Http_ClientCredentialTypeTests
+public class Http_ClientCredentialTypeTests : ConditionalWcfTest
 {
     [WcfFact]
     [OuterLoop]
@@ -138,5 +135,30 @@ public static class Http_ClientCredentialTypeTests
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
+    }
+
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
+    [OuterLoop]
+    public static void WindowsAuthentication_RoundTrips_Echo()
+    {
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+        basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
+
+        ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Http_WindowsAuth_Address, "BasicHttpBinding with Windows authentication", null);
+    }
+
+    [WcfFact]
+    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
+    [OuterLoop]
+    public static void IntegratedWindowsAuthentication_Negotiate_RoundTrips_Echo()
+    {
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+        basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
+        var binding = new CustomBinding(basicHttpBinding);
+        var htbe = binding.Elements.Find<HttpTransportBindingElement>();
+        htbe.AuthenticationScheme = System.Net.AuthenticationSchemes.IntegratedWindowsAuthentication;
+
+        ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Http_WindowsAuth_Address, "BasicHttpBinding with IntegratedWindowsAuthentication authentication and Negotiate endpoint", null);
     }
 }

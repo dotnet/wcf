@@ -52,7 +52,7 @@ namespace System.ServiceModel
             {
                 AuthenticationSchemes authScheme = (AuthenticationSchemes)requirement.Properties[ServiceModelSecurityTokenRequirement.HttpAuthenticationSchemeProperty];
 
-                if (!authScheme.IsSingleton())
+                if (!authScheme.IsSingleton() && authScheme != AuthenticationSchemes.IntegratedWindowsAuthentication)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("authScheme", string.Format(SR.HttpRequiresSingleAuthScheme, authScheme));
                 }

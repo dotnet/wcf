@@ -442,7 +442,7 @@ namespace System.ServiceModel.Channels
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.Format(SR.HttpAuthSchemeCannotBeNone,
                     AuthenticationScheme));
             }
-            else if (!AuthenticationScheme.IsSingleton())
+            else if (!AuthenticationScheme.IsSingleton() && AuthenticationScheme != AuthenticationSchemes.IntegratedWindowsAuthentication)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.Format(SR.HttpRequiresSingleAuthScheme,
                     AuthenticationScheme));
