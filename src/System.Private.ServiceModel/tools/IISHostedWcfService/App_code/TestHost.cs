@@ -268,7 +268,7 @@ namespace WcfService
             }
 
             builder.Append(footer);
-            
+
             return builder.ToString();
         }
     }

@@ -33,6 +33,11 @@ namespace System.ServiceModel
     {
         public UpnEndpointIdentity(string upnName) { }
     }
+    public partial class X509CertificateEndpointIdentity : System.ServiceModel.EndpointIdentity
+    {
+        public X509CertificateEndpointIdentity(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) { }
+        public System.Security.Cryptography.X509Certificates.X509Certificate2Collection Certificates { get; }
+    }
 }
 namespace System.ServiceModel.Channels
 {

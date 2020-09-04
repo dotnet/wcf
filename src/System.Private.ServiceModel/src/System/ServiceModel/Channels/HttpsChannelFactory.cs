@@ -172,10 +172,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                if (to.Identity is X509CertificateEndpointIdentity)
-                {
-                    HttpTransportSecurityHelpers.SetServerCertificateValidationCallback(httpClientHandler);
-                }
+                HttpTransportSecurityHelpers.AddServerCertIdentityValidation(httpClientHandler, to);
             }
         }
 

@@ -4,6 +4,7 @@
 
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net;
@@ -336,89 +337,61 @@ namespace System.ServiceModel.Channels
             // support from HttpClient before any functionality can be added here. 
         }
 
-        private static Dictionary<HttpRequestMessage, string> s_serverCertMap = new Dictionary<HttpRequestMessage, string>();
-
-        public static void AddServerCertMapping(HttpRequestMessage request, EndpointAddress to)
+        public static void AddServerCertIdentityValidation(HttpClientHandler httpClientHandler, EndpointAddress to)
         {
-            Fx.Assert(request.RequestUri.Scheme == UriEx.UriSchemeHttps,
-                "Wrong URI scheme for AddServerCertMapping().");
             X509CertificateEndpointIdentity remoteCertificateIdentity = to.Identity as X509CertificateEndpointIdentity;
             if (remoteCertificateIdentity != null)
             {
                 // The following condition should have been validated when the channel was created.
                 Fx.Assert(remoteCertificateIdentity.Certificates.Count <= 1,
                     "HTTPS server certificate identity contains multiple certificates");
-                AddServerCertMapping(request, remoteCertificateIdentity.Certificates[0].Thumbprint);
-            }
-        }
-
-        private static void AddServerCertMapping(HttpRequestMessage request, string thumbprint)
-        {
-            lock (s_serverCertMap)
-            {
-                s_serverCertMap.Add(request, thumbprint);
-            }
-        }
-
-        public static void SetServerCertificateValidationCallback(HttpClientHandler handler)
-        {
-            handler.ServerCertificateCustomValidationCallback =
-                ChainValidator(handler.ServerCertificateCustomValidationCallback);
-        }
-
-        private static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator)
-        {
-            if (previousValidator == null)
-            {
-                return OnValidateServerCertificate;
-            }
-
-            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> chained =
-                (request, certificate, chain, sslPolicyErrors) =>
-                {
-                    bool valid = OnValidateServerCertificate(request, certificate, chain, sslPolicyErrors);
-                    if (valid)
-                    {
-                        return previousValidator(request, certificate, chain, sslPolicyErrors);
-                    }
-
-                    return false;
-                };
-            return chained;
-        }
-
-        private static bool OnValidateServerCertificate(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain,
-            SslPolicyErrors sslPolicyErrors)
-        {
-            if (request != null)
-            {
-                string thumbprint;
-                lock (s_serverCertMap)
-                {
-                    s_serverCertMap.TryGetValue(request, out thumbprint);
-                }
-                if (thumbprint != null)
+                var thumbprint = remoteCertificateIdentity.Certificates[0].Thumbprint;
+                bool identityValidator(HttpRequestMessage requestMessage, X509Certificate2 cert, X509Chain chain, SslPolicyErrors policyErrors)
                 {
                     try
                     {
-                        ValidateServerCertificate(certificate, thumbprint);
+                        ValidateServerCertificate(cert, thumbprint);
                     }
-                    catch (SecurityNegotiationException)
+                    catch (SecurityNegotiationException e)
                     {
+                        DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
                         return false;
                     }
-                }
-            }
 
-            return (sslPolicyErrors == SslPolicyErrors.None);
+                    return (policyErrors == SslPolicyErrors.None);
+                }
+
+                SetServerCertificateValidationCallback(httpClientHandler, identityValidator);
+            }
         }
 
-        public static void RemoveServerCertMapping(HttpRequestMessage request)
+        public static void SetServerCertificateValidationCallback(HttpClientHandler handler, Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> validator)
         {
-            lock (s_serverCertMap)
+            handler.ServerCertificateCustomValidationCallback =
+                ChainValidator(handler.ServerCertificateCustomValidationCallback, validator);
+        }
+
+        private static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(
+            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator,
+            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> validator)
+        {
+            if (previousValidator == null)
             {
-                s_serverCertMap.Remove(request);
+                return validator;
             }
+
+            bool chained(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+            {
+                bool valid = validator(request, certificate, chain, sslPolicyErrors);
+                if (valid)
+                {
+                    return previousValidator(request, certificate, chain, sslPolicyErrors);
+                }
+
+                return false;
+            }
+
+            return chained;
         }
 
         private static void ValidateServerCertificate(X509Certificate2 certificate, string thumbprint)
