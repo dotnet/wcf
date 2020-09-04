@@ -85,7 +85,7 @@ namespace WcfService
 
     public class WcfDuplexService_CallbackConcurrenyMode : IWcfDuplexService_CallbackConcurrencyMode
     {
-        public async Task DoWork()
+        public async Task DoWorkAsync()
         {
             Task t1 = Callback.CallWithWaitAsync(4000);
             Task t2 = Callback.CallWithWaitAsync(500);

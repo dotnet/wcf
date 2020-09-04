@@ -134,81 +134,97 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
     [WcfFact]
     [OuterLoop]
-    public static void CallbackBehavior_ConcurrencyMode_Single_NetTcpBinding()
+    public static async void CallbackBehavior_ConcurrencyMode_Single_NetTcpBindingAsync()
     {
         NetTcpBinding binding;
         InstanceContext instanceContext;
-        DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory = null;
-        IWcfDuplexService_CallbackConcurrencyMode channel = null;
+        DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory;
+        IWcfDuplexService_CallbackConcurrencyMode channel;
 
         // *** SETUP *** \\
-        binding = new NetTcpBinding(SecurityMode.None);
-        instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Single());
+        binding = new NetTcpBinding(SecurityMode.None);        
+        var imp = new CallbackHandler_ConcurrencyMode_Single(new ManualResetEvent(false));
+        instanceContext = new InstanceContext(imp);
         factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
         // *** EXECUTE *** \\
         channel = factory.CreateChannel();
-        channel.DoWork();
+        Task task = channel.DoWorkAsync();
 
         // *** VALIDATE *** \\
-        Assert.True(CallbackHandler_ConcurrencyMode_Single.s_manualResetEvent.WaitOne(20000));
-        Assert.Equal(1, CallbackHandler_ConcurrencyMode_Single.s_counter);
+        Assert.True(imp.MyManualResetEvent.WaitOne(20000));
+        Assert.Equal(1, imp.Counter);
+        await task;
 
-        // *** ENSURE CLEANUP *** \\
-        ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
+        // *** CLEANUP *** \\
+        ((ICommunicationObject)channel).Close();
+        factory.Close();
     }
 
     [WcfFact]
     [OuterLoop]
-    public static void CallbackBehavior_ConcurrencyMode_Multiple_NetTcpBinding()
+    public static async void CallbackBehavior_ConcurrencyMode_Multiple_NetTcpBinding()
     {
         NetTcpBinding binding;
         InstanceContext instanceContext;
-        DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory = null;
-        IWcfDuplexService_CallbackConcurrencyMode channel = null;
+        DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory;
+        IWcfDuplexService_CallbackConcurrencyMode channel;
 
         // *** SETUP *** \\
         binding = new NetTcpBinding(SecurityMode.None);
-        instanceContext = new InstanceContext(new CallbackHandler_ConcurrencyMode_Multiple());
+        var imp = new CallbackHandler_ConcurrencyMode_Multiple(new ManualResetEvent(false));
+        instanceContext = new InstanceContext(imp);
         factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
 
         // *** EXECUTE *** \\
         channel = factory.CreateChannel();
-        channel.DoWork();
+        Task task = channel.DoWorkAsync();
 
         // *** VALIDATE *** \\
-        Assert.True(CallbackHandler_ConcurrencyMode_Multiple.s_manualResetEvent.WaitOne(20000));
-        Assert.Equal(2, CallbackHandler_ConcurrencyMode_Multiple.s_counter);
+        Assert.True(imp.ManualResetEvent.WaitOne(20000));
+        Assert.Equal(2, imp.Counter);
+        await task;
 
-        // *** ENSURE CLEANUP *** \\
-        ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)channel, factory);
+        // *** CLEANUP *** \\
+        ((ICommunicationObject)channel).Close();
+        factory.Close();
     }
 
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
     internal class CallbackHandler_ConcurrencyMode_Single : IWcfDuplexService_CallbackConcurrencyMode_Callback
     {
-        public static int s_counter = 0;
-        public static ManualResetEvent s_manualResetEvent = new ManualResetEvent(false);
+        public int Counter = 0;
+        public ManualResetEvent MyManualResetEvent;
+
+        public CallbackHandler_ConcurrencyMode_Single(ManualResetEvent manualResetEvent)
+        {
+            MyManualResetEvent = manualResetEvent;
+        }
 
         public async Task CallWithWaitAsync(int delayTime)
         {
-            Interlocked.Increment(ref s_counter);
+            Interlocked.Increment(ref Counter);
             await Task.Delay(delayTime);
-            s_manualResetEvent.Set();
+            MyManualResetEvent.Set();
         }
     }
 
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     internal class CallbackHandler_ConcurrencyMode_Multiple : IWcfDuplexService_CallbackConcurrencyMode_Callback
     {
-        public static int s_counter = 0;
-        public static ManualResetEvent s_manualResetEvent = new ManualResetEvent(false);
+        public int Counter = 0;
+        public ManualResetEvent ManualResetEvent;
+
+        public CallbackHandler_ConcurrencyMode_Multiple(ManualResetEvent manualResetEvent)
+        {
+            ManualResetEvent = manualResetEvent;
+        }
 
         public async Task CallWithWaitAsync(int delayTime)
         {
-            Interlocked.Increment(ref s_counter);
+            Interlocked.Increment(ref Counter);
             await Task.Delay(delayTime);
-            s_manualResetEvent.Set();
+            ManualResetEvent.Set();
         }
     }
 }

@@ -91,7 +91,7 @@ namespace WcfService
     public interface IWcfDuplexService_CallbackConcurrencyMode
     {
         [OperationContract(IsOneWay = true)]
-        Task DoWork();
+        Task DoWorkAsync();
     }
 
     public interface IWcfDuplexService_CallbackConcurrencyMode_Callback

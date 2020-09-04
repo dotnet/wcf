@@ -24,7 +24,7 @@ namespace System.ServiceModel
             {
                 if (!ConcurrencyModeHelper.IsDefined(value))
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
                 }
 
                 _concurrencyMode = value;
