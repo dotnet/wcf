@@ -173,8 +173,13 @@ namespace SvcutilTest
 
             // Uninstall the global tool and install the current version.
             var currentDirectory = Directory.GetCurrentDirectory();
-            var ret = ProcessRunner.TryRunAsync("dotnet", "tool uninstall -g dotnet-svcutil", currentDirectory, null, CancellationToken.None).Result;
+            ProcessRunner.ProcessResult ret = ProcessRunner.TryRunAsync("dotnet", "tool uninstall -g dotnet-svcutil", currentDirectory, null, CancellationToken.None).Result;
             string pkgPath = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "Shipping");
+            if (!Directory.Exists(pkgPath) || !Directory.GetFiles(pkgPath, "dotnet-svcutil-lib*.nupkg").Any())
+            {
+                pkgPath = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "NonShipping");
+            }
+            Assert.True(Directory.GetFiles(pkgPath, "dotnet-svcutil-lib.*.nupkg").Any(), $"dotnet-svcutil-lib*.nupkg not found under {pkgPath}!");
             ret = ProcessRunner.TryRunAsync("dotnet", $"tool install --global --add-source {pkgPath} dotnet-svcutil --version {g_SvcutilPkgVersion}", currentDirectory, null, CancellationToken.None).Result;
             Assert.True(ret.ExitCode == 0, "Could not install the global tool." + Environment.NewLine + ret.OutputText);
         }
@@ -535,6 +540,11 @@ namespace SvcutilTest
                 if (nugetFiles.Length == 0)
                 {
                     var binDir = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "Shipping");
+                    if (!Directory.Exists(binDir) || !Directory.GetFiles(binDir, "dotnet-svcutil-lib.*.nupkg").Any())
+                    {
+                        binDir = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "NonShipping");
+                    }
+
                     DirectoryInfo binDirectory = new DirectoryInfo(binDir);
 
                     FileInfo nugetFile = binDirectory.GetFiles("dotnet-svcutil-lib.*.nupkg", SearchOption.AllDirectories).Where(f => !f.Name.Contains("symbols")).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
