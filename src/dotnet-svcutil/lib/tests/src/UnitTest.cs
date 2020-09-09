@@ -285,7 +285,6 @@ namespace SvcutilTest
             this_TestCaseName = "CommandOptionsTelemetryString";
             TestFixture();
 
-            //InitializeUnitTest(testCaseName, createProject: false, sdkVersion: "3.1.101");
             InitializeUnitTest(testCaseName, createProject: false, sdkVersion: g_SdkVersion);
             options = $"{options} -tc Infrastructure";
 
