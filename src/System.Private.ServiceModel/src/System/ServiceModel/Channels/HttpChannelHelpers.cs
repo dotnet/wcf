@@ -96,6 +96,7 @@ namespace System.ServiceModel.Channels
                     break;
 
                 case AuthenticationSchemes.Ntlm:
+                case AuthenticationSchemes.IntegratedWindowsAuthentication: // IWA could use NTLM
                     result = await TransportSecurityHelpers.GetSspiCredentialAsync(credentialProvider,
                         impersonationLevelWrapper, authenticationLevelWrapper, timeout);
                     if (authenticationLevelWrapper.Value == AuthenticationLevel.MutualAuthRequired)

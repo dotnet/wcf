@@ -862,10 +862,10 @@
     <value>Cannot resolve the host name of URI "{0}" using DNS.</value>
   </data>
   <data name="HttpRequiresSingleAuthScheme" xml:space="preserve">
-    <value>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, or Anonymous.</value>
+    <value>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</value>
   </data>
   <data name="HttpAuthSchemeCannotBeNone" xml:space="preserve">
-    <value>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, or Anonymous.</value>
+    <value>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</value>
   </data>
   <data name="HttpAuthorizationFailed" xml:space="preserve">
     <value>The HTTP request is unauthorized with client authentication scheme '{0}'. The authentication header received from the server was '{1}'.</value>
