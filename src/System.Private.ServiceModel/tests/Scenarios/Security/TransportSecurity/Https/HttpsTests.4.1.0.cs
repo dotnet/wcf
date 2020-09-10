@@ -223,8 +223,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     [WcfFact]
     [Issue(2870, OS = OSID.AnyOSX)]
-    [Condition(nameof(Client_Certificate_Installed),
-           nameof(SSL_Available))]
+    [Condition(nameof(SSL_Available))]
     [OuterLoop]
     public static async Task ServerCertificateValidationUsingIdentity_EchoString()
     {
@@ -251,6 +250,44 @@ public partial class HttpsTests : ConditionalWcfTest
 
             // *** VALIDATE *** \\
             Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Issue(2870, OS = OSID.AnyOSX)]
+    [Condition(nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
+    [OuterLoop]
+    public static void ServerCertificateValidationUsingIdentity_Throws_EchoString()
+    {
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
+
+            // This is intentionally the wrong certificate
+            var identity = new X509CertificateEndpointIdentity(ServiceUtilHelper.ClientCertificate);
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address), identity);
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Assert.Throws<SecurityNegotiationException>(() => { _ = serviceProxy.Echo(testString); });
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();

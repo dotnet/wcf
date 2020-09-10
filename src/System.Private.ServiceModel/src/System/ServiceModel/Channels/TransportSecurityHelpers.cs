@@ -4,17 +4,21 @@
 
 
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Numerics;
 using System.Runtime;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -345,12 +349,13 @@ namespace System.ServiceModel.Channels
                 // The following condition should have been validated when the channel was created.
                 Fx.Assert(remoteCertificateIdentity.Certificates.Count <= 1,
                     "HTTPS server certificate identity contains multiple certificates");
+                var rawData = remoteCertificateIdentity.Certificates[0].GetRawCertData();
                 var thumbprint = remoteCertificateIdentity.Certificates[0].Thumbprint;
                 bool identityValidator(HttpRequestMessage requestMessage, X509Certificate2 cert, X509Chain chain, SslPolicyErrors policyErrors)
                 {
                     try
                     {
-                        ValidateServerCertificate(cert, thumbprint);
+                        ValidateServerCertificate(cert, rawData, thumbprint);
                     }
                     catch (SecurityNegotiationException e)
                     {
@@ -394,14 +399,50 @@ namespace System.ServiceModel.Channels
             return chained;
         }
 
-        private static void ValidateServerCertificate(X509Certificate2 certificate, string thumbprint)
+        private static void ValidateServerCertificate(X509Certificate2 certificate, byte[] rawData, string thumbprint)
         {
-            string certHashString = certificate.Thumbprint;
-            if (!thumbprint.Equals(certHashString))
+            byte[] certRawData = certificate.GetRawCertData();
+            bool valid = true;
+            if (rawData.Length != certRawData.Length)
+            {
+                valid = false;
+            }
+            else
+            {
+                int i = 0;
+                while (true)
+                {
+                    if ((i + Vector<byte>.Count) > certRawData.Length)
+                    {
+                        // Not enough bytes left to use vector
+                        for (; i < certRawData.Length; i++)
+                        {
+                            if (certRawData[i] != rawData[i])
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+
+                    Vector<byte> certDataVec = new Vector<byte>(certRawData, i);
+                    Vector<byte> rawDataVec = new Vector<byte>(rawData, i);
+                    if (!certDataVec.Equals(rawDataVec))
+                    {
+                        valid = false;
+                        break;
+                    }
+
+                    i += Vector<byte>.Count;
+                }
+            }
+            if (!valid)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new SecurityNegotiationException(SR.Format(SR.HttpsServerCertThumbprintMismatch,
-                    certificate.Subject, certHashString, thumbprint)));
+                    certificate.Subject, certificate.Thumbprint, thumbprint)));
             }
         }
     }

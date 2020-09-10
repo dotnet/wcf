@@ -54,8 +54,10 @@
                       Version="$(SystemReflectionDispatchProxyPackageVersion)" />
     <PackageReference Include="System.Security.Principal.Windows"
                       Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
-  <PackageReference Include="System.Security.Cryptography.Xml"
+    <PackageReference Include="System.Security.Cryptography.Xml"
                       Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
+    <PackageReference Include="System.Numerics.Vectors"
+                      Version="$(SystemNumericsVectorsPackageVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
