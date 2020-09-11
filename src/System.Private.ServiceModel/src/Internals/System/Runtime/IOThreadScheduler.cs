@@ -487,7 +487,11 @@ namespace System.Runtime
                 {
                     throw Fx.AssertAndThrowFatal("Cleanup called on an overlapped that is in-flight.");
                 }
-                Overlapped.Free(_nativeOverlapped);
+				
+                if (!s_isWindows)
+                {
+                    Overlapped.Free(_nativeOverlapped);
+                }
             }
         }
     }
