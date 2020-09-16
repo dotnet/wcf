@@ -83,6 +83,7 @@ namespace WcfService
         }
     }
 
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class WcfDuplexService_CallbackConcurrenyMode : IWcfDuplexService_CallbackConcurrencyMode
     {
         public async Task DoWorkAsync()

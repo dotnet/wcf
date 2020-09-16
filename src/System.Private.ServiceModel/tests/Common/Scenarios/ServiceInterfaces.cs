@@ -382,13 +382,13 @@ public interface IWcfDuplexService_Xml_Callback
 [ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackConcurrencyMode_Callback))]
 public interface IWcfDuplexService_CallbackConcurrencyMode
 {
-    [OperationContract(IsOneWay = true)]
+    [OperationContract]
     Task DoWorkAsync();
 }
 
 public interface IWcfDuplexService_CallbackConcurrencyMode_Callback
 {
-    [OperationContract(IsOneWay = true)]
+    [OperationContract]
     Task CallWithWaitAsync(int delayTime);
 }
 
