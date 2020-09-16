@@ -4,16 +4,21 @@
 
 
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Numerics;
 using System.Runtime;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -336,99 +341,108 @@ namespace System.ServiceModel.Channels
             // support from HttpClient before any functionality can be added here. 
         }
 
-        private static Dictionary<HttpRequestMessage, string> s_serverCertMap = new Dictionary<HttpRequestMessage, string>();
-
-        public static void AddServerCertMapping(HttpRequestMessage request, EndpointAddress to)
+        public static void AddServerCertIdentityValidation(HttpClientHandler httpClientHandler, EndpointAddress to)
         {
-            Fx.Assert(request.RequestUri.Scheme == UriEx.UriSchemeHttps,
-                "Wrong URI scheme for AddServerCertMapping().");
             X509CertificateEndpointIdentity remoteCertificateIdentity = to.Identity as X509CertificateEndpointIdentity;
             if (remoteCertificateIdentity != null)
             {
                 // The following condition should have been validated when the channel was created.
                 Fx.Assert(remoteCertificateIdentity.Certificates.Count <= 1,
                     "HTTPS server certificate identity contains multiple certificates");
-                AddServerCertMapping(request, remoteCertificateIdentity.Certificates[0].Thumbprint);
-            }
-        }
-
-        private static void AddServerCertMapping(HttpRequestMessage request, string thumbprint)
-        {
-            lock (s_serverCertMap)
-            {
-                s_serverCertMap.Add(request, thumbprint);
-            }
-        }
-
-        public static void SetServerCertificateValidationCallback(HttpClientHandler handler)
-        {
-            handler.ServerCertificateCustomValidationCallback =
-                ChainValidator(handler.ServerCertificateCustomValidationCallback);
-        }
-
-        private static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator)
-        {
-            if (previousValidator == null)
-            {
-                return OnValidateServerCertificate;
-            }
-
-            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> chained =
-                (request, certificate, chain, sslPolicyErrors) =>
-                {
-                    bool valid = OnValidateServerCertificate(request, certificate, chain, sslPolicyErrors);
-                    if (valid)
-                    {
-                        return previousValidator(request, certificate, chain, sslPolicyErrors);
-                    }
-
-                    return false;
-                };
-            return chained;
-        }
-
-        private static bool OnValidateServerCertificate(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain,
-            SslPolicyErrors sslPolicyErrors)
-        {
-            if (request != null)
-            {
-                string thumbprint;
-                lock (s_serverCertMap)
-                {
-                    s_serverCertMap.TryGetValue(request, out thumbprint);
-                }
-                if (thumbprint != null)
+                var rawData = remoteCertificateIdentity.Certificates[0].GetRawCertData();
+                var thumbprint = remoteCertificateIdentity.Certificates[0].Thumbprint;
+                bool identityValidator(HttpRequestMessage requestMessage, X509Certificate2 cert, X509Chain chain, SslPolicyErrors policyErrors)
                 {
                     try
                     {
-                        ValidateServerCertificate(certificate, thumbprint);
+                        ValidateServerCertificate(cert, rawData, thumbprint);
                     }
-                    catch (SecurityNegotiationException)
+                    catch (SecurityNegotiationException e)
                     {
+                        DiagnosticUtility.TraceHandledException(e, TraceEventType.Information);
                         return false;
                     }
+
+                    return (policyErrors == SslPolicyErrors.None);
+                }
+
+                SetServerCertificateValidationCallback(httpClientHandler, identityValidator);
+            }
+        }
+
+        public static void SetServerCertificateValidationCallback(HttpClientHandler handler, Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> validator)
+        {
+            handler.ServerCertificateCustomValidationCallback =
+                ChainValidator(handler.ServerCertificateCustomValidationCallback, validator);
+        }
+
+        private static Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> ChainValidator(
+            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> previousValidator,
+            Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> validator)
+        {
+            if (previousValidator == null)
+            {
+                return validator;
+            }
+
+            bool chained(HttpRequestMessage request, X509Certificate2 certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+            {
+                bool valid = validator(request, certificate, chain, sslPolicyErrors);
+                if (valid)
+                {
+                    return previousValidator(request, certificate, chain, sslPolicyErrors);
+                }
+
+                return false;
+            }
+
+            return chained;
+        }
+
+        private static void ValidateServerCertificate(X509Certificate2 certificate, byte[] rawData, string thumbprint)
+        {
+            byte[] certRawData = certificate.GetRawCertData();
+            bool valid = true;
+            if (rawData.Length != certRawData.Length)
+            {
+                valid = false;
+            }
+            else
+            {
+                int i = 0;
+                while (true)
+                {
+                    if ((i + Vector<byte>.Count) > certRawData.Length)
+                    {
+                        // Not enough bytes left to use vector
+                        for (; i < certRawData.Length; i++)
+                        {
+                            if (certRawData[i] != rawData[i])
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+
+                    Vector<byte> certDataVec = new Vector<byte>(certRawData, i);
+                    Vector<byte> rawDataVec = new Vector<byte>(rawData, i);
+                    if (!certDataVec.Equals(rawDataVec))
+                    {
+                        valid = false;
+                        break;
+                    }
+
+                    i += Vector<byte>.Count;
                 }
             }
-
-            return (sslPolicyErrors == SslPolicyErrors.None);
-        }
-
-        public static void RemoveServerCertMapping(HttpRequestMessage request)
-        {
-            lock (s_serverCertMap)
-            {
-                s_serverCertMap.Remove(request);
-            }
-        }
-
-        private static void ValidateServerCertificate(X509Certificate2 certificate, string thumbprint)
-        {
-            string certHashString = certificate.Thumbprint;
-            if (!thumbprint.Equals(certHashString))
+            if (!valid)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(
                     new SecurityNegotiationException(SR.Format(SR.HttpsServerCertThumbprintMismatch,
-                    certificate.Subject, certHashString, thumbprint)));
+                    certificate.Subject, certificate.Thumbprint, thumbprint)));
             }
         }
     }

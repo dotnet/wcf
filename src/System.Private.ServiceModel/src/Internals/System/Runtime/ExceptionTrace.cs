@@ -4,6 +4,7 @@
 
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -201,6 +202,33 @@ namespace System.Runtime
         {
             // pass in null, not disposedObject.GetType().FullName as per the above guideline
             return TraceException(new ObjectDisposedException(null, message));
+        }
+
+        public void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            switch (traceEventType)
+            {
+                case TraceEventType.Error:
+                    if (!TraceCore.HandledExceptionErrorIsEnabled(_diagnosticTrace))
+                        break;
+                    TraceCore.HandledExceptionError(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+                case TraceEventType.Warning:
+                    if (!TraceCore.HandledExceptionWarningIsEnabled(_diagnosticTrace))
+                        break;
+                    TraceCore.HandledExceptionWarning(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+                case TraceEventType.Verbose:
+                    if (!TraceCore.HandledExceptionVerboseIsEnabled(_diagnosticTrace))
+                        break;
+                    TraceCore.HandledExceptionVerbose(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+                default:
+                    if (!TraceCore.HandledExceptionIsEnabled(_diagnosticTrace))
+                        break;
+                    TraceCore.HandledException(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+            }
         }
 
         public void TraceUnhandledException(Exception exception)

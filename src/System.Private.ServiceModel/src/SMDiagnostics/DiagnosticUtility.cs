@@ -51,6 +51,11 @@ namespace System.ServiceModel
             return DiagnosticUtility.s_exceptionUtility;
         }
 
+        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            FxTrace.Exception.TraceHandledException(exception, traceEventType);
+        }
+
         static internal bool ShouldUseActivity
         {
             get { return DiagnosticUtility.s_shouldUseActivity; }
