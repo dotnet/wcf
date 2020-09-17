@@ -721,6 +721,11 @@ public static partial class Endpoints
             return GetEndpointAddress("TcpTransSecMessCredsUserName.svc//tcp-message-credentials-username", protocol: "net.tcp");
         }
     }
+
+    public static string DuplexCallbackConcurrencyMode_Address
+    {
+        get { return GetEndpointAddress("DuplexCallbackConcurrencyMode.svc/tcp", protocol: "net.tcp"); }
+    }
     #endregion net.tcp Addresses
 }
 

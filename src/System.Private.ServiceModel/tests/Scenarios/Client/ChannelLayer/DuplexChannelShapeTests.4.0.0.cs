@@ -5,6 +5,7 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Infrastructure.Common;
@@ -89,11 +90,11 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
             // Create the channel factory
             factory = binding.BuildChannelFactory<IDuplexSessionChannel>(new BindingParameterCollection());
-            Task.Factory.FromAsync(factory.BeginOpen, factory.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult(); 
+            Task.Factory.FromAsync(factory.BeginOpen, factory.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult();
 
             // Create the channel.
             channel = factory.CreateChannel(new EndpointAddress(Endpoints.Tcp_NoSecurity_Address));
-            Task.Factory.FromAsync(channel.BeginOpen, channel.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult(); 
+            Task.Factory.FromAsync(channel.BeginOpen, channel.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult();
 
             // Create the Message object to send to the service.
             Message requestMessage = Message.CreateMessage(
@@ -104,8 +105,8 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
 
             // *** EXECUTE *** \\
             // Send the Message and receive the Response.
-            Task.Factory.FromAsync((asyncCallback, o) => channel.BeginSend(requestMessage, asyncCallback, o), 
-                channel.EndSend, 
+            Task.Factory.FromAsync((asyncCallback, o) => channel.BeginSend(requestMessage, asyncCallback, o),
+                channel.EndSend,
                 TaskCreationOptions.None).GetAwaiter().GetResult();
             replyMessage = Task.Factory.FromAsync(channel.BeginReceive, channel.EndReceive, TaskCreationOptions.None).GetAwaiter().GetResult();
 
@@ -128,6 +129,102 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects(channel, factory);
+        }
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static async void CallbackBehavior_ConcurrencyMode_Single_NetTcpBindingAsync()
+    {
+        NetTcpBinding binding;
+        InstanceContext instanceContext;
+        DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory;
+        IWcfDuplexService_CallbackConcurrencyMode channel;
+
+        // *** SETUP *** \\
+        binding = new NetTcpBinding(SecurityMode.None);        
+        var imp = new CallbackHandler_ConcurrencyMode_Single(new ManualResetEvent(false));
+        instanceContext = new InstanceContext(imp);
+        factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
+
+        // *** EXECUTE *** \\
+        channel = factory.CreateChannel();
+        Task task = channel.DoWorkAsync();
+
+        // *** VALIDATE *** \\
+        Assert.True(imp.MyManualResetEvent.WaitOne(20000));
+        Assert.Equal(1, imp.Counter);
+        await task;
+
+        // *** CLEANUP *** \\
+        ((ICommunicationObject)channel).Close();
+        factory.Close();
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static async void CallbackBehavior_ConcurrencyMode_Multiple_NetTcpBinding()
+    {
+        NetTcpBinding binding;
+        InstanceContext instanceContext;
+        DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode> factory;
+        IWcfDuplexService_CallbackConcurrencyMode channel;
+
+        // *** SETUP *** \\
+        binding = new NetTcpBinding(SecurityMode.None);
+        var imp = new CallbackHandler_ConcurrencyMode_Multiple(new ManualResetEvent(false));
+        instanceContext = new InstanceContext(imp);
+        factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
+
+        // *** EXECUTE *** \\
+        channel = factory.CreateChannel();
+        Task task = channel.DoWorkAsync();
+
+        // *** VALIDATE *** \\
+        Assert.True(imp.ManualResetEvent.WaitOne(20000));
+        Assert.Equal(2, imp.Counter);
+        await task;
+
+        // *** CLEANUP *** \\
+        ((ICommunicationObject)channel).Close();
+        factory.Close();
+    }
+
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
+    internal class CallbackHandler_ConcurrencyMode_Single : IWcfDuplexService_CallbackConcurrencyMode_Callback
+    {
+        public int Counter = 0;
+        public ManualResetEvent MyManualResetEvent;
+
+        public CallbackHandler_ConcurrencyMode_Single(ManualResetEvent manualResetEvent)
+        {
+            MyManualResetEvent = manualResetEvent;
+        }
+
+        public async Task CallWithWaitAsync(int delayTime)
+        {
+            Interlocked.Increment(ref Counter);
+            await Task.Delay(delayTime);
+            MyManualResetEvent.Set();
+        }
+    }
+
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
+    internal class CallbackHandler_ConcurrencyMode_Multiple : IWcfDuplexService_CallbackConcurrencyMode_Callback
+    {
+        public int Counter = 0;
+        public ManualResetEvent ManualResetEvent;
+
+        public CallbackHandler_ConcurrencyMode_Multiple(ManualResetEvent manualResetEvent)
+        {
+            ManualResetEvent = manualResetEvent;
+        }
+
+        public async Task CallWithWaitAsync(int delayTime)
+        {
+            Interlocked.Increment(ref Counter);
+            await Task.Delay(delayTime);
+            ManualResetEvent.Set();
         }
     }
 }

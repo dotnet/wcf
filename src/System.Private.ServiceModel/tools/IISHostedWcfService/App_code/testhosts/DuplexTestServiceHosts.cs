@@ -120,4 +120,20 @@ namespace WcfService
         {
         }
     }
+
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "DuplexCallbackConcurrencyMode.svc")]
+    public class DuplexCallbackConcurrencyModeServiceHost : TestServiceHostBase<IWcfDuplexService_CallbackConcurrencyMode>
+    {
+        protected override string Address { get { return "tcp"; } }
+
+        protected override Binding GetBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+        }
+
+        public DuplexCallbackConcurrencyModeServiceHost(params Uri[] baseAddresses)
+            : base(typeof(WcfDuplexService_CallbackConcurrenyMode), baseAddresses)
+        {
+        }
+    }
 }
