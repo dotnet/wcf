@@ -78,10 +78,6 @@ namespace System.ServiceModel
             Fx.Assert(message);
         }
 
-        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
-        {
-            FxTrace.Exception.TraceHandledException(exception, traceEventType);
-        }
         internal static bool ShouldTraceCritical => false;
         internal static bool ShouldTraceError => false;
         internal static bool ShouldTraceWarning => false;
