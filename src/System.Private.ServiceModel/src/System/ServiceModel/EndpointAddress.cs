@@ -132,7 +132,7 @@ namespace System.ServiceModel
 
             if (identity != null && ident2 != null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.MultipleIdentities, "extensionReader"));
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.MultipleIdentities, nameof(extensionReader)));
             }
 
             PossiblyPopulateBuffer(pspReader, ref buffer, out _pspSection);
@@ -165,7 +165,7 @@ namespace System.ServiceModel
         {
             if (!uri.IsAbsoluteUri)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("uri", SR.UriMustBeAbsolute);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(uri), SR.UriMustBeAbsolute);
             }
 
             _addressingVersion = version;
@@ -531,12 +531,12 @@ namespace System.ServiceModel
             else if (reader.NodeType != XmlNodeType.Element)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(
-                    "reader", SR.CannotDetectAddressingVersion);
+                    nameof(reader), SR.CannotDetectAddressingVersion);
             }
             else
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(
-                    "reader", SR.Format(SR.AddressingVersionNotSupported, reader.NamespaceURI));
+                    nameof(reader), SR.Format(SR.AddressingVersionNotSupported, reader.NamespaceURI));
             }
 
             EndpointAddress ea = ReadFromDriver(version, reader);
@@ -557,6 +557,19 @@ namespace System.ServiceModel
             }
 
             reader.ReadFullStartElement();
+            EndpointAddress ea = ReadFromDriver(addressingVersion, reader);
+            reader.ReadEndElement();
+            return ea;
+        }
+
+        public static EndpointAddress ReadFrom(AddressingVersion addressingVersion, XmlDictionaryReader reader, XmlDictionaryString localName, XmlDictionaryString ns)
+        {
+            if (reader == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(reader));
+            if (addressingVersion == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(addressingVersion));
+
+            reader.ReadFullStartElement(localName, ns);
             EndpointAddress ea = ReadFromDriver(addressingVersion, reader);
             reader.ReadEndElement();
             return ea;
@@ -583,7 +596,7 @@ namespace System.ServiceModel
             }
             else
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(addressingVersion),
                     SR.Format(SR.AddressingVersionNotSupported, addressingVersion));
             }
 
@@ -961,7 +974,7 @@ namespace System.ServiceModel
             }
             else
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("addressingVersion",
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(addressingVersion),
                     SR.Format(SR.AddressingVersionNotSupported, addressingVersion));
             }
         }

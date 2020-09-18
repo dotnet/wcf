@@ -299,5 +299,32 @@ namespace System.Runtime
         internal void TraceFailFast(string message)
         {
         }
+
+        public void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            switch (traceEventType)
+            {
+                case TraceEventType.Error:
+                    if (!TraceCore.HandledExceptionErrorIsEnabled(Fx.Trace))
+                        break;
+                    TraceCore.HandledExceptionError(Fx.Trace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+                case TraceEventType.Warning:
+                    if (!TraceCore.HandledExceptionWarningIsEnabled(Fx.Trace))
+                        break;
+                    TraceCore.HandledExceptionWarning(Fx.Trace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+                case TraceEventType.Verbose:
+                    if (!TraceCore.HandledExceptionVerboseIsEnabled(Fx.Trace))
+                        break;
+                    TraceCore.HandledExceptionVerbose(Fx.Trace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+                default:
+                    if (!TraceCore.HandledExceptionIsEnabled(Fx.Trace))
+                        break;
+                    TraceCore.HandledException(Fx.Trace, exception != null ? exception.ToString() : string.Empty, exception);
+                    break;
+            }
+        }
     }
 }

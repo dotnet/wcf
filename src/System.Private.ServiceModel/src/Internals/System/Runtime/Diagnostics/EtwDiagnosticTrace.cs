@@ -127,8 +127,6 @@ namespace System.Runtime.Diagnostics
         public void TraceTransfer(Guid newId)
         {
         }
-
-        [Fx.Tag.SecurityNote(Critical = "Usage of EventDescriptor, which is protected by a LinkDemand")]
         [SecurityCritical]
         public void WriteTraceSource(ref EventDescriptor eventDescriptor, string description, TracePayload payload)
         {

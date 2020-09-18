@@ -29,8 +29,8 @@ namespace System.ServiceModel.Channels
         Task SendAsync(Message message, TimeSpan timeout);
         Task SendAsync(Message message, TimeSpan timeout, MaskingMode maskingMode);
 
-        Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout);
-        Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout, MaskingMode maskingMode);
+        Task<(bool success, RequestContext requestContext)> TryReceiveAsync(TimeSpan timeout);
+        Task<(bool success, RequestContext requestContext)> TryReceiveAsync(TimeSpan timeout, MaskingMode maskingMode);
 
         ISession GetInnerSession();
         void HandleException(Exception e);

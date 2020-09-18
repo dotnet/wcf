@@ -842,3 +842,21 @@ public class ByteParams
     public byte P1;
     public byte P2;
 }
+
+// ********************************************************************************
+
+[ServiceContract]
+public interface IWcfReliableService
+{
+    [OperationContract]
+    Task<int> GetNextNumberAsync();
+    [OperationContract]
+    Task<string> EchoAsync(string echo);
+}
+
+[ServiceContract(CallbackContract = typeof(IWcfReliableDuplexService))]
+public interface IWcfReliableDuplexService
+{
+    [OperationContract]
+    Task<string> DuplexEchoAsync(string echo);
+}

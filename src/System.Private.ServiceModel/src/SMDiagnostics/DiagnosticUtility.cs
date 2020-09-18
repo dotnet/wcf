@@ -77,5 +77,43 @@ namespace System.ServiceModel
         {
             Fx.Assert(message);
         }
+
+        internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
+        {
+            FxTrace.Exception.TraceHandledException(exception, traceEventType);
+        }
+        internal static bool ShouldTraceCritical => false;
+        internal static bool ShouldTraceError => false;
+        internal static bool ShouldTraceWarning => false;
+        internal static bool ShouldTraceInformation => false;
+        internal static bool ShouldTraceVerbose => false;
+        internal static bool TracingEnabled => false;
+
+        internal static bool ShouldTrace(TraceEventType type)
+        {
+            bool retval = false;
+            if (DiagnosticUtility.TracingEnabled)
+            {
+                switch (type)
+                {
+                    case TraceEventType.Critical:
+                        retval = DiagnosticUtility.ShouldTraceCritical;
+                        break;
+                    case TraceEventType.Error:
+                        retval = DiagnosticUtility.ShouldTraceError;
+                        break;
+                    case TraceEventType.Warning:
+                        retval = DiagnosticUtility.ShouldTraceWarning;
+                        break;
+                    case TraceEventType.Information:
+                        retval = DiagnosticUtility.ShouldTraceInformation;
+                        break;
+                    case TraceEventType.Verbose:
+                        retval = DiagnosticUtility.ShouldTraceVerbose;
+                        break;
+                }
+            }
+            return retval;
+        }
     }
 }
