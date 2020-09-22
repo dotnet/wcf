@@ -711,7 +711,7 @@ namespace System.ServiceModel.Channels
         // CloseOutputSession && Close: CloseOutputSession only closes the ReliableOutputConnection
         // from the Opened state, if it does, it must create the closeOutputWaitObject so that
         // close may properly synchronize. If no closeOutputWaitObject is present, Close may close
-        // the ROC safely since it is in the Closing state.
+        // the ReliableOutputConnection safely since it is in the Closing state.
         protected internal override async Task OnCloseAsync(TimeSpan timeout)
         {
             ThrowIfCloseInvalid();
@@ -741,7 +741,7 @@ namespace System.ServiceModel.Channels
         // CloseOutputSession && Close: CloseOutputSession only closes the ReliableOutputConnection
         // from the Opened state, if it does, it must create the closeOutputWaitObject so that
         // close may properly synchronize. If no closeOutputWaitObject is present, Close may close
-        // the ROC safely since it is in the Closing state.
+        // the ReliableOutputConnection safely since it is in the Closing state.
         protected override void OnClose(TimeSpan timeout)
         {
             TaskHelpers.WaitForCompletionNoSpin(OnCloseAsync(timeout));
