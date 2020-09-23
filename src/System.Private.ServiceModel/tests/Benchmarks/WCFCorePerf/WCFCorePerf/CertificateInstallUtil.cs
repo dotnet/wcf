@@ -71,7 +71,7 @@ namespace WCFCorePerf
         private static string GetResourceAddress(string serviceUrl, string resource, string protocol = "http")
         {
             string host = new Uri(serviceUrl).Host;
-            return string.Format(@"{0}://{1}/{2}/{3}/{4}", protocol, host, "wcfservice38", "testhost.svc", resource);
+            return string.Format(@"{0}://{1}/{2}/{3}/{4}", protocol, host, "testhost", "testhost.svc", resource);
         }
 
         public static X509Certificate2 InstallCertificateToTrustedPeopleStore(X509Certificate2 certificate)
