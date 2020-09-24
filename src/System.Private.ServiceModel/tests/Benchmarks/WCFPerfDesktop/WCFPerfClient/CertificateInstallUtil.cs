@@ -59,7 +59,6 @@ namespace WCFPerfClient
         public static byte[] GetResourceFromServiceAsByteArray(string serviceUrl, string resource)
         {
             string requestUri = GetResourceAddress(serviceUrl, resource);
-            Console.WriteLine(String.Format("Invoking {0} ...", requestUri));
 
             using (HttpClient httpClient = new HttpClient())
             {

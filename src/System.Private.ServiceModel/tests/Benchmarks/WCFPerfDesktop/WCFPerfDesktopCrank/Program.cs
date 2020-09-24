@@ -101,7 +101,10 @@ namespace WCFPerfDesktopCrank
             {
                 foreach (string v in results)
                 {
-                    dict.Add(v.Split(':')[0], v.Split(':')[1]);
+                    if (v.Split(':').Length == 2)
+                    {
+                        dict.Add(v.Split(':')[0], v.Split(':')[1]);
+                    }
                 }
             }
             return dict;

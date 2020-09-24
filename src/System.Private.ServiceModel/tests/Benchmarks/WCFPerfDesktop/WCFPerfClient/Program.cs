@@ -96,7 +96,7 @@ namespace WCFPerfClient
                         var clientWSHttp = wsHttpFactory.CreateChannel();
                         var stopwatchWSHttpFirstReq = new Stopwatch();
                         stopwatchWSHttpFirstReq.Start();
-                        Console.WriteLine(clientWSHttp.HelloAsync("helloworld").Result);
+                        var wsResults=clientWSHttp.HelloAsync("helloworld").Result;
                         sb.Append(" firstrequest:" + stopwatchWSHttpFirstReq.ElapsedMilliseconds);
 
                         while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
