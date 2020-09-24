@@ -1,8 +1,8 @@
 jobs:
   BasicHttpWithBuffered:
     source:
-      repository: https://github.com/ZhaodongTian/wcf.git
-      branchOrCommit: WCFPerfDesktopCrank
+      repository: https://github.com/dotnet/wcf.git
+      branchOrCommit: master
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFPerfDesktop/WCFPerfDesktopCrank/WCFPerfDesktopCrank.csproj
     isConsoleApp: true
     waitForExit: true
@@ -14,8 +14,8 @@ jobs:
     arguments: " binding:{{Binding}} serviceurl:{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
   BasicHttpWitDefault:
     source:
-      repository: https://github.com/ZhaodongTian/wcf.git
-      branchOrCommit: WCFPerfDesktopCrank
+      repository: https://github.com/dotnet/wcf.git
+      branchOrCommit: master
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFPerfDesktop/WCFPerfDesktopCrank/WCFPerfDesktopCrank.csproj
     isConsoleApp: true
     waitForExit: true
@@ -27,8 +27,8 @@ jobs:
     arguments: " binding:{{Binding}} serviceurl:{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
   WSHttp:
     source:
-      repository: https://github.com/ZhaodongTian/wcf.git
-      branchOrCommit: WCFPerfDesktopCrank
+      repository: https://github.com/dotnet/wcf.git
+      branchOrCommit: master
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFPerfDesktop/WCFPerfDesktopCrank/WCFPerfDesktopCrank.csproj
     isConsoleApp: true
     waitForExit: true
@@ -39,8 +39,8 @@ jobs:
     arguments: " binding:{{Binding}} serviceurl:{{Url}}  perfmeasurementduration:{{Duration}} "
   NetTcp:
     source:
-      repository: https://github.com/ZhaodongTian/wcf.git
-      branchOrCommit: WCFPerfDesktopCrank
+      repository: https://github.com/dotnet/wcf.git
+      branchOrCommit: master
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFPerfDesktop/WCFPerfDesktopCrank/WCFPerfDesktopCrank.csproj
     isConsoleApp: true
     waitForExit: true
