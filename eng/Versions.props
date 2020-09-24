@@ -27,11 +27,11 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetArcadeSdkPackageVersion>5.0.0-beta.20467.6</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetHelixSdkPackageVersion>5.0.0-beta.20467.6</MicrosoftDotNetHelixSdkPackageVersion>
-    <MicrosoftDotNetGenFacadesPackageVersion>5.0.0-beta.20467.6</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>5.0.0-beta.20467.6</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetSignToolVersion>5.0.0-beta.20467.6</MicrosoftDotNetSignToolVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>5.0.0-beta.20472.36</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetHelixSdkPackageVersion>5.0.0-beta.20472.36</MicrosoftDotNetHelixSdkPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>5.0.0-beta.20472.36</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>5.0.0-beta.20472.36</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetSignToolVersion>5.0.0-beta.20472.36</MicrosoftDotNetSignToolVersion>
   </PropertyGroup>
   <!-- CoreFx dependencies -->
   <PropertyGroup>
@@ -39,7 +39,7 @@
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
     <SystemSecurityPrincipalWindowsPackageVersion>4.7.0</SystemSecurityPrincipalWindowsPackageVersion>
     <SystemSecurityCryptographyXmlPackageVersion>4.7.0</SystemSecurityCryptographyXmlPackageVersion>
-	<SystemNumericsVectorsPackageVersion>4.5.0</SystemNumericsVectorsPackageVersion>
+    <SystemNumericsVectorsPackageVersion>4.5.0</SystemNumericsVectorsPackageVersion>
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.7.0-preview4.19164.7</MicrosoftPrivateCoreFxUAPPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->
