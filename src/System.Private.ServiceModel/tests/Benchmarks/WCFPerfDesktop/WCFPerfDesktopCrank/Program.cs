@@ -23,9 +23,9 @@ namespace WCFPerfDesktopCrank
     class Program
     {
         private TestBinding _paramBinding = TestBinding.BasicHttp;
-        private TimeSpan _paramPerfMeasurementDuration = s_defaultPerfMeasurementDuration;
+        private int _paramPerfMeasurementDuration = s_defaultPerfMeasurementDuration;
         private string _paramServiceUrl = "";
-        private readonly static TimeSpan s_defaultPerfMeasurementDuration = TimeSpan.FromSeconds(10);
+        private readonly static int s_defaultPerfMeasurementDuration = 10;
         private string _paramTransferMode = "Buffered";
 
         static async Task Main(string[] args)
@@ -46,7 +46,7 @@ namespace WCFPerfDesktopCrank
             {
                 BenchmarksEventSource.Log.Metadata("channelopen", "max", "max", "Channel Open Time (ms)", "Time to Open Channel in ms", "n0");
                 BenchmarksEventSource.Log.Metadata("firstrequest", "max", "max", "First Request (ms)", "Time to first request in ms", "n0");
-                BenchmarksEventSource.Log.Metadata("bombardier/requests", "max", "sum", "Requests (" + test._paramPerfMeasurementDuration.TotalMilliseconds + " ms)", "Total number of requests", "n0");
+                BenchmarksEventSource.Log.Metadata("bombardier/requests", "max", "sum", "Requests (" + test._paramPerfMeasurementDuration * 1000 + " ms)", "Total number of requests", "n0");
                 BenchmarksEventSource.Log.Metadata("bombardier/rps/max", "max", "sum", "Requests/sec (max)", "Max requests per second", "n0");
 
                 var process = new Process()
@@ -132,7 +132,7 @@ namespace WCFPerfDesktopCrank
                         {
                             return ReportWrongArgument(s);
                         }
-                        _paramPerfMeasurementDuration = TimeSpan.FromSeconds(perfPerfMeasurementDurationSeconds);
+                        _paramPerfMeasurementDuration = perfPerfMeasurementDurationSeconds;
                         break;
 
                     case Parameters.ServiceUrl:
