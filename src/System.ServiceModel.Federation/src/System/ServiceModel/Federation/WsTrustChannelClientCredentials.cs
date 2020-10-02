@@ -12,13 +12,13 @@ namespace System.ServiceModel.Federation
     /// <summary>
     /// These client credentials class that will serve up a SecurityTokenManager that will use a TrustChannel to get a token from an STS
     /// </summary>
-    public class WsTrustChannelClientCredentials : ClientCredentials
+    public class WSTrustChannelClientCredentials : ClientCredentials
     {
         /// <summary>
         /// Default constructor
         /// TODO - do we need this ctor
         /// </summary>
-        public WsTrustChannelClientCredentials()
+        public WSTrustChannelClientCredentials()
             : base()
         {
         }
@@ -27,7 +27,7 @@ namespace System.ServiceModel.Federation
         /// Copy constructor
         /// </summary>
         /// <param name="other">The WSTrustChannelClientCredentials to create a copy of</param>
-        protected WsTrustChannelClientCredentials(WsTrustChannelClientCredentials other)
+        protected WSTrustChannelClientCredentials(WSTrustChannelClientCredentials other)
             : base(other)
         {
             ClientCredentials = other.ClientCredentials;
@@ -38,7 +38,7 @@ namespace System.ServiceModel.Federation
         ///
         /// </summary>
         /// <param name="clientCredentials"></param>
-        public WsTrustChannelClientCredentials(ClientCredentials clientCredentials)
+        public WSTrustChannelClientCredentials(ClientCredentials clientCredentials)
             : base(clientCredentials)
         {
             // TODO - throw on null
@@ -53,7 +53,7 @@ namespace System.ServiceModel.Federation
 
         protected override ClientCredentials CloneCore()
         {
-            return new WsTrustChannelClientCredentials(this);
+            return new WSTrustChannelClientCredentials(this);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace System.ServiceModel.Federation
             if (ClientCredentials != null)
                 SecurityTokenManager = ClientCredentials.CreateSecurityTokenManager();
     
-            return new WsTrustChannelSecurityTokenManager((WsTrustChannelClientCredentials)Clone());
+            return new WSTrustChannelSecurityTokenManager((WSTrustChannelClientCredentials)Clone());
         }
 
         internal SecurityTokenManager SecurityTokenManager { get; private set; }

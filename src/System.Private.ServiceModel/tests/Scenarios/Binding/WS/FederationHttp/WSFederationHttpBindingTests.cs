@@ -37,8 +37,8 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
             var issuerBinding = new WSHttpBinding(SecurityMode.Transport);
             issuerBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
 
-            WsFederationHttpBinding federationBinding = new WsFederationHttpBinding(
-                new WsTrustTokenParameters
+            WSFederationHttpBinding federationBinding = new WSFederationHttpBinding(
+                new WSTrustTokenParameters
                 {
                     IssuerAddress = issuerAddress,
                     IssuerBinding = issuerBinding,

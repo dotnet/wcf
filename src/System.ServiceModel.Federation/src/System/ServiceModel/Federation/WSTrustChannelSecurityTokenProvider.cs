@@ -29,7 +29,7 @@ namespace System.ServiceModel.Federation
     /// <summary>
     /// Custom WSTrustChannelSecurityTokenProvider that returns a SAML assertion
     /// </summary>
-    public class WsTrustChannelSecurityTokenProvider : SecurityTokenProvider
+    public class WSTrustChannelSecurityTokenProvider : SecurityTokenProvider
     {
         private const int DefaultPublicKeySize = 1024;
         private const string Namespace = "http://schemas.microsoft.com/ws/2006/05/servicemodel/securitytokenrequirement";
@@ -38,20 +38,20 @@ namespace System.ServiceModel.Federation
         private const string SecurityBindingElementProperty = Namespace + "/SecurityBindingElement";
         private const string TargetAddressProperty = Namespace + "/TargetAddress";
 
-        //private readonly WsTrustTokenParameters _issuedTokenParameters;
+        //private readonly WSTrustTokenParameters _issuedTokenParameters;
         private SecurityKeyEntropyMode _keyEntropyMode;
         private ChannelFactory<IRequestChannel> _channelFactory;
         private readonly SecurityAlgorithmSuite _securityAlgorithmSuite;
         private WsSerializationContext _requestSerializationContext;
 
-        public WsTrustChannelSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
+        public WSTrustChannelSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
             SecurityTokenRequirement = tokenRequirement ?? throw new ArgumentNullException(nameof(tokenRequirement));
             SecurityTokenRequirement.TryGetProperty(SecurityAlgorithmSuiteProperty, out _securityAlgorithmSuite);
-            WsTrustTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty) as WsTrustTokenParameters;
+            WSTrustTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty) as WSTrustTokenParameters;
             InitializeKeyEntropyMode();
             SetInboundSerializationContext();
-            RequestContext = string.IsNullOrEmpty(WsTrustTokenParameters.RequestContext) ? Guid.NewGuid().ToString() : WsTrustTokenParameters.RequestContext;
+            RequestContext = string.IsNullOrEmpty(WSTrustTokenParameters.RequestContext) ? Guid.NewGuid().ToString() : WSTrustTokenParameters.RequestContext;
         }
 
         private DateTime AddTicks(DateTime time, long ticks)
@@ -81,7 +81,7 @@ namespace System.ServiceModel.Federation
 
         private void CacheSecurityTokenResponse(WsTrustRequest request, WsTrustResponse response)
         {
-            if (WsTrustTokenParameters.CacheIssuedTokens)
+            if (WSTrustTokenParameters.CacheIssuedTokens)
             {
                 // If cached respones are stored in a shared cache in the future, that cache should be written
                 // to here, possibly including serializing the WsTrustResponse if the cache stores byte[] (as
@@ -100,7 +100,7 @@ namespace System.ServiceModel.Federation
             {
                 if (_channelFactory == null)
                 {
-                    _channelFactory = new ChannelFactory<IRequestChannel>(IssuerBinding, WsTrustTokenParameters.IssuerAddress);
+                    _channelFactory = new ChannelFactory<IRequestChannel>(IssuerBinding, WSTrustTokenParameters.IssuerAddress);
                     if (ClientCredentials != null)
                     {
                         _channelFactory.Endpoint.EndpointBehaviors.Remove(typeof(ClientCredentials));
@@ -121,7 +121,7 @@ namespace System.ServiceModel.Federation
             int keySize;
             string keyType;
 
-            switch (WsTrustTokenParameters.KeyType)
+            switch (WSTrustTokenParameters.KeyType)
             {
                 case SecurityKeyType.AsymmetricKey:
                     keySize = DefaultPublicKeySize;
@@ -140,7 +140,7 @@ namespace System.ServiceModel.Federation
             }
 
             Entropy entropy = null;
-            if (WsTrustTokenParameters.KeyType != SecurityKeyType.BearerKey &&
+            if (WSTrustTokenParameters.KeyType != SecurityKeyType.BearerKey &&
                 (KeyEntropyMode == SecurityKeyEntropyMode.ClientEntropy || KeyEntropyMode == SecurityKeyEntropyMode.CombinedEntropy))
             {
                 byte[] entropyBytes = new byte[keySize / 8];
@@ -173,7 +173,7 @@ namespace System.ServiceModel.Federation
 
         private WsTrustResponse GetCachedResponse(WsTrustRequest request)
         {
-            if (WsTrustTokenParameters.CacheIssuedTokens && CachedResponse != null)
+            if (WSTrustTokenParameters.CacheIssuedTokens && CachedResponse != null)
             {
                 // If cached responses are read from shared caches in the future, then that cache should be read here
                 // and, if necessary, translated (perhaps via deserialization) into a WsTrustResponse.
@@ -397,7 +397,7 @@ namespace System.ServiceModel.Federation
             // That scenario does not seem to be needed in .NET Core WsTrust scenarios, so key entropy mode is simply being read from the issuer's
             // security binding element. If, in the future, it's necessary to change the default (if some scenarios don't have a security binding
             // element, for example), that could be done by adding a DefaultKeyEntropyMode property to WsTrustChannelCredentials and moving
-            // the code that calculates KeyEntropyMode out to WsTrustChannelSecurityTokenManager since it can set this property
+            // the code that calculates KeyEntropyMode out to WSTrustChannelSecurityTokenManager since it can set this property
             // when it creates the provider and fall back to the credentials' default value if no security binding element is present.
             KeyEntropyMode = SecurityKeyEntropyMode.CombinedEntropy;
             SecurityBindingElement securityBindingElement = IssuerBinding?.CreateBindingElements().Find<SecurityBindingElement>();
@@ -413,7 +413,7 @@ namespace System.ServiceModel.Federation
         /// 
         internal Binding IssuerBinding
         {
-            get => WsTrustTokenParameters?.IssuerBinding;
+            get => WSTrustTokenParameters?.IssuerBinding;
         }
 
         private bool IsWsTrustResponseExpired(WsTrustResponse response)
@@ -434,8 +434,8 @@ namespace System.ServiceModel.Federation
             DateTime toTime = responseLifetime.Expires.Value.ToUniversalTime();
 
             long interval = toTime.Ticks - fromTime.Ticks;
-            long effectiveInterval = (long)((WsTrustTokenParameters.IssuedTokenRenewalThresholdPercentage / (double)100) * interval);
-            DateTime effectiveExpiration = AddTicks(fromTime, Math.Min(effectiveInterval, WsTrustTokenParameters.MaxIssuedTokenCachingTime.Ticks));
+            long effectiveInterval = (long)((WSTrustTokenParameters.IssuedTokenRenewalThresholdPercentage / (double)100) * interval);
+            DateTime effectiveExpiration = AddTicks(fromTime, Math.Min(effectiveInterval, WSTrustTokenParameters.MaxIssuedTokenCachingTime.Ticks));
 
             return effectiveExpiration < DateTime.UtcNow;
         }
@@ -486,12 +486,12 @@ namespace System.ServiceModel.Federation
         /// </summary>
         private void SetInboundSerializationContext()
         {
-            // WsTrustTokenParameters.MessageSecurityVersion can be checked directly instead of
-            // extracting MessageSecurityVersion from the issuer binding, because the WsFederationHttpBinding
-            // creates its security binding element using the MessageSecurityVersion from its WsTrustTokenParameters.
-            MessageSecurityVersion messageSecurityVersion = WsTrustTokenParameters.MessageSecurityVersion;
+            // WSTrustTokenParameters.MessageSecurityVersion can be checked directly instead of
+            // extracting MessageSecurityVersion from the issuer binding, because the WSFederationHttpBinding
+            // creates its security binding element using the MessageSecurityVersion from its WSTrustTokenParameters.
+            MessageSecurityVersion messageSecurityVersion = WSTrustTokenParameters.MessageSecurityVersion;
             if (messageSecurityVersion == null)
-                messageSecurityVersion = WsTrustTokenParameters.DefaultMessageSecurityVersion;
+                messageSecurityVersion = WSTrustTokenParameters.DefaultMessageSecurityVersion;
 
             if (messageSecurityVersion == null)
             {
@@ -511,6 +511,6 @@ namespace System.ServiceModel.Federation
 
         public override bool SupportsTokenRenewal => false;
 
-        internal WsTrustTokenParameters WsTrustTokenParameters { get; }
+        internal WSTrustTokenParameters WSTrustTokenParameters { get; }
     }
 }

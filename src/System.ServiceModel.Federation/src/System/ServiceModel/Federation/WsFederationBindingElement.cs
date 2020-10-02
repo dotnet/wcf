@@ -7,21 +7,21 @@ using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Federation
 {
-    internal class WsFederationBindingElement : BindingElement
+    internal class WSFederationBindingElement : BindingElement
     {
-        public WsFederationBindingElement(WsTrustTokenParameters wsTrustTokenParameters, SecurityBindingElement securityBindingElement)
+        public WSFederationBindingElement(WSTrustTokenParameters wsTrustTokenParameters, SecurityBindingElement securityBindingElement)
         {
-            WsTrustTokenParameters = wsTrustTokenParameters;
+            WSTrustTokenParameters = wsTrustTokenParameters;
             SecurityBindingElement = securityBindingElement;
         }
 
-        public WsTrustTokenParameters WsTrustTokenParameters { get; }
+        public WSTrustTokenParameters WSTrustTokenParameters { get; }
 
         public SecurityBindingElement SecurityBindingElement { get; }
 
         public override BindingElement Clone()
         {
-            return new WsFederationBindingElement(WsTrustTokenParameters, SecurityBindingElement);
+            return new WSFederationBindingElement(WSTrustTokenParameters, SecurityBindingElement);
         }
 
         public override T GetProperty<T>(BindingContext context)
@@ -31,19 +31,19 @@ namespace System.ServiceModel.Federation
 
         public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context)
         {
-            WsTrustChannelClientCredentials trustCredentials = Find<WsTrustChannelClientCredentials>(context.BindingParameters);
+            WSTrustChannelClientCredentials trustCredentials = Find<WSTrustChannelClientCredentials>(context.BindingParameters);
             if (trustCredentials == null)
             {
                 var clientCredentials = Find<ClientCredentials>(context.BindingParameters);
                 if (clientCredentials != null)
                 {
-                    trustCredentials = new WsTrustChannelClientCredentials(clientCredentials);
+                    trustCredentials = new WSTrustChannelClientCredentials(clientCredentials);
                     context.BindingParameters.Remove(typeof(ClientCredentials));
                     context.BindingParameters.Add(trustCredentials);
                 }
                 else
                 {
-                    trustCredentials = new WsTrustChannelClientCredentials();
+                    trustCredentials = new WSTrustChannelClientCredentials();
                     context.BindingParameters.Add(trustCredentials);
                 }
             }
