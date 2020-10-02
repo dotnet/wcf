@@ -10,16 +10,16 @@ using System.ServiceModel.Security.Tokens;
 
 namespace System.ServiceModel.Federation
 {
-    public class WsFederationHttpBinding : WSHttpBinding
+    public class WSFederationHttpBinding : WSHttpBinding
     {
         // binding is always TransportWithMessageCredentialy
-        public WsFederationHttpBinding(WsTrustTokenParameters wsTrustTokenParameters) : base(SecurityMode.TransportWithMessageCredential)
+        public WSFederationHttpBinding(WSTrustTokenParameters wsTrustTokenParameters) : base(SecurityMode.TransportWithMessageCredential)
         {
-            WsTrustTokenParameters = wsTrustTokenParameters ?? throw new ArgumentNullException(nameof(wsTrustTokenParameters));
+            WSTrustTokenParameters = wsTrustTokenParameters ?? throw new ArgumentNullException(nameof(wsTrustTokenParameters));
             Security.Message.ClientCredentialType = MessageCredentialType.IssuedToken;
         }
 
-        public WsTrustTokenParameters WsTrustTokenParameters
+        public WSTrustTokenParameters WSTrustTokenParameters
         {
             get;
         }
@@ -28,28 +28,28 @@ namespace System.ServiceModel.Federation
 
         protected override SecurityBindingElement CreateMessageSecurity()
         {
-            WsTrustTokenParameters.RequireDerivedKeys = false;
+            WSTrustTokenParameters.RequireDerivedKeys = false;
             var result = new TransportSecurityBindingElement
             {
                 IncludeTimestamp = true,
-                MessageSecurityVersion = WsTrustTokenParameters.MessageSecurityVersion
+                MessageSecurityVersion = WSTrustTokenParameters.MessageSecurityVersion
             };
 
-            if (WsTrustTokenParameters.KeyType == SecurityKeyType.BearerKey)
+            if (WSTrustTokenParameters.KeyType == SecurityKeyType.BearerKey)
             {
-                result.EndpointSupportingTokenParameters.Signed.Add(WsTrustTokenParameters);
+                result.EndpointSupportingTokenParameters.Signed.Add(WSTrustTokenParameters);
             }
             else
             {
-                result.EndpointSupportingTokenParameters.Endorsing.Add(WsTrustTokenParameters);
+                result.EndpointSupportingTokenParameters.Endorsing.Add(WSTrustTokenParameters);
             }
 
-            if (WsTrustTokenParameters.EstablishSecurityContext)
+            if (WSTrustTokenParameters.EstablishSecurityContext)
             {
                 var securityContextWrappingElement = new TransportSecurityBindingElement
                 {
                     IncludeTimestamp = true,
-                    MessageSecurityVersion = WsTrustTokenParameters.MessageSecurityVersion
+                    MessageSecurityVersion = WSTrustTokenParameters.MessageSecurityVersion
                 };
                 securityContextWrappingElement.LocalClientSettings.DetectReplays = false;
 
@@ -70,7 +70,7 @@ namespace System.ServiceModel.Federation
         public override BindingElementCollection CreateBindingElements()
         {
             var bindingElementCollection = base.CreateBindingElements();
-            bindingElementCollection.Insert(0, new WsFederationBindingElement(WsTrustTokenParameters, SecurityBindingElement));
+            bindingElementCollection.Insert(0, new WSFederationBindingElement(WSTrustTokenParameters, SecurityBindingElement));
             return bindingElementCollection;
         }
 

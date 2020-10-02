@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Protocols.WsFed;
 
 namespace System.ServiceModel.Federation
 {
-    public class WsTrustTokenParameters : IssuedSecurityTokenParameters
+    public class WSTrustTokenParameters : IssuedSecurityTokenParameters
     {
         internal const bool DefaultEstablishSecurityContext = true;
         public static readonly bool DefaultCacheIssuedTokens = true;
@@ -29,7 +29,7 @@ namespace System.ServiceModel.Federation
         /// <summary>
         /// Values that are used to obtain a token from an IdentityProvider
         /// </summary>
-        public WsTrustTokenParameters()
+        public WSTrustTokenParameters()
         {
             KeyType = DefaultSecurityKeyType;
             EstablishSecurityContext = DefaultEstablishSecurityContext;
@@ -37,7 +37,7 @@ namespace System.ServiceModel.Federation
             MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
         }
 
-        protected WsTrustTokenParameters(WsTrustTokenParameters other) : base(other)
+        protected WSTrustTokenParameters(WSTrustTokenParameters other) : base(other)
         {
             foreach (var parameter in other.AdditionalRequestParameters)
                 AdditionalRequestParameters.Add(parameter);
@@ -57,7 +57,7 @@ namespace System.ServiceModel.Federation
 
         protected override SecurityTokenParameters CloneCore()
         {
-            return new WsTrustTokenParameters(this);
+            return new WSTrustTokenParameters(this);
         }
 
         public ICollection<XmlElement> AdditionalRequestParameters { get; } = new Collection<XmlElement>();
