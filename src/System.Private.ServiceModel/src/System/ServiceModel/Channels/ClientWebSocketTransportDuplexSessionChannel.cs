@@ -21,7 +21,6 @@ namespace System.ServiceModel.Channels
         private SecurityTokenProviderContainer _webRequestTokenProvider;
         private SecurityTokenProviderContainer _webRequestProxyTokenProvider;
         private volatile bool _cleanupStarted;
-        private volatile bool _cleanupIdentity;
 
         public ClientWebSocketTransportDuplexSessionChannel(HttpChannelFactory<IDuplexSessionChannel> channelFactory, ClientWebSocketFactory connectionFactory, EndpointAddress remoteAddress, Uri via)
             : base(channelFactory, remoteAddress, via)
@@ -66,14 +65,6 @@ namespace System.ServiceModel.Channels
                 }
 
                 ChannelParameterCollection channelParameterCollection = new ChannelParameterCollection();
-
-                if (HttpChannelFactory<IDuplexSessionChannel>.MapIdentity(RemoteAddress, _channelFactory.AuthenticationScheme))
-                {
-                    lock (ThisLock)
-                    {
-                        _cleanupIdentity = HttpTransportSecurityHelpers.AddIdentityMapping(Via, RemoteAddress);
-                    }
-                }
 
                 X509Certificate2 clientCertificate = null;
                 HttpsChannelFactory<IDuplexSessionChannel> httpsChannelFactory = _channelFactory as HttpsChannelFactory<IDuplexSessionChannel>;
@@ -206,6 +197,10 @@ namespace System.ServiceModel.Channels
                 if (_channelFactory.MessageEncoderFactory is BinaryMessageEncoderFactory)
                 {
                     headers[WebSocketTransportSettings.BinaryEncoderTransferModeHeader] = _channelFactory.TransferMode.ToString();
+                }
+                if (HttpChannelFactory<IDuplexSessionChannel>.MapIdentity(RemoteAddress, _channelFactory.AuthenticationScheme))
+                {
+                    headers[HttpRequestHeader.Host] = HttpTransportSecurityHelpers.GeIdentityHostHeader(RemoteAddress);
                 }
 
                 var credentials = _channelFactory.GetCredentials();
