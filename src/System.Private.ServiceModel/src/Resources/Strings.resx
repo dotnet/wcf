@@ -2481,9 +2481,6 @@
   <data name="SignedSupportingTokenNotExpected" xml:space="preserve">
     <value>A signed supporting token is not expected in the security header in this context.</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>Crypto algorithm '{0}' not supported in this context.</value>
-  </data>
   <data name="TokenManagerCouldNotReadToken" xml:space="preserve">
     <value>Security token manager could not parse token with name '{0}', namespace '{1}', valueType '{2}'.</value>
   </data>
@@ -2819,5 +2816,14 @@
   </data>
   <data name="TheBindingForDoesnTSupportOrderedDelivery1" xml:space="preserve">
     <value>The DeliveryRequirementsAttribute on contract '{0}' specifies a QueuedDeliveryRequirements value of NotAllowed.  However, the configured binding for this contract specifies that it does support queued delivery.  A queued binding may not be used with this contract.</value>
+  </data>
+  <data name="HttpsExplicitIdentity" xml:space="preserve">
+    <value>The HTTPS channel factory does not support explicit specification of an identity in the EndpointAddress unless the authentication scheme is NTLM or Negotiate.</value>
+  </data>
+  <data name="HttpsIdentityMultipleCerts" xml:space="preserve">
+    <value>The endpoint identity specified when creating the HTTPS channel to '{0}' contains multiple server certificates.  However, the HTTPS transport only supports the specification of a single server certificate.  In order to create an HTTPS channel, please specify no more than one server certificate in the endpoint identity.</value>
+      </data>
+          <data name="OnlyDefaultSpnServiceSupported" xml:space="preserve">
+    <value>Only HOST and HTTP service principal names are supported .</value>
   </data>
 </root>

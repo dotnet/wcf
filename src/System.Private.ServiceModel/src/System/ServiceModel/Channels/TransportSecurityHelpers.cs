@@ -16,6 +16,7 @@ using System.Runtime;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.ServiceModel.Diagnostics;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
@@ -328,17 +329,42 @@ namespace System.ServiceModel.Channels
     {
         private static Dictionary<string, int> s_targetNameCounter = new Dictionary<string, int>();
 
-        public static bool AddIdentityMapping(Uri via, EndpointAddress target)
+        public static void AddIdentityMapping(EndpointAddress target, Message message)
         {
-            // On Desktop, we do mutual auth when the EndpointAddress has an identity. We need
-            // support from HttpClient before any functionality can be added here. 
-            return false;
+            var hostHeader = GeIdentityHostHeader(target);
+            HttpRequestMessageProperty requestProperty;
+            if (!message.Properties.TryGetValue(HttpRequestMessageProperty.Name, out requestProperty))
+            {
+                requestProperty = new HttpRequestMessageProperty();
+                message.Properties.Add(HttpRequestMessageProperty.Name, requestProperty);
+            }
+
+            requestProperty.Headers[HttpRequestHeader.Host] = hostHeader; 
         }
 
-        public static void RemoveIdentityMapping(Uri via, EndpointAddress target, bool validateState)
+        public static string GeIdentityHostHeader(EndpointAddress target)
         {
-            // On Desktop, we do mutual auth when the EndpointAddress has an identity. We need
-            // support from HttpClient before any functionality can be added here. 
+            EndpointIdentity identity = target.Identity;
+            string value;
+            if (identity != null && !(identity is X509CertificateEndpointIdentity))
+            {
+                value = SecurityUtils.GetSpnFromIdentity(identity, target);
+            }
+            else
+            {
+                value = SecurityUtils.GetSpnFromTarget(target);
+            }
+
+            // HttpClientHandler supports specifying the SPN via the HOST header. The service name is hard coded to "HTTP/". "HTTP/"
+            // is an alias for the "HOST/" service name so we accept either but can't accept anything else.
+            if (!(value.StartsWith("host/", StringComparison.OrdinalIgnoreCase) || value.StartsWith("http/", StringComparison.OrdinalIgnoreCase)))
+            {
+                throw Fx.Exception.AsError(new InvalidOperationException(SR.OnlyDefaultSpnServiceSupported));
+            }
+
+            // The leading service name has been constrained to be either "HTTP/" or "HOST/" which are both 5 charactes long.
+            // This needs to be removed to provide just the hostname part for the Host header.
+            return value.Substring(5);
         }
 
         public static void AddServerCertIdentityValidation(HttpClientHandler httpClientHandler, EndpointAddress to)

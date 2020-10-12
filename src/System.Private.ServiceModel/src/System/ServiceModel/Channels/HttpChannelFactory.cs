@@ -990,6 +990,11 @@ namespace System.ServiceModel.Channels
                 public async Task SendRequestAsync(Message message, TimeoutHelper timeoutHelper)
                 {
                     _timeoutHelper = timeoutHelper;
+                    if (_channel.Factory.MapIdentity(_to))
+                    {
+                        HttpTransportSecurityHelpers.AddIdentityMapping(_to, message);
+                    }
+
                     _factory.ApplyManualAddressing(ref _to, ref _via, message);
                     _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper);
 
@@ -1201,10 +1206,6 @@ namespace System.ServiceModel.Channels
                                 {
                                     _httpRequestMessage.Headers.Expect.TryParseAdd(value);
                                 }
-                            }
-                            else if (string.Compare(name, "host", StringComparison.OrdinalIgnoreCase) == 0)
-                            {
-                                // this should be controlled through Via
                             }
                             else if (string.Compare(name, "referer", StringComparison.OrdinalIgnoreCase) == 0)
                             {
