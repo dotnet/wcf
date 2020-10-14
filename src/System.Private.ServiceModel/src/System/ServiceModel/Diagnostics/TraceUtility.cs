@@ -232,6 +232,7 @@ namespace System.ServiceModel.Diagnostics
 
         internal static Exception ThrowHelperError(Exception exception, Message message)
         {
+            DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
             return exception;
         }
 

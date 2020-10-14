@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 // NOTE: this file was generated from 'xd.xml'
 
 using System.Xml;
@@ -971,7 +970,7 @@ namespace System.ServiceModel
         public const string ActivityIdNamespace = ServiceModelStringsVersion1.String426;
     }
 
-    internal static class AddressingStrings
+    internal static partial class AddressingStrings
     {
         // Main dictionary strings
         public const string Action = ServiceModelStringsVersion1.String5;
@@ -1000,16 +999,6 @@ namespace System.ServiceModel
         public const string X509v3Certificate = ServiceModelStringsVersion1.String98;
         public const string ReferenceParameters = ServiceModelStringsVersion1.String100;
         public const string IsReferenceParameter = ServiceModelStringsVersion1.String101;
-        // String constants
-        public const string EndpointUnavailable = "EndpointUnavailable";
-        public const string ActionNotSupported = "ActionNotSupported";
-        public const string EndpointReferenceType = "EndpointReferenceType";
-        public const string Request = "Request";
-        public const string DestinationUnreachable = "DestinationUnreachable";
-        public const string AnonymousUri = "http://schemas.microsoft.com/2005/12/ServiceModel/Addressing/Anonymous";
-        public const string NoneUri = "http://schemas.microsoft.com/2005/12/ServiceModel/Addressing/None";
-        public const string IndigoNamespace = "http://schemas.microsoft.com/serviceModel/2004/05/addressing";
-        public const string ChannelTerminated = "ChannelTerminated";
     }
 
     internal static class Addressing10Strings
@@ -1159,19 +1148,6 @@ namespace System.ServiceModel
         // Main dictionary strings
         public const string Namespace = ServiceModelStringsVersion1.String437;
         public const string HeaderName = ServiceModelStringsVersion1.String438;
-    }
-
-    internal static class DotNetSecurityStrings
-    {
-        // Main dictionary strings
-        public const string Namespace = ServiceModelStringsVersion1.String162;
-        public const string Prefix = ServiceModelStringsVersion1.String163;
-        // String constants
-        public const string KeyRenewalNeededFault = "ExpiredSecurityContextTokenKey";
-        public const string SecuritySessionAbortedFault = "SecuritySessionAborted";
-        public const string SecurityServerTooBusyFault = "ServerTooBusy";
-        public const string SecuritySessionFaultAction = "http://schemas.microsoft.com/ws/2006/05/security/SecureConversationFault";
-        public const string SecureConversationCancelNotAllowedFault = "SecureConversationCancellationNotAllowed";
     }
 
     class DotNetSecurityDictionary

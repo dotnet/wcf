@@ -44,7 +44,7 @@
   <PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <DefineConstants>$(DefineConstants);FEATURE_NETNATIVE</DefineConstants>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
     <DefineConstants>$(DefineConstants);FEATURE_CORECLR</DefineConstants>
   </PropertyGroup>
@@ -91,6 +91,14 @@
     </Compile>
     <Compile Include="..\..\Common\src\System\SR.cs">
       <Link>Common\System\SR.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\Internals\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
   </ItemGroup>
 

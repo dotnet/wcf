@@ -7,23 +7,8 @@ using System.Runtime.Diagnostics;
 
 namespace System.Runtime
 {
-    [EventSource(Name = "Microsoft-Windows-Application Server-Applications", Guid = "c651f5f6-1c0d-492e-8ae1-b4efd7c9d503")]
-    internal sealed class WcfEventSource : EventSource
+    internal sealed partial class WcfEventSource : EventSource
     {
-        public static WcfEventSource Instance = new WcfEventSource();
-        private bool _canTransferActivityId = false;
-
-        internal WcfEventSource()
-#if DEBUG
-             : base(throwOnEventWriteErrors: true)
-#endif // DEBUG
-        {
-            if (Environment.Version.Major >= 5)
-            {
-                _canTransferActivityId = true;
-            }
-        }
-
         public bool BufferPoolAllocationIsEnabled()
         {
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
@@ -2078,60 +2063,6 @@ namespace System.Runtime
             ThrowingExceptionVerbose(data1, data2, SerializedException, "");
         }
 
-        public bool EtwUnhandledExceptionIsEnabled()
-        {
-            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
-        }
-
-        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info, Keywords = Keywords.Infrastructure | ChannelKeywords.Operational,
-            Message = "Unhandled exception. Exception details: {0}")]
-        public void EtwUnhandledException(string data1, string SerializedException, string AppDomain)
-        {
-            WriteEvent(EventIds.EtwUnhandledException, data1, SerializedException, AppDomain);
-        }
-
-        [NonEvent]
-        public void EtwUnhandledException(string data1, string SerializedException)
-        {
-            EtwUnhandledException(data1, SerializedException, "");
-        }
-
-        public bool ThrowingEtwExceptionVerboseIsEnabled()
-        {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
-        }
-
-        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Keywords = Keywords.Infrastructure | ChannelKeywords.Analytic,
-            Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
-        public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException, string AppDomain)
-        {
-            WriteEvent(EventIds.ThrowingEtwExceptionVerbose, data1, data2, SerializedException, AppDomain);
-        }
-
-        [NonEvent]
-        public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException)
-        {
-            ThrowingEtwExceptionVerbose(data1, data2, SerializedException, "");
-        }
-
-        public bool ThrowingEtwExceptionIsEnabled()
-        {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
-        }
-
-        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Keywords = Keywords.Infrastructure | ChannelKeywords.Analytic,
-            Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
-        public void ThrowingEtwException(string data1, string data2, string SerializedException, string AppDomain)
-        {
-            WriteEvent(EventIds.ThrowingEtwException, data1, data2, SerializedException, AppDomain);
-        }
-
-        [NonEvent]
-        public void ThrowingEtwException(string data1, string data2, string SerializedException)
-        {
-            ThrowingEtwException(data1, data2, SerializedException, "");
-        }
-
         [NonEvent]
         private void SetActivityId(EventTraceActivity eventTraceActivity)
         {
@@ -2153,7 +2084,7 @@ namespace System.Runtime
 
         #region Keywords / Tasks / Opcodes
 
-        public class EventIds
+        public partial class EventIds
         {
             public const int WorkflowInstanceRecord = 100;
             public const int WorkflowInstanceUnhandledExceptionRecord = 101;
@@ -2632,9 +2563,9 @@ namespace System.Runtime
             public const int HandledExceptionError = 57405;
             public const int HandledExceptionVerbose = 57406;
             public const int ThrowingExceptionVerbose = 57407;
-            public const int EtwUnhandledException = 57408;
-            public const int ThrowingEtwExceptionVerbose = 57409;
-            public const int ThrowingEtwException = 57410;
+            //public const int EtwUnhandledException = 57408;
+            //public const int ThrowingEtwExceptionVerbose = 57409;
+            //public const int ThrowingEtwException = 57410;
             public const int HttpHandlerPickedForUrl = 62326;
         }
 
@@ -2904,7 +2835,7 @@ namespace System.Runtime
             public const EventOpcode RoutingServiceReceiveContextAbandoning = (EventOpcode)99;
         }
 
-        public class Keywords
+        public partial class Keywords
         {
             public const EventKeywords ServiceHost = (EventKeywords)0x1;
             public const EventKeywords Serialization = (EventKeywords)0x2;
@@ -2922,7 +2853,7 @@ namespace System.Runtime
             public const EventKeywords WebHTTP = (EventKeywords)0x2000;
             public const EventKeywords Discovery = (EventKeywords)0x4000;
             public const EventKeywords RoutingServices = (EventKeywords)0x8000;
-            public const EventKeywords Infrastructure = (EventKeywords)0x10000;
+            //public const EventKeywords Infrastructure = (EventKeywords)0x10000;
             public const EventKeywords EndToEndMonitoring = (EventKeywords)0x20000;
             public const EventKeywords HealthMonitoring = (EventKeywords)0x40000;
             public const EventKeywords Troubleshooting = (EventKeywords)0x80000;
@@ -2934,15 +2865,6 @@ namespace System.Runtime
             public const EventKeywords WFServices = (EventKeywords)0x4000000;
             public const EventKeywords WFInstanceStore = (EventKeywords)0x8000000;
         }
-
-        public class ChannelKeywords
-        {
-            public const EventKeywords Admin = unchecked((EventKeywords)0x8000000000000000);
-            public const EventKeywords Operational = unchecked((EventKeywords)0x4000000000000000);
-            public const EventKeywords Analytic = unchecked((EventKeywords)0x2000000000000000);
-            public const EventKeywords Debug = unchecked((EventKeywords)0x1000000000000000);
-        }
-
         #endregion
     }
 }

@@ -24,4 +24,28 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
+
+  <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <GenerateSource>true</GenerateSource>
+      <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>System.SR</ClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Common\src\System\SR.cs">
+      <Link>Common\System\SR.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\Internals\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
 </Project>
