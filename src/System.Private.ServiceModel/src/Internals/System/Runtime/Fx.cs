@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace System.Runtime
 {
-    public static class Fx
+    internal static partial class Fx
     {
         private const string defaultEventSource = "System.Runtime";
 
@@ -77,9 +77,7 @@ namespace System.Runtime
 
         private static EtwDiagnosticTrace InitializeTracing()
         {
-            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(defaultEventSource, EtwDiagnosticTrace.DefaultEtwProviderId);
-
-            return trace;
+            return new EtwDiagnosticTrace();
         }
 
         public static ExceptionHandler AsynchronousThreadExceptionHandler
@@ -92,22 +90,6 @@ namespace System.Runtime
             {
                 Fx.s_asynchronousThreadExceptionHandler = value;
             }
-        }
-
-        // Do not call the parameter "message" or else FxCop thinks it should be localized.
-        [Conditional("DEBUG")]
-        public static void Assert(bool condition, string description)
-        {
-            if (!condition)
-            {
-                Assert(description);
-            }
-        }
-
-        [Conditional("DEBUG")]
-        public static void Assert(string description)
-        {
-            AssertHelper.FireAssert(description);
         }
 
         public static void AssertAndThrow(bool condition, string description)

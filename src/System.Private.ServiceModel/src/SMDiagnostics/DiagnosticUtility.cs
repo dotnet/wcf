@@ -15,41 +15,11 @@ namespace System.ServiceModel
     /// <summary>
     /// This is the Management utility class.
     /// </summary>
-    public static partial class DiagnosticUtility
+    internal static partial class DiagnosticUtility
     {
-        private const string TraceSourceName = "TraceSourceNameToReplace";
-        internal const string EventSourceName = TraceSourceName + " [COR_BUILD_MAJOR].[COR_BUILD_MINOR].[CLR_OFFICIAL_ASSEMBLY_NUMBER].0";
         internal const string DefaultTraceListenerName = "Default";
 
         private static bool s_shouldUseActivity = false;
-
-        private static object s_lockObject = new object();
-
-        private static ExceptionUtility s_exceptionUtility = null;
-
-        private static void UpdateLevel()
-        {
-        }
-
-        public static ExceptionUtility ExceptionUtility
-        {
-            get
-            {
-                return DiagnosticUtility.s_exceptionUtility ?? GetExceptionUtility();
-            }
-        }
-
-        private static ExceptionUtility GetExceptionUtility()
-        {
-            lock (DiagnosticUtility.s_lockObject)
-            {
-                if (DiagnosticUtility.s_exceptionUtility == null)
-                {
-                    DiagnosticUtility.s_exceptionUtility = new ExceptionUtility(DiagnosticUtility.TraceSourceName, DiagnosticUtility.EventSourceName, FxTrace.Exception);
-                }
-            }
-            return DiagnosticUtility.s_exceptionUtility;
-        }
 
         internal static void TraceHandledException(Exception exception, TraceEventType traceEventType)
         {

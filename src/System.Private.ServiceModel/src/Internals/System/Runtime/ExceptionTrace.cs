@@ -5,28 +5,14 @@
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Diagnostics;
-using System.Security;
 
 namespace System.Runtime
 {
-    internal class ExceptionTrace
+    internal partial class ExceptionTrace
     {
         private const ushort FailFastEventLogCategory = 6;
-
-        private string _eventSourceName;
-        private readonly EtwDiagnosticTrace _diagnosticTrace;
-
-        public ExceptionTrace(string eventSourceName, EtwDiagnosticTrace diagnosticTrace)
-        {
-            Fx.Assert(diagnosticTrace != null, "'diagnosticTrace' MUST NOT be NULL.");
-
-            _eventSourceName = eventSourceName;
-            _diagnosticTrace = diagnosticTrace;
-        }
 
         public void AsInformation(Exception exception)
         {
@@ -114,11 +100,11 @@ namespace System.Runtime
         /// including the one returned.   The containing <paramref name="aggregateException"/>
         /// will not be traced unless there are no inner exceptions.
         /// </remarks>
-        /// <typeparam name="TPreferredException">The preferred type of inner exception to extract.   
+        /// <typeparam name="TPreferredException">The preferred type of inner exception to extract.
         /// Use <c>typeof(Exception)</c> to extract the first exception regardless of type.</typeparam>
         /// <param name="aggregateException">The <see cref="AggregateException"/> to examine.</param>
         /// <param name="eventSource">The event source to trace.</param>
-        /// <returns>The extracted exception.  It will not be <c>null</c> 
+        /// <returns>The extracted exception.  It will not be <c>null</c>
         /// but it may not be of type <typeparamref name="TPreferredException"/>.</returns>
         public Exception AsError<TPreferredException>(AggregateException aggregateException, string eventSource)
         {
@@ -236,44 +222,11 @@ namespace System.Runtime
             TraceCore.UnhandledException(_diagnosticTrace, exception != null ? exception.ToString() : string.Empty, exception);
         }
 
-        public void TraceEtwException(Exception exception, EventLevel eventLevel)
-        {
-            switch (eventLevel)
-            {
-                case EventLevel.Error:
-                case EventLevel.Warning:
-                    if (WcfEventSource.Instance.ThrowingEtwExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
-                        WcfEventSource.Instance.ThrowingEtwException(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                case EventLevel.Critical:
-                    if (WcfEventSource.Instance.UnhandledExceptionIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
-                        WcfEventSource.Instance.EtwUnhandledException(exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-                    break;
-                default:
-                    if (WcfEventSource.Instance.ThrowingExceptionVerboseIsEnabled())
-                    {
-                        string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
-                        WcfEventSource.Instance.ThrowingEtwExceptionVerbose(_eventSourceName, exception != null ? exception.ToString() : string.Empty, serializedException);
-                    }
-
-                    break;
-            }
-        }
-
         private TException TraceException<TException>(TException exception)
             where TException : Exception
         {
             return TraceException(exception, _eventSourceName);
         }
-        [Fx.Tag.SecurityNote(Critical = "Calls 'System.Runtime.Interop.UnsafeNativeMethods.IsDebuggerPresent()' which is a P/Invoke method",
-                    Safe = "Does not leak any resource, needed for debugging")]
-        [SecuritySafeCritical]
 
         private TException TraceException<TException>(TException exception, string eventSource)
                     where TException : Exception
@@ -287,9 +240,6 @@ namespace System.Runtime
 
             return exception;
         }
-        [Fx.Tag.SecurityNote(Critical = "Calls into critical method UnsafeNativeMethods.IsDebuggerPresent and UnsafeNativeMethods.DebugBreak",
-                Safe = "Safe because it's a no-op in retail builds.")]
-        [SecuritySafeCritical]
 
         private void BreakOnException(Exception exception)
         {

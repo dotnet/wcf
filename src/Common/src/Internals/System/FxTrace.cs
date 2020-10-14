@@ -2,27 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime;
 using System.Runtime.Diagnostics;
 
 namespace System
 {
-    internal static partial class FxTrace
+    internal static class FxTrace
     {
+        private static ExceptionTrace s_exceptionTrace;
         private const string baseEventSourceName = "System.ServiceModel";
         private const string EventSourceVersion = "4.0.0.0";
-
-        private static Guid s_etwProviderId;
         private static string s_eventSourceName;
         private static EtwDiagnosticTrace s_diagnosticTrace;
-        private static ExceptionTrace s_exceptionTrace;
         private static readonly object s_lockObject = new object();
-
-        [SuppressMessage(FxCop.Category.Performance, FxCop.Rule.AvoidUncalledPrivateCode,
-            Justification = "This template is shared across all assemblies, some of which use this accessor.")]
-
 
         public static ExceptionTrace Exception
         {
@@ -38,18 +30,6 @@ namespace System
             }
         }
 
-        [SuppressMessage(FxCop.Category.Performance, FxCop.Rule.AvoidUncalledPrivateCode,
-            Justification = "This template is shared across all assemblies, some of which use this accessor.")]
-        public static EtwDiagnosticTrace Trace
-        {
-            get
-            {
-                EnsureEtwProviderInitialized();
-                return FxTrace.s_diagnosticTrace;
-            }
-        }
-
-
         private static string EventSourceName
         {
             get
@@ -63,31 +43,33 @@ namespace System
             }
         }
 
-        [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
-            Justification = "This is a method that creates ETW provider passing Guid Provider ID.")]
-        private static EtwDiagnosticTrace InitializeTracing()
+        public static EtwDiagnosticTrace Trace
         {
-            //Etw tracing is switched off by not enabling the session
-            s_etwProviderId = EtwDiagnosticTrace.DefaultEtwProviderId;
-
-            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(baseEventSourceName, s_etwProviderId);
-
-            return trace;
+            get
+            {
+                EnsureEtwProviderInitialized();
+                return s_diagnosticTrace;
+            }
         }
-
 
         private static void EnsureEtwProviderInitialized()
         {
-            if (null == FxTrace.s_diagnosticTrace)
+            if (null == s_diagnosticTrace)
             {
-                lock (FxTrace.s_lockObject)
+                lock (s_lockObject)
                 {
-                    if (null == FxTrace.s_diagnosticTrace)
+                    if (null == s_diagnosticTrace)
                     {
-                        FxTrace.s_diagnosticTrace = InitializeTracing();
+                        s_diagnosticTrace = InitializeTracing();
                     }
                 }
             }
+        }
+
+        private static EtwDiagnosticTrace InitializeTracing()
+        {
+            EtwDiagnosticTrace trace = new EtwDiagnosticTrace();
+            return trace;
         }
     }
 }
