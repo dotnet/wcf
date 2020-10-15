@@ -8,7 +8,7 @@ using System.Threading;
 namespace WcfService
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerSession)]
-    public class WcfReliableService : IWcfReliableService, IWcfReliableDuplexService
+    public class WcfReliableService : IWcfReliableService, IWcfReliableDuplexService, IOneWayWcfReliableService
     {
         private int _currentNumber = 0;
 
@@ -26,6 +26,11 @@ namespace WcfService
         {
             var callback = OperationContext.Current.GetCallbackChannel<IWcfReliableDuplexService>();
             return callback.DuplexEcho(echo);
+        }
+
+        public void OneWay(string text)
+        {
+            return;
         }
     }
 }

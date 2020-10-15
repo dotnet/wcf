@@ -330,6 +330,26 @@ namespace System.ServiceModel.Channels
             CommunicationObjectInternal.OnOpen(this, timeout);
         }
 
+        protected internal override async Task OnOpenAsync(TimeSpan timeout)
+        {
+            TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            bool throwing = true;
+
+            try
+            {
+                await _binder.OpenAsync(timeoutHelper.RemainingTime());
+                await _session.OpenAsync(timeoutHelper.RemainingTime());
+                throwing = false;
+            }
+            finally
+            {
+                if (throwing)
+                {
+                    await Binder.CloseAsync(timeoutHelper.RemainingTime());
+                }
+            }
+        }
+
         protected override async Task OnSendAsync(Message message, TimeSpan timeout)
         {
             if (!await Connection.AddMessageAsync(message, timeout, null))

@@ -51,6 +51,42 @@ public static class Binding_ReliableSession_NetTcpBindingTests
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
     [OuterLoop]
+    public static async Task OneWayCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
+    {
+        string testString = "Hello";
+        ChannelFactory<IOneWayWcfReliableService> factory = null;
+        IOneWayWcfReliableService serviceProxy = null;
+        NetTcpBinding binding = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetTcpBinding(SecurityMode.None, true);
+            binding.ReliableSession.Ordered = ordered;
+            var customBinding = new CustomBinding(binding);
+            var reliableSessionBindingElement = customBinding.Elements.Find<ReliableSessionBindingElement>();
+            reliableSessionBindingElement.ReliableMessagingVersion = rmVersion;
+            factory = new ChannelFactory<IOneWayWcfReliableService>(customBinding, new EndpointAddress(Endpoints.ReliableOneWaySession_NetTcp + endpointSuffix));
+            serviceProxy = factory.CreateChannel();
+            // *** EXECUTE *** \\
+            ((IClientChannel)serviceProxy).Open(); // This will establish a reliable session
+            await serviceProxy.OneWayAsync(testString);
+            // *** VALIDATE *** \\
+
+            // *** CLEANUP *** \\
+            ((IClientChannel)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfTheory]
+    [MemberData(nameof(GetTestVariations))]
+    [OuterLoop]
     public static async Task DuplexEchoCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
         string testString = "Hello";

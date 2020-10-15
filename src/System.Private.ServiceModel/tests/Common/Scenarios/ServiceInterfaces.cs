@@ -854,6 +854,13 @@ public interface IWcfReliableService
     Task<string> EchoAsync(string echo);
 }
 
+[ServiceContract]
+public interface IOneWayWcfReliableService
+{
+    [OperationContract(IsOneWay = true)]
+    Task OneWayAsync(string text);
+}
+
 [ServiceContract(CallbackContract = typeof(IWcfReliableDuplexService))]
 public interface IWcfReliableDuplexService
 {
