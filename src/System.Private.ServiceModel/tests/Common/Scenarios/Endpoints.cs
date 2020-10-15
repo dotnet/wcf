@@ -144,9 +144,19 @@ public static partial class Endpoints
         get { return GetEndpointAddress("ReliableSessionService.svc/NetHttp"); }
     }
 
+    public static string ReliableOneWaySession_NetHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionOneWayService.svc/NetHttp"); }
+    }
+
     public static string ReliableSession_WSHttp
     {
         get { return GetEndpointAddress("ReliableSessionService.svc/WSHttp"); }
+    }
+
+    public static string ReliableOneWaySession_WSHttp
+    {
+        get { return GetEndpointAddress("ReliableSessionOneWayService.svc/WSHttp"); }
     }
 
     #region WebSocket Addresses
@@ -732,6 +742,11 @@ public static partial class Endpoints
     public static string ReliableSession_NetTcp
     {
         get { return GetEndpointAddress("ReliableSessionService.svc/NetTcp", protocol: "net.tcp"); }
+    }
+
+    public static string ReliableOneWaySession_NetTcp
+    {
+        get { return GetEndpointAddress("ReliableSessionOneWayService.svc/NetTcp", protocol: "net.tcp"); }
     }
 
     public static string ReliableDuplexSession_NetTcp

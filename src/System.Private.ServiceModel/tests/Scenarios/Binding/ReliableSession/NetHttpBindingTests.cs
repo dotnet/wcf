@@ -57,6 +57,43 @@ public static class Binding_ReliableSession_NetHttpBindingTests
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
     [OuterLoop]
+    public static async Task OneWayCall(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
+    {
+        string testString = "Hello";
+        ChannelFactory<IOneWayWcfReliableService> factory = null;
+        IOneWayWcfReliableService serviceProxy = null;
+        NetHttpBinding binding = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new NetHttpBinding(BasicHttpSecurityMode.None, true);
+            binding.ReliableSession.Ordered = ordered;
+            var customBinding = new CustomBinding(binding);
+            var reliableSessionBindingElement = customBinding.Elements.Find<ReliableSessionBindingElement>();
+            reliableSessionBindingElement.ReliableMessagingVersion = rmVersion;
+            factory = new ChannelFactory<IOneWayWcfReliableService>(customBinding, new EndpointAddress(Endpoints.ReliableOneWaySession_NetHttp + endpointSuffix));
+            serviceProxy = factory.CreateChannel();
+            // *** EXECUTE *** \\
+            ((IClientChannel)serviceProxy).Open(); // This will establish a reliable session
+            await serviceProxy.OneWayAsync(testString);
+            // *** VALIDATE *** \\
+
+            // *** CLEANUP *** \\
+            ((IClientChannel)serviceProxy).Close();
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfTheory]
+    [MemberData(nameof(GetTestVariations))]
+    [OuterLoop]
     public static async Task ResendFailedRequest(ReliableMessagingVersion rmVersion, bool ordered, string endpointSuffix)
     {
         ChannelFactory<IWcfReliableService> factory = null;

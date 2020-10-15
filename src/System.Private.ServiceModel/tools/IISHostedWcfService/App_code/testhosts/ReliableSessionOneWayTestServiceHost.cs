@@ -9,13 +9,15 @@ using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    [TestServiceDefinition(BasePath = "ReliableSessionDuplexService.svc", Schema = ServiceSchema.NETTCP)]
-    public class ReliableSessionDuplexServiceHost : TestServiceHostBase<IWcfReliableDuplexService>
+    [TestServiceDefinition(BasePath = "ReliableSessionOneWayService.svc", Schema = ServiceSchema.HTTP | ServiceSchema.NETTCP)]
+    public class ReliableSessionOneWaySerivceHost : TestServiceHostBase<IOneWayWcfReliableService>
     {
         protected override IList<Binding> GetBindings()
         {
             var bindings = new List<Binding>();
+            AddBindings(bindings, new NetHttpBinding(BasicHttpSecurityMode.None, true), "NetHttp");
             AddBindings(bindings, new NetTcpBinding(SecurityMode.None, true), "NetTcp");
+            AddBindings(bindings, new WSHttpBinding(SecurityMode.None, true), "WSHttp");
             return bindings;
         }
 
@@ -37,7 +39,7 @@ namespace WcfService
             bindingList.Add(customBinding);
         }
 
-        public ReliableSessionDuplexServiceHost(params Uri[] baseAddresses)
+        public ReliableSessionOneWaySerivceHost(params Uri[] baseAddresses)
             : base(typeof(WcfReliableService), baseAddresses)
         {
         }

@@ -15,6 +15,13 @@ namespace WcfService
         string Echo(string echo);
     }
 
+    [ServiceContract]
+    public interface IOneWayWcfReliableService
+    {
+        [OperationContract(IsOneWay = true)]
+        void OneWay(string text);
+    }
+
     [ServiceContract(CallbackContract = typeof(IWcfReliableDuplexService))]
     public interface IWcfReliableDuplexService
     {
