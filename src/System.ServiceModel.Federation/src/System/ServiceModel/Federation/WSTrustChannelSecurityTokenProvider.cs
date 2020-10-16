@@ -17,15 +17,13 @@ using Microsoft.IdentityModel.Protocols.WsAddressing;
 using Microsoft.IdentityModel.Protocols.WsPolicy;
 using Microsoft.IdentityModel.Protocols.WsSecurity;
 using Microsoft.IdentityModel.Protocols.WsTrust;
-using Microsoft.IdentityModel.Tokens;
 using SecurityToken = System.IdentityModel.Tokens.SecurityToken;
 
 namespace System.ServiceModel.Federation
 {
-
     /// <summary>
-    /// <see cref="WSTrustChannelSecurityTokenProvider"/> has been designed to work with <see cref="WSFederationHttpBinding"/> to that will send a WsTrust message to obtain a token from an STS and add the token as
-    /// an issued token when communicating with a WCF relying party.
+    /// <see cref="WSTrustChannelSecurityTokenProvider"/> has been designed to work with the <see cref="WSFederationHttpBinding"/> to send a WsTrust message to obtain a SecurityToken from an STS. The SecurityToken is
+    /// added as an IssuedToken on the outbound WCF message.
     /// </summary>
     public class WSTrustChannelSecurityTokenProvider : SecurityTokenProvider
     {
@@ -41,11 +39,22 @@ namespace System.ServiceModel.Federation
         private readonly SecurityAlgorithmSuite _securityAlgorithmSuite;
         private WsSerializationContext _requestSerializationContext;
 
+        /// <summary>
+        /// Instantiates a <see cref="WSTrustChannelSecurityTokenProvider"/> that describe the parameters for a WSTrust request.
+        /// </summary>
+        /// <param name="tokenRequirement">the <see cref="SecurityTokenRequirement"/> that must contain a <see cref="WSTrustTokenParameters"/> as the <see cref="IssuedSecurityTokenParameters"/> property.</param>
+        /// <exception cref="ArgumentNullException">thrown if <paramref name="tokenRequirement"/> is null.</exception>
+        /// <exception cref="ArgumentException">thrown if <see cref="SecurityTokenRequirement.GetProperty{TValue}(string)"/> (IssuedSecurityTokenParameters) is not a <see cref="WSTrustTokenParameters"/>.</exception>
         public WSTrustChannelSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
-            SecurityTokenRequirement = tokenRequirement ?? throw new ArgumentNullException(nameof(tokenRequirement));
+            SecurityTokenRequirement = tokenRequirement ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
             SecurityTokenRequirement.TryGetProperty(SecurityAlgorithmSuiteProperty, out _securityAlgorithmSuite);
-            WSTrustTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty) as WSTrustTokenParameters;
+
+            IssuedSecurityTokenParameters issuedSecurityTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty);
+            WSTrustTokenParameters = issuedSecurityTokenParameters as WSTrustTokenParameters;
+            if (WSTrustTokenParameters == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant("tokenRequirement.GetProperty<IssuedSecurityTokenParameters> must be of type: WSTrustTokenParameters. Was: '{0}.", issuedSecurityTokenParameters), nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
+
             InitializeKeyEntropyMode();
             SetInboundSerializationContext();
             RequestContext = string.IsNullOrEmpty(WSTrustTokenParameters.RequestContext) ? Guid.NewGuid().ToString() : WSTrustTokenParameters.RequestContext;
@@ -80,7 +89,7 @@ namespace System.ServiceModel.Federation
         {
             if (WSTrustTokenParameters.CacheIssuedTokens)
             {
-                // If cached respones are stored in a shared cache in the future, that cache should be written
+                // If cached responses are stored in a shared cache in the future, that cache should be written
                 // to here, possibly including serializing the WsTrustResponse if the cache stores byte[] (as
                 // IDistributedCache does).
                 CachedResponse = response;

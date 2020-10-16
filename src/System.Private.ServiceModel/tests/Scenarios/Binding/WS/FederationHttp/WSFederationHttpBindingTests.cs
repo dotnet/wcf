@@ -32,6 +32,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             issuerAddress = new EndpointAddress(new Uri(Endpoints.WSFederationAuthorityLocalSTS));
+            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2;
             serviceEndpointAddress = new EndpointAddress(new Uri(tokenTargetAddress));
             var issuerBinding = new WSHttpBinding(SecurityMode.Transport);
             issuerBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
