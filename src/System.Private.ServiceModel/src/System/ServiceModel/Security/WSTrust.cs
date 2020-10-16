@@ -9,7 +9,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Xml;
 using System.Runtime;
-using System.Security.Cryptography;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
@@ -1263,71 +1262,6 @@ namespace System.ServiceModel.Security
                 if (mode == SecurityKeyEntropyMode.ServerEntropy && entropy != null)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.EntropyModeCannotHaveRequestorEntropy, mode)));
-                }
-            }
-
-            internal static void ProcessRstAndIssueKey(RequestSecurityToken requestSecurityToken, SecurityTokenResolver resolver, SecurityKeyEntropyMode keyEntropyMode, SecurityAlgorithmSuite algorithmSuite, out int issuedKeySize, out byte[] issuerEntropy, out byte[] proofKey,
-                out SecurityToken proofToken)
-            {
-                SecurityToken requestorEntropyToken = requestSecurityToken.GetRequestorEntropy(resolver);
-                ValidateRequestorEntropy(requestorEntropyToken, keyEntropyMode);
-                byte[] requestorEntropy;
-                if (requestorEntropyToken != null)
-                {
-                    if (requestorEntropyToken is BinarySecretSecurityToken)
-                    {
-                        BinarySecretSecurityToken skToken = (BinarySecretSecurityToken)requestorEntropyToken;
-                        requestorEntropy = skToken.GetKeyBytes();
-                    }
-                    else
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperWarning(new InvalidOperationException(SR.Format(SR.TokenCannotCreateSymmetricCrypto, requestorEntropyToken)));
-                    }
-                }
-                else
-                {
-                    requestorEntropy = null;
-                }
-
-                if (keyEntropyMode == SecurityKeyEntropyMode.ClientEntropy)
-                {
-                    if (requestorEntropy != null)
-                    {
-                        // validate that the entropy length matches the algorithm suite
-                        ValidateRequestedKeySize(requestorEntropy.Length * 8, algorithmSuite);
-                    }
-                    proofKey = requestorEntropy;
-                    issuerEntropy = null;
-                    issuedKeySize = 0;
-                    proofToken = null;
-                }
-                else
-                {
-                    if (requestSecurityToken.KeySize != 0)
-                    {
-                        ValidateRequestedKeySize(requestSecurityToken.KeySize, algorithmSuite);
-                        issuedKeySize = requestSecurityToken.KeySize;
-                    }
-                    else
-                    {
-                        issuedKeySize = algorithmSuite.DefaultSymmetricKeyLength;
-                    }
-                    RNGCryptoServiceProvider random = new RNGCryptoServiceProvider();
-                    if (keyEntropyMode == SecurityKeyEntropyMode.ServerEntropy)
-                    {
-                        proofKey = new byte[issuedKeySize / 8];
-                        // proof key is completely issued by the server
-                        random.GetNonZeroBytes(proofKey);
-                        issuerEntropy = null;
-                        proofToken = new BinarySecretSecurityToken(proofKey);
-                    }
-                    else
-                    {
-                        issuerEntropy = new byte[issuedKeySize / 8];
-                        random.GetNonZeroBytes(issuerEntropy);
-                        proofKey = RequestSecurityTokenResponse.ComputeCombinedKey(requestorEntropy, issuerEntropy, issuedKeySize);
-                        proofToken = null;
-                    }
                 }
             }
         }
