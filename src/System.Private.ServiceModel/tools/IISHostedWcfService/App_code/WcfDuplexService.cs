@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.IO;
 using System.ServiceModel;
 using System.Threading.Tasks;
 
@@ -79,6 +80,25 @@ namespace WcfService
                 throw new FaultException<FaultDetail>(ex.Detail, ex.Message, ex.Code);
             }
             return retval;
+        }
+    }
+
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    public class WcfDuplexService_CallbackConcurrenyMode : IWcfDuplexService_CallbackConcurrencyMode
+    {
+        public async Task DoWorkAsync()
+        {
+            Task t1 = Callback.CallWithWaitAsync(4000);
+            Task t2 = Callback.CallWithWaitAsync(500);
+            await Task.WhenAll(t1, t2);   
+        }
+
+        public IWcfDuplexService_CallbackConcurrencyMode_Callback Callback
+        {
+            get
+            {
+                return OperationContext.Current.GetCallbackChannel<IWcfDuplexService_CallbackConcurrencyMode_Callback>();
+            }
         }
     }
 }

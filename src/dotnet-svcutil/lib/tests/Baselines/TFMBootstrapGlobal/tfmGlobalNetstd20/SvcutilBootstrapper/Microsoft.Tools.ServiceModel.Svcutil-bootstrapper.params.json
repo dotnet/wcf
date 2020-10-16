@@ -1,0 +1,26 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil-bootstrap",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "$testCasesPath$/wsdl/Simple.wsdl"
+    ],
+    "bootstrapPath": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNetstd20",
+    "namespaceMappings": [
+      "*, tfmGlobalNetstd20_NS"
+    ],
+    "noBootstrapping": true,
+    "noLogo": true,
+    "noProjectUpdates": true,
+    "outputDir": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNetstd20/../tfmGlobalNetstd20",
+    "outputFile": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNetstd20/Reference.cs",
+    "projectFile": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNetstd20/tfmGlobalNetstd20.csproj",
+    "references": [
+      "Newtonsoft.Json, {Newtonsoft.Json, *}"
+    ],
+    "targetFramework": "netstandard2.0",
+    "toolContext": "Bootstrapper",
+    "typeReuseMode": "Specified",
+    "verbosity": "Minimal"
+  }
+}

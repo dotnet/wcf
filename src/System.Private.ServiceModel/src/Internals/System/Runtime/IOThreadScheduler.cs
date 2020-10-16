@@ -51,7 +51,7 @@ namespace System.Runtime
         }
 
         private static IOThreadScheduler s_current = new IOThreadScheduler(32);
-
+        private readonly ScheduledOverlapped _overlapped;
         private readonly Slot[] _slots;
 
         // This field holds both the head (HiWord) and tail (LoWord) indicies into the slot array.  This limits each
@@ -74,19 +74,22 @@ namespace System.Runtime
 
             _slots = new Slot[capacity];
             Contract.Assert((_slots.Length & SlotMask) == 0, "Capacity must be a power of two.");
+
+            _overlapped = new ScheduledOverlapped();
         }
 
-        public static void ScheduleCallbackNoFlow(SendOrPostCallback callback, object state)
+        public static void ScheduleCallbackNoFlow(Action<object> callback, object state)
         {
             if (callback == null)
             {
-                throw Fx.Exception.ArgumentNull("callback");
+                throw Fx.Exception.ArgumentNull(nameof(callback));
             }
 
             bool queued = false;
             while (!queued)
             {
-                try { }
+                try
+                { }
                 finally
                 {
                     // Called in a finally because it needs to run uninterrupted in order to maintain consistency.
@@ -95,39 +98,18 @@ namespace System.Runtime
             }
         }
 
-        public static void IOCallback(object scheduler)
+        public static void ScheduleCallbackLowPriNoFlow(Action<object> callback, object state)
         {
-            IOThreadScheduler iots = scheduler as IOThreadScheduler;
-            Contract.Assert(iots != null, "Overlapped completed without a scheduler.");
-
-            SendOrPostCallback callback;
-            object state;
-            try { }
-            finally
+            if (callback == null)
             {
-                // Called in a finally because it needs to run uninterrupted in order to maintain consistency.
-                iots.CompletionCallback(out callback, out state);
+                throw Fx.Exception.ArgumentNull(nameof(callback));
             }
 
-            bool found = true;
-            while (found)
-            {
-                // The callback can be null if synchronization misses result in unsuable slots.  Keep going onto
-                // the next slot in such cases until there are no more slots.
-                callback?.Invoke(state);
-
-                try { }
-                finally
-                {
-                    // Called in a finally because it needs to run uninterrupted in order to maintain consistency.
-                    found = iots.TryCoalesce(out callback, out state);
-                }
-            }
+            Task.Factory.StartNew(callback, state, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
         }
 
-
         // Returns true if successfully scheduled, false otherwise.
-        private bool ScheduleCallbackHelper(SendOrPostCallback callback, object state)
+        private bool ScheduleCallbackHelper(Action<object> callback, object state)
         {
             // See if there's a free slot.  Fortunately the overflow bit is simply lost.
             int slot = Interlocked.Add(ref _headTail, Bits.HiOne);
@@ -164,13 +146,13 @@ namespace System.Runtime
             if (wasIdle)
             {
                 // It's our responsibility to kick off the runner thread.
-                Task.Factory.StartNew(IOCallback, this, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+                _overlapped.Post(this);
             }
 
             return queued;
         }
 
-        private void CompletionCallback(out SendOrPostCallback callback, out object state)
+        private void CompletionCallback(out Action<object> callback, out object state)
         {
             int slot = _headTail;
             while (true)
@@ -183,7 +165,7 @@ namespace System.Runtime
                 {
                     if (!wasEmpty)
                     {
-                        Task.Factory.StartNew(IOCallback, this, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+                        _overlapped.Post(this);
                         _slots[slot & SlotMask].DequeueWorkItem(out callback, out state);
                         return;
                     }
@@ -196,7 +178,7 @@ namespace System.Runtime
             state = null;
         }
 
-        private bool TryCoalesce(out SendOrPostCallback callback, out object state)
+        private bool TryCoalesce(out Action<object> callback, out object state)
         {
             int slot = _headTail;
             while (true)
@@ -242,10 +224,10 @@ namespace System.Runtime
 
         private void Cleanup()
         {
-            //if (overlapped != null)
-            //{
-            //    overlapped.Cleanup();
-            //}
+            if (_overlapped != null)
+            {
+                _overlapped.Cleanup();
+            }
         }
 
 #if DEBUG
@@ -309,10 +291,10 @@ namespace System.Runtime
         private struct Slot
         {
             private int _gate;
-            private SendOrPostCallback _callback;
+            private Action<object> _callback;
             private object _state;
 
-            public bool TryEnqueueWorkItem(SendOrPostCallback callback, object state, out bool wrapped)
+            public bool TryEnqueueWorkItem(Action<object> callback, object state, out bool wrapped)
             {
                 // Register our arrival and check the state of this slot.  If the slot was already full, we wrapped.
                 int gateSnapshot = Interlocked.Increment(ref _gate);
@@ -360,7 +342,7 @@ namespace System.Runtime
                 return false;
             }
 
-            public void DequeueWorkItem(out SendOrPostCallback callback, out object state)
+            public void DequeueWorkItem(out Action<object> callback, out object state)
             {
                 // Stake our claim on the item.
                 int gateSnapshot = Interlocked.Add(ref _gate, Bits.HiOne);
@@ -418,5 +400,110 @@ namespace System.Runtime
             }
 #endif
         }
+
+        // A note about the IOThreadScheduler and the ScheduledOverlapped references:
+        // Although for each scheduler we have a single instance of overlapped, we cannot point to the scheduler from the
+        // overlapped, through the entire lifetime of the overlapped. This is because the ScheduledOverlapped is pinned
+        // and if it has a reference to the IOTS, it would be rooted and the finalizer will never get called.
+        // Therefore, we are passing the reference, when we post a pending callback and reset it, once the callback was
+        // invoked; during that time the scheduler is rooted but in that time we don't want that it would be collected
+        // by the GC anyway.
+        private unsafe class ScheduledOverlapped
+        {
+            private static bool s_isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            private readonly NativeOverlapped* _nativeOverlapped;
+            private IOThreadScheduler _scheduler;
+            private Action _postDelegate;
+
+            public ScheduledOverlapped()
+            {
+                if (s_isWindows)
+                {
+                    _nativeOverlapped = (new Overlapped()).UnsafePack(
+                        Fx.ThunkCallback(new IOCompletionCallback(IOCallback)), null);
+                    _postDelegate = PostIOCP;
+                }
+                else
+                {
+                    _postDelegate = PostNewThread;
+                }
+            }
+
+            private void IOCallback(uint errorCode, uint numBytes, NativeOverlapped* nativeOverlapped)
+            {
+                Callback();
+            }
+
+            private void Callback()
+            {
+                // Unhook the IOThreadScheduler ASAP to prevent it from leaking.
+                IOThreadScheduler iots = _scheduler;
+                _scheduler = null;
+                Fx.Assert(iots != null, "Overlapped completed without a scheduler.");
+
+                Action<object> callback;
+                object state;
+                try
+                { }
+                finally
+                {
+                    // Called in a finally because it needs to run uninterrupted in order to maintain consistency.
+                    iots.CompletionCallback(out callback, out state);
+                }
+
+                bool found = true;
+                while (found)
+                {
+                    // The callback can be null if synchronization misses result in unusable slots.  Keep going onto
+                    // the next slot in such cases until there are no more slots.
+                    if (callback != null)
+                    {
+                        callback(state);
+                    }
+
+                    try
+                    { }
+                    finally
+                    {
+                        // Called in a finally because it needs to run uninterrupted in order to maintain consistency.
+                        found = iots.TryCoalesce(out callback, out state);
+                    }
+                }
+            }
+
+            public void Post(IOThreadScheduler iots)
+            {
+                Fx.Assert(_scheduler == null, "Post called on an overlapped that is already posted.");
+                Fx.Assert(iots != null, "Post called with a null scheduler.");
+
+                _scheduler = iots;
+                _postDelegate();
+            }
+
+            private void PostIOCP()
+            {
+                ThreadPool.UnsafeQueueNativeOverlapped(_nativeOverlapped);
+            }
+
+            private void PostNewThread()
+            {
+                var thread = new Thread(new ThreadStart(Callback));
+                thread.Start();
+            }
+
+            public void Cleanup()
+            {
+                if (_scheduler != null)
+                {
+                    throw Fx.AssertAndThrowFatal("Cleanup called on an overlapped that is in-flight.");
+                }
+				
+                if (!s_isWindows)
+                {
+                    Overlapped.Free(_nativeOverlapped);
+                }
+            }
+        }
+
     }
 }

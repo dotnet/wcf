@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Security;
 using System.ServiceModel;
 
@@ -52,7 +54,18 @@ namespace System.Runtime.Diagnostics
         [SecuritySafeCritical]
         public static EventTraceActivity GetFromThreadOrCreate(bool clearIdOnThread = false)
         {
-            return new EventTraceActivity(Guid.Empty);
+            Guid guid = Trace.CorrelationManager.ActivityId;
+            if (guid == Guid.Empty)
+            {
+                guid = Guid.NewGuid();
+            }
+            else if (clearIdOnThread)
+            {
+                // Reset the ActivityId on the thread to avoid using the same Id again
+                Trace.CorrelationManager.ActivityId = Guid.Empty;
+            }
+
+            return new EventTraceActivity(guid);
         }
 
         [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",
@@ -60,19 +73,15 @@ namespace System.Runtime.Diagnostics
         [SecuritySafeCritical]
         public static Guid GetActivityIdFromThread()
         {
-            throw ExceptionHelper.PlatformNotSupported();
+            return EventSource.CurrentThreadActivityId;
         }
 
-        public void SetActivityId(Guid guid)
-        {
-            ActivityId = guid;
-        }
         [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",
                     Safe = "We do not leak security data.")]
         [SecuritySafeCritical]
-
         private void SetActivityIdOnThread()
         {
+            EventSource.SetCurrentThreadActivityId(ActivityId);
         }
     }
 }

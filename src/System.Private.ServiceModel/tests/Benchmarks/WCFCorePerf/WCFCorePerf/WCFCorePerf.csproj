@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.7.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.7.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.7.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.7.*" />
+  </ItemGroup>
+</Project>

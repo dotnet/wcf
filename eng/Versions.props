@@ -2,13 +2,15 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
-    <MajorVersion>5</MajorVersion>
-    <MinorVersion>0</MinorVersion>
-    <WcfAssemblyVersion>5.0.0.0</WcfAssemblyVersion>
+    <ProductVersion>3.1.0</ProductVersion>
+    <MajorVersion>4</MajorVersion>
+    <MinorVersion>8</MinorVersion>
+    <WcfAssemblyVersion>4.8.0.0</WcfAssemblyVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration>1</PreReleaseVersionIteration>
+    <PreReleaseVersionLabel>rc2</PreReleaseVersionLabel>
+    <PreReleaseVersionIteration>
+    </PreReleaseVersionIteration>
     <!-- Use the compiler in the CLI instead of in the sdk, since the sdk one doesn't work with netcoreapp3.0 yet -->
     <!--[todo:arcade] Current compiler is failing to build our generated testproperties code in Infrastructure.Common.csproj-->
     <UsingToolMicrosoftNetCompilers>false</UsingToolMicrosoftNetCompilers>
@@ -25,18 +27,19 @@
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
-    <MicrosoftDotNetArcadeSdkPackageVersion>5.0.0-beta.20168.2</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetHelixSdkPackageVersion>5.0.0-beta.20168.2</MicrosoftDotNetHelixSdkPackageVersion>
-    <MicrosoftDotNetGenFacadesPackageVersion>5.0.0-beta.20168.2</MicrosoftDotNetGenFacadesPackageVersion>
-    <MicrosoftDotNetXUnitExtensionsPackageVersion>5.0.0-beta.20168.2</MicrosoftDotNetXUnitExtensionsPackageVersion>
-    <MicrosoftDotNetSignToolVersion>5.0.0-beta.20168.2</MicrosoftDotNetSignToolVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>6.0.0-beta.20509.12</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetHelixSdkPackageVersion>6.0.0-beta.20509.12</MicrosoftDotNetHelixSdkPackageVersion>
+    <MicrosoftDotNetGenFacadesPackageVersion>6.0.0-beta.20509.12</MicrosoftDotNetGenFacadesPackageVersion>
+    <MicrosoftDotNetXUnitExtensionsPackageVersion>6.0.0-beta.20509.12</MicrosoftDotNetXUnitExtensionsPackageVersion>
+    <MicrosoftDotNetSignToolVersion>6.0.0-beta.20509.12</MicrosoftDotNetSignToolVersion>
   </PropertyGroup>
   <!-- CoreFx dependencies -->
   <PropertyGroup>
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
-    <SystemReflectionDispatchProxyPackageVersion>4.5.0</SystemReflectionDispatchProxyPackageVersion>
-    <SystemSecurityPrincipalWindowsPackageVersion>4.5.0</SystemSecurityPrincipalWindowsPackageVersion>
-    <SystemSecurityCryptographyXmlPackageVersion>4.5.0</SystemSecurityCryptographyXmlPackageVersion>
+    <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
+    <SystemSecurityPrincipalWindowsPackageVersion>4.7.0</SystemSecurityPrincipalWindowsPackageVersion>
+    <SystemSecurityCryptographyXmlPackageVersion>4.7.0</SystemSecurityCryptographyXmlPackageVersion>
+    <SystemNumericsVectorsPackageVersion>4.5.0</SystemNumericsVectorsPackageVersion>
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.7.0-preview4.19164.7</MicrosoftPrivateCoreFxUAPPackageVersion>
   </PropertyGroup>
   <!-- Additional dependencies -->

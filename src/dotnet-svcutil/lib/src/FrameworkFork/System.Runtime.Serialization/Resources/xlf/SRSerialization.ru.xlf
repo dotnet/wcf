@@ -1,0 +1,2152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="ru" original="../SRSerialization.resx">
+    <body>
+      <trans-unit id="AbstractElementNotSupported">
+        <source>The element cannot have 'abstract' set to 'true'.</source>
+        <target state="new">The element cannot have 'abstract' set to 'true'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AbstractTypeNotSupported">
+        <source>The type cannot have 'abstract' set to 'true'.</source>
+        <target state="new">The type cannot have 'abstract' set to 'true'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AmbiguousReferencedCollectionTypes1">
+        <source>List of referenced collection types contains more than one type with same data contract name. Include only one of the following types. Only matching types can be valid references: {0}</source>
+        <target state="new">List of referenced collection types contains more than one type with same data contract name. Include only one of the following types. Only matching types can be valid references: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AmbiguousReferencedCollectionTypes3">
+        <source>List of referenced collection types contains more than one type with data contract name '{0}' in namespace '{1}'. Include only one of the following types. Only matching types can be valid references: {2}</source>
+        <target state="new">List of referenced collection types contains more than one type with data contract name '{0}' in namespace '{1}'. Include only one of the following types. Only matching types can be valid references: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AmbiguousReferencedTypes1">
+        <source>List of referenced types contains more than one type with same data contract name. Need to exclude all but one of the following types. Only matching types can be valid references: {0}</source>
+        <target state="new">List of referenced types contains more than one type with same data contract name. Need to exclude all but one of the following types. Only matching types can be valid references: {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AmbiguousReferencedTypes3">
+        <source>List of referenced types contains more than one type with data contract name '{0}' in namespace '{1}'. Need to exclude all but one of the following types. Only matching types can be valid references: {2}</source>
+        <target state="new">List of referenced types contains more than one type with data contract name '{0}' in namespace '{1}'. Need to exclude all but one of the following types. Only matching types can be valid references: {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnnotationAttributeNotFound">
+        <source>Invalid '{0}' annotation in type '{1}' from namespace '{2}'. Attribute '{3}' not present.</source>
+        <target state="new">Invalid '{0}' annotation in type '{1}' from namespace '{2}'. Attribute '{3}' not present.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnonymousTypeNotSupported">
+        <source>Anonymous type in element '{0}' from namespace '{1}' is not supported.</source>
+        <target state="new">Anonymous type in element '{0}' from namespace '{1}' is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AnyAttributeNotSupported">
+        <source>'anyAttribute' is not supported.</source>
+        <target state="new">'anyAttribute' is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArrayExceededSize">
+        <source>Array length '{0}' provided by the get-only collection of type '{1}' is less than the number of array elements found in the input stream.  Consider increasing the length of the array.</source>
+        <target state="new">Array length '{0}' provided by the get-only collection of type '{1}' is less than the number of array elements found in the input stream.  Consider increasing the length of the array.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArrayExceededSizeAttribute">
+        <source>Array length '{0}' provided by Size attribute is not equal to the number of array elements '{1}' from namespace '{2}' found.</source>
+        <target state="new">Array length '{0}' provided by Size attribute is not equal to the number of array elements '{1}' from namespace '{2}' found.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArrayItemFormMustBe">
+        <source>Form for element '{0}' must be qualified.</source>
+        <target state="new">Form for element '{0}' must be qualified.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArrayTypeCannotBeImported">
+        <source>Array type '{0}' in namespace '{1}' cannot be imported. {2}</source>
+        <target state="new">Array type '{0}' in namespace '{1}' cannot be imported. {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ArrayTypeIsNotSupported">
+        <source>An internal error has occurred. '{0}[]' is not supported when generating code for serialization.</source>
+        <target state="new">An internal error has occurred. '{0}[]' is not supported when generating code for serialization.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AssemblyNotFound">
+        <source>Assembly '{0}' is not found.</source>
+        <target state="new">Assembly '{0}' is not found.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AttributeNotFound">
+        <source>XML '{2}' '{3}:{4}' does not contain expected attribute '{0}:{1}'. The deserializer has no knowledge of which type to deserialize. Check that the type being serialized has the same contract as the type being deserialized.</source>
+        <target state="new">XML '{2}' '{3}:{4}' does not contain expected attribute '{0}:{1}'. The deserializer has no knowledge of which type to deserialize. Check that the type being serialized has the same contract as the type being deserialized.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="AttributedTypesCannotInheritFromNonAttributedSerializableTypes">
+        <source>Type '{0}' cannot inherit from a type that is not marked with DataContractAttribute or SerializableAttribute.  Consider marking the base type '{1}' with DataContractAttribute or SerializableAttribute, or removing them from the derived type.</source>
+        <target state="new">Type '{0}' cannot inherit from a type that is not marked with DataContractAttribute or SerializableAttribute.  Consider marking the base type '{1}' with DataContractAttribute or SerializableAttribute, or removing them from the derived type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="BaseTypeNotISerializable">
+        <source>One of its base types, '{0}' from namespace '{1}' is not ISerializable.</source>
+        <target state="new">One of its base types, '{0}' from namespace '{1}' is not ISerializable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CLRNamespaceMappedMultipleTimes">
+        <source>CLR namespace '{2}' has already been mapped to data contract namespace '{0}'. It cannot be mapped to another data contract namespace '{1}'.</source>
+        <target state="new">CLR namespace '{2}' has already been mapped to data contract namespace '{0}'. It cannot be mapped to another data contract namespace '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CallbackMustReturnVoid">
+        <source>Serialization Callback '{1}' in type '{0}' must return void.</source>
+        <target state="new">Serialization Callback '{1}' in type '{0}' must return void.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CallbackParameterInvalid">
+        <source>Serialization Callback '{1}' in type '{0}' must have a single parameter of type '{2}'.</source>
+        <target state="new">Serialization Callback '{1}' in type '{0}' must have a single parameter of type '{2}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CallbacksCannotBeVirtualMethods">
+        <source>Virtual Method '{0}' of type '{1}' cannot be marked with '{2}' attribute.</source>
+        <target state="new">Virtual Method '{0}' of type '{1}' cannot be marked with '{2}' attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CanOnlyStoreIntoArgOrLocGot0">
+        <source>An internal error has occurred. Data can only be stored into ArgBuilder or LocalBuilder. Got: {0}.</source>
+        <target state="new">An internal error has occurred. Data can only be stored into ArgBuilder or LocalBuilder. Got: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotComputeUniqueName">
+        <source>A unique name cannot be computed for '{0}' because there are already Int32.MaxValue types of with the same name.</source>
+        <target state="new">A unique name cannot be computed for '{0}' because there are already Int32.MaxValue types of with the same name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotDeriveFromSealedReferenceType">
+        <source>Type with data contract name '{0}' in namespace '{1}' cannot be imported. Cannot derive from sealed referenced type '{2}'. </source>
+        <target state="new">Type with data contract name '{0}' in namespace '{1}' cannot be imported. Cannot derive from sealed referenced type '{2}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotDeserializeRefAtTopLevel">
+        <source>Cannot deserialize since root element references unrecognized object with id '{0}'.</source>
+        <target state="new">Cannot deserialize since root element references unrecognized object with id '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotHaveDuplicateAttributeNames">
+        <source>The type contains two attributes with the same name '{0}'. Multiple attributes with the same name in one type are not supported.</source>
+        <target state="new">The type contains two attributes with the same name '{0}'. Multiple attributes with the same name in one type are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotHaveDuplicateElementNames">
+        <source>The type contains two elements with the same name '{0}'. Multiple elements with the same name in one type are not supported because members marked with DataMemberAttribute attribute must have unique names.</source>
+        <target state="new">The type contains two elements with the same name '{0}'. Multiple elements with the same name in one type are not supported because members marked with DataMemberAttribute attribute must have unique names.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotImportInvalidSchemas">
+        <source>Cannot import invalid schemas. Compilation on the XmlSchemaSet failed.</source>
+        <target state="new">Cannot import invalid schemas. Compilation on the XmlSchemaSet failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotImportNullDataContractName">
+        <source>Cannot import type for null XmlQualifiedName specified via parameter.</source>
+        <target state="new">Cannot import type for null XmlQualifiedName specified via parameter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotImportNullSchema">
+        <source>Cannot import null XmlSchema contained in XmlSchemaSet specified via parameter.</source>
+        <target state="new">Cannot import null XmlSchema contained in XmlSchemaSet specified via parameter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotLoadMemberType">
+        <source>Cannot load member type '{0}'.</source>
+        <target state="new">Cannot load member type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotSerializeObjectWithCycles">
+        <source>Object graph for type '{0}' contains cycles and cannot be serialized if reference tracking is disabled.</source>
+        <target state="new">Object graph for type '{0}' contains cycles and cannot be serialized if reference tracking is disabled.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotSetMembersForReferencedType">
+        <source>Existing type '{0}' specified via the referenced types collection has been referenced in the generated code. Members cannot be added for this type since it cannot be modified.</source>
+        <target state="new">Existing type '{0}' specified via the referenced types collection has been referenced in the generated code. Members cannot be added for this type since it cannot be modified.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotSetNamespaceForReferencedType">
+        <source>Existing type '{0}' specified via the referenced types collection has been referenced in the generated code. Cannot set namespace for this type since it cannot be modified.</source>
+        <target state="new">Existing type '{0}' specified via the referenced types collection has been referenced in the generated code. Cannot set namespace for this type since it cannot be modified.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CannotUseGenericTypeAsBase">
+        <source>Collection type cannot be generated for type '{0}' from namespace '{1}'. Cannot use a generic list type as a base type because the language does not support generic type references.</source>
+        <target state="new">Collection type cannot be generated for type '{0}' from namespace '{1}'. Cannot use a generic list type as a base type because the language does not support generic type references.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CharIsInvalidPrimitive">
+        <source>An internal error has occurred. Char is not a valid schema primitive and should be treated as int in DataContract.</source>
+        <target state="new">An internal error has occurred. Char is not a valid schema primitive and should be treated as int in DataContract.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CircularTypeReference">
+        <source>It contains a circular reference for type '{0}' from namespace '{1}'.</source>
+        <target state="new">It contains a circular reference for type '{0}' from namespace '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ClrTypeNotFound">
+        <source>The deserializer cannot load the type to deserialize because type '{1}' could not be found in assembly '{0}'. Check that the type being serialized has the same contract as the type being deserialized and the same assembly is used.</source>
+        <target state="new">The deserializer cannot load the type to deserialize because type '{1}' could not be found in assembly '{0}'. Check that the type being serialized has the same contract as the type being deserialized and the same assembly is used.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionAssignedToIncompatibleInterface">
+        <source>'{0}' is a collection type and cannot be serialized when assigned to an interface type that does not implement IEnumerable ('{1}'.)</source>
+        <target state="new">'{0}' is a collection type and cannot be serialized when assigned to an interface type that does not implement IEnumerable ('{1}'.)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionMustHaveAddMethod">
+        <source>Collection type '{0}' does not have a valid Add method.</source>
+        <target state="new">Collection type '{0}' does not have a valid Add method.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionMustHaveGetEnumeratorMethod">
+        <source>Collection type '{0}' does not have a valid GetEnumerator method.</source>
+        <target state="new">Collection type '{0}' does not have a valid GetEnumerator method.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionMustHaveItemType">
+        <source>Collection type '{0}' must have a non-null item type.</source>
+        <target state="new">Collection type '{0}' must have a non-null item type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionTypeCannotBeBuiltIn">
+        <source>{0} is a built-in type and cannot be a collection.</source>
+        <target state="new">{0} is a built-in type and cannot be a collection.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionTypeCannotHaveDataContract">
+        <source>{0} has DataContractAttribute attribute.</source>
+        <target state="new">{0} has DataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionTypeDoesNotHaveAddMethod">
+        <source>{0} does not have a valid Add method with parameter of type '{1}'.</source>
+        <target state="new">{0} does not have a valid Add method with parameter of type '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionTypeDoesNotHaveDefaultCtor">
+        <source>{0} does not have a default constructor.</source>
+        <target state="new">{0} does not have a default constructor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionTypeHasMultipleDefinitionsOfInterface">
+        <source>{0} has multiple definitions of interface '{1}'.</source>
+        <target state="new">{0} has multiple definitions of interface '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CollectionTypeIsNotIEnumerable">
+        <source>{0} does not implement IEnumerable interface.</source>
+        <target state="new">{0} does not implement IEnumerable interface.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComplexTypeRestrictionNotSupported">
+        <source>Complex types derived by restriction not supported. </source>
+        <target state="new">Complex types derived by restriction not supported. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="CouldNotReadSerializationSchema">
+        <source>An internal error has occurred. Could not load serialization schema. Consider providing schema with namespace '{0}'.</source>
+        <target state="new">An internal error has occurred. Could not load serialization schema. Consider providing schema with namespace '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DataContractCacheOverflow">
+        <source>An internal error has occurred. DataContract cache overflow.</source>
+        <target state="new">An internal error has occurred. DataContract cache overflow.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DataContractNamespaceAlreadySet">
+        <source>ContractNamespaceAttribute attribute maps CLR namespace '{2}' to multiple data contract namespaces '{0}' and '{1}'. You can map a CLR namespace to only one data contract namespace.</source>
+        <target state="new">ContractNamespaceAttribute attribute maps CLR namespace '{2}' to multiple data contract namespaces '{0}' and '{1}'. You can map a CLR namespace to only one data contract namespace.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DataContractNamespaceIsNotValid">
+        <source>DataContract namespace '{0}' is not a valid URI. </source>
+        <target state="new">DataContract namespace '{0}' is not a valid URI. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DataContractNamespaceReserved">
+        <source>DataContract namespace '{0}' cannot be specified since it is reserved. </source>
+        <target state="new">DataContract namespace '{0}' cannot be specified since it is reserved. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DataMemberOnEnumField">
+        <source>Member '{0}.{1}' has DataMemberAttribute attribute. Use EnumMemberAttribute attribute instead. </source>
+        <target state="new">Member '{0}.{1}' has DataMemberAttribute attribute. Use EnumMemberAttribute attribute instead. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DcTypeNotFoundOnDeserialize">
+        <source>Element '{2}:{3}' contains data from a type that maps to the name '{0}:{1}'. The deserializer has no knowledge of any type that maps to this name. Consider using a DataContractResolver if you are using DataContractSerializer or add the type corresponding to '{1}' to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding it to the list of known types passed to the serializer.</source>
+        <target state="new">Element '{2}:{3}' contains data from a type that maps to the name '{0}:{1}'. The deserializer has no knowledge of any type that maps to this name. Consider using a DataContractResolver if you are using DataContractSerializer or add the type corresponding to '{1}' to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding it to the list of known types passed to the serializer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DcTypeNotFoundOnSerialize">
+        <source>Type '{0}' with data contract name '{1}:{2}' is not expected. Consider using a DataContractResolver if you are using DataContractSerializer or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to the serializer.</source>
+        <target state="new">Type '{0}' with data contract name '{1}:{2}' is not expected. Consider using a DataContractResolver if you are using DataContractSerializer or add any types not known statically to the list of known types - for example, by using the KnownTypeAttribute attribute or by adding them to the list of known types passed to the serializer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DcTypeNotResolvedOnDeserialize">
+        <source>Element '{2}:{3}' contains data from a type that maps to the name '{0}:{1}'. The deserializer has no knowledge of any type that maps to this name. Consider changing the implementation of the ResolveName method on your DataContractResolver to return a non-null value for name '{1}' and namespace '{0}'.</source>
+        <target state="new">Element '{2}:{3}' contains data from a type that maps to the name '{0}:{1}'. The deserializer has no knowledge of any type that maps to this name. Consider changing the implementation of the ResolveName method on your DataContractResolver to return a non-null value for name '{1}' and namespace '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DefaultOnElementNotSupported">
+        <source>Default value on element '{0}' is not supported.</source>
+        <target state="new">Default value on element '{0}' is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DerivedTypeNotISerializable">
+        <source>It is not ISerializable but its base type '{0}' in namespace '{1}' is ISerializable.</source>
+        <target state="new">It is not ISerializable but its base type '{0}' in namespace '{1}' is ISerializable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DeserializedObjectWithIdNotFound">
+        <source>Deserialized object with reference id '{0}' not found in stream.</source>
+        <target state="new">Deserialized object with reference id '{0}' not found in stream.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DupContractInDataContractSet">
+        <source>DataContract with name '{0}' and namespace '{1}' cannot be added to DataContractSet since another contract with the same data contract name is already present and the contracts are not equivalent.</source>
+        <target state="new">DataContract with name '{0}' and namespace '{1}' cannot be added to DataContractSet since another contract with the same data contract name is already present and the contracts are not equivalent.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DupContractInKnownTypes">
+        <source>Type '{0}' cannot be added to list of known types since another type '{1}' with the same data contract name '{2}:{3}' is already present. If there are different collections of a particular type - for example, List&lt;Test&gt; and Test[], they cannot both be added as known types.  Consider specifying only one of these types for addition to the known types list.</source>
+        <target state="new">Type '{0}' cannot be added to list of known types since another type '{1}' with the same data contract name '{2}:{3}' is already present. If there are different collections of a particular type - for example, List&lt;Test&gt; and Test[], they cannot both be added as known types.  Consider specifying only one of these types for addition to the known types list.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DupEnumMemberValue">
+        <source>Type '{2}' contains two members '{0}' 'and '{1}' with the same name '{3}'. Multiple members with the same name in one type are not supported. Consider changing one of the member names using EnumMemberAttribute attribute.</source>
+        <target state="new">Type '{2}' contains two members '{0}' 'and '{1}' with the same name '{3}'. Multiple members with the same name in one type are not supported. Consider changing one of the member names using EnumMemberAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DupKeyValueName">
+        <source>The collection data contract type '{0}' specifies the same value '{1}' for both the KeyName and the ValueName properties. This is not allowed. Consider changing either the KeyName or the ValueName property.</source>
+        <target state="new">The collection data contract type '{0}' specifies the same value '{1}' for both the KeyName and the ValueName properties. This is not allowed. Consider changing either the KeyName or the ValueName property.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DupMemberName">
+        <source>Type '{2}' contains two members '{0}' 'and '{1}' with the same data member name '{3}'. Multiple members with the same name in one type are not supported. Consider changing one of the member names using DataMemberAttribute attribute.</source>
+        <target state="new">Type '{2}' contains two members '{0}' 'and '{1}' with the same data member name '{3}'. Multiple members with the same name in one type are not supported. Consider changing one of the member names using DataMemberAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DupTypeContractInDataContractSet">
+        <source>DataContract for type '{0}' cannot be added to DataContractSet since type '{1}' with the same data contract name '{2}' in namespace '{3}' is already present and the contracts are not equivalent.</source>
+        <target state="new">DataContract for type '{0}' cannot be added to DataContractSet since type '{1}' with the same data contract name '{2}' in namespace '{3}' is already present and the contracts are not equivalent.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DuplicateAttribute">
+        <source>Invalid Callback. Method '{3}' in type '{2}' has both '{0}' and '{1}'.</source>
+        <target state="new">Invalid Callback. Method '{3}' in type '{2}' has both '{0}' and '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="DuplicateCallback">
+        <source>Invalid attribute. Both '{0}' and '{1}' in type '{2}' have '{3}'.</source>
+        <target state="new">Invalid attribute. Both '{0}' and '{1}' in type '{2}' have '{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ElementMaxOccursMustBe">
+        <source>'maxOccurs' on element '{0}' must be 1.</source>
+        <target state="new">'maxOccurs' on element '{0}' must be 1.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ElementMinOccursMustBe">
+        <source>'minOccurs' on element '{0}' must be 0 or 1.</source>
+        <target state="new">'minOccurs' on element '{0}' must be 0 or 1.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ElementRefOnLocalElementNotSupported">
+        <source>Ref to element '{0}' in '{1}' namespace is not supported.</source>
+        <target state="new">Ref to element '{0}' in '{1}' namespace is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EncounteredWithNameNamespace">
+        <source>{0}. Encountered '{1}'  with name '{2}', namespace '{3}'. </source>
+        <target state="new">{0}. Encountered '{1}'  with name '{2}', namespace '{3}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumEnumerationFacetsMustHaveValue">
+        <source>Enumeration facets without 'value' are not supported.</source>
+        <target state="new">Enumeration facets without 'value' are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumListInAnonymousTypeNotSupported">
+        <source>Anonymous type with &lt;list&gt; cannot be used to create Flags enumeration because it is not a valid enum type.</source>
+        <target state="new">Anonymous type with &lt;list&gt; cannot be used to create Flags enumeration because it is not a valid enum type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumListMustContainAnonymousType">
+        <source>Simple type list must contain an anonymous type specifying enumeration facets.</source>
+        <target state="new">Simple type list must contain an anonymous type specifying enumeration facets.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumOnlyEnumerationFacetsSupported">
+        <source>Facets other than enumeration facets are not supported.</source>
+        <target state="new">Facets other than enumeration facets are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumRestrictionInvalid">
+        <source>Anonymous type with &lt;restriction&gt; cannot be used to create Flags enumeration because it is not a valid enum type.</source>
+        <target state="new">Anonymous type with &lt;restriction&gt; cannot be used to create Flags enumeration because it is not a valid enum type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumTypeCannotBeImported">
+        <source>Enum type '{0}' in namespace '{1}' cannot be imported. {2}</source>
+        <target state="new">Enum type '{0}' in namespace '{1}' cannot be imported. {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumTypeCannotHaveIsReference">
+        <source>Enum type '{0}' cannot have the IsReference setting of '{1}'. Either change the setting to '{2}', or remove it completely. </source>
+        <target state="new">Enum type '{0}' cannot have the IsReference setting of '{1}'. Either change the setting to '{2}', or remove it completely. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumTypeNotSupportedByDataContractJsonSerializer">
+        <source>DataContractJsonSerializer does not support data members of type '{0}'.  Consider using int, System.Object, or a concrete enum definition instead.</source>
+        <target state="new">DataContractJsonSerializer does not support data members of type '{0}'.  Consider using int, System.Object, or a concrete enum definition instead.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EnumUnionInAnonymousTypeNotSupported">
+        <source>Anonymous type with &lt;union&gt;. cannot be used to create Flags enumeration because it is not a valid enum type.</source>
+        <target state="new">Anonymous type with &lt;union&gt;. cannot be used to create Flags enumeration because it is not a valid enum type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorDeserializing">
+        <source>There was an error deserializing the object {0}. {1}</source>
+        <target state="new">There was an error deserializing the object {0}. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorInLine">
+        <source>Error in line {0} position {1}.</source>
+        <target state="new">Error in line {0} position {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorIsStartObject">
+        <source>There was an error checking start element of object {0}. {1}</source>
+        <target state="new">There was an error checking start element of object {0}. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorSerializing">
+        <source>There was an error serializing the object {0}. {1}</source>
+        <target state="new">There was an error serializing the object {0}. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorTypeInfo">
+        <source>of type {0}</source>
+        <target state="new">of type {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorWriteEndObject">
+        <source>There was an error writing end element of object {0}. {1}</source>
+        <target state="new">There was an error writing end element of object {0}. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ErrorWriteStartObject">
+        <source>There was an error writing start element of object {0}. {1}</source>
+        <target state="new">There was an error writing start element of object {0}. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExceededMaxItemsQuota">
+        <source>Maximum number of items that can be serialized or deserialized in an object graph is '{0}'. Change the object graph or increase the MaxItemsInObjectGraph quota. </source>
+        <target state="new">Maximum number of items that can be serialized or deserialized in an object graph is '{0}'. Change the object graph or increase the MaxItemsInObjectGraph quota. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpectingElement">
+        <source>Expecting element '{1}' from namespace '{0}'.</source>
+        <target state="new">Expecting element '{1}' from namespace '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpectingElementAtDeserialize">
+        <source>Expecting state '{0}' when ReadObject is called.</source>
+        <target state="new">Expecting state '{0}' when ReadObject is called.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpectingEnd">
+        <source>Expecting End'{0}'.</source>
+        <target state="new">Expecting End'{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ExpectingState">
+        <source>Expecting state '{0}'.</source>
+        <target state="new">Expecting state '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FactoryObjectContainsSelfReference">
+        <source>Object graph of type '{0}' with Id '{2}' contains a reference to itself. The object has been replaced with a new object of type '{1}' either because it implements IObjectReference or because it is surrogated. The serializer does not support fixing up the nested reference to the new object and cannot deserialize this object. Consider changing the object to remove the nested self-reference.</source>
+        <target state="new">Object graph of type '{0}' with Id '{2}' contains a reference to itself. The object has been replaced with a new object of type '{1}' either because it implements IObjectReference or because it is surrogated. The serializer does not support fixing up the nested reference to the new object and cannot deserialize this object. Consider changing the object to remove the nested self-reference.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FixedOnElementNotSupported">
+        <source>Fixed value on element '{0}' is not supported.</source>
+        <target state="new">Fixed value on element '{0}' is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="FormMustBeQualified">
+        <source>Form on element '{0}' must be qualified.</source>
+        <target state="new">Form on element '{0}' must be qualified.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericAnnotationAttributeNotFound">
+        <source>Annotation for generic type '{0}' did not have attribute '{1}'.</source>
+        <target state="new">Annotation for generic type '{0}' did not have attribute '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericAnnotationForNestedLevelMustBeIncreasing">
+        <source>Nested level on annotation elements '{0}' from namespace '{1}' for generic type '{2}' must be in increasing order.</source>
+        <target state="new">Nested level on annotation elements '{0}' from namespace '{1}' for generic type '{2}' must be in increasing order.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericAnnotationHasInvalidAttributeValue">
+        <source>Annotation element '{0}' from namespace '{1}' for generic type '{2}' has an invalid value '{3}' for attribute '{4}'. Expecting value to be of type '{5}'.</source>
+        <target state="new">Annotation element '{0}' from namespace '{1}' for generic type '{2}' has an invalid value '{3}' for attribute '{4}'. Expecting value to be of type '{5}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericAnnotationHasInvalidElement">
+        <source>Annotation for generic type '{2}' has an invalid element '{0}' from namespace '{1}'.</source>
+        <target state="new">Annotation for generic type '{2}' has an invalid element '{0}' from namespace '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericCallbackException">
+        <source>A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</source>
+        <target state="new">A user callback threw an exception.  Check the exception stack and inner exception to determine the callback that failed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericNameBraceMismatch">
+        <source>The data contract name '{0}' for type '{1}' has a curly brace '{{' that is not matched with a closing curly brace. Curly braces have special meaning in data contract names - they are used to customize the naming of data contracts for generic types.</source>
+        <target state="new">The data contract name '{0}' for type '{1}' has a curly brace '{{' that is not matched with a closing curly brace. Curly braces have special meaning in data contract names - they are used to customize the naming of data contracts for generic types.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericParameterNotValid">
+        <source>In the data contract name for type '{1}', there are curly braces with '{0}' inside, which is an invalid value. Curly braces have special meaning in data contract names - they are used to customize the naming of data contracts for generic types. Based on the number of generic parameters this type has, the contents of the curly braces must either be a number between 0 and '{2}' to insert the name of the generic parameter at that index or the '#' symbol to insert a digest of the generic parameter namespaces.</source>
+        <target state="new">In the data contract name for type '{1}', there are curly braces with '{0}' inside, which is an invalid value. Curly braces have special meaning in data contract names - they are used to customize the naming of data contracts for generic types. Based on the number of generic parameters this type has, the contents of the curly braces must either be a number between 0 and '{2}' to insert the name of the generic parameter at that index or the '#' symbol to insert a digest of the generic parameter namespaces.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericTypeNameMismatch">
+        <source>DataContract name '{0}' from namespace '{1}' does not match the generic name '{2}' from namespace '{3}'.</source>
+        <target state="new">DataContract name '{0}' from namespace '{1}' does not match the generic name '{2}' from namespace '{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GenericTypeNotExportable">
+        <source>Type '{0}' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.</source>
+        <target state="new">Type '{0}' cannot be exported as a schema type because it is an open generic type. You can only export a generic type if all its generic parameter types are actual types.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="GetOnlyCollectionMustHaveAddMethod">
+        <source>Collection interface type '{0}' is being used as a get-only property and does not have an Add method. Consider adding a setter to the property or using a collection data contract that does have an Add method - for example IList or ICollection&lt;T&gt;.</source>
+        <target state="new">Collection interface type '{0}' is being used as a get-only property and does not have an Add method. Consider adding a setter to the property or using a collection data contract that does have an Add method - for example IList or ICollection&lt;T&gt;.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableContainsMoreThanOneItems">
+        <source>Its root sequence contains more than one particle.</source>
+        <target state="new">Its root sequence contains more than one particle.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableDerivedContainsOneOrMoreItems">
+        <source>Derived ISerializable types cannot contain any particles.</source>
+        <target state="new">Derived ISerializable types cannot contain any particles.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableDoesNotContainAny">
+        <source>It does not contain root sequence with a wildcard element &lt;any&gt;.</source>
+        <target state="new">It does not contain root sequence with a wildcard element &lt;any&gt;.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableMustRefFactoryTypeAttribute">
+        <source>It does not reference attribute '{0}' from namespace '{1}'. </source>
+        <target state="new">It does not reference attribute '{0}' from namespace '{1}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableTypeCannotBeImported">
+        <source>ISerializable type '{0}' in namespace '{1}' cannot be imported. '{2}'</source>
+        <target state="new">ISerializable type '{0}' in namespace '{1}' cannot be imported. '{2}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableWildcardMaxOccursMustBe">
+        <source>'maxOccurs' on the wildcard element must be '{0}'.</source>
+        <target state="new">'maxOccurs' on the wildcard element must be '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableWildcardMinOccursMustBe">
+        <source>'minOccurs' on the wildcard element must be '{0}'.</source>
+        <target state="new">'minOccurs' on the wildcard element must be '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableWildcardNamespaceInvalid">
+        <source>Namespace on the wildcard element must be '{0}'.</source>
+        <target state="new">Namespace on the wildcard element must be '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ISerializableWildcardProcessContentsInvalid">
+        <source>ProcessContents on the wildcard element must be '{0}'.</source>
+        <target state="new">ProcessContents on the wildcard element must be '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IXmlSerializableCannotHaveCollectionDataContract">
+        <source>Type '{0}' cannot be IXmlSerializable and have CollectionDataContractAttribute attribute.</source>
+        <target state="new">Type '{0}' cannot be IXmlSerializable and have CollectionDataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IXmlSerializableCannotHaveDataContract">
+        <source>Type '{0}' cannot be IXmlSerializable and have DataContractAttribute attribute.</source>
+        <target state="new">Type '{0}' cannot be IXmlSerializable and have DataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IXmlSerializableIllegalOperation">
+        <source>This method cannot be called from IXmlSerializable implementations.</source>
+        <target state="new">This method cannot be called from IXmlSerializable implementations.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IXmlSerializableMissingEndElements">
+        <source>IXmlSerializable.WriteXml method of type '{0}' did not close all open tags. Verify that the IXmlSerializable implementation is correct.</source>
+        <target state="new">IXmlSerializable.WriteXml method of type '{0}' did not close all open tags. Verify that the IXmlSerializable implementation is correct.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IXmlSerializableMustHaveDefaultConstructor">
+        <source>IXmlSerializable Type '{0}' must have default constructor.</source>
+        <target state="new">IXmlSerializable Type '{0}' must have default constructor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IXmlSerializableWritePastSubTree">
+        <source>IXmlSerializable.WriteXml method of type '{0}' attempted to close too many tags.  Verify that the IXmlSerializable implementation is correct.</source>
+        <target state="new">IXmlSerializable.WriteXml method of type '{0}' attempted to close too many tags.  Verify that the IXmlSerializable implementation is correct.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InconsistentIsReference">
+        <source>The IsReference setting for type '{0}' is '{1}', but the same setting for its parent class '{2}' is '{3}'. Derived types must have the same value for IsReference as the base type. Change the setting on type '{0}' to '{3}', or on type '{2}' to '{1}', or do not set IsReference explicitly.</source>
+        <target state="new">The IsReference setting for type '{0}' is '{1}', but the same setting for its parent class '{2}' is '{3}'. Derived types must have the same value for IsReference as the base type. Change the setting on type '{0}' to '{3}', or on type '{2}' to '{1}', or do not set IsReference explicitly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IndexedPropertyCannotBeSerialized">
+        <source>Property '{1}' in type '{0}' cannot be serialized because serialization of indexed properties is not supported.</source>
+        <target state="new">Property '{1}' in type '{0}' cannot be serialized because serialization of indexed properties is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidAnnotationExpectingText">
+        <source>Annotation '{0}' from namespace '{1}' has an invalid element '{2}' from namespace '{3}'. Expecting text.</source>
+        <target state="new">Annotation '{0}' from namespace '{1}' has an invalid element '{2}' from namespace '{3}'. Expecting text.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidAsyncResult">
+        <source>The asynchronous result object used to end this operation was not the object that was returned when the operation was initiated.</source>
+        <target state="new">The asynchronous result object used to end this operation was not the object that was returned when the operation was initiated.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCharacterEncountered">
+        <source>Encountered invalid character '{0}'.</source>
+        <target state="new">Encountered invalid character '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidClassDerivation">
+        <source>Type '{0}' in namespace '{1}' cannot be used as the base type of a data contract type, because it itself does not have a data contract. Consider marking type '{0}' with the DataContractAttribute attribute.</source>
+        <target state="new">Type '{0}' in namespace '{1}' cannot be used as the base type of a data contract type, because it itself does not have a data contract. Consider marking type '{0}' with the DataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidClrNameGeneratedForISerializable">
+        <source>ISerializable type with data contract name '{0}' in namespace '{1}' cannot be imported. The data contract name cannot be customized for ISerializable type and the generated name '{2}' does not match the expected name '{0}'. Check if the required name has been mapped to a different type or if it is an invalid CLR name which cannot be generated or if the type requires an outer type which is not present.</source>
+        <target state="new">ISerializable type with data contract name '{0}' in namespace '{1}' cannot be imported. The data contract name cannot be customized for ISerializable type and the generated name '{2}' does not match the expected name '{0}'. Check if the required name has been mapped to a different type or if it is an invalid CLR name which cannot be generated or if the type requires an outer type which is not present.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidClrNamespaceGeneratedForISerializable">
+        <source>ISerializable type with data contract name '{0}' in namespace '{1}' cannot be imported. The data contract namespace cannot be customized for ISerializable types and the generated namespace '{3}' does not match the required CLR namespace '{2}'. Check if the required namespace has been mapped to a different data contract namespace and consider mapping it explicitly using the namespaces collection. </source>
+        <target state="new">ISerializable type with data contract name '{0}' in namespace '{1}' cannot be imported. The data contract namespace cannot be customized for ISerializable types and the generated namespace '{3}' does not match the required CLR namespace '{2}'. Check if the required namespace has been mapped to a different data contract namespace and consider mapping it explicitly using the namespaces collection. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractItemName">
+        <source>Type '{0}' cannot have CollectionDataContractAttribute attribute ItemName set to null or empty string.</source>
+        <target state="new">Type '{0}' cannot have CollectionDataContractAttribute attribute ItemName set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractKeyName">
+        <source>Type '{0}' cannot have CollectionDataContractAttribute attribute KeyName set to null or empty string.</source>
+        <target state="new">Type '{0}' cannot have CollectionDataContractAttribute attribute KeyName set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractKeyNoDictionary">
+        <source>The collection data contract type '{0}' specifies '{1}' for the KeyName property. This is not allowed since the type is not IDictionary. Remove the setting for the KeyName property.</source>
+        <target state="new">The collection data contract type '{0}' specifies '{1}' for the KeyName property. This is not allowed since the type is not IDictionary. Remove the setting for the KeyName property.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractName">
+        <source>Type '{0}' cannot have CollectionDataContractAttribute attribute Name set to null or empty string.</source>
+        <target state="new">Type '{0}' cannot have CollectionDataContractAttribute attribute Name set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractNamespace">
+        <source>Type '{0}' cannot have CollectionDataContractAttribute attribute Namespace set to null.</source>
+        <target state="new">Type '{0}' cannot have CollectionDataContractAttribute attribute Namespace set to null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractValueName">
+        <source>Type '{0}' cannot have CollectionDataContractAttribute attribute ValueName set to null or empty string.</source>
+        <target state="new">Type '{0}' cannot have CollectionDataContractAttribute attribute ValueName set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionContractValueNoDictionary">
+        <source>The collection data contract type '{0}' specifies '{1}' for the ValueName property. This is not allowed since the type is not IDictionary. Remove the setting for the ValueName property.</source>
+        <target state="new">The collection data contract type '{0}' specifies '{1}' for the ValueName property. This is not allowed since the type is not IDictionary. Remove the setting for the ValueName property.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionDataContract">
+        <source>Type '{0}' with CollectionDataContractAttribute attribute is an invalid collection type since it</source>
+        <target state="new">Type '{0}' with CollectionDataContractAttribute attribute is an invalid collection type since it</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidCollectionType">
+        <source>Type '{0}' is an invalid collection type since it</source>
+        <target state="new">Type '{0}' is an invalid collection type since it</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidDataContractName">
+        <source>Type '{0}' cannot have DataContractAttribute attribute Name set to null or empty string.</source>
+        <target state="new">Type '{0}' cannot have DataContractAttribute attribute Name set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidDataContractNamespace">
+        <source>Type '{0}' cannot have DataContractAttribute attribute Namespace set to null.</source>
+        <target state="new">Type '{0}' cannot have DataContractAttribute attribute Namespace set to null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidDataMemberName">
+        <source>Member '{0}' in type '{1}' cannot have DataMemberAttribute attribute Name set to null or empty string.</source>
+        <target state="new">Member '{0}' in type '{1}' cannot have DataMemberAttribute attribute Name set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidEmitDefaultAnnotation">
+        <source>Annotation for element {0} in type {1} from namespace {2} specifies EmitDefaultValue as 'true'. This requires the element to be either nillable or the element's type must be a value type.</source>
+        <target state="new">Annotation for element {0} in type {1} from namespace {2} specifies EmitDefaultValue as 'true'. This requires the element to be either nillable or the element's type must be a value type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidEnumBaseType">
+        <source>Type '{0}' in namespace '{1}' is not a valid base type for enum '{2}' in namespace '{3}'.</source>
+        <target state="new">Type '{0}' in namespace '{1}' is not a valid base type for enum '{2}' in namespace '{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidEnumMemberValue">
+        <source>'{0}' in type '{1}' cannot have EnumMemberAttribute attribute Value set to null or empty string.</source>
+        <target state="new">'{0}' in type '{1}' cannot have EnumMemberAttribute attribute Value set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidEnumValueOnRead">
+        <source>Invalid enum value '{0}' cannot be deserialized into type '{1}'. Ensure that the necessary enum values are present and are marked with EnumMemberAttribute attribute if the type has DataContractAttribute attribute.</source>
+        <target state="new">Invalid enum value '{0}' cannot be deserialized into type '{1}'. Ensure that the necessary enum values are present and are marked with EnumMemberAttribute attribute if the type has DataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidEnumValueOnWrite">
+        <source>Enum value '{0}' is invalid for type '{1}' and cannot be serialized. Ensure that the necessary enum values are present and are marked with EnumMemberAttribute attribute if the type has DataContractAttribute attribute.</source>
+        <target state="new">Enum value '{0}' is invalid for type '{1}' and cannot be serialized. Ensure that the necessary enum values are present and are marked with EnumMemberAttribute attribute if the type has DataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidGetSchemaMethod">
+        <source>Type '{0}' cannot have MethodName on XmlSchemaProviderAttribute attribute set to null or empty string. </source>
+        <target state="new">Type '{0}' cannot have MethodName on XmlSchemaProviderAttribute attribute set to null or empty string. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidGlobalDataContractNamespace">
+        <source>CLR namespace '{0}' cannot have ContractNamespace set to null.</source>
+        <target state="new">CLR namespace '{0}' cannot have ContractNamespace set to null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidISerializableDerivation">
+        <source>Cannot import type '{0}' in namespace '{1}' as its base type because derived type is ISerializable but the base type is not ISerializable.</source>
+        <target state="new">Cannot import type '{0}' in namespace '{1}' as its base type because derived type is ISerializable but the base type is not ISerializable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidKeyValueType">
+        <source>It is an invalid dictionary type. Element '{0}' must reference a complex type containing a sequence with two required elements. Either fix the schema or remove the IsDictionary annotation.</source>
+        <target state="new">It is an invalid dictionary type. Element '{0}' must reference a complex type containing a sequence with two required elements. Either fix the schema or remove the IsDictionary annotation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidKeyValueTypeNamespace">
+        <source>It is an invalid dictionary type since element '{0}' references a type from a different namespace '{1}'. Either fix the schema or remove the IsDictionary annotation.</source>
+        <target state="new">It is an invalid dictionary type since element '{0}' references a type from a different namespace '{1}'. Either fix the schema or remove the IsDictionary annotation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidLocalNameEmpty">
+        <source>The empty string is not a valid local name.</source>
+        <target state="new">The empty string is not a valid local name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidMember">
+        <source>Member '{0}.{1}' cannot be serialized since it is neither a field nor a property, and therefore cannot be marked with the DataMemberAttribute attribute. Remove the DataMemberAttribute attribute from the '{1}' member.</source>
+        <target state="new">Member '{0}.{1}' cannot be serialized since it is neither a field nor a property, and therefore cannot be marked with the DataMemberAttribute attribute. Remove the DataMemberAttribute attribute from the '{1}' member.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidNodeType">
+        <source>'{0}' is an invalid node type.</source>
+        <target state="new">'{0}' is an invalid node type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidNonNullReturnValueByIsAny">
+        <source>Method '{0}.{1}()' returns a non-null value. The return value must be null since IsAny=true.</source>
+        <target state="new">Method '{0}.{1}()' returns a non-null value. The return value must be null since IsAny=true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidPrimitiveType">
+        <source>Type '{0}' is not a valid serializable type.</source>
+        <target state="new">Type '{0}' is not a valid serializable type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidReturnTypeOnGetSchemaMethod">
+        <source>Method '{0}.{1}()' returns '{2}'. The return type must be compatible with '{3}' or '{4}'.</source>
+        <target state="new">Method '{0}.{1}()' returns '{2}'. The return type must be compatible with '{3}' or '{4}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidSizeDefinition">
+        <source>Invalid Size '{0}'. Must be non-negative integer.</source>
+        <target state="new">Invalid Size '{0}'. Must be non-negative integer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidStateInExtensionDataReader">
+        <source>An internal error has occurred. ExtensionDataReader is in an invalid state.</source>
+        <target state="new">An internal error has occurred. ExtensionDataReader is in an invalid state.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidXmlDataContractName">
+        <source>XML data contract Name for type '{0}' cannot be set to null or empty string.</source>
+        <target state="new">XML data contract Name for type '{0}' cannot be set to null or empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidXmlDeserializingExtensionData">
+        <source>The XML encountered when deserializing extension data is invalid.</source>
+        <target state="new">The XML encountered when deserializing extension data is invalid.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidXsIdDefinition">
+        <source>Invalid Id '{0}'. Must not be null or empty.</source>
+        <target state="new">Invalid Id '{0}'. Must not be null or empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidXsRefDefinition">
+        <source>Invalid Ref '{0}'. Must not be null or empty.</source>
+        <target state="new">Invalid Ref '{0}'. Must not be null or empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsAnyCannotBeNull">
+        <source>A null value cannot be serialized at the top level for IXmlSerializable root type '{0}' since its IsAny setting is 'true'. This type must write all its contents including the root element. Verify that the IXmlSerializable implementation is correct.</source>
+        <target state="new">A null value cannot be serialized at the top level for IXmlSerializable root type '{0}' since its IsAny setting is 'true'. This type must write all its contents including the root element. Verify that the IXmlSerializable implementation is correct.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsAnyCannotBeSerializedAsDerivedType">
+        <source>An object of type '{0}' cannot be serialized at the top level for IXmlSerializable root type '{1}' since its IsAny setting is 'true'. This type must write all its contents including the root element. Verify that the IXmlSerializable implementation is correct.</source>
+        <target state="new">An object of type '{0}' cannot be serialized at the top level for IXmlSerializable root type '{1}' since its IsAny setting is 'true'. This type must write all its contents including the root element. Verify that the IXmlSerializable implementation is correct.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsAnyCannotHaveXmlRoot">
+        <source>Type '{0}' cannot specify an XmlRootAttribute attribute because its IsAny setting is 'true'. This type must write all its contents including the root element. Verify that the IXmlSerializable implementation is correct.</source>
+        <target state="new">Type '{0}' cannot specify an XmlRootAttribute attribute because its IsAny setting is 'true'. This type must write all its contents including the root element. Verify that the IXmlSerializable implementation is correct.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsDictionaryFormattedIncorrectly">
+        <source>'{0}' is an invalid value for IsDictionary annotation. {1}</source>
+        <target state="new">'{0}' is an invalid value for IsDictionary annotation. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsNotAssignableFrom">
+        <source>An internal error has occurred. '{0}' is not assignable from '{1}' - error generating code for serialization.</source>
+        <target state="new">An internal error has occurred. '{0}' is not assignable from '{1}' - error generating code for serialization.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsRequiredDataMemberOnIsReferenceDataContractType">
+        <source>'{0}.{1}' has the IsRequired setting of '{2}. However, '{0}' has the IsReference setting of '{2}', because either it is set explicitly, or it is derived from a base class. Set IsRequired on '{0}.{1}' to false, or disable IsReference on '{0}'. </source>
+        <target state="new">'{0}.{1}' has the IsRequired setting of '{2}. However, '{0}' has the IsReference setting of '{2}', because either it is set explicitly, or it is derived from a base class. Set IsRequired on '{0}.{1}' to false, or disable IsReference on '{0}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IsValueTypeFormattedIncorrectly">
+        <source>'{0}' is an invalid value for IsValueType annotation. {1}</source>
+        <target state="new">'{0}' is an invalid value for IsValueType annotation. {1}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonAttributeAlreadyWritten">
+        <source>Cannot write attribute with local name '{0}' multiple times.</source>
+        <target state="new">Cannot write attribute with local name '{0}' multiple times.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonAttributeMustHaveElement">
+        <source>WriteStartElement must be called at least once before WriteStartAttribute may be called.</source>
+        <target state="new">WriteStartElement must be called at least once before WriteStartAttribute may be called.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonCannotWriteStandaloneTextAfterQuotedText">
+        <source>Cannot write a CLR value that maps to number, array, object, true, false or null in JSON after a string value has been written.</source>
+        <target state="new">Cannot write a CLR value that maps to number, array, object, true, false or null in JSON after a string value has been written.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonCannotWriteTextAfterNonTextAttribute">
+        <source>Attempted to write text after writing attribute type='{0}'. Text may be written only after the attributes type='number', type='boolean', or type='string'.</source>
+        <target state="new">Attempted to write text after writing attribute type='{0}'. Text may be written only after the attributes type='number', type='boolean', or type='string'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonCircularReferenceDetected">
+        <source>A circular reference has been detected when serializing an object of type {0} to JSON. Circular references are not supported in the JSON format.</source>
+        <target state="new">A circular reference has been detected when serializing an object of type {0} to JSON. Circular references are not supported in the JSON format.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonDateTimeOutOfRange">
+        <source>DateTime values that are greater than DateTime.MaxValue or smaller than DateTime.MinValue when converted to UTC cannot be serialized to JSON.</source>
+        <target state="new">DateTime values that are greater than DateTime.MaxValue or smaller than DateTime.MinValue when converted to UTC cannot be serialized to JSON.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonDuplicateMemberInInput">
+        <source>The data contract type '{0}' cannot be deserialized because the data member '{1}' was found more than once in the input.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized because the data member '{1}' was found more than once in the input.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonDuplicateMemberNames">
+        <source>The data contract type '{0}' is not serializable with DataContractJsonSerializer because the data member '{1}' is duplicated in its type hierarchy.</source>
+        <target state="new">The data contract type '{0}' is not serializable with DataContractJsonSerializer because the data member '{1}' is duplicated in its type hierarchy.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonEncodingNotSupported">
+        <source>Encoding not supported in JSON. UTF-8, Unicode, and BigEndianUnicode are the only supported encodings.</source>
+        <target state="new">Encoding not supported in JSON. UTF-8, Unicode, and BigEndianUnicode are the only supported encodings.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonEncounteredUnexpectedCharacter">
+        <source>Encountered unexpected character '{0}'.</source>
+        <target state="new">Encountered unexpected character '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonEndElementNoOpenNodes">
+        <source>No corresponding start element is open.</source>
+        <target state="new">No corresponding start element is open.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonExpectedEncoding">
+        <source>The expected encoding '{0}' does not match the actual encoding '{1}'.</source>
+        <target state="new">The expected encoding '{0}' does not match the actual encoding '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidBytes">
+        <source>Invalid byte encoding.</source>
+        <target state="new">Invalid byte encoding.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidDataTypeSpecifiedForServerType">
+        <source>Attempted to write an attribute '{0}'='{1}' after writing the attribute with local name '{2}'. The attribute with local name '{2}' is only valid with an attribute '{0}'='{3}'.</source>
+        <target state="new">Attempted to write an attribute '{0}'='{1}' after writing the attribute with local name '{2}'. The attribute with local name '{2}' is only valid with an attribute '{0}'='{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidDateTimeString">
+        <source>DateTime content '{0}' does not start with '{1}' and end with '{2}' as required for JSON.</source>
+        <target state="new">DateTime content '{0}' does not start with '{1}' and end with '{2}' as required for JSON.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidFFFE">
+        <source>Characters with hexadecimal values 0xFFFE and 0xFFFF are not valid.</source>
+        <target state="new">Characters with hexadecimal values 0xFFFE and 0xFFFF are not valid.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidItemNameForArrayElement">
+        <source>Encountered unexpected element local name '{0}' for item in collection. '{1}' is the only valid local name for elements in a collection.</source>
+        <target state="new">Encountered unexpected element local name '{0}' for item in collection. '{1}' is the only valid local name for elements in a collection.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidLocalNameEmpty">
+        <source>The empty string is not a valid local name in JSON.</source>
+        <target state="new">The empty string is not a valid local name in JSON.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidMethodBetweenStartEndAttribute">
+        <source>Cannot write content while an attribute is being written.</source>
+        <target state="new">Cannot write content while an attribute is being written.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidRootElementName">
+        <source>Encountered invalid root element name '{0}'. '{1}' is the only allowed root element name.</source>
+        <target state="new">Encountered invalid root element name '{0}'. '{1}' is the only allowed root element name.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidStartElementCall">
+        <source>WriteStartElement can be called at only the start of a document or immediately after calling WriteEndElement.</source>
+        <target state="new">WriteStartElement can be called at only the start of a document or immediately after calling WriteEndElement.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidWriteStat">
+        <source>'{0}' cannot be called while WriteState is '{1}'.</source>
+        <target state="new">'{0}' cannot be called while WriteState is '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonInvalidWriteState">
+        <source>'{0}' cannot be called while WriteState is '{1}'.</source>
+        <target state="new">'{0}' cannot be called while WriteState is '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonMethodNotSupported">
+        <source>This XmlDictionaryWriter implementation does not support the '{0}' method.</source>
+        <target state="new">This XmlDictionaryWriter implementation does not support the '{0}' method.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonMultipleRootElementsNotAllowedOnWriter">
+        <source>This XmlDictionaryWriter implementation does not support the writing of multiple root elements.</source>
+        <target state="new">This XmlDictionaryWriter implementation does not support the writing of multiple root elements.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonMustSpecifyDataType">
+        <source>You must write an attribute '{0}'='{1}' after writing the attribute with local name '{2}'.</source>
+        <target state="new">You must write an attribute '{0}'='{1}' after writing the attribute with local name '{2}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonMustUseWriteStringForWritingAttributeValues">
+        <source>To write attribute values with this XmlDictionaryWriter implementation, you must write either string or char[] values.</source>
+        <target state="new">To write attribute values with this XmlDictionaryWriter implementation, you must write either string or char[] values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonNamespaceMustBeEmpty">
+        <source>Encountered unexpected namespace '{0}'. The namespace must be empty.</source>
+        <target state="new">Encountered unexpected namespace '{0}'. The namespace must be empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonNestedArraysNotSupported">
+        <source>Nested arrays are not supported.</source>
+        <target state="new">Nested arrays are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonNoMatchingStartAttribute">
+        <source>There is no open attribute.</source>
+        <target state="new">There is no open attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonNodeTypeArrayOrObjectNotSpecified">
+        <source>WriteStartElement cannot be called immediately after WriteStartElement without writing the 'type'='array' or 'type='object' attribute.</source>
+        <target state="new">WriteStartElement cannot be called immediately after WriteStartElement without writing the 'type'='array' or 'type='object' attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonOffsetExceedsBufferSize">
+        <source>The specified offset exceeds the buffer size ({0} bytes).</source>
+        <target state="new">The specified offset exceeds the buffer size ({0} bytes).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonOneRequiredMemberNotFound">
+        <source>The data contract type '{0}' cannot be deserialized because the required data member '{1}' was not found.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized because the required data member '{1}' was not found.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonOnlyWhitespace">
+        <source>Unexpected character '{0}'. '{1}' can write only white space characters.</source>
+        <target state="new">Unexpected character '{0}'. '{1}' can write only white space characters.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonOpenAttributeMustBeClosedFirst">
+        <source>Cannot call {0} while an attribute is being written.</source>
+        <target state="new">Cannot call {0} while an attribute is being written.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonPrefixMustBeNullOrEmpty">
+        <source>Encountered unexpected prefix '{0}'. The prefix must be null or empty.</source>
+        <target state="new">Encountered unexpected prefix '{0}'. The prefix must be null or empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonRequiredMembersNotFound">
+        <source>The data contract type '{0}' cannot be deserialized because the required data members '{1}' were not found.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized because the required data members '{1}' were not found.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonServerTypeSpecifiedForInvalidDataType">
+        <source>Attempted to write an attribute with local name '{0}' after writing the attribute '{1}'='{2}'. An attribute with local name '{0}' may be written only after writing the attribute '{1}'='{3}'.</source>
+        <target state="new">Attempted to write an attribute with local name '{0}' after writing the attribute '{1}'='{2}'. An attribute with local name '{0}' may be written only after writing the attribute '{1}'='{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonSizeExceedsRemainingBufferSpace">
+        <source>The specified size exceeds the remaining buffer space ('{0}' bytes).</source>
+        <target state="new">The specified size exceeds the remaining buffer space ('{0}' bytes).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonTypeNotSupportedByDataContractJsonSerializer">
+        <source>DataContractJsonSerializer does not support objects of type '{0}'.</source>
+        <target state="new">DataContractJsonSerializer does not support objects of type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonUnexpectedAttributeLocalName">
+        <source>Encountered unexpected attribute local name '{0}'. 'type' and '__type' are the only allowed local names for attributes. 'type' can be used to influence how data is written; its valid values are 'object', 'string', 'number', 'null', 'boolean', and 'array'. '__type' can be used to provide type hint information to the writer.</source>
+        <target state="new">Encountered unexpected attribute local name '{0}'. 'type' and '__type' are the only allowed local names for attributes. 'type' can be used to influence how data is written; its valid values are 'object', 'string', 'number', 'null', 'boolean', and 'array'. '__type' can be used to provide type hint information to the writer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonUnexpectedAttributeValue">
+        <source>The attribute 'type' must have one of the following strings as its values: 'string', 'number', 'array', 'object', 'null', or 'boolean'.  Encountered unexpected value '{0}'</source>
+        <target state="new">The attribute 'type' must have one of the following strings as its values: 'string', 'number', 'array', 'object', 'null', or 'boolean'.  Encountered unexpected value '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonUnexpectedEndOfFile">
+        <source>Unexpected end of file.</source>
+        <target state="new">Unexpected end of file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonUnsupportedForIsReference">
+        <source>The type '{0}' cannot be serialized to JSON because its IsReference setting is '{1}'. The JSON format does not support references because there is no standardized format for representing references. To enable serialization, disable the IsReference setting on the type or an appropriate parent class of the type.</source>
+        <target state="new">The type '{0}' cannot be serialized to JSON because its IsReference setting is '{1}'. The JSON format does not support references because there is no standardized format for representing references. To enable serialization, disable the IsReference setting on the type or an appropriate parent class of the type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonWriteArrayNotSupported">
+        <source>To write JSON arrays, use XML writer methods to write the attribute type="array" followed by methods like WriteStartElement (with the local name "item"), WriteAttributeString, and WriteEndElement to write the JSON array items.</source>
+        <target state="new">To write JSON arrays, use XML writer methods to write the attribute type="array" followed by methods like WriteStartElement (with the local name "item"), WriteAttributeString, and WriteEndElement to write the JSON array items.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonWriterClosed">
+        <source>The writer is closed.</source>
+        <target state="new">The writer is closed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonXmlInvalidDeclaration">
+        <source>XML declaration can only be written at the beginning of the document.</source>
+        <target state="new">XML declaration can only be written at the beginning of the document.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="JsonXmlProcessingInstructionNotSupported">
+        <source>Processing instructions (other than the XML declaration) are not supported.</source>
+        <target state="new">Processing instructions (other than the XML declaration) are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KeyTypeCannotBeParsedInSimpleDictionary">
+        <source>The dictionary of type '{0}' cannot be deserialized as a simple dictionary because its key type '{1}' does not have a public static Parse method.</source>
+        <target state="new">The dictionary of type '{0}' cannot be deserialized as a simple dictionary because its key type '{1}' does not have a public static Parse method.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeEmptyString">
+        <source>Method name specified by KnownTypeAttribute attribute on type '{0}' cannot be the empty string.</source>
+        <target state="new">Method name specified by KnownTypeAttribute attribute on type '{0}' cannot be the empty string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeMethodNull">
+        <source>Method specified by KnownTypeAttribute attribute on type '{0}' returned null.</source>
+        <target state="new">Method specified by KnownTypeAttribute attribute on type '{0}' returned null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeNoData">
+        <source>KnownTypeAttribute attribute on type '{0}' contains no data.</source>
+        <target state="new">KnownTypeAttribute attribute on type '{0}' contains no data.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeOneScheme">
+        <source>Type '{0}': If a KnownTypeAttribute attribute specifies a method it must be the only KnownTypeAttribute attribute on that type.</source>
+        <target state="new">Type '{0}': If a KnownTypeAttribute attribute specifies a method it must be the only KnownTypeAttribute attribute on that type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeReturnType">
+        <source>KnownTypeAttribute attribute on type '{0}' specifies a method named '{1}' to provide known types. The return type of this method is invalid because it is not assignable to IEnumerable&lt;Type&gt;. Ensure that the method exists and has a valid signature.</source>
+        <target state="new">KnownTypeAttribute attribute on type '{0}' specifies a method named '{1}' to provide known types. The return type of this method is invalid because it is not assignable to IEnumerable&lt;Type&gt;. Ensure that the method exists and has a valid signature.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeUnknownMethod">
+        <source>KnownTypeAttribute attribute on type '{1}' specifies a method named '{0}' to provide known types. Static method '{0}()' was not found on this type. Ensure that the method exists and is marked as static.</source>
+        <target state="new">KnownTypeAttribute attribute on type '{1}' specifies a method named '{0}' to provide known types. Static method '{0}()' was not found on this type. Ensure that the method exists and is marked as static.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="KnownTypeAttributeValidMethodTypes">
+        <source>Method specified by KnownTypeAttribute attribute on type '{0}' does not expose valid types.</source>
+        <target state="new">Method specified by KnownTypeAttribute attribute on type '{0}' does not expose valid types.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MaxArrayLengthExceeded">
+        <source>The maximum array length ({0}) has been exceeded while reading XML data for array of type '{1}'. </source>
+        <target state="new">The maximum array length ({0}) has been exceeded while reading XML data for array of type '{1}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MissingGetSchemaMethod">
+        <source>Type '{0}' does not have a static method '{1}' that takes a parameter of type 'System.Xml.Schema.XmlSchemaSet' as specified by the XmlSchemaProviderAttribute attribute.</source>
+        <target state="new">Type '{0}' does not have a static method '{1}' that takes a parameter of type 'System.Xml.Schema.XmlSchemaSet' as specified by the XmlSchemaProviderAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MixedContentNotSupported">
+        <source>Complex type with mixed content is not supported.</source>
+        <target state="new">Complex type with mixed content is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MultipleIdDefinition">
+        <source>Invalid XML encountered. The same Id value '{0}' is defined more than once. Multiple objects cannot be deserialized using the same Id.</source>
+        <target state="new">Invalid XML encountered. The same Id value '{0}' is defined more than once. Multiple objects cannot be deserialized using the same Id.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MustContainOnlyLocalElements">
+        <source>The root sequence must contain only local elements. Group ref, choice, any and nested sequences are not supported.</source>
+        <target state="new">The root sequence must contain only local elements. Group ref, choice, any and nested sequences are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NameCannotBeNullOrEmpty">
+        <source>XmlQualifiedName.Name cannot be null or empty.</source>
+        <target state="new">XmlQualifiedName.Name cannot be null or empty.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoConversionPossibleTo">
+        <source>An internal error has occurred. No conversion is possible to '{0}' - error generating code for serialization.</source>
+        <target state="new">An internal error has occurred. No conversion is possible to '{0}' - error generating code for serialization.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoGetMethodForProperty">
+        <source>No get method for property '{1}' in type '{0}'.</source>
+        <target state="new">No get method for property '{1}' in type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoSetMethodForProperty">
+        <source>No set method for property '{1}' in type '{0}'.</source>
+        <target state="new">No set method for property '{1}' in type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NonAttributedSerializableTypesMustHaveDefaultConstructor">
+        <source>The Type '{0}' must have a parameterless constructor.</source>
+        <target state="new">The Type '{0}' must have a parameterless constructor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NonOptionalFieldMemberOnIsReferenceSerializableType">
+        <source>'{0}.{1}' is not marked with OptionalFieldAttribute, thus indicating that it must be serialized. However, '{0}' derives from a class marked with DataContractAttribute and an IsReference setting of '{2}'. It is not possible to have required data members on IsReference classes. Either decorate '{0}.{1}' with OptionalFieldAttribute, or disable the IsReference setting on the appropriate parent class.</source>
+        <target state="new">'{0}.{1}' is not marked with OptionalFieldAttribute, thus indicating that it must be serialized. However, '{0}' derives from a class marked with DataContractAttribute and an IsReference setting of '{2}'. It is not possible to have required data members on IsReference classes. Either decorate '{0}.{1}' with OptionalFieldAttribute, or disable the IsReference setting on the appropriate parent class.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NullKnownType">
+        <source>One of the known types provided to the serializer via '{0}' argument was invalid because it was null. All known types specified must be non-null values.</source>
+        <target state="new">One of the known types provided to the serializer via '{0}' argument was invalid because it was null. All known types specified must be non-null values.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NullValueReturnedForGetOnlyCollection">
+        <source>The get-only collection of type '{0}' returned a null value.  The input stream contains collection items which cannot be added if the instance is null.  Consider initializing the collection in the getter.</source>
+        <target state="new">The get-only collection of type '{0}' returned a null value.  The input stream contains collection items which cannot be added if the instance is null.  Consider initializing the collection in the getter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_BadEscape">
+        <source>Invalid escape code encountered in a JSON string.</source>
+        <target state="new">Invalid escape code encountered in a JSON string.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_IllegalPrimitive">
+        <source>'{0}' is not a valid JSON primitive. This error can also occur when extraneous data is present after the JSON data.</source>
+        <target state="new">'{0}' is not a valid JSON primitive. This error can also occur when extraneous data is present after the JSON data.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_InvalidArrayExtraComma">
+        <source>JSON array ended with a trailing comma.</source>
+        <target state="new">JSON array ended with a trailing comma.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_InvalidMemberName">
+        <source>Invalid member name encountered in a JSON object.</source>
+        <target state="new">Invalid member name encountered in a JSON object.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_StringNotQuoted">
+        <source>An internal error has occurred. JSON string not properly quoted.</source>
+        <target state="new">An internal error has occurred. JSON string not properly quoted.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_UnexpectedToken">
+        <source>Unexpected character encountered in JSON. Expected '{1}', got '{0}'.</source>
+        <target state="new">Unexpected character encountered in JSON. Expected '{1}', got '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectDeserializer_UnterminatedString">
+        <source>Unterminated JSON string encountered. JSON strings must start with a single or double quote character and end with the same character.</source>
+        <target state="new">Unterminated JSON string encountered. JSON strings must start with a single or double quote character and end with the same character.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectSerializer_DictionaryNotSupported">
+        <source>An internal error has occurred. JSON dictionary type {0} not supported.</source>
+        <target state="new">An internal error has occurred. JSON dictionary type {0} not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ObjectTableOverflow">
+        <source>An internal error has occurred. Object table overflow. This could be caused by serializing or deserializing extremely large object graphs.</source>
+        <target state="new">An internal error has occurred. Object table overflow. This could be caused by serializing or deserializing extremely large object graphs.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OffsetExceedsBufferSize">
+        <source>The specified offset exceeds the buffer size ({0} bytes).</source>
+        <target state="new">The specified offset exceeds the buffer size ({0} bytes).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OrderCannotBeNegative">
+        <source>Property 'Order' in DataMemberAttribute attribute cannot be a negative number.</source>
+        <target state="new">Property 'Order' in DataMemberAttribute attribute cannot be a negative number.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OutParametersMustBeByRefTypeReceived">
+        <source>Out parameters must be ByRef. Type received: '{0}'.</source>
+        <target state="new">Out parameters must be ByRef. Type received: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ParameterCountMismatch">
+        <source>Invalid number of parameters to call method '{0}'. Expected '{1}' parameters, but '{2}' were provided.</source>
+        <target state="new">Invalid number of parameters to call method '{0}'. Expected '{1}' parameters, but '{2}' were provided.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustCollectionContractAddMethodNotPublic">
+        <source>The collection data contract type '{0}' cannot be deserialized in partial trust because the method '{1}' is not public.</source>
+        <target state="new">The collection data contract type '{0}' cannot be deserialized in partial trust because the method '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustCollectionContractNoPublicConstructor">
+        <source>The collection data contract type '{0}' cannot be deserialized in partial trust because it does not have a public parameterless constructor.</source>
+        <target state="new">The collection data contract type '{0}' cannot be deserialized in partial trust because it does not have a public parameterless constructor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustCollectionContractTypeNotPublic">
+        <source>The collection data contract type '{0}' is not serializable in partial trust because it is not public.</source>
+        <target state="new">The collection data contract type '{0}' is not serializable in partial trust because it is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractFieldGetNotPublic">
+        <source>The data contract type '{0}' cannot be serialized in partial trust because the member '{1}' is not public.</source>
+        <target state="new">The data contract type '{0}' cannot be serialized in partial trust because the member '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractFieldSetNotPublic">
+        <source>The data contract type '{0}' cannot be deserialized in partial trust because the member '{1}' is not public.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized in partial trust because the member '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractMemberGetNotPublic">
+        <source>The data contract type '{0}' cannot be serialized because the member '{1}' is not public. Making the member public will fix this error. Alternatively, you can make it internal, and use the InternalsVisibleToAttribute attribute on your assembly in order to enable serialization of internal members - see documentation for more details. Be aware that doing so has certain security implications.</source>
+        <target state="new">The data contract type '{0}' cannot be serialized because the member '{1}' is not public. Making the member public will fix this error. Alternatively, you can make it internal, and use the InternalsVisibleToAttribute attribute on your assembly in order to enable serialization of internal members - see documentation for more details. Be aware that doing so has certain security implications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractMemberSetNotPublic">
+        <source>The data contract type '{0}' cannot be deserialized because the member '{1}' is not public. Making the member public will fix this error. Alternatively, you can make it internal, and use the InternalsVisibleToAttribute attribute on your assembly in order to enable serialization of internal members - see documentation for more details. Be aware that doing so has certain security implications.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized because the member '{1}' is not public. Making the member public will fix this error. Alternatively, you can make it internal, and use the InternalsVisibleToAttribute attribute on your assembly in order to enable serialization of internal members - see documentation for more details. Be aware that doing so has certain security implications.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractOnDeserializedNotPublic">
+        <source>The data contract type '{0}' cannot be deserialized in partial trust because the OnDeserialized method '{1}' is not public.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized in partial trust because the OnDeserialized method '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractOnDeserializingNotPublic">
+        <source>The data contract type '{0}' cannot be deserialized in partial trust because the OnDeserializing method '{1}' is not public.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized in partial trust because the OnDeserializing method '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractOnSerializedNotPublic">
+        <source>The data contract type '{0}' cannot be serialized in partial trust because the OnSerialized method '{1}' is not public.</source>
+        <target state="new">The data contract type '{0}' cannot be serialized in partial trust because the OnSerialized method '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractOnSerializingNotPublic">
+        <source>The data contract type '{0}' cannot be serialized in partial trust because the OnSerializing method '{1}' is not public.</source>
+        <target state="new">The data contract type '{0}' cannot be serialized in partial trust because the OnSerializing method '{1}' is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractPropertyGetNotPublic">
+        <source>The data contract type '{0}' cannot be serialized in partial trust because the property '{1}' does not have a public getter.</source>
+        <target state="new">The data contract type '{0}' cannot be serialized in partial trust because the property '{1}' does not have a public getter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractPropertySetNotPublic">
+        <source>The data contract type '{0}' cannot be deserialized in partial trust because the property '{1}' does not have a public setter.</source>
+        <target state="new">The data contract type '{0}' cannot be deserialized in partial trust because the property '{1}' does not have a public setter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustDataContractTypeNotPublic">
+        <source>The data contract type '{0}' is not serializable in partial trust because it is not public.</source>
+        <target state="new">The data contract type '{0}' is not serializable in partial trust because it is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustIXmlSerializableTypeNotPublic">
+        <source>The IXmlSerializable type '{0}' is not serializable in partial trust because it is not public.</source>
+        <target state="new">The IXmlSerializable type '{0}' is not serializable in partial trust because it is not public.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustIXmlSerialzableNoPublicConstructor">
+        <source>The IXmlSerializable type '{0}' cannot be deserialized in partial trust because it does not have a public parameterless constructor.</source>
+        <target state="new">The IXmlSerializable type '{0}' cannot be deserialized in partial trust because it does not have a public parameterless constructor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PartialTrustNonAttributedSerializableTypeNoPublicConstructor">
+        <source>The type '{0}' cannot be deserialized in partial trust because it does not have a public parameterless constructor.</source>
+        <target state="new">The type '{0}' cannot be deserialized in partial trust because it does not have a public parameterless constructor.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="QuotaCopyReadOnly">
+        <source>Cannot copy XmlDictionaryReaderQuotas. Target is readonly.</source>
+        <target state="new">Cannot copy XmlDictionaryReaderQuotas. Target is readonly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="QuotaIsReadOnly">
+        <source>The '{0}' quota is readonly.</source>
+        <target state="new">The '{0}' quota is readonly.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="QuotaMustBePositive">
+        <source>Quota must be a positive value.</source>
+        <target state="new">Quota must be a positive value.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RecursiveCollectionType">
+        <source>Type '{0}' is a recursive collection data contract which is not supported. Consider modifying the definition of collection '{0}' to remove references to itself.</source>
+        <target state="new">Type '{0}' is a recursive collection data contract which is not supported. Consider modifying the definition of collection '{0}' to remove references to itself.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RedefineNotSupported">
+        <source>Redefine is not supported.</source>
+        <target state="new">Redefine is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencedBaseTypeDoesNotExist">
+        <source>Collection type cannot be generated for type '{0}' from namespace '{1}'. Rename the type to '{2}' in namespace '{3}' or reference an existing collection type that implements '{4}' or '{5}' which can be used as a base type for the generated collection.</source>
+        <target state="new">Collection type cannot be generated for type '{0}' from namespace '{1}'. Rename the type to '{2}' in namespace '{3}' or reference an existing collection type that implements '{4}' or '{5}' which can be used as a base type for the generated collection.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencedCollectionTypesCannotContainNull">
+        <source>ReferencedCollectionTypes specified via ImportOptions must contain valid types. Cannot contain null.</source>
+        <target state="new">ReferencedCollectionTypes specified via ImportOptions must contain valid types. Cannot contain null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencedTypeDoesNotMatch">
+        <source>Referenced type '{0}' with data contract name '{1}' in namespace '{2}' cannot be used since it does not match imported DataContract. Need to exclude this type from referenced types.</source>
+        <target state="new">Referenced type '{0}' with data contract name '{1}' in namespace '{2}' cannot be used since it does not match imported DataContract. Need to exclude this type from referenced types.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencedTypeMatchingMessage">
+        <source>(matching)</source>
+        <target state="new">(matching)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencedTypeNotMatchingMessage">
+        <source>(not matching)</source>
+        <target state="new">(not matching)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ReferencedTypesCannotContainNull">
+        <source>ReferencedTypes specified via ImportOptions must contain valid types. Cannot contain null.</source>
+        <target state="new">ReferencedTypes specified via ImportOptions must contain valid types. Cannot contain null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RequiredMemberMustBeEmitted">
+        <source>Member {0} in type {1} cannot be serialized. This exception is usually caused by trying to use a null value where a null value is not allowed. The '{0}' member is set to its default value (usually null or zero). The member's EmitDefault setting is 'false', indicating that the member should not be serialized. However, the member's IsRequired setting is 'true', indicating that it must be serialized. This conflict cannot be resolved.  Consider setting '{0}' to a non-default value. Alternatively, you can change the EmitDefaultValue property on the DataMemberAttribute attribute to true, or changing the IsRequired property to false.</source>
+        <target state="new">Member {0} in type {1} cannot be serialized. This exception is usually caused by trying to use a null value where a null value is not allowed. The '{0}' member is set to its default value (usually null or zero). The member's EmitDefault setting is 'false', indicating that the member should not be serialized. However, the member's IsRequired setting is 'true', indicating that it must be serialized. This conflict cannot be resolved.  Consider setting '{0}' to a non-default value. Alternatively, you can change the EmitDefaultValue property on the DataMemberAttribute attribute to true, or changing the IsRequired property to false.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ResolveTypeReturnedFalse">
+        <source>An object of type '{0}' which derives from DataContractResolver returned false from its TryResolveType method when attempting to resolve the name for an object of type '{1}', indicating that the resolution failed. Change the TryResolveType implementation to return true.</source>
+        <target state="new">An object of type '{0}' which derives from DataContractResolver returned false from its TryResolveType method when attempting to resolve the name for an object of type '{1}', indicating that the resolution failed. Change the TryResolveType implementation to return true.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ResolveTypeReturnedNull">
+        <source>An object of type '{0}' which derives from DataContractResolver returned a null typeName or typeNamespace but not both from its TryResolveType method when attempting to resolve the name for an object of type '{1}'. Change the TryResolveType implementation to return non-null values, or to return null values for both typeName and typeNamespace in order to serialize as the declared type.</source>
+        <target state="new">An object of type '{0}' which derives from DataContractResolver returned a null typeName or typeNamespace but not both from its TryResolveType method when attempting to resolve the name for an object of type '{1}'. Change the TryResolveType implementation to return non-null values, or to return null values for both typeName and typeNamespace in order to serialize as the declared type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootParticleMustBeSequence">
+        <source>The root particle must be a sequence.</source>
+        <target state="new">The root particle must be a sequence.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootSequenceMaxOccursMustBe">
+        <source>'maxOccurs' on the root sequence must be 1.</source>
+        <target state="new">'maxOccurs' on the root sequence must be 1.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RootSequenceMustBeRequired">
+        <source>'minOccurs' on the root sequence must be 1.</source>
+        <target state="new">'minOccurs' on the root sequence must be 1.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SerializationCodeIsMissingForType">
+        <source>Type '{0}' cannot be serialized, serialization code for the type is missing. Consult the SDK documentation for adding it as a root serialization type.</source>
+        <target state="new">Type '{0}' cannot be serialized, serialization code for the type is missing. Consult the SDK documentation for adding it as a root serialization type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SimpleContentNotSupported">
+        <source>Complex types with simple content extension are not supported.</source>
+        <target state="new">Complex types with simple content extension are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SimpleTypeRestrictionDoesNotSpecifyBase">
+        <source>Simple type restriction must specify a base type.</source>
+        <target state="new">Simple type restriction must specify a base type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SimpleTypeUnionNotSupported">
+        <source>Simple types with &lt;union&gt; content are not supported.</source>
+        <target state="new">Simple types with &lt;union&gt; content are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SizeExceedsRemainingBufferSpace">
+        <source>The specified size exceeds the remaining buffer space ({0} bytes).</source>
+        <target state="new">The specified size exceeds the remaining buffer space ({0} bytes).</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SpecifiedTypeNotFoundInSchema">
+        <source>Invalid type specified. Type with name '{0}' not found in schema with namespace '{1}'.</source>
+        <target state="new">Invalid type specified. Type with name '{0}' not found in schema with namespace '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SubstitutionGroupOnElementNotSupported">
+        <source>Substitution group on element '{0}' is not supported.</source>
+        <target state="new">Substitution group on element '{0}' is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SupportForMultidimensionalArraysNotPresent">
+        <source>Multi-dimensional arrays are not supported.</source>
+        <target state="new">Multi-dimensional arrays are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SurrogatesWithGetOnlyCollectionsNotSupported">
+        <source>Using surrogates with get-only collection properties is not supported.  Consider removing the surrogate associated with '{0}' or adding a setter to '{1}.{2}'. </source>
+        <target state="new">Using surrogates with get-only collection properties is not supported.  Consider removing the surrogate associated with '{0}' or adding a setter to '{1}.{2}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SurrogatesWithGetOnlyCollectionsNotSupportedSerDeser">
+        <source>Using surrogates with get-only collection properties is not supported.  Consider removing the surrogate associated with '{0}'. </source>
+        <target state="new">Using surrogates with get-only collection properties is not supported.  Consider removing the surrogate associated with '{0}'. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TooManyCollectionContracts">
+        <source>Type '{0}' has more than one CollectionDataContractAttribute attribute.</source>
+        <target state="new">Type '{0}' has more than one CollectionDataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TooManyDataContracts">
+        <source>Type '{0}' has more than one DataContractAttribute attribute.</source>
+        <target state="new">Type '{0}' has more than one DataContractAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TooManyDataMembers">
+        <source>Member '{0}.{1}' has more than one DataMemberAttribute attribute.</source>
+        <target state="new">Member '{0}.{1}' has more than one DataMemberAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TooManyEnumMembers">
+        <source>Member '{0}.{1}' has more than one EnumMemberAttribute attribute.</source>
+        <target state="new">Member '{0}.{1}' has more than one EnumMemberAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TooManyIgnoreDataMemberAttributes">
+        <source>Member '{0}.{1}' has more than one IgnoreDataMemberAttribute attribute.</source>
+        <target state="new">Member '{0}.{1}' has more than one IgnoreDataMemberAttribute attribute.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TopLevelElementRepresentsDifferentType">
+        <source>The global element found in the schema with same name references a different type '{0}' in namespace '{1}'. Data contract types must have the same name as their root element name. Consider removing the global element or changing its type.</source>
+        <target state="new">The global element found in the schema with same name references a different type '{0}' in namespace '{1}'. Data contract types must have the same name as their root element name. Consider removing the global element or changing its type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TraceCodeXsdImportAnnotationFailed">
+        <source>Failed to import annotation during XSD import.</source>
+        <target state="new">Failed to import annotation during XSD import.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TraceCodeXsdImportBegin">
+        <source>Starting schema import</source>
+        <target state="new">Starting schema import</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TraceCodeXsdImportEnd">
+        <source>Finished schema import</source>
+        <target state="new">Finished schema import</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TraceCodeXsdImportError">
+        <source>Error on schema import</source>
+        <target state="new">Error on schema import</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeCannotBeImported">
+        <source>Type '{0}' in namespace '{1}' cannot be imported. {2}</source>
+        <target state="new">Type '{0}' in namespace '{1}' cannot be imported. {2}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeCannotBeImportedHowToFix">
+        <source>{0} Either change the schema so that the types can map to data contract types or use ImportXmlType or use a different serializer.</source>
+        <target state="new">{0} Either change the schema so that the types can map to data contract types or use ImportXmlType or use a different serializer.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeHasNotBeenImported">
+        <source>Type '{0}' from namespace '{1}' has not been imported from schema. Consider first importing this type by calling one of the Import methods on XsdDataContractImporter.</source>
+        <target state="new">Type '{0}' from namespace '{1}' has not been imported from schema. Consider first importing this type by calling one of the Import methods on XsdDataContractImporter.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeMustBeIXmlSerializable">
+        <source>Schema type '{2}' in namespace '{3}' must be imported as an XML type. Type '{0}' cannot be mapped to this schema type because it does not implement '{1}'.  Consider not adding type '{0}' to the list of referenced types or changing it to implement '{1}'.</source>
+        <target state="new">Schema type '{2}' in namespace '{3}' must be imported as an XML type. Type '{0}' cannot be mapped to this schema type because it does not implement '{1}'.  Consider not adding type '{0}' to the list of referenced types or changing it to implement '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeMustNotBeOpenGeneric">
+        <source>Type '{0}' is not a fully instantiated generic class.</source>
+        <target state="new">Type '{0}' is not a fully instantiated generic class.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeNotSerializable">
+        <source>Type '{0}' cannot be serialized. Consider marking it with the DataContractAttribute attribute, and marking all of its members you want serialized with the DataMemberAttribute attribute.  If the type is a collection, consider marking it with the CollectionDataContractAttribute.  See the Microsoft .NET Framework documentation for other supported types.</source>
+        <target state="new">Type '{0}' cannot be serialized. Consider marking it with the DataContractAttribute attribute, and marking all of its members you want serialized with the DataMemberAttribute attribute.  If the type is a collection, consider marking it with the CollectionDataContractAttribute.  See the Microsoft .NET Framework documentation for other supported types.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TypeShouldNotContainAttributes">
+        <source>Attributes must be optional and from namespace '{0}'.</source>
+        <target state="new">Attributes must be optional and from namespace '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnexpectedContractType">
+        <source>An internal error has occurred. Unexpected contract type '{0}' for type '{1}' encountered. </source>
+        <target state="new">An internal error has occurred. Unexpected contract type '{0}' for type '{1}' encountered. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnexpectedElementExpectingElements">
+        <source>'{0}' '{1}' from namespace '{2}' is not expected. Expecting element '{3}'.</source>
+        <target state="new">'{0}' '{1}' from namespace '{2}' is not expected. Expecting element '{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnexpectedEndOfFile">
+        <source>Unexpected end of file.</source>
+        <target state="new">Unexpected end of file.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnknownConstantType">
+        <source>Unrecognized constant type '{0}'.</source>
+        <target state="new">Unrecognized constant type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnknownDataContract">
+        <source>Unknown data contract: '{0}'.</source>
+        <target state="new">Unknown data contract: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UnknownXmlType">
+        <source>Type '{0}' is not a valid XML type.</source>
+        <target state="new">Type '{0}' is not a valid XML type.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeInRange">
+        <source>The value of this argument must fall within the range {0} to {1}.</source>
+        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueMustBeNonNegative">
+        <source>The value of this argument must be non-negative.</source>
+        <target state="new">The value of this argument must be non-negative.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueTypeCannotBeNull">
+        <source>ValueType '{0}' cannot be null.</source>
+        <target state="new">ValueType '{0}' cannot be null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueTypeCannotHaveBaseType">
+        <source>Data contract '{0}' from namespace '{1}' is a value type and cannot have base contract '{2}' from namespace '{3}'.</source>
+        <target state="new">Data contract '{0}' from namespace '{1}' is a value type and cannot have base contract '{2}' from namespace '{3}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueTypeCannotHaveId">
+        <source>ValueType '{0}' cannot have id.</source>
+        <target state="new">ValueType '{0}' cannot have id.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueTypeCannotHaveIsReference">
+        <source>Value type '{0}' cannot have the IsReference setting of '{1}'. Either change the setting to '{2}', or remove it completely. </source>
+        <target state="new">Value type '{0}' cannot have the IsReference setting of '{1}'. Either change the setting to '{2}', or remove it completely. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueTypeCannotHaveRef">
+        <source>ValueType '{0}' cannot have ref to another object.</source>
+        <target state="new">ValueType '{0}' cannot have ref to another object.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlArrayTooSmall">
+        <source>Array too small.</source>
+        <target state="new">Array too small.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlArrayTooSmallInput">
+        <source>Array too small.  Length of available data must be at least {0}.</source>
+        <target state="new">Array too small.  Length of available data must be at least {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlArrayTooSmallOutput">
+        <source>Array too small.  Must be able to hold at least {0}.</source>
+        <target state="new">Array too small.  Must be able to hold at least {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlAsyncIsRunningException">
+        <source>An asynchronous operation is already in progress.</source>
+        <target state="new">An asynchronous operation is already in progress.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlBadBOM">
+        <source>Unrecognized Byte Order Mark.</source>
+        <target state="new">Unrecognized Byte Order Mark.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlBase64DataExpected">
+        <source>Base64 encoded data expected. Found {0}.</source>
+        <target state="new">Base64 encoded data expected. Found {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlCDATAInvalidAtTopLevel">
+        <source>CData elements not valid at top level of an XML document.</source>
+        <target state="new">CData elements not valid at top level of an XML document.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlCloseCData">
+        <source>']]&gt;' not valid in text node content.</source>
+        <target state="new">']]&gt;' not valid in text node content.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlConversionOverflow">
+        <source>The value '{0}' cannot be represented with the type '{1}'.</source>
+        <target state="new">The value '{0}' cannot be represented with the type '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDeclMissing">
+        <source>An XML declaration is required for all non-UTF8 documents.</source>
+        <target state="new">An XML declaration is required for all non-UTF8 documents.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDeclMissingVersion">
+        <source>Version not found in XML declaration.</source>
+        <target state="new">Version not found in XML declaration.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDeclNotFirst">
+        <source>No characters can appear before the XML declaration.</source>
+        <target state="new">No characters can appear before the XML declaration.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDeclarationRequired">
+        <source>An XML declaration with an encoding is required for all non-UTF8 documents.</source>
+        <target state="new">An XML declaration with an encoding is required for all non-UTF8 documents.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDictionaryStringIDRange">
+        <source>XmlDictionaryString IDs must be in the range from {0} to {1}.</source>
+        <target state="new">XmlDictionaryString IDs must be in the range from {0} to {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDictionaryStringIDUndefinedSession">
+        <source>XmlDictionaryString ID {0} not defined in the XmlBinaryReaderSession.</source>
+        <target state="new">XmlDictionaryString ID {0} not defined in the XmlBinaryReaderSession.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDictionaryStringIDUndefinedStatic">
+        <source>XmlDictionaryString ID {0} not defined in the static dictionary.</source>
+        <target state="new">XmlDictionaryString ID {0} not defined in the static dictionary.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlDuplicateAttribute">
+        <source>Duplicate attribute found. Both '{0}' and '{1}' are from the namespace '{2}'.</source>
+        <target state="new">Duplicate attribute found. Both '{0}' and '{1}' are from the namespace '{2}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlElementAttributes">
+        <source>Only Element nodes have attributes.</source>
+        <target state="new">Only Element nodes have attributes.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlEmptyNamespaceRequiresNullPrefix">
+        <source>The empty namespace requires a null or empty prefix.</source>
+        <target state="new">The empty namespace requires a null or empty prefix.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlEncodingMismatch">
+        <source>The encoding in the declaration '{0}' does not match the encoding of the document '{1}'.</source>
+        <target state="new">The encoding in the declaration '{0}' does not match the encoding of the document '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlEncodingNotSupported">
+        <source>XML encoding not supported.</source>
+        <target state="new">XML encoding not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlEndElementExpected">
+        <source>End element '{0}' from namespace '{1}' expected. Found {2}.</source>
+        <target state="new">End element '{0}' from namespace '{1}' expected. Found {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlEndElementNoOpenNodes">
+        <source>No corresponding start element is open.</source>
+        <target state="new">No corresponding start element is open.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlExpectedEncoding">
+        <source>The expected encoding '{0}' does not match the actual encoding '{1}'.</source>
+        <target state="new">The expected encoding '{0}' does not match the actual encoding '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlForObjectCannotHaveContent">
+        <source>Element {0} from namespace {1} cannot have child contents to be deserialized as an object. Please use XmlNode[] to deserialize this pattern of XML.</source>
+        <target state="new">Element {0} from namespace {1} cannot have child contents to be deserialized as an object. Please use XmlNode[] to deserialize this pattern of XML.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundCData">
+        <source>cdata '{0}'</source>
+        <target state="new">cdata '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundComment">
+        <source>comment '{0}'</source>
+        <target state="new">comment '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundElement">
+        <source>element '{0}' from namespace '{1}'</source>
+        <target state="new">element '{0}' from namespace '{1}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundEndElement">
+        <source>end element '{0}' from namespace '{1}'</source>
+        <target state="new">end element '{0}' from namespace '{1}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundEndOfFile">
+        <source>end of file</source>
+        <target state="new">end of file</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundNodeType">
+        <source>node {0}</source>
+        <target state="new">node {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFoundText">
+        <source>text '{0}'</source>
+        <target state="new">text '{0}'</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFullStartElementExpected">
+        <source>Non-empty start element expected. Found {0}.</source>
+        <target state="new">Non-empty start element expected. Found {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFullStartElementLocalNameNsExpected">
+        <source>Non-empty start element '{0}' from namespace '{1}' expected. Found {2}.</source>
+        <target state="new">Non-empty start element '{0}' from namespace '{1}' expected. Found {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlFullStartElementNameExpected">
+        <source>Non-empty start element '{0}' expected. Found {1}.</source>
+        <target state="new">Non-empty start element '{0}' expected. Found {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlIDDefined">
+        <source>ID already defined.</source>
+        <target state="new">ID already defined.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlIllegalOutsideRoot">
+        <source>Text cannot be written outside the root element.</source>
+        <target state="new">Text cannot be written outside the root element.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidBase64Length">
+        <source>Base64 sequence length ({0}) not valid. Must be a multiple of 4.</source>
+        <target state="new">Base64 sequence length ({0}) not valid. Must be a multiple of 4.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidBase64Sequence">
+        <source>The characters '{0}' at offset {1} are not a valid Base64 sequence.</source>
+        <target state="new">The characters '{0}' at offset {1} are not a valid Base64 sequence.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidBinHexLength">
+        <source>BinHex sequence length ({0}) not valid. Must be a multiple of 2.</source>
+        <target state="new">BinHex sequence length ({0}) not valid. Must be a multiple of 2.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidBinHexSequence">
+        <source>The characters '{0}' at offset {1} are not a valid BinHex sequence.</source>
+        <target state="new">The characters '{0}' at offset {1} are not a valid BinHex sequence.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidBytes">
+        <source>Invalid byte encoding.</source>
+        <target state="new">Invalid byte encoding.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidCharRef">
+        <source>Character reference not valid.</source>
+        <target state="new">Character reference not valid.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidCommentChars">
+        <source>XML comments cannot contain '--' or end with '-'.</source>
+        <target state="new">XML comments cannot contain '--' or end with '-'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidConversion">
+        <source>The value '{0}' cannot be parsed as the type '{1}'.</source>
+        <target state="new">The value '{0}' cannot be parsed as the type '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidConversionWithoutValue">
+        <source>The value cannot be parsed as the type '{0}'.</source>
+        <target state="new">The value cannot be parsed as the type '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidDeclaration">
+        <source>XML declaration can only be written at the beginning of the document.</source>
+        <target state="new">XML declaration can only be written at the beginning of the document.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidDepth">
+        <source>Cannot call '{0}' while Depth is '{1}'.</source>
+        <target state="new">Cannot call '{0}' while Depth is '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidEncoding">
+        <source>XML encoding must be 'UTF-8'.</source>
+        <target state="new">XML encoding must be 'UTF-8'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidFFFE">
+        <source>Characters with hexadecimal values 0xFFFE and 0xFFFF are not valid.</source>
+        <target state="new">Characters with hexadecimal values 0xFFFE and 0xFFFF are not valid.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidFormat">
+        <source>The input source is not correctly formatted.</source>
+        <target state="new">The input source is not correctly formatted.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidHighSurrogate">
+        <source>High surrogate char '0x{0}' not valid. High surrogate chars range from 0xD800 to 0xDBFF.</source>
+        <target state="new">High surrogate char '0x{0}' not valid. High surrogate chars range from 0xD800 to 0xDBFF.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidID">
+        <source>ID must be &gt;= 0.</source>
+        <target state="new">ID must be &gt;= 0.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidLowSurrogate">
+        <source>Low surrogate char '0x{0}' not valid. Low surrogate chars range from 0xDC00 to 0xDFFF.</source>
+        <target state="new">Low surrogate char '0x{0}' not valid. Low surrogate chars range from 0xDC00 to 0xDFFF.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidOperation">
+        <source>The reader cannot be advanced.</source>
+        <target state="new">The reader cannot be advanced.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidPrefixState">
+        <source>A prefix cannot be defined while WriteState is '{0}'.</source>
+        <target state="new">A prefix cannot be defined while WriteState is '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidQualifiedName">
+        <source>Expected XML qualified name. Found '{0}'.</source>
+        <target state="new">Expected XML qualified name. Found '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidRootData">
+        <source>The data at the root level is invalid.</source>
+        <target state="new">The data at the root level is invalid.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidStandalone">
+        <source>'standalone' value in declaration must be 'yes' or 'no'.</source>
+        <target state="new">'standalone' value in declaration must be 'yes' or 'no'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidStream">
+        <source>Stream returned by IStreamProvider cannot be null.</source>
+        <target state="new">Stream returned by IStreamProvider cannot be null.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidSurrogate">
+        <source>Surrogate char '0x{0}' not valid. Surrogate chars range from 0x10000 to 0x10FFFF.</source>
+        <target state="new">Surrogate char '0x{0}' not valid. Surrogate chars range from 0x10000 to 0x10FFFF.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidUTF8Bytes">
+        <source>'{0}' contains invalid UTF8 bytes.</source>
+        <target state="new">'{0}' contains invalid UTF8 bytes.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidUniqueId">
+        <source>UniqueId cannot be zero length.</source>
+        <target state="new">UniqueId cannot be zero length.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidVersion">
+        <source>XML version must be '1.0'.</source>
+        <target state="new">XML version must be '1.0'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidWriteState">
+        <source>'{0}' cannot be called while WriteState is '{1}'.</source>
+        <target state="new">'{0}' cannot be called while WriteState is '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidXmlByte">
+        <source>The byte 0x{0} is not valid at this location. </source>
+        <target state="new">The byte 0x{0} is not valid at this location. </target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlInvalidXmlSpace">
+        <source>'{0}' is not a valid xml:space value. Valid values are 'default' and 'preserve'.</source>
+        <target state="new">'{0}' is not a valid xml:space value. Valid values are 'default' and 'preserve'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlKeyAlreadyExists">
+        <source>The specified key already exists in the dictionary.</source>
+        <target state="new">The specified key already exists in the dictionary.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlLineInfo">
+        <source>Line {0}, position {1}.</source>
+        <target state="new">Line {0}, position {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMalformedDecl">
+        <source>Malformed XML declaration.</source>
+        <target state="new">Malformed XML declaration.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMaxArrayLengthExceeded">
+        <source>The maximum array length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxArrayLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
+        <target state="new">The maximum array length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxArrayLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMaxBytesPerReadExceeded">
+        <source>The 'maximum bytes per Read operation' quota ({0}) has been exceeded while reading XML data. Long element start tags (consisting of the element name, attribute names and attribute values) may trigger this quota. This quota may be increased by changing the MaxBytesPerRead property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
+        <target state="new">The 'maximum bytes per Read operation' quota ({0}) has been exceeded while reading XML data. Long element start tags (consisting of the element name, attribute names and attribute values) may trigger this quota. This quota may be increased by changing the MaxBytesPerRead property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMaxDepthExceeded">
+        <source>The maximum read depth ({0}) has been exceeded because XML data being read has more levels of nesting than is allowed by the quota. This quota may be increased by changing the MaxDepth property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
+        <target state="new">The maximum read depth ({0}) has been exceeded because XML data being read has more levels of nesting than is allowed by the quota. This quota may be increased by changing the MaxDepth property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMaxNameTableCharCountExceeded">
+        <source>The maximum nametable character count quota ({0}) has been exceeded while reading XML data. The nametable is a data structure used to store strings encountered during XML processing - long XML documents with non-repeating element names, attribute names and attribute values may trigger this quota. This quota may be increased by changing the MaxNameTableCharCount property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
+        <target state="new">The maximum nametable character count quota ({0}) has been exceeded while reading XML data. The nametable is a data structure used to store strings encountered during XML processing - long XML documents with non-repeating element names, attribute names and attribute values may trigger this quota. This quota may be increased by changing the MaxNameTableCharCount property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMaxStringContentLengthExceeded">
+        <source>The maximum string content length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxStringContentLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
+        <target state="new">The maximum string content length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxStringContentLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMethodNotSupported">
+        <source>This XmlWriter implementation does not support the '{0}' method.</source>
+        <target state="new">This XmlWriter implementation does not support the '{0}' method.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMissingLowSurrogate">
+        <source>The surrogate pair is invalid. Missing a low surrogate character.</source>
+        <target state="new">The surrogate pair is invalid. Missing a low surrogate character.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlMultipleRootElements">
+        <source>There are multiple root elements.</source>
+        <target state="new">There are multiple root elements.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlNamespaceNotFound">
+        <source>The namespace '{0}' is not defined.</source>
+        <target state="new">The namespace '{0}' is not defined.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlNestedArraysNotSupported">
+        <source>Nested arrays are not supported.</source>
+        <target state="new">Nested arrays are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlNoRootElement">
+        <source>The document does not have a root element.</source>
+        <target state="new">The document does not have a root element.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlObjectAssignedToIncompatibleInterface">
+        <source>'{0}' is an XML type and cannot be serialized when assigned to an interface type that does not implement IXmlSerializable ('{1}'.)</source>
+        <target state="new">'{0}' is an XML type and cannot be serialized when assigned to an interface type that does not implement IXmlSerializable ('{1}'.)</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlOnlyOneRoot">
+        <source>Only one root element is permitted per document.</source>
+        <target state="new">Only one root element is permitted per document.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlOnlySingleValue">
+        <source>Only a single typed value may be written inside an attribute or content.</source>
+        <target state="new">Only a single typed value may be written inside an attribute or content.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlOnlyWhitespace">
+        <source>Only white space characters can be written with this method.</source>
+        <target state="new">Only white space characters can be written with this method.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlPrefixBoundToNamespace">
+        <source>The prefix '{0}' is bound to the namespace '{1}' and cannot be changed to '{2}'.</source>
+        <target state="new">The prefix '{0}' is bound to the namespace '{1}' and cannot be changed to '{2}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlProcessingInstructionNotSupported">
+        <source>Processing instructions (other than the XML declaration) and DTDs are not supported.</source>
+        <target state="new">Processing instructions (other than the XML declaration) and DTDs are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlReservedPrefix">
+        <source>Prefixes beginning with "xml" (regardless of casing) are reserved for use by XML.</source>
+        <target state="new">Prefixes beginning with "xml" (regardless of casing) are reserved for use by XML.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlSpaceBetweenAttributes">
+        <source>Whitespace must appear between attributes.</source>
+        <target state="new">Whitespace must appear between attributes.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlSpecificBindingNamespace">
+        <source>The namespace '{1}' can only be bound to the prefix '{0}'.</source>
+        <target state="new">The namespace '{1}' can only be bound to the prefix '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlSpecificBindingPrefix">
+        <source>The prefix '{0}' can only be bound to the namespace '{1}'.</source>
+        <target state="new">The prefix '{0}' can only be bound to the namespace '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlStartElementExpected">
+        <source>Start element expected. Found {0}.</source>
+        <target state="new">Start element expected. Found {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlStartElementLocalNameNsExpected">
+        <source>Start element '{0}' from namespace '{1}' expected. Found {2}.</source>
+        <target state="new">Start element '{0}' from namespace '{1}' expected. Found {2}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlStartElementNameExpected">
+        <source>Start element '{0}' expected. Found {1}.</source>
+        <target state="new">Start element '{0}' expected. Found {1}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlTagMismatch">
+        <source>Start element '{0}' does not match end element '{1}'.</source>
+        <target state="new">Start element '{0}' does not match end element '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlTokenExpected">
+        <source>The token '{0}' was expected but found '{1}'.</source>
+        <target state="new">The token '{0}' was expected but found '{1}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlUndefinedPrefix">
+        <source>The prefix '{0}' is not defined.</source>
+        <target state="new">The prefix '{0}' is not defined.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlUnexpectedEndElement">
+        <source>No matching start tag for end element.</source>
+        <target state="new">No matching start tag for end element.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlUnexpectedEndOfFile">
+        <source>Unexpected end of file. Following elements are not closed: {0}.</source>
+        <target state="new">Unexpected end of file. Following elements are not closed: {0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterClosed">
+        <source>The XmlWriter is closed.</source>
+        <target state="new">The XmlWriter is closed.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="XmlWriterMustBeInElement">
+        <source>WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</source>
+        <target state="new">WriteState '{0}' not valid. Caller must write start element before serializing in contentOnly mode.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

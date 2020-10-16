@@ -88,7 +88,7 @@ stages:
                 /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
                 /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
             # Service uri needed for integration tests in official builds
-            - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+            - _serviceUri: wcfcoresrv5.cloudapp.net/WcfTestService1
 
         # Public/PR & CI Build Variables
         - ${{ if eq(variables._RunAsPublic, True) }}:
@@ -276,6 +276,7 @@ stages:
     parameters:
       validateDependsOn:
       - Build
+      publishingInfraVersion: 3
       # Symbol validation isn't being very reliable lately. This should be enabled back
       # once this issue is resolved: https://github.com/dotnet/arcade/issues/2871
       enableSymbolValidation: false

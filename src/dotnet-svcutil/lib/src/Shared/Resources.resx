@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ErrorDepenencySpecFormat" xml:space="preserve">
+    <value>Project dependency specification not formatted correctly: '{0}'.</value>
+  </data>
+  <data name="ErrorFullPathNotAProjectFilePathFormat" xml:space="preserve">
+    <value>The specified path does not refer to a project file: '{0}.</value>
+  </data>
+  <data name="ErrorInvalidProjectFormat" xml:space="preserve">
+    <value>The project format is incorrect.</value>
+  </data>
+  <data name="ErrorNotSupportedTargetFrameworkFormat" xml:space="preserve">
+    <value>The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</value>
+  </data>
+  <data name="ErrorProjectFileAlreadyExistsFormat" xml:space="preserve">
+    <value>The specified project file '{0}' already exists.</value>
+  </data>
+  <data name="ErrorProjectReferenceMissingFilePathFormat" xml:space="preserve">
+    <value>The project reference specification '{0}' does not have a file path.</value>
+  </data>
+  <data name="ResolvingProjectReferences" xml:space="preserve">
+    <value>Resolving project references ...</value>
+  </data>
+  <data name="WarningCannotResolveProjectReferences" xml:space="preserve">
+    <value>The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</value>
+  </data>
+  <data name="WarningMultiFxOrNoSupportedDnxVersion" xml:space="preserve">
+    <value>The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</value>
+  </data>
+  <data name="WarningUnrecognizedOptionFormat" xml:space="preserve">
+    <value>The specified option '{0}' is not recognized.</value>
+  </data>
+  <data name="ErrorOnInvalidEnumSupportedValuesFormat" xml:space="preserve">
+    <value> The valid values are: {0}.</value>
+  </data>
+  <data name="ErrorOptionAlreadyRegisteredFormat" xml:space="preserve">
+    <value>The specified option '{0}' was already registered.</value>
+  </data>
+  <data name="ErrorInvalidOptionValueFormat" xml:space="preserve">
+    <value>The value '{0}' specified for the option '{1}' is not valid.</value>
+  </data>
+  <data name="ErrorTypeNotSupportedbyOptionFormat" xml:space="preserve">
+    <value>The type '{0}' is not supported by the '{1}' option.</value>
+  </data>
+  <data name="ErrorOptionDuplicateValueFormat" xml:space="preserve">
+    <value>The option '{0}' already contains the value '{1}'.</value>
+  </data>
+  <data name="ErrorOptionAlreadyDeserializedFormat" xml:space="preserve">
+    <value>The option '{0}' has already been deserialized.</value>
+  </data>
+  <data name="ErrorDeserializingOptionsFromJsonFormat" xml:space="preserve">
+    <value>One or more errors where found while deserializing options:{0}</value>
+  </data>
+  <data name="ErrorInvalidKeyOrValueNotFoundFormat" xml:space="preserve">
+    <value>The specifed key '{0}' is not valid for the option '{1}'.</value>
+  </data>
+  <data name="ErrorItemNotFoundInCollectionFormat" xml:space="preserve">
+    <value>The option '{0}' doesn't have an item with the key '{1}'.</value>
+  </data>
+  <data name="ErrorInvalidDependencyValue" xml:space="preserve">
+    <value>The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</value>
+  </data>
+</root>

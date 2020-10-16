@@ -89,7 +89,7 @@ namespace System.ServiceModel.Channels
                 _httpCookieContainerManager = new HttpCookieContainerManager();
             }
 
-            if (!bindingElement.AuthenticationScheme.IsSingleton())
+            if (!bindingElement.AuthenticationScheme.IsSingleton() && bindingElement.AuthenticationScheme != AuthenticationSchemes.IntegratedWindowsAuthentication)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument("value", SR.Format(SR.HttpRequiresSingleAuthScheme,
                     bindingElement.AuthenticationScheme));
@@ -328,8 +328,20 @@ namespace System.ServiceModel.Channels
                     else
                     {
                         CredentialCache credentials = new CredentialCache();
-                        credentials.Add(GetCredentialCacheUriPrefix(via),
-                            AuthenticationSchemesHelper.ToString(AuthenticationScheme), credential);
+                        Uri credentialCacheUriPrefix = GetCredentialCacheUriPrefix(via);
+                        if (AuthenticationScheme == AuthenticationSchemes.IntegratedWindowsAuthentication)
+                        {
+                            credentials.Add(credentialCacheUriPrefix, AuthenticationSchemesHelper.ToString(AuthenticationSchemes.Negotiate),
+                                credential);
+                            credentials.Add(credentialCacheUriPrefix, AuthenticationSchemesHelper.ToString(AuthenticationSchemes.Ntlm),
+                                credential);
+                        }
+                        else
+                        {
+                            credentials.Add(credentialCacheUriPrefix, AuthenticationSchemesHelper.ToString(AuthenticationScheme),
+                                credential);
+                        }
+
                         clientHandler.Credentials = credentials;
                     }
                 }
@@ -413,7 +425,7 @@ namespace System.ServiceModel.Channels
                             }
                             break;
                         case AuthenticationSchemes.Ntlm:
-                            goto case AuthenticationSchemes.Negotiate;
+                        case AuthenticationSchemes.IntegratedWindowsAuthentication:
                         case AuthenticationSchemes.Negotiate:
                             if (credentials.Windows.ClientCredential.UserName != string.Empty)
                             {
@@ -451,6 +463,7 @@ namespace System.ServiceModel.Channels
                     break;
                 case AuthenticationSchemes.Negotiate:
                 case AuthenticationSchemes.Ntlm:
+                case AuthenticationSchemes.IntegratedWindowsAuthentication:
                     tokenProvider = TransportSecurityHelpers.GetSspiTokenProvider(SecurityTokenManager, target, via, Scheme, authenticationScheme, channelParameters);
                     break;
                 case AuthenticationSchemes.Digest:
@@ -617,10 +630,11 @@ namespace System.ServiceModel.Channels
 
         internal static bool IsWindowsAuth(AuthenticationSchemes authScheme)
         {
-            Contract.Assert(authScheme.IsSingleton(), "authenticationScheme used in an Http(s)ChannelFactory must be a singleton value.");
+            Fx.Assert(authScheme.IsSingleton() || authScheme == AuthenticationSchemes.IntegratedWindowsAuthentication, "authenticationScheme used in an Http(s)ChannelFactory must be a singleton value.");
 
             return authScheme == AuthenticationSchemes.Negotiate ||
-                authScheme == AuthenticationSchemes.Ntlm;
+                authScheme == AuthenticationSchemes.Ntlm ||
+                authScheme == AuthenticationSchemes.IntegratedWindowsAuthentication;
         }
 
         private string GetConnectionGroupName(NetworkCredential credential, AuthenticationLevel authenticationLevel,
@@ -976,6 +990,11 @@ namespace System.ServiceModel.Channels
                 public async Task SendRequestAsync(Message message, TimeoutHelper timeoutHelper)
                 {
                     _timeoutHelper = timeoutHelper;
+                    if (_channel.Factory.MapIdentity(_to))
+                    {
+                        HttpTransportSecurityHelpers.AddIdentityMapping(_to, message);
+                    }
+
                     _factory.ApplyManualAddressing(ref _to, ref _via, message);
                     _httpClient = await _channel.GetHttpClientAsync(_to, _via, _timeoutHelper);
 
@@ -1188,10 +1207,6 @@ namespace System.ServiceModel.Channels
                                     _httpRequestMessage.Headers.Expect.TryParseAdd(value);
                                 }
                             }
-                            else if (string.Compare(name, "host", StringComparison.OrdinalIgnoreCase) == 0)
-                            {
-                                // this should be controlled through Via
-                            }
                             else if (string.Compare(name, "referer", StringComparison.OrdinalIgnoreCase) == 0)
                             {
                                 // referrer is proper spelling, but referer is the what is in the protocol.
@@ -1336,7 +1351,7 @@ namespace System.ServiceModel.Channels
                 _address = address;
                 _bypassOnLocal = bypassOnLocal;
 
-                if (!authenticationScheme.IsSingleton())
+                if (!authenticationScheme.IsSingleton() && authenticationScheme != AuthenticationSchemes.IntegratedWindowsAuthentication)
                 {
                     throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(authenticationScheme), SR.Format(SR.HttpRequiresSingleAuthScheme,
                         authenticationScheme));
@@ -1376,8 +1391,18 @@ namespace System.ServiceModel.Channels
                     }
 
                     CredentialCache credentials = new CredentialCache();
-                    credentials.Add(_address, AuthenticationSchemesHelper.ToString(AuthenticationScheme),
-                        credential);
+                    if (AuthenticationScheme == AuthenticationSchemes.IntegratedWindowsAuthentication)
+                    {
+                        credentials.Add(_address, AuthenticationSchemesHelper.ToString(AuthenticationSchemes.Negotiate),
+                            credential);
+                        credentials.Add(_address, AuthenticationSchemesHelper.ToString(AuthenticationSchemes.Ntlm),
+                            credential);
+                    }
+                    else
+                    {
+                        credentials.Add(_address, AuthenticationSchemesHelper.ToString(AuthenticationScheme),
+                            credential);
+                    }
                     result.Credentials = credentials;
                 }
 

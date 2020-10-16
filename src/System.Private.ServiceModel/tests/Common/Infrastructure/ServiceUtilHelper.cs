@@ -8,6 +8,7 @@ using System.ServiceModel;
 using System.Security.Cryptography.X509Certificates;
 using Infrastructure.Common;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 public static class ServiceUtilHelper
 {
@@ -16,6 +17,7 @@ public static class ServiceUtilHelper
 
     private const string TestHostUtilitiesService = "TestHost.svc";
     private const string ClientCertificateResource = "ClientCert";
+    private const string MachineCertificateResource = "MachineCert";
     private const string CrlResource = "Crl";
     private const string PeerCertificateResource = "PeerCert";
     private const string RootCertificateResource = "RootCert";
@@ -140,6 +142,11 @@ public static class ServiceUtilHelper
     {
         X509Certificate2 rootCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(RootCertificateResource));
         return CertificateManager.InstallCertificateToRootStore(rootCertificate);
+    }
+
+    public static async Task<X509Certificate2> GetServiceMacineCertFromServerAsync()
+    {
+        return new X509Certificate2(await GetResourceFromServiceAsByteArrayAsync(MachineCertificateResource));
     }
 
     // Tries to ensure that the client certificate is installed into
@@ -530,6 +537,18 @@ public static class ServiceUtilHelper
         {
             HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
             return response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+        }
+    }
+
+    public static async Task<byte[]> GetResourceFromServiceAsByteArrayAsync(string resource)
+    {
+        string requestUri = GetResourceAddress(resource);
+        Console.WriteLine(String.Format("Invoking {0} ...", requestUri));
+
+        using (HttpClient httpClient = new HttpClient())
+        {
+            HttpResponseMessage response = await httpClient.GetAsync(requestUri);
+            return await response.Content.ReadAsByteArrayAsync();
         }
     }
 }

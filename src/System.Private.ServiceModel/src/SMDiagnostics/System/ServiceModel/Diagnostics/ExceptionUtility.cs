@@ -2,34 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Diagnostics.Tracing;
 using System.Runtime;
 using System.Xml;
 
 namespace System.ServiceModel.Diagnostics
 {
-    public class ExceptionUtility
+    internal partial class ExceptionUtility
     {
         private const string ExceptionStackAsStringKey = "System.ServiceModel.Diagnostics.ExceptionUtility.ExceptionStackAsString";
 
         // This field should be only used for debug build.
         internal static ExceptionUtility mainInstance;
 
-        private ExceptionTrace _exceptionTrace;
-        private string _name;
-        private string _eventSourceName;
-
         [ThreadStatic]
         private static Guid s_activityId;
-
-        internal ExceptionUtility(string name, string eventSourceName, object exceptionTrace)
-        {
-            _exceptionTrace = (ExceptionTrace)exceptionTrace;
-            _name = name;
-            _eventSourceName = eventSourceName;
-        }
-
 
         public ArgumentException ThrowHelperArgument(string message)
         {
@@ -86,21 +73,9 @@ namespace System.ServiceModel.Diagnostics
             return ThrowHelper(exception, EventLevel.Critical);
         }
 
-        public Exception ThrowHelperError(Exception exception)
-        {
-            return ThrowHelper(exception, EventLevel.Error);
-        }
-
         public Exception ThrowHelperWarning(Exception exception)
         {
             return ThrowHelper(exception, EventLevel.Warning);
-        }
-
-        internal Exception ThrowHelper(Exception exception, EventLevel eventLevel)
-        {
-            FxTrace.Exception.TraceEtwException(exception, eventLevel);
-
-            return exception;
         }
 
         internal Exception ThrowHelperXml(XmlReader reader, string message)

@@ -93,7 +93,7 @@ namespace System.ServiceModel
             }
 
             // set the algorithm suite and issued token params if required
-            result.DefaultAlgorithmSuite = oneShotSecurity.DefaultAlgorithmSuite = this.AlgorithmSuite;
+            result.DefaultAlgorithmSuite = oneShotSecurity.DefaultAlgorithmSuite = AlgorithmSuite;
 
             result.IncludeTimestamp = true;
             if (!isReliableSession)
@@ -102,10 +102,9 @@ namespace System.ServiceModel
             }
             else
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                result.LocalClientSettings.ReconnectTransportOnFailure = true;
             }
 
-            // since a session is always bootstrapped, configure the transition sct to live for a short time only
             result.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
             oneShotSecurity.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
 

@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../../../dotnet-svcutil-lib/VSTest/TestCases/wsdl/regression/GitHub635/clients.mindbodyonline.com.api.0_5.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, GitHub9999_JAN_9_9_9_wsdl_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "netcoreapp1.1",
+    "typeReuseMode": "None"
+  }
+}

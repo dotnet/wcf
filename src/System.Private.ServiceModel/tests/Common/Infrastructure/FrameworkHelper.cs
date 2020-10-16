@@ -15,6 +15,7 @@ namespace Infrastructure.Common
         private const string NetNativeFrameworkName = ".NET Native";
         private const string NetFrameworkFrameworkName = ".NET Framework";
         private const string NetCoreFrameworkName = ".NET Core";
+        private const string Net5PlusFrameworkName = ".NET ";
 
         private static bool _detectedFrameworkID = false;
         private static FrameworkID _currentFrameworkID = 0;
@@ -81,6 +82,12 @@ namespace Infrastructure.Common
             }
 
             if (frameworkName.IndexOf(NetCoreFrameworkName, StringComparison.Ordinal) >= 0)
+            {
+                return FrameworkID.NetCore;
+            }
+
+            if (frameworkName.IndexOf(Net5PlusFrameworkName, StringComparison.Ordinal) >= 0
+                && Char.IsDigit(frameworkName[5]))
             {
                 return FrameworkID.NetCore;
             }

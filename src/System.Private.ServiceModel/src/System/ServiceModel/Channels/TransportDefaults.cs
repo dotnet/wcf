@@ -300,6 +300,22 @@ namespace System.ServiceModel.Channels
         public const bool PacketRoutable = false;
     }
 
+    static class ReliableSessionDefaults
+    {
+        internal const string AcknowledgementIntervalString = "00:00:00.2";
+        internal static TimeSpan AcknowledgementInterval { get { return TimeSpanHelper.FromMilliseconds(200, AcknowledgementIntervalString); } }
+        internal const bool Enabled = false;
+        internal const bool FlowControlEnabled = true;
+        internal const string InactivityTimeoutString = "00:10:00";
+        internal static TimeSpan InactivityTimeout { get { return TimeSpanHelper.FromMinutes(10, InactivityTimeoutString); } }
+        internal const int MaxPendingChannels = 4;
+        internal const int MaxRetryCount = 8;
+        internal const int MaxTransferWindowSize = 8;
+        internal const bool Ordered = true;
+        internal static ReliableMessagingVersion ReliableMessagingVersion { get { return System.ServiceModel.ReliableMessagingVersion.WSReliableMessagingFebruary2005; } }
+        internal const string ReliableMessagingVersionString = "WSReliableMessagingFebruary2005";
+    }
+
     public static class BasicHttpBindingDefaults
     {
         public const BasicHttpMessageCredentialType MessageSecurityClientCredentialType = BasicHttpMessageCredentialType.UserName;

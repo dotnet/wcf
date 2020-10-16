@@ -11,9 +11,9 @@ namespace System.ServiceModel
     {
         public BasicHttpBinding() { }
         public BasicHttpBinding(System.ServiceModel.BasicHttpSecurityMode securityMode) { }
-        public System.ServiceModel.BasicHttpSecurity Security { get { return default(System.ServiceModel.BasicHttpSecurity); } set { } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        public System.ServiceModel.BasicHttpSecurity Security { get { return default; } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
     }
     public enum BasicHttpMessageCredentialType
     {
@@ -23,15 +23,15 @@ namespace System.ServiceModel
     public sealed partial class BasicHttpMessageSecurity
     {
         public BasicHttpMessageSecurity() { }
-        public System.ServiceModel.BasicHttpMessageCredentialType ClientCredentialType { get { return default(System.ServiceModel.BasicHttpMessageCredentialType); } set { } }
-        public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
+        public System.ServiceModel.BasicHttpMessageCredentialType ClientCredentialType { get { return default; } set { } }
+        public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default; } set { } }
     }
     public sealed partial class BasicHttpSecurity
     {
         public BasicHttpSecurity() { }
-        public System.ServiceModel.BasicHttpSecurityMode Mode { get { return default(System.ServiceModel.BasicHttpSecurityMode); } set { } }
-        public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
-        public System.ServiceModel.BasicHttpMessageSecurity Message { get { return default(System.ServiceModel.BasicHttpMessageSecurity); } set { } }
+        public System.ServiceModel.BasicHttpSecurityMode Mode { get { return default; } set { } }
+        public System.ServiceModel.HttpTransportSecurity Transport { get { return default; } set { } }
+        public System.ServiceModel.BasicHttpMessageSecurity Message { get { return default; } set { } }
     }
     public enum BasicHttpSecurityMode
     {
@@ -45,15 +45,15 @@ namespace System.ServiceModel
     {
         public BasicHttpsBinding() { }
         public BasicHttpsBinding(System.ServiceModel.BasicHttpsSecurityMode securityMode) { }
-        public System.ServiceModel.BasicHttpsSecurity Security { get { return default(System.ServiceModel.BasicHttpsSecurity); } set { } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        public System.ServiceModel.BasicHttpsSecurity Security { get { return default; } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
     }
     public sealed partial class BasicHttpsSecurity
     {
         internal BasicHttpsSecurity() { }
-        public System.ServiceModel.BasicHttpsSecurityMode Mode { get { return default(System.ServiceModel.BasicHttpsSecurityMode); } set { } }
-        public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
+        public System.ServiceModel.BasicHttpsSecurityMode Mode { get { return default; } set { } }
+        public System.ServiceModel.HttpTransportSecurity Transport { get { return default; } set { } }
     }
      public enum BasicHttpsSecurityMode
     {
@@ -64,26 +64,26 @@ namespace System.ServiceModel
     {
         internal HttpBindingBase() { }
         [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool AllowCookies { get { return default(bool); } set { } }
+        public bool AllowCookies { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(false)]
-        public bool BypassProxyOnLocal { get { return default(bool); } set { } }
-        public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default(System.ServiceModel.EnvelopeVersion); } }
+        public bool BypassProxyOnLocal { get { return default; } set { } }
+        public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default; } }
         [System.ComponentModel.DefaultValueAttribute((long)524288)]
-        public long MaxBufferPoolSize { get { return default(long); } set { } }
+        public long MaxBufferPoolSize { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute(65536)]
-        public int MaxBufferSize { get { return default(int); } set { } }
+        public int MaxBufferSize { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((long)65536)]
-        public long MaxReceivedMessageSize { get { return default(long); } set { } }
+        public long MaxReceivedMessageSize { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute(null)]
         [System.ComponentModel.TypeConverter(typeof(System.UriTypeConverter))]
-        public System.Uri ProxyAddress { get { return default(System.Uri); } set { } }
-        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default(System.Xml.XmlDictionaryReaderQuotas); } set { } }
-        public override string Scheme { get { return default(string); } }
-        public System.Text.Encoding TextEncoding { get { return default(System.Text.Encoding); } set { } }
+        public System.Uri ProxyAddress { get { return default; } set { } }
+        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default; } set { } }
+        public override string Scheme { get { return default; } }
+        public System.Text.Encoding TextEncoding { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.TransferMode)(0))]
-        public System.ServiceModel.TransferMode TransferMode { get { return default(System.ServiceModel.TransferMode); } set { } }
+        public System.ServiceModel.TransferMode TransferMode { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(true)]
-        public bool UseDefaultWebProxy { get { return default(bool); } set { } }
+        public bool UseDefaultWebProxy { get { return default; } set { } }
     }
     public enum HttpClientCredentialType
     {
@@ -106,33 +106,37 @@ namespace System.ServiceModel
     public sealed partial class HttpTransportSecurity
     {
         public HttpTransportSecurity() { }
-        public System.ServiceModel.HttpClientCredentialType ClientCredentialType { get { return default(System.ServiceModel.HttpClientCredentialType); } set { } }
-        public System.ServiceModel.HttpProxyCredentialType ProxyCredentialType { get { return default(System.ServiceModel.HttpProxyCredentialType); } set { } }
-        public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get { return default(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy); } set { } }
+        public System.ServiceModel.HttpClientCredentialType ClientCredentialType { get { return default; } set { } }
+        public System.ServiceModel.HttpProxyCredentialType ProxyCredentialType { get { return default; } set { } }
+        public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get { return default; } set { } }
     }
     public partial class NetHttpBinding : System.ServiceModel.HttpBindingBase
     {
         public NetHttpBinding() { }
         public NetHttpBinding(System.ServiceModel.BasicHttpSecurityMode securityMode) { }
+        public NetHttpBinding(System.ServiceModel.BasicHttpSecurityMode securityMode, bool reliableSessionEnabled) { }
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         public NetHttpBinding(string configurationName) { }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.NetHttpMessageEncoding)(0))]
-        public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default(System.ServiceModel.NetHttpMessageEncoding); } set { } }
-        public System.ServiceModel.BasicHttpSecurity Security { get { return default(System.ServiceModel.BasicHttpSecurity); } set { } }
-        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default(System.ServiceModel.Channels.WebSocketTransportSettings); } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default; } set { } }
+        public System.ServiceModel.BasicHttpSecurity Security { get { return default; } set { } }
+        public System.ServiceModel.OptionalReliableSession ReliableSession { get; set; }
+        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default; } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
     }
     public partial class NetHttpsBinding : System.ServiceModel.HttpBindingBase
     {
         public NetHttpsBinding() { }
         public NetHttpsBinding(System.ServiceModel.BasicHttpsSecurityMode securityMode) { }
+        public NetHttpsBinding(System.ServiceModel.BasicHttpsSecurityMode securityMode, bool reliableSessionEnabled) { }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.NetHttpMessageEncoding)(0))]
-        public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default(System.ServiceModel.NetHttpMessageEncoding); } set { } }
-        public System.ServiceModel.BasicHttpsSecurity Security { get { return default(System.ServiceModel.BasicHttpsSecurity); } set { } }
-        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default(System.ServiceModel.Channels.WebSocketTransportSettings); } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default; } set { } }
+        public System.ServiceModel.BasicHttpsSecurity Security { get { return default; } set { } }
+        public System.ServiceModel.OptionalReliableSession ReliableSession { get; set; }
+        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default; } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
     }
     public enum NetHttpMessageEncoding
     {
@@ -144,20 +148,20 @@ namespace System.ServiceModel
     {
         protected WSHttpBindingBase() { }
         protected WSHttpBindingBase(bool reliableSessionEnabled) { }
-        public bool BypassProxyOnLocal { get { return default(bool); } set { } }
-        public bool TransactionFlow { get { return default(bool); } set { } }
-        //public System.ServiceModel.HostNameComparisonMode HostNameComparisonMode { get { return default(System.ServiceModel.HostNameComparisonMode); } set { } }
-        public long MaxBufferPoolSize { get { return default(long); } set { } }
-        public long MaxReceivedMessageSize { get { return default(long); } set { } }
-        //public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default(System.ServiceModel.WSMessageEncoding); } set { } }
-        public Uri ProxyAddress { get { return default(Uri); } set { } }
-        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default(System.Xml.XmlDictionaryReaderQuotas); } set { } }
-        //public System.ServiceModel.OptionalReliableSession ReliableSession { get { return default(System.ServiceModel.OptionalReliableSession); } set { } }
-        public override string Scheme { get { return default(string); } }
-        public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default(System.ServiceModel.EnvelopeVersion); } set { } }
-        public System.Text.Encoding TextEncoding { get { return default(System.Text.Encoding); } set { } }
-        public bool UseDefaultWebProxy { get { return default(bool); } set { } }
-        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
+        public bool BypassProxyOnLocal { get { return default; } set { } }
+        public bool TransactionFlow { get { return default; } set { } }
+        //public System.ServiceModel.HostNameComparisonMode HostNameComparisonMode { get { return default; } set { } }
+        public long MaxBufferPoolSize { get { return default; } set { } }
+        public long MaxReceivedMessageSize { get { return default; } set { } }
+        //public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default; } set { } }
+        public Uri ProxyAddress { get { return default; } set { } }
+        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default; } set { } }
+        public System.ServiceModel.OptionalReliableSession ReliableSession { get { return default; } set { } }
+        public override string Scheme { get { return default; } }
+        public System.ServiceModel.EnvelopeVersion EnvelopeVersion { get { return default; } set { } }
+        public System.Text.Encoding TextEncoding { get { return default; } set { } }
+        public bool UseDefaultWebProxy { get { return default; } set { } }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
         protected abstract System.ServiceModel.Channels.TransportBindingElement GetTransport();
         protected abstract System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity();
     }
@@ -166,40 +170,40 @@ namespace System.ServiceModel
         public WSHttpBinding() { }
         public WSHttpBinding(System.ServiceModel.SecurityMode securityMode) { }
         public WSHttpBinding(System.ServiceModel.SecurityMode securityMode, bool reliableSessionEnabled) { }
-        public bool AllowCookies { get { return default(bool); } set { } }
-        public System.ServiceModel.WSHttpSecurity Security { get { return default(System.ServiceModel.WSHttpSecurity); } set { } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default(System.ServiceModel.Channels.BindingElementCollection); }
-        protected override System.ServiceModel.Channels.TransportBindingElement GetTransport() { return default(System.ServiceModel.Channels.TransportBindingElement); }
-        protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default(System.ServiceModel.Channels.SecurityBindingElement); }
+        public bool AllowCookies { get { return default; } set { } }
+        public System.ServiceModel.WSHttpSecurity Security { get { return default; } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
+        public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
+        protected override System.ServiceModel.Channels.TransportBindingElement GetTransport() { return default; }
+        protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default; }
     }
     public class WS2007HttpBinding : WSHttpBinding
     {
         public WS2007HttpBinding() { }
         public WS2007HttpBinding(System.ServiceModel.SecurityMode securityMode) { }
         public WS2007HttpBinding(System.ServiceModel.SecurityMode securityMode, bool reliableSessionEnabled) { }
-        protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default(System.ServiceModel.Channels.SecurityBindingElement); }
+        protected override System.ServiceModel.Channels.SecurityBindingElement CreateMessageSecurity() { return default; }
     }
     public sealed partial class WSHttpSecurity
     {
         public WSHttpSecurity() { }
-        public System.ServiceModel.SecurityMode Mode { get { return default(System.ServiceModel.SecurityMode); } set { } }
-        public System.ServiceModel.HttpTransportSecurity Transport { get { return default(System.ServiceModel.HttpTransportSecurity); } set { } }
-        public System.ServiceModel.NonDualMessageSecurityOverHttp Message { get { return default(System.ServiceModel.NonDualMessageSecurityOverHttp); } set { } }
+        public System.ServiceModel.SecurityMode Mode { get { return default; } set { } }
+        public System.ServiceModel.HttpTransportSecurity Transport { get { return default; } set { } }
+        public System.ServiceModel.NonDualMessageSecurityOverHttp Message { get { return default; } set { } }
     }
     public sealed class NonDualMessageSecurityOverHttp : System.ServiceModel.MessageSecurityOverHttp
     {
         public NonDualMessageSecurityOverHttp() { }
-        public bool EstablishSecurityContext { get { return default(bool); } set { } }
-        protected override bool IsSecureConversationEnabled() { return default(bool); }
+        public bool EstablishSecurityContext { get { return default; } set { } }
+        protected override bool IsSecureConversationEnabled() { return default; }
     }
     public class MessageSecurityOverHttp
     {
         public MessageSecurityOverHttp() { }
-        public System.ServiceModel.MessageCredentialType ClientCredentialType { get { return default(System.ServiceModel.MessageCredentialType); } set { } }
-        public bool NegotiateServiceCredential { get { return default(bool); } set { } }
-        public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default(System.ServiceModel.Security.SecurityAlgorithmSuite); } set { } }
-        protected virtual bool IsSecureConversationEnabled() { return default(bool); }
+        public System.ServiceModel.MessageCredentialType ClientCredentialType { get { return default; } set { } }
+        public bool NegotiateServiceCredential { get { return default; } set { } }
+        public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default; } set { } }
+        protected virtual bool IsSecureConversationEnabled() { return default; }
     }
     //public enum WSMessageEncoding
     //{
@@ -212,62 +216,62 @@ namespace System.ServiceModel.Channels
     public sealed partial class HttpRequestMessageProperty : System.ServiceModel.Channels.IMessageProperty
     {
         public HttpRequestMessageProperty() { }
-        public System.Net.WebHeaderCollection Headers { get { return default(System.Net.WebHeaderCollection); } }
-        public string Method { get { return default(string); } set { } }
-        public static string Name { get { return default(string); } }
-        public string QueryString { get { return default(string); } set { } }
-        public bool SuppressEntityBody { get { return default(bool); } set { } }
-        System.ServiceModel.Channels.IMessageProperty System.ServiceModel.Channels.IMessageProperty.CreateCopy() { return default(System.ServiceModel.Channels.IMessageProperty); }
+        public System.Net.WebHeaderCollection Headers { get { return default; } }
+        public string Method { get { return default; } set { } }
+        public static string Name { get { return default; } }
+        public string QueryString { get { return default; } set { } }
+        public bool SuppressEntityBody { get { return default; } set { } }
+        System.ServiceModel.Channels.IMessageProperty System.ServiceModel.Channels.IMessageProperty.CreateCopy() { return default; }
     }
     public sealed partial class HttpResponseMessageProperty : System.ServiceModel.Channels.IMessageProperty
     {
         public HttpResponseMessageProperty() { }
-        public System.Net.WebHeaderCollection Headers { get { return default(System.Net.WebHeaderCollection); } }
-        public static string Name { get { return default(string); } }
-        public System.Net.HttpStatusCode StatusCode { get { return default(System.Net.HttpStatusCode); } set { } }
-        public string StatusDescription { get { return default(string); } set { } }
-        System.ServiceModel.Channels.IMessageProperty System.ServiceModel.Channels.IMessageProperty.CreateCopy() { return default(System.ServiceModel.Channels.IMessageProperty); }
+        public System.Net.WebHeaderCollection Headers { get { return default; } }
+        public static string Name { get { return default; } }
+        public System.Net.HttpStatusCode StatusCode { get { return default; } set { } }
+        public string StatusDescription { get { return default; } set { } }
+        System.ServiceModel.Channels.IMessageProperty System.ServiceModel.Channels.IMessageProperty.CreateCopy() { return default; }
     }
     public partial class HttpsTransportBindingElement : System.ServiceModel.Channels.HttpTransportBindingElement
     {
         public HttpsTransportBindingElement() { }
         protected HttpsTransportBindingElement(System.ServiceModel.Channels.HttpsTransportBindingElement elementToBeCloned) { }
-        public bool RequireClientCertificate { get { return default(bool); } set { } }
-        public override string Scheme { get { return default(string); } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override System.ServiceModel.Channels.BindingElement Clone() { return default(System.ServiceModel.Channels.BindingElement); }
-        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default(T); }
+        public bool RequireClientCertificate { get { return default; } set { } }
+        public override string Scheme { get { return default; } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override System.ServiceModel.Channels.BindingElement Clone() { return default; }
+        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
     }
     public partial class HttpTransportBindingElement : System.ServiceModel.Channels.TransportBindingElement
     {
         public HttpTransportBindingElement() { }
         protected HttpTransportBindingElement(System.ServiceModel.Channels.HttpTransportBindingElement elementToBeCloned) { }
         [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool AllowCookies { get { return default(bool); } set { } }
+        public bool AllowCookies { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.Net.AuthenticationSchemes)(32768))]
-        public System.Net.AuthenticationSchemes AuthenticationScheme { get { return default(System.Net.AuthenticationSchemes); } set { } }
+        public System.Net.AuthenticationSchemes AuthenticationScheme { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(false)]
-        public bool BypassProxyOnLocal { get { return default(bool); } set { } }
+        public bool BypassProxyOnLocal { get { return default; } set { } }
         public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get; set; }
         [System.ComponentModel.DefaultValueAttribute(65536)]
-        public int MaxBufferSize { get { return default(int); } set { } }
+        public int MaxBufferSize { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(null)]
         [System.ComponentModel.TypeConverter(typeof(System.UriTypeConverter))]
-        public System.Uri ProxyAddress { get { return default(System.Uri); } set { } }
+        public System.Uri ProxyAddress { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.Net.AuthenticationSchemes)(32768))]
-        public System.Net.AuthenticationSchemes ProxyAuthenticationScheme { get { return default(System.Net.AuthenticationSchemes); } set { } }
-        public override string Scheme { get { return default(string); } }
+        public System.Net.AuthenticationSchemes ProxyAuthenticationScheme { get { return default; } set { } }
+        public override string Scheme { get { return default; } }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.TransferMode)(0))]
-        public System.ServiceModel.TransferMode TransferMode { get { return default(System.ServiceModel.TransferMode); } set { } }
-        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default(System.ServiceModel.Channels.WebSocketTransportSettings); } set { } }
+        public System.ServiceModel.TransferMode TransferMode { get { return default; } set { } }
+        public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(true)]
-        public bool UseDefaultWebProxy { get { return default(bool); } set { } }
+        public bool UseDefaultWebProxy { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(true)]
-        public bool KeepAliveEnabled { get { return default(bool); } set { } }
-        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(System.ServiceModel.Channels.IChannelFactory<TChannel>); }
-        public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default(bool); }
-        public override System.ServiceModel.Channels.BindingElement Clone() { return default(System.ServiceModel.Channels.BindingElement); }
-        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default(T); }
+        public bool KeepAliveEnabled { get { return default; } set { } }
+        public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override bool CanBuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingContext context) { return default; }
+        public override System.ServiceModel.Channels.BindingElement Clone() { return default; }
+        public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
     }
     public partial interface IHttpCookieContainerManager
     {
@@ -279,16 +283,16 @@ namespace System.ServiceModel.Channels
         public const string TextMessageReceivedAction = "http://schemas.microsoft.com/2011/02/websockets/ontextmessage";
         public WebSocketTransportSettings() { }
         [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool DisablePayloadMasking { get { return default(bool); } set { } }
+        public bool DisablePayloadMasking { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute(typeof(System.TimeSpan), "00:00:00")]
-        public System.TimeSpan KeepAliveInterval { get { return default(System.TimeSpan); } set { } }
+        public System.TimeSpan KeepAliveInterval { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute(null)]
-        public string SubProtocol { get { return default(string); } set { } }
+        public string SubProtocol { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.Channels.WebSocketTransportUsage)(2))]
-        public System.ServiceModel.Channels.WebSocketTransportUsage TransportUsage { get { return default(System.ServiceModel.Channels.WebSocketTransportUsage); } set { } }
-        public override bool Equals(object obj) { return default(bool); }
-        public bool Equals(System.ServiceModel.Channels.WebSocketTransportSettings other) { return default(bool); }
-        public override int GetHashCode() { return default(int); }
+        public System.ServiceModel.Channels.WebSocketTransportUsage TransportUsage { get { return default; } set { } }
+        public override bool Equals(object obj) { return default; }
+        public bool Equals(System.ServiceModel.Channels.WebSocketTransportSettings other) { return default; }
+        public override int GetHashCode() { return default; }
     }
     public enum WebSocketTransportUsage
     {

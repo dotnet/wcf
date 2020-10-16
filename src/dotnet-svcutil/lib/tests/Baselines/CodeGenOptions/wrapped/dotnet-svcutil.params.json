@@ -1,0 +1,16 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/WcfProjectNService/tempuri.org.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, wrapped_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "N.N",
+    "typeReuseMode": "None",
+    "wrapped": true
+  }
+}

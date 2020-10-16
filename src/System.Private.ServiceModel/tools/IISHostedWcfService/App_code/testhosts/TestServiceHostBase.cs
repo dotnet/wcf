@@ -36,9 +36,9 @@ namespace WcfService
             }
         }
 
-        //Overriding ApplyConfiguration() allows us to 
+        //Overriding ApplyConfiguration() allows us to
         //alter the ServiceDescription prior to opening
-        //the service host. 
+        //the service host.
         protected override void ApplyConfiguration()
         {
             //First, we call base.ApplyConfiguration()

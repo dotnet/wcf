@@ -163,39 +163,6 @@ namespace System.IdentityModel
             RandomNumberGenerator.GetBytes(buffer);
         }
 
-        /// <summary>
-        /// This generates the entropy using random number. This is usually used on the sending 
-        /// side to generate the requestor's entropy.
-        /// </summary>
-        /// <param name="data">The array to fill with cryptographically strong random nonzero bytes.</param>
-        public static void GenerateRandomBytes(byte[] data)
-        {
-            RandomNumberGenerator.GetNonZeroBytes(data);
-        }
-
-        /// <summary>
-        /// This method generates a random byte array used as entropy with the given size. 
-        /// </summary>
-        /// <param name="sizeInBits"></param>
-        /// <returns></returns>
-        public static byte[] GenerateRandomBytes(int sizeInBits)
-        {
-            int sizeInBytes = sizeInBits / 8;
-            if (sizeInBits <= 0)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(sizeInBits), SR.Format(SR.ID6033, sizeInBits)));
-            }
-            else if (sizeInBytes * 8 != sizeInBits)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.ID6002, sizeInBits), nameof(sizeInBits)));
-            }
-
-            byte[] data = new byte[sizeInBytes];
-            GenerateRandomBytes(data);
-
-            return data;
-        }
-
         internal static RandomNumberGenerator RandomNumberGenerator
         {
             get

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.ComponentModel;
 using System.ServiceModel.Channels;
 using System.Xml;
@@ -12,6 +11,8 @@ namespace System.ServiceModel
     public class NetHttpBinding : HttpBindingBase
     {
         private BinaryMessageEncodingBindingElement _binaryMessageEncodingBindingElement;
+        private ReliableSessionBindingElement _session;
+        private OptionalReliableSession _reliableSession;
         private BasicHttpSecurity _basicHttpSecurity;
 
         public NetHttpBinding()
@@ -26,6 +27,10 @@ namespace System.ServiceModel
             _basicHttpSecurity.Mode = securityMode;
         }
 
+        public NetHttpBinding(BasicHttpSecurityMode securityMode, bool reliableSessionEnabled) : this(securityMode)
+        {
+            ReliableSession.Enabled = reliableSessionEnabled;
+        }
 
         public NetHttpBinding(string configurationName)
             : base()
@@ -52,10 +57,27 @@ namespace System.ServiceModel
 
             set
             {
-                _basicHttpSecurity = value ?? throw FxTrace.Exception.ArgumentNull("value");
+                _basicHttpSecurity = value ?? throw FxTrace.Exception.ArgumentNull(nameof(value));
             }
         }
 
+        public OptionalReliableSession ReliableSession
+        {
+            get
+            {
+                return _reliableSession;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw FxTrace.Exception.ArgumentNull(nameof(value));
+                }
+
+                _reliableSession.CopySettings(value);
+            }
+        }
 
         public WebSocketTransportSettings WebSocketSettings
         {
@@ -93,6 +115,11 @@ namespace System.ServiceModel
             BindingElementCollection bindingElements = new BindingElementCollection();
 
             // order of BindingElements is important
+            // add session
+            if (_reliableSession.Enabled)
+            {
+                bindingElements.Add(_session);
+            }
 
             // add security (*optional)
             SecurityBindingElement messageSecurity = BasicHttpSecurity.CreateMessageSecurity();
@@ -146,6 +173,8 @@ namespace System.ServiceModel
             MessageEncoding = NetHttpBindingDefaults.MessageEncoding;
             _binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement() { MessageVersion = MessageVersion.Soap12WSAddressing10 };
             TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            _session = new ReliableSessionBindingElement();
+            _reliableSession = new OptionalReliableSession(_session);
             WebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;
             WebSocketSettings.SubProtocol = WebSocketTransportSettings.SoapSubProtocol;
             _basicHttpSecurity = new BasicHttpSecurity();

@@ -238,13 +238,16 @@ public class Https_ClientCredentialTypeTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available), nameof(Is_Windows))]
+    [Condition(nameof(NTLM_Available), nameof(Root_Certificate_Installed))]
     [OuterLoop]
-    public static void WindowsAuthentication_RoundTrips_Echo()
+    public static void IntegratedWindowsAuthentication_Ntlm_RoundTrips_Echo()
     {
-        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+        BasicHttpBinding basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
         basicHttpBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
+        var binding = new CustomBinding(basicHttpBinding);
+        var htbe = binding.Elements.Find<HttpsTransportBindingElement>();
+        htbe.AuthenticationScheme = System.Net.AuthenticationSchemes.IntegratedWindowsAuthentication;
 
-        ScenarioTestHelpers.RunBasicEchoTest(basicHttpBinding, Endpoints.Http_WindowsAuth_Address, "BasicHttpBinding with Windows authentication", null);
+        ScenarioTestHelpers.RunBasicEchoTest(binding, Endpoints.Https_NtlmAuth_Address, "BasicHttpBinding with IntegratedWindowsAuthentication authentication and Ntlm endpoint", null);
     }
 }

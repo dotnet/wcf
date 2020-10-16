@@ -299,6 +299,11 @@ namespace System.ServiceModel.Dispatcher
 
             public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             {
+                if (count == 0)
+                {
+                    return 0;
+                }
+
                 if (_reader == null)
                 {
                     if (_message.Properties.ContainsKey(BufferedReadStream.BufferedReadStreamPropertyName))
@@ -342,6 +347,11 @@ namespace System.ServiceModel.Dispatcher
                 if (buffer.Length - offset < count)
                 {
                     throw TraceUtility.ThrowHelperError(new ArgumentException(SR.Format(SR.SFxInvalidStreamOffsetLength, offset + count)), _message);
+                }
+
+                if (count == 0)
+                {
+                    return 0;
                 }
 
                 try

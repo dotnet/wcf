@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 // NOTE: this file was generated from 'xd.xml'
 
 using System.Xml;
@@ -29,6 +28,7 @@ namespace System.ServiceModel
         private static SecurityXXX2005Dictionary s_securityXXX2005Dictionary;
         private static TrustFeb2005Dictionary s_trustFeb2005Dictionary;
         private static UtilityDictionary s_utilityDictionary;
+        private static WsrmFeb2005Dictionary s_wsrmFeb2005Dictionary;
         private static XmlSignatureDictionary s_xmlSignatureDictionary;
 
         static public ActivityIdFlowDictionary ActivityIdFlowDictionary
@@ -220,6 +220,16 @@ namespace System.ServiceModel
                 }
 
                 return s_utilityDictionary;
+            }
+        }
+
+        static public WsrmFeb2005Dictionary WsrmFeb2005Dictionary
+        {
+            get
+            {
+                if (s_wsrmFeb2005Dictionary == null)
+                    s_wsrmFeb2005Dictionary = new WsrmFeb2005Dictionary(Dictionary);
+                return s_wsrmFeb2005Dictionary;
             }
         }
 
@@ -761,6 +771,88 @@ namespace System.ServiceModel
         }
     }
 
+    class WsrmFeb2005Dictionary
+    {
+        public XmlDictionaryString Identifier;
+        public XmlDictionaryString Namespace;
+        public XmlDictionaryString SequenceAcknowledgement;
+        public XmlDictionaryString AcknowledgementRange;
+        public XmlDictionaryString Upper;
+        public XmlDictionaryString Lower;
+        public XmlDictionaryString BufferRemaining;
+        public XmlDictionaryString NETNamespace;
+        public XmlDictionaryString SequenceAcknowledgementAction;
+        public XmlDictionaryString Sequence;
+        public XmlDictionaryString MessageNumber;
+        public XmlDictionaryString AckRequested;
+        public XmlDictionaryString AckRequestedAction;
+        public XmlDictionaryString AcksTo;
+        public XmlDictionaryString Accept;
+        public XmlDictionaryString CreateSequence;
+        public XmlDictionaryString CreateSequenceAction;
+        public XmlDictionaryString CreateSequenceRefused;
+        public XmlDictionaryString CreateSequenceResponse;
+        public XmlDictionaryString CreateSequenceResponseAction;
+        public XmlDictionaryString Expires;
+        public XmlDictionaryString FaultCode;
+        public XmlDictionaryString InvalidAcknowledgement;
+        public XmlDictionaryString LastMessage;
+        public XmlDictionaryString LastMessageAction;
+        public XmlDictionaryString LastMessageNumberExceeded;
+        public XmlDictionaryString MessageNumberRollover;
+        public XmlDictionaryString Nack;
+        public XmlDictionaryString NETPrefix;
+        public XmlDictionaryString Offer;
+        public XmlDictionaryString Prefix;
+        public XmlDictionaryString SequenceFault;
+        public XmlDictionaryString SequenceTerminated;
+        public XmlDictionaryString TerminateSequence;
+        public XmlDictionaryString TerminateSequenceAction;
+        public XmlDictionaryString UnknownSequence;
+        public XmlDictionaryString ConnectionLimitReached;
+
+        public WsrmFeb2005Dictionary(ServiceModelDictionary dictionary)
+        {
+            Identifier = dictionary.CreateString(ServiceModelStringsVersion1.String15, 15);
+            Namespace = dictionary.CreateString(ServiceModelStringsVersion1.String16, 16);
+            SequenceAcknowledgement = dictionary.CreateString(ServiceModelStringsVersion1.String23, 23);
+            AcknowledgementRange = dictionary.CreateString(ServiceModelStringsVersion1.String24, 24);
+            Upper = dictionary.CreateString(ServiceModelStringsVersion1.String25, 25);
+            Lower = dictionary.CreateString(ServiceModelStringsVersion1.String26, 26);
+            BufferRemaining = dictionary.CreateString(ServiceModelStringsVersion1.String27, 27);
+            NETNamespace = dictionary.CreateString(ServiceModelStringsVersion1.String28, 28);
+            SequenceAcknowledgementAction = dictionary.CreateString(ServiceModelStringsVersion1.String29, 29);
+            Sequence = dictionary.CreateString(ServiceModelStringsVersion1.String31, 31);
+            MessageNumber = dictionary.CreateString(ServiceModelStringsVersion1.String32, 32);
+            AckRequested = dictionary.CreateString(ServiceModelStringsVersion1.String328, 328);
+            AckRequestedAction = dictionary.CreateString(ServiceModelStringsVersion1.String329, 329);
+            AcksTo = dictionary.CreateString(ServiceModelStringsVersion1.String330, 330);
+            Accept = dictionary.CreateString(ServiceModelStringsVersion1.String331, 331);
+            CreateSequence = dictionary.CreateString(ServiceModelStringsVersion1.String332, 332);
+            CreateSequenceAction = dictionary.CreateString(ServiceModelStringsVersion1.String333, 333);
+            CreateSequenceRefused = dictionary.CreateString(ServiceModelStringsVersion1.String334, 334);
+            CreateSequenceResponse = dictionary.CreateString(ServiceModelStringsVersion1.String335, 335);
+            CreateSequenceResponseAction = dictionary.CreateString(ServiceModelStringsVersion1.String336, 336);
+            Expires = dictionary.CreateString(ServiceModelStringsVersion1.String55, 55);
+            FaultCode = dictionary.CreateString(ServiceModelStringsVersion1.String337, 337);
+            InvalidAcknowledgement = dictionary.CreateString(ServiceModelStringsVersion1.String338, 338);
+            LastMessage = dictionary.CreateString(ServiceModelStringsVersion1.String339, 339);
+            LastMessageAction = dictionary.CreateString(ServiceModelStringsVersion1.String340, 340);
+            LastMessageNumberExceeded = dictionary.CreateString(ServiceModelStringsVersion1.String341, 341);
+            MessageNumberRollover = dictionary.CreateString(ServiceModelStringsVersion1.String342, 342);
+            Nack = dictionary.CreateString(ServiceModelStringsVersion1.String343, 343);
+            NETPrefix = dictionary.CreateString(ServiceModelStringsVersion1.String344, 344);
+            Offer = dictionary.CreateString(ServiceModelStringsVersion1.String345, 345);
+            Prefix = dictionary.CreateString(ServiceModelStringsVersion1.String346, 346);
+            SequenceFault = dictionary.CreateString(ServiceModelStringsVersion1.String347, 347);
+            SequenceTerminated = dictionary.CreateString(ServiceModelStringsVersion1.String348, 348);
+            TerminateSequence = dictionary.CreateString(ServiceModelStringsVersion1.String349, 349);
+            TerminateSequenceAction = dictionary.CreateString(ServiceModelStringsVersion1.String350, 350);
+            UnknownSequence = dictionary.CreateString(ServiceModelStringsVersion1.String351, 351);
+            ConnectionLimitReached = dictionary.CreateString(ServiceModelStringsVersion1.String480, 480);
+        }
+    }
+
     internal class UtilityDictionary
     {
         public XmlDictionaryString IdAttribute;
@@ -878,7 +970,7 @@ namespace System.ServiceModel
         public const string ActivityIdNamespace = ServiceModelStringsVersion1.String426;
     }
 
-    internal static class AddressingStrings
+    internal static partial class AddressingStrings
     {
         // Main dictionary strings
         public const string Action = ServiceModelStringsVersion1.String5;
@@ -907,16 +999,6 @@ namespace System.ServiceModel
         public const string X509v3Certificate = ServiceModelStringsVersion1.String98;
         public const string ReferenceParameters = ServiceModelStringsVersion1.String100;
         public const string IsReferenceParameter = ServiceModelStringsVersion1.String101;
-        // String constants
-        public const string EndpointUnavailable = "EndpointUnavailable";
-        public const string ActionNotSupported = "ActionNotSupported";
-        public const string EndpointReferenceType = "EndpointReferenceType";
-        public const string Request = "Request";
-        public const string DestinationUnreachable = "DestinationUnreachable";
-        public const string AnonymousUri = "http://schemas.microsoft.com/2005/12/ServiceModel/Addressing/Anonymous";
-        public const string NoneUri = "http://schemas.microsoft.com/2005/12/ServiceModel/Addressing/None";
-        public const string IndigoNamespace = "http://schemas.microsoft.com/serviceModel/2004/05/addressing";
-        public const string ChannelTerminated = "ChannelTerminated";
     }
 
     internal static class Addressing10Strings
@@ -1066,19 +1148,6 @@ namespace System.ServiceModel
         // Main dictionary strings
         public const string Namespace = ServiceModelStringsVersion1.String437;
         public const string HeaderName = ServiceModelStringsVersion1.String438;
-    }
-
-    internal static class DotNetSecurityStrings
-    {
-        // Main dictionary strings
-        public const string Namespace = ServiceModelStringsVersion1.String162;
-        public const string Prefix = ServiceModelStringsVersion1.String163;
-        // String constants
-        public const string KeyRenewalNeededFault = "ExpiredSecurityContextTokenKey";
-        public const string SecuritySessionAbortedFault = "SecuritySessionAborted";
-        public const string SecurityServerTooBusyFault = "ServerTooBusy";
-        public const string SecuritySessionFaultAction = "http://schemas.microsoft.com/ws/2006/05/security/SecureConversationFault";
-        public const string SecureConversationCancelNotAllowedFault = "SecureConversationCancellationNotAllowed";
     }
 
     class DotNetSecurityDictionary

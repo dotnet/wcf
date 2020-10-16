@@ -10,6 +10,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.Text;
+using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
@@ -208,6 +209,85 @@ public partial class HttpsTests : ConditionalWcfTest
             // *** VALIDATE *** \\
             Assert.True(myX509CertificateValidator.validateMethodWasCalled, "The Validate method of the X509CertificateValidator was NOT called.");
             Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Issue(2870, OS = OSID.AnyOSX)]
+    [Condition(nameof(SSL_Available))]
+    [OuterLoop]
+    public static async Task ServerCertificateValidationUsingIdentity_EchoString()
+    {
+        EndpointAddress endpointAddress = null;
+        X509Certificate2 serviceCertificate = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
+
+            serviceCertificate = await ServiceUtilHelper.GetServiceMacineCertFromServerAsync();
+            var identity = new X509CertificateEndpointIdentity(serviceCertificate);
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address), identity);
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.Equal(testString, result);
+
+            // *** CLEANUP *** \\
+            ((ICommunicationObject)serviceProxy).Close();
+            factory.Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
+    [WcfFact]
+    [Issue(2870, OS = OSID.AnyOSX)]
+    [Condition(nameof(Client_Certificate_Installed),
+               nameof(SSL_Available))]
+    [OuterLoop]
+    public static void ServerCertificateValidationUsingIdentity_Throws_EchoString()
+    {
+        EndpointAddress endpointAddress = null;
+        string testString = "Hello";
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+
+        try
+        {
+            // *** SETUP *** \\
+            CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
+
+            // This is intentionally the wrong certificate
+            var identity = new X509CertificateEndpointIdentity(ServiceUtilHelper.ClientCertificate);
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address), identity);
+
+            factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            Assert.Throws<SecurityNegotiationException>(() => { _ = serviceProxy.Echo(testString); });
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
