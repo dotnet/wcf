@@ -18,7 +18,7 @@ namespace System.ServiceModel.Federation
         private WSTrustChannelClientCredentials _wsTrustChannelClientCredentials;
 
         /// <summary>
-        /// Instaintiates a <see cref="WSTrustChannelSecurityTokenManager"/>.
+        /// Instantiates a <see cref="WSTrustChannelSecurityTokenManager"/>.
         /// </summary>
         /// <param name="wsTrustChannelClientCredentials"> the WSTrustChannelClientCredentials that can serve up a SecurityTokenProvider to use.</param>
         public WSTrustChannelSecurityTokenManager(WSTrustChannelClientCredentials wsTrustChannelClientCredentials)
