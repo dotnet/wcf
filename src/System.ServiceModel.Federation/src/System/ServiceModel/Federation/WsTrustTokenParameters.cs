@@ -5,9 +5,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
 using Microsoft.IdentityModel.Protocols.WsTrust;
+using Microsoft.IdentityModel.Tokens.Saml2;
 
 namespace System.ServiceModel.Federation
 {
@@ -124,5 +126,29 @@ namespace System.ServiceModel.Federation
         /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
         /// </summary>
         public string RequestContext { get; set; }
+
+        public static WSTrustTokenParameters CreateWSFederationTokenParameters(Binding issuerBinding, EndpointAddress issuerAddress)
+        {
+            return new WSTrustTokenParameters
+            {
+                IssuerAddress = issuerAddress,
+                IssuerBinding = issuerBinding,
+                KeyType = SecurityKeyType.SymmetricKey,
+                TokenType = Saml2Constants.OasisWssSaml2TokenProfile11,
+                MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10
+            };
+        }
+
+        public static WSTrustTokenParameters CreateWS2007FederationTokenParameters(Binding issuerBinding, EndpointAddress issuerAddress)
+        {
+            return new WSTrustTokenParameters
+            {
+                IssuerAddress = issuerAddress,
+                IssuerBinding = issuerBinding,
+                KeyType = SecurityKeyType.BearerKey,
+                TokenType = Saml2Constants.OasisWssSaml2TokenProfile11,
+                MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10
+            };
+        }
     }
 }

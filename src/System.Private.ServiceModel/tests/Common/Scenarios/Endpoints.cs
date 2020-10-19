@@ -436,7 +436,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("LocalSTS.svc/transport", protocol: "https");
+            return GetEndpointAddress("LocalSTS.svc/", protocol: "https");
         }
     }
 
@@ -444,7 +444,7 @@ public static partial class Endpoints
     {
         get
         {
-            return GetEndpointAddress("Saml2IssuedToken.svc/issued-token-using-tls", protocol: "https");
+            return GetEndpointAddress("Saml2IssuedToken.svc/issued-token-using-tls/", protocol: "https");
         }
     }
 

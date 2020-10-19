@@ -13,10 +13,7 @@ namespace WcfService
 {
     internal class SelfHostSecurityTokenService : SecurityTokenService
     {
-        public SelfHostSecurityTokenService(SecurityTokenServiceConfiguration configuration)
-            : base(configuration)
-        {
-        }
+        public SelfHostSecurityTokenService(SecurityTokenServiceConfiguration configuration) : base(configuration) { }
 
         protected override Scope GetScope(ClaimsPrincipal principal, RequestSecurityToken request)
         {
@@ -37,9 +34,8 @@ namespace WcfService
 
             var scope = new Scope(request.AppliesTo.Uri.OriginalString, SecurityTokenServiceConfiguration.SigningCredentials)
             {
-                TokenEncryptionRequired = false
-                //EncryptingCredentials = new X509EncryptingCredentials(SecurityTokenServiceConfiguration.ServiceCertificate),
-                //SymmetricKeyEncryptionRequired = true
+                TokenEncryptionRequired = false,
+                SymmetricKeyEncryptionRequired = false
             };
 
             if (string.IsNullOrEmpty(request.ReplyTo))

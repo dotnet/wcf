@@ -8,6 +8,8 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.IdentityModel.Tokens;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WcfService
 {
@@ -19,17 +21,58 @@ namespace WcfService
 
         protected override string Address { get { return "issued-token-using-tls"; } }
 
-        protected override Binding GetBinding()
+        protected override IList<Binding> GetBindings()
         {
-            var authorityBinding = new WSHttpBinding(SecurityMode.Transport);
-            var serviceBinding = new WS2007FederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);
+            var bindings = new List<Binding>();
+            // Add binding to receive requests using tokens issued from each of the STS endpoints
+            foreach (var tuple in FederationSTSServiceHost.EndpointList)
+            {
+                // Accept clients not using SecureConversation
+                var binding = GetBinding(tuple.Item1, tuple.Item2, tuple.Item3, useSC: false);
+                binding.Name = Address + "/" + tuple.Item3;
+                bindings.Add(binding);
+                // Accept clients using SecureConversation
+                binding = GetBinding(tuple.Item1, tuple.Item2, tuple.Item3 + "/sc", useSC: true);
+                binding.Name = Address + "/" + tuple.Item3 + "/sc";
+                bindings.Add(binding);
+            }
+
+            return bindings;
+        }
+
+        private Binding GetBinding(Type contractType, Binding issuerBinding, string issuerRelativePath, bool useSC)
+        {
+            var serviceBinding = GetFederatedBindingFromIssuerContract(contractType);
+            serviceBinding.Security.Message.EstablishSecurityContext = useSC;
             serviceBinding.Security.Message.IssuedTokenType = Saml20TokenType;
             var serverBasePathUri = BaseAddresses[0];
-            var issuerUri = new Uri(serverBasePathUri, FederationSTSServiceHost.BasePath + "/" + FederationSTSServiceHost.RelativePath);
+            var issuerUri = new Uri(serverBasePathUri, FederationSTSServiceHost.BasePath + "/" + issuerRelativePath);
             serviceBinding.Security.Message.IssuerAddress = new EndpointAddress(issuerUri);
-            serviceBinding.Security.Message.IssuerBinding = authorityBinding;
-            serviceBinding.Security.Message.IssuedKeyType = SecurityKeyType.BearerKey;
+            serviceBinding.Security.Message.IssuerBinding = issuerBinding;
             return serviceBinding;
+        }
+
+        private WSFederationHttpBinding GetFederatedBindingFromIssuerContract(Type contractType)
+        {
+            WSFederationHttpBinding binding;
+            // If STS endpoint is using WSTrustFeb2005, then need to use WSFederationHttpBinding and symmetric issued tokens
+            if (contractType == typeof(IWSTrustFeb2005SyncContract))
+            {
+                binding = new WSFederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);
+                binding.Security.Message.IssuedKeyType = SecurityKeyType.SymmetricKey;
+            }
+            // If STS endpoint is using WSTrust1.3, then need to use WS2007FederationHttpBinding and bearer issued tokens
+            else if (contractType == typeof(IWSTrust13SyncContract))
+            {
+                binding = new WS2007FederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);
+                binding.Security.Message.IssuedKeyType = SecurityKeyType.BearerKey;
+            }
+            else
+            {
+                throw new ArgumentException("Unknown contract type", "contractType");
+            }
+
+            return binding;
         }
 
         protected override void ApplyConfiguration()
@@ -47,8 +90,19 @@ namespace WcfService
                 }
             }
 
-            var audienceUriBuilder = new UriBuilder(serverBasePathUri);
-            audienceUriBuilder.Path = audienceUriBuilder.Path + "/" + Address; // localhost
+            foreach (var tuple in FederationSTSServiceHost.EndpointList)
+            {
+                AddAllowedAudienceUri(serverBasePathUri, tuple.Item3);
+                AddAllowedAudienceUri(serverBasePathUri, tuple.Item3 + "/sc");
+            }
+            Credentials.IdentityConfiguration.CertificateValidationMode = X509CertificateValidationMode.None;
+            Credentials.IdentityConfiguration.IssuerNameRegistry = new CustomIssuerNameRegistry();
+        }
+
+        private void AddAllowedAudienceUri(Uri basepath, string relativePath)
+        {
+            var audienceUriBuilder = new UriBuilder(basepath);
+            audienceUriBuilder.Path = audienceUriBuilder.Path + "/" + Address + "/" + relativePath; // localhost
             audienceUriBuilder.Host = "localhost"; // When IIS hosted Host was the fqdn, self hosted it's localhost
             Credentials.IdentityConfiguration.AudienceRestriction.AllowedAudienceUris.Add(audienceUriBuilder.Uri);
 
@@ -57,10 +111,6 @@ namespace WcfService
 
             audienceUriBuilder.Host = Environment.MachineName; // netbios name
             Credentials.IdentityConfiguration.AudienceRestriction.AllowedAudienceUris.Add(audienceUriBuilder.Uri);
-
-            Credentials.IdentityConfiguration.CertificateValidationMode = X509CertificateValidationMode.None;
-            var issuerUri = new Uri(serverBasePathUri, FederationSTSServiceHost.BasePath + "/" + FederationSTSServiceHost.RelativePath);
-            Credentials.IdentityConfiguration.IssuerNameRegistry = new CustomIssuerNameRegistry(issuerUri.ToString());
         }
 
         public Saml2IssuedTokenTestServiceHost(params Uri[] baseAddresses)
@@ -71,9 +121,10 @@ namespace WcfService
         class CustomIssuerNameRegistry : IssuerNameRegistry
         {
             string _issuer;
-            public CustomIssuerNameRegistry(string issuer)
+            public CustomIssuerNameRegistry()
             {
-                _issuer = issuer;
+                var issuerCert = TestHost.CertificateFromFriendlyName(StoreName.My, StoreLocation.LocalMachine, "WCF Bridge - STSMetaData");
+                _issuer = issuerCert.SubjectName.Name;
             }
 
             public override string GetIssuerName(SecurityToken securityToken)

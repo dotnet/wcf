@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Configuration;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
@@ -17,18 +18,25 @@ namespace WcfService
     public class FederationSTSServiceHost : WSTrustServiceHost
     {
         internal const string BasePath = "LocalSTS.svc";
-        internal const string RelativePath = "transport";
+        internal static List<Tuple<Type, Binding, string>> EndpointList = new List<Tuple<Type, Binding, string>>
+        {
+            Tuple.Create(typeof(IWSTrust13SyncContract), GetBinding(), "wsHttp/wstrust13"),
+            Tuple.Create(typeof(IWSTrustFeb2005SyncContract), GetBinding(), "wsHttp/wstrustFeb2005"),
+        };
 
         public FederationSTSServiceHost(params Uri[] baseAddresses)
             : base(new SecurityTokenServiceConfiguration(), baseAddresses)
         {
             ConfigureService();
-            AddServiceEndpoint(typeof(IWSTrust13SyncContract), GetBinding(), RelativePath);
+            foreach(var tuple in EndpointList)
+            {
+                AddServiceEndpoint(tuple.Item1, tuple.Item2, tuple.Item3);
+            }
         }
 
-        private Binding GetBinding()
+        private static Binding GetBinding()
         {
-            var binding = new WS2007HttpBinding(SecurityMode.Transport);
+            var binding = new WSHttpBinding(SecurityMode.Transport);
             if (HostingEnvironment.IsHosted)
             {
                 binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
