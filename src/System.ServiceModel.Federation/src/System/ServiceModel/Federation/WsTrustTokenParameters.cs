@@ -2,20 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#pragma warning disable 1591
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
-using Microsoft.IdentityModel.Protocols.WsFed;
+using Microsoft.IdentityModel.Protocols.WsTrust;
+using Microsoft.IdentityModel.Tokens.Saml2;
 
 namespace System.ServiceModel.Federation
 {
+    /// <summary>
+    /// <see cref="WSTrustTokenParameters"/> is designed to be used with the <see cref="WSFederationHttpBinding"/> to send a WSTrust message to an STS and attach the token received as
+    /// an IssuedToken in the message to a WCF RelyingParty.
+    /// </summary>
     public class WSTrustTokenParameters : IssuedSecurityTokenParameters
     {
-        internal const bool DefaultEstablishSecurityContext = true;
         public static readonly bool DefaultCacheIssuedTokens = true;
         public static readonly int DefaultIssuedTokenRenewalThresholdPercentage = 60;
         public static readonly TimeSpan DefaultMaxIssuedTokenCachingTime = TimeSpan.MaxValue;
@@ -24,20 +27,25 @@ namespace System.ServiceModel.Federation
         private TimeSpan _maxIssuedTokenCachingTime = DefaultMaxIssuedTokenCachingTime;
         private MessageSecurityVersion _messageSecurityVersion;
         private int _issuedTokenRenewalThresholdPercentage = DefaultIssuedTokenRenewalThresholdPercentage;
-        private string _target;
 
         /// <summary>
-        /// Values that are used to obtain a token from an IdentityProvider
+        /// Instantiates a <see cref="wsTrustTokenParameters"/> that describe the parameters for a WSTrust request.
         /// </summary>
+        /// <remarks><see cref="KeyType"/> == <see cref="SecurityKeyType.SymmetricKey"/>.
+        /// <para><see cref="MessageSecurityVersion"/> == <see cref="MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10"/></para></remarks>
         public WSTrustTokenParameters()
         {
             KeyType = DefaultSecurityKeyType;
-            EstablishSecurityContext = DefaultEstablishSecurityContext;
             DefaultMessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
             MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
         }
 
-        protected WSTrustTokenParameters(WSTrustTokenParameters other) : base(other)
+        /// <summary>
+        /// Creates a shallow copy of 'other'.
+        /// </summary>
+        /// <param name="other">The WSTrustTokenParameters to copy.</param>
+        protected WSTrustTokenParameters(WSTrustTokenParameters other)
+            : base(other)
         {
             foreach (var parameter in other.AdditionalRequestParameters)
                 AdditionalRequestParameters.Add(parameter);
@@ -50,21 +58,32 @@ namespace System.ServiceModel.Federation
             KeySize = other.KeySize;
             _maxIssuedTokenCachingTime = other.MaxIssuedTokenCachingTime;
             _messageSecurityVersion = other.MessageSecurityVersion;
-            RequestContext = other.RequestContext;
-            _target = other.Target;
-            EstablishSecurityContext = other.EstablishSecurityContext;
         }
 
+        /// <summary>
+        /// Creates a shallow clone of this.
+        /// </summary>
         protected override SecurityTokenParameters CloneCore()
         {
             return new WSTrustTokenParameters(this);
         }
 
+        /// <summary>
+        /// Allows the addition of custom <see cref="XmlElement"/>s to the WSTrust request
+        /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
+        /// </summary>
         public ICollection<XmlElement> AdditionalRequestParameters { get; } = new Collection<XmlElement>();
 
+        /// <summary>
+        /// Gets or set a bool that controls if tokens received from that STS should be cached.
+        /// </summary>
         public bool CacheIssuedTokens { get; set; } = DefaultCacheIssuedTokens;
 
-        public ICollection<ClaimType> ClaimTypes { get; } = new Collection<ClaimType>();
+        /// <summary>
+        /// Allows the addition of <see cref="Claims"/> to the WSTrust request
+        /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
+        /// </summary>
+        public ICollection<Claims> ClaimTypes { get; } = new Collection<Claims>();
 
         /// <summary>
         /// Gets or sets the percentage of the issued token's lifetime at which it should be renewed instead of cached.
@@ -73,10 +92,13 @@ namespace System.ServiceModel.Federation
         {
             get => _issuedTokenRenewalThresholdPercentage;
             set => _issuedTokenRenewalThresholdPercentage = (value <= 0 || value > 100)
-                ? throw new ArgumentOutOfRangeException(nameof(value), $"IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{value}'")
+                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant("IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.", value)), System.Diagnostics.Tracing.EventLevel.Error)
                 : value;
         }
 
+        /// <summary>
+        /// Gets or sets the keysize to request from the STS
+        /// </summary>
         public int? KeySize { get; set; }
 
         /// <summary>
@@ -86,24 +108,47 @@ namespace System.ServiceModel.Federation
         {
             get => _maxIssuedTokenCachingTime;
             set => _maxIssuedTokenCachingTime = value <= TimeSpan.Zero
-                ? throw new ArgumentOutOfRangeException(nameof(value), "MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{value}'") // TODO - Get exception messages from resources
+                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant("MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.", value)), System.Diagnostics.Tracing.EventLevel.Error)
                 : value;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="MessageSecurityVersion"/> to use.
+        /// </summary>
         public MessageSecurityVersion MessageSecurityVersion
         {
             get => _messageSecurityVersion;
-            set => _messageSecurityVersion = value ?? throw new ArgumentNullException(nameof(value));
+            set => _messageSecurityVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(value)), System.Diagnostics.Tracing.EventLevel.Error);
         }
 
+        /// <summary>
+        /// Gets or sets a string to put in the WSTrust request as a 'context' that helps in tracking request / response pairs.
+        /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
+        /// </summary>
         public string RequestContext { get; set; }
 
-        public string Target
+        public static WSTrustTokenParameters CreateWSFederationTokenParameters(Binding issuerBinding, EndpointAddress issuerAddress)
         {
-            get => _target;
-            set => _target = !string.IsNullOrEmpty(value) ? value : throw new ArgumentNullException(nameof(value));
+            return new WSTrustTokenParameters
+            {
+                IssuerAddress = issuerAddress,
+                IssuerBinding = issuerBinding,
+                KeyType = SecurityKeyType.SymmetricKey,
+                TokenType = Saml2Constants.OasisWssSaml2TokenProfile11,
+                MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10
+            };
         }
 
-        public bool EstablishSecurityContext { get; set; }
+        public static WSTrustTokenParameters CreateWS2007FederationTokenParameters(Binding issuerBinding, EndpointAddress issuerAddress)
+        {
+            return new WSTrustTokenParameters
+            {
+                IssuerAddress = issuerAddress,
+                IssuerBinding = issuerBinding,
+                KeyType = SecurityKeyType.BearerKey,
+                TokenType = Saml2Constants.OasisWssSaml2TokenProfile11,
+                MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10
+            };
+        }
     }
 }

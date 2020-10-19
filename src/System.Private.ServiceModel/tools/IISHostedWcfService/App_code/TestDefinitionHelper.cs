@@ -87,8 +87,21 @@ namespace WcfService
                     if (success)
                     {
                         var serviceHost = (ServiceHostBase)Activator.CreateInstance(sht, serviceBaseAddresses.ToArray());
-                        Console.WriteLine("  {0} at {1}", sht.Name, string.Join(", ", serviceBaseAddresses.Select(sba => sba.ToString())));
                         serviceHost.Open();
+                        Console.Write("  {0} at ", sht.Name);
+                        bool first = true;
+                        foreach (var endpoint in serviceHost.Description.Endpoints)
+                        {
+                            if (endpoint.IsSystemEndpoint)
+                                continue;
+                            if(first)
+                                first = false;
+                            else
+                                Console.Write(", ");
+
+                            Console.Write(endpoint.Address);
+                        }
+                        Console.WriteLine();
                     }
                 }
                 catch (Exception e)

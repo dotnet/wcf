@@ -83,5 +83,7 @@ namespace System.ServiceModel.Federation
         public string RequestContext { get => default; set { } }
         public string Target { get => default; set { } }
         public bool EstablishSecurityContext { get => default; set { } }
+        public static WSTrustTokenParameters CreateWSFederationTokenParameters(System.ServiceModel.Channels.Binding issuerBinding, System.ServiceModel.EndpointAddress issuerAddress) => default;
+        public static WSTrustTokenParameters CreateWS2007FederationTokenParameters(System.ServiceModel.Channels.Binding issuerBinding, System.ServiceModel.EndpointAddress issuerAddress) => default;
     }
 }

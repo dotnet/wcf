@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#pragma warning disable 1591
-
 using System.ComponentModel;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
@@ -14,20 +12,18 @@ using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
 using System.Xml;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.WsAddressing;
 using Microsoft.IdentityModel.Protocols.WsPolicy;
 using Microsoft.IdentityModel.Protocols.WsSecurity;
 using Microsoft.IdentityModel.Protocols.WsTrust;
-using Microsoft.IdentityModel.Tokens;
 using SecurityToken = System.IdentityModel.Tokens.SecurityToken;
 
 namespace System.ServiceModel.Federation
 {
-
     /// <summary>
-    /// Custom WSTrustChannelSecurityTokenProvider that returns a SAML assertion
+    /// <see cref="WSTrustChannelSecurityTokenProvider"/> has been designed to work with the <see cref="WSFederationHttpBinding"/> to send a WsTrust message to obtain a SecurityToken from an STS. The SecurityToken is
+    /// added as an IssuedToken on the outbound WCF message.
     /// </summary>
     public class WSTrustChannelSecurityTokenProvider : SecurityTokenProvider
     {
@@ -38,17 +34,27 @@ namespace System.ServiceModel.Federation
         private const string SecurityBindingElementProperty = Namespace + "/SecurityBindingElement";
         private const string TargetAddressProperty = Namespace + "/TargetAddress";
 
-        //private readonly WSTrustTokenParameters _issuedTokenParameters;
         private SecurityKeyEntropyMode _keyEntropyMode;
         private ChannelFactory<IRequestChannel> _channelFactory;
         private readonly SecurityAlgorithmSuite _securityAlgorithmSuite;
         private WsSerializationContext _requestSerializationContext;
 
+        /// <summary>
+        /// Instantiates a <see cref="WSTrustChannelSecurityTokenProvider"/> that describe the parameters for a WSTrust request.
+        /// </summary>
+        /// <param name="tokenRequirement">the <see cref="SecurityTokenRequirement"/> that must contain a <see cref="WSTrustTokenParameters"/> as the <see cref="IssuedSecurityTokenParameters"/> property.</param>
+        /// <exception cref="ArgumentNullException">thrown if <paramref name="tokenRequirement"/> is null.</exception>
+        /// <exception cref="ArgumentException">thrown if <see cref="SecurityTokenRequirement.GetProperty{TValue}(string)"/> (IssuedSecurityTokenParameters) is not a <see cref="WSTrustTokenParameters"/>.</exception>
         public WSTrustChannelSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
-            SecurityTokenRequirement = tokenRequirement ?? throw new ArgumentNullException(nameof(tokenRequirement));
+            SecurityTokenRequirement = tokenRequirement ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
             SecurityTokenRequirement.TryGetProperty(SecurityAlgorithmSuiteProperty, out _securityAlgorithmSuite);
-            WSTrustTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty) as WSTrustTokenParameters;
+
+            IssuedSecurityTokenParameters issuedSecurityTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty);
+            WSTrustTokenParameters = issuedSecurityTokenParameters as WSTrustTokenParameters;
+            if (WSTrustTokenParameters == null)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant("tokenRequirement.GetProperty<IssuedSecurityTokenParameters> must be of type: WSTrustTokenParameters. Was: '{0}.", issuedSecurityTokenParameters), nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
+
             InitializeKeyEntropyMode();
             SetInboundSerializationContext();
             RequestContext = string.IsNullOrEmpty(WSTrustTokenParameters.RequestContext) ? Guid.NewGuid().ToString() : WSTrustTokenParameters.RequestContext;
@@ -67,11 +73,11 @@ namespace System.ServiceModel.Federation
 
 
         /// <summary>
-        /// Gets or sets the cached security token response
+        /// Gets or sets the cached security token response.
         /// </summary>
         private WsTrustResponse CachedResponse
         {
-            // TODO : At some point, it may be valuable to replace this with a cache (Microsoft.Extensions.Caching.Distributed.IDistributedCache, perhaps)
+            // FUTURE : At some point, it may be valuable to replace this with a cache (Microsoft.Extensions.Caching.Distributed.IDistributedCache, perhaps)
             //        so that caches can be shared between token providers. For the time being, this is just an in-memory WsTrustResponse since a
             //        WSTrustChannelSecurityTokenProvider will only ever use a single WsTrustRequest. If caches can be shared, though, then this would
             //        be replaced with a more full-featured cache allowing multiple providers to cache tokens in a single cache object.
@@ -83,7 +89,7 @@ namespace System.ServiceModel.Federation
         {
             if (WSTrustTokenParameters.CacheIssuedTokens)
             {
-                // If cached respones are stored in a shared cache in the future, that cache should be written
+                // If cached responses are stored in a shared cache in the future, that cache should be written
                 // to here, possibly including serializing the WsTrustResponse if the cache stores byte[] (as
                 // IDistributedCache does).
                 CachedResponse = response;
@@ -114,6 +120,10 @@ namespace System.ServiceModel.Federation
 
         internal ClientCredentials ClientCredentials { get; set; }
 
+        /// <summary>
+        /// Creates a <see cref="WsTrustRequest"/> from the <see cref="WSTrustTokenParameters"/>
+        /// </summary>
+        /// <returns></returns>
         protected virtual WsTrustRequest CreateWsTrustRequest()
         {
             EndpointAddress target = SecurityTokenRequirement.GetProperty<EndpointAddress>(TargetAddressProperty);
@@ -136,7 +146,7 @@ namespace System.ServiceModel.Federation
                     keyType = _requestSerializationContext.TrustKeyTypes.Bearer;
                     break;
                 default:
-                    throw LogHelper.LogExceptionMessage(new NotSupportedException($"KeyType is not supported: '{0}'"));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("KeyType is not supported: {0}", WSTrustTokenParameters.KeyType)), System.Diagnostics.Tracing.EventLevel.Error);
             }
 
             Entropy entropy = null;
@@ -208,13 +218,13 @@ namespace System.ServiceModel.Federation
             // Encrypted keys and encrypted entropy are not supported, currently, as they should
             // only be needed by unsupported message security scenarios.
             if (response.RequestedProofToken?.EncryptedKey != null)
-                throw new NotSupportedException("Encrypted keys for proof tokens are not supported.");
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Encrypted keys for proof tokens are not supported."), System.Diagnostics.Tracing.EventLevel.Error);
 
             // Bearer scenarios have no proof token
             if (string.Equals(keyType, _requestSerializationContext.TrustKeyTypes.Bearer, StringComparison.Ordinal))
             {
                 if (response.RequestedProofToken != null || response.Entropy != null)
-                    throw new InvalidOperationException("Bearer key scenarios should not include a proof token or issuer entropy in the response.");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Bearer key scenarios should not include a proof token or issuer entropy in the response."), System.Diagnostics.Tracing.EventLevel.Error);
 
                 return null;
             }
@@ -225,7 +235,7 @@ namespace System.ServiceModel.Federation
             {
                 // Confirm that a computed key algorithm isn't also specified
                 if (!string.IsNullOrEmpty(response.RequestedProofToken.ComputedKeyAlgorithm) || response.Entropy != null)
-                    throw new InvalidOperationException("An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy."), System.Diagnostics.Tracing.EventLevel.Error);
 
                 return new BinarySecretSecurityToken(response.RequestedProofToken.BinarySecret.Data);
             }
@@ -234,9 +244,7 @@ namespace System.ServiceModel.Federation
             else if (response.RequestedProofToken?.ComputedKeyAlgorithm != null)
             {
                 if (!string.Equals(keyType, _requestSerializationContext.TrustKeyTypes.Symmetric, StringComparison.Ordinal))
-                {
-                    throw new InvalidOperationException("Computed key proof tokens are only supported with symmetric key types.");
-                }
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens are only supported with symmetric key types."), System.Diagnostics.Tracing.EventLevel.Error);
 
                 if (string.Equals(response.RequestedProofToken.ComputedKeyAlgorithm, _requestSerializationContext.TrustKeyTypes.PSHA1, StringComparison.Ordinal))
                 {
@@ -244,16 +252,16 @@ namespace System.ServiceModel.Federation
                     // If we wish to support it in the future, most of the work will be in the WSTrust serializer;
                     // this code would just have to use protected key's .Secret property to get the key material.
                     if (response.Entropy?.ProtectedKey != null || request.Entropy?.ProtectedKey != null)
-                        throw new NotSupportedException("Protected key entropy is not supported.");
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper( new NotSupportedException("Protected key entropy is not supported."), System.Diagnostics.Tracing.EventLevel.Error);
 
                     // Get issuer and requestor entropy
                     byte[] issuerEntropy = response.Entropy?.BinarySecret?.Data;
                     if (issuerEntropy == null)
-                        throw new InvalidOperationException("Computed key proof tokens require issuer to supply key material via entropy.");
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens require issuer to supply key material via entropy."), System.Diagnostics.Tracing.EventLevel.Error);
 
                     byte[] requestorEntropy = request.Entropy?.BinarySecret?.Data;
                     if (requestorEntropy == null)
-                        throw new InvalidOperationException("Computed key proof tokens require requestor to supply key material via entropy.");
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens require requestor to supply key material via entropy."), System.Diagnostics.Tracing.EventLevel.Error);
 
                     // Get key size
                     int keySizeInBits = response.KeySizeInBits ?? 0; // RSTR key size has precedence
@@ -264,13 +272,13 @@ namespace System.ServiceModel.Federation
                         keySizeInBits = _securityAlgorithmSuite?.DefaultSymmetricKeyLength ?? 0; // Symmetric keys should default to a length cooresponding to the algorithm in use
 
                     if (keySizeInBits == 0)
-                        throw new InvalidOperationException("No key size provided.");
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("No key size provided."), System.Diagnostics.Tracing.EventLevel.Error);
 
                     return new BinarySecretSecurityToken(Psha1KeyGenerator.ComputeCombinedKey(issuerEntropy, requestorEntropy, keySizeInBits));
                 }
                 else
                 {
-                    throw new NotSupportedException("Only PSHA1 computed keys are supported.");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Only PSHA1 computed keys are supported."), System.Diagnostics.Tracing.EventLevel.Error);
                 }
             }
             // If the response does not have a proof token or computed key value, but the request proposed entropy,
@@ -278,7 +286,7 @@ namespace System.ServiceModel.Federation
             else if (request.Entropy != null)
             {
                 if (request.Entropy.ProtectedKey != null)
-                    throw new NotSupportedException("Protected key entropy is not supported.");
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Protected key entropy is not supported."), System.Diagnostics.Tracing.EventLevel.Error);
 
                 if (request.Entropy.BinarySecret != null)
                     return new BinarySecretSecurityToken(request.Entropy.BinarySecret.Data);
@@ -293,21 +301,18 @@ namespace System.ServiceModel.Federation
             if (securityTokenReference == null)
                 return null;
 
-            // this is tricky.
-            // the SecurityTokenReference must be in the wsse namespace of the security binding that will communicate with the relying party.
-            // the 'TokenType must be in wsse 1.1
-            // TODO - need to create to obtain the actual security version that will be used for the relying party.
-            // even though the MessageSecurityVersion is 1.1, the security header is written with 1.0
-            return new GenericXmlSecurityKeyIdentifierClause(WsSecuritySerializer.GetXmlElement(securityTokenReference, new WsSerializationContext(WsTrustVersion.TrustFeb2005)));
+            return new GenericXmlSecurityKeyIdentifierClause(WsSecuritySerializer.CreateXmlElement(securityTokenReference));
         }
 
         /// <summary>
-        /// Calls out to the STS, if necessary to get a token
+        /// Makes a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
         /// </summary>
+        /// <returns>A <see cref="GenericXmlSecurityToken"/>.</returns>
         protected override SecurityToken GetTokenCore(TimeSpan timeout)
         {
             WsTrustRequest request = CreateWsTrustRequest();
             WsTrustResponse trustResponse = GetCachedResponse(request);
+
             if (trustResponse is null)
             {
                 using (var memeoryStream = new MemoryStream())
@@ -319,8 +324,8 @@ namespace System.ServiceModel.Federation
                     var reader = XmlDictionaryReader.CreateTextReader(memeoryStream.ToArray(), XmlDictionaryReaderQuotas.Max);
                     IRequestChannel channel = ChannelFactory.CreateChannel();
                     Message reply = channel.Request(Message.CreateMessage(MessageVersion.Soap12WSAddressing10, _requestSerializationContext.TrustActions.IssueRequest, reader));
+                    SecurityUtils.ThrowIfNegotiationFault(reply, channel.RemoteAddress);
                     trustResponse = serializer.ReadResponse(reply.GetReaderAtBodyContents());
-                    // TODO - we need to handle faults.
                     CacheSecurityTokenResponse(request, trustResponse);
                 }
             }
@@ -357,28 +362,6 @@ namespace System.ServiceModel.Federation
             }
         }
 
-        private WsAddressingVersion GetWsAddressingVersion(MessageSecurityVersion messageSecurityVersion)
-        {
-            if (messageSecurityVersion.SecurityVersion == SecurityVersion.WSSecurity10)
-                return WsAddressingVersion.Addressing200408;
-
-            if (messageSecurityVersion.SecurityVersion == SecurityVersion.WSSecurity11)
-                return WsAddressingVersion.Addressing10;
-
-            throw new NotSupportedException($"Unsupported SecurityVersion: '{MessageSecurityVersion.SecurityVersion}'.");
-        }
-
-        private WsSecurityVersion GetWsSecurityVersion(MessageSecurityVersion messageSecurityVersion)
-        {
-            if (messageSecurityVersion.SecurityVersion == SecurityVersion.WSSecurity10)
-                return WsSecurityVersion.Security10;
-
-            if (messageSecurityVersion.SecurityVersion == SecurityVersion.WSSecurity11)
-                return WsSecurityVersion.Security11;
-
-            throw new NotSupportedException($"Unsupported SecurityVersion: '{MessageSecurityVersion.SecurityVersion}'.");
-        }
-
         private WsTrustVersion GetWsTrustVersion(MessageSecurityVersion messageSecurityVersion)
         {
             if (messageSecurityVersion.TrustVersion == TrustVersion.WSTrust13)
@@ -387,7 +370,7 @@ namespace System.ServiceModel.Federation
             if (messageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
                 return WsTrustVersion.TrustFeb2005;
 
-            throw new NotSupportedException($"Unsupported TrustVersion: '{MessageSecurityVersion.TrustVersion}'.");
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("Unsupported TrustVersion: '{0}'.", MessageSecurityVersion.TrustVersion)), System.Diagnostics.Tracing.EventLevel.Error);
         }
 
         private void InitializeKeyEntropyMode()
@@ -449,7 +432,7 @@ namespace System.ServiceModel.Federation
             set
             {
                 if (!Enum.IsDefined(typeof(SecurityKeyEntropyMode), value))
-                    throw new InvalidEnumArgumentException(nameof(value), (int)value, typeof(SecurityKeyEntropyMode));
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidEnumArgumentException(nameof(value), (int)value, typeof(SecurityKeyEntropyMode)), System.Diagnostics.Tracing.EventLevel.Error);
 
                 _keyEntropyMode = value;
             }
@@ -479,10 +462,10 @@ namespace System.ServiceModel.Federation
 
         /// <summary>
         /// Set initial MessageSecurityVersion based on (in priority order):
-        ///  1. The message security version of the issuer binding's security binding element.
-        ///  2. The provided DefaultMessageSecurityVersion from issued token parameters.
-        ///  3. The message security version of the outer security binding element (from the security token requirement).
-        ///  4. MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11
+        ///  <para>1. The message security version of the issuer binding's security binding element.</para>
+        ///  <para>2. The provided DefaultMessageSecurityVersion from issued token parameters.</para>
+        ///  <para>3. The message security version of the outer security binding element (from the security token requirement).</para>
+        ///  <para>4. MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11.</para>
         /// </summary>
         private void SetInboundSerializationContext()
         {
@@ -504,7 +487,7 @@ namespace System.ServiceModel.Federation
 
             MessageSecurityVersion = messageSecurityVersion;
 
-            _requestSerializationContext = new WsSerializationContext(GetWsTrustVersion(messageSecurityVersion), GetWsAddressingVersion(messageSecurityVersion), GetWsSecurityVersion(messageSecurityVersion));
+            _requestSerializationContext = new WsSerializationContext(GetWsTrustVersion(messageSecurityVersion));
         }
 
         public override bool SupportsTokenCancellation => false;
