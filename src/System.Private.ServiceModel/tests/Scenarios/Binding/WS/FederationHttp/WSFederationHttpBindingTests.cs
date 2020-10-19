@@ -53,6 +53,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
             factory = new ChannelFactory<IWcfService>(federationBinding, serviceEndpointAddress);
 
             factory.Credentials.UserName.UserName = "AUser";
+			// [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a real secret")]
             factory.Credentials.UserName.Password = "MyPassword";
             serviceProxy = factory.CreateChannel();
 
