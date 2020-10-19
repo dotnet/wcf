@@ -218,8 +218,7 @@ stages:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
-            name:  Hosted macOS
-            queue: OSX.1013.Amd64.Open
+            name: Hosted macOS
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
