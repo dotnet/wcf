@@ -110,7 +110,7 @@ namespace System.ServiceModel.Description
             foreach (WsdlNS.ServiceDescription wsdl in _wsdlDocuments)
                 foreach (WsdlNS.PortType wsdlPortType in wsdl.PortTypes)
                 {
-                    if (IsBlackListed(wsdlPortType))
+                    if (IsBockedListed(wsdlPortType))
                         continue;
 
                     ContractDescription contract = ImportWsdlPortType(wsdlPortType, WsdlPortTypeImportOptions.ReuseExistingContracts, ErrorBehavior.DoNotThrowExceptions);
@@ -129,7 +129,7 @@ namespace System.ServiceModel.Description
             ServiceEndpointCollection endpoints = new ServiceEndpointCollection();
             foreach (WsdlNS.Port wsdlPort in this.GetAllPorts())
             {
-                if (IsBlackListed(wsdlPort))
+                if (IsBockedListed(wsdlPort))
                     continue;
 
                 ServiceEndpoint endpoint = ImportWsdlPort(wsdlPort, ErrorBehavior.DoNotThrowExceptions);
@@ -150,7 +150,7 @@ namespace System.ServiceModel.Description
             foreach (WsdlNS.Binding wsdlBinding in this.GetAllBindings())
             {
                 WsdlEndpointConversionContext importedBindingContext = null;
-                if (IsBlackListed(wsdlBinding))
+                if (IsBockedListed(wsdlBinding))
                     continue;
 
                 importedBindingContext = ImportWsdlBinding(wsdlBinding, ErrorBehavior.DoNotThrowExceptions);
@@ -202,7 +202,7 @@ namespace System.ServiceModel.Description
             if (wsdlPortType == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("wsdlPortType");
 
-            if (IsBlackListed(wsdlPortType))
+            if (IsBockedListed(wsdlPortType))
                 throw CreateAlreadyFaultedException(wsdlPortType);
             else
                 ImportWsdlPortType(wsdlPortType, WsdlPortTypeImportOptions.ReuseExistingContracts, ErrorBehavior.RethrowExceptions);
@@ -210,7 +210,7 @@ namespace System.ServiceModel.Description
             ServiceEndpointCollection endpoints = new ServiceEndpointCollection();
 
             foreach (WsdlNS.Binding wsdlBinding in FindBindingsForPortType(wsdlPortType))
-                if (!IsBlackListed(wsdlBinding))
+                if (!IsBockedListed(wsdlBinding))
                     foreach (ServiceEndpoint endpoint in ImportEndpoints(wsdlBinding))
                         endpoints.Add(endpoint);
 
@@ -235,7 +235,7 @@ namespace System.ServiceModel.Description
             ServiceEndpointCollection endpoints = new ServiceEndpointCollection();
 
             foreach (WsdlNS.Binding wsdlBinding in FindBindingsForContract(contract))
-                if (!IsBlackListed(wsdlBinding))
+                if (!IsBockedListed(wsdlBinding))
                     foreach (ServiceEndpoint endpoint in ImportEndpoints(wsdlBinding))
                         endpoints.Add(endpoint);
 
@@ -250,7 +250,7 @@ namespace System.ServiceModel.Description
             if (wsdlBinding == null)
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("wsdlBinding");
 
-            if (IsBlackListed(wsdlBinding))
+            if (IsBockedListed(wsdlBinding))
                 throw CreateAlreadyFaultedException(wsdlBinding);
             else
                 ImportWsdlBinding(wsdlBinding, ErrorBehavior.RethrowExceptions);
@@ -258,7 +258,7 @@ namespace System.ServiceModel.Description
             ServiceEndpointCollection endpoints = new ServiceEndpointCollection();
 
             foreach (WsdlNS.Port wsdlPort in FindPortsForBinding(wsdlBinding))
-                if (!IsBlackListed(wsdlPort))
+                if (!IsBockedListed(wsdlPort))
                 {
                     ServiceEndpoint endpoint = ImportWsdlPort(wsdlPort, ErrorBehavior.DoNotThrowExceptions);
                     if (endpoint != null)
@@ -280,7 +280,7 @@ namespace System.ServiceModel.Description
             ServiceEndpointCollection endpoints = new ServiceEndpointCollection();
 
             foreach (WsdlNS.Port wsdlPort in wsdlService.Ports)
-                if (!IsBlackListed(wsdlPort))
+                if (!IsBockedListed(wsdlPort))
                 {
                     ServiceEndpoint endpoint = ImportWsdlPort(wsdlPort, ErrorBehavior.DoNotThrowExceptions);
                     if (endpoint != null)
@@ -290,14 +290,14 @@ namespace System.ServiceModel.Description
             return endpoints;
         }
 
-        private bool IsBlackListed(WsdlNS.NamedItem item)
+        private bool IsBockedListed(WsdlNS.NamedItem item)
         {
             return _importErrors.ContainsKey(item);
         }
 
         private ContractDescription ImportWsdlPortType(WsdlNS.PortType wsdlPortType, WsdlPortTypeImportOptions importOptions, ErrorBehavior errorBehavior)
         {
-            if (IsBlackListed(wsdlPortType))
+            if (IsBockedListed(wsdlPortType))
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateAlreadyFaultedException(wsdlPortType));
 
 
@@ -358,7 +358,7 @@ namespace System.ServiceModel.Description
         private WsdlEndpointConversionContext ImportWsdlBinding(WsdlNS.Binding wsdlBinding, ErrorBehavior errorBehavior)
         {
             //Check for exisiting exception
-            if (IsBlackListed(wsdlBinding))
+            if (IsBockedListed(wsdlBinding))
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateAlreadyFaultedException(wsdlBinding));
 
             XmlQualifiedName wsdlBindingQName = new XmlQualifiedName(wsdlBinding.Name, wsdlBinding.ServiceDescription.TargetNamespace);
@@ -437,7 +437,7 @@ namespace System.ServiceModel.Description
 
         private ServiceEndpoint ImportWsdlPort(WsdlNS.Port wsdlPort, ErrorBehavior errorBehavior)
         {
-            if (IsBlackListed(wsdlPort))
+            if (IsBockedListed(wsdlPort))
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(CreateAlreadyFaultedException(wsdlPort));
 
 
