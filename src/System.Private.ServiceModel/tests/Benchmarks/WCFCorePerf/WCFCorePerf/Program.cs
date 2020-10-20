@@ -16,6 +16,7 @@ namespace WCFCorePerf
         public const string ReportingUrl = "reportingurl";
         public const string PerfMeasurementDuration = "perfmeasurementduration";
     }
+
     public enum TestBinding { BasicHttp, WSHttp, NetTcp }
 
     class Program

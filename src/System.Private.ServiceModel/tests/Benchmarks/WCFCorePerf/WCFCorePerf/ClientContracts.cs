@@ -17,6 +17,6 @@ namespace WCFCorePerf
         string GetData(int value);
 
         [OperationContract]
-        Task<string> GetDataAsync(int value);      
+        Task<string> GetDataAsync(int value);
     }
 }

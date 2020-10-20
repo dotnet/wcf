@@ -8,14 +8,16 @@ jobs:
     waitForExit: true
     variables:
       Duration: 300
-    arguments: " binding:{{Binding}} serviceurl:{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
+    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{Server}}{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
 
 scenarios:
   BasicHttpWithBuffered:    
     load:
       job: WCFCorePerf
       variables:
-        Url: http://wcfcranksrv01.redmond.corp.microsoft.com/SayHello/SayHello.svc
+        Server: /
+        Protocol: Http
+        Url: /SayHello/SayHello.svc
         Binding: BasicHttp
         TransferMode: Buffered
         serverPort: 8231
@@ -24,7 +26,9 @@ scenarios:
     load:
       job: WCFCorePerf
       variables:
-        Url: http://wcfcranksrv01.redmond.corp.microsoft.com/SayHello/SayHello.svc
+        Server: /
+        Protocol: Http
+        Url: /SayHello/SayHello.svc
         Binding: BasicHttp
         TransferMode: Default
         serverPort: 8231
@@ -33,7 +37,9 @@ scenarios:
     load:
       job: WCFCorePerf
       variables:
-        Url: https://wcfcranksrv01.redmond.corp.microsoft.com/wcfservicewshttp/service.svc
+        Server: /
+        Protocol: Https
+        Url: /wcfservicewshttp/service.svc
         Binding: WSHttp
         serverPort: 8231
         path: /
@@ -41,7 +47,9 @@ scenarios:
     load:
       job: WCFCorePerf
       variables:
-        Url: net.tcp://wcfcranksrv01.redmond.corp.microsoft.com/WcfNetTcpService/Service1.svc
+        Server: /
+        Protocol: net.tcp
+        Url: /WcfNetTcpService/Service1.svc
         Binding: NetTcp
         serverPort: 8231
         path: /

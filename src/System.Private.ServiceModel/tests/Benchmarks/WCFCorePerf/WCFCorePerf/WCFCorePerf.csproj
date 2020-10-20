@@ -11,4 +11,5 @@
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.7.*" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.7.*" />
   </ItemGroup>
+  
 </Project>

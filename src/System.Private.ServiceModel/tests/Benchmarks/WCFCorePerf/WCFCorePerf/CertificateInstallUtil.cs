@@ -12,7 +12,6 @@ namespace WCFCorePerf
         public static X509Certificate2 InstallClientCertificateFromServer(string serviceUrl, string cerResoure)
         {
             X509KeyStorageFlags storageFlags = X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet;
-
             X509Certificate2 clientCertificate = new X509Certificate2(GetResourceFromServiceAsByteArray(serviceUrl, cerResoure), "test", storageFlags);
             return InstallCertificateToTrustedPeopleStore(clientCertificate);
         }
@@ -38,16 +37,11 @@ namespace WCFCorePerf
             }
             catch
             {
-                // Exceptions installing the root certificate are captured and
-                // will be reported if it is requested.  But allow the attempt
-                // to install the client certificate to succeed or fail independently.
+               
             }
 
             try
-            {
-                // Once only, we interrogate the service utility endpoint
-                // for the client certificate and install it locally if it
-                // is not already in the store.
+            {               
                 var clientCertificate = InstallClientCertificateFromServer(serviceUrl, cerResoure);
             }
             catch
@@ -111,7 +105,6 @@ namespace WCFCorePerf
                             exceptionString.AppendFormat("while attempting to install cert with thumbprint '{1}'.", Environment.NewLine, certificate.Thumbprint);
                             exceptionString.AppendFormat("{0}This is usually due to permissions issues if writing to the LocalMachine location", Environment.NewLine);
                             exceptionString.AppendFormat("{0}Try running the test with elevated or superuser permissions.", Environment.NewLine);
-
                             throw new InvalidOperationException(exceptionString.ToString(), inner);
                         }
                     }

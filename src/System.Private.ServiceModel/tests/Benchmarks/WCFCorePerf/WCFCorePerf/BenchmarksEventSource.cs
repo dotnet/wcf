@@ -14,6 +14,7 @@ namespace Benchmarks
         internal BenchmarksEventSource()
             : this("Benchmarks")
         {
+
         }
 
         // Used for testing
