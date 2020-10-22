@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using Benchmarks;
+using Microsoft.Crank.EventSources;
 
 namespace WCFCorePerf
 {
@@ -29,6 +29,8 @@ namespace WCFCorePerf
 
         static void Main(string[] args)
         {
+            Console.WriteLine("WCFCorePerf Client.");
+
             Program test = new Program();
 
             if (test.ProcessRunOptions(args))
