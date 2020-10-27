@@ -9,7 +9,7 @@ using System.Net.Security;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Name={_name}, Action={_action}, DetailType={_detailType}")]
+    [DebuggerDisplay("Name={_name}, Action={Action}, DetailType={DetailType}")]
     public class FaultDescription
     {
         private XmlName _name;

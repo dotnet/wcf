@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Action={_action}, Direction={_direction}, MessageType={_messageType}")]
+    [DebuggerDisplay("Action={Action}, Direction={Direction}, MessageType={MessageType}")]
     public class MessageDescription
     {
         private static Type s_typeOfUntypedMessage;
