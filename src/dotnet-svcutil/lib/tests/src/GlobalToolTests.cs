@@ -67,17 +67,17 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrapGlobal";
             TestFixture();
-            InitializeGlobal(testCaseName, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeGlobal(testCaseName, sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
             this_TestCaseBootstrapDir = this_TestCaseOutputDir;
             // the boostrapper won't delete the folder if not created by it or with the -v Debug option 
             Directory.CreateDirectory(Path.Combine(this_TestCaseOutputDir, "SvcutilBootstrapper"));
 
-            var uri = $"\"{Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl")}\"";
+            var uri = $"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
-            var tr = $"-r \"{{Newtonsoft.Json, *}}\" -bd {this_TestCaseBootstrapDir}";
-            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ..\\{testCaseName} -n \"*, {testCaseName}_NS\"";
+            var tr = $"-r \"{{Newtonsoft.Json, *}}\" -bd {this_TestCaseBootstrapDir.Replace("\\", "/")}";
+            var options = $"{uri.Replace("\\", "/")} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"*, {testCaseName}_NS\"";
 
             TestGlobalSvcutil(options);
         }
@@ -87,6 +87,11 @@ namespace SvcutilTest
         [InlineData("FullFramework")]
         public void FullFramework(string testCaseName)
         {
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
+            {
+                return;
+            }
+
             this_TestCaseName = "FullFramework";
             TestFixture();
             InitializeGlobal(testCaseName, targetFramework: "net46");
@@ -103,16 +108,16 @@ namespace SvcutilTest
 
         [Trait("Category", "BVT")]
         [Theory]
-        [InlineData("netcoreapp2.0", "3.1.101", "-edb")]
-        [InlineData("netcoreapp2.1", "3.1.101", "-elm")]
-        public void ParamsFiles_SDK_TFM(string targetFramework, string sdkVersion, string extraOptions)
+        [InlineData("netcoreapp2.0", "-edb")]
+        [InlineData("netcoreapp2.1", "-elm")]
+        public void ParamsFiles_SDK_TFM(string targetFramework, string extraOptions)
         {
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
-            var testCaseName = $"TF{targetFramework}_SDK{sdkVersion}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework, sdkVersion);
+            var testCaseName = $"TF{targetFramework}".Replace(".", "_");
+            InitializeGlobal(testCaseName, targetFramework, g_SdkVersion);
 
-            var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "simple.wsdl")}";
+            var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";
 
             // generate params file from options

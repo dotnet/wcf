@@ -9,8 +9,8 @@
     <Reference Include="dotnet-svcutil-lib">
       <HintPath>$repositoryRoot$/.packages/dotnet-svcutil-lib/99.99.99/lib/netstandard2.0/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
-    <Reference Include="binlib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/binlib.dll</HintPath>
+    <Reference Include="BinLib">
+      <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/BinLib.dll</HintPath>
     </Reference>
     <Reference Include="TypesLib">
       <HintPath>$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/TypesLib.dll</HintPath>

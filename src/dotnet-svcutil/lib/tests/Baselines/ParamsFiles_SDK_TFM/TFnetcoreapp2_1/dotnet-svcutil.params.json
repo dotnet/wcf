@@ -3,16 +3,16 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "../../../../../src/dotnet-svcutil/lib/tests-old/TestCases/wsdl/Simple.wsdl"
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/Simple.wsdl"
     ],
     "namespaceMappings": [
-      "*, TFnetcoreapp9999_JAN_9_9_9_NS"
+      "*, TFnetcoreapp2_1_NS"
     ],
     "outputFile": "Reference.cs",
     "references": [
       "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}"
     ],
-    "targetFramework": "netcoreapp2.0",
+    "targetFramework": "N.N",
     "typeReuseMode": "Specified"
   }
 }

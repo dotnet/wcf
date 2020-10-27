@@ -6,7 +6,7 @@
       "../../../../../src/dotnet-svcutil/lib/tests/TestCases/metadataEpr/epr/http___WcfProjectNServer_WcfProjectNService_WcfProjectNService.svc.xml"
     ],
     "namespaceMappings": [
-      "*, MetadataEpr_NS"
+      "*, metadataEpr_NS"
     ],
     "outputFile": "Reference.cs",
     "targetFramework": "N.N",

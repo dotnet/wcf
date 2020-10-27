@@ -10,7 +10,7 @@ namespace UpdateServiceRefOptionsFullPath
         static int Main(string[] args)
         {
             var re = new Regex(@"'[^\""]*'|[^\""^\s]+|""[^\""]*""");
-            string optstring = @"-u $resultPath$\TestResults\UpdateServiceRefOptions\UpdateServiceRefOptionsFullPath/UpdateServiceRefOptionsFullPath/dotnet-svcutil.params.json -v minimal";
+            string optstring = @"-u $resultPath$/TestResults/UpdateServiceRefOptions/UpdateServiceRefOptionsFullPath/UpdateServiceRefOptionsFullPath/dotnet-svcutil.params.json -v minimal";
             string[] opts = re.Matches(optstring).Cast<Match>().Select(m => m.Value).ToArray();
             return Tool.Main(opts);
         }

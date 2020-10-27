@@ -10,9 +10,9 @@
     ],
     "outputFile": "Reference.cs",
     "references": [
-      "$resultPath$//TestResults//TypeReuse//TypeReuse20//bin//Debug//netcoreapp2.0//binlib.dll",
-      "$resultPath$//TestResults//TypeReuse//TypeReuse20//bin//Debug//netcoreapp2.0//TypesLib.dll",
       "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
+      "$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/BinLib.dll",
+      "$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/TypesLib.dll",
       "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
       "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
       "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",

@@ -3,7 +3,7 @@
   "version": "1.0.4-prerelease-40343.1313",
   "options": {
     "inputs": [
-      "$testCasesPath$/wsdl/simple.wsdl"
+      "$testCasesPath$/wsdl/Simple.wsdl"
     ],
     "collectionTypes": [
       "System.Collections.Generic.List`1",

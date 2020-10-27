@@ -64,6 +64,18 @@ namespace SvcutilTest
             }
         }
 
+        internal static string buildType
+        {
+            get
+            {
+#if DEBUG
+                return "Debug";
+#else
+                return "Release";
+#endif
+            }
+        }
+
         // special-name TestGroup projects to identify them when updating baselines as they are not not tracked.
         // because they are not specific to any test.
         protected string this_TestGroupProjectName { get { return $"{this_TestCaseName}_TestGroup.csproj"; } }
@@ -117,10 +129,16 @@ namespace SvcutilTest
 
             var vsTestsRoot = GetSTestRootDir();
 
-            g_SdkVersion = "3.1.100";
+            g_SdkVersion = "5.0.100";
+            ProcessRunner.ProcessResult procResult = ProcessRunner.TryRunAsync("dotnet", "--version", Directory.GetCurrentDirectory(), null, new CancellationToken()).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            if (procResult.ExitCode == 0)
+            {
+                g_SdkVersion = procResult.OutputText.Trim();
+            }
 
             g_ServiceUrl = "http://wcfcoresrv5.cloudapp.net/wcftestservice1";
-            g_TestOutputDir = Path.Combine(g_RepositoryRoot, "artifacts\\TestOutput");
+            g_TestOutputDir = Path.Combine(g_RepositoryRoot, "artifacts", "TestOutput");
             g_TestResultsDir = Path.Combine(g_TestOutputDir, "TestResults");
             g_TestBootstrapDir = Path.Combine(g_TestOutputDir, "TestBootstrap");
             g_TestCasesDir = Path.Combine(vsTestsRoot, "TestCases");
@@ -155,9 +173,14 @@ namespace SvcutilTest
 
             // Uninstall the global tool and install the current version.
             var currentDirectory = Directory.GetCurrentDirectory();
-            var ret = ProcessRunner.TryRunAsync("dotnet", "tool uninstall -g dotnet-svcutil", currentDirectory, null, CancellationToken.None).Result;
-            ret = ProcessRunner.TryRunAsync("dotnet", $"tool install --global --add-source {g_RepositoryRoot}\\artifacts\\packages\\Release\\Shipping dotnet-svcutil --version {g_SvcutilPkgVersion}", currentDirectory, null, CancellationToken.None).Result;
-            //Assert.True(false, $"currentDirectory: {currentDirectory}, command: dotnet tool install --global --add-source {g_RepositoryRoot}\\artifacts\\packages\\Release\\Shipping dotnet-svcutil --version {g_SvcutilPkgVersion}");
+            ProcessRunner.ProcessResult ret = ProcessRunner.TryRunAsync("dotnet", "tool uninstall -g dotnet-svcutil", currentDirectory, null, CancellationToken.None).Result;
+            string pkgPath = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "Shipping");
+            if (!Directory.Exists(pkgPath) || !Directory.GetFiles(pkgPath, "dotnet-svcutil-lib*.nupkg").Any())
+            {
+                pkgPath = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "NonShipping");
+            }
+            Assert.True(Directory.GetFiles(pkgPath, "dotnet-svcutil-lib.*.nupkg").Any(), $"dotnet-svcutil-lib*.nupkg not found under {pkgPath}!");
+            ret = ProcessRunner.TryRunAsync("dotnet", $"tool install --global --add-source {pkgPath} dotnet-svcutil --version {g_SvcutilPkgVersion}", currentDirectory, null, CancellationToken.None).Result;
             Assert.True(ret.ExitCode == 0, "Could not install the global tool." + Environment.NewLine + ret.OutputText);
         }
 
@@ -260,7 +283,7 @@ namespace SvcutilTest
         protected string AppendCommonOptions(string options)
         {
             // add the namespace option to avoid type clashing in the generated code and be able to compile the project when more than one service ref is added.
-            options = $"{options} -v Minimal -d ..\\{this_TestCaseName} -n \"\"*,{this_TestCaseName}_NS\"\" -ntr";
+            options = $"{options} -v Minimal -d ../{this_TestCaseName} -n \"\"*,{this_TestCaseName}_NS\"\" -ntr";
             return options;
         }
 
@@ -500,7 +523,7 @@ namespace SvcutilTest
             var vstestDir = Directory.GetCurrentDirectory();
             if (!Directory.Exists(Path.Combine(vstestDir, "TestCases")))
             {
-                vstestDir = new DirectoryInfo(Path.Combine(g_RepositoryRoot, @"src\dotnet-svcutil\lib\tests")).FullName;
+                vstestDir = new DirectoryInfo(Path.Combine(g_RepositoryRoot, "src", "dotnet-svcutil", "lib", "tests")).FullName;
                 Assert.True(Directory.Exists(vstestDir), $"{nameof(vstestDir)} is not initialized!");
             }
             return vstestDir;
@@ -516,7 +539,12 @@ namespace SvcutilTest
 
                 if (nugetFiles.Length == 0)
                 {
-                    var binDir = Path.Combine(g_RepositoryRoot, @"artifacts\Packages\Release\Shipping");
+                    var binDir = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "Shipping");
+                    if (!Directory.Exists(binDir) || !Directory.GetFiles(binDir, "dotnet-svcutil-lib.*.nupkg").Any())
+                    {
+                        binDir = Path.Combine(g_RepositoryRoot, "artifacts", "packages", buildType, "NonShipping");
+                    }
+
                     DirectoryInfo binDirectory = new DirectoryInfo(binDir);
 
                     FileInfo nugetFile = binDirectory.GetFiles("dotnet-svcutil-lib.*.nupkg", SearchOption.AllDirectories).Where(f => !f.Name.Contains("symbols")).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();

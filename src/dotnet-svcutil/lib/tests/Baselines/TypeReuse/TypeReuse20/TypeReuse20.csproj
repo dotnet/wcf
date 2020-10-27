@@ -6,8 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dotnet-svcutil-lib" Version="99.99.99" />
-    <Reference Include="binlib">
-      <HintPath>$resultPath$/TestResults/TypeReuse/BinLib/bin/debug/netstandard1.3/binlib.dll</HintPath>
+    <Reference Include="BinLib">
+      <HintPath>$resultPath$/TestResults/TypeReuse/BinLib/bin/Debug/netstandard1.3/BinLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

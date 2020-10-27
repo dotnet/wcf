@@ -47,14 +47,14 @@ namespace SvcutilTest
             Assert.False(string.IsNullOrWhiteSpace(this_TestCaseName), $"{nameof(this_TestCaseName)} not initialized!");
             Assert.False(options == null, $"{nameof(options)} not initialized!");
 
-            // thi sets the current directory to the project's.
+            // this sets the current directory to the project's.
             ProcessRunner.ProcessResult processResult = this_TestCaseProject.RunSvcutil(options, expectSuccess, this_TestCaseLogger);
 
             _ = $"{processResult.OutputText}{Environment.NewLine}{((TestLogger)this_TestCaseLogger)}";
 
             ValidateTest(options, this_TestCaseProject.DirectoryPath, processResult.ExitCode, processResult.OutputText, expectSuccess);
         }
-        
+
         [Theory]
         [Trait("Category", "BVT")]
         [InlineData("silent")]
@@ -83,17 +83,17 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TFMBootstrap";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             // set bootstrapper dir the same as the test output dir to validate generated files.
             this_TestCaseBootstrapDir = this_TestCaseOutputDir;
             // the boostrapper won't delete the folder if not created by it or with the -v Debug option 
             Directory.CreateDirectory(Path.Combine(this_TestCaseOutputDir, "SvcutilBootstrapper"));
 
-            var uri = $"\"\"{Path.Combine(g_TestCasesDir, "wsdl/simple.wsdl")}\"\"";
+            var uri = $"\"\"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}\"\"";
             var tf = string.IsNullOrEmpty(targetFramework) ? string.Empty : $"-tf {targetFramework}";
-            var tr = $"-r \"\"{{Newtonsoft.Json,*}}\"\" -bd {this_TestCaseBootstrapDir}";
-            var options = $"{uri} {tf} {tr} -nl -tc global -v minimal -d ..\\{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";
+            var tr = $"-r \"\"{{Newtonsoft.Json,*}}\"\" -bd {this_TestCaseBootstrapDir.Replace("\\", "/")}";
+            var options = $"{uri.Replace("\\", "/")} {tf} {tr} -nl -tc global -v minimal -d ../{testCaseName} -n \"\"*,{testCaseName}_NS\"\"";
 
             TestSvcutil(options);
         }
@@ -139,7 +139,7 @@ namespace SvcutilTest
             this_TestCaseName = "ErrorScenarios";
             TestFixture();
             InitializeE2E(testCaseName);
-            
+
             options = options
                 .Replace("$serviceUrl$", g_ServiceUrl)
                 .Replace("$testCaseBootstratDir$", $"\"\"{this_TestCaseBootstrapDir}\"\"")
@@ -194,7 +194,7 @@ namespace SvcutilTest
             InitializeE2E(testCaseName);
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl")}";
-            var dir = $"-d ..\\{ testCaseName}";
+            var dir = $"-d ../{ testCaseName}";
 
             TestSvcutil(dir + " " + url + " " + options, expectSuccess);
         }
@@ -206,11 +206,11 @@ namespace SvcutilTest
         {
             this_TestCaseName = "TypeReuse";
             TestFixture();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: targetFramework, sdkVersion: g_SdkVersion);
 
             var uri = SetupProjectDependencies();
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
-            var options = $"{uri} -nl -v minimal -d {outDir} -n \"\"*,{testCaseName}_NS\"\" -bd {this_TestCaseBootstrapDir}";
+            var options = $"{uri} -nl -v minimal -d {outDir.Replace("\\", "/")} -n \"\"*,{testCaseName}_NS\"\" -bd {this_TestCaseBootstrapDir.Replace("\\", "/")}";
 
             TestSvcutil(options, expectSuccess: true);
         }
@@ -219,7 +219,7 @@ namespace SvcutilTest
         {
             var libProjPath = Path.Combine(this_TestGroupOutputDir, "TypesLib", "TypesLib.csproj");
             var binProjPath = Path.Combine(this_TestGroupOutputDir, "BinLib", "BinLib.csproj");
-            var assemblyPath = Path.Combine(Path.GetDirectoryName(binProjPath), "bin/debug/netstandard1.3/binlib.dll");
+            var assemblyPath = Path.Combine(Path.GetDirectoryName(binProjPath), "bin", "Debug", "netstandard1.3", "BinLib.dll");
 
             if (!File.Exists(assemblyPath))
             {
@@ -260,7 +260,7 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefBasic";
             TestFixture();
             var testCaseName = referenceFolderName;
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName);
 
@@ -296,9 +296,9 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefOptions";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
-            cmdOptions = cmdOptions?.Replace("$testCaseOutputDir$", this_TestCaseOutputDir);
+            cmdOptions = cmdOptions?.Replace("$testCaseOutputDir$", this_TestCaseOutputDir.Replace("\\", "/"));
             var paramsFile = SetupServiceReferenceFolder("dotnet-svcutil.params.json", referenceFolderName, refCount, addNamespace: true);
 
             // disable type reuse (bootstrapping) to speed up test.
@@ -319,7 +319,7 @@ namespace SvcutilTest
             this_TestCaseName = "UpdateServiceRefWCFCS";
             TestFixture();
             var testCaseName = referenceFolderName.Replace(" ", "_").Split('/').Last();
-            InitializeE2E(testCaseName, createUniqueProject: true, targetFramework: "netcoreapp3.1", sdkVersion: "3.1.101");
+            InitializeE2E(testCaseName, createUniqueProject: true, sdkVersion: g_SdkVersion);
 
             var paramsFile = SetupServiceReferenceFolder("ConnectedService.json", referenceFolderName, refCount: 1, addNamespace: false);
 

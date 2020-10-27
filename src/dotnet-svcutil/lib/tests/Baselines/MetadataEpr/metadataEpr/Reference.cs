@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MetadataEpr_NS
+namespace metadataEpr_NS
 {
     using System.Runtime.Serialization;
     
@@ -373,7 +373,7 @@ namespace MetadataEpr_NS
         
         private string ErrorMessageField;
         
-        private MetadataEpr_NS.HttpStatusCode HttpStatusCodeField;
+        private metadataEpr_NS.HttpStatusCode HttpStatusCodeField;
         
         private string ResultField;
         
@@ -404,7 +404,7 @@ namespace MetadataEpr_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataEpr_NS.HttpStatusCode HttpStatusCode
+        public metadataEpr_NS.HttpStatusCode HttpStatusCode
         {
             get
             {
@@ -587,9 +587,9 @@ namespace MetadataEpr_NS
         
         private string ErrorMessageField;
         
-        private MetadataEpr_NS.HttpStatusCode HttpStatusCodeField;
+        private metadataEpr_NS.HttpStatusCode HttpStatusCodeField;
         
-        private MetadataEpr_NS.UserGamePlay[] ResultField;
+        private metadataEpr_NS.UserGamePlay[] ResultField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ErrorCode
@@ -618,7 +618,7 @@ namespace MetadataEpr_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataEpr_NS.HttpStatusCode HttpStatusCode
+        public metadataEpr_NS.HttpStatusCode HttpStatusCode
         {
             get
             {
@@ -631,7 +631,7 @@ namespace MetadataEpr_NS
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataEpr_NS.UserGamePlay[] Result
+        public metadataEpr_NS.UserGamePlay[] Result
         {
             get
             {
@@ -794,7 +794,7 @@ namespace MetadataEpr_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MetadataEpr_NS.IWcfProjectNService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="metadataEpr_NS.IWcfProjectNService")]
     public interface IWcfProjectNService
     {
         
@@ -808,38 +808,38 @@ namespace MetadataEpr_NS
         System.Threading.Tasks.Task<string> EchoAsync(string message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/EchoComplex", ReplyAction="http://tempuri.org/IWcfProjectNService/EchoComplexResponse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.ComplexCompositeType> EchoComplexAsync(MetadataEpr_NS.ComplexCompositeType message);
+        System.Threading.Tasks.Task<metadataEpr_NS.ComplexCompositeType> EchoComplexAsync(metadataEpr_NS.ComplexCompositeType message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/TestFault", ReplyAction="http://tempuri.org/IWcfProjectNService/TestFaultResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataEpr_NS.FaultDetail), Action="http://tempuri.org/IWcfProjectNService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(metadataEpr_NS.FaultDetail), Action="http://tempuri.org/IWcfProjectNService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://schemas.wcf.projectn.com/wcfnamespace")]
         System.Threading.Tasks.Task TestFaultAsync(string faultMsg);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException", ReplyAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationExceptionResponse")]
         System.Threading.Tasks.Task ThrowInvalidOperationExceptionAsync(string message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.CompositeType> GetDataUsingDataContractAsync(MetadataEpr_NS.CompositeType composite);
+        System.Threading.Tasks.Task<metadataEpr_NS.CompositeType> GetDataUsingDataContractAsync(metadataEpr_NS.CompositeType composite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders", ReplyAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeadersResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, string>> ValidateMessagePropertyHeadersAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/UserGetAuthToken", ReplyAction="http://tempuri.org/IWcfProjectNService/UserGetAuthTokenResponse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.ResultOfstring> UserGetAuthTokenAsync(string liveId);
+        System.Threading.Tasks.Task<metadataEpr_NS.ResultOfstring> UserGetAuthTokenAsync(string liveId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList", ReplyAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetListResponse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.ResultOfArrayOfUserGamePlay> UserGamePlayGetListAsync(string gameKey, string keys);
+        System.Threading.Tasks.Task<metadataEpr_NS.ResultOfArrayOfUserGamePlay> UserGamePlayGetListAsync(string gameKey, string keys);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply", ReplyAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyResponse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.ReplyBankingData> MessageContractRequestReplyAsync(MetadataEpr_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<metadataEpr_NS.ReplyBankingData> MessageContractRequestReplyAsync(metadataEpr_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped", ReplyAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrappedRespo" +
             "nse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(MetadataEpr_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<metadataEpr_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(metadataEpr_NS.RequestBankingData request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty", ReplyAction="http://tempuri.org/IWcfProjectNService/EchoHttpRequestMessagePropertyResponse")]
-        System.Threading.Tasks.Task<MetadataEpr_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync();
+        System.Threading.Tasks.Task<metadataEpr_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync();
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -924,13 +924,13 @@ namespace MetadataEpr_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IWcfProjectNServiceChannel : MetadataEpr_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
+    public interface IWcfProjectNServiceChannel : metadataEpr_NS.IWcfProjectNService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class WcfProjectNServiceClient : System.ServiceModel.ClientBase<MetadataEpr_NS.IWcfProjectNService>, MetadataEpr_NS.IWcfProjectNService
+    public partial class WcfProjectNServiceClient : System.ServiceModel.ClientBase<metadataEpr_NS.IWcfProjectNService>, metadataEpr_NS.IWcfProjectNService
     {
         
         /// <summary>
@@ -981,7 +981,7 @@ namespace MetadataEpr_NS
             return base.Channel.EchoAsync(message);
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.ComplexCompositeType> EchoComplexAsync(MetadataEpr_NS.ComplexCompositeType message)
+        public System.Threading.Tasks.Task<metadataEpr_NS.ComplexCompositeType> EchoComplexAsync(metadataEpr_NS.ComplexCompositeType message)
         {
             return base.Channel.EchoComplexAsync(message);
         }
@@ -996,7 +996,7 @@ namespace MetadataEpr_NS
             return base.Channel.ThrowInvalidOperationExceptionAsync(message);
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.CompositeType> GetDataUsingDataContractAsync(MetadataEpr_NS.CompositeType composite)
+        public System.Threading.Tasks.Task<metadataEpr_NS.CompositeType> GetDataUsingDataContractAsync(metadataEpr_NS.CompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
@@ -1006,27 +1006,27 @@ namespace MetadataEpr_NS
             return base.Channel.ValidateMessagePropertyHeadersAsync();
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.ResultOfstring> UserGetAuthTokenAsync(string liveId)
+        public System.Threading.Tasks.Task<metadataEpr_NS.ResultOfstring> UserGetAuthTokenAsync(string liveId)
         {
             return base.Channel.UserGetAuthTokenAsync(liveId);
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.ResultOfArrayOfUserGamePlay> UserGamePlayGetListAsync(string gameKey, string keys)
+        public System.Threading.Tasks.Task<metadataEpr_NS.ResultOfArrayOfUserGamePlay> UserGamePlayGetListAsync(string gameKey, string keys)
         {
             return base.Channel.UserGamePlayGetListAsync(gameKey, keys);
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.ReplyBankingData> MessageContractRequestReplyAsync(MetadataEpr_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<metadataEpr_NS.ReplyBankingData> MessageContractRequestReplyAsync(metadataEpr_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(MetadataEpr_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<metadataEpr_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(metadataEpr_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyNotWrappedAsync(request);
         }
         
-        public System.Threading.Tasks.Task<MetadataEpr_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync()
+        public System.Threading.Tasks.Task<metadataEpr_NS.TestHttpRequestMessageProperty> EchoHttpRequestMessagePropertyAsync()
         {
             return base.Channel.EchoHttpRequestMessagePropertyAsync();
         }
