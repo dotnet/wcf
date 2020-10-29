@@ -38,10 +38,10 @@ namespace WCFCorePerf
                 var startTime = DateTime.Now;
                 int request = 0;
 
-                BenchmarksEventSource.Log.Metadata("channelopen", "max", "max", "Channel Open Time (ms)", "Time to Open Channel in ms", "n0");
-                BenchmarksEventSource.Log.Metadata("firstrequest", "max", "max", "First Request (ms)", "Time to first request in ms", "n0");
-                BenchmarksEventSource.Log.Metadata("bombardier/requests", "max", "sum", "Requests (" + test._paramPerfMeasurementDuration.TotalMilliseconds + " ms)", "Total number of requests", "n0");
-                BenchmarksEventSource.Log.Metadata("bombardier/rps/max", "max", "sum", "Requests/sec (max)", "Max requests per second", "n0");
+                BenchmarksEventSource.Log.Metadata("wcfcoreperf/channelopen", "max", "max", "Channel Open Time (ms)", "Time to Open Channel in ms", "n0");
+                BenchmarksEventSource.Log.Metadata("wcfcoreperf/firstrequest", "max", "max", "First Request (ms)", "Time to first request in ms", "n0");
+                BenchmarksEventSource.Log.Metadata("wcfcoreperf/requests", "max", "sum", "Requests (" + test._paramPerfMeasurementDuration.TotalMilliseconds + " ms)", "Total number of requests", "n0");
+                BenchmarksEventSource.Log.Metadata("wcfcoreperf/rps/max", "max", "sum", "Requests/sec (max)", "Max requests per second", "n0");
 
                 switch (test._paramBinding)
                 {
@@ -70,13 +70,13 @@ namespace WCFCorePerf
                         var stopwatchChannelOpen = new Stopwatch();
                         stopwatchChannelOpen.Start();
                         factory.Open();
-                        BenchmarksEventSource.Measure("channelopen", stopwatchChannelOpen.ElapsedMilliseconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/channelopen", stopwatchChannelOpen.ElapsedMilliseconds);
 
                         var client = factory.CreateChannel();
                         var stopwatchFirstReq = new Stopwatch();
                         stopwatchFirstReq.Start();
                         var result = client.HelloAsync("helloworld").Result;
-                        BenchmarksEventSource.Measure("firstrequest", stopwatchFirstReq.ElapsedMilliseconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchFirstReq.ElapsedMilliseconds);
 
                         while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
                         {
@@ -84,8 +84,8 @@ namespace WCFCorePerf
                             request++;
                         }
 
-                        BenchmarksEventSource.Measure("bombardier/requests", request);
-                        BenchmarksEventSource.Measure("bombardier/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
+                        BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
                         break;
                     case TestBinding.WSHttp:                        
                         CertificateInstallUtil.EnsureClientCertificateInstalled(test._paramServiceUrl, "machinecert");                        
@@ -98,13 +98,13 @@ namespace WCFCorePerf
                         var stopwatchWSHttpChannelOpen = new Stopwatch();
                         stopwatchWSHttpChannelOpen.Start();
                         wsHttpFactory.Open();
-                        BenchmarksEventSource.Measure("channelopen", stopwatchWSHttpChannelOpen.ElapsedMilliseconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/channelopen", stopwatchWSHttpChannelOpen.ElapsedMilliseconds);
 
                         var clientWSHttp = wsHttpFactory.CreateChannel();
                         var stopwatchWSHttpFirstReq = new Stopwatch();
                         stopwatchWSHttpFirstReq.Start();
                         Console.WriteLine(clientWSHttp.HelloAsync("helloworld").Result);
-                        BenchmarksEventSource.Measure("firstrequest", stopwatchWSHttpFirstReq.ElapsedMilliseconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchWSHttpFirstReq.ElapsedMilliseconds);
 
                         while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
                         {
@@ -112,8 +112,8 @@ namespace WCFCorePerf
                             request++;
                         }
 
-                        BenchmarksEventSource.Measure("bombardier/requests", request);
-                        BenchmarksEventSource.Measure("bombardier/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
+                        BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
                         break;
                     case TestBinding.NetTcp:
                         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
@@ -122,13 +122,13 @@ namespace WCFCorePerf
                         var stopwatchNetTcpChannelOpen = new Stopwatch();
                         stopwatchNetTcpChannelOpen.Start();
                         netTcpFactory.Open();
-                        BenchmarksEventSource.Measure("channelopen", stopwatchNetTcpChannelOpen.ElapsedMilliseconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/channelopen", stopwatchNetTcpChannelOpen.ElapsedMilliseconds);
 
                         var clientNetTcp = netTcpFactory.CreateChannel();
                         var stopwatchNetTcpFirstReq = new Stopwatch();
                         stopwatchNetTcpFirstReq.Start();
                         var netTcpResult = clientNetTcp.GetDataAsync(1).Result;
-                        BenchmarksEventSource.Measure("firstrequest", stopwatchNetTcpFirstReq.ElapsedMilliseconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchNetTcpFirstReq.ElapsedMilliseconds);
 
                         while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
                         {
@@ -136,8 +136,8 @@ namespace WCFCorePerf
                             request++;
                         }
 
-                        BenchmarksEventSource.Measure("bombardier/requests", request);
-                        BenchmarksEventSource.Measure("bombardier/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
+                        BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
+                        BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
                         break;
                 }
             }

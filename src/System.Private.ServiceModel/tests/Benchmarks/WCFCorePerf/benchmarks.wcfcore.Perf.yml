@@ -4,10 +4,10 @@ jobs:
       repository: https://github.com/dotnet/wcf.git
       branchOrCommit: master
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerf/WCFCorePerf.csproj
-    readyStateText: WCFCorePerf Client
     isConsoleApp: true
     waitForExit: true
     variables:
+      Server: /
       Duration: 300
     arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{Server}}{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
 
@@ -16,43 +16,35 @@ scenarios:
     load:
       job: WCFCorePerf
       variables:
-        Server: /
         Protocol: Http
         Url: /SayHello/SayHello.svc
         Binding: BasicHttp
         TransferMode: Buffered
-        serverPort: 8231
         path: /
   BasicHttpWithDefault:    
     load:
       job: WCFCorePerf
       variables:
-        Server: /
         Protocol: Http
         Url: /SayHello/SayHello.svc
         Binding: BasicHttp
         TransferMode: Default
-        serverPort: 8231
         path: /
   WSHttp:    
     load:
       job: WCFCorePerf
       variables:
-        Server: /
         Protocol: Https
         Url: /wcfservicewshttp/service.svc
         Binding: WSHttp
-        serverPort: 8231
         path: /
   NetTcp:    
     load:
       job: WCFCorePerf
       variables:
-        Server: /
         Protocol: net.tcp
         Url: /WcfNetTcpService/Service1.svc
         Binding: NetTcp
-        serverPort: 8231
         path: /
 
 profiles:
