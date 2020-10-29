@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Name={_name}, IsInitiating={_isInitiating}, IsTerminating={_isTerminating}")]
+    [DebuggerDisplay("Name={XmlName}, IsInitiating={IsInitiating}, IsTerminating={IsTerminating}")]
     public class OperationDescription
     {
         internal const string SessionOpenedAction = Channels.WebSocketTransportSettings.ConnectionOpenedAction;
