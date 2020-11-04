@@ -1,4 +1,4 @@
-# System.ServiceModel.Duplex
+# System.ServiceModel.Federation
 
 ## Information
 
