@@ -8,7 +8,7 @@
 
 ## Version History
 
-### 4.8.0-rc2
+### 4.8.0
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.8.0)
 * [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.2.0)
