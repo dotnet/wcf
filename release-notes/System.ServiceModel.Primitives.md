@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 4.8.0
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Primitives/4.8.0)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.2.0-rtm)
+
 ### 4.8.0-rc2
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Primitives/4.8.0-rc2.20474.1)
