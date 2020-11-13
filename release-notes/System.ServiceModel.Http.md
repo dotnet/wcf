@@ -10,6 +10,11 @@
 
 ### 4.8.0-rc2
 
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.8.0)
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.2.0)
+
+### 4.8.0-rc2
+
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Http/4.8.0-rc2.20474.1)
 * [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.2.0-rc2)
 
