@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using Microsoft.Crank.EventSources;
 
 namespace WCFCorePerf
@@ -87,11 +89,15 @@ namespace WCFCorePerf
                         BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
                         BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
                         break;
-                    case TestBinding.WSHttp:                        
-                        CertificateInstallUtil.EnsureClientCertificateInstalled(test._paramServiceUrl, "machinecert");                        
+                    case TestBinding.WSHttp:                                               
                         WSHttpBinding wsHttpBinding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
                         wsHttpBinding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
                         ChannelFactory<ISayHello> wsHttpFactory = new ChannelFactory<ISayHello>(wsHttpBinding, new EndpointAddress(test._paramServiceUrl));
+                        wsHttpFactory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication
+                        {
+                            CertificateValidationMode = X509CertificateValidationMode.None,
+                            RevocationMode = X509RevocationMode.NoCheck
+                        };
                         wsHttpFactory.Credentials.UserName.UserName = "abc";
                         wsHttpFactory.Credentials.UserName.Password = "abc";
 
@@ -117,7 +123,7 @@ namespace WCFCorePerf
                         break;
                     case TestBinding.NetTcp:
                         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
-                        ChannelFactory<IService1> netTcpFactory = new ChannelFactory<IService1>(netTcpBinding, new EndpointAddress(test._paramServiceUrl));
+                        ChannelFactory<ISayHello> netTcpFactory = new ChannelFactory<ISayHello>(netTcpBinding, new EndpointAddress(test._paramServiceUrl));
 
                         var stopwatchNetTcpChannelOpen = new Stopwatch();
                         stopwatchNetTcpChannelOpen.Start();
@@ -127,12 +133,12 @@ namespace WCFCorePerf
                         var clientNetTcp = netTcpFactory.CreateChannel();
                         var stopwatchNetTcpFirstReq = new Stopwatch();
                         stopwatchNetTcpFirstReq.Start();
-                        var netTcpResult = clientNetTcp.GetDataAsync(1).Result;
+                        var netTcpResult = clientNetTcp.HelloAsync("helloworld").Result;
                         BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchNetTcpFirstReq.ElapsedMilliseconds);
 
                         while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
                         {
-                            var rtnResult = clientNetTcp.GetDataAsync(1).Result;
+                            var rtnResult = clientNetTcp.HelloAsync("helloworld").Result;
                             request++;
                         }
 
@@ -141,6 +147,9 @@ namespace WCFCorePerf
                         break;
                 }
             }
+
+            //cleanup firewall rull
+            CleanupResourceFromService(test._paramServiceUrl, "Cleanup");
         }
 
         private bool ProcessRunOptions(string[] args)
@@ -192,6 +201,19 @@ namespace WCFCorePerf
         {
             Console.WriteLine("Wrong parameter: " + arg);
             return false;
+        }
+
+        private static string CleanupResourceFromService(string serviceUrl, string resource)
+        {
+            string host = new Uri(serviceUrl).Host;
+            string requestUri= string.Format(@"{0}://{1}/{2}/{3}/{4}", "http", host, "wcfcoreperf", "TestService.svc/TestHost", resource);           
+            Console.WriteLine(String.Format("Invoking {0} ...", requestUri));
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                HttpResponseMessage response = httpClient.GetAsync(requestUri).GetAwaiter().GetResult();
+                return response.Content.ReadAsStringAsync().Result;
+            }
         }
     }
 }

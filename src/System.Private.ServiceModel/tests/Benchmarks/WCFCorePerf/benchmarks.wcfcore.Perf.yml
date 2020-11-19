@@ -7,50 +7,62 @@ jobs:
     isConsoleApp: true
     waitForExit: true
     variables:
-      Server: /
       Duration: 300
-    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{Server}}{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
+    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{serverAddress}}{% if Binding == 'WSHttp' %}:{{serverPort}}{% endif %}/WCFCorePerf/TestService.svc/{{EndpointAddress}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
+  WCFCorePerfService:
+    source:
+      repository: https://github.com/dotnet/wcf.git
+      branchOrCommit: master
+      project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerfService/WCFCorePerfService.csproj
+    arguments: " port:{{serverPort}}"
+    isConsoleApp: true
+   
 
 scenarios:
-  BasicHttpWithBuffered:    
+  BasicHttpWithBuffered:
+    application:
+      job: WCFCorePerfService
     load:
       job: WCFCorePerf
       variables:
         Protocol: Http
-        Url: /SayHello/SayHello.svc
+        EndpointAddress: BasicHttp
         Binding: BasicHttp
         TransferMode: Buffered
-        path: /
-  BasicHttpWithDefault:    
+  BasicHttpWithDefault: 
+    application:
+      job: WCFCorePerfService
     load:
       job: WCFCorePerf
       variables:
         Protocol: Http
-        Url: /SayHello/SayHello.svc
+        EndpointAddress: BasicHttp
         Binding: BasicHttp
         TransferMode: Default
-        path: /
   WSHttp:    
+    application:
+      job: WCFCorePerfService
     load:
       job: WCFCorePerf
       variables:
         Protocol: Https
-        Url: /wcfservicewshttp/service.svc
+        EndpointAddress: WSHttp
         Binding: WSHttp
-        path: /
-  NetTcp:    
+  NetTcp: 
+    application:
+      job: WCFCorePerfService
     load:
       job: WCFCorePerf
       variables:
         Protocol: net.tcp
-        Url: /WcfNetTcpService/Service1.svc
+        EndpointAddress: NetTcp
         Binding: NetTcp
-        path: /
 
 profiles:
   local:
     variables:
-      serverUri: Http://localhost
+      serverAddress: localhost
+      serverPort: 5000
     jobs: 
       application:
         endpoints: 
