@@ -145,7 +145,7 @@ namespace System.ServiceModel.Federation
             {
                 IssuerAddress = issuerAddress,
                 IssuerBinding = issuerBinding,
-                KeyType = SecurityKeyType.BearerKey,
+                KeyType = SecurityKeyType.SymmetricKey,
                 TokenType = Saml2Constants.OasisWssSaml2TokenProfile11,
                 MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10
             };
