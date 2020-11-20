@@ -179,8 +179,8 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
     public static IEnumerable<object[]> GetTestVariations()
     {
         // Equivalent to WS2007FederationHttpBinding
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.BearerKey, false, "wsHttp/wstrust13" };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.BearerKey, true, "wsHttp/wstrust13" };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13" };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13" };
         // Equivalent to WSFederationHttpBinding
         yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005" };
         yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005" };
