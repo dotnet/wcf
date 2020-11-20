@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading;
 
 namespace System.Runtime
 {
@@ -17,10 +18,16 @@ namespace System.Runtime
         private readonly int _lowWatermark;
         private readonly int _highWatermark;
         private CacheEntry _mruEntry;
+        private int _refCount = 1;
 
         public MruCache(int watermark)
             : this(watermark * 4 / 5, watermark)
         {
+        }
+
+        public void AddRef()
+        {
+            Interlocked.Increment(ref _refCount);
         }
 
         //
@@ -202,7 +209,12 @@ namespace System.Runtime
 
         public void Dispose()
         {
-            Dispose(true);
+            int refCount = Interlocked.Decrement(ref _refCount);
+            Fx.Assert(_refCount >= 0, "Ref count shouldn't go below zero");
+            if (refCount == 0)
+            {
+                Dispose(true);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

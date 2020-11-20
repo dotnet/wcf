@@ -6,6 +6,7 @@
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Net;
+using System.Net.Http;
 using System.Net.Security;
 using System.Runtime;
 using System.Security.Authentication.ExtendedProtection;
@@ -29,6 +30,7 @@ namespace System.ServiceModel.Channels
         private WebSocketTransportSettings _webSocketSettings;
         private ExtendedProtectionPolicy _extendedProtectionPolicy;
         private int _maxPendingAccepts;
+        private MruCache<string, HttpClient> _httpClientCache;
 
         public HttpTransportBindingElement()
             : base()
@@ -395,6 +397,11 @@ namespace System.ServiceModel.Channels
             {
                 return (T)(object)new TransportCompressionSupportHelper();
             }
+            else if (typeof(T) == typeof(MruCache<string, HttpClient>))
+            {
+                EnsureHttpClientCache();
+                return (T)(object)_httpClientCache;
+            }
             else
             {
                 Contract.Assert(context.BindingParameters != null);
@@ -404,6 +411,20 @@ namespace System.ServiceModel.Channels
                 }
                 return base.GetProperty<T>(context);
             }
+        }
+
+        private MruCache<string, HttpClient> EnsureHttpClientCache()
+        {
+            if (_httpClientCache == null || _httpClientCache.IsDisposed)
+            {
+                _httpClientCache = new MruCache<string, HttpClient>(10);
+            }
+            else
+            {
+                _httpClientCache.AddRef();
+            }
+
+            return _httpClientCache;
         }
 
         public override bool CanBuildChannelFactory<TChannel>(BindingContext context)

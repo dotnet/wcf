@@ -131,6 +131,7 @@ namespace System.ServiceModel.Channels
             WebSocketSettings = WebSocketHelper.GetRuntimeWebSocketSettings(bindingElement.WebSocketSettings);
             _clientWebSocketFactory = ClientWebSocketFactory.GetFactory();
             _webSocketSoapContentType = new Lazy<string>(() => MessageEncoderFactory.CreateSessionEncoder().ContentType, LazyThreadSafetyMode.ExecutionAndPublication);
+            _httpClientCache = bindingElement.GetProperty<MruCache<string, HttpClient>>(context);
         }
 
         public bool AllowCookies { get; }
@@ -254,17 +255,6 @@ namespace System.ServiceModel.Channels
             var authenticationLevelWrapper = new OutWrapper<AuthenticationLevel>();
             NetworkCredential credential = await HttpChannelUtilities.GetCredentialAsync(AuthenticationScheme,
                 tokenProvider, impersonationLevelWrapper, authenticationLevelWrapper, timeout);
-
-            if (_httpClientCache == null)
-            {
-                lock (ThisLock)
-                {
-                    if (_httpClientCache == null)
-                    {
-                        _httpClientCache = new MruCache<string, HttpClient>(10);
-                    }
-                }
-            }
 
             HttpClient httpClient;
 
