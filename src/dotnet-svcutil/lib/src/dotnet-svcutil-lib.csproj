@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
-    <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,22 +17,24 @@
 
   <PropertyGroup>
     <IsPackable>true</IsPackable>
+    <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
+    <MajorVersion>2</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>3</PatchVersion>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>false</IncludeSource>
+    <!--To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42).--> 
+    <!--
+    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    -->
     <!-- Enable localization -->
     <EnableXlfLocalization>true</EnableXlfLocalization>
   </PropertyGroup>
 
   <PropertyGroup>
-    <MajorVersion>2</MajorVersion>
-    <MinorVersion>0</MinorVersion>
-    <PatchVersion>3</PatchVersion>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-
-    <!--To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42).--> 
-    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <!-- For debug builds we include the full value string so that we get actual resources, even in the case the toolchain strips the resources file -->
     <GenerateResxSourceIncludeDefaultValues Condition="'$(ConfigurationGroup)' == 'Debug'">true</GenerateResxSourceIncludeDefaultValues>
   </PropertyGroup>

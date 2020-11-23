@@ -1,13 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
-    <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
   </PropertyGroup>
   
+  <!--Package Properties-->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
+    <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
+    <MajorVersion>2</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>3</PatchVersion>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
     <NoDefaultExcludes>true</NoDefaultExcludes>
     <EnableXlfLocalization>true</EnableXlfLocalization>
+  <!--
+    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  -->
   </PropertyGroup>
 
   <PropertyGroup>
@@ -20,14 +29,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <MajorVersion>2</MajorVersion>
-    <MinorVersion>0</MinorVersion>
-    <PatchVersion>3</PatchVersion>
-    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
