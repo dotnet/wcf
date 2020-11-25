@@ -11,12 +11,10 @@
     <MinorVersion>0</MinorVersion>
     <PatchVersion>3</PatchVersion>
     <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <NoDefaultExcludes>true</NoDefaultExcludes>
     <EnableXlfLocalization>true</EnableXlfLocalization>
-  <!--
-    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-  -->
   </PropertyGroup>
 
   <PropertyGroup>
