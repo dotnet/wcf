@@ -1,0 +1,82 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\OSS\\carol\\wcf\\.packages\\microsoft.dotnet.arcade.sdk\\6.0.0-beta.20573.2\\tools\\Tools.proj": {}
+  },
+  "projects": {
+    "D:\\OSS\\carol\\wcf\\.packages\\microsoft.dotnet.arcade.sdk\\6.0.0-beta.20573.2\\tools\\Tools.proj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\OSS\\carol\\wcf\\.packages\\microsoft.dotnet.arcade.sdk\\6.0.0-beta.20573.2\\tools\\Tools.proj",
+        "projectName": "Tools",
+        "projectPath": "D:\\OSS\\carol\\wcf\\.packages\\microsoft.dotnet.arcade.sdk\\6.0.0-beta.20573.2\\tools\\Tools.proj",
+        "packagesPath": "D:\\OSS\\carol\\wcf\\.packages\\",
+        "outputPath": "D:\\OSS\\carol\\wcf\\artifacts\\toolset\\Common",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "D:\\OSS\\carol\\wcf\\NuGet.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json": {},
+          "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json": {},
+          "https://www.myget.org/F/azureadwebstacknightly/api/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "allWarningsAsErrors": true
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "dependencies": {
+            "MicroBuild.Core": {
+              "target": "Package",
+              "version": "[0.2.0, )",
+              "autoReferenced": true
+            },
+            "MicroBuild.Core.Sentinel": {
+              "target": "Package",
+              "version": "[1.0.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.DotNet.Build.Tasks.Feed": {
+              "target": "Package",
+              "version": "[6.0.0-beta.20573.2, )",
+              "autoReferenced": true
+            },
+            "Microsoft.DotNet.SignTool": {
+              "target": "Package",
+              "version": "[6.0.0-beta.20573.2, )",
+              "autoReferenced": true
+            },
+            "Microsoft.SymbolUploader.Build.Task": {
+              "target": "Package",
+              "version": "[1.1.156402, )",
+              "autoReferenced": true
+            },
+            "sn": {
+              "target": "Package",
+              "version": "[1.0.0, )",
+              "autoReferenced": true
+            },
+            "vswhere": {
+              "target": "Package",
+              "version": "[2.6.7, )",
+              "autoReferenced": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

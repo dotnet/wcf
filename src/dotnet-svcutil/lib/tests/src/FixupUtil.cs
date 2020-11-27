@@ -85,7 +85,10 @@ namespace SvcutilTest
             _replacements.Add(new ReplaceInfo(Environment.GetEnvironmentVariable("HOME"), "$USERPROFILE$"));
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+/dotnet-svcutil-lib.dll", "DOTNET_VERSION/dotnet-svcutil-lib.dll") { UseRegex = true }); //for linux
             _replacements.Add(new ReplaceInfo(@"net(coreapp)?\d+\.\d+\\dotnet-svcutil-lib.dll", "DOTNET_VERSION\\dotnet-svcutil-lib.dll") { UseRegex = true }); //for windows
-            _replacements.Add(new ReplaceInfo(@"NonShipping", @"Shipping"));
+            _replacements.Add(new ReplaceInfo(@"Release\Shipping", @"RelType/ShipType"));
+            _replacements.Add(new ReplaceInfo(@"Release\NonShipping", @"RelType/ShipType"));
+            _replacements.Add(new ReplaceInfo(@"Debug\Shipping", @"RelType/ShipType"));
+            _replacements.Add(new ReplaceInfo(@"Debug\NonShipping", @"RelType/ShipType"));
         }
 
         public string FixupFile(string fileName)

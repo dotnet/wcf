@@ -1,0 +1,512 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "MicroBuild.Core/0.2.0": {
+        "type": "package",
+        "build": {
+          "build/MicroBuild.Core.props": {},
+          "build/MicroBuild.Core.targets": {}
+        }
+      },
+      "MicroBuild.Core.Sentinel/1.0.0": {
+        "type": "package"
+      },
+      "Microsoft.DotNet.Build.Tasks.Feed/6.0.0-beta.20573.2": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Diagnostics.TraceSource",
+          "System.IO",
+          "System.IO.Compression",
+          "System.Net.Http",
+          "System.Runtime",
+          "System.Runtime.InteropServices",
+          "System.Runtime.InteropServices.RuntimeInformation",
+          "System.Security.Cryptography.Algorithms",
+          "System.Security.Cryptography.Encoding",
+          "System.Security.Cryptography.Primitives",
+          "System.Security.Cryptography.X509Certificates"
+        ],
+        "build": {
+          "build/Microsoft.DotNet.Build.Tasks.Feed.targets": {}
+        }
+      },
+      "Microsoft.DotNet.SignTool/6.0.0-beta.20573.2": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.IO.Compression",
+          "System.IO.FileSystem.Primitives",
+          "System.Runtime.InteropServices.RuntimeInformation"
+        ],
+        "compile": {
+          "lib/net472/Microsoft.DotNet.SignTool.dll": {},
+          "lib/net472/Newtonsoft.Json.dll": {},
+          "lib/net472/NuGet.Common.dll": {},
+          "lib/net472/NuGet.Configuration.dll": {},
+          "lib/net472/NuGet.Frameworks.dll": {},
+          "lib/net472/NuGet.Packaging.Core.dll": {},
+          "lib/net472/NuGet.Packaging.dll": {},
+          "lib/net472/NuGet.Versioning.dll": {},
+          "lib/net472/System.Reflection.Metadata.dll": {}
+        },
+        "runtime": {
+          "lib/net472/Microsoft.DotNet.SignTool.dll": {},
+          "lib/net472/Newtonsoft.Json.dll": {},
+          "lib/net472/NuGet.Common.dll": {},
+          "lib/net472/NuGet.Configuration.dll": {},
+          "lib/net472/NuGet.Frameworks.dll": {},
+          "lib/net472/NuGet.Packaging.Core.dll": {},
+          "lib/net472/NuGet.Packaging.dll": {},
+          "lib/net472/NuGet.Versioning.dll": {},
+          "lib/net472/System.Reflection.Metadata.dll": {}
+        },
+        "build": {
+          "build/Microsoft.DotNet.SignTool.props": {}
+        }
+      },
+      "Microsoft.SymbolUploader.Build.Task/1.1.156402": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.SymbolUploader.Build.Task.targets": {}
+        }
+      },
+      "sn/1.0.0": {
+        "type": "package"
+      },
+      "vswhere/2.6.7": {
+        "type": "package",
+        "build": {
+          "build/vswhere.props": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MicroBuild.Core/0.2.0": {
+      "sha512": "UU0glyD/p+hIrgMdA6nYw5NhdhsYxaKTc3/N9sGEPZZi63wuB3dlB1AAbFBBtVjj9jZ9UijaBnUslNWKM1xDxA==",
+      "type": "package",
+      "path": "microbuild.core/0.2.0",
+      "files": [
+        ".nupkg.metadata",
+        "build/MicroBuild.Core.props",
+        "build/MicroBuild.Core.targets",
+        "build/MicroBuild.Plugin.props",
+        "microbuild.core.0.2.0.nupkg.sha512",
+        "microbuild.core.nuspec"
+      ]
+    },
+    "MicroBuild.Core.Sentinel/1.0.0": {
+      "sha512": "Hra2Plv5lO61Gk7pF44lQ2B4Y1vCEpyKpUZLuNoTr9YZ2dV/B0KSQOzIrZM/wwe+SoYKmY80X5igGSny332Diw==",
+      "type": "package",
+      "path": "microbuild.core.sentinel/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        "microbuild.core.sentinel.1.0.0.nupkg.sha512",
+        "microbuild.core.sentinel.nuspec",
+        "sentinel.txt"
+      ]
+    },
+    "Microsoft.DotNet.Build.Tasks.Feed/6.0.0-beta.20573.2": {
+      "sha512": "dqWdTG9rMmUurHoVb8gMk4i1D79iIogWhANfz3Al0YU3I8GOaUMXfhg/LpKgDeyIvFIDkEKONthGKXbq5rEIiA==",
+      "type": "package",
+      "path": "microsoft.dotnet.build.tasks.feed/6.0.0-beta.20573.2",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/Microsoft.DotNet.Build.Tasks.Feed.targets",
+        "microsoft.dotnet.build.tasks.feed.6.0.0-beta.20573.2.nupkg.sha512",
+        "microsoft.dotnet.build.tasks.feed.nuspec",
+        "sdk/Sdk.props",
+        "sdk/Sdk.targets",
+        "tools/net472/AWSSDK.Core.dll",
+        "tools/net472/AWSSDK.S3.dll",
+        "tools/net472/Azure.Core.dll",
+        "tools/net472/Azure.Storage.Blobs.dll",
+        "tools/net472/Azure.Storage.Common.dll",
+        "tools/net472/Microsoft.Azure.KeyVault.Core.dll",
+        "tools/net472/Microsoft.Bcl.AsyncInterfaces.dll",
+        "tools/net472/Microsoft.Data.Edm.dll",
+        "tools/net472/Microsoft.Data.OData.dll",
+        "tools/net472/Microsoft.Data.Services.Client.dll",
+        "tools/net472/Microsoft.DiaSymReader.PortablePdb.dll",
+        "tools/net472/Microsoft.DiaSymReader.dll",
+        "tools/net472/Microsoft.DotNet.Build.Tasks.Feed.dll",
+        "tools/net472/Microsoft.DotNet.Build.Tasks.Feed.dll.config",
+        "tools/net472/Microsoft.DotNet.Deployment.Tasks.Links.dll",
+        "tools/net472/Microsoft.DotNet.Maestro.Client.dll",
+        "tools/net472/Microsoft.DotNet.VersionTools.dll",
+        "tools/net472/Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll",
+        "tools/net472/Microsoft.IdentityModel.Clients.ActiveDirectory.dll",
+        "tools/net472/Microsoft.WindowsAzure.Storage.dll",
+        "tools/net472/Newtonsoft.Json.dll",
+        "tools/net472/NuGet.Common.dll",
+        "tools/net472/NuGet.Configuration.dll",
+        "tools/net472/NuGet.Frameworks.dll",
+        "tools/net472/NuGet.Packaging.Core.dll",
+        "tools/net472/NuGet.Packaging.dll",
+        "tools/net472/NuGet.Versioning.dll",
+        "tools/net472/SleetLib.dll",
+        "tools/net472/System.Buffers.dll",
+        "tools/net472/System.Collections.Immutable.dll",
+        "tools/net472/System.Diagnostics.DiagnosticSource.dll",
+        "tools/net472/System.Memory.dll",
+        "tools/net472/System.Numerics.Vectors.dll",
+        "tools/net472/System.Reflection.Metadata.dll",
+        "tools/net472/System.Runtime.CompilerServices.Unsafe.dll",
+        "tools/net472/System.Spatial.dll",
+        "tools/net472/System.Text.Encodings.Web.dll",
+        "tools/net472/System.Threading.Tasks.Extensions.dll",
+        "tools/net472/de/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/de/Microsoft.Data.OData.resources.dll",
+        "tools/net472/de/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/de/System.Spatial.resources.dll",
+        "tools/net472/es/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/es/Microsoft.Data.OData.resources.dll",
+        "tools/net472/es/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/es/System.Spatial.resources.dll",
+        "tools/net472/fr/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/fr/Microsoft.Data.OData.resources.dll",
+        "tools/net472/fr/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/fr/System.Spatial.resources.dll",
+        "tools/net472/it/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/it/Microsoft.Data.OData.resources.dll",
+        "tools/net472/it/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/it/System.Spatial.resources.dll",
+        "tools/net472/ja/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/ja/Microsoft.Data.OData.resources.dll",
+        "tools/net472/ja/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/ja/System.Spatial.resources.dll",
+        "tools/net472/ko/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/ko/Microsoft.Data.OData.resources.dll",
+        "tools/net472/ko/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/ko/System.Spatial.resources.dll",
+        "tools/net472/ru/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/ru/Microsoft.Data.OData.resources.dll",
+        "tools/net472/ru/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/ru/System.Spatial.resources.dll",
+        "tools/net472/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "tools/net472/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/zh-Hans/System.Spatial.resources.dll",
+        "tools/net472/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "tools/net472/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "tools/net472/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
+        "tools/net472/zh-Hant/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/AWSSDK.Core.dll",
+        "tools/netcoreapp2.1/AWSSDK.S3.dll",
+        "tools/netcoreapp2.1/Azure.Core.dll",
+        "tools/netcoreapp2.1/Azure.Storage.Blobs.dll",
+        "tools/netcoreapp2.1/Azure.Storage.Common.dll",
+        "tools/netcoreapp2.1/Microsoft.Bcl.AsyncInterfaces.dll",
+        "tools/netcoreapp2.1/Microsoft.Data.Edm.dll",
+        "tools/netcoreapp2.1/Microsoft.Data.OData.dll",
+        "tools/netcoreapp2.1/Microsoft.DiaSymReader.PortablePdb.dll",
+        "tools/netcoreapp2.1/Microsoft.DiaSymReader.dll",
+        "tools/netcoreapp2.1/Microsoft.DotNet.Build.Tasks.Feed.deps.json",
+        "tools/netcoreapp2.1/Microsoft.DotNet.Build.Tasks.Feed.dll",
+        "tools/netcoreapp2.1/Microsoft.DotNet.Deployment.Tasks.Links.dll",
+        "tools/netcoreapp2.1/Microsoft.DotNet.Maestro.Client.dll",
+        "tools/netcoreapp2.1/Microsoft.DotNet.VersionTools.dll",
+        "tools/netcoreapp2.1/Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll",
+        "tools/netcoreapp2.1/Microsoft.IdentityModel.Clients.ActiveDirectory.dll",
+        "tools/netcoreapp2.1/Microsoft.WindowsAzure.Storage.dll",
+        "tools/netcoreapp2.1/Newtonsoft.Json.dll",
+        "tools/netcoreapp2.1/SleetLib.dll",
+        "tools/netcoreapp2.1/System.Diagnostics.DiagnosticSource.dll",
+        "tools/netcoreapp2.1/System.Spatial.dll",
+        "tools/netcoreapp2.1/System.Text.Encodings.Web.dll",
+        "tools/netcoreapp2.1/de/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/de/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/de/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/es/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/es/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/es/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/fr/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/fr/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/fr/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/it/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/it/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/it/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/ja/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/ja/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/ja/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/ko/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/ko/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/ko/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/ru/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/ru/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/ru/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "tools/netcoreapp2.1/runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "tools/netcoreapp2.1/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/zh-Hans/System.Spatial.resources.dll",
+        "tools/netcoreapp2.1/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "tools/netcoreapp2.1/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "tools/netcoreapp2.1/zh-Hant/System.Spatial.resources.dll"
+      ]
+    },
+    "Microsoft.DotNet.SignTool/6.0.0-beta.20573.2": {
+      "sha512": "dcDeD9odOoEtxi07tf6VJvYbe0cY20qo0a1BhAQDmu0T4M6DowNpntS20BlVkJgZvLDGIGvERlGEkXNhL9F8WA==",
+      "type": "package",
+      "path": "microsoft.dotnet.signtool/6.0.0-beta.20573.2",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/Microsoft.DotNet.SignTool.props",
+        "lib/net472/Microsoft.DotNet.SignTool.dll",
+        "lib/net472/Microsoft.DotNet.SignTool.dll.config",
+        "lib/net472/Newtonsoft.Json.dll",
+        "lib/net472/NuGet.Common.dll",
+        "lib/net472/NuGet.Configuration.dll",
+        "lib/net472/NuGet.Frameworks.dll",
+        "lib/net472/NuGet.Packaging.Core.dll",
+        "lib/net472/NuGet.Packaging.dll",
+        "lib/net472/NuGet.Versioning.dll",
+        "lib/net472/System.Reflection.Metadata.dll",
+        "lib/netcoreapp2.1/Microsoft.DotNet.SignTool.deps.json",
+        "lib/netcoreapp2.1/Microsoft.DotNet.SignTool.dll",
+        "lib/netcoreapp2.1/Newtonsoft.Json.dll",
+        "lib/netcoreapp2.1/NuGet.Common.dll",
+        "lib/netcoreapp2.1/NuGet.Configuration.dll",
+        "lib/netcoreapp2.1/NuGet.Frameworks.dll",
+        "lib/netcoreapp2.1/NuGet.Packaging.Core.dll",
+        "lib/netcoreapp2.1/NuGet.Packaging.dll",
+        "lib/netcoreapp2.1/NuGet.Versioning.dll",
+        "lib/netcoreapp2.1/runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "lib/netcoreapp2.1/runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "microsoft.dotnet.signtool.6.0.0-beta.20573.2.nupkg.sha512",
+        "microsoft.dotnet.signtool.nuspec",
+        "tools/net472/Microsoft.DotNet.SignTool.dll",
+        "tools/net472/Microsoft.DotNet.SignTool.dll.config",
+        "tools/net472/Newtonsoft.Json.dll",
+        "tools/net472/NuGet.Common.dll",
+        "tools/net472/NuGet.Configuration.dll",
+        "tools/net472/NuGet.Frameworks.dll",
+        "tools/net472/NuGet.Packaging.Core.dll",
+        "tools/net472/NuGet.Packaging.dll",
+        "tools/net472/NuGet.Versioning.dll",
+        "tools/net472/System.Reflection.Metadata.dll",
+        "tools/netcoreapp2.1/Microsoft.DotNet.SignTool.deps.json",
+        "tools/netcoreapp2.1/Microsoft.DotNet.SignTool.dll",
+        "tools/netcoreapp2.1/Newtonsoft.Json.dll",
+        "tools/netcoreapp2.1/NuGet.Common.dll",
+        "tools/netcoreapp2.1/NuGet.Configuration.dll",
+        "tools/netcoreapp2.1/NuGet.Frameworks.dll",
+        "tools/netcoreapp2.1/NuGet.Packaging.Core.dll",
+        "tools/netcoreapp2.1/NuGet.Packaging.dll",
+        "tools/netcoreapp2.1/NuGet.Versioning.dll",
+        "tools/netcoreapp2.1/runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll",
+        "tools/netcoreapp2.1/runtimes/win/lib/netstandard1.3/System.Security.Cryptography.ProtectedData.dll"
+      ]
+    },
+    "Microsoft.SymbolUploader.Build.Task/1.1.156402": {
+      "sha512": "VTnYlH1NAeGx0Hn6zaN8M8hijxixpqGSzzGR01MTHqB50lJRWPurHM3Z6Bv60ukN4zdPHrouKU6CEF7lvVbXfQ==",
+      "type": "package",
+      "path": "microsoft.symboluploader.build.task/1.1.156402",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "build/Microsoft.SymbolUploader.Build.Task.targets",
+        "build/PublishSymbols.targets",
+        "build/net45/Microsoft.DiaSymReader.Converter.dll",
+        "build/net45/Microsoft.DiaSymReader.dll",
+        "build/net45/Microsoft.FileFormats.dll",
+        "build/net45/Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll",
+        "build/net45/Microsoft.IdentityModel.Clients.ActiveDirectory.dll",
+        "build/net45/Microsoft.SymbolStore.dll",
+        "build/net45/Microsoft.SymbolUploader.Build.Task.dll",
+        "build/net45/Microsoft.SymbolUploader.Build.Task.pdb",
+        "build/net45/Microsoft.SymbolUploader.dll",
+        "build/net45/Microsoft.SymbolUploader.pdb",
+        "build/net45/Newtonsoft.Json.dll",
+        "build/net45/System.Collections.Immutable.dll",
+        "build/net45/System.Net.Http.Formatting.dll",
+        "build/net45/System.Reflection.Metadata.dll",
+        "build/net45/System.Runtime.InteropServices.RuntimeInformation.dll",
+        "build/net45/System.Threading.Tasks.Dataflow.dll",
+        "build/net45/System.ValueTuple.dll",
+        "build/net45/cs/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/de/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/es/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/fr/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/it/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/ja/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/ko/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/pl/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/pt-BR/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/ru/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/tr/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/zh-Hans/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/net45/zh-Hant/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/Microsoft.CSharp.dll",
+        "build/netstandard2.0/Microsoft.DiaSymReader.Converter.dll",
+        "build/netstandard2.0/Microsoft.DiaSymReader.dll",
+        "build/netstandard2.0/Microsoft.FileFormats.dll",
+        "build/netstandard2.0/Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll",
+        "build/netstandard2.0/Microsoft.IdentityModel.Clients.ActiveDirectory.dll",
+        "build/netstandard2.0/Microsoft.SymbolStore.dll",
+        "build/netstandard2.0/Microsoft.SymbolUploader.Build.Task.deps.json",
+        "build/netstandard2.0/Microsoft.SymbolUploader.Build.Task.dll",
+        "build/netstandard2.0/Microsoft.SymbolUploader.Build.Task.pdb",
+        "build/netstandard2.0/Microsoft.SymbolUploader.dll",
+        "build/netstandard2.0/Microsoft.SymbolUploader.pdb",
+        "build/netstandard2.0/Newtonsoft.Json.Bson.dll",
+        "build/netstandard2.0/Newtonsoft.Json.dll",
+        "build/netstandard2.0/System.Collections.Immutable.dll",
+        "build/netstandard2.0/System.Net.Http.Formatting.dll",
+        "build/netstandard2.0/System.Reflection.Metadata.dll",
+        "build/netstandard2.0/System.Threading.Tasks.Dataflow.dll",
+        "build/netstandard2.0/cs/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/de/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/es/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/fr/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/it/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/ja/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/ko/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/pl/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/pt-BR/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/ru/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/tr/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/zh-Hans/Microsoft.DiaSymReader.Converter.resources.dll",
+        "build/netstandard2.0/zh-Hant/Microsoft.DiaSymReader.Converter.resources.dll",
+        "microsoft.symboluploader.build.task.1.1.156402.nupkg.sha512",
+        "microsoft.symboluploader.build.task.nuspec"
+      ]
+    },
+    "sn/1.0.0": {
+      "sha512": "SiT1VAsvaikecEO/NwhfoA4OBAxfrV+EzHg4ZpbbEvmwrIXKNwvyHMEIvCaY8m0QM9DteFWX8u4reyZ3xB5h5w==",
+      "type": "package",
+      "path": "sn/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        "1033/IlDasmrc.dll",
+        "1033/TrackerUI.dll",
+        "1033/flogvwrc.dll",
+        "1033/gacutlrc.dll",
+        "1033/pevrfyrc.dll",
+        "1033/snrc.dll",
+        "LICENSE.TXT",
+        "README.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "sn.1.0.0.nupkg.sha512",
+        "sn.exe",
+        "sn.exe.config",
+        "sn.nuspec"
+      ]
+    },
+    "vswhere/2.6.7": {
+      "sha512": "uH8Qa6yleChbsz7bnv1JlsXvEuplDpTQbiYtPvrqFDoFtDuvHG34rzaD3anDPPahnR9Hp3gz6ca4hZ7FvvjP+w==",
+      "type": "package",
+      "path": "vswhere/2.6.7",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/vswhere.props",
+        "tools/LICENSE.txt",
+        "tools/VERIFICATION.txt",
+        "tools/vswhere.exe",
+        "vswhere.2.6.7.nupkg.sha512",
+        "vswhere.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "MicroBuild.Core >= 0.2.0",
+      "MicroBuild.Core.Sentinel >= 1.0.0",
+      "Microsoft.DotNet.Build.Tasks.Feed >= 6.0.0-beta.20573.2",
+      "Microsoft.DotNet.SignTool >= 6.0.0-beta.20573.2",
+      "Microsoft.SymbolUploader.Build.Task >= 1.1.156402",
+      "sn >= 1.0.0",
+      "vswhere >= 2.6.7"
+    ]
+  },
+  "packageFolders": {
+    "D:\\OSS\\carol\\wcf\\.packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\OSS\\carol\\wcf\\.packages\\microsoft.dotnet.arcade.sdk\\6.0.0-beta.20573.2\\tools\\Tools.proj",
+      "projectName": "Tools",
+      "projectPath": "D:\\OSS\\carol\\wcf\\.packages\\microsoft.dotnet.arcade.sdk\\6.0.0-beta.20573.2\\tools\\Tools.proj",
+      "packagesPath": "D:\\OSS\\carol\\wcf\\.packages\\",
+      "outputPath": "D:\\OSS\\carol\\wcf\\artifacts\\toolset\\Common",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "D:\\OSS\\carol\\wcf\\NuGet.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json": {},
+        "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json": {},
+        "https://www.myget.org/F/azureadwebstacknightly/api/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "allWarningsAsErrors": true
+      }
+    },
+    "frameworks": {
+      "net472": {
+        "targetAlias": "net472",
+        "dependencies": {
+          "MicroBuild.Core": {
+            "target": "Package",
+            "version": "[0.2.0, )",
+            "autoReferenced": true
+          },
+          "MicroBuild.Core.Sentinel": {
+            "target": "Package",
+            "version": "[1.0.0, )",
+            "autoReferenced": true
+          },
+          "Microsoft.DotNet.Build.Tasks.Feed": {
+            "target": "Package",
+            "version": "[6.0.0-beta.20573.2, )",
+            "autoReferenced": true
+          },
+          "Microsoft.DotNet.SignTool": {
+            "target": "Package",
+            "version": "[6.0.0-beta.20573.2, )",
+            "autoReferenced": true
+          },
+          "Microsoft.SymbolUploader.Build.Task": {
+            "target": "Package",
+            "version": "[1.1.156402, )",
+            "autoReferenced": true
+          },
+          "sn": {
+            "target": "Package",
+            "version": "[1.0.0, )",
+            "autoReferenced": true
+          },
+          "vswhere": {
+            "target": "Package",
+            "version": "[2.6.7, )",
+            "autoReferenced": true
+          }
+        }
+      }
+    }
+  }
+}
