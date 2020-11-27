@@ -328,7 +328,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else if (projects.Length == 0)
                     {
-                        if (this.ToolContext == OperationalContext.Project || this.ToolContext == OperationalContext.Global)
+                        if (this.ToolContext == OperationalContext.Project || (this.ToolContext == OperationalContext.Global && IsUpdateOperation))
+
                         {
                             throw new ToolArgumentException(string.Format(CultureInfo.CurrentCulture, SR.ErrInvalidOperationNoProjectFileFoundUnderFolderFormat, workingDirectory));
                         }
