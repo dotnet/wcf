@@ -1,1 +1,0 @@
-D:\OSS\carol\wcf\.packages\microsoft.dotnet.arcade.sdk\6.0.0-beta.20573.2\tools\Build.proj
