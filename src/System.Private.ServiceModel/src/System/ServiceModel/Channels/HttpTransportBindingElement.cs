@@ -415,13 +415,9 @@ namespace System.ServiceModel.Channels
 
         private MruCache<string, HttpClient> EnsureHttpClientCache()
         {
-            if (_httpClientCache == null || _httpClientCache.IsDisposed)
+            if (_httpClientCache == null || !_httpClientCache.AddRef())
             {
                 _httpClientCache = new MruCache<string, HttpClient>(10);
-            }
-            else
-            {
-                _httpClientCache.AddRef();
             }
 
             return _httpClientCache;

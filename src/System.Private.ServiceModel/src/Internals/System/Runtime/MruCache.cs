@@ -2,10 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Generic;
 using System.ServiceModel;
-using System.Threading;
 
 namespace System.Runtime
 {
@@ -19,15 +17,26 @@ namespace System.Runtime
         private readonly int _highWatermark;
         private CacheEntry _mruEntry;
         private int _refCount = 1;
+        private object _mutex = new object();
 
         public MruCache(int watermark)
             : this(watermark * 4 / 5, watermark)
         {
         }
 
-        public void AddRef()
+        // Returns whether the cache can be used by the caller after calling AddRef
+        public bool AddRef()
         {
-            Interlocked.Increment(ref _refCount);
+            lock(_mutex)
+            {
+                if (_refCount == 0)
+                {
+                    return false;
+                }
+
+                _refCount++;
+                return true;
+            }
         }
 
         //
@@ -209,8 +218,12 @@ namespace System.Runtime
 
         public void Dispose()
         {
-            int refCount = Interlocked.Decrement(ref _refCount);
-            Fx.Assert(_refCount >= 0, "Ref count shouldn't go below zero");
+            int refCount;
+            lock (_mutex)
+            {
+                refCount = --_refCount;
+            }
+            Fx.Assert(refCount >= 0, "Ref count shouldn't go below zero");
             if (refCount == 0)
             {
                 Dispose(true);
@@ -221,10 +234,13 @@ namespace System.Runtime
         {
             if (disposing)
             {
-                if (!IsDisposed)
+                lock (_mutex)
                 {
-                    IsDisposed = true;
-                    Clear(true);
+                    if (!IsDisposed)
+                    {
+                        IsDisposed = true;
+                        Clear(true);
+                    }
                 }
             }
         }
