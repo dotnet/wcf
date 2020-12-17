@@ -8,12 +8,13 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     public class ProtocolException : CommunicationException
     {
         public ProtocolException() { }
         public ProtocolException(string message) : base(message) { }
         public ProtocolException(string message, Exception innerException) : base(message, innerException) { }
-        protected ProtocolException(SerializationInfo info, StreamingContext context) : base(info, context) { throw new PlatformNotSupportedException(); }
+        protected ProtocolException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         internal static ProtocolException ReceiveShutdownReturnedNonNull(Message message)
         {
