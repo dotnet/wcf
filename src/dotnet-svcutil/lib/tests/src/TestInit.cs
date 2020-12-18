@@ -184,7 +184,7 @@ namespace SvcutilTest
             Assert.True(ret.ExitCode == 0, "Could not install the global tool." + Environment.NewLine + ret.OutputText);
         }
 
-        public string GetServiceUriFromEnv()
+        private string GetServiceUriFromEnv()
         {
             string result = Environment.GetEnvironmentVariable("ServiceUri");
             if (string.IsNullOrEmpty(result))
