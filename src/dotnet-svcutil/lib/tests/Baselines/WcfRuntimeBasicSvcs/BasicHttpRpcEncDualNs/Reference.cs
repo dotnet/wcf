@@ -282,7 +282,7 @@ namespace BasicHttpRpcEncDualNs_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_ICalculatorRpcEnc))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicHttpRpcEncDualNs.svc/Basic");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpRpcEncDualNs.svc/Basic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
@@ -406,7 +406,7 @@ namespace BasicHttpRpcEncDualNs_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IHelloWorldRpcEnc))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicHttpRpcEncDualNs.svc/Basic");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpRpcEncDualNs.svc/Basic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

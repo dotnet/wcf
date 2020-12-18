@@ -149,7 +149,7 @@ namespace noQuery_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Service1_IService1))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicService1.svc/Service1");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicService1.svc/Service1");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
