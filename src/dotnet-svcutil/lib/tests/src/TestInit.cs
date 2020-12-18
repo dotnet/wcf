@@ -119,8 +119,13 @@ namespace SvcutilTest
 
             g_SdkVersion = "3.1.100";
 
+<<<<<<< HEAD
             g_ServiceUrl = "http://wcfcoresrv5.cloudapp.net/wcftestservice1";
             g_TestOutputDir = Path.Combine(g_RepositoryRoot, "artifacts\\TestOutput");
+=======
+            g_ServiceUrl = "http://wcfcoresrv5.westus2.cloudapp.azure.com/wcftestservice1";
+            g_TestOutputDir = Path.Combine(g_RepositoryRoot, "artifacts", "TestOutput");
+>>>>>>> e82750bb (Update server hostname in svcutil tests)
             g_TestResultsDir = Path.Combine(g_TestOutputDir, "TestResults");
             g_TestBootstrapDir = Path.Combine(g_TestOutputDir, "TestBootstrap");
             g_TestCasesDir = Path.Combine(vsTestsRoot, "TestCases");
