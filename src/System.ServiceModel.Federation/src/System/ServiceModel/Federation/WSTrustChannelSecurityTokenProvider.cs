@@ -11,6 +11,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.WsAddressing;
@@ -305,6 +306,79 @@ namespace System.ServiceModel.Federation
         }
 
         /// <summary>
+        /// Begins a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
+        /// </summary>
+        /// <returns>A <see cref="IAsyncResult"/>.</returns>
+        protected override IAsyncResult BeginGetTokenCore(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            var tcsLocal = new TaskCompletionSource<SecurityToken>(state);
+            GetTokenAsyncCore(timeout).ContinueWith((antecedant, tcsObj) =>
+            {
+                var tcs = (TaskCompletionSource<SecurityToken>)tcsObj;
+                if (antecedant.IsFaulted)
+                {
+                    tcs.SetException(antecedant.Exception);
+                }
+                else if(antecedant.IsCanceled)
+                {
+                    tcs.SetCanceled();
+                }
+                else
+                {
+                    tcs.SetResult(antecedant.Result);
+                }
+            }, tcsLocal, TaskContinuationOptions.RunContinuationsAsynchronously);
+            return tcsLocal.Task;
+        }
+
+        /// <summary>
+        /// Completes a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
+        /// </summary>
+        /// <returns>A <see cref="SecurityToken"/>.</returns>
+        protected override SecurityToken EndGetTokenCore(IAsyncResult result)
+        {
+            if (result == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(result)), System.Diagnostics.Tracing.EventLevel.Error);
+            }
+            var task = result as Task<SecurityToken>;
+            if (task == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException("", nameof(result)), System.Diagnostics.Tracing.EventLevel.Error);
+            }
+
+            return task.Result;
+        }
+
+        private async Task<SecurityToken> GetTokenAsyncCore(TimeSpan timeout)
+        {
+            WsTrustRequest request = CreateWsTrustRequest();
+            WsTrustResponse trustResponse = GetCachedResponse(request);
+
+            if (trustResponse is null)
+            {
+                using (var memeoryStream = new MemoryStream())
+                {
+                    var writer = XmlDictionaryWriter.CreateTextWriter(memeoryStream, Encoding.UTF8);
+                    var serializer = new WsTrustSerializer();
+                    serializer.WriteRequest(writer, _requestSerializationContext.TrustVersion, request);
+                    writer.Flush();
+                    var reader = XmlDictionaryReader.CreateTextReader(memeoryStream.ToArray(), XmlDictionaryReaderQuotas.Max);
+                    IRequestChannel channel = ChannelFactory.CreateChannel();
+                    await Task.Factory.FromAsync(channel.BeginOpen, channel.EndOpen, null, TaskCreationOptions.RunContinuationsAsynchronously);
+                    Message requestMessage = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, _requestSerializationContext.TrustActions.IssueRequest, reader);
+                    Message reply = await Task.Factory.FromAsync(channel.BeginRequest, channel.EndRequest, requestMessage, null, TaskCreationOptions.RunContinuationsAsynchronously);
+                    await Task.Factory.FromAsync(channel.BeginClose, channel.EndClose, null, TaskCreationOptions.RunContinuationsAsynchronously);
+                    SecurityUtils.ThrowIfNegotiationFault(reply, channel.RemoteAddress);
+                    trustResponse = serializer.ReadResponse(reply.GetReaderAtBodyContents());
+                    CacheSecurityTokenResponse(request, trustResponse);
+                }
+            }
+
+            return CreateGenericXmlSecurityToken(request, trustResponse);
+        }
+
+        /// <summary>
         /// Makes a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
         /// </summary>
         /// <returns>A <see cref="GenericXmlSecurityToken"/>.</returns>
@@ -323,43 +397,47 @@ namespace System.ServiceModel.Federation
                     writer.Flush();
                     var reader = XmlDictionaryReader.CreateTextReader(memeoryStream.ToArray(), XmlDictionaryReaderQuotas.Max);
                     IRequestChannel channel = ChannelFactory.CreateChannel();
+                    channel.Open();
                     Message reply = channel.Request(Message.CreateMessage(MessageVersion.Soap12WSAddressing10, _requestSerializationContext.TrustActions.IssueRequest, reader));
+                    channel.Close();
                     SecurityUtils.ThrowIfNegotiationFault(reply, channel.RemoteAddress);
                     trustResponse = serializer.ReadResponse(reply.GetReaderAtBodyContents());
                     CacheSecurityTokenResponse(request, trustResponse);
                 }
             }
 
+            return CreateGenericXmlSecurityToken(request, trustResponse);
+        }
+
+        private SecurityToken CreateGenericXmlSecurityToken(WsTrustRequest request, WsTrustResponse trustResponse)
+        {
             // Create GenericXmlSecurityToken
             // Assumes that token is first and Saml2SecurityToken.
-            using (var stream = new MemoryStream())
-            {
-                RequestSecurityTokenResponse response = trustResponse.RequestSecurityTokenResponseCollection[0];
+            RequestSecurityTokenResponse response = trustResponse.RequestSecurityTokenResponseCollection[0];
 
-                // Get attached and unattached references
-                GenericXmlSecurityKeyIdentifierClause internalSecurityKeyIdentifierClause = null;
-                if (response.AttachedReference != null)
-                    internalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.AttachedReference);
+            // Get attached and unattached references
+            GenericXmlSecurityKeyIdentifierClause internalSecurityKeyIdentifierClause = null;
+            if (response.AttachedReference != null)
+                internalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.AttachedReference);
 
-                GenericXmlSecurityKeyIdentifierClause externalSecurityKeyIdentifierClause = null;
-                if (response.UnattachedReference != null)
-                    externalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.UnattachedReference);
+            GenericXmlSecurityKeyIdentifierClause externalSecurityKeyIdentifierClause = null;
+            if (response.UnattachedReference != null)
+                externalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.UnattachedReference);
 
-                // Get proof token
-                IdentityModel.Tokens.SecurityToken proofToken = GetProofToken(request, response);
+            // Get proof token
+            IdentityModel.Tokens.SecurityToken proofToken = GetProofToken(request, response);
 
-                // Get lifetime
-                DateTime created = response.Lifetime?.Created ?? DateTime.UtcNow;
-                DateTime expires = response.Lifetime?.Expires ?? created.AddDays(1);
+            // Get lifetime
+            DateTime created = response.Lifetime?.Created ?? DateTime.UtcNow;
+            DateTime expires = response.Lifetime?.Expires ?? created.AddDays(1);
 
-                return new GenericXmlSecurityToken(response.RequestedSecurityToken.TokenElement,
-                                                   proofToken,
-                                                   created,
-                                                   expires,
-                                                   internalSecurityKeyIdentifierClause,
-                                                   externalSecurityKeyIdentifierClause,
-                                                   null);
-            }
+            return new GenericXmlSecurityToken(response.RequestedSecurityToken.TokenElement,
+                                               proofToken,
+                                               created,
+                                               expires,
+                                               internalSecurityKeyIdentifierClause,
+                                               externalSecurityKeyIdentifierClause,
+                                               null);
         }
 
         private WsTrustVersion GetWsTrustVersion(MessageSecurityVersion messageSecurityVersion)
