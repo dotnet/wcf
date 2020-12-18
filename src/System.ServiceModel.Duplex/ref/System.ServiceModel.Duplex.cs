@@ -13,10 +13,17 @@ namespace System.ServiceModel
         public CallbackBehaviorAttribute() { }
         public bool AutomaticSessionShutdown { get { return default(bool); } set { } }
         public bool UseSynchronizationContext { get { return default(bool); } set { } }
+        public System.ServiceModel.ConcurrencyMode ConcurrencyMode { get { return default(System.ServiceModel.ConcurrencyMode); } set { } }
         void System.ServiceModel.Description.IEndpointBehavior.AddBindingParameters(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Channels.BindingParameterCollection parameters) { }
         void System.ServiceModel.Description.IEndpointBehavior.ApplyClientBehavior(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Dispatcher.ClientRuntime clientRuntime) { }
         void System.ServiceModel.Description.IEndpointBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Dispatcher.EndpointDispatcher endpointDispatcher) { }
         void System.ServiceModel.Description.IEndpointBehavior.Validate(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint) { }
+    }
+    public enum ConcurrencyMode
+    {
+        Single = 0,
+        Reentrant = 1,
+        Multiple = 2
     }
     public partial class DuplexChannelFactory<TChannel> : System.ServiceModel.ChannelFactory<TChannel>
     {
