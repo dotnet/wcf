@@ -2677,7 +2677,8 @@ namespace BasicHttp_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicHttp.svc/Basic");
+                return new System.ServiceModel.EndpointAddress("$ServiceUri$/BasicHttp.svc/Basic" +
+                        "");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

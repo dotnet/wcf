@@ -3,7 +3,7 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "http://wcfcoresrv5.cloudapp.net/wcftestservice1/NetHttp.svc"
+      "$ServiceUri$/NetHttp.svc"
     ],
     "namespaceMappings": [
       "*, NetHttp_NS"

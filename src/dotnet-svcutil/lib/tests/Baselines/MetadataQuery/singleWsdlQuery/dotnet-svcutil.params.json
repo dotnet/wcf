@@ -3,7 +3,7 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "http://wcfcoresrv5.cloudapp.net/wcftestservice1/BasicService1.svc?singlewsdl"
+      "$ServiceUri$/BasicService1.svc?singlewsdl"
     ],
     "namespaceMappings": [
       "*, singleWsdlQuery_NS"

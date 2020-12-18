@@ -149,7 +149,8 @@ namespace wsdlQuery_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Service1_IService1))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicService1.svc/Service1");
+                return new System.ServiceModel.EndpointAddress("$ServiceUri$/BasicService1.svc/S" +
+                        "ervice1");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

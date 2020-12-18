@@ -3,7 +3,7 @@
   "version": "99.99.99",
   "options": {
     "inputs": [
-      "http://wcfcoresrv5.cloudapp.net/wcftestservice1/BasicHttpRpcLitSingleNs.svc"
+      "$ServiceUri$/BasicHttpRpcLitSingleNs.svc"
     ],
     "namespaceMappings": [
       "*, BasicHttpRpcLitSingleNs_NS"

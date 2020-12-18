@@ -236,7 +236,8 @@ namespace BasicHttpSoap_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IWcfSoapService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.cloudapp.net/WcfTestService1/BasicHttpSoap.svc/Basic");
+                return new System.ServiceModel.EndpointAddress("$ServiceUri$/BasicHttpSoap.svc/B" +
+                        "asic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

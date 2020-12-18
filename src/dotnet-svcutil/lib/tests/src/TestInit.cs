@@ -24,7 +24,7 @@ namespace SvcutilTest
         protected static string g_TestBootstrapDir;
         protected static string g_TestOutputDir;
         protected static string g_BaselinesDir;
-        protected static string g_ServiceUrl;
+        internal static string g_ServiceUrl;
         protected static string g_ServiceId;
         protected static string g_SvcutilNugetFeed;
         protected static string g_SvcutilPkgVersion;
@@ -137,7 +137,7 @@ namespace SvcutilTest
                 g_SdkVersion = procResult.OutputText.Trim();
             }
 
-            g_ServiceUrl = "http://wcfcoresrv5.cloudapp.net/wcftestservice1";
+            g_ServiceUrl = GetServiceUriFromEnv();
             g_TestOutputDir = Path.Combine(g_RepositoryRoot, "artifacts", "TestOutput");
             g_TestResultsDir = Path.Combine(g_TestOutputDir, "TestResults");
             g_TestBootstrapDir = Path.Combine(g_TestOutputDir, "TestBootstrap");
@@ -182,6 +182,17 @@ namespace SvcutilTest
             Assert.True(Directory.GetFiles(pkgPath, "dotnet-svcutil-lib.*.nupkg").Any(), $"dotnet-svcutil-lib*.nupkg not found under {pkgPath}!");
             ret = ProcessRunner.TryRunAsync("dotnet", $"tool install --global --add-source {pkgPath} dotnet-svcutil --version {g_SvcutilPkgVersion}", currentDirectory, null, CancellationToken.None).Result;
             Assert.True(ret.ExitCode == 0, "Could not install the global tool." + Environment.NewLine + ret.OutputText);
+        }
+
+        public string GetServiceUriFromEnv()
+        {
+            string result = Environment.GetEnvironmentVariable("ServiceUri");
+            if (string.IsNullOrEmpty(result))
+            {                
+                result = "http://wcfcoresrv5.westus2.cloudapp.azure.com/wcftestservice1";
+            }
+
+            return result.Trim();
         }
 
         public void Dispose()
