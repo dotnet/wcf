@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="dotnet-svcutil-lib">
-      <HintPath>$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/netcoreapp3.1/any/dotnet-svcutil-lib.dll</HintPath>
+      <HintPath>$USERPROFILE$/.dotnet/tools/.store/dotnet-svcutil/99.99.99/dotnet-svcutil/99.99.99/tools/DOTNET_VERSION/any/dotnet-svcutil-lib.dll</HintPath>
     </Reference>
     <PackageReference Include="Newtonsoft.Json" Version="*" />
   </ItemGroup>
