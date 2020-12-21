@@ -802,7 +802,8 @@ namespace BasicHttpDocLitDualNs_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_ICalculatorDocLit))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpDocLitDualNs.svc/Basic");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpDocLitDual" +
+                        "Ns.svc/Basic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
@@ -1099,7 +1100,8 @@ namespace BasicHttpDocLitDualNs_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IHelloWorldDocLit))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpDocLitDualNs.svc/Basic");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpDocLitDual" +
+                        "Ns.svc/Basic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
