@@ -49,9 +49,6 @@ namespace System.Runtime.Diagnostics
             get { return "E2EActivity"; }
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",
-            Safe = "We do not leak security data.")]
-        [SecuritySafeCritical]
         public static EventTraceActivity GetFromThreadOrCreate(bool clearIdOnThread = false)
         {
             Guid guid = Trace.CorrelationManager.ActivityId;
@@ -68,17 +65,11 @@ namespace System.Runtime.Diagnostics
             return new EventTraceActivity(guid);
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",
-            Safe = "We do not leak security data.")]
-        [SecuritySafeCritical]
         public static Guid GetActivityIdFromThread()
         {
             return EventSource.CurrentThreadActivityId;
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Critical because the CorrelationManager property has a link demand on UnmanagedCode.",
-                    Safe = "We do not leak security data.")]
-        [SecuritySafeCritical]
         private void SetActivityIdOnThread()
         {
             EventSource.SetCurrentThreadActivityId(ActivityId);
