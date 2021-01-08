@@ -424,6 +424,14 @@ public static partial class Endpoints
         }
     }
 
+    public static string BasicHttpsBinding_SecModeTransWithMessCred_ClientCredTypeCert
+    {
+        get
+        {
+            return GetEndpointAddress("BasicHttpsBindingTransSecMessCredsCert.svc//https-transwithmessage-credentials-cert", protocol: "https");
+        }
+    }
+
     public static string BasicHttps_SecModeTransWithMessCred_ClientCredTypeUserName
     {
         get
