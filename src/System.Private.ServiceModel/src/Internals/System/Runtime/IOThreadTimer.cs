@@ -635,7 +635,7 @@ namespace System.Runtime
                 do
                 {
                     var earliestDueTime = waitableTimers[0].dueTime;
-                    for (int i = 1; i < waitableTimers.Length; i++)
+                    for (int i = 0; i < waitableTimers.Length; i++)
                     {
                         if (waitableTimers[i].dead)
                             return 0;
