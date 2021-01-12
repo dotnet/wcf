@@ -1,87 +1,68 @@
 jobs:
-  BasicHttpWithBuffered:
+  WCFCorePerf:
     source:
       repository: https://github.com/dotnet/wcf.git
       branchOrCommit: master
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerf/WCFCorePerf.csproj
     isConsoleApp: true
     waitForExit: true
-    variables:      
-      Url: http://wcfcranksrv01.redmond.corp.microsoft.com/SayHello/SayHello.svc
-      Binding: BasicHttp
+    variables:
       Duration: 300
-      TransferMode: Buffered
-    arguments: " binding:{{Binding}} serviceurl:{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
-  BasicHttpWitDefault:
+    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{serverAddress}}{% if Binding == 'WSHttp' %}:{{serverPort}}{% endif %}/WCFCorePerf/TestService.svc/{{EndpointAddress}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
+  WCFCorePerfService:
     source:
       repository: https://github.com/dotnet/wcf.git
       branchOrCommit: master
-      project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerf/WCFCorePerf.csproj
+      project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerfService/WCFCorePerfService.csproj
+    arguments: " port:{{serverPort}}"
     isConsoleApp: true
-    waitForExit: true
-    variables:      
-      Url: http://wcfcranksrv01.redmond.corp.microsoft.com/SayHello/SayHello.svc
-      Binding: BasicHttp
-      Duration: 300
-      TransferMode: Default
-    arguments: " binding:{{Binding}} serviceurl:{{Url}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
-  WSHttp:
-    source:
-      repository: https://github.com/dotnet/wcf.git
-      branchOrCommit: master
-      project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerf/WCFCorePerf.csproj
-    isConsoleApp: true
-    waitForExit: true
-    variables:      
-      Url: https://wcfcranksrv01.redmond.corp.microsoft.com/wcfservicewshttp/service.svc
-      Binding: WSHttp
-      Duration: 300
-    arguments: " binding:{{Binding}} serviceurl:{{Url}}  perfmeasurementduration:{{Duration}} "
-  NetTcp:
-    source:
-      repository: https://github.com/dotnet/wcf.git
-      branchOrCommit: master
-      project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerf/WCFCorePerf.csproj
-    isConsoleApp: true
-    waitForExit: true
-    variables:       
-      Url: net.tcp://wcfcranksrv01.redmond.corp.microsoft.com/WcfNetTcpService/Service1.svc
-      Binding: NetTcp
-      Duration: 300
-    arguments: " binding:{{Binding}} serviceurl:{{Url}} perfmeasurementduration:{{Duration}} "  
+   
 
 scenarios:
-  BasicHttpWithBuffered:    
+  BasicHttpWithBuffered:
+    application:
+      job: WCFCorePerfService
     load:
-      job: BasicHttpWithBuffered
+      job: WCFCorePerf
       variables:
-        serverPort: 8231
-        path: /
-  BasicHttpWithDefault:    
+        Protocol: Http
+        EndpointAddress: BasicHttp
+        Binding: BasicHttp
+        TransferMode: Buffered
+  BasicHttpWithDefault: 
+    application:
+      job: WCFCorePerfService
     load:
-      job: BasicHttpWithDefault
+      job: WCFCorePerf
       variables:
-        serverPort: 8231
-        path: /
+        Protocol: Http
+        EndpointAddress: BasicHttp
+        Binding: BasicHttp
+        TransferMode: Default
   WSHttp:    
+    application:
+      job: WCFCorePerfService
     load:
-      job: WSHttp
+      job: WCFCorePerf
       variables:
-        serverPort: 8231
-        path: /
-  NetTcp:    
+        Protocol: Https
+        EndpointAddress: WSHttp
+        Binding: WSHttp
+  NetTcp: 
+    application:
+      job: WCFCorePerfService
     load:
-      job: NetTcp
+      job: WCFCorePerf
       variables:
-        serverPort: 8231
-        path: /
-
-
+        Protocol: net.tcp
+        EndpointAddress: NetTcp
+        Binding: NetTcp
 
 profiles:
   local:
     variables:
-      serverUri: Http://localhost
+      serverAddress: localhost
+      serverPort: 5000
     jobs: 
       application:
         endpoints: 
@@ -98,7 +79,7 @@ profiles:
     jobs: 
       db:
         endpoints: 
-          - http://asp-perf-db:5001
+          - http://asp-citrine-db:5001
       application:
         endpoints: 
           - http://asp-citrine-lin:5001
@@ -125,7 +106,7 @@ profiles:
       load:
         endpoints: 
           - http://asp-citrine-db:5001
-  
+
   aspnet-citrine-arm:
     variables:
       serverPort: 5000
@@ -143,7 +124,7 @@ profiles:
       load:
         endpoints: 
           - http://asp-citrine-load:5001
-  
+
   aspnet-citrine-amd:
     variables:
       serverPort: 5000
@@ -161,7 +142,7 @@ profiles:
       load:
         endpoints: 
           - http://asp-citrine-db:5001
-  
+
   aspnet-perf-lin:
     variables:
       serverPort: 5000
