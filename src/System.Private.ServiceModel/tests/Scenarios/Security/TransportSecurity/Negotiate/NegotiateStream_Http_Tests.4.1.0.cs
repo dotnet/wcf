@@ -83,7 +83,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
+            Assert.Equal(testString+"test", result);
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
@@ -134,7 +134,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
+            Assert.Equal(testString+"test", result);
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
