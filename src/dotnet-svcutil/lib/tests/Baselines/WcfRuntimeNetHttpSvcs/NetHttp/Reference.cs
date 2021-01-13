@@ -2679,8 +2679,12 @@ namespace NetHttp_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.NetHttp_IWcfService))
             {
+<<<<<<< HEAD
                 return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/NetHttp.svc/NetHttp" +
                         "");
+=======
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/NetHttp.svc/NetHttp");
+>>>>>>> d78815ea903d00ff2476e9d4260e7eab192c161a
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

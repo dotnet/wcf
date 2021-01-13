@@ -802,8 +802,13 @@ namespace BasicHttpDocLitSingleNs_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_ICalculatorDocLit))
             {
+<<<<<<< HEAD
                 return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpDocLitSing" +
                         "leNs.svc/Basic");
+=======
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpDocLitSingleNs.svc/Basic" +
+                        "");
+>>>>>>> d78815ea903d00ff2476e9d4260e7eab192c161a
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
