@@ -6,14 +6,11 @@ using System.Runtime.Serialization;
 
 namespace System.Runtime
 {
+    [Serializable]
     internal class FatalException : Exception
     {
-        public FatalException()
-        {
-        }
-        public FatalException(string message) : base(message)
-        {
-        }
+        public FatalException() { }
+        public FatalException(string message) : base(message) { }
 
         public FatalException(string message, Exception innerException) : base(message, innerException)
         {
@@ -22,9 +19,6 @@ namespace System.Runtime
             Fx.Assert(innerException == null || !Fx.IsFatal(innerException), "FatalException can't be used to wrap fatal exceptions.");
         }
 
-        protected FatalException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-            throw new PlatformNotSupportedException();
-        }
+        protected FatalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
