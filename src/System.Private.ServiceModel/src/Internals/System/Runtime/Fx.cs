@@ -971,33 +971,18 @@ namespace System.Runtime
             }
         }
 
-        internal class InternalException : Exception
+        [Serializable]
+        internal class InternalException : SystemException
         {
-            public InternalException(string description)
-                : base(InternalSR.ShipAssertExceptionMessage(description))
-            {
-            }
-
-            protected InternalException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-                throw new PlatformNotSupportedException();
-            }
+            public InternalException(string description) : base(InternalSR.ShipAssertExceptionMessage(description)) { }
+            protected InternalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         }
 
         [Serializable]
         internal class FatalInternalException : InternalException
         {
-            public FatalInternalException(string description)
-                : base(description)
-            {
-            }
-
-            protected FatalInternalException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-                throw new PlatformNotSupportedException();
-            }
+            public FatalInternalException(string description) : base(description) { }
+            protected FatalInternalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         }
     }
 }
