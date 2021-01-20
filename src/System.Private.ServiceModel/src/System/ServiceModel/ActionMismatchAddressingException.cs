@@ -8,38 +8,27 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     internal class ActionMismatchAddressingException : ProtocolException
     {
-        private string _soapActionHeader;
-
         public ActionMismatchAddressingException(string message, string soapActionHeader, string httpActionHeader)
             : base(message)
         {
             HttpActionHeader = httpActionHeader;
-            _soapActionHeader = soapActionHeader;
+            SoapActionHeader = soapActionHeader;
         }
 
-        protected ActionMismatchAddressingException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            throw new PlatformNotSupportedException();
-        }
+        protected ActionMismatchAddressingException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         public string HttpActionHeader { get; }
 
-        public string SoapActionHeader
-        {
-            get
-            {
-                return _soapActionHeader;
-            }
-        }
+        public string SoapActionHeader { get; }
 
         internal Message ProvideFault(MessageVersion messageVersion)
         {
             Fx.Assert(messageVersion.Addressing == AddressingVersion.WSAddressing10, "");
             WSAddressing10ProblemHeaderQNameFault phf = new WSAddressing10ProblemHeaderQNameFault(this);
-            Message message = System.ServiceModel.Channels.Message.CreateMessage(messageVersion, phf, messageVersion.Addressing.FaultAction);
+            Message message = Channels.Message.CreateMessage(messageVersion, phf, messageVersion.Addressing.FaultAction);
             phf.AddHeaders(message.Headers);
             return message;
         }

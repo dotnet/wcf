@@ -2,33 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Runtime.Serialization;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     public class InvalidMessageContractException : Exception
     {
-        public InvalidMessageContractException()
-            : base()
-        {
-        }
-
-        public InvalidMessageContractException(String message)
-            : base(message)
-        {
-        }
-
-        public InvalidMessageContractException(String message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        protected InvalidMessageContractException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            throw new PlatformNotSupportedException();
-        }
+        public InvalidMessageContractException() : base() { }
+        public InvalidMessageContractException(string message) : base(message) { }
+        public InvalidMessageContractException(String message, Exception innerException) : base(message, innerException) { }
+        protected InvalidMessageContractException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
 
