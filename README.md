@@ -4,7 +4,7 @@
 
 This repository contains the [.NET Core](http://github.com/dotnet/core) version of the [Windows Communication Foundation](https://msdn.microsoft.com/en-us/library/dd456779.aspx) client libraries.
 
-It's a subset of the .NET Framework version of Windows Communication Foundation and currently supports the same API surface available for Windows 8.1 Store apps. It is used to build .NET Core apps, including [Windows UWP](https://msdn.microsoft.com/en-us/library/windows/apps/dn609832.aspx) and [ASP.NET 5](http://weblogs.asp.net/scottgu/introducing-asp-net-5). These client libraries are suitable for mobile devices or on mid-tier servers to communicate with existing WCF services.
+It's a subset of the .NET Framework version of Windows Communication Foundation and currently supports the same API surface available for Windows 8.1 Store apps. It is used to build .NET Core apps, including [Windows UWP](https://msdn.microsoft.com/en-us/library/windows/apps/dn609832.aspx) and [ASP.NET Core](https://docs.microsoft.com/aspnet/core). These client libraries are suitable for mobile devices or on mid-tier servers to communicate with existing WCF services.
 
 By targeting .NET Core, WCF now has the opportunity for much wider reach across PCs, laptops, mobile devices, Xbox, HoloLens etc. It can also be ported to other operating systems since it runs on .NET Core, which is adding support for Linux and OS X.
 
