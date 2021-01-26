@@ -780,7 +780,11 @@ namespace System.ServiceModel.Security
                 return OpenCommunicationObjectAsync(aco, timeout);
             }
 
-            OpenCommunicationObject(tokenProvider as ICommunicationObject, timeout);
+            if (tokenProvider is ICommunicationObject communicationObject && communicationObject != null)
+            {
+                return Task.Factory.FromAsync(communicationObject.BeginOpen, communicationObject.EndOpen, timeout, null, TaskCreationOptions.None);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -802,7 +806,11 @@ namespace System.ServiceModel.Security
                 return CloseCommunicationObjectAsync(aco, false, timeout);
             }
 
-            CloseCommunicationObject(tokenProvider, false, timeout);
+            if (tokenProvider is ICommunicationObject communicationObject && communicationObject != null)
+            {
+                return Task.Factory.FromAsync(communicationObject.BeginClose, communicationObject.EndClose, timeout, null, TaskCreationOptions.None);
+            }
+
             return Task.CompletedTask;
         }
 

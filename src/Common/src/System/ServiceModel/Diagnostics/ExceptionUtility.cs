@@ -13,11 +13,20 @@ namespace System.ServiceModel.Diagnostics
             return ThrowHelper(exception, EventLevel.Error);
         }
 
+        internal Exception ThrowHelperError(Exception exception, Guid activityId, object source)
+        {
+            return exception;
+        }
+
         internal Exception ThrowHelper(Exception exception, EventLevel eventLevel)
         {
             FxTrace.Exception.TraceEtwException(exception, eventLevel);
             return exception;
         }
 
+        internal ArgumentNullException ThrowHelperArgumentNull(string paramName)
+        {
+            return (ArgumentNullException)ThrowHelperError(new ArgumentNullException(paramName));
+        }
     }
 }

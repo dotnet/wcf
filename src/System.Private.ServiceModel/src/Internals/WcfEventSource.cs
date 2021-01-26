@@ -2062,26 +2062,6 @@ namespace System.Runtime
         {
             ThrowingExceptionVerbose(data1, data2, SerializedException, "");
         }
-
-        [NonEvent]
-        private void SetActivityId(EventTraceActivity eventTraceActivity)
-        {
-            if (eventTraceActivity != null)
-            {
-                SetCurrentThreadActivityId(eventTraceActivity.ActivityId);
-            }
-        }
-
-        [NonEvent]
-        private void TransferActivityId(EventTraceActivity eventTraceActivity)
-        {
-            if (eventTraceActivity != null)
-            {
-                Guid oldGuid;
-                SetCurrentThreadActivityId(eventTraceActivity.ActivityId, out oldGuid);
-            }
-        }
-
         #region Keywords / Tasks / Opcodes
 
         public partial class EventIds
@@ -2307,7 +2287,7 @@ namespace System.Runtime
             public const int ClientFormatterDeserializeReplyStop = 3329;
             public const int SecurityNegotiationStart = 3330;
             public const int SecurityNegotiationStop = 3331;
-            public const int SecurityTokenProviderOpened = 3332;
+            //public const int SecurityTokenProviderOpened = 3332;
             public const int OutgoingMessageSecured = 3333;
             public const int IncomingMessageVerified = 3334;
             public const int GetServiceInstanceStart = 3335;
@@ -2569,7 +2549,7 @@ namespace System.Runtime
             public const int HttpHandlerPickedForUrl = 62326;
         }
 
-        public class Tasks
+        public partial class Tasks
         {
             public const EventTask ActivationDispatchSession = (EventTask)2500;
             public const EventTask ActivationDuplicateSocket = (EventTask)2501;
@@ -2640,7 +2620,7 @@ namespace System.Runtime
             public const EventTask RuntimeTransaction = (EventTask)2568;
             public const EventTask ScheduleActivity = (EventTask)2569;
             public const EventTask ScheduleWorkItem = (EventTask)2570;
-            public const EventTask SecureMessage = (EventTask)2571;
+            //public const EventTask SecureMessage = (EventTask)2571;
             public const EventTask SecurityImpersonation = (EventTask)2572;
             public const EventTask SecurityNegotiation = (EventTask)2573;
             public const EventTask SecurityVerification = (EventTask)2574;
@@ -2841,7 +2821,7 @@ namespace System.Runtime
             public const EventKeywords Serialization = (EventKeywords)0x2;
             public const EventKeywords ServiceModel = (EventKeywords)0x4;
             public const EventKeywords Transaction = (EventKeywords)0x8;
-            public const EventKeywords Security = (EventKeywords)0x10;
+            //public const EventKeywords Security = (EventKeywords)0x10;
             public const EventKeywords WCFMessageLogging = (EventKeywords)0x20;
             public const EventKeywords WFTracking = (EventKeywords)0x40;
             public const EventKeywords WebHost = (EventKeywords)0x80;
