@@ -28,11 +28,6 @@ namespace System.ServiceModel.Diagnostics
             return (ArgumentException)ThrowHelperError(new ArgumentException(message, paramName));
         }
 
-        public ArgumentNullException ThrowHelperArgumentNull(string paramName)
-        {
-            return (ArgumentNullException)ThrowHelperError(new ArgumentNullException(paramName));
-        }
-
         public ArgumentNullException ThrowHelperArgumentNull(string paramName, string message)
         {
             return (ArgumentNullException)ThrowHelperError(new ArgumentNullException(paramName, message));

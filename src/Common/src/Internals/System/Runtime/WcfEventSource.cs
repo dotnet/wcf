@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Diagnostics.Tracing;
+using System.Runtime.Diagnostics;
 
 namespace System.Runtime
 {
@@ -79,10 +80,29 @@ namespace System.Runtime
             ThrowingEtwExceptionVerbose(data1, data2, SerializedException, "");
         }
 
+        [NonEvent]
+        private void TransferActivityId(EventTraceActivity eventTraceActivity)
+        {
+            if (eventTraceActivity != null)
+            {
+                Guid oldGuid;
+                SetCurrentThreadActivityId(eventTraceActivity.ActivityId, out oldGuid);
+            }
+        }
+
+        [NonEvent]
+        private void SetActivityId(EventTraceActivity eventTraceActivity)
+        {
+            if (eventTraceActivity != null)
+            {
+                SetCurrentThreadActivityId(eventTraceActivity.ActivityId);
+            }
+        }
         #region Keywords / Tasks / Opcodes
 
         public partial class EventIds
         {
+            public const int SecurityTokenProviderOpened = 3332;
             public const int EtwUnhandledException = 57408;
             public const int ThrowingEtwExceptionVerbose = 57409;
             public const int ThrowingEtwException = 57410;
@@ -90,8 +110,8 @@ namespace System.Runtime
 
         public partial class Keywords
         {
+            public const EventKeywords Security = (EventKeywords)0x10;
             public const EventKeywords Infrastructure = (EventKeywords)0x10000;
-
         }
 
         public class ChannelKeywords
@@ -100,6 +120,11 @@ namespace System.Runtime
             public const EventKeywords Operational = unchecked((EventKeywords)0x4000000000000000);
             public const EventKeywords Analytic = unchecked((EventKeywords)0x2000000000000000);
             public const EventKeywords Debug = unchecked((EventKeywords)0x1000000000000000);
+        }
+
+        public partial class Tasks
+        {
+            public const EventTask SecureMessage = (EventTask)2571;
         }
         #endregion
     }

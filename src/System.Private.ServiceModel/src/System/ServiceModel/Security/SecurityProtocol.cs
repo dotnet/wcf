@@ -337,7 +337,7 @@ namespace System.ServiceModel.Security
                         SecurityProtocolFactory.ExpectSupportingTokens = true;
                         foreach (SupportingTokenProviderSpecification tokenProviderSpec in ChannelSupportingTokenProviderSpecification)
                         {
-                            SecurityUtils.OpenTokenProviderIfRequired(tokenProviderSpec.TokenProvider, timeoutHelper.RemainingTime());
+                            await SecurityUtils.OpenTokenProviderIfRequiredAsync(tokenProviderSpec.TokenProvider, timeoutHelper.RemainingTime());
                             if (tokenProviderSpec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.Endorsing || tokenProviderSpec.SecurityTokenAttachmentMode == SecurityTokenAttachmentMode.SignedEndorsing)
                             {
                                 if (tokenProviderSpec.TokenParameters.RequireDerivedKeys && !tokenProviderSpec.TokenParameters.HasAsymmetricKey)
