@@ -3,14 +3,20 @@
 // See the LICENSE file in the project root for more information.
 
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
+using System.IdentityModel.Security;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.IO;
+using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.Diagnostics;
+using System.ServiceModel.Federation.System.Runtime;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.WsAddressing;
@@ -25,7 +31,7 @@ namespace System.ServiceModel.Federation
     /// <see cref="WSTrustChannelSecurityTokenProvider"/> has been designed to work with the <see cref="WSFederationHttpBinding"/> to send a WsTrust message to obtain a SecurityToken from an STS. The SecurityToken is
     /// added as an IssuedToken on the outbound WCF message.
     /// </summary>
-    public class WSTrustChannelSecurityTokenProvider : SecurityTokenProvider
+    public class WSTrustChannelSecurityTokenProvider : SecurityTokenProvider, ICommunicationObject, ISecurityCommunicationObject
     {
         private const int DefaultPublicKeySize = 1024;
         private const string Namespace = "http://schemas.microsoft.com/ws/2006/05/servicemodel/securitytokenrequirement";
@@ -35,9 +41,10 @@ namespace System.ServiceModel.Federation
         private const string TargetAddressProperty = Namespace + "/TargetAddress";
 
         private SecurityKeyEntropyMode _keyEntropyMode;
-        private ChannelFactory<IRequestChannel> _channelFactory;
         private readonly SecurityAlgorithmSuite _securityAlgorithmSuite;
         private WsSerializationContext _requestSerializationContext;
+        private WrapperSecurityCommunicationObject _communicationObject;
+        private EventTraceActivity _eventTraceActivity;
 
         /// <summary>
         /// Instantiates a <see cref="WSTrustChannelSecurityTokenProvider"/> that describe the parameters for a WSTrust request.
@@ -47,17 +54,17 @@ namespace System.ServiceModel.Federation
         /// <exception cref="ArgumentException">thrown if <see cref="SecurityTokenRequirement.GetProperty{TValue}(string)"/> (IssuedSecurityTokenParameters) is not a <see cref="WSTrustTokenParameters"/>.</exception>
         public WSTrustChannelSecurityTokenProvider(SecurityTokenRequirement tokenRequirement)
         {
-            SecurityTokenRequirement = tokenRequirement ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
+            SecurityTokenRequirement = tokenRequirement ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(tokenRequirement)), EventLevel.Error);
             SecurityTokenRequirement.TryGetProperty(SecurityAlgorithmSuiteProperty, out _securityAlgorithmSuite);
 
             IssuedSecurityTokenParameters issuedSecurityTokenParameters = SecurityTokenRequirement.GetProperty<IssuedSecurityTokenParameters>(IssuedSecurityTokenParametersProperty);
             WSTrustTokenParameters = issuedSecurityTokenParameters as WSTrustTokenParameters;
             if (WSTrustTokenParameters == null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant("tokenRequirement.GetProperty<IssuedSecurityTokenParameters> must be of type: WSTrustTokenParameters. Was: '{0}.", issuedSecurityTokenParameters), nameof(tokenRequirement)), System.Diagnostics.Tracing.EventLevel.Error);
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant("tokenRequirement.GetProperty<IssuedSecurityTokenParameters> must be of type: WSTrustTokenParameters. Was: '{0}.", issuedSecurityTokenParameters), nameof(tokenRequirement)), EventLevel.Error);
+            }
 
-            InitializeKeyEntropyMode();
-            SetInboundSerializationContext();
-            RequestContext = string.IsNullOrEmpty(WSTrustTokenParameters.RequestContext) ? Guid.NewGuid().ToString() : WSTrustTokenParameters.RequestContext;
+            _communicationObject = new WrapperSecurityCommunicationObject(this);
         }
 
         private DateTime AddTicks(DateTime time, long ticks)
@@ -70,7 +77,6 @@ namespace System.ServiceModel.Federation
 
             return time.AddTicks(ticks);
         }
-
 
         /// <summary>
         /// Gets or sets the cached security token response.
@@ -100,23 +106,7 @@ namespace System.ServiceModel.Federation
         /// Returns a channel factory with the credentials that the user set the users credentials on.
         /// </summary>
         /// <returns></returns>
-        internal virtual ChannelFactory<IRequestChannel> ChannelFactory
-        {
-            get
-            {
-                if (_channelFactory == null)
-                {
-                    _channelFactory = new ChannelFactory<IRequestChannel>(IssuerBinding, WSTrustTokenParameters.IssuerAddress);
-                    if (ClientCredentials != null)
-                    {
-                        _channelFactory.Endpoint.EndpointBehaviors.Remove(typeof(ClientCredentials));
-                        _channelFactory.Endpoint.EndpointBehaviors.Add(ClientCredentials.Clone());
-                    }
-                }
-
-                return _channelFactory;
-            }
-        }
+        internal virtual ChannelFactory<IRequestChannel> ChannelFactory { get; set; }
 
         internal ClientCredentials ClientCredentials { get; set; }
 
@@ -146,7 +136,7 @@ namespace System.ServiceModel.Federation
                     keyType = _requestSerializationContext.TrustKeyTypes.Bearer;
                     break;
                 default:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("KeyType is not supported: {0}", WSTrustTokenParameters.KeyType)), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("KeyType is not supported: {0}", WSTrustTokenParameters.KeyType)), EventLevel.Error);
             }
 
             Entropy entropy = null;
@@ -179,6 +169,18 @@ namespace System.ServiceModel.Federation
             }
 
             return trustRequest;
+        }
+
+        private EventTraceActivity EventTraceActivity
+        {
+            get
+            {
+                if (_eventTraceActivity == null)
+                {
+                    _eventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
+                }
+                return _eventTraceActivity;
+            }
         }
 
         private WsTrustResponse GetCachedResponse(WsTrustRequest request)
@@ -218,13 +220,13 @@ namespace System.ServiceModel.Federation
             // Encrypted keys and encrypted entropy are not supported, currently, as they should
             // only be needed by unsupported message security scenarios.
             if (response.RequestedProofToken?.EncryptedKey != null)
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Encrypted keys for proof tokens are not supported."), System.Diagnostics.Tracing.EventLevel.Error);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Encrypted keys for proof tokens are not supported."), EventLevel.Error);
 
             // Bearer scenarios have no proof token
             if (string.Equals(keyType, _requestSerializationContext.TrustKeyTypes.Bearer, StringComparison.Ordinal))
             {
                 if (response.RequestedProofToken != null || response.Entropy != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Bearer key scenarios should not include a proof token or issuer entropy in the response."), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Bearer key scenarios should not include a proof token or issuer entropy in the response."), EventLevel.Error);
 
                 return null;
             }
@@ -235,7 +237,7 @@ namespace System.ServiceModel.Federation
             {
                 // Confirm that a computed key algorithm isn't also specified
                 if (!string.IsNullOrEmpty(response.RequestedProofToken.ComputedKeyAlgorithm) || response.Entropy != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy."), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy."), EventLevel.Error);
 
                 return new BinarySecretSecurityToken(response.RequestedProofToken.BinarySecret.Data);
             }
@@ -244,7 +246,7 @@ namespace System.ServiceModel.Federation
             else if (response.RequestedProofToken?.ComputedKeyAlgorithm != null)
             {
                 if (!string.Equals(keyType, _requestSerializationContext.TrustKeyTypes.Symmetric, StringComparison.Ordinal))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens are only supported with symmetric key types."), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens are only supported with symmetric key types."), EventLevel.Error);
 
                 if (string.Equals(response.RequestedProofToken.ComputedKeyAlgorithm, _requestSerializationContext.TrustKeyTypes.PSHA1, StringComparison.Ordinal))
                 {
@@ -252,16 +254,16 @@ namespace System.ServiceModel.Federation
                     // If we wish to support it in the future, most of the work will be in the WSTrust serializer;
                     // this code would just have to use protected key's .Secret property to get the key material.
                     if (response.Entropy?.ProtectedKey != null || request.Entropy?.ProtectedKey != null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper( new NotSupportedException("Protected key entropy is not supported."), System.Diagnostics.Tracing.EventLevel.Error);
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper( new NotSupportedException("Protected key entropy is not supported."), EventLevel.Error);
 
                     // Get issuer and requestor entropy
                     byte[] issuerEntropy = response.Entropy?.BinarySecret?.Data;
                     if (issuerEntropy == null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens require issuer to supply key material via entropy."), System.Diagnostics.Tracing.EventLevel.Error);
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens require issuer to supply key material via entropy."), EventLevel.Error);
 
                     byte[] requestorEntropy = request.Entropy?.BinarySecret?.Data;
                     if (requestorEntropy == null)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens require requestor to supply key material via entropy."), System.Diagnostics.Tracing.EventLevel.Error);
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("Computed key proof tokens require requestor to supply key material via entropy."), EventLevel.Error);
 
                     // Get key size
                     int keySizeInBits = response.KeySizeInBits ?? 0; // RSTR key size has precedence
@@ -272,13 +274,13 @@ namespace System.ServiceModel.Federation
                         keySizeInBits = _securityAlgorithmSuite?.DefaultSymmetricKeyLength ?? 0; // Symmetric keys should default to a length cooresponding to the algorithm in use
 
                     if (keySizeInBits == 0)
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("No key size provided."), System.Diagnostics.Tracing.EventLevel.Error);
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidOperationException("No key size provided."), EventLevel.Error);
 
                     return new BinarySecretSecurityToken(Psha1KeyGenerator.ComputeCombinedKey(issuerEntropy, requestorEntropy, keySizeInBits));
                 }
                 else
                 {
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Only PSHA1 computed keys are supported."), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Only PSHA1 computed keys are supported."), EventLevel.Error);
                 }
             }
             // If the response does not have a proof token or computed key value, but the request proposed entropy,
@@ -286,7 +288,7 @@ namespace System.ServiceModel.Federation
             else if (request.Entropy != null)
             {
                 if (request.Entropy.ProtectedKey != null)
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Protected key entropy is not supported."), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException("Protected key entropy is not supported."), EventLevel.Error);
 
                 if (request.Entropy.BinarySecret != null)
                     return new BinarySecretSecurityToken(request.Entropy.BinarySecret.Data);
@@ -305,11 +307,26 @@ namespace System.ServiceModel.Federation
         }
 
         /// <summary>
-        /// Makes a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
+        /// Begins a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
         /// </summary>
-        /// <returns>A <see cref="GenericXmlSecurityToken"/>.</returns>
-        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        /// <returns>A <see cref="IAsyncResult"/>.</returns>
+        protected override IAsyncResult BeginGetTokenCore(TimeSpan timeout, AsyncCallback callback, object state)
         {
+            return GetTokenAsyncCore(timeout).ToApm(callback, state);
+        }
+
+        /// <summary>
+        /// Completes a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
+        /// </summary>
+        /// <returns>A <see cref="SecurityToken"/>.</returns>
+        protected override SecurityToken EndGetTokenCore(IAsyncResult result)
+        {
+            return result.ToApmEnd<SecurityToken>();
+        }
+
+        private async Task<SecurityToken> GetTokenAsyncCore(TimeSpan timeout)
+        {
+            _communicationObject.ThrowIfClosedOrNotOpen();
             WsTrustRequest request = CreateWsTrustRequest();
             WsTrustResponse trustResponse = GetCachedResponse(request);
 
@@ -323,43 +340,92 @@ namespace System.ServiceModel.Federation
                     writer.Flush();
                     var reader = XmlDictionaryReader.CreateTextReader(memeoryStream.ToArray(), XmlDictionaryReaderQuotas.Max);
                     IRequestChannel channel = ChannelFactory.CreateChannel();
-                    Message reply = channel.Request(Message.CreateMessage(MessageVersion.Soap12WSAddressing10, _requestSerializationContext.TrustActions.IssueRequest, reader));
-                    SecurityUtils.ThrowIfNegotiationFault(reply, channel.RemoteAddress);
-                    trustResponse = serializer.ReadResponse(reply.GetReaderAtBodyContents());
-                    CacheSecurityTokenResponse(request, trustResponse);
+                    await Task.Factory.FromAsync(channel.BeginOpen, channel.EndOpen, null, TaskCreationOptions.None);
+                    try
+                    {
+                        Message requestMessage = Message.CreateMessage(MessageVersion.Soap12WSAddressing10, _requestSerializationContext.TrustActions.IssueRequest, reader);
+                        Message reply = await Task.Factory.FromAsync(channel.BeginRequest, channel.EndRequest, requestMessage, null, TaskCreationOptions.None);
+                        SecurityUtils.ThrowIfNegotiationFault(reply, channel.RemoteAddress);
+                        trustResponse = serializer.ReadResponse(reply.GetReaderAtBodyContents());
+                        CacheSecurityTokenResponse(request, trustResponse);
+                    }
+                    finally
+                    {
+                        await Task.Factory.FromAsync(channel.BeginClose, channel.EndClose, null, TaskCreationOptions.None);
+                    }
                 }
             }
 
+            return CreateGenericXmlSecurityToken(request, trustResponse);
+        }
+
+        /// <summary>
+        /// Makes a WSTrust call to the STS to obtain a <see cref="SecurityToken"/> first checking if the token is available in the cache.
+        /// </summary>
+        /// <returns>A <see cref="GenericXmlSecurityToken"/>.</returns>
+        protected override SecurityToken GetTokenCore(TimeSpan timeout)
+        {
+            _communicationObject.ThrowIfClosedOrNotOpen();
+            WsTrustRequest request = CreateWsTrustRequest();
+            WsTrustResponse trustResponse = GetCachedResponse(request);
+
+            if (trustResponse is null)
+            {
+                using (var memeoryStream = new MemoryStream())
+                {
+                    var writer = XmlDictionaryWriter.CreateTextWriter(memeoryStream, Encoding.UTF8);
+                    var serializer = new WsTrustSerializer();
+                    serializer.WriteRequest(writer, _requestSerializationContext.TrustVersion, request);
+                    writer.Flush();
+                    var reader = XmlDictionaryReader.CreateTextReader(memeoryStream.ToArray(), XmlDictionaryReaderQuotas.Max);
+                    IRequestChannel channel = ChannelFactory.CreateChannel();
+                    try
+                    {
+                        channel.Open();
+                        Message reply = channel.Request(Message.CreateMessage(MessageVersion.Soap12WSAddressing10, _requestSerializationContext.TrustActions.IssueRequest, reader));
+                        SecurityUtils.ThrowIfNegotiationFault(reply, channel.RemoteAddress);
+                        trustResponse = serializer.ReadResponse(reply.GetReaderAtBodyContents());
+                        CacheSecurityTokenResponse(request, trustResponse);
+                    }
+                    finally
+                    {
+                        channel.Close();
+                    }
+                }
+            }
+
+            return CreateGenericXmlSecurityToken(request, trustResponse);
+        }
+
+        private SecurityToken CreateGenericXmlSecurityToken(WsTrustRequest request, WsTrustResponse trustResponse)
+        {
             // Create GenericXmlSecurityToken
             // Assumes that token is first and Saml2SecurityToken.
-            using (var stream = new MemoryStream())
-            {
-                RequestSecurityTokenResponse response = trustResponse.RequestSecurityTokenResponseCollection[0];
+            RequestSecurityTokenResponse response = trustResponse.RequestSecurityTokenResponseCollection[0];
 
-                // Get attached and unattached references
-                GenericXmlSecurityKeyIdentifierClause internalSecurityKeyIdentifierClause = null;
-                if (response.AttachedReference != null)
-                    internalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.AttachedReference);
+            // Get attached and unattached references
+            GenericXmlSecurityKeyIdentifierClause internalSecurityKeyIdentifierClause = null;
+            if (response.AttachedReference != null)
+                internalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.AttachedReference);
 
-                GenericXmlSecurityKeyIdentifierClause externalSecurityKeyIdentifierClause = null;
-                if (response.UnattachedReference != null)
-                    externalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.UnattachedReference);
+            GenericXmlSecurityKeyIdentifierClause externalSecurityKeyIdentifierClause = null;
+            if (response.UnattachedReference != null)
+                externalSecurityKeyIdentifierClause = GetSecurityKeyIdentifierForTokenReference(response.UnattachedReference);
 
-                // Get proof token
-                IdentityModel.Tokens.SecurityToken proofToken = GetProofToken(request, response);
+            // Get proof token
+            IdentityModel.Tokens.SecurityToken proofToken = GetProofToken(request, response);
 
-                // Get lifetime
-                DateTime created = response.Lifetime?.Created ?? DateTime.UtcNow;
-                DateTime expires = response.Lifetime?.Expires ?? created.AddDays(1);
+            // Get lifetime
+            DateTime created = response.Lifetime?.Created ?? DateTime.UtcNow;
+            DateTime expires = response.Lifetime?.Expires ?? created.AddDays(1);
 
-                return new GenericXmlSecurityToken(response.RequestedSecurityToken.TokenElement,
-                                                   proofToken,
-                                                   created,
-                                                   expires,
-                                                   internalSecurityKeyIdentifierClause,
-                                                   externalSecurityKeyIdentifierClause,
-                                                   null);
-            }
+            return new GenericXmlSecurityToken(response.RequestedSecurityToken.TokenElement,
+                                               proofToken,
+                                               created,
+                                               expires,
+                                               internalSecurityKeyIdentifierClause,
+                                               externalSecurityKeyIdentifierClause,
+                                               null);
         }
 
         private WsTrustVersion GetWsTrustVersion(MessageSecurityVersion messageSecurityVersion)
@@ -370,7 +436,7 @@ namespace System.ServiceModel.Federation
             if (messageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
                 return WsTrustVersion.TrustFeb2005;
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("Unsupported TrustVersion: '{0}'.", MessageSecurityVersion.TrustVersion)), System.Diagnostics.Tracing.EventLevel.Error);
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("Unsupported TrustVersion: '{0}'.", MessageSecurityVersion.TrustVersion)), EventLevel.Error);
         }
 
         private void InitializeKeyEntropyMode()
@@ -393,7 +459,7 @@ namespace System.ServiceModel.Federation
         /// <summary>
         /// Gets the issuer binding from the issued token parameters.
         /// </summary>
-        /// 
+        ///
         internal Binding IssuerBinding
         {
             get => WSTrustTokenParameters?.IssuerBinding;
@@ -432,7 +498,7 @@ namespace System.ServiceModel.Federation
             set
             {
                 if (!Enum.IsDefined(typeof(SecurityKeyEntropyMode), value))
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidEnumArgumentException(nameof(value), (int)value, typeof(SecurityKeyEntropyMode)), System.Diagnostics.Tracing.EventLevel.Error);
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new InvalidEnumArgumentException(nameof(value), (int)value, typeof(SecurityKeyEntropyMode)), EventLevel.Error);
 
                 _keyEntropyMode = value;
             }
@@ -449,7 +515,7 @@ namespace System.ServiceModel.Federation
         /// </summary>
         internal string RequestContext
         {
-            get;
+            get; private set;
         }
 
         /// <summary>
@@ -495,5 +561,152 @@ namespace System.ServiceModel.Federation
         public override bool SupportsTokenRenewal => false;
 
         internal WSTrustTokenParameters WSTrustTokenParameters { get; }
+
+        #region ISecurityCommunicationObject
+        // This implementation is based on a combination of IssuanceTokenProviderBase<T> and CommunicationObjectSecurityTokenProvider
+        // As this class is public, it's not possible to derive from the internal CommunicationObjectSecurityTokenProvider class so the
+        // equivalent implementation has been provided inline in this class.
+        void ISecurityCommunicationObject.OnAbort()
+        {
+            if (ChannelFactory != null && ChannelFactory.State == CommunicationState.Opened)
+            {
+                ChannelFactory.Abort();
+                ChannelFactory = null;
+            }
+        }
+
+        async Task ISecurityCommunicationObject.OnCloseAsync(TimeSpan timeout)
+        {
+            if (ChannelFactory != null && ChannelFactory.State == CommunicationState.Opened)
+            {
+                await Task.Factory.FromAsync(ChannelFactory.BeginClose, ChannelFactory.EndClose, timeout, null, TaskCreationOptions.None);
+                ChannelFactory = null;
+            }
+        }
+
+        async Task ISecurityCommunicationObject.OnOpenAsync(TimeSpan timeout)
+        {
+            InitializeKeyEntropyMode();
+            SetInboundSerializationContext();
+            RequestContext = string.IsNullOrEmpty(WSTrustTokenParameters.RequestContext) ? Guid.NewGuid().ToString() : WSTrustTokenParameters.RequestContext;
+            var channelFactory = new ChannelFactory<IRequestChannel>(IssuerBinding, WSTrustTokenParameters.IssuerAddress);
+            if (ClientCredentials != null)
+            {
+                channelFactory.Endpoint.EndpointBehaviors.Remove(typeof(ClientCredentials));
+                channelFactory.Endpoint.EndpointBehaviors.Add(ClientCredentials.Clone());
+            }
+
+            await Task.Factory.FromAsync(channelFactory.BeginOpen, channelFactory.EndOpen, null, TaskCreationOptions.None);
+            ChannelFactory = channelFactory;
+        }
+
+        void ISecurityCommunicationObject.OnClosed() { }
+
+        void ISecurityCommunicationObject.OnClosing() { }
+
+        void ISecurityCommunicationObject.OnFaulted() { }
+
+        void ISecurityCommunicationObject.OnOpened()
+        {
+            SecurityTraceRecordHelper.TraceTokenProviderOpened(EventTraceActivity, this);
+        }
+
+        void ISecurityCommunicationObject.OnOpening() { }
+
+        TimeSpan ISecurityCommunicationObject.DefaultOpenTimeout => ServiceDefaults.OpenTimeout;
+        TimeSpan ISecurityCommunicationObject.DefaultCloseTimeout => ServiceDefaults.CloseTimeout;
+        #endregion
+
+        #region ICommunicationObject
+        event EventHandler ICommunicationObject.Closed
+        {
+            add { _communicationObject.Closed += value; }
+            remove { _communicationObject.Closed -= value; }
+        }
+
+        event EventHandler ICommunicationObject.Closing
+        {
+            add { _communicationObject.Closing += value; }
+            remove { _communicationObject.Closing -= value; }
+        }
+
+        event EventHandler ICommunicationObject.Faulted
+        {
+            add { _communicationObject.Faulted += value; }
+            remove { _communicationObject.Faulted -= value; }
+        }
+
+        event EventHandler ICommunicationObject.Opened
+        {
+            add { _communicationObject.Opened += value; }
+            remove { _communicationObject.Opened -= value; }
+        }
+
+        event EventHandler ICommunicationObject.Opening
+        {
+            add { _communicationObject.Opening += value; }
+            remove { _communicationObject.Opening -= value; }
+        }
+
+        CommunicationState ICommunicationObject.State
+        {
+            get { return _communicationObject.State; }
+        }
+
+        void ICommunicationObject.Abort()
+        {
+            _communicationObject.Abort();
+        }
+
+        void ICommunicationObject.Close()
+        {
+            _communicationObject.Close();
+        }
+
+        void ICommunicationObject.Close(TimeSpan timeout)
+        {
+            _communicationObject.Close(timeout);
+        }
+
+        IAsyncResult ICommunicationObject.BeginClose(AsyncCallback callback, object state)
+        {
+            return _communicationObject.BeginClose(callback, state);
+        }
+
+        IAsyncResult ICommunicationObject.BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return _communicationObject.BeginClose(timeout, callback, state);
+        }
+
+        void ICommunicationObject.EndClose(IAsyncResult result)
+        {
+            _communicationObject.EndClose(result);
+        }
+
+        void ICommunicationObject.Open()
+        {
+            _communicationObject.Open();
+        }
+
+        void ICommunicationObject.Open(TimeSpan timeout)
+        {
+            _communicationObject.Open(timeout);
+        }
+
+        IAsyncResult ICommunicationObject.BeginOpen(AsyncCallback callback, object state)
+        {
+            return _communicationObject.BeginOpen(callback, state);
+        }
+
+        IAsyncResult ICommunicationObject.BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
+        {
+            return _communicationObject.BeginOpen(timeout, callback, state);
+        }
+
+        void ICommunicationObject.EndOpen(IAsyncResult result)
+        {
+            _communicationObject.EndOpen(result);
+        }
+        #endregion
     }
 }

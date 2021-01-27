@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Tracing;
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security.Tokens;
@@ -92,7 +93,7 @@ namespace System.ServiceModel.Federation
         {
             get => _issuedTokenRenewalThresholdPercentage;
             set => _issuedTokenRenewalThresholdPercentage = (value <= 0 || value > 100)
-                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant("IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.", value)), System.Diagnostics.Tracing.EventLevel.Error)
+                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant("IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.", value)), EventLevel.Error)
                 : value;
         }
 
@@ -108,7 +109,7 @@ namespace System.ServiceModel.Federation
         {
             get => _maxIssuedTokenCachingTime;
             set => _maxIssuedTokenCachingTime = value <= TimeSpan.Zero
-                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant("MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.", value)), System.Diagnostics.Tracing.EventLevel.Error)
+                ? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentOutOfRangeException(nameof(value), LogHelper.FormatInvariant("MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.", value)), EventLevel.Error)
                 : value;
         }
 
@@ -118,7 +119,7 @@ namespace System.ServiceModel.Federation
         public MessageSecurityVersion MessageSecurityVersion
         {
             get => _messageSecurityVersion;
-            set => _messageSecurityVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(value)), System.Diagnostics.Tracing.EventLevel.Error);
+            set => _messageSecurityVersion = value ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentNullException(nameof(value)), EventLevel.Error);
         }
 
         /// <summary>

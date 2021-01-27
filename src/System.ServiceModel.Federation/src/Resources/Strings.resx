@@ -123,4 +123,10 @@
   <data name="SecurityServerTooBusy" xml:space="preserve">
     <value>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</value>
   </data>
+  <data name="CommunicationObjectFaulted1" xml:space="preserve">
+    <value>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</value>
+  </data>
+  <data name="CommunicationObjectCannotBeUsed" xml:space="preserve">
+    <value>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</value>
+  </data>
 </root>

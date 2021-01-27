@@ -487,7 +487,7 @@ namespace System.ServiceModel.Security
             {
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 SetupSessionTokenProvider();
-                SecurityUtils.OpenTokenProviderIfRequired(_sessionTokenProvider, timeoutHelper.RemainingTime());
+                await SecurityUtils.OpenTokenProviderIfRequiredAsync(_sessionTokenProvider, timeoutHelper.RemainingTime());
                 using (ServiceModelActivity activity = DiagnosticUtility.ShouldUseActivity ?
                     ServiceModelActivity.CreateBoundedActivity() : null)
                 {
