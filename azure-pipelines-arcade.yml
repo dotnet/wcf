@@ -88,12 +88,12 @@ stages:
                 /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
                 /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
             # Service uri needed for integration tests in official builds
-            - _serviceUri: wcfcoresrv5.cloudapp.net/wcftestservice1
+            - _serviceUri: wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1
 
         # Public/PR & CI Build Variables
         - ${{ if eq(variables._RunAsPublic, True) }}:
             # For PR and CI test runs we use a different server machine that host multiple services to avoid concurrency issues.
-            - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+            - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
             # For PR and CI test runs we need to update the Service being used by Scenario tests.
             # Used in UpdatePRService.yml
             # I think this can be removed based on the logic, setting it to true for now.
@@ -164,7 +164,7 @@ stages:
             queue: BuildPool.Ubuntu.1604.Amd64.Open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+          - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
           - _updateService: true
 
           # Send to Helix variables
@@ -218,11 +218,10 @@ stages:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
-            name:  Hosted macOS
-            queue: OSX.1013.Amd64.Open
+            name: Hosted macOS
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
-          - _serviceUri: wcfcoresrv2.cloudapp.net/WcfService$(_WcfPRServiceId)
+          - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
           - _updateService: true
 
           # Send to Helix variables
@@ -276,6 +275,7 @@ stages:
     parameters:
       validateDependsOn:
       - Build
+      publishingInfraVersion: 3
       # Symbol validation isn't being very reliable lately. This should be enabled back
       # once this issue is resolved: https://github.com/dotnet/arcade/issues/2871
       enableSymbolValidation: false

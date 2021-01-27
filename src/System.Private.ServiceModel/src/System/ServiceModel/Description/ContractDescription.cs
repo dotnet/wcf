@@ -12,7 +12,7 @@ using System.ServiceModel.Security;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Name={_name}, Namespace={_ns}, ContractType={_contractType}")]
+    [DebuggerDisplay("Name={_name}, Namespace={_ns}, ContractType={ContractType}")]
     public class ContractDescription
     {
         private XmlName _name;

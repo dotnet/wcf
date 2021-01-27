@@ -97,7 +97,7 @@ if ($vs) {
   $env:PATH=($env:DOTNET_ROOT + ";" + $env:PATH);
 
   # Launch Visual Studio with the locally defined environment variables
-  ."$vs"
+  Invoke-Item "$vs"
 
   exit 0
 }

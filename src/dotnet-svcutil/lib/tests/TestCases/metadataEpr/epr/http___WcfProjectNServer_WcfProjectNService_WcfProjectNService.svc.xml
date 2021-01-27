@@ -1,0 +1,3 @@
+<EndpointReference xmlns="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+	<Address>http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc</Address>
+</EndpointReference>

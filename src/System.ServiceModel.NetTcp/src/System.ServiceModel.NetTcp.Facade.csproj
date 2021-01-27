@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyVersion>5.0.0.0</AssemblyVersion>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <AssemblyName>System.ServiceModel.NetTcp</AssemblyName>
     <CLSCompliant>true</CLSCompliant>

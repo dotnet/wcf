@@ -1,0 +1,143 @@
+-- <?xml version="1.0" encoding="ISO-8859-1"?>
+-- <wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://tempuri.org/" name="TypeReuseSvc">
+--   <wsdl:types>
+--     <xs:schema targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+--       <xs:import namespace="http://schemas.datacontract.org/2004/07/BinLib"/>
+--       <xs:import namespace="http://schemas.datacontract.org/2004/07/TypesLib"/>
+--       <xs:element name="GetData">
+--         <xs:complexType>
+--           <xs:sequence>
+--             <xs:element name="value" type="xs:int" minOccurs="0"/>
+--           </xs:sequence>
+--         </xs:complexType>
+--       </xs:element>
+--       <xs:element name="GetDataResponse">
+--         <xs:complexType>
+--           <xs:sequence>
+--             <xs:element name="GetDataResult" type="q1:BinLibrary" minOccurs="0" xmlns:q1="http://schemas.datacontract.org/2004/07/BinLib" nillable="true"/>
+--           </xs:sequence>
+--         </xs:complexType>
+--       </xs:element>
+--       <xs:element name="GetDataUsingDataContract">
+--         <xs:complexType>
+--           <xs:sequence>
+            <xs:element name="composite" type="q2:TypeReuseCompositeType" minOccurs="0" nillable="true" xmlns:q2="http://schemas.datacontract.org/2004/07/TypesLib"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDataUsingDataContractResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="GetDataUsingDataContractResult" type="q3:TypeReuseCompositeType" minOccurs="0" nillable="true" xmlns:q3="http://schemas.datacontract.org/2004/07/TypesLib"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+      <xs:element name="anyType" type="xs:anyType" nillable="true"/>
+      <xs:element name="anyURI" type="xs:anyURI" nillable="true"/>
+      <xs:element name="base64Binary" type="xs:base64Binary" nillable="true"/>
+      <xs:element name="boolean" type="xs:boolean" nillable="true"/>
+      <xs:element name="byte" type="xs:byte" nillable="true"/>
+      <xs:element name="dateTime" type="xs:dateTime" nillable="true"/>
+      <xs:element name="decimal" type="xs:decimal" nillable="true"/>
+      <xs:element name="double" type="xs:double" nillable="true"/>
+      <xs:element name="float" type="xs:float" nillable="true"/>
+      <xs:element name="int" type="xs:int" nillable="true"/>
+      <xs:element name="long" type="xs:long" nillable="true"/>
+      <xs:element name="QName" type="xs:QName" nillable="true"/>
+      <xs:element name="short" type="xs:short" nillable="true"/>
+      <xs:element name="string" type="xs:string" nillable="true"/>
+      <xs:element name="unsignedByte" type="xs:unsignedByte" nillable="true"/>
+      <xs:element name="unsignedInt" type="xs:unsignedInt" nillable="true"/>
+      <xs:element name="unsignedLong" type="xs:unsignedLong" nillable="true"/>
+      <xs:element name="unsignedShort" type="xs:unsignedShort" nillable="true"/>
+      <xs:element name="char" type="tns:char" nillable="true"/>
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int"/>
+      </xs:simpleType>
+      <xs:element name="duration" type="tns:duration" nillable="true"/>
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" type="tns:guid" nillable="true"/>
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName"/>
+      <xs:attribute name="Id" type="xs:ID"/>
+      <xs:attribute name="Ref" type="xs:IDREF"/>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/BinLib" targetNamespace="http://schemas.datacontract.org/2004/07/BinLib" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+      <xs:complexType name="BinLibrary">
+        <xs:sequence>
+          <xs:element name="Value" type="xs:string" minOccurs="0" nillable="true"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BinLibrary" type="tns:BinLibrary" nillable="true"/>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TypesLib" targetNamespace="http://schemas.datacontract.org/2004/07/TypesLib" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+      <xs:complexType name="TypeReuseCompositeType">
+        <xs:sequence>
+          <xs:element name="BoolValue" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="StringValue" type="xs:string" minOccurs="0" nillable="true"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="TypeReuseCompositeType" type="tns:TypeReuseCompositeType" nillable="true"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="ITypeReuseSvc_GetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetData"/>
+  </wsdl:message>
+  <wsdl:message name="ITypeReuseSvc_GetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ITypeReuseSvc_GetDataUsingDataContract_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContract"/>
+  </wsdl:message>
+  <wsdl:message name="ITypeReuseSvc_GetDataUsingDataContract_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="ITypeReuseSvc">
+    <wsdl:operation name="GetData">
+      <wsdl:input message="tns:ITypeReuseSvc_GetData_InputMessage" wsaw:Action="http://tempuri.org/ITypeReuseSvc/GetData"/>
+      <wsdl:output message="tns:ITypeReuseSvc_GetData_OutputMessage" wsaw:Action="http://tempuri.org/ITypeReuseSvc/GetDataResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <wsdl:input message="tns:ITypeReuseSvc_GetDataUsingDataContract_InputMessage" wsaw:Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract"/>
+      <wsdl:output message="tns:ITypeReuseSvc_GetDataUsingDataContract_OutputMessage" wsaw:Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ITypeReuseSvc" type="tns:ITypeReuseSvc">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetData">
+      <soap:operation style="document" soapAction="http://tempuri.org/ITypeReuseSvc/GetData"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation style="document" soapAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TypeReuseSvc">
+    <wsdl:port name="BasicHttpBinding_ITypeReuseSvc" binding="tns:BasicHttpBinding_ITypeReuseSvc">
+      <soap:address location="http://localhost:51074/TypeReuseSvc.svc"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

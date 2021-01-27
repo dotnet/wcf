@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel.Security
 {
-    public static class ProtectionLevelHelper
+    internal static class ProtectionLevelHelper
     {
         public static bool IsDefined(ProtectionLevel value)
         {
@@ -240,7 +240,7 @@ namespace System.ServiceModel.Security
         }
     }
 
-    internal static class SecurityUtils
+    internal static partial class SecurityUtils
     {
         public const string Principal = "Principal";
         public const string Identities = "Identities";
@@ -780,7 +780,11 @@ namespace System.ServiceModel.Security
                 return OpenCommunicationObjectAsync(aco, timeout);
             }
 
-            OpenCommunicationObject(tokenProvider as ICommunicationObject, timeout);
+            if (tokenProvider is ICommunicationObject communicationObject && communicationObject != null)
+            {
+                return Task.Factory.FromAsync(communicationObject.BeginOpen, communicationObject.EndOpen, timeout, null, TaskCreationOptions.None);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -802,7 +806,11 @@ namespace System.ServiceModel.Security
                 return CloseCommunicationObjectAsync(aco, false, timeout);
             }
 
-            CloseCommunicationObject(tokenProvider, false, timeout);
+            if (tokenProvider is ICommunicationObject communicationObject && communicationObject != null)
+            {
+                return Task.Factory.FromAsync(communicationObject.BeginClose, communicationObject.EndClose, timeout, null, TaskCreationOptions.None);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -1243,28 +1251,7 @@ namespace System.ServiceModel.Security
             }
         }
 
-        internal static void ThrowIfNegotiationFault(Message message, EndpointAddress target)
-        {
-            if (message.IsFault)
-            {
-                MessageFault fault = MessageFault.CreateFault(message, TransportDefaults.MaxSecurityFaultSize);
-                Exception faultException = new FaultException(fault, message.Headers.Action);
-                if (fault.Code != null && fault.Code.IsReceiverFault && fault.Code.SubCode != null)
-                {
-                    FaultCode subCode = fault.Code.SubCode;
-                    if (subCode.Name == DotNetSecurityStrings.SecurityServerTooBusyFault && subCode.Namespace == DotNetSecurityStrings.Namespace)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ServerTooBusyException(SR.Format(SR.SecurityServerTooBusy, target), faultException));
-                    }
-                    else if (subCode.Name == AddressingStrings.EndpointUnavailable && subCode.Namespace == message.Version.Addressing.Namespace)
-                    {
-                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new EndpointNotFoundException(SR.Format(SR.SecurityEndpointNotFound, target), faultException));
-                    }
-                }
 
-                throw TraceUtility.ThrowHelperError(faultException, message);
-            }
-        }
 
         internal static bool IsSecurityFault(MessageFault fault, SecurityStandardsManager standardsManager)
         {

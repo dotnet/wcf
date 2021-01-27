@@ -12,6 +12,7 @@ using System.ServiceModel.Dispatcher;
 using System.Threading;
 using System.Security;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace System.ServiceModel.Diagnostics
 {
@@ -231,6 +232,7 @@ namespace System.ServiceModel.Diagnostics
 
         internal static Exception ThrowHelperError(Exception exception, Message message)
         {
+            DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception);
             return exception;
         }
 
@@ -296,7 +298,7 @@ namespace System.ServiceModel.Diagnostics
         }
 
         // Most of the time, shouldPropagateActivity will be false.
-        // This property will rarely be executed as a result. 
+        // This property will rarely be executed as a result.
         private static bool PropagateUserActivityCore
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
@@ -523,6 +525,22 @@ namespace System.ServiceModel.Diagnostics
                 OperationContext.Current.OutgoingMessageProperties.Remove(TraceUtility.AsyncOperationStartTimeKey);
                 eventTraceActivity = data.EventTraceActivity;
                 startTime = data.StartTime;
+            }
+        }
+
+        internal static void TraceEvent(TraceEventType severity, int traceCode, string traceDescription, object source)
+        {
+            TraceEvent(severity, traceCode, traceDescription, null, source, (Exception)null);
+        }
+
+        // These methods require a TraceRecord to be allocated, so we want them to show up on profiles if the caller didn't avoid
+        // allocating the TraceRecord by using ShouldTrace.
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void TraceEvent(TraceEventType severity, int traceCode, string traceDescription, TraceRecord extendedData, object source, Exception exception)
+        {
+            if (DiagnosticUtility.ShouldTrace(severity))
+            {
+                //DiagnosticUtility.DiagnosticTrace.TraceEvent(severity, traceCode, GenerateMsdnTraceCode(traceCode), traceDescription, extendedData, exception, source);
             }
         }
 

@@ -12,7 +12,7 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Description
 {
-    [DebuggerDisplay("Address={_address}")]
+    [DebuggerDisplay("Address={Address}")]
     [DebuggerDisplay("Name={_name}")]
     public class ServiceEndpoint
     {

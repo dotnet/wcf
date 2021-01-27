@@ -1,0 +1,36 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "d:/dd/temp/hellosvcutil/wsdl/my.wsdl",
+      "http://miguell-main/wcfforsvctuil/service1.svc"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.Collections.Generic.List`1"
+    ],
+    "enableDataBinding": true,
+    "excludeTypes": [
+      "System.Array, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.DateTime"
+    ],
+    "internalTypeAccess": true,
+    "messageContract": true,
+    "namespaceMappings": [
+      "Microsoft*, MyNamespace1",
+      "System*, MyNamespace2"
+    ],
+    "noStandardLibrary": true,
+    "outputFile": "Reference.cs",
+    "references": [
+      "System.Collections, {Microsoft.NETCore.App, *}",
+      "System.ServiceModel, {System.ServiceModel.Primitives, 99.99.99}"
+    ],
+    "runtimeIdentifier": "ubuntu.14.04-x64",
+    "serializerMode": "XmlSerializer",
+    "targetFramework": "N.N",
+    "typeReuseMode": "None",
+    "wrapped": true
+  }
+}

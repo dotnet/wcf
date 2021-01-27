@@ -86,4 +86,17 @@ namespace WcfService
         [OperationContract]
         void OnDataContractPingCallback(ComplexCompositeTypeDuplexCallbackOnly complexCompositeType);
     }
+
+    [ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackConcurrencyMode_Callback))]
+    public interface IWcfDuplexService_CallbackConcurrencyMode
+    {
+        [OperationContract]
+        Task DoWorkAsync();
+    }
+
+    public interface IWcfDuplexService_CallbackConcurrencyMode_Callback
+    {
+        [OperationContract]
+        Task CallWithWaitAsync(int delayTime);
+    }
 }

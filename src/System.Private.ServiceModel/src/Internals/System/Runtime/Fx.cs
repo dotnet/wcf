@@ -13,10 +13,11 @@ using System.Runtime.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security;
+using System.Threading;
 
 namespace System.Runtime
 {
-    public static class Fx
+    internal static partial class Fx
     {
         private const string defaultEventSource = "System.Runtime";
 
@@ -76,9 +77,7 @@ namespace System.Runtime
 
         private static EtwDiagnosticTrace InitializeTracing()
         {
-            EtwDiagnosticTrace trace = new EtwDiagnosticTrace(defaultEventSource, EtwDiagnosticTrace.DefaultEtwProviderId);
-
-            return trace;
+            return new EtwDiagnosticTrace();
         }
 
         public static ExceptionHandler AsynchronousThreadExceptionHandler
@@ -91,22 +90,6 @@ namespace System.Runtime
             {
                 Fx.s_asynchronousThreadExceptionHandler = value;
             }
-        }
-
-        // Do not call the parameter "message" or else FxCop thinks it should be localized.
-        [Conditional("DEBUG")]
-        public static void Assert(bool condition, string description)
-        {
-            if (!condition)
-            {
-                Assert(description);
-            }
-        }
-
-        [Conditional("DEBUG")]
-        public static void Assert(string description)
-        {
-            AssertHelper.FireAssert(description);
         }
 
         public static void AssertAndThrow(bool condition, string description)
@@ -295,6 +278,16 @@ namespace System.Runtime
             return (new ActionThunk<T1>(callback)).ThunkFrame;
         }
 
+#pragma warning disable CS3002 // Return type is not CLS-compliant
+#pragma warning disable CS3001 // Argument type is not CLS-compliant
+        public static IOCompletionCallback ThunkCallback(IOCompletionCallback callback)
+#pragma warning restore CS3001 // Argument type is not CLS-compliant
+#pragma warning restore CS3002 // Return type is not CLS-compliant
+        {
+            Fx.Assert(callback != null, "Trying to create a ThunkCallback with a null callback method");
+            return (new IOCompletionThunk(callback)).ThunkFrame;
+        }
+
         [SuppressMessage(FxCop.Category.ReliabilityBasic, FxCop.Rule.UseNewGuidHelperRule,
             Justification = "These are the core methods that should be used for all other Guid(string) calls.")]
         public static Guid CreateGuid(string guidString)
@@ -446,6 +439,41 @@ namespace System.Runtime
         {
             [Tag.SecurityNote(Miscellaneous = "Must not call into PT code as it is called within a CER.")]
             public abstract bool HandleException(Exception exception);
+        }
+
+        // This can't derive from Thunk since T would be unsafe.
+        unsafe sealed class IOCompletionThunk
+        {
+            IOCompletionCallback callback;
+
+            public IOCompletionThunk(IOCompletionCallback callback)
+            {
+                this.callback = callback;
+            }
+
+            public IOCompletionCallback ThunkFrame
+            {
+                get
+                {
+                    return new IOCompletionCallback(UnhandledExceptionFrame);
+                }
+            }
+
+            void UnhandledExceptionFrame(uint error, uint bytesRead, NativeOverlapped* nativeOverlapped)
+            {
+                RuntimeHelpers.PrepareConstrainedRegions();
+                try
+                {
+                    callback(error, bytesRead, nativeOverlapped);
+                }
+                catch (Exception exception)
+                {
+                    if (!Fx.HandleAtThreadBase(exception))
+                    {
+                        throw;
+                    }
+                }
+            }
         }
 
         public static class Tag
@@ -943,33 +971,18 @@ namespace System.Runtime
             }
         }
 
-        internal class InternalException : Exception
+        [Serializable]
+        internal class InternalException : SystemException
         {
-            public InternalException(string description)
-                : base(InternalSR.ShipAssertExceptionMessage(description))
-            {
-            }
-
-            protected InternalException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-                throw new PlatformNotSupportedException();
-            }
+            public InternalException(string description) : base(InternalSR.ShipAssertExceptionMessage(description)) { }
+            protected InternalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         }
 
         [Serializable]
         internal class FatalInternalException : InternalException
         {
-            public FatalInternalException(string description)
-                : base(description)
-            {
-            }
-
-            protected FatalInternalException(SerializationInfo info, StreamingContext context)
-                : base(info, context)
-            {
-                throw new PlatformNotSupportedException();
-            }
+            public FatalInternalException(string description) : base(description) { }
+            protected FatalInternalException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         }
     }
 }

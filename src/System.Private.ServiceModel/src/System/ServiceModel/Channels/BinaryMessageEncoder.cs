@@ -684,6 +684,14 @@ namespace System.ServiceModel.Channels
                     _factory.ReturnMessageWriter(messageWriter);
                 }
 
+                if (WcfEventSource.Instance.MessageWrittenByEncoderIsEnabled() && messageData != null)
+                {
+                    WcfEventSource.Instance.MessageWrittenByEncoder(
+                        eventTraceActivity ?? EventTraceActivityHelper.TryExtractActivity(message),
+                        messageData.Count,
+                        this);
+                }
+
                 CompressionFormat compressionFormat = CheckCompressedWrite(message);
                 if (compressionFormat != CompressionFormat.None)
                 {

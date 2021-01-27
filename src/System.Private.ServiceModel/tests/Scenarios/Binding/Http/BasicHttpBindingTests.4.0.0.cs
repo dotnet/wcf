@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 using Infrastructure.Common;
 using Xunit;
 
@@ -98,10 +99,10 @@ public static class Binding_Http_BasicHttpBindingTests
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             var handlerFactoryBehavior = new HttpMessageHandlerBehavior();
             bool handlerCalled = false;
-            handlerFactoryBehavior.OnSending = (message, token) =>
+            handlerFactoryBehavior.OnSendingAsync = (message, token) =>
             {
                 handlerCalled = true;
-                return null;
+                return Task.FromResult((HttpResponseMessage)null);
             };
             factory.Endpoint.Behaviors.Add(handlerFactoryBehavior);
             serviceProxy = factory.CreateChannel();
@@ -140,7 +141,7 @@ public static class Binding_Http_BasicHttpBindingTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
             var handlerFactoryBehavior = new HttpMessageHandlerBehavior();
-            handlerFactoryBehavior.OnSending = (message, token) =>
+            handlerFactoryBehavior.OnSendingAsync = (message, token) =>
             {
                 var oldContent = message.Content;
                 string requestMessageBody = oldContent.ReadAsStringAsync().Result;
@@ -156,7 +157,7 @@ public static class Binding_Http_BasicHttpBindingTests
                     message.Content.Headers.Add(header.Key, header.Value);
                 }
 
-                return null;
+                return Task.FromResult((HttpResponseMessage)null);
             };
             factory.Endpoint.Behaviors.Add(handlerFactoryBehavior);
             serviceProxy = factory.CreateChannel();

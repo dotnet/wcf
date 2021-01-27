@@ -7,6 +7,7 @@ using System.Runtime;
 using System.Threading.Tasks;
 using System.ServiceModel.Diagnostics;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace System.ServiceModel.Channels
 {
@@ -27,6 +28,8 @@ namespace System.ServiceModel.Channels
         internal bool _isSynchronousClose;
         private bool _supportsAsyncOpenClose;
         private bool _supportsAsyncOpenCloseSet;
+        private AsyncLock _asyncLock;
+        private object _thisLock;
 
         protected CommunicationObject()
             : this(new object())
@@ -35,7 +38,7 @@ namespace System.ServiceModel.Channels
 
         protected CommunicationObject(object mutex)
         {
-            ThisLock = mutex;
+            _thisLock = mutex;
             EventSender = this;
             _state = CommunicationState.Created;
         }
@@ -103,7 +106,32 @@ namespace System.ServiceModel.Channels
             get { return _state; }
         }
 
-        protected object ThisLock { get; }
+        protected object ThisLock { 
+            get
+            {
+#if DEBUG
+                if (_asyncLock != null)
+                {
+                    Fx.Assert("Inconsistent usage of ThisLock and AsyncLock");
+                }
+#endif
+                return _thisLock;
+            }
+        }
+
+        internal AsyncLock ThisAsyncLock
+        {
+            get
+            {
+                if (_asyncLock != null)
+                {
+                    return _asyncLock;
+                }
+
+                _ = Interlocked.CompareExchange(ref _asyncLock, new AsyncLock(), null);
+                return _asyncLock;
+            }
+        }
 
         protected abstract TimeSpan DefaultCloseTimeout { get; }
         protected abstract TimeSpan DefaultOpenTimeout { get; }
@@ -126,7 +154,7 @@ namespace System.ServiceModel.Channels
 
         public void Abort()
         {
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 if (Aborted || _state == CommunicationState.Closed)
                 {
@@ -207,7 +235,7 @@ namespace System.ServiceModel.Channels
             }
 
             CommunicationState originalState;
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 originalState = _state;
                 if (originalState != CommunicationState.Closed)
@@ -380,7 +408,7 @@ namespace System.ServiceModel.Channels
 
         protected void Fault()
         {
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 if (_state == CommunicationState.Closed || _state == CommunicationState.Closing)
                 {
@@ -400,16 +428,21 @@ namespace System.ServiceModel.Channels
 
         internal void Fault(Exception exception)
         {
-            lock (ThisLock)
+            AddPendingException(exception);
+            Fault();
+        }
+
+        internal void AddPendingException(Exception exception)
+        {
+            lock (_thisLock)
             {
                 if (_exceptionQueue == null)
                 {
-                    _exceptionQueue = new ExceptionQueue(ThisLock);
+                    _exceptionQueue = new ExceptionQueue(_thisLock);
                 }
             }
 
             _exceptionQueue.AddException(exception);
-            Fault();
         }
 
         internal Exception GetPendingException()
@@ -479,7 +512,7 @@ namespace System.ServiceModel.Channels
                     new ArgumentOutOfRangeException(nameof(timeout), SR.SFxTimeoutOutOfRange0));
             }
 
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 ThrowIfDisposedOrImmutable();
                 _state = CommunicationState.Opening;
@@ -547,7 +580,7 @@ namespace System.ServiceModel.Channels
         {
             _onClosedCalled = true;
 
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 if (_raisedClosed)
                 {
@@ -582,7 +615,7 @@ namespace System.ServiceModel.Channels
         {
             _onClosingCalled = true;
 
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 if (_raisedClosing)
                 {
@@ -614,7 +647,7 @@ namespace System.ServiceModel.Channels
 
         protected virtual void OnFaulted()
         {
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 if (_raisedFaulted)
                 {
@@ -647,7 +680,7 @@ namespace System.ServiceModel.Channels
         {
             _onOpenedCalled = true;
 
-            lock (ThisLock)
+            lock (_thisLock)
             {
                 if (Aborted || _state != CommunicationState.Opening)
                 {
@@ -979,33 +1012,33 @@ namespace System.ServiceModel.Channels
 
         // Helper used to open another CommunicationObject "owned" by the current one.
         // It is used to propagate the use of either the synchronous or asynchronous methods
-        internal async Task OpenOtherAsync(ICommunicationObject other, TimeSpan timeout)
+        internal Task OpenOtherAsync(ICommunicationObject other, TimeSpan timeout)
         {
             // If the current object is being opened synchronously, use the synchronous
             // open path for the other object.
             if (_isSynchronousOpen)
             {
-                await TaskHelpers.CallActionAsync(other.Open, timeout);
+                return TaskHelpers.CallActionAsync(other.Open, timeout);
             }
             else
             {
-                await Task.Factory.FromAsync(other.BeginOpen(timeout, callback: null, state: null), other.EndOpen);
+                return Task.Factory.FromAsync(other.BeginOpen, other.EndOpen, timeout, null);
             }
         }
 
         // Helper used to close another CommunicationObject "owned" by the current one.
         // It is used to propagate the use of either the synchronous or asynchronous methods
-        internal async Task CloseOtherAsync(ICommunicationObject other, TimeSpan timeout)
+        internal Task CloseOtherAsync(ICommunicationObject other, TimeSpan timeout)
         {
             // If the current object is being closed synchronously, use the synchronous
             // close path for the other object.
             if (_isSynchronousClose)
             {
-                await TaskHelpers.CallActionAsync(other.Close, timeout);
+                return TaskHelpers.CallActionAsync(other.Close, timeout);
             }
             else
             {
-                await Task.Factory.FromAsync(other.BeginClose(timeout, callback: null, state: null), other.EndClose);
+                return Task.Factory.FromAsync(other.BeginClose, other.EndClose, timeout, null);
             }
         }
 
@@ -1015,10 +1048,10 @@ namespace System.ServiceModel.Channels
 
             internal ExceptionQueue(object thisLock)
             {
-                ThisLock = thisLock;
+                _thisLock = thisLock;
             }
 
-            private object ThisLock { get; }
+            private object _thisLock { get; }
 
             public void AddException(Exception exception)
             {
@@ -1027,7 +1060,7 @@ namespace System.ServiceModel.Channels
                     return;
                 }
 
-                lock (ThisLock)
+                lock (_thisLock)
                 {
                     _exceptions.Enqueue(exception);
                 }
@@ -1035,7 +1068,7 @@ namespace System.ServiceModel.Channels
 
             public Exception GetException()
             {
-                lock (ThisLock)
+                lock (_thisLock)
                 {
                     if (_exceptions.Count > 0)
                     {

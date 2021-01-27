@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Xml;
 using System.Globalization;
 using System.Collections.ObjectModel;
@@ -11,11 +10,12 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel
 {
+    [Serializable]
     internal class MustUnderstandSoapException : CommunicationException
     {
         // for serialization
         public MustUnderstandSoapException() { }
-        protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { throw new PlatformNotSupportedException(); }
+        protected MustUnderstandSoapException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 
         private EnvelopeVersion _envelopeVersion;
 

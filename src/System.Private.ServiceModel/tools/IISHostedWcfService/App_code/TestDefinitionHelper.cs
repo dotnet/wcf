@@ -51,15 +51,21 @@ namespace WcfService
         {
             foreach (var sht in GetAttributedServiceHostTypes())
             {
+                var serviceBaseAddresses = new List<Uri>();
+                bool success = true;
                 foreach(TestServiceDefinitionAttribute attr in sht.GetCustomAttributes(typeof(TestServiceDefinitionAttribute), false))
                 {
-                    string serviceBaseAddress = string.Empty;
+                    Uri serviceBaseAddress = null;
                     try
                     {
-                        serviceBaseAddress = string.Format("{0}/{1}", BaseAddresses[attr.Schema], attr.BasePath);
-                        var serviceHost = (ServiceHostBase)Activator.CreateInstance(sht, new Uri[] { new Uri(serviceBaseAddress) });
-                        Console.WriteLine("  {0} at {1}", sht.Name, serviceBaseAddress);
-                        serviceHost.Open();
+                        foreach (Enum schema in Enum.GetValues(typeof(ServiceSchema)))
+                        {
+                            if (attr.Schema.HasFlag(schema))
+                            {
+                                serviceBaseAddress = new Uri(string.Format("{0}/{1}", BaseAddresses[(ServiceSchema)schema], attr.BasePath));
+                                serviceBaseAddresses.Add(serviceBaseAddress);
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -67,11 +73,47 @@ namespace WcfService
                         ConsoleColor fg = Console.ForegroundColor;
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Problem starting servicehost type " + sht.Name + " with schema " + attr.Schema + " and address " + serviceBaseAddress);
+                        Console.WriteLine("Problem creating base address for servicehost type " + sht.Name + " with schema " + attr.Schema + " and address " + serviceBaseAddress == null ? string.Empty : serviceBaseAddress.ToString());
                         Console.WriteLine(e);
                         Console.BackgroundColor = bg;
                         Console.ForegroundColor = fg;
+                        success = false;
+                        break;
                     }
+                }
+
+                try
+                {
+                    if (success)
+                    {
+                        var serviceHost = (ServiceHostBase)Activator.CreateInstance(sht, serviceBaseAddresses.ToArray());
+                        serviceHost.Open();
+                        Console.Write("  {0} at ", sht.Name);
+                        bool first = true;
+                        foreach (var endpoint in serviceHost.Description.Endpoints)
+                        {
+                            if (endpoint.IsSystemEndpoint)
+                                continue;
+                            if(first)
+                                first = false;
+                            else
+                                Console.Write(", ");
+
+                            Console.Write(endpoint.Address);
+                        }
+                        Console.WriteLine();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ConsoleColor bg = Console.BackgroundColor;
+                    ConsoleColor fg = Console.ForegroundColor;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Problem starting servicehost type " + sht.Name);
+                    Console.WriteLine(e);
+                    Console.BackgroundColor = bg;
+                    Console.ForegroundColor = fg;
                 }
             }
         }

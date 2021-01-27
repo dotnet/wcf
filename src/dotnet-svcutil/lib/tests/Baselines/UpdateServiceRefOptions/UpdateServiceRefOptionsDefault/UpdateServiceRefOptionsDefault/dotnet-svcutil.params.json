@@ -1,0 +1,22 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "$testCasesPath$/wsdl/Simple.wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.Collections.Generic.List`1"
+    ],
+    "excludeTypes": [
+      "System.Array, System.Private.CoreLib, Version=99.99.99, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "System.DateTime"
+    ],
+    "namespaceMappings": [
+      "*, UpdateServiceRefOptionsDefault"
+    ],
+    "targetFramework": "N.N",
+    "typeReuseMode": "None"
+  }
+}

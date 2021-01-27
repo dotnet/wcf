@@ -2,10 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
-using System.Diagnostics.Contracts;
+using System.Diagnostics;
 using System.Runtime.Diagnostics;
-using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,25 +17,38 @@ namespace System.Runtime
         {
         }
 
-        public bool LowPriority { get; protected set; }
-
         public static void Schedule(Action<object> callback, object state)
         {
-            Contract.Assert(callback != null, "Cannot schedule a null callback");
-            Task.Factory.StartNew(callback, state, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            Fx.Assert(callback != null, "A null callback was passed for Schedule!");
+            if (WaitCallbackActionItem.ShouldUseActivity ||
+                Fx.Trace.IsEnd2EndActivityTracingEnabled)
+            {
+                new DefaultActionItem(callback, state).Schedule();
+            }
+            else
+            {
+                ScheduleCallback(callback, state);
+            }
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Called after applying the user context on the stack or (potentially) " +
-            "without any user context on the stack")]
-        [SecurityCritical]
+        public static void Schedule(Func<object, Task> callback, object state)
+        {
+            Fx.Assert(callback != null, "A null callback was passed for Schedule!");
+            if (WaitCallbackActionItem.ShouldUseActivity ||
+    Fx.Trace.IsEnd2EndActivityTracingEnabled)
+            {
+                new DefaultActionItem(callback, state).ScheduleAsync();
+            }
+            else
+            {
+                ScheduleCallback(callback, state);
+            }
+        }
+
         protected abstract void Invoke();
 
-        [Fx.Tag.SecurityNote(Critical = "Access critical field context and critical property " +
-            "CallbackHelper.InvokeWithContextCallback, calls into critical method " +
-            "PartialTrustHelpers.CaptureSecurityContextNoIdentityFlow, calls into critical method ScheduleCallback; " +
-            "since the invoked method and the capturing of the security context are de-coupled, can't " +
-            "be treated as safe")]
-        [SecurityCritical]
+        protected abstract Task InvokeAsync();
+
         protected void Schedule()
         {
             if (_isScheduled)
@@ -48,20 +59,64 @@ namespace System.Runtime
             _isScheduled = true;
             ScheduleCallback(CallbackHelper.InvokeCallbackAction);
         }
-        [Fx.Tag.SecurityNote(Critical = "Calls into critical static method ScheduleCallback")]
-        [SecurityCritical]
+
+        protected void ScheduleAsync()
+        {
+            if (_isScheduled)
+            {
+                throw Fx.Exception.AsError(new InvalidOperationException(InternalSR.ActionItemIsAlreadyScheduled));
+            }
+
+            _isScheduled = true;
+            ScheduleCallback(CallbackHelper.InvokeAsyncCallbackFunc);
+        }
+
+        private static void ScheduleCallback(Action<object> callback, object state)
+        {
+            Fx.Assert(callback != null, "Cannot schedule a null callback");
+            IOThreadScheduler.ScheduleCallbackNoFlow(callback, state);
+        }
+
+        private static void ScheduleCallback(Func<object, Task> callback, object state)
+        {
+            Fx.Assert(callback != null, "Cannot schedule a null callback");
+            // The trick here is using CallbackHelper.IOTaskSchedule as the TaskScheduler. This is a special TaskScheduler created from a sync context
+            // which posts action's to the IOThreadScheduler. So instead of directly posting a Task to the IOThreadScheduler, we let the TaskScheduler
+            // break up the Task into individual Action<object> delegates and post them for us.
+            Task<Task>.Factory.StartNew(callback, state, CancellationToken.None, TaskCreationOptions.DenyChildAttach, CallbackHelper.IOTaskScheduler);
+        }
 
         private void ScheduleCallback(Action<object> callback)
         {
-            Fx.Assert(callback != null, "Cannot schedule a null callback");
-            Task.Factory.StartNew(callback, this, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            ScheduleCallback(callback, this);
         }
 
-        [SecurityCritical]
+        private void ScheduleCallback(Func<object, Task> callback)
+        {
+            ScheduleCallback(callback, this);
+        }
+
         internal static class CallbackHelper
         {
-            [Fx.Tag.SecurityNote(Critical = "Stores a delegate to a critical method")]
+            private static TaskScheduler s_IOTaskScheduler;
             private static Action<object> s_invokeCallback;
+            private static Func<object, Task> s_invokeAsyncCallback;
+
+            public static TaskScheduler IOTaskScheduler
+            {
+                get
+                {
+                    if (s_IOTaskScheduler == null)
+                    {
+                        using(TaskHelpers.RunTaskContinuationsOnOurThreads())
+                        {
+                            s_IOTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+                        }
+                    }
+
+                    return s_IOTaskScheduler;
+                }
+            }
 
             public static Action<object> InvokeCallbackAction
             {
@@ -75,35 +130,44 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.SecurityNote(Critical = "Called by the scheduler without any user context on the stack")]
             private static void InvokeCallback(object state)
             {
                 ((ActionItem)state).Invoke();
+                ((ActionItem)state)._isScheduled = false;
+            }
+
+            public static Func<object, Task> InvokeAsyncCallbackFunc
+            {
+                get
+                {
+                    if (s_invokeAsyncCallback == null)
+                    {
+                        s_invokeAsyncCallback = new Func<object, Task>(InvokeAsyncCallback);
+                    }
+                    return s_invokeAsyncCallback;
+                }
+            }
+
+            private static async Task InvokeAsyncCallback(object state)
+            {
+                await ((ActionItem)state).InvokeAsync();
                 ((ActionItem)state)._isScheduled = false;
             }
         }
 
         internal class DefaultActionItem : ActionItem
         {
-            [Fx.Tag.SecurityNote(Critical = "Stores a delegate that will be called later, at a particular context")]
-            [SecurityCritical]
             private Action<object> _callback;
-            [Fx.Tag.SecurityNote(Critical = "Stores an object that will be passed to the delegate that will be " +
-                            "called later, at a particular context")]
-            [SecurityCritical]
             private object _state;
 
             private bool _flowLegacyActivityId;
             private Guid _activityId;
             private EventTraceActivity _eventTraceActivity;
+            private Func<object, Task> _asyncCallback;
 
-            [Fx.Tag.SecurityNote(Critical = "Access critical fields callback and state",
-                Safe = "Doesn't leak information or resources")]
-            [SecuritySafeCritical]
-            public DefaultActionItem(Action<object> callback, object state, bool isLowPriority)
+            public DefaultActionItem(Action<object> callback, object state)
             {
                 Fx.Assert(callback != null, "Shouldn't instantiate an object to wrap a null callback");
-                base.LowPriority = isLowPriority;
                 _callback = callback;
                 _state = state;
                 if (WaitCallbackActionItem.ShouldUseActivity)
@@ -121,11 +185,29 @@ namespace System.Runtime
                 }
             }
 
-            [Fx.Tag.SecurityNote(Critical = "Implements a the critical abstract ActionItem.Invoke method, " +
-                "Access critical fields callback and state")]
-            [SecurityCritical]
+            public DefaultActionItem(Func<object, Task> callback, object state)
+            {
+                Fx.Assert(callback != null, "Shouldn't instantiate an object to wrap a null callback");
+                _asyncCallback = callback;
+                _state = state;
+                if (WaitCallbackActionItem.ShouldUseActivity)
+                {
+                    _flowLegacyActivityId = true;
+                    _activityId = EtwDiagnosticTrace.ActivityId;
+                }
+                if (Fx.Trace.IsEnd2EndActivityTracingEnabled)
+                {
+                    _eventTraceActivity = EventTraceActivity.GetFromThreadOrCreate();
+                    if (TraceCore.ActionItemScheduledIsEnabled(Fx.Trace))
+                    {
+                        TraceCore.ActionItemScheduled(Fx.Trace, _eventTraceActivity);
+                    }
+                }
+            }
+
             protected override void Invoke()
             {
+                Fx.Assert(_asyncCallback == null, "Can't call Invoke on async ActionItem");
                 if (_flowLegacyActivityId || Fx.Trace.IsEnd2EndActivityTracingEnabled)
                 {
                     TraceAndInvoke();
@@ -135,9 +217,19 @@ namespace System.Runtime
                     _callback(_state);
                 }
             }
-            [Fx.Tag.SecurityNote(Critical = "Implements a the critical abstract Trace method, " +
-                                "Access critical fields callback and state")]
-            [SecurityCritical]
+
+            protected override Task InvokeAsync()
+            {
+                Fx.Assert(_callback == null, "Can't call InvokeAsync on sync ActionItem");
+                if (_flowLegacyActivityId || Fx.Trace.IsEnd2EndActivityTracingEnabled)
+                {
+                    return TraceAndInvokeAsync();
+                }
+                else
+                {
+                    return _asyncCallback(_state);
+                }
+            }
 
             private void TraceAndInvoke()
             {
@@ -157,7 +249,73 @@ namespace System.Runtime
                 else
                 {
                     Guid previous = Guid.Empty;
-                    _callback(_state);
+                    bool restoreActivityId = false;
+                    try
+                    {
+                        if (_eventTraceActivity != null)
+                        {
+                            previous = Trace.CorrelationManager.ActivityId;
+                            restoreActivityId = true;
+                            Trace.CorrelationManager.ActivityId = _eventTraceActivity.ActivityId;
+                            if (TraceCore.ActionItemCallbackInvokedIsEnabled(Fx.Trace))
+                            {
+                                TraceCore.ActionItemCallbackInvoked(Fx.Trace, _eventTraceActivity);
+                            }
+                        }
+
+                        _callback(_state);
+                    }
+                    finally
+                    {
+                        if (restoreActivityId)
+                        {
+                            Trace.CorrelationManager.ActivityId = previous;
+                        }
+                    }
+                }
+            }
+
+            private async Task TraceAndInvokeAsync()
+            {
+                if (_flowLegacyActivityId)
+                {
+                    Guid currentActivityId = EtwDiagnosticTrace.ActivityId;
+                    try
+                    {
+                        EtwDiagnosticTrace.ActivityId = _activityId;
+                        await _asyncCallback(_state);
+                    }
+                    finally
+                    {
+                        EtwDiagnosticTrace.ActivityId = currentActivityId;
+                    }
+                }
+                else
+                {
+                    Guid previous = Guid.Empty;
+                    bool restoreActivityId = false;
+                    try
+                    {
+                        if (_eventTraceActivity != null)
+                        {
+                            previous = Trace.CorrelationManager.ActivityId;
+                            restoreActivityId = true;
+                            Trace.CorrelationManager.ActivityId = _eventTraceActivity.ActivityId;
+                            if (TraceCore.ActionItemCallbackInvokedIsEnabled(Fx.Trace))
+                            {
+                                TraceCore.ActionItemCallbackInvoked(Fx.Trace, _eventTraceActivity);
+                            }
+                        }
+
+                        await _asyncCallback(_state);
+                    }
+                    finally
+                    {
+                        if (restoreActivityId)
+                        {
+                            Trace.CorrelationManager.ActivityId = previous;
+                        }
+                    }
                 }
             }
         }

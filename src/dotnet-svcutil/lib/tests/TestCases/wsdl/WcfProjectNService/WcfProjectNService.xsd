@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/WcfProjectNService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfProjectNService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
+  <xs:complexType name="ComplexCompositeType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BoolValue" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ByteArrayValue" nillable="true" type="xs:base64Binary" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CharArrayValue" nillable="true" type="q1:ArrayOfchar" />
+      <xs:element minOccurs="0" name="CharValue" type="ser:char" />
+      <xs:element minOccurs="0" name="DateTimeValue" type="xs:dateTime" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="DayOfWeekValue" type="q2:DayOfWeek" />
+      <xs:element minOccurs="0" name="DoubleValue" type="xs:double" />
+      <xs:element minOccurs="0" name="FloatValue" type="xs:float" />
+      <xs:element minOccurs="0" name="GuidValue" type="ser:guid" />
+      <xs:element minOccurs="0" name="IntValue" type="xs:int" />
+      <xs:element minOccurs="0" name="LongValue" type="xs:long" />
+      <xs:element minOccurs="0" name="LongerStringValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SbyteValue" type="xs:byte" />
+      <xs:element minOccurs="0" name="ShortValue" type="xs:short" />
+      <xs:element minOccurs="0" name="StringValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TimeSpanValue" type="ser:duration" />
+      <xs:element minOccurs="0" name="UintValue" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="UlongValue" type="xs:unsignedLong" />
+      <xs:element minOccurs="0" name="UshortValue" type="xs:unsignedShort" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ComplexCompositeType" nillable="true" type="tns:ComplexCompositeType" />
+  <xs:complexType name="CompositeType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BoolValue" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StringValue" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CompositeType" nillable="true" type="tns:CompositeType" />
+  <xs:complexType name="ArrayOfUserGamePlay">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserGamePlay" nillable="true" type="tns:UserGamePlay" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserGamePlay" nillable="true" type="tns:ArrayOfUserGamePlay" />
+  <xs:complexType name="UserGamePlay">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GameKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TimeStamp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserGamePlay" nillable="true" type="tns:UserGamePlay" />
+  <xs:complexType name="TestHttpRequestMessageProperty">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Headers" nillable="true" type="q3:ArrayOfKeyValueOfstringstring" />
+      <xs:element minOccurs="0" name="Method" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="QueryString" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SuppressEntityBody" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TestHttpRequestMessageProperty" nillable="true" type="tns:TestHttpRequestMessageProperty" />
+</xs:schema>

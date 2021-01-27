@@ -12,7 +12,7 @@ namespace System.Runtime
 
         public override void Post(SendOrPostCallback d, object state)
         {
-            IOThreadScheduler.ScheduleCallbackNoFlow(d, state);
+            IOThreadScheduler.ScheduleCallbackNoFlow((s) => d(s), state);
         }
     }
 }

@@ -1,0 +1,20 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using Microsoft.Xml.Schema;
+
+namespace Microsoft.Xml
+{
+    using System;
+
+    internal interface IValidationEventHandling
+    {
+        // This is a ValidationEventHandler, but it is not strongly typed due to dependencies on Microsoft.Xml.Schema
+        object EventHandler { get; }
+
+        // The exception is XmlSchemaException, but it is not strongly typed due to dependencies on Microsoft.Xml.Schema
+        void SendEvent(Exception exception, XmlSeverityType severity);
+    }
+}

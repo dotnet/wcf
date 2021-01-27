@@ -10,9 +10,11 @@ namespace System.ServiceModel
 {
     public class NetTcpBinding : Binding
     {
+        private OptionalReliableSession reliableSession;
         // private BindingElements
         private TcpTransportBindingElement _transport;
         private BinaryMessageEncodingBindingElement _encoding;
+        private ReliableSessionBindingElement session;
         private NetTcpSecurity _security = new NetTcpSecurity();
 
         public NetTcpBinding() { Initialize(); }
@@ -20,6 +22,11 @@ namespace System.ServiceModel
             : this()
         {
             _security.Mode = securityMode;
+        }
+
+        public NetTcpBinding(SecurityMode securityMode, bool reliableSessionEnabled) : this(securityMode)
+        {
+            ReliableSession.Enabled = reliableSessionEnabled;
         }
 
         public NetTcpBinding(string configurationName)
@@ -69,6 +76,22 @@ namespace System.ServiceModel
             }
         }
 
+        public OptionalReliableSession ReliableSession
+        {
+            get
+            {
+                return reliableSession;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentNullException(nameof(value)));
+                }
+                reliableSession.CopySettings(value);
+            }
+        }
+
         public override string Scheme { get { return _transport.Scheme; } }
 
         public EnvelopeVersion EnvelopeVersion
@@ -93,24 +116,8 @@ namespace System.ServiceModel
             // NetNative and CoreCLR initialize to what TransportBindingElement does in the desktop
             // This property is not available in shipped contracts
             MaxBufferPoolSize = TransportDefaults.MaxBufferPoolSize;
-        }
-
-        // check that properties of the HttpTransportBindingElement and 
-        // MessageEncodingBindingElement not exposed as properties on BasicHttpBinding 
-        // match default values of the binding elements
-        private bool IsBindingElementsMatch(TcpTransportBindingElement transport, BinaryMessageEncodingBindingElement encoding)
-        {
-            if (!_transport.IsMatch(transport))
-            {
-                return false;
-            }
-
-            if (!_encoding.IsMatch(encoding))
-            {
-                return false;
-            }
-
-            return true;
+            session = new ReliableSessionBindingElement();
+            this.reliableSession = new OptionalReliableSession(session);
         }
 
         private void CheckSettings()
@@ -124,6 +131,11 @@ namespace System.ServiceModel
             // return collection of BindingElements
             BindingElementCollection bindingElements = new BindingElementCollection();
             // order of BindingElements is important
+            // add session
+            if (reliableSession.Enabled)
+            {
+                bindingElements.Add(session);
+            }
             // add security (*optional)
             SecurityBindingElement wsSecurity = CreateMessageSecurity();
             if (wsSecurity != null)
@@ -158,7 +170,7 @@ namespace System.ServiceModel
             }
             if (_security.Mode == SecurityMode.TransportWithMessageCredential)
             {
-                return _security.CreateMessageSecurity(false);
+                return _security.CreateMessageSecurity(ReliableSession.Enabled);
             }
             else
             {

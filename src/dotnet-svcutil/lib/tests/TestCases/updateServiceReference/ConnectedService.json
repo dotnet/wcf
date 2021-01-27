@@ -1,0 +1,34 @@
+{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "99.99.99",
+  "GettingStartedDocument": {
+    "Uri": "http://www.msn.com"
+  },
+  "ExtendedData": {
+    "Uri": "$testCasesPath$/wsdl/Simple.wsdl",
+    "Namespace": "ServiceReference1",
+    "SelectedAccessLevelForGeneratedClass": "Public",
+    "GenerateMessageContract": false,
+    "ReuseTypesinReferencedAssemblies": true,
+    "ReuseTypesinAllReferencedAssemblies": true,
+    "CollectionTypeReference": {
+      "Item1": "System.Array",
+      "Item2": "System.Runtime.dll"
+    },
+    "DictionaryCollectionTypeReference": {
+      "Item1": "System.Collections.Generic.Dictionary`2",
+      "Item2": "System.Collections.dll"
+    },
+    "CheckedReferencedAssemblies": [
+      {
+        "Name": "Microsoft.CSharp"
+      },
+      {
+        "Name": "Microsoft.Win32.Primitives"
+      }
+    ],
+    "InstanceId": null,
+    "Name": "ServiceReference1",
+    "Metadata": {}
+  }
+}

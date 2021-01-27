@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/metadataEpr/epr/http___WcfProjectNServer_WcfProjectNService_WcfProjectNService.svc.xml"
+    ],
+    "namespaceMappings": [
+      "*, metadataEpr_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "N.N",
+    "typeReuseMode": "None"
+  }
+}

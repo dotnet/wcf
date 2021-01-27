@@ -483,12 +483,7 @@ namespace System.ServiceModel.Channels
                 return;
             }
 
-            EventHandler handler = ConnectionLost;
-
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            ConnectionLost?.Invoke(this, EventArgs.Empty);
         }
 
         protected abstract Task OnOpenAsync(TimeSpan timeout);
@@ -739,11 +734,6 @@ namespace System.ServiceModel.Channels
 
         public virtual async Task<(bool, RequestContext)> TryReceiveAsync(TimeSpan timeout, MaskingMode maskingMode)
         {
-            if (maskingMode != MaskingMode.None)
-            {
-                throw Fx.AssertAndThrow("This method was implemented only for the case where we do not mask exceptions.");
-            }
-
             if (!ValidateInputOperation(timeout))
             {
                 return (true, null);
@@ -760,6 +750,9 @@ namespace System.ServiceModel.Channels
                     (bool success, TChannel channel) = await Synchronizer.TryGetChannelForInputAsync(
                         CanGetChannelForReceive, timeoutHelper.RemainingTime());
                     success = !success;
+
+                    // the synchronizer is faulted and not reestablishing or closed, or the call timed
+                    // out, complete and don't retry.
                     if (channel == null)
                     {
                         return (success, null);
@@ -1751,7 +1744,15 @@ namespace System.ServiceModel.Channels
                 public void Close()
                 {
                     var exception = _synchronizer._binder.GetClosedException(_maskingMode);
-                    _tcs.TrySetException(DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception));
+                    if (exception == null)
+                    {
+                        _tcs.TrySetResult(null);
+                    }
+                    else
+                    {
+                        _tcs.TrySetException(DiagnosticUtility.ExceptionUtility.ThrowHelperError(exception));
+                    }
+
                 }
 
                 public void Fault()

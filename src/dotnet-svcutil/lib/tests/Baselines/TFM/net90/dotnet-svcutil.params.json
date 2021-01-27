@@ -1,0 +1,15 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../../../../src/dotnet-svcutil/lib/tests/TestCases/wsdl/Simple.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, net90_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "targetFramework": "net90",
+    "typeReuseMode": "None"
+  }
+}

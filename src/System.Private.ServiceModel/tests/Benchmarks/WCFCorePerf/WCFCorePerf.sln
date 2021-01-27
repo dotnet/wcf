@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30323.103
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCFCorePerf", "WCFCorePerf\WCFCorePerf.csproj", "{57DAD894-E349-43FD-9A55-0924F9F5D31A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFCorePerfService", "WCFCorePerfService\WCFCorePerfService.csproj", "{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57DAD894-E349-43FD-9A55-0924F9F5D31A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DAD894-E349-43FD-9A55-0924F9F5D31A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DAD894-E349-43FD-9A55-0924F9F5D31A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DAD894-E349-43FD-9A55-0924F9F5D31A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C214CAEF-D55A-44E5-96BE-1C2900E9A7CD}
+	EndGlobalSection
+EndGlobal

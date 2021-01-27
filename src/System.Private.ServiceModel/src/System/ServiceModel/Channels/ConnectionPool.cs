@@ -16,7 +16,6 @@ namespace System.ServiceModel.Channels
         where TItem : class
     {
         private Dictionary<TKey, EndpointConnectionPool> _endpointPools;
-        private int _openCount;
         // need to make sure we prune over a certain number of endpoint pools
         private int _pruneAccrual;
         private const int pruneThreshold = 30;
@@ -25,7 +24,7 @@ namespace System.ServiceModel.Channels
         {
             MaxIdleConnectionPoolCount = maxCount;
             _endpointPools = new Dictionary<TKey, EndpointConnectionPool>();
-            _openCount = 1;
+            OpenCount = 1;
         }
 
         public int MaxIdleConnectionPoolCount { get; }
@@ -34,6 +33,8 @@ namespace System.ServiceModel.Channels
         {
             get { return this; }
         }
+
+        internal int OpenCount { get; set; }
 
         protected abstract void AbortItem(TItem item);
 
@@ -51,14 +52,14 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_openCount <= 0)
+                if (OpenCount <= 0)
                 {
                     return true;
                 }
 
-                _openCount--;
+                OpenCount--;
 
-                if (_openCount == 0)
+                if (OpenCount == 0)
                 {
                     OnClose(timeout);
                     return true;
@@ -142,14 +143,14 @@ namespace System.ServiceModel.Channels
         {
             lock (ThisLock)
             {
-                if (_openCount <= 0)
+                if (OpenCount <= 0)
                 {
                     // can't reopen connection pools since the registry purges them on close
                     return false;
                 }
                 else
                 {
-                    _openCount++;
+                    OpenCount++;
                     return true;
                 }
             }
@@ -377,7 +378,7 @@ namespace System.ServiceModel.Channels
                 bool closeConnection = false;
                 lock (ThisLock)
                 {
-                    if (!_closed)
+                    if (!_closed && Parent.OpenCount > 0)
                     {
                         if (!IdleConnections.Add(connection))
                         {
@@ -472,7 +473,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (_busyConnections.Remove(connection) && connectionIsStillGood)
                         {
-                            if (!IdleConnections.Return(connection))
+                            if (Parent.OpenCount == 0 || !IdleConnections.Return(connection))
                             {
                                 closeConnection = true;
                             }

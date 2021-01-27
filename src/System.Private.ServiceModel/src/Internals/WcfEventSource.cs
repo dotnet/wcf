@@ -7,11 +7,8 @@ using System.Runtime.Diagnostics;
 
 namespace System.Runtime
 {
-    [EventSource(Name = "Microsoft-Windows-Application Server-Applications", Guid = "c651f5f6-1c0d-492e-8ae1-b4efd7c9d503")]
-    internal sealed class WcfEventSource : EventSource
+    internal sealed partial class WcfEventSource : EventSource
     {
-        public static WcfEventSource Instance = new WcfEventSource();
-
         public bool BufferPoolAllocationIsEnabled()
         {
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
@@ -284,16 +281,24 @@ namespace System.Runtime
 
         [Event(EventIds.MessageReceivedByTransport, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Stop, Task = Tasks.TransportReceive, Keywords = Keywords.Troubleshooting | Keywords.TransportGeneral | ChannelKeywords.Analytic, ActivityOptions = EventActivityOptions.Disable,
             Message = "The transport received a message from '{0}'.")]
-        public void MessageReceivedByTransport(string ListenAddress, string HostReference, string AppDomain)
+        public void MessageReceivedByTransport(Guid relatedActivityId, string ListenAddress, string HostReference, string AppDomain)
         {
-            WriteEvent(EventIds.MessageReceivedByTransport, ListenAddress, HostReference, AppDomain);
+            if (_canTransferActivityId)
+            {
+                WriteEventWithRelatedActivityId(EventIds.MessageReceivedByTransport, relatedActivityId, ListenAddress, HostReference, AppDomain);
+            }
+            else
+            {
+                WriteEvent(EventIds.MessageReceivedByTransport, ListenAddress, HostReference, AppDomain);
+            }
         }
 
         [NonEvent]
         public void MessageReceivedByTransport(EventTraceActivity eventTraceActivity, string ListenAddress, Guid relatedActivityId)
         {
             TransferActivityId(eventTraceActivity);
-            MessageReceivedByTransport(ListenAddress, "", "");
+            MessageReceivedByTransport(relatedActivityId, ListenAddress, "", "");
+
         }
 
         public bool MessageSentByTransportIsEnabled()
@@ -322,16 +327,23 @@ namespace System.Runtime
 
         [Event(EventIds.ClientOperationPrepared, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ClientRuntimeOperationPrepared, Task = Tasks.ClientRuntime, Keywords = Keywords.Troubleshooting | Keywords.ServiceModel | ChannelKeywords.Debug,
             Message = "The Client is executing Action '{0}' associated with the '{1}' contract. The message will be sent to '{2}'.")]
-        public void ClientOperationPrepared(string Action, string ContractName, string Destination, string HostReference, string AppDomain)
+        public void ClientOperationPrepared(Guid relatedActivityId, string Action, string ContractName, string Destination, string HostReference, string AppDomain)
         {
-            WriteEvent(EventIds.ClientOperationPrepared, Action, ContractName, Destination, HostReference, AppDomain);
+            if (_canTransferActivityId)
+            {
+                WriteEventWithRelatedActivityId(EventIds.ClientOperationPrepared, relatedActivityId, Action, ContractName, Destination, HostReference, AppDomain);
+            }
+            else
+            {
+                WriteEvent(EventIds.ClientOperationPrepared, Action, ContractName, Destination, HostReference, AppDomain);
+            }
         }
 
         [NonEvent]
         public void ClientOperationPrepared(EventTraceActivity eventTraceActivity, string Action, string ContractName, string Destination, Guid relatedActivityId)
         {
             TransferActivityId(eventTraceActivity);
-            ClientOperationPrepared(Action, ContractName, Destination, "", "");
+            ClientOperationPrepared(relatedActivityId, Action, ContractName, Destination, "", "");
         }
 
         public bool ServiceChannelCallStopIsEnabled()
@@ -673,6 +685,24 @@ namespace System.Runtime
             ReceiveTimeout(data1, "");
         }
 
+        public bool InactivityTimeoutIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.InactivityTimeout, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.TimeoutException, Keywords = Keywords.ServiceModel,
+            Message = "{0}")]
+        public void InactivityTimeout(string data1, string AppDomain)
+        {
+            WriteEvent(EventIds.InactivityTimeout, data1, AppDomain);
+        }
+
+        [NonEvent]
+        public void InactivityTimeout(string data1)
+        {
+            InactivityTimeout(data1, "");
+        }
+
         public bool MaxReceivedMessageSizeExceededIsEnabled()
         {
             return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
@@ -689,6 +719,18 @@ namespace System.Runtime
         public void MaxReceivedMessageSizeExceeded(string data1)
         {
             MaxReceivedMessageSizeExceeded(data1, "");
+        }
+
+        public bool MaxRetryCyclesExceededIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Error, Keywords.Quota, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MaxRetryCyclesExceeded, Level = EventLevel.Error, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Task = Tasks.Quotas, Keywords = Keywords.Quota,
+            Message = "{0}")]
+        public void MaxRetryCyclesExceeded(string data1)
+        {
+            WriteEvent(EventIds.MaxRetryCyclesExceeded, data1);
         }
 
         public bool MaxSentMessageSizeExceededIsEnabled()
@@ -1362,6 +1404,60 @@ namespace System.Runtime
             SocketAsyncWriteStart(SocketId, Size, Endpoint, "");
         }
 
+        public bool SequenceAcknowledgementSentIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.SequenceAcknowledgementSent, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = Opcodes.ReliableSessionSequenceAck, Task = Tasks.ReliableSession, Keywords = Keywords.Channel,
+            Message = "SessionId:{0} acknowledgement sent.")]
+        public void SequenceAcknowledgementSent(string SessionId, string AppDomain)
+        {
+            WriteEvent(EventIds.SequenceAcknowledgementSent, SessionId, AppDomain);
+        }
+
+        [NonEvent]
+        public void SequenceAcknowledgementSent(string SessionId)
+        {
+            SequenceAcknowledgementSent(SessionId, "");
+        }
+
+        public bool ClientReliableSessionReconnectIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientReliableSessionReconnect, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ReliableSessionReconnect, Task = Tasks.ReliableSession, Keywords = Keywords.Channel,
+            Message = "SessionId:{0} reconnecting.")]
+        public void ClientReliableSessionReconnect(string SessionId, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientReliableSessionReconnect, SessionId, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientReliableSessionReconnect(string SessionId)
+        {
+            ClientReliableSessionReconnect(SessionId, "");
+        }
+
+        public bool ReliableSessionChannelFaultedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ReliableSessionChannelFaulted, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = Opcodes.ReliableSessionFaulted, Task = Tasks.ReliableSession, Keywords = Keywords.Channel,
+            Message = "SessionId:{0} faulted.")]
+        public void ReliableSessionChannelFaulted(string SessionId, string AppDomain)
+        {
+            WriteEvent(EventIds.ReliableSessionChannelFaulted, SessionId, AppDomain);
+        }
+
+        [NonEvent]
+        public void ReliableSessionChannelFaulted(string SessionId)
+        {
+            ReliableSessionChannelFaulted(SessionId, "");
+        }
+
         public bool WindowsStreamSecurityOnInitiateUpgradeIsEnabled()
         {
             return base.IsEnabled(EventLevel.Verbose, Keywords.Security, EventChannel.Analytic);
@@ -1966,83 +2062,9 @@ namespace System.Runtime
         {
             ThrowingExceptionVerbose(data1, data2, SerializedException, "");
         }
-
-        public bool EtwUnhandledExceptionIsEnabled()
-        {
-            return base.IsEnabled(EventLevel.Critical, Keywords.Infrastructure, EventChannel.Operational);
-        }
-
-        [Event(EventIds.EtwUnhandledException, Level = EventLevel.Critical, Channel = EventChannel.Operational, Opcode = EventOpcode.Info, Keywords = Keywords.Infrastructure | ChannelKeywords.Operational,
-            Message = "Unhandled exception. Exception details: {0}")]
-        public void EtwUnhandledException(string data1, string SerializedException, string AppDomain)
-        {
-            WriteEvent(EventIds.EtwUnhandledException, data1, SerializedException, AppDomain);
-        }
-
-        [NonEvent]
-        public void EtwUnhandledException(string data1, string SerializedException)
-        {
-            EtwUnhandledException(data1, SerializedException, "");
-        }
-
-        public bool ThrowingEtwExceptionVerboseIsEnabled()
-        {
-            return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Analytic);
-        }
-
-        [Event(EventIds.ThrowingEtwExceptionVerbose, Level = EventLevel.Verbose, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Keywords = Keywords.Infrastructure | ChannelKeywords.Analytic,
-            Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
-        public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException, string AppDomain)
-        {
-            WriteEvent(EventIds.ThrowingEtwExceptionVerbose, data1, data2, SerializedException, AppDomain);
-        }
-
-        [NonEvent]
-        public void ThrowingEtwExceptionVerbose(string data1, string data2, string SerializedException)
-        {
-            ThrowingEtwExceptionVerbose(data1, data2, SerializedException, "");
-        }
-
-        public bool ThrowingEtwExceptionIsEnabled()
-        {
-            return base.IsEnabled(EventLevel.Warning, Keywords.Infrastructure, EventChannel.Analytic);
-        }
-
-        [Event(EventIds.ThrowingEtwException, Level = EventLevel.Warning, Channel = EventChannel.Analytic, Opcode = EventOpcode.Info, Keywords = Keywords.Infrastructure | ChannelKeywords.Analytic,
-            Message = "Throwing an exception. Source: {0}. Exception details: {1}")]
-        public void ThrowingEtwException(string data1, string data2, string SerializedException, string AppDomain)
-        {
-            WriteEvent(EventIds.ThrowingEtwException, data1, data2, SerializedException, AppDomain);
-        }
-
-        [NonEvent]
-        public void ThrowingEtwException(string data1, string data2, string SerializedException)
-        {
-            ThrowingEtwException(data1, data2, SerializedException, "");
-        }
-
-        [NonEvent]
-        private void SetActivityId(EventTraceActivity eventTraceActivity)
-        {
-            if (eventTraceActivity != null)
-            {
-                SetCurrentThreadActivityId(eventTraceActivity.ActivityId);
-            }
-        }
-
-        [NonEvent]
-        private void TransferActivityId(EventTraceActivity eventTraceActivity)
-        {
-            if (eventTraceActivity != null)
-            {
-                Guid oldGuid;
-                SetCurrentThreadActivityId(eventTraceActivity.ActivityId, out oldGuid);
-            }
-        }
-
         #region Keywords / Tasks / Opcodes
 
-        public class EventIds
+        public partial class EventIds
         {
             public const int WorkflowInstanceRecord = 100;
             public const int WorkflowInstanceUnhandledExceptionRecord = 101;
@@ -2265,7 +2287,7 @@ namespace System.Runtime
             public const int ClientFormatterDeserializeReplyStop = 3329;
             public const int SecurityNegotiationStart = 3330;
             public const int SecurityNegotiationStop = 3331;
-            public const int SecurityTokenProviderOpened = 3332;
+            //public const int SecurityTokenProviderOpened = 3332;
             public const int OutgoingMessageSecured = 3333;
             public const int IncomingMessageVerified = 3334;
             public const int GetServiceInstanceStart = 3335;
@@ -2521,13 +2543,13 @@ namespace System.Runtime
             public const int HandledExceptionError = 57405;
             public const int HandledExceptionVerbose = 57406;
             public const int ThrowingExceptionVerbose = 57407;
-            public const int EtwUnhandledException = 57408;
-            public const int ThrowingEtwExceptionVerbose = 57409;
-            public const int ThrowingEtwException = 57410;
+            //public const int EtwUnhandledException = 57408;
+            //public const int ThrowingEtwExceptionVerbose = 57409;
+            //public const int ThrowingEtwException = 57410;
             public const int HttpHandlerPickedForUrl = 62326;
         }
 
-        public class Tasks
+        public partial class Tasks
         {
             public const EventTask ActivationDispatchSession = (EventTask)2500;
             public const EventTask ActivationDuplicateSocket = (EventTask)2501;
@@ -2598,7 +2620,7 @@ namespace System.Runtime
             public const EventTask RuntimeTransaction = (EventTask)2568;
             public const EventTask ScheduleActivity = (EventTask)2569;
             public const EventTask ScheduleWorkItem = (EventTask)2570;
-            public const EventTask SecureMessage = (EventTask)2571;
+            //public const EventTask SecureMessage = (EventTask)2571;
             public const EventTask SecurityImpersonation = (EventTask)2572;
             public const EventTask SecurityNegotiation = (EventTask)2573;
             public const EventTask SecurityVerification = (EventTask)2574;
@@ -2793,13 +2815,13 @@ namespace System.Runtime
             public const EventOpcode RoutingServiceReceiveContextAbandoning = (EventOpcode)99;
         }
 
-        public class Keywords
+        public partial class Keywords
         {
             public const EventKeywords ServiceHost = (EventKeywords)0x1;
             public const EventKeywords Serialization = (EventKeywords)0x2;
             public const EventKeywords ServiceModel = (EventKeywords)0x4;
             public const EventKeywords Transaction = (EventKeywords)0x8;
-            public const EventKeywords Security = (EventKeywords)0x10;
+            //public const EventKeywords Security = (EventKeywords)0x10;
             public const EventKeywords WCFMessageLogging = (EventKeywords)0x20;
             public const EventKeywords WFTracking = (EventKeywords)0x40;
             public const EventKeywords WebHost = (EventKeywords)0x80;
@@ -2811,7 +2833,7 @@ namespace System.Runtime
             public const EventKeywords WebHTTP = (EventKeywords)0x2000;
             public const EventKeywords Discovery = (EventKeywords)0x4000;
             public const EventKeywords RoutingServices = (EventKeywords)0x8000;
-            public const EventKeywords Infrastructure = (EventKeywords)0x10000;
+            //public const EventKeywords Infrastructure = (EventKeywords)0x10000;
             public const EventKeywords EndToEndMonitoring = (EventKeywords)0x20000;
             public const EventKeywords HealthMonitoring = (EventKeywords)0x40000;
             public const EventKeywords Troubleshooting = (EventKeywords)0x80000;
@@ -2823,15 +2845,6 @@ namespace System.Runtime
             public const EventKeywords WFServices = (EventKeywords)0x4000000;
             public const EventKeywords WFInstanceStore = (EventKeywords)0x8000000;
         }
-
-        public class ChannelKeywords
-        {
-            public const EventKeywords Admin = unchecked((EventKeywords)0x8000000000000000);
-            public const EventKeywords Operational = unchecked((EventKeywords)0x4000000000000000);
-            public const EventKeywords Analytic = unchecked((EventKeywords)0x2000000000000000);
-            public const EventKeywords Debug = unchecked((EventKeywords)0x1000000000000000);
-        }
-
         #endregion
     }
 }

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
+using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net.Http;
@@ -59,6 +60,32 @@ namespace System.ServiceModel.Channels
 
         protected override void ValidateCreateChannelParameters(EndpointAddress remoteAddress, Uri via)
         {
+            if (remoteAddress.Identity != null)
+            {
+                X509CertificateEndpointIdentity certificateIdentity =
+                    remoteAddress.Identity as X509CertificateEndpointIdentity;
+                if (certificateIdentity != null)
+                {
+                    if (certificateIdentity.Certificates.Count > 1)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(remoteAddress), SR.Format(
+                            SR.HttpsIdentityMultipleCerts, remoteAddress.Uri));
+                    }
+                }
+
+                EndpointIdentity identity = remoteAddress.Identity;
+                bool validIdentity = (certificateIdentity != null)
+                    || ClaimTypes.Spn.Equals(identity.IdentityClaim.ClaimType)
+                    || ClaimTypes.Upn.Equals(identity.IdentityClaim.ClaimType)
+                    || ClaimTypes.Dns.Equals(identity.IdentityClaim.ClaimType);
+
+                if (!IsWindowsAuth(AuthenticationScheme)
+                    && !validIdentity)
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgument(nameof(remoteAddress), SR.HttpsExplicitIdentity);
+                }
+            }
+
             if (string.Compare(via.Scheme, "wss", StringComparison.OrdinalIgnoreCase) != 0)
             {
                 ValidateScheme(via);
@@ -147,7 +174,7 @@ namespace System.ServiceModel.Channels
 
             if (requestCertificateProvider != null)
             {
-                token = requestCertificateProvider.GetTokenAsync(timeoutHelper.RemainingTime()).GetAwaiter().GetResult();
+                token = requestCertificateProvider.GetToken(timeoutHelper.RemainingTime());
             }
 
             if (ManualAddressing && RequireClientCertificate)
@@ -172,10 +199,7 @@ namespace System.ServiceModel.Channels
             }
             else
             {
-                if (to.Identity is X509CertificateEndpointIdentity)
-                {
-                    HttpTransportSecurityHelpers.SetServerCertificateValidationCallback(httpClientHandler);
-                }
+                HttpTransportSecurityHelpers.AddServerCertIdentityValidation(httpClientHandler, to);
             }
         }
 

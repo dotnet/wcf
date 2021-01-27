@@ -17,6 +17,19 @@ namespace System.ServiceModel
 
         public bool AutomaticSessionShutdown { get; set; } = true;
 
+        public ConcurrencyMode ConcurrencyMode
+        {
+            get { return _concurrencyMode; }
+            set
+            {
+                if (!ConcurrencyModeHelper.IsDefined(value))
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value)));
+                }
+
+                _concurrencyMode = value;
+            }
+        }
 
         public bool UseSynchronizationContext
         {

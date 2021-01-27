@@ -1,0 +1,38 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "../../TypeReuseSvc.wsdl"
+    ],
+    "namespaceMappings": [
+      "*, TypeReuse20_NS"
+    ],
+    "outputFile": "Reference.cs",
+    "references": [
+      "dotnet-svcutil-lib, {dotnet-svcutil-lib, 99.99.99}",
+      "$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/BinLib.dll",
+      "$resultPath$/TestResults/TypeReuse/TypeReuse20/bin/Debug/netcoreapp2.0/TypesLib.dll",
+      "Microsoft.ApplicationInsights, {Microsoft.ApplicationInsights, 99.99.99}",
+      "Microsoft.DotNet.InternalAbstractions, {Microsoft.DotNet.InternalAbstractions, 99.99.99}",
+      "Microsoft.Extensions.DependencyModel, {Microsoft.Extensions.DependencyModel, 99.99.99}",
+      "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}",
+      "NuGet.Common, {NuGet.Common, 99.99.99}",
+      "NuGet.Configuration, {NuGet.Configuration, 99.99.99}",
+      "NuGet.DependencyResolver.Core, {NuGet.DependencyResolver.Core, 99.99.99}",
+      "NuGet.Frameworks, {NuGet.Frameworks, 99.99.99}",
+      "NuGet.LibraryModel, {NuGet.LibraryModel, 99.99.99}",
+      "NuGet.Packaging, {NuGet.Packaging, 99.99.99}",
+      "NuGet.Packaging.Core, {NuGet.Packaging.Core, 99.99.99}",
+      "NuGet.Packaging.Core.Types, {NuGet.Packaging.Core.Types, 99.99.99}",
+      "NuGet.ProjectModel, {NuGet.ProjectModel, 99.99.99}",
+      "NuGet.Protocol.Core.Types, {NuGet.Protocol.Core.Types, 99.99.99}",
+      "NuGet.Protocol.Core.v3, {NuGet.Protocol.Core.v3, 99.99.99}",
+      "NuGet.Repositories, {NuGet.Repositories, 99.99.99}",
+      "NuGet.RuntimeModel, {NuGet.RuntimeModel, 99.99.99}",
+      "NuGet.Versioning, {NuGet.Versioning, 99.99.99}"
+    ],
+    "targetFramework": "N.N",
+    "typeReuseMode": "All"
+  }
+}

@@ -92,6 +92,16 @@ public interface IWcfService
 }
 
 [ServiceContract]
+public interface IService1
+{
+    [OperationContract]
+    string GetData(int value);
+
+    [OperationContract]
+    CompositeType GetDataUsingDataContract(CompositeType composite);
+}
+
+[ServiceContract]
 public interface IWcfProjectNRestartService
 {
     [OperationContract]
@@ -367,6 +377,19 @@ public interface IWcfDuplexService_Xml_Callback
 {
     [OperationContract, XmlSerializerFormat]
     void OnXmlPingCallback(XmlCompositeTypeDuplexCallbackOnly xmlCompositeType);
+}
+
+[ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackConcurrencyMode_Callback))]
+public interface IWcfDuplexService_CallbackConcurrencyMode
+{
+    [OperationContract]
+    Task DoWorkAsync();
+}
+
+public interface IWcfDuplexService_CallbackConcurrencyMode_Callback
+{
+    [OperationContract]
+    Task CallWithWaitAsync(int delayTime);
 }
 
 // WebSocket Interfaces
@@ -818,4 +841,29 @@ public class ByteParams
 {
     public byte P1;
     public byte P2;
+}
+
+// ********************************************************************************
+
+[ServiceContract]
+public interface IWcfReliableService
+{
+    [OperationContract]
+    Task<int> GetNextNumberAsync();
+    [OperationContract]
+    Task<string> EchoAsync(string echo);
+}
+
+[ServiceContract]
+public interface IOneWayWcfReliableService
+{
+    [OperationContract(IsOneWay = true)]
+    Task OneWayAsync(string text);
+}
+
+[ServiceContract(CallbackContract = typeof(IWcfReliableDuplexService))]
+public interface IWcfReliableDuplexService
+{
+    [OperationContract]
+    Task<string> DuplexEchoAsync(string echo);
 }

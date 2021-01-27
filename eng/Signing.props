@@ -1,0 +1,7 @@
+<Project>
+  <ItemGroup>
+    <!-- This is a third party library that is included in dotnet-svcutil. 
+         We need to sign it with a 3rd party certificate even if it's already signed. -->
+    <FileSignInfo Include="Newtonsoft.Json.dll" CertificateName="3PartySHA2" />
+  </ItemGroup>
+</Project>

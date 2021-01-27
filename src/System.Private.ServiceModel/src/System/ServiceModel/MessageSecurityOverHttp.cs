@@ -56,16 +56,15 @@ namespace System.ServiceModel
 
         internal SecurityBindingElement CreateSecurityBindingElement(bool isSecureTransportMode, bool isReliableSession, MessageSecurityVersion version)
         {
-            if (isReliableSession)
+            if (isReliableSession && !IsSecureConversationEnabled())
             {
-                throw ExceptionHelper.PlatformNotSupported(); // Reliable sessions
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SecureConversationRequiredByReliableSession));
             }
 
             SecurityBindingElement result;
             SecurityBindingElement oneShotSecurity;
 
             bool isKerberosSelected = false;
-            //bool emitBspAttributes = true;
             if (isSecureTransportMode)
             {
                 switch (_clientCredentialType)

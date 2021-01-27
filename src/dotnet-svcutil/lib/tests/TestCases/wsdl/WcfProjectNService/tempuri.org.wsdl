@@ -1,0 +1,1583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WcfProjectNService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="defaultEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="basicHttpsEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="httpsoap12Endpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="httpbinaryEndpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="httpssoap11Endpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="httpssoap12Endpoint_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="nettcpdefaultBinding_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="nettcpdefaultBinding1_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/WcfProjectNService" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd6" namespace="http://schemas.wcf.projectn.com/wcfnamespace" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/System.Net" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd8" namespace="http://mycustomwrappernamespace.com" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd9" namespace="CustomNamespace" />
+      <xsd:import schemaLocation="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc?xsd=xsd10" namespace="http://mycustomcustomernamespace.com" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IWcfProjectNService_EchoWithTimeout_InputMessage">
+    <wsdl:part name="parameters" element="tns:EchoWithTimeout" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_EchoWithTimeout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EchoWithTimeoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_MessageRequestReply_InputMessage">
+    <wsdl:part xmlns:q1="http://schemas.microsoft.com/Message" name="message" type="q1:MessageBody" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_MessageRequestReply_OutputMessage">
+    <wsdl:part xmlns:q2="http://schemas.microsoft.com/Message" name="MessageRequestReplyResult" type="q2:MessageBody" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_Echo_InputMessage">
+    <wsdl:part name="parameters" element="tns:Echo" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_Echo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EchoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_EchoComplex_InputMessage">
+    <wsdl:part name="parameters" element="tns:EchoComplex" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_EchoComplex_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EchoComplexResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_TestFault_InputMessage">
+    <wsdl:part name="parameters" element="tns:TestFault" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_TestFault_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TestFaultResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_TestFault_FaultDetailFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.wcf.projectn.com/wcfnamespace" name="detail" element="q3:FaultDetail" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_ThrowInvalidOperationException_InputMessage">
+    <wsdl:part name="parameters" element="tns:ThrowInvalidOperationException" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_ThrowInvalidOperationException_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ThrowInvalidOperationExceptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_GetDataUsingDataContract_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContract" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_GetDataUsingDataContract_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_ValidateMessagePropertyHeaders_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateMessagePropertyHeaders" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_ValidateMessagePropertyHeaders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateMessagePropertyHeadersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_UserGetAuthToken_InputMessage">
+    <wsdl:part name="parameters" element="tns:UserGetAuthToken" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_UserGetAuthToken_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UserGetAuthTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_UserGamePlayGetList_InputMessage">
+    <wsdl:part name="parameters" element="tns:UserGamePlayGetList" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_UserGamePlayGetList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UserGamePlayGetListResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestBankingData">
+    <wsdl:part xmlns:q4="http://mycustomwrappernamespace.com" name="parameters" element="q4:CustomWrapperName" />
+  </wsdl:message>
+  <wsdl:message name="ReplyBankingData">
+    <wsdl:part xmlns:q5="http://mycustomwrappernamespace.com" name="parameters" element="q5:CustomWrapperName" />
+  </wsdl:message>
+  <wsdl:message name="ReplyBankingDataNotWrapped">
+    <wsdl:part name="Date_of_Request" element="tns:Date_of_Request" />
+    <wsdl:part name="Transaction_Amount" element="tns:Transaction_Amount" />
+    <wsdl:part xmlns:q6="http://mycustomcustomernamespace.com" name="Customer_Name" element="q6:Customer_Name" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_EchoHttpRequestMessageProperty_InputMessage">
+    <wsdl:part name="parameters" element="tns:EchoHttpRequestMessageProperty" />
+  </wsdl:message>
+  <wsdl:message name="IWcfProjectNService_EchoHttpRequestMessageProperty_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EchoHttpRequestMessagePropertyResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IWcfProjectNService">
+    <wsdl:operation name="EchoWithTimeout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" message="tns:IWcfProjectNService_EchoWithTimeout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoWithTimeoutResponse" message="tns:IWcfProjectNService_EchoWithTimeout_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/MessageRequestReply" message="tns:IWcfProjectNService_MessageRequestReply_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/MessageRequestReplyResponse" message="tns:IWcfProjectNService_MessageRequestReply_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/Echo" message="tns:IWcfProjectNService_Echo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoResponse" message="tns:IWcfProjectNService_Echo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoComplex" message="tns:IWcfProjectNService_EchoComplex_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoComplexResponse" message="tns:IWcfProjectNService_EchoComplex_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/TestFault" message="tns:IWcfProjectNService_TestFault_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/TestFaultResponse" message="tns:IWcfProjectNService_TestFault_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IWcfProjectNService/TestFaultFaultDetailFault" name="FaultDetailFault" message="tns:IWcfProjectNService_TestFault_FaultDetailFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" message="tns:IWcfProjectNService_ThrowInvalidOperationException_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationExceptionResponse" message="tns:IWcfProjectNService_ThrowInvalidOperationException_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" message="tns:IWcfProjectNService_GetDataUsingDataContract_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContractResponse" message="tns:IWcfProjectNService_GetDataUsingDataContract_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" message="tns:IWcfProjectNService_ValidateMessagePropertyHeaders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeadersResponse" message="tns:IWcfProjectNService_ValidateMessagePropertyHeaders_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" message="tns:IWcfProjectNService_UserGetAuthToken_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/UserGetAuthTokenResponse" message="tns:IWcfProjectNService_UserGetAuthToken_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" message="tns:IWcfProjectNService_UserGamePlayGetList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/UserGamePlayGetListResponse" message="tns:IWcfProjectNService_UserGamePlayGetList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" name="RequestBankingData" message="tns:RequestBankingData" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyResponse" name="ReplyBankingData" message="tns:ReplyBankingData" />
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" name="RequestBankingData" message="tns:RequestBankingData" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrappedResponse" name="ReplyBankingDataNotWrapped" message="tns:ReplyBankingDataNotWrapped" />
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" message="tns:IWcfProjectNService_EchoHttpRequestMessageProperty_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfProjectNService/EchoHttpRequestMessagePropertyResponse" message="tns:IWcfProjectNService_EchoHttpRequestMessageProperty_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="defaultEndpoint" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#defaultEndpoint_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap12:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="defaultBasic" type="tns:IWcfProjectNService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap:fault use="literal" name="FaultDetailFault" namespace="" />
+        <soap:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="basicHttpsEndpoint" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#basicHttpsEndpoint_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="httpsoap11Endpoint" type="tns:IWcfProjectNService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="httpsoap12Endpoint" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#httpsoap12Endpoint_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap12:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="httpbinaryEndpoint" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#httpbinaryEndpoint_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap12:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="httpssoap11Endpoint" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#httpssoap11Endpoint_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="httpssoap12Endpoint" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#httpssoap12Endpoint_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap12:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="nettcpdefaultBinding" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#nettcpdefaultBinding_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap12:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="nettcpdefaultBinding1" type="tns:IWcfProjectNService">
+    <wsp:PolicyReference URI="#nettcpdefaultBinding1_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="EchoWithTimeout">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoWithTimeout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageRequestReply" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Echo">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/Echo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoComplex">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoComplex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestFault">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/TestFault" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FaultDetailFault">
+        <soap12:fault use="literal" name="FaultDetailFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ThrowInvalidOperationException">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ThrowInvalidOperationException" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataUsingDataContract">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/GetDataUsingDataContract" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateMessagePropertyHeaders">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/ValidateMessagePropertyHeaders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGetAuthToken">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGetAuthToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UserGamePlayGetList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/UserGamePlayGetList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReply">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReply" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingData">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MessageContractRequestReplyNotWrapped">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/MessageContractRequestReplyNotWrapped" style="document" />
+      <wsdl:input name="RequestBankingData">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ReplyBankingDataNotWrapped">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EchoHttpRequestMessageProperty">
+      <soap12:operation soapAction="http://tempuri.org/IWcfProjectNService/EchoHttpMessageProperty" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WcfProjectNService">
+    <wsdl:port name="defaultEndpoint" binding="tns:defaultEndpoint">
+      <soap12:address location="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="defaultBasic" binding="tns:defaultBasic">
+      <soap:address location="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/Basic" />
+    </wsdl:port>
+    <wsdl:port name="basicHttpEndpoint" binding="tns:defaultBasic">
+      <soap:address location="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/basicHttp" />
+    </wsdl:port>
+    <wsdl:port name="basicHttpsEndpoint" binding="tns:basicHttpsEndpoint">
+      <soap:address location="https://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/basicHttps" />
+    </wsdl:port>
+    <wsdl:port name="httpsoap11Endpoint" binding="tns:httpsoap11Endpoint">
+      <soap:address location="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpsoap11" />
+    </wsdl:port>
+    <wsdl:port name="httpsoap12Endpoint" binding="tns:httpsoap12Endpoint">
+      <soap12:address location="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpsoap12" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpsoap12</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="httpbinaryEndpoint" binding="tns:httpbinaryEndpoint">
+      <soap12:address location="http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpbinary" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpbinary</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="httpssoap11Endpoint" binding="tns:httpssoap11Endpoint">
+      <soap:address location="https://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpssoap11" />
+    </wsdl:port>
+    <wsdl:port name="httpssoap12Endpoint" binding="tns:httpssoap12Endpoint">
+      <soap12:address location="https://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpssoap12" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/httpssoap12</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="nettcpdefaultBinding" binding="tns:nettcpdefaultBinding">
+      <soap12:address location="net.tcp://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/tcpdefault" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/tcpdefault</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Spn>host/WcfProjectNServer.redmond.corp.microsoft.com</Spn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="nettcpdefaultBinding1" binding="tns:nettcpdefaultBinding1">
+      <soap12:address location="net.tcp://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/tcpnosecurity" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://wcfprojectnserver.redmond.corp.microsoft.com/WcfProjectNService/WcfProjectNService.svc/tcpnosecurity</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

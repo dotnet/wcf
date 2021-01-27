@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyVersion>5.0.0.0</AssemblyVersion>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
     <StrongNameKeyId>Microsoft</StrongNameKeyId>
     <TargetFrameworks>netstandard2.0;net461;</TargetFrameworks>
     <AssemblyName>System.ServiceModel.Http</AssemblyName>
     <RootNamespace>System.ServiceModel</RootNamespace>
+    <CLSCompliant>true</CLSCompliant>
     <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
   </PropertyGroup>
 

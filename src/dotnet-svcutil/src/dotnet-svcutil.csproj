@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersionFile>$(IntermediateOutputPath)\$(TargetFramework)\$(MSBuildProjectName).$(TargetFramework).version.cs</AssemblyVersionFile>
+  </PropertyGroup>
+  
+  <!--Package Properties-->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
+    <MajorVersion>2</MajorVersion>
+    <MinorVersion>0</MinorVersion>
+    <PatchVersion>3</PatchVersion>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
+    <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <EnableXlfLocalization>true</EnableXlfLocalization>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0</TargetFrameworks>
+    <RootNamespace>Microsoft.Tools.ServiceModel.Svcutil</RootNamespace>
+
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dotnet-svcutil</ToolCommandName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib\src\dotnet-svcutil-lib.csproj" />
+  </ItemGroup>
+</Project>
