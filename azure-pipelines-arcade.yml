@@ -8,6 +8,7 @@ trigger:
     include:
     - master
     - release/3.*
+    - main
 
 # trigger ci builds for pull requests into listed branches
 pr:
@@ -15,6 +16,7 @@ pr:
     include:
     - master
     - release/3.*
+    - main
 
 variables:  
   - name: _TeamName
