@@ -78,7 +78,7 @@ steps:
         echo "Operation mode has been set to: $_OPERATION"
         echo "##vso[task.setvariable variable=operation]$_OPERATION"
         echo "Set the repo branch to be what build.SourceBranchName is: $BUILD_SOURCEBRANCHNAME"
-        if [[ $BUILD_SOURCEBRANCHNAME = master ]]; then
+        if [[ $BUILD_SOURCEBRANCHNAME = main ]]; then
           echo "##vso[task.setvariable variable=branchNameorPrId]origin/$BUILD_SOURCEBRANCHNAME"
         else
           echo "##vso[task.setvariable variable=branchNameorPrId]origin/release/$BUILD_SOURCEBRANCHNAME"
