@@ -112,7 +112,7 @@ public class PullRequestHandler : IHttpHandler
             return;
         }
 
-        // Cleanup all branches except master from the repo - this shouldn't fail, and if it does, there's something wrong with the repo
+        // Cleanup all branches except main from the repo - this shouldn't fail, and if it does, there's something wrong with the repo
         success = CleanupBranches(gitRepoPath, result);
 
         if (!success)
@@ -275,7 +275,7 @@ public class PullRequestHandler : IHttpHandler
         return success;
     }
 
-    // Cleans up branches that aren't currently used except "master" from the repo
+    // Cleans up branches that aren't currently used except "main" from the repo
     // If not done, we'll end up with dozens of branches that aren't used after a while
     // because we don't nuke and re-create the repo after each PR
     private bool CleanupBranches(string gitRepoPath, StringBuilder executionResult)
@@ -285,7 +285,7 @@ public class PullRequestHandler : IHttpHandler
         string[] gitCommands = new string[]
         {
             "fetch --all --prune",
-            "checkout -f origin/master"
+            "checkout -f origin/main"
         };
 
         success = RunGitCommands(gitCommands, gitRepoPath, executionResult);
@@ -303,14 +303,14 @@ public class PullRequestHandler : IHttpHandler
             // we won't get branchesList == null because of the success check
             for (int i = 0; i < branchesList.Length; i++)
             {
-                // delete all branches - GetBranches will prevent deletion of the detached head at origin/master
+                // delete all branches - GetBranches will prevent deletion of the detached head at origin/main
                 commands.Add(string.Format("branch -D {0}", branchesList[i]));
             }
 
-            // Execute a checkout to put the branch back to a usable state at the master branch
-            // We do this to prevent successive origin/master checkouts from checking out to the same commit
+            // Execute a checkout to put the branch back to a usable state at the main branch
+            // We do this to prevent successive origin/main checkouts from checking out to the same commit
 
-            commands.Add("checkout -b master --track origin/master");
+            commands.Add("checkout -b main --track origin/main");
             success = RunGitCommands(commands.ToArray(), gitRepoPath, executionResult);
         }
 
