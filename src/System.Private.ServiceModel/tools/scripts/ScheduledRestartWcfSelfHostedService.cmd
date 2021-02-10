@@ -40,8 +40,8 @@ TASKKILL /F /IM SelfHostedWCFService.exe >> %_LOGFILE% 2>&1
 :: Pull the latest code from GitHub
 
 pushd %_GITREPO%
-echo [%~n0] git checkout master >> %_LOGFILE% 
-CALL git checkout master >> %_LOGFILE% 2>&1
+echo [%~n0] git checkout main >> %_LOGFILE% 
+CALL git checkout main >> %_LOGFILE% 2>&1
 
 echo [%~n0] git clean -xdfq >> %_LOGFILE% 
 CALL git clean -xdfq >> %_LOGFILE% 2>&1
