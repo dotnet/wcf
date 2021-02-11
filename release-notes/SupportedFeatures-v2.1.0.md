@@ -14,6 +14,7 @@ Supported features
 |              |CustomBinding          |:white_check_mark:                  |:white_check_mark:                          | :white_check_mark:                  |
 |              |NetHttpBinding         |:white_check_mark:                  |:white_check_mark:                          | :white_check_mark:                  |
 |              |NetTcpBinding          |:white_check_mark:                  |:white_check_mark:                          | :white_check_mark:    |
+|              |WebHttpBinding         |:no_entry_sign:                     |:no_entry_sign:                            | :no_entry_sign:                      |
 |Transports    |Http                   |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:                  |
 |              |Https                  |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:           |
 |              |Tcp                    |:white_check_mark:                  |:white_check_mark:                         | :white_check_mark:          |
