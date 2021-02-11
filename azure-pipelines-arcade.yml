@@ -88,7 +88,7 @@ stages:
                 /p:DotNetArtifactsCategory=$(_DotNetArtifactsCategory)
                 /p:OfficialBuildId=$(BUILD.BUILDNUMBER)
             # Service uri needed for integration tests in official builds
-           - _serviceUri: wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1
+            - _serviceUri: wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1
 
         # Public/PR & CI Build Variables
         - ${{ if eq(variables._RunAsPublic, True) }}:
