@@ -99,7 +99,7 @@ namespace WCFCorePerf
                             RevocationMode = X509RevocationMode.NoCheck
                         };
                         wsHttpFactory.Credentials.UserName.UserName = "abc";
-                        wsHttpFactory.Credentials.UserName.Password = "abc";
+                        wsHttpFactory.Credentials.UserName.Password = "[PLACEHOLDER]";
 
                         var stopwatchWSHttpChannelOpen = new Stopwatch();
                         stopwatchWSHttpChannelOpen.Start();
