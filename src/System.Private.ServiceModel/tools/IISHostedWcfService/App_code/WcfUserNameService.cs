@@ -20,7 +20,7 @@ namespace WcfService
             }
 
             // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Net real secrets")]
-            if (!(userName == "test1" && password == "Mytestpwd1") && !(userName == "test2" && password == "[PLACEHOLDER]"))
+            if (!(userName == "test1" && password == "Mytestpwd1") && !(userName == "test2" && password == "test2pwd"))
             {
                 throw new SecurityTokenException("Unknown Username or Incorrect Password");
             }
