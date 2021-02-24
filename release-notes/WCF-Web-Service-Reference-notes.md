@@ -1,6 +1,6 @@
 ﻿# WCF Web Service Reference Provider - Release Notes
 
-WCF Web Service Reference connected services provider is now part of Visual Studio 2017. Instructions can be found in the [usage guide](https://go.microsoft.com/fwlink/?linkid=858814) document. Please [let us know](https://developercommunity.visualstudio.com) if you run into any issues or have any feedback.
+WCF Web Service Reference connected services provider is now part of Visual Studio since Visual Studio 2017. Instructions can be found in the [usage guide](https://go.microsoft.com/fwlink/?linkid=858814) document. Please [let us know](https://developercommunity.visualstudio.com) if you run into any issues or have any feedback.
 
 ## Release History
 
