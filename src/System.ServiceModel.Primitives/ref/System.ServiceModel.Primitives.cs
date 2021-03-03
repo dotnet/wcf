@@ -1721,6 +1721,9 @@ namespace System.ServiceModel.Dispatcher
         public bool SerializeRequest { get { return default; } set { } }
         public System.Reflection.MethodInfo TaskMethod { get { return default; } set { } }
         public System.Type TaskTResult { get { return default; } set { } }
+        public System.Reflection.MethodInfo BeginMethod { get { return default; } set { } }
+        public System.Reflection.MethodInfo EndMethod { get { return default; } set { } }
+        public System.Reflection.MethodInfo SyncMethod { get { return default; } set { } }
     }
     public sealed partial class ClientRuntime
     {
