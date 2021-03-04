@@ -96,6 +96,7 @@ namespace System.ServiceModel.Channels
             }
 
             AuthenticationScheme = bindingElement.AuthenticationScheme;
+            ProxyAuthenticationScheme = bindingElement.ProxyAuthenticationScheme;
             MaxBufferSize = bindingElement.MaxBufferSize;
             TransferMode = bindingElement.TransferMode;
             _keepAliveEnabled = bindingElement.KeepAliveEnabled;
@@ -137,6 +138,7 @@ namespace System.ServiceModel.Channels
         public bool AllowCookies { get; }
 
         public AuthenticationSchemes AuthenticationScheme { get; }
+        public AuthenticationSchemes ProxyAuthenticationScheme { get; }
 
         public virtual bool IsChannelBindingSupportEnabled
         {
@@ -556,7 +558,7 @@ namespace System.ServiceModel.Channels
 
         protected virtual bool IsSecurityTokenManagerRequired()
         {
-            return AuthenticationScheme != AuthenticationSchemes.Anonymous;
+            return ProxyAuthenticationScheme != AuthenticationSchemes.Anonymous || AuthenticationScheme != AuthenticationSchemes.Anonymous;
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
