@@ -217,6 +217,9 @@ namespace System.ServiceModel.Channels
                 _maxPendingAccepts = value;
             }
         }
+        
+        // proxy
+        public IWebProxy Proxy { get; set; }
 
         // string.Empty == wildcard
         internal string Method
