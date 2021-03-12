@@ -100,7 +100,9 @@ namespace System.ServiceModel.Channels
             TransferMode = bindingElement.TransferMode;
             _keepAliveEnabled = bindingElement.KeepAliveEnabled;
 
-            if (bindingElement.ProxyAddress != null)
+            if (bindingElement.Proxy != null)
+                _proxy = bindingElement.Proxy;
+            else if (bindingElement.ProxyAddress != null)
             {
                 if (bindingElement.UseDefaultWebProxy)
                 {
