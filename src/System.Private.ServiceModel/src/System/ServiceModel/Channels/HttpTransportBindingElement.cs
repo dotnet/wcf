@@ -45,6 +45,7 @@ namespace System.ServiceModel.Channels
             _maxPendingAccepts = HttpTransportDefaults.DefaultMaxPendingAccepts;
             _method = string.Empty;
             _proxyAuthenticationScheme = HttpTransportDefaults.ProxyAuthenticationScheme;
+            Proxy = HttpTransportDefaults.Proxy;
             ProxyAddress = HttpTransportDefaults.ProxyAddress;
             _realm = HttpTransportDefaults.Realm;
             _requestInitializationTimeout = HttpTransportDefaults.RequestInitializationTimeout;
@@ -68,6 +69,7 @@ namespace System.ServiceModel.Channels
             _maxBufferSizeInitialized = elementToBeCloned._maxBufferSizeInitialized;
             _maxPendingAccepts = elementToBeCloned._maxPendingAccepts;
             _method = elementToBeCloned._method;
+            Proxy = elementToBeCloned.Proxy;
             ProxyAddress = elementToBeCloned.ProxyAddress;
             _proxyAuthenticationScheme = elementToBeCloned._proxyAuthenticationScheme;
             _realm = elementToBeCloned._realm;
@@ -233,6 +235,7 @@ namespace System.ServiceModel.Channels
         }
 
         // fully specified proxy by client
+        [DefaultValue(HttpTransportDefaults.Proxy)]
         public IWebProxy Proxy { get; set; }
         
         [DefaultValue(HttpTransportDefaults.ProxyAddress)]
