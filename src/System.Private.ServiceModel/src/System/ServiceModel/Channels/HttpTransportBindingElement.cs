@@ -232,6 +232,9 @@ namespace System.ServiceModel.Channels
             }
         }
 
+        // fully specified proxy by client
+        public IWebProxy Proxy { get; set; }
+        
         [DefaultValue(HttpTransportDefaults.ProxyAddress)]
         [TypeConverter(typeof(UriTypeConverter))]
         public Uri ProxyAddress { get; set; }
