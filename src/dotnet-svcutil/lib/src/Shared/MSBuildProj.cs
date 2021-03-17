@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using NuGet.ProjectModel;
 using Microsoft.Extensions.DependencyModel;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -159,6 +160,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var targetFramework = targetFrameworkElements.Last().Value.Trim();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
+                        Regex re = new Regex(@"\w+\d+\.\d+");
+                        Match m = re.Match(targetFramework);
+                        if (m.Success)
+                        {
+                            targetFramework = m.Value;
+                        }
+
                         msbuildProj._targetFrameworks.Add(targetFramework);
                     }
                 }
