@@ -48,6 +48,8 @@ stages:
     - template: /eng/common/templates/job/onelocbuild.yml
       parameters:
         CreatePr: false
+        LclSource: lclFilesfromPackage
+        LclPackageId: 'LCL-JUNO-PROD-WCF'
   - template: /eng/common/templates/jobs/jobs.yml
     parameters:
       enableMicrobuild: true
