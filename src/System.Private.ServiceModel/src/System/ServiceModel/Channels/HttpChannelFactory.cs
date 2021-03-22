@@ -101,7 +101,9 @@ namespace System.ServiceModel.Channels
             _keepAliveEnabled = bindingElement.KeepAliveEnabled;
 
             if (bindingElement.Proxy != null)
+            {
                 _proxy = bindingElement.Proxy;
+            }
             else if (bindingElement.ProxyAddress != null)
             {
                 if (bindingElement.UseDefaultWebProxy)
