@@ -1,630 +1,630 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="cs" original="../SR.resx">
+  <file datatype="xml" source-language="en" target-language="cs-CZ" original="../SR.resx">
     <body>
       <trans-unit id="BindingBinaryMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported binary message encoding version: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported binary message encoding version: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Nepodporovaná verze kódování binární zprávy: {0}. Verze musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingClientCertRequirementNotSupported">
         <source>Client certificate security requirement is not supported.</source>
-        <target state="new">Client certificate security requirement is not supported.</target>
+        <target state="translated">Požadavek na zabezpečení klientského certifikátu není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingElementTypeNotSupportedFormat">
         <source>Unsupported binding element type: '{0}'.</source>
-        <target state="new">Unsupported binding element type: '{0}'.</target>
+        <target state="translated">Nepodporovaný typ elementu vazby: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingElementNotSupportedFormat">
         <source>Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</source>
-        <target state="new">Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</target>
+        <target state="translated">Nepodporovaný typ elementu kódování zprávy: {0}. Musí jím být jeden z následujících typů: {1}, {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingNotSupportedFormat">
         <source>Unsupported message encoding value: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported message encoding value: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Nepodporovaná hodnota kódování zprávy: {0}. Hodnota musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
-        <target state="new">Reliable session is not supported.</target>
+        <target state="translated">Spolehlivá relace není podporována.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTextMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</source>
-        <target state="new">Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</target>
+        <target state="translated">Nepodporovaná verze kódování textové zprávy: {0}. Verze musí být {1}, {2}, {3}, {4} nebo {5}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransactionFlowNotSupported">
         <source>Transaction flow is not supported.</source>
-        <target state="new">Transaction flow is not supported.</target>
+        <target state="translated">Tok transakce není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportDetectReplaysNotSupported">
         <source>Transport Security with DetectReplays enabled is not supported.</source>
-        <target state="new">Transport Security with DetectReplays enabled is not supported.</target>
+        <target state="translated">Zabezpečení přenosu s povolenou možností DetectReplays není podporováno.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportMessageSecurityVersionNotSupportedFormat">
         <source>Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</source>
-        <target state="new">Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</target>
+        <target state="translated">Hodnota verze zabezpečení zprávy přenosu není podporována: {0}. Hodnotou musí být jedna z následujících hodnot: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat">
         <source>Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Sada algoritmů výchozího zabezpečení přenosu není podporována: {0}. Sada musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityElementTypeNotSupportedFormat">
         <source>Transport security element type not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security element type not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Typ elementu zabezpečení přenosu není podporován: {0}. Typ musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityHeaderLayoutValueNotSupportedFormat">
         <source>Transport security header layout value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security header layout value is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Hodnota rozložení záhlaví zabezpečení přenosu není podporována: {0}. Hodnota musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityMustIncludeTimestamp">
         <source>Transport security must include timestamp.</source>
-        <target state="new">Transport security must include timestamp.</target>
+        <target state="translated">Zabezpečení přenosu musí zahrnovat časové razítko.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenEndorsingParamsTypeFormat">
         <source>Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Nepodporovaný typ parametrů podporujících token zabezpečení přenosu: {0}. Typ musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted">
         <source>Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</source>
-        <target state="new">Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</target>
+        <target state="translated">Token zabezpečení přenosu musí mít jeden a pouze jeden typ parametrů, kterým musí být buď Endorsing, nebo SignedEncrypted.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat">
         <source>Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Hodnota režimu zahrnutí parametrů tokenu zabezpečení přenosu není podporována: {0}. Hodnota musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat">
         <source>Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Styl odkazů parametrů tokenu zabezpečení přenosu není podporován: {0}. Styl musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsRequiringDerivedKeysNotSupported">
         <source>Security token parameters requiring derived keys is not supported.</source>
-        <target state="new">Security token parameters requiring derived keys is not supported.</target>
+        <target state="translated">Parametry tokenu zabezpečení, které vyžadují odvozené klíče, nejsou podporovány.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsTypeNotSupportedFormat">
         <source>Security token parameters type is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Security token parameters type is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Typ parametrů tokenu zabezpečení není podporován: {0}. Typ musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported">
         <source>Transport security token with signed or signed and endorsing paramaters is not supported.</source>
-        <target state="new">Transport security token with signed or signed and endorsing paramaters is not supported.</target>
+        <target state="translated">Token zabezpečení přenosu s podepsanými nebo podepsanými a podporujícími parametry není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportTypeNotSupportedFormat">
         <source>Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</source>
-        <target state="new">Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</target>
+        <target state="translated">Nepodporovaný typ přenosu: {0}. Musí jím být jeden z následujících typů: {1}, {2}, {3}</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTypeNotSupportedFormat">
         <source>Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</source>
-        <target state="new">Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</target>
+        <target state="translated">Nepodporovaný typ vazby: {0}. Musí jím být jeden z následujících typů: {1}, {2}, {3}, {4}, nebo {5}</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateIndexPrompt">
         <source>Please enter the index of the certificate to use or ESC to cancel:</source>
-        <target state="new">Please enter the index of the certificate to use or ESC to cancel:</target>
+        <target state="translated">Zadejte prosím index certifikátu, který se má použít, nebo operaci zrušte klávesou Esc:</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateSelectionMessageFormat">
         <source>The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</source>
-        <target state="new">The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</target>
+        <target state="translated">Web {0} žádá o klientský certifikát. Vypíše se seznam možných platných certifikátů.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsComment">
         <source>The client credentials</source>
-        <target state="new">The client credentials</target>
+        <target state="translated">Přihlašovací údaje klienta</target>
         <note />
       </trans-unit>
       <trans-unit id="CodeExpressionCouldNotFindEndpoint">
         <source>Could not find endpoint with name '{0}'.</source>
-        <target state="new">Could not find endpoint with name '{0}'.</target>
+        <target state="translated">Nelze najít koncový bod s názvem {0}.</target>
         <note>This is not a formatting string (no trailing Format).</note>
       </trans-unit>
       <trans-unit id="ConfigureEndpointCommentSummary">
         <source>Implement this partial method to configure the service endpoint.</source>
-        <target state="new">Implement this partial method to configure the service endpoint.</target>
+        <target state="translated">Chcete-li nakonfigurovat koncový bod služby, implementujte tuto částečnou metodu.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="translated">Pokud je toto služba Windows (R) Communication Foundation, ke které máte přístup, zkontrolujte prosím, jestli jste povolili publikování metadat na zadané adrese. Nápovědu pro povolení publikování metadat najdete v dokumentaci MSDN na http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterOrEscapeMessage">
         <source>Press the ENTER to accept or ESC to cancel:</source>
-        <target state="new">Press the ENTER to accept or ESC to cancel:</target>
+        <target state="translated">Klávesou Enter můžete potvrdit přijetí, nebo klávesou Esc operaci zrušit:</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterYesOrNoMessage">
         <source>Invalid answer.  Please enter 'yes' or 'no':</source>
-        <target state="new">Invalid answer.  Please enter 'yes' or 'no':</target>
+        <target state="translated">Neplatná odpověď. Zadejte prosím ano, nebo ne:</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrArgumentWithoutValue">
         <source>The --{0} option requires a value to be passed, but none was found.</source>
-        <target state="new">The --{0} option requires a value to be passed, but none was found.</target>
+        <target state="translated">Možnost --{0} vyžaduje, aby se předala hodnota, ale žádná se nenašla.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingElementNotSupportedFormat">
         <source>Binding element of type '{0}' is not supported.</source>
-        <target state="new">Binding element of type '{0}' is not supported.</target>
+        <target state="translated">Prvek vazby typu '{0}' není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingTypeNotSupportedFormat">
         <source>Binding type '{0}' is not supported.</source>
-        <target state="new">Binding type '{0}' is not supported.</target>
+        <target state="translated">Typ vazby '{0}' není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectoryFormat">
         <source>Cannot create directory: '{0}'.</source>
-        <target state="new">Cannot create directory: '{0}'.</target>
+        <target state="translated">Nejde vytvořit adresář: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateFileFormat">
         <source>Cannot create output file: '{0}'.</source>
-        <target state="new">Cannot create output file: '{0}'.</target>
+        <target state="translated">Nejde vytvořit výstupní soubor: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDisambiguateSpecifiedTypesFormat">
         <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
-        <target state="new">More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</target>
+        <target state="translated">V sadě odkazovaných sestavení existuje více než jeden typ stejného názvu. K rozlišení mezi typy --{0} {1} a {2} použijte názvy kvalifikované pro sestavení.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotLoadSpecifiedTypeFormat">
         <source>No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
-        <target state="new">No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</target>
+        <target state="translated">Pro hodnotu {1} předanou možnosti --{0} se nepovedlo načíst žádný typ. Ujistěte se, že sestavení, k němuž tento typ patří, se zadalo pomocí možnosti --{2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotWriteFile">
         <source>Cannot write to output file.</source>
-        <target state="new">Cannot write to output file.</target>
+        <target state="translated">Nejde zapisovat do výstupního souboru.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCodegenError">
         <source>There was an error trying to generate code in the specified language.
 This could be because the language does not support all the code elements being generated. Consider using another language.</source>
-        <target state="new">There was an error trying to generate code in the specified language.
-This could be because the language does not support all the code elements being generated. Consider using another language.</target>
+        <target state="translated">Při pokusu o vygenerování kódu v zadaném jazyce došlo k chybě.
+K tomu může dojít v případě, že jazyk nepodporuje všechny generované elementy kódu. Zvažte možnost použít jiný jazyk.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">Pro hodnotu {0} předanou možnosti --{1} se nepovedlo vytvořit poskytovatele kódu. Ověřte, že je poskytovatel kódu správně nainstalovaný a nakonfigurovaný.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateInstanceFormat">
         <source>Cannot create instance of the type '{0}' passed to the --{1} option.</source>
-        <target state="new">Cannot create instance of the type '{0}' passed to the --{1} option.</target>
+        <target state="translated">Nejde vytvořit instanci typu {0} předanou možnosti --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAtFormat">
         <source>Cannot load any types in assembly '{0}'.</source>
-        <target state="new">Cannot load any types in assembly '{0}'.</target>
+        <target state="translated">Nelze načíst žádné typy v sestavení {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateReferenceValuesFormat">
         <source>The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</source>
-        <target state="new">The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</target>
+        <target state="translated">Sestavení {1} se pomocí možnosti --{0} načetlo dvakrát. Na každé sestavení je možné odkazovat jen jednou.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateValuePassedToTypeArgFormat">
         <source>The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</source>
-        <target state="new">The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</target>
+        <target state="translated">Hodnota {1} se do možnosti --{0} předala vícekrát. Každý typ je možné zadat jen jednou.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrEncodingNotSupportedFormat">
         <source>Encoding '{0}' is not supported.</source>
-        <target state="new">Encoding '{0}' is not supported.</target>
+        <target state="translated">Kódování {0} není podporováno.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrIncompatibleContractSoapEncodingFormat">
         <source>The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</source>
-        <target state="new">The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</target>
+        <target state="translated">Kontrakt {0} obsahuje minimálně jednu operaci s kódováním SOAP (use='encoded'). Aktuální cílová architektura toto nepodporuje. Vygenerují se jenom případné nekódované operace.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputEPRFileParseErrorFormat">
         <source>Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Z {0} se nedá přečíst odkaz koncového bodu. Ověřte, že kód XML má správný formát a je platný.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputPolicyParseErrorFormat">
         <source>WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Během čtení došlo k chybě parsování WS-Policy: {0}. Ověřte, že kód XML má správný formát a je platný.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputSchemaParseErrorFormat">
         <source>XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Během čtení došlo k chybě parsování schématu XML: {0}. Ověřte, že kód XML má správný formát a je platný.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputWsdlParseErrorFormat">
         <source>WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Během čtení došlo k chybě parsování WSDL: {0}. Ověřte, že kód XML má správný formát a je platný.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidNamespaceFormat">
         <source>The specified namespace mappings {0} contain invalid identifiers.</source>
-        <target state="new">The specified namespace mappings {0} contain invalid identifiers.</target>
+        <target state="translated">Zadaná mapování oboru názvů {0} obsahuje neplatné identifikátory.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidOperationNoProjectFileFoundUnderFolderFormat">
         <source>The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</source>
-        <target state="new">The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</target>
+        <target state="translated">Aktuální operace je mimo kontext projektu neplatná a v adresáři {0} se nenašel žádný soubor projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidPathFormat">
         <source>Invalid path '{0}'. Check the --{1} option value.</source>
-        <target state="new">Invalid path '{0}'. Check the --{1} option value.</target>
+        <target state="translated">Neplatná cesta {0}. Zkontrolujte hodnotu možnosti --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMessageVersionNotSupportedFormat">
         <source>MessageVersion '{0}' is not supported.</source>
-        <target state="new">MessageVersion '{0}' is not supported.</target>
+        <target state="translated">MessageVersion '{0}' není podporována.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneProjectFoundFormat">
         <source>The directory '{0}' contains more than one project file.</source>
-        <target state="new">The directory '{0}' contains more than one project file.</target>
+        <target state="translated">Adresář {0} obsahuje více než jeden soubor projektu.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneUpdateParamsFilesFoundFormat">
         <source>More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</source>
-        <target state="new">More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</target>
+        <target state="translated">V projektu {0} se našel více než jeden odkaz na webovou službu. Zadejte prosím odkaz na službu, který se má aktualizovat, pomocí možnosti --{1}. Možné hodnoty jsou tyto: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoCompatibleEndpoints">
         <source>No endpoints compatible with .Net Core apps were found.</source>
-        <target state="new">No endpoints compatible with .Net Core apps were found.</target>
+        <target state="translated">Nebyly nalezeny žádné koncové body kompatibilní s aplikacemi .NET Core.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoUpdateParamsFileFoundFormat">
         <source>The project '{0}' does not have a web service reference that can be updated.</source>
-        <target state="new">The project '{0}' does not have a web service reference that can be updated.</target>
+        <target state="translated">Projekt {0} nemá odkaz na webovou službu, který by se dal aktualizovat.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoValidInputSpecified">
         <source>No valid input specified. Specify either a service url or a wsdl file.</source>
-        <target state="new">No valid input specified. Specify either a service url or a wsdl file.</target>
+        <target state="translated">Nebyl zadán žádný platný vstup. Zadejte prosím buď adresu URL služby, nebo soubor WSDL.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotCodeDomTypeFormat">
         <source>The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</source>
-        <target state="new">The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</target>
+        <target state="translated">Typ {0} předaný možnosti --{1} není podtřídou třídy {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotLanguageOrCodeDomTypeFormat">
         <source>The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
-        <target state="new">The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</target>
+        <target state="translated">Hodnota {0} předaná možnosti --{1} nepředstavuje definovaný jazyk a nebylo možné ji načíst jako plně kvalifikovaný typ CLR.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileAlreadyExistsFormat">
         <source>The source file '{0}' resolved from the value specified with the option --{1} already exists!</source>
-        <target state="new">The source file '{0}' resolved from the value specified with the option --{1} already exists!</target>
+        <target state="translated">Zdrojový soubor {0}, který se přeložil z hodnoty zadané pomocí možnosti --{1}, už existuje!</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileNotUnderOutputDirFormat">
         <source>The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</source>
-        <target state="new">The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</target>
+        <target state="translated">Hodnota možnosti --{0} se překládá na cestu {1}, která se nenachází v adresáři {2} přeloženém z hodnoty zadané pomocí možnosti --{3}. Soubor musí být relativní název souboru nebo úplná cesta v tomto adresáři.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongDirOnlyFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} option value.</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} option value.</target>
+        <target state="translated">Výsledná cesta {0} je moc dlouhá. Zkontrolujte hodnotu možnosti --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</target>
+        <target state="translated">Výsledná cesta {0} je moc dlouhá. Zkontrolujte hodnoty možností --{1} a --{2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrProjectToUpdateNotFoundFormat">
         <source>The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</source>
-        <target state="new">The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</target>
+        <target state="translated">Možnost --{0} vyžaduje, aby se zadal projekt. Zadejte prosím projekt, který se má použít, pomocí možnosti --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServerCertFailedValidationFormat">
         <source>There were errors when validating the server certificate: {0}
 {1}</source>
-        <target state="new">There were errors when validating the server certificate: {0}
+        <target state="translated">Při ověřování certifikátu serveru došlo k chybám: {0}
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceReferenceNotFoundUnderProjectFormat">
         <source>The specified web service reference '{0}' was not found under the project '{1}'.</source>
-        <target state="new">The specified web service reference '{0}' was not found under the project '{1}'.</target>
+        <target state="translated">Zadaný odkaz na webovou službu {0} se v projektu {1} nenašel.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitchFormat">
         <source>The --{0} option cannot be specified multiple times.</source>
-        <target state="new">The --{0} option cannot be specified multiple times.</target>
+        <target state="translated">Možnost --{0} se nemůže zadat více než jednou.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToImportMetadata">
         <source>A critical error occurred while attempting to import metadata.</source>
-        <target state="new">A critical error occurred while attempting to import metadata.</target>
+        <target state="translated">Při pokusu o import metadat došlo ke kritické chybě.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadExtensionsFormat">
         <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
-        <target state="new">There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</target>
+        <target state="translated">Při načítání rozšíření importu došlo k chybě. Ujistěte se, že jste jako referenční sestavení pomocí možnosti --{0} poskytli sestavení, která obsahují tato rozšíření.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadInputs">
         <source>There was an error reading the loaded metadata.</source>
-        <target state="new">There was an error reading the loaded metadata.</target>
+        <target state="translated">Během čtení načtených metadat došlo k chybě.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadMetadataDocumentFormat">
         <source>There was an error reading the metadata from one of the loaded documents.
 Document Identifier: '{0}'.</source>
-        <target state="new">There was an error reading the metadata from one of the loaded documents.
-Document Identifier: '{0}'.</target>
+        <target state="translated">Během čtení metadat z jednoho z načtených dokumentů došlo k chybě.
+Identifikátor dokumentu: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadReferenceFormat">
         <source>Reference cannot be loaded: '{0}', {1}</source>
-        <target state="new">Reference cannot be loaded: '{0}', {1}</target>
+        <target state="translated">Odkaz nelze načíst: {0}, {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToRetrieveMetadataFromUriFormat">
         <source>Cannot obtain Metadata from {0} 
 
 {1}</source>
-        <target state="new">Cannot obtain Metadata from {0} 
+        <target state="translated">Nelze načíst metadata z {0}.
 
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilenameFormat">
         <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Cannot create output filename. Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">Nelze vytvořit název výstupního souboru. Je vytvářeno příliš mnoho souborů s předponou {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
         <source>An error occurred in the tool.</source>
-        <target state="new">An error occurred in the tool.</target>
+        <target state="translated">V nástroji došlo k chybě.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnknownSwitchFormat">
         <source>Unrecognized option '{0}' specified.</source>
-        <target state="new">Unrecognized option '{0}' specified.</target>
+        <target state="translated">Byla zadána nerozpoznaná možnost {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorPrefix">
         <source>Error:</source>
-        <target state="new">Error:</target>
+        <target state="translated">Chyba:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
-        <target state="new">Generating files...</target>
+        <target state="translated">Generují se soubory...</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
-        <target state="new">Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</target>
+        <target state="translated">Automatický výběr serializátoru. Tato funkce se pokusí použít serializátor kontraktu dat. Není-li tento pokus úspěšný, je použit XmlSerializer. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput1">
         <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
-        <target state="new">The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</target>
+        <target state="translated">Cesta k dokumentu metadat (wsdl nebo xsd). V cestě k souboru lze použít standardní zástupné znaky příkazového řádku.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput2">
         <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online.</source>
-        <target state="new">The URL to a service endpoint that provides metadata or to a metadata document hosted online.</target>
+        <target state="translated">Adresa URL ke koncovému bodu služby, který poskytuje metadata, nebo k dokumentu metadat hostovanému online.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput3">
         <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
-        <target state="new">The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</target>
+        <target state="translated">Cesta k souboru XML, který obsahuje WS-Addressing EndpointReference pro koncový bod služby podporující WS-Metadata Exchange.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCollectionTypeFormat">
         <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</target>
+        <target state="translated">Plně kvalifikovaný název nebo kvalifikovaný název sestavení daného typu, který bude použit jako datový typ kolekce ve chvíli, kdy bude ze schémat vygenerován kód. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCommonOptionsCategory">
         <source>-= COMMON OPTIONS =-</source>
-        <target state="new">-= COMMON OPTIONS =-</target>
+        <target state="translated">-= SPOLEČNÉ MOŽNOSTI =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDataContractSerializer">
         <source>Generate data types that use the Data Contract Serializer for serialization and deserialization</source>
-        <target state="new">Generate data types that use the Data Contract Serializer for serialization and deserialization</target>
+        <target state="translated">Generování datových typů, které k serializaci a deserializaci používají serializátor kontraktu dat</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDirectoryFormat">
         <source>Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</source>
-        <target state="new">Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</target>
+        <target state="translated">Adresář, ve kterém se mají vytvářet soubory. Výchozí hodnota: adresář s názvem ServiceReference pod aktuálním adresářem. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpEnableDataBindingFormat">
         <source>Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</source>
-        <target state="new">Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</target>
+        <target state="translated">Chcete-li povolit vazby dat, implementujte rozhraní System.ComponentModel.INotifyPropertyChanged pro všechny typy kontraktu dat. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples">
         <source>-= EXAMPLES =-</source>
-        <target state="new">-= EXAMPLES =-</target>
+        <target state="translated">-= PŘÍKLADY =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples2">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl</source>
-        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl</target>
+        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples3">
         <source>- Generate client code from a running service or online metadata documents.</source>
-        <target state="new">- Generate client code from a running service or online metadata documents.</target>
+        <target state="translated">- Vygeneruje kód klienta ze spuštěné služby nebo online dokumentů metadat.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples6">
         <source>dotnet-svcutil *.wsdl *.xsd --language:C#</source>
-        <target state="new">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
+        <target state="translated">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples7">
         <source>- Generate client code in Visual Basic from local metadata documents.</source>
-        <target state="new">- Generate client code in Visual Basic from local metadata documents.</target>
+        <target state="translated">- Vygeneruje kód klienta v jazyce Visual Basic z místních dokumentů metadat.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples8">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</source>
-        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
+        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples9">
         <source>- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</source>
-        <target state="new">- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</target>
+        <target state="translated">- Vygeneruje kód klienta ze spuštěné služby pomocí nastavení, která emulují výchozí chování Služby připojení k WCF v sadě Visual Studio.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExcludeTypeCodeGenerationFormat">
         <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</target>
+        <target state="translated">Plně kvalifikovaný název nebo kvalifikovaný název sestavení, který bude vyloučen z odkazovaných typů kontraktu. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpHelpFormat">
         <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
-        <target state="new">Display command syntax and options for the tool. (Short Form: -{0})</target>
+        <target state="translated">Zobrazení syntaxe příkazu a možností pro nástroj (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputEpr">
         <source>&lt;epr&gt;</source>
-        <target state="new">&lt;epr&gt;</target>
+        <target state="translated">&lt;epr&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;cesta k dokumentu metadat&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="new">&lt;url&gt;</target>
+        <target state="translated">&lt;url&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
-        <target state="new">Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</target>
+        <target state="translated">Vygeneruje třídy, které jsou označeny jako vnitřní. Výchozí: generovat veřejné třídy (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">Programovací jazyk, v němž bude vygenerován kód. Poskytněte prosím buď název jazyka zaregistrovaný v souboru machine.config, nebo plně kvalifikovaný název třídy, která dědí ze třídy System.CodeDom.Compiler.CodeDomProvider. Příklady názvů jazyků, které lze použít, jsou CS a VB. Výchozí: C# (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMessageContractFormat">
         <source>Generate Message Contract types. (Short Form: -{0})</source>
-        <target state="new">Generate Message Contract types. (Short Form: -{0})</target>
+        <target state="translated">Generování typů kontraktu zprávy (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNamespaceFormat">
         <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
-        <target state="new">A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</target>
+        <target state="translated">Mapování z oboru názvů targetNamespace schématu WSDL nebo XML na obor názvů CLR. Pomocí znaku * pro targetNamespace lze mapovat všechny obory názvů targetNamespace bez explicitního mapování na daný obor názvů CLR. Výchozí: odvozeno z cílového oboru názvů dokumentu schématu pro kontrakty dat. Výchozí obor názvů je používán pro všechny ostatní generované typy. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="new">Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
+        <target state="translated">Zakáže opakované používání typů z odkazů na projekt. Odkazy poskytnuté pomocí možnosti --{1} se budou brát v úvahu jen pro překlad typů kolekcí zadaných pomocí možnosti --{2}. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">
         <source>Suppress the copyright and banner message. (Short Form: -{0})</source>
-        <target state="new">Suppress the copyright and banner message. (Short Form: -{0})</target>
+        <target state="translated">Potlačit copyright a informační zprávu (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlibFormat">
         <source>Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</source>
-        <target state="new">Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</target>
+        <target state="translated">Neodkazovat na standardní knihovny. Ve výchozím nastavení jsou odkazovány knihovny System.Runtime (mscorlib) a System.ServiceModel (WCF). (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOptions">
         <source>Options:</source>
-        <target state="new">Options:</target>
+        <target state="translated">Parametry:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOutFormat">
         <source>The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
-        <target state="new">The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</target>
+        <target state="translated">Název souboru pro vygenerovaný kód. Výchozí: odvozeno z názvu definice WSDL, název služby WSDL nebo targetNamespace jednoho ze schémat (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpProjectFileFormat">
         <source>The project file to add the client to (if any). (Short Form: -{0}).</source>
-        <target state="new">The project file to add the client to (if any). (Short Form: -{0}).</target>
+        <target state="translated">Soubor projektu, do kterého se má klient přidat (pokud nějaký existuje). (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpReferenceCodeGenerationFormat">
         <source>Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</source>
-        <target state="new">Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</target>
+        <target state="translated">Odkazy na balíček nebo projekt, ze kterých se mají znovu použít typy. Při generování klientů zadejte pomocí této možnosti odkazy v projektu uživatele, který může obsahovat typy představující importovaná metadata. Odkaz jde zadat jako název a verze balíčku nuget nebo cesta k projektu .Net Core. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
-        <target state="new">The runtime identifier used for building reference projects (if any). (Short Form: -{0})</target>
+        <target state="translated">Identifikátor modulu runtime, který se použil k sestavení projektů odkazů (pokud nějaký existuje). (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
-        <target state="new">Generate synchronous methods for operations in addition to async. (Short Form: -{0})</target>
+        <target state="translated">Kromě asynchronních metod generovat pro operace i synchronní metody (krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
-        <target state="new">The target framework used for building reference projects. (Short Form: -{0}).</target>
+        <target state="translated">Cílová architektura, která byla použita k sestavení projektů odkazů. (Krátký tvar: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUpdateWebServiceReferenceFormat">
         <source>Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</source>
-        <target state="new">Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</target>
+        <target state="translated">Aktualizuje existující odkaz na webovou službu. Pokud projekt obsahuje více než jeden odkaz na webovou službu, vyžaduje se, aby se název tohoto odkazu aktualizoval. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage1">
         <source>USE:</source>
-        <target state="new">USE:</target>
+        <target state="translated">POUŽÍT:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage2">
         <source> - Generate web service proxy code from running services or static metadata documents. </source>
-        <target state="new"> - Generate web service proxy code from running services or static metadata documents. </target>
+        <target state="translated"> - Vygeneruje kód proxy webové služby ze spuštěné služby nebo statických dokumentů metadat. </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsageCategory">
         <source>-= USAGE =-</source>
-        <target state="new">-= USAGE =-</target>
+        <target state="translated">-= POUŽITÍ =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
-        <target state="new">Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</target>
+        <target state="translated">Určuje množství informací, které nástroj zobrazuje. Platné hodnoty: {0} (Krátký tvar: -{1})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpWrappedFormat">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</source>
-        <target state="new">Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</target>
+        <target state="translated">Vygenerovaný kód nebude rozbalovat člen parameters zpráv document-wrapped-literal. (Krátký tvar: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
-        <target state="new">Generate data types that use the XmlSerializer for serialization and deserialization</target>
+        <target state="translated">Generování datových typů, které k serializaci a deserializaci používají XmlSerializer</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">
@@ -632,193 +632,193 @@ Document Identifier: '{0}'.</target>
 [{0}, Version {1}]
 {2}
 </source>
-        <target state="new">Microsoft (R) WCF Service Model Proxy Generation Tool for .Net Core platform
-[{0}, Version {1}]
+        <target state="translated">Microsoft (R) WCF Service Model Proxy Generation Tool pro platformu .NET Core
+[{0}, verze {1}]
 {2}
 </target>
         <note />
       </trans-unit>
       <trans-unit id="Microsoft_Copyright_CommandLine_Logo">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="new">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
+        <target state="translated">Copyright (c) Microsoft Corporation. Všechna práva vyhrazena.</target>
         <note />
       </trans-unit>
       <trans-unit id="MoreHelpFormat">
         <source>If you would like more help, type "dotnet-svcutil -{0}"</source>
-        <target state="new">If you would like more help, type "dotnet-svcutil -{0}"</target>
+        <target state="translated">Pokud potřebujete další pomoc, zadejte dotnet-svcutil -{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoCodeWasGenerated">
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="new">No code was generated.
-If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</target>
+        <target state="translated">Nevygeneroval se žádný kód.
+Pokud jste se pokoušeli vygenerovat klienta, může k tomuto dojít v případě, že dokumenty metadat neobsahovaly žádné platné kontrakty ani služby, nebo pokud bylo zjištěno, že všechny kontrakty nebo služby existují v sestaveních --reference. Ověřte, že jste nástroji předali všechny dokumenty metadat.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotClientBaseType">
         <source>Type does not inherit from ClientBase&lt;T&gt;</source>
-        <target state="new">Type does not inherit from ClientBase&lt;T&gt;</target>
+        <target state="translated">Typ nedědí z ClientBase&lt;T&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
         <source>&lt;directory&gt;</source>
-        <target state="new">&lt;directory&gt;</target>
+        <target state="translated">&lt;directory&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
         <source>&lt;language&gt;</source>
-        <target state="new">&lt;language&gt;</target>
+        <target state="translated">&lt;language&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersNamespace">
         <source>&lt;string,string&gt;</source>
-        <target state="new">&lt;string,string&gt;</target>
+        <target state="translated">&lt;string,string&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersOut">
         <source>&lt;file&gt;</source>
-        <target state="new">&lt;file&gt;</target>
+        <target state="translated">&lt;file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;soubor projektu&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="new">&lt;package&gt;</target>
+        <target state="translated">&lt;package&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;identifikátor modulu runtime&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="new">&lt;framework&gt;</target>
+        <target state="translated">&lt;framework&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="new">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;verbosity level&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="new">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;odkaz na webovou službu&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
         <source>Enter password (ESC to cancel):</source>
-        <target state="new">Enter password (ESC to cancel):</target>
+        <target state="translated">Zadejte heslo (klávesou Esc operaci zrušíte):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadingMetadataMessageFormat">
         <source>Attempting to load metadata from '{0}'.</source>
-        <target state="new">Attempting to load metadata from '{0}'.</target>
+        <target state="translated">Probíhá pokus o načtení metadat z {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestReplyCallbackContractNotSupported">
         <source>Request/Reply callback contracts are not supported for .Net Core apps.</source>
-        <target state="new">Request/Reply callback contracts are not supported for .Net Core apps.</target>
+        <target state="translated">Kontrakty zpětného volání požadavku nebo odpovědi nejsou v aplikacích .NET Core podporovány.</target>
         <note />
       </trans-unit>
       <trans-unit id="RetreivingMetadataMsgFormat">
         <source>Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</source>
-        <target state="new">Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</target>
+        <target state="translated">Probíhá pokus o stažení metadat z {0} pomocí WS-Metadata Exchange a HttpGet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServiceEndpointComment">
         <source>The endpoint to configure</source>
-        <target state="new">The endpoint to configure</target>
+        <target state="translated">Koncový bod, který má být nakonfigurován</target>
         <note />
       </trans-unit>
       <trans-unit id="TelemetryEnabled">
         <source>This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
 </source>
-        <target state="new">This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
+        <target state="translated">Tento nástroj shromažďuje informace o tom, jak se používá. Tyto informace slouží k jeho vylepšení. Shromažďování se dá zakázat tak, že se proměnná prostředí DOTNET_SVCUTIL_TELEMETRY_OPTOUT nastaví na 1.
 </target>
         <note />
       </trans-unit>
       <trans-unit id="UseProjectFileOptionOnMultipleFilesMsgFormat">
         <source>Please use the --{0} option to specify the project to use, possible values: {1}.</source>
-        <target state="new">Please use the --{0} option to specify the project to use, possible values: {1}.</target>
+        <target state="translated">Zadejte prosím projekt, který se má použít, pomocí možnosti --{0}. Možné hodnoty: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="UsernamePrompt">
         <source>Enter username (ESC to cancel):</source>
-        <target state="new">Enter username (ESC to cancel):</target>
+        <target state="translated">Zadejte uživatelské jméno (klávesou Esc operaci zrušíte):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningPrefix">
         <source>Warning:</source>
-        <target state="new">Warning:</target>
+        <target state="translated">Upozornění:</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotGenerateContractOperationsFormat">
         <source>Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</source>
-        <target state="new">Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</target>
+        <target state="translated">Pomocí typu {0} se nepovedlo vygenerovat operace kontraktu. Zkouší se to s typem {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat">
         <source>Cannot load some types in assembly '{0}', types will not be available to the tool.</source>
-        <target state="new">Cannot load some types in assembly '{0}', types will not be available to the tool.</target>
+        <target state="translated">Nelze načíst některé typy v sestavení {0}, typy nebudou nástroji k dispozici.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnExtraParamsOnInputFileParamIgnoredFormat">
         <source>An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</source>
-        <target state="new">An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</target>
+        <target state="translated">V příkazovém řádku se zadal soubor se vstupními parametry, následující parametry se budou ignorovat: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
-        <target state="new">Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</target>
+        <target state="translated">Koncový bod {0} na adrese {1} obsahuje nejméně jednu vazbu, která není kompatibilní s aplikacemi .NET Core. Přeskakování...</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
-        <target state="new">The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</target>
+        <target state="translated">Hodnota zadaná pomocí možnosti --{0} se překládá na cestu k souboru {1}, která se nenachází v adresáři projektu {2}. Je možné, že se soubor nezkompiluje!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
         <source>The specified --{0} option is not expected in the current operational context of the tool!</source>
-        <target state="new">The specified --{0} option is not expected in the current operational context of the tool!</target>
+        <target state="translated">Zadaná možnost --{0} se v aktuálním provozním kontextu tohoto nástroje neočekává!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedInputsFormat">
         <source>The specified input(s) {0} are not expected in the current operational context of the tool!</source>
-        <target state="new">The specified input(s) {0} are not expected in the current operational context of the tool!</target>
+        <target state="translated">Zadané vstupy {0} se v aktuálním provozním kontextu tohoto nástroje neočekávají!</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUserBasicCredentialsInClearText">
         <source>The server needs to authenticate your request.
 Your credentials will be sent to the server in clear text.</source>
-        <target state="new">The server needs to authenticate your request.
-Your credentials will be sent to the server in clear text.</target>
+        <target state="translated">Server potřebuje ověřit vaši žádost.
+Vaše přihlašovací údaje se odešlou na server v podobě prostého textu.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnWSMExFailedFormat">
         <source>WS-Metadata Exchange Error
     URI: {0}</source>
-        <target state="new">WS-Metadata Exchange Error
-    URI: {0}</target>
+        <target state="translated">Chyba WS-Metadata Exchange
+    Identifikátor URI: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlOrSchemaFilesMsg">
         <source>WSDL files</source>
-        <target state="new">WSDL files</target>
+        <target state="translated">Soubory WSDL</target>
         <note />
       </trans-unit>
     </body>

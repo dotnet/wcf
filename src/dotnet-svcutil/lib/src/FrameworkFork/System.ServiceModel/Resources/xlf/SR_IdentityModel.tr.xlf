@@ -1,425 +1,425 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="tr" original="../SR_IdentityModel.resx">
+  <file datatype="xml" source-language="en" target-language="tr-TR" original="../SR_IdentityModel.resx">
     <body>
       <trans-unit id="ArgumentCannotBeEmptyString">
         <source>The argument must be a non-empty string.</source>
-        <target state="new">The argument must be a non-empty string.</target>
+        <target state="translated">Bağımsız değişken boş olmayan bir dize olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadEncryptionState">
         <source>The EncryptedData or EncryptedKey is in an invalid state for this operation.</source>
-        <target state="new">The EncryptedData or EncryptedKey is in an invalid state for this operation.</target>
+        <target state="translated">EncryptedData veya EncryptedKey, bu işlem için geçersiz bir durumda.</target>
         <note />
       </trans-unit>
       <trans-unit id="BufferQuotaExceededReadingBase64">
         <source>Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</source>
-        <target state="new">Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</target>
+        <target state="translated">Verilen arabellek kotası aşıldığından Base64 verilerinin okunması bitirilemedi. Arabellek kotası: {0}. TransportBindingElement üstündeki MaxReceivedMessageSize kotasını artırmayı deneyin. Çok yüksek bir MaxReceivedMessageSize değerinin, çok büyük bir iletiyi arabelleğe alarak, sistemi DOS saldırılarına açabileceğini unutmayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
         <source>Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</source>
-        <target state="new">Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</target>
+        <target state="translated">Arama ölçütleriyle X.509 sertifikası bulunamıyor: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotReadKeyIdentifierClause">
         <source>Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</source>
-        <target state="new">Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</target>
+        <target state="translated">'{1}' ad alanına sahip '{0}' öğesinden KeyIdentifierClause okunamıyor. Özel KeyIdentifierClause'lar için özel SecurityTokenSerializer'lar gerekir, örnekleri görmek için lütfen SDK'ya başvurun.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotReadToken">
         <source>Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</source>
-        <target state="new">Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</target>
+        <target state="translated">'{1}' ad alanına sahip '{0}' öğesinden '{2}' ValueType öğesine sahip BinarySecretSecurityToken için belirteç okunamıyor. Bu öğenin geçerli olması bekleniyorsa, güvenliğin ad, ad alanı ve değer türleri belirtilen belirteçleri kullanmasını sağlayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotValidateSecurityTokenType">
         <source>The security token authenticator '{0}' cannot validate a token of type '{1}'.</source>
-        <target state="new">The security token authenticator '{0}' cannot validate a token of type '{1}'.</target>
+        <target state="translated">'{0}' güvenlik belirteci kimlik doğrulayıcısı '{1}' türündeki bir belirteci doğrulayamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="DidNotFindKeyIdentifierInReference">
         <source>The SecurityTokenReference does not contain a KeyIdentifier. </source>
-        <target state="new">The SecurityTokenReference does not contain a KeyIdentifier. </target>
+        <target state="translated">SecurityTokenReference bir KeyIdentifier içermiyor. </target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingKeyIdentifierClause">
         <source>There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</source>
-        <target state="new">There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</target>
+        <target state="translated">Güvenlik anahtarı tanımlayıcısının yan tümce XML'i seri durumdan çıkarılırken bir hata oluştu. Ayrıntılar için iç özel duruma bakın.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorSerializingKeyIdentifier">
         <source>There was an error serializing the security key identifier. Please see the inner exception for more details.</source>
-        <target state="new">There was an error serializing the security key identifier. Please see the inner exception for more details.</target>
+        <target state="translated">Anahtar tanımlayıcısı serileştirilirken bir hata oluştu. Ayrıntılar için iç özel duruma bakın.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorSerializingKeyIdentifierClause">
         <source>There was an error serializing the security key identifier clause. Please see the inner exception for more details.</source>
-        <target state="new">There was an error serializing the security key identifier clause. Please see the inner exception for more details.</target>
+        <target state="translated">Güvenlik anahtarı tanımlayıcısı yan tümcesi serileştirilirken bir hata oluştu. Ayrıntılar için iç özel duruma bakın.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpectedElementMissing">
         <source>The expected '{0}' element with the '{1}' namespace is missing.</source>
-        <target state="new">The expected '{0}' element with the '{1}' namespace is missing.</target>
+        <target state="translated">Beklenen '{1}' ad alanına sahip '{0}' öğesi eksik.</target>
         <note />
       </trans-unit>
       <trans-unit id="FoundMultipleCerts">
         <source>Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</source>
-        <target state="new">Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</target>
+        <target state="translated">Aşağıdaki arama ölçütleri kullanılarak birden çok X.509 sertifikası bulundu: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'. Daha belirli bir arama değeri girin.</target>
         <note />
       </trans-unit>
       <trans-unit id="ID0023">
         <source>ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</source>
-        <target state="new">ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</target>
+        <target state="translated">ID0023: Yapılandırmadan bir '{0}' örneği oluşturulamadı. Özel bir yapılandırma öğesi belirtildi, ancak LoadCustomConfiguration metodu uygulanmadı. Özel yapılandırma yüklemesini işlemek için LoadCustomConfiguration öğesini geçersiz kılın.</target>
         <note />
       </trans-unit>
       <trans-unit id="ID4140">
         <source>ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</source>
-        <target state="new">ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</target>
+        <target state="translated">ID4140: Assertion ham XML olarak yeniden verilemiyor. Bunun nedeni başlangıçta XML'den okunmaması veya Assertion'ın, değiştirilen Id özelliğiyle belirtildiği gibi, okunduktan sonra değiştirilmesi olabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImpersonationLevelNotSupported">
         <source>The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</source>
-        <target state="new">The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</target>
+        <target state="translated">Kerberos kullanan kimlik doğrulama modları '{0}' kimliğe bürünme düzeyini desteklemez. Kimlik ya da kimliğe bürünme belirtin.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAsyncResult">
         <source>Invalid AsyncResult.</source>
-        <target state="new">Invalid AsyncResult.</target>
+        <target state="translated">AsyncResult geçersiz.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDataReferenceInReferenceList">
         <source>The data reference '{0}' in encryption reference list is not valid.</source>
-        <target state="new">The data reference '{0}' in encryption reference list is not valid.</target>
+        <target state="translated">Şifreleme başvuru listesindeki '{0}' veri başvurusu geçerli değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidX509RawData">
         <source>Invalid binary representation of an X.509 certificate.</source>
-        <target state="new">Invalid binary representation of an X.509 certificate.</target>
+        <target state="translated">X.509 sertifikasının geçersiz ikili gösterimi.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidXmlQualifiedName">
         <source>An Xml qualified name was expected. '{0}' was found.</source>
-        <target state="new">An Xml qualified name was expected. '{0}' was found.</target>
+        <target state="translated">Bir Xml tam adı bekleniyordu. '{0}' bulundu.</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyIdentifierCannotCreateKey">
         <source>This SecurityKeyIdentifier does not have any clause that can create a key.</source>
-        <target state="new">This SecurityKeyIdentifier does not have any clause that can create a key.</target>
+        <target state="translated">Bu SecurityKeyIdentifier, anahtar oluşturabilecek bir yan tümceye sahip değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyIdentifierClauseDoesNotSupportKeyCreation">
         <source>This SecurityKeyIdentifierClause does not support key creation.</source>
-        <target state="new">This SecurityKeyIdentifierClause does not support key creation.</target>
+        <target state="translated">Bu SecurityKeyIdentifierClause anahtar oluşturmayı desteklemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyLengthMustBeMultipleOfEight">
         <source>Key length '{0}' is not a multiple of 8 for symmetric keys.</source>
-        <target state="new">Key length '{0}' is not a multiple of 8 for symmetric keys.</target>
+        <target state="translated">'{0}' anahtar uzunluğu simetrik anahtarlar için 8'in katı değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="LengthMustBeGreaterThanZero">
         <source>The length of this argument must be greater than 0.</source>
-        <target state="new">The length of this argument must be greater than 0.</target>
+        <target state="translated">Bu bağımsız değişkenin uzunluğu 0'dan büyük olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="LocalIdCannotBeEmpty">
         <source>The localId cannot be empty. Specify a valid 'localId'.</source>
-        <target state="new">The localId cannot be empty. Specify a valid 'localId'.</target>
+        <target state="translated">localId boş olamaz. Geçerli bir 'localId' belirtin.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleKeyIdentifiersInReference">
         <source>The SecurityTokenReference contains multiple KeyIdentifier elements.</source>
-        <target state="new">The SecurityTokenReference contains multiple KeyIdentifier elements.</target>
+        <target state="translated">SecurityTokenReference birden çok KeyIdentifier öğesi içeriyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSamlAuthorityBindingsInReference">
         <source>The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</source>
-        <target state="new">The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</target>
+        <target state="translated">SAML onaylaması SecurityTokenReference başvurusu birden çok AuthorityBinding öğesi içeriyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
         <source>No clause of type '{0}' was found in the SecurityKeyIdentifier.</source>
-        <target state="new">No clause of type '{0}' was found in the SecurityKeyIdentifier.</target>
+        <target state="translated">SecurityKeyIdentifier içinde '{0}' türünde yan tümce bulunamadı.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyInfoClausesToWrite">
         <source>The SecurityKeyIdentifier has no key identifier clauses to write.</source>
-        <target state="new">The SecurityKeyIdentifier has no key identifier clauses to write.</target>
+        <target state="translated">SecurityKeyIdentifier öğesinin yazılacak anahtar tanımlayıcı ifadesi yok.</target>
         <note />
       </trans-unit>
       <trans-unit id="ObjectIsReadOnly">
         <source>The object is read-only.</source>
-        <target state="new">The object is read-only.</target>
+        <target state="translated">Nesne salt okunur.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProvidedNetworkCredentialsForKerberosHasInvalidUserName">
         <source>The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</source>
-        <target state="new">The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</target>
+        <target state="translated">Kerberos Belirteci için sağlanan NetworkCredentials geçerli bir UserName değerine sahip değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferenceListCannotBeEmpty">
         <source>The ReferenceList element must have at least one DataReference or KeyReference.</source>
-        <target state="new">The ReferenceList element must have at least one DataReference or KeyReference.</target>
+        <target state="translated">ReferenceList öğesinin en az bir DataReference ya da KeyReference öğesi olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredAttributeMissing">
         <source>Attribute '{0}' is required on element '{1}'.</source>
-        <target state="new">Attribute '{0}' is required on element '{1}'.</target>
+        <target state="translated">'{1}' öğesinde '{0}' özniteliği gerekiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIDIsInvalid">
         <source>The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</source>
-        <target state="new">The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</target>
+        <target state="translated">Bir SamlAssertion'ın '{0}' 'assertionId'si bir harfle ya da '_' ile başlamalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIdRequired">
         <source>The 'assertionId' for a SamlAssertion can not be null or empty.</source>
-        <target state="new">The 'assertionId' for a SamlAssertion can not be null or empty.</target>
+        <target state="translated">Bir SamlAssertion'ın 'assertionId'si null veya boş olamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIssuerRequired">
         <source>The 'Issuer' specified for a SamlAssertion cannot be null or empty.</source>
-        <target state="new">The 'Issuer' specified for a SamlAssertion cannot be null or empty.</target>
+        <target state="translated">SamlAssertion için belirtilen 'Issuer' değeri null ya da boş olamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingIssuerAttributeOnRead">
         <source>The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</source>
-        <target state="new">The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</target>
+        <target state="translated">Okunan SamlAssertion için 'Issuer' değeri eksik ya da 0 uzunluğunda.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingMajorVersionAttributeOnRead">
         <source>The MajorVersion for the SamAssertion being read is missing or is of length 0.</source>
-        <target state="new">The MajorVersion for the SamAssertion being read is missing or is of length 0.</target>
+        <target state="translated">Okunan SamAssertion için MajorVersion değeri eksik ya da 0 uzunluğunda.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingMinorVersionAttributeOnRead">
         <source>TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</source>
-        <target state="new">TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</target>
+        <target state="translated">Okunan SamlAssertion için MinorVersion değeri eksik ya da 0 uzunluğunda.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionRequireOneStatement">
         <source>A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</source>
-        <target state="new">A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</target>
+        <target state="translated">SamlAssertion en az bir deyim gerektirir. Oluşturmakta olduğunuz SamlAssertion'a en az bir SamlStatement eklediğinizden emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionRequireOneStatementOnRead">
         <source>The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</source>
-        <target state="new">The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</target>
+        <target state="translated">Okunan SamlAssertion hiç SamlStatement içermiyordu. Bir SamlAssertion en az bir SamlStatement içermelidir.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLElementNotRecognized">
         <source>The {0} element is not supported.</source>
-        <target state="new">The {0} element is not supported.</target>
+        <target state="translated">{0} öğesi desteklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLEntityCannotBeNullOrEmpty">
         <source>The SamlAssertion entity {0} cannot be null or empty.</source>
-        <target state="new">The SamlAssertion entity {0} cannot be null or empty.</target>
+        <target state="translated">SamlAssertion varlığı {0} null veya boş olamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLSignatureAlreadyRead">
         <source>The signature is already read in the SamlAssertion.</source>
-        <target state="new">The signature is already read in the SamlAssertion.</target>
+        <target state="translated">İmza zaten SamlAssertion içinde okunmuş.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLTokenNotSerialized">
         <source>The SamlAssertion could not be serialized to XML. Please see inner exception for details.</source>
-        <target state="new">The SamlAssertion could not be serialized to XML. Please see inner exception for details.</target>
+        <target state="translated">SamlAssertion, XML'ye serileştirilemedi. Ayrıntılar için lütfen iç özel duruma bakın.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLTokenVersionNotSupported">
         <source>The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</source>
-        <target state="new">The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</target>
+        <target state="translated">Ana sürüm {0} ve ara sürüm {1} desteklenmiyor. Desteklenen sürümler: Major {2} ve Minor {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadAdvice">
         <source>Failed to load the &lt;saml:advice&gt; element.</source>
-        <target state="new">Failed to load the &lt;saml:advice&gt; element.</target>
+        <target state="translated">&lt;saml:advice&gt; öğesi yüklenemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadAssertion">
         <source>The &lt;saml:assertion&gt; element failed to load.</source>
-        <target state="new">The &lt;saml:assertion&gt; element failed to load.</target>
+        <target state="translated">&lt;saml:assertion&gt; öğesi yüklenemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadCondtion">
         <source>The &lt;saml:conditions&gt; element failed to load.</source>
-        <target state="new">The &lt;saml:conditions&gt; element failed to load.</target>
+        <target state="translated">&lt;saml:conditions&gt; öğesi yüklenemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadCondtions">
         <source>The &lt;saml:conditions&gt; element failed to load. </source>
-        <target state="new">The &lt;saml:conditions&gt; element failed to load. </target>
+        <target state="translated">&lt;saml:conditions&gt; öğesi yüklenemedi. </target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadStatement">
         <source>Failed to load a SamlStatement.</source>
-        <target state="new">Failed to load a SamlStatement.</target>
+        <target state="translated">Bir SamlStatement yüklenemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadUnknownElement">
         <source>The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</source>
-        <target state="new">The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</target>
+        <target state="translated">Seçili SamlSerializer, bu {0} öğesini seri durumdan çıkaramıyor. Özel öğeleri seri durumdan çıkarmak için lütfen özel bir SamlSerializer kaydettirin.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToResolveSignatureKey">
         <source>Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</source>
-        <target state="new">Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</target>
+        <target state="translated">SamlAssertion imzasında bulunan SecurityKeyIdentifier çözümlenemedi. {0} adlı sertifika veren için SamlAssertion imzası doğrulanamıyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlAssertionMissingSigningCredentials">
         <source>SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</source>
-        <target state="new">SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</target>
+        <target state="translated">SamlAssertion'da SigningCredentials ayarlanmadı. SamlAssertions imzalanmalıdır, devam etmek için SamlAssertion'da geçerli bir SigningCredentials ayarlayın.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerRequiresExternalSerializers">
         <source>The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</source>
-        <target state="new">The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</target>
+        <target state="translated">SamlSerializer, belirteç içinde bulunan SecurityKeyIdentifier öğesini serileştirmek için bir SecurityTokenSerializer öğesine gereksinim duyar.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerUnableToReadSecurityKeyIdentifier">
         <source>The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</source>
-        <target state="new">The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</target>
+        <target state="translated">SamlSerializer, SecurityKeyIdentifier öğesini okuyabilecek bir SecurityTokenSerializer içermiyor. Özel bir SecurityKeyIdentifier kullanıyorsanız, özel bir SecurityTokenSerializer sağlamalısınız.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerUnableToWriteSecurityKeyIdentifier">
         <source>The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</source>
-        <target state="new">The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</target>
+        <target state="translated">SamlSerializer, verilen SecurityKeyIdentifier '{0}' öğesini serileştirebilecek bir SecurityTokenSerializer içermiyor. Özel bir SecurityKeyIdentifier kullanıyorsanız, özel bir SecurityTokenSerializer sağlamalısınız.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSigningTokenNotFound">
         <source>The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</source>
-        <target state="new">The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</target>
+        <target state="translated">SamlAssertion imzalandı, ancak SamlAssertion öğesini imzalayan belirteç bulunamıyor. SecurityTokenResolver öğesinin, SamlAssertion'ı imzalayan belirteci içerdiğinden emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlTokenMissingSignature">
         <source>The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</source>
-        <target state="new">The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</target>
+        <target state="translated">SamlAssertion imzalanmamış. SamlAssertion öğeleri SigningCredential değerleri ayarlanarak imzalanabilir.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityTokenRequirementDoesNotContainProperty">
         <source>The token requirement does not contain a property '{0}'.</source>
-        <target state="new">The token requirement does not contain a property '{0}'.</target>
+        <target state="translated">Belirteç gereksinimi '{0}' özelliğini içermiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityTokenRequirementHasInvalidTypeForProperty">
         <source>The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</source>
-        <target state="new">The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</target>
+        <target state="translated">Belirteç gereksiniminin '{0}' özelliği için beklenmeyen bir '{1}' türü var. Beklenen özellik türü: '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
-        <target state="new">The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</target>
+        <target state="translated">Belirteç Serializer özelliği, '{0}' öğesini serileştiremiyor. Bu özel bir türse, özel bir serileştirici sağlamalısınız.</target>
         <note />
       </trans-unit>
       <trans-unit id="SymmetricKeyLengthTooShort">
         <source>The length of the symmetric key specified is too short ({0} bytes).</source>
-        <target state="new">The length of the symmetric key specified is too short ({0} bytes).</target>
+        <target state="translated">Belirtilen simetrik anahtarın uzunluğu ({0} bayt) çok kısa.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenCancellationNotSupported">
         <source>The token provider '{0}' does not support token cancellation.</source>
-        <target state="new">The token provider '{0}' does not support token cancellation.</target>
+        <target state="translated">'{0}' belirteç sağlayıcısı, belirteç iptal etmeyi desteklemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenDoesNotSupportKeyIdentifierClauseCreation">
         <source>'{0}' does not support '{1}' creation.</source>
-        <target state="new">'{0}' does not support '{1}' creation.</target>
+        <target state="translated">'{0}', '{1}' oluşturmayı desteklemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
+        <target state="translated">'{0}' belirteç sağlayıcısı bir güvenlik belirteci sağlayamadı.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToRenewToken">
         <source>The token provider '{0}' was unable to renew the security token.</source>
-        <target state="new">The token provider '{0}' was unable to renew the security token.</target>
+        <target state="translated">'{0}' belirteç sağlayıcısı güvenlik belirtecini yenileyemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenRenewalNotSupported">
         <source>The token provider '{0}' does not support token renewal.</source>
-        <target state="new">The token provider '{0}' does not support token renewal.</target>
+        <target state="translated">'{0}' belirteç sağlayıcısı, belirteç yenilemeyi desteklemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToCreateTokenReference">
         <source>Unable to create a security token reference.</source>
-        <target state="new">Unable to create a security token reference.</target>
+        <target state="translated">Güvenlik belirteci başvurusu oluşturulamıyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">
         <source>The token resolver is unable to resolve the security key reference '{0}'.</source>
-        <target state="new">The token resolver is unable to resolve the security key reference '{0}'.</target>
+        <target state="translated">Belirteç çözümleyici, '{0}' güvenlik anahtarı başvurusunu çözümleyemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveTokenReference">
         <source>The token resolver is unable to resolve the token reference '{0}'.</source>
-        <target state="new">The token resolver is unable to resolve the token reference '{0}'.</target>
+        <target state="translated">Belirteç çözümleyici, '{0}' belirteç başvurusunu çözümleyemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnboundPrefixInQName">
         <source>An unbound prefix is used in the '{0}' qualified name.</source>
-        <target state="new">An unbound prefix is used in the '{0}' qualified name.</target>
+        <target state="translated">'{0}' tam adında bağlı olmayan bir ön ek kullanılıyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnexpectedXmlChildNode">
         <source>XML child node {0} of type {1} is unexpected for element {2}.</source>
-        <target state="new">XML child node {0} of type {1} is unexpected for element {2}.</target>
+        <target state="translated">{2} öğesi için {1} türündeki {0} XML alt düğümü beklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnknownEncodingInKeyIdentifier">
         <source>Unrecognized encoding while reading key identifier.</source>
-        <target state="new">Unrecognized encoding while reading key identifier.</target>
+        <target state="translated">Anahtar tanımlayıcısı okunurken kodlama tanınmadı.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedKeyDerivationAlgorithm">
         <source>The '{0}' key derivation algorithm is not supported.</source>
-        <target state="new">The '{0}' key derivation algorithm is not supported.</target>
+        <target state="translated">'{0}' anahtar türetme algoritması desteklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameCannotBeEmpty">
         <source>The username cannot be empty.</source>
-        <target state="new">The username cannot be empty.</target>
+        <target state="translated">Kullanıcı adı boş olamaz.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeGreaterThanZero">
         <source>The value of this argument must be greater than 0.</source>
-        <target state="new">The value of this argument must be greater than 0.</target>
+        <target state="translated">Bu bağımsız değişkenin değeri 0'dan büyük olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">Bu bağımsız değişkenin değeri {0} - {1} aralığında olmalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="new">The value of this argument must be non-negative.</target>
+        <target state="translated">Bu bağımsız değişkenin değeri negatif olmamalıdır.</target>
         <note />
       </trans-unit>
       <trans-unit id="X509ChainBuildFail">
         <source>The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</source>
-        <target state="new">The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</target>
+        <target state="translated">X.509 sertifikası {0} zincir oluşturma işlemi başarısız oldu. Kullanılan sertifika doğrulanamayan bir güven zincirine sahip. Sertifikayı yenisiyle değiştirin veya certificateValidationMode'u değiştirin. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XDCannotFindValueInDictionaryString">
         <source>The '{0}' value is not found in the dictionary string.</source>
-        <target state="new">The '{0}' value is not found in the dictionary string.</target>
+        <target state="translated">'{0}' değeri, sözlük dizesinde bulunamadı.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferInInvalidState">
         <source>An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</source>
-        <target state="new">An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</target>
+        <target state="translated">Bir iç hata oluştu. XML arabelleği bu işlemi gerçekleştirmek için doğru durumda değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferQuotaExceeded">
         <source>The size necessary to buffer the XML content exceeded the buffer quota.</source>
-        <target state="new">The size necessary to buffer the XML content exceeded the buffer quota.</target>
+        <target state="translated">XML içeriğini ara belleğe almak için gerekli olan boyut, ara bellek kotasını aştı.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlLangAttributeMissing">
         <source>The required xml:lang attribute is missing.</source>
-        <target state="new">The required xml:lang attribute is missing.</target>
+        <target state="translated">Gerekli xml:lang özniteliği eksik.</target>
         <note />
       </trans-unit>
     </body>

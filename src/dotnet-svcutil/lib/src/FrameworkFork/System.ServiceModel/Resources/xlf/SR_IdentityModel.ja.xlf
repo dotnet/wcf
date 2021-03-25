@@ -1,425 +1,425 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="ja" original="../SR_IdentityModel.resx">
+  <file datatype="xml" source-language="en" target-language="ja-JP" original="../SR_IdentityModel.resx">
     <body>
       <trans-unit id="ArgumentCannotBeEmptyString">
         <source>The argument must be a non-empty string.</source>
-        <target state="new">The argument must be a non-empty string.</target>
+        <target state="translated">引数には空でない文字列を指定する必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="BadEncryptionState">
         <source>The EncryptedData or EncryptedKey is in an invalid state for this operation.</source>
-        <target state="new">The EncryptedData or EncryptedKey is in an invalid state for this operation.</target>
+        <target state="translated">EncryptedData または EncryptedKey は、この操作に対して無効な状態です。</target>
         <note />
       </trans-unit>
       <trans-unit id="BufferQuotaExceededReadingBase64">
         <source>Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</source>
-        <target state="new">Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</target>
+        <target state="translated">指定されたバッファー クォータを超えたため、Base64 データの読み取りを完了できません。バッファー クォータ: {0}。TransportBindingElement の MaxReceivedMessageSize クォータを増やしてください。MaxReceivedMessageSize の値を大きくしすぎると、サイズの大きいメッセージがバッファリングされることになり、その結果としてシステムが DoS 攻撃を受けやすくなるので注意してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
         <source>Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</source>
-        <target state="new">Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</target>
+        <target state="translated">次の検索条件を使って X.509 証明書を見つけることができませんでした: StoreName '{0}'、StoreLocation '{1}'、FindType '{2}'、FindValue '{3}'。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotReadKeyIdentifierClause">
         <source>Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</source>
-        <target state="new">Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</target>
+        <target state="translated">名前空間 '{1}' の要素 '{0}' から KeyIdentifierClause を読み取ることができません。カスタムの KeyIdentifierClauses には、カスタムの SecurityTokenSerializers が必要です。例については、SDK をご覧ください。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotReadToken">
         <source>Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</source>
-        <target state="new">Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</target>
+        <target state="translated">ValueType が '{2}' である BinarySecretSecurityToken の名前空間 '{1}' を持つ要素 '{0}' からトークンを読み取ることができません。この要素が有効であることが予期される場合は、指定された名前、名前空間、および値の型のトークンを使用するようにセキュリティが構成されていることを確認してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotValidateSecurityTokenType">
         <source>The security token authenticator '{0}' cannot validate a token of type '{1}'.</source>
-        <target state="new">The security token authenticator '{0}' cannot validate a token of type '{1}'.</target>
+        <target state="translated">セキュリティ トークン認証システム '{0}' は、型が '{1}' のトークンを検証できません。</target>
         <note />
       </trans-unit>
       <trans-unit id="DidNotFindKeyIdentifierInReference">
         <source>The SecurityTokenReference does not contain a KeyIdentifier. </source>
-        <target state="new">The SecurityTokenReference does not contain a KeyIdentifier. </target>
+        <target state="translated">SecurityTokenReference に KeyIdentifier が含まれていません。 </target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingKeyIdentifierClause">
         <source>There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</source>
-        <target state="new">There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</target>
+        <target state="translated">セキュリティ キー識別子句の XML の逆シリアル化でエラーが発生しました。詳細については、内部例外を参照してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorSerializingKeyIdentifier">
         <source>There was an error serializing the security key identifier. Please see the inner exception for more details.</source>
-        <target state="new">There was an error serializing the security key identifier. Please see the inner exception for more details.</target>
+        <target state="translated">セキュリティ キー識別子のシリアル化でエラーが発生しました。詳細については、内部例外を参照してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorSerializingKeyIdentifierClause">
         <source>There was an error serializing the security key identifier clause. Please see the inner exception for more details.</source>
-        <target state="new">There was an error serializing the security key identifier clause. Please see the inner exception for more details.</target>
+        <target state="translated">セキュリティ キー識別子句のシリアル化でエラーが発生しました。詳細については、内部例外を参照してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpectedElementMissing">
         <source>The expected '{0}' element with the '{1}' namespace is missing.</source>
-        <target state="new">The expected '{0}' element with the '{1}' namespace is missing.</target>
+        <target state="translated">名前空間 '{1}' の要素 '{0}' が必要ですが、見つかりません。</target>
         <note />
       </trans-unit>
       <trans-unit id="FoundMultipleCerts">
         <source>Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</source>
-        <target state="new">Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</target>
+        <target state="translated">次の検索条件を使った結果、複数の X.509 証明書が見つかりました: StoreName '{0}'、StoreLocation '{1}'、FindType '{2}'、FindValue '{3}'。より具体的な検索条件を指定してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="ID0023">
         <source>ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</source>
-        <target state="new">ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</target>
+        <target state="translated">ID0023: '{0}' のインスタンスを構成から作成できませんでした。カスタム構成要素が指定されましたが、LoadCustomConfiguration メソッドが実装されていませんでした。LoadCustomConfiguration をオーバーライドしてカスタム構成の読み込みを処理してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="ID4140">
         <source>ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</source>
-        <target state="new">ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</target>
+        <target state="translated">ID4140: このアサーションは未加工の XML として再生成できません。これは最初の段階でこのアサーションを XML から読み取ることができなかった、または変更された Id プロパティに示されるように、読み取った後にアサーションが変更されたことが原因である可能性があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="ImpersonationLevelNotSupported">
         <source>The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</source>
-        <target state="new">The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</target>
+        <target state="translated">Kerberos を使用した認証モードは、偽装レベル '{0}' をサポートしていません。ID または偽装を指定してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAsyncResult">
         <source>Invalid AsyncResult.</source>
-        <target state="new">Invalid AsyncResult.</target>
+        <target state="translated">AsyncResult が無効です。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDataReferenceInReferenceList">
         <source>The data reference '{0}' in encryption reference list is not valid.</source>
-        <target state="new">The data reference '{0}' in encryption reference list is not valid.</target>
+        <target state="translated">暗号化参照一覧内のデータ参照 '{0}' は無効です。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidX509RawData">
         <source>Invalid binary representation of an X.509 certificate.</source>
-        <target state="new">Invalid binary representation of an X.509 certificate.</target>
+        <target state="translated">X.509 証明書の無効なバイナリ表記です。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidXmlQualifiedName">
         <source>An Xml qualified name was expected. '{0}' was found.</source>
-        <target state="new">An Xml qualified name was expected. '{0}' was found.</target>
+        <target state="translated">Xml 修飾名が必要ですが、'{0}' が見つかりました。</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyIdentifierCannotCreateKey">
         <source>This SecurityKeyIdentifier does not have any clause that can create a key.</source>
-        <target state="new">This SecurityKeyIdentifier does not have any clause that can create a key.</target>
+        <target state="translated">この SecurityKeyIdentifier には、キーを作成できる句がありません。</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyIdentifierClauseDoesNotSupportKeyCreation">
         <source>This SecurityKeyIdentifierClause does not support key creation.</source>
-        <target state="new">This SecurityKeyIdentifierClause does not support key creation.</target>
+        <target state="translated">この SecurityKeyIdentifierClause は、キーの作成をサポートしていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyLengthMustBeMultipleOfEight">
         <source>Key length '{0}' is not a multiple of 8 for symmetric keys.</source>
-        <target state="new">Key length '{0}' is not a multiple of 8 for symmetric keys.</target>
+        <target state="translated">対称キーについては、キーの長さ '{0}' は 8 の倍数ではありません。</target>
         <note />
       </trans-unit>
       <trans-unit id="LengthMustBeGreaterThanZero">
         <source>The length of this argument must be greater than 0.</source>
-        <target state="new">The length of this argument must be greater than 0.</target>
+        <target state="translated">この引数の長さは、正の値である必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="LocalIdCannotBeEmpty">
         <source>The localId cannot be empty. Specify a valid 'localId'.</source>
-        <target state="new">The localId cannot be empty. Specify a valid 'localId'.</target>
+        <target state="translated">localId を空にすることはできません。有効な 'localId' を指定してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleKeyIdentifiersInReference">
         <source>The SecurityTokenReference contains multiple KeyIdentifier elements.</source>
-        <target state="new">The SecurityTokenReference contains multiple KeyIdentifier elements.</target>
+        <target state="translated">SecurityTokenReference に複数の KeyIdentifier 要素があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSamlAuthorityBindingsInReference">
         <source>The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</source>
-        <target state="new">The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</target>
+        <target state="translated">SAML アサーションへの SecurityTokenReference に複数の AuthorityBinding 要素があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
         <source>No clause of type '{0}' was found in the SecurityKeyIdentifier.</source>
-        <target state="new">No clause of type '{0}' was found in the SecurityKeyIdentifier.</target>
+        <target state="translated">'{0}' 型の句が SecurityKeyIdentifier にありません。</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyInfoClausesToWrite">
         <source>The SecurityKeyIdentifier has no key identifier clauses to write.</source>
-        <target state="new">The SecurityKeyIdentifier has no key identifier clauses to write.</target>
+        <target state="translated">SecurityKeyIdentifier には、書き込むことができるキー識別子句がありません。</target>
         <note />
       </trans-unit>
       <trans-unit id="ObjectIsReadOnly">
         <source>The object is read-only.</source>
-        <target state="new">The object is read-only.</target>
+        <target state="translated">このオブジェクトは読み取り専用です。</target>
         <note />
       </trans-unit>
       <trans-unit id="ProvidedNetworkCredentialsForKerberosHasInvalidUserName">
         <source>The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</source>
-        <target state="new">The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</target>
+        <target state="translated">Kerberos トークンに指定された NetworkCredentials に有効な UserName がありません。</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferenceListCannotBeEmpty">
         <source>The ReferenceList element must have at least one DataReference or KeyReference.</source>
-        <target state="new">The ReferenceList element must have at least one DataReference or KeyReference.</target>
+        <target state="translated">ReferenceList 要素には、DataReference または KeyReference が少なくとも 1 つ必要です。</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredAttributeMissing">
         <source>Attribute '{0}' is required on element '{1}'.</source>
-        <target state="new">Attribute '{0}' is required on element '{1}'.</target>
+        <target state="translated">要素 '{1}' には属性 '{0}' が必要です。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIDIsInvalid">
         <source>The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</source>
-        <target state="new">The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</target>
+        <target state="translated">SamlAssertion の 'assertionId' '{0}' は、文字または '_' で始まる必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIdRequired">
         <source>The 'assertionId' for a SamlAssertion can not be null or empty.</source>
-        <target state="new">The 'assertionId' for a SamlAssertion can not be null or empty.</target>
+        <target state="translated">SamlAssertion の 'assertionId' は、null や空にはできません。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIssuerRequired">
         <source>The 'Issuer' specified for a SamlAssertion cannot be null or empty.</source>
-        <target state="new">The 'Issuer' specified for a SamlAssertion cannot be null or empty.</target>
+        <target state="translated">SamlAssertion に対して指定された 'Issuer' は、null や空にはできません。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingIssuerAttributeOnRead">
         <source>The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</source>
-        <target state="new">The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</target>
+        <target state="translated">読み取り中の SamlAssertion の 'Issuer' が指定されていないか長さが 0 です。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingMajorVersionAttributeOnRead">
         <source>The MajorVersion for the SamAssertion being read is missing or is of length 0.</source>
-        <target state="new">The MajorVersion for the SamAssertion being read is missing or is of length 0.</target>
+        <target state="translated">読み取り中の SamAssertion の MajorVersion が指定されていないか長さが 0 です。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingMinorVersionAttributeOnRead">
         <source>TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</source>
-        <target state="new">TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</target>
+        <target state="translated">読み取り中の SamlAssertion の MinorVersion が指定されていないか長さが 0 です。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionRequireOneStatement">
         <source>A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</source>
-        <target state="new">A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</target>
+        <target state="translated">SamlAssertion には少なくとも 1 つのステートメントが必要です。作成する SamlAssertion に少なくとも 1 つの SamlStatement を追加済みであることをご確認ください。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionRequireOneStatementOnRead">
         <source>The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</source>
-        <target state="new">The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</target>
+        <target state="translated">読み取り中の SamlAssertion に SamlStatement がありませんでした。SamlAssertion には 1 つ以上の SamlStatement が含まれている必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLElementNotRecognized">
         <source>The {0} element is not supported.</source>
-        <target state="new">The {0} element is not supported.</target>
+        <target state="translated">要素 {0} はサポートされていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLEntityCannotBeNullOrEmpty">
         <source>The SamlAssertion entity {0} cannot be null or empty.</source>
-        <target state="new">The SamlAssertion entity {0} cannot be null or empty.</target>
+        <target state="translated">SamlAssertion エンティティ {0} は null や空にできません。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLSignatureAlreadyRead">
         <source>The signature is already read in the SamlAssertion.</source>
-        <target state="new">The signature is already read in the SamlAssertion.</target>
+        <target state="translated">この署名は既に SamlAssertion に読み込まれています。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLTokenNotSerialized">
         <source>The SamlAssertion could not be serialized to XML. Please see inner exception for details.</source>
-        <target state="new">The SamlAssertion could not be serialized to XML. Please see inner exception for details.</target>
+        <target state="translated">SamlAssertion を XML にシリアル化できませんでした。詳細については、内部例外を参照してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLTokenVersionNotSupported">
         <source>The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</source>
-        <target state="new">The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</target>
+        <target state="translated">メジャー バージョン {0} とマイナー バージョン {1} はサポートされていません。サポートされているバージョンは、メジャー {2} およびマイナー {3} です。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadAdvice">
         <source>Failed to load the &lt;saml:advice&gt; element.</source>
-        <target state="new">Failed to load the &lt;saml:advice&gt; element.</target>
+        <target state="translated">&lt;saml:advice&gt; 要素を読み込むことができませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadAssertion">
         <source>The &lt;saml:assertion&gt; element failed to load.</source>
-        <target state="new">The &lt;saml:assertion&gt; element failed to load.</target>
+        <target state="translated">&lt;saml:assertion&gt; 要素を読み込むことができませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadCondtion">
         <source>The &lt;saml:conditions&gt; element failed to load.</source>
-        <target state="new">The &lt;saml:conditions&gt; element failed to load.</target>
+        <target state="translated">&lt;saml:conditions&gt; 要素を読み込むことができませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadCondtions">
         <source>The &lt;saml:conditions&gt; element failed to load. </source>
-        <target state="new">The &lt;saml:conditions&gt; element failed to load. </target>
+        <target state="translated">&lt;saml:conditions&gt; 要素を読み込むことができませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadStatement">
         <source>Failed to load a SamlStatement.</source>
-        <target state="new">Failed to load a SamlStatement.</target>
+        <target state="translated">SamlStatement を読み込むことができませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadUnknownElement">
         <source>The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</source>
-        <target state="new">The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</target>
+        <target state="translated">選択された SamlSerializer は、この要素 {0} を逆シリアル化できません。カスタム要素を逆シリアルするためのカスタム SamlSerializer を登録してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToResolveSignatureKey">
         <source>Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</source>
-        <target state="new">Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</target>
+        <target state="translated">SamlAssertion 署名で見つかった SecurityKeyIdentifier を解決できません。SamlAssertion 署名を発行者 '{0}' について検証できません。</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlAssertionMissingSigningCredentials">
         <source>SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</source>
-        <target state="new">SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</target>
+        <target state="translated">SigningCredentials が SamlAssertion に設定されていません。SamlAssertions には署名が必要です。続行するには、有効な SigningCredentials を SamlAssertion に設定してください。</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerRequiresExternalSerializers">
         <source>The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</source>
-        <target state="new">The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</target>
+        <target state="translated">SamlSerializer は、トークン内に存在する SecurityKeyIdentifier をシリアル化するために SecurityTokenSerializer を必要とします。</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerUnableToReadSecurityKeyIdentifier">
         <source>The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</source>
-        <target state="new">The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</target>
+        <target state="translated">SamlSerializer には、SecurityKeyIdentifier を読み取ることができる SecurityTokenSerializer が含まれていません。カスタム SecurityKeyIdentifier を使用している場合は、カスタム SecurityTokenSerializer を提供する必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerUnableToWriteSecurityKeyIdentifier">
         <source>The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</source>
-        <target state="new">The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</target>
+        <target state="translated">SamlSerializer には、指定された SecurityKeyIdentifier '{0}' をシリアル化できる SecurityTokenSerializer が含まれていません。カスタム SecurityKeyIdentifier を使用している場合は、カスタム SecurityTokenSerializer を提供する必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSigningTokenNotFound">
         <source>The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</source>
-        <target state="new">The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</target>
+        <target state="translated">SamlAssertion は署名されていますが、SamlAssertion に署名したトークンが見つかりません。SecurityTokenResolver に、SamlAssertion に署名したトークンが含まれていることをご確認ください。</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlTokenMissingSignature">
         <source>The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</source>
-        <target state="new">The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</target>
+        <target state="translated">SamlAssertion は署名されていません。SamlAssertions に署名するには、SigningCredentials を設定します。</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityTokenRequirementDoesNotContainProperty">
         <source>The token requirement does not contain a property '{0}'.</source>
-        <target state="new">The token requirement does not contain a property '{0}'.</target>
+        <target state="translated">トークンの要件に、プロパティ '{0}' が含まれていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityTokenRequirementHasInvalidTypeForProperty">
         <source>The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</source>
-        <target state="new">The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</target>
+        <target state="translated">トークンの要件に、プロパティ '{0}' では予期されていない型 '{1}' が含まれています。予期されたプロパティの型は '{2}' です。</target>
         <note />
       </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
-        <target state="new">The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</target>
+        <target state="translated">トークン シリアライザーは '{0}' をシリアル化できません。これがカスタム型である場合は、カスタム シリアライザーを提供する必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="SymmetricKeyLengthTooShort">
         <source>The length of the symmetric key specified is too short ({0} bytes).</source>
-        <target state="new">The length of the symmetric key specified is too short ({0} bytes).</target>
+        <target state="translated">指定された対称キーの長さが短すぎます ({0} バイト)。</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenCancellationNotSupported">
         <source>The token provider '{0}' does not support token cancellation.</source>
-        <target state="new">The token provider '{0}' does not support token cancellation.</target>
+        <target state="translated">トークン プロバイダー '{0}' はトークンのキャンセルをサポートしていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenDoesNotSupportKeyIdentifierClauseCreation">
         <source>'{0}' does not support '{1}' creation.</source>
-        <target state="new">'{0}' does not support '{1}' creation.</target>
+        <target state="translated">'{0}' は '{1}' の作成をサポートしていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
+        <target state="translated">トークン プロバイダー '{0}' はセキュリティ トークンを提供できませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToRenewToken">
         <source>The token provider '{0}' was unable to renew the security token.</source>
-        <target state="new">The token provider '{0}' was unable to renew the security token.</target>
+        <target state="translated">トークン プロバイダー '{0}' はセキュリティ トークンを更新できませんでした。</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenRenewalNotSupported">
         <source>The token provider '{0}' does not support token renewal.</source>
-        <target state="new">The token provider '{0}' does not support token renewal.</target>
+        <target state="translated">トークン プロバイダー '{0}' はトークンの更新をサポートしていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToCreateTokenReference">
         <source>Unable to create a security token reference.</source>
-        <target state="new">Unable to create a security token reference.</target>
+        <target state="translated">セキュリティ トークン参照を作成できません。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">
         <source>The token resolver is unable to resolve the security key reference '{0}'.</source>
-        <target state="new">The token resolver is unable to resolve the security key reference '{0}'.</target>
+        <target state="translated">トークン リゾルバーは、セキュリティ キーへの参照 '{0}' を解決できません。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveTokenReference">
         <source>The token resolver is unable to resolve the token reference '{0}'.</source>
-        <target state="new">The token resolver is unable to resolve the token reference '{0}'.</target>
+        <target state="translated">トークン リゾルバーは、トークンへの参照 '{0}' を解決できません。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnboundPrefixInQName">
         <source>An unbound prefix is used in the '{0}' qualified name.</source>
-        <target state="new">An unbound prefix is used in the '{0}' qualified name.</target>
+        <target state="translated">バインドされていないプレフィックスが修飾名 '{0}' で使用されています。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnexpectedXmlChildNode">
         <source>XML child node {0} of type {1} is unexpected for element {2}.</source>
-        <target state="new">XML child node {0} of type {1} is unexpected for element {2}.</target>
+        <target state="translated">型 {1} の XML 子ノード {0} は要素 {2} に対して予期されていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnknownEncodingInKeyIdentifier">
         <source>Unrecognized encoding while reading key identifier.</source>
-        <target state="new">Unrecognized encoding while reading key identifier.</target>
+        <target state="translated">キー ID を読み取るときの不明なエンコードです。</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedKeyDerivationAlgorithm">
         <source>The '{0}' key derivation algorithm is not supported.</source>
-        <target state="new">The '{0}' key derivation algorithm is not supported.</target>
+        <target state="translated">キー派生アルゴリズム '{0}' はサポートされていません。</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameCannotBeEmpty">
         <source>The username cannot be empty.</source>
-        <target state="new">The username cannot be empty.</target>
+        <target state="translated">ユーザー名を空にすることはできません。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeGreaterThanZero">
         <source>The value of this argument must be greater than 0.</source>
-        <target state="new">The value of this argument must be greater than 0.</target>
+        <target state="translated">この引数の値は、正の値である必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
+        <target state="translated">この引数の値は、{0} から {1} の範囲内である必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="new">The value of this argument must be non-negative.</target>
+        <target state="translated">この引数の値は、負ではない値である必要があります。</target>
         <note />
       </trans-unit>
       <trans-unit id="X509ChainBuildFail">
         <source>The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</source>
-        <target state="new">The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</target>
+        <target state="translated">X.509 証明書 {0} のチェーンを構築できませんでした。使用された証明書には、検証できない信頼チェーンがあります。証明書を交換するか certificateValidationMode を変更してください。{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XDCannotFindValueInDictionaryString">
         <source>The '{0}' value is not found in the dictionary string.</source>
-        <target state="new">The '{0}' value is not found in the dictionary string.</target>
+        <target state="translated">辞書の文字列に '{0}' という値が見つかりません。</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferInInvalidState">
         <source>An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</source>
-        <target state="new">An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</target>
+        <target state="translated">内部エラーが発生しました。XML バッファーがこの操作を実行するための適切な状態にありません。</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferQuotaExceeded">
         <source>The size necessary to buffer the XML content exceeded the buffer quota.</source>
-        <target state="new">The size necessary to buffer the XML content exceeded the buffer quota.</target>
+        <target state="translated">XML コンテンツのバッファリングに必要なサイズがバッファー クォータを超過しました。</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlLangAttributeMissing">
         <source>The required xml:lang attribute is missing.</source>
-        <target state="new">The required xml:lang attribute is missing.</target>
+        <target state="translated">必要な xml:lang 属性が見つかりません。</target>
         <note />
       </trans-unit>
     </body>

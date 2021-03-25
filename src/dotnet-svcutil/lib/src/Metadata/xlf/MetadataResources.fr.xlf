@@ -1,72 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="fr" original="../MetadataResources.resx">
+  <file datatype="xml" source-language="en" target-language="fr-FR" original="../MetadataResources.resx">
     <body>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="translated">S'il s'agit d'un service Windows (R) Communication Foundation auquel vous avez accès, vérifiez que vous avez activé la publication des métadonnées à l'adresse spécifiée. Pour obtenir de l'aide sur l'activation de la publication des métadonnées, consultez la documentation MSDN à l'adresse http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateAMetadataExchangeClientFormat">
         <source>Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</source>
-        <target state="new">Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</target>
+        <target state="translated">Impossible de récupérer les métadonnées de {0}. Le schéma URI '{1}' n'est pas pris en charge par défaut.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFileFormat">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</source>
-        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</target>
+        <target state="translated">Le chemin d'entrée '{0}' est un répertoire. Les entrées doivent être des URL ou des chemins de fichiers.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFoundFormat">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
+        <target state="translated">Le répertoire '{0}' est introuvable. Vérifiez que le répertoire existe et que vous avez les autorisations appropriées pour le lire.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrFileAlreadyExistsFormat">
         <source>The file '{0}' already exists.</source>
-        <target state="new">The file '{0}' already exists.</target>
+        <target state="translated">Le fichier {0} existe déjà</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidUriFormat">
         <source>The specified URI '{0}' does not appear to be valid.</source>
-        <target state="new">The specified URI '{0}' does not appear to be valid.</target>
+        <target state="translated">L'URI spécifié '{0}' semble non valide.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFoundFormat">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
+        <target state="translated">Le chemin d'entrée '{0}' ne semble pas faire référence à un fichier existant</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotXmlMetadataFileFormat">
         <source>The specified path '{0}' does not appear to refer to an XML metadata file.</source>
-        <target state="new">The specified path '{0}' does not appear to refer to an XML metadata file.</target>
+        <target state="translated">Le chemin spécifié '{0}' ne semble pas faire référence à un fichier de métadonnées XML.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceMetadataNotImported">
         <source>The service metadata has not been imported yet.</source>
-        <target state="new">The service metadata has not been imported yet.</target>
+        <target state="translated">Les métadonnées du service n'ont pas encore été importées.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToConnectToUriFormat">
         <source>Cannot obtain Metadata from the URI: {0} 
  Check the URI and try again.{1}</source>
-        <target state="new">Cannot obtain Metadata from the URI: {0} 
- Check the URI and try again.{1}</target>
+        <target state="translated">Impossible de récupérer les métadonnées à partir de l'URI : {0} 
+ Vérifiez l'URI, puis réessayez.{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToCreateUniqueFileNameFormat">
         <source>Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">Les fichiers créés avec le préfixe '{0}' sont trop nombreux.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToResolveSchemaReferenceFormat">
         <source>Unable to resolve schema reference '{0}'.</source>
-        <target state="new">Unable to resolve schema reference '{0}'.</target>
+        <target state="translated">Impossible de résoudre la référence de schéma '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUrlNotAllowedOnMultipleInputsFormat">
         <source>"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</source>
-        <target state="new">"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</target>
+        <target state="translated">"URL non autorisée : '{0}'. Seuls les fichiers de document de métadonnées sont autorisés quand plusieurs entrées sont spécifiées !"</target>
         <note />
       </trans-unit>
     </body>

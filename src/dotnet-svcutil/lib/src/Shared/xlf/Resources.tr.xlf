@@ -1,105 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="tr" original="../Resources.resx">
+  <file datatype="xml" source-language="en" target-language="tr-TR" original="../Resources.resx">
     <body>
       <trans-unit id="ErrorDepenencySpecFormat">
         <source>Project dependency specification not formatted correctly: '{0}'.</source>
-        <target state="new">Project dependency specification not formatted correctly: '{0}'.</target>
+        <target state="translated">Proje bağımlılığı belirtimi düzgün biçimlendirilmemiş: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingOptionsFromJsonFormat">
         <source>One or more errors where found while deserializing options:{0}</source>
-        <target state="new">One or more errors where found while deserializing options:{0}</target>
+        <target state="translated">Seçenekler seri durumdan çıkarılırken en az bir hata bulundu:{0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorFullPathNotAProjectFilePathFormat">
         <source>The specified path does not refer to a project file: '{0}.</source>
-        <target state="new">The specified path does not refer to a project file: '{0}.</target>
+        <target state="translated">Belirtilen yol bir proje dosyasına başvurmuyor: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidDependencyValue">
         <source>The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</source>
-        <target state="new">The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</target>
+        <target state="translated">Belirtilen parametre değeri '{0}' geçerli değil. Parametre adı: '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidKeyOrValueNotFoundFormat">
         <source>The specifed key '{0}' is not valid for the option '{1}'.</source>
-        <target state="new">The specifed key '{0}' is not valid for the option '{1}'.</target>
+        <target state="translated">Belirtilen '{0}' anahtarı, '{1}' seçeneği için geçerli değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidOptionValueFormat">
         <source>The value '{0}' specified for the option '{1}' is not valid.</source>
-        <target state="new">The value '{0}' specified for the option '{1}' is not valid.</target>
+        <target state="translated">'{1}' seçeneği için belirtilen '{0}' değeri geçerli değil.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidProjectFormat">
         <source>The project format is incorrect.</source>
-        <target state="new">The project format is incorrect.</target>
+        <target state="translated">Proje biçimi yanlış.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorItemNotFoundInCollectionFormat">
         <source>The option '{0}' doesn't have an item with the key '{1}'.</source>
-        <target state="new">The option '{0}' doesn't have an item with the key '{1}'.</target>
+        <target state="translated">'{0}' seçeneğinin '{1}' anahtarına sahip bir öğesi yok.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorNotSupportedTargetFrameworkFormat">
         <source>The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</source>
-        <target state="new">The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</target>
+        <target state="translated">'{0}' hedef çerçevesi, desteklenen bir .NET Core, .NET Standard veya .NET Framework sürümü değil. Desteklenen en düşük çerçeve sürümleri şunlardır: netcoreapp{1}, netstandard{2} ve net{3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOnInvalidEnumSupportedValuesFormat">
         <source> The valid values are: {0}.</source>
-        <target state="new"> The valid values are: {0}.</target>
+        <target state="translated"> Geçerli değerler şunlardır: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyDeserializedFormat">
         <source>The option '{0}' has already been deserialized.</source>
-        <target state="new">The option '{0}' has already been deserialized.</target>
+        <target state="translated">'{0}' seçeneği zaten seri durumdan çıkarıldı.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyRegisteredFormat">
         <source>The specified option '{0}' was already registered.</source>
-        <target state="new">The specified option '{0}' was already registered.</target>
+        <target state="translated">Belirtilen '{0}' seçeneği zaten kayıtlı.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionDuplicateValueFormat">
         <source>The option '{0}' already contains the value '{1}'.</source>
-        <target state="new">The option '{0}' already contains the value '{1}'.</target>
+        <target state="translated">'{0}' seçeneği zaten '{1}' değerini içeriyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectFileAlreadyExistsFormat">
         <source>The specified project file '{0}' already exists.</source>
-        <target state="new">The specified project file '{0}' already exists.</target>
+        <target state="translated">Belirtilen '{0}' proje dosyası zaten var.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectReferenceMissingFilePathFormat">
         <source>The project reference specification '{0}' does not have a file path.</source>
-        <target state="new">The project reference specification '{0}' does not have a file path.</target>
+        <target state="translated">'{0}' proje başvurusu belirtiminin bir dosya yolu yok.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorTypeNotSupportedbyOptionFormat">
         <source>The type '{0}' is not supported by the '{1}' option.</source>
-        <target state="new">The type '{0}' is not supported by the '{1}' option.</target>
+        <target state="translated">'{0}' türü '{1}' seçeneği tarafından desteklenmiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResolvingProjectReferences">
         <source>Resolving project references ...</source>
-        <target state="new">Resolving project references ...</target>
+        <target state="translated">Proje başvuruları çözümleniyor...</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningCannotResolveProjectReferences">
         <source>The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</source>
-        <target state="new">The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</target>
+        <target state="translated">Proje yapılandırması geçerli bir durumda değil gibi görünüyor. Proje başvurularının çözümlenebilmesi için projenin derlenebilir olduğundan emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMultiFxOrNoSupportedDnxVersion">
         <source>The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</source>
-        <target state="new">The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</target>
+        <target state="translated">Proje birden çok hedef çerçeve belirtiyor veya desteklenen bir .NET Core ya da .NET Standard sürümünü hedeflemiyor.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningUnrecognizedOptionFormat">
         <source>The specified option '{0}' is not recognized.</source>
-        <target state="new">The specified option '{0}' is not recognized.</target>
+        <target state="translated">Belirtilen '{0}' seçeneği tanınmıyor.</target>
         <note />
       </trans-unit>
     </body>

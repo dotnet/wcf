@@ -4,69 +4,69 @@
     <body>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="translated">Se esse for um serviço do Windows (R) Communication Foundation ao qual você tem acesso, verifique se você habilitou publicação de metadados no endereço especificado. Para obter ajuda para habilitar publicação de metadados, consulte a documentação MSDN em http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateAMetadataExchangeClientFormat">
         <source>Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</source>
-        <target state="new">Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</target>
+        <target state="translated">Não é possível obter metadados do {0}.  O esquema de URI '{1}' não tem suporte por padrão.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFileFormat">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</source>
-        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</target>
+        <target state="translated">O caminho de entrada '{0}' parece ser um diretório. As entradas devem ser caminhos de arquivo ou URLs.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFoundFormat">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
+        <target state="translated">Não foi possível encontrar o diretório '{0}'. Verifique se o diretório existe e se você tem as permissões apropriadas para lê-lo.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrFileAlreadyExistsFormat">
         <source>The file '{0}' already exists.</source>
-        <target state="new">The file '{0}' already exists.</target>
+        <target state="translated">O arquivo {0} já existe.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidUriFormat">
         <source>The specified URI '{0}' does not appear to be valid.</source>
-        <target state="new">The specified URI '{0}' does not appear to be valid.</target>
+        <target state="translated">A URI especificada '{0}' não parece ser válida.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFoundFormat">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
+        <target state="translated">O caminho de entrada '{0}' não parece fazer referência a nenhum arquivo existente</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotXmlMetadataFileFormat">
         <source>The specified path '{0}' does not appear to refer to an XML metadata file.</source>
-        <target state="new">The specified path '{0}' does not appear to refer to an XML metadata file.</target>
+        <target state="translated">O caminho especificado '{0}' não parece referir-se a um arquivo de metadados XML.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceMetadataNotImported">
         <source>The service metadata has not been imported yet.</source>
-        <target state="new">The service metadata has not been imported yet.</target>
+        <target state="translated">Os metadados do serviço ainda não foram importados.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToConnectToUriFormat">
         <source>Cannot obtain Metadata from the URI: {0} 
  Check the URI and try again.{1}</source>
-        <target state="new">Cannot obtain Metadata from the URI: {0} 
- Check the URI and try again.{1}</target>
+        <target state="translated">Não é possível obter metadados da URI: {0} 
+ Verifique a URI e tente novamente.{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToCreateUniqueFileNameFormat">
         <source>Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">Arquivos demais estão sendo criados com o prefixo '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToResolveSchemaReferenceFormat">
         <source>Unable to resolve schema reference '{0}'.</source>
-        <target state="new">Unable to resolve schema reference '{0}'.</target>
+        <target state="translated">Não é possível resolver a referência de esquema '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUrlNotAllowedOnMultipleInputsFormat">
         <source>"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</source>
-        <target state="new">"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</target>
+        <target state="translated">"URL não permitida: '{0}'. Somente arquivos de documento de metadados são permitidos quando há várias entradas especificadas."</target>
         <note />
       </trans-unit>
     </body>
