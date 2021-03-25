@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
-  <file datatype="xml" source-language="en" target-language="zh-CN" original="../SRCodeDom.resx">
+  <file datatype="xml" source-language="en" target-language="zh-Hans" original="../SRCodeDom.resx">
     <body>
       <trans-unit id="Argument_NullComment">
         <source>The 'Comment' property of the CodeCommentStatement '{0}' cannot be null.</source>
