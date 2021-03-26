@@ -354,7 +354,7 @@ namespace System.ServiceModel.Channels
                     httpClient.DefaultRequestHeaders.ExpectContinue = true;
                 }
 
-                // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1 
+                // We provide our own CancellationToken for each request. Setting HttpClient.Timeout to -1
                 // prevents a call to CancellationToken.CancelAfter that HttpClient does internally which
                 // causes TimerQueue contention at high load.
                 httpClient.Timeout = Timeout.InfiniteTimeSpan;
@@ -556,7 +556,18 @@ namespace System.ServiceModel.Channels
 
         protected virtual bool IsSecurityTokenManagerRequired()
         {
-            return AuthenticationScheme != AuthenticationSchemes.Anonymous;
+            if (AuthenticationScheme != AuthenticationSchemes.Anonymous)
+            {
+                return true;
+            }
+            if (_proxyFactory != null && _proxyFactory.AuthenticationScheme != AuthenticationSchemes.Anonymous)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -998,7 +1009,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (_channel.State != CommunicationState.Opened)
                         {
-                            // if we were aborted while getting our request or doing correlation, 
+                            // if we were aborted while getting our request or doing correlation,
                             // we need to abort the request and bail
                             Cleanup();
                             _channel.ThrowIfDisposedOrNotOpen();
@@ -1280,7 +1291,7 @@ namespace System.ServiceModel.Channels
                         }
                     }
 
-                    // since we don't get the output stream in send when retVal == true, 
+                    // since we don't get the output stream in send when retVal == true,
                     // we need to disable chunking for some verbs (DELETE/PUT)
                     if (suppressEntityBody)
                     {
@@ -1316,7 +1327,7 @@ namespace System.ServiceModel.Channels
                     }
 
                     var requestUri = _httpRequestMessage.RequestUri;
-                    // sends a HEAD request to the specificed requestUri for authentication purposes 
+                    // sends a HEAD request to the specificed requestUri for authentication purposes
                     Contract.Assert(requestUri != null);
 
                     HttpRequestMessage headHttpRequestMessage = new HttpRequestMessage()
@@ -1371,7 +1382,7 @@ namespace System.ServiceModel.Channels
                             SR.ProxyImpersonationLevelMismatch, impersonationLevelWrapper.Value, requestImpersonationLevel)));
                     }
 
-                    // The authentication level for target auth is also used for proxy auth (by System.Net).  
+                    // The authentication level for target auth is also used for proxy auth (by System.Net).
                     // Therefore, fail if proxy auth requires mutual authentication but target auth does not.
                     if ((authenticationLevelWrapper.Value == AuthenticationLevel.MutualAuthRequired) &&
                         (requestAuthenticationLevel != AuthenticationLevel.MutualAuthRequired))
