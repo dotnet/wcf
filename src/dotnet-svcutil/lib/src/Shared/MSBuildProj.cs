@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using NuGet.ProjectModel;
 using Microsoft.Extensions.DependencyModel;
-using System.Text.RegularExpressions;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
