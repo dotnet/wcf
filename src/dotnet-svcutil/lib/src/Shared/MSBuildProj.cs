@@ -160,11 +160,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var targetFramework = targetFrameworkElements.Last().Value.Trim();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
-                        Regex re = new Regex(@"\w+\d+\.\d+");
-                        Match m = re.Match(targetFramework);
-                        if (m.Success)
+                        if ("net5.0-windows" == targetFramework)
                         {
-                            targetFramework = m.Value;
+                            targetFramework = "net5.0";
                         }
 
                         msbuildProj._targetFrameworks.Add(targetFramework);
