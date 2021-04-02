@@ -8,13 +8,24 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.Threading;
 
 namespace System.ServiceModel
 {
     public sealed class OperationContext : IExtensibleObject<OperationContext>
     {
+        static OperationContext()
+        {
+            DisableAsyncFlow = AppContext.TryGetSwitch("System.ServiceModel.OperationContext.DisableAsyncFlow", out var enabled) && enabled;
+            if (!DisableAsyncFlow)
+            {
+                s_asyncContext = new AsyncLocal<OperationContext>();
+            }
+        }
+
         [ThreadStatic]
         private static Holder s_currentContext;
+        private static AsyncLocal<OperationContext> s_asyncContext;
         private Message _clientReply;
         private bool _closeClientReply;
         private ExtensionCollection<OperationContext> _extensions;
@@ -80,12 +91,26 @@ namespace System.ServiceModel
         {
             get
             {
-                return CurrentHolder.Context;
+                if (DisableAsyncFlow)
+                {
+                    return CurrentHolder.Context;
+                }
+                else
+                {
+                    return s_asyncContext.Value;
+                }
             }
 
             set
             {
-                CurrentHolder.Context = value;
+                if (DisableAsyncFlow)
+                {
+                    CurrentHolder.Context = value;
+                }
+                else
+                {
+                    s_asyncContext.Value = value;
+                }
             }
         }
 
@@ -93,15 +118,19 @@ namespace System.ServiceModel
         {
             get
             {
-                Holder holder = OperationContext.s_currentContext;
+                Holder holder;
+                holder = s_currentContext;
                 if (holder == null)
                 {
                     holder = new Holder();
-                    OperationContext.s_currentContext = holder;
+                    s_currentContext = holder;
                 }
+
                 return holder;
             }
         }
+
+        internal static bool DisableAsyncFlow { get; }
 
         public EndpointDispatcher EndpointDispatcher
         {

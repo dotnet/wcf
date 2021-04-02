@@ -5,8 +5,8 @@
     <CLSCompliant>false</CLSCompliant>
     <IsTestProject>true</IsTestProject>
     <IsPackable>false</IsPackable>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\System.Private.ServiceModel.csproj" />
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />

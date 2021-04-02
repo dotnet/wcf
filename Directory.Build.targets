@@ -4,4 +4,5 @@
   <Import Project="eng\FacadeAssemblies.targets" />
   <Import Project="eng\harvest.targets" Condition="'$(HarvestFromPackage)' == 'true'" />
   <Import Project="eng\uwp.targets" />
+  <Import Project="eng\testing\runsettings.targets" Condition="'$(EnableRunSettingsSupport)' == 'true'" />
 </Project>

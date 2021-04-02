@@ -43,6 +43,9 @@ public static class ServiceUtilHelper
     {
         get
         {
+            // When running under VS, the Condition checks are run in a different process than the test run
+            // which means the test running process won't have the certificate installed by the condition check code.
+            EnsureRootCertificateInstalled();
             ThrowIfRootCertificateInstallationError();
             return s_rootCertificate;
         }
@@ -52,6 +55,9 @@ public static class ServiceUtilHelper
     {
         get
         {
+            // When running under VS, the Condition checks are run in a different process than the test run
+            // which means the test running process won't have the certificate installed by the condition check code.
+            EnsureClientCertificateInstalled();
             ThrowIfClientCertificateInstallationError();
             return s_clientCertificate;
         }
@@ -61,6 +67,9 @@ public static class ServiceUtilHelper
     {
         get
         {
+            // When running under VS, the Condition checks are run in a different process than the test run
+            // which means the test running process won't have the certificate installed by the condition check code.
+            EnsurePeerCertificateInstalled();
             ThrowIfPeerCertificateInstallationError();
             return s_peerCertificate;
         }

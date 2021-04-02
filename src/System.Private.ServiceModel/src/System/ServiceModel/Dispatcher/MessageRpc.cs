@@ -409,15 +409,12 @@ namespace System.ServiceModel.Dispatcher
                     NextProcessor = null;
 
                     OperationContext originalContext;
-                    OperationContext.Holder contextHolder;
                     if (!isOperationContextSet)
                     {
-                        contextHolder = OperationContext.CurrentHolder;
-                        originalContext = contextHolder.Context;
+                        originalContext = OperationContext.Current;
                     }
                     else
                     {
-                        contextHolder = null;
                         originalContext = null;
                     }
                     IncrementBusyCount();
@@ -426,7 +423,7 @@ namespace System.ServiceModel.Dispatcher
                     {
                         if (!isOperationContextSet)
                         {
-                            contextHolder.Context = OperationContext;
+                            OperationContext.Current = OperationContext;
                         }
 
                         processor(ref this);
@@ -455,7 +452,7 @@ namespace System.ServiceModel.Dispatcher
 
                             if (!isOperationContextSet)
                             {
-                                contextHolder.Context = originalContext;
+                                OperationContext.Current = originalContext;
                             }
 
                             completed = !IsPaused;
