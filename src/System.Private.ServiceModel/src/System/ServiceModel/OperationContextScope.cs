@@ -2,19 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
+using System.Threading;
 
 namespace System.ServiceModel
 {
     public sealed class OperationContextScope : IDisposable
     {
+        static OperationContextScope()
+        {
+            if (!OperationContext.DisableAsyncFlow)
+            {
+                s_asyncCurrentScope = new AsyncLocal<OperationContextScope>();
+            }
+        }
+
         [ThreadStatic]
         private static OperationContextScope s_currentScope;
-
+        private static AsyncLocal<OperationContextScope> s_asyncCurrentScope;
         private OperationContext _currentContext;
         private bool _disposed;
         private readonly OperationContext _originalContext = OperationContext.Current;
-        private readonly OperationContextScope _originalScope = OperationContextScope.s_currentScope;
+        private readonly OperationContextScope _originalScope = OperationContext.DisableAsyncFlow ? s_currentScope : s_asyncCurrentScope.Value;
 
         public OperationContextScope(IContextChannel channel)
         {
@@ -38,13 +46,21 @@ namespace System.ServiceModel
         private void PushContext(OperationContext context)
         {
             _currentContext = context;
-            OperationContextScope.s_currentScope = this;
+            if (OperationContext.DisableAsyncFlow)
+            {
+                s_currentScope = this;
+            }
+            else
+            {
+                s_asyncCurrentScope.Value = this;
+            }
+
             OperationContext.Current = _currentContext;
         }
 
         private void PopContext()
         {
-            if (OperationContextScope.s_currentScope != this)
+            if ((OperationContext.DisableAsyncFlow ? s_currentScope : s_asyncCurrentScope.Value) != this)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxInterleavedContextScopes0));
             }
@@ -54,7 +70,15 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.SFxContextModifiedInsideScope0));
             }
 
-            OperationContextScope.s_currentScope = _originalScope;
+            if (OperationContext.DisableAsyncFlow)
+            {
+                s_currentScope = _originalScope;
+            }
+            else
+            {
+                s_asyncCurrentScope.Value = _originalScope;
+            }
+
             OperationContext.Current = _originalContext;
 
             if (_currentContext != null)

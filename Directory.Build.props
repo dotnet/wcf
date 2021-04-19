@@ -34,6 +34,12 @@
     <XUnitPublishTargetFramework>netcoreapp3.1</XUnitPublishTargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- TODO: Remove this condition when VSTest is used in CI. -->
+    <EnableRunSettingsSupport Condition="'$(ContinuousIntegrationBuild)' != 'true'">true</EnableRunSettingsSupport>
+  </PropertyGroup>
+
+
   <ItemGroup>
     <!-- Include license and third party files to packages -->
     <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />

@@ -10,57 +10,38 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Infrastructure.Common
 {
     /// <summary>Provides for custom IXunitTestCase.</summary>
-    internal class WcfTestCase : LongLivedMarshalByRefObject, IXunitTestCase
+    internal class WcfTestCase : XunitTestCase, IXunitTestCase
     {
-        private readonly IXunitTestCase _testCase;
-        private readonly string _skippedReason;
-        private readonly bool _isTheory;
+        private string _skippedReason;
+        private bool _isTheory;
         private readonly IMessageSink _diagnosticMessageSink;
 
         static TestEventListener s_testListener = new TestEventListener(new List<string>() { "Microsoft-Windows-Application Server-Applications" }, EventLevel.Verbose);
 
+        [Obsolete("Called by the de-serializer; should only be called by deriving classes for de-serialization purposes")]
         public WcfTestCase()
         {
         }
 
-        internal WcfTestCase(IXunitTestCase testCase, string skippedReason = null, bool isTheory = false, IMessageSink diagnosticMessageSink = null)
+        internal WcfTestCase(XunitTestCase testCase,
+                             TestMethodDisplay defaultMethodDisplay,
+                             string skippedReason = null,
+                             bool isTheory = false,
+                             IMessageSink diagnosticMessageSink = null)
+            : base(diagnosticMessageSink, defaultMethodDisplay, TestMethodDisplayOptions.None, testCase.TestMethod, testCase.TestMethodArguments)
         {
-            _testCase = testCase;
             _skippedReason = skippedReason;
             _isTheory = isTheory;
             _diagnosticMessageSink = diagnosticMessageSink;
         }
 
-        public string DisplayName { get { return _testCase.DisplayName; } }
-
-        public IMethodInfo Method { get { return _testCase.Method; } }
-
-        public string SkipReason { get { return _skippedReason; } }
-
-        public ISourceInformation SourceInformation { get { return _testCase.SourceInformation; } set { _testCase.SourceInformation = value; } }
-
-        public ITestMethod TestMethod { get { return _testCase.TestMethod; } }
-
-        public object[] TestMethodArguments { get { return _testCase.TestMethodArguments; } }
-
-        public Dictionary<string, List<string>> Traits { get { return _testCase.Traits; } }
-
-        public string UniqueID { get { return _testCase?.UniqueID; } }
-
-        public Exception InitializationException { get { return null; } }
-
-        public int Timeout { get { return 0; } }
-
-        public void Deserialize(IXunitSerializationInfo info) { _testCase?.Deserialize(info); }
-
-        public async Task<RunSummary> RunAsync(
+        public override async Task<RunSummary> RunAsync(
             IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments,
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
@@ -81,7 +62,7 @@ namespace Infrastructure.Common
                     {
                         etwOutput.AppendLine(string.Format(DisplayName + ": " + item.Message, item.Payload.ToArray()));
                     }
-                    //The mumber of parameters in Payload does not match the number of arguments in the item.Message and thus cause a
+                    // The mumber of parameters in Payload does not match the number of arguments in the item.Message and thus cause a
                     // FormatException occationally, In this case, we catch and output all items in the payload and the Message without formatting the message.
                     // https://github.com/dotnet/wcf/issues/1440 is opened to investigate the root cause of the mismatch exception.
                     catch (FormatException e)
@@ -107,6 +88,18 @@ namespace Infrastructure.Common
             return runsummary;
         }
 
-        public void Serialize(IXunitSerializationInfo info) { _testCase.Serialize(info); }
+        public override void Serialize(IXunitSerializationInfo data)
+        {
+            base.Serialize(data);
+            data.AddValue("_isTheory", _isTheory);
+            data.AddValue("_skippedReason", _skippedReason);
+        }
+
+        public override void Deserialize(IXunitSerializationInfo data)
+        {
+            _isTheory = data.GetValue<bool>("_isTheory");
+            _skippedReason = data.GetValue<string>("_skippedReason");
+            base.Deserialize(data);
+        }
     }
 }

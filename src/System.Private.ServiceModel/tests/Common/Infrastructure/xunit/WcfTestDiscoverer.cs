@@ -45,7 +45,11 @@ namespace Infrastructure.Common
                 if (issueSkipList.Count > 0)
                 {
                     string skippedReason = string.Format("Active issue(s): {0}", string.Join(", ", issueSkipList));
-                    return testCases.Select(tc => new WcfTestCase(tc, skippedReason));
+                    return testCases.Select(tc => new WcfTestCase((XunitTestCase)tc,
+                                                                  discoveryOptions.MethodDisplayOrDefault(),
+                                                                  skippedReason,
+                                                                  isTheory,
+                                                                  diagnosticMessageSink));
                 }
             }
 
@@ -69,14 +73,19 @@ namespace Infrastructure.Common
                 if (skipReasons.Count > 0)
                 {
                     string skippedReason = string.Format("Condition(s) not met: {0}", string.Join(", ", skipReasons));
-                    return testCases.Select(tc => new WcfTestCase(tc, skippedReason));
+                    return testCases.Select(tc => new WcfTestCase((XunitTestCase)tc,
+                                                                  discoveryOptions.MethodDisplayOrDefault(),
+                                                                  skippedReason,
+                                                                  isTheory,
+                                                                  diagnosticMessageSink));
                 }
             }
 
             // If we get this far, we have decided to run the test.
             // Still wrap it in a WcfTestCase with a null skip message
             // so that other WcfTestCase customizations are used.
-            return testCases.Select(tc => new WcfTestCase(tc,
+            return testCases.Select(tc => new WcfTestCase(testCase: (XunitTestCase)tc,
+                                                          defaultMethodDisplay: discoveryOptions.MethodDisplayOrDefault(),
                                                           skippedReason: null,
                                                           isTheory: isTheory,
                                                           diagnosticMessageSink: diagnosticMessageSink));
