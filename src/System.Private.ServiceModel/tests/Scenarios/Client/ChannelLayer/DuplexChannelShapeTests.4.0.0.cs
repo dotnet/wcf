@@ -142,7 +142,7 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
         IWcfDuplexService_CallbackConcurrencyMode channel;
 
         // *** SETUP *** \\
-        binding = new NetTcpBinding(SecurityMode.None);        
+        binding = new NetTcpBinding(SecurityMode.None);
         var imp = new CallbackHandler_ConcurrencyMode_Single(new ManualResetEvent(false));
         instanceContext = new InstanceContext(imp);
         factory = new DuplexChannelFactory<IWcfDuplexService_CallbackConcurrencyMode>(instanceContext, binding, Endpoints.DuplexCallbackConcurrencyMode_Address);
@@ -206,6 +206,8 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
             Interlocked.Increment(ref Counter);
             await Task.Delay(delayTime);
             MyManualResetEvent.Set();
+            // Need time between setting MRE and the next call incrementing counter.
+            await Task.Delay(100);
         }
     }
 
@@ -225,6 +227,8 @@ public partial class DuplexChannelShapeTests : ConditionalWcfTest
             Interlocked.Increment(ref Counter);
             await Task.Delay(delayTime);
             ManualResetEvent.Set();
+            // Need time between setting MRE and the next call incrementing counter.
+            await Task.Delay(100);
         }
     }
 }
