@@ -22,6 +22,7 @@ namespace System.ServiceModel
     public enum ConcurrencyMode
     {
         Single = 0,
+        [System.Obsolete]
         Reentrant = 1,
         Multiple = 2
     }
