@@ -159,6 +159,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var targetFramework = targetFrameworkElements.Last().Value.Trim();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
+                        if (targetFramework.StartsWith("net5.0-"))
+                        {
+                            targetFramework = "net5.0";
+                        }
+
                         msbuildProj._targetFrameworks.Add(targetFramework);
                     }
                 }
