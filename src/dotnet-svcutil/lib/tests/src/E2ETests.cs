@@ -167,7 +167,7 @@ namespace SvcutilTest
             TestFixture();
             InitializeE2E(testCaseName);
 
-            // copy wsdl files into test project's path to make it easier to pass the params as relative paths.
+            //copy wsdl files into test project's path to make it easier to pass the params as relative paths.
             var wsdlFile = Path.Combine(this_TestGroupOutputDir, "wsdl", "tempuri.org.wsdl");
             if (!File.Exists(wsdlFile))
             {
