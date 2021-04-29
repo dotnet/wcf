@@ -4,627 +4,627 @@
     <body>
       <trans-unit id="BindingBinaryMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported binary message encoding version: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported binary message encoding version: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Nicht unterstützte Version der Codierung der binären Nachricht: "{0}". Die Version muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingClientCertRequirementNotSupported">
         <source>Client certificate security requirement is not supported.</source>
-        <target state="new">Client certificate security requirement is not supported.</target>
+        <target state="translated">Die Clientzertifikat-Sicherheitsanforderung wird nicht unterstützt</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingElementTypeNotSupportedFormat">
         <source>Unsupported binding element type: '{0}'.</source>
-        <target state="new">Unsupported binding element type: '{0}'.</target>
+        <target state="translated">Nicht unterstützter Bindungselementtyp: "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingElementNotSupportedFormat">
         <source>Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</source>
-        <target state="new">Unsupported message encoding element type: '{0}'. It must be one of the following types: '{1}', '{2}.'</target>
+        <target state="translated">Nicht unterstützter Typ des Nachrichtencodierungselements: "{0}". Es muss sich um einen der folgenden Typen handeln: "{1}" oder "{2}".</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingMessageEncodingNotSupportedFormat">
         <source>Unsupported message encoding value: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported message encoding value: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Nicht unterstützter Wert der Nachrichtencodierung: "{0}". Der Wert muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
-        <target state="new">Reliable session is not supported.</target>
+        <target state="translated">Zuverlässige Sitzung wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTextMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</source>
-        <target state="new">Unsupported text message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}' or '{5}'.</target>
+        <target state="translated">Nicht unterstützte Version der Textnachrichtencodierung: "{0}". Die Version muss "{1}", "{2}", "{3}", "{4}" oder "{5}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransactionFlowNotSupported">
         <source>Transaction flow is not supported.</source>
-        <target state="new">Transaction flow is not supported.</target>
+        <target state="translated">Transaktionsfluss wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportDetectReplaysNotSupported">
         <source>Transport Security with DetectReplays enabled is not supported.</source>
-        <target state="new">Transport Security with DetectReplays enabled is not supported.</target>
+        <target state="translated">Transportsicherheit mit aktivierten DetectReplays wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportMessageSecurityVersionNotSupportedFormat">
         <source>Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</source>
-        <target state="new">Transport message security version value is not supported: '{0}'. It must be one of the following values: {1}.</target>
+        <target state="translated">Der Versionswert der Transportnachrichtensicherheit wird nicht unterstützt: "{0}". Es muss sich um einen der folgenden Werte handeln: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat">
         <source>Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport default security algorithm suite is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Die Standard-Sicherheitsalgorithmussammlung wird nicht unterstützt: "{0}". Das Paket muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityElementTypeNotSupportedFormat">
         <source>Transport security element type not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security element type not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Der Typ des Transportsicherheitselements wird nicht unterstützt: "{0}". Der Typ muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityHeaderLayoutValueNotSupportedFormat">
         <source>Transport security header layout value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security header layout value is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Der Wert des Transport-Sicherheitsheaderlayouts wird nicht unterstützt: "{0}". Der Wert muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityMustIncludeTimestamp">
         <source>Transport security must include timestamp.</source>
-        <target state="new">Transport security must include timestamp.</target>
+        <target state="translated">Die Transportsicherheit muss einen Zeitstempel enthalten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenEndorsingParamsTypeFormat">
         <source>Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</source>
-        <target state="new">Unsupported transport security token endorsing parameters type: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Nicht unterstützter Typ der unterzeichnenden Parameter des Transportsicherheitstokens: "{0}". Der Typ muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted">
         <source>Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</source>
-        <target state="new">Transport security token must have one and only one type of parameters and it must be either 'Endorsing' or 'SignedEncrypted'.</target>
+        <target state="translated">Das Transportsicherheitstoken muss einen Parametertyp aufweisen, und bei diesem Typ muss es sich entweder um "Endorsing" oder "SignedEncrypted" handeln.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsInclusionModeValueNotSupportedFormat">
         <source>Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security token parameters inclusion mode value is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Der Wert des Einschlussmodus der Transport-Sicherheitstokenparameter wird nicht unterstützt: "{0}". Der Wert muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsReferenceStyleNotSupportedFormat">
         <source>Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Transport security token parameters reference style is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Die Verweisart der Transport-Sicherheitstokenparameter wird nicht unterstützt: "{0}". Die Verweisart muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsRequiringDerivedKeysNotSupported">
         <source>Security token parameters requiring derived keys is not supported.</source>
-        <target state="new">Security token parameters requiring derived keys is not supported.</target>
+        <target state="translated">Sicherheitstokenparameter, die abgeleitete Schlüssel erfordern, werden nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenParamsTypeNotSupportedFormat">
         <source>Security token parameters type is not supported: '{0}'. It must be '{1}'.</source>
-        <target state="new">Security token parameters type is not supported: '{0}'. It must be '{1}'.</target>
+        <target state="translated">Der Typ der Sicherheitstokenparameter wird nicht unterstützt: "{0}". Der Typ muss "{1}" lauten.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported">
         <source>Transport security token with signed or signed and endorsing paramaters is not supported.</source>
-        <target state="new">Transport security token with signed or signed and endorsing paramaters is not supported.</target>
+        <target state="translated">Ein Transportsicherheitstoken mit signierten oder signierten und unterzeichnenden Parametern wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTransportTypeNotSupportedFormat">
         <source>Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</source>
-        <target state="new">Unsupported transport type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}'.</target>
+        <target state="translated">Nicht unterstützter Transporttyp: "{0}". Es muss sich um einen der folgenden Typen handeln: "{1}", "{2}" oder "{3}".</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingTypeNotSupportedFormat">
         <source>Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</source>
-        <target state="new">Unsupported binding type: '{0}'. It must be one of the following types: '{1}', '{2}', '{3}', '{4}' or '{5}'.</target>
+        <target state="translated">Nicht unterstützter Bindungstyp: "{0}". Es muss sich um einen der folgenden Typen handeln: "{1}", "{2}", "{3}", "{4}" oder "{5}".</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateIndexPrompt">
         <source>Please enter the index of the certificate to use or ESC to cancel:</source>
-        <target state="new">Please enter the index of the certificate to use or ESC to cancel:</target>
+        <target state="translated">Geben Sie den Index des Zertifikats ein, oder verwenden Sie die ESC-Taste zum Abbrechen:</target>
         <note />
       </trans-unit>
       <trans-unit id="CertificateSelectionMessageFormat">
         <source>The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</source>
-        <target state="new">The site {0} is asking for a client certificate, a list of possible valid certificates will be presented.</target>
+        <target state="translated">Die Website "{0}" fordert ein Clientzertifikat an, es wird eine Liste möglicher gültiger Zertifikate vorgelegt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientCredentialsComment">
         <source>The client credentials</source>
-        <target state="new">The client credentials</target>
+        <target state="translated">Die Clientanmeldeinformationen</target>
         <note />
       </trans-unit>
       <trans-unit id="CodeExpressionCouldNotFindEndpoint">
         <source>Could not find endpoint with name '{0}'.</source>
-        <target state="new">Could not find endpoint with name '{0}'.</target>
+        <target state="translated">Es wurde kein Endpunkt mit dem Namen "{0}" gefunden.</target>
         <note>This is not a formatting string (no trailing Format).</note>
       </trans-unit>
       <trans-unit id="ConfigureEndpointCommentSummary">
         <source>Implement this partial method to configure the service endpoint.</source>
-        <target state="new">Implement this partial method to configure the service endpoint.</target>
+        <target state="translated">Implementieren Sie diese partielle Methode, um den Dienstendpunkt zu konfigurieren.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="translated">Wenn es sich hierbei um einen Windows (R) Communication Foundation-Dienst handelt, auf den Sie Zugriff haben, prüfen Sie, ob die Metadatenveröffentlichung für die angegebene Adresse aktiviert ist. Informationen zum Aktivieren der Metadatenveröffentlichung finden Sie in der MSDN-Dokumentation unter http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterOrEscapeMessage">
         <source>Press the ENTER to accept or ESC to cancel:</source>
-        <target state="new">Press the ENTER to accept or ESC to cancel:</target>
+        <target state="translated">Drücken Sie zum Akzeptieren die EINGABETASTE oder zum Abbrechen die ESC-Taste:</target>
         <note />
       </trans-unit>
       <trans-unit id="EnterYesOrNoMessage">
         <source>Invalid answer.  Please enter 'yes' or 'no':</source>
-        <target state="new">Invalid answer.  Please enter 'yes' or 'no':</target>
+        <target state="translated">Ungültige Antwort. Geben Sie "yes" oder "no" ein:</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrArgumentWithoutValue">
         <source>The --{0} option requires a value to be passed, but none was found.</source>
-        <target state="new">The --{0} option requires a value to be passed, but none was found.</target>
+        <target state="translated">An die {0}-Option muss ein Wert übergeben werden, es wurde aber kein Wert gefunden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingElementNotSupportedFormat">
         <source>Binding element of type '{0}' is not supported.</source>
-        <target state="new">Binding element of type '{0}' is not supported.</target>
+        <target state="translated">Das Bindungselement vom Typ "{0}" wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrBindingTypeNotSupportedFormat">
         <source>Binding type '{0}' is not supported.</source>
-        <target state="new">Binding type '{0}' is not supported.</target>
+        <target state="translated">Der Bindungstyp "{0}" wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateDirectoryFormat">
         <source>Cannot create directory: '{0}'.</source>
-        <target state="new">Cannot create directory: '{0}'.</target>
+        <target state="translated">Das Verzeichnis kann nicht erstellt werden: "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateFileFormat">
         <source>Cannot create output file: '{0}'.</source>
-        <target state="new">Cannot create output file: '{0}'.</target>
+        <target state="translated">Die Ausgabedatei kann nicht erstellt werden: "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotDisambiguateSpecifiedTypesFormat">
         <source>More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</source>
-        <target state="new">More than one type with the same name exists in the set of referenced assemblies. Use assembly-qualified names to disambiguate between the --{0} types '{1}' and '{2}'</target>
+        <target state="translated">Im Satz referenzierter Assemblys sind mehrere Typen mit demselben Namen vorhanden. Verwenden Sie qualifizierte Assemblynamen, um die --{0}-Typen "{1}" und "{2}" eindeutig zu unterscheiden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotLoadSpecifiedTypeFormat">
         <source>No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</source>
-        <target state="new">No type could be loaded for the value '{1}' passed to the --{0} option. Ensure that the assembly this type belongs to is specified via the --{2} option.</target>
+        <target state="translated">Für den an die Option --{0} übergebenen Wert "{1}" konnte kein Typ geladen werden. Stellen Sie sicher, dass die Assembly, zu der dieser Typ gehört, mithilfe der Option --{2} angegeben wurde.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotWriteFile">
         <source>Cannot write to output file.</source>
-        <target state="new">Cannot write to output file.</target>
+        <target state="translated">In die Ausgabedatei kann nicht geschrieben werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCodegenError">
         <source>There was an error trying to generate code in the specified language.
 This could be because the language does not support all the code elements being generated. Consider using another language.</source>
-        <target state="new">There was an error trying to generate code in the specified language.
-This could be because the language does not support all the code elements being generated. Consider using another language.</target>
+        <target state="translated">Beim Generieren von Code in der angegebenen Sprache ist ein Fehler aufgetreten.
+Dies kann daran liegen, dass nicht alle zu generierenden Codeelemente von der Sprache unterstützt werden. Verwenden Sie ggf. eine andere Sprache.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateCodeProviderFormat">
         <source>A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</source>
-        <target state="new">A code provider could not be created for the value: '{0}' passed to the --{1} option. Verify that the code provider is properly installed and configured.</target>
+        <target state="translated">Für den an die Option --{1} übergebenen Wert "{0}" konnte kein Codeanbieter erstellt werden. Überprüfen Sie, ob der Codeanbieter ordnungsgemäß installiert und konfiguriert ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotCreateInstanceFormat">
         <source>Cannot create instance of the type '{0}' passed to the --{1} option.</source>
-        <target state="new">Cannot create instance of the type '{0}' passed to the --{1} option.</target>
+        <target state="translated">Die an die Option --{1} übergebene Instanz vom Typ "{0}" kann nicht erstellt werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCouldNotLoadTypesFromAssemblyAtFormat">
         <source>Cannot load any types in assembly '{0}'.</source>
-        <target state="new">Cannot load any types in assembly '{0}'.</target>
+        <target state="translated">In der Assembly "{0}" können keine Typen geladen werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateReferenceValuesFormat">
         <source>The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</source>
-        <target state="new">The assembly '{1}' was loaded twice through the --{0} option. You may reference each assembly only once.</target>
+        <target state="translated">Die Assembly "{1}" wurde über die Option --{0} zwei Mal geladen. Auf jede Assembly darf nur ein Mal verwiesen werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDuplicateValuePassedToTypeArgFormat">
         <source>The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</source>
-        <target state="new">The value '{1}' was passed to the --{0} option multiple times. Each type may be specified only once.</target>
+        <target state="translated">Der Wert "{1}" wurde mehrfach an die Option --{0} übergeben. Jeder Typ darf nur ein Mal angegeben werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrEncodingNotSupportedFormat">
         <source>Encoding '{0}' is not supported.</source>
-        <target state="new">Encoding '{0}' is not supported.</target>
+        <target state="translated">Die Codierung von "{0}" wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrIncompatibleContractSoapEncodingFormat">
         <source>The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</source>
-        <target state="new">The contract '{0}' contains one or more operations with SOAP Encoding (use='encoded'). This is not supported by the current target framework. Only the non-encoded operations will be generated, if any.</target>
+        <target state="translated">Der Vertrag "{0}" enthält mindestens einen Vorgang mit SOAP-Codierung (use='encoded'). Dies wird vom aktuellen Zielframework nicht unterstützt. Nur die nicht codierten Vorgänge werden generiert, sofern vorhanden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputEPRFileParseErrorFormat">
         <source>Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">Cannot read Endpoint Reference from: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Der Endpunktverweis kann nicht von "{0}" gelesen werden. Stellen Sie sicher, dass der XML-Code wohlgeformt und gültig ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputPolicyParseErrorFormat">
         <source>WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">WS-Policy Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Fehler beim Analysieren der WS-Richtlinie während des Lesens: "{0}". Stellen Sie sicher, dass der XML-Code wohlgeformt und gültig ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputSchemaParseErrorFormat">
         <source>XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">XML Schema Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Fehler beim Analysieren des XML-Schemas während des Lesens: "{0}". Stellen Sie sicher, dass der XML-Code wohlgeformt und gültig ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInputWsdlParseErrorFormat">
         <source>WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</source>
-        <target state="new">WSDL Parsing Error while reading: '{0}'. Verify that the XML is both well-formed and valid.</target>
+        <target state="translated">Fehler beim Analysieren von WSDL während des Lesens: "{0}". Stellen Sie sicher, dass der XML-Code wohlgeformt und gültig ist.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidNamespaceFormat">
         <source>The specified namespace mappings {0} contain invalid identifiers.</source>
-        <target state="new">The specified namespace mappings {0} contain invalid identifiers.</target>
+        <target state="translated">Die angegebenen Namespacezuordnungen "{0}" enthalten ungültige Bezeichner.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidOperationNoProjectFileFoundUnderFolderFormat">
         <source>The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</source>
-        <target state="new">The current operation is invalid outside the context of a project and no project file was found under the '{0}' directory.</target>
+        <target state="translated">Der aktuelle Vorgang ist außerhalb des Kontexts eines Projekts ungültig, und es wurde keine Projektdatei unter dem Verzeichnis "{0}" gefunden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidPathFormat">
         <source>Invalid path '{0}'. Check the --{1} option value.</source>
-        <target state="new">Invalid path '{0}'. Check the --{1} option value.</target>
+        <target state="translated">Ungültiger Pfad "{0}". Überprüfen Sie den Wert der Option --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMessageVersionNotSupportedFormat">
         <source>MessageVersion '{0}' is not supported.</source>
-        <target state="new">MessageVersion '{0}' is not supported.</target>
+        <target state="translated">MessageVersion "{0}" wird nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneProjectFoundFormat">
         <source>The directory '{0}' contains more than one project file.</source>
-        <target state="new">The directory '{0}' contains more than one project file.</target>
+        <target state="translated">Das Verzeichnis "{0}" enthält mehrere Projektdateien.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrMoreThanOneUpdateParamsFilesFoundFormat">
         <source>More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</source>
-        <target state="new">More than one web service reference was found under the project '{0}'.  Please use the --{1} option to specify the service reference to update. The possible values are: {2}.</target>
+        <target state="translated">Unter dem Projekt "{0}" wurden mehrere Webdienstverweise gefunden. Verwenden Sie die Option --{1}, um den zu aktualisierenden Dienstverweis anzugeben. Mögliche Werte sind: {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoCompatibleEndpoints">
         <source>No endpoints compatible with .Net Core apps were found.</source>
-        <target state="new">No endpoints compatible with .Net Core apps were found.</target>
+        <target state="translated">Es wurden keine mit .NET Core-Apps kompatiblen Endpunkte gefunden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoUpdateParamsFileFoundFormat">
         <source>The project '{0}' does not have a web service reference that can be updated.</source>
-        <target state="new">The project '{0}' does not have a web service reference that can be updated.</target>
+        <target state="translated">Das Projekt "{0}" weist keinen Webdienstverweis auf, der aktualisiert werden kann.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoValidInputSpecified">
         <source>No valid input specified. Specify either a service url or a wsdl file.</source>
-        <target state="new">No valid input specified. Specify either a service url or a wsdl file.</target>
+        <target state="translated">Keine gültige Eingabe angegeben. Geben Sie entweder eine Dienst-URL oder eine WSDL-Datei an.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotCodeDomTypeFormat">
         <source>The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</source>
-        <target state="new">The type '{0}' passed to the --{1} option is not a subclass of '{2}'.</target>
+        <target state="translated">Der an die Option --{1} übergebene Typ "{0}" ist keine Unterklasse von "{2}".</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotLanguageOrCodeDomTypeFormat">
         <source>The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</source>
-        <target state="new">The value '{0}' passed to the --{1} option does not represent a defined language and it could not be loaded as a fully qualified CLR type.</target>
+        <target state="translated">Der an die Option --{1} übergebene Wert "{0}" stellt keine definierte Sprache dar und konnte nicht als vollqualifizierter CLR-Typ geladen werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileAlreadyExistsFormat">
         <source>The source file '{0}' resolved from the value specified with the option --{1} already exists!</source>
-        <target state="new">The source file '{0}' resolved from the value specified with the option --{1} already exists!</target>
+        <target state="translated">Die Quelldatei "{0}", die aus dem durch die Option "--{1}" angegebenen Wert aufgelöst wird, ist bereits vorhanden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrOutputFileNotUnderOutputDirFormat">
         <source>The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</source>
-        <target state="new">The value of the --{0} option resolves to the path '{1}' which is not under the directory '{2}' resolved from the value specified with the --{3} option. The file must be a relative file name or a full path under this directory.</target>
+        <target state="translated">Der Wert der Option --{0} wird in den Pfad "{1}" aufgelöst, der sich nicht im Verzeichnis "{2}" befindet, das aus dem mit der Option --{3} angegebenen Wert aufgelöst wird. Bei der Datei muss es sich um einen relativen Dateinamen oder einen vollständigen Pfad unter diesem Verzeichnis handeln.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongDirOnlyFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} option value.</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} option value.</target>
+        <target state="translated">Der sich ergebende Pfad "{0}" ist zu lang. Überprüfen Sie den Wert der Option --{1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrPathTooLongFormat">
         <source>The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</source>
-        <target state="new">The resultant path '{0}' is too long. Review the --{1} and --{2} option values.</target>
+        <target state="translated">Der sich ergebende Pfad "{0}" ist zu lang. Überprüfen Sie die Werte der Optionen --{1} und --{2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrProjectToUpdateNotFoundFormat">
         <source>The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</source>
-        <target state="new">The --{0} option requires a project to be specified, please use the --{1} option to specify the project to use.</target>
+        <target state="translated">Für die Option --{0} muss ein Projekt angegeben werden. Verwenden Sie die Option --{1}, um das zu verwendende Projekt anzugeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServerCertFailedValidationFormat">
         <source>There were errors when validating the server certificate: {0}
 {1}</source>
-        <target state="new">There were errors when validating the server certificate: {0}
+        <target state="translated">Fehler beim Validieren des Serverzertifikats: {0}
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceReferenceNotFoundUnderProjectFormat">
         <source>The specified web service reference '{0}' was not found under the project '{1}'.</source>
-        <target state="new">The specified web service reference '{0}' was not found under the project '{1}'.</target>
+        <target state="translated">Der angegebene Webdienstverweis "{0}" wurde unter dem Projekt "{1}" nicht gefunden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrSingleUseSwitchFormat">
         <source>The --{0} option cannot be specified multiple times.</source>
-        <target state="new">The --{0} option cannot be specified multiple times.</target>
+        <target state="translated">Die Option --{0} darf nicht mehrmals angegeben werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToImportMetadata">
         <source>A critical error occurred while attempting to import metadata.</source>
-        <target state="new">A critical error occurred while attempting to import metadata.</target>
+        <target state="translated">Beim Importieren von Metadaten ist ein kritischer Fehler aufgetreten.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadExtensionsFormat">
         <source>There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</source>
-        <target state="new">There was an error loading import extensions. Make sure to provide the assemblies containing these extensions as reference assemblies using the --{0} option.</target>
+        <target state="translated">Fehler beim Laden von Importerweiterungen. Stellen Sie sicher, dass die Assemblys, in denen diese Erweiterungen enthalten sind, mithilfe der Option --{0} als Referenzassemblys bereitgestellt werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadInputs">
         <source>There was an error reading the loaded metadata.</source>
-        <target state="new">There was an error reading the loaded metadata.</target>
+        <target state="translated">Beim Lesen der geladenen Metadaten ist ein Fehler aufgetreten.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadMetadataDocumentFormat">
         <source>There was an error reading the metadata from one of the loaded documents.
 Document Identifier: '{0}'.</source>
-        <target state="new">There was an error reading the metadata from one of the loaded documents.
-Document Identifier: '{0}'.</target>
+        <target state="translated">Fehler beim Lesen der Metadaten aus einem der geladenen Dokumente.
+Dokumentbezeichner: "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToLoadReferenceFormat">
         <source>Reference cannot be loaded: '{0}', {1}</source>
-        <target state="new">Reference cannot be loaded: '{0}', {1}</target>
+        <target state="translated">Der Verweis kann nicht geladen werden: "{0}", {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToRetrieveMetadataFromUriFormat">
         <source>Cannot obtain Metadata from {0} 
 
 {1}</source>
-        <target state="new">Cannot obtain Metadata from {0} 
+        <target state="translated">Von {0} können keine Metadaten abgerufen werden. 
 
 {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToUniquifyFilenameFormat">
         <source>Cannot create output filename. Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Cannot create output filename. Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">Der Ausgabedateiname kann nicht erstellt werden. Es werden zu viele Dateien mit dem Präfix "{0}" erstellt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnexpectedError">
         <source>An error occurred in the tool.</source>
-        <target state="new">An error occurred in the tool.</target>
+        <target state="translated">Im Tool ist ein Fehler aufgetreten.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnknownSwitchFormat">
         <source>Unrecognized option '{0}' specified.</source>
-        <target state="new">Unrecognized option '{0}' specified.</target>
+        <target state="translated">Es wurde eine nicht erkannte Option "{0}" angegeben.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorPrefix">
         <source>Error:</source>
-        <target state="new">Error:</target>
+        <target state="translated">Fehler:</target>
         <note />
       </trans-unit>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
-        <target state="new">Generating files...</target>
+        <target state="translated">Dateien werden generiert...</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
         <source>Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</source>
-        <target state="new">Automatically select the serializer. This tries to use the Data Contract serializer and uses the XmlSerializer if that fails. (Short Form: -{0})</target>
+        <target state="translated">Das Serialisierungsmodul wird automatisch ausgewählt. Hier wird versucht, das Datenvertragsserialisierungsmodul zu verwenden und, falls dies nicht möglich ist, den XmlSerializer zu verwenden. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput1">
         <source>The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</source>
-        <target state="new">The path to a metadata document (wsdl or xsd). Standard command-line wildcards can be used in the file path.</target>
+        <target state="translated">Der Pfad zu einem Metadatendokument (WSDL oder XSD). Im Dateipfad können standardmäßige Befehlszeilen-Platzhalterzeichen verwendet werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput2">
         <source>The URL to a service endpoint that provides metadata or to a metadata document hosted online.</source>
-        <target state="new">The URL to a service endpoint that provides metadata or to a metadata document hosted online.</target>
+        <target state="translated">Die URL zu einem Dienstendpunkt, der Metadaten bereitstellt, oder zu einem online gehosteten Metadatendokument.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCodeGenerationSyntaxInput3">
         <source>The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</source>
-        <target state="new">The path to an XML file that contains a WS-Addressing EndpointReference for a service endpoint that supports WS-Metadata Exchange.</target>
+        <target state="translated">Der Pfad zu einer XML-Datei, die einen WS-Addressing-EndpointReference für einen Dienstendpunkt enthält, der WS-Metadata Exchange unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCollectionTypeFormat">
         <source>A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified name of the type to use as a collection data type when code is generated from schemas. (Short Form: -{0})</target>
+        <target state="translated">Ein vollqualifizierter Name oder ein qualifizierter Assemblyname des Typs, der bei der Generierung von Code aus Schemas als Sammlungsdatentyp zu verwenden ist. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpCommonOptionsCategory">
         <source>-= COMMON OPTIONS =-</source>
-        <target state="new">-= COMMON OPTIONS =-</target>
+        <target state="translated">-= ALLGEMEINE OPTIONEN =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDataContractSerializer">
         <source>Generate data types that use the Data Contract Serializer for serialization and deserialization</source>
-        <target state="new">Generate data types that use the Data Contract Serializer for serialization and deserialization</target>
+        <target state="translated">Datentypen generieren, die das Datenvertragsserialisierungsmodul zum Serialisieren und Deserialisieren verwenden</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpDirectoryFormat">
         <source>Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</source>
-        <target state="new">Directory to create files in. Default: A directory called ServiceReference inside the current directory. (Short Form: -{0})</target>
+        <target state="translated">Verzeichnis, in dem Dateien erstellt werden. Standard: ein Verzeichnis namens "ServiceReference" innerhalb des aktuellen Verzeichnisses. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpEnableDataBindingFormat">
         <source>Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</source>
-        <target state="new">Implement the System.ComponentModel.INotifyPropertyChanged interface on all Data Contract types to enable data binding. (Short Form: -{0})</target>
+        <target state="translated">Die System.ComponentModel.INotifyPropertyChanged-Schnittstelle für alle Datenvertragstypen implementieren, um die Datenbindung zu aktivieren. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples">
         <source>-= EXAMPLES =-</source>
-        <target state="new">-= EXAMPLES =-</target>
+        <target state="translated">-= BEISPIELE =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples2">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl</source>
-        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl</target>
+        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples3">
         <source>- Generate client code from a running service or online metadata documents.</source>
-        <target state="new">- Generate client code from a running service or online metadata documents.</target>
+        <target state="translated">- Clientcode aus einem Dienst, der ausgeführt wird, oder aus Onlinemetadatendokumenten generieren.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples6">
         <source>dotnet-svcutil *.wsdl *.xsd --language:C#</source>
-        <target state="new">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
+        <target state="translated">dotnet-svcutil *.wsdl *.xsd --language:C#</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples7">
         <source>- Generate client code in Visual Basic from local metadata documents.</source>
-        <target state="new">- Generate client code in Visual Basic from local metadata documents.</target>
+        <target state="translated">- Clientcode in Visual Basic aus lokalen Metadatendokumenten generieren.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples8">
         <source>dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</source>
-        <target state="new">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
+        <target state="translated">dotnet-svcutil http://example.com/service.svc?wsdl -edb -n "*,MyApplication.ServiceReference1" -ct MyLibrary.MyCollection`1 -r "{{MyLibrary,1.0.0}}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples9">
         <source>- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</source>
-        <target state="new">- Generate client code from a running service using settings that emulate the default "WCF Connected Service" behavior in Visual Studio</target>
+        <target state="translated">- Generieren von Clientcode aus einem ausgeführten Dienst mit Einstellungen, die das Standardverhalten von "WCF Connected Service" in Visual Studio emulieren</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExcludeTypeCodeGenerationFormat">
         <source>A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</source>
-        <target state="new">A fully-qualified or assembly-qualified type name to exclude from referenced contract types. (Short Form: -{0})</target>
+        <target state="translated">Ein vollqualifizierter Name oder ein Typname mit Assemblyqualifikation, der aus referenzierten Vertragstypen ausgeschlossen werden soll. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpHelpFormat">
         <source>Display command syntax and options for the tool. (Short Form: -{0})</source>
-        <target state="new">Display command syntax and options for the tool. (Short Form: -{0})</target>
+        <target state="translated">Befehlssyntax und Optionen für das Tool anzeigen. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputEpr">
         <source>&lt;epr&gt;</source>
-        <target state="new">&lt;epr&gt;</target>
+        <target state="translated">&lt;epr&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputMetadataDocumentPath">
         <source>&lt;metadata document path&gt;</source>
-        <target state="new">&lt;metadata document path&gt;</target>
+        <target state="translated">&lt;Pfad zum Metadatendokument&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInputUrl">
         <source>&lt;url&gt;</source>
-        <target state="new">&lt;url&gt;</target>
+        <target state="translated">&lt;URL&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpInternalFormat">
         <source>Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</source>
-        <target state="new">Generate classes that are marked as internal. Default: generate public classes. (Short Form: -{0})</target>
+        <target state="translated">Klassen generieren, die als intern markiert sind. Standard: öffentliche Klassen generieren. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpLanguageFormat">
         <source>The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</source>
-        <target state="new">The programming language to use for generating code. Provide either a language name registered in the machine.config file or provide the fully-qualified name of a class that inherits from System.CodeDom.Compiler.CodeDomProvider. Examples of language names to use are CS and VB. Default: C#. (Short Form: -{0})</target>
+        <target state="translated">Die Programmiersprache, mit der Code generiert wird. Geben Sie entweder einen in der Datei "machine.config" registrierten Sprachennamen an, oder geben Sie den vollqualifizierten Namen einer Klasse an, die von System.CodeDom.Compiler.CodeDomProvider erbt. Beispiele für zu verwendende Sprachennamen sind "CS" und "VB". Standard: C#. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpMessageContractFormat">
         <source>Generate Message Contract types. (Short Form: -{0})</source>
-        <target state="new">Generate Message Contract types. (Short Form: -{0})</target>
+        <target state="translated">Nachrichtenvertragstypen generieren. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNamespaceFormat">
         <source>A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</source>
-        <target state="new">A mapping from a WSDL or XML Schema targetNamespace to a CLR namespace. Using the '*' for the targetNamespace maps all targetNamespaces without an explicit mapping to that CLR namespace. Default: derived from the target namespace of the schema document for Data Contracts. The default namespace is used for all other generated types. (Short Form: -{0})</target>
+        <target state="translated">Eine Zuordnung von einem WSDL- oder XML-Schema-targetNamespace zu einem CLR-Namespace. Bei Verwendung von "*" als targetNamespace werden alle targetNamespaces ohne explizite Zuordnung diesem CLR-Namespace zugeordnet. Standard: Wird vom Zielnamespace des Schemadokuments für Datenverträge abgeleitet. Für alle anderen generierten Typen wird der Standardnamespace verwendet. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNoTypeReuseFormat">
         <source>Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</source>
-        <target state="new">Disable reusing types from project refereces. References provided with the --{1} option will only be considered for resolving collection types specified with the --{2} option. (Short Form: -{0})</target>
+        <target state="translated">Deaktivieren der Wiederverwendung von Typen aus Projektverweisen. Verweise, die mit der Option --{1} angegeben werden, werden nur für die Auflösung von Sammlungstypen berücksichtigt, die mit der Option --{2} angegeben wurden. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNologoFormat">
         <source>Suppress the copyright and banner message. (Short Form: -{0})</source>
-        <target state="new">Suppress the copyright and banner message. (Short Form: -{0})</target>
+        <target state="translated">Unterdrückt die Copyright- und Bannermeldung. (Kurzform:-{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpNostdlibFormat">
         <source>Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</source>
-        <target state="new">Do not reference standard libraries. By default System.Runtime (mscorlib) and System.ServiceModel (WCF) libraries are referenced. (Short Form: -{0})</target>
+        <target state="translated">Verweisen Sie nicht auf Standardbibliotheken. Auf die Bibliotheken System.Runtime (mscorlib) und System.ServiceModel (WCF) wird standardmäßig verwiesen. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOptions">
         <source>Options:</source>
-        <target state="new">Options:</target>
+        <target state="translated">Optionen:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpOutFormat">
         <source>The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</source>
-        <target state="new">The filename for the generated code. Default: derived from the WSDL definition name, WSDL service name or targetNamespace of one of the schemas. (Short Form: -{0})</target>
+        <target state="translated">Der Dateiname für den generierten Code. Standard: abgeleitet vom WSDL-Definitionsnamen, WSDL-Dienstnamen oder targetNamespace eines der Schemas. (Kurzform: /{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpProjectFileFormat">
         <source>The project file to add the client to (if any). (Short Form: -{0}).</source>
-        <target state="new">The project file to add the client to (if any). (Short Form: -{0}).</target>
+        <target state="translated">Die Projektdatei, die dem Client hinzugefügt werden soll (sofern vorhanden). (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpReferenceCodeGenerationFormat">
         <source>Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</source>
-        <target state="new">Package or project references to reuse types from. When generating clients, use this option to specify references in the user's project that might contain types representing the metadata being imported. The reference can be specified as a nuget package name and version or the path to a .Net Core project. (Short Form: -{0})</target>
+        <target state="translated">Paket- oder Projektverweise, aus denen Typen wiederverwendet werden sollen. Verwenden Sie diese Option beim Generieren von Clients, um Verweise im Projekt des Benutzers anzugeben, die möglicherweise Typen enthalten, die die zu importierenden Metadaten darstellen. Der Verweis kann als NuGet-Paketname und -version oder als Pfad zu einem .NET Core-Projekt angegeben werden. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpRuntimeIdentifierFormat">
         <source>The runtime identifier used for building reference projects (if any). (Short Form: -{0})</source>
-        <target state="new">The runtime identifier used for building reference projects (if any). (Short Form: -{0})</target>
+        <target state="translated">Der Runtimebezeichner zum Erstellen von Verweisprojekten (sofern vorhanden). (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpSyncFormat">
         <source>Generate synchronous methods for operations in addition to async. (Short Form: -{0})</source>
-        <target state="new">Generate synchronous methods for operations in addition to async. (Short Form: -{0})</target>
+        <target state="translated">Hiermit werden synchrone Methoden für Vorgänge generiert, die zusätzlich zu asynchronen Vorgängen ausgeführt werden. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTargetFrameworkFormat">
         <source>The target framework used for building reference projects. (Short Form: -{0}).</source>
-        <target state="new">The target framework used for building reference projects. (Short Form: -{0}).</target>
+        <target state="translated">Das zum Erstellen von Verweisprojekten verwendete Zielframework. (Kurzform: /{0}).</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUpdateWebServiceReferenceFormat">
         <source>Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</source>
-        <target state="new">Updates an existing web service reference. If the project contains more than one web service reference, the name of the web service reference to be updated is required. (Short Form: -{0})</target>
+        <target state="translated">Aktualisiert einen vorhandenen Webdienstverweis. Wenn das Projekt mehrere Webdienstverweise enthält, ist der Name des zu aktualisierenden Webdienstverweises erforderlich. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage1">
         <source>USE:</source>
-        <target state="new">USE:</target>
+        <target state="translated">VERWENDEN:</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsage2">
         <source> - Generate web service proxy code from running services or static metadata documents. </source>
-        <target state="new"> - Generate web service proxy code from running services or static metadata documents. </target>
+        <target state="translated"> - Webdienstproxy-Code aus Diensten, die ausgeführt werden, oder aus statischen Metadatendokumenten generieren. </target>
         <note />
       </trans-unit>
       <trans-unit id="HelpUsageCategory">
         <source>-= USAGE =-</source>
-        <target state="new">-= USAGE =-</target>
+        <target state="translated">-= NUTZUNG =-</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbosityFormat">
         <source>Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</source>
-        <target state="new">Determines the amount of information displayed by the tool. Valid values are '{0}'. (Short Form: -{1})</target>
+        <target state="translated">Legt die Menge an Informationen fest, die vom Tool angezeigt werden. Gültige Werte: {0}. (Kurzform: -{1})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpWrappedFormat">
         <source>Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</source>
-        <target state="new">Generated code will not unwrap "parameters" member of document-wrapped-literal messages. (Short Form: -{0})</target>
+        <target state="translated">Generierter Code entpackt nicht den parameters-Member von document-wrapped-literal-Nachrichten. (Kurzform: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpXmlSerializer">
         <source>Generate data types that use the XmlSerializer for serialization and deserialization</source>
-        <target state="new">Generate data types that use the XmlSerializer for serialization and deserialization</target>
+        <target state="translated">Datentypen generieren, die den XmlSerializer zum Serialisieren und Deserialisieren verwenden.</target>
         <note />
       </trans-unit>
       <trans-unit id="LogoFormat">
@@ -632,7 +632,7 @@ Document Identifier: '{0}'.</target>
 [{0}, Version {1}]
 {2}
 </source>
-        <target state="new">Microsoft (R) WCF Service Model Proxy Generation Tool for .Net Core platform
+        <target state="translated">Microsoft (R) WCF Service Model-Proxygenerierungstool für die .NET Core-Plattform
 [{0}, Version {1}]
 {2}
 </target>
@@ -640,185 +640,185 @@ Document Identifier: '{0}'.</target>
       </trans-unit>
       <trans-unit id="Microsoft_Copyright_CommandLine_Logo">
         <source>Copyright (c) Microsoft Corporation.  All rights reserved.</source>
-        <target state="new">Copyright (c) Microsoft Corporation.  All rights reserved.</target>
+        <target state="translated">Copyright (c) Microsoft Corporation. Alle Rechte vorbehalten.</target>
         <note />
       </trans-unit>
       <trans-unit id="MoreHelpFormat">
         <source>If you would like more help, type "dotnet-svcutil -{0}"</source>
-        <target state="new">If you would like more help, type "dotnet-svcutil -{0}"</target>
+        <target state="translated">Geben Sie "dotnet-svcutil -{0}" ein, um weitere Hilfeinformationen anzuzeigen.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoCodeWasGenerated">
         <source>No code was generated.
 If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</source>
-        <target state="new">No code was generated.
-If you were trying to generate a client, this could be because the metadata documents did not contain any valid contracts or services, or because all contracts/services were discovered to exist in --reference assemblies. Verify that you passed all the metadata documents to the tool.</target>
+        <target state="translated">Es wurde kein Code generiert.
+Wenn Sie versucht haben, einen Client zu generieren, könnte die Ursache hierfür sein, dass die Metadatendokumente keine gültigen Verträge oder Dienste enthielten oder dass erkannt wurde, dass sich alle Verträge/Dienste in Referenzassemblys befinden. Stellen Sie sicher, dass alle Metadatendokumente an das Tool übergeben wurden.</target>
         <note />
       </trans-unit>
       <trans-unit id="NotClientBaseType">
         <source>Type does not inherit from ClientBase&lt;T&gt;</source>
-        <target state="new">Type does not inherit from ClientBase&lt;T&gt;</target>
+        <target state="translated">Der Typ erbt nicht von ClientBase&lt;T&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersCollectionType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;Typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersDirectory">
         <source>&lt;directory&gt;</source>
-        <target state="new">&lt;directory&gt;</target>
+        <target state="translated">&lt;directory&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersExcludeType">
         <source>&lt;type&gt;</source>
-        <target state="new">&lt;type&gt;</target>
+        <target state="translated">&lt;Typ&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersLanguage">
         <source>&lt;language&gt;</source>
-        <target state="new">&lt;language&gt;</target>
+        <target state="translated">&lt;language&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersNamespace">
         <source>&lt;string,string&gt;</source>
-        <target state="new">&lt;string,string&gt;</target>
+        <target state="translated">&lt;string,string&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersOut">
         <source>&lt;file&gt;</source>
-        <target state="new">&lt;file&gt;</target>
+        <target state="translated">&lt;file&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersProjectFile">
         <source>&lt;project file&gt;</source>
-        <target state="new">&lt;project file&gt;</target>
+        <target state="translated">&lt;Projektdatei&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersReference">
         <source>&lt;package&gt;</source>
-        <target state="new">&lt;package&gt;</target>
+        <target state="translated">&lt;Paket&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersRuntimeIdentifier">
         <source>&lt;runtime identifier&gt;</source>
-        <target state="new">&lt;runtime identifier&gt;</target>
+        <target state="translated">&lt;Runtimebezeichner&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersTargetFramework">
         <source>&lt;framework&gt;</source>
-        <target state="new">&lt;framework&gt;</target>
+        <target state="translated">&lt;Framework&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersVerbosity">
         <source>&lt;verbosity level&gt;</source>
-        <target state="new">&lt;verbosity level&gt;</target>
+        <target state="translated">&lt;Ausführlichkeitsgrad&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="ParametersWebServiceReferenceName">
         <source>&lt;web service reference&gt;</source>
-        <target state="new">&lt;web service reference&gt;</target>
+        <target state="translated">&lt;Webdienstverweis&gt;</target>
         <note />
       </trans-unit>
       <trans-unit id="PasswordPrompt">
         <source>Enter password (ESC to cancel):</source>
-        <target state="new">Enter password (ESC to cancel):</target>
+        <target state="translated">Kennwort eingeben (ESC-Taste zum Abbrechen):</target>
         <note />
       </trans-unit>
       <trans-unit id="ReadingMetadataMessageFormat">
         <source>Attempting to load metadata from '{0}'.</source>
-        <target state="new">Attempting to load metadata from '{0}'.</target>
+        <target state="translated">Es wird versucht, Metadaten aus "{0}" zu laden.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestReplyCallbackContractNotSupported">
         <source>Request/Reply callback contracts are not supported for .Net Core apps.</source>
-        <target state="new">Request/Reply callback contracts are not supported for .Net Core apps.</target>
+        <target state="translated">Anforderungs-/Antwortrückrufverträge werden für .NET Core-Apps nicht unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="RetreivingMetadataMsgFormat">
         <source>Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</source>
-        <target state="new">Attempting to download metadata from '{0}' using WS-Metadata Exchange and HttpGet.</target>
+        <target state="translated">Es wird versucht, Metadaten unter Verwendung von WS-Metadata Exchange und HttpGet von "{0}" herunterzuladen.</target>
         <note />
       </trans-unit>
       <trans-unit id="ServiceEndpointComment">
         <source>The endpoint to configure</source>
-        <target state="new">The endpoint to configure</target>
+        <target state="translated">Der zu konfigurierende Endpunkt</target>
         <note />
       </trans-unit>
       <trans-unit id="TelemetryEnabled">
         <source>This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
 </source>
-        <target state="new">This tool collects information about how it is used in order to improve the tool. This functionality can be disabled by setting the environment variable "DOTNET_SVCUTIL_TELEMETRY_OPTOUT" to 1.
+        <target state="translated">Dieses Tool sammelt Informationen zu seiner Verwendung, um das Tool zu verbessern. Diese Funktionalität kann deaktiviert werden, indem Sie die Umgebungsvariable DOTNET_SVCUTIL_TELEMETRY_OPTOUT auf 1 festlegen.
 </target>
         <note />
       </trans-unit>
       <trans-unit id="UseProjectFileOptionOnMultipleFilesMsgFormat">
         <source>Please use the --{0} option to specify the project to use, possible values: {1}.</source>
-        <target state="new">Please use the --{0} option to specify the project to use, possible values: {1}.</target>
+        <target state="translated">Verwenden Sie die Option --{0}, um das zu verwendende Projekt anzugeben. Mögliche Werte: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UsernamePrompt">
         <source>Enter username (ESC to cancel):</source>
-        <target state="new">Enter username (ESC to cancel):</target>
+        <target state="translated">Benutzernamen eingeben (ESC-Taste zum Abbrechen):</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningPrefix">
         <source>Warning:</source>
-        <target state="new">Warning:</target>
+        <target state="translated">Warnung:</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotGenerateContractOperationsFormat">
         <source>Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</source>
-        <target state="new">Could not generate contract operations using the '{0}' type, attempting with the '{1}' type.</target>
+        <target state="translated">Die Vertragsvorgänge konnten nicht mit dem Typ "{0}" generiert werden, es wird ein neuer Versuch mit dem Typ "{1}" ausgeführt.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnCouldNotLoadTypesFromReferenceAssemblyAtFormat">
         <source>Cannot load some types in assembly '{0}', types will not be available to the tool.</source>
-        <target state="new">Cannot load some types in assembly '{0}', types will not be available to the tool.</target>
+        <target state="translated">Einige Typen in der Assembly "{0}" können nicht geladen werden und werden nicht für das Tool verfügbar sein.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnExtraParamsOnInputFileParamIgnoredFormat">
         <source>An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</source>
-        <target state="new">An input parameters file was specified in the command line, the following parameter(s) will be ignored: {0}.</target>
+        <target state="translated">In der Befehlszeile wurde eine Datei mit Eingabeparametern angegeben. Die folgenden Parameter werden ignoriert: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnIncompatibleEndpointFormat">
         <source>Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</source>
-        <target state="new">Endpoint '{0}' at address '{1}' contains one or more bindings not compatible with .Net Core apps, skipping...</target>
+        <target state="translated">Der Endpunkt "{0}" an der Adresse "{1}" enthält mindestens eine Bindung, die nicht mit .NET Core-Apps kompatibel ist. Wird übersprungen...</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnSpecifiedFilePathNotUndeProjectDirFormat">
         <source>The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</source>
-        <target state="new">The value specified with the --{0} option resolves to the file path '{1}' which is not under the directory of the project '{2}'.  The file may not get compiled!</target>
+        <target state="translated">Der mit der Option --{0} angegebene Wert wird in den Dateipfad "{1}" aufgelöst, der nicht unter dem Verzeichnis des Projekts "{2}" vorhanden ist. Die Datei wird möglicherweise nicht kompiliert.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedArgumentFormat">
         <source>The specified --{0} option is not expected in the current operational context of the tool!</source>
-        <target state="new">The specified --{0} option is not expected in the current operational context of the tool!</target>
+        <target state="translated">Die angegebene Option --{0} wird nicht im aktuellen operativen Kontext des Tools erwartet.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUnexpectedInputsFormat">
         <source>The specified input(s) {0} are not expected in the current operational context of the tool!</source>
-        <target state="new">The specified input(s) {0} are not expected in the current operational context of the tool!</target>
+        <target state="translated">Die angegebenen Eingaben "{0}" werden im aktuellen operativen Kontext des Tools nicht erwartet.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnUserBasicCredentialsInClearText">
         <source>The server needs to authenticate your request.
 Your credentials will be sent to the server in clear text.</source>
-        <target state="new">The server needs to authenticate your request.
-Your credentials will be sent to the server in clear text.</target>
+        <target state="translated">Ihre Anforderung muss vom Server authentifiziert werden.
+Die Anmeldeinformationen werden in Klartext an den Server gesendet.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrnWSMExFailedFormat">
         <source>WS-Metadata Exchange Error
     URI: {0}</source>
-        <target state="new">WS-Metadata Exchange Error
+        <target state="translated">WS-Metadata Exchange-Fehler
     URI: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlOrSchemaFilesMsg">
         <source>WSDL files</source>
-        <target state="new">WSDL files</target>
+        <target state="translated">WSDL-Dateien</target>
         <note />
       </trans-unit>
     </body>
