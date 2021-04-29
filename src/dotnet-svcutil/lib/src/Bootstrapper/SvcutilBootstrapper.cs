@@ -51,6 +51,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         internal async Task<ProcessRunner.ProcessResult> BoostrapSvcutilAsync(bool keepBootstrapperDir, ILogger logger, CancellationToken cancellationToken)
         {
+            bool redirectOutput = false;
+            if (this.Options.ToolContext == OperationalContext.Infrastructure)
+            {
+                redirectOutput = true;
+            }
+
             ProcessRunner.ProcessResult result = null;
 
             using (await SafeLogger.WriteStartOperationAsync(logger, "Bootstrapping svcutil ...").ConfigureAwait(false))
@@ -79,7 +85,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 await BuildBootstrapProjectAsync(logger, cancellationToken).ConfigureAwait(false);
 
                 ToolConsole.WriteLineIf(ToolConsole.Verbosity >= Verbosity.Verbose, Resource.InvokingProjectMsg);
-                result = await ProcessRunner.RunAsync("dotnet", $"run \"{paramsFilePath}\"", this.MSBuildProj.DirectoryPath, /*redirectOutput*/ false, logger, cancellationToken).ConfigureAwait(false);
+                result = await ProcessRunner.RunAsync("dotnet", $"run \"{paramsFilePath}\"", this.MSBuildProj.DirectoryPath, redirectOutput, logger, cancellationToken).ConfigureAwait(false);
                 MarkupTelemetryHelper.TelemetryPostOperation(result.ExitCode == 0, "Invoke svcutil bootstrapper");
             }
 
@@ -109,6 +115,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             using (await SafeLogger.WriteStartOperationAsync(logger, $"Creating project file: \"{projectFullPath}\"").ConfigureAwait(false))
             {
                 var svcutilPkgRef = ProjectDependency.FromAssembly(Path.Combine(Path.GetDirectoryName(Tool.FullPath), Tool.AssemblyName + ".dll"));
+                if (Options.ToolContext == OperationalContext.Infrastructure)
+                {
+                    svcutilPkgRef = ProjectDependency.FromPackage(Tool.AssemblyName, Tool.PackageVersion);
+                }
 
                 this.MSBuildProj = await MSBuildProj.DotNetNewAsync(projectFullPath, logger, cancellationToken).ConfigureAwait(false);
                 this.MSBuildProj.AddDependency(svcutilPkgRef);
