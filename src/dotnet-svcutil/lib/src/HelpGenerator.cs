@@ -82,6 +82,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             WriteExample(SR.HelpExamples2, SR.HelpExamples3);
             WriteExample(SR.HelpExamples8, SR.HelpExamples9);
+            WriteExample(SR.HelpExamples10, SR.HelpExamples11);
         }
 
         private static void WriteExample(string syntax, string explanation)
