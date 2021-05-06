@@ -126,6 +126,11 @@ namespace System.ServiceModel.Security
         public abstract string DefaultAsymmetricSignatureAlgorithm { get; }
         public abstract int DefaultSignatureKeyDerivationLength { get; }
         public abstract int DefaultSymmetricKeyLength { get; }
+        public abstract bool IsSymmetricKeyLengthSupported(int length);
+        public abstract bool IsAsymmetricKeyLengthSupported(int length);
+        public static SecurityAlgorithmSuite Default { get; }
+        public static SecurityAlgorithmSuite Basic256 { get; }
+        internal static SecurityAlgorithmSuite Basic256Sha256 { get; }
     }
     public abstract partial class SecurityPolicyVersion
     {
