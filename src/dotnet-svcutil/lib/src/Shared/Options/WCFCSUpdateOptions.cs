@@ -50,10 +50,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             var namespaceOption = GetOption(NamespaceMappingsKey);
             namespaceOption.Deserializing += this.OnNamespaceOptionDeserializing;
 
-            var referencesOption = GetOption(ReferencesKey);
-            referencesOption.Aliases.Add("CheckedReferencedAssemblies");
-            referencesOption.Deserializing += this.OnCheckedReferencedAssemblyDeserializing;
-
             var collectionTypeRefOption = GetOption(CollectionTypeReferenceKey);
             collectionTypeRefOption.Deserializing += this.OnCollectionTypeDeserializing;
 
