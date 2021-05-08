@@ -12,6 +12,7 @@ namespace System.ServiceModel.Security
     {
         private static SecurityAlgorithmSuite s_basic256;
         private static SecurityAlgorithmSuite s_tripleDes;
+        private static SecurityAlgorithmSuite s_basic256Sha256;
 
         static public SecurityAlgorithmSuite Default
         {
@@ -44,6 +45,19 @@ namespace System.ServiceModel.Security
                 }
                     
                 return s_tripleDes;
+            }
+        }
+
+        static public SecurityAlgorithmSuite Basic256Sha256
+        {
+            get
+            {
+                if (s_basic256Sha256 == null)
+                {
+                    s_basic256Sha256 = new Basic256Sha256SecurityAlgorithmSuite();
+                }
+                    
+                return s_basic256Sha256;
             }
         }
 
@@ -170,6 +184,20 @@ namespace System.ServiceModel.Security
         public override string ToString()
         {
             return "TripleDes";
+        }
+    }
+
+    public class Basic256Sha256SecurityAlgorithmSuite : Basic256SecurityAlgorithmSuite
+    {
+        public Basic256Sha256SecurityAlgorithmSuite() : base() { }
+
+        internal override XmlDictionaryString DefaultDigestAlgorithmDictionaryString { get { return XD.SecurityAlgorithmDictionary.Sha256Digest; } }
+        internal override XmlDictionaryString DefaultSymmetricSignatureAlgorithmDictionaryString { get { return XD.SecurityAlgorithmDictionary.HmacSha256Signature; } }
+        internal override XmlDictionaryString DefaultAsymmetricSignatureAlgorithmDictionaryString { get { return XD.SecurityAlgorithmDictionary.RsaSha256Signature; } }
+
+        public override string ToString()
+        {
+            return "Basic256Sha256";
         }
     }
 }

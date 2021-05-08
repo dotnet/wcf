@@ -73,6 +73,8 @@ namespace System.ServiceModel.Channels
         public static System.ServiceModel.Channels.SecurityBindingElement CreateSecureConversationBindingElement(System.ServiceModel.Channels.SecurityBindingElement bootstrapSecurity) { return default; }
         public static System.ServiceModel.Channels.TransportSecurityBindingElement CreateUserNameOverTransportBindingElement() { return default; }
         public static TransportSecurityBindingElement CreateIssuedTokenOverTransportBindingElement(System.ServiceModel.Security.Tokens.IssuedSecurityTokenParameters issuedTokenParameters) { return default; }
+        public static TransportSecurityBindingElement CreateCertificateOverTransportBindingElement() { return default; }
+        public static TransportSecurityBindingElement CreateCertificateOverTransportBindingElement(MessageSecurityVersion version) { return default; }
         public override T GetProperty<T>(System.ServiceModel.Channels.BindingContext context) { return default; }
         public override string ToString() { return default; }
         public System.ServiceModel.Security.SecurityKeyEntropyMode KeyEntropyMode { get { return default;} set { } }
@@ -130,7 +132,7 @@ namespace System.ServiceModel.Security
         public abstract bool IsAsymmetricKeyLengthSupported(int length);
         public static SecurityAlgorithmSuite Default { get; }
         public static SecurityAlgorithmSuite Basic256 { get; }
-        internal static SecurityAlgorithmSuite Basic256Sha256 { get; }
+        public static SecurityAlgorithmSuite Basic256Sha256 { get; }
     }
     public abstract partial class SecurityPolicyVersion
     {
