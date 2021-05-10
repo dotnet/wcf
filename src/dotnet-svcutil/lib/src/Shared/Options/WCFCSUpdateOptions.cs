@@ -103,7 +103,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-
         private void OnCollectionTypeDeserializing(object sender, OptionDeserializingEventArgs e)
         {
             // Alias for CollectionTypes option, translate to collection of string ...
@@ -127,57 +126,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                         _deserializedCollectionAssemblies.Add(System.IO.Path.GetFileNameWithoutExtension(item2.Trim()));
                     }
-                }
-            }
-        }
-
-        private void OnCheckedReferencedAssemblyDeserializing(object sender, OptionDeserializingEventArgs e)
-        {
-            // Alias for References option, translate to collection of string ...
-
-            var jToken = e.JToken;
-            if (jToken.Type == JTokenType.Array)
-            {
-                // If this is an array of objects it should be a single-value property object like below, extract the values into a list of strings:
-                // "CheckedReferencedAssemblies": [ { "Name": "Microsoft.CSharp" }, { "Name": "Microsoft.Win32.Primitives" } ],
-
-                IEnumerable<JToken> collection = jToken.Value<JArray>();
-                if (collection.All(j => j.Type == JTokenType.Object && j.Count() == 1 && ((JProperty)j.First).Name == "Name"))
-                {
-                    e.Value = collection.Select(o => ((JProperty)o.First).Value.Value<string>()).ToList();
-                }
-                else
-                {
-                    // We also need to handle json files written in an older format before Name was the only property. This includes a FullName (which we can ignore), and an IsChecked:
-                    // "CheckedReferencedAssemblies": [ { "FullName": "Microsoft.ApplicationInsights", "IsChecked": false, "Name": "Microsoft.ApplicationInsights" } ]
-                    List<string> names = new List<string>();
-                    foreach (JToken j in collection)
-                    {
-                        if (j.Type == JTokenType.Object)
-                        {
-                            string name = null;
-                            bool isChecked = true;
-
-                            foreach (JProperty prop in j)
-                            {
-                                if (prop.Name == "Name")
-                                {
-                                    name = prop.Value.Value<string>();
-                                }
-                                else if (prop.Name == "IsChecked")
-                                {
-                                    isChecked = prop.Value.Value<bool>();
-                                }
-                            }
-
-                            if (isChecked && name != null)
-                            {
-                                names.Add(name);
-                            }
-                        }
-                    }
-
-                    e.Value = names;
                 }
             }
         }
