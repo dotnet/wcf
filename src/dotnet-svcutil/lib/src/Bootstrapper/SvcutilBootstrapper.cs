@@ -20,7 +20,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private MSBuildProj MSBuildProj { get; set; }
 
-        private SvcutilOptions Options { get; set; }
+        internal SvcutilOptions Options { get; set; }
 
         public SvcutilBootstrapper(SvcutilOptions options)
         {
@@ -92,7 +92,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return result;
         }
 
-        private async Task GenerateProjectAsync(bool keepBootstrapperDir, ILogger logger, CancellationToken cancellationToken)
+        internal async Task GenerateProjectAsync(bool keepBootstrapperDir, ILogger logger, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -164,7 +164,7 @@ namespace SvcutilBootstrap {
     }
 }";
 
-        private async Task GenerateProgramFileAsync(ILogger logger, CancellationToken cancellationToken)
+        internal async Task GenerateProgramFileAsync(ILogger logger, CancellationToken cancellationToken)
         {
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, "Generating Program.cs ...").ConfigureAwait(false))
             {
@@ -173,7 +173,7 @@ namespace SvcutilBootstrap {
             }
         }
 
-        private async Task<string> GenerateParamsFileAsync(ILogger logger, CancellationToken cancellationToken)
+        internal async Task<string> GenerateParamsFileAsync(ILogger logger, CancellationToken cancellationToken)
         {
             var paramsFilePath = Path.Combine(this.MSBuildProj.DirectoryPath, s_bootstrapperParamsFileName);
             using (await SafeLogger.WriteStartOperationAsync(logger, $"Generating {paramsFilePath} params file ...").ConfigureAwait(false))
@@ -183,7 +183,7 @@ namespace SvcutilBootstrap {
             }
         }
 
-        private async Task BuildBootstrapProjectAsync(ILogger logger, CancellationToken cancellationToken)
+        internal async Task BuildBootstrapProjectAsync(ILogger logger, CancellationToken cancellationToken)
         {
             string outputText;
             string errorMessage = null;
