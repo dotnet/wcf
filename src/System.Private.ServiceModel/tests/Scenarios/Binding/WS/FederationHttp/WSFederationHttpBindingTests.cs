@@ -52,9 +52,9 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
             federationBinding.Security.Message.EstablishSecurityContext = useSecureConversation;
             factory = new ChannelFactory<IWcfService>(federationBinding, serviceEndpointAddress);
 
-            factory.Credentials.UserName.UserName = "AUser";
+            factory.Credentials.UserName.UserName = "PlaceholderUser";
 			// [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a real secret")]
-            factory.Credentials.UserName.Password = "MyPassword";
+            factory.Credentials.UserName.Password = "PlaceholderPassword";
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -103,9 +103,9 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
             federationBinding.Security.Message.EstablishSecurityContext = false;
             factory = new ChannelFactory<IWcfService>(federationBinding, serviceEndpointAddress);
 
-            factory.Credentials.UserName.UserName = "AUser";
+            factory.Credentials.UserName.UserName = "PlaceholderUser";
 			// [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a real secret")]
-            factory.Credentials.UserName.Password = "MyPassword";
+            factory.Credentials.UserName.Password = "PlaceholderPassword";
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -154,9 +154,9 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
             federationBinding.Security.Message.EstablishSecurityContext = false;
             factory = new ChannelFactory<IWcfService>(federationBinding, serviceEndpointAddress);
 
-            factory.Credentials.UserName.UserName = "AUser";
+            factory.Credentials.UserName.UserName = "PlaceholderUser";
 			// [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Not a real secret")]
-            factory.Credentials.UserName.Password = "MyPassword";
+            factory.Credentials.UserName.Password = "PlaceholderPassword";
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
