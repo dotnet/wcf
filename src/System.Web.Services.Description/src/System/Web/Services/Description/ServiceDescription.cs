@@ -1,3 +1,6 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
 using System.Xml.Serialization;
 using System.Xml.Schema;
 using System.Collections;
@@ -502,7 +505,6 @@ namespace System.Web.Services.Description
         }
 
         [XmlAnyElement("documentation", Namespace = ServiceDescription.Namespace)]
-        [ComVisible(false)]
         public XmlElement DocumentationElement
         {
             get { return _documentationElement; }
