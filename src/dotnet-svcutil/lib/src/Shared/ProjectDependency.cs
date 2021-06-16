@@ -326,7 +326,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return dependencyType;
         }
 
-        private static bool IsValidVersion(string version)
+        internal static bool IsValidVersion(string version)
         {
             // https://semver.org/spec/v2.0.0.html
 

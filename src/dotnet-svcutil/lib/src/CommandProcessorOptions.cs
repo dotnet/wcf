@@ -803,7 +803,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             var loadableReferences = this.References.Where(r => !TargetFrameworkHelper.ServiceModelPackages.Any(s => s.Name == r.Name));
             foreach (ProjectDependency reference in loadableReferences)
             {
-                Assembly assembly = TypeLoader.LoadAssembly(reference.AssemblyName);
+                Assembly assembly = null;
+
+                if (this.ToolContext == OperationalContext.Infrastructure)
+                {
+                    string projFolder = Path.Combine(this.BootstrapPath.FullName, nameof(SvcutilBootstrapper));
+                    DirectoryInfo directoryInfo = new DirectoryInfo(projFolder);
+                    FileInfo assemblyFile = directoryInfo.GetFiles(reference.AssemblyName + ".*", SearchOption.AllDirectories).FirstOrDefault();
+                    if (assemblyFile != null)
+                    {
+                        assembly = Assembly.LoadFrom(assemblyFile.FullName);
+                    }
+                }
+                else
+                {
+                    assembly = TypeLoader.LoadAssembly(reference.AssemblyName);
+                }
+
                 if (assembly != null)
                 {
                     if (!this.ReferencedAssemblies.Contains(assembly))

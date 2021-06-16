@@ -203,6 +203,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         continue;
 
                     string version = GetItemValue(reference, "Version");
+                    if (!ProjectDependency.IsValidVersion(version))
+                    {
+                        version = "";
+                    }
 
                     ProjectDependency packageDep = ProjectDependency.FromPackage(packageName, version);
 
