@@ -18,10 +18,6 @@
     <!-- IBC optimization data embedding by default true if Configuration is 'Release' and OfficialBuild is 'true'. -->
     <!-- [todo:arcade] Setting it to true always seems to be common practice. Not sure if we need to or not. -->
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
-    <!-- Opt-out repo features -->
-    <!-- [todo:arcade] Default Arcade value, imports Localization.targets if true. -->
-    <!-- https://github.com/dotnet/arcade/blob/master/src/Microsoft.DotNet.Arcade.Sdk/tools/Imports.targets#L56 -->
-    <UsingToolXliff>false</UsingToolXliff>
     <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
     <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
   </PropertyGroup>

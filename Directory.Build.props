@@ -2,9 +2,6 @@
 <Project>
   <PropertyGroup>
     <ImportNetSdkFromRepoToolset>false</ImportNetSdkFromRepoToolset>
-
-    <!-- Disable localization -->
-    <EnableXlfLocalization>false</EnableXlfLocalization>
   </PropertyGroup>
 
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
