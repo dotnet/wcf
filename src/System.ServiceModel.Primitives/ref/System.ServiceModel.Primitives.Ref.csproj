@@ -10,7 +10,7 @@
     <IsPartialFacadeAssembly Condition="'$(TargetFramework)' == 'net461'">true</IsPartialFacadeAssembly>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
     <Compile Include="System.ServiceModel.Primitives.cs" />
   </ItemGroup>
 
