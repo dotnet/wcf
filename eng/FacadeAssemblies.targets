@@ -13,8 +13,38 @@
     <PackageReference Include="Microsoft.DotNet.GenFacades" Version="$(MicrosoftDotNetGenFacadesPackageVersion)" PrivateAssets="All" />
   </ItemGroup>
 
-  <!--This is where we tell GenFacades what Ref assembly to look for.-->
-  <Target Condition="'$(IsPartialFacadeAssembly)'=='true' AND '$(IsReferenceAssembly)' != 'true'" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild">
+  <Target Condition="'$(IsReferenceAssembly)' == 'true'" Name="ResolveMatchingContractRef" >
+    <!-- The reference assembly itself is facade, use the next compatible reference as the contract. -->
+    <ItemGroup>
+      <!-- Exclude the current TargetFramework to find the next closest TargetFramework-->
+      <_OtherTargetFrameworks Include="$(TargetFrameworks)" Exclude="$(TargetFramework)" />
+
+      <_SelfProjectReference Include="$(MSBuildProjectFile)">
+        <TargetFrameworks>@(_OtherTargetFrameworks)</TargetFrameworks>
+        <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+        <OutputItemType>ResolvedMatchingContract</OutputItemType>
+      </_SelfProjectReference>
+    </ItemGroup>
+
+    <!-- Find the next closest reference -->
+    <GetReferenceNearestTargetFrameworkTask AnnotatedProjectReferences="@(_SelfProjectReference)"
+                                            CurrentProjectTargetFramework="$(TargetFramework)"
+                                            CurrentProjectTargetPlatform="$(TargetPlatformMoniker)"
+                                            CurrentProjectName="$(MSBuildProjectName)"
+                                            FallbackTargetFrameworks="$(AssetTargetFallback)">
+      <Output ItemName="_AnnotatedSelfProjectReference" TaskParameter="AssignedProjects" />
+    </GetReferenceNearestTargetFrameworkTask>
+
+    <Error Text="Cannot locate a compatible reference from '@(_OtherTargetFrameworks)' for TargetFramework '$(TargetFramework)'.  Cannot generate a facade without a reference as input."
+           Condition="'%(_AnnotatedSelfProjectReference.NearestTargetFramework)' == ''" />
+
+    <ItemGroup>
+      <ProjectReference Include="@(_AnnotatedSelfProjectReference)" SetTargetFramework="TargetFramework=%(_AnnotatedSelfProjectReference.NearestTargetFramework)" />
+    </ItemGroup>
+  </Target>
+  
+  <Target Condition="'$(IsReferenceAssembly)' != 'true'" Name="ResolveMatchingContractNonRef" >
+    <!-- Use the reference assembly as the contract -->
     <ItemGroup Condition="'$(AssemblyName)'!='System.ServiceModel'">
       <ProjectReference Include="..\ref\$(AssemblyName).Ref.csproj">
         <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -22,6 +52,9 @@
       </ProjectReference>
     </ItemGroup>
   </Target>
+  
+  <!--This is where we tell GenFacades what Ref assembly to look for.-->
+  <Target Condition="'$(IsPartialFacadeAssembly)'=='true'" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild" DependsOnTargets="ResolveMatchingContractNonRef;ResolveMatchingContractRef" />
   
   <!-- This property will break if we're packing a global tool, so skip it in that case. -->
   <PropertyGroup Condition="'$(PackAsTool)' != 'true'">
