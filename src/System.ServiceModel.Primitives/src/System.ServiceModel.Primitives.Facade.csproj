@@ -8,7 +8,7 @@
     <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
     <NoWarn>$(NoWarn);NU5131</NoWarn>
 
-    <BuildFrameworks>netstandard2.0;netcoreapp2.1;net461;</BuildFrameworks>
+    <BuildFrameworks>net6.0;netstandard2.0;netcoreapp2.1;net461;</BuildFrameworks>
     <HarvestFrameworks>MonoAndroid10;MonoTouch10;net45;net46;netcore50;netstandard1.0;netstandard1.1;netstandard1.3;portable-net45+win8+wp8;win8;wp8;xamarinios10;xamarinmac20;xamarintvos10;xamarinwatchos10;</HarvestFrameworks>
     <TargetFrameworks>$(BuildFrameworks)$(HarvestFrameworks)</TargetFrameworks>
     <IsBuilding Condition="$(BuildFrameworks.Contains('$(TargetFramework);'))">true</IsBuilding>
