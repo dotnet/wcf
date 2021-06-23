@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageDownload Include="$(MicrosoftTargetingPackNETFrameworkv472Package)" Version="[$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)]" />
-    <ResolvedMatchingContract Include="$(NuGetPackageRoot)$(MicrosoftTargetingPackNETFrameworkv472Package)\$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)\lib\net472\System.ServiceModel.dll" />
+    <ResolvedMatchingContract Include="$(NuGetPackageRoot)$(MicrosoftTargetingPackNETFrameworkv472Package.ToLowerInvariant())\$(MicrosoftTargetingPackNETFrameworkv472PackageVersion)\lib\net472\System.ServiceModel.dll" />
   </ItemGroup>
 
   <ItemGroup>
