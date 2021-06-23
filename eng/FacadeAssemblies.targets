@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   
-  <PropertyGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
+  <PropertyGroup>
     <!--Don't produce or publish symbols for Facade assemblies.-->
     <PublishWindowsPdb>false</PublishWindowsPdb>
     <!-- GenFacades requires a PDB -->
     <DebugType>portable</DebugType>
     <NoWarn Condition="'$(IsReferenceAssembly)' == 'true'">$(NoWarn);0436</NoWarn>
+    <HasReferenceAssembly Condition="'$(IsReferenceAssembly)' != 'true' AND Exists('..\ref\$(AssemblyName).Ref.csproj')">true</HasReferenceAssembly>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsPartialFacadeAssembly)'=='true'">
+  <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.GenFacades" Version="$(MicrosoftDotNetGenFacadesPackageVersion)" PrivateAssets="All" />
+
+    <ContractProjectReference Include="..\ref\$(AssemblyName).Ref.csproj" 
+                              Condition="'@(ContractProjectReference)' == '' AND '$(HasReferenceAssembly)' == 'true'" />
   </ItemGroup>
 
-  <!--This is where we tell GenFacades what Ref assembly to look for.-->
-  <Target Condition="'$(IsPartialFacadeAssembly)'=='true' AND '$(IsReferenceAssembly)' != 'true'" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild">
-    <ItemGroup Condition="'$(AssemblyName)'!='System.ServiceModel'">
-      <ProjectReference Include="..\ref\$(AssemblyName).Ref.csproj">
+  <Target Condition="'@(ContractProjectReference)' == ''" Name="EnsureContractProjectReference" >
+    <!-- If no ContractProjectReference was specified, use a compatible TargetFramework from this project -->
+    <ItemGroup>
+      <!-- Exclude the current TargetFramework to find the next closest TargetFramework-->
+      <_OtherTargetFrameworks Include="$(TargetFrameworks)" Exclude="$(TargetFramework)" />
+      <_SelfProjectReference Include="$(MSBuildProjectFile)" TargetFrameworks="@(_OtherTargetFrameworks)" />
+    </ItemGroup>
+
+    <!-- Find the next closest reference -->
+    <GetReferenceNearestTargetFrameworkTask AnnotatedProjectReferences="@(_SelfProjectReference)"
+                                            CurrentProjectTargetFramework="$(TargetFramework)"
+                                            CurrentProjectTargetPlatform="$(TargetPlatformMoniker)"
+                                            CurrentProjectName="$(MSBuildProjectName)"
+                                            FallbackTargetFrameworks="$(AssetTargetFallback)">
+      <Output ItemName="_AnnotatedSelfProjectReference" TaskParameter="AssignedProjects" />
+    </GetReferenceNearestTargetFrameworkTask>
+
+    <Error Text="Cannot locate a compatible reference from '@(_OtherTargetFrameworks)' for TargetFramework '$(TargetFramework)'.  Cannot generate a facade without a reference as input."
+           Condition="'%(_AnnotatedSelfProjectReference.NearestTargetFramework)' == ''" />
+
+    <ItemGroup>
+      <ContractProjectReference Include="@(_AnnotatedSelfProjectReference)" SetTargetFramework="TargetFramework=%(_AnnotatedSelfProjectReference.NearestTargetFramework)" />
+    </ItemGroup>
+  </Target>
+  
+  <!-- Reference ContractProjectReference as the contract for facade generation, if no contract has been provided.-->
+  <Target Condition="'@(ResolvedMatchingContract)' == ''" Name="ResolveMatchingContract" AfterTargets="ResolvePackageDependenciesForBuild" DependsOnTargets="EnsureContractProjectReference">
+    <ItemGroup>
+      <ProjectReference Include="@(ContractProjectReference)">
         <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
         <OutputItemType>ResolvedMatchingContract</OutputItemType>
       </ProjectReference>
     </ItemGroup>
   </Target>
   
-  <!-- This property will break if we're packing a global tool, so skip it in that case. -->
-  <PropertyGroup Condition="'$(PackAsTool)' != 'true'">
+  <PropertyGroup Condition="'$(HasReferenceAssembly)' == 'true'">
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificBuildOutput);AddReferenceAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
-  <Target Condition="'$(IsPartialFacadeAssembly)'=='true'" Name="AddReferenceAssemblyToPackage" DependsOnTargets="ResolveReferences">
+  <Target Name="AddReferenceAssemblyToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
       <TfmSpecificPackageFile Include="@(ResolvedMatchingContract)" PackagePath="ref/$(TargetFramework)" />
     </ItemGroup>

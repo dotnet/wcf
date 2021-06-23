@@ -9,6 +9,11 @@
 
   <!-- Override CoreCompile so that we don't build anything. -->
   <Target Name="CoreCompile" />
+  
+  <!-- Override GetTargetFrameworksWithPlatformForSingleTargetFramework so that we don't satisfy project references. 
+       Workaround https://github.com/dotnet/msbuild/issues/6603 -->
+  <Target Name="GetTargetFrameworksWithPlatformForSingleTargetFramework" />
+
   <!-- Since we are't building, make sure the outputgroups used by packaging will be empty -->
   <Target Name="BuiltProjectOutputGroup">
     <ItemGroup>

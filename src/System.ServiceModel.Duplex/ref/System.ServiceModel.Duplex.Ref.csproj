@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'" >
+    <Compile Remove="System.ServiceModel.Duplex.cs" />
     <Reference Include="System" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
