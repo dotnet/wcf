@@ -44,10 +44,10 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
     - template: /eng/common/templates/job/onelocbuild.yml
       parameters:
-        CreatePr: false
+        MirrorRepo: wcf
         LclSource: lclFilesfromPackage
         LclPackageId: 'LCL-JUNO-PROD-WCF'
   - template: /eng/common/templates/jobs/jobs.yml
