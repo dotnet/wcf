@@ -635,7 +635,7 @@ namespace System.ServiceModel
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false, Inherited = false)]
     public partial class MessageHeaderAttribute : MessageContractMemberAttribute
     {
-        public bool MustUnderstand { get { return default; } set { } } 
+        public bool MustUnderstand { get { return default; } set { } }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(384), AllowMultiple = false, Inherited = false)]
     public sealed partial class MessageHeaderArrayAttribute : MessageHeaderAttribute
@@ -850,7 +850,27 @@ namespace System.ServiceModel
         public XmlSerializerFormatAttribute() { }
         public System.ServiceModel.OperationFormatStyle Style { get { return default; } set { } }
         public bool SupportFaults { get { return default; } set { } }
-        public OperationFormatUse Use{ get { throw null; } set { } }
+        public OperationFormatUse Use { get { throw null; } set { } }
+    }
+    public sealed partial class InstanceContext : System.ServiceModel.Channels.CommunicationObject, System.ServiceModel.IExtensibleObject<System.ServiceModel.InstanceContext>
+    {
+        public InstanceContext(object implementation) { }
+        protected override System.TimeSpan DefaultCloseTimeout { get { return default(System.TimeSpan); } }
+        protected override System.TimeSpan DefaultOpenTimeout { get { return default(System.TimeSpan); } }
+        public System.Threading.SynchronizationContext SynchronizationContext { get { return default(System.Threading.SynchronizationContext); } set { } }
+        public System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext> Extensions { get { return default(System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext>); } }
+        public object GetServiceInstance(System.ServiceModel.Channels.Message message) { return default(object); }
+        protected override void OnAbort() { }
+        protected override System.IAsyncResult OnBeginClose(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        protected override System.IAsyncResult OnBeginOpen(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
+        protected override void OnClose(System.TimeSpan timeout) { }
+        protected override void OnClosed() { }
+        protected override void OnEndClose(System.IAsyncResult result) { }
+        protected override void OnEndOpen(System.IAsyncResult result) { }
+        protected override void OnFaulted() { }
+        protected override void OnOpen(System.TimeSpan timeout) { }
+        protected override void OnOpened() { }
+        protected override void OnOpening() { }
     }
 }
 namespace System.ServiceModel.Channels
@@ -1749,6 +1769,7 @@ namespace System.ServiceModel.Dispatcher
         internal ClientRuntime() { }
         public System.Collections.Generic.SynchronizedCollection<IChannelInitializer> ChannelInitializers { get { return default; } }
         public System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.IClientMessageInspector> ClientMessageInspectors { get { return default; } }
+        public System.ServiceModel.Dispatcher.DispatchRuntime CallbackDispatchRuntime { get { return default; } }
         public System.Collections.Generic.ICollection<System.ServiceModel.Dispatcher.ClientOperation> ClientOperations { get { return default; } }
         public System.Type ContractClientType { get { return default; } set { } }
         public string ContractName { get { return default; } }
@@ -1774,6 +1795,7 @@ namespace System.ServiceModel.Dispatcher
     public sealed partial class DispatchRuntime
     {
         internal DispatchRuntime() { }
+        public System.Collections.Generic.SynchronizedCollection<IDispatchMessageInspector> MessageInspectors { get { return default; } }
     }
     public partial class EndpointDispatcher
     {
@@ -1798,6 +1820,11 @@ namespace System.ServiceModel.Dispatcher
     {
         void AfterReceiveReply(ref System.ServiceModel.Channels.Message reply, object correlationState);
         object BeforeSendRequest(ref System.ServiceModel.Channels.Message request, System.ServiceModel.IClientChannel channel);
+    }
+    public interface IDispatchMessageInspector
+    {
+        object AfterReceiveRequest(ref Message request, IClientChannel channel, System.ServiceModel.InstanceContext instanceContext);
+        void BeforeSendReply(ref Message reply, object correlationState);
     }
     public partial interface IClientOperationSelector
     {

@@ -26,6 +26,7 @@ namespace System.ServiceModel.Dispatcher
         private Type _type;
         private DispatchOperation _unhandled;
         private SharedRuntimeState _shared;
+        private SynchronizedCollection<IDispatchMessageInspector> _messageInspectors;
 
         internal DispatchRuntime(ClientRuntime proxyRuntime, SharedRuntimeState shared)
             : this(shared)
@@ -42,6 +43,7 @@ namespace System.ServiceModel.Dispatcher
             _shared = shared;
 
             _operations = new OperationCollection(this);
+            _messageInspectors = NewBehaviorCollection<IDispatchMessageInspector>();
             _synchronizationContext = ThreadBehavior.GetCurrentSynchronizationContext();
             _automaticInputSessionShutdown = true;
 
@@ -186,6 +188,11 @@ namespace System.ServiceModel.Dispatcher
                     _type = value;
                 }
             }
+        }
+
+        public SynchronizedCollection<IDispatchMessageInspector> MessageInspectors
+        {
+            get { return _messageInspectors; }
         }
 
         public DispatchOperation UnhandledDispatchOperation

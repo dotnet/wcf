@@ -51,24 +51,4 @@ namespace System.ServiceModel
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected DuplexClientBase(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) { }
     }
-    public sealed partial class InstanceContext : System.ServiceModel.Channels.CommunicationObject, System.ServiceModel.IExtensibleObject<System.ServiceModel.InstanceContext>
-    {
-        public InstanceContext(object implementation) { }
-        protected override System.TimeSpan DefaultCloseTimeout { get { return default(System.TimeSpan); } }
-        protected override System.TimeSpan DefaultOpenTimeout { get { return default(System.TimeSpan); } }
-        public System.Threading.SynchronizationContext SynchronizationContext { get { return default(System.Threading.SynchronizationContext); } set { } }
-        public System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext> Extensions { get { return default(System.ServiceModel.IExtensionCollection<System.ServiceModel.InstanceContext>); } }
-        public object GetServiceInstance(System.ServiceModel.Channels.Message message) { return default(object); }
-        protected override void OnAbort() { }
-        protected override System.IAsyncResult OnBeginClose(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
-        protected override System.IAsyncResult OnBeginOpen(System.TimeSpan timeout, System.AsyncCallback callback, object state) { return default(System.IAsyncResult); }
-        protected override void OnClose(System.TimeSpan timeout) { }
-        protected override void OnClosed() { }
-        protected override void OnEndClose(System.IAsyncResult result) { }
-        protected override void OnEndOpen(System.IAsyncResult result) { }
-        protected override void OnFaulted() { }
-        protected override void OnOpen(System.TimeSpan timeout) { }
-        protected override void OnOpened() { }
-        protected override void OnOpening() { }
-    }
 }
