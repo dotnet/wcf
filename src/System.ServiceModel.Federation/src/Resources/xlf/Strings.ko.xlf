@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
+        <target state="translated">통신 개체 {0}이(가) {1} 상태입니다. 통신 개체는 열림 상태가 아닌 경우 통신에 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
+        <target state="translated">통신 개체 {0}은(는) Faulted 상태이기 때문에 통신에 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
+        <target state="translated">종료하는 중이라는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 자세한 오류 내용은 내부 예외를 참조하십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
+        <target state="translated">사용 중이어서 요청을 처리할 수 없다는 것을 나타내는 오류를 '{0}' 서버가 다시 보냈습니다. 나중에 다시 시도하세요. 자세한 오류 내용은 내부 예외를 참조하세요.</target>
         <note />
       </trans-unit>
     </body>
