@@ -46,11 +46,29 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.4.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.4.*"),
             } },
-            {new Version("5.0"), new List<ProjectDependency> {
+            {new Version("2.1"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.6.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.6.*"),
+            } },
+            {new Version("3.1"), new List<ProjectDependency> {
                 ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.7.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "4.7.*"    ),
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.7.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.7.*"),
+             } },
+            {new Version("5.0"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.8.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.8.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.8.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.8.*"),
+            } },
+            {new Version("6.0"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.9.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.9.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.9.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.9.*"),
             } }
         };
 
