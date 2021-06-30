@@ -4,102 +4,102 @@
     <body>
       <trans-unit id="ErrorDepenencySpecFormat">
         <source>Project dependency specification not formatted correctly: '{0}'.</source>
-        <target state="translated">Projektabhängigkeitsspezifikation nicht ordnungsgemäß formatiert: "{0}".</target>
+        <target state="new">Project dependency specification not formatted correctly: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingOptionsFromJsonFormat">
         <source>One or more errors where found while deserializing options:{0}</source>
-        <target state="translated">Mindestens ein Fehler beim Deserialisieren von Optionen: {0}</target>
+        <target state="new">One or more errors where found while deserializing options:{0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorFullPathNotAProjectFilePathFormat">
         <source>The specified path does not refer to a project file: '{0}.</source>
-        <target state="translated">Der angegebene Pfad verweist nicht auf eine Projektdatei: "{0}".</target>
+        <target state="new">The specified path does not refer to a project file: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidDependencyValue">
         <source>The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</source>
-        <target state="translated">Der angegebene Parameterwert "{0}" ist ungültig. Parametername: "{1}".</target>
+        <target state="new">The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidKeyOrValueNotFoundFormat">
         <source>The specifed key '{0}' is not valid for the option '{1}'.</source>
-        <target state="translated">Der angegebene Schlüssel "{0}" ist für die Option "{1}" ungültig.</target>
+        <target state="new">The specifed key '{0}' is not valid for the option '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidOptionValueFormat">
         <source>The value '{0}' specified for the option '{1}' is not valid.</source>
-        <target state="translated">Der für die Option "{0}" angegebene Wert "{1}" ist ungültig.</target>
+        <target state="new">The value '{0}' specified for the option '{1}' is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidProjectFormat">
         <source>The project format is incorrect.</source>
-        <target state="translated">Das Projektformat ist falsch.</target>
+        <target state="new">The project format is incorrect.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorItemNotFoundInCollectionFormat">
         <source>The option '{0}' doesn't have an item with the key '{1}'.</source>
-        <target state="translated">Die Option "{0}" verfügt nicht über ein Element mit dem Schlüssel "{1}".</target>
+        <target state="new">The option '{0}' doesn't have an item with the key '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorNotSupportedTargetFrameworkFormat">
         <source>The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</source>
-        <target state="translated">Das Zielframework "{0}" ist keine unterstützte .NET Core-, .NET Standard- oder .NET Framework-Version. Folgende Mindestversionen für das Framework werden unterstützt: netcoreapp{1}, netstandard{2} und net{3}.</target>
+        <target state="new">The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOnInvalidEnumSupportedValuesFormat">
         <source> The valid values are: {0}.</source>
-        <target state="translated"> Gültige Werte sind: {0}.</target>
+        <target state="new"> The valid values are: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyDeserializedFormat">
         <source>The option '{0}' has already been deserialized.</source>
-        <target state="translated">Die Option "{0}" wurde bereits deserialisiert.</target>
+        <target state="new">The option '{0}' has already been deserialized.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyRegisteredFormat">
         <source>The specified option '{0}' was already registered.</source>
-        <target state="translated">Die angegebene Option "{0}" wurde bereits registriert.</target>
+        <target state="new">The specified option '{0}' was already registered.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionDuplicateValueFormat">
         <source>The option '{0}' already contains the value '{1}'.</source>
-        <target state="translated">Die Option "{0}" enthält bereits den Wert "{1}".</target>
+        <target state="new">The option '{0}' already contains the value '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectFileAlreadyExistsFormat">
         <source>The specified project file '{0}' already exists.</source>
-        <target state="translated">Die angegebene Projektdatei "{0}" ist bereits vorhanden.</target>
+        <target state="new">The specified project file '{0}' already exists.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectReferenceMissingFilePathFormat">
         <source>The project reference specification '{0}' does not have a file path.</source>
-        <target state="translated">Die Projektverweisspezifikation "{0}" enthält keinen Dateipfad.</target>
+        <target state="new">The project reference specification '{0}' does not have a file path.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorTypeNotSupportedbyOptionFormat">
         <source>The type '{0}' is not supported by the '{1}' option.</source>
-        <target state="translated">Der Typ "{0}" wird durch die Option "{1}" nicht unterstützt.</target>
+        <target state="new">The type '{0}' is not supported by the '{1}' option.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResolvingProjectReferences">
         <source>Resolving project references ...</source>
-        <target state="translated">Projektverweise werden aufgelöst...</target>
+        <target state="new">Resolving project references ...</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningCannotResolveProjectReferences">
         <source>The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</source>
-        <target state="translated">Die Projektkonfiguration befindet sich offenbar in einem ungültigen Zustand. Stellen Sie sicher, dass das Projekt erstellt werden kann, sodass Projektverweise aufgelöst werden können.</target>
+        <target state="new">The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMultiFxOrNoSupportedDnxVersion">
         <source>The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</source>
-        <target state="translated">Im Projekt wird mehr als ein Zielframework oder eine nicht unterstützte .NET Core- oder .NET Standard-Zielversion angegeben.</target>
+        <target state="new">The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningUnrecognizedOptionFormat">
         <source>The specified option '{0}' is not recognized.</source>
-        <target state="translated">Die angegebene Option "{0}" wird nicht erkannt.</target>
+        <target state="new">The specified option '{0}' is not recognized.</target>
         <note />
       </trans-unit>
     </body>

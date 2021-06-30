@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="BootstrapErrorDisableReferences">
         <source>An error occurred while bootstrapping svcutil. This usually happens when processing references.  You might be able to work around this problem by not providing reference parameters, and manually removing any types redefined in the generated proxy code.</source>
-        <target state="translated">svcutil 的啟動程序期間發生錯誤。這通常發生在處理參考時。您可以不提供參考參數，並手動移除所產生的 Proxy 程式碼中重新定義的任何類型，來解決此問題。</target>
+        <target state="new">An error occurred while bootstrapping svcutil. This usually happens when processing references.  You might be able to work around this problem by not providing reference parameters, and manually removing any types redefined in the generated proxy code.</target>
         <note />
       </trans-unit>
       <trans-unit id="BootstrappingApplicationMsg">
         <source>Bootstrapping application ...</source>
-        <target state="translated">正在執行應用程式啟動程序...</target>
+        <target state="new">Bootstrapping application ...</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildingProjectMsg">
         <source>Building bootstrapper project ...</source>
-        <target state="translated">正在建置啟動載入器專案...</target>
+        <target state="new">Building bootstrapper project ...</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldNotFindEmbeddedResourceFormat">
         <source>Could not find embedded resource '{0}'</source>
-        <target state="translated">找不到內嵌資源 '{0}'。</target>
+        <target state="new">Could not find embedded resource '{0}'</target>
         <note />
       </trans-unit>
       <trans-unit id="CreatingProjectMsg">
         <source>Creating bootstrapper project ...</source>
-        <target state="translated">正在建立啟動載入器專案...</target>
+        <target state="new">Creating bootstrapper project ...</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotFindNuGetPackageFormat">
         <source>Unable to locate NuGet package '{0}'.</source>
-        <target state="translated">找不到 NuGet 套件 '{0}'。</target>
+        <target state="new">Unable to locate NuGet package '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvokingProjectMsg">
         <source>Invoking bootstrapper ...</source>
-        <target state="translated">正在叫用啟動載入器...</target>
+        <target state="new">Invoking bootstrapper ...</target>
         <note />
       </trans-unit>
       <trans-unit id="RestoringNuGetPackagesMsg">
         <source>Restoring NuGet packages for bootstrapper project ...</source>
-        <target state="translated">正在還原啟動載入器專案的 NuGet 套件...</target>
+        <target state="new">Restoring NuGet packages for bootstrapper project ...</target>
         <note />
       </trans-unit>
       <trans-unit id="TypesReuseDisabled">
         <source>Reusing types in referenced assemblies has been disabled.</source>
-        <target state="translated">已停用在已參考組件中重複使用類型。</target>
+        <target state="new">Reusing types in referenced assemblies has been disabled.</target>
         <note />
       </trans-unit>
     </body>
