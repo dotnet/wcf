@@ -21,7 +21,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
              {new Version("1.5"), new Version("1.0") },
              {new Version("1.6"), new Version("1.0") },
              {new Version("1.6.1"), new Version("1.1") },
-             {new Version("2.0"), new Version("2.0") }
+             {new Version("2.0"), new Version("2.0") },
+             {new Version("2.1"), new Version("3.0") }
          });
 
         internal static SortedDictionary<Version, List<ProjectDependency>> NetCoreVersionReferenceTable = new SortedDictionary<Version, List<ProjectDependency>>
@@ -46,6 +47,30 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.4.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.4.*"),
             } },
+            {new Version("2.1"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.6.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.6.*"),
+            } },
+            {new Version("2.2"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.6.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.6.*"),
+            } },
+            {new Version("3.0"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.6.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.6.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.6.*"),
+             } },
+            {new Version("3.1"), new List<ProjectDependency> {
+                ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.7.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Http", "4.7.*"    ),
+                ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.7.*"  ),
+                ProjectDependency.FromPackage("System.ServiceModel.Security", "4.7.*"),
+             } },
             {new Version("5.0"), new List<ProjectDependency> {
                 ProjectDependency.FromPackage("System.ServiceModel.Duplex", "4.7.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "4.7.*"    ),

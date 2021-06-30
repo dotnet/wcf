@@ -164,6 +164,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             targetFramework = "net5.0";
                         }
 
+                        if (targetFramework.StartsWith("net6.0-"))
+                        {
+                            targetFramework = "net6.0";
+                        }
+
                         msbuildProj._targetFrameworks.Add(targetFramework);
                     }
                 }
