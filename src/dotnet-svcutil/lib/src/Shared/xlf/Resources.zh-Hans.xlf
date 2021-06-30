@@ -4,102 +4,102 @@
     <body>
       <trans-unit id="ErrorDepenencySpecFormat">
         <source>Project dependency specification not formatted correctly: '{0}'.</source>
-        <target state="translated">项目依赖项规范的格式不正确: {0}。</target>
+        <target state="new">Project dependency specification not formatted correctly: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingOptionsFromJsonFormat">
         <source>One or more errors where found while deserializing options:{0}</source>
-        <target state="translated">反序列化选项时发现一个或多个错误: {0}</target>
+        <target state="new">One or more errors where found while deserializing options:{0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorFullPathNotAProjectFilePathFormat">
         <source>The specified path does not refer to a project file: '{0}.</source>
-        <target state="translated">指定路径不引用项目文件:“{0}”。</target>
+        <target state="new">The specified path does not refer to a project file: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidDependencyValue">
         <source>The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</source>
-        <target state="translated">指定的参数值“{0}”无效。参数名称:“{1}”。</target>
+        <target state="new">The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidKeyOrValueNotFoundFormat">
         <source>The specifed key '{0}' is not valid for the option '{1}'.</source>
-        <target state="translated">指定的密钥“{0}”对于选项“{1}”无效。</target>
+        <target state="new">The specifed key '{0}' is not valid for the option '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidOptionValueFormat">
         <source>The value '{0}' specified for the option '{1}' is not valid.</source>
-        <target state="translated">为选项“{1}”指定的值“{0}”无效。</target>
+        <target state="new">The value '{0}' specified for the option '{1}' is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidProjectFormat">
         <source>The project format is incorrect.</source>
-        <target state="translated">项目格式不正确。</target>
+        <target state="new">The project format is incorrect.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorItemNotFoundInCollectionFormat">
         <source>The option '{0}' doesn't have an item with the key '{1}'.</source>
-        <target state="translated">选项“{0}”不具有含密钥“{1}”的项。</target>
+        <target state="new">The option '{0}' doesn't have an item with the key '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorNotSupportedTargetFrameworkFormat">
         <source>The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</source>
-        <target state="translated">目标框架“{0}”不是受支持的 .Net Core、.NET Standard 或 .Net Framework 版本。受支持的最低框架版本如下: netcoreapp{1}、netstandard{2} 和 net{3}。</target>
+        <target state="new">The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOnInvalidEnumSupportedValuesFormat">
         <source> The valid values are: {0}.</source>
-        <target state="translated">有效值为: {0}。</target>
+        <target state="new"> The valid values are: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyDeserializedFormat">
         <source>The option '{0}' has already been deserialized.</source>
-        <target state="translated">选项“{0}”已被反序列化。</target>
+        <target state="new">The option '{0}' has already been deserialized.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyRegisteredFormat">
         <source>The specified option '{0}' was already registered.</source>
-        <target state="translated">已注册指定的选项“{0}”。</target>
+        <target state="new">The specified option '{0}' was already registered.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionDuplicateValueFormat">
         <source>The option '{0}' already contains the value '{1}'.</source>
-        <target state="translated">选项“{0}”已包含值“{1}”。</target>
+        <target state="new">The option '{0}' already contains the value '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectFileAlreadyExistsFormat">
         <source>The specified project file '{0}' already exists.</source>
-        <target state="translated">指定的项目文件“{0}”已存在。</target>
+        <target state="new">The specified project file '{0}' already exists.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectReferenceMissingFilePathFormat">
         <source>The project reference specification '{0}' does not have a file path.</source>
-        <target state="translated">项目引用规范“{0}”没有文件路径。</target>
+        <target state="new">The project reference specification '{0}' does not have a file path.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorTypeNotSupportedbyOptionFormat">
         <source>The type '{0}' is not supported by the '{1}' option.</source>
-        <target state="translated">“{1}”选项不支持类型“{0}”。</target>
+        <target state="new">The type '{0}' is not supported by the '{1}' option.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResolvingProjectReferences">
         <source>Resolving project references ...</source>
-        <target state="translated">正在解析项目引用...</target>
+        <target state="new">Resolving project references ...</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningCannotResolveProjectReferences">
         <source>The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</source>
-        <target state="translated">项目配置似乎不处于有效状态。请确保可以生成项目，以便可以解析项目引用。</target>
+        <target state="new">The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMultiFxOrNoSupportedDnxVersion">
         <source>The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</source>
-        <target state="translated">项目指定多个目标框架，或不以支持的 .NET Core 或 .NET Standard 版本为目标。</target>
+        <target state="new">The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningUnrecognizedOptionFormat">
         <source>The specified option '{0}' is not recognized.</source>
-        <target state="translated">无法识别指定的选项“{0}”。</target>
+        <target state="new">The specified option '{0}' is not recognized.</target>
         <note />
       </trans-unit>
     </body>

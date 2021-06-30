@@ -4,69 +4,69 @@
     <body>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="translated">Jeśli masz dostęp do usługi Windows (R) Communication Foundation, upewnij się, że włączono publikowanie metadanych pod określonym adresem. Aby uzyskać pomoc dotyczącą publikowania metadanych, zapoznaj się z dokumentacją w sieci MSDN na stronie http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateAMetadataExchangeClientFormat">
         <source>Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</source>
-        <target state="translated">Nie można uzyskać metadanych z lokalizacji {0}.  Schemat identyfikatora URI „{1}” domyślnie nie jest obsługiwany.</target>
+        <target state="new">Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFileFormat">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</source>
-        <target state="translated">Ścieżka danych wejściowych „{0}” wygląda na katalog. Dane wejściowe muszą być adresami URL albo ścieżkami plików.</target>
+        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFoundFormat">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="translated">Nie można znaleźć katalogu „{0}”. Sprawdź, czy katalog istnieje i czy masz odpowiednie uprawnienia umożliwiające jego odczyt.</target>
+        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrFileAlreadyExistsFormat">
         <source>The file '{0}' already exists.</source>
-        <target state="translated">Plik „{0}” już istnieje.</target>
+        <target state="new">The file '{0}' already exists.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidUriFormat">
         <source>The specified URI '{0}' does not appear to be valid.</source>
-        <target state="translated">Określony identyfikator URI „{0}” wydaje się nieprawidłowy.</target>
+        <target state="new">The specified URI '{0}' does not appear to be valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFoundFormat">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="translated">Ścieżka wejściowa „{0}” nie wydaje się odwoływać do żadnego istniejącego pliku</target>
+        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotXmlMetadataFileFormat">
         <source>The specified path '{0}' does not appear to refer to an XML metadata file.</source>
-        <target state="translated">Wygląda na to, że określona ścieżka „{0}” nie odwołuje się do pliku metadanych XML.</target>
+        <target state="new">The specified path '{0}' does not appear to refer to an XML metadata file.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceMetadataNotImported">
         <source>The service metadata has not been imported yet.</source>
-        <target state="translated">Metadane usługi nie zostały jeszcze zaimportowane.</target>
+        <target state="new">The service metadata has not been imported yet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToConnectToUriFormat">
         <source>Cannot obtain Metadata from the URI: {0} 
  Check the URI and try again.{1}</source>
-        <target state="translated">Nie można uzyskać metadanych z identyfikatora URI: {0} 
- Sprawdź identyfikator URI i spróbuj ponownie.{1}</target>
+        <target state="new">Cannot obtain Metadata from the URI: {0} 
+ Check the URI and try again.{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToCreateUniqueFileNameFormat">
         <source>Too many files are being created with the prefix '{0}'.</source>
-        <target state="translated">Jest tworzonych zbyt wiele plików z prefiksem „{0}”.</target>
+        <target state="new">Too many files are being created with the prefix '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToResolveSchemaReferenceFormat">
         <source>Unable to resolve schema reference '{0}'.</source>
-        <target state="translated">Nie można rozpoznać odwołania do schematu „{0}”.</target>
+        <target state="new">Unable to resolve schema reference '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUrlNotAllowedOnMultipleInputsFormat">
         <source>"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</source>
-        <target state="translated">„Niedozwolony adres URL: „{0}”.  W przypadku określenia wielu danych wejściowych dozwolone są tylko pliki dokumentów metadanych.”</target>
+        <target state="new">"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</target>
         <note />
       </trans-unit>
     </body>

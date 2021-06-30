@@ -4,102 +4,102 @@
     <body>
       <trans-unit id="ErrorDepenencySpecFormat">
         <source>Project dependency specification not formatted correctly: '{0}'.</source>
-        <target state="translated">프로젝트 종속성 사양의 형식이 올바르지 않습니다. '{0}'.</target>
+        <target state="new">Project dependency specification not formatted correctly: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingOptionsFromJsonFormat">
         <source>One or more errors where found while deserializing options:{0}</source>
-        <target state="translated">옵션을 역직렬화하는 동안 하나 이상의 오류 발생: {0}</target>
+        <target state="new">One or more errors where found while deserializing options:{0}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorFullPathNotAProjectFilePathFormat">
         <source>The specified path does not refer to a project file: '{0}.</source>
-        <target state="translated">지정된 경로가 프로젝트 파일 '{0}'을(를) 참조하지 않습니다.</target>
+        <target state="new">The specified path does not refer to a project file: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidDependencyValue">
         <source>The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</source>
-        <target state="translated">지정된 매개 변수 값 '{0}'이(가) 잘못되었습니다. 매개 변수 이름은 '{1}'입니다.</target>
+        <target state="new">The specified parameter value '{0}' is not valid. Parameter name: '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidKeyOrValueNotFoundFormat">
         <source>The specifed key '{0}' is not valid for the option '{1}'.</source>
-        <target state="translated">지정된 키 '{0}'이(가) '{1}' 옵션에 대해 유효하지 않습니다.</target>
+        <target state="new">The specifed key '{0}' is not valid for the option '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidOptionValueFormat">
         <source>The value '{0}' specified for the option '{1}' is not valid.</source>
-        <target state="translated">'{1}' 옵션에 대해 지정된 값 '{0}'이(가) 잘못되었습니다.</target>
+        <target state="new">The value '{0}' specified for the option '{1}' is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidProjectFormat">
         <source>The project format is incorrect.</source>
-        <target state="translated">프로젝트 형식이 잘못되었습니다.</target>
+        <target state="new">The project format is incorrect.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorItemNotFoundInCollectionFormat">
         <source>The option '{0}' doesn't have an item with the key '{1}'.</source>
-        <target state="translated">'{0}' 옵션에 '{1}' 키가 포함된 항목이 없습니다.</target>
+        <target state="new">The option '{0}' doesn't have an item with the key '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorNotSupportedTargetFrameworkFormat">
         <source>The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</source>
-        <target state="translated">대상 프레임워크 '{0}'이(가) 지원되는 .NET Core, .NET Standard 또는 .NET Framework 버전이 아닙니다. 지원되는 최소 프레임워크 버전은 netcoreapp{1}, netstandard{2} 및 net{3}입니다.</target>
+        <target state="new">The target framework '{0}' is not a supported .NET Core, .NET Standard, or a .NET Framework version. The minimum supported framework versions are as follows: netcoreapp{1}, netstandard{2} and net{3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOnInvalidEnumSupportedValuesFormat">
         <source> The valid values are: {0}.</source>
-        <target state="translated"> 유효한 값은 {0}입니다.</target>
+        <target state="new"> The valid values are: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyDeserializedFormat">
         <source>The option '{0}' has already been deserialized.</source>
-        <target state="translated">'{0}' 옵션이 이미 역직렬화되었습니다.</target>
+        <target state="new">The option '{0}' has already been deserialized.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionAlreadyRegisteredFormat">
         <source>The specified option '{0}' was already registered.</source>
-        <target state="translated">지정된 옵션 '{0}'이(가) 이미 등록되었습니다.</target>
+        <target state="new">The specified option '{0}' was already registered.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorOptionDuplicateValueFormat">
         <source>The option '{0}' already contains the value '{1}'.</source>
-        <target state="translated">'{0}' 옵션에 '{1}' 값이 이미 포함되어 있습니다.</target>
+        <target state="new">The option '{0}' already contains the value '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectFileAlreadyExistsFormat">
         <source>The specified project file '{0}' already exists.</source>
-        <target state="translated">지정한 프로젝트 파일 '{0}'이(가) 이미 있습니다.</target>
+        <target state="new">The specified project file '{0}' already exists.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorProjectReferenceMissingFilePathFormat">
         <source>The project reference specification '{0}' does not have a file path.</source>
-        <target state="translated">프로젝트 참조 사양 '{0}'에 파일 경로가 없습니다.</target>
+        <target state="new">The project reference specification '{0}' does not have a file path.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorTypeNotSupportedbyOptionFormat">
         <source>The type '{0}' is not supported by the '{1}' option.</source>
-        <target state="translated">형식 '{0}'은(는) '{1}' 옵션에서 지원하지 않습니다.</target>
+        <target state="new">The type '{0}' is not supported by the '{1}' option.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResolvingProjectReferences">
         <source>Resolving project references ...</source>
-        <target state="translated">프로젝트 참조를 확인하는 중...</target>
+        <target state="new">Resolving project references ...</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningCannotResolveProjectReferences">
         <source>The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</source>
-        <target state="translated">프로젝트 구성이 유효한 상태가 아닌 것 같습니다. 프로젝트 참조를 확인할 수 있도록 프로젝트를 빌드할 수 있는지 확인하세요.</target>
+        <target state="new">The project configuration doesn't seem to be in a valid state. Please ensure the project can be built so project references can be resolved.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMultiFxOrNoSupportedDnxVersion">
         <source>The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</source>
-        <target state="translated">프로젝트가 여러 대상 프레임워크를 지정하거나, 지원되는 .NET Core 또는 .NET Standard 버전을 대상으로 하지 않습니다.</target>
+        <target state="new">The project specifies multiple target frameworks or does not target a supported .NET Core or .NET Standard version.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningUnrecognizedOptionFormat">
         <source>The specified option '{0}' is not recognized.</source>
-        <target state="translated">지정된 옵션 '{0}'을(를) 인식할 수 없습니다.</target>
+        <target state="new">The specified option '{0}' is not recognized.</target>
         <note />
       </trans-unit>
     </body>
