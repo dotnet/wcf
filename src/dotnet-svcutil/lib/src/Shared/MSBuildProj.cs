@@ -156,7 +156,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (targetFrameworkElements.Count() > 0)
                 {
                     // If property is specified more than once, MSBuild will resolve it by overwriting it with the last value.
-                    var targetFramework = targetFrameworkElements.Last().Value.Trim();
+                    var targetFramework = targetFrameworkElements.Last().Value.Trim().ToLowerInvariant();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
                         var tfx = targetFramework.Split('-');
