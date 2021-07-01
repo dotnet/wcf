@@ -4,422 +4,422 @@
     <body>
       <trans-unit id="ArgumentCannotBeEmptyString">
         <source>The argument must be a non-empty string.</source>
-        <target state="translated">Argument musí být neprázdný řetězec.</target>
+        <target state="new">The argument must be a non-empty string.</target>
         <note />
       </trans-unit>
       <trans-unit id="BadEncryptionState">
         <source>The EncryptedData or EncryptedKey is in an invalid state for this operation.</source>
-        <target state="translated">Třída EncryptedData nebo EncryptedKey je pro tuto operaci v neplatném stavu.</target>
+        <target state="new">The EncryptedData or EncryptedKey is in an invalid state for this operation.</target>
         <note />
       </trans-unit>
       <trans-unit id="BufferQuotaExceededReadingBase64">
         <source>Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</source>
-        <target state="translated">Nelze dokončit načtení dat Base64, protože byla překročena daná kvóta vyrovnávací paměti. Kvóta vyrovnávací paměti: {0}. Zvažte možnost zvýšit kvótu MaxReceivedMessageSize ve třídě TransportBindingElement. Poznámka: Příliš vysoká hodnota MaxReceivedMessageSize způsobí, že do vyrovnávací paměti bude uložena objemná zpráva, a může systém vystavit útokům DOS.</target>
+        <target state="new">Unable to finish reading Base64 data as the given buffer quota has been exceeded. Buffer quota: {0}. Consider increasing the MaxReceivedMessageSize quota on the TransportBindingElement. Please note that a very high value for MaxReceivedMessageSize will result in buffering a large message and might open the system to DOS attacks.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotFindCert">
         <source>Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</source>
-        <target state="translated">Nelze najít certifikát X.509 pomocí kritérií hledání: StoreName {0}, StoreLocation {1}, FindType {2}, FindValue {3}.</target>
+        <target state="new">Unable to find X.509 certificate using search criteria StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotReadKeyIdentifierClause">
         <source>Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</source>
-        <target state="translated">Nelze přečíst klauzuli KeyIdentifierClause z elementu {0} s oborem názvů {1}. Vlastní klauzule KeyIdentifierClause vyžadují vlastní serializátory SecurityTokenSerializers. Příklady naleznete v sadě SDK.</target>
+        <target state="new">Cannot read KeyIdentifierClause from element '{0}' with namespace '{1}'.  Custom KeyIdentifierClauses require custom SecurityTokenSerializers, please refer to the SDK for examples.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotReadToken">
         <source>Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</source>
-        <target state="translated">Nelze přečíst token z elementu {0} s oborem názvů {1} pro BinarySecretSecurityToken s typem ValueType {2}. Je-li očekáváno, že tento element bude platný, ujistěte se, že zabezpečení je nakonfigurováno tak, aby využívalo tokeny se zadaným názvem, oborem názvů a typem hodnoty.</target>
+        <target state="new">Cannot read the token from the '{0}' element with the '{1}' namespace for BinarySecretSecurityToken, with a '{2}' ValueType. If this element is expected to be valid, ensure that security is configured to consume tokens with the name, namespace and value type specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="CannotValidateSecurityTokenType">
         <source>The security token authenticator '{0}' cannot validate a token of type '{1}'.</source>
-        <target state="translated">Ověřovací data tokenu zabezpečení {0} nemohou ověřit token typu {1}.</target>
+        <target state="new">The security token authenticator '{0}' cannot validate a token of type '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="DidNotFindKeyIdentifierInReference">
         <source>The SecurityTokenReference does not contain a KeyIdentifier. </source>
-        <target state="translated">SecurityTokenReference neobsahuje KeyIdentifier. </target>
+        <target state="new">The SecurityTokenReference does not contain a KeyIdentifier. </target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorDeserializingKeyIdentifierClause">
         <source>There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</source>
-        <target state="translated">Při deserializaci klauzule identifikátoru klíče zabezpečení kódu XML došlo k chybě. Další informace naleznete u vnitřní výjimky.</target>
+        <target state="new">There was an error deserializing the security key identifier clause XML. Please see the inner exception for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorSerializingKeyIdentifier">
         <source>There was an error serializing the security key identifier. Please see the inner exception for more details.</source>
-        <target state="translated">Při serializaci identifikátoru klíče zabezpečení došlo k chybě. Další informace naleznete u vnitřní výjimky.</target>
+        <target state="new">There was an error serializing the security key identifier. Please see the inner exception for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorSerializingKeyIdentifierClause">
         <source>There was an error serializing the security key identifier clause. Please see the inner exception for more details.</source>
-        <target state="translated">Při deserializaci klauzule identifikátoru klíče zabezpečení došlo k chybě. Další informace naleznete u vnitřní výjimky.</target>
+        <target state="new">There was an error serializing the security key identifier clause. Please see the inner exception for more details.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExpectedElementMissing">
         <source>The expected '{0}' element with the '{1}' namespace is missing.</source>
-        <target state="translated">Očekávaný element {0} s oborem názvů {1} chybí.</target>
+        <target state="new">The expected '{0}' element with the '{1}' namespace is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="FoundMultipleCerts">
         <source>Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</source>
-        <target state="translated">Bylo nalezeno více certifikátů X.509 pomocí následujících kritérií hledání: StoreName {0}, StoreLocation {1}, FindType {2}, FindValue {3}. Zadejte přesnější hledanou hodnotu.</target>
+        <target state="new">Found multiple X.509 certificates using the following search criteria: StoreName '{0}', StoreLocation '{1}', FindType '{2}', FindValue '{3}'.  Provide a more specific find value.</target>
         <note />
       </trans-unit>
       <trans-unit id="ID0023">
         <source>ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</source>
-        <target state="translated">ID0023: Nepodařilo se vytvořit instanci {0} z konfigurace. Byl zadán vlastní element konfigurace, ale nebyla naimplementována metoda LoadCustomConfiguration. Přepište metodu LoadCustomConfiguration tak, aby dokázala načítat vlastní konfigurace.</target>
+        <target state="new">ID0023: Failed to create an instance of '{0}' from configuration. A custom configuration element was specified, but the method LoadCustomConfiguration was not implemented. Override LoadCustomConfiguration to handle custom configuration loading.</target>
         <note />
       </trans-unit>
       <trans-unit id="ID4140">
         <source>ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</source>
-        <target state="translated">ID4140: Tento výraz Assertion nelze znovu vygenerovat jako nezpracovaný kód XML. To může být způsobeno tím, že výraz nebyl přečten z kódu XML nebo že se po přečtení změnil, jak to naznačuje změněná vlastnost Id.</target>
+        <target state="new">ID4140: This Assertion cannot be re-emitted as raw XML. This may be because it was not read from XML in the first place, or because Assertion was changed after it was read, as indicated by a changed Id property.</target>
         <note />
       </trans-unit>
       <trans-unit id="ImpersonationLevelNotSupported">
         <source>The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</source>
-        <target state="translated">Režimy ověřování pomocí protokolu Kerberos nepodporují úroveň zosobnění {0}. Zadejte identifikaci nebo zosobnění.</target>
+        <target state="new">The athentication modes using Kerberos do not support the impersonation level '{0}'. Specify identification or impersonation.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAsyncResult">
         <source>Invalid AsyncResult.</source>
-        <target state="translated">Neplatný výsledek AsyncResult</target>
+        <target state="new">Invalid AsyncResult.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDataReferenceInReferenceList">
         <source>The data reference '{0}' in encryption reference list is not valid.</source>
-        <target state="translated">Odkaz na data {0} v seznamu odkazů šifrování není platný.</target>
+        <target state="new">The data reference '{0}' in encryption reference list is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidX509RawData">
         <source>Invalid binary representation of an X.509 certificate.</source>
-        <target state="translated">Neplatná binární reprezentace certifikátu X.509</target>
+        <target state="new">Invalid binary representation of an X.509 certificate.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidXmlQualifiedName">
         <source>An Xml qualified name was expected. '{0}' was found.</source>
-        <target state="translated">Byl očekáván kvalifikovaný název XML. Nalezen byl název {0}.</target>
+        <target state="new">An Xml qualified name was expected. '{0}' was found.</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyIdentifierCannotCreateKey">
         <source>This SecurityKeyIdentifier does not have any clause that can create a key.</source>
-        <target state="translated">Tento identifikátor SecurityKeyIdentifier neobsahuje žádnou klauzuli, která by mohla vytvořit klíč.</target>
+        <target state="new">This SecurityKeyIdentifier does not have any clause that can create a key.</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyIdentifierClauseDoesNotSupportKeyCreation">
         <source>This SecurityKeyIdentifierClause does not support key creation.</source>
-        <target state="translated">Tato klauzule SecurityKeyIdentifierClause nepodporuje vytváření klíčů.</target>
+        <target state="new">This SecurityKeyIdentifierClause does not support key creation.</target>
         <note />
       </trans-unit>
       <trans-unit id="KeyLengthMustBeMultipleOfEight">
         <source>Key length '{0}' is not a multiple of 8 for symmetric keys.</source>
-        <target state="translated">Délka klíče {0} není násobkem čísla 8 pro symetrické klíče.</target>
+        <target state="new">Key length '{0}' is not a multiple of 8 for symmetric keys.</target>
         <note />
       </trans-unit>
       <trans-unit id="LengthMustBeGreaterThanZero">
         <source>The length of this argument must be greater than 0.</source>
-        <target state="translated">Délka tohoto argumentu musí být větší než 0.</target>
+        <target state="new">The length of this argument must be greater than 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="LocalIdCannotBeEmpty">
         <source>The localId cannot be empty. Specify a valid 'localId'.</source>
-        <target state="translated">Hodnota localId nemůže být prázdná. Zadejte platnou hodnotu localId.</target>
+        <target state="new">The localId cannot be empty. Specify a valid 'localId'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleKeyIdentifiersInReference">
         <source>The SecurityTokenReference contains multiple KeyIdentifier elements.</source>
-        <target state="translated">SecurityTokenReference obsahuje několik elementů KeyIdentifier.</target>
+        <target state="new">The SecurityTokenReference contains multiple KeyIdentifier elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSamlAuthorityBindingsInReference">
         <source>The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</source>
-        <target state="translated">Odkaz SecurityTokenReference na kontrolní výraz SAML obsahuje několik elementů AuthorityBinding.</target>
+        <target state="new">The SecurityTokenReference to the SAML assertion contains multiple AuthorityBinding elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyIdentifierClauseFound">
         <source>No clause of type '{0}' was found in the SecurityKeyIdentifier.</source>
-        <target state="translated">V identifikátoru SecurityKeyIdentifier nebyla nalezena žádná klauzule typu {0}.</target>
+        <target state="new">No clause of type '{0}' was found in the SecurityKeyIdentifier.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeyInfoClausesToWrite">
         <source>The SecurityKeyIdentifier has no key identifier clauses to write.</source>
-        <target state="translated">SecurityKeyIdentifier nemá žádné klazule identifikátoru klíče k zápisu.</target>
+        <target state="new">The SecurityKeyIdentifier has no key identifier clauses to write.</target>
         <note />
       </trans-unit>
       <trans-unit id="ObjectIsReadOnly">
         <source>The object is read-only.</source>
-        <target state="translated">Objekt je určen jen pro čtení.</target>
+        <target state="new">The object is read-only.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProvidedNetworkCredentialsForKerberosHasInvalidUserName">
         <source>The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</source>
-        <target state="translated">Přihlašovací údaje NetworkCredentials, které byly zadány pro token protokolu Kerberos, neobsahují platné jméno UserName.</target>
+        <target state="new">The NetworkCredentials provided for the Kerberos Token does not have a valid UserName.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReferenceListCannotBeEmpty">
         <source>The ReferenceList element must have at least one DataReference or KeyReference.</source>
-        <target state="translated">Element ReferenceList musí mít alespoň jeden odkaz DataReference nebo KeyReference.</target>
+        <target state="new">The ReferenceList element must have at least one DataReference or KeyReference.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredAttributeMissing">
         <source>Attribute '{0}' is required on element '{1}'.</source>
-        <target state="translated">V elementu {1} je vyžadován atribut {0}.</target>
+        <target state="new">Attribute '{0}' is required on element '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIDIsInvalid">
         <source>The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</source>
-        <target state="translated">Identifikátor assertionId {0} pro SamlAssertion musí začínat písmenem nebo znakem _.</target>
+        <target state="new">The 'assertionId' '{0}' for a SamlAssertion must start with a letter or '_'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIdRequired">
         <source>The 'assertionId' for a SamlAssertion can not be null or empty.</source>
-        <target state="translated">Identifikátor assertionId pro SamlAssertion nemůže být null ani prázdný.</target>
+        <target state="new">The 'assertionId' for a SamlAssertion can not be null or empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionIssuerRequired">
         <source>The 'Issuer' specified for a SamlAssertion cannot be null or empty.</source>
-        <target state="translated">Hodnota Issuer zadaná pro SamlAssertion nemůže být null ani prázdná.</target>
+        <target state="new">The 'Issuer' specified for a SamlAssertion cannot be null or empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingIssuerAttributeOnRead">
         <source>The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</source>
-        <target state="translated">Čtená hodnota Issuer pro SamlAssertion chybí nebo její délka je 0.</target>
+        <target state="new">The 'Issuer' for the SamlAssertion being read is missing or is of length 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingMajorVersionAttributeOnRead">
         <source>The MajorVersion for the SamAssertion being read is missing or is of length 0.</source>
-        <target state="translated">Čtená hodnota MajorVersion pro SamlAssertion chybí nebo její délka je 0.</target>
+        <target state="new">The MajorVersion for the SamAssertion being read is missing or is of length 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionMissingMinorVersionAttributeOnRead">
         <source>TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</source>
-        <target state="translated">Čtená hodnota MinorVersion pro SamlAssertion chybí nebo její délka je 0.</target>
+        <target state="new">TheMinorVersion for the SamlAssertion being read is missing or is of length 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionRequireOneStatement">
         <source>A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</source>
-        <target state="translated">SamlAssertion vyžaduje alespoň jeden příkaz. Ujistěte se, že jste do výrazu SamlAssertion, který vytváříte, přidali alespoň jeden příkaz SamlStatement.</target>
+        <target state="new">A SamlAssertion requires at least one statement.  Ensure that you have added at least one SamlStatement to the SamlAssertion you are creating.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLAssertionRequireOneStatementOnRead">
         <source>The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</source>
-        <target state="translated">Čtený výraz SamlAssertion neobsahuje žádný příkaz SamlStatement. SamlAssertion musí obsahovat alespoň jeden výraz SamlStatement.</target>
+        <target state="new">The SamlAssertion being read did not contain any SamlStatement.  A SamlAssertion must contain at least one SamlStatement.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLElementNotRecognized">
         <source>The {0} element is not supported.</source>
-        <target state="translated">Element {0} není podporován.</target>
+        <target state="new">The {0} element is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLEntityCannotBeNullOrEmpty">
         <source>The SamlAssertion entity {0} cannot be null or empty.</source>
-        <target state="translated">Entita SamlAssertion {0} nemůže být null ani prázdná.</target>
+        <target state="new">The SamlAssertion entity {0} cannot be null or empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLSignatureAlreadyRead">
         <source>The signature is already read in the SamlAssertion.</source>
-        <target state="translated">Podpis už byl ve výrazu SamlAssertion přečten.</target>
+        <target state="new">The signature is already read in the SamlAssertion.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLTokenNotSerialized">
         <source>The SamlAssertion could not be serialized to XML. Please see inner exception for details.</source>
-        <target state="translated">Výraz SamlAssertion nebylo možné serializovat na kód XML. Podrobnosti naleznete ve vnitřní výjimce.</target>
+        <target state="new">The SamlAssertion could not be serialized to XML. Please see inner exception for details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLTokenVersionNotSupported">
         <source>The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</source>
-        <target state="translated">Hlavní verze {0} a podverze {1} nejsou podporovány. Podporované verze jsou: hlavní verze {2}, podverze {3}</target>
+        <target state="new">The major version {0} and minor version {1} are not supported.  Versions supported are: Major {2} and Minor {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadAdvice">
         <source>Failed to load the &lt;saml:advice&gt; element.</source>
-        <target state="translated">Nebylo možné načíst element &lt;saml:advice&gt;.</target>
+        <target state="new">Failed to load the &lt;saml:advice&gt; element.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadAssertion">
         <source>The &lt;saml:assertion&gt; element failed to load.</source>
-        <target state="translated">Element &lt;saml:assertion&gt; nebylo možné načíst.</target>
+        <target state="new">The &lt;saml:assertion&gt; element failed to load.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadCondtion">
         <source>The &lt;saml:conditions&gt; element failed to load.</source>
-        <target state="translated">Element &lt;saml:conditions&gt; nebylo možné načíst.</target>
+        <target state="new">The &lt;saml:conditions&gt; element failed to load.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadCondtions">
         <source>The &lt;saml:conditions&gt; element failed to load. </source>
-        <target state="translated">Element &lt;saml:conditions&gt; nebylo možné načíst. </target>
+        <target state="new">The &lt;saml:conditions&gt; element failed to load. </target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadStatement">
         <source>Failed to load a SamlStatement.</source>
-        <target state="translated">Nebylo možné načíst SamlStatement.</target>
+        <target state="new">Failed to load a SamlStatement.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToLoadUnknownElement">
         <source>The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</source>
-        <target state="translated">Vybraný serializátor SamlSerializer nemohl deserializovat tento element {0}. Chcete-li deserializovat vlastní elementy, zaregistrujte prosím vlastní SamlSerializer.</target>
+        <target state="new">The selected SamlSerializer is unable to deserialize this element {0}. Please register a custom SamlSerializer to deserialize custom elements.</target>
         <note />
       </trans-unit>
       <trans-unit id="SAMLUnableToResolveSignatureKey">
         <source>Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</source>
-        <target state="translated">Nelze přeložit identifikátor SecurityKeyIdentifier nalezený v podpisu SamlAssertion. Pro vydavatele {0} nelze ověřit podpis SamlAssertion.</target>
+        <target state="new">Unable to resolve SecurityKeyIdentifier found in the SamlAssertion signature. The SamlAssertion signature can not be validated for the Issuer {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlAssertionMissingSigningCredentials">
         <source>SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</source>
-        <target state="translated">Ve výrazu SamlAssertion nebyly nastaveny přihlašovací údaje SigningCredentials. Výrazy SamlAssertion musí být podepsány. Chcete-li pokračovat, nastavte prosím platné přihlašovací údaje SigningCredentials ve výrazu SamlAssertion.</target>
+        <target state="new">SigningCredentials have not been set on the SamlAssertion. SamlAssertions must be signed, please set a valid SigningCredentials on the SamlAssertion to proceed.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerRequiresExternalSerializers">
         <source>The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</source>
-        <target state="translated">Aby serializátor SamlSerializer mohl serializovat SecurityKeyIdentifier v tokenu, potřebuje SecurityTokenSerializer.</target>
+        <target state="new">The SamlSerializer requires a SecurityTokenSerializer to serialize the SecurityKeyIdentifier present in the token.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerUnableToReadSecurityKeyIdentifier">
         <source>The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</source>
-        <target state="translated">SamlSerializer neobsahuje serializátor SecurityTokenSerializer, který umí přečíst SecurityKeyIdentifier. Používáte-li vlastní SecurityKeyIdentifier, je nutné poskytnout vlastní SecurityTokenSerializer.</target>
+        <target state="new">The SamlSerializer does not contain a SecurityTokenSerializer capable of reading the SecurityKeyIdentifier.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSerializerUnableToWriteSecurityKeyIdentifier">
         <source>The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</source>
-        <target state="translated">SamlSerializer neobsahuje serializátor SecurityTokenSerializer, který umí serializovat daný SecurityKeyIdentifier {0}. Používáte-li vlastní SecurityKeyIdentifier, je nutné poskytnout vlastní SecurityTokenSerializer.</target>
+        <target state="new">The SamlSerializer does not contain a SecurityTokenSerializer capable of serializing the given SecurityKeyIdentifier '{0}'.  If you are using a custom SecurityKeyIdentifier, you must provide a custom SecurityTokenSerializer.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlSigningTokenNotFound">
         <source>The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</source>
-        <target state="translated">Výraz SamlAssertion je podepsán, ale token, který jej podepsal, nelze najít. Ujistěte se, že SecurityTokenResolver obsahuje token, kterým byl podepsán výraz SamlAssertion.</target>
+        <target state="new">The SamlAssertion is signed but the tolen that signed the SamlAssertion cannot be found. Ensure that the SecurityTokenResolver contains the token that signed the SamlAssertion.</target>
         <note />
       </trans-unit>
       <trans-unit id="SamlTokenMissingSignature">
         <source>The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</source>
-        <target state="translated">Výraz SamlAssertion není podepsán. Výrazy SamlAssertion lze podepsat nastavením přihlašovacích údajů SigningCredentials.</target>
+        <target state="new">The SamlAssertion is not signed. SamlAssertions can be signed by setting the SigningCredentials.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityTokenRequirementDoesNotContainProperty">
         <source>The token requirement does not contain a property '{0}'.</source>
-        <target state="translated">Požadavek tokenu neobsahuje vlastnost {0}.</target>
+        <target state="new">The token requirement does not contain a property '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityTokenRequirementHasInvalidTypeForProperty">
         <source>The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</source>
-        <target state="translated">Požadavek tokenu má pro vlastnost {1} neočekávaný typ {0}. Očekávaný typ vlastnosti je {2}.</target>
+        <target state="new">The token requirement has an unexpected type '{1}' for property '{0}'. The expected property type is '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="StandardsManagerCannotWriteObject">
         <source>The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</source>
-        <target state="translated">Serializátor tokenů nemůže serializovat {0}. Pokud je to vlastní typ, je nutné poskytnout vlastní serializátor.</target>
+        <target state="new">The token Serializer cannot serialize '{0}'.  If this is a custom type you must supply a custom serializer.</target>
         <note />
       </trans-unit>
       <trans-unit id="SymmetricKeyLengthTooShort">
         <source>The length of the symmetric key specified is too short ({0} bytes).</source>
-        <target state="translated">Zadaný symetrický klíč je příliš krátký (počet bajtů: {0}).</target>
+        <target state="new">The length of the symmetric key specified is too short ({0} bytes).</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenCancellationNotSupported">
         <source>The token provider '{0}' does not support token cancellation.</source>
-        <target state="translated">Poskytovatel tokenu {0} nepodporuje možnost zrušit token.</target>
+        <target state="new">The token provider '{0}' does not support token cancellation.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenDoesNotSupportKeyIdentifierClauseCreation">
         <source>'{0}' does not support '{1}' creation.</source>
-        <target state="translated">{0} nepodporuje vytvoření {1}.</target>
+        <target state="new">'{0}' does not support '{1}' creation.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="translated">Poskytovatel tokenu {0} nemohl poskytnout token zabezpečení.</target>
+        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenProviderUnableToRenewToken">
         <source>The token provider '{0}' was unable to renew the security token.</source>
-        <target state="translated">Poskytovatel tokenu {0} nemohl obnovit token zabezpečení.</target>
+        <target state="new">The token provider '{0}' was unable to renew the security token.</target>
         <note />
       </trans-unit>
       <trans-unit id="TokenRenewalNotSupported">
         <source>The token provider '{0}' does not support token renewal.</source>
-        <target state="translated">Poskytovatel tokenu {0} nepodporuje možnost obnovit token.</target>
+        <target state="new">The token provider '{0}' does not support token renewal.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToCreateTokenReference">
         <source>Unable to create a security token reference.</source>
-        <target state="translated">Nelze vytvořit odkaz tokenu zabezpečení.</target>
+        <target state="new">Unable to create a security token reference.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveKeyReference">
         <source>The token resolver is unable to resolve the security key reference '{0}'.</source>
-        <target state="translated">Překladač tokenů nemůže přeložit odkaz na klíč zabezpečení {0}.</target>
+        <target state="new">The token resolver is unable to resolve the security key reference '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToResolveTokenReference">
         <source>The token resolver is unable to resolve the token reference '{0}'.</source>
-        <target state="translated">Překladač tokenů nemůže přeložit odkaz na token {0}.</target>
+        <target state="new">The token resolver is unable to resolve the token reference '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnboundPrefixInQName">
         <source>An unbound prefix is used in the '{0}' qualified name.</source>
-        <target state="translated">V kvalifikovaném názvu {0} je použita nevázaná předpona.</target>
+        <target state="new">An unbound prefix is used in the '{0}' qualified name.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnexpectedXmlChildNode">
         <source>XML child node {0} of type {1} is unexpected for element {2}.</source>
-        <target state="translated">Podřízený uzel XML {0} typu {1} není pro element {2} očekáván.</target>
+        <target state="new">XML child node {0} of type {1} is unexpected for element {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnknownEncodingInKeyIdentifier">
         <source>Unrecognized encoding while reading key identifier.</source>
-        <target state="translated">Při čtení identifikátoru klíče se zjistilo nerozpoznané kódování.</target>
+        <target state="new">Unrecognized encoding while reading key identifier.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedKeyDerivationAlgorithm">
         <source>The '{0}' key derivation algorithm is not supported.</source>
-        <target state="translated">Algoritmus odvození klíče {0} není podporován.</target>
+        <target state="new">The '{0}' key derivation algorithm is not supported.</target>
         <note />
       </trans-unit>
       <trans-unit id="UserNameCannotBeEmpty">
         <source>The username cannot be empty.</source>
-        <target state="translated">Uživatelské jméno nemůže být prázdné.</target>
+        <target state="new">The username cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeGreaterThanZero">
         <source>The value of this argument must be greater than 0.</source>
-        <target state="translated">Hodnota tohoto argumentu musí být větší než 0.</target>
+        <target state="new">The value of this argument must be greater than 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeInRange">
         <source>The value of this argument must fall within the range {0} to {1}.</source>
-        <target state="translated">Hodnota tohoto argumentu musí být v rozsahu od {0} do {1}.</target>
+        <target state="new">The value of this argument must fall within the range {0} to {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueMustBeNonNegative">
         <source>The value of this argument must be non-negative.</source>
-        <target state="translated">Hodnota tohoto argumentu nesmí být záporná.</target>
+        <target state="new">The value of this argument must be non-negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="X509ChainBuildFail">
         <source>The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</source>
-        <target state="translated">Vytvoření řetězce certifikátu X.509 {0} se nezdařilo. Použitý certifikát má řetězec certifikátů, který nemůže být ověřen. Nahraďte certifikát, nebo změňte certificateValidationMode. {1}</target>
+        <target state="new">The X.509 certificate {0} chain building failed. The certificate that was used has a trust chain that cannot be verified. Replace the certificate or change the certificateValidationMode. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XDCannotFindValueInDictionaryString">
         <source>The '{0}' value is not found in the dictionary string.</source>
-        <target state="translated">Hodnota {0} nebyla nalezena v řetězci slovníku.</target>
+        <target state="new">The '{0}' value is not found in the dictionary string.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferInInvalidState">
         <source>An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</source>
-        <target state="translated">Došlo k vnitřní chybě. Vyrovnávací paměť XML není ve správném stavu k provedení operace.</target>
+        <target state="new">An internal error has occurred. The XML buffer is not in the correct state to perform the operation.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferQuotaExceeded">
         <source>The size necessary to buffer the XML content exceeded the buffer quota.</source>
-        <target state="translated">Velikost nutná k uložení obsahu XML do vyrovnávací paměti překročila její kvótu.</target>
+        <target state="new">The size necessary to buffer the XML content exceeded the buffer quota.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlLangAttributeMissing">
         <source>The required xml:lang attribute is missing.</source>
-        <target state="translated">Požadovaný atribut xml:lang nebyl nalezen.</target>
+        <target state="new">The required xml:lang attribute is missing.</target>
         <note />
       </trans-unit>
     </body>
