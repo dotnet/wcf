@@ -4,247 +4,247 @@
     <body>
       <trans-unit id="Binding">
         <source>Binding '{0}' from namespace '{1}'.</source>
-        <target state="translated">Bindung "{0}" aus dem Namespace "{1}".</target>
+        <target state="new">Binding '{0}' from namespace '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CanTSpecifyElementOnEncodedMessagePartsPart">
         <source>The element attribute is not allowed on encoded message parts. The erroneous part is named '{0}' in message '{1}'.</source>
-        <target state="translated">Das Elementattribut ist bei codierten Nachrichtenteilen nicht zulässig. Der fehlerhafte Teil in der Nachricht "{1}" hat den Namen "{0}".</target>
+        <target state="new">The element attribute is not allowed on encoded message parts. The erroneous part is named '{0}' in message '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CodegenWarningDetails">
         <source>CODEGEN: {0}</source>
-        <target state="translated">CODEGEN: {0}</target>
+        <target state="new">CODEGEN: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="Description">
         <source>Service description with targetNamespace='{0}'.</source>
-        <target state="translated">Dienstbeschreibung mit targetNamespace="{0}".</target>
+        <target state="new">Service description with targetNamespace='{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Element">
         <source>{0} from service description with targetNamespace='{1}'.</source>
-        <target state="translated">{0} aus Dienstbeschreibung mit targetNamespace="{1}".</target>
+        <target state="new">{0} from service description with targetNamespace='{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Fault">
         <source>soapbind:fault '{0}' on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</source>
-        <target state="translated">soapbind:fault "{0}" für den Vorgang "{1}" des portType "{2}" aus dem Namespace "{3}". {4}</target>
+        <target state="new">soapbind:fault '{0}' on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="FaultBinding">
         <source>Fault '{0}' on operation '{1}' on binding '{2}' from namespace '{3}'.</source>
-        <target state="translated">Fehler "{0}" für den Vorgang "{1}" der Bindung "{2}" aus dem Namespace "{3}".</target>
+        <target state="new">Fault '{0}' on operation '{1}' on binding '{2}' from namespace '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderFault">
         <source>{0} on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</source>
-        <target state="translated">{0} für den Vorgang "{1}" des portType "{2}" aus dem Namespace "{3}". {4}</target>
+        <target state="new">{0} on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="Message">
         <source>Message '{0}' from service description with targetNamespace='{1}'.</source>
-        <target state="translated">Nachricht "{0}" aus der Dienstbeschreibung mit targetNamespace="{1}".</target>
+        <target state="new">Message '{0}' from service description with targetNamespace='{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingMessagePartForMessageFromNamespace3">
         <source>Missing message part '{0}' for message '{1}' from namespace '{2}'.</source>
-        <target state="translated">Der Nachrichtenteil "{0}" für die Nachricht "{1}" aus dem Namespace "{2}" fehlt.</target>
+        <target state="new">Missing message part '{0}' for message '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyOperationInputOrOperationOutputTypes">
         <source>Only objects of type OperationInput or OperationOutput may be added.</source>
-        <target state="translated">Es können nur Objekte vom Typ OperationInput oder OperationOutput hinzugefügt werden.</target>
+        <target state="new">Only objects of type OperationInput or OperationOutput may be added.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0">
         <source>Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</source>
-        <target state="translated">Es können nur XmlElements oder Typen hinzugefügt werden, die von ServiceDescriptionFormatExtension abgeleitet sind.</target>
+        <target state="new">Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</target>
         <note />
       </trans-unit>
       <trans-unit id="Operation">
         <source>Operation '{0}' on portType '{1}' from namespace '{2}'.</source>
-        <target state="translated">Vorgang "{0}" für portType "{1}" aus Namespace "{2}".</target>
+        <target state="new">Operation '{0}' on portType '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationBinding">
         <source>Operation '{0}' on binding '{1}' from namespace '{2}'.</source>
-        <target state="translated">Vorgang "{0}" für Bindung "{1}" aus Namespace "{2}".</target>
+        <target state="new">Operation '{0}' on binding '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Part">
         <source>Part '{0}' of message '{1}' from service description with targetNamespace='{2}'.</source>
-        <target state="translated">Teil "{0}" der Nachricht "{1}" der Dienstbeschreibung mit targetNamespace="{2}".</target>
+        <target state="new">Part '{0}' of message '{1}' from service description with targetNamespace='{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Port">
         <source>Port '{0}' on service {1} from namespace='{2}'.</source>
-        <target state="translated">Port "{0}" des Diensts {1} aus Namespace="{2}".</target>
+        <target state="new">Port '{0}' on service {1} from namespace='{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtocolWithNameIsNotRecognized1">
         <source>Protocol with name '{0}' is not recognized.</source>
-        <target state="translated">Das Protokoll mit dem Namen "{0}" ist unbekannt.</target>
+        <target state="new">Protocol with name '{0}' is not recognized.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredXmlFormatExtensionAttributeIsMissing1">
         <source>Required XmlFormatExtension attribute is missing on class {0}.</source>
-        <target state="translated">Das für die {0}-Klasse erforderliche XmlFormatExtension-Attribut ist nicht vorhanden.</target>
+        <target state="new">Required XmlFormatExtension attribute is missing on class {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SchemaSyntaxErrorDetails">
         <source>Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.</source>
-        <target state="translated">Schema mit targetNamespace="{0}" weist eine ungültige Syntax auf. {1} Zeile {2}, Position {3}.</target>
+        <target state="new">Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SchemaValidationError">
         <source>Schema validation error: {0}</source>
-        <target state="translated">Schemavalidierungsfehler: {0}</target>
+        <target state="new">Schema validation error: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="TheSyntaxOfTypeMayNotBeExtended1">
         <source>The syntax of type {0} may not be extended.</source>
-        <target state="translated">Die Syntax des {0}-Typs kann nicht erweitert werden.</target>
+        <target state="new">The syntax of type {0} may not be extended.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValidationError">
         <source>Error: {0} Line {1}, position {2}.</source>
-        <target state="translated">Fehler: {0} Zeile {1}, Position {2}.</target>
+        <target state="new">Error: {0} Line {1}, position {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissing">
         <source>Cannot find definition for {0}.  Service Description with namespace {1} is missing.</source>
-        <target state="translated">Die Definition für {0} wurde nicht gefunden. Die Dienstdefinition mit dem Namespace {1} fehlt.</target>
+        <target state="new">Cannot find definition for {0}.  Service Description with namespace {1} is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissingItem">
         <source>Element {0} named {1} from namespace {2} is missing.</source>
-        <target state="translated">Das {0}-Element mit dem Namen {1} aus dem Namespace {2} fehlt.</target>
+        <target state="new">Element {0} named {1} from namespace {2} is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionTooManyMessages">
         <source>No more than one input and one output message may be specified.</source>
-        <target state="translated">Es kann maximal eine Eingabe- und eine Ausgabenachricht angegeben werden.</target>
+        <target state="new">No more than one input and one output message may be specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateBinding">
         <source>More than one binding named '{0}' was specified. Each binding must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Bindungen mit dem Namen "{0}" angegeben. Jede Bindung muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one binding named '{0}' was specified. Each binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFaultBinding">
         <source>More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Fehlerbindungen mit dem Namen "{0}" angegeben. Jede Fehlerbindung muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFormatExtension">
         <source>More than one format extension named '{0}' was specified. Each format extension must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Formaterweiterungen mit dem Namen "{0}" angegeben. Jede Formaterweiterung muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one format extension named '{0}' was specified. Each format extension must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateImport">
         <source>More than one import named '{0}' was specified. Each import must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Importvorgänge mit dem Namen "{0}" angegeben. Jeder Importvorgang muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one import named '{0}' was specified. Each import must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessage">
         <source>More than one message named '{0}' was specified. Each message must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Nachrichten mit dem Namen "{0}" angegeben. Jede Nachricht muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one message named '{0}' was specified. Each message must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessagePart">
         <source>More than one message part named '{0}' was specified. Each message part must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Nachrichtenteile mit dem Namen "{0}" angegeben. Jeder Nachrichtenteil muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one message part named '{0}' was specified. Each message part must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperation">
         <source>More than one operation named '{0}' was specified. Each operation must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Vorgänge mit dem Namen "{0}" angegeben. Jeder Vorgang muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one operation named '{0}' was specified. Each operation must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationBinding">
         <source>More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Vorgangsbindungen mit dem Namen "{0}" angegeben. Jede Vorgangsbindung muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationFault">
         <source>More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Vorgangsfehler mit dem Namen "{0}" angegeben. Jeder Vorgangsfehler muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationMessage">
         <source>More than one operation message named '{0}' was specified. Each operation message must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Vorgangsmeldungen mit dem Namen "{0}" angegeben. Jede Vorgangsmeldung muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one operation message named '{0}' was specified. Each operation message must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePort">
         <source>More than one port named '{0}' was specified. Each port must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Ports mit dem Namen "{0}" angegeben. Jeder Port muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one port named '{0}' was specified. Each port must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePortType">
         <source>More than one port type named '{0}' was specified. Each port type must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Porttypen mit dem Namen "{0}" angegeben. Jeder Porttyp muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one port type named '{0}' was specified. Each port type must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateService">
         <source>More than one service named '{0}' was specified. Each service must have a unique name.</source>
-        <target state="translated">Es wurden mehrere Dienste mit dem Namen "{0}" angegeben. Jeder Dienst muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one service named '{0}' was specified. Each service must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateUnknownElement">
         <source>More than one {0} named '{1}' was specified. Each {0} must have a unique name.</source>
-        <target state="translated">Es wurden mehrere {0}-Elemente mit dem Namen "{1}" angegeben. Jedes {0}-Element muss einen eindeutigen Namen haben.</target>
+        <target state="new">More than one {0} named '{1}' was specified. Each {0} must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebNegativeValue">
         <source>The value for '{0}' cannot be negative.</source>
-        <target state="translated">Der Wert für "{0}" darf nicht negativ sein.</target>
+        <target state="new">The value for '{0}' cannot be negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidation">
         <source>Warning: {0}</source>
-        <target state="translated">Warnung: {0}</target>
+        <target state="new">Warning: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidationDetails">
         <source>Warning: {0} Line {1}, position {2}.</source>
-        <target state="translated">Warnung: {0}, Zeile {1}, Position {2}.</target>
+        <target state="new">Warning: {0} Line {1}, position {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlLang">
         <source>en</source>
-        <target state="translated">de</target>
+        <target state="new">en</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchema">
         <source>Schema with targetNamespace='{0}' has invalid syntax. {1}</source>
-        <target state="translated">Das Schema mit targetNamespace="{0}" weist eine ungültige Syntax auf. {1}</target>
+        <target state="new">Schema with targetNamespace='{0}' has invalid syntax. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaAttributeReference">
         <source>Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.</source>
-        <target state="translated">Attributverweis "{0}" im Schematyp "{1}" aus dem Namespace "{2}" deklariert.</target>
+        <target state="new">Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaContentDef">
         <source>Check content definition of schema type '{0}' from namespace '{1}'. {2}</source>
-        <target state="translated">Überprüfen Sie die Inhaltsdefinition des Schematyps "{0}" aus dem Namespace "{1}". {2}</target>
+        <target state="new">Check content definition of schema type '{0}' from namespace '{1}'. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaElementReference">
         <source>Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.</source>
-        <target state="translated">Elementverweis "{0}" im Schematyp "{1}" aus dem Namespace "{2}" deklariert.</target>
+        <target state="new">Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaItem">
         <source>Schema item '{1}' from namespace '{0}'. {2}</source>
-        <target state="translated">Schemaelement "{1}" aus dem Namespace "{0}". {2}</target>
+        <target state="new">Schema item '{1}' from namespace '{0}'. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaNamedItem">
         <source>Schema item '{1}' named '{2}' from namespace '{0}' is invalid. {3}</source>
-        <target state="translated">Das Schemaelement "{1}" mit dem Namen "{2}" aus dem Namespace "{0}" ist ungültig. {3}</target>
+        <target state="new">Schema item '{1}' named '{2}' from namespace '{0}' is invalid. {3}</target>
         <note />
       </trans-unit>
     </body>
