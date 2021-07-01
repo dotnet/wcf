@@ -159,8 +159,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                     else
                     {
-                        // this is a target framework not yet known to the tool, use the latest known netcore version.
-                        netCoreVersion = TargetFrameworkHelper.NetStandardToNetCoreVersionMap.Values.LastOrDefault();
+                        // target framework is not the minumum standard supported netcore version but it is a known shipped netcore version.
+                        if (TargetFrameworkHelper.NetCoreVersionReferenceTable.ContainsKey(frameworkInfo.Version))
+                        {
+                            netCoreVersion = frameworkInfo.Version;
+                        }
+                        else
+                        {
+                            // target framework is not known to the tool, use the latest known netcore version.
+                            netCoreVersion = TargetFrameworkHelper.NetCoreVersionReferenceTable.Keys.LastOrDefault();
+                        }
                     }
 
                     if (targetVersion == null || targetVersion > netCoreVersion)
