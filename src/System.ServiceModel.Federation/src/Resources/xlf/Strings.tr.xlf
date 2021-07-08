@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">{0} iletişim nesnesi {1} durumunda. Opened durumunda olmadıkları sürece, iletişim nesneleri iletişim için kullanılamaz.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">{0} iletişim nesnesi, Faulted durumunda olduğundan iletişim için kullanılamıyor.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">'{0}' sunucusu, kapanmakta olduğunu belirten bir hata gönderdi. Hata ayrıntıları için iç özel duruma bakın.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">'{0}' sunucusu bir hata geri göndererek, isteği işleyemeyecek kadar meşgul olduğunu belirtti. Lütfen daha sonra yeniden deneyin. Hata ayrıntıları için iç özel duruma bakın.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
     </body>
