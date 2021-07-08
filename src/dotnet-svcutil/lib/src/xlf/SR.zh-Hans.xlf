@@ -469,12 +469,12 @@ Document Identifier: '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpExamples10">
         <source>dotnet-svcutil -u ServiceReference</source>
-        <target state="translated">dotnet-svcutil -u ServiceReference</target>
+        <target state="new">dotnet-svcutil -u ServiceReference</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples11">
         <source>- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</source>
-        <target state="translated">- 更新名为 ServiceReference 的现有 Web 服务引用。需要在包含项目文件的目录下执行该命令。</target>
+        <target state="new">- Update existing web service reference named ServiceReference. The command need to be executed under directory which contains the project file.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpExamples2">

@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">通訊物件 {0} 為 {1} 狀態。除非通訊物件為「已開啟」狀態，否則無法用於通訊。</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">因為通訊物件 {0} 為「出錯」狀態，所以無法用於通訊。</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">伺服器 '{0}' 傳回錯誤，指出正在進行關機。如需錯誤詳細資訊，請參閱內部例外狀況。</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">伺服器 '{0}' 傳回錯誤，指出因過於忙碌，無法處理要求。請稍後重試。請參考內部例外狀況，以取得錯誤詳細資料。</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
     </body>

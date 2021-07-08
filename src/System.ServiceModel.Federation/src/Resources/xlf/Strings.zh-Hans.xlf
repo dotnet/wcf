@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">通信对象 {0} 处于 {1} 状态。除非通信对象处于“已打开”状态，否则无法将其用于通信。</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">通信对象 {0} 无法用于通信，因为其处于“出错”状态。</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">服务器“{0}”发回错误，指示其正在关机。有关错误的详细信息，请参见内部异常。</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">服务器“{0}”发回错误，指示其太忙，无法处理请求。请稍后重试。有关错误的详细信息，请参见内部异常。</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
     </body>

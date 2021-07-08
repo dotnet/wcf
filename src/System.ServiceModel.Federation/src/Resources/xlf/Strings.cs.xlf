@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">Objekt komunikace {0} je ve stavu {1}. Pokud objekty komunikace nejsou ve stavu Opened, nelze je použít ke komunikaci.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">Objekt komunikace {0} nelze použít ke komunikaci, protože je ve stavu Faulted.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">Server {0} odeslal zpět chybu, která udává, že probíhá jeho vypínání. Podrobné informace o chybě naleznete v popisu vnitřní výjimky.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Server {0} odeslal zpět chybu, která udává, že je příliš zaneprázdněn a nemůže zpracovat požadavek. Podrobné informace o chybě naleznete v popisu vnitřní výjimky.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
     </body>

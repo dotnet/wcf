@@ -4,22 +4,22 @@
     <body>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
-        <target state="translated">L'objet de communication {0} est dans l'état {1}. Les objets de communication ne peuvent pas être utilisés à moins d'être dans l'état Opened.</target>
+        <target state="new">The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectFaulted1">
         <source>The communication object, {0}, cannot be used for communication because it is in the Faulted state.</source>
-        <target state="translated">L'objet de communication {0} ne peut pas être utilisé pour la communication, car il est dans l'état Faulted.</target>
+        <target state="new">The communication object, {0}, cannot be used for communication because it is in the Faulted state.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
-        <target state="translated">Le serveur '{0}' a renvoyé une erreur indiquant qu'il est en cours d'arrêt. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
-        <target state="translated">Le serveur '{0}' a envoyé une erreur indiquant qu'il est trop occupé pour traiter la requête. Réessayez plus tard. Consultez l'exception interne pour obtenir des détails sur l'erreur.</target>
+        <target state="new">Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</target>
         <note />
       </trans-unit>
     </body>
