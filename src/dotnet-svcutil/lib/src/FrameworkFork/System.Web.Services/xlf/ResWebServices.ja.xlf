@@ -4,247 +4,247 @@
     <body>
       <trans-unit id="Binding">
         <source>Binding '{0}' from namespace '{1}'.</source>
-        <target state="translated">名前空間 '{1}' のバインド '{0}' です。</target>
+        <target state="new">Binding '{0}' from namespace '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CanTSpecifyElementOnEncodedMessagePartsPart">
         <source>The element attribute is not allowed on encoded message parts. The erroneous part is named '{0}' in message '{1}'.</source>
-        <target state="translated">要素属性をエンコードされたメッセージ パーツで使用することはできません。エラーを含んだパーツには、メッセージ '{1}' で '{0}' という名前が指定されています。</target>
+        <target state="new">The element attribute is not allowed on encoded message parts. The erroneous part is named '{0}' in message '{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CodegenWarningDetails">
         <source>CODEGEN: {0}</source>
-        <target state="translated">CODEGEN: {0}</target>
+        <target state="new">CODEGEN: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="Description">
         <source>Service description with targetNamespace='{0}'.</source>
-        <target state="translated">targetNamespace='{0}' のサービスの説明です。</target>
+        <target state="new">Service description with targetNamespace='{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Element">
         <source>{0} from service description with targetNamespace='{1}'.</source>
-        <target state="translated">targetNamespace='{1}' のサービスの説明 {0} です。</target>
+        <target state="new">{0} from service description with targetNamespace='{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Fault">
         <source>soapbind:fault '{0}' on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</source>
-        <target state="translated">名前空間 '{3}' の portType '{2}' にある操作 '{1}' の soapbind:fault '{0}' です。{4}</target>
+        <target state="new">soapbind:fault '{0}' on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="FaultBinding">
         <source>Fault '{0}' on operation '{1}' on binding '{2}' from namespace '{3}'.</source>
-        <target state="translated">名前空間 '{3}' のバインド '{2}' にある操作 '{1}' のフォールト '{0}' です。</target>
+        <target state="new">Fault '{0}' on operation '{1}' on binding '{2}' from namespace '{3}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="HeaderFault">
         <source>{0} on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</source>
-        <target state="translated">名前空間 '{3}' の portType '{2}' にある操作 '{1}' の '{0}' です。{4}</target>
+        <target state="new">{0} on operation '{1}' on portType '{2}' from namespace '{3}'. {4}</target>
         <note />
       </trans-unit>
       <trans-unit id="Message">
         <source>Message '{0}' from service description with targetNamespace='{1}'.</source>
-        <target state="translated">targetNamespace='{1}' のサービスの説明にあるメッセージ '{0}' です。</target>
+        <target state="new">Message '{0}' from service description with targetNamespace='{1}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingMessagePartForMessageFromNamespace3">
         <source>Missing message part '{0}' for message '{1}' from namespace '{2}'.</source>
-        <target state="translated">名前空間 '{2}' からのメッセージ '{1}' でメッセージ パーツ '{0}' がありません。</target>
+        <target state="new">Missing message part '{0}' for message '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyOperationInputOrOperationOutputTypes">
         <source>Only objects of type OperationInput or OperationOutput may be added.</source>
-        <target state="translated">型 OperationInput または OperationOutput のオブジェクトのみを追加できます。</target>
+        <target state="new">Only objects of type OperationInput or OperationOutput may be added.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0">
         <source>Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</source>
-        <target state="translated">ServiceDescriptionFormatExtension から派生する XmlElements または型のみを追加できます。</target>
+        <target state="new">Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</target>
         <note />
       </trans-unit>
       <trans-unit id="Operation">
         <source>Operation '{0}' on portType '{1}' from namespace '{2}'.</source>
-        <target state="translated">名前空間 '{2}' からの portType '{1}' 上の操作 '{0}' です。</target>
+        <target state="new">Operation '{0}' on portType '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="OperationBinding">
         <source>Operation '{0}' on binding '{1}' from namespace '{2}'.</source>
-        <target state="translated">名前空間 '{2}' からのバインディング '{1}' 上の操作 '{0}' です。</target>
+        <target state="new">Operation '{0}' on binding '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Part">
         <source>Part '{0}' of message '{1}' from service description with targetNamespace='{2}'.</source>
-        <target state="translated">targetNamespace='{2}' を含むサービスの説明の、メッセージ '{1}' のパート '{0}' です。</target>
+        <target state="new">Part '{0}' of message '{1}' from service description with targetNamespace='{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="Port">
         <source>Port '{0}' on service {1} from namespace='{2}'.</source>
-        <target state="translated">namespace='{2}' からのサービス {1} 上のポート '{0}' です。</target>
+        <target state="new">Port '{0}' on service {1} from namespace='{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtocolWithNameIsNotRecognized1">
         <source>Protocol with name '{0}' is not recognized.</source>
-        <target state="translated">'{0}' という名前のプロトコルは認識されません。</target>
+        <target state="new">Protocol with name '{0}' is not recognized.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredXmlFormatExtensionAttributeIsMissing1">
         <source>Required XmlFormatExtension attribute is missing on class {0}.</source>
-        <target state="translated">必要な XmlFormatExtension 属性がクラス {0} に見つかりません。</target>
+        <target state="new">Required XmlFormatExtension attribute is missing on class {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SchemaSyntaxErrorDetails">
         <source>Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.</source>
-        <target state="translated">targetNamespace='{0}' を持つスキーマの構文が無効です。{1} 行 {2}、位置 {3}。</target>
+        <target state="new">Schema with targetNamespace='{0}' has invalid syntax. {1} Line {2}, position {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SchemaValidationError">
         <source>Schema validation error: {0}</source>
-        <target state="translated">スキーマの検証エラー: {0}</target>
+        <target state="new">Schema validation error: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="TheSyntaxOfTypeMayNotBeExtended1">
         <source>The syntax of type {0} may not be extended.</source>
-        <target state="translated">型 {0} の構文を拡張することはできません。</target>
+        <target state="new">The syntax of type {0} may not be extended.</target>
         <note />
       </trans-unit>
       <trans-unit id="ValidationError">
         <source>Error: {0} Line {1}, position {2}.</source>
-        <target state="translated">エラー: {0} 行 {1}、位置 {2}。</target>
+        <target state="new">Error: {0} Line {1}, position {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissing">
         <source>Cannot find definition for {0}.  Service Description with namespace {1} is missing.</source>
-        <target state="translated">{0} の定義が見つかりません。名前空間 {1} のサービスの説明がありません。</target>
+        <target state="new">Cannot find definition for {0}.  Service Description with namespace {1} is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissingItem">
         <source>Element {0} named {1} from namespace {2} is missing.</source>
-        <target state="translated">名前空間 '{2}' からの '{1}' という名前の要素 {0} がありません。</target>
+        <target state="new">Element {0} named {1} from namespace {2} is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionTooManyMessages">
         <source>No more than one input and one output message may be specified.</source>
-        <target state="translated">2 つ以上の入力および出力メッセージを指定することはできません。</target>
+        <target state="new">No more than one input and one output message may be specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateBinding">
         <source>More than one binding named '{0}' was specified. Each binding must have a unique name.</source>
-        <target state="translated">'{0}' という名前のバインドが 1 つ以上指定されました。各バインドに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one binding named '{0}' was specified. Each binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFaultBinding">
         <source>More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</source>
-        <target state="translated">'{0}' という名前のフォールト バインドが 1 つ以上指定されました。各フォールト バインドに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFormatExtension">
         <source>More than one format extension named '{0}' was specified. Each format extension must have a unique name.</source>
-        <target state="translated">'{0}' という名前のフォーマット拡張が 1 つ以上指定されました。各フォーマット拡張には一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one format extension named '{0}' was specified. Each format extension must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateImport">
         <source>More than one import named '{0}' was specified. Each import must have a unique name.</source>
-        <target state="translated">'{0}' という名前のインポートが 1 つ以上指定されました。各インポートに一意の名前の指定しなければなりません。</target>
+        <target state="new">More than one import named '{0}' was specified. Each import must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessage">
         <source>More than one message named '{0}' was specified. Each message must have a unique name.</source>
-        <target state="translated">'{0}' という名前のメッセージが 1 つ以上指定されました。各メッセージに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one message named '{0}' was specified. Each message must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessagePart">
         <source>More than one message part named '{0}' was specified. Each message part must have a unique name.</source>
-        <target state="translated">'{0}' という名前のメッセージ パーツが 1 つ以上指定されました。各メッセージ パーツに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one message part named '{0}' was specified. Each message part must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperation">
         <source>More than one operation named '{0}' was specified. Each operation must have a unique name.</source>
-        <target state="translated">'{0}' という名前の操作が 1 つ以上指定されました。各操作に一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one operation named '{0}' was specified. Each operation must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationBinding">
         <source>More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</source>
-        <target state="translated">'{0}' という名前の操作バインドが 1 つ以上指定されました。各操作バインドに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationFault">
         <source>More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</source>
-        <target state="translated">'{0}' という名前の操作フォールトが 1 つ以上指定されました。各操作フォールトに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationMessage">
         <source>More than one operation message named '{0}' was specified. Each operation message must have a unique name.</source>
-        <target state="translated">'{0}' という名前の操作メッセージが 1 つ以上指定されました。各操作メッセージに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one operation message named '{0}' was specified. Each operation message must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePort">
         <source>More than one port named '{0}' was specified. Each port must have a unique name.</source>
-        <target state="translated">'{0}' という名前のポートが 1 つ以上指定されました。各ポートに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one port named '{0}' was specified. Each port must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePortType">
         <source>More than one port type named '{0}' was specified. Each port type must have a unique name.</source>
-        <target state="translated">'{0}' という名前のポートの種類が 1 つ以上指定されました。各ポートの種類に一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one port type named '{0}' was specified. Each port type must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateService">
         <source>More than one service named '{0}' was specified. Each service must have a unique name.</source>
-        <target state="translated">'{0}' という名前のサービスが 1 つ以上指定されました。各サービスに一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one service named '{0}' was specified. Each service must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateUnknownElement">
         <source>More than one {0} named '{1}' was specified. Each {0} must have a unique name.</source>
-        <target state="translated">'{1}' という名前の {0} が 1 つ以上指定されました。各 {0} に一意の名前を指定しなければなりません。</target>
+        <target state="new">More than one {0} named '{1}' was specified. Each {0} must have a unique name.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebNegativeValue">
         <source>The value for '{0}' cannot be negative.</source>
-        <target state="translated">'{0}' を負の値にすることはできません。</target>
+        <target state="new">The value for '{0}' cannot be negative.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidation">
         <source>Warning: {0}</source>
-        <target state="translated">警告: {0}</target>
+        <target state="new">Warning: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidationDetails">
         <source>Warning: {0} Line {1}, position {2}.</source>
-        <target state="translated">警告: {0} 行 {1}、位置 {2}。</target>
+        <target state="new">Warning: {0} Line {1}, position {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlLang">
         <source>en</source>
-        <target state="translated">ja</target>
+        <target state="new">en</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchema">
         <source>Schema with targetNamespace='{0}' has invalid syntax. {1}</source>
-        <target state="translated">targetNamespace='{0}' を持つスキーマの構文が無効です。{1}</target>
+        <target state="new">Schema with targetNamespace='{0}' has invalid syntax. {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaAttributeReference">
         <source>Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.</source>
-        <target state="translated">名前空間 '{2}' のスキーマの型 '{1}' に属性の参照 '{0}' が宣言されています。</target>
+        <target state="new">Attribute reference '{0}' declared in schema type '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaContentDef">
         <source>Check content definition of schema type '{0}' from namespace '{1}'. {2}</source>
-        <target state="translated">名前空間 '{1}' のスキーマの型 '{0}' のコンテンツの定義を確認してください。{2}</target>
+        <target state="new">Check content definition of schema type '{0}' from namespace '{1}'. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaElementReference">
         <source>Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.</source>
-        <target state="translated">名前空間 '{2}' のスキーマの型 '{1}' に要素の参照 '{0}' が宣言されています。</target>
+        <target state="new">Element reference '{0}' declared in schema type '{1}' from namespace '{2}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaItem">
         <source>Schema item '{1}' from namespace '{0}'. {2}</source>
-        <target state="translated">名前空間 '{0}' のスキーマ アイテム '{1}'。{2}</target>
+        <target state="new">Schema item '{1}' from namespace '{0}'. {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlSchemaNamedItem">
         <source>Schema item '{1}' named '{2}' from namespace '{0}' is invalid. {3}</source>
-        <target state="translated">名前空間 '{1}' からの {2} という名前のスキーマ アイテム '{0}' は無効です。{3}</target>
+        <target state="new">Schema item '{1}' named '{2}' from namespace '{0}' is invalid. {3}</target>
         <note />
       </trans-unit>
     </body>

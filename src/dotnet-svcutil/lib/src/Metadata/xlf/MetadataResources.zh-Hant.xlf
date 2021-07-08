@@ -4,69 +4,69 @@
     <body>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="translated">若這是您具有存取權的 Windows (R) Communication Foundation 服務，請檢查您是否已在指定的位址啟用中繼資料發佈。如需啟用中繼資料發佈的說明，請參閱 MSDN 文件，網址是 http://go.microsoft.com/fwlink/?LinkId=65455。</target>
+        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateAMetadataExchangeClientFormat">
         <source>Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</source>
-        <target state="translated">無法從 {0} 取得中繼資料。根據預設，不支援 URI 結構描述 '{1}'。</target>
+        <target state="new">Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFileFormat">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</source>
-        <target state="translated">輸入路徑 '{0}' 似乎是目錄，但輸入必須是 URL 或檔案路徑。</target>
+        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFoundFormat">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="translated">找不到目錄 '{0}'。請確認該目錄存在，且您有適當的權限可讀取該目錄。</target>
+        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrFileAlreadyExistsFormat">
         <source>The file '{0}' already exists.</source>
-        <target state="translated">檔案 '{0}' 已存在。</target>
+        <target state="new">The file '{0}' already exists.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidUriFormat">
         <source>The specified URI '{0}' does not appear to be valid.</source>
-        <target state="translated">指定的 URI '{0}' 似乎無效。</target>
+        <target state="new">The specified URI '{0}' does not appear to be valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFoundFormat">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="translated">輸入路徑 '{0}' 似乎未參考任何現有的檔案</target>
+        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotXmlMetadataFileFormat">
         <source>The specified path '{0}' does not appear to refer to an XML metadata file.</source>
-        <target state="translated">指定的路徑 '{0}' 似乎未參考 XML 中繼資料檔案。</target>
+        <target state="new">The specified path '{0}' does not appear to refer to an XML metadata file.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceMetadataNotImported">
         <source>The service metadata has not been imported yet.</source>
-        <target state="translated">服務中繼資料尚未匯入。</target>
+        <target state="new">The service metadata has not been imported yet.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToConnectToUriFormat">
         <source>Cannot obtain Metadata from the URI: {0} 
  Check the URI and try again.{1}</source>
-        <target state="translated">無法從 URI {0} 取得中繼資料 
- 請檢查 URI 並再試一次。{1}</target>
+        <target state="new">Cannot obtain Metadata from the URI: {0} 
+ Check the URI and try again.{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToCreateUniqueFileNameFormat">
         <source>Too many files are being created with the prefix '{0}'.</source>
-        <target state="translated">已使用前置詞 '{0}' 建立太多檔案。</target>
+        <target state="new">Too many files are being created with the prefix '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToResolveSchemaReferenceFormat">
         <source>Unable to resolve schema reference '{0}'.</source>
-        <target state="translated">無法解析結構描述參考 '{0}'。</target>
+        <target state="new">Unable to resolve schema reference '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUrlNotAllowedOnMultipleInputsFormat">
         <source>"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</source>
-        <target state="translated">"不允許 URL: '{0}'。指定多重輸入時，只允許中繼資料文件檔!"</target>
+        <target state="new">"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</target>
         <note />
       </trans-unit>
     </body>
