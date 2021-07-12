@@ -4,6 +4,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 #if DEBUG
 using System.Diagnostics;
 #endif
@@ -18,53 +19,72 @@ namespace System.Runtime
 #endif
         private readonly SemaphoreSlim _semaphore;
         private readonly SafeSemaphoreRelease _semaphoreRelease;
-        private AsyncLocal<bool> _lockTaken;
+        private static AsyncLocal<object> s_heldLocks = new AsyncLocal<object>(LockTakenValueChanged);
 
         public AsyncLock()
         {
             _semaphore = new SemaphoreSlim(1);
             _semaphoreRelease = new SafeSemaphoreRelease(this);
-            _lockTaken = new AsyncLocal<bool>(LockTakenValueChanged);
-            _lockTaken.Value = false;
         }
 
-        private void LockTakenValueChanged(AsyncLocalValueChangedArgs<bool> obj)
+        private static void LockTakenValueChanged(AsyncLocalValueChangedArgs<object> obj)
         {
             // Without this fixup, when completing the call to await TakeLockAsync there is
-            // a switch of Context and _localTaken will be reset to false. This is because
+            // a switch of Context and _heldLocks will be reset to null. This is because
             // of leaving the task.
 
             if (obj.ThreadContextChanged)
             {
-                _lockTaken.Value = obj.PreviousValue;
+                s_heldLocks.Value = obj.PreviousValue;
             }
         }
 
-        public async Task<IDisposable> TakeLockAsync()
+        public Task<IDisposable> TakeLockAsync()
         {
-            if (_lockTaken.Value)
-            {
-                return null;
-            }
-
-            await _semaphore.WaitAsync();
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
+            return TakeLockAsync(default);
         }
 
         public async Task<IDisposable> TakeLockAsync(CancellationToken token)
         {
-            if (_lockTaken.Value)
+#if DEBUG
+            object existingValue = s_heldLocks.Value;
+#endif // DEBUG
+            AsyncLock existingLock = s_heldLocks.Value as AsyncLock;
+            if (existingLock == this)
             {
                 return null;
             }
 
+            List<AsyncLock> existingLocks = null;
+            if (existingLock == null)
+            {
+                existingLocks = s_heldLocks.Value as List<AsyncLock>;
+                if (existingLocks?.Contains(this) ?? false)
+                {
+                    return null;
+                }
+            }
+
             await _semaphore.WaitAsync(token);
-            _lockTaken.Value = true;
+
+#if DEBUG
+            Fx.Assert(existingValue == s_heldLocks.Value, "AsyncLocal modified while awaiting");
+#endif // DEBUG
+
+            if (s_heldLocks.Value == null) // No locks previously entered
+            {
+                s_heldLocks.Value = this;
+            }
+            else if (existingLock != null) // A single AsyncLock already entered but not this instance
+            {
+                // Create new list of held locks and add the single existing lock and this lock to it
+                s_heldLocks.Value = new List<AsyncLock>(new AsyncLock[] { existingLock, this });
+            }
+            else
+            {
+                Fx.Assert(existingLocks != null, "_heldLocks.Value has invalid value, type of value is " + s_heldLocks.Value?.GetType() ?? "(null)");
+                existingLocks.Add(this);
+            }
 #if DEBUG
             _lockTakenCallStack = new StackTrace();
             _lockTakenCallStackString = _lockTakenCallStack.ToString();
@@ -74,45 +94,55 @@ namespace System.Runtime
 
         public IDisposable TakeLock()
         {
-            if (_lockTaken.Value)
-            {
-                return null;
-            }
-
-            _semaphore.Wait();
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
+            return TakeLock(Timeout.Infinite);
         }
 
         public IDisposable TakeLock(TimeSpan timeout)
         {
-            if (_lockTaken.Value)
-            {
-                return null;
-            }
-
-            _semaphore.Wait(timeout);
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
+            return TakeLock((int)timeout.TotalMilliseconds);
         }
 
         public IDisposable TakeLock(int timeout)
         {
-            if (_lockTaken.Value)
+#if DEBUG
+            object existingValue = s_heldLocks.Value;
+#endif // DEBUG
+            AsyncLock existingLock = s_heldLocks.Value as AsyncLock;
+            if (existingLock == this)
             {
                 return null;
             }
 
+            List<AsyncLock> existingLocks = null;
+            if (existingLock == null)
+            {
+                existingLocks = s_heldLocks.Value as List<AsyncLock>;
+                if (existingLocks?.Contains(this) ?? false)
+                {
+                    return null;
+                }
+            }
+
             _semaphore.Wait(timeout);
-            _lockTaken.Value = true;
+
+#if DEBUG
+            Fx.Assert(existingValue == s_heldLocks.Value, "AsyncLocal modified while awaiting");
+#endif // DEBUG
+
+            if (s_heldLocks.Value == null) // No locks previously entered
+            {
+                s_heldLocks.Value = this;
+            }
+            else if (existingLock != null) // A single AsyncLock already entered but not this instance
+            {
+                // Create new list of held locks and add the single existing lock and this lock to it
+                s_heldLocks.Value = new List<AsyncLock>(new AsyncLock[] { existingLock, this });
+            }
+            else
+            {
+                Fx.Assert(existingLocks != null, "_heldLocks.Value has invalid value, type of value is " + s_heldLocks.Value?.GetType() ?? "(null)");
+                existingLocks.Add(this);
+            }
 #if DEBUG
             _lockTakenCallStack = new StackTrace();
             _lockTakenCallStackString = _lockTakenCallStack.ToString();
@@ -135,7 +165,23 @@ namespace System.Runtime
                 _asyncLock._lockTakenCallStack = null;
                 _asyncLock._lockTakenCallStackString = null;
 #endif
-                _asyncLock._lockTaken.Value = false;
+                if (s_heldLocks.Value == _asyncLock) // This is the only lock entered
+                {
+                    s_heldLocks.Value = null;
+                }
+                else if (s_heldLocks.Value is List<AsyncLock> listOfLocks)
+                {
+                    Fx.Assert(listOfLocks.Contains(_asyncLock), "The list of AsyncLock's didn't contain the expected lock");
+                    // As locks are expected to be released in the order they are taken and they are always appended to the end,
+                    // removal should be O(n) simply to look for the lock and removal should be constant time. If this becomes
+                    // a significant overhead, then manual search in reverse will fix it. Keeping simple for now.
+                    listOfLocks.Remove(_asyncLock);
+                    if (listOfLocks.Count == 1) // If only one lock left, replace list with single lock.
+                    {
+                        s_heldLocks.Value = listOfLocks[0];
+                    }
+                }
+
                 _asyncLock._semaphore.Release();
             }
         }
