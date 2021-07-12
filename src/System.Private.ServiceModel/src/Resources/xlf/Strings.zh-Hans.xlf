@@ -2547,6 +2547,11 @@
         <target state="translated">操作 {0} 和 {1} 具有相同操作({2})。每个操作都必须有且仅有一个操作值。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxActionMismatch">
+        <source>Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</source>
+        <target state="new">Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxBadByReferenceParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-reference parameter is marked with the 'in' but not the 'out' parameter mode.</source>
         <target state="translated">类“{1}”中的方法“{0}”具有错误的参数元数据: 按引用传递的参数使用 "in" 进行标记，而不是使用 "out" 参数模式进行标记。</target>
@@ -3095,6 +3100,11 @@
       <trans-unit id="SFxKnownTypeNull">
         <source>KnownType cannot be null in operation {0}</source>
         <target state="translated">KnownType 在操作 {0} 中不能为 null</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxMessageContractAttributeRequired">
+        <source>Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</source>
+        <target state="new">Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMessageContractBaseTypeNotValid">

@@ -2547,6 +2547,11 @@
         <target state="translated">Les opérations {0} et {1} contiennent la même action ({2}). Chaque opération doit contenir une valeur d'action unique.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxActionMismatch">
+        <source>Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</source>
+        <target state="new">Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxBadByReferenceParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-reference parameter is marked with the 'in' but not the 'out' parameter mode.</source>
         <target state="translated">La méthode '{0}' de la classe '{1}' contient des métadonnées de paramètre incorrectes : un paramètre de passage par référence est marqué avec le mode de paramètre 'in' mais pas 'out'.</target>
@@ -3095,6 +3100,11 @@
       <trans-unit id="SFxKnownTypeNull">
         <source>KnownType cannot be null in operation {0}</source>
         <target state="translated">KnownType ne peut pas avoir une valeur null dans l'opération {0}</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxMessageContractAttributeRequired">
+        <source>Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</source>
+        <target state="new">Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMessageContractBaseTypeNotValid">

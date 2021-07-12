@@ -2547,6 +2547,11 @@
         <target state="translated">{0} 및 {1} 작업의 동작({2})이 같습니다. 모든 작업에서 동작 값은 고유해야 합니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxActionMismatch">
+        <source>Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</source>
+        <target state="new">Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxBadByReferenceParameterMetadata">
         <source>Method '{0}' in class '{1}' has bad parameter metadata: a pass-by-reference parameter is marked with the 'in' but not the 'out' parameter mode.</source>
         <target state="translated">'{1}' 클래스의 '{0}' 메서드에 잘못된 매개 변수 메타데이터가 있습니다. pass-by-reference 매개 변수가 'out' 매개 변수 모드가 아닌 'in' 매개 변수 모드로 표시되어 있습니다.</target>
@@ -3095,6 +3100,11 @@
       <trans-unit id="SFxKnownTypeNull">
         <source>KnownType cannot be null in operation {0}</source>
         <target state="translated">KnownType은 {0} 작업에서 null일 수 없습니다.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="SFxMessageContractAttributeRequired">
+        <source>Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</source>
+        <target state="new">Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMessageContractBaseTypeNotValid">
