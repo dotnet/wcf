@@ -1709,6 +1709,18 @@ namespace System.ServiceModel.Description
         void System.ServiceModel.Description.IOperationBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.DispatchOperation dispatch) { }
         void System.ServiceModel.Description.IOperationBehavior.ApplyClientBehavior(System.ServiceModel.Description.OperationDescription description, System.ServiceModel.Dispatcher.ClientOperation proxy) { }
     }
+    public abstract partial class TypedMessageConverter
+    {
+        public static TypedMessageConverter Create(Type messageContract, string action) { return default; }
+        public static TypedMessageConverter Create(Type messageContract, string action, string defaultNamespace) { return default; }
+        public static TypedMessageConverter Create(Type messageContract, string action, XmlSerializerFormatAttribute formatterAttribute) { return default; }
+        public static TypedMessageConverter Create(Type messageContract, string action, DataContractFormatAttribute formatterAttribute) { return default; }
+        public static TypedMessageConverter Create(Type messageContract, string action, string defaultNamespace, XmlSerializerFormatAttribute formatterAttribute) { return default; }
+        public static TypedMessageConverter Create(Type messageContract, string action, string defaultNamespace, DataContractFormatAttribute formatterAttribute) { return default; }
+        public abstract Message ToMessage(object typedMessage);
+        public abstract Message ToMessage(object typedMessage, MessageVersion version);
+        public abstract object FromMessage(Message message);
+    }
 }
 namespace System.ServiceModel.Dispatcher
 {
