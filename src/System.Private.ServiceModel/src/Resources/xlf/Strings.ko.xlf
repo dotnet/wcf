@@ -504,7 +504,7 @@
       </trans-unit>
       <trans-unit id="ClientSecurityNegotiationTimeout">
         <source>Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</source>
-        <target state="new">Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</target>
+        <target state="translated">클라이언트가 구성된 시간 제한({0}) 내에 보안 협상을 끝낼 수 없습니다. 현재 협상 레그는 {1}({2})입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientSecurityOutputSessionCloseTimeout">
@@ -819,7 +819,7 @@
       </trans-unit>
       <trans-unit id="EmptyOrNullArgumentString">
         <source>The argument '{0}' is null or empty string.</source>
-        <target state="new">The argument '{0}' is null or empty string.</target>
+        <target state="translated">'{0}' 인수가 null이거나 빈 문자열입니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="EmptyXmlElementError">
@@ -959,7 +959,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
         <source>CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</source>
-        <target state="new">CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</target>
+        <target state="translated">CustomChannelBinding은 지원되지 않습니다. ExtendedProtectionPolicy에서 CustomChannelBinding을 제거하십시오.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtraContentIsPresentInFaultDetail">
@@ -1844,7 +1844,7 @@
       </trans-unit>
       <trans-unit id="MultipleRelatesToHeaders">
         <source> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</source>
-        <target state="new"> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</target>
+        <target state="translated">관계 '{0}'을(를) 가진 여러 RelatesTo 헤더를 찾았습니다. 관계당 하나만 허용됩니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSecurityCredentialsManagersInChannelBindingParameters">

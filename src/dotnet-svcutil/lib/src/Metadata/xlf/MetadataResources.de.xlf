@@ -4,69 +4,69 @@
     <body>
       <trans-unit id="EnableMetadataHelpMessage">
         <source>If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</source>
-        <target state="new">If this is a Windows (R) Communication Foundation service to which you have access, please check that you have enabled metadata publishing at the specified address.  For help enabling metadata publishing, please refer to the MSDN documentation at http://go.microsoft.com/fwlink/?LinkId=65455.</target>
+        <target state="translated">Wenn es sich hierbei um einen Windows (R) Communication Foundation-Dienst handelt, auf den Sie Zugriff haben, prüfen Sie, ob die Metadatenveröffentlichung für die angegebene Adresse aktiviert ist. Informationen zum Aktivieren der Metadatenveröffentlichung finden Sie in der MSDN-Dokumentation unter http://go.microsoft.com/fwlink/?LinkId=65455.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotCreateAMetadataExchangeClientFormat">
         <source>Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</source>
-        <target state="new">Cannot obtain Metadata from {0}.  The URI scheme '{1}' is not supported by default.</target>
+        <target state="translated">Es können keine Metadaten von {0} abgerufen werden. Das URI-Schema "{1}" wird nicht standardmäßig unterstützt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryInsteadOfFileFormat">
         <source>The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</source>
-        <target state="new">The input path '{0}' appears to be a directory. Inputs must be either URLs or file paths.</target>
+        <target state="translated">Der Eingabepfad "{0}" ist offenbar ein Verzeichnis. Als Eingabe können nur URLs oder Dateipfade verwendet werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrDirectoryNotFoundFormat">
         <source>The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</source>
-        <target state="new">The directory '{0}' could not be found. Verify that the directory exists and that you have the appropriate permissions to read it.</target>
+        <target state="translated">Das Verzeichnis "{0}" wurde nicht gefunden. Stellen Sie sicher, dass das Verzeichnis vorhanden ist, und dass Sie über Leseberechtigungen für das Verzeichnis verfügen.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrFileAlreadyExistsFormat">
         <source>The file '{0}' already exists.</source>
-        <target state="new">The file '{0}' already exists.</target>
+        <target state="translated">Die Datei "{0}" ist bereits vorhanden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrInvalidUriFormat">
         <source>The specified URI '{0}' does not appear to be valid.</source>
-        <target state="new">The specified URI '{0}' does not appear to be valid.</target>
+        <target state="translated">Der angegebene URI "{0}" ist anscheinend nicht gültig.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNoFilesFoundFormat">
         <source>The input path '{0}' doesn't appear to refer to any existing files</source>
-        <target state="new">The input path '{0}' doesn't appear to refer to any existing files</target>
+        <target state="translated">Der Eingabepfad "{0}" scheint auf keine vorhandenen Dateien zu verweisen.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrNotXmlMetadataFileFormat">
         <source>The specified path '{0}' does not appear to refer to an XML metadata file.</source>
-        <target state="new">The specified path '{0}' does not appear to refer to an XML metadata file.</target>
+        <target state="translated">Der angegebene Pfad "{0}" verweist anscheinend nicht auf eine XML-Metadatendatei.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrServiceMetadataNotImported">
         <source>The service metadata has not been imported yet.</source>
-        <target state="new">The service metadata has not been imported yet.</target>
+        <target state="translated">Die Dienstmetadaten wurden noch nicht importiert.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToConnectToUriFormat">
         <source>Cannot obtain Metadata from the URI: {0} 
  Check the URI and try again.{1}</source>
-        <target state="new">Cannot obtain Metadata from the URI: {0} 
- Check the URI and try again.{1}</target>
+        <target state="translated">Von dem URI "{0}" können keine Metadaten abgerufen werden. 
+ Überprüfen Sie den URI, und versuchen Sie es noch mal.{1}</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToCreateUniqueFileNameFormat">
         <source>Too many files are being created with the prefix '{0}'.</source>
-        <target state="new">Too many files are being created with the prefix '{0}'.</target>
+        <target state="translated">Es werden zu viele Dateien mit dem Präfix "{0}" erstellt.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUnableToResolveSchemaReferenceFormat">
         <source>Unable to resolve schema reference '{0}'.</source>
-        <target state="new">Unable to resolve schema reference '{0}'.</target>
+        <target state="translated">Der Schemaverweis "{0}" kann nicht aufgelöst werden.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrUrlNotAllowedOnMultipleInputsFormat">
         <source>"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</source>
-        <target state="new">"URL not allowed: '{0}'.  Only metadata document files are allowed when multiple inputs specified!"</target>
+        <target state="translated">"URL nicht zulässig: {0}.  Beim Angeben mehrerer Eingaben sind nur Metadatendokumentdateien zulässig."</target>
         <note />
       </trans-unit>
     </body>
