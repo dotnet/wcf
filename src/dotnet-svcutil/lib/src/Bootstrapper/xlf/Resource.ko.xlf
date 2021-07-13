@@ -4,47 +4,47 @@
     <body>
       <trans-unit id="BootstrapErrorDisableReferences">
         <source>An error occurred while bootstrapping svcutil. This usually happens when processing references.  You might be able to work around this problem by not providing reference parameters, and manually removing any types redefined in the generated proxy code.</source>
-        <target state="new">An error occurred while bootstrapping svcutil. This usually happens when processing references.  You might be able to work around this problem by not providing reference parameters, and manually removing any types redefined in the generated proxy code.</target>
+        <target state="translated">svcutil을 부트스트랩하는 동안 오류가 발생했습니다. 이 오류는 일반적으로 참조를 처리할 때 발생합니다. 참조 매개 변수를 제공하고 생성된 프록시 코드에서 재정의된 형식을 수동으로 제거하면 이 문제를 해결할 수 있습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="BootstrappingApplicationMsg">
         <source>Bootstrapping application ...</source>
-        <target state="new">Bootstrapping application ...</target>
+        <target state="translated">애플리케이션 부트스트랩 중...</target>
         <note />
       </trans-unit>
       <trans-unit id="BuildingProjectMsg">
         <source>Building bootstrapper project ...</source>
-        <target state="new">Building bootstrapper project ...</target>
+        <target state="translated">부트스트래퍼 프로젝트를 빌드하는 중...</target>
         <note />
       </trans-unit>
       <trans-unit id="CouldNotFindEmbeddedResourceFormat">
         <source>Could not find embedded resource '{0}'</source>
-        <target state="new">Could not find embedded resource '{0}'</target>
+        <target state="translated">포함 리소스 '{0}'을(를) 찾을 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="CreatingProjectMsg">
         <source>Creating bootstrapper project ...</source>
-        <target state="new">Creating bootstrapper project ...</target>
+        <target state="translated">부트스트래퍼 프로젝트를 만드는 중...</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrCannotFindNuGetPackageFormat">
         <source>Unable to locate NuGet package '{0}'.</source>
-        <target state="new">Unable to locate NuGet package '{0}'.</target>
+        <target state="translated">NuGet 패키지 '{0}'을(를) 찾을 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvokingProjectMsg">
         <source>Invoking bootstrapper ...</source>
-        <target state="new">Invoking bootstrapper ...</target>
+        <target state="translated">부트스트래퍼를 호출하는 중...</target>
         <note />
       </trans-unit>
       <trans-unit id="RestoringNuGetPackagesMsg">
         <source>Restoring NuGet packages for bootstrapper project ...</source>
-        <target state="new">Restoring NuGet packages for bootstrapper project ...</target>
+        <target state="translated">부트스트래퍼 프로젝트에 대한 NuGet 패키지를 복원하는 중...</target>
         <note />
       </trans-unit>
       <trans-unit id="TypesReuseDisabled">
         <source>Reusing types in referenced assemblies has been disabled.</source>
-        <target state="new">Reusing types in referenced assemblies has been disabled.</target>
+        <target state="translated">참조된 어셈블리의 형식 재사용을 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
     </body>

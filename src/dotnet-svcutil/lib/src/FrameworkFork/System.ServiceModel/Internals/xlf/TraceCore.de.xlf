@@ -4,107 +4,107 @@
     <body>
       <trans-unit id="ActionItemCallbackInvoked">
         <source>IO Thread scheduler callback invoked.</source>
-        <target state="new">IO Thread scheduler callback invoked.</target>
+        <target state="translated">Der E/A-Threadplanungsrückruf wurde aufgerufen.</target>
         <note>L=verbose, id=134, c=Debug, t=ThreadScheduling, o=Stop, K={Threading}, TT=ETW, P=a</note>
       </trans-unit>
       <trans-unit id="ActionItemScheduled">
         <source>IO Thread scheduler callback invoked.</source>
-        <target state="new">IO Thread scheduler callback invoked.</target>
+        <target state="translated">Der E/A-Threadplanungsrückruf wurde aufgerufen.</target>
         <note>L=verbose, id=133, c=Debug, t=ThreadScheduling, o=Start, K={Threading}, TT=ETW, P=a</note>
       </trans-unit>
       <trans-unit id="AppDomainUnload">
         <source>AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.</source>
-        <target state="new">AppDomain unloading. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.</target>
+        <target state="translated">AppDomain wird entladen. AppDomain.FriendlyName {0}, ProcessName {1}, ProcessId {2}.</target>
         <note>L=informational, id=57393, c=Debug, keywords={Infrastructure}, Types={appdomainName:string}{processName:string}{processId:string}</note>
       </trans-unit>
       <trans-unit id="BufferPoolAllocation">
         <source>Pool allocating {0} Bytes.</source>
-        <target state="new">Pool allocating {0} Bytes.</target>
+        <target state="translated">Poolreservierung {0} Bytes.</target>
         <note>L=verbose, id=131, c=Debug, t=BufferPooling, o=Allocate,K={Infrastructure}, Types={Size:int}, TT=ETW</note>
       </trans-unit>
       <trans-unit id="BufferPoolChangeQuota">
         <source>BufferPool of size {0}, changing quota by {1}.</source>
-        <target state="new">BufferPool of size {0}, changing quota by {1}.</target>
+        <target state="translated">BufferPool der Größe {0}, Kontingent wird um {1} geändert.</target>
         <note>L=verbose, id=132, c=Debug, t=BufferPooling, o=Tune, K={Infrastructure}, Types={PoolSize:int}{Delta:int}, TT=ETW</note>
       </trans-unit>
       <trans-unit id="EtwUnhandledException">
         <source>Unhandled exception. Exception details: {0}</source>
-        <target state="new">Unhandled exception. Exception details: {0}</target>
+        <target state="translated">Ausnahmefehler. Ausnahmedetails: {0}</target>
         <note>L=critical, id=57408, c=Operational, keywords={Infrastructure}, P=E, TT=ETW</note>
       </trans-unit>
       <trans-unit id="HandledException">
         <source>Handling an exception.  Exception details: {0}</source>
-        <target state="new">Handling an exception.  Exception details: {0}</target>
+        <target state="translated">Eine Ausnahme wird verarbeitet. Ausnahmedetails: {0}</target>
         <note>L=informational, id=57394, c=Analytic, keywords={Infrastructure}, P=E</note>
       </trans-unit>
       <trans-unit id="HandledExceptionError">
         <source>Handling an exception. Exception details: {0}</source>
-        <target state="new">Handling an exception. Exception details: {0}</target>
+        <target state="translated">Eine Ausnahme wird verarbeitet. Ausnahmedetails: {0}</target>
         <note>L=error, id=57405, c=Operational, keywords={Infrastructure}, P=E</note>
       </trans-unit>
       <trans-unit id="HandledExceptionVerbose">
         <source>Handling an exception  Exception details: {0}</source>
-        <target state="new">Handling an exception  Exception details: {0}</target>
+        <target state="translated">Eine Ausnahme wird verarbeitet. Ausnahmedetails: {0}</target>
         <note>L=verbose, id=57406, c=Analytic, keywords={Infrastructure}, P=E</note>
       </trans-unit>
       <trans-unit id="HandledExceptionWarning">
         <source>Handling an exception. Exception details: {0}</source>
-        <target state="new">Handling an exception. Exception details: {0}</target>
+        <target state="translated">Eine Ausnahme wird verarbeitet. Ausnahmedetails: {0}</target>
         <note>L=warning, id=57404, c=Analytic, keywords={Infrastructure}, P=E</note>
       </trans-unit>
       <trans-unit id="ShipAssertExceptionMessage">
         <source>An unexpected failure occurred. Applications should not attempt to handle this error. For diagnostic purposes, this English message is associated with the failure: {0}.</source>
-        <target state="new">An unexpected failure occurred. Applications should not attempt to handle this error. For diagnostic purposes, this English message is associated with the failure: {0}.</target>
+        <target state="translated">Unerwarteter Fehler. Anwendungen sollten diesen Fehler nicht behandeln. Zu Diagnosezwecken ist diesem Fehler die folgende englischsprachige Meldung zugewiesen: "{0}".</target>
         <note>L=error, id=57395, c=Analytic, keywords={Infrastructure}</note>
       </trans-unit>
       <trans-unit id="ThrowingEtwException">
         <source>Throwing an exception. Source: {0}. Exception details: {1}</source>
-        <target state="new">Throwing an exception. Source: {0}. Exception details: {1}</target>
+        <target state="translated">Eine Ausnahme wird ausgelöst. Quelle: {0}. Ausnahmedetails: {1}</target>
         <note>L=warning, id=57410, c=Analytic, keywords={Infrastructure}, P=E, TT=ETW</note>
       </trans-unit>
       <trans-unit id="ThrowingEtwExceptionVerbose">
         <source>Throwing an exception. Source: {0}. Exception details: {1}</source>
-        <target state="new">Throwing an exception. Source: {0}. Exception details: {1}</target>
+        <target state="translated">Eine Ausnahme wird ausgelöst. Quelle: {0}. Ausnahmedetails: {1}</target>
         <note>L=verbose, id=57409, c=Analytic, keywords={Infrastructure}, P=E, TT=ETW</note>
       </trans-unit>
       <trans-unit id="ThrowingException">
         <source>Throwing an exception. Source: {0}. Exception details: {1}</source>
-        <target state="new">Throwing an exception. Source: {0}. Exception details: {1}</target>
+        <target state="translated">Eine Ausnahme wird ausgelöst. Quelle: {0}. Ausnahmedetails: {1}</target>
         <note>L=warning, id=57396, c=Analytic, keywords={Infrastructure}, P=E</note>
       </trans-unit>
       <trans-unit id="ThrowingExceptionVerbose">
         <source>Throwing an exception. Source: {0}. Exception details: {1}</source>
-        <target state="new">Throwing an exception. Source: {0}. Exception details: {1}</target>
+        <target state="translated">Eine Ausnahme wird ausgelöst. Quelle: {0}. Ausnahmedetails: {1}</target>
         <note>L=verbose, id=57407, c=Analytic, keywords={Infrastructure}, P=E</note>
       </trans-unit>
       <trans-unit id="TraceCodeEventLogCritical">
         <source>Wrote to the EventLog.</source>
-        <target state="new">Wrote to the EventLog.</target>
+        <target state="translated">Wurde in EventLog geschrieben.</target>
         <note>L=critical, id=57399, c=Debug, keywords={Infrastructure}, P=T</note>
       </trans-unit>
       <trans-unit id="TraceCodeEventLogError">
         <source>Wrote to the EventLog.</source>
-        <target state="new">Wrote to the EventLog.</target>
+        <target state="translated">Wurde in EventLog geschrieben.</target>
         <note>L=error, id=57400, c=Debug, keywords={Infrastructure}, P=T</note>
       </trans-unit>
       <trans-unit id="TraceCodeEventLogInfo">
         <source>Wrote to the EventLog.</source>
-        <target state="new">Wrote to the EventLog.</target>
+        <target state="translated">Wurde in EventLog geschrieben.</target>
         <note>L=informational, id=57401, c=Debug, keywords={Infrastructure}, P=T</note>
       </trans-unit>
       <trans-unit id="TraceCodeEventLogVerbose">
         <source>Wrote to the EventLog.</source>
-        <target state="new">Wrote to the EventLog.</target>
+        <target state="translated">Wurde in EventLog geschrieben.</target>
         <note>L=verbose, id=57402, c=Debug, keywords={Infrastructure}, P=T</note>
       </trans-unit>
       <trans-unit id="TraceCodeEventLogWarning">
         <source>Wrote to the EventLog.</source>
-        <target state="new">Wrote to the EventLog.</target>
+        <target state="translated">Wurde in EventLog geschrieben.</target>
         <note>L=warning, id=57403, c=Debug, keywords={Infrastructure}, P=T</note>
       </trans-unit>
       <trans-unit id="UnhandledException">
         <source>Unhandled exception.  Exception details: {0}</source>
-        <target state="new">Unhandled exception.  Exception details: {0}</target>
+        <target state="translated">Ausnahmefehler. Ausnahmedetails: {0}</target>
         <note>L=critical, id=57397, c=Operational, keywords={Infrastructure}, P=E</note>
       </trans-unit>
     </body>
