@@ -8,6 +8,11 @@
 
 ## Version History
 
+### 4.9.0-Preview1
+
+* [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Federation/4.9.0-preview1.21220.1
+* [Release tag](https://github.com/dotnet/wcf/releases/tag/v3.3.0-preview1)
+
 ### 4.8.1
 
 * [NuGet Package](https://www.nuget.org/packages/System.ServiceModel.Federation/4.8.1)
