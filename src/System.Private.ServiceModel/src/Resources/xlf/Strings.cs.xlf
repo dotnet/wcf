@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="ActivityProcessingMessage">
         <source>Processing message {0}.</source>
-        <target state="new">Processing message {0}.</target>
+        <target state="translated">Zpracování zprávy {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivitySecurityClose">
         <source>Close Security Session.</source>
-        <target state="new">Close Security Session.</target>
+        <target state="translated">Ukončete relaci zabezpečení.</target>
         <note />
       </trans-unit>
       <trans-unit id="AddressingExtensionInBadNS">
@@ -99,12 +99,12 @@
       </trans-unit>
       <trans-unit id="AlgorithmAndPrivateKeyMisMatch">
         <source>The algorithm specified and the private key do not match.</source>
-        <target state="new">The algorithm specified and the private key do not match.</target>
+        <target state="translated">Zadaný algoritmus a privátní klíč se neshodují.</target>
         <note />
       </trans-unit>
       <trans-unit id="AlgorithmAndPublicKeyMisMatch">
         <source>The algorithm specified and the public key do not match.</source>
-        <target state="new">The algorithm specified and the public key do not match.</target>
+        <target state="translated">Zadaný algoritmus a veřejný klíč se neshodují.</target>
         <note />
       </trans-unit>
       <trans-unit id="AnonymousLogonsAreNotAllowed">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="AsyncResultCompletedTwice">
         <source>AsyncResult completed twice.</source>
-        <target state="new">AsyncResult completed twice.</target>
+        <target state="translated">Výsledek AsyncResult byl dokončen dvakrát.</target>
         <note />
       </trans-unit>
       <trans-unit id="AtLeastOneFaultReasonMustBeSpecified">
@@ -504,7 +504,7 @@
       </trans-unit>
       <trans-unit id="ClientSecurityNegotiationTimeout">
         <source>Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</source>
-        <target state="new">Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</target>
+        <target state="translated">Klient nemůže dokončit vyjednávání zabezpečení v nakonfigurovaném časovém limitu ({0}). Aktuální fáze vyjednávání je {1} ({2}).</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientSecurityOutputSessionCloseTimeout">
@@ -644,7 +644,7 @@
       </trans-unit>
       <trans-unit id="CustomCryptoAlgorithmIsNotValidKeyedHashAlgorithm">
         <source>The custom crypto algorithm '{0}'obtained using CryptoConfig is not a valid or supported keyed hash algorithm.</source>
-        <target state="new">The custom crypto algorithm '{0}'obtained using CryptoConfig is not a valid or supported keyed hash algorithm.</target>
+        <target state="translated">Vlastní šifrovací algoritmus {0} načtený pomocí objektu CryptoConfig není platný nebo se nejedná o podporovaný algoritmus hash s klíčem.</target>
         <note />
       </trans-unit>
       <trans-unit id="DelayedSecurityApplicationAlreadyCompleted">
@@ -819,7 +819,7 @@
       </trans-unit>
       <trans-unit id="EmptyOrNullArgumentString">
         <source>The argument '{0}' is null or empty string.</source>
-        <target state="new">The argument '{0}' is null or empty string.</target>
+        <target state="translated">Argument {0} má hodnotu null nebo je prázdný řetězec.</target>
         <note />
       </trans-unit>
       <trans-unit id="EmptyXmlElementError">
@@ -959,7 +959,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
         <source>CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</source>
-        <target state="new">CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</target>
+        <target state="translated">Vazby CustomChannelBindings nejsou podporovány. Odeberte vazbu CustomChannelBinding ze zásady ExtendedProtectionPolicy.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtraContentIsPresentInFaultDetail">
@@ -1154,7 +1154,7 @@
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">Zadaná hodnota vlastnosti AuthenticationScheme v elementu HttpTransportBindingElement ({0}) není při vytváření objektu ChannelFactory povolena. Pokud jste použili standardní vazbu, ujistěte se, zda nebyl typ ClientCredentialType nastaven na hodnotu HttpClientCredentialType.InheritedFromHost, která je na klientovi neplatná. Pokud hodnotu nastavujete na {0} přímo v elementu HttpTransportBindingElement, nastavte ji na Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication nebo Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
@@ -1224,7 +1224,7 @@
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">Schéma ověřování {0} bylo určeno v objektu pro vytváření protokolu HTTP. Objekt pro vytváření však podporuje pouze specifikaci právě jednoho schématu ověřování. Platná schémata ověřování jsou Digest (Stručný), Negotiate (Vyjednaný), NTLM, Basic (Základní), IntegratedWindowsAuthentication a Anonymous (Anonymní).</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
@@ -1269,12 +1269,12 @@
       </trans-unit>
       <trans-unit id="ID6002">
         <source>ID6002: The given key size in bits is '{0}' which is not a multiple of 8.</source>
-        <target state="new">ID6002: The given key size in bits is '{0}' which is not a multiple of 8.</target>
+        <target state="translated">ID6002: Zadaná velikost klíče v bitech je {0}, což není násobek čísla 8.</target>
         <note />
       </trans-unit>
       <trans-unit id="ID6033">
         <source>ID6033: The specified key size '{0}' is not supported.</source>
-        <target state="new">ID6033: The specified key size '{0}' is not supported.</target>
+        <target state="translated">ID6033: Zadaná velikost klíče {0} není podporována.</target>
         <note />
       </trans-unit>
       <trans-unit id="IdentityCheckFailedForIncomingMessage">
@@ -1374,7 +1374,7 @@
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
-        <target state="new">A security session close response was received with an invalid action '{0}'.</target>
+        <target state="translated">Odpověď na ukončení relace zabezpečení byla přijata s neplatnou akcí {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
@@ -1794,7 +1794,7 @@
       </trans-unit>
       <trans-unit id="MissingPrivateKey">
         <source>The private key is not present in the X.509 certificate.</source>
-        <target state="new">The private key is not present in the X.509 certificate.</target>
+        <target state="translated">V certifikátu X.509 se nenachází privátní klíč.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingRelatesToOnWsrmResponseReason">
@@ -1844,7 +1844,7 @@
       </trans-unit>
       <trans-unit id="MultipleRelatesToHeaders">
         <source> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</source>
-        <target state="new"> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</target>
+        <target state="translated"> Bylo nalezeno více záhlaví třídy RelatesTo se vztahem {0}. Pro jednu třídu je povolen pouze jeden vztah.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSecurityCredentialsManagersInChannelBindingParameters">
@@ -2029,7 +2029,7 @@
       </trans-unit>
       <trans-unit id="OnlyDefaultSpnServiceSupported">
         <source>Only HOST and HTTP service principal names are supported .</source>
-        <target state="new">Only HOST and HTTP service principal names are supported .</target>
+        <target state="translated">Jsou podporovány pouze hlavní názvy služby typu HOST a HTTP.</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
@@ -2059,7 +2059,7 @@
       </trans-unit>
       <trans-unit id="PeerTrustNotSupportedOnOSX">
         <source>Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</source>
-        <target state="new">Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</target>
+        <target state="translated">Ověření certifikátů důvěryhodných pro druhou stranu se v systému OSX nepodporuje. Podrobnosti najdete tady: https://go.microsoft.com/fwlink/?linkid=849976.</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
@@ -2089,17 +2089,17 @@
       </trans-unit>
       <trans-unit id="PrivateKeyNotDSA">
         <source>The private key is not a DSA key.</source>
-        <target state="new">The private key is not a DSA key.</target>
+        <target state="translated">Privátní klíč není klíč DSA.</target>
         <note />
       </trans-unit>
       <trans-unit id="PrivateKeyNotRSA">
         <source>The private key is not a RSA key.</source>
-        <target state="new">The private key is not a RSA key.</target>
+        <target state="translated">Privátní klíč není klíč RSA.</target>
         <note />
       </trans-unit>
       <trans-unit id="PrivateKeyNotSupported">
         <source>The key algorithm for this private key is not supported.</source>
-        <target state="new">The key algorithm for this private key is not supported.</target>
+        <target state="translated">Algoritmus klíče pro tento privátní klíč není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
@@ -2144,7 +2144,7 @@
       </trans-unit>
       <trans-unit id="PublicKeyNotDSA">
         <source>The public key is not a DSA key.</source>
-        <target state="new">The public key is not a DSA key.</target>
+        <target state="translated">Veřejný klíč není klíč DSA.</target>
         <note />
       </trans-unit>
       <trans-unit id="PublicKeyNotRSA">
@@ -2154,7 +2154,7 @@
       </trans-unit>
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
-        <target state="new">The key algorithm for this public key is not supported.</target>
+        <target state="translated">Algoritmus klíče pro tento veřejný klíč není podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
@@ -3139,7 +3139,7 @@
       </trans-unit>
       <trans-unit id="SFxTerminatingOperationAlreadyCalled1">
         <source>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </source>
-        <target state="new">This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </target>
+        <target state="translated">Tento kanál nemůže odeslat další zprávy, protože již byla volána operace IsTerminating {0}. </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
@@ -3219,7 +3219,7 @@
       </trans-unit>
       <trans-unit id="SSLProtocolNegotiationFailed">
         <source>SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</source>
-        <target state="new">SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</target>
+        <target state="translated">Vyjednávání protokolu SSL se nezdařilo. Bylo požadováno klíčové slovo {0}, ale bylo nabídnuto {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecureConversationDriverVersionDoesNotSupportSession">
@@ -3844,7 +3844,7 @@
       </trans-unit>
       <trans-unit id="TimestampAlreadySetForSecurityHeader">
         <source>TimestampAlreadySetForSecurityHeader</source>
-        <target state="new">TimestampAlreadySetForSecurityHeader</target>
+        <target state="translated">TimestampAlreadySetForSecurityHeader</target>
         <note />
       </trans-unit>
       <trans-unit id="TimestampToSignHasNoId">
@@ -3984,12 +3984,12 @@
       </trans-unit>
       <trans-unit id="UnableToCreateHashAlgorithmFromAsymmetricCrypto">
         <source>Unable to create a HashAlgorithm for the '{0}' algorithm from the '{1}' asymmetric crypto.</source>
-        <target state="new">Unable to create a HashAlgorithm for the '{0}' algorithm from the '{1}' asymmetric crypto.</target>
+        <target state="translated">Nelze vytvořit HashAlgorithm pro algoritmus {0} z asymetrického šifrování {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToCreateKeyedHashAlgorithm">
         <source>Unable to create a KeyedHashAlgorithm from '{0}' for the signature algorithm '{1}'.</source>
-        <target state="new">Unable to create a KeyedHashAlgorithm from '{0}' for the signature algorithm '{1}'.</target>
+        <target state="translated">Nelze vytvořit KeyedHashAlgorithm z {0} pro algoritmus podpisu {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToCreateTokenReference">
@@ -4209,7 +4209,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedAlgorithmForCryptoOperation">
         <source>The algorithm {0} is not supported for operation {1}.</source>
-        <target state="new">The algorithm {0} is not supported for operation {1}.</target>
+        <target state="translated">Algoritmus {0} se pro operaci {1} nepodporuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedBinaryEncoding">
@@ -4234,7 +4234,7 @@
       </trans-unit>
       <trans-unit id="UnsupportedCryptoAlgorithm">
         <source>Crypto algorithm '{0}' not supported in this context.</source>
-        <target state="new">Crypto algorithm '{0}' not supported in this context.</target>
+        <target state="translated">Šifrovací algoritmus {0} není v tomto kontextu podporován.</target>
         <note />
       </trans-unit>
       <trans-unit id="UnsupportedEnvelopeVersion">
@@ -4444,17 +4444,17 @@
       </trans-unit>
       <trans-unit id="X509InvalidUsageTime">
         <source>The X.509 certificate ({0}) usage time is invalid.  The usage time '{1}' does not fall between NotBefore time '{2}' and NotAfter time '{3}'.</source>
-        <target state="new">The X.509 certificate ({0}) usage time is invalid.  The usage time '{1}' does not fall between NotBefore time '{2}' and NotAfter time '{3}'.</target>
+        <target state="translated">Čas použití certifikátu X.509 ({0}) je neplatný.  Čas využití {1} nepatří mezi čas NotBefore {2} a čas NotAfter {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="X509IsInUntrustedStore">
         <source>The {0} X.509 certificate is in an untrusted certificate store.</source>
-        <target state="new">The {0} X.509 certificate is in an untrusted certificate store.</target>
+        <target state="translated">Certifikát {0} X.509 je v úložišti nedůvěryhodných certifikátů.</target>
         <note />
       </trans-unit>
       <trans-unit id="X509IsNotInTrustedStore">
         <source>The X.509 certificate {0} is not in the trusted people store.</source>
-        <target state="new">The X.509 certificate {0} is not in the trusted people store.</target>
+        <target state="translated">Certifikát X.509 {0} není v úložišti důvěryhodné osoby.</target>
         <note />
       </trans-unit>
       <trans-unit id="XDCannotFindValueInDictionaryString">

@@ -1154,7 +1154,7 @@
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">Указанное значение свойства AuthenticationScheme элемента HttpTransportBindingElement ("{0}") не разрешено при построении фабрики ChannelFactory. Если используется стандартная привязка, убедитесь, что свойству ClientCredentialType не задано значение HttpClientCredentialType.InheritedFromHost, которое недопустимо для клиента. Если значение для "{0}" задается непосредственно в элементе HttpTransportBindingElement, используйте значение "Дайджест", "Согласование", NTLM, "Обычная", "IntegratedWindowsAuthentication" или "Анонимная".</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
@@ -1224,7 +1224,7 @@
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">Схема проверки подлинности "{0}" указана в фабрике HTTP. Однако эта фабрика поддерживает спецификацию только одной схемы проверки подлинности. Допустимые схемы проверки подлинности: "Дайджест", "Согласование", NTLM, "Обычная", "IntegratedWindowsAuthentication" или "Анонимная".</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
@@ -1374,7 +1374,7 @@
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
-        <target state="new">A security session close response was received with an invalid action '{0}'.</target>
+        <target state="translated">Получено ответное сообщение закрытия сеанса безопасности с недопустимым действием "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
@@ -3139,7 +3139,7 @@
       </trans-unit>
       <trans-unit id="SFxTerminatingOperationAlreadyCalled1">
         <source>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </source>
-        <target state="new">This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </target>
+        <target state="translated">По этому каналу больше нельзя отправлять сообщения, так как операция IsTerminating "{0}" уже была вызвана.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
@@ -3219,7 +3219,7 @@
       </trans-unit>
       <trans-unit id="SSLProtocolNegotiationFailed">
         <source>SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</source>
-        <target state="new">SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</target>
+        <target state="translated">Сбой согласования протокола SSL. Запрошено "{0}", но возвращено "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="SecureConversationDriverVersionDoesNotSupportSession">

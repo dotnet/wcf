@@ -1154,7 +1154,7 @@
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">Il valore specificato per la proprietà AuthenticationScheme in HttpTransportBindingElement ('{0}') non è consentito durante la creazione di un elemento ChannelFactory. Se è stato usato un binding standard, verificare che ClientCredentialType non sia impostato su HttpClientCredentialType.InheritedFromHost, che è un valore non valido in un client. Se il valore viene impostato su '{0}' direttamente in HttpTransportBindingElement, impostarlo su Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication o Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
@@ -1224,7 +1224,7 @@
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">Nella factory HTTP è stato specificato lo schema di autenticazione "{0}", ma la factory supporta solo la specifica di un unico schema di autenticazione. Gli schemi di autenticazione validi sono Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication o Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
@@ -1374,7 +1374,7 @@
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
-        <target state="new">A security session close response was received with an invalid action '{0}'.</target>
+        <target state="translated">È stata ricevuta una risposta di chiusura nella sessione di sicurezza con un'azione non valida "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">

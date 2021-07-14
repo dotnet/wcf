@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="ActivityProcessingMessage">
         <source>Processing message {0}.</source>
-        <target state="new">Processing message {0}.</target>
+        <target state="translated">正在处理消息 {0}。</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivitySecurityClose">
         <source>Close Security Session.</source>
-        <target state="new">Close Security Session.</target>
+        <target state="translated">关闭安全会话。</target>
         <note />
       </trans-unit>
       <trans-unit id="AddressingExtensionInBadNS">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="AsyncResultCompletedTwice">
         <source>AsyncResult completed twice.</source>
-        <target state="new">AsyncResult completed twice.</target>
+        <target state="translated">AsyncResult 已完成两次。</target>
         <note />
       </trans-unit>
       <trans-unit id="AtLeastOneFaultReasonMustBeSpecified">
@@ -504,7 +504,7 @@
       </trans-unit>
       <trans-unit id="ClientSecurityNegotiationTimeout">
         <source>Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</source>
-        <target state="new">Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</target>
+        <target state="translated">客户端无法在配置的超时({0})内完成安全协商。当前的协商段为 {1} ({2})。</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientSecurityOutputSessionCloseTimeout">
@@ -819,7 +819,7 @@
       </trans-unit>
       <trans-unit id="EmptyOrNullArgumentString">
         <source>The argument '{0}' is null or empty string.</source>
-        <target state="new">The argument '{0}' is null or empty string.</target>
+        <target state="translated">参数“{0}”为 null 或空字符串。</target>
         <note />
       </trans-unit>
       <trans-unit id="EmptyXmlElementError">
@@ -959,7 +959,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
         <source>CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</source>
-        <target state="new">CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</target>
+        <target state="translated">不支持 CustomChannelBinding。请从 ExtendedProtectionPolicy 中移除 CustomChannelBinding。</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtraContentIsPresentInFaultDetail">
@@ -1154,7 +1154,7 @@
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">生成 ChannelFactory 时不允许使用为 HttpTransportBindingElement (“{0}”)上的 AuthenticationScheme 属性指定的值。如果使用了标准绑定，请确保 ClientCredentialType 未设置为 HttpClientCredentialType.InheritedFromHost (该值在客户端无效)。如果直接在 HttpTransportBindingElement 上将该值设置为“{0}”，请将其设置为 Digest、Negotiate、NTLM、Basic、IntegratedWindowsAuthentication 或 Anonymous。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
@@ -1224,7 +1224,7 @@
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">已在 HTTP 工厂上指定了“{0}”身份验证方案。但是，该工厂仅支持只指定一种身份验证方案。有效的身份验证方案为 Digest、Negotiate、NTLM、Basic、IntegratedWindowsAuthentication 或 Anonymous。</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
@@ -1374,7 +1374,7 @@
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
-        <target state="new">A security session close response was received with an invalid action '{0}'.</target>
+        <target state="translated">已收到带有无效操作“{0}”的安全会话关闭响应</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
@@ -1844,7 +1844,7 @@
       </trans-unit>
       <trans-unit id="MultipleRelatesToHeaders">
         <source> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</source>
-        <target state="new"> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</target>
+        <target state="translated"> 已找到多个关系为“{0}”的 RelatesTo 标头。每个关系只允许有一个上述标头。</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSecurityCredentialsManagersInChannelBindingParameters">
@@ -2029,7 +2029,7 @@
       </trans-unit>
       <trans-unit id="OnlyDefaultSpnServiceSupported">
         <source>Only HOST and HTTP service principal names are supported .</source>
-        <target state="new">Only HOST and HTTP service principal names are supported .</target>
+        <target state="translated">仅支持 HOST 和 HTTP 服务主体名称。</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
@@ -2059,7 +2059,7 @@
       </trans-unit>
       <trans-unit id="PeerTrustNotSupportedOnOSX">
         <source>Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</source>
-        <target state="new">Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</target>
+        <target state="translated">OSX 不支持对等信任证书验证。有关详细信息，请参阅 https://go.microsoft.com/fwlink/?linkid=849976。</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
@@ -2099,7 +2099,7 @@
       </trans-unit>
       <trans-unit id="PrivateKeyNotSupported">
         <source>The key algorithm for this private key is not supported.</source>
-        <target state="new">The key algorithm for this private key is not supported.</target>
+        <target state="translated">不支持此私钥的密钥算法。</target>
         <note />
       </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
@@ -2154,7 +2154,7 @@
       </trans-unit>
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
-        <target state="new">The key algorithm for this public key is not supported.</target>
+        <target state="translated">不支持此公钥的密钥算法。</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
@@ -3139,7 +3139,7 @@
       </trans-unit>
       <trans-unit id="SFxTerminatingOperationAlreadyCalled1">
         <source>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </source>
-        <target state="new">This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </target>
+        <target state="translated">此通道无法再发送更多消息，因为已调用 IsTerminating 操作“{0}”。 </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
@@ -3219,7 +3219,7 @@
       </trans-unit>
       <trans-unit id="SSLProtocolNegotiationFailed">
         <source>SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</source>
-        <target state="new">SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</target>
+        <target state="translated">SSL 协议协商失败。已请求“{0}”，但提供了“{1}”。</target>
         <note />
       </trans-unit>
       <trans-unit id="SecureConversationDriverVersionDoesNotSupportSession">
@@ -3844,7 +3844,7 @@
       </trans-unit>
       <trans-unit id="TimestampAlreadySetForSecurityHeader">
         <source>TimestampAlreadySetForSecurityHeader</source>
-        <target state="new">TimestampAlreadySetForSecurityHeader</target>
+        <target state="translated">TimestampAlreadySetForSecurityHeader</target>
         <note />
       </trans-unit>
       <trans-unit id="TimestampToSignHasNoId">

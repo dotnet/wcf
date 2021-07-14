@@ -74,12 +74,12 @@
       </trans-unit>
       <trans-unit id="ActivityProcessingMessage">
         <source>Processing message {0}.</source>
-        <target state="new">Processing message {0}.</target>
+        <target state="translated">Procesando el mensaje {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="ActivitySecurityClose">
         <source>Close Security Session.</source>
-        <target state="new">Close Security Session.</target>
+        <target state="translated">Cerrar sesión de seguridad.</target>
         <note />
       </trans-unit>
       <trans-unit id="AddressingExtensionInBadNS">
@@ -129,7 +129,7 @@
       </trans-unit>
       <trans-unit id="AsyncResultCompletedTwice">
         <source>AsyncResult completed twice.</source>
-        <target state="new">AsyncResult completed twice.</target>
+        <target state="translated">AsyncResult completado dos veces.</target>
         <note />
       </trans-unit>
       <trans-unit id="AtLeastOneFaultReasonMustBeSpecified">
@@ -504,7 +504,7 @@
       </trans-unit>
       <trans-unit id="ClientSecurityNegotiationTimeout">
         <source>Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</source>
-        <target state="new">Client is unable to finish the security negotiation within the configured timeout ({0}).  The current negotiation leg is {1} ({2}).</target>
+        <target state="translated">El cliente no puede terminar la negociación de seguridad dentro del tiempo de espera configurado ({0}).  El tramo de negociación actual es{1} ({2}).</target>
         <note />
       </trans-unit>
       <trans-unit id="ClientSecurityOutputSessionCloseTimeout">
@@ -649,7 +649,7 @@
       </trans-unit>
       <trans-unit id="DelayedSecurityApplicationAlreadyCompleted">
         <source>Delayed security application has already been completed.</source>
-        <target state="translated">La aplicación de seguridad retrasada ya se completó.</target>
+        <target state="translated">La solicitud de seguridad retrasada ya ha sido completada..</target>
         <note />
       </trans-unit>
       <trans-unit id="DelegatingHandlerArrayFromFuncContainsNullItem">
@@ -819,7 +819,7 @@
       </trans-unit>
       <trans-unit id="EmptyOrNullArgumentString">
         <source>The argument '{0}' is null or empty string.</source>
-        <target state="new">The argument '{0}' is null or empty string.</target>
+        <target state="translated">El argumento "{0}" es una cadena nula o vacía.</target>
         <note />
       </trans-unit>
       <trans-unit id="EmptyXmlElementError">
@@ -959,7 +959,7 @@
       </trans-unit>
       <trans-unit id="ExtendedProtectionPolicyCustomChannelBindingNotSupported">
         <source>CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</source>
-        <target state="new">CustomChannelBindings are not supported.  Please remove the CustomChannelBinding from the ExtendedProtectionPolicy.</target>
+        <target state="translated">Los CustomChannelBindings no son compatibles.  Quite el CustomChannelBinding de la ExtendedProtectionPolicy.</target>
         <note />
       </trans-unit>
       <trans-unit id="ExtraContentIsPresentInFaultDetail">
@@ -1154,7 +1154,7 @@
       </trans-unit>
       <trans-unit id="HttpAuthSchemeCannotBeNone">
         <source>The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The value specified for the AuthenticationScheme property on the HttpTransportBindingElement ('{0}') is not allowed when building a ChannelFactory. If you used a standard binding, ensure the ClientCredentialType is not set to HttpClientCredentialType.InheritedFromHost, a value which is invalid on a client. If you set the value to '{0}' directly on the HttpTransportBindingElement, please set it to Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">El valor especificado para la propiedad AuthenticationScheme en el HttpTransportBindingElement ("{0}") no está permitido al compilar un ChannelFactory. Si ha utilizado un vínculo estándar, asegúrese de que el ClientCredentialType no está establecido como HttpClientCredentialType.InheritedFromHost, un valor que no es válido en un cliente. Si establece el valor a "{0}" directamente en el HttpTransportBindingElement, establézcalo a Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, o Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpAuthorizationFailed">
@@ -1224,7 +1224,7 @@
       </trans-unit>
       <trans-unit id="HttpRequiresSingleAuthScheme">
         <source>The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</source>
-        <target state="new">The '{0}' authentication scheme has been specified on the HTTP factory. However, the factory only supports specification of exactly one authentication scheme. Valid authentication schemes are Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication, or Anonymous.</target>
+        <target state="translated">El esquema de autenticación "{0}" ha sido especificado en la fábrica HTTP. Sin embargo, la fábrica sólo admite la especificación de exactamente un esquema de autenticación. Los esquemas de autenticación válidos son Digest, Negotiate, NTLM, Basic, IntegratedWindowsAuthentication o Anonymous.</target>
         <note />
       </trans-unit>
       <trans-unit id="HttpResponseTimedOut">
@@ -1374,7 +1374,7 @@
       </trans-unit>
       <trans-unit id="InvalidCloseResponseAction">
         <source>A security session close response was received with an invalid action '{0}'.</source>
-        <target state="new">A security session close response was received with an invalid action '{0}'.</target>
+        <target state="translated">Se recibió una respuesta de cierre de sesión de seguridad con una acción no válida "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDecoderStateMachine">
@@ -1844,7 +1844,7 @@
       </trans-unit>
       <trans-unit id="MultipleRelatesToHeaders">
         <source> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</source>
-        <target state="new"> Multiple RelatesTo headers with relationship '{0}' found.  Only one is allowed per relationship.</target>
+        <target state="translated"> Se han encontrado varios encabezados RelatesTo con la relación "{0}". solo se permite uno por relación.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleSecurityCredentialsManagersInChannelBindingParameters">
@@ -2029,7 +2029,7 @@
       </trans-unit>
       <trans-unit id="OnlyDefaultSpnServiceSupported">
         <source>Only HOST and HTTP service principal names are supported .</source>
-        <target state="new">Only HOST and HTTP service principal names are supported .</target>
+        <target state="translated">Sólo son compatibles los nombres de HOST y de la entidad principal del servicio HTTP.</target>
         <note />
       </trans-unit>
       <trans-unit id="OpenTimedOutEstablishingTransportSession">
@@ -2059,7 +2059,7 @@
       </trans-unit>
       <trans-unit id="PeerTrustNotSupportedOnOSX">
         <source>Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</source>
-        <target state="new">Peer Trust certificate validation is not supported on OSX. See https://go.microsoft.com/fwlink/?linkid=849976 for details.</target>
+        <target state="translated">La validación de certificados de confianza del mismo nivel no es compatible con OSX. Consulte https://go.microsoft.com/fwlink/?linkid=849976 para obtener más detalles.</target>
         <note />
       </trans-unit>
       <trans-unit id="PreambleAckIncorrect">
@@ -2099,7 +2099,7 @@
       </trans-unit>
       <trans-unit id="PrivateKeyNotSupported">
         <source>The key algorithm for this private key is not supported.</source>
-        <target state="new">The key algorithm for this private key is not supported.</target>
+        <target state="translated">El algoritmo de la clave para esta clave privada no es compatible.</target>
         <note />
       </trans-unit>
       <trans-unit id="PropertySettingErrorOnProtocolFactory">
@@ -2154,7 +2154,7 @@
       </trans-unit>
       <trans-unit id="PublicKeyNotSupported">
         <source>The key algorithm for this public key is not supported.</source>
-        <target state="new">The key algorithm for this public key is not supported.</target>
+        <target state="translated">El algoritmo de clave para esta clave pública no es compatible.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
@@ -3139,7 +3139,7 @@
       </trans-unit>
       <trans-unit id="SFxTerminatingOperationAlreadyCalled1">
         <source>This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </source>
-        <target state="new">This channel cannot send any more messages because IsTerminating operation '{0}' has already been called. </target>
+        <target state="translated">Este canal no puede enviar más mensajes porque ya se llamó a la operación IsTerminating "{0}". </target>
         <note />
       </trans-unit>
       <trans-unit id="SFxTimeoutOutOfRange0">
@@ -3219,7 +3219,7 @@
       </trans-unit>
       <trans-unit id="SSLProtocolNegotiationFailed">
         <source>SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</source>
-        <target state="new">SSL protocol negotiation failed. Requested '{0}' but was offered '{1}'.</target>
+        <target state="translated">La negociación del protocolo SSL ha fallado. Se ha solicitado "{0}" pero se ofreció "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="SecureConversationDriverVersionDoesNotSupportSession">
@@ -3844,7 +3844,7 @@
       </trans-unit>
       <trans-unit id="TimestampAlreadySetForSecurityHeader">
         <source>TimestampAlreadySetForSecurityHeader</source>
-        <target state="new">TimestampAlreadySetForSecurityHeader</target>
+        <target state="translated">TimestampAlreadySetForSecurityHeader</target>
         <note />
       </trans-unit>
       <trans-unit id="TimestampToSignHasNoId">
