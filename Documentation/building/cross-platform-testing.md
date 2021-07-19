@@ -17,8 +17,8 @@ Following are just quick summaries of those steps.
 Building the WCF product and running the unit tests can be done with just these scripts from the root of the GitHub repo:
 
 ```
-./clean.sh -all
 ./build.sh
+./build.sh -test
 ```
 
 This will build the product from scratch, run all the unit tests, and place all the results in the file `msbuild.log`
@@ -31,7 +31,6 @@ To run the scenario tests ("OuterLoops") cross platform, you must first ensure t
 Then on the non-Windows machine where you want to run the tests, use these scripts:
 
 ```
-./clean.sh -all
 ./build.sh -outerloop -- /p:ServiceUri={URL-to-WCF-service}
 ```
 
