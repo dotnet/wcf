@@ -13,20 +13,24 @@ using Xunit;
 
 public static class Binding_Http_BasicHttpBindingTests
 {
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String()
+    public static void DefaultSettings_Echo_RoundTrips_String(WSMessageEncoding messageEncoding)
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
         string testString = "Hello";
-        Binding binding = null;
+        BasicHttpBinding binding = null;
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            binding.MessageEncoding = messageEncoding;
+
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -46,24 +50,27 @@ public static class Binding_Http_BasicHttpBindingTests
         }
     }
 
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void HttpKeepAliveDisabled_Echo_RoundTrips_True()
+    public static void HttpKeepAliveDisabled_Echo_RoundTrips_True(WSMessageEncoding messageEncoding)
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
-        Binding binding = null;
+        BasicHttpBinding binding = null;
         CustomBinding customBinding = null;
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.MessageEncoding = messageEncoding;
             customBinding = new CustomBinding(binding);
             var httpElement = customBinding.Elements.Find<HttpTransportBindingElement>();
             httpElement.KeepAliveEnabled = false;
 
-            factory = new ChannelFactory<IWcfService>(customBinding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(customBinding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -83,20 +90,23 @@ public static class Binding_Http_BasicHttpBindingTests
         }
     }
 
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void HttpMessageHandlerFactory_Success()
+    public static void HttpMessageHandlerFactory_Success(WSMessageEncoding messageEncoding)
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
         string testString = "Hello";
-        Binding binding = null;
+        BasicHttpBinding binding = null;
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            binding.MessageEncoding = messageEncoding;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
             var handlerFactoryBehavior = new HttpMessageHandlerBehavior();
             bool handlerCalled = false;
             handlerFactoryBehavior.OnSendingAsync = (message, token) =>
@@ -125,21 +135,24 @@ public static class Binding_Http_BasicHttpBindingTests
         }
     }
 
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void HttpMessageHandlerFactory_ModifyContent_Success()
+    public static void HttpMessageHandlerFactory_ModifyContent_Success(WSMessageEncoding messageEncoding)
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
         string testString = "Hello";
         string substituteString = "World";
-        Binding binding = null;
+        BasicHttpBinding binding = null;
 
         try
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            binding.MessageEncoding = messageEncoding;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
             var handlerFactoryBehavior = new HttpMessageHandlerBehavior();
             handlerFactoryBehavior.OnSendingAsync = (message, token) =>
             {
@@ -179,9 +192,11 @@ public static class Binding_Http_BasicHttpBindingTests
         }
     }
 
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void HttpExpect100Continue_AnonymousAuth_False()
+    public static void HttpExpect100Continue_AnonymousAuth_False(WSMessageEncoding messageEncoding)
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -191,8 +206,9 @@ public static class Binding_Http_BasicHttpBindingTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.MessageEncoding = messageEncoding;
 
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -214,9 +230,11 @@ public static class Binding_Http_BasicHttpBindingTests
         }
     }
 
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void MultiValue_UserAgent_Success()
+    public static void MultiValue_UserAgent_Success(WSMessageEncoding messageEncoding)
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
@@ -228,8 +246,9 @@ public static class Binding_Http_BasicHttpBindingTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            binding.MessageEncoding = messageEncoding;
 
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -273,7 +292,7 @@ public static class Binding_Http_BasicHttpBindingTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
 
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

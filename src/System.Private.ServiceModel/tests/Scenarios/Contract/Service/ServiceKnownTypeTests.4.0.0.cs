@@ -90,7 +90,7 @@ public static class ServiceKnownTypeTests
     private static ChannelFactory<ServiceContractType> GetChannelFactory<ServiceContractType>()
     {
         var binding = new BasicHttpBinding();
-        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
         var factory = new ChannelFactory<ServiceContractType>(binding, endpointAddress);
         return factory;
     }

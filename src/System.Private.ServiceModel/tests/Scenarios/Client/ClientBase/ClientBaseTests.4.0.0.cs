@@ -769,7 +769,7 @@ public static partial class ClientBaseTests
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding();
 
-            client = new MyClientBase<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            client = new MyClientBase<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = client.ChannelFactory.CreateChannel();
 
             using (OperationContextScope scope = new OperationContextScope((IContextChannel)serviceProxy))

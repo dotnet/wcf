@@ -68,7 +68,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         // We need the Service to create and open a ServiceHost and then give us the endpoint address for it.
         try
         {
-            setupHostFactory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            setupHostFactory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             setupHostServiceProxy = setupHostFactory.CreateChannel();
             restartServiceAddress = setupHostServiceProxy.GetRestartServiceEndpoint();
 
@@ -89,7 +89,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
 
         // Use Endpoints.HttpBaseAddress_Basic only for the purpose of extracting the Service host name.
         // Then update 'restartServiceAddress' with it.
-        string hostName = new Uri(Endpoints.HttpBaseAddress_Basic).Host;
+        string hostName = new Uri(Endpoints.HttpBaseAddress_Basic_Text).Host;
         restartServiceAddress = restartServiceAddress.Replace("[HOST]", hostName);
 
         // Get the last portion of the restart service url which is a Guid and convert it back to a Guid
@@ -150,7 +150,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void UnknownUrl_Throws_EndpointNotFoundException()
     {
         // We need a running service host at the other end but mangle the endpoint suffix
-        string notFoundUrl = Endpoints.HttpBaseAddress_Basic + "not-an-endpoint";
+        string notFoundUrl = Endpoints.HttpBaseAddress_Basic_Text + "not-an-endpoint";
         BasicHttpBinding binding = null;
         ChannelFactory<IWcfService> factory = null;
         EndpointAddress endpointAddress = null;
@@ -506,7 +506,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             binding.TransferMode = TransferMode.Streamed;
             // SendTimeout is the timeout used for implicit opens
             binding.SendTimeout = TimeSpan.FromMilliseconds(timeoutMs);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // Force the implicit open to stall until we have multiple concurrent calls pending.

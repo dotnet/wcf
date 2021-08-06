@@ -9,23 +9,23 @@ using System.ServiceModel.Channels;
 
 namespace WcfService
 {
-    [TestServiceDefinition(BasePath = "BasicHttp.svc", Schema = ServiceSchema.HTTP)]
-    public class BasicHttpTestServiceHost : TestServiceHostBase<IWcfService>
+    [TestServiceDefinition(BasePath = "WSHttp.svc", Schema = ServiceSchema.HTTP)]
+    public class WSHttpBindingTestServiceHost : TestServiceHostBase<IWcfService>
     {
         protected override IList<Binding> GetBindings()
         {
-            return new List<Binding> { GetBasicHttpBinding(WSMessageEncoding.Text), GetBasicHttpBinding(WSMessageEncoding.Mtom) };
+            return new List<Binding> { GetWSHttpBinding(WSMessageEncoding.Text), GetWSHttpBinding(WSMessageEncoding.Mtom) };
         }
 
-        private Binding GetBasicHttpBinding(WSMessageEncoding messageEncoding)
+        private Binding GetWSHttpBinding(WSMessageEncoding messageEncoding)
         {
-            var binding = new BasicHttpBinding();
+            var binding = new WSHttpBinding(SecurityMode.None);
             binding.MessageEncoding = messageEncoding;
             binding.Name = Enum.GetName(typeof(WSMessageEncoding), messageEncoding);
             return binding;
         }
 
-        public BasicHttpTestServiceHost(params Uri[] baseAddresses)
+        public WSHttpBindingTestServiceHost(params Uri[] baseAddresses)
             : base(typeof(WcfService), baseAddresses)
         {
         }

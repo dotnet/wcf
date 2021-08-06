@@ -16,7 +16,7 @@ public static partial class XmlSerializerFormatTests
     {
         // *** SETUP *** \\
         var binding = new BasicHttpBinding();
-        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
         var factory = new ChannelFactory<IXmlMessageContarctTestService>(binding, endpointAddress);
         IXmlMessageContarctTestService serviceProxy = factory.CreateChannel();
         var input = new XmlMessageContractTestRequest("1");
@@ -43,7 +43,7 @@ public static partial class XmlSerializerFormatTests
     {
         // *** SETUP *** \\
         var binding = new BasicHttpBinding();
-        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+        var endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
         var factory = new ChannelFactory<IXmlMessageContarctTestService>(binding, endpointAddress);
         IXmlMessageContarctTestService serviceProxy = factory.CreateChannel();
         var input = new XmlMessageContractTestRequestWithMessageHeader("1");
@@ -70,7 +70,7 @@ public static partial class XmlSerializerFormatTests
     {
         // *** SETUP *** \\
         BasicHttpBinding binding = new BasicHttpBinding();
-        MyClientBase<IWcfServiceXml_OperationContext> client = new MyClientBase<IWcfServiceXml_OperationContext>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        MyClientBase<IWcfServiceXml_OperationContext> client = new MyClientBase<IWcfServiceXml_OperationContext>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
         IWcfServiceXml_OperationContext serviceProxy = client.ChannelFactory.CreateChannel();
 
         string customHeaderName = "TestSessionHeader";

@@ -11,6 +11,7 @@ using System.ServiceModel.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using BufferedReadStream = System.ServiceModel.Channels.BufferedReadStream;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -111,15 +112,13 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
-        private Task WriteEndWrapperIfNecessaryAsync(XmlDictionaryWriter writer)
+        private async Task WriteEndWrapperIfNecessaryAsync(XmlDictionaryWriter writer)
         {
-            writer.WriteEndElement();
+            await writer.WriteEndElementAsync();
             if (WrapperName != null)
             {
-                writer.WriteEndElement();
+                await writer.WriteEndElementAsync();
             }
-
-            return Task.CompletedTask;
         }
 
         internal IAsyncResult BeginSerialize(XmlDictionaryWriter writer, object[] parameters, object returnValue, AsyncCallback callback, object state)

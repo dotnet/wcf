@@ -23,9 +23,14 @@ public static partial class Endpoints
         get { return GetEndpointAddress("DefaultCustomHttp.svc//default-custom-http"); }
     }
 
+    public static string HttpBaseAddress_Basic_Text
+    {
+        get { return GetEndpointAddress("BasicHttp.svc/Text"); }
+    }
+
     public static string HttpBaseAddress_Basic
     {
-        get { return GetEndpointAddress("BasicHttp.svc//Basic"); }
+        get { return GetEndpointAddress("BasicHttp.svc/"); }
     }
 
     public static string HttpBaseAddress_BasicService1
@@ -46,7 +51,7 @@ public static partial class Endpoints
 
     public static string HttpBaseAddress_NetHttp
     {
-        get { return GetEndpointAddress("NetHttp.svc//NetHttp"); }
+        get { return GetEndpointAddress("NetHttp.svc/"); }
     }
 
     public static string HttpSoap11_Address
@@ -159,6 +164,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("ReliableSessionOneWayService.svc/WSHttp"); }
     }
 
+    public static string WSHttpBindingBaseAddress
+    {
+        get { return GetEndpointAddress("WSHttp.svc/"); }
+    }
+
     #region WebSocket Addresses
     public static string HttpBaseAddress_NetHttpWebSockets
     {
@@ -180,44 +190,24 @@ public static partial class Endpoints
         get { return GetEndpointAddress("DuplexWebSocket.svc//http-defaultduplexwebsockets", protocol: "ws"); }
     }
 
-    public static string WebSocketHttpDuplexBinaryStreamed_Address
+    public static string WebSocketHttpDuplexStreamed_Address
     {
-        get { return GetEndpointAddress("WebSocketHttpDuplexBinaryStreamed.svc//WebSocketHttpDuplexBinaryStreamedResource", protocol: "ws"); }
+        get { return GetEndpointAddress("WebSocketHttpDuplex.svc/Streamed", protocol: "ws"); }
     }
 
-    public static string WebSocketHttpRequestReplyBinaryStreamed_Address
+    public static string WebSocketHttpRequestReplyStreamed_Address
     {
-        get { return GetEndpointAddress("WebSocketHttpRequestReplyBinaryStreamed.svc//WebSocketHttpRequestReplyBinaryStreamedResource", protocol: "ws"); }
+        get { return GetEndpointAddress("WebSocketHttpRequestReply.svc/Streamed", protocol: "ws"); }
     }
 
-    public static string WebSocketHttpRequestReplyTextStreamed_Address
+    public static string WebSocketHttpRequestReplyBuffered_Address
     {
-        get { return GetEndpointAddress("WebSocketHttpRequestReplyTextStreamed.svc//WebSocketHttpRequestReplyTextStreamedResource", protocol: "ws"); }
+        get { return GetEndpointAddress("WebSocketHttpRequestReply.svc/Buffered", protocol: "ws"); }
     }
 
-    public static string WebSocketHttpDuplexTextStreamed_Address
+    public static string WebSocketHttpDuplexBuffered_Address
     {
-        get { return GetEndpointAddress("WebSocketHttpDuplexTextStreamed.svc//WebSocketHttpDuplexTextStreamedResource", protocol: "ws"); }
-    }
-
-    public static string WebSocketHttpRequestReplyTextBuffered_Address
-    {
-        get { return GetEndpointAddress("WebSocketHttpRequestReplyTextBuffered.svc//WebSocketHttpRequestReplyTextBufferedResource", protocol: "ws"); }
-    }
-
-    public static string WebSocketHttpRequestReplyBinaryBuffered_Address
-    {
-        get { return GetEndpointAddress("WebSocketHttpRequestReplyBinaryBuffered.svc//WebSocketHttpRequestReplyBinaryBufferedResource", protocol: "ws"); }
-    }
-
-    public static string WebSocketHttpDuplexTextBuffered_Address
-    {
-        get { return GetEndpointAddress("WebSocketHttpDuplexTextBuffered.svc//WebSocketHttpDuplexTextBufferedResource", protocol: "ws"); }
-    }
-
-    public static string WebSocketHttpDuplexBinaryBuffered_Address
-    {
-        get { return GetEndpointAddress("WebSocketHttpDuplexBinaryBuffered.svc//WebSocketHttpDuplexBinaryBufferedResource", protocol: "ws"); }
+        get { return GetEndpointAddress("WebSocketHttpDuplex.svc/Buffered", protocol: "ws"); }
     }
 
     public static string WebSocketHttpVerifyWebSocketsUsed_Address
@@ -336,11 +326,19 @@ public static partial class Endpoints
         }
     }
 
+    public static string Https_DefaultBinding_Address_Text
+    {
+        get
+        {
+            return GetEndpointAddress("BasicHttps.svc/Text", protocol: "https");
+        }
+    }
+
     public static string Https_DefaultBinding_Address
     {
         get
         {
-            return GetEndpointAddress("BasicHttps.svc//basicHttps", protocol: "https");
+            return GetEndpointAddress("BasicHttps.svc/", protocol: "https");
         }
     }
 
@@ -360,11 +358,19 @@ public static partial class Endpoints
         }
     }
 
+    public static string HttpBaseAddress_NetHttps_Binary
+    {
+        get
+        {
+            return GetEndpointAddress("NetHttps.svc/Binary", protocol: "https");
+        }
+    }
+
     public static string HttpBaseAddress_NetHttps
     {
         get
         {
-            return GetEndpointAddress("NetHttps.svc//NetHttps", protocol: "https");
+            return GetEndpointAddress("NetHttps.svc/", protocol: "https");
         }
     }
 
@@ -457,51 +463,27 @@ public static partial class Endpoints
     }
 
     #region Secure WebSocket Addresses
-    public static string WebSocketHttpsDuplexBinaryStreamed_Address
+    public static string WebSocketHttpsDuplexStreamed_Address
     {
         get
         {
-            return GetEndpointAddress("WebSocketHttpsDuplexBinaryStreamed.svc//WebSocketHttpsDuplexBinaryStreamedResource", protocol: "wss");
+            return GetEndpointAddress("WebSocketHttpsDuplex.svc/Streamed", protocol: "wss");
         }
     }
 
-    public static string WebSocketHttpsDuplexTextStreamed_Address
+    public static string WebSocketHttpsRequestReplyBuffered_Address
     {
         get
         {
-            return GetEndpointAddress("WebSocketHttpsDuplexTextStreamed.svc//WebSocketHttpsDuplexTextStreamedResource", protocol: "wss");
+            return GetEndpointAddress("WebSocketHttpsRequestReply.svc/Buffered", protocol: "wss");
         }
     }
 
-    public static string WebSocketHttpsRequestReplyBinaryBuffered_Address
+    public static string WebSocketHttpsDuplexBuffered_Address
     {
         get
         {
-            return GetEndpointAddress("WebSocketHttpsRequestReplyBinaryBuffered.svc//WebSocketHttpsRequestReplyBinaryBufferedResource", protocol: "wss");
-        }
-    }
-
-    public static string WebSocketHttpsRequestReplyTextBuffered_Address
-    {
-        get
-        {
-            return GetEndpointAddress("WebSocketHttpsRequestReplyTextBuffered.svc//WebSocketHttpsRequestReplyTextBufferedResource", protocol: "wss");
-        }
-    }
-
-    public static string WebSocketHttpsDuplexBinaryBuffered_Address
-    {
-        get
-        {
-            return GetEndpointAddress("WebSocketHttpsDuplexBinaryBuffered.svc//WebSocketHttpsDuplexBinaryBufferedResource", protocol: "wss");
-        }
-    }
-
-    public static string WebSocketHttpsDuplexTextBuffered_Address
-    {
-        get
-        {
-            return GetEndpointAddress("WebSocketHttpsDuplexTextBuffered.svc//WebSocketHttpsDuplexTextBufferedResource", protocol: "wss");
+            return GetEndpointAddress("WebSocketHttpsDuplex.svc/Buffered", protocol: "wss");
         }
     }
     #endregion Secure WebSocket Addresses

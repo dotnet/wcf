@@ -11,7 +11,7 @@ using Xunit;
 
 public static partial class XmlSerializerFormatTests
 {
-    private static readonly string s_basicEndpointAddress = Endpoints.HttpBaseAddress_Basic;
+    private static readonly string s_basicEndpointAddress = Endpoints.HttpBaseAddress_Basic_Text;
 
     [WcfFact]
     [OuterLoop]

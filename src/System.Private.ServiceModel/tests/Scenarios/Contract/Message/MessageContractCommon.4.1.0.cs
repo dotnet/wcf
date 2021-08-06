@@ -45,7 +45,7 @@ namespace MessageContractCommon
         {
             MyInspector inspector = new MyInspector();
             BasicHttpBinding binding = new BasicHttpBinding();
-            ChannelFactory<IMessageContract> factory = new ChannelFactory<IMessageContract>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            ChannelFactory<IMessageContract> factory = new ChannelFactory<IMessageContract>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             factory.Endpoint.EndpointBehaviors.Add(inspector);
             clientProxy = factory.CreateChannel();
             transaction = new MessageContractTypes.RequestBankingData();

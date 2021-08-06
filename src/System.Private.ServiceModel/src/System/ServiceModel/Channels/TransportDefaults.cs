@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Net;
 using System.Net.Security;
 using System.Net.WebSockets;
@@ -17,7 +16,7 @@ namespace System.ServiceModel.Channels
     // If any of the const's are modified in this file, they must also be modified
     // on the Internal.ServiceModel.Primitives contract and implementation assemblies.
 
-    public static class EncoderDefaults
+    internal static class EncoderDefaults
     {
         public const int MaxReadPoolSize = 64;
         public const int MaxWritePoolSize = 16;
@@ -44,7 +43,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class TextEncoderDefaults
+    internal static class TextEncoderDefaults
     {
         public static readonly Encoding Encoding = Encoding.GetEncoding(TextEncoderDefaults.EncodingString);
         public const string EncodingString = "utf-8";
@@ -141,14 +140,19 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class BinaryEncoderDefaults
+    internal static class MtomEncoderDefaults
+    {
+        internal const int MaxBufferSize = 65536;
+    }
+
+    internal static class BinaryEncoderDefaults
     {
         public static EnvelopeVersion EnvelopeVersion { get { return EnvelopeVersion.Soap12; } }
         public static BinaryVersion BinaryVersion { get { return BinaryVersion.Version1; } }
         public const int MaxSessionSize = 2048;
     }
 
-    public static class TransportDefaults
+    internal static class TransportDefaults
     {
         public const bool ExtractGroupsForWindowsAccounts = SspiSecurityTokenProvider.DefaultExtractWindowsGroupClaims;
         public const HostNameComparisonMode HostNameComparisonMode = System.ServiceModel.HostNameComparisonMode.Exact;
@@ -180,7 +184,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class ConnectionOrientedTransportDefaults
+    internal static class ConnectionOrientedTransportDefaults
     {
         public const bool AllowNtlm = SspiSecurityTokenProvider.DefaultAllowNtlm;
         public const int ConnectionBufferSize = 8192;
@@ -216,7 +220,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class TcpTransportDefaults
+    internal static class TcpTransportDefaults
     {
         public const int ListenBacklogConst = 0;
         public static TimeSpan ConnectionLeaseTimeout { get { return TimeSpanHelper.FromMinutes(5, TcpTransportDefaults.ConnectionLeaseTimeoutString); } }
@@ -232,7 +236,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class ApplicationContainerSettingsDefaults
+    internal static class ApplicationContainerSettingsDefaults
     {
         public const string CurrentUserSessionDefaultString = "CurrentSession";
         public const string Session0ServiceSessionString = "ServiceSession";
@@ -285,12 +289,12 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class NetTcpDefaults
+    internal static class NetTcpDefaults
     {
         public const MessageCredentialType MessageSecurityClientCredentialType = MessageCredentialType.Windows;
     }
 
-    public static class OneWayDefaults
+    internal static class OneWayDefaults
     {
         public static TimeSpan IdleTimeout { get { return TimeSpanHelper.FromMinutes(2, IdleTimeoutString); } }
         public const string IdleTimeoutString = "00:02:00";
@@ -301,7 +305,7 @@ namespace System.ServiceModel.Channels
         public const bool PacketRoutable = false;
     }
 
-    static class ReliableSessionDefaults
+    internal static class ReliableSessionDefaults
     {
         internal const string AcknowledgementIntervalString = "00:00:00.2";
         internal static TimeSpan AcknowledgementInterval { get { return TimeSpanHelper.FromMilliseconds(200, AcknowledgementIntervalString); } }
@@ -317,7 +321,7 @@ namespace System.ServiceModel.Channels
         internal const string ReliableMessagingVersionString = "WSReliableMessagingFebruary2005";
     }
 
-    public static class BasicHttpBindingDefaults
+    internal static class BasicHttpBindingDefaults
     {
         public const BasicHttpMessageCredentialType MessageSecurityClientCredentialType = BasicHttpMessageCredentialType.UserName;
         public const WSMessageEncoding MessageEncoding = WSMessageEncoding.Text;
@@ -328,7 +332,7 @@ namespace System.ServiceModel.Channels
         }
     }
 
-    public static class WebSocketDefaults
+    internal static class WebSocketDefaults
     {
         public const WebSocketTransportUsage TransportUsage = WebSocketTransportUsage.Never;
         public const bool CreateNotificationOnConnection = false;
@@ -346,7 +350,7 @@ namespace System.ServiceModel.Channels
         public const string WebSocketUpgradeHeaderValue = "websocket";
     }
 
-    public static class NetHttpBindingDefaults
+    internal static class NetHttpBindingDefaults
     {
         public const NetHttpMessageEncoding MessageEncoding = NetHttpMessageEncoding.Binary;
         public const WebSocketTransportUsage TransportUsage = WebSocketTransportUsage.WhenDuplex;

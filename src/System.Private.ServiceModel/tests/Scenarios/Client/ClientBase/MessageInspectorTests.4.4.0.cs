@@ -29,7 +29,7 @@ public static class MessageInspectorTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding((BasicHttpSecurityMode)BasicHttpSecurityMode.None);
             AuthenticationType authType = AuthenticationType.Live;
-            EndpointAddress endPoint = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            EndpointAddress endPoint = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             
 
             // *** EXECUTE FIRST VARIATION *** \\
@@ -82,7 +82,7 @@ public static class MessageInspectorTests
 
             AuthenticationType authType = AuthenticationType.None;
 
-            EndpointAddress endPoint = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            EndpointAddress endPoint = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
 
             mi_ClientBase_ClientAuth = new MI_ClientBase_ClientAuth(authType.ToString(), accessToken, binding, endPoint);
 

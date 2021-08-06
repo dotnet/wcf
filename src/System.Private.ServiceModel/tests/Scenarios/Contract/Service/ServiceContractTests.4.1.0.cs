@@ -32,7 +32,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.Buffered;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             stream = StringToStream(testString);
 
@@ -69,7 +69,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.StreamedRequest;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             stream = StringToStream(testString);
 
@@ -104,7 +104,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.StreamedResponse;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -140,7 +140,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.Streamed;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             stream = StringToStream(testString);
 
@@ -177,7 +177,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.Streamed;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             stream = StringToStream(testString);
 
@@ -245,7 +245,7 @@ public static partial class ServiceContractTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.Streamed;
             binding.SendTimeout = TimeSpan.FromMilliseconds(sendTimeoutMs);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // Create a read stream that will both timeout and then abort the proxy channel when the
@@ -307,7 +307,7 @@ public static partial class ServiceContractTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.TransferMode = TransferMode.Streamed;
             binding.SendTimeout = TimeSpan.FromMilliseconds(sendTimeoutMs);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // Create a read stream that deliberately times out during the async read during the request.
@@ -689,7 +689,7 @@ public static partial class ServiceContractTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.CloseTimeout = ScenarioTestHelpers.TestTimeout;
             binding.SendTimeout = ScenarioTestHelpers.TestTimeout;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy1 = factory.CreateChannel();
             serviceProxy2 = factory.CreateChannel();
 
@@ -779,7 +779,7 @@ public static partial class ServiceContractTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.CloseTimeout = ScenarioTestHelpers.TestTimeout;
             binding.SendTimeout = ScenarioTestHelpers.TestTimeout;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy1 = factory.CreateChannel();
             serviceProxy2 = factory.CreateChannel();
 
@@ -869,7 +869,7 @@ public static partial class ServiceContractTests
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.CloseTimeout = ScenarioTestHelpers.TestTimeout;
             binding.SendTimeout = ScenarioTestHelpers.TestTimeout;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy1 = factory.CreateChannel();
             serviceProxy2 = factory.CreateChannel();
 

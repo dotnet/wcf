@@ -85,7 +85,7 @@ namespace System.Runtime.Diagnostics
                 throw new ArgumentNullException("source");
             }
 
-            return String.Format(CultureInfo.CurrentCulture, "{0}/{1}", source.GetType().ToString(), source.GetHashCode());
+            return string.Format(CultureInfo.CurrentCulture, "{0}/{1}", source.GetType().ToString(), source.GetHashCode());
         }
 
         protected static void AddExceptionToTraceString(XmlWriter xml, Exception exception)

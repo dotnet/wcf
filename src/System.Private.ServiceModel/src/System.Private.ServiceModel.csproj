@@ -50,23 +50,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Reflection.DispatchProxy"
-                      Version="$(SystemReflectionDispatchProxyPackageVersion)" />
-    <PackageReference Include="System.Security.Principal.Windows"
-                      Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
-    <PackageReference Include="System.Security.Cryptography.Xml"
-                      Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
-    <PackageReference Include="System.Numerics.Vectors"
-                      Version="$(SystemNumericsVectorsPackageVersion)" />
+    <PackageReference Include="System.Reflection.DispatchProxy" Version="$(SystemReflectionDispatchProxyPackageVersion)" />
+    <PackageReference Include="System.Security.Principal.Windows" Version="$(SystemSecurityPrincipalWindowsPackageVersion)" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
+    <PackageReference Include="System.Numerics.Vectors" Version="$(SystemNumericsVectorsPackageVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('uap'))">
     <!-- [todo:arcade] This package contains Windows.winmd, this is the easiest way to get it. -->
-    <PackageReference Include="Microsoft.TargetingPack.Private.WinRT"
-                      Version="1.0.3" />
+    <PackageReference Include="Microsoft.TargetingPack.Private.WinRT" Version="1.0.3" />
     <!--[todo:arcade] The Arcade SDK assumes resources being embedded are '.resx' files and generates sources and changes the name.-->
     <!--Override this behavior by setting 'GenerateSource' and 'ManifestResourceName'.-->
-    <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml" >
+    <EmbeddedResource Include="$(MsBuildThisFileDirectory)Resources\$(AssemblyName).rd.xml">
         <GenerateSource>False</GenerateSource>
         <ManifestResourceName>$(AssemblyName).rd.xml</ManifestResourceName>
     </EmbeddedResource>

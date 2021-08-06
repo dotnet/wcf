@@ -36,7 +36,7 @@ public partial class RequestReplyChannelShapeTests : ConditionalWcfTest
             factory.Open();
 
             // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps_Binary));
             channel.Open();
 
             // Create the Message object to send to the service.

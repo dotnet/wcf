@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -11,11 +12,17 @@ namespace WcfService
     [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "BasicHttps.svc")]
     public class BasicHttpsTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "basicHttps"; } }
-
-        protected override Binding GetBinding()
+        protected override IList<Binding> GetBindings()
         {
-            return new BasicHttpsBinding();
+            return new List<Binding> { GetBasicHttpsBinding(WSMessageEncoding.Text), GetBasicHttpsBinding(WSMessageEncoding.Mtom) };
+        }
+
+        private Binding GetBasicHttpsBinding(WSMessageEncoding messageEncoding)
+        {
+            var binding = new BasicHttpsBinding();
+            binding.MessageEncoding = messageEncoding;
+            binding.Name = Enum.GetName(typeof(WSMessageEncoding), messageEncoding);
+            return binding;
         }
 
         public BasicHttpsTestServiceHost(params Uri[] baseAddresses)
