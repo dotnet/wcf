@@ -1277,6 +1277,26 @@ namespace System.Runtime
             BinaryMessageEncodingStart("");
         }
 
+        public bool MtomMessageEncodingStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.MtomMessageEncodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageEncoding,
+            Keywords = Keywords.Channel,
+            Message = "MtomMessageEncoder started encoding the message.")]
+        public void MtomMessageEncodingStart(string AppDomain)
+        {
+            WriteEvent(EventIds.MtomMessageEncodingStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void MtomMessageEncodingStart(EventTraceActivity eventTraceActivity)
+        {
+            SetActivityId(eventTraceActivity);
+            MtomMessageEncodingStart("");
+        }
+
         public bool TextMessageEncodingStartIsEnabled()
         {
             return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
@@ -1312,6 +1332,25 @@ namespace System.Runtime
         public void BinaryMessageDecodingStart()
         {
             BinaryMessageDecodingStart("");
+        }
+
+        public bool MtomMessageDecodingStartIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Verbose, Keywords.Channel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.MtomMessageDecodingStart, Level = EventLevel.Verbose, Channel = EventChannel.Debug, Opcode = EventOpcode.Start, Task = Tasks.MessageDecoding,
+            Keywords = Keywords.Channel,
+            Message = "MtomMessageEncoder started decoding the message.")]
+        public void MtomMessageDecodingStart(string AppDomain)
+        {
+            WriteEvent(EventIds.MtomMessageDecodingStart, AppDomain);
+        }
+
+        [NonEvent]
+        public void MtomMessageDecodingStart()
+        {
+            MtomMessageDecodingStart("");
         }
 
         public bool TextMessageDecodingStartIsEnabled()

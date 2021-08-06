@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
 using Infrastructure.Common;
@@ -10,12 +9,15 @@ using Xunit;
 
 public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
 {
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(NetHttpMessageEncoding.Binary)]
+    [InlineData(NetHttpMessageEncoding.Text)]
+    [InlineData(NetHttpMessageEncoding.Mtom)]
     [Issue(3572, OS = OSID.OSX_10_14)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
-    public static void DefaultCtor_NetHttps_Echo_RoundTrips_String()
+    public static void DefaultCtor_NetHttps_Echo_RoundTrips_String(NetHttpMessageEncoding messageEncoding)
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
@@ -25,7 +27,8 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             NetHttpsBinding netHttpsBinding = new NetHttpsBinding();
-            factory = new ChannelFactory<IWcfService>(netHttpsBinding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
+            netHttpsBinding.MessageEncoding = messageEncoding;
+            factory = new ChannelFactory<IWcfService>(netHttpsBinding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps + Enum.GetName(typeof(NetHttpMessageEncoding), messageEncoding)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -62,7 +65,7 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
             {
                 // *** SETUP *** \\
                 NetHttpsBinding netHttpsBinding = new NetHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-                factory = new ChannelFactory<IWcfService>(netHttpsBinding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
+                factory = new ChannelFactory<IWcfService>(netHttpsBinding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps_Binary));
                 serviceProxy = factory.CreateChannel();
 
                 // *** EXECUTE *** \\
@@ -91,7 +94,7 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             NetHttpsBinding netHttpsBinding = new NetHttpsBinding(BasicHttpsSecurityMode.Transport);
-            factory = new ChannelFactory<IWcfService>(netHttpsBinding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps));
+            factory = new ChannelFactory<IWcfService>(netHttpsBinding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttps_Binary));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

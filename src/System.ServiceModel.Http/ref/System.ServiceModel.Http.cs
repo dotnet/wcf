@@ -11,6 +11,7 @@ namespace System.ServiceModel
     {
         public BasicHttpBinding() { }
         public BasicHttpBinding(System.ServiceModel.BasicHttpSecurityMode securityMode) { }
+        public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default; } set { } }
         public System.ServiceModel.BasicHttpSecurity Security { get { return default; } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
         public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
@@ -46,6 +47,7 @@ namespace System.ServiceModel
         public BasicHttpsBinding() { }
         public BasicHttpsBinding(System.ServiceModel.BasicHttpsSecurityMode securityMode) { }
         public System.ServiceModel.BasicHttpsSecurity Security { get { return default; } set { } }
+        public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default; } set { } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
         public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
     }
@@ -153,7 +155,7 @@ namespace System.ServiceModel
         //public System.ServiceModel.HostNameComparisonMode HostNameComparisonMode { get { return default; } set { } }
         public long MaxBufferPoolSize { get { return default; } set { } }
         public long MaxReceivedMessageSize { get { return default; } set { } }
-        //public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default; } set { } }
+        public System.ServiceModel.WSMessageEncoding MessageEncoding { get { return default; } set { } }
         public Uri ProxyAddress { get { return default; } set { } }
         public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get { return default; } set { } }
         public System.ServiceModel.OptionalReliableSession ReliableSession { get { return default; } set { } }
@@ -205,11 +207,11 @@ namespace System.ServiceModel
         public System.ServiceModel.Security.SecurityAlgorithmSuite AlgorithmSuite { get { return default; } set { } }
         protected virtual bool IsSecureConversationEnabled() { return default; }
     }
-    //public enum WSMessageEncoding
-    //{
-    //    Text = 0,
-    //    Mtom,
-    //}
+    public enum WSMessageEncoding
+    {
+        Text = 0,
+        Mtom,
+    }
 }
 namespace System.ServiceModel.Channels
 {

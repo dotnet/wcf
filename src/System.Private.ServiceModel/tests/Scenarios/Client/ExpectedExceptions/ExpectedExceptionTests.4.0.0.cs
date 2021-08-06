@@ -29,7 +29,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
 
@@ -70,7 +70,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
             binding.SendTimeout = TimeSpan.FromMilliseconds(5000);
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
             watch = new Stopwatch();
@@ -117,7 +117,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
             binding.SendTimeout = TimeSpan.FromMilliseconds(0);
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
             watch = new Stopwatch();
@@ -159,7 +159,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
 
@@ -194,7 +194,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
 
@@ -256,7 +256,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
             binding.TransferMode = TransferMode.Streamed;
             // SendTimeout is the timeout used for implicit opens
             binding.SendTimeout = TimeSpan.FromMilliseconds(timeoutMs);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // Force the implicit open to stall until we have multiple concurrent calls pending.

@@ -301,7 +301,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.OpenTimeout = ScenarioTestHelpers.TestTimeout;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
 
             // *** EXECUTE *** \\
             Task t = Task.Factory.FromAsync(factory.BeginOpen, factory.EndOpen, TaskCreationOptions.None);
@@ -353,7 +353,7 @@ public static partial class ServiceContractTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -407,7 +407,7 @@ public static partial class ServiceContractTests
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
             binding.CloseTimeout = ScenarioTestHelpers.TestTimeout;
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             result = serviceProxy.Echo(testString);         // force proxy and factory to open as part of setup
             ((ICommunicationObject)serviceProxy).Close();   // force proxy closed before close factory
@@ -456,7 +456,7 @@ public static partial class ServiceContractTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             serviceProxy.Echo(testString);  // force sync open as part of setup
 

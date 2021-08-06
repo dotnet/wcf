@@ -22,7 +22,7 @@ public static partial class ClientBaseTests
                  {
                      AllowCookies = true
                  },
-                 new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+                 new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
 
         IWcfAspNetCompatibleService serviceProxy = factory.CreateChannel();
 
@@ -32,7 +32,7 @@ public static partial class ClientBaseTests
         string cookieName = "cookieName";
         string cookieValue = "cookieValue";
         string cookieSentOut = string.Format("{0}={1}", cookieName, cookieValue);
-        cookieManager.CookieContainer.Add(new Uri(Endpoints.HttpBaseAddress_Basic), new System.Net.Cookie(cookieName, cookieValue));
+        cookieManager.CookieContainer.Add(new Uri(Endpoints.HttpBaseAddress_Basic_Text), new System.Net.Cookie(cookieName, cookieValue));
 
         try
         {
@@ -59,7 +59,7 @@ public static partial class ClientBaseTests
     public static void DefaultSettings_SetCookieOnServerSide()
     {
         // *** SETUP *** \\
-        Uri uri = new Uri(Endpoints.HttpBaseAddress_Basic);
+        Uri uri = new Uri(Endpoints.HttpBaseAddress_Basic_Text);
         var factory = new ChannelFactory<IWcfAspNetCompatibleService>(
                  new BasicHttpBinding()
                  {

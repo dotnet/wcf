@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
 using System.ServiceModel;
 using Infrastructure.Common;
@@ -10,9 +9,12 @@ using Xunit;
 
 public static class Binding_Http_NetHttpBindingTests
 {
-    [WcfFact]
+    [WcfTheory]
+    [InlineData(NetHttpMessageEncoding.Binary)]
+    [InlineData(NetHttpMessageEncoding.Text)]
+    [InlineData(NetHttpMessageEncoding.Mtom)]
     [OuterLoop]
-    public static void DefaultSettings_Echo_RoundTrips_String()
+    public static void DefaultSettings_Echo_RoundTrips_String(NetHttpMessageEncoding messageEncoding)
     {
         string testString = "Hello";
         ChannelFactory<IWcfService> factory = null;
@@ -22,7 +24,8 @@ public static class Binding_Http_NetHttpBindingTests
         {
             // *** SETUP *** \\
             NetHttpBinding binding = new NetHttpBinding();
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp));
+            binding.MessageEncoding = messageEncoding;
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_NetHttp + Enum.GetName(typeof(NetHttpMessageEncoding), messageEncoding)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\

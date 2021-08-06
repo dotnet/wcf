@@ -24,7 +24,7 @@ public static partial class TextEncodingTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -57,7 +57,7 @@ public static partial class TextEncodingTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             channel = factory.CreateChannel();
 
             // *** EXECUTE *** \\

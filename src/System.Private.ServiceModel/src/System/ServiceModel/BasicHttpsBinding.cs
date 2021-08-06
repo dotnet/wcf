@@ -20,7 +20,7 @@ namespace System.ServiceModel
             _basicHttpsSecurity.Mode = securityMode;
         }
 
-        internal WSMessageEncoding MessageEncoding { get; set; } = BasicHttpBindingDefaults.MessageEncoding;
+        public WSMessageEncoding MessageEncoding { get; set; } = BasicHttpBindingDefaults.MessageEncoding;
 
         public BasicHttpsSecurity Security
         {
@@ -73,11 +73,17 @@ namespace System.ServiceModel
             {
                 bindingElements.Add(wsSecurity);
             }
-            // add encoding
+            // add encoding (text or mtom)
+            WSMessageEncodingHelper.SyncUpEncodingBindingElementProperties(TextMessageEncodingBindingElement, MtomMessageEncodingBindingElement);
             if (MessageEncoding == WSMessageEncoding.Text)
             {
                 bindingElements.Add(TextMessageEncodingBindingElement);
             }
+            else if (MessageEncoding == WSMessageEncoding.Mtom)
+            {
+                bindingElements.Add(MtomMessageEncodingBindingElement);
+            }
+
             // add transport (http or https)
             bindingElements.Add(GetTransport());
 

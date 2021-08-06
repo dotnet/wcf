@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -42,12 +43,29 @@ namespace WcfService
         }
     }
 
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexBinaryStreamed.svc")]
-    public class WebSocketHttpDuplexBinaryStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplex.svc")]
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplex.svc")]
+    public class WebSocketHttpDuplexTestServiceHost : TestServiceHostBase<IWSDuplexService>
     {
-        protected override string Address { get { return "WebSocketHttpDuplexBinaryStreamedResource"; } }
+        protected override IList<Binding> GetBindings()
+        {
+            return new List<Binding> {
+                GetNetHttpBinding(NetHttpMessageEncoding.Text, TransferMode.Buffered),
+                GetNetHttpBinding(NetHttpMessageEncoding.Binary, TransferMode.Buffered),
+                GetNetHttpBinding(NetHttpMessageEncoding.Mtom, TransferMode.Buffered),
+                GetNetHttpBinding(NetHttpMessageEncoding.Text, TransferMode.Streamed),
+                GetNetHttpBinding(NetHttpMessageEncoding.Binary, TransferMode.Streamed),
+                GetNetHttpBinding(NetHttpMessageEncoding.Mtom, TransferMode.Streamed),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Text, TransferMode.Buffered),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Binary, TransferMode.Buffered),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Mtom, TransferMode.Buffered),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Text, TransferMode.Streamed),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Binary, TransferMode.Streamed),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Mtom, TransferMode.Streamed)
+            };
+        }
 
-        protected override Binding GetBinding()
+        private Binding GetNetHttpBinding(NetHttpMessageEncoding messageEncoding, TransferMode transferMode)
         {
             NetHttpBinding binding = new NetHttpBinding()
             {
@@ -55,23 +73,57 @@ namespace WcfService
                 MaxBufferSize = SixtyFourMB,
             };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.TransferMode = transferMode;
+            binding.MessageEncoding = messageEncoding;
+            binding.Name = Enum.GetName(typeof(TransferMode), transferMode) +
+                           Enum.GetName(typeof(NetHttpMessageEncoding), messageEncoding);
             return binding;
         }
 
-        public WebSocketHttpDuplexBinaryStreamedTestServiceHost(params Uri[] baseAddresses)
+        private Binding GetNetHttpsBinding(NetHttpMessageEncoding messageEncoding, TransferMode transferMode)
+        {
+            NetHttpsBinding binding = new NetHttpsBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = transferMode;
+            binding.MessageEncoding = messageEncoding;
+            binding.Name = Enum.GetName(typeof(TransferMode), transferMode) +
+                           Enum.GetName(typeof(NetHttpMessageEncoding), messageEncoding);
+            return binding;
+        }
+
+        public WebSocketHttpDuplexTestServiceHost(params Uri[] baseAddresses)
             : base(typeof(WSDuplexService), baseAddresses)
         {
         }
     }
 
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyBinaryStreamed.svc")]
-    public class WebSocketHttpRequestReplyBinaryStreamedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
+    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsRequestReply.svc")]
+    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReply.svc")]
+    public class WebSocketHttpRequestReplyTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
     {
-        protected override string Address { get { return "WebSocketHttpRequestReplyBinaryStreamedResource"; } }
+        protected override IList<Binding> GetBindings()
+        {
+            return new List<Binding> {
+                GetNetHttpBinding(NetHttpMessageEncoding.Text, TransferMode.Buffered),
+                GetNetHttpBinding(NetHttpMessageEncoding.Binary, TransferMode.Buffered),
+                GetNetHttpBinding(NetHttpMessageEncoding.Mtom, TransferMode.Buffered),
+                GetNetHttpBinding(NetHttpMessageEncoding.Text, TransferMode.Streamed),
+                GetNetHttpBinding(NetHttpMessageEncoding.Binary, TransferMode.Streamed),
+                GetNetHttpBinding(NetHttpMessageEncoding.Mtom, TransferMode.Streamed),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Text, TransferMode.Buffered),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Binary, TransferMode.Buffered),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Mtom, TransferMode.Buffered),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Text, TransferMode.Streamed),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Binary, TransferMode.Streamed),
+                GetNetHttpsBinding(NetHttpMessageEncoding.Mtom, TransferMode.Streamed)
+            };
+        }
 
-        protected override Binding GetBinding()
+        private Binding GetNetHttpBinding(NetHttpMessageEncoding messageEncoding, TransferMode transferMode)
         {
             NetHttpBinding binding = new NetHttpBinding()
             {
@@ -79,303 +131,33 @@ namespace WcfService
                 MaxBufferSize = SixtyFourMB,
             };
             binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
+            binding.TransferMode = transferMode;
+            binding.MessageEncoding = messageEncoding;
+            binding.Name = Enum.GetName(typeof(TransferMode), transferMode) +
+                           Enum.GetName(typeof(NetHttpMessageEncoding), messageEncoding);
             return binding;
         }
 
-        public WebSocketHttpRequestReplyBinaryStreamedTestServiceHost(params Uri[] baseAddresses)
+        private Binding GetNetHttpsBinding(NetHttpMessageEncoding messageEncoding, TransferMode transferMode)
+        {
+            NetHttpsBinding binding = new NetHttpsBinding()
+            {
+                MaxReceivedMessageSize = SixtyFourMB,
+                MaxBufferSize = SixtyFourMB,
+            };
+            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
+            binding.TransferMode = transferMode;
+            binding.MessageEncoding = messageEncoding;
+            binding.Name = Enum.GetName(typeof(TransferMode), transferMode) +
+                           Enum.GetName(typeof(NetHttpMessageEncoding), messageEncoding);
+            return binding;
+        }
+
+        public WebSocketHttpRequestReplyTestServiceHost(params Uri[] baseAddresses)
             : base(typeof(WSRequestReplyService), baseAddresses)
         {
         }
     }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexBinaryStreamed.svc")]
-    public class WebSocketHttpsDuplexBinaryStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpsDuplexBinaryStreamedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-                TransferMode = TransferMode.Streamed
-            };
-            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
-            return binding;
-        }
-
-        public WebSocketHttpsDuplexBinaryStreamedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexTextStreamed.svc")]
-    public class WebSocketHttpsDuplexTextStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpsDuplexTextStreamedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            TextMessageEncodingBindingElement textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-                TransferMode = TransferMode.Streamed
-            };
-            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            CustomBinding binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
-            return binding;
-        }
-
-        public WebSocketHttpsDuplexTextStreamedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyTextStreamed.svc")]
-    public class WebSocketHttpRequestReplyTextStreamedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
-    {
-        protected override string Address { get { return "WebSocketHttpRequestReplyTextStreamedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            NetHttpBinding binding = new NetHttpBinding()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = NetHttpMessageEncoding.Text;
-            return binding;
-        }
-
-        public WebSocketHttpRequestReplyTextStreamedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSRequestReplyService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexTextStreamed.svc")]
-    public class WebSocketHttpDuplexTextStreamedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpDuplexTextStreamedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            NetHttpBinding binding = new NetHttpBinding()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.TransferMode = TransferMode.Streamed;
-            binding.MessageEncoding = NetHttpMessageEncoding.Text;
-            return binding;
-        }
-
-        public WebSocketHttpDuplexTextStreamedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyTextBuffered.svc")]
-    public class WebSocketHttpRequestReplyTextBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
-    {
-        protected override string Address { get { return "WebSocketHttpRequestReplyTextBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            NetHttpBinding binding = new NetHttpBinding()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MessageEncoding = NetHttpMessageEncoding.Text;
-            return binding;
-        }
-
-        public WebSocketHttpRequestReplyTextBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSRequestReplyService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpRequestReplyBinaryBuffered.svc")]
-    public class WebSocketHttpRequestReplyBinaryBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
-    {
-        protected override string Address { get { return "WebSocketHttpRequestReplyBinaryBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            NetHttpBinding binding = new NetHttpBinding()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
-            return binding;
-        }
-
-        public WebSocketHttpRequestReplyBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSRequestReplyService), baseAddresses)
-        {
-        }
-    }
-
-
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexTextBuffered.svc")]
-    public class WebSocketHttpDuplexTextBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpDuplexTextBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            NetHttpBinding binding = new NetHttpBinding()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MessageEncoding = NetHttpMessageEncoding.Text;
-            return binding;
-        }
-
-        public WebSocketHttpDuplexTextBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
-
-    [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpDuplexBinaryBuffered.svc")]
-    public class WebSocketHttpDuplexBinaryBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpDuplexBinaryBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            NetHttpBinding binding = new NetHttpBinding()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            binding.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            binding.MessageEncoding = NetHttpMessageEncoding.Binary;
-            return binding;
-        }
-
-        public WebSocketHttpDuplexBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsRequestReplyBinaryBuffered.svc")]
-    public class WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
-    {
-        protected override string Address { get { return "WebSocketHttpsRequestReplyBinaryBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
-            return binding;
-        }
-        public WebSocketHttpsRequestReplyBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSRequestReplyService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsRequestReplyTextBuffered.svc")]
-    public class WebSocketHttpsRequestReplyTextBufferedTestServiceHost : TestServiceHostBase<IWSRequestReplyService>
-    {
-        protected override string Address { get { return "WebSocketHttpsRequestReplyTextBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            TextMessageEncodingBindingElement textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB
-            };
-            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            CustomBinding binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
-            return binding;
-        }
-
-        public WebSocketHttpsRequestReplyTextBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSRequestReplyService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexBinaryBuffered.svc")]
-    public class WebSocketHttpsDuplexBinaryBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpsDuplexBinaryBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            BinaryMessageEncodingBindingElement binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB,
-            };
-            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            CustomBinding binding = new CustomBinding(binaryMessageEncodingBindingElement, httpsTransportBindingElement);
-            return binding;
-        }
-        public WebSocketHttpsDuplexBinaryBufferedTestServiceHost(params Uri[] baseAddresses)
-            : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
-    [TestServiceDefinition(Schema = ServiceSchema.WSS, BasePath = "WebSocketHttpsDuplexTextBuffered.svc")]
-    public class WebSocketHttpsDuplexTextBufferedTestServiceHost : TestServiceHostBase<IWSDuplexService>
-    {
-        protected override string Address { get { return "WebSocketHttpsDuplexTextBufferedResource"; } }
-
-        protected override Binding GetBinding()
-        {
-            TextMessageEncodingBindingElement textMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
-            HttpsTransportBindingElement httpsTransportBindingElement = new HttpsTransportBindingElement()
-            {
-                MaxReceivedMessageSize = SixtyFourMB,
-                MaxBufferSize = SixtyFourMB
-            };
-            httpsTransportBindingElement.WebSocketSettings.TransportUsage = WebSocketTransportUsage.Always;
-            CustomBinding binding = new CustomBinding(textMessageEncodingBindingElement, httpsTransportBindingElement);
-            return binding;
-        }
-
-        public WebSocketHttpsDuplexTextBufferedTestServiceHost(params Uri[] baseAddresses)
-           : base(typeof(WSDuplexService), baseAddresses)
-        {
-        }
-    }
-
 
     [TestServiceDefinition(Schema = ServiceSchema.WS, BasePath = "WebSocketHttpVerifyWebSocketsUsed.svc")]
     public class WebSocketHttpVerifyWebSocketsUsedTestServiceHost : TestServiceHostBase<IVerifyWebSockets>

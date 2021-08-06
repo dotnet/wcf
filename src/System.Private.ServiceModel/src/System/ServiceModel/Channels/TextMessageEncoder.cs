@@ -600,7 +600,6 @@ namespace System.ServiceModel.Channels
                 result.ToApmEnd();
             }
 
-
             private XmlDictionaryWriter TakeStreamedWriter(Stream stream)
             {
                 return XmlDictionaryWriter.CreateTextWriter(stream, _writeEncoding, false);

@@ -24,6 +24,9 @@ namespace System.ServiceModel
 
             TextMessageEncodingBindingElement = new TextMessageEncodingBindingElement();
             TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap11;
+            MtomMessageEncodingBindingElement = new MtomMessageEncodingBindingElement();
+            MtomMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap11;
+
             _httpsTransport.WebSocketSettings = _httpTransport.WebSocketSettings;
         }
 
@@ -84,6 +87,7 @@ namespace System.ServiceModel
             {
                 _httpTransport.MaxBufferSize = value;
                 _httpsTransport.MaxBufferSize = value;
+                MtomMessageEncodingBindingElement.MaxBufferSize = value;
             }
         }
 
@@ -148,6 +152,8 @@ namespace System.ServiceModel
                 }
 
                 value.CopyTo(TextMessageEncodingBindingElement.ReaderQuotas);
+                value.CopyTo(MtomMessageEncodingBindingElement.ReaderQuotas);
+
                 SetReaderQuotas(value);
             }
         }
@@ -175,6 +181,7 @@ namespace System.ServiceModel
             set
             {
                 TextMessageEncodingBindingElement.WriteEncoding = value;
+                MtomMessageEncodingBindingElement.WriteEncoding = value;
             }
         }
 
@@ -214,6 +221,8 @@ namespace System.ServiceModel
         }
 
         internal TextMessageEncodingBindingElement TextMessageEncodingBindingElement { get; }
+
+        internal MtomMessageEncodingBindingElement MtomMessageEncodingBindingElement { get; }
 
         internal abstract BasicHttpSecurity BasicHttpSecurity
         {

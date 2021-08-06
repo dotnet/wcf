@@ -27,7 +27,7 @@ public class DuplexClientBaseTests : ConditionalWcfTest
             WcfDuplexServiceCallback callbackService = new WcfDuplexServiceCallback();
             InstanceContext context = new InstanceContext(callbackService);
 
-            duplexService = new MyDuplexClientBase<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address));
+            duplexService = new MyDuplexClientBase<IWcfDuplexService>(context, binding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address_Text));
 
             // *** EXECUTE *** \\
             var exception = Assert.Throws<InvalidOperationException>(() =>

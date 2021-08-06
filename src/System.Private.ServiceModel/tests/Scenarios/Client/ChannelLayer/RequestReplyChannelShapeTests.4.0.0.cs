@@ -37,7 +37,7 @@ public partial class RequestReplyChannelShapeTests
             factory.Open();
 
             // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             channel.Open();
 
             // Create the Message object to send to the service.
@@ -143,7 +143,7 @@ public partial class RequestReplyChannelShapeTests
             Task.Factory.FromAsync(factory.BeginOpen, factory.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult(); 
 
             // Create the channel.
-            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             Task.Factory.FromAsync(channel.BeginOpen, channel.EndOpen, TaskCreationOptions.None).GetAwaiter().GetResult(); 
 
             // Create the Message object to send to the service.

@@ -26,7 +26,7 @@ public static class MessageTests
         factory.Open();
 
         // Create the channel.
-        IRequestChannel channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        IRequestChannel channel = factory.CreateChannel(new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
         channel.Open();
 
         // Create the Message object to send to the service.
@@ -69,7 +69,7 @@ public static class MessageTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
 
             string suffix = "_suffix";
             var customBehavior = new AppendSuffixToStringBehavior(suffix);

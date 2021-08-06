@@ -38,7 +38,7 @@ public static class OperationContextTests
             bool asyncFlowDisabled = AppContext.TryGetSwitch("System.ServiceModel.OperationContext.DisableAsyncFlow", out bool switchEnabled) && switchEnabled;
             Assert.True(asyncFlowDisabled, "Async flow of Operation Context isn't disabled");
             var binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
             ((IClientChannel)serviceProxy).Open();
             Assert.Null(OperationContext.Current);

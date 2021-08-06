@@ -122,7 +122,8 @@ namespace System.ServiceModel
                     bindingElements.Add(TextMessageEncodingBindingElement);
                     break;
                 case NetHttpMessageEncoding.Mtom:
-                    throw ExceptionHelper.PlatformNotSupported(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding));
+                    bindingElements.Add(MtomMessageEncodingBindingElement);
+                    break;
                 default:
                     bindingElements.Add(_binaryMessageEncodingBindingElement);
                     break;
@@ -144,22 +145,12 @@ namespace System.ServiceModel
             return EnvelopeVersion.Soap12;
         }
 
-        internal override void CheckSettings()
-        {
-            base.CheckSettings();
-
-            // Mtom is not supported.
-            if (MessageEncoding == NetHttpMessageEncoding.Mtom)
-            {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(SR.Format(SR.UnsupportedBindingProperty, "MessageEncoding", MessageEncoding)));
-            }
-        }
-
         private void Initialize()
         {
             MessageEncoding = NetHttpBindingDefaults.MessageEncoding;
             _binaryMessageEncodingBindingElement = new BinaryMessageEncodingBindingElement() { MessageVersion = MessageVersion.Soap12WSAddressing10 };
             TextMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
+            MtomMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap12WSAddressing10;
             _session = new ReliableSessionBindingElement();
             _reliableSession = new OptionalReliableSession(_session);
             InternalWebSocketSettings.TransportUsage = NetHttpBindingDefaults.TransportUsage;

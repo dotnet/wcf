@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -11,11 +12,21 @@ namespace WcfService
     [TestServiceDefinition(Schema = ServiceSchema.HTTP, BasePath = "NetHttp.svc")]
     public class NetHttpTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "NetHttp"; } }
-
-        protected override Binding GetBinding()
+        protected override IList<Binding> GetBindings()
         {
-            return new NetHttpBinding();
+            return new List<Binding> {
+                GetNetHttpBinding(NetHttpMessageEncoding.Binary),
+                GetNetHttpBinding(NetHttpMessageEncoding.Text),
+                GetNetHttpBinding(NetHttpMessageEncoding.Mtom)
+            };
+        }
+
+        private Binding GetNetHttpBinding(NetHttpMessageEncoding encoding)
+        {
+            var binding = new NetHttpBinding();
+            binding.MessageEncoding = encoding;
+            binding.Name = Enum.GetName(typeof(NetHttpMessageEncoding), encoding);
+            return binding;
         }
 
         public NetHttpTestServiceHost(params Uri[] baseAddresses)

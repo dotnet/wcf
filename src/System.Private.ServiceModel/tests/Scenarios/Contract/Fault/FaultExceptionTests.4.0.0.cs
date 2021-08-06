@@ -25,8 +25,8 @@ public static partial class FaultExceptionTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -59,7 +59,7 @@ public static partial class FaultExceptionTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic);
+            endpointAddress = new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text);
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
 
@@ -94,7 +94,7 @@ public static partial class FaultExceptionTests
         {
             // *** SETUP *** \\
             binding = new BasicHttpBinding();
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -131,7 +131,7 @@ public static partial class FaultExceptionTests
         {
         // *** SETUP *** \\
         binding = new BasicHttpBinding();
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
         // *** EXECUTE *** \\
@@ -168,7 +168,7 @@ public static partial class FaultExceptionTests
         {
         // *** SETUP *** \\
         binding = new BasicHttpBinding();
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
         // *** EXECUTE *** \\
@@ -205,7 +205,7 @@ public static partial class FaultExceptionTests
         {
         // *** SETUP *** \\
         binding = new BasicHttpBinding();
-            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+            factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
             serviceProxy = factory.CreateChannel();
 
         // *** EXECUTE *** \\
@@ -238,7 +238,7 @@ public static partial class FaultExceptionTests
 
         // *** SETUP *** \\
         binding = new BasicHttpBinding();
-        factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic));
+        factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.HttpBaseAddress_Basic_Text));
         serviceProxy = factory.CreateChannel();
 
         // *** EXECUTE *** \\

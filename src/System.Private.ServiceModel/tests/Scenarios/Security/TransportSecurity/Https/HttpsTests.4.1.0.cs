@@ -16,6 +16,54 @@ using Xunit;
 
 public partial class HttpsTests : ConditionalWcfTest
 {
+    [WcfTheory]
+    [InlineData(WSMessageEncoding.Text)]
+    [InlineData(WSMessageEncoding.Mtom)]
+    [Issue(2870, OS = OSID.AnyOSX)]
+    [Condition(nameof(Root_Certificate_Installed),
+           nameof(Client_Certificate_Installed),
+           nameof(Server_Accepts_Certificates),
+           nameof(SSL_Available))]
+    [OuterLoop]
+    public static void DefaultSettings_Echo_RoundTrips_String(WSMessageEncoding messageEncoding)
+    {
+        ChannelFactory<IWcfService> factory = null;
+        IWcfService serviceProxy = null;
+        string testString = "Hello";
+
+        try
+        {
+            // *** SETUP *** \\
+            BasicHttpsBinding basicHttpsBinding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            basicHttpsBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Certificate;
+            basicHttpsBinding.MessageEncoding = messageEncoding;
+
+            string clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
+            factory = new ChannelFactory<IWcfService>(basicHttpsBinding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address + Enum.GetName(typeof(WSMessageEncoding), messageEncoding)));
+            factory.Credentials.ClientCertificate.SetCertificate(
+                StoreLocation.CurrentUser,
+                StoreName.My,
+                X509FindType.FindByThumbprint,
+                clientCertThumb);
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            string result = serviceProxy.Echo(testString);
+
+            // *** VALIDATE *** \\
+            Assert.True(result == testString, String.Format("Error: expected response from service: '{0}' Actual was: '{1}'", testString, result));
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
+
     // Client: CustomBinding set MessageVersion to Soap11
     // Server: BasicHttpsBinding default value is Soap11
     [WcfFact]
@@ -33,7 +81,7 @@ public partial class HttpsTests : ConditionalWcfTest
         try
         {
             CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
-            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address));
+            ChannelFactory<IWcfService> factory = new ChannelFactory<IWcfService>(binding, new EndpointAddress(Endpoints.Https_DefaultBinding_Address_Text));
             IWcfService serviceProxy = factory.CreateChannel();
 
             string result = serviceProxy.Echo(testString);
@@ -192,7 +240,7 @@ public partial class HttpsTests : ConditionalWcfTest
             // *** SETUP *** \\
             CustomBinding binding = new CustomBinding(new TextMessageEncodingBindingElement(MessageVersion.Soap11, Encoding.UTF8), new HttpsTransportBindingElement());
 
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address));
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address_Text));
             clientCertThumb = ServiceUtilHelper.ClientCertificate.Thumbprint;
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
@@ -240,7 +288,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
             serviceCertificate = await ServiceUtilHelper.GetServiceMacineCertFromServerAsync();
             var identity = new X509CertificateEndpointIdentity(serviceCertificate);
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address), identity);
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address_Text), identity);
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
@@ -281,7 +329,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
             // This is intentionally the wrong certificate
             var identity = new X509CertificateEndpointIdentity(ServiceUtilHelper.ClientCertificate);
-            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address), identity);
+            endpointAddress = new EndpointAddress(new Uri(Endpoints.Https_DefaultBinding_Address_Text), identity);
 
             factory = new ChannelFactory<IWcfService>(binding, endpointAddress);
             serviceProxy = factory.CreateChannel();
