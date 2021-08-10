@@ -139,7 +139,7 @@ namespace System.Xml
 
                 WriteMimeHeaders(_contentID, _initialContentTypeForRootPart, _isUTF8 ? MimeGlobals.Encoding8bit : MimeGlobals.EncodingBinary);
 
-                Stream infosetContentStream = _mimeWriter.GetContentStreamAsync().GetAwaiter().GetResult();
+                Stream infosetContentStream = _mimeWriter.GetContentStream();
                 IXmlTextWriterInitializer initializer = _writer as IXmlTextWriterInitializer;
                 if (initializer == null)
                     _writer = XmlDictionaryWriter.CreateTextWriter(infosetContentStream, _encoding, _ownsStream);
@@ -1215,29 +1215,6 @@ namespace System.Xml
             state = MimeWriterState.StartPreface;
         }
 
-        internal async Task StartPartAsync()
-        {
-            switch (state)
-            {
-                case MimeWriterState.StartPart:
-                case MimeWriterState.Closed:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.MimeWriterInvalidStateForStartPart, state.ToString())));
-                default:
-                    break;
-            }
-
-            state = MimeWriterState.StartPart;
-
-            if (contentStream != null)
-            {
-                await contentStream.FlushAsync();
-                contentStream = null;
-            }
-
-            bufferedWrite.Write(boundaryBytes);
-            bufferedWrite.Write(MimeGlobals.CRLF);
-        }
-
         internal void StartPart()
         {
             switch (state)
@@ -1254,6 +1231,30 @@ namespace System.Xml
             if (contentStream != null)
             {
                 contentStream.Flush();
+                contentStream = null;
+            }
+
+            bufferedWrite.Write(boundaryBytes);
+            bufferedWrite.Write(MimeGlobals.CRLF);
+        }
+
+
+        internal async Task StartPartAsync()
+        {
+            switch (state)
+            {
+                case MimeWriterState.StartPart:
+                case MimeWriterState.Closed:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.MimeWriterInvalidStateForStartPart, state.ToString())));
+                default:
+                    break;
+            }
+
+            state = MimeWriterState.StartPart;
+
+            if (contentStream != null)
+            {
+                await contentStream.FlushAsync();
                 contentStream = null;
             }
 
@@ -1311,20 +1312,20 @@ namespace System.Xml
             await FlushAsync();
         }
 
-        private async Task FlushAsync()
-        {
-            if (bufferedWrite.Length > 0)
-            {
-                await stream.WriteAsync(bufferedWrite.GetBuffer(), 0, bufferedWrite.Length);
-                bufferedWrite.Reset();
-            }
-        }
-
         private void Flush()
         {
             if (bufferedWrite.Length > 0)
             {
                 stream.Write(bufferedWrite.GetBuffer(), 0, bufferedWrite.Length);
+                bufferedWrite.Reset();
+            }
+        }
+
+        private async Task FlushAsync()
+        {
+            if (bufferedWrite.Length > 0)
+            {
+                await stream.WriteAsync(bufferedWrite.GetBuffer(), 0, bufferedWrite.Length);
                 bufferedWrite.Reset();
             }
         }
@@ -1354,25 +1355,6 @@ namespace System.Xml
             bufferedWrite.Write(MimeGlobals.CRLF);
         }
 
-        internal async Task<Stream> GetContentStreamAsync()
-        {
-            switch (state)
-            {
-                case MimeWriterState.Start:
-                case MimeWriterState.Content:
-                case MimeWriterState.Closed:
-                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.MimeWriterInvalidStateForContent, state.ToString())));
-                default:
-                    break;
-            }
-
-            state = MimeWriterState.Content;
-            bufferedWrite.Write(MimeGlobals.CRLF);
-            await FlushAsync();
-            contentStream = stream;
-            return contentStream;
-        }
-
         internal Stream GetContentStream()
         {
             switch (state)
@@ -1388,6 +1370,25 @@ namespace System.Xml
             state = MimeWriterState.Content;
             bufferedWrite.Write(MimeGlobals.CRLF);
             Flush();
+            contentStream = stream;
+            return contentStream;
+        }
+
+        internal async Task<Stream> GetContentStreamAsync()
+        {
+            switch (state)
+            {
+                case MimeWriterState.Start:
+                case MimeWriterState.Content:
+                case MimeWriterState.Closed:
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.MimeWriterInvalidStateForContent, state.ToString())));
+                default:
+                    break;
+            }
+
+            state = MimeWriterState.Content;
+            bufferedWrite.Write(MimeGlobals.CRLF);
+            await FlushAsync();
             contentStream = stream;
             return contentStream;
         }
