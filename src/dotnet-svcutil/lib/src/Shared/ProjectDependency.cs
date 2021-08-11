@@ -112,12 +112,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 // even when it is a Pacakge type, it may contain a valid binary, let's check.
                 fileHasKnownExtension = string.IsNullOrWhiteSpace(filePath) ? false :
                      (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0));
-
-                // check that package name is not confused with assembly name.
-                if (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(packageName), ext, StringComparison.OrdinalIgnoreCase) == 0))
-                {
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Shared.Resources.ErrorInvalidDependencyValue, packageName, nameof(packageName)));
-                }
             }
             else // Binary or Project.
             {
