@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace System.ServiceModel.Channels
@@ -56,9 +55,9 @@ namespace System.ServiceModel.Channels
         private Exception _asyncWriteException;
         private bool _asyncWritePending;
 
-        private IOTimer<SocketConnection> _receiveTimer;
+        private IOThreadTimer _receiveTimer;
         private static Action<object> s_onReceiveTimeout;
-        private IOTimer<SocketConnection> _sendTimer;
+        private IOThreadTimer _sendTimer;
         private static Action<object> s_onSendTimeout;
         private string _timeoutErrorString;
         private TransferOperation _timeoutErrorTransferOperation;
@@ -150,7 +149,7 @@ namespace System.ServiceModel.Channels
             }
         }
 
-        private IOTimer<SocketConnection> SendTimer
+        private IOThreadTimer SendTimer
         {
             get
             {
@@ -161,14 +160,14 @@ namespace System.ServiceModel.Channels
                         s_onSendTimeout = new Action<object>(OnSendTimeout);
                     }
 
-                    _sendTimer = new IOTimer<SocketConnection>(s_onSendTimeout, this);
+                    _sendTimer = new IOThreadTimer(s_onSendTimeout, this, isTypicallyCanceledShortlyAfterBeingSet: false);
                 }
 
                 return _sendTimer;
             }
         }
 
-        private IOTimer<SocketConnection> ReceiveTimer
+        private IOThreadTimer ReceiveTimer
         {
             get
             {
@@ -179,7 +178,7 @@ namespace System.ServiceModel.Channels
                         s_onReceiveTimeout = new Action<object>(OnReceiveTimeout);
                     }
 
-                    _receiveTimer = new IOTimer<SocketConnection>(s_onReceiveTimeout, this);
+                    _receiveTimer = new IOThreadTimer(s_onReceiveTimeout, this, isTypicallyCanceledShortlyAfterBeingSet: false);
                 }
 
                 return _receiveTimer;
@@ -1061,7 +1060,20 @@ namespace System.ServiceModel.Channels
 
         private bool ReceiveAsync()
         {
+            if (!ExecutionContext.IsFlowSuppressed())
+            {
+                return ReceiveAsyncNoFlow();
+            }
+
             return _socket.ReceiveAsync(_asyncReadEventArgs);
+        }
+
+        bool ReceiveAsyncNoFlow()
+        {
+            using (ExecutionContext.SuppressFlow())
+            {
+                return _socket.ReceiveAsync(_asyncReadEventArgs);
+            }
         }
 
         private void OnReceive(IAsyncResult result)
@@ -1264,7 +1276,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    ReceiveTimer.ScheduleAfter(timeout);
+                    ReceiveTimer.Set(timeout);
                 }
             }
         }
@@ -1301,7 +1313,7 @@ namespace System.ServiceModel.Channels
                 }
                 else
                 {
-                    SendTimer.ScheduleAfter(timeout);
+                    ReceiveTimer.Set(timeout);
                 }
             }
         }

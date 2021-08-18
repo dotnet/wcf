@@ -4,139 +4,131 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-#if DEBUG
-using System.Diagnostics;
-#endif
+using Microsoft.Extensions.ObjectPool;
 
 namespace System.Runtime
 {
-    internal class AsyncLock
+    internal class AsyncLock : IAsyncDisposable
     {
-#if DEBUG
-        private StackTrace _lockTakenCallStack;
-        private string _lockTakenCallStackString;
-#endif
-        private readonly SemaphoreSlim _semaphore;
-        private readonly SafeSemaphoreRelease _semaphoreRelease;
-        private AsyncLocal<bool> _lockTaken;
+        private static ObjectPool<SemaphoreSlim> s_semaphorePool = (new DefaultObjectPoolProvider { MaximumRetained = 100 })
+            .Create(new SemaphoreSlimPooledObjectPolicy());
+
+        private AsyncLocal<SemaphoreSlim> _currentSemaphore;
+        private SemaphoreSlim _topLevelSemaphore;
+        private bool _isDisposed;
 
         public AsyncLock()
         {
-            _semaphore = new SemaphoreSlim(1);
-            _semaphoreRelease = new SafeSemaphoreRelease(this);
-            _lockTaken = new AsyncLocal<bool>(LockTakenValueChanged);
-            _lockTaken.Value = false;
+            _topLevelSemaphore = s_semaphorePool.Get();
+            _currentSemaphore = new AsyncLocal<SemaphoreSlim>();
         }
 
-        private void LockTakenValueChanged(AsyncLocalValueChangedArgs<bool> obj)
+        public Task<IAsyncDisposable> TakeLockAsync(CancellationToken cancellationToken = default)
         {
-            // Without this fixup, when completing the call to await TakeLockAsync there is
-            // a switch of Context and _localTaken will be reset to false. This is because
-            // of leaving the task.
-
-            if (obj.ThreadContextChanged)
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(AsyncLock));
+            if (_currentSemaphore.Value == null)
             {
-                _lockTaken.Value = obj.PreviousValue;
+                _currentSemaphore.Value = _topLevelSemaphore;
             }
+            SemaphoreSlim currentSem = _currentSemaphore.Value;
+            var nextSem = s_semaphorePool.Get();
+            _currentSemaphore.Value = nextSem;
+            var safeRelease = new SafeSemaphoreRelease(currentSem, nextSem, this);
+            return TakeLockCoreAsync(currentSem, safeRelease);
         }
 
-        public async Task<IDisposable> TakeLockAsync()
+        private async Task<IAsyncDisposable> TakeLockCoreAsync(SemaphoreSlim currentSemaphore, SafeSemaphoreRelease safeSemaphoreRelease, CancellationToken cancellationToken = default)
         {
-            if (_lockTaken.Value)
-            {
-                return null;
-            }
-
-            await _semaphore.WaitAsync();
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
-        }
-
-        public async Task<IDisposable> TakeLockAsync(CancellationToken token)
-        {
-            if (_lockTaken.Value)
-            {
-                return null;
-            }
-
-            await _semaphore.WaitAsync(token);
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
+            await currentSemaphore.WaitAsync(cancellationToken);
+            return safeSemaphoreRelease;
         }
 
         public IDisposable TakeLock()
         {
-            if (_lockTaken.Value)
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(AsyncLock));
+            if (_currentSemaphore.Value == null)
             {
-                return null;
+                _currentSemaphore.Value = _topLevelSemaphore;
             }
-
-            _semaphore.Wait();
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
+            SemaphoreSlim currentSem = _currentSemaphore.Value;
+            currentSem.Wait(/*cancellationToken*/);
+            var nextSem = s_semaphorePool.Get();
+            _currentSemaphore.Value = nextSem;
+            return new SafeSemaphoreRelease(currentSem, nextSem, this);
         }
 
-        public IDisposable TakeLock(TimeSpan timeout)
+        public async ValueTask DisposeAsync()
         {
-            if (_lockTaken.Value)
-            {
-                return null;
-            }
-
-            _semaphore.Wait(timeout);
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
+            if (_isDisposed)
+                return;
+            _isDisposed = true;
+            // Ensure not in use
+            await _topLevelSemaphore.WaitAsync();
+            _topLevelSemaphore.Release();
+            s_semaphorePool.Return(_topLevelSemaphore);
+            _topLevelSemaphore = null;
         }
 
-        public IDisposable TakeLock(int timeout)
+        private struct SafeSemaphoreRelease : IAsyncDisposable, IDisposable
         {
-            if (_lockTaken.Value)
+            private SemaphoreSlim _currentSemaphore;
+            private SemaphoreSlim _nextSemaphore;
+            private AsyncLock _asyncLock;
+
+            public SafeSemaphoreRelease(SemaphoreSlim currentSemaphore, SemaphoreSlim nextSemaphore, AsyncLock asyncLock)
             {
-                return null;
-            }
-
-            _semaphore.Wait(timeout);
-            _lockTaken.Value = true;
-#if DEBUG
-            _lockTakenCallStack = new StackTrace();
-            _lockTakenCallStackString = _lockTakenCallStack.ToString();
-#endif
-            return _semaphoreRelease;
-        }
-
-        public struct SafeSemaphoreRelease : IDisposable
-        {
-            private readonly AsyncLock _asyncLock;
-
-            public SafeSemaphoreRelease(AsyncLock asyncLock)
-            {
+                _currentSemaphore = currentSemaphore;
+                _nextSemaphore = nextSemaphore;
                 _asyncLock = asyncLock;
+            }
+
+            public async ValueTask DisposeAsync()
+            {
+                Fx.Assert(_nextSemaphore == _asyncLock._currentSemaphore.Value, "_nextSemaphore was expected to by the current semaphore");
+                await _nextSemaphore.WaitAsync();
+                _asyncLock._currentSemaphore.Value = _currentSemaphore;
+                _currentSemaphore.Release();
+                _nextSemaphore.Release();
+                s_semaphorePool.Return(_nextSemaphore);
+                if (_asyncLock._currentSemaphore.Value == _asyncLock._topLevelSemaphore)
+                {
+                    _asyncLock._currentSemaphore.Value = null;
+                }
             }
 
             public void Dispose()
             {
-#if DEBUG
-                _asyncLock._lockTakenCallStack = null;
-                _asyncLock._lockTakenCallStackString = null;
-#endif
-                _asyncLock._lockTaken.Value = false;
-                _asyncLock._semaphore.Release();
+                Fx.Assert(_nextSemaphore == _asyncLock._currentSemaphore.Value, "_nextSemaphore was expected to by the current semaphore");
+                _nextSemaphore.Wait();
+                _asyncLock._currentSemaphore.Value = _currentSemaphore;
+                _currentSemaphore.Release();
+                _nextSemaphore.Release();
+                s_semaphorePool.Return(_nextSemaphore);
+                if (_asyncLock._currentSemaphore.Value == _asyncLock._topLevelSemaphore)
+                {
+                    _asyncLock._currentSemaphore.Value = null;
+                }
+            }
+        }
+
+        private class SemaphoreSlimPooledObjectPolicy : PooledObjectPolicy<SemaphoreSlim>
+        {
+            public override SemaphoreSlim Create()
+            {
+                return new SemaphoreSlim(1);
+            }
+
+            public override bool Return(SemaphoreSlim obj)
+            {
+                if (obj.CurrentCount != 1)
+                {
+                    Fx.Assert("Shouldn't be returning semaphore with a count != 1");
+                    return false;
+                }
+
+                return true;
             }
         }
     }

@@ -646,7 +646,7 @@ namespace System.ServiceModel.Channels
 
         private async Task OnAcknowledgementTimeoutElapsedAsync(object state)
         {
-            using (await ThisAsyncLock.TakeLockAsync())
+            await using (await ThisAsyncLock.TakeLockAsync())
             {
                 _acknowledgementScheduled = false;
                 _pendingAcknowledgements = 0;
@@ -1125,7 +1125,7 @@ namespace System.ServiceModel.Channels
 
         private async void OnConnectionLost(object sender, EventArgs args)
         {
-            using (await ThisAsyncLock.TakeLockAsync())
+            await using (await ThisAsyncLock.TakeLockAsync())
             {
                 if ((State == CommunicationState.Opened || State == CommunicationState.Closing) &&
                     !Binder.Connected && _clientSession.StopPolling())
@@ -1181,7 +1181,7 @@ namespace System.ServiceModel.Channels
         private static async Task OnReconnectTimerElapsed(object state)
         {
             ClientReliableDuplexSessionChannel channel = (ClientReliableDuplexSessionChannel)state;
-            using (await channel.ThisAsyncLock.TakeLockAsync())
+            await using (await channel.ThisAsyncLock.TakeLockAsync())
             {
                 if ((channel.State == CommunicationState.Opened || channel.State == CommunicationState.Closing) &&
                     !channel.Binder.Connected)
