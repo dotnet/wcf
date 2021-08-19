@@ -55,7 +55,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     //              Set the ExplicitUserName, ExplicitPassword, and NegotiateTestDomain TestProperties to a user valid on your Kerberos realm
     //       Linux: This scenario is not yet supported - dotnet/corefx#6606
 
-// These tests are used for testing NegotiateStream (SecurityMode.Transport) 
+    // These tests are used for testing NegotiateStream (SecurityMode.Transport) 
 
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
@@ -116,7 +116,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address),new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -214,7 +214,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address),new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
 
             factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
             factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();
