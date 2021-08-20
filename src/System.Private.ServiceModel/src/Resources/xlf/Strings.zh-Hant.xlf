@@ -2917,6 +2917,11 @@
         <target state="translated">開啟 ChannelFactory 之後，便不能更改此值。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxImmutableClientBaseCacheSetting">
+        <source>This value cannot be changed after the first ClientBase of type '{0}' has been created.</source>
+        <target state="new">This value cannot be changed after the first ClientBase of type '{0}' has been created.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxImmutableServiceHostBehavior0">
         <source>This value cannot be changed after the ServiceHost has opened.</source>
         <target state="translated">開啟 ServiceHost 之後，便不能更改此值。</target>
