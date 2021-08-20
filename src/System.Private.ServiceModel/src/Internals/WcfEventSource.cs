@@ -9,6 +9,10 @@ namespace System.Runtime
 {
     internal sealed partial class WcfEventSource : EventSource
     {
+        // All events from NetFx can be found here:
+        // https://github.com/dotnet/wcf/blob/6d515edfbdc2aa408d1ad1b40eb7f30f726039d2/src/System.Private.ServiceModel/src/Internals/WcfEventSource.cs
+        // When adding more functionality which emits ETW events, this is the easiest place to get it from.
+
         public bool BufferPoolAllocationIsEnabled()
         {
             return base.IsEnabled(EventLevel.Verbose, Keywords.Infrastructure, EventChannel.Debug);
@@ -839,6 +843,86 @@ namespace System.Runtime
         public void WritePoolMiss(string itemTypeName)
         {
             WritePoolMiss(itemTypeName, "");
+        }
+
+        public bool ClientBaseCachedChannelFactoryCountIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientBaseCachedChannelFactoryCount, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCaching,
+            Keywords = Keywords.ServiceModel,
+            Message = "Number of cached channel factories is: '{0}'.  At most '{1}' channel factories can be cached.")]
+        public void ClientBaseCachedChannelFactoryCount(int Count, int MaxNum, string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientBaseCachedChannelFactoryCount, Count, MaxNum, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientBaseCachedChannelFactoryCount(int Count, int MaxNum, object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            ClientBaseCachedChannelFactoryCount(Count, MaxNum, payload.EventSource, "");
+        }
+
+        public bool ClientBaseChannelFactoryAgedOutofCacheIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientBaseChannelFactoryAgedOutofCache, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCaching,
+            Keywords = Keywords.ServiceModel,
+            Message = "A channel factory has been aged out of the cache because the cache has reached its limit of '{0}'.")]
+        public void ClientBaseChannelFactoryAgedOutofCache(int Count, string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientBaseChannelFactoryAgedOutofCache, Count, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientBaseChannelFactoryAgedOutofCache(int Count, object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            ClientBaseChannelFactoryAgedOutofCache(Count, payload.EventSource, "");
+        }
+
+        public bool ClientBaseChannelFactoryCacheHitIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientBaseChannelFactoryCacheHit, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCaching,
+            Keywords = Keywords.ServiceModel,
+            Message = "Used matching channel factory found in cache.")]
+        public void ClientBaseChannelFactoryCacheHit(string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientBaseChannelFactoryCacheHit, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientBaseChannelFactoryCacheHit(object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            ClientBaseChannelFactoryCacheHit(payload.EventSource, "");
+        }
+
+        public bool ClientBaseUsingLocalChannelFactoryIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.ServiceModel, EventChannel.Debug);
+        }
+
+        [Event(EventIds.ClientBaseUsingLocalChannelFactory, Level = EventLevel.Informational, Channel = EventChannel.Debug, Opcode = EventOpcode.Info, Task = Tasks.ChannelFactoryCaching,
+            Keywords = Keywords.ServiceModel,
+            Message = "Not using channel factory from cache, i.e. caching disabled for instance.")]
+        public void ClientBaseUsingLocalChannelFactory(string EventSource, string AppDomain)
+        {
+            WriteEvent(EventIds.ClientBaseUsingLocalChannelFactory, EventSource, AppDomain);
+        }
+
+        [NonEvent]
+        public void ClientBaseUsingLocalChannelFactory(object source)
+        {
+            TracePayload payload = FxTrace.Trace.GetSerializedPayload(source, null, null);
+            ClientBaseUsingLocalChannelFactory(payload.EventSource, "");
         }
 
         public bool MessageReadByEncoderIsEnabled()

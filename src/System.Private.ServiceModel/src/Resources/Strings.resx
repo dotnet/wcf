@@ -2991,4 +2991,7 @@
   <data name="SFxErrorCreatingMtomReader" xml:space="preserve">
     <value>Error creating a reader for the MTOM message</value>
   </data>
+  <data name="SFxImmutableClientBaseCacheSetting" xml:space="preserve">
+    <value>This value cannot be changed after the first ClientBase of type '{0}' has been created.</value>
+  </data>
 </root>

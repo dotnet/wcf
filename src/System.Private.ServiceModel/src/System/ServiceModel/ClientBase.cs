@@ -4,6 +4,7 @@
 
 
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -17,7 +18,34 @@ namespace System.ServiceModel
         where TChannel : class
     {
         private TChannel _channel;
-        private object _syncRoot = new object();
+        private ChannelFactoryRef<TChannel> _channelFactoryRef;
+        private EndpointTrait<TChannel> _endpointTrait;
+
+        // Determine whether the proxy can share factory with others. It is false only if the public getters
+        // are invoked.
+        private bool _canShareFactory = true;
+
+        // Determine whether the proxy is currently holding a cached factory
+        private bool _useCachedFactory;
+
+        // Determine whether we have locked down sharing for this proxy. This is turned on only when the channel
+        // is created.
+        private bool _sharingFinalized;
+
+        // Determine whether the ChannelFactoryRef has been released. We should release it only once per proxy
+        private bool _channelFactoryRefReleased;
+
+        // Determine whether we have released the last ref count of the ChannelFactory so that we could abort it when it was closing.
+        private bool _releasedLastRef;
+        private object finalizeLock = new object();
+
+        // Cache at most 32 ChannelFactories
+        private const int MaxNumChannelFactories = 32;
+        private static ChannelFactoryRefCache<TChannel> s_factoryRefCache = new ChannelFactoryRefCache<TChannel>(MaxNumChannelFactories);
+        private static object s_staticLock = new object();
+        private static object s_cacheLock = new object();
+        private static CacheSetting s_cacheSetting = CacheSetting.Default;
+        private static bool s_isCacheSettingReadOnly;
 
         private static AsyncCallback s_onAsyncCallCompleted = Fx.ThunkCallback(new AsyncCallback(OnAsyncCallCompleted));
 
@@ -53,8 +81,19 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(remoteAddress));
             }
 
-            ChannelFactory = new ChannelFactory<TChannel>(binding, remoteAddress);
-            ChannelFactory.TraceOpenAndClose = false;
+            MakeCacheSettingReadOnly();
+
+            if (s_cacheSetting == CacheSetting.AlwaysOn)
+            {
+                _endpointTrait = new ProgrammaticEndpointTrait<TChannel>(binding, remoteAddress, null);
+                InitializeChannelFactoryRef();
+            }
+            else
+            {
+                _channelFactoryRef = new ChannelFactoryRef<TChannel>(new ChannelFactory<TChannel>(binding, remoteAddress));
+                _channelFactoryRef.ChannelFactory.TraceOpenAndClose = false;
+                TryDisableSharing();
+            }
         }
 
         protected ClientBase(ServiceEndpoint endpoint)
@@ -64,8 +103,19 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(endpoint));
             }
 
-            ChannelFactory = new ChannelFactory<TChannel>(endpoint);
-            ChannelFactory.TraceOpenAndClose = false;
+            MakeCacheSettingReadOnly();
+
+            if (s_cacheSetting == CacheSetting.AlwaysOn)
+            {
+                _endpointTrait = new ServiceEndpointTrait<TChannel>(endpoint, null);
+                InitializeChannelFactoryRef();
+            }
+            else
+            {
+                _channelFactoryRef = new ChannelFactoryRef<TChannel>(new ChannelFactory<TChannel>(endpoint));
+                _channelFactoryRef.ChannelFactory.TraceOpenAndClose = false;
+                TryDisableSharing();
+            }
         }
 
         protected ClientBase(InstanceContext callbackInstance, Binding binding, EndpointAddress remoteAddress)
@@ -85,8 +135,20 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(remoteAddress));
             }
 
-            ChannelFactory = new DuplexChannelFactory<TChannel>(callbackInstance, binding, remoteAddress);
-            ChannelFactory.TraceOpenAndClose = false;
+            MakeCacheSettingReadOnly();
+
+            if (s_cacheSetting == CacheSetting.AlwaysOn)
+            {
+                _endpointTrait = new ProgrammaticEndpointTrait<TChannel>(binding, remoteAddress, callbackInstance);
+                InitializeChannelFactoryRef();
+            }
+            else
+            {
+                _channelFactoryRef = new ChannelFactoryRef<TChannel>(
+                    new DuplexChannelFactory<TChannel>(callbackInstance, binding, remoteAddress));
+                _channelFactoryRef.ChannelFactory.TraceOpenAndClose = false;
+                TryDisableSharing();
+            }
         }
 
         protected T GetDefaultValueForInitialization<T>()
@@ -94,13 +156,7 @@ namespace System.ServiceModel
             return default(T);
         }
 
-        private object ThisLock
-        {
-            get
-            {
-                return _syncRoot;
-            }
-        }
+        private object ThisLock { get; } = new object();
 
         protected TChannel Channel
         {
@@ -120,16 +176,75 @@ namespace System.ServiceModel
                                     ServiceModelActivity.Start(activity, SR.Format(SR.ActivityOpenClientBase, typeof(TChannel).FullName), ActivityType.OpenClient);
                                 }
 
-                                CreateChannelInternal();
+                                if (_useCachedFactory)
+                                {
+                                    try
+                                    {
+                                        CreateChannelInternal();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        if (_useCachedFactory &&
+                                            (ex is CommunicationException ||
+                                            ex is ObjectDisposedException ||
+                                            ex is TimeoutException))
+                                        {
+                                            DiagnosticUtility.TraceHandledException(ex, TraceEventType.Warning);
+                                            InvalidateCacheAndCreateChannel();
+                                        }
+                                        else
+                                        {
+                                            throw;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    CreateChannelInternal();
+                                }
                             }
                         }
                     }
                 }
+
                 return _channel;
             }
         }
 
-        public ChannelFactory<TChannel> ChannelFactory { get; }
+        public static CacheSetting CacheSetting
+        {
+            get
+            {
+                return s_cacheSetting;
+            }
+            set
+            {
+                lock (s_cacheLock)
+                {
+                    if (s_isCacheSettingReadOnly && s_cacheSetting != value)
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.Format(SR.SFxImmutableClientBaseCacheSetting, typeof(TChannel).ToString())));
+                    }
+                    else
+                    {
+                        s_cacheSetting = value;
+                    }
+                }
+            }
+        }
+
+        public ChannelFactory<TChannel> ChannelFactory
+        {
+            get
+            {
+                if (s_cacheSetting == CacheSetting.Default)
+                {
+                    TryDisableSharing();
+                }
+
+                return GetChannelFactory();
+            }
+        }
 
         public ClientCredentials ClientCredentials
         {
@@ -151,7 +266,14 @@ namespace System.ServiceModel
                 else
                 {
                     // we may have failed to create the channel under open, in which case we our factory wouldn't be open
-                    return ChannelFactory.State;
+                    if (!_useCachedFactory)
+                    {
+                        return GetChannelFactory().State;
+                    }
+                    else
+                    {
+                        return CommunicationState.Created;
+                    }
                 }
             }
         }
@@ -174,7 +296,7 @@ namespace System.ServiceModel
 
         public void Open()
         {
-            ((ICommunicationObject)this).Open(ChannelFactory.InternalOpenTimeout);
+            ((ICommunicationObject)this).Open(GetChannelFactory().InternalOpenTimeout);
         }
 
         public void Abort()
@@ -184,22 +306,86 @@ namespace System.ServiceModel
             {
                 channel.Abort();
             }
-            ChannelFactory.Abort();
+
+            if (!_channelFactoryRefReleased)
+            {
+                lock (s_staticLock)
+                {
+                    if (!_channelFactoryRefReleased)
+                    {
+                        if (_channelFactoryRef.Release())
+                        {
+                            _releasedLastRef = true;
+                        }
+
+                        _channelFactoryRefReleased = true;
+                    }
+                }
+            }
+
+            // Abort the ChannelFactory if we released the last one. We should be able to abort it when another thread is closing it.
+            if (_releasedLastRef)
+            {
+                _channelFactoryRef.Abort();
+            }
         }
 
         public void Close()
         {
-            ((ICommunicationObject)this).Close(ChannelFactory.InternalCloseTimeout);
+            ((ICommunicationObject)this).Close(GetChannelFactory().InternalCloseTimeout);
         }
 
-        private void CreateChannelInternal()
+        // This ensures that the cachesetting (on, off or default) cannot be modified by 
+        // another ClientBase instance of matching TChannel after the first instance is created.
+        private void MakeCacheSettingReadOnly()
         {
-            _channel = CreateChannel();
+            if (s_isCacheSettingReadOnly)
+            {
+                return;
+            }
+
+            lock (s_cacheLock)
+            {
+                s_isCacheSettingReadOnly = true;
+            }
+        }
+
+        void CreateChannelInternal()
+        {
+            try
+            {
+                _channel = CreateChannel();
+                if (_sharingFinalized)
+                {
+                    if (_canShareFactory && !_useCachedFactory)
+                    {
+                        // It is OK to add ChannelFactory to the cache now.
+                        TryAddChannelFactoryToCache();
+                    }
+                }
+            }
+            finally
+            {
+                if (!_sharingFinalized && s_cacheSetting == CacheSetting.Default)
+                {
+                    // this.CreateChannel() is not called. For safety, we disable sharing.
+                    TryDisableSharing();
+                }
+            }
         }
 
         protected virtual TChannel CreateChannel()
         {
-            return ChannelFactory.CreateChannel();
+            if (_sharingFinalized)
+            {
+                return GetChannelFactory().CreateChannel();
+            }
+
+            lock (finalizeLock)
+            {
+                _sharingFinalized = true;
+                return GetChannelFactory().CreateChannel();
+            }
         }
 
         void IDisposable.Dispose()
@@ -210,7 +396,11 @@ namespace System.ServiceModel
         void ICommunicationObject.Open(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
-            ChannelFactory.Open(timeoutHelper.RemainingTime());
+            if (!_useCachedFactory)
+            {
+                GetChannelFactory().Open(timeoutHelper.RemainingTime());
+            }
+
             InnerChannel.Open(timeoutHelper.RemainingTime());
         }
 
@@ -222,14 +412,41 @@ namespace System.ServiceModel
                 {
                     ServiceModelActivity.Start(activity, SR.Format(SR.ActivityCloseClientBase, typeof(TChannel).FullName), ActivityType.Close);
                 }
-                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
 
+                TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
                 if (_channel != null)
                 {
                     InnerChannel.Close(timeoutHelper.RemainingTime());
                 }
 
-                ChannelFactory.Close(timeoutHelper.RemainingTime());
+                if (!_channelFactoryRefReleased)
+                {
+                    lock (s_staticLock)
+                    {
+                        if (!_channelFactoryRefReleased)
+                        {
+                            if (_channelFactoryRef.Release())
+                            {
+                                _releasedLastRef = true;
+                            }
+
+                            _channelFactoryRefReleased = true;
+                        }
+                    }
+
+                    // Close the factory outside of the lock so that we can abort from a different thread.
+                    if (_releasedLastRef)
+                    {
+                        if (_useCachedFactory)
+                        {
+                            _channelFactoryRef.Abort();
+                        }
+                        else
+                        {
+                            _channelFactoryRef.Close(timeoutHelper.RemainingTime());
+                        }
+                    }
+                }
             }
         }
 
@@ -295,7 +512,7 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginClose(AsyncCallback callback, object state)
         {
-            return ((ICommunicationObject)this).BeginClose(ChannelFactory.InternalCloseTimeout, callback, state);
+            return ((ICommunicationObject)this).BeginClose(GetChannelFactory().InternalCloseTimeout, callback, state);
         }
 
         IAsyncResult ICommunicationObject.BeginClose(TimeSpan timeout, AsyncCallback callback, object state)
@@ -310,7 +527,7 @@ namespace System.ServiceModel
 
         IAsyncResult ICommunicationObject.BeginOpen(AsyncCallback callback, object state)
         {
-            return ((ICommunicationObject)this).BeginOpen(ChannelFactory.InternalOpenTimeout, callback, state);
+            return ((ICommunicationObject)this).BeginOpen(GetChannelFactory().InternalOpenTimeout, callback, state);
         }
 
         IAsyncResult ICommunicationObject.BeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -327,12 +544,26 @@ namespace System.ServiceModel
 
         internal IAsyncResult BeginFactoryOpen(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return ChannelFactory.BeginOpen(timeout, callback, state);
+            if (_useCachedFactory)
+            {
+                return new CompletedAsyncResult(callback, state);
+            }
+            else
+            {
+                return GetChannelFactory().BeginOpen(timeout, callback, state);
+            }
         }
 
         internal void EndFactoryOpen(IAsyncResult result)
         {
-            ChannelFactory.EndOpen(result);
+            if (_useCachedFactory)
+            {
+                CompletedAsyncResult.End(result);
+            }
+            else
+            {
+                GetChannelFactory().EndOpen(result);
+            }
         }
 
         internal IAsyncResult BeginChannelOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -347,7 +578,14 @@ namespace System.ServiceModel
 
         internal IAsyncResult BeginFactoryClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return ChannelFactory.BeginClose(timeout, callback, state);
+            if (_useCachedFactory)
+            {
+                return new CompletedAsyncResult(callback, state);
+            }
+            else
+            {
+                return GetChannelFactory().BeginClose(timeout, callback, state);
+            }
         }
 
         internal void EndFactoryClose(IAsyncResult result)
@@ -358,7 +596,7 @@ namespace System.ServiceModel
             }
             else
             {
-                ChannelFactory.EndClose(result);
+                GetChannelFactory().EndClose(result);
             }
         }
 
@@ -383,6 +621,153 @@ namespace System.ServiceModel
             else
             {
                 InnerChannel.EndClose(result);
+            }
+        }
+
+        ChannelFactory<TChannel> GetChannelFactory()
+        {
+            return _channelFactoryRef.ChannelFactory;
+        }
+
+        void InitializeChannelFactoryRef()
+        {
+            Fx.Assert(_channelFactoryRef == null, "The channelFactory should have never been assigned");
+            Fx.Assert(_canShareFactory, "GetChannelFactoryFromCache can be called only when canShareFactory is true");
+            lock (s_staticLock)
+            {
+                ChannelFactoryRef<TChannel> factoryRef;
+                if (s_factoryRefCache.TryGetValue(_endpointTrait, out factoryRef))
+                {
+                    if (factoryRef.ChannelFactory.State != CommunicationState.Opened)
+                    {
+                        // Remove the bad ChannelFactory.
+                        s_factoryRefCache.Remove(_endpointTrait);
+                    }
+                    else
+                    {
+                        _channelFactoryRef = factoryRef;
+                        _channelFactoryRef.AddRef();
+                        _useCachedFactory = true;
+                        if (WcfEventSource.Instance.ClientBaseChannelFactoryCacheHitIsEnabled())
+                        {
+                            WcfEventSource.Instance.ClientBaseChannelFactoryCacheHit(this);
+                        }
+                        return;
+                    }
+                }
+            }
+
+            if (_channelFactoryRef == null)
+            {
+                // Creating the ChannelFactory at initial time to catch configuration exception earlier.
+                _channelFactoryRef = CreateChannelFactoryRef(_endpointTrait);
+            }
+        }
+
+        static ChannelFactoryRef<TChannel> CreateChannelFactoryRef(EndpointTrait<TChannel> endpointTrait)
+        {
+            Fx.Assert(endpointTrait != null, "The endpointTrait should not be null when the factory can be shared.");
+
+            ChannelFactory<TChannel> channelFactory = endpointTrait.CreateChannelFactory();
+            channelFactory.TraceOpenAndClose = false;
+            return new ChannelFactoryRef<TChannel>(channelFactory);
+        }
+
+        // Once the channel is created, we can't disable caching.
+        // This method can be called safely multiple times.  
+        // this.sharingFinalized is set the first time the method is called.
+        // Subsequent calls are essentially no-ops.
+        void TryDisableSharing()
+        {
+            if (_sharingFinalized)
+            {
+                return;
+            }
+
+            lock (finalizeLock)
+            {
+                if (_sharingFinalized)
+                {
+                    return;
+                }
+
+                _canShareFactory = false;
+                _sharingFinalized = true;
+
+                if (_useCachedFactory)
+                {
+                    ChannelFactoryRef<TChannel> pendingFactoryRef = _channelFactoryRef;
+                    _channelFactoryRef = CreateChannelFactoryRef(_endpointTrait);
+                    _useCachedFactory = false;
+
+                    lock (s_staticLock)
+                    {
+                        if (!pendingFactoryRef.Release())
+                        {
+                            pendingFactoryRef = null;
+                        }
+                    }
+
+                    if (pendingFactoryRef != null)
+                    {
+                        pendingFactoryRef.Abort();
+                    }
+                }
+            }
+
+            // can be done outside the lock since the lines below do not access shared data.
+            // also the use of this.sharingFinalized in the lines above ensures that tracing 
+            // happens only once and only when needed.
+            if (WcfEventSource.Instance.ClientBaseUsingLocalChannelFactoryIsEnabled())
+            {
+                WcfEventSource.Instance.ClientBaseUsingLocalChannelFactory(this);
+            }
+        }
+
+        void TryAddChannelFactoryToCache()
+        {
+            Fx.Assert(_canShareFactory, "This should be called only when this proxy can share ChannelFactory.");
+            Fx.Assert(_channelFactoryRef.ChannelFactory.State == CommunicationState.Opened,
+                "The ChannelFactory must be in Opened state for caching.");
+
+            // Lock the cache and add the item to synchronize with lookup.
+            lock (s_staticLock)
+            {
+                ChannelFactoryRef<TChannel> cfRef;
+                if (!s_factoryRefCache.TryGetValue(_endpointTrait, out cfRef))
+                {
+                    // Increment the ref count before adding to the cache.
+                    _channelFactoryRef.AddRef();
+                    s_factoryRefCache.Add(_endpointTrait, _channelFactoryRef);
+                    _useCachedFactory = true;
+                    if (WcfEventSource.Instance.ClientBaseCachedChannelFactoryCountIsEnabled())
+                    {
+                        WcfEventSource.Instance.ClientBaseCachedChannelFactoryCount(s_factoryRefCache.Count, MaxNumChannelFactories, this);
+                    }
+                }
+            }
+        }
+
+        // NOTE: This should be called inside ThisLock
+        void InvalidateCacheAndCreateChannel()
+        {
+            RemoveFactoryFromCache();
+            TryDisableSharing();
+            CreateChannelInternal();
+        }
+
+        void RemoveFactoryFromCache()
+        {
+            lock (s_staticLock)
+            {
+                ChannelFactoryRef<TChannel> factoryRef;
+                if (s_factoryRefCache.TryGetValue(_endpointTrait, out factoryRef))
+                {
+                    if (object.ReferenceEquals(_channelFactoryRef, factoryRef))
+                    {
+                        s_factoryRefCache.Remove(_endpointTrait);
+                    }
+                }
             }
         }
 

@@ -202,6 +202,12 @@ namespace System.ServiceModel
         public ActionNotSupportedException(string message, System.Exception innerException) { }
         protected ActionNotSupportedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
+    public enum CacheSetting
+    {
+        Default,
+        AlwaysOn,
+        AlwaysOff
+    }
     public abstract partial class ChannelFactory : System.ServiceModel.Channels.CommunicationObject, System.IDisposable, System.ServiceModel.Channels.IChannelFactory, System.ServiceModel.ICommunicationObject
     {
         protected ChannelFactory() { }
@@ -263,6 +269,7 @@ namespace System.ServiceModel
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         protected ClientBase(string endpointConfigurationName, string remoteAddress) { }
         protected TChannel Channel { get { return default; } }
+        public static CacheSetting CacheSetting { get { return default; } set { } }
         public System.ServiceModel.ChannelFactory<TChannel> ChannelFactory { get { return default; } }
         public System.ServiceModel.Description.ClientCredentials ClientCredentials { get { return default; } }
         public System.ServiceModel.Description.ServiceEndpoint Endpoint { get { return default; } }
