@@ -55,7 +55,6 @@ namespace System.ServiceModel.Description
             _contracts = new Dictionary<Type, ContractDescription>();
             _messages = new Dictionary<Type, MessageDescriptionItems>();
         }
-        [SuppressMessage(FxCop.Category.Usage, "CA2301:EmbeddableTypesInContainersRule", MessageId = "contracts", Justification = "No need to support type equivalence here.")]
 
         private ContractDescription LoadContractDescriptionHelper(Type contractType, Type serviceType, object serviceImplementation)
         {
@@ -158,6 +157,12 @@ namespace System.ServiceModel.Description
         }
 
         public ContractDescription LoadContractDescription(Type contractType)
+        {
+            Fx.Assert(contractType != null, "");
+            return LoadContractDescriptionHelper(contractType, null, null);
+        }
+
+        public ContractDescription LoadCachedContractDescription(Type contractType)
         {
             Fx.Assert(contractType != null, "");
             WeakReference<ContractDescription> contractReference;
@@ -1325,7 +1330,6 @@ namespace System.ServiceModel.Description
             return parameterPart;
         }
 
-        [SuppressMessage(FxCop.Category.Usage, "CA2301:EmbeddableTypesInContainersRule", MessageId = "messages", Justification = "No need to support type equivalence here.")]
         internal MessageDescription CreateTypedMessageDescription(Type typedMessageType,
                                                   ICustomAttributeProvider returnAttrProvider,
                                                   XmlName returnValueName,

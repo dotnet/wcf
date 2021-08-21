@@ -212,17 +212,23 @@ public static class ContractDescriptionTest
         // the instances aren't GC'd.
         int hashCode = VerifyCachingAndReturnHashCode();
         FullGCTwice();
-        var contractDescription = ContractDescription.GetContract(typeof(IWcfService));
+        var contractDescription = GetContractDescription<IWcfService>();
         Assert.NotEqual(hashCode, contractDescription.GetHashCode());
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static int VerifyCachingAndReturnHashCode()
     {
-        ContractDescription contractDescription = ContractDescription.GetContract(typeof(IWcfService));
-        ContractDescription contractDescription2 = ContractDescription.GetContract(typeof(IWcfService));
+        ContractDescription contractDescription = GetContractDescription<IWcfService>();
+        ContractDescription contractDescription2 = GetContractDescription<IWcfService>();
         Assert.Equal(contractDescription, contractDescription2);
         return contractDescription.GetHashCode();
+    }
+
+    private static ContractDescription GetContractDescription<T>()
+    {
+        var factory = new ChannelFactory<T>(new BasicHttpBinding(), new EndpointAddress("http://nowhere"));
+        return factory.Endpoint.Contract;
     }
 
     private static void FullGCTwice()
