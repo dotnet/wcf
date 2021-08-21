@@ -37,6 +37,9 @@ namespace System.ServiceModel.Description
 
         private static readonly Type s_OperationContractAttributeType = typeof(OperationContractAttribute);
 
+        private static readonly Dictionary<Type, WeakReference<ContractDescription>> s_contractDescriptionCache = new Dictionary<Type, WeakReference<ContractDescription>>();
+        private static readonly object s_cacheLock = new object();
+
         internal const string ReturnSuffix = "Result";
         internal const string ResponseSuffix = "Response";
         internal const string FaultSuffix = "Fault";
@@ -157,8 +160,37 @@ namespace System.ServiceModel.Description
         public ContractDescription LoadContractDescription(Type contractType)
         {
             Fx.Assert(contractType != null, "");
+            WeakReference<ContractDescription> contractReference;
+            bool found;
+            lock(s_cacheLock)
+            {
+                found = s_contractDescriptionCache.TryGetValue(contractType, out contractReference);
+            }
 
-            return LoadContractDescriptionHelper(contractType, null, null);
+            if (found)
+            {
+                // ContractReference still has a reference to the ContractDescription
+                if (contractReference.TryGetTarget(out var cd))
+                {
+                    return cd;
+                }
+            }
+            else
+            {
+                // WeakReference was not in the cache dictionary, so create new instance.
+                // We either populate this instance with a newly created ContractDescription
+                // or populate empty found instance which a newly created ContractDescription.
+                contractReference = new WeakReference<ContractDescription>(null);
+            }
+
+            var contractDescription = LoadContractDescriptionHelper(contractType, null, null);
+            contractReference.SetTarget(contractDescription);
+            lock(s_cacheLock)
+            {
+                s_contractDescriptionCache[contractType] = contractReference;
+            }
+
+            return contractDescription;
         }
 
         public ContractDescription LoadContractDescription(Type contractType, Type serviceType)
