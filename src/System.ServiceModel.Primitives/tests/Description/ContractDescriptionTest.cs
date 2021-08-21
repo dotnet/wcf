@@ -4,6 +4,7 @@
 
 
 using System;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -200,5 +201,33 @@ public static class ContractDescriptionTest
         ContractDescription contractDescription = ContractDescription.GetContract(typeof(IDescriptionTestsService));
         Assert.Equal(typeof(IDescriptionTestsService).Name, contractDescription.ContractType.Name);
         Assert.Equal("http://tempuri.org/", contractDescription.Namespace);
+    }
+
+    [WcfFact]
+    public static void ContractDescription_GetContractCaching()
+    {
+        // Ensure cache is empty from previous tests
+        FullGCTwice();
+        // Need to run in separate method otherwise a reference stays on the stack and
+        // the instances aren't GC'd.
+        int hashCode = VerifyCachingAndReturnHashCode();
+        FullGCTwice();
+        var contractDescription = ContractDescription.GetContract(typeof(IWcfService));
+        Assert.NotEqual(hashCode, contractDescription.GetHashCode());
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static int VerifyCachingAndReturnHashCode()
+    {
+        ContractDescription contractDescription = ContractDescription.GetContract(typeof(IWcfService));
+        ContractDescription contractDescription2 = ContractDescription.GetContract(typeof(IWcfService));
+        Assert.Equal(contractDescription, contractDescription2);
+        return contractDescription.GetHashCode();
+    }
+
+    private static void FullGCTwice()
+    {
+        GC.Collect(2);
+        GC.Collect(2);
     }
 }
