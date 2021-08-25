@@ -20,13 +20,13 @@ namespace System.ServiceModel.Dispatcher
         private ChannelDispatcher _channelDispatcher;
         private IInstanceProvider _instanceProvider;
         private IInstanceContextProvider _instanceContextProvider;
+        private SynchronizedCollection<IDispatchMessageInspector> _messageInspectors;
         private OperationCollection _operations;
         private ImmutableDispatchRuntime _runtime;
         private SynchronizationContext _synchronizationContext;
         private Type _type;
         private DispatchOperation _unhandled;
         private SharedRuntimeState _shared;
-        private SynchronizedCollection<IDispatchMessageInspector> _messageInspectors;
 
         internal DispatchRuntime(ClientRuntime proxyRuntime, SharedRuntimeState shared)
             : this(shared)
@@ -159,6 +159,11 @@ namespace System.ServiceModel.Dispatcher
             }
         }
 
+        public SynchronizedCollection<IDispatchMessageInspector> MessageInspectors
+        {
+            get { return _messageInspectors; }
+        }
+
         public SynchronizedKeyedCollection<string, DispatchOperation> Operations
         {
             get { return _operations; }
@@ -188,11 +193,6 @@ namespace System.ServiceModel.Dispatcher
                     _type = value;
                 }
             }
-        }
-
-        public SynchronizedCollection<IDispatchMessageInspector> MessageInspectors
-        {
-            get { return _messageInspectors; }
         }
 
         public DispatchOperation UnhandledDispatchOperation
