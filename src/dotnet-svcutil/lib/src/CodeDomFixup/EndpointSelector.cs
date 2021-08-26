@@ -244,12 +244,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     transportSecurityBindingElement.DefaultAlgorithmSuite.GetType().FullName, SecurityAlgorithmSuite.Default.GetType().FullName));
             }
 
-            if (transportSecurityBindingElement.SecurityHeaderLayout != SecurityHeaderLayout.Strict)
-            {
-                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityHeaderLayoutValueNotSupportedFormat,
-                            transportSecurityBindingElement.SecurityHeaderLayout, SecurityHeaderLayout.Strict));
-            }
-
             if (transportSecurityBindingElement.LocalClientSettings.DetectReplays || transportSecurityBindingElement.LocalServiceSettings.DetectReplays)
             {
                 s_bindingValidationErrors.Add(SR.BindingTransportDetectReplaysNotSupported);

@@ -315,14 +315,24 @@ namespace System.ServiceModel
             {
                 return;
             }
-            else if (mode == BasicHttpSecurityMode.Message || mode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            else if (mode == BasicHttpSecurityMode.Message)
             {
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", mode)));
             }
 
+            // Message.ClientCredentialType = Certificate is not supported.
+            if (mode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            {
+                BasicHttpMessageSecurity message = security.Message;
+                if ((message != null) && (message.ClientCredentialType == BasicHttpMessageCredentialType.Certificate))
+                {
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new NotSupportedException(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Message.ClientCredentialType", message.ClientCredentialType)));
+                }
+            }
+
             // Transport.ClientCredentialType = InheritedFromHost is not supported.
             Fx.Assert(
-                (mode == BasicHttpSecurityMode.Transport) || (mode == BasicHttpSecurityMode.TransportCredentialOnly),
+                (mode == BasicHttpSecurityMode.Transport) || (mode == BasicHttpSecurityMode.TransportCredentialOnly) || (mode == BasicHttpSecurityMode.TransportWithMessageCredential),
                 "Unexpected BasicHttpSecurityMode value: " + mode);
             HttpTransportSecurity transport = security.Transport;
             if (transport?.ClientCredentialType == HttpClientCredentialType.InheritedFromHost)

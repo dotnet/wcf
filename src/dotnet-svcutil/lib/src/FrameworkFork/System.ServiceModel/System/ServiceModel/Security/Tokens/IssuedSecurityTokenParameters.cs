@@ -380,7 +380,142 @@ namespace System.ServiceModel.Security.Tokens
 
         internal void AddAlgorithmParameters(SecurityAlgorithmSuite algorithmSuite, SecurityStandardsManager standardsManager, SecurityKeyType issuedKeyType)
         {
-            throw new NotImplementedException();
+            this._additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptionAlgorithmElement(algorithmSuite.DefaultEncryptionAlgorithm));
+            this._additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateCanonicalizationAlgorithmElement(algorithmSuite.DefaultCanonicalizationAlgorithm));
+
+            if (this._keyType == SecurityKeyType.BearerKey)
+            {
+                // As the client does not have a proof token in the Bearer case
+                // we don't have any specific algorithms to request for.
+                return;
+            }
+
+            string signWithAlgorithm = (this._keyType == SecurityKeyType.SymmetricKey) ? algorithmSuite.DefaultSymmetricSignatureAlgorithm : algorithmSuite.DefaultAsymmetricSignatureAlgorithm;
+            this._additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateSignWithElement(signWithAlgorithm));
+            string encryptWithAlgorithm;
+            if (issuedKeyType == SecurityKeyType.SymmetricKey)
+            {
+                encryptWithAlgorithm = algorithmSuite.DefaultEncryptionAlgorithm;
+            }
+            else
+            {
+                encryptWithAlgorithm = algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm;
+            }
+            this._additionalRequestParameters.Insert(0, standardsManager.TrustDriver.CreateEncryptWithElement(encryptWithAlgorithm));
+
+            if (standardsManager.TrustVersion != TrustVersion.WSTrustFeb2005)
+            {
+                this._additionalRequestParameters.Insert(0, ((WSTrustDec2005.DriverDec2005)standardsManager.TrustDriver).CreateKeyWrapAlgorithmElement(algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm));
+            }
+
+            return;
+        }
+
+        internal bool DoAlgorithmsMatch(SecurityAlgorithmSuite algorithmSuite, SecurityStandardsManager standardsManager, out Collection<XmlElement> otherRequestParameters)
+        {
+            bool doesSignWithAlgorithmMatch = false;
+            bool doesEncryptWithAlgorithmMatch = false;
+            bool doesEncryptionAlgorithmMatch = false;
+            bool doesCanonicalizationAlgorithmMatch = false;
+            bool doesKeyWrapAlgorithmMatch = false;
+            otherRequestParameters = new Collection<XmlElement>();
+            bool trustNormalizationPerformed = false;
+
+            Collection<XmlElement> trustVersionNormalizedParameterCollection;
+
+            // For Trust 1.3 we move all the additional parameters into the secondaryParameters
+            // element. So the list contains just one element called SecondaryParameters that 
+            // contains all the other elements as child elements.
+            if ((standardsManager.TrustVersion == TrustVersion.WSTrust13) &&
+                (this.AdditionalRequestParameters.Count == 1) &&
+                (((WSTrustDec2005.DriverDec2005)standardsManager.TrustDriver).IsSecondaryParametersElement(this.AdditionalRequestParameters[0])))
+            {
+                trustNormalizationPerformed = true;
+                trustVersionNormalizedParameterCollection = new Collection<XmlElement>();
+                foreach (XmlElement innerElement in this.AdditionalRequestParameters[0])
+                {
+                    trustVersionNormalizedParameterCollection.Add(innerElement);
+                }
+            }
+            else
+            {
+                trustVersionNormalizedParameterCollection = this.AdditionalRequestParameters;
+            }
+
+            for (int i = 0; i < trustVersionNormalizedParameterCollection.Count; i++)
+            {
+                string algorithm;
+                XmlElement element = trustVersionNormalizedParameterCollection[i];
+                if (standardsManager.TrustDriver.IsCanonicalizationAlgorithmElement(element, out algorithm))
+                {
+                    if (algorithmSuite.DefaultCanonicalizationAlgorithm != algorithm)
+                    {
+                        return false;
+                    }
+                    doesCanonicalizationAlgorithmMatch = true;
+                }
+                else if (standardsManager.TrustDriver.IsSignWithElement(element, out algorithm))
+                {
+                    if ((this._keyType == SecurityKeyType.SymmetricKey && algorithm != algorithmSuite.DefaultSymmetricSignatureAlgorithm)
+                        || (this._keyType == SecurityKeyType.AsymmetricKey && algorithm != algorithmSuite.DefaultAsymmetricSignatureAlgorithm))
+                    {
+                        return false;
+                    }
+                    doesSignWithAlgorithmMatch = true;
+                }
+                else if (standardsManager.TrustDriver.IsEncryptWithElement(element, out algorithm))
+                {
+                    if ((this._keyType == SecurityKeyType.SymmetricKey && algorithm != algorithmSuite.DefaultEncryptionAlgorithm)
+                        || (this._keyType == SecurityKeyType.AsymmetricKey && algorithm != algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm))
+                    {
+                        return false;
+                    }
+                    doesEncryptWithAlgorithmMatch = true;
+                }
+                else if (standardsManager.TrustDriver.IsEncryptionAlgorithmElement(element, out algorithm))
+                {
+                    if (algorithm != algorithmSuite.DefaultEncryptionAlgorithm)
+                    {
+                        return false;
+                    }
+                    doesEncryptionAlgorithmMatch = true;
+                }
+                else if (standardsManager.TrustDriver.IsKeyWrapAlgorithmElement(element, out algorithm))
+                {
+                    if (algorithm != algorithmSuite.DefaultAsymmetricKeyWrapAlgorithm)
+                    {
+                        return false;
+                    }
+                    doesKeyWrapAlgorithmMatch = true;
+                }
+                else
+                {
+                    otherRequestParameters.Add(element);
+                }
+            }
+
+            // Undo normalization if performed
+            // move all back into secondaryParameters
+            if (trustNormalizationPerformed)
+            {
+                otherRequestParameters = this.AdditionalRequestParameters;
+            }
+
+            if (this._keyType == SecurityKeyType.BearerKey)
+            {
+                // As the client does not have a proof token in the Bearer case
+                // we don't have any specific algorithms to request for.
+                return true;
+            }
+            if (standardsManager.TrustVersion == TrustVersion.WSTrustFeb2005)
+            {
+                // For V1 compatibility check all algorithms
+                return (doesSignWithAlgorithmMatch && doesCanonicalizationAlgorithmMatch && doesEncryptionAlgorithmMatch && doesEncryptWithAlgorithmMatch);
+            }
+            else
+            {
+                return (doesSignWithAlgorithmMatch && doesCanonicalizationAlgorithmMatch && doesEncryptionAlgorithmMatch && doesEncryptWithAlgorithmMatch && doesKeyWrapAlgorithmMatch);
+            }
         }
 
         internal static IssuedSecurityTokenParameters CreateInfoCardParameters(SecurityStandardsManager standardsManager, SecurityAlgorithmSuite algorithm)
