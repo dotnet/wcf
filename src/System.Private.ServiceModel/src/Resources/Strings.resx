@@ -2994,7 +2994,6 @@
   <data name="SFxImmutableClientBaseCacheSetting" xml:space="preserve">
     <value>This value cannot be changed after the first ClientBase of type '{0}' has been created.</value>
   </data>
-</root>
   <data name="SFxMessageContractAttributeRequired" xml:space="preserve">
     <value>Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</value>
   </data>
