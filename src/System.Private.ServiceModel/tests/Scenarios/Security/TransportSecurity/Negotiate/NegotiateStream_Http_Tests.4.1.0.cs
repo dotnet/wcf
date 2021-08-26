@@ -112,11 +112,11 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string spn = GetSPN().ToLowerInvariant().Replace("host", "HTTP");
 
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -211,10 +211,10 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string spn = GetSPN().ToLowerInvariant().Replace("host", "HTTP");
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
 
             factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
             factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();
