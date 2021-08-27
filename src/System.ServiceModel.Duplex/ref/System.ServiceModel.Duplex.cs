@@ -5,7 +5,7 @@
 // ------------------------------------------------------------------------------
 
 
-[assembly: TypeForwardedToAttribute(typeof(System.ServiceModel.InstanceContext))]
+[assembly:System.Runtime.CompilerServices.TypeForwardedToAttribute(typeof(System.ServiceModel.InstanceContext))]
 namespace System.ServiceModel
 {
     [System.AttributeUsageAttribute((System.AttributeTargets)(4))]
