@@ -1604,7 +1604,7 @@
       </trans-unit>
       <trans-unit id="MaxMimePartsExceeded">
         <source>The number of MIME parts in the MTOM message exceeded the current quota '{0}'. To increase the quota, change the '{1}' setting in the AppSettings section of the configuration file.</source>
-        <target state="new">The number of MIME parts in the MTOM message exceeded the current quota '{0}'. To increase the quota, change the '{1}' setting in the AppSettings section of the configuration file.</target>
+        <target state="translated">Počet částí MIME ve zprávě MTOM překročil aktuální kvótu {0}. Pokud chcete kvótu zvýšit, změňte nastavení {1} v oddílu AppSettings v konfiguračním souboru.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
@@ -1769,67 +1769,67 @@
       </trans-unit>
       <trans-unit id="MimeContentTypeHeaderInvalid">
         <source>Invalid MIME content-type header encountered on read.</source>
-        <target state="new">Invalid MIME content-type header encountered on read.</target>
+        <target state="translated">Při čtení se vyskytla neplatná hlavička MIME pro typ obsahu.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeHeaderInvalidCharacter">
         <source>Character '{0}' (hexadecimal value 0x{1}) not valid in MIME header.</source>
-        <target state="new">Character '{0}' (hexadecimal value 0x{1}) not valid in MIME header.</target>
+        <target state="translated">Znak {0} (hodnota v šestnáctkové soustavě 0x{1}) není v hlavičce MIME platný.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeMessageGetContentStreamCalledAlready">
         <source>Content stream can be retrieved from MIME message only once.</source>
-        <target state="new">Content stream can be retrieved from MIME message only once.</target>
+        <target state="translated">Stream obsahu se dá ze zprávy MIME načíst jenom jednou.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderHeaderAlreadyExists">
         <source>'{0}' MIME header is specified multiple times.</source>
-        <target state="new">'{0}' MIME header is specified multiple times.</target>
+        <target state="translated">Hlavička MIME {0} je zadaná víckrát.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderMalformedHeader">
         <source>Malformed header.</source>
-        <target state="new">Malformed header.</target>
+        <target state="translated">Chybně vytvořená hlavička</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderResetCalledBeforeEOF">
         <source>Reset called on MIME header reader before end of file.</source>
-        <target state="new">Reset called on MIME header reader before end of file.</target>
+        <target state="translated">U čtecí funkce hlavičky MIME se volal reset před koncem souboru.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderTruncated">
         <source>Unexpected end of file.</source>
-        <target state="new">Unexpected end of file.</target>
+        <target state="translated">Neočekávaný konec souboru</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeVersionHeaderInvalid">
         <source>Invalid mime-version header encountered on read.</source>
-        <target state="new">Invalid mime-version header encountered on read.</target>
+        <target state="translated">Při čtení se vyskytla neplatná hlavička mime-version.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForClose">
         <source>Cannot call Close on MIME writer in state '{0}'.</source>
-        <target state="new">Cannot call Close on MIME writer in state '{0}'.</target>
+        <target state="translated">U zapisovače MIME ve stavu {0} nejde volat Close.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForContent">
         <source>MIME writer cannot write content in state '{0}'.</source>
-        <target state="new">MIME writer cannot write content in state '{0}'.</target>
+        <target state="translated">Zapisovač MIME ve stavu {0} nemůže zapsat obsah.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForHeader">
         <source>MIME writer cannot write MIME header in state '{0}'.</source>
-        <target state="new">MIME writer cannot write MIME header in state '{0}'.</target>
+        <target state="translated">Zapisovač MIME ve stavu {0} nemůže zapsat hlavičku MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForStartPart">
         <source>MIME writer cannot start new MIME part in state '{0}'.</source>
-        <target state="new">MIME writer cannot start new MIME part in state '{0}'.</target>
+        <target state="translated">Zapisovač MIME ve stavu {0} nemůže začít novou část MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForStartPreface">
         <source>MIME writer cannot start preface in '{0}' state.</source>
-        <target state="new">MIME writer cannot start preface in '{0}' state.</target>
+        <target state="translated">Zapisovač MIME ve stavu {0} nemůže začít úvod.</target>
         <note />
       </trans-unit>
       <trans-unit id="MismatchInSecurityOperationToken">
@@ -1889,152 +1889,152 @@
       </trans-unit>
       <trans-unit id="MtomBoundaryInvalid">
         <source>'{0}' not a valid MIME boundary.</source>
-        <target state="new">'{0}' not a valid MIME boundary.</target>
+        <target state="translated">{0} není platné ohraničení MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomBufferQuotaExceeded">
         <source>The maximum buffer size ({0}) has been exceeded while reading MTOM data. This quota may be increased by changing the maxBufferSize setting used when creating the MTOM reader.</source>
-        <target state="new">The maximum buffer size ({0}) has been exceeded while reading MTOM data. This quota may be increased by changing the maxBufferSize setting used when creating the MTOM reader.</target>
+        <target state="translated">Při čtení dat MTOM se překročila maximální velikost vyrovnávací paměti ({0}). Tuto kvótu jde zvýšit změnou nastavení maxBufferSize, které se používá při vytváření čtecí funkce MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotPresent">
         <source>Content-Transfer-Encoding header with value '{0}' must be present for binary part.</source>
-        <target state="new">Content-Transfer-Encoding header with value '{0}' must be present for binary part.</target>
+        <target state="translated">Pro binární část musí být přítomná hlavička Content-Transfer-Encoding s hodnotou {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotSupported">
         <source>'{0}' Content-Transfer-Encoding not supported for infoset. Must be one of '{1}', '{2}', or '{3}'.</source>
-        <target state="new">'{0}' Content-Transfer-Encoding not supported for infoset. Must be one of '{1}', '{2}', or '{3}'.</target>
+        <target state="translated">Hlavička Content-Transfer-Encoding s hodnotou {0} není pro informační sadu podporovaná. Musí mít hodnotu {1}, {2} nebo {3}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTypeInvalid">
         <source>contentType must be non-zero length string.</source>
-        <target state="new">contentType must be non-zero length string.</target>
+        <target state="translated">contentType musí být řetězec nenulové délky.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomDataMustNotContainXopInclude">
         <source>XML data contained in MTOM messages must not contain element with name '{0}' from namespace '{1}'.</source>
-        <target state="new">XML data contained in MTOM messages must not contain element with name '{0}' from namespace '{1}'.</target>
+        <target state="translated">Data XML obsažená ve zprávách MTOM nesmějí obsahovat element s názvem {0} z oboru názvů {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomEncoderBadMessageVersion">
         <source>MessageVersion '{0}' not supported by MTOM encoder.</source>
-        <target state="new">MessageVersion '{0}' not supported by MTOM encoder.</target>
+        <target state="translated">Třídu MessageVersion {0} kodér MTOM nepodporuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomExceededMaxSizeInBytes">
         <source>The 'maximum size in bytes' quota ({0}) has been exceeded while writing MTOM data. This quota may be increased by changing the maxSizeInBytes setting used when creating the MTOM writer.</source>
-        <target state="new">The 'maximum size in bytes' quota ({0}) has been exceeded while writing MTOM data. This quota may be increased by changing the maxSizeInBytes setting used when creating the MTOM writer.</target>
+        <target state="translated">Při zápisu dat MTOM se překročila kvóta maximální velikost v bajtech ({0}). Tuto kvótu jde zvýšit změnou nastavení maxSizeInBytes používaného při vytváření zapisovací funkce MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidCIDUri">
         <source>Invalid URI '{0}' specified for MIME part Content-ID is not conformant cid URI.</source>
-        <target state="new">Invalid URI '{0}' specified for MIME part Content-ID is not conformant cid URI.</target>
+        <target state="translated">Neplatný identifikátor URI {0} zadaný pro část MIME Content-ID neodpovídá identifikátoru cid URI.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidEmptyURI">
         <source>URI specified for MIME part Content-ID cannot be empty.</source>
-        <target state="new">URI specified for MIME part Content-ID cannot be empty.</target>
+        <target state="translated">Identifikátor URI zadaný pro část MIME Content-ID nemůže být prázdný.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidStartUri">
         <source>Invalid start URI for infoset '{0}'.</source>
-        <target state="new">Invalid start URI for infoset '{0}'.</target>
+        <target state="translated">Neplatný počáteční identifikátor URI pro informační sadu {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidTransferEncodingForMimePart">
         <source>Content-Transfer-Encoding '{0}' not supported for binary part. Must be '{1}'.</source>
-        <target state="new">Content-Transfer-Encoding '{0}' not supported for binary part. Must be '{1}'.</target>
+        <target state="translated">Hlavička Content-Transfer-Encoding {0} není pro binární část podporovaná. Musí být {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageContentTypeNotFound">
         <source>Content-Type header for MTOM message not found.</source>
-        <target state="new">Content-Type header for MTOM message not found.</target>
+        <target state="translated">Nenašla se hlavička Content-Type pro zprávu MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageInvalidContent">
         <source>MTOM message not valid. Does not contain correctly formatted content following headers.</source>
-        <target state="new">MTOM message not valid. Does not contain correctly formatted content following headers.</target>
+        <target state="translated">Zpráva MTOM není platná. Za hlavičkami neobsahuje správně formátovaný obsah.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageInvalidContentInMimePart">
         <source>MTOM message not valid. One or more MIME parts in the message does not contain correctly formatted content and/or boundary string.</source>
-        <target state="new">MTOM message not valid. One or more MIME parts in the message does not contain correctly formatted content and/or boundary string.</target>
+        <target state="translated">Zpráva MTOM není platná. Jedna nebo víc částí MIME ve zprávě neobsahuje správně formátovaný obsah a/nebo řetězec ohraničení.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageInvalidMimeVersion">
         <source>'{0}' not a valid MIME version. MTOM messages must have MIME version '{1}'.</source>
-        <target state="new">'{0}' not a valid MIME version. MTOM messages must have MIME version '{1}'.</target>
+        <target state="translated">{0} není platná verze MIME. Zprávy MTOM musejí mít verzi MIME {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageNotApplicationXopXml">
         <source>MTOM messages must have type '{0}'.</source>
-        <target state="new">MTOM messages must have type '{0}'.</target>
+        <target state="translated">Zprávy MTOM musejí mít typ {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageNotMultipart">
         <source>MTOM messages must have media type '{0}' and media subtype '{1}'.</source>
-        <target state="new">MTOM messages must have media type '{0}' and media subtype '{1}'.</target>
+        <target state="translated">Zprávy MTOM musejí mít typ média {0} a podtyp média {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageRequiredParamNotSpecified">
         <source>MTOM messages must have non-zero length '{0}' parameter in Content-Type header.</source>
-        <target state="new">MTOM messages must have non-zero length '{0}' parameter in Content-Type header.</target>
+        <target state="translated">Zprávy MTOM musejí mít v hlavičce Content-Type parametr {0} s nenulovou délkou.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMimePartReferencedMoreThanOnce">
         <source>MTOM message not valid. Infoset references MIME part with Content-ID '{0}' more than once.</source>
-        <target state="new">MTOM message not valid. Infoset references MIME part with Content-ID '{0}' more than once.</target>
+        <target state="translated">Zpráva MTOM není platná. Informační sada odkazuje na část MIME s identifikátorem obsahu {0} víckrát než jednou.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomPartNotFound">
         <source>MIME part with Content-ID '{0}' not found.</source>
-        <target state="new">MIME part with Content-ID '{0}' not found.</target>
+        <target state="translated">Část MIME s identifikátorem obsahu {0} se nenašla.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootContentTypeNotFound">
         <source>Content-Type header for root MIME part not found.</source>
-        <target state="new">Content-Type header for root MIME part not found.</target>
+        <target state="translated">Nenašla se hlavička Content-Type pro kořenovou část MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootNotApplicationXopXml">
         <source>Root MIME part must have media type '{0}' and media subtype '{1}'.</source>
-        <target state="new">Root MIME part must have media type '{0}' and media subtype '{1}'.</target>
+        <target state="translated">Kořenová část MIME musí mít typ média {0} a podtyp média {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootPartNotFound">
         <source>Root MIME part containing infoset not found.</source>
-        <target state="new">Root MIME part containing infoset not found.</target>
+        <target state="translated">Nenašla se kořenová část MIME obsahující informační sadu.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootRequiredParamNotSpecified">
         <source>Root MIME part must contain non-zero length value for '{0}' parameter in Content-Type header.</source>
-        <target state="new">Root MIME part must contain non-zero length value for '{0}' parameter in Content-Type header.</target>
+        <target state="translated">Kořenová část MIME musí v hlavičce Content-Type obsahovat hodnotu s nenulovou délkou pro parametr {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootUnexpectedCharset">
         <source>Unexpected charset '{0}' found in root MIME part. Expecting '{1}'.</source>
-        <target state="new">Unexpected charset '{0}' found in root MIME part. Expecting '{1}'.</target>
+        <target state="translated">V kořenové části MIME se vyskytla neočekávaná znaková sada {0}. Očekává se {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootUnexpectedType">
         <source>Unexpected type '{0}' found in root MIME part. Message header specifies '{1}'.</source>
-        <target state="new">Unexpected type '{0}' found in root MIME part. Message header specifies '{1}'.</target>
+        <target state="translated">V kořenové části MIME se vyskytl neočekávaný typ {0}. Hlavička zprávy uvádí typ {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomXopIncludeHrefNotSpecified">
         <source>Mandatory attribute '{0}' not found on XOP Include element.</source>
-        <target state="new">Mandatory attribute '{0}' not found on XOP Include element.</target>
+        <target state="translated">U elementu XOP Include chybí povinný atribut {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomXopIncludeInvalidXopAttributes">
         <source>XOP Include element has invalid attribute '{0}' from XOP namespace '{1}'.</source>
-        <target state="new">XOP Include element has invalid attribute '{0}' from XOP namespace '{1}'.</target>
+        <target state="translated">Element XOP Include má neplatný atribut {0} z oboru názvů XOP {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomXopIncludeInvalidXopElement">
         <source>XOP Include element has invalid child element '{0}' from XOP namespace '{1}'.</source>
-        <target state="new">XOP Include element has invalid child element '{0}' from XOP namespace '{1}'.</target>
+        <target state="translated">Element XOP Include má neplatný podřízený element {0} z oboru názvů XOP {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleIdentities">
@@ -2379,7 +2379,7 @@
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
         <source>Read not supported on stream '{0}'.</source>
-        <target state="new">Read not supported on stream '{0}'.</target>
+        <target state="translated">Čtení není u streamu {0} podporované.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
@@ -2549,7 +2549,7 @@
       </trans-unit>
       <trans-unit id="SFxActionMismatch">
         <source>Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</source>
-        <target state="new">Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</target>
+        <target state="translated">Nelze vytvořit zadanou zprávu, protože došlo k neshodě akcí, očekává se {0} zjištěna byla {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBadByReferenceParameterMetadata">
@@ -2789,7 +2789,7 @@
       </trans-unit>
       <trans-unit id="SFxErrorCreatingMtomReader">
         <source>Error creating a reader for the MTOM message</source>
-        <target state="new">Error creating a reader for the MTOM message</target>
+        <target state="translated">Při vytváření modulu pro čtení pro zprávu MTOM došlo k chybě</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxErrorDeserializingFault">
@@ -2924,7 +2924,7 @@
       </trans-unit>
       <trans-unit id="SFxImmutableClientBaseCacheSetting">
         <source>This value cannot be changed after the first ClientBase of type '{0}' has been created.</source>
-        <target state="new">This value cannot be changed after the first ClientBase of type '{0}' has been created.</target>
+        <target state="translated">Tato vlastnost nemůže být změněna po vytvoření prvního objektu ClientBase typu {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxImmutableServiceHostBehavior0">
@@ -3104,7 +3104,7 @@
       </trans-unit>
       <trans-unit id="SFxMessageContractAttributeRequired">
         <source>Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</source>
-        <target state="new">Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</target>
+        <target state="translated">Nelze vytvořit zadanou zprávu z typu {0}. Funkce je platná pouze pro typy dekorované třídou MessageContractAttribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMessageContractBaseTypeNotValid">
@@ -3579,7 +3579,7 @@
       </trans-unit>
       <trans-unit id="SeekNotSupportedOnStream">
         <source>Seek not supported on stream '{0}'.</source>
-        <target state="new">Seek not supported on stream '{0}'.</target>
+        <target state="translated">Hledání není u streamu {0} podporované.</target>
         <note />
       </trans-unit>
       <trans-unit id="SendCannotBeCalledAfterCloseOutputSession">
@@ -4644,12 +4644,12 @@
       </trans-unit>
       <trans-unit id="WriteBufferOverflow">
         <source>An internal error has occurred. Overflow on MIME writer buffer.</source>
-        <target state="new">An internal error has occurred. Overflow on MIME writer buffer.</target>
+        <target state="translated">Došlo k vnitřní chybě. Přetečení vyrovnávací paměti zapisovací funkce MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="WriteNotSupportedOnStream">
         <source>Write not supported on stream '{0}'.</source>
-        <target state="new">Write not supported on stream '{0}'.</target>
+        <target state="translated">Zápis není u streamu {0} podporovaný.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrongIdentifierFault">
@@ -4724,7 +4724,7 @@
       </trans-unit>
       <trans-unit id="XmlArrayTooSmall">
         <source>Array too small.</source>
-        <target state="new">Array too small.</target>
+        <target state="translated">Pole je příliš malé.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferInInvalidState">
@@ -4739,12 +4739,12 @@
       </trans-unit>
       <trans-unit id="XmlInvalidBinHexLength">
         <source>BinHex sequence length ({0}) not valid. Must be a multiple of 2.</source>
-        <target state="new">BinHex sequence length ({0}) not valid. Must be a multiple of 2.</target>
+        <target state="translated">Délka sekvence BinHex ({0}) není platná. Musí být násobkem 2.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlInvalidBinHexSequence">
         <source>The characters '{0}' at offset {1} are not a valid BinHex sequence.</source>
-        <target state="new">The characters '{0}' at offset {1} are not a valid BinHex sequence.</target>
+        <target state="translated">Znaky {0} u odsazení {1} nejsou platná sekvence BinHex.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlInvalidConversion">
@@ -4764,17 +4764,17 @@
       </trans-unit>
       <trans-unit id="XmlLineInfo">
         <source>Line {0}, position {1}.</source>
-        <target state="new">Line {0}, position {1}.</target>
+        <target state="translated">Řádek {0}, pozice {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlMaxStringContentLengthExceeded">
         <source>The maximum string content length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxStringContentLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
-        <target state="new">The maximum string content length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxStringContentLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <target state="translated">Při čtení dat XML byla překročena kvóta maximální délky obsahu řetězce ({0}). Tuto kvótu lze zvýšit změnou vlastnosti MaxStringContentLength u objektu XmlDictionaryReaderQuotas, který se používá při vytváření čtecí funkce XML.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlWriterClosed">
         <source>The XmlWriter is closed.</source>
-        <target state="new">The XmlWriter is closed.</target>
+        <target state="translated">Funkce XmlWriter je zavřena.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_InvalidNodeType">
