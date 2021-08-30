@@ -234,10 +234,19 @@ namespace System.IdentityModel.Tokens
             SecurityKeyIdentifierClause internalTokenReference,
             SecurityKeyIdentifierClause externalTokenReference,
             System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> authorizationPolicies) {}
-        public override string Id { get; }
-        public override DateTime ValidFrom { get; }
-        public override DateTime ValidTo { get; }
-        public override System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get; }
+        public override string Id => default;
+        public override DateTime ValidFrom => default;
+        public override DateTime ValidTo => default;
+        public SecurityKeyIdentifierClause InternalTokenReference => default;
+        public SecurityKeyIdentifierClause ExternalTokenReference => default;
+        public System.Xml.XmlElement TokenXml => default;
+        public SecurityToken ProofToken => default;
+        public System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> AuthorizationPolicies => default;
+        public override System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys => default;
+        public override bool CanCreateKeyIdentifierClause<T>() => default;
+        public override T CreateKeyIdentifierClause<T>() => default;
+        public override bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause) => default;
+        public override string ToString() => default;
     }
     public enum SecurityKeyType
     {
@@ -247,18 +256,9 @@ namespace System.IdentityModel.Tokens
     }
     public partial class GenericXmlSecurityKeyIdentifierClause : SecurityKeyIdentifierClause
     {
-        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml)
-            : this(referenceXml, null, 0)
-        {
-        }
-
-        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml, byte[] derivationNonce, int derivationLength)
-            : base(null, derivationNonce, derivationLength)
-        {
-        }
-
-        public System.Xml.XmlElement ReferenceXml { get { return default; } }
-
-        public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause){ return default; }
+        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml) : this(referenceXml, null, 0) { }
+        public GenericXmlSecurityKeyIdentifierClause(System.Xml.XmlElement referenceXml, byte[] derivationNonce, int derivationLength) : base(null, derivationNonce, derivationLength) { }
+        public System.Xml.XmlElement ReferenceXml => default;
+        public override bool Matches(SecurityKeyIdentifierClause keyIdentifierClause) => default;
     }
 }
