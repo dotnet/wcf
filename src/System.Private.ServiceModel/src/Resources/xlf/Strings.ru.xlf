@@ -1604,7 +1604,7 @@
       </trans-unit>
       <trans-unit id="MaxMimePartsExceeded">
         <source>The number of MIME parts in the MTOM message exceeded the current quota '{0}'. To increase the quota, change the '{1}' setting in the AppSettings section of the configuration file.</source>
-        <target state="new">The number of MIME parts in the MTOM message exceeded the current quota '{0}'. To increase the quota, change the '{1}' setting in the AppSettings section of the configuration file.</target>
+        <target state="translated">Количество частей MIME в сообщении MTOM превысило текущую квоту "{0}". Чтобы увеличить квоту, измените значение параметра "{1}" в разделе AppSettings файла конфигурации.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxReceivedMessageSizeExceeded">
@@ -1769,67 +1769,67 @@
       </trans-unit>
       <trans-unit id="MimeContentTypeHeaderInvalid">
         <source>Invalid MIME content-type header encountered on read.</source>
-        <target state="new">Invalid MIME content-type header encountered on read.</target>
+        <target state="translated">При чтении обнаружен недопустимый MIME-заголовок Content-Type.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeHeaderInvalidCharacter">
         <source>Character '{0}' (hexadecimal value 0x{1}) not valid in MIME header.</source>
-        <target state="new">Character '{0}' (hexadecimal value 0x{1}) not valid in MIME header.</target>
+        <target state="translated">Символ "{0}" (шестнадцатеричное значение — 0x{1}) недопустим в MIME-заголовке.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeMessageGetContentStreamCalledAlready">
         <source>Content stream can be retrieved from MIME message only once.</source>
-        <target state="new">Content stream can be retrieved from MIME message only once.</target>
+        <target state="translated">Поток содержимого можно извлечь из MIME-сообщения только один раз.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderHeaderAlreadyExists">
         <source>'{0}' MIME header is specified multiple times.</source>
-        <target state="new">'{0}' MIME header is specified multiple times.</target>
+        <target state="translated">MIME-заголовок "{0}" указан несколько раз.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderMalformedHeader">
         <source>Malformed header.</source>
-        <target state="new">Malformed header.</target>
+        <target state="translated">Неправильно сформированный заголовок.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderResetCalledBeforeEOF">
         <source>Reset called on MIME header reader before end of file.</source>
-        <target state="new">Reset called on MIME header reader before end of file.</target>
+        <target state="translated">В программе чтения MIME-заголовков сброс вызван до достижения конца файла.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeReaderTruncated">
         <source>Unexpected end of file.</source>
-        <target state="new">Unexpected end of file.</target>
+        <target state="translated">Непредусмотренный конец файла.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeVersionHeaderInvalid">
         <source>Invalid mime-version header encountered on read.</source>
-        <target state="new">Invalid mime-version header encountered on read.</target>
+        <target state="translated">При чтении найден заголовок неверной версии MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForClose">
         <source>Cannot call Close on MIME writer in state '{0}'.</source>
-        <target state="new">Cannot call Close on MIME writer in state '{0}'.</target>
+        <target state="translated">Не удается вызвать метод Close, если программа записи MIME-данных находится в состоянии "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForContent">
         <source>MIME writer cannot write content in state '{0}'.</source>
-        <target state="new">MIME writer cannot write content in state '{0}'.</target>
+        <target state="translated">В состоянии "{0}" программа записи MIME-данных не может записать содержимое.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForHeader">
         <source>MIME writer cannot write MIME header in state '{0}'.</source>
-        <target state="new">MIME writer cannot write MIME header in state '{0}'.</target>
+        <target state="translated">В состоянии "{0}" программа записи MIME-данных не может записать MIME-заголовок.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForStartPart">
         <source>MIME writer cannot start new MIME part in state '{0}'.</source>
-        <target state="new">MIME writer cannot start new MIME part in state '{0}'.</target>
+        <target state="translated">В состоянии "{0}" программа записи MIME-данных не может начать новую часть MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MimeWriterInvalidStateForStartPreface">
         <source>MIME writer cannot start preface in '{0}' state.</source>
-        <target state="new">MIME writer cannot start preface in '{0}' state.</target>
+        <target state="translated">В состоянии "{0}" программа записи MIME-данных не может начать вводную часть.</target>
         <note />
       </trans-unit>
       <trans-unit id="MismatchInSecurityOperationToken">
@@ -1889,152 +1889,152 @@
       </trans-unit>
       <trans-unit id="MtomBoundaryInvalid">
         <source>'{0}' not a valid MIME boundary.</source>
-        <target state="new">'{0}' not a valid MIME boundary.</target>
+        <target state="translated">"{0}" не является допустимой границей MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomBufferQuotaExceeded">
         <source>The maximum buffer size ({0}) has been exceeded while reading MTOM data. This quota may be increased by changing the maxBufferSize setting used when creating the MTOM reader.</source>
-        <target state="new">The maximum buffer size ({0}) has been exceeded while reading MTOM data. This quota may be increased by changing the maxBufferSize setting used when creating the MTOM reader.</target>
+        <target state="translated">Максимальный размер буфера ({0}) был превышен при чтении данных MTOM. Эту квоту можно увеличить, изменив параметр maxBufferSize, используемый при создании устройства чтения MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotPresent">
         <source>Content-Transfer-Encoding header with value '{0}' must be present for binary part.</source>
-        <target state="new">Content-Transfer-Encoding header with value '{0}' must be present for binary part.</target>
+        <target state="translated">Для двоичной части должен быть представлен заголовок Content-Transfer-Encoding со значением "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTransferEncodingNotSupported">
         <source>'{0}' Content-Transfer-Encoding not supported for infoset. Must be one of '{1}', '{2}', or '{3}'.</source>
-        <target state="new">'{0}' Content-Transfer-Encoding not supported for infoset. Must be one of '{1}', '{2}', or '{3}'.</target>
+        <target state="translated">Заголовок Content-Transfer-Encoding "{0}" не поддерживается для информационного набора. Это должен быть "{1}", "{2}" или "{3}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomContentTypeInvalid">
         <source>contentType must be non-zero length string.</source>
-        <target state="new">contentType must be non-zero length string.</target>
+        <target state="translated">contentType должен быть строкой ненулевой длины.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomDataMustNotContainXopInclude">
         <source>XML data contained in MTOM messages must not contain element with name '{0}' from namespace '{1}'.</source>
-        <target state="new">XML data contained in MTOM messages must not contain element with name '{0}' from namespace '{1}'.</target>
+        <target state="translated">Данные XML из сообщения MTOM не должны содержать элемент с именем "{0}" из пространства имен "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomEncoderBadMessageVersion">
         <source>MessageVersion '{0}' not supported by MTOM encoder.</source>
-        <target state="new">MessageVersion '{0}' not supported by MTOM encoder.</target>
+        <target state="translated">Версия MessageVersion "{0}" не поддерживается шифратором MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomExceededMaxSizeInBytes">
         <source>The 'maximum size in bytes' quota ({0}) has been exceeded while writing MTOM data. This quota may be increased by changing the maxSizeInBytes setting used when creating the MTOM writer.</source>
-        <target state="new">The 'maximum size in bytes' quota ({0}) has been exceeded while writing MTOM data. This quota may be increased by changing the maxSizeInBytes setting used when creating the MTOM writer.</target>
+        <target state="translated">Превышена квота на максимальный размер в байтах ({0}) при записи данных MTOM. Эту квоту можно увеличить, изменив параметр maxSizeInBytes, используемый при создании устройства записи MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidCIDUri">
         <source>Invalid URI '{0}' specified for MIME part Content-ID is not conformant cid URI.</source>
-        <target state="new">Invalid URI '{0}' specified for MIME part Content-ID is not conformant cid URI.</target>
+        <target state="translated">Неверный URI "{0}", указанный для Content-ID MIME-части, не согласуется с ИД подтверждения URI.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidEmptyURI">
         <source>URI specified for MIME part Content-ID cannot be empty.</source>
-        <target state="new">URI specified for MIME part Content-ID cannot be empty.</target>
+        <target state="translated">URI, указанный для Content-ID MIME-части, не может быть пустым.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidStartUri">
         <source>Invalid start URI for infoset '{0}'.</source>
-        <target state="new">Invalid start URI for infoset '{0}'.</target>
+        <target state="translated">Недопустимый стартовый URI для информационного набора "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomInvalidTransferEncodingForMimePart">
         <source>Content-Transfer-Encoding '{0}' not supported for binary part. Must be '{1}'.</source>
-        <target state="new">Content-Transfer-Encoding '{0}' not supported for binary part. Must be '{1}'.</target>
+        <target state="translated">Для двоичной части заголовок "{0}" Content-Transfer-Encoding не поддерживается. Должно быть "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageContentTypeNotFound">
         <source>Content-Type header for MTOM message not found.</source>
-        <target state="new">Content-Type header for MTOM message not found.</target>
+        <target state="translated">Заголовок Content-Type для сообщения MTOM не найден.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageInvalidContent">
         <source>MTOM message not valid. Does not contain correctly formatted content following headers.</source>
-        <target state="new">MTOM message not valid. Does not contain correctly formatted content following headers.</target>
+        <target state="translated">Недопустимое сообщение MTOM. Не содержит правильно сформатированного содержания, соответствующего заголовкам.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageInvalidContentInMimePart">
         <source>MTOM message not valid. One or more MIME parts in the message does not contain correctly formatted content and/or boundary string.</source>
-        <target state="new">MTOM message not valid. One or more MIME parts in the message does not contain correctly formatted content and/or boundary string.</target>
+        <target state="translated">Недопустимое сообщение MTOM. Одна или несколько частей MIME в сообщении не содержат правильно сформатированного содержимого и/или граничной строки.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageInvalidMimeVersion">
         <source>'{0}' not a valid MIME version. MTOM messages must have MIME version '{1}'.</source>
-        <target state="new">'{0}' not a valid MIME version. MTOM messages must have MIME version '{1}'.</target>
+        <target state="translated">"{0}" не является допустимой версией MIME. Сообщения MTOM должны иметь версию MIME "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageNotApplicationXopXml">
         <source>MTOM messages must have type '{0}'.</source>
-        <target state="new">MTOM messages must have type '{0}'.</target>
+        <target state="translated">Сообщения MTOM должны иметь тип "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageNotMultipart">
         <source>MTOM messages must have media type '{0}' and media subtype '{1}'.</source>
-        <target state="new">MTOM messages must have media type '{0}' and media subtype '{1}'.</target>
+        <target state="translated">Сообщения MTOM должны иметь тип носителя "{0}" и подтип носителя "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMessageRequiredParamNotSpecified">
         <source>MTOM messages must have non-zero length '{0}' parameter in Content-Type header.</source>
-        <target state="new">MTOM messages must have non-zero length '{0}' parameter in Content-Type header.</target>
+        <target state="translated">Сообщения MTOM должны иметь в заголовке Content-Type параметр ненулевой длины "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomMimePartReferencedMoreThanOnce">
         <source>MTOM message not valid. Infoset references MIME part with Content-ID '{0}' more than once.</source>
-        <target state="new">MTOM message not valid. Infoset references MIME part with Content-ID '{0}' more than once.</target>
+        <target state="translated">Недопустимое сообщение MTOM. Информационный набор ссылается на часть MIME с Content-ID "{0}" более одного раза.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomPartNotFound">
         <source>MIME part with Content-ID '{0}' not found.</source>
-        <target state="new">MIME part with Content-ID '{0}' not found.</target>
+        <target state="translated">Часть MIME с Content-ID "{0}" не найдена.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootContentTypeNotFound">
         <source>Content-Type header for root MIME part not found.</source>
-        <target state="new">Content-Type header for root MIME part not found.</target>
+        <target state="translated">Не найден заголовок Content-Type для корневой части MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootNotApplicationXopXml">
         <source>Root MIME part must have media type '{0}' and media subtype '{1}'.</source>
-        <target state="new">Root MIME part must have media type '{0}' and media subtype '{1}'.</target>
+        <target state="translated">Корневая часть MIME должна иметь тип носителя "{0}" и подтип носителя "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootPartNotFound">
         <source>Root MIME part containing infoset not found.</source>
-        <target state="new">Root MIME part containing infoset not found.</target>
+        <target state="translated">Не найдена корневая часть MIME, содержащая информационный набор.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootRequiredParamNotSpecified">
         <source>Root MIME part must contain non-zero length value for '{0}' parameter in Content-Type header.</source>
-        <target state="new">Root MIME part must contain non-zero length value for '{0}' parameter in Content-Type header.</target>
+        <target state="translated">В заголовке Content-Type корневой части MIME должен содержаться параметр "{0}" со значением ненулевой длины.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootUnexpectedCharset">
         <source>Unexpected charset '{0}' found in root MIME part. Expecting '{1}'.</source>
-        <target state="new">Unexpected charset '{0}' found in root MIME part. Expecting '{1}'.</target>
+        <target state="translated">В корневой части найден неожиданный набор символов "{0}". Ожидается "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomRootUnexpectedType">
         <source>Unexpected type '{0}' found in root MIME part. Message header specifies '{1}'.</source>
-        <target state="new">Unexpected type '{0}' found in root MIME part. Message header specifies '{1}'.</target>
+        <target state="translated">В корневой части MIME найден неожиданный тип "{0}". В заголовке сообщения указан "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomXopIncludeHrefNotSpecified">
         <source>Mandatory attribute '{0}' not found on XOP Include element.</source>
-        <target state="new">Mandatory attribute '{0}' not found on XOP Include element.</target>
+        <target state="translated">Обязательный атрибут "{0}" не найден в элементе включения XOP.</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomXopIncludeInvalidXopAttributes">
         <source>XOP Include element has invalid attribute '{0}' from XOP namespace '{1}'.</source>
-        <target state="new">XOP Include element has invalid attribute '{0}' from XOP namespace '{1}'.</target>
+        <target state="translated">Элемент включения XOP имеет недопустимый атрибут "{0}" из пространства имен XOP "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MtomXopIncludeInvalidXopElement">
         <source>XOP Include element has invalid child element '{0}' from XOP namespace '{1}'.</source>
-        <target state="new">XOP Include element has invalid child element '{0}' from XOP namespace '{1}'.</target>
+        <target state="translated">Элемент включения XOP имеет недопустимый дочерний элемент "{0}" из пространства имен XOP "{1}".</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleIdentities">
@@ -2379,7 +2379,7 @@
       </trans-unit>
       <trans-unit id="ReadNotSupportedOnStream">
         <source>Read not supported on stream '{0}'.</source>
-        <target state="new">Read not supported on stream '{0}'.</target>
+        <target state="translated">Чтение потока "{0}" не поддерживается.</target>
         <note />
       </trans-unit>
       <trans-unit id="ReceiveShutdownReturnedFault">
@@ -2549,7 +2549,7 @@
       </trans-unit>
       <trans-unit id="SFxActionMismatch">
         <source>Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</source>
-        <target state="new">Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</target>
+        <target state="translated">Не удается создать типизированное сообщение из-за несоответствия действия: ожидается {0}, обнаружено {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxBadByReferenceParameterMetadata">
@@ -2789,7 +2789,7 @@
       </trans-unit>
       <trans-unit id="SFxErrorCreatingMtomReader">
         <source>Error creating a reader for the MTOM message</source>
-        <target state="new">Error creating a reader for the MTOM message</target>
+        <target state="translated">Ошибка формирования программы чтения для сообщения MTOM.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxErrorDeserializingFault">
@@ -2924,7 +2924,7 @@
       </trans-unit>
       <trans-unit id="SFxImmutableClientBaseCacheSetting">
         <source>This value cannot be changed after the first ClientBase of type '{0}' has been created.</source>
-        <target state="new">This value cannot be changed after the first ClientBase of type '{0}' has been created.</target>
+        <target state="translated">Это значение нельзя изменить после создания первого объекта ClientBase типа "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxImmutableServiceHostBehavior0">
@@ -3104,7 +3104,7 @@
       </trans-unit>
       <trans-unit id="SFxMessageContractAttributeRequired">
         <source>Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</source>
-        <target state="new">Cannot create a typed message from type '{0}'.  The functionality only valid for types decorated with MessageContractAttribute.</target>
+        <target state="translated">Не удалось создать типизированное сообщение из типа "{0}".  Данная функциональная возможность допустима только для типов, имеющих атрибут MessageContractAttribute.</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxMessageContractBaseTypeNotValid">
@@ -3579,7 +3579,7 @@
       </trans-unit>
       <trans-unit id="SeekNotSupportedOnStream">
         <source>Seek not supported on stream '{0}'.</source>
-        <target state="new">Seek not supported on stream '{0}'.</target>
+        <target state="translated">Поиск в потоке "{0}" не поддерживается.</target>
         <note />
       </trans-unit>
       <trans-unit id="SendCannotBeCalledAfterCloseOutputSession">
@@ -4644,12 +4644,12 @@
       </trans-unit>
       <trans-unit id="WriteBufferOverflow">
         <source>An internal error has occurred. Overflow on MIME writer buffer.</source>
-        <target state="new">An internal error has occurred. Overflow on MIME writer buffer.</target>
+        <target state="translated">Произошла внутренняя ошибка. Переполнение буфера программы записи MIME.</target>
         <note />
       </trans-unit>
       <trans-unit id="WriteNotSupportedOnStream">
         <source>Write not supported on stream '{0}'.</source>
-        <target state="new">Write not supported on stream '{0}'.</target>
+        <target state="translated">В потоке "{0}" запись не поддерживается.</target>
         <note />
       </trans-unit>
       <trans-unit id="WrongIdentifierFault">
@@ -4724,7 +4724,7 @@
       </trans-unit>
       <trans-unit id="XmlArrayTooSmall">
         <source>Array too small.</source>
-        <target state="new">Array too small.</target>
+        <target state="translated">Массив слишком мал.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlBufferInInvalidState">
@@ -4739,12 +4739,12 @@
       </trans-unit>
       <trans-unit id="XmlInvalidBinHexLength">
         <source>BinHex sequence length ({0}) not valid. Must be a multiple of 2.</source>
-        <target state="new">BinHex sequence length ({0}) not valid. Must be a multiple of 2.</target>
+        <target state="translated">Недопустимая для BinHex длина последовательности ({0}). Она должна быть кратна 2.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlInvalidBinHexSequence">
         <source>The characters '{0}' at offset {1} are not a valid BinHex sequence.</source>
-        <target state="new">The characters '{0}' at offset {1} are not a valid BinHex sequence.</target>
+        <target state="translated">Символы "{0}" в смещении {1} не являются допустимой для BinHex последовательностью.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlInvalidConversion">
@@ -4764,17 +4764,17 @@
       </trans-unit>
       <trans-unit id="XmlLineInfo">
         <source>Line {0}, position {1}.</source>
-        <target state="new">Line {0}, position {1}.</target>
+        <target state="translated">Строка {0}, позиция {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlMaxStringContentLengthExceeded">
         <source>The maximum string content length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxStringContentLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</source>
-        <target state="new">The maximum string content length quota ({0}) has been exceeded while reading XML data. This quota may be increased by changing the MaxStringContentLength property on the XmlDictionaryReaderQuotas object used when creating the XML reader.</target>
+        <target state="translated">Превышена квота максимальной длины строки ({0}) при чтении данных XML. Эту квоту можно увеличить, изменив свойство MaxStringContentLength объекта XmlDictionaryReaderQuotas, используемого при создании модуля чтения XML.</target>
         <note />
       </trans-unit>
       <trans-unit id="XmlWriterClosed">
         <source>The XmlWriter is closed.</source>
-        <target state="new">The XmlWriter is closed.</target>
+        <target state="translated">XmlWriter закрыт.</target>
         <note />
       </trans-unit>
       <trans-unit id="Xml_InvalidNodeType">
