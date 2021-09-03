@@ -17,7 +17,7 @@
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
-      TargetFrameworkMoniker="$(NuGetTargetMoniker)"
+      TargetFramework="$(TargetFramework)"
       DotNetAppHostExecutableNameWithoutExtension="$(_DotNetAppHostExecutableNameWithoutExtension)">
       <Output
           TaskParameter="RuntimeAssemblies"
