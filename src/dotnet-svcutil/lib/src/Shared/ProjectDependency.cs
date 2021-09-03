@@ -28,6 +28,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private static readonly IReadOnlyList<string> s_binaryExtensions = new List<string> { ".exe", ".dll" }.AsReadOnly();
         private static readonly IReadOnlyList<string> s_projectExtensions = new List<string> { ".csproj" }.AsReadOnly();
+        private static readonly IReadOnlyList<string> s_exeExtensions = new List<string> { ".exe" }.AsReadOnly();
 
         /// <summary>
         /// The dependency name.  This can be a package or assembly name.
@@ -113,8 +114,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 fileHasKnownExtension = string.IsNullOrWhiteSpace(filePath) ? false :
                      (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(filePath), ext, StringComparison.OrdinalIgnoreCase) == 0));
 
-                // check that package name is not confused with assembly name.
-                if (s_binaryExtensions.Any((ext) => String.Compare(Path.GetExtension(packageName), ext, StringComparison.OrdinalIgnoreCase) == 0))
+                // check that package name is not confused with executable name.
+                if (s_exeExtensions.Any((ext) => String.Compare(Path.GetExtension(packageName), ext, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Shared.Resources.ErrorInvalidDependencyValue, packageName, nameof(packageName)));
                 }
