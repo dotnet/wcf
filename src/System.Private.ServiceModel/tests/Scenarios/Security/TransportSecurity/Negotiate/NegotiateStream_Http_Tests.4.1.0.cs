@@ -78,7 +78,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 #if NET5_0
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(Endpoints.Https_WindowsAuth_Address, new SpnEndpointIdentity(spn)));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
 #else
             factory = new ChannelFactory<IWcfService>(
                 binding,
@@ -172,7 +172,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 #if NET5_0
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(Endpoints.Https_WindowsAuth_Address, new SpnEndpointIdentity(spn)));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
 #else
             factory = new ChannelFactory<IWcfService>(
                 binding,
