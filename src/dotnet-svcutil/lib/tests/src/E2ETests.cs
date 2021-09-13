@@ -381,6 +381,28 @@ namespace SvcutilTest
         }
 
         [Trait("Category", "Test")]
+        [Theory]        
+        [InlineData("BasicHttpsTransSecMessCredsUserName.svc", true)]
+        public void WcfRuntimeBasicHttpsTransSecMessCredsUserName(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WcfRuntimeBasicHttpsTransSecMessCredsUserName";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("HttpsTransSecMessCredsUserName.svc", true)]
+        public void WsHttpBindingAndws2007HttpBindingTransSecMessCredsUserName(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WsHttpBindingAndws2007HttpBindingTransSecMessCredsUserName";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
         [Theory]
         [InlineData("NetHttp.svc", true)]
         [InlineData("NetHttpWebSockets.svc", true)]

@@ -183,26 +183,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 s_bindingValidationErrors.Add(SR.BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported);
             }
-
-            if (!(transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing.Count != 1 ^
-                  transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted.Count != 1))
-            {
-                s_bindingValidationErrors.Add(SR.BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted);
-            }
             else if (transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted.Count == 1)
             {
                 ValidateUserNamePasswordSecurityBindingElement(transportSecurityBindingElement);
             }
-            else //if (transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing.Count == 1)
+            else if (transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing.Count == 1)
             {
                 SecureConversationSecurityTokenParameters endorsingTokenParams = transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing[0] as SecureConversationSecurityTokenParameters;
-
-                if (endorsingTokenParams == null)
-                {
-                    s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityTokenEndorsingParamsTypeFormat,
-                        transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing[0].GetType().FullName, typeof(SecureConversationSecurityTokenParameters).FullName));
-                }
-                else
+                
+                if (endorsingTokenParams != null)
                 {
                     if (endorsingTokenParams.RequireDerivedKeys)
                     {
@@ -221,17 +210,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         ValidateTransportSecurityBindingElement(bootstrapElement);
                     }
                 }
-            }
-
-            if (transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 &&
-                transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10)
-            {
-                string values = string.Format(CultureInfo.InvariantCulture, "'{0}', '{1}'",
-                    MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10,
-                    MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10);
-
-                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportMessageSecurityVersionNotSupportedFormat, transportSecurityBindingElement.MessageSecurityVersion, values));
-            }
+            }            
 
             if (!transportSecurityBindingElement.IncludeTimestamp)
             {
@@ -242,11 +221,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat,
                     transportSecurityBindingElement.DefaultAlgorithmSuite.GetType().FullName, SecurityAlgorithmSuite.Default.GetType().FullName));
-            }
-
-            if (transportSecurityBindingElement.LocalClientSettings.DetectReplays || transportSecurityBindingElement.LocalServiceSettings.DetectReplays)
-            {
-                s_bindingValidationErrors.Add(SR.BindingTransportDetectReplaysNotSupported);
             }
         }
 
