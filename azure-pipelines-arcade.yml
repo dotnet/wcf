@@ -220,7 +220,8 @@ stages:
               IsWindowsBuild: false
 
       # Only build and test Unix in PR and CI builds.
-      - ${{ if eq(variables._RunAsPublic, True) }}:
+      # - ${{ if eq(variables._RunAsPublic, True) }}:
+      - ${{ if eq(False, True) }}:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
