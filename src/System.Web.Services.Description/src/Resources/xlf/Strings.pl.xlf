@@ -4,152 +4,152 @@
     <body>
       <trans-unit id="MissingMessagePartForMessageFromNamespace3">
         <source>Missing message part '{0}' for message '{1}' from namespace '{2}'.</source>
-        <target state="new">Missing message part '{0}' for message '{1}' from namespace '{2}'.</target>
+        <target state="translated">Brak części „{0}” komunikatu „{1}” z przestrzeni nazw „{2}”.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyOperationInputOrOperationOutputTypes">
         <source>Only objects of type OperationInput or OperationOutput may be added.</source>
-        <target state="new">Only objects of type OperationInput or OperationOutput may be added.</target>
+        <target state="translated">Dodawane mogą być tylko obiekty typu OperationInput lub OperationOutput.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyXmlElementsOrTypesDerivingFromServiceDescriptionFormatExtension0">
         <source>Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</source>
-        <target state="new">Only XmlElements or types deriving from ServiceDescriptionFormatExtension may be added.</target>
+        <target state="translated">Dodawane mogą być tylko elementy XmlElement lub typy pochodzące od elementu ServiceDescriptionFormatExtension.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequiredXmlFormatExtensionAttributeIsMissing1">
         <source>Required XmlFormatExtension attribute is missing on class {0}.</source>
-        <target state="new">Required XmlFormatExtension attribute is missing on class {0}.</target>
+        <target state="translated">Brak wymaganego atrybutu XmlFormatExtension dla klasy {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="TheSyntaxOfTypeMayNotBeExtended1">
         <source>The syntax of type {0} may not be extended.</source>
-        <target state="new">The syntax of type {0} may not be extended.</target>
+        <target state="translated">Składnia typu {0} nie może zostać rozszerzona.</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceExceptionCaught">
         <source>Exception caught in {0}.\r\n    {1}: {2}</source>
-        <target state="new">Exception caught in {0}.\r\n    {1}: {2}</target>
+        <target state="translated">Przechwycono wyjątek w elemencie {0}.\r\n    {1}: {2}</target>
         <note />
       </trans-unit>
       <trans-unit id="TraceExceptionDetails">
         <source>Exception Details:\r\n{0}</source>
-        <target state="new">Exception Details:\r\n{0}</target>
+        <target state="translated">Szczegóły wyjątku:\r\n{0}</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissing">
         <source>Cannot find definition for {0}.  Service Description with namespace {1} is missing.</source>
-        <target state="new">Cannot find definition for {0}.  Service Description with namespace {1} is missing.</target>
+        <target state="translated">Nie można odnaleźć definicji {0}. Brak opisu usługi z przestrzenią nazw {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionMissingItem">
         <source>Element {0} named {1} from namespace {2} is missing.</source>
-        <target state="new">Element {0} named {1} from namespace {2} is missing.</target>
+        <target state="translated">Brak elementu {0} o nazwie {1} z przestrzeni nazw {2}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDescriptionTooManyMessages">
         <source>No more than one input and one output message may be specified.</source>
-        <target state="new">No more than one input and one output message may be specified.</target>
+        <target state="translated">Nie można określić więcej niż jednego komunikatu wejściowego i jednego komunikatu wyjściowego.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateBinding">
         <source>More than one binding named '{0}' was specified. Each binding must have a unique name.</source>
-        <target state="new">More than one binding named '{0}' was specified. Each binding must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedno powiązanie o nazwie „{0}”. Nazwa każdego powiązania musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFaultBinding">
         <source>More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</source>
-        <target state="new">More than one fault binding named '{0}' was specified. Each fault binding must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedno powiązanie błędu o nazwie „{0}”. Nazwa każdego powiązania błędu musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateFormatExtension">
         <source>More than one format extension named '{0}' was specified. Each format extension must have a unique name.</source>
-        <target state="new">More than one format extension named '{0}' was specified. Each format extension must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedno rozszerzenie formatu o nazwie „{0}”. Nazwa każdego rozszerzenia formatu musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateImport">
         <source>More than one import named '{0}' was specified. Each import must have a unique name.</source>
-        <target state="new">More than one import named '{0}' was specified. Each import must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedną operację importowania o nazwie „{0}”. Nazwa każdej operacji importowania musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessage">
         <source>More than one message named '{0}' was specified. Each message must have a unique name.</source>
-        <target state="new">More than one message named '{0}' was specified. Each message must have a unique name.</target>
+        <target state="translated">Określono więcej niż jeden komunikat o nazwie „{0}”. Nazwa każdego komunikatu musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateMessagePart">
         <source>More than one message part named '{0}' was specified. Each message part must have a unique name.</source>
-        <target state="new">More than one message part named '{0}' was specified. Each message part must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedną część komunikatu o nazwie „{0}”. Nazwa każdej części komunikatu musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperation">
         <source>More than one operation named '{0}' was specified. Each operation must have a unique name.</source>
-        <target state="new">More than one operation named '{0}' was specified. Each operation must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedną operację o nazwie „{0}”. Nazwa każdej operacji musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationBinding">
         <source>More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</source>
-        <target state="new">More than one operation binding named '{0}' was specified. Each operation binding must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedno powiązanie operacji o nazwie „{0}”. Nazwa każdego powiązania operacji musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationFault">
         <source>More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</source>
-        <target state="new">More than one operation fault named '{0}' was specified. Each operation fault must have a unique name.</target>
+        <target state="translated">Określono więcej niż jeden błąd operacji o nazwie „{0}”. Nazwa każdego błędu operacji musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateOperationMessage">
         <source>More than one operation message named '{0}' was specified. Each operation message must have a unique name.</source>
-        <target state="new">More than one operation message named '{0}' was specified. Each operation message must have a unique name.</target>
+        <target state="translated">Określono więcej niż jeden komunikat operacji o nazwie „{0}”. Nazwa każdego komunikatu operacji musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePort">
         <source>More than one port named '{0}' was specified. Each port must have a unique name.</source>
-        <target state="new">More than one port named '{0}' was specified. Each port must have a unique name.</target>
+        <target state="translated">Określono więcej niż jeden port o nazwie „{0}”. Nazwa każdego portu musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicatePortType">
         <source>More than one port type named '{0}' was specified. Each port type must have a unique name.</source>
-        <target state="new">More than one port type named '{0}' was specified. Each port type must have a unique name.</target>
+        <target state="translated">Określono więcej niż jeden typ portu o nazwie „{0}”. Nazwa każdego typu portu musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateService">
         <source>More than one service named '{0}' was specified. Each service must have a unique name.</source>
-        <target state="new">More than one service named '{0}' was specified. Each service must have a unique name.</target>
+        <target state="translated">Określono więcej niż jedną usługę o nazwie „{0}”. Nazwa każdej usługi musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateServiceDescription">
         <source>More than one service description with targetNamespace '{0}' was specified.</source>
-        <target state="new">More than one service description with targetNamespace '{0}' was specified.</target>
+        <target state="translated">Określono więcej niż jeden opis usługi w obszarze nazw targetNamespace „{0}”.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebDuplicateUnknownElement">
         <source>More than one {0} named '{1}' was specified. Each {0} must have a unique name.</source>
-        <target state="new">More than one {0} named '{1}' was specified. Each {0} must have a unique name.</target>
+        <target state="translated">Określono więcej niż jeden element {0} o nazwie „{1}”. Nazwa każdego elementu {0} musi być unikatowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebNegativeValue">
         <source>The value for '{0}' cannot be negative.</source>
-        <target state="new">The value for '{0}' cannot be negative.</target>
+        <target state="translated">Wartość „{0}” nie może być ujemna.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebUnknownElement">
         <source>The element was not expected in this context: {0}.</source>
-        <target state="new">The element was not expected in this context: {0}.</target>
+        <target state="translated">Nieoczekiwany element w tym kontekście: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebUnknownElement1">
         <source>An unexpected element was encountered: {0}. No elements were expected in this scope.</source>
-        <target state="new">An unexpected element was encountered: {0}. No elements were expected in this scope.</target>
+        <target state="translated">Napotkano nieoczekiwany element: {0}. W tym zakresie nie ma oczekiwanych elementów.</target>
         <note />
       </trans-unit>
       <trans-unit id="WebUnknownElement2">
         <source>The element was not expected in this context: {0}. Expected elements: {1}.</source>
-        <target state="new">The element was not expected in this context: {0}. Expected elements: {1}.</target>
+        <target state="translated">Nieoczekiwany element w tym kontekście: {0}. Oczekiwane elementy: {1}.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsdlInstanceValidationDetails">
         <source>Warning: {0} Line {1}, position {2}.</source>
-        <target state="new">Warning: {0} Line {1}, position {2}.</target>
+        <target state="translated">Ostrzeżenie: {0}, wiersz {1}, pozycja {2}.</target>
         <note />
       </trans-unit>
     </body>
