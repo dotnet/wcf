@@ -150,6 +150,7 @@ stages:
             -integrationTest
             -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
             $(_TestArgs)
+            /p:TestJob=Windows
             /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
           displayName: Windows - Run Helix Tests
           env:
@@ -210,6 +211,7 @@ stages:
               --integrationTest
               --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
+              /p:TestJob=Linux
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: Linux - Run Helix Tests
             env:
@@ -220,12 +222,11 @@ stages:
               IsWindowsBuild: false
 
       # Only build and test Unix in PR and CI builds.
-      # - ${{ if eq(variables._RunAsPublic, True) }}:
-      - ${{ if eq(False, True) }}:
+      - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
-            name: Hosted macOS
+            vmImage: windows-latest
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
@@ -254,22 +255,23 @@ stages:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
-          - script: eng/common/cibuild.sh
+          - script: eng\common\cibuild.cmd
               -configuration $(_BuildConfig)
               -preparemachine
               $(_TestArgs)
               /p:Test=false
-            displayName: Unix Build
-          - script: eng/common/build.sh
-              --configuration $(_BuildConfig)
-              --prepareMachine
-              --ci
-              --test
-              --integrationTest
-              --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
+            displayName: MacOS Build
+          - powershell: eng\common\build.ps1
+              -configuration $(_BuildConfig)
+              -prepareMachine
+              -ci
+              -test
+              -integrationTest
+              -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
+              /p:TestJob=MacOS
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
-            displayName: Linux - Run Helix Tests
+            displayName: MacOS - Run Helix Tests
             env:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
               ServiceHost: $(_serviceUri)

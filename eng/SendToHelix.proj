@@ -19,18 +19,18 @@
     <XUnitProject Include="..\src\System.ServiceModel.*\tests\*.Tests.csproj"/>
   </ItemGroup>
 
-  <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsPublic)' == 'true'" >
+  <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsPublic)' == 'true'" >
     <HelixTargetQueue Include="Windows.10.Amd64.ClientRS5.Open" />
     <HelixTargetQueue Include="Windows.10.Amd64.ServerRS5.Open" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(IsWindowsBuild) AND '$(RunAsInternal)'" >
+  <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="Windows.10.Amd64" />
     <HelixTargetQueue Include="Debian.9.Amd64" />
     <HelixTargetQueue Include="RedHat.7.Amd64" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(AGENT_OS)' == 'Linux'" >
+  <ItemGroup Condition="'$(TestJob)' == 'Linux'" >
     <HelixTargetQueue Include="Centos.7.Amd64.Open" />
     <HelixTargetQueue Include="Debian.9.Amd64.Open" />
     <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
@@ -38,7 +38,7 @@
     <HelixTargetQueue Include="Ubuntu.1804.Amd64.Open" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(AGENT_OS)' == 'Darwin'" >
+  <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >
     <HelixTargetQueue Include="OSX.1014.Amd64.Open" />
   </ItemGroup>
 
