@@ -186,6 +186,10 @@ namespace System.IdentityModel.Tokens
         public abstract System.Collections.ObjectModel.ReadOnlyCollection<System.IdentityModel.Tokens.SecurityKey> SecurityKeys { get; }
         public abstract DateTime ValidFrom { get; }
         public abstract DateTime ValidTo { get; }
+        public virtual bool CanCreateKeyIdentifierClause<T>() where T : SecurityKeyIdentifierClause => default;
+        public virtual T CreateKeyIdentifierClause<T>() where T : SecurityKeyIdentifierClause => default;
+        public virtual bool MatchesKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause) => default;
+        public virtual SecurityKey ResolveKeyIdentifierClause(SecurityKeyIdentifierClause keyIdentifierClause) => default;
     }
     public abstract partial class SymmetricSecurityKey : SecurityKey
     {
