@@ -4,6 +4,7 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
+[assembly:System.Runtime.CompilerServices.TypeForwardedToAttribute(typeof(System.ServiceModel.InstanceContext))]
 
 namespace System.ServiceModel
 {
