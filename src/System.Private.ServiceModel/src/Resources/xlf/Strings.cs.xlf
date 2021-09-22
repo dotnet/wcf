@@ -3227,6 +3227,11 @@
         <target state="translated">Hodnota NONE elementu WS-Addressing není platná pro verzi elementu WS-Addressing ze srpna 2004.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxNullReplyFromExtension2">
+        <source>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</source>
+        <target state="new">Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxNullReplyFromFormatter2">
         <source>Formatter {0} returned a null reply message for call to operation '{1}'.</source>
         <target state="translated">Formátovací modul {0} vrátil zprávu odpovědi s hodnotou NULL pro volání do operace {1}.</target>

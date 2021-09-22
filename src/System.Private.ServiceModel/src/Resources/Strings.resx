@@ -3000,4 +3000,7 @@
   <data name="SFxActionMismatch" xml:space="preserve">
     <value>Cannot create a typed message due to action mismatch, expecting {0} encountered {1}</value>
   </data>
+  <data name="SFxNullReplyFromExtension2" xml:space="preserve">
+    <value>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</value>
+  </data>
 </root>
