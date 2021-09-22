@@ -202,38 +202,4 @@ public static class ContractDescriptionTest
         Assert.Equal(typeof(IDescriptionTestsService).Name, contractDescription.ContractType.Name);
         Assert.Equal("http://tempuri.org/", contractDescription.Namespace);
     }
-
-    [WcfFact]
-    public static void ContractDescription_GetContractCaching()
-    {
-        // Ensure cache is empty from previous tests
-        FullGCTwice();
-        // Need to run in separate method otherwise a reference stays on the stack and
-        // the instances aren't GC'd.
-        int hashCode = VerifyCachingAndReturnHashCode();
-        FullGCTwice();
-        var contractDescription = GetContractDescription<IWcfService>();
-        Assert.NotEqual(hashCode, contractDescription.GetHashCode());
-    }
-
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    private static int VerifyCachingAndReturnHashCode()
-    {
-        ContractDescription contractDescription = GetContractDescription<IWcfService>();
-        ContractDescription contractDescription2 = GetContractDescription<IWcfService>();
-        Assert.Equal(contractDescription, contractDescription2);
-        return contractDescription.GetHashCode();
-    }
-
-    private static ContractDescription GetContractDescription<T>()
-    {
-        var factory = new ChannelFactory<T>(new BasicHttpBinding(), new EndpointAddress("http://nowhere"));
-        return factory.Endpoint.Contract;
-    }
-
-    private static void FullGCTwice()
-    {
-        GC.Collect(2);
-        GC.Collect(2);
-    }
 }

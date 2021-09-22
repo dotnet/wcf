@@ -999,7 +999,7 @@ namespace System.ServiceModel.Channels
             {
                 bool fault = false;
 
-                using (await ThisLock.TakeLockAsync())
+                await using (await ThisLock.TakeLockAsync())
                 {
                     if (ValidateOpened())
                     {
@@ -1448,7 +1448,7 @@ namespace System.ServiceModel.Channels
 
             public async Task StartSynchronizingAsync()
             {
-                using (await ThisLock.TakeLockAsync())
+                await using (await ThisLock.TakeLockAsync())
                 {
                     if (_state == State.Created)
                     {
