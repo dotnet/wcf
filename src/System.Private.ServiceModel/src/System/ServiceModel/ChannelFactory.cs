@@ -546,7 +546,7 @@ namespace System.ServiceModel
 
         protected override ServiceEndpoint CreateDescription()
         {
-            ContractDescription contractDescription = TypeLoader.LoadCachedContractDescription(_channelType);
+            ContractDescription contractDescription = TypeLoader.LoadContractDescription(_channelType);
 
             ServiceEndpoint endpoint = new ServiceEndpoint(contractDescription);
             ReflectOnCallbackInstance(endpoint);
