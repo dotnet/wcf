@@ -62,6 +62,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     {
                         s_bindingValidationErrors.Add(string.Format(SR.BindingMessageEncodingNotSupportedFormat, wsHttpBinding.MessageEncoding, WSMessageEncoding.Text));
                     }
+                    if (wsHttpBinding.Security.Mode == SecurityMode.Message)
+                    {
+                        s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", wsHttpBinding.Security.Mode));
+                    }
                 }
                 else
                 {
@@ -76,6 +80,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         {
                             s_bindingValidationErrors.Add(SR.BindingTransactionFlowNotSupported);
                         }
+                        if (netTcpBinding.Security.Mode == SecurityMode.Message)
+                        {
+                            s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", netTcpBinding.Security.Mode));
+                        }
                     }
                     else
                     {
@@ -83,6 +91,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         if (netHttpBinding != null && netHttpBinding.ReliableSession.Enabled)
                         {
                             s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
+                        }
+                        if (netHttpBinding != null && netHttpBinding.Security.Mode == BasicHttpSecurityMode.Message)
+                        {
+                            s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", netHttpBinding.Security.Mode));
                         }
                     }
                 }
