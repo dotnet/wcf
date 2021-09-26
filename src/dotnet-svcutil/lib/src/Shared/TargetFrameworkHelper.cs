@@ -63,7 +63,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 ProjectDependency.FromPackage("System.ServiceModel.Http", "4.8.*"    ),
                 ProjectDependency.FromPackage("System.ServiceModel.NetTcp", "4.8.*"  ),
                 ProjectDependency.FromPackage("System.ServiceModel.Security", "4.8.*"),
-                ProjectDependency.FromPackage("System.ServiceModel.Federation", "4.8.*"),
             } }
         };
 

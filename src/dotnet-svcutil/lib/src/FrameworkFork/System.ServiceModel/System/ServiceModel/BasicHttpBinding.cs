@@ -16,8 +16,7 @@ namespace System.ServiceModel
         public BasicHttpBinding(BasicHttpSecurityMode securityMode)
             : base()
         {
-            if (securityMode == BasicHttpSecurityMode.Message ||
-                securityMode == BasicHttpSecurityMode.TransportWithMessageCredential)
+            if (securityMode == BasicHttpSecurityMode.Message)
             {
                 throw ExceptionHelper.PlatformNotSupported(string.Format(SRServiceModel.UnsupportedSecuritySetting, "securityMode", securityMode));
             }
