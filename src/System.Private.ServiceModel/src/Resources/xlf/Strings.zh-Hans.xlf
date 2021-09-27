@@ -3229,7 +3229,7 @@
       </trans-unit>
       <trans-unit id="SFxNullReplyFromExtension2">
         <source>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</source>
-        <target state="new">Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</target>
+        <target state="translated">扩展 {0} 通过将回复设置为空使得对操作“{1}”的调用无法回复。</target>
         <note />
       </trans-unit>
       <trans-unit id="SFxNullReplyFromFormatter2">
