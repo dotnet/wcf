@@ -308,12 +308,98 @@ namespace System.ServiceModel.Security
 
         private bool TryImportWsspSignedSupportingTokensAssertion(MetadataImporter importer, PolicyConversionContext policyContext, ICollection<XmlElement> assertions, Collection<SecurityTokenParameters> signed, Collection<SecurityTokenParameters> optionalSigned, out XmlElement assertion)
         {
-            throw new NotImplementedException();
+            if (signed == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("signed");
+            }
+            if (optionalSigned == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("optionalSigned");
+            }
+
+            bool result = true;
+
+            Collection<Collection<XmlElement>> alternatives;
+
+            if (TryImportWsspAssertion(assertions, SignedSupportingTokensName, out assertion)
+                && TryGetNestedPolicyAlternatives(importer, assertion, out alternatives))
+            {
+                foreach (Collection<XmlElement> alternative in alternatives)
+                {
+                    SecurityTokenParameters parameters;
+                    bool isOptional;
+                    while (alternative.Count > 0 && TryImportTokenAssertion(importer, policyContext, alternative, out parameters, out isOptional))
+                    {
+                        if (isOptional)
+                        {
+                            optionalSigned.Add(parameters);
+                        }
+                        else
+                        {
+                            signed.Add(parameters);
+                        }
+                    }
+                    if (alternative.Count == 0)
+                    {
+                        result = true;
+                        break;
+                    }
+                    else
+                    {
+                        result = false;
+                    }
+                }
+            }
+
+            return result;
         }
 
         private bool TryImportWsspSignedEncryptedSupportingTokensAssertion(MetadataImporter importer, PolicyConversionContext policyContext, ICollection<XmlElement> assertions, Collection<SecurityTokenParameters> signedEncrypted, Collection<SecurityTokenParameters> optionalSignedEncrypted, out XmlElement assertion)
         {
-            throw new NotImplementedException();
+            if (signedEncrypted == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("signedEncrypted");
+            }
+            if (optionalSignedEncrypted == null)
+            {
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("optionalSignedEncrypted");
+            }
+
+            bool result = true;
+
+            Collection<Collection<XmlElement>> alternatives;
+
+            if (TryImportWsspAssertion(assertions, SignedEncryptedSupportingTokensName, out assertion)
+                && TryGetNestedPolicyAlternatives(importer, assertion, out alternatives))
+            {
+                foreach (Collection<XmlElement> alternative in alternatives)
+                {
+                    SecurityTokenParameters parameters;
+                    bool isOptional;
+                    while (alternative.Count > 0 && TryImportTokenAssertion(importer, policyContext, alternative, out parameters, out isOptional))
+                    {
+                        if (isOptional)
+                        {
+                            optionalSignedEncrypted.Add(parameters);
+                        }
+                        else
+                        {
+                            signedEncrypted.Add(parameters);
+                        }
+                    }
+                    if (alternative.Count == 0)
+                    {
+                        result = true;
+                        break;
+                    }
+                    else
+                    {
+                        result = false;
+                    }
+                }
+            }
+
+            return result;
         }
 
         public override XmlElement CreateWsspTrustAssertion(MetadataExporter exporter, SecurityKeyEntropyMode keyEntropyMode)
