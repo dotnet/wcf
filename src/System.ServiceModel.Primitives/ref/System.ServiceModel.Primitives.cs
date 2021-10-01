@@ -1468,6 +1468,25 @@ namespace System.ServiceModel.Channels
         public override int GetHashCode() { return default; }
         public override string ToString() { return default; }
     }
+    public sealed class MtomMessageEncodingBindingElement : MessageEncodingBindingElement
+    {
+        public MtomMessageEncodingBindingElement() { }
+        public MtomMessageEncodingBindingElement(MessageVersion messageVersion, System.Text.Encoding writeEncoding) { }
+        [System.ComponentModel.DefaultValueAttribute(64)]
+        public int MaxReadPoolSize { get; set; }
+        [System.ComponentModel.DefaultValueAttribute(16)]
+        public int MaxWritePoolSize { get; set; }
+        public System.Xml.XmlDictionaryReaderQuotas ReaderQuotas { get; set; }
+        [System.ComponentModel.DefaultValueAttribute(65536)]
+        public int MaxBufferSize { get; set; }
+        public System.Text.Encoding WriteEncoding { get; set; }
+        public override MessageVersion MessageVersion { get; set; }
+        public override IChannelFactory<TChannel> BuildChannelFactory<TChannel>(BindingContext context) { return default; }
+        public override bool CanBuildChannelFactory<TChannel>(BindingContext context) { return default; }
+        public override BindingElement Clone() { return default; }
+        public override MessageEncoderFactory CreateMessageEncoderFactory() { return default; }
+        public override T GetProperty<T>(BindingContext context) { return default; }
+    }
     public sealed class ReliableSessionBindingElement : System.ServiceModel.Channels.BindingElement
     {
         public ReliableSessionBindingElement() { }
