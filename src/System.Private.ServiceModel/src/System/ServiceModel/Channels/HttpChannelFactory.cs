@@ -311,7 +311,10 @@ namespace System.ServiceModel.Channels
                 clientHandler.UseDefaultCredentials = false;
                 if (credential == CredentialCache.DefaultCredentials || credential == null)
                 {
-                    clientHandler.UseDefaultCredentials = true;
+                    if (AuthenticationScheme != AuthenticationSchemes.Anonymous)
+                    {
+                        clientHandler.UseDefaultCredentials = true;
+                    }
                 }
                 else
                 {

@@ -96,7 +96,7 @@ namespace System.ServiceModel
             if (_mode == BasicHttpSecurityMode.Message
                 || _mode == BasicHttpSecurityMode.TransportWithMessageCredential)
             {
-                throw ExceptionHelper.PlatformNotSupported();
+                return this._messageSecurity.CreateMessageSecurity(this.Mode == BasicHttpSecurityMode.TransportWithMessageCredential);
             }
 
             return null;

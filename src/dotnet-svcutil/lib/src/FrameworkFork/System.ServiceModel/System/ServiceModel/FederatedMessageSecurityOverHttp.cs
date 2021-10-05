@@ -139,7 +139,10 @@ namespace System.ServiceModel
 
         internal static bool TryCreate(SecurityBindingElement sbe, bool isSecureTransportMode, bool isReliableSession, MessageSecurityVersion version, out FederatedMessageSecurityOverHttp messageSecurity)
         {
-            throw new NotImplementedException();
+            messageSecurity = null;
+
+            //Currently dotnet-svcutil don't support FederationHttpBinding, do nothing here
+            return false;
         }
 
         internal bool InternalShouldSerialize()

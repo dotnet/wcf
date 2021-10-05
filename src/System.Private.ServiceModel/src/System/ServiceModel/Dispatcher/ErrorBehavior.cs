@@ -223,6 +223,11 @@ namespace System.ServiceModel.Dispatcher
             return HandleErrorCommon(error, ref faultInfo);
         }
 
+        internal static bool ShouldRethrowExceptionAsIs(Exception e)
+        {
+            return true;
+        }
+
         internal static bool ShouldRethrowClientSideExceptionAsIs(Exception e)
         {
             return true;

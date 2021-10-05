@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsBuilding)' == 'true'">
-    <ProjectReference Condition="'$(TargetFramework)' != 'net461'" Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Condition="'$(TargetFramework)' != 'net461'" Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj"  Aliases="system_Private_ServiceModel"/>
     <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
   </ItemGroup>
 
@@ -55,5 +55,22 @@
     Explicitly referencing them from here to avoid a security vulnerability in the 4.3.0 version.-->
     <PackageReference Include="System.Net.Security" Version="4.3.1" />
     <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'net6.0'">
+    <SeedTypePreference Include="System.ServiceModel.CallbackBehaviorAttribute">
+      <Aliases>system_Private_ServiceModel</Aliases>
+    </SeedTypePreference>
+    <SeedTypePreference Include="System.ServiceModel.ConcurrencyMode">
+      <Aliases>system_Private_ServiceModel</Aliases>
+    </SeedTypePreference>
+    <SeedTypePreference Include="System.ServiceModel.DuplexChannelFactory`1">
+      <Aliases>system_Private_ServiceModel</Aliases>
+    </SeedTypePreference>
+    <SeedTypePreference Include="System.ServiceModel.DuplexClientBase`1">
+      <Aliases>system_Private_ServiceModel</Aliases>
+    </SeedTypePreference>
+    <SeedTypePreference Include="System.ServiceModel.InstanceContext">
+      <Aliases>system_Private_ServiceModel</Aliases>
+    </SeedTypePreference>
   </ItemGroup>
 </Project>

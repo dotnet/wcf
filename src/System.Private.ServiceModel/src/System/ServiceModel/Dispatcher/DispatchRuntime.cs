@@ -20,6 +20,7 @@ namespace System.ServiceModel.Dispatcher
         private ChannelDispatcher _channelDispatcher;
         private IInstanceProvider _instanceProvider;
         private IInstanceContextProvider _instanceContextProvider;
+        private SynchronizedCollection<IDispatchMessageInspector> _messageInspectors;
         private OperationCollection _operations;
         private ImmutableDispatchRuntime _runtime;
         private SynchronizationContext _synchronizationContext;
@@ -42,6 +43,7 @@ namespace System.ServiceModel.Dispatcher
             _shared = shared;
 
             _operations = new OperationCollection(this);
+            _messageInspectors = NewBehaviorCollection<IDispatchMessageInspector>();
             _synchronizationContext = ThreadBehavior.GetCurrentSynchronizationContext();
             _automaticInputSessionShutdown = true;
 
@@ -155,6 +157,11 @@ namespace System.ServiceModel.Dispatcher
                     _instanceProvider = value;
                 }
             }
+        }
+
+        public SynchronizedCollection<IDispatchMessageInspector> MessageInspectors
+        {
+            get { return _messageInspectors; }
         }
 
         public SynchronizedKeyedCollection<string, DispatchOperation> Operations
