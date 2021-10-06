@@ -56,6 +56,7 @@ namespace System.ServiceModel
         internal BasicHttpsSecurity() { }
         public System.ServiceModel.BasicHttpsSecurityMode Mode { get { return default; } set { } }
         public System.ServiceModel.HttpTransportSecurity Transport { get { return default; } set { } }
+        public System.ServiceModel.BasicHttpMessageSecurity Message { get { return default; } set { } }
     }
      public enum BasicHttpsSecurityMode
     {

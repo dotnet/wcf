@@ -3227,6 +3227,11 @@
         <target state="translated">WS-Addressing "none" 值对 2004 年 8 月版本的 WS-Addressing 无效。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxNullReplyFromExtension2">
+        <source>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</source>
+        <target state="translated">扩展 {0} 通过将回复设置为空使得对操作“{1}”的调用无法回复。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxNullReplyFromFormatter2">
         <source>Formatter {0} returned a null reply message for call to operation '{1}'.</source>
         <target state="translated">格式化程序 {0} 对操作“{1}”的调用返回了空回复消息。</target>

@@ -2,15 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Security;
-using System.Security.Permissions;
 using System.ServiceModel;
 
 namespace System.Xml
@@ -2685,9 +2682,6 @@ namespace System.Xml
             return value != null;
         }
 
-        [Fx.Tag.SecurityNote(Critical = "Calls unsafe code", Safe = "Demands for FullTrust")]
-        [SecuritySafeCritical]
-        [PermissionSet(SecurityAction.Demand, Unrestricted = true)]
         private bool ProcessBuffer(int maxBuffer, ref int remaining)
         {
             unsafe

@@ -3227,6 +3227,11 @@
         <target state="translated">WS-Addressing の値を "なし" にすることは、2004 年 8 月版の WS-Addressing では無効です。</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxNullReplyFromExtension2">
+        <source>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</source>
+        <target state="translated">拡張 {0} は、応答を NULL に設定することで、操作 '{1}' への呼び出しが応答しないようにしています。</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxNullReplyFromFormatter2">
         <source>Formatter {0} returned a null reply message for call to operation '{1}'.</source>
         <target state="translated">フォーマッタ {0} が、操作 '{1}' への呼び出しに対して null の応答メッセージを返しました。</target>

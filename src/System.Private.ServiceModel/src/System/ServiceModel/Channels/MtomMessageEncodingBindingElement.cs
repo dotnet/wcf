@@ -10,12 +10,12 @@ namespace System.ServiceModel.Channels
 {
     public sealed class MtomMessageEncodingBindingElement : MessageEncodingBindingElement
     {
-        int _maxReadPoolSize;
-        int _maxWritePoolSize;
-        XmlDictionaryReaderQuotas _readerQuotas;
-        int _maxBufferSize;
-        Encoding _writeEncoding;
-        MessageVersion _messageVersion;
+        private int _maxReadPoolSize;
+        private int _maxWritePoolSize;
+        private XmlDictionaryReaderQuotas _readerQuotas;
+        private int _maxBufferSize;
+        private Encoding _writeEncoding;
+        private MessageVersion _messageVersion;
 
         public MtomMessageEncodingBindingElement() : this(MessageVersion.Default, TextEncoderDefaults.Encoding) { }
 
@@ -40,7 +40,7 @@ namespace System.ServiceModel.Channels
             _writeEncoding = writeEncoding;
         }
 
-        MtomMessageEncodingBindingElement(MtomMessageEncodingBindingElement elementToBeCloned)
+        private MtomMessageEncodingBindingElement(MtomMessageEncodingBindingElement elementToBeCloned)
             : base(elementToBeCloned)
         {
             _maxReadPoolSize = elementToBeCloned._maxReadPoolSize;

@@ -221,6 +221,46 @@ namespace System.Runtime
             FaultProviderInvoked(TypeName, ExceptionTypeName, "", "");
         }
 
+        public bool MessageInspectorAfterReceiveInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MessageInspectorAfterReceiveInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageDispathMessageInspectorAfterReceiveInvoked, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'AfterReceiveReply' on a MessageInspector of type '{0}'.")]
+        public void MessageInspectorAfterReceiveInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageInspectorAfterReceiveInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageInspectorAfterReceiveInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            MessageInspectorAfterReceiveInvoked(TypeName, "", "");
+        }
+
+        public bool MessageInspectorBeforeSendInvokedIsEnabled()
+        {
+            return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
+        }
+
+        [Event(EventIds.MessageInspectorBeforeSendInvoked, Level = EventLevel.Informational, Channel = EventChannel.Analytic, Opcode = Opcodes.DispatchMessageDispathMessageInspectorBeforeSendInvoked, Task = Tasks.DispatchMessage,
+            Keywords = Keywords.Troubleshooting | Keywords.ServiceModel,
+            Message = "The Dispatcher invoked 'BeforeSendRequest' on a MessageInspector of type '{0}'.")]
+        public void MessageInspectorBeforeSendInvoked(string TypeName, string HostReference, string AppDomain)
+        {
+            WriteEvent(EventIds.MessageInspectorBeforeSendInvoked, TypeName, HostReference, AppDomain);
+        }
+
+        [NonEvent]
+        public void MessageInspectorBeforeSendInvoked(EventTraceActivity eventTraceActivity, string TypeName)
+        {
+            SetActivityId(eventTraceActivity);
+            MessageInspectorBeforeSendInvoked(TypeName, "", "");
+        }
+
         public bool ParameterInspectorAfterCallInvokedIsEnabled()
         {
             return base.IsEnabled(EventLevel.Informational, Keywords.Troubleshooting | Keywords.ServiceModel, EventChannel.Analytic);
