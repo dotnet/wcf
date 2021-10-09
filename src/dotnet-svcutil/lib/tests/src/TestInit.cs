@@ -57,6 +57,8 @@ namespace SvcutilTest
             {
                 if (__g_StarterProject == null)
                 {
+                    File.WriteAllText(Path.Combine(g_TestOutputDir, "Directory.Build.props"), "<Project xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\" />");
+                    File.WriteAllText(Path.Combine(g_TestOutputDir, "Directory.Build.targets"), "<Project></Project>");
                     var projectPath = Path.Combine(g_TestOutputDir, "TestStarterProject", "TestStarterProject.csproj");
                     __g_StarterProject = ProjectUtils.GetProject(projectPath, targetFramework: null, forceNew: true, build: false, logger: null);
                 }
