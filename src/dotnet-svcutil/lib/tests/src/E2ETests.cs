@@ -419,6 +419,17 @@ namespace SvcutilTest
 
         [Trait("Category", "Test")]
         [Theory]
+        [InlineData("Duplex.svc", true)]
+        public void WcfRuntimeDuplexCallback(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "DuplexCallback";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
         [InlineData("NetHttp.svc", true)]
         [InlineData("NetHttpWebSockets.svc", true)]
         [InlineData("NetHttps.svc", true)]
