@@ -381,7 +381,7 @@ namespace SvcutilTest
         }
 
         [Trait("Category", "Test")]
-        [Theory]        
+        [Theory]
         [InlineData("BasicHttpsTransSecMessCredsUserName.svc", true)]
         public void WcfRuntimeBasicHttpsTransSecMessCredsUserName(string serviceName, bool expectSuccess)
         {
@@ -403,7 +403,7 @@ namespace SvcutilTest
 
             var uri = $"{g_ServiceUrl}/{serviceName}".Replace("http", "net.tcp");
             this_TestCaseName = testCaseName;
-            TestSvcutil(AppendCommonOptions(uri), expectSuccess);           
+            TestSvcutil(AppendCommonOptions(uri), expectSuccess);
         }
 
         [Trait("Category", "Test")]
@@ -426,6 +426,17 @@ namespace SvcutilTest
         public void WcfRuntimeNetHttpSvcs(string serviceName, bool expectSuccess)
         {
             this_TestCaseName = "WcfRuntimeNetHttpSvcs";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("ReliableSessionService.svc", true)]
+        public void WcfRuntimeReliableSessionSvc(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WcfRuntimeReliableSessionSvc";
             TestFixture();
 
             WcfRuntimeSvcs(serviceName, expectSuccess);

@@ -254,6 +254,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                 }
 
+                if(!handled)
+                {
+                    ReliableSessionBindingElement reliableSessionBE = bindingElement as ReliableSessionBindingElement;
+                    if(reliableSessionBE != null)
+                    {
+                        AddReliableSessionBindingElement(statements, resultVar, reliableSessionBE);
+                        handled = true;
+                    }
+                }
+
                 if (!handled)
                 {
                     SslStreamSecurityBindingElement sslStreamSE = bindingElement as SslStreamSecurityBindingElement;
@@ -588,6 +598,106 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     bindingElementRef));
         }
 
+        private static void AddReliableSessionBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, ReliableSessionBindingElement bindingElement)
+        {
+            ReliableSessionBindingElement defaultBindingElement = new ReliableSessionBindingElement();
+            CodeVariableDeclarationStatement reliableBindingElement = new CodeVariableDeclarationStatement(
+                typeof(ReliableSessionBindingElement),
+                "reliableBindingElement",
+                new CodeObjectCreateExpression(typeof(ReliableSessionBindingElement)));
+            statements.Add(reliableBindingElement);
+            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(reliableBindingElement.Name);
+            if (defaultBindingElement.Ordered != bindingElement.Ordered)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "Ordered"),
+                        new CodePrimitiveExpression(bindingElement.Ordered)));
+            }
+
+            if (defaultBindingElement.AcknowledgementInterval != bindingElement.AcknowledgementInterval)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "AcknowledgementInterval"),
+                        CreateTimeSpanExpression(bindingElement.AcknowledgementInterval)));
+            }
+
+            if (defaultBindingElement.FlowControlEnabled != bindingElement.FlowControlEnabled)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "FlowControlEnabled"),
+                        new CodePrimitiveExpression(bindingElement.FlowControlEnabled)));
+            }
+
+            if (defaultBindingElement.InactivityTimeout != bindingElement.InactivityTimeout)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "InactivityTimeout"),
+                        CreateTimeSpanExpression(bindingElement.InactivityTimeout)));
+            }
+
+            if (defaultBindingElement.MaxPendingChannels != bindingElement.MaxPendingChannels)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "MaxPendingChannels"),
+                        new CodePrimitiveExpression(bindingElement.MaxPendingChannels)));
+            }
+
+            if (defaultBindingElement.MaxRetryCount != bindingElement.MaxRetryCount)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "MaxRetryCount"),
+                        new CodePrimitiveExpression(bindingElement.MaxRetryCount)));
+            }
+
+            if (defaultBindingElement.MaxTransferWindowSize != bindingElement.MaxTransferWindowSize)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "MaxTransferWindowSize"),
+                        new CodePrimitiveExpression(bindingElement.MaxTransferWindowSize)));
+            }
+
+            if (defaultBindingElement.ReliableMessagingVersion != bindingElement.ReliableMessagingVersion)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            bindingElementRef,
+                            "ReliableMessagingVersion"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(ReliableMessagingVersion)),
+                            GetReliableMessagingVersionName(bindingElement.ReliableMessagingVersion))));
+            }
+
+            statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodePropertyReferenceExpression(
+                        customBinding,
+                        "Elements"),
+                    "Add",
+                    bindingElementRef));
+        }
+
         private static string GetEncoding(Encoding encoding)
         {
             if (encoding.WebName == Encoding.UTF8.WebName)
@@ -632,6 +742,24 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrMessageVersionNotSupportedFormat, messageVersion));
         }
 
+        private static string GetReliableMessagingVersionName(ReliableMessagingVersion messagingVersion)
+        {
+            if (messagingVersion == ReliableMessagingVersion.Default)
+            {
+                return "Default";
+            }
+            else if (messagingVersion == ReliableMessagingVersion.WSReliableMessaging11)
+            {
+                return "WSReliableMessaging11";
+            }
+            else if (messagingVersion == ReliableMessagingVersion.WSReliableMessagingFebruary2005)
+            {
+                return "WSReliableMessagingFebruary2005";
+            }
+
+            throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrMessageVersionNotSupportedFormat, messagingVersion));
+        }
+
         private static void AddNetTcpBindingConfiguration(CodeStatementCollection statements, NetTcpBinding netTcp)
         {
             const string ResultVarName = "result";
@@ -667,6 +795,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new CodeFieldReferenceExpression(
                             new CodeTypeReferenceExpression(typeof(SecurityMode)),
                             netTcp.Security.Mode.ToString())));
+            }
+
+            if (defaultBinding.ReliableSession.Enabled != netTcp.ReliableSession.Enabled)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                            "Enabled"),
+                        new CodePrimitiveExpression(netTcp.ReliableSession.Enabled)));
             }
 
             if (defaultBinding.Security.Transport.ClientCredentialType != netTcp.Security.Transport.ClientCredentialType)
@@ -849,6 +987,16 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         new CodeFieldReferenceExpression(
                             new CodeTypeReferenceExpression(typeof(BasicHttpSecurityMode)),
                             netHttp.Security.Mode.ToString())));
+            }
+
+            if (defaultBinding.ReliableSession.Enabled != netHttp.ReliableSession.Enabled)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                            "Enabled"),
+                        new CodePrimitiveExpression(netHttp.ReliableSession.Enabled)));
             }
 
             if (defaultBinding.Security.Transport.ClientCredentialType != netHttp.Security.Transport.ClientCredentialType)
