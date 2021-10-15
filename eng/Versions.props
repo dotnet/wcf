@@ -20,9 +20,6 @@
     <UsingToolIbcOptimization>true</UsingToolIbcOptimization>
     <!-- Adds a pkg ref to netfx references in order to resolve desktop refs in our facade projects. -->
     <UsingToolNetFrameworkReferenceAssemblies>true</UsingToolNetFrameworkReferenceAssemblies>
-
-    <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">true</StabilizePackageVersion>
-    <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
   </PropertyGroup>
   <!-- Arcade dependencies -->
   <PropertyGroup>
