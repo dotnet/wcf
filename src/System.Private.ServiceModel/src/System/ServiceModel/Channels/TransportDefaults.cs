@@ -261,7 +261,7 @@ namespace System.ServiceModel.Channels
         internal const bool DecompressionEnabled = true;
         internal const HostNameComparisonMode HostNameComparisonMode = System.ServiceModel.HostNameComparisonMode.StrongWildcard;
         internal const bool KeepAliveEnabled = true;
-        internal const IWebProxy Proxy = null; 
+        internal const IWebProxy Proxy = null;
         internal const Uri ProxyAddress = null;
         internal const AuthenticationSchemes ProxyAuthenticationScheme = AuthenticationSchemes.Anonymous;
         internal const string Realm = "";

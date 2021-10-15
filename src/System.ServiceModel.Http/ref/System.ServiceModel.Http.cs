@@ -123,7 +123,7 @@ namespace System.ServiceModel
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.NetHttpMessageEncoding)(0))]
         public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default; } set { } }
         public System.ServiceModel.BasicHttpSecurity Security { get { return default; } set { } }
-        public System.ServiceModel.OptionalReliableSession ReliableSession { get; set; }
+        public System.ServiceModel.OptionalReliableSession ReliableSession { get { return default; } set { } }
         public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default; } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
         public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
@@ -136,7 +136,7 @@ namespace System.ServiceModel
         [System.ComponentModel.DefaultValueAttribute((System.ServiceModel.NetHttpMessageEncoding)(0))]
         public System.ServiceModel.NetHttpMessageEncoding MessageEncoding { get { return default; } set { } }
         public System.ServiceModel.BasicHttpsSecurity Security { get { return default; } set { } }
-        public System.ServiceModel.OptionalReliableSession ReliableSession { get; set; }
+        public System.ServiceModel.OptionalReliableSession ReliableSession { get { return default; } set { } }
         public System.ServiceModel.Channels.WebSocketTransportSettings WebSocketSettings { get { return default; } }
         public override System.ServiceModel.Channels.IChannelFactory<TChannel> BuildChannelFactory<TChannel>(System.ServiceModel.Channels.BindingParameterCollection parameters) { return default; }
         public override System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() { return default; }
@@ -255,7 +255,9 @@ namespace System.ServiceModel.Channels
         public System.Net.AuthenticationSchemes AuthenticationScheme { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(false)]
         public bool BypassProxyOnLocal { get { return default; } set { } }
-        public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get; set; }
+        [System.ComponentModel.DefaultValue(true)]
+        public bool DecompressionEnabled { get { return default; } set { } }
+        public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get { return default; } set { } }
         [System.ComponentModel.DefaultValueAttribute(65536)]
         public int MaxBufferSize { get { return default; } set { } }
         [System.ComponentModel.DefaultValue(null)]
