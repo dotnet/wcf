@@ -3,7 +3,7 @@
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
     <ProductVersion>3.3.0</ProductVersion>
-    <MajorVersion>4</MajorVersion> 
+    <MajorVersion>4</MajorVersion>
     <MinorVersion>9</MinorVersion>
     <WcfAssemblyVersion>4.9.0.0</WcfAssemblyVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
