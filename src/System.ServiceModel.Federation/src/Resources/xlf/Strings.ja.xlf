@@ -2,6 +2,16 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
   <file datatype="xml" source-language="en" target-language="ja" original="../Strings.resx">
     <body>
+      <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
+        <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
+        <target state="new">Bearer key scenarios should not include a proof token or issuer entropy in the response.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
+        <source>ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</source>
+        <target state="new">ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
         <source>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</source>
         <target state="translated">通信オブジェクト {0} は {1} 状態です。通信オブジェクトは、Opened 状態でないと通信に使用できません。</target>
@@ -12,6 +22,51 @@
         <target state="translated">通信オブジェクト {0} は、状態が Faulted であるため通信に使用できません。</target>
         <note />
       </trans-unit>
+      <trans-unit id="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes">
+        <source>Computed key proof tokens are only supported with symmetric key types.</source>
+        <target state="new">Computed key proof tokens are only supported with symmetric key types.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy">
+        <source>Computed key proof tokens require issuer to supply key material via entropy.</source>
+        <target state="new">Computed key proof tokens require issuer to supply key material via entropy.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy">
+        <source>Computed key proof tokens require requester to supply key material via entropy.</source>
+        <target state="new">Computed key proof tokens require requester to supply key material via entropy.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="EncryptedKeysForProofTokensNotSupported">
+        <source>Encrypted keys for proof tokens are not supported.</source>
+        <target state="new">Encrypted keys for proof tokens are not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="NoKeySizeProvided">
+        <source>No key size provided.</source>
+        <target state="new">No key size provided.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="OnlyPSHA1ComputedKeysAreSupported">
+        <source>Only PSHA1 computed keys are supported.</source>
+        <target state="new">Only PSHA1 computed keys are supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ProtectedKeyEntropyIsNotSupported">
+        <source>Protected key entropy is not supported.</source>
+        <target state="new">Protected key entropy is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy">
+        <source>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</source>
+        <target state="new">An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="RequestTypeNotSupported">
+        <source>The RequestType '{0}', is not supported.</source>
+        <target state="new">The RequestType '{0}', is not supported.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
         <source>Server '{0}' sent back a fault indicating it is in the process of shutting down. Please see the inner exception for fault details.</source>
         <target state="translated">サーバー '{0}' は、シャットダウンの処理中であることを示すフォールトを返信しました。詳細については、内部例外を参照してください。</target>
@@ -20,6 +75,21 @@
       <trans-unit id="SecurityServerTooBusy">
         <source>Server '{0}' sent back a fault indicating it is too busy to process the request. Please retry later. Please see the inner exception for fault details.</source>
         <target state="translated">サーバー '{0}' は、ビジー状態のため要求を処理できないことを示すフォールトを送り返しました。後で再試行してください。フォールトの詳細については、内部例外を参照してください。</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="TokenProviderUnableToGetToken">
+        <source>The token provider '{0}' was unable to provide a security token.</source>
+        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseKeysAreNotSupported">
+        <source>UseKeys are not supported</source>
+        <target state="new">UseKeys are not supported</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="WsTrustVersionNotSupported">
+        <source>The WsTrust wersion '{0}' is not supported.</source>
+        <target state="new">The WsTrust wersion '{0}' is not supported.</target>
         <note />
       </trans-unit>
     </body>
