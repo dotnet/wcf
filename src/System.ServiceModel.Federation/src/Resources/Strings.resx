@@ -129,4 +129,46 @@
   <data name="CommunicationObjectCannotBeUsed" xml:space="preserve">
     <value>The communication object, {0}, is in the {1} state.  Communication objects cannot be used for communication unless they are in the Opened state.</value>
   </data>
+  <data name="RequestTypeNotSupported" xml:space="preserve">
+    <value>The RequestType '{0}', is not supported.</value>
+  </data>
+  <data name="TokenProviderUnableToGetToken" xml:space="preserve">
+    <value>The token provider '{0}' was unable to provide a security token.</value>
+  </data>
+  <data name="UseKeysAreNotSupported" xml:space="preserve">
+    <value>UseKeys are not supported</value>
+  </data>
+  <data name="WsTrustVersionNotSupported" xml:space="preserve">
+    <value>The WsTrust wersion '{0}' is not supported.</value>
+  </data>
+  <data name="ChannelFactoryMustSupportIRequestChannel" xml:space="preserve">
+    <value>ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</value>
+  </data>
+  <data name="BearerKeyShouldNotIincludeAProofToken" xml:space="preserve">
+    <value>Bearer key scenarios should not include a proof token or issuer entropy in the response.</value>
+  </data>
+  <data name="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes" xml:space="preserve">
+    <value>Computed key proof tokens are only supported with symmetric key types.</value>
+  </data>
+  <data name="ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy" xml:space="preserve">
+    <value>Computed key proof tokens require issuer to supply key material via entropy.</value>
+  </data>
+  <data name="ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy" xml:space="preserve">
+    <value>Computed key proof tokens require requester to supply key material via entropy.</value>
+  </data>
+  <data name="EncryptedKeysForProofTokensNotSupported" xml:space="preserve">
+    <value>Encrypted keys for proof tokens are not supported.</value>
+  </data>
+  <data name="NoKeySizeProvided" xml:space="preserve">
+    <value>No key size provided.</value>
+  </data>
+  <data name="OnlyPSHA1ComputedKeysAreSupported" xml:space="preserve">
+    <value>Only PSHA1 computed keys are supported.</value>
+  </data>
+  <data name="ProtectedKeyEntropyIsNotSupported" xml:space="preserve">
+    <value>Protected key entropy is not supported.</value>
+  </data>
+  <data name="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy" xml:space="preserve">
+    <value>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</value>
+  </data>
 </root>
