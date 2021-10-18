@@ -1,6 +1,5 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_IsNet5Compatable>$([MSBuild]::IsTargetFrameworkCompatible('net5.0-windows', 'net5.0'))</_IsNet5Compatable>
     <MyProperty>$(IntermediateOutputPath)</MyProperty>
     <_SerializationAssemblyName>$(AssemblyName).XmlSerializers</_SerializationAssemblyName>
     <_SerializerDllIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).dll</_SerializerDllIntermediateFolder>
@@ -15,7 +14,7 @@
 
   <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
     <ResolvePackageAssets
-      Condition="'$(_IsNet5Compatable)' == 'False'"
+      Condition="'$(TargetFramework)' != 'netstandard2.0'"
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
@@ -27,7 +26,7 @@
     </ResolvePackageAssets>
 
     <ResolvePackageAssets
-      Condition="'$(_IsNet5Compatable)' == 'True'"
+      Condition="'$(TargetFramework)' == 'netstandard2.0'"
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
