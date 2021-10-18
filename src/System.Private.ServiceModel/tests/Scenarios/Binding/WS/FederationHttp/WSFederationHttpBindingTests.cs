@@ -21,7 +21,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
     [OuterLoop]
     [WcfTheory]
     [MemberData(nameof(GetTestVariations))]
-    public static void WSFederationHttpBindingTests_Succeeds(MessageSecurityVersion messageSecurityVersion, SecurityKeyType securityKeyType, bool useSecureConversation, string endpointSuffix)
+    public static void WSFederationHttpBindingTests_Succeeds(MessageSecurityVersion messageSecurityVersion, SecurityKeyType securityKeyType, bool useSecureConversation, string endpointSuffix, WSMessageEncoding encoding)
     {
         Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
         EndpointAddress issuerAddress = null;
@@ -35,7 +35,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             issuerAddress = new EndpointAddress(new Uri(Endpoints.WSFederationAuthorityLocalSTS + endpointSuffix));
-            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2 + endpointSuffix + (useSecureConversation ? "/sc" : string.Empty);
+            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2 + endpointSuffix + (useSecureConversation ? "/sc" : string.Empty) + "/" + Enum.GetName(typeof(WSMessageEncoding), encoding);
             serviceEndpointAddress = new EndpointAddress(new Uri(tokenTargetAddress));
             var issuerBinding = new WSHttpBinding(SecurityMode.Transport);
             issuerBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
@@ -49,6 +49,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
                     TokenType = Saml2Constants.OasisWssSaml2TokenProfile11,
                     MessageSecurityVersion = messageSecurityVersion,
                 });
+            federationBinding.MessageEncoding = encoding;
             federationBinding.Security.Message.EstablishSecurityContext = useSecureConversation;
             factory = new ChannelFactory<IWcfService>(federationBinding, serviceEndpointAddress);
 
@@ -94,7 +95,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             issuerAddress = new EndpointAddress(new Uri(Endpoints.WSFederationAuthorityLocalSTS + "wsHttp/wstrustFeb2005"));
-            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2 + "wsHttp/wstrustFeb2005";
+            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2 + "wsHttp/wstrustFeb2005/Text";
             serviceEndpointAddress = new EndpointAddress(new Uri(tokenTargetAddress));
             var issuerBinding = new WSHttpBinding(SecurityMode.Transport);
             issuerBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
@@ -145,7 +146,7 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
         {
             // *** SETUP *** \\
             issuerAddress = new EndpointAddress(new Uri(Endpoints.WSFederationAuthorityLocalSTS + "wsHttp/wstrust13"));
-            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2 + "wsHttp/wstrust13";
+            tokenTargetAddress = Endpoints.Https_SecModeTransWithMessCred_ClientCredTypeIssuedTokenSaml2 + "wsHttp/wstrust13/Text";
             serviceEndpointAddress = new EndpointAddress(new Uri(tokenTargetAddress));
             var issuerBinding = new WSHttpBinding(SecurityMode.Transport);
             issuerBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
@@ -179,10 +180,14 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
     public static IEnumerable<object[]> GetTestVariations()
     {
         // Equivalent to WS2007FederationHttpBinding
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13" };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13" };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13", WSMessageEncoding.Text };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13", WSMessageEncoding.Text };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13", WSMessageEncoding.Mtom };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13", WSMessageEncoding.Mtom };
         // Equivalent to WSFederationHttpBinding
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005" };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005" };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005", WSMessageEncoding.Text };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005", WSMessageEncoding.Text };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005", WSMessageEncoding.Mtom };
+        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005", WSMessageEncoding.Mtom };
     }
 }
