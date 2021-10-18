@@ -96,6 +96,7 @@ namespace System.ServiceModel.Channels
             }
 
             AuthenticationScheme = bindingElement.AuthenticationScheme;
+            DecompressionEnabled = bindingElement.DecompressionEnabled;
             MaxBufferSize = bindingElement.MaxBufferSize;
             TransferMode = bindingElement.TransferMode;
             _keepAliveEnabled = bindingElement.KeepAliveEnabled;
@@ -141,6 +142,8 @@ namespace System.ServiceModel.Channels
         public bool AllowCookies { get; }
 
         public AuthenticationSchemes AuthenticationScheme { get; }
+
+        public bool DecompressionEnabled { get; }
 
         public virtual bool IsChannelBindingSupportEnabled
         {
@@ -283,7 +286,14 @@ namespace System.ServiceModel.Channels
             if (!foundHttpClient)
             {
                 var clientHandler = GetHttpClientHandler(to, clientCertificateToken);
-                clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                if (DecompressionEnabled)
+                {
+                    clientHandler.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                }
+                else
+                {
+                    clientHandler.AutomaticDecompression = DecompressionMethods.None;
+                }
 
                 if (clientHandler.SupportsProxy)
                 {
@@ -311,7 +321,10 @@ namespace System.ServiceModel.Channels
                 clientHandler.UseDefaultCredentials = false;
                 if (credential == CredentialCache.DefaultCredentials || credential == null)
                 {
-                    clientHandler.UseDefaultCredentials = true;
+                    if (AuthenticationScheme != AuthenticationSchemes.Anonymous)
+                    {
+                        clientHandler.UseDefaultCredentials = true;
+                    }
                 }
                 else
                 {

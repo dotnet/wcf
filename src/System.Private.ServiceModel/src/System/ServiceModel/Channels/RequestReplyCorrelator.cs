@@ -3,8 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections;
 using System.Runtime;
 using System.ServiceModel.Diagnostics;
 using System.Xml;
@@ -13,11 +12,11 @@ namespace System.ServiceModel.Channels
 {
     internal class RequestReplyCorrelator : IRequestReplyCorrelator
     {
-        private Dictionary<Key, object> _states;
+        private Hashtable _states;
 
         internal RequestReplyCorrelator()
         {
-            _states = new Dictionary<Key, object>();
+            _states = new Hashtable();
         }
 
         void IRequestReplyCorrelator.Add<T>(Message request, T state)
@@ -45,13 +44,12 @@ namespace System.ServiceModel.Channels
             UniqueId relatesTo = GetRelatesTo(reply);
             Type stateType = typeof(T);
             Key key = new Key(relatesTo, stateType);
-            T value;
+            T value = (T)_states[key];
 
-            lock (_states)
+            if (remove)
             {
-                value = (T)_states[key];
-
-                if (remove)
+                // With HashTable, only need to lock when modifying
+                lock (_states)
                 {
                     _states.Remove(key);
                 }
@@ -259,7 +257,6 @@ namespace System.ServiceModel.Channels
                 return other.MessageId == MessageId && other.StateType == StateType;
             }
 
-            [SuppressMessage(FxCop.Category.Usage, "CA2303:FlagTypeGetHashCode", Justification = "The hashcode is not used for identity purposes for embedded types.")]
             public override int GetHashCode()
             {
                 return MessageId.GetHashCode() ^ StateType.GetHashCode();

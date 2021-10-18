@@ -382,6 +382,54 @@ namespace SvcutilTest
 
         [Trait("Category", "Test")]
         [Theory]
+        [InlineData("BasicHttpsTransSecMessCredsUserName.svc", true)]
+        public void WcfRuntimeBasicHttpsTransSecMessCredsUserName(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WcfRuntimeBasicHttpsTransSecMessCredsUserName";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("TcpTransSecMessCredsUserName.svc", true)]
+        public void WcfRuntimeNettcpTransSecMessCredsUserName(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WcfRuntimeNettcpTransSecMessCredsUserName";
+            TestFixture();
+            var testCaseName = serviceName.Replace(".svc", "");
+            InitializeE2E(testCaseName);
+
+            var uri = $"{g_ServiceUrl}/{serviceName}".Replace("http", "net.tcp");
+            this_TestCaseName = testCaseName;
+            TestSvcutil(AppendCommonOptions(uri), expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("HttpsTransSecMessCredsUserName.svc", true)]
+        public void WsHttpBindingAndws2007HttpBindingTransSecMessCredsUserName(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WsHttpBindingAndws2007HttpBindingTransSecMessCredsUserName";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("Duplex.svc", true)]
+        public void WcfRuntimeDuplexCallback(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "DuplexCallback";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
         [InlineData("NetHttp.svc", true)]
         [InlineData("NetHttpWebSockets.svc", true)]
         [InlineData("NetHttps.svc", true)]
@@ -389,6 +437,17 @@ namespace SvcutilTest
         public void WcfRuntimeNetHttpSvcs(string serviceName, bool expectSuccess)
         {
             this_TestCaseName = "WcfRuntimeNetHttpSvcs";
+            TestFixture();
+
+            WcfRuntimeSvcs(serviceName, expectSuccess);
+        }
+
+        [Trait("Category", "Test")]
+        [Theory]
+        [InlineData("ReliableSessionService.svc", true)]
+        public void WcfRuntimeReliableSessionSvc(string serviceName, bool expectSuccess)
+        {
+            this_TestCaseName = "WcfRuntimeReliableSessionSvc";
             TestFixture();
 
             WcfRuntimeSvcs(serviceName, expectSuccess);

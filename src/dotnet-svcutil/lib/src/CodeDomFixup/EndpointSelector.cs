@@ -50,17 +50,13 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 WSHttpBinding wsHttpBinding = binding as WSHttpBinding;
                 if (wsHttpBinding != null)
                 {
-                    if (wsHttpBinding.ReliableSession.Enabled)
-                    {
-                        s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
-                    }
                     if (wsHttpBinding.TransactionFlow)
                     {
                         s_bindingValidationErrors.Add(SR.BindingTransactionFlowNotSupported);
                     }
-                    if (wsHttpBinding.MessageEncoding != WSMessageEncoding.Text)
+                    if (wsHttpBinding.Security.Mode == SecurityMode.Message)
                     {
-                        s_bindingValidationErrors.Add(string.Format(SR.BindingMessageEncodingNotSupportedFormat, wsHttpBinding.MessageEncoding, WSMessageEncoding.Text));
+                        s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", wsHttpBinding.Security.Mode));
                     }
                 }
                 else
@@ -68,21 +64,32 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     NetTcpBinding netTcpBinding = binding as NetTcpBinding;
                     if (netTcpBinding != null)
                     {
-                        if (netTcpBinding.ReliableSession.Enabled)
-                        {
-                            s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
-                        }
                         if (netTcpBinding.TransactionFlow)
                         {
                             s_bindingValidationErrors.Add(SR.BindingTransactionFlowNotSupported);
+                        }
+                        if (netTcpBinding.Security.Mode == SecurityMode.Message)
+                        {
+                            s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", netTcpBinding.Security.Mode));
                         }
                     }
                     else
                     {
                         NetHttpBinding netHttpBinding = binding as NetHttpBinding;
-                        if (netHttpBinding != null && netHttpBinding.ReliableSession.Enabled)
+                        if (netHttpBinding != null)
                         {
-                            s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
+                            if (netHttpBinding.Security.Mode == BasicHttpSecurityMode.Message)
+                            {
+                                s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", netHttpBinding.Security.Mode));
+                            }
+                        }
+                        else
+                        {
+                            BasicHttpBinding basicHttpBinding = binding as BasicHttpBinding;
+                            if (basicHttpBinding != null && basicHttpBinding.Security.Mode == BasicHttpSecurityMode.Message)
+                            {
+                                s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", basicHttpBinding.Security.Mode));
+                            }
                         }
                     }
                 }
@@ -154,6 +161,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 {
                     // do nothing
                 }
+                else if (bindingElement is ReliableSessionBindingElement)
+                {
+                    // do nothing
+                }
                 else if (bindingElement is TransactionFlowBindingElement)
                 {
                     if (binding is WSHttpBinding && ((WSHttpBinding)binding).TransactionFlow)
@@ -183,26 +194,15 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 s_bindingValidationErrors.Add(SR.BindingTransportSecurityTokenSignedOrSignedEndorsingNotSupported);
             }
-
-            if (!(transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing.Count != 1 ^
-                  transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted.Count != 1))
-            {
-                s_bindingValidationErrors.Add(SR.BindingTransportSecurityTokenMustBeOneOfEitherEndorsingOrSignedEncrypted);
-            }
             else if (transportSecurityBindingElement.EndpointSupportingTokenParameters.SignedEncrypted.Count == 1)
             {
                 ValidateUserNamePasswordSecurityBindingElement(transportSecurityBindingElement);
             }
-            else //if (transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing.Count == 1)
+            else if (transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing.Count == 1)
             {
                 SecureConversationSecurityTokenParameters endorsingTokenParams = transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing[0] as SecureConversationSecurityTokenParameters;
 
-                if (endorsingTokenParams == null)
-                {
-                    s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityTokenEndorsingParamsTypeFormat,
-                        transportSecurityBindingElement.EndpointSupportingTokenParameters.Endorsing[0].GetType().FullName, typeof(SecureConversationSecurityTokenParameters).FullName));
-                }
-                else
+                if (endorsingTokenParams != null)
                 {
                     if (endorsingTokenParams.RequireDerivedKeys)
                     {
@@ -223,16 +223,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
             }
 
-            if (transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 &&
-                transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10)
-            {
-                string values = string.Format(CultureInfo.InvariantCulture, "'{0}', '{1}'",
-                    MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10,
-                    MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10);
-
-                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportMessageSecurityVersionNotSupportedFormat, transportSecurityBindingElement.MessageSecurityVersion, values));
-            }
-
             if (!transportSecurityBindingElement.IncludeTimestamp)
             {
                 s_bindingValidationErrors.Add(SR.BindingTransportSecurityMustIncludeTimestamp);
@@ -242,17 +232,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityDefaultAlgorithmSuiteNotSupportedFormat,
                     transportSecurityBindingElement.DefaultAlgorithmSuite.GetType().FullName, SecurityAlgorithmSuite.Default.GetType().FullName));
-            }
-
-            if (transportSecurityBindingElement.SecurityHeaderLayout != SecurityHeaderLayout.Strict)
-            {
-                s_bindingValidationErrors.Add(string.Format(SR.BindingTransportSecurityHeaderLayoutValueNotSupportedFormat,
-                            transportSecurityBindingElement.SecurityHeaderLayout, SecurityHeaderLayout.Strict));
-            }
-
-            if (transportSecurityBindingElement.LocalClientSettings.DetectReplays || transportSecurityBindingElement.LocalServiceSettings.DetectReplays)
-            {
-                s_bindingValidationErrors.Add(SR.BindingTransportDetectReplaysNotSupported);
             }
         }
 

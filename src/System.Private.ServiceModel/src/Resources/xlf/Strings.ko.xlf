@@ -3227,6 +3227,11 @@
         <target state="translated">WS-Addressing "none" 값이 2004년 8월 버전의 WS-Addressing에 올바르지 않습니다.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxNullReplyFromExtension2">
+        <source>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</source>
+        <target state="translated">{0} 확장 때문에 회신을 null로 설정하여 '{1}' 작업에 대한 호출에 회신할 수 없습니다.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxNullReplyFromFormatter2">
         <source>Formatter {0} returned a null reply message for call to operation '{1}'.</source>
         <target state="translated">{0} 포맷터가 '{1}' 작업의 호출에 대해 null 회신 메시지를 반환했습니다.</target>

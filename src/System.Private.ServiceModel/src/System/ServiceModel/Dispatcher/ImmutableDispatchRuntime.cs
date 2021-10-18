@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System.Collections.Specialized;
 using System.Runtime;
 using System.Runtime.Diagnostics;
@@ -13,10 +12,11 @@ namespace System.ServiceModel.Dispatcher
 {
     internal class ImmutableDispatchRuntime
     {
-        readonly private ConcurrencyBehavior _concurrency;
-        readonly private IDemuxer _demuxer;
-        readonly private ErrorBehavior _error;
+        private readonly ConcurrencyBehavior _concurrency;
+        private readonly IDemuxer _demuxer;
+        private readonly ErrorBehavior _error;
         private InstanceBehavior _instance;
+        private readonly IDispatchMessageInspector[] _messageInspectors;
         private readonly TerminatingOperationBehavior _terminate;
         private readonly ThreadBehavior _thread;
         private readonly bool _sendAsynchronously;
@@ -45,6 +45,7 @@ namespace System.ServiceModel.Dispatcher
             EnableFaults = dispatch.EnableFaults;
             _instance = new InstanceBehavior(dispatch, this);
             ManualAddressing = dispatch.ManualAddressing;
+            _messageInspectors = EmptyArray<IDispatchMessageInspector>.ToArray(dispatch.MessageInspectors);
             _terminate = TerminatingOperationBehavior.CreateIfNecessary(dispatch);
             _thread = new ThreadBehavior(dispatch);
             _sendAsynchronously = dispatch.ChannelDispatcher.SendAsynchronously;
@@ -87,9 +88,93 @@ namespace System.ServiceModel.Dispatcher
 
         internal bool ValidateMustUnderstand { get; }
 
+        internal int MessageInspectorCorrelationOffset => 0;
+
         internal void AfterReceiveRequest(ref MessageRpc rpc)
         {
-            // IDispatchMessageInspector would normally be called here. That interface isn't in contract.
+            if (_messageInspectors.Length > 0)
+            {
+                AfterReceiveRequestCore(ref rpc);
+            }
+        }
+
+        internal void AfterReceiveRequestCore(ref MessageRpc rpc)
+        {
+            int offset = MessageInspectorCorrelationOffset;
+            try
+            {
+                for (int i = 0; i < _messageInspectors.Length; i++)
+                {
+                    rpc.Correlation[offset + i] = _messageInspectors[i].AfterReceiveRequest(ref rpc.Request, (IClientChannel)rpc.Channel.Proxy, rpc.InstanceContext);
+                    if (WcfEventSource.Instance.MessageInspectorAfterReceiveInvokedIsEnabled())
+                    {
+                        WcfEventSource.Instance.MessageInspectorAfterReceiveInvoked(rpc.EventTraceActivity, _messageInspectors[i].GetType().FullName);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (Fx.IsFatal(e))
+                {
+                    throw;
+                }
+                if (ErrorBehavior.ShouldRethrowExceptionAsIs(e))
+                {
+                    throw;
+                }
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(e);
+            }
+        }
+
+        void BeforeSendReply(ref MessageRpc rpc, ref Exception exception, ref bool thereIsAnUnhandledException)
+        {
+            if (_messageInspectors.Length > 0)
+            {
+                BeforeSendReplyCore(ref rpc, ref exception, ref thereIsAnUnhandledException);
+            }
+        }
+
+        internal void BeforeSendReplyCore(ref MessageRpc rpc, ref Exception exception, ref bool thereIsAnUnhandledException)
+        {
+            int offset = MessageInspectorCorrelationOffset;
+            for (int i = 0; i < _messageInspectors.Length; i++)
+            {
+                try
+                {
+                    Message originalReply = rpc.Reply;
+                    Message reply = originalReply;
+
+                    _messageInspectors[i].BeforeSendReply(ref reply, rpc.Correlation[offset + i]);
+                    if (WcfEventSource.Instance.MessageInspectorBeforeSendInvokedIsEnabled())
+                    {
+                        WcfEventSource.Instance.MessageInspectorBeforeSendInvoked(rpc.EventTraceActivity, _messageInspectors[i].GetType().FullName);
+                    }
+
+                    if ((reply == null) && (originalReply != null))
+                    {
+                        string message = SR.Format(SR.SFxNullReplyFromExtension2, _messageInspectors[i].GetType().ToString(), (rpc.Operation.Name ?? ""));
+                        ErrorBehavior.ThrowAndCatch(new InvalidOperationException(message));
+                    }
+                    rpc.Reply = reply;
+                }
+                catch (Exception e)
+                {
+                    if (Fx.IsFatal(e))
+                    {
+                        throw;
+                    }
+                    if (!ErrorBehavior.ShouldRethrowExceptionAsIs(e))
+                    {
+                        throw DiagnosticUtility.ExceptionUtility.ThrowHelperCallback(e);
+                    }
+
+                    if (exception == null)
+                    {
+                        exception = e;
+                    }
+                    thereIsAnUnhandledException = (!_error.HandleError(e)) || thereIsAnUnhandledException;
+                }
+            }
         }
 
         private void Reply(ref MessageRpc rpc)
@@ -303,6 +388,8 @@ namespace System.ServiceModel.Dispatcher
                     }
                 }
             }
+
+            BeforeSendReply(ref rpc, ref exception, ref thereIsAnUnhandledException);
 
             if (rpc.Operation.IsOneWay)
             {

@@ -3227,6 +3227,11 @@
         <target state="translated">El valor "none" de WS-Addressing no es válido para la versión de agosto de 2004 de WS-Addressing.</target>
         <note />
       </trans-unit>
+      <trans-unit id="SFxNullReplyFromExtension2">
+        <source>Extension {0} prevented call to operation '{1}' from replying by setting the reply to null.</source>
+        <target state="translated">La extensión {0} impidió que la llamada a la operación '{1}' respondiera estableciendo la respuesta en Null.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="SFxNullReplyFromFormatter2">
         <source>Formatter {0} returned a null reply message for call to operation '{1}'.</source>
         <target state="translated">El formateador {0} devolvió un mensaje de respuesta nulo para la llamada a la operación "{1}".</target>

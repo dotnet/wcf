@@ -93,7 +93,7 @@ namespace System.ServiceModel
 
         internal BindingElement CreateTransportProtectionOnly()
         {
-            throw ExceptionHelper.PlatformNotSupported("TcpTransportSecurity.CreateTransportProtectionOnly is not supported.");
+            return CreateSslBindingElement(false);
         }
 
         internal static bool SetTransportProtectionOnly(BindingElement transport, TcpTransportSecurity transportSecurity)

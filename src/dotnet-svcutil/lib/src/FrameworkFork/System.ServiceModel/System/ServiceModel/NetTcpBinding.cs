@@ -399,9 +399,13 @@ namespace System.ServiceModel
 
         private SecurityBindingElement CreateMessageSecurity()
         {
-            if (_security.Mode == SecurityMode.Message || _security.Mode == SecurityMode.TransportWithMessageCredential)
+            if (_security.Mode == SecurityMode.Message)
             {
-                throw ExceptionHelper.PlatformNotSupported("NetTcpBinding.CreateMessageSecurity is not supported.");
+                throw ExceptionHelper.PlatformNotSupported(nameof(SecurityMode.Message));
+            }
+            if (_security.Mode == SecurityMode.TransportWithMessageCredential)
+            {
+                return _security.CreateMessageSecurity(ReliableSession.Enabled);
             }
             else
             {
