@@ -179,15 +179,14 @@ public class WSFederationHttpBindingTests : ConditionalWcfTest
 
     public static IEnumerable<object[]> GetTestVariations()
     {
-        // Equivalent to WS2007FederationHttpBinding
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13", WSMessageEncoding.Text };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13", WSMessageEncoding.Text };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13", WSMessageEncoding.Mtom };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13", WSMessageEncoding.Mtom };
-        // Equivalent to WSFederationHttpBinding
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005", WSMessageEncoding.Text };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005", WSMessageEncoding.Text };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005", WSMessageEncoding.Mtom };
-        yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005", WSMessageEncoding.Mtom };
+        foreach (WSMessageEncoding messageEncoding in Enum.GetValues(typeof(WSMessageEncoding)))
+        {
+            // Equivalent to WS2007FederationHttpBinding
+            yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrust13", messageEncoding };
+            yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrust13", messageEncoding };
+            // Equivalent to WSFederationHttpBinding
+            yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, false, "wsHttp/wstrustFeb2005", messageEncoding };
+            yield return new object[] { MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10, SecurityKeyType.SymmetricKey, true, "wsHttp/wstrustFeb2005", messageEncoding };
+        }
     }
 }
