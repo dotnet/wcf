@@ -78,13 +78,37 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                 binding,
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
             serviceProxy = factory.CreateChannel();
+#if NET5_0
+            //iis-host service uri
+            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            {
+                // *** EXECUTE *** \\
+                string result = serviceProxy.Echo(testString);
 
+                // *** VALIDATE *** \\
+                Assert.Equal(testString, result);
+            }
+            else //selfhost uri
+            {
+                try
+                {
+                    // *** EXECUTE *** \\
+                    string result = serviceProxy.Echo(testString);
+                    //on net5.0 with non-standard uri port, expect exception thrown
+                    Assert.True(false);
+                }
+                catch (System.ServiceModel.ProtocolException ex)
+                {
+                    Assert.Contains("(400) Bad Request", ex.Message);
+                }
+            }
+#else
             // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
             Assert.Equal(testString, result);
-
+#endif
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
@@ -112,11 +136,11 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string spn = GetSPN().ToLowerInvariant().Replace("host", "HTTP");
 
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
             serviceProxy = factory.CreateChannel();
 
             // *** EXECUTE *** \\
@@ -169,13 +193,37 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             factory.Credentials.Windows.ClientCredential.Password = GetExplicitPassword();
 
             serviceProxy = factory.CreateChannel();
+#if NET5_0
+            //iis-host service uri
+            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            {
+                // *** EXECUTE *** \\
+                string result = serviceProxy.Echo(testString);
 
+                // *** VALIDATE *** \\
+                Assert.Equal(testString, result);
+            }
+            else //selfhost uri
+            {
+                try
+                {
+                    // *** EXECUTE *** \\
+                    string result = serviceProxy.Echo(testString);
+                    //on net5.0 with non-standard uri port, expect exception thrown
+                    Assert.True(false);
+                }
+                catch (System.ServiceModel.ProtocolException ex)
+                {
+                    Assert.Contains("(400) Bad Request", ex.Message);
+                }
+            }
+#else
             // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
             Assert.Equal(testString, result);
-
+#endif
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
@@ -211,10 +259,10 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string spn = GetSPN().ToLowerInvariant().Replace("host", "HTTP");
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
 
             factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
             factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();
