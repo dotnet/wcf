@@ -62,12 +62,12 @@ namespace WcfService
             // If STS endpoint is using WSTrustFeb2005, then need to use WSFederationHttpBinding
             if (contractType == typeof(IWSTrustFeb2005SyncContract))
             {
-                binding = new WSFederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);               
+                binding = new WSFederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);
             }
             // If STS endpoint is using WSTrust1.3, then need to use WS2007FederationHttpBinding
             else if (contractType == typeof(IWSTrust13SyncContract))
             {
-                binding = new WS2007FederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);               
+                binding = new WS2007FederationHttpBinding(WSFederationHttpSecurityMode.TransportWithMessageCredential);
             }
             else
             {
