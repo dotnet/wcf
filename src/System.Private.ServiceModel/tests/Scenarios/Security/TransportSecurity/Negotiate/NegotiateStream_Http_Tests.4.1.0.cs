@@ -79,28 +79,18 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
             serviceProxy = factory.CreateChannel();
 #if NET5_0
-            //iis-host service uri
-            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            // on NET5.0, expect non-standard port (selfhost uri) throw exception on non-windows platform
+            if (!OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            {
+                Assert.Throws<Exception>(() => { string result = serviceProxy.Echo(testString); });
+            }
+            else
             {
                 // *** EXECUTE *** \\
                 string result = serviceProxy.Echo(testString);
 
                 // *** VALIDATE *** \\
                 Assert.Equal(testString, result);
-            }
-            else //selfhost uri
-            {
-                try
-                {
-                    // *** EXECUTE *** \\
-                    string result = serviceProxy.Echo(testString);
-                    //on net5.0 with non-standard uri port, expect exception thrown
-                    Assert.True(false);
-                }
-                catch (System.ServiceModel.ProtocolException ex)
-                {
-                    Assert.Contains("(400) Bad Request", ex.Message);
-                }
             }
 #else
             // *** EXECUTE *** \\
@@ -194,28 +184,18 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
 
             serviceProxy = factory.CreateChannel();
 #if NET5_0
-            //iis-host service uri
-            if (TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            // on NET5.0, expect non-standard port (selfhost uri) throw exception on non-windows platform
+            if (!OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            {
+                Assert.Throws<Exception>(() => { string result = serviceProxy.Echo(testString); });
+            }
+            else
             {
                 // *** EXECUTE *** \\
                 string result = serviceProxy.Echo(testString);
 
                 // *** VALIDATE *** \\
                 Assert.Equal(testString, result);
-            }
-            else //selfhost uri
-            {
-                try
-                {
-                    // *** EXECUTE *** \\
-                    string result = serviceProxy.Echo(testString);
-                    //on net5.0 with non-standard uri port, expect exception thrown
-                    Assert.True(false);
-                }
-                catch (System.ServiceModel.ProtocolException ex)
-                {
-                    Assert.Contains("(400) Bad Request", ex.Message);
-                }
             }
 #else
             // *** EXECUTE *** \\
