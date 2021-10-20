@@ -1542,18 +1542,18 @@ namespace System.ServiceModel.Channels
                 return TryGetChannelAsync(true, true, timeout, maskingMode);
             }
 
-            private Task<(bool success, TChannel channel)> TryGetChannelAsync(bool canGetChannel, bool canCauseFault, TimeSpan timeout,
+            private async Task<(bool success, TChannel channel)> TryGetChannelAsync(bool canGetChannel, bool canCauseFault, TimeSpan timeout,
                 MaskingMode maskingMode)
             {
                 TaskWaiter waiter = null;
                 bool faulted = false;
                 bool getChannel = false;
 
-                lock (ThisLock)
+                await using (await ThisLock.TakeLockAsync())
                 {
                     if (!ThrowIfNecessary(maskingMode))
                     {
-                        return Task.FromResult((true, (TChannel)null));
+                        return (true, (TChannel)null);
                     }
 
                     if (_state == State.ChannelOpened)
@@ -1564,7 +1564,7 @@ namespace System.ServiceModel.Channels
                         }
 
                         _count++;
-                        return Task.FromResult((true, CurrentChannel));
+                        return (true, CurrentChannel);
                     }
 
                     if (!TolerateFaults
@@ -1573,7 +1573,7 @@ namespace System.ServiceModel.Channels
                     {
                         if (!canCauseFault)
                         {
-                            return Task.FromResult((true, (TChannel)null));
+                            return (true, (TChannel)null);
                         }
 
                         faulted = true;
@@ -1604,7 +1604,7 @@ namespace System.ServiceModel.Channels
                 if (faulted)
                 {
                     _binder.Fault(null);
-                    return Task.FromResult((true, (TChannel)null));
+                    return (true, (TChannel)null);
                 }
 
                 if (getChannel)
@@ -1612,7 +1612,7 @@ namespace System.ServiceModel.Channels
                     waiter.GetChannel(true);
                 }
 
-                return waiter.TryWaitAsync();
+                return await waiter.TryWaitAsync();
             }
 
             public void UnblockWaiters()
@@ -1620,7 +1620,7 @@ namespace System.ServiceModel.Channels
                 Queue<IWaiter> temp1;
                 Queue<IWaiter> temp2;
 
-                lock (ThisLock)
+                using (ThisLock.TakeLock())
                 {
                     temp1 = _getChannelQueue;
                     temp2 = _waitQueue;
@@ -1662,9 +1662,9 @@ namespace System.ServiceModel.Channels
                 return (_state != State.Closed) && (_state != State.Faulted);
             }
 
-            public Task WaitForPendingOperationsAsync(TimeSpan timeout)
+            public async Task WaitForPendingOperationsAsync(TimeSpan timeout)
             {
-                lock (ThisLock)
+                await using (await ThisLock.TakeLockAsync())
                 {
                     if (_drainEvent != null)
                     {
@@ -1679,11 +1679,7 @@ namespace System.ServiceModel.Channels
 
                 if (_drainEvent != null)
                 {
-                    return _drainEvent.WaitAsync(timeout);
-                }
-                else
-                {
-                    return Task.CompletedTask;
+                    await _drainEvent.WaitAsync(timeout);
                 }
             }
 
