@@ -82,7 +82,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             // on NET5.0, expect non-standard port (selfhost uri) throw exception on non-windows platform
             if (!OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
             {
-                Assert.Throws<Exception>(() => { string result = serviceProxy.Echo(testString); });
+                Assert.Throws<System.ServiceModel.ProtocolException>(() => { string result = serviceProxy.Echo(testString); });
             }
             else
             {
@@ -183,27 +183,13 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             factory.Credentials.Windows.ClientCredential.Password = GetExplicitPassword();
 
             serviceProxy = factory.CreateChannel();
-#if NET5_0
-            // on NET5.0, expect non-standard port (selfhost uri) throw exception on non-windows platform
-            if (!OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
-            {
-                Assert.Throws<Exception>(() => { string result = serviceProxy.Echo(testString); });
-            }
-            else
-            {
-                // *** EXECUTE *** \\
-                string result = serviceProxy.Echo(testString);
 
-                // *** VALIDATE *** \\
-                Assert.Equal(testString, result);
-            }
-#else
             // *** EXECUTE *** \\
             string result = serviceProxy.Echo(testString);
 
             // *** VALIDATE *** \\
             Assert.Equal(testString, result);
-#endif
+
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
