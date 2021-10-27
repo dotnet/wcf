@@ -25,7 +25,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 if (s_referenceKey == null)
                 {
                     Type namespaceHelper = typeof(ServiceContractGenerator).GetTypeInfo().Assembly.GetType(typeof(ServiceContractGenerator).FullName + "+NamespaceHelper");
-                    FieldInfo referenceKeyField = namespaceHelper.GetField("referenceKey", BindingFlags.NonPublic | BindingFlags.Static);
+                    FieldInfo referenceKeyField = namespaceHelper.GetField("s_referenceKey", BindingFlags.NonPublic | BindingFlags.Static);
                     s_referenceKey = referenceKeyField.GetValue(null);
                 }
                 return s_referenceKey;

@@ -1,0 +1,22 @@
+{
+  "providerId": "TFnet5_0",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "$testCasesPath$/wsdl/Simple.wsdl"
+    ],
+    "bootstrapPath": "$resultPath$/TestBootstrap/ParamsFiles_SDK_TFM/TFnet5_0",
+    "namespaceMappings": [
+      "*, TFnet5_0_NS"
+    ],
+    "noLogo": true,
+    "noTelemetry": true,
+    "outputDir": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/TFnet5_0",
+    "projectFile": "$resultPath$/TestResults/ParamsFiles_SDK_TFM/TFnet5_0/TFnet5_0.csproj",
+    "references": [
+      "Newtonsoft.Json, {Newtonsoft.Json, 99.99.99}"
+    ],
+    "toolContext": "Global",
+    "verbosity": "Minimal"
+  }
+}

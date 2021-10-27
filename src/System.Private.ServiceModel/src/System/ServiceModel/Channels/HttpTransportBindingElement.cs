@@ -16,7 +16,6 @@ namespace System.ServiceModel.Channels
     public class HttpTransportBindingElement
         : TransportBindingElement
     {
-        private bool _decompressionEnabled;
         private HostNameComparisonMode _hostNameComparisonMode;
         private bool _inheritBaseAddressSettings;
         private int _maxBufferSize;
@@ -38,7 +37,7 @@ namespace System.ServiceModel.Channels
             AllowCookies = HttpTransportDefaults.AllowCookies;
             AuthenticationScheme = HttpTransportDefaults.AuthenticationScheme;
             BypassProxyOnLocal = HttpTransportDefaults.BypassProxyOnLocal;
-            _decompressionEnabled = HttpTransportDefaults.DecompressionEnabled;
+            DecompressionEnabled = HttpTransportDefaults.DecompressionEnabled;
             _hostNameComparisonMode = HttpTransportDefaults.HostNameComparisonMode;
             KeepAliveEnabled = HttpTransportDefaults.KeepAliveEnabled;
             _maxBufferSize = TransportDefaults.MaxBufferSize;
@@ -61,7 +60,7 @@ namespace System.ServiceModel.Channels
             AllowCookies = elementToBeCloned.AllowCookies;
             AuthenticationScheme = elementToBeCloned.AuthenticationScheme;
             BypassProxyOnLocal = elementToBeCloned.BypassProxyOnLocal;
-            _decompressionEnabled = elementToBeCloned._decompressionEnabled;
+            DecompressionEnabled = elementToBeCloned.DecompressionEnabled;
             _hostNameComparisonMode = elementToBeCloned._hostNameComparisonMode;
             _inheritBaseAddressSettings = elementToBeCloned.InheritBaseAddressSettings;
             KeepAliveEnabled = elementToBeCloned.KeepAliveEnabled;
@@ -92,17 +91,7 @@ namespace System.ServiceModel.Channels
         public bool BypassProxyOnLocal { get; set; }
 
         [DefaultValue(HttpTransportDefaults.DecompressionEnabled)]
-        public bool DecompressionEnabled
-        {
-            get
-            {
-                return _decompressionEnabled;
-            }
-            set
-            {
-                _decompressionEnabled = value;
-            }
-        }
+        public bool DecompressionEnabled { get; set; }
 
         [DefaultValue(HttpTransportDefaults.HostNameComparisonMode)]
         public HostNameComparisonMode HostNameComparisonMode
@@ -497,7 +486,7 @@ namespace System.ServiceModel.Channels
                 return false;
             }
 
-            if (_decompressionEnabled != http._decompressionEnabled)
+            if (DecompressionEnabled != http.DecompressionEnabled)
             {
                 return false;
             }
