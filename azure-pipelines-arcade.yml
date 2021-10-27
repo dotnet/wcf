@@ -57,9 +57,6 @@ stages:
       enablePublishBuildAssets: true
       enablePublishUsingPipelines: $(_PublishUsingPipelines)
       enableTelemetry: true
-      graphFileGeneration:
-        enabled: true
-        includeToolset: true
       helixRepo: dotnet/wcf
       jobs:
       - job: Windows

@@ -387,7 +387,7 @@ namespace System.ServiceModel.Dispatcher
             }
 
             string encoding = _isEncoded ? GetEncoding(version.Envelope) : null;
-            serializer.Serialize(writer, bodyParameters, null);
+            serializer.Serialize(writer, bodyParameters, null, encoding);
         }
 
 

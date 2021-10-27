@@ -26,13 +26,11 @@
     <PackageReference Include="NuGet.Frameworks" Version="99.99.99" />
     <PackageReference Include="NuGet.LibraryModel" Version="99.99.99" />
     <PackageReference Include="NuGet.Packaging" Version="99.99.99" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="99.99.99" />
-    <PackageReference Include="NuGet.Packaging.Core.Types" Version="99.99.99" />
     <PackageReference Include="NuGet.ProjectModel" Version="99.99.99" />
-    <PackageReference Include="NuGet.Protocol.Core.Types" Version="99.99.99" />
-    <PackageReference Include="NuGet.Protocol.Core.v3" Version="99.99.99" />
-    <PackageReference Include="NuGet.Repositories" Version="99.99.99" />
-    <PackageReference Include="NuGet.RuntimeModel" Version="99.99.99" />
+    <PackageReference Include="NuGet.Protocol" Version="99.99.99" />
     <PackageReference Include="NuGet.Versioning" Version="99.99.99" />
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="99.99.99" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="99.99.99" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="99.99.99" />
   </ItemGroup>
 </Project>

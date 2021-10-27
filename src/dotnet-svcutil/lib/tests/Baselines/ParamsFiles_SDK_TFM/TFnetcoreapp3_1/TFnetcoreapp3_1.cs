@@ -1,6 +1,6 @@
 using System;
 
-namespace TFnetcoreapp2_1
+namespace TFnetcoreapp3_1
 {
     class Program
     {
