@@ -616,8 +616,8 @@ namespace BasicHttps_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(BasicHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(BasicHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<BasicHttps_NS.TestFaultsResponse> TestFaultsAsync(BasicHttps_NS.TestFaultsRequest request);
         
@@ -2263,13 +2263,6 @@ namespace BasicHttps_NS
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
         
-        public WcfServiceClient() : 
-                base(WcfServiceClient.GetDefaultBinding(), WcfServiceClient.GetDefaultEndpointAddress())
-        {
-            this.Endpoint.Name = EndpointConfiguration.basicHttps_IWcfService.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
         public WcfServiceClient(EndpointConfiguration endpointConfiguration) : 
                 base(WcfServiceClient.GetBindingForEndpoint(endpointConfiguration), WcfServiceClient.GetEndpointAddress(endpointConfiguration))
         {
@@ -2661,7 +2654,17 @@ namespace BasicHttps_NS
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.basicHttps_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
+            {
+                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+                result.MaxBufferSize = int.MaxValue;
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
             {
                 System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
                 result.MaxBufferSize = int.MaxValue;
@@ -2676,27 +2679,23 @@ namespace BasicHttps_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.basicHttps_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/BasicHttps.svc/basicHttps");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/BasicHttps.svc/Text");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/BasicHttps.svc/Mtom");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
-        }
-        
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
-        {
-            return WcfServiceClient.GetBindingForEndpoint(EndpointConfiguration.basicHttps_IWcfService);
-        }
-        
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
-        {
-            return WcfServiceClient.GetEndpointAddress(EndpointConfiguration.basicHttps_IWcfService);
         }
         
         public enum EndpointConfiguration
         {
             
-            basicHttps_IWcfService,
+            Text_IWcfService,
+            
+            Mtom_IWcfService,
         }
     }
 }

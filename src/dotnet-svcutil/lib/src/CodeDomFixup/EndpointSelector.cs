@@ -50,10 +50,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 WSHttpBinding wsHttpBinding = binding as WSHttpBinding;
                 if (wsHttpBinding != null)
                 {
-                    if (wsHttpBinding.ReliableSession.Enabled)
-                    {
-                        s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
-                    }
                     if (wsHttpBinding.TransactionFlow)
                     {
                         s_bindingValidationErrors.Add(SR.BindingTransactionFlowNotSupported);
@@ -68,10 +64,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     NetTcpBinding netTcpBinding = binding as NetTcpBinding;
                     if (netTcpBinding != null)
                     {
-                        if (netTcpBinding.ReliableSession.Enabled)
-                        {
-                            s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
-                        }
                         if (netTcpBinding.TransactionFlow)
                         {
                             s_bindingValidationErrors.Add(SR.BindingTransactionFlowNotSupported);
@@ -86,10 +78,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         NetHttpBinding netHttpBinding = binding as NetHttpBinding;
                         if (netHttpBinding != null)
                         {
-                            if (netHttpBinding.ReliableSession.Enabled)
-                            {
-                                s_bindingValidationErrors.Add(SR.BindingReliableSessionNotSupported);
-                            }
                             if (netHttpBinding.Security.Mode == BasicHttpSecurityMode.Message)
                             {
                                 s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", netHttpBinding.Security.Mode));
@@ -170,6 +158,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     // do nothing
                 }
                 else if (bindingElement is WindowsStreamSecurityBindingElement)
+                {
+                    // do nothing
+                }
+                else if (bindingElement is ReliableSessionBindingElement)
                 {
                     // do nothing
                 }

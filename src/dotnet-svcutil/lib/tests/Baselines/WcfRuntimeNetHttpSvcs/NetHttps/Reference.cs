@@ -616,8 +616,8 @@ namespace NetHttps_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttps_NS.TestFaultsResponse> TestFaultsAsync(NetHttps_NS.TestFaultsRequest request);
         
@@ -2263,13 +2263,6 @@ namespace NetHttps_NS
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
         
-        public WcfServiceClient() : 
-                base(WcfServiceClient.GetDefaultBinding(), WcfServiceClient.GetDefaultEndpointAddress())
-        {
-            this.Endpoint.Name = EndpointConfiguration.NetHttps_IWcfService.ToString();
-            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        }
-        
         public WcfServiceClient(EndpointConfiguration endpointConfiguration) : 
                 base(WcfServiceClient.GetBindingForEndpoint(endpointConfiguration), WcfServiceClient.GetEndpointAddress(endpointConfiguration))
         {
@@ -2661,10 +2654,22 @@ namespace NetHttps_NS
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.NetHttps_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
             {
                 System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
                 result.Elements.Add(new System.ServiceModel.Channels.BinaryMessageEncodingBindingElement());
+                System.ServiceModel.Channels.HttpsTransportBindingElement httpsBindingElement = new System.ServiceModel.Channels.HttpsTransportBindingElement();
+                httpsBindingElement.AllowCookies = true;
+                httpsBindingElement.MaxBufferSize = int.MaxValue;
+                httpsBindingElement.MaxReceivedMessageSize = int.MaxValue;
+                result.Elements.Add(httpsBindingElement);
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
+            {
+                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
+                System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
+                result.Elements.Add(textBindingElement);
                 System.ServiceModel.Channels.HttpsTransportBindingElement httpsBindingElement = new System.ServiceModel.Channels.HttpsTransportBindingElement();
                 httpsBindingElement.AllowCookies = true;
                 httpsBindingElement.MaxBufferSize = int.MaxValue;
@@ -2677,27 +2682,23 @@ namespace NetHttps_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.NetHttps_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/NetHttps");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Binary");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Text");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
-        }
-        
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
-        {
-            return WcfServiceClient.GetBindingForEndpoint(EndpointConfiguration.NetHttps_IWcfService);
-        }
-        
-        private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
-        {
-            return WcfServiceClient.GetEndpointAddress(EndpointConfiguration.NetHttps_IWcfService);
         }
         
         public enum EndpointConfiguration
         {
             
-            NetHttps_IWcfService,
+            Binary_IWcfService,
+            
+            Text_IWcfService,
         }
     }
 }
