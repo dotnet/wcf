@@ -14,7 +14,11 @@
 
   <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
     <ResolvePackageAssets
-      Condition="'$(TargetFramework)' != 'netstandard2.0'"
+      Condition="
+      '$(TargetFramework)' != 'netstandard3.1' AND
+      '$(TargetFramework)' != 'netcoreapp3.1' AND
+      '$(TargetFramework)' != 'net5.0'
+      "
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
@@ -26,7 +30,11 @@
     </ResolvePackageAssets>
 
     <ResolvePackageAssets
-      Condition="'$(TargetFramework)' == 'netstandard2.0'"
+      Condition="
+      '$(TargetFramework)' == 'netstandard2.0' AND
+      '$(TargetFramework)' == 'netcoreapp3.1' AND
+      '$(TargetFramework)' == 'net5.0'
+      "
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
