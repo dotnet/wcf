@@ -1,6 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MyProperty>$(IntermediateOutputPath)</MyProperty>
+    <_IsNet5Compatible Condition="'$(MSBuildVersion)' != '' AND '$(MSBuildVersion)' >= '16.8.0'">true</_IsNet5Compatible>
     <_SerializationAssemblyName>$(AssemblyName).XmlSerializers</_SerializationAssemblyName>
     <_SerializerDllIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).dll</_SerializerDllIntermediateFolder>
     <_SerializerPdbIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).pdb</_SerializerPdbIntermediateFolder>
@@ -14,11 +15,7 @@
 
   <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
     <ResolvePackageAssets
-      Condition="
-      '$(TargetFramework)' != 'netstandard3.1' AND
-      '$(TargetFramework)' != 'netcoreapp3.1' AND
-      '$(TargetFramework)' != 'net5.0'
-      "
+      Condition="'$(_IsNet5Compatible)' != 'true'"
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
@@ -30,11 +27,7 @@
     </ResolvePackageAssets>
 
     <ResolvePackageAssets
-      Condition="
-      '$(TargetFramework)' == 'netstandard2.0' AND
-      '$(TargetFramework)' == 'netcoreapp3.1' AND
-      '$(TargetFramework)' == 'net5.0'
-      "
+      Condition="'$(_IsNet5Compatible)' == 'true'"
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
