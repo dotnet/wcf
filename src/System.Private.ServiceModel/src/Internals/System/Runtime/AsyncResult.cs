@@ -90,7 +90,7 @@ namespace System.Runtime
         {
             if (IsCompleted)
             {
-                throw Fx.Exception.AsError(new InvalidOperationException(InternalSR.AsyncResultCompletedTwice));
+                throw Fx.Exception.AsError(new InvalidOperationException(InternalSR.AsyncResultCompletedTwice(GetType())));
             }
 
 
