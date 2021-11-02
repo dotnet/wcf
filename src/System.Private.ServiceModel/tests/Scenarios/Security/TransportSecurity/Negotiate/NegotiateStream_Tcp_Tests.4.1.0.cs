@@ -56,7 +56,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
-               nameof(Ambient_Credentials_Available))]
+               nameof(Ambient_Credentials_Available),
+               nameof(SkipIISWithLinux))]
     [OuterLoop]
     public static void NegotiateStream_Tcp_AmbientCredentials()
     {
@@ -91,7 +92,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
-               nameof(Domain_Available))]
+               nameof(Domain_Available),
+               nameof(SkipIISWithLinux))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -138,7 +140,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
-               nameof(SPN_Available))]
+               nameof(SPN_Available),
+               nameof(SkipIISWithLinux))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...
@@ -182,7 +185,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
 
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
-               nameof(SPN_Available))]
+               nameof(SPN_Available),
+               nameof(SkipIISWithLinux))]
     [OuterLoop]
     public static void NegotiateStream_Tcp_With_SPN()
     {
@@ -224,7 +228,8 @@ public class NegotiateStream_Tcp_Tests : ConditionalWcfTest
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available),
-               nameof(SPN_Available))]
+               nameof(SPN_Available),
+               nameof(SkipIISWithLinux))]
     [OuterLoop]
     // Test Requirements \\
     // The following environment variables must be set...

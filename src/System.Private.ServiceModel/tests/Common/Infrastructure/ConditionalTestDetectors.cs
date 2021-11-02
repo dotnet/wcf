@@ -142,6 +142,19 @@ namespace Infrastructure.Common
             return OSID.AnyWindows.MatchesCurrent();
         }
 
+        public static bool IslinuxWithIIS()
+        {
+            if (IsWindows())
+            {
+                return true;
+            }
+            else if (!IsIISHosted())
+            {
+                return true;
+            }
+            return false;
+        }
+
         // Returns 'true' if the server is running as localhost.
         // This test is meant to be used only to detect that our service URI
         // indicates localhost.  It is not intended to be used to detect that
