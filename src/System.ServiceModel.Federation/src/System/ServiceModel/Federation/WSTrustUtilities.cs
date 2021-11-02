@@ -17,7 +17,7 @@ namespace System.ServiceModel.Federation
     /// <see cref="WSTrustChannelSecurityTokenProvider"/> has been designed to work with the <see cref="WSFederationHttpBinding"/> to send a WsTrust message to obtain a SecurityToken from an STS. The SecurityToken is
     /// added as an IssuedToken on the outbound WCF message.
     /// </summary>
-    public static class WSTrustUtilities
+    internal static class WSTrustUtilities
     {
         /// <summary>
         /// Gets the WsTrustVersion for the current MessageSecurityVersion.

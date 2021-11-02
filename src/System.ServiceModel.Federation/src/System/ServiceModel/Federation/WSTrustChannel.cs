@@ -23,30 +23,9 @@ namespace System.ServiceModel.Federation
         /// Constructs a <see cref="WSTrustChannel" />.
         /// </summary>
         /// <param name="channelfactory">The <see cref="ChannelFactory" /> that is creating this object.</param>
-        /// <param name="trustVersion">The version of WS-Trust this channel will use for serializing <see cref="Message" /> objects.</param>
-        public WSTrustChannel(ChannelFactory channelFactory,
-                              WsTrustVersion trustVersion)
-        {
-            if (!(channelFactory is IRequestChannel requestChannel))
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(SR.GetResourceString(SR.ChannelFactoryMustSupportIRequestChannel)));
-
-            Initialize(channelFactory, requestChannel, trustVersion);
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="WSTrustChannel" />.
-        /// </summary>
-        /// <param name="channelfactory">The <see cref="Federation.ChannelFactory" /> that is creating this object.</param>
         /// <param name="requestChannel">The <see cref="IRequestChannel" /> this object will be used to send and receive <see cref="Message" /> objects.</param>
         /// <param name="trustVersion">The version of WS-Trust this channel will use for serializing <see cref="Message" /> objects.</param>
         public WSTrustChannel(ChannelFactory channelfactory,
-                              IRequestChannel requestChannel,
-                              WsTrustVersion trustVersion)
-        {
-            Initialize(channelfactory, requestChannel, trustVersion);
-        }
-
-        private void Initialize(ChannelFactory channelfactory,
                               IRequestChannel requestChannel,
                               WsTrustVersion trustVersion)
         {

@@ -13,7 +13,6 @@ namespace System.ServiceModel.Federation
     /// A service contract that defines the Issue request.
     /// </summary>
     [ServiceContract]
-    [ComVisible(false)]
     public interface IWSTrustChannelContract : IWSTrustContract
     {
         /// <summary>

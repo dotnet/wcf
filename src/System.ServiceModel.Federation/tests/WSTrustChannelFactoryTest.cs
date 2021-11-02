@@ -11,7 +11,7 @@ namespace System.ServiceModel.Federation.Tests
         [WcfFact]
         public static void DefaultWSTrustChannelFactory()
         {
-            WSTrustChannelFactory trustChannelFactory = new WSTrustChannelFactory((string)null, null);
+            WSTrustChannelFactory trustChannelFactory = new WSTrustChannelFactory(null, null);
         }
     }
 }

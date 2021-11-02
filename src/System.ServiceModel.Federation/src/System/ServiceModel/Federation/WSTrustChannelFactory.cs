@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System.Runtime.InteropServices;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using Microsoft.IdentityModel.Protocols.WsTrust;
@@ -12,36 +11,14 @@ namespace System.ServiceModel.Federation
     /// <summary>
     /// A <see cref="WSTrustChannelFactory" /> that produces <see cref="WSTrustChannel" /> objects used to communicate with a WS-Trust endpoint.
     /// </summary>
-    [ComVisible(false)]
     public class WSTrustChannelFactory : ChannelFactory<IWSTrustChannelContract>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WSTrustChannelFactory" /> class with a specified endpoint.
-        /// configuration name.
-        /// </summary>
-        /// <param name="endpointConfigurationName">The configuration name used for the endpoint.</param>
-        public WSTrustChannelFactory(string endpointConfigurationName)
-            : base(endpointConfigurationName)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WSTrustChannelFactory" /> class with a specified endpoint.
         /// </summary>
         /// <param name="endpoint">The <see cref="ServiceEndpoint" />for the channels produced by the factory.</param>
         public WSTrustChannelFactory(ServiceEndpoint endpoint)
             : base(endpoint)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WSTrustChannelFactory" /> class associated with a specified
-        /// name for the endpoint configuration and remote address.
-        /// </summary>
-        /// <param name="endpointConfigurationName">The configuration name used for the endpoint.</param>
-        /// <param name="remoteAddress">The <see cref="EndpointAddress" /> that provides the location of the service.</param>
-        public WSTrustChannelFactory(string endpointConfigurationName, EndpointAddress remoteAddress)
-            : base(endpointConfigurationName, remoteAddress)
         {
         }
 
