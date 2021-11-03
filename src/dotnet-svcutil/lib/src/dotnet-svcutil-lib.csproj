@@ -20,8 +20,8 @@
     <IsShipping>$(Ship_SvcUtilPackages)</IsShipping>
     <MajorVersion>2</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PatchVersion>3</PatchVersion>
-    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
+    <PatchVersion>4</PatchVersion>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
