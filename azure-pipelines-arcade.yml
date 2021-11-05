@@ -218,7 +218,8 @@ stages:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
-            name: Hosted macOS
+            name: NetCore1ESPool-Public
+            demands: ImageOverride -equals build.windows.10.amd64.vs2017.open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
@@ -247,22 +248,23 @@ stages:
           - template: /eng/UpdatePRService.yml
             parameters:
               wcfPRServiceId: $(_WcfPRServiceId)
-          - script: eng/common/cibuild.sh
+          - script: eng\common\cibuild.cmd
               -configuration $(_BuildConfig)
               -preparemachine
               $(_TestArgs)
               /p:Test=false
-            displayName: Unix Build
-          - script: eng/common/build.sh
-              --configuration $(_BuildConfig)
-              --prepareMachine
-              --ci
-              --test
-              --integrationTest
-              --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
+            displayName: MacOS Build
+          - powershell: eng\common\build.ps1
+              -configuration $(_BuildConfig)
+              -prepareMachine
+              -ci
+              -test
+              -integrationTest
+              -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
+              /p:TestJob=MacOS
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
-            displayName: Linux - Run Helix Tests
+            displayName: MacOS - Run Helix Tests
             env:
               SYSTEM_ACCESSTOKEN: $(System.AccessToken)
               ServiceHost: $(_serviceUri)
