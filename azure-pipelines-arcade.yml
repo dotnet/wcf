@@ -144,6 +144,7 @@ stages:
             -integrationTest
             -projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
             $(_TestArgs)
+            /p:TestJob=Windows
             /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
           displayName: Windows - Run Helix Tests
           env:
@@ -153,7 +154,7 @@ stages:
             RunAsPublic: $(_RunAsPublic)
             RunAsInternal: $(_RunAsInternal)
             IsWindowsBuild: true
-
+            
       # Only build and test Unix in PR and CI builds.
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
