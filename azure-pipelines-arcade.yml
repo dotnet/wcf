@@ -205,6 +205,7 @@ stages:
               --integrationTest
               --projects $(Build.SourcesDirectory)/eng/SendToHelix.proj
               $(_TestArgs)
+              /p:TestJob=Linux
               /bl:$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/SendToHelix.binlog
             displayName: Linux - Run Helix Tests
             env:
