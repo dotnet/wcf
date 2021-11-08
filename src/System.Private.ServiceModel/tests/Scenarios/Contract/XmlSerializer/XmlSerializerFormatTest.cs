@@ -127,14 +127,30 @@ public static partial class XmlSerializerFormatTests
     [OuterLoop]
     public static void XmlSerializerFormatEncodedAttributeTest()
     {
-        BasicHttpBinding binding = null;
-        EndpointAddress endpointAddress = null;
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncSingleNs_Address);
+
+        XmlSerializerFormatEncodedAttributeHelper(binding, endpointAddress);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSerializerWSHttpFormatEncodedAttributeTest()
+    {
+        // *** SETUP *** \\
+        WSHttpBinding binding = new WSHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.WSHttpRpcEncSingleNs_Address);
+
+        XmlSerializerFormatEncodedAttributeHelper(binding, endpointAddress);
+    }
+
+    private static void XmlSerializerFormatEncodedAttributeHelper(Binding binding, EndpointAddress endpointAddress)
+    {
         ChannelFactory<ICalculatorRpcEnc> factory1 = null;
         ICalculatorRpcEnc serviceProxy1 = null;
 
         // *** SETUP *** \\
-        binding = new BasicHttpBinding();
-        endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncSingleNs_Address);
         factory1 = new ChannelFactory<ICalculatorRpcEnc>(binding, endpointAddress);
         factory1.Endpoint.EndpointBehaviors.Add(new InspectorBehavior());
         serviceProxy1 = factory1.CreateChannel();
@@ -159,14 +175,30 @@ public static partial class XmlSerializerFormatTests
     [OuterLoop]
     public static void XmlSFAttributeRpcEncSingleNsTest()
     {
-        BasicHttpBinding binding = null;
-        EndpointAddress endpointAddress = null;
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncSingleNs_Address);
+
+        XmlSFAttributeRpcEncSingleNsHelper(binding, endpointAddress);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeWSHttpRpcEncSingleNsTest()
+    {
+        // *** SETUP *** \\
+        WSHttpBinding binding = new WSHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.WSHttpRpcEncSingleNs_Address);
+
+        XmlSFAttributeRpcEncSingleNsHelper(binding, endpointAddress);
+    }
+
+    private static void XmlSFAttributeRpcEncSingleNsHelper(Binding binding, EndpointAddress endpointAddress)
+    {
         ChannelFactory<ICalculatorRpcEnc> factory1 = null;
         ICalculatorRpcEnc serviceProxy1 = null;
 
         // *** SETUP *** \\
-        binding = new BasicHttpBinding();
-        endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncSingleNs_Address);
         factory1 = new ChannelFactory<ICalculatorRpcEnc>(binding, endpointAddress);
         serviceProxy1 = factory1.CreateChannel();
 
@@ -303,21 +335,38 @@ public static partial class XmlSerializerFormatTests
     [OuterLoop]
     public static void XmlSFAttributeRpcEncDualNsTest()
     {
-        BasicHttpBinding binding = null;
-        EndpointAddress endpointAddress = null;
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncDualNs_Address);
+
+        XmlSFAttributeRpcEncDualNsHelper(binding, endpointAddress);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeWSHttpRpcEncDualNsTest()
+    {
+        // *** SETUP *** \\
+        WSHttpBinding binding = new WSHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.WSHttpRpcEncDualNs_Address);
+
+        XmlSFAttributeRpcEncDualNsHelper(binding, endpointAddress);
+    }
+
+
+    private static void XmlSFAttributeRpcEncDualNsHelper(Binding binding, EndpointAddress endpointAddress)
+    {
         ChannelFactory<ICalculatorRpcEnc> factory1 = null;
         ChannelFactory<IHelloWorldRpcEnc> factory2 = null;
         ICalculatorRpcEnc serviceProxy1 = null;
         IHelloWorldRpcEnc serviceProxy2 = null;
 
         // *** SETUP *** \\
-        binding = new BasicHttpBinding();
-        endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncDualNs_Address);
         factory1 = new ChannelFactory<ICalculatorRpcEnc>(binding, endpointAddress);
         serviceProxy1 = factory1.CreateChannel();
         factory2 = new ChannelFactory<IHelloWorldRpcEnc>(binding, endpointAddress);
         serviceProxy2 = factory2.CreateChannel();
-        
+
         // *** EXECUTE Variation *** \\
         try
         {
@@ -474,8 +523,26 @@ public static partial class XmlSerializerFormatTests
     [OuterLoop]
     public static void XmlSFAttributeRpcEncMessageHeaderTest()
     {
-        BasicHttpBinding binding = null;
-        EndpointAddress endpointAddress = null;
+        // *** SETUP *** \\
+        BasicHttpBinding binding = new BasicHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncWithHeaders_Address);
+
+        XmlSFAttributeRpcEncMessageHeaderHelper(binding, endpointAddress);
+    }
+
+    [WcfFact]
+    [OuterLoop]
+    public static void XmlSFAttributeWSHttpRpcEncMessageHeaderTest()
+    {
+        // *** SETUP *** \\
+        WSHttpBinding binding = new WSHttpBinding();
+        EndpointAddress endpointAddress = new EndpointAddress(Endpoints.WSHttpRpcEncWithHeaders_Address);
+
+        XmlSFAttributeRpcEncMessageHeaderHelper(binding, endpointAddress);
+    }
+
+    private static void XmlSFAttributeRpcEncMessageHeaderHelper(Binding binding, EndpointAddress endpointAddress)
+    {
         ChannelFactory<IEchoRpcEncWithHeadersService> factory1 = null;
         IEchoRpcEncWithHeadersService serviceProxy1 = null;
         string echoText = "Hello";
@@ -483,8 +550,6 @@ public static partial class XmlSerializerFormatTests
         string expectedHeaderText = headerText + headerText;
 
         // *** SETUP *** \\
-        binding = new BasicHttpBinding();
-        endpointAddress = new EndpointAddress(Endpoints.BasicHttpRpcEncWithHeaders_Address);
         factory1 = new ChannelFactory<IEchoRpcEncWithHeadersService>(binding, endpointAddress);
         serviceProxy1 = factory1.CreateChannel();
 
