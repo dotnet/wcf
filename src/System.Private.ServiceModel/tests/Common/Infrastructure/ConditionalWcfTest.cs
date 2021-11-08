@@ -348,7 +348,7 @@ namespace Infrastructure.Common
 
         public static bool SkipIISWithLinux()
         {
-            return GetConditionValue(nameof(SkipIISWithLinux), ConditionalTestDetectors.IslinuxWithIIS);
+            return GetConditionValue(nameof(SkipIISWithLinux), ConditionalTestDetectors.IsNotLinuxWithIIS);
         }
 
         // Returns the Domain if available.

@@ -142,7 +142,7 @@ namespace Infrastructure.Common
             return OSID.AnyWindows.MatchesCurrent();
         }
 
-        public static bool IslinuxWithIIS()
+        public static bool IsNotLinuxWithIIS()
         {
             if (IsWindows())
             {
