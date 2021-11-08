@@ -223,7 +223,8 @@ stages:
         - job: MacOS
           timeoutInMinutes: 90
           pool:
-            vmImage: windows-latest
+            name: NetCore1ESPool-Public
+            demands: ImageOverride -equals build.windows.10.amd64.vs2017.open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
