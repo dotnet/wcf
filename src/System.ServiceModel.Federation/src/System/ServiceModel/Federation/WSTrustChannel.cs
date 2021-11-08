@@ -28,6 +28,9 @@ namespace System.ServiceModel.Federation
         public WSTrustChannel(IRequestChannel requestChannel)
         {
             RequestChannel = requestChannel ?? throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull(nameof(requestChannel));
+            if (requestChannel.State != CommunicationState.Created)
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(LogHelper.FormatInvariant(SR.GetResourceString(SR.IRequestChannelMustBeCreated), requestChannel.State)));
+
             MessageVersion = RequestChannel.GetProperty<MessageVersion>();
             if (MessageVersion == null || MessageVersion == MessageVersion.None)
                 MessageVersion = MessageVersion.Default;

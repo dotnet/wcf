@@ -61,7 +61,7 @@ namespace System.ServiceModel.Federation
             WSTrustTokenParameters = issuedSecurityTokenParameters as WSTrustTokenParameters;
             if (WSTrustTokenParameters == null)
             {
-                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant("tokenRequirement.GetProperty<IssuedSecurityTokenParameters> must be of type: WSTrustTokenParameters. Was: '{0}.", issuedSecurityTokenParameters), nameof(tokenRequirement)), EventLevel.Error);
+                throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new ArgumentException(LogHelper.FormatInvariant(SR.GetResourceString(SR.IssuedSecurityTokenParametersIncorrectType), issuedSecurityTokenParameters), nameof(tokenRequirement)), EventLevel.Error);
             }
 
             _communicationObject = new WrapperSecurityCommunicationObject(this);
@@ -295,7 +295,7 @@ namespace System.ServiceModel.Federation
             if (messageSecurityVersion.TrustVersion == TrustVersion.WSTrustFeb2005)
                 return WsTrustVersion.TrustFeb2005;
 
-            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant("Unsupported TrustVersion: '{0}'.", MessageSecurityVersion.TrustVersion)), EventLevel.Error);
+            throw DiagnosticUtility.ExceptionUtility.ThrowHelper(new NotSupportedException(LogHelper.FormatInvariant(SR.GetResourceString(SR.WsTrustVersionNotSupported), MessageSecurityVersion.TrustVersion)), EventLevel.Error);
         }
 
         private void InitializeKeyEntropyMode()
