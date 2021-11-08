@@ -171,4 +171,16 @@
   <data name="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy" xml:space="preserve">
     <value>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</value>
   </data>
+  <data name="IRequestChannelMustBeCreated" xml:space="preserve">
+    <value>The IRequestChannel must be in the created state. Was: '{0}'.</value>
+  </data>
+  <data name="IssuedSecurityTokenParametersIncorrectType" xml:space="preserve">
+    <value>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</value>
+  </data>
+  <data name="IssuedTokenRenewalThresholdPercentageIncorrect" xml:space="preserve">
+    <value>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</value>
+  </data>
+  <data name="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero" xml:space="preserve">
+    <value>MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</value>
+  </data>
 </root>

@@ -42,6 +42,26 @@
         <target state="new">Encrypted keys for proof tokens are not supported.</target>
         <note />
       </trans-unit>
+      <trans-unit id="IRequestChannelMustBeCreated">
+        <source>The IRequestChannel must be in the created state. Was: '{0}'.</source>
+        <target state="new">The IRequestChannel must be in the created state. Was: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
+        <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
+        <target state="new">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
+        <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
+        <target state="new">IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">
+        <source>MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</source>
+        <target state="new">MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="NoKeySizeProvided">
         <source>No key size provided.</source>
         <target state="new">No key size provided.</target>
