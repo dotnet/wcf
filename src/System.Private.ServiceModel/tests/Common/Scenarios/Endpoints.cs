@@ -33,6 +33,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicHttp.svc/"); }
     }
 
+    public static string HttpBaseAddress_BasicDecomp
+    {
+        get { return GetEndpointAddress("BasicHttpWcfDecomp.svc/TestDecompressionEnabled"); }
+    }
+
     public static string HttpBaseAddress_BasicService1
     {
         get { return GetEndpointAddress("BasicService1.svc//Service1"); }
