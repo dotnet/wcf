@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Infrastructure.Common;
+using Xunit;
 
 namespace System.ServiceModel.Federation.Tests
 {
@@ -11,7 +12,14 @@ namespace System.ServiceModel.Federation.Tests
         [WcfFact]
         public static void DefaultWSTrustChannelFactory()
         {
-            WSTrustChannelFactory trustChannelFactory = new WSTrustChannelFactory(null, null);
+            try
+            {
+                WSTrustChannelFactory trustChannelFactory = new WSTrustChannelFactory(null, null);
+            }
+            catch(Exception ex)
+            {
+                Assert.Equal(typeof(ArgumentNullException), ex.GetType());
+            }
         }
     }
 }
