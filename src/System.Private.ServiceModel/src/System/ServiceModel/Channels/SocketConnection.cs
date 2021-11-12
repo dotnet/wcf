@@ -1450,13 +1450,13 @@ namespace System.ServiceModel.Channels
             }
             else if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.WSAENOBUFS)
             {
-                return new OutOfMemoryException(SR.TcpConnectNoBufs, innerException);
+                return new InsufficientMemoryException(SR.TcpConnectNoBufs, innerException);
             }
             else if ((int)socketException.SocketErrorCode == UnsafeNativeMethods.ERROR_NOT_ENOUGH_MEMORY ||
                 (int)socketException.SocketErrorCode == UnsafeNativeMethods.ERROR_NO_SYSTEM_RESOURCES ||
                 (int)socketException.SocketErrorCode == UnsafeNativeMethods.ERROR_OUTOFMEMORY)
             {
-                return new OutOfMemoryException(SR.InsufficentMemory, socketException);
+                return new InsufficientMemoryException(SR.InsufficentMemory, socketException);
             }
             else
             {
