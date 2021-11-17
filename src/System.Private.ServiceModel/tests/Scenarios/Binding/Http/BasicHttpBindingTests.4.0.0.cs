@@ -320,4 +320,43 @@ public static class Binding_Http_BasicHttpBindingTests
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
         }
     }
+
+    [WcfTheory]
+    [InlineData(true)]
+    [InlineData(false)]
+    [OuterLoop]
+    public static void DecompressionEnabled_Echo_RoundTrips_String(bool decompressionEnabled)
+    {
+        ChannelFactory<IWcfDecompService> factory = null;
+        IWcfDecompService serviceProxy = null;
+        BasicHttpBinding binding;
+        CustomBinding customBinding;
+
+        try
+        {
+            // *** SETUP *** \\
+            binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            customBinding = new CustomBinding(binding);
+            var httpElement = customBinding.Elements.Find<HttpTransportBindingElement>();
+            httpElement.DecompressionEnabled = decompressionEnabled;
+
+            factory = new ChannelFactory<IWcfDecompService>(customBinding, new EndpointAddress(Endpoints.HttpBaseAddress_BasicDecomp));
+            serviceProxy = factory.CreateChannel();
+
+            // *** EXECUTE *** \\
+            bool result = serviceProxy.IsDecompressionEnabled();
+
+            // *** VALIDATE *** \\
+            Assert.Equal(result, decompressionEnabled);
+
+            // *** CLEANUP *** \\
+            factory.Close();
+            ((ICommunicationObject)serviceProxy).Close();
+        }
+        finally
+        {
+            // *** ENSURE CLEANUP *** \\
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+        }
+    }
 }

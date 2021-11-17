@@ -169,7 +169,7 @@ namespace System.Runtime
             while (exception != null)
             {
                 if (exception is FatalException ||
-                    exception is OutOfMemoryException ||
+                    (exception is OutOfMemoryException && !(exception is InsufficientMemoryException)) ||
                     exception is FatalInternalException)
                 {
                     return true;
@@ -345,10 +345,9 @@ namespace System.Runtime
             }
             catch (OutOfMemoryException exception)
             {
-                // Desktop wraps the OOM inside a new InsufficientMemoryException, traces, and then throws it.
-                // Project N and K trace and throw the original OOM.  InsufficientMemoryException does not exist in N and K.
-                Fx.Exception.AsError(exception);
-                throw;
+                // Convert OOM into an exception that can be safely handled by higher layers.
+                throw Exception.AsError(
+                    new InsufficientMemoryException(InternalSR.BufferAllocationFailed(size), exception));
             }
         }
 
@@ -361,10 +360,9 @@ namespace System.Runtime
             }
             catch (OutOfMemoryException exception)
             {
-                // Desktop wraps the OOM inside a new InsufficientMemoryException, traces, and then throws it.
-                // Project N and K trace and throw the original OOM.  InsufficientMemoryException does not exist in N and K.
-                Fx.Exception.AsError(exception);
-                throw;
+                // Convert OOM into an exception that can be safely handled by higher layers.
+                throw Fx.Exception.AsError(
+                    new InsufficientMemoryException(InternalSR.BufferAllocationFailed(size * sizeof(char)), exception));
             }
         }
 

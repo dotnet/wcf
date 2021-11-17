@@ -102,6 +102,13 @@ public interface IService1
 }
 
 [ServiceContract]
+public interface IWcfDecompService
+{
+    [OperationContract]
+    bool IsDecompressionEnabled();
+}
+
+[ServiceContract]
 public interface IWcfProjectNRestartService
 {
     [OperationContract]
