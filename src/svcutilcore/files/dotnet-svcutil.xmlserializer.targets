@@ -1,6 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- <PropertyGroup>
-   <MyProperty>$(IntermediateOutputPath)</MyProperty>
+  <PropertyGroup>
+    <MyProperty>$(IntermediateOutputPath)</MyProperty>
+    <_IsNet5Compatible Condition="'$(MSBuildVersion)' != '' AND '$(MSBuildVersion)' >= '16.8.0'">true</_IsNet5Compatible>
     <_SerializationAssemblyName>$(AssemblyName).XmlSerializers</_SerializationAssemblyName>
     <_SerializerDllIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).dll</_SerializerDllIntermediateFolder>
     <_SerializerPdbIntermediateFolder>$(IntermediateOutputPath)$(_SerializationAssemblyName).pdb</_SerializerPdbIntermediateFolder>
@@ -14,6 +15,7 @@
 
   <Target Name="SvcUtilGenerateSerializationAssembly" AfterTargets="Build">
     <ResolvePackageAssets
+      Condition="'$(_IsNet5Compatible)' != 'true'"
       ProjectAssetsFile="$(ProjectAssetsFile)"
       ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
       ProjectPath="$(MSBuildProjectFullPath)"
@@ -24,10 +26,22 @@
           ItemName="WCFRuntimeAssembly"/>
     </ResolvePackageAssets>
 
+    <ResolvePackageAssets
+      Condition="'$(_IsNet5Compatible)' == 'true'"
+      ProjectAssetsFile="$(ProjectAssetsFile)"
+      ProjectAssetsCacheFile="$(ProjectAssetsCacheFile)"
+      ProjectPath="$(MSBuildProjectFullPath)"
+      TargetFramework="$(TargetFramework)"
+      DotNetAppHostExecutableNameWithoutExtension="$(_DotNetAppHostExecutableNameWithoutExtension)">
+      <Output
+          TaskParameter="RuntimeAssemblies"
+          ItemName="WCFRuntimeAssembly"/>
+    </ResolvePackageAssets>
+
     <ItemGroup>
       <_ReferenceSMAssembly Include="@(WCFRuntimeAssembly)" />
     </ItemGroup>
-    
+
     <Delete Condition="Exists('$(_SerializerDllIntermediateFolder)') == 'true'" Files="$(_SerializerDllIntermediateFolder)" ContinueOnError="true" />
     <Delete Condition="Exists('$(_SerializerPdbIntermediateFolder)') == 'true'" Files="$(_SerializerPdbIntermediateFolder)" ContinueOnError="true" />
     <Delete Condition="Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Files="$(_SerializerCsIntermediateFolder)" ContinueOnError="true" />
@@ -38,7 +52,7 @@
     <Warning Condition="Exists('$(_SerializerDllIntermediateFolder)') != 'true' And Exists('$(_SerializerCsIntermediateFolder)') == 'true'" Text="$(_SvcUtilWarningText)" />
     <Copy Condition="Exists('$(_SerializerDllIntermediateFolder)') == 'true'" SourceFiles="$(_SerializerDllIntermediateFolder)" DestinationFolder="$(OutputPath)" />
   </Target>
-  
+
   <Target Name="SvcUtilCleanSerializationAssembly" AfterTargets="CoreClean">
     <Message Text="Cleaning up serialization assemblies..." Importance="normal" />
     <Delete Condition="Exists('$(OutputPath)\$(_SerializationAssemblyName).dll') == 'true'" Files="$(OutputPath)\$(_SerializationAssemblyName).dll" />
