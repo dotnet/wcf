@@ -63,6 +63,10 @@ namespace SvcutilTest
         [InlineData("tfmGlobalCoreapp20", "netcoreapp2.0")]
         [InlineData("tfmGlobalNetstd20", "netstandard2.0")]
         [InlineData("tfmGlobal100", "netcoreapp100.0")]
+        [InlineData("tfmGlobalCoreapp21", "netcoreapp2.1")]
+        [InlineData("tfmGlobalCoreapp31", "netcoreapp3.1")]
+        [InlineData("tfmGlobalNet50", "net5.0")]
+        [InlineData("tfmGlobalNet60", "net6.0")]
         public void TFMBootstrapGlobal(string testCaseName, string targetFramework)
         {
             this_TestCaseName = "TFMBootstrapGlobal";

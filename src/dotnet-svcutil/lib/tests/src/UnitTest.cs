@@ -39,7 +39,7 @@ namespace SvcutilTest
                 ValidateTest(options, this_TestCaseProject.DirectoryPath, exitCode, outputText, expectSuccess);
             }
         }
-        
+
         [Trait("Category", "UnitTest")]
         [Theory]
         [InlineData(null)]
@@ -134,23 +134,35 @@ namespace SvcutilTest
         [Theory]
         [InlineData("tfmDefault", null, true)]
         [InlineData("tfm20", "netcoreapp2.0", true)]
-        [InlineData("tfm100", "netcoreapp100.0", true)]
-        [InlineData("tfm45", "net45", true)]
-        [InlineData("net90", "net90", true)]
+        [InlineData("tfm100", "netcoreapp100.0", false)]
+        [InlineData("tfm48", "net48", true)]
+        [InlineData("net90", "net90", false)]
         [InlineData("badTFM", "badTFM", false)]
+        [InlineData("tfm21", "netcoreapp2.1", true)]
+        [InlineData("tfm31", "netcoreapp3.1", true)]
+        [InlineData("tfm50", "net5.0", true)]
+        [InlineData("tfm60", "net6.0", true)]
         public void TFM(string testCaseName, string targetFramework, bool expectSuccess)
         {
             this_TestCaseName = "TFM";
             TestFixture();
 
-            //InitializeUnitTest(testCaseName, createProject: true, sdkVersion: "3.1.101");
-            InitializeUnitTest(testCaseName, createProject: true, sdkVersion: g_SdkVersion);
-
-            var uri = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
-            var tf = targetFramework == null ? string.Empty : $"-tf {targetFramework}";
-            var options = $"{uri} {tf}";
-            this_TestCaseName = testCaseName;
-            UnitTestSvcutil(AppendCommonOptions(options), expectSuccess);
+            try
+            {
+                InitializeUnitTest(testCaseName, createProject: true, sdkVersion: targetFramework);
+                var uri = Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl");
+                var tf = targetFramework == null ? string.Empty : $"-tf {targetFramework}";
+                var options = $"{uri} {tf}";
+                this_TestCaseName = testCaseName;
+                UnitTestSvcutil(AppendCommonOptions(options), expectSuccess);
+            }
+            catch (Exception ex)
+            {
+                if (expectSuccess)
+                {
+                    throw ex;
+                }
+            }
         }
 
         [Trait("Category", "UnitTest")]
@@ -205,7 +217,7 @@ namespace SvcutilTest
         {
             if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
             {
-                if(testCaseName == "bckWild" || testCaseName == "backFull")
+                if (testCaseName == "bckWild" || testCaseName == "backFull")
                 {
                     return; //Linux doesn't support back slash as path separator
                 }
@@ -339,7 +351,7 @@ namespace SvcutilTest
 
             ValidateTest(options.ToString(), this_TestCaseProject.DirectoryPath, 0, string.Empty, true);
         }
-        
+
         private bool ValidateJson(ApplicationOptions options, string jsonFileSrcPath, out string errorMessage)
         {
             errorMessage = string.Empty;

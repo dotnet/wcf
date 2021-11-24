@@ -253,10 +253,15 @@ namespace SvcutilTest
 
             if (createProject == true)
             {
-                var project = (sdkVersion == null || g_StarterProject.SdkVersion == sdkVersion) ? g_StarterProject : this_TestGroupProject;
                 var projectPath = CopyProject(g_StarterProject, this_TestCaseOutputDir, testCaseName);
-
-                this_TestCaseProject = MSBuildProj.FromPathAsync(projectPath, null, CancellationToken.None).Result;
+                if (sdkVersion != null)
+                {
+                    this_TestCaseProject = ProjectUtils.GetProject(projectPath, targetFramework: sdkVersion, forceNew: false, build: false, logger: null);
+                }
+                else
+                {
+                    this_TestCaseProject = MSBuildProj.FromPathAsync(projectPath, null, CancellationToken.None).Result;
+                }
             }
             else
             {

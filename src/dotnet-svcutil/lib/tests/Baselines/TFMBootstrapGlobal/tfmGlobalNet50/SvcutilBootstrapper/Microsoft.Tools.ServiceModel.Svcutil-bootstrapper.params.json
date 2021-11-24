@@ -1,0 +1,26 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil-bootstrap",
+  "version": "99.99.99",
+  "options": {
+    "inputs": [
+      "$testCasesPath$/wsdl/Simple.wsdl"
+    ],
+    "bootstrapPath": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNet50",
+    "namespaceMappings": [
+      "*, tfmGlobalNet50_NS"
+    ],
+    "noBootstrapping": true,
+    "noLogo": true,
+    "noProjectUpdates": true,
+    "outputDir": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNet50/../tfmGlobalNet50",
+    "outputFile": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNet50/Reference.cs",
+    "projectFile": "$resultPath$/TestResults/TFMBootstrapGlobal/tfmGlobalNet50/tfmGlobalNet50.csproj",
+    "references": [
+      "Newtonsoft.Json, {Newtonsoft.Json, *}"
+    ],
+    "targetFramework": "N.N",
+    "toolContext": "Bootstrapper",
+    "typeReuseMode": "Specified",
+    "verbosity": "Minimal"
+  }
+}

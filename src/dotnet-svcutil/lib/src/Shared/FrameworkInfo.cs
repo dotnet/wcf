@@ -75,7 +75,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             fxInfo.IsDnx = name == Netstandard || name == Netcoreapp || version.Major >= 5;
             fxInfo.IsKnownDnx = fxInfo.IsDnx &&
                         (TargetFrameworkHelper.NetStandardToNetCoreVersionMap.Keys.Any((netstdVersion) => netstdVersion == version) ||
-                         TargetFrameworkHelper.NetStandardToNetCoreVersionMap.Values.Any((netcoreVersion) => netcoreVersion == version));
+                         TargetFrameworkHelper.NetStandardToNetCoreVersionMap.Values.Any((netcoreVersion) => netcoreVersion == version) ||
+                         TargetFrameworkHelper.NetCoreVersionReferenceTable.Keys.Any((netcoreVersion) => netcoreVersion == version));
 
             return fxInfo;
         }
