@@ -7,30 +7,90 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TypeReuse20_NS
+namespace tfmNetCoreapp31_NS
 {
+    using System.Runtime.Serialization;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BinLibrary", Namespace="http://schemas.datacontract.org/2004/07/BinLib")]
+    public partial class BinLibrary : object
+    {
+        
+        private string ValueField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Value
+        {
+            get
+            {
+                return this.ValueField;
+            }
+            set
+            {
+                this.ValueField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TypeReuseCompositeType", Namespace="http://schemas.datacontract.org/2004/07/TypesLib")]
+    public partial class TypeReuseCompositeType : object
+    {
+        
+        private bool BoolValueField;
+        
+        private string StringValueField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool BoolValue
+        {
+            get
+            {
+                return this.BoolValueField;
+            }
+            set
+            {
+                this.BoolValueField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string StringValue
+        {
+            get
+            {
+                return this.StringValueField;
+            }
+            set
+            {
+                this.StringValueField = value;
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TypeReuse20_NS.ITypeReuseSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="tfmNetCoreapp31_NS.ITypeReuseSvc")]
     public interface ITypeReuseSvc
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetData", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataResponse")]
-        System.Threading.Tasks.Task<BinLib.BinLibrary> GetDataAsync(int value);
+        System.Threading.Tasks.Task<tfmNetCoreapp31_NS.BinLibrary> GetDataAsync(int value);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContract", ReplyAction="http://tempuri.org/ITypeReuseSvc/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<TypesLib.TypeReuseCompositeType> GetDataUsingDataContractAsync(TypesLib.TypeReuseCompositeType composite);
+        System.Threading.Tasks.Task<tfmNetCoreapp31_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(tfmNetCoreapp31_NS.TypeReuseCompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface ITypeReuseSvcChannel : TypeReuse20_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
+    public interface ITypeReuseSvcChannel : tfmNetCoreapp31_NS.ITypeReuseSvc, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<TypeReuse20_NS.ITypeReuseSvc>, TypeReuse20_NS.ITypeReuseSvc
+    public partial class TypeReuseSvcClient : System.ServiceModel.ClientBase<tfmNetCoreapp31_NS.ITypeReuseSvc>, tfmNetCoreapp31_NS.ITypeReuseSvc
     {
         
         /// <summary>
@@ -73,12 +133,12 @@ namespace TypeReuse20_NS
         {
         }
         
-        public System.Threading.Tasks.Task<BinLib.BinLibrary> GetDataAsync(int value)
+        public System.Threading.Tasks.Task<tfmNetCoreapp31_NS.BinLibrary> GetDataAsync(int value)
         {
             return base.Channel.GetDataAsync(value);
         }
         
-        public System.Threading.Tasks.Task<TypesLib.TypeReuseCompositeType> GetDataUsingDataContractAsync(TypesLib.TypeReuseCompositeType composite)
+        public System.Threading.Tasks.Task<tfmNetCoreapp31_NS.TypeReuseCompositeType> GetDataUsingDataContractAsync(tfmNetCoreapp31_NS.TypeReuseCompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
