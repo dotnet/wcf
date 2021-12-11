@@ -178,14 +178,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             WSHttpBinding httpBinding = binding as WSHttpBinding;
             if (httpBinding != null)
             {
-                AddCustomBindingConfiguration(statements, new CustomBinding(httpBinding));
+                AddCustomBindingConfiguration(statements, new CustomBinding(httpBinding), httpBinding.Security.Message.EstablishSecurityContext);
                 return;
             }
 
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingTypeNotSupportedFormat, binding.GetType().FullName));
         }
 
-        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom)
+        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom, bool establishSecurityContext = false)
         {
             const string ResultVarName = "result";
             statements.Add(
@@ -239,7 +239,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     TransportSecurityBindingElement transportSE = bindingElement as TransportSecurityBindingElement;
                     if (transportSE != null)
                     {
-                        AddTransportSecurityBindingElement(statements, resultVar, transportSE);
+                        AddTransportSecurityBindingElement(statements, resultVar, transportSE, establishSecurityContext);
                         handled = true;
                     }
                 }
@@ -294,7 +294,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     new CodeObjectCreateExpression(typeof(SslStreamSecurityBindingElement))));
         }
 
-        private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement)
+        private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement, bool establishSecurityContext)
         {
             // Security binding validation is done in EndpointSelector.cs - Add UserNameOverTransportBindingElement
             TransportSecurityBindingElement defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
@@ -306,7 +306,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     "CreateUserNameOverTransportBindingElement"));
             statements.Add(userNameOverTransportSecurityBindingElement);
             CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
-
+            if (establishSecurityContext)
+            {
+                CodeVariableDeclarationStatement securityBindingElement = new CodeVariableDeclarationStatement(
+                    typeof(SecurityBindingElement),
+                    "securityBindingElement",
+                    new CodeMethodInvokeExpression(
+                        new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
+                        "CreateSecureConversationBindingElement",
+                        bindingElementRef));
+                statements.Add(securityBindingElement);
+                bindingElementRef = new CodeVariableReferenceExpression(securityBindingElement.Name);
+            }
+            
             if (defaultBindingElement.IncludeTimestamp != bindingElement.IncludeTimestamp)
             {
                 statements.Add(
