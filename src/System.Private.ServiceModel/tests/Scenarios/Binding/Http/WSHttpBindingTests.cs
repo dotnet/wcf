@@ -15,7 +15,7 @@ public static class Binding_Http_WSHttpBindingTests
     {
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
-        string testString = "Hello";
+        string testString = "  Hello  ";
         WSHttpBinding binding = null;
 
         try
