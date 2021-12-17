@@ -178,14 +178,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             WSHttpBinding httpBinding = binding as WSHttpBinding;
             if (httpBinding != null)
             {
-                AddCustomBindingConfiguration(statements, new CustomBinding(httpBinding), httpBinding.Security.Message.EstablishSecurityContext);
+                AddCustomBindingConfiguration(statements, new CustomBinding(httpBinding), httpBinding.Security.Message.ClientCredentialType, httpBinding.Security.Message.EstablishSecurityContext);
                 return;
             }
 
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingTypeNotSupportedFormat, binding.GetType().FullName));
         }
 
-        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom, bool establishSecurityContext = false)
+        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom, MessageCredentialType messageCredential = MessageCredentialType.UserName, bool establishSecurityContext = false)
         {
             const string ResultVarName = "result";
             statements.Add(
@@ -239,7 +239,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     TransportSecurityBindingElement transportSE = bindingElement as TransportSecurityBindingElement;
                     if (transportSE != null)
                     {
-                        AddTransportSecurityBindingElement(statements, resultVar, transportSE, establishSecurityContext);
+                        AddTransportSecurityBindingElement(statements, resultVar, transportSE, messageCredential, establishSecurityContext);
                         handled = true;
                     }
                 }
@@ -294,18 +294,38 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     new CodeObjectCreateExpression(typeof(SslStreamSecurityBindingElement))));
         }
 
-        private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement, bool establishSecurityContext)
+        private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement, MessageCredentialType messageCredential, bool establishSecurityContext)
         {
             // Security binding validation is done in EndpointSelector.cs - Add UserNameOverTransportBindingElement
-            TransportSecurityBindingElement defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-            CodeVariableDeclarationStatement userNameOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
-                typeof(TransportSecurityBindingElement),
-                "userNameOverTransportSecurityBindingElement",
-                new CodeMethodInvokeExpression(
-                    new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
-                    "CreateUserNameOverTransportBindingElement"));
-            statements.Add(userNameOverTransportSecurityBindingElement);
-            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
+            TransportSecurityBindingElement defaultBindingElement = null;
+            CodeVariableReferenceExpression bindingElementRef = null;
+            switch (messageCredential)
+            {
+                case MessageCredentialType.Certificate:
+                    defaultBindingElement = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
+                    CodeVariableDeclarationStatement certificateOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
+                        typeof(TransportSecurityBindingElement),
+                        "certificateOverTransportSecurityBindingElement",
+                        new CodeMethodInvokeExpression(
+                            new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
+                            "CreateCertificateOverTransportBindingElement"));
+                    statements.Add(certificateOverTransportSecurityBindingElement);
+                    bindingElementRef = new CodeVariableReferenceExpression(certificateOverTransportSecurityBindingElement.Name);
+                    break;
+                case MessageCredentialType.UserName:
+                default:
+                    defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
+                    CodeVariableDeclarationStatement userNameOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
+                        typeof(TransportSecurityBindingElement),
+                        "userNameOverTransportSecurityBindingElement",
+                        new CodeMethodInvokeExpression(
+                            new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
+                            "CreateUserNameOverTransportBindingElement"));
+                    statements.Add(userNameOverTransportSecurityBindingElement);
+                    bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
+                    break;
+            }
+            
             if (establishSecurityContext)
             {
                 CodeVariableDeclarationStatement securityBindingElement = new CodeVariableDeclarationStatement(
