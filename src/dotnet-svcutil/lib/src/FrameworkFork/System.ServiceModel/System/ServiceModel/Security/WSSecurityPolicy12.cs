@@ -44,9 +44,7 @@ namespace System.ServiceModel.Security
         {
             get
             {
-                throw new NotImplementedException();
-                // TODO:
-                // return new WSTrustDec2005.DriverDec2005(new SecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12, WSSecurityTokenSerializer.DefaultInstance));
+                return new WSTrustDec2005.DriverDec2005(new SecurityStandardsManager(MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12, WSSecurityTokenSerializer.DefaultInstance));
             }
         }
 
@@ -157,6 +155,55 @@ namespace System.ServiceModel.Security
             return supportingTokenAssertions;
         }
 
+        public override XmlElement CreateWsspSpnegoContextTokenAssertion(MetadataExporter exporter, SspiSecurityTokenParameters parameters)
+        {
+            XmlElement result = CreateWsspAssertion(SpnegoContextTokenName);
+            SetIncludeTokenValue(result, parameters.InclusionMode);
+            result.AppendChild(
+                CreateWspPolicyWrapper(
+                    exporter,
+                    CreateWsspRequireDerivedKeysAssertion(parameters.RequireDerivedKeys),
+                    // Always emit <sp:MustNotSendCancel/> for spnego and sslnego
+                    CreateWsspMustNotSendCancelAssertion(false),
+                    CreateWsspMustNotSendAmendAssertion(),
+                    CreateWsspMustNotSendRenewAssertion()
+            ));
+            return result;
+        }
+
+        public override XmlElement CreateMsspSslContextTokenAssertion(MetadataExporter exporter, SslSecurityTokenParameters parameters)
+        {
+            XmlElement result = CreateMsspAssertion(SslContextTokenName);
+            SetIncludeTokenValue(result, parameters.InclusionMode);
+            result.AppendChild(
+                CreateWspPolicyWrapper(
+                    exporter,
+                    CreateWsspRequireDerivedKeysAssertion(parameters.RequireDerivedKeys),
+                    // Always emit <sp:MustNotSendCancel/> for spnego and sslnego
+                    CreateWsspMustNotSendCancelAssertion(false),
+                    CreateMsspRequireClientCertificateAssertion(parameters.RequireClientCertificate),
+                    CreateWsspMustNotSendAmendAssertion(),
+                    CreateWsspMustNotSendRenewAssertion()
+            ));
+            return result;
+        }
+
+        public override XmlElement CreateWsspSecureConversationTokenAssertion(MetadataExporter exporter, SecureConversationSecurityTokenParameters parameters)
+        {
+            XmlElement result = CreateWsspAssertion(SecureConversationTokenName);
+            SetIncludeTokenValue(result, parameters.InclusionMode);
+            result.AppendChild(
+                CreateWspPolicyWrapper(
+                    exporter,
+                    CreateWsspRequireDerivedKeysAssertion(parameters.RequireDerivedKeys),
+                    CreateWsspMustNotSendCancelAssertion(parameters.RequireCancellation),
+                    CreateWsspBootstrapPolicyAssertion(exporter, parameters.BootstrapSecurityBindingElement),
+                    CreateWsspMustNotSendAmendAssertion(),
+                    (!parameters.RequireCancellation || !parameters.CanRenewSession) ? CreateWsspMustNotSendRenewAssertion() : null
+            ));
+            return result;
+        }
+
         private XmlElement CreateWsspMustNotSendAmendAssertion()
         {
             XmlElement result = CreateWsspAssertion(MustNotSendAmendName);
@@ -167,6 +214,152 @@ namespace System.ServiceModel.Security
         {
             XmlElement result = CreateWsspAssertion(MustNotSendRenewName);
             return result;
+        }
+
+        public override bool TryImportWsspSpnegoContextTokenAssertion(MetadataImporter importer, XmlElement assertion, out SecurityTokenParameters parameters)
+        {
+            parameters = null;
+
+            SecurityTokenInclusionMode inclusionMode;
+            Collection<Collection<XmlElement>> alternatives;
+
+            if (IsWsspAssertion(assertion, SpnegoContextTokenName)
+                && TryGetIncludeTokenValue(assertion, out inclusionMode))
+            {
+                if (TryGetNestedPolicyAlternatives(importer, assertion, out alternatives))
+                {
+                    foreach (Collection<XmlElement> alternative in alternatives)
+                    {
+                        SspiSecurityTokenParameters sspi = new SspiSecurityTokenParameters();
+                        parameters = sspi;
+                        bool requireCancellation;
+                        bool canRenewSession;
+                        if (TryImportWsspRequireDerivedKeysAssertion(alternative, sspi)
+                            && TryImportWsspMustNotSendCancelAssertion(alternative, out requireCancellation)
+                            && TryImportWsspMustNotSendAmendAssertion(alternative)
+                            // We do not support Renew for spnego and sslnego. Read the 
+                            // assertion if present and ignore it.
+                            && TryImportWsspMustNotSendRenewAssertion(alternative, out canRenewSession)
+                            && alternative.Count == 0)
+                        {
+                            // Client always set this to true to match the standardbinding.
+                            // This setting on client has no effect for spnego and sslnego.
+                            sspi.RequireCancellation = true;
+                            sspi.InclusionMode = inclusionMode;
+                            break;
+                        }
+                        else
+                        {
+                            parameters = null;
+                        }
+                    }
+                }
+                else
+                {
+                    parameters = new SspiSecurityTokenParameters();
+                    parameters.RequireDerivedKeys = false;
+                    parameters.InclusionMode = inclusionMode;
+                }
+            }
+
+            return parameters != null;
+        }
+
+        public override bool TryImportMsspSslContextTokenAssertion(MetadataImporter importer, XmlElement assertion, out SecurityTokenParameters parameters)
+        {
+            parameters = null;
+
+            SecurityTokenInclusionMode inclusionMode;
+            Collection<Collection<XmlElement>> alternatives;
+
+            if (IsMsspAssertion(assertion, SslContextTokenName)
+                && TryGetIncludeTokenValue(assertion, out inclusionMode))
+            {
+                if (TryGetNestedPolicyAlternatives(importer, assertion, out alternatives))
+                {
+                    foreach (Collection<XmlElement> alternative in alternatives)
+                    {
+                        SslSecurityTokenParameters ssl = new SslSecurityTokenParameters();
+                        parameters = ssl;
+                        bool requireCancellation;
+                        bool canRenewSession;
+                        if (TryImportWsspRequireDerivedKeysAssertion(alternative, ssl)
+                            && TryImportWsspMustNotSendCancelAssertion(alternative, out requireCancellation)
+                            && TryImportWsspMustNotSendAmendAssertion(alternative)
+                            // We do not support Renew for spnego and sslnego. Read the 
+                            // assertion if present and ignore it.
+                            && TryImportWsspMustNotSendRenewAssertion(alternative, out canRenewSession)
+                            && TryImportMsspRequireClientCertificateAssertion(alternative, ssl)
+                            && alternative.Count == 0)
+                        {
+                            // Client always set this to true to match the standardbinding.
+                            // This setting on client has no effect for spnego and sslnego.
+                            ssl.RequireCancellation = true;
+                            ssl.InclusionMode = inclusionMode;
+                            break;
+                        }
+                        else
+                        {
+                            parameters = null;
+                        }
+                    }
+                }
+                else
+                {
+                    parameters = new SslSecurityTokenParameters();
+                    parameters.RequireDerivedKeys = false;
+                    parameters.InclusionMode = inclusionMode;
+                }
+            }
+
+            return parameters != null;
+        }
+
+        public override bool TryImportWsspSecureConversationTokenAssertion(MetadataImporter importer, XmlElement assertion, out SecurityTokenParameters parameters)
+        {
+            parameters = null;
+
+            SecurityTokenInclusionMode inclusionMode;
+            Collection<Collection<XmlElement>> alternatives;
+
+            if (IsWsspAssertion(assertion, SecureConversationTokenName)
+                && TryGetIncludeTokenValue(assertion, out inclusionMode))
+            {
+                if (TryGetNestedPolicyAlternatives(importer, assertion, out alternatives))
+                {
+                    foreach (Collection<XmlElement> alternative in alternatives)
+                    {
+                        SecureConversationSecurityTokenParameters sc = new SecureConversationSecurityTokenParameters();
+                        parameters = sc;
+                        bool requireCancellation;
+                        bool canRenewSession;
+                        if (TryImportWsspRequireDerivedKeysAssertion(alternative, sc)
+                            && TryImportWsspMustNotSendCancelAssertion(alternative, out requireCancellation)
+                            && TryImportWsspMustNotSendAmendAssertion(alternative)
+                            && TryImportWsspMustNotSendRenewAssertion(alternative, out canRenewSession)
+                            && TryImportWsspBootstrapPolicyAssertion(importer, alternative, sc)
+                            && alternative.Count == 0)
+                        {
+                            sc.RequireCancellation = requireCancellation;
+                            sc.CanRenewSession = canRenewSession;
+                            sc.InclusionMode = inclusionMode;
+                            break;
+                        }
+                        else
+                        {
+                            parameters = null;
+                        }
+                    }
+                }
+                else
+                {
+                    parameters = new SecureConversationSecurityTokenParameters();
+                    parameters.InclusionMode = inclusionMode;
+                    parameters.RequireDerivedKeys = false;
+                }
+            }
+
+            return parameters != null;
         }
 
         public virtual bool TryImportWsspMustNotSendAmendAssertion(ICollection<XmlElement> assertions)
@@ -402,6 +595,25 @@ namespace System.ServiceModel.Security
             return result;
         }
 
+        public override bool TryImportWsspRequireDerivedKeysAssertion(ICollection<XmlElement> assertions, SecurityTokenParameters parameters)
+        {
+            parameters.RequireDerivedKeys = TryImportWsspAssertion(assertions, WSSecurityPolicy.RequireDerivedKeysName);
+
+            if (!parameters.RequireDerivedKeys)
+            {
+                parameters.RequireDerivedKeys = TryImportWsspAssertion(assertions, WSSecurityPolicy12.RequireExplicitDerivedKeysName);
+            }
+
+            if (!parameters.RequireDerivedKeys)
+            {
+                XmlElement assertion = null;
+                if (TryImportWsspAssertion(assertions, WSSecurityPolicy12.RequireImpliedDerivedKeysName, out assertion))
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(string.Format(SRServiceModel.UnsupportedSecurityPolicyAssertion, assertion.OuterXml)));
+            }
+
+            return true;
+        }
+
         public override XmlElement CreateWsspTrustAssertion(MetadataExporter exporter, SecurityKeyEntropyMode keyEntropyMode)
         {
             return CreateWsspTrustAssertion(Trust13Name, exporter, keyEntropyMode);
@@ -410,6 +622,31 @@ namespace System.ServiceModel.Security
         public override bool TryImportWsspTrustAssertion(MetadataImporter importer, ICollection<XmlElement> assertions, SecurityBindingElement binding, out XmlElement assertion)
         {
             return TryImportWsspTrustAssertion(Trust13Name, importer, assertions, binding, out assertion);
+        }
+
+        public override XmlElement CreateWsspRsaTokenAssertion(RsaSecurityTokenParameters parameters)
+        {
+            XmlElement result = CreateWsspAssertion(KeyValueTokenName);
+            SetIncludeTokenValue(result, parameters.InclusionMode);
+            return result;
+        }
+
+        public override bool TryImportWsspRsaTokenAssertion(MetadataImporter importer, XmlElement assertion, out SecurityTokenParameters parameters)
+        {
+            parameters = null;
+
+            SecurityTokenInclusionMode inclusionMode;
+            Collection<Collection<XmlElement>> alternatives;
+
+            if (IsWsspAssertion(assertion, KeyValueTokenName)
+                && TryGetIncludeTokenValue(assertion, out inclusionMode)
+                && TryGetNestedPolicyAlternatives(importer, assertion, out alternatives) == false)
+            {
+                parameters = new RsaSecurityTokenParameters();
+                parameters.InclusionMode = inclusionMode;
+            }
+
+            return parameters != null;
         }
     }
 }

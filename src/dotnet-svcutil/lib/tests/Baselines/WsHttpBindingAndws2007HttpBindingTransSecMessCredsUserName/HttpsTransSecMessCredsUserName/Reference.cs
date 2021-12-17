@@ -2658,8 +2658,9 @@ namespace HttpsTransSecMessCredsUserName_NS
             {
                 System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
                 System.ServiceModel.Channels.TransportSecurityBindingElement userNameOverTransportSecurityBindingElement = System.ServiceModel.Channels.SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-                userNameOverTransportSecurityBindingElement.MessageSecurityVersion = System.ServiceModel.MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
-                result.Elements.Add(userNameOverTransportSecurityBindingElement);
+                System.ServiceModel.Channels.SecurityBindingElement securityBindingElement = System.ServiceModel.Channels.SecurityBindingElement.CreateSecureConversationBindingElement(userNameOverTransportSecurityBindingElement);
+                securityBindingElement.MessageSecurityVersion = System.ServiceModel.MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
+                result.Elements.Add(securityBindingElement);
                 System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
                 result.Elements.Add(textBindingElement);
                 System.ServiceModel.Channels.HttpsTransportBindingElement httpsBindingElement = new System.ServiceModel.Channels.HttpsTransportBindingElement();
@@ -2673,8 +2674,9 @@ namespace HttpsTransSecMessCredsUserName_NS
             {
                 System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
                 System.ServiceModel.Channels.TransportSecurityBindingElement userNameOverTransportSecurityBindingElement = System.ServiceModel.Channels.SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-                userNameOverTransportSecurityBindingElement.MessageSecurityVersion = System.ServiceModel.MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
-                result.Elements.Add(userNameOverTransportSecurityBindingElement);
+                System.ServiceModel.Channels.SecurityBindingElement securityBindingElement = System.ServiceModel.Channels.SecurityBindingElement.CreateSecureConversationBindingElement(userNameOverTransportSecurityBindingElement);
+                securityBindingElement.MessageSecurityVersion = System.ServiceModel.MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
+                result.Elements.Add(securityBindingElement);
                 System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
                 result.Elements.Add(textBindingElement);
                 System.ServiceModel.Channels.HttpsTransportBindingElement httpsBindingElement = new System.ServiceModel.Channels.HttpsTransportBindingElement();
