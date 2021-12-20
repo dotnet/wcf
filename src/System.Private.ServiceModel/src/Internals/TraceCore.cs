@@ -15,7 +15,7 @@ namespace System.Runtime
 
     internal partial class TraceCore
     {
-        
+        private const int MaxExceptionStringLength = 28 * 1024;
         static System.Resources.ResourceManager resourceManager;
         
         static System.Globalization.CultureInfo resourceCulture;
@@ -74,7 +74,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void HandledException(EtwDiagnosticTrace trace, string param0, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.HandledException(param0, serializedException);
         }
 
@@ -110,7 +110,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void ThrowingException(EtwDiagnosticTrace trace, string param0, string param1, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.ThrowingException(param0, param1, serializedException);
         }
 
@@ -133,7 +133,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void UnhandledException(EtwDiagnosticTrace trace, string param0, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.UnhandledException(param0, serializedException);
         }
 
@@ -261,7 +261,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void HandledExceptionWarning(EtwDiagnosticTrace trace, string param0, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.HandledExceptionWarning(param0, serializedException);
         }
 
@@ -369,7 +369,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void HandledExceptionError(EtwDiagnosticTrace trace, string param0, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.HandledExceptionError(param0, serializedException);
         }
 
@@ -392,7 +392,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void HandledExceptionVerbose(EtwDiagnosticTrace trace, string param0, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.HandledExceptionVerbose(param0, serializedException);
         }
 
@@ -415,7 +415,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void EtwUnhandledException(EtwDiagnosticTrace trace, string param0, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.EtwUnhandledException(param0, serializedException);
         }
 
@@ -439,7 +439,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void ThrowingEtwException(EtwDiagnosticTrace trace, string param0, string param1, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.ThrowingEtwException(param0, param1, serializedException);
         }
 
@@ -463,7 +463,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void ThrowingEtwExceptionVerbose(EtwDiagnosticTrace trace, string param0, string param1, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.ThrowingEtwExceptionVerbose(param0, param1, serializedException);
         }
 
@@ -487,7 +487,7 @@ namespace System.Runtime
         /// <param name="exception">Exception associated with the event</param>
         internal static void ThrowingExceptionVerbose(EtwDiagnosticTrace trace, string param0, string param1, System.Exception exception)
         {
-            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, int.MaxValue);
+            string serializedException = EtwDiagnosticTrace.ExceptionToTraceString(exception, MaxExceptionStringLength);
             WcfEventSource.Instance.ThrowingExceptionVerbose(param0, param1, serializedException);
         }
     }
