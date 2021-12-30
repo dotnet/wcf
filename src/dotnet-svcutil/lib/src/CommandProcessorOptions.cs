@@ -58,7 +58,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         internal const string WCFCSParamsFileName = "ConnectedService.json";
         internal const string BaseServiceReferenceName = "ServiceReference";
 
-        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name };
+        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name, Switches.ProjectFile.Name };
 
         internal class CommandSwitches
         {
