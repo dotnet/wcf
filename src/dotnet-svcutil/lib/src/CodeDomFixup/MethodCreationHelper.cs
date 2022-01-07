@@ -175,17 +175,270 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 return;
             }
 
-            WSHttpBinding httpBinding = binding as WSHttpBinding;
-            if (httpBinding != null)
+            if (binding is WS2007HttpBinding ws2007HttpBinding)
             {
-                AddCustomBindingConfiguration(statements, new CustomBinding(httpBinding), httpBinding.Security.Message.ClientCredentialType, httpBinding.Security.Message.EstablishSecurityContext);
+                AddWS2007HttpBindingConfiguration(statements, ws2007HttpBinding);
+                return;
+            }
+
+            if (binding is WSHttpBinding wsHttpBinding)
+            {
+                AddWSHttpBindingConfiguration(statements, wsHttpBinding);
                 return;
             }
 
             throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, SR.ErrBindingTypeNotSupportedFormat, binding.GetType().FullName));
         }
 
-        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom, MessageCredentialType messageCredential = MessageCredentialType.UserName, bool establishSecurityContext = false)
+        private static void AddWSHttpBindingConfiguration(CodeStatementCollection statements, WSHttpBinding wsHttp)
+        {
+            const string ResultVarName = "result";
+            WSHttpBinding defaultBinding = new WSHttpBinding();
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(WSHttpBinding),
+                    ResultVarName,
+                    new CodeObjectCreateExpression(typeof(WSHttpBinding))));
+            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+
+            WSHttpMaxOutProperties(statements, resultVar);
+
+            // Set AllowCookies's default value to true.
+            statements.Add(
+                   new CodeAssignStatement(
+                       new CodePropertyReferenceExpression(
+                           resultVar,
+                           "AllowCookies"),
+                       new CodePrimitiveExpression(true)));
+
+            if (defaultBinding.MessageEncoding != wsHttp.MessageEncoding)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "MessageEncoding"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(WSMessageEncoding)),
+                            wsHttp.MessageEncoding.ToString())));
+            }
+
+            if (defaultBinding.TransactionFlow != wsHttp.TransactionFlow)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "TransactionFlow"),
+                        new CodePrimitiveExpression(wsHttp.TransactionFlow)));
+            }
+
+            if (defaultBinding.ReliableSession.Enabled != wsHttp.ReliableSession.Enabled)
+            {
+                if (wsHttp.ReliableSession.Enabled)
+                {
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Enabled"),
+                            new CodePrimitiveExpression(wsHttp.ReliableSession.Enabled)));
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Ordered"),
+                            new CodePrimitiveExpression(wsHttp.ReliableSession.Ordered)));
+                    statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                            "InactivityTimeout"),
+                        CreateTimeSpanExpression(wsHttp.ReliableSession.InactivityTimeout)));
+                }
+            }
+
+            if (defaultBinding.Security.Mode != wsHttp.Security.Mode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "Security"),
+                            "Mode"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(SecurityMode)),
+                            wsHttp.Security.Mode.ToString())));
+            }
+
+            if (defaultBinding.Security.Transport.ClientCredentialType != wsHttp.Security.Transport.ClientCredentialType)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Transport"),
+                            "ClientCredentialType"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(HttpClientCredentialType)),
+                            wsHttp.Security.Transport.ClientCredentialType.ToString())));
+            }
+
+            if (defaultBinding.Security.Message.ClientCredentialType != wsHttp.Security.Message.ClientCredentialType)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "ClientCredentialType"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(MessageCredentialType)),
+                            wsHttp.Security.Message.ClientCredentialType.ToString())));
+            }
+
+            if (defaultBinding.Security.Message.EstablishSecurityContext != wsHttp.Security.Message.EstablishSecurityContext)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "EstablishSecurityContext"),
+                        new CodePrimitiveExpression(wsHttp.Security.Message.EstablishSecurityContext)));
+            }
+
+            statements.Add(new CodeMethodReturnStatement(resultVar));
+        }
+
+        private static void AddWS2007HttpBindingConfiguration(CodeStatementCollection statements, WS2007HttpBinding ws2007Http)
+        {
+            const string ResultVarName = "result";
+            WS2007HttpBinding defaultBinding = new WS2007HttpBinding();
+
+            statements.Add(
+                new CodeVariableDeclarationStatement(
+                    typeof(WS2007HttpBinding),
+                    ResultVarName,
+                    new CodeObjectCreateExpression(typeof(WS2007HttpBinding))));
+            CodeVariableReferenceExpression resultVar = new CodeVariableReferenceExpression(ResultVarName);
+
+            WSHttpMaxOutProperties(statements, resultVar);
+
+            // Set AllowCookies's default value to true.
+            statements.Add(
+                   new CodeAssignStatement(
+                       new CodePropertyReferenceExpression(
+                           resultVar,
+                           "AllowCookies"),
+                       new CodePrimitiveExpression(true)));
+
+            if (defaultBinding.MessageEncoding != ws2007Http.MessageEncoding)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "MessageEncoding"),
+                        new CodePropertyReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(WSMessageEncoding)),
+                            ws2007Http.MessageEncoding.ToString())));
+            }
+
+            if (defaultBinding.TransactionFlow != ws2007Http.TransactionFlow)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            resultVar,
+                            "TransactionFlow"),
+                        new CodePrimitiveExpression(ws2007Http.TransactionFlow)));
+            }
+
+            if (defaultBinding.ReliableSession.Enabled != ws2007Http.ReliableSession.Enabled)
+            {
+                if (ws2007Http.ReliableSession.Enabled)
+                {
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Enabled"),
+                            new CodePrimitiveExpression(ws2007Http.ReliableSession.Enabled)));
+                    statements.Add(
+                        new CodeAssignStatement(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                                "Ordered"),
+                            new CodePrimitiveExpression(ws2007Http.ReliableSession.Ordered)));
+                    statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "ReliableSession"),
+                            "InactivityTimeout"),
+                        CreateTimeSpanExpression(ws2007Http.ReliableSession.InactivityTimeout)));
+                }
+            }
+
+            if (defaultBinding.Security.Mode != ws2007Http.Security.Mode)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(resultVar, "Security"),
+                            "Mode"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(SecurityMode)),
+                            ws2007Http.Security.Mode.ToString())));
+            }
+
+            if (defaultBinding.Security.Transport.ClientCredentialType != ws2007Http.Security.Transport.ClientCredentialType)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Transport"),
+                            "ClientCredentialType"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(HttpClientCredentialType)),
+                            ws2007Http.Security.Transport.ClientCredentialType.ToString())));
+            }
+
+            if (defaultBinding.Security.Message.ClientCredentialType != ws2007Http.Security.Message.ClientCredentialType)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "ClientCredentialType"),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression(typeof(MessageCredentialType)),
+                            ws2007Http.Security.Message.ClientCredentialType.ToString())));
+            }
+
+            if (defaultBinding.Security.Message.EstablishSecurityContext != ws2007Http.Security.Message.EstablishSecurityContext)
+            {
+                statements.Add(
+                    new CodeAssignStatement(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(resultVar, "Security"),
+                                "Message"),
+                            "EstablishSecurityContext"),
+                        new CodePrimitiveExpression(ws2007Http.Security.Message.EstablishSecurityContext)));
+            }
+
+            statements.Add(new CodeMethodReturnStatement(resultVar));
+        }
+
+        private static void AddCustomBindingConfiguration(CodeStatementCollection statements, CustomBinding custom)
         {
             const string ResultVarName = "result";
             statements.Add(
@@ -239,7 +492,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     TransportSecurityBindingElement transportSE = bindingElement as TransportSecurityBindingElement;
                     if (transportSE != null)
                     {
-                        AddTransportSecurityBindingElement(statements, resultVar, transportSE, messageCredential, establishSecurityContext);
+                        AddTransportSecurityBindingElement(statements, resultVar, transportSE);
                         handled = true;
                     }
                 }
@@ -294,51 +547,19 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     new CodeObjectCreateExpression(typeof(SslStreamSecurityBindingElement))));
         }
 
-        private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement, MessageCredentialType messageCredential, bool establishSecurityContext)
+        private static void AddTransportSecurityBindingElement(CodeStatementCollection statements, CodeVariableReferenceExpression customBinding, TransportSecurityBindingElement bindingElement)
         {
             // Security binding validation is done in EndpointSelector.cs - Add UserNameOverTransportBindingElement
-            TransportSecurityBindingElement defaultBindingElement = null;
-            CodeVariableReferenceExpression bindingElementRef = null;
-            switch (messageCredential)
-            {
-                case MessageCredentialType.Certificate:
-                    defaultBindingElement = SecurityBindingElement.CreateCertificateOverTransportBindingElement();
-                    CodeVariableDeclarationStatement certificateOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
-                        typeof(TransportSecurityBindingElement),
-                        "certificateOverTransportSecurityBindingElement",
-                        new CodeMethodInvokeExpression(
-                            new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
-                            "CreateCertificateOverTransportBindingElement"));
-                    statements.Add(certificateOverTransportSecurityBindingElement);
-                    bindingElementRef = new CodeVariableReferenceExpression(certificateOverTransportSecurityBindingElement.Name);
-                    break;
-                case MessageCredentialType.UserName:
-                default:
-                    defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
-                    CodeVariableDeclarationStatement userNameOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
-                        typeof(TransportSecurityBindingElement),
-                        "userNameOverTransportSecurityBindingElement",
-                        new CodeMethodInvokeExpression(
-                            new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
-                            "CreateUserNameOverTransportBindingElement"));
-                    statements.Add(userNameOverTransportSecurityBindingElement);
-                    bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
-                    break;
-            }
-            
-            if (establishSecurityContext)
-            {
-                CodeVariableDeclarationStatement securityBindingElement = new CodeVariableDeclarationStatement(
-                    typeof(SecurityBindingElement),
-                    "securityBindingElement",
-                    new CodeMethodInvokeExpression(
-                        new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
-                        "CreateSecureConversationBindingElement",
-                        bindingElementRef));
-                statements.Add(securityBindingElement);
-                bindingElementRef = new CodeVariableReferenceExpression(securityBindingElement.Name);
-            }
-            
+            TransportSecurityBindingElement defaultBindingElement = SecurityBindingElement.CreateUserNameOverTransportBindingElement();
+            CodeVariableDeclarationStatement userNameOverTransportSecurityBindingElement = new CodeVariableDeclarationStatement(
+                typeof(TransportSecurityBindingElement),
+                "userNameOverTransportSecurityBindingElement",
+                new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression(typeof(SecurityBindingElement)),
+                    "CreateUserNameOverTransportBindingElement"));
+            statements.Add(userNameOverTransportSecurityBindingElement);
+            CodeVariableReferenceExpression bindingElementRef = new CodeVariableReferenceExpression(userNameOverTransportSecurityBindingElement.Name);
+
             if (defaultBindingElement.IncludeTimestamp != bindingElement.IncludeTimestamp)
             {
                 statements.Add(
@@ -1071,6 +1292,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         "MaxBufferSize"),
                     new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(int)), "MaxValue")));
 
+            statements.Add(
+                new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(
+                        resultVar,
+                        "ReaderQuotas"),
+                    new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(XmlDictionaryReaderQuotas)), "Max")));
+
+            statements.Add(
+                new CodeAssignStatement(
+                    new CodePropertyReferenceExpression(
+                    resultVar,
+                    "MaxReceivedMessageSize"),
+                    new CodePropertyReferenceExpression(new CodeTypeReferenceExpression(typeof(int)), "MaxValue")));
+        }
+
+        private static void WSHttpMaxOutProperties(CodeStatementCollection statements, CodeVariableReferenceExpression resultVar)
+        {
             statements.Add(
                 new CodeAssignStatement(
                     new CodePropertyReferenceExpression(

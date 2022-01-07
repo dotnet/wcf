@@ -27,6 +27,31 @@ namespace System.ServiceModel
                 throw DiagnosticUtility.ExceptionUtility.ThrowHelperArgumentNull("reliableSessionBindingElement");
             _element = reliableSessionBindingElement;
         }
+
+        public bool Ordered
+        {
+            get { return _element.Ordered; }
+            set { _element.Ordered = value; }
+        }
+
+        public TimeSpan InactivityTimeout
+        {
+            get { return _element.InactivityTimeout; }
+            set
+            {
+                if (value <= TimeSpan.Zero)
+                    throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException(nameof(value), value,
+                                                    SRServiceModel.ValueMustBePositive));
+
+                _element.InactivityTimeout = value;
+            }
+        }
+
+        internal void CopySettings(ReliableSession copyFrom)
+        {
+            Ordered = copyFrom.Ordered;
+            InactivityTimeout = copyFrom.InactivityTimeout;
+        }
     }
 
     public class OptionalReliableSession : ReliableSession
