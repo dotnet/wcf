@@ -192,61 +192,50 @@ namespace ReliableSessionService_NS
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
-                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
-                System.ServiceModel.Channels.ReliableSessionBindingElement reliableBindingElement = new System.ServiceModel.Channels.ReliableSessionBindingElement();
-                reliableBindingElement.ReliableMessagingVersion = System.ServiceModel.ReliableMessagingVersion.WSReliableMessaging11;
-                result.Elements.Add(reliableBindingElement);
-                System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
-                result.Elements.Add(textBindingElement);
-                System.ServiceModel.Channels.HttpTransportBindingElement httpBindingElement = new System.ServiceModel.Channels.HttpTransportBindingElement();
-                httpBindingElement.AllowCookies = true;
-                httpBindingElement.MaxBufferSize = int.MaxValue;
-                httpBindingElement.MaxReceivedMessageSize = int.MaxValue;
-                result.Elements.Add(httpBindingElement);
+                System.ServiceModel.WS2007HttpBinding result = new System.ServiceModel.WS2007HttpBinding();
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.ReliableSession.Enabled = true;
+                result.ReliableSession.Ordered = true;
+                result.ReliableSession.InactivityTimeout = new System.TimeSpan(6000000000);
+                result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
-                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
-                System.ServiceModel.Channels.ReliableSessionBindingElement reliableBindingElement = new System.ServiceModel.Channels.ReliableSessionBindingElement();
-                reliableBindingElement.Ordered = false;
-                reliableBindingElement.ReliableMessagingVersion = System.ServiceModel.ReliableMessagingVersion.WSReliableMessaging11;
-                result.Elements.Add(reliableBindingElement);
-                System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
-                result.Elements.Add(textBindingElement);
-                System.ServiceModel.Channels.HttpTransportBindingElement httpBindingElement = new System.ServiceModel.Channels.HttpTransportBindingElement();
-                httpBindingElement.AllowCookies = true;
-                httpBindingElement.MaxBufferSize = int.MaxValue;
-                httpBindingElement.MaxReceivedMessageSize = int.MaxValue;
-                result.Elements.Add(httpBindingElement);
+                System.ServiceModel.WS2007HttpBinding result = new System.ServiceModel.WS2007HttpBinding();
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.ReliableSession.Enabled = true;
+                result.ReliableSession.Ordered = false;
+                result.ReliableSession.InactivityTimeout = new System.TimeSpan(6000000000);
+                result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
-                System.ServiceModel.Channels.ReliableSessionBindingElement reliableBindingElement = new System.ServiceModel.Channels.ReliableSessionBindingElement();
-                result.Elements.Add(reliableBindingElement);
-                System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
-                result.Elements.Add(textBindingElement);
-                System.ServiceModel.Channels.HttpTransportBindingElement httpBindingElement = new System.ServiceModel.Channels.HttpTransportBindingElement();
-                httpBindingElement.AllowCookies = true;
-                httpBindingElement.MaxBufferSize = int.MaxValue;
-                httpBindingElement.MaxReceivedMessageSize = int.MaxValue;
-                result.Elements.Add(httpBindingElement);
+                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.ReliableSession.Enabled = true;
+                result.ReliableSession.Ordered = true;
+                result.ReliableSession.InactivityTimeout = new System.TimeSpan(6000000000);
+                result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
-                System.ServiceModel.Channels.ReliableSessionBindingElement reliableBindingElement = new System.ServiceModel.Channels.ReliableSessionBindingElement();
-                result.Elements.Add(reliableBindingElement);
-                System.ServiceModel.Channels.TextMessageEncodingBindingElement textBindingElement = new System.ServiceModel.Channels.TextMessageEncodingBindingElement();
-                result.Elements.Add(textBindingElement);
-                System.ServiceModel.Channels.HttpTransportBindingElement httpBindingElement = new System.ServiceModel.Channels.HttpTransportBindingElement();
-                httpBindingElement.AllowCookies = true;
-                httpBindingElement.MaxBufferSize = int.MaxValue;
-                httpBindingElement.MaxReceivedMessageSize = int.MaxValue;
-                result.Elements.Add(httpBindingElement);
+                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.ReliableSession.Enabled = true;
+                result.ReliableSession.Ordered = true;
+                result.ReliableSession.InactivityTimeout = new System.TimeSpan(6000000000);
+                result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
