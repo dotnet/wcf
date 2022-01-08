@@ -521,6 +521,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             SetPropertyValue("WarningsAsErrors", string.Empty);
         }
 
+        public void SetLangVersion()
+        {
+            // netstandard2.0 will throw an error saying default 7.3 lang version is too low, requiring 8 or higher. 
+            SetPropertyValue("LangVersion", "latest");
+        }
+
         private void UpdateTargetFramework(string targetFramework)
         {
             if (_targetFramework != targetFramework && !string.IsNullOrWhiteSpace(targetFramework))

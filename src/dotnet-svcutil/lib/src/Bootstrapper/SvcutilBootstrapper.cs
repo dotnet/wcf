@@ -151,6 +151,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             // Don't treat warnings as errors so the bootstrapper will succeed as often as possible.
             this.MSBuildProj.ClearWarningsAsErrors();
 
+            // Nullable requires newer lang versions.
+            this.MSBuildProj.SetLangVersion();
+
             await this.MSBuildProj.SaveAsync(logger, cancellationToken).ConfigureAwait(false);
         }
 
