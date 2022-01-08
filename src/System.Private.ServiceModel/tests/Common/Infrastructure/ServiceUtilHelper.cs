@@ -351,7 +351,7 @@ public static class ServiceUtilHelper
     private static X509Certificate2 InstallClientCertificateFromServer()
     {
         X509KeyStorageFlags storageFlags = X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.UserKeySet;
-        if((OSHelper.Current & OSID.AnyOSX) == OSHelper.Current)
+        if((OSHelper.Current & OSID.OSX) == OSHelper.Current)
         {
             // The PersistKeySet flag causes an exception on OSX when constructing an X509Certificate2 object.
             // The UserKeySet flag is meaningless on OSX. The Exportable flag means the private certificate

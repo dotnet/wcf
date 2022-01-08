@@ -226,7 +226,7 @@ namespace Infrastructure.Common
         {
             // If we're not running on OSX, none of the keychain api's
             // will work so fail fast if not on OSX.
-            if((OSHelper.Current & OSID.AnyOSX) != OSHelper.Current)
+            if((OSHelper.Current & OSID.OSX) != OSHelper.Current)
             {
                 return false;
             }

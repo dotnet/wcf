@@ -249,7 +249,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_Streamed(NetHttpMessageEncoding messageEncoding)
@@ -347,7 +347,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_Duplex_Buffered(NetHttpMessageEncoding messageEncoding)
@@ -591,7 +591,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_Buffered(NetHttpMessageEncoding messageEncoding)
@@ -646,7 +646,7 @@ public class WebSocketTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
     [Condition(nameof(Root_Certificate_Installed))]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Issue(1438, OS = OSID.Windows_7)]  // not supported on Win7
     [OuterLoop]
     public static void WebSocket_Https_RequestReply_Buffered_KeepAlive(NetHttpMessageEncoding messageEncoding)
