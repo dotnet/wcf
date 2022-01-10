@@ -22,7 +22,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedRequest_RoundTrips_String()
     {
@@ -63,7 +63,8 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
+               
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedResponse_RoundTrips_String()
     {
@@ -103,7 +104,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_RoundTrips_String()
     {
@@ -145,7 +146,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_MultipleReads()
     {
@@ -255,7 +256,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String()
     {
@@ -297,7 +298,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedRequest_Async_RoundTrips_String()
     {
@@ -339,7 +340,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_StreamedResponse_Async_RoundTrips_String()
     {
@@ -381,7 +382,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_RoundTrips_String_WithSingleThreadedSyncContext()
     {
@@ -400,7 +401,7 @@ public class StreamingTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Windows_Authentication_Available),
                nameof(Ambient_Credentials_Available),
-               nameof(SkipIISWithLinux))]
+               nameof(WindowsOrSelfHosted))]
     [OuterLoop]
     public static void NetTcp_TransportSecurity_Streamed_Async_RoundTrips_String_WithSingleThreadedSyncContext()
     {

@@ -346,9 +346,9 @@ namespace Infrastructure.Common
                                      ConditionalTestDetectors.IsWindows);
         }
 
-        public static bool SkipIISWithLinux()
+        public static bool WindowsOrSelfHosted()
         {
-            return GetConditionValue(nameof(SkipIISWithLinux), ConditionalTestDetectors.IsNotLinuxWithIIS);
+            return GetConditionValue(nameof(WindowsOrSelfHosted), ConditionalTestDetectors.IsWindowsOrSelfHosted);
         }
 
         // Returns the Domain if available.
