@@ -66,7 +66,7 @@ public partial class HttpsTests : ConditionalWcfTest
                nameof(Client_Certificate_Installed),
                nameof(Peer_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(1945, OS = OSID.AnyOSX)] // OSX doesn't support the TrustedPeople certificate store
+    [Issue(1945, OS = OSID.OSX)] // OSX doesn't support the TrustedPeople certificate store
     [OuterLoop]
     // Asking for PeerTrust alone should throw SecurityNegotiationException
     // if the certificate is not in the TrustedPeople store.  For this test
@@ -126,7 +126,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
-    [Issue(1945, OS = OSID.AnyOSX)] // OSX doesn't support the TrustedPeople certificate store
+    [Issue(1945, OS = OSID.OSX)] // OSX doesn't support the TrustedPeople certificate store
     [OuterLoop]
     // Asking for PeerOrChainTrust should succeed if the certificate is
     // chain-trusted, even though it is not in the TrustedPeople store.
@@ -171,7 +171,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]

@@ -13,7 +13,7 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
     [InlineData(NetHttpMessageEncoding.Binary)]
     [InlineData(NetHttpMessageEncoding.Text)]
     [InlineData(NetHttpMessageEncoding.Mtom)]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -80,7 +80,7 @@ public class Binding_Http_NetHttpsBindingTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]

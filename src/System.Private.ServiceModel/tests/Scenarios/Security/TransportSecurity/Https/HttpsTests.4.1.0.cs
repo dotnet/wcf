@@ -19,7 +19,7 @@ public partial class HttpsTests : ConditionalWcfTest
     [WcfTheory]
     [InlineData(WSMessageEncoding.Text)]
     [InlineData(WSMessageEncoding.Mtom)]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
            nameof(Server_Accepts_Certificates),
@@ -67,7 +67,7 @@ public partial class HttpsTests : ConditionalWcfTest
     // Client: CustomBinding set MessageVersion to Soap11
     // Server: BasicHttpsBinding default value is Soap11
     [WcfFact]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [OuterLoop]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
@@ -106,7 +106,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     // Client and Server bindings setup exactly the same using default settings.
     [WcfFact]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -145,7 +145,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     // Client and Server bindings setup exactly the same using Soap11
     [WcfFact]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -184,7 +184,7 @@ public partial class HttpsTests : ConditionalWcfTest
 
     // Client and Server bindings setup exactly the same using Soap12
     [WcfFact]
-    [Issue(3572, OS = OSID.OSX_10_14)]
+    [Issue(3572, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -222,7 +222,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
@@ -270,7 +270,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(SSL_Available))]
     [OuterLoop]
     public static async Task ServerCertificateValidationUsingIdentity_EchoString()
@@ -311,7 +311,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Client_Certificate_Installed),
                nameof(SSL_Available))]
     [OuterLoop]
@@ -349,7 +349,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
                nameof(Client_Certificate_Installed),
                nameof(Server_Accepts_Certificates),
@@ -399,7 +399,7 @@ public partial class HttpsTests : ConditionalWcfTest
     }
 
     [WcfFact]
-    [Issue(2870, OS = OSID.AnyOSX)]
+    [Issue(2870, OS = OSID.OSX)]
     [Condition(nameof(Root_Certificate_Installed),
            nameof(Client_Certificate_Installed),
            nameof(Server_Accepts_Certificates),

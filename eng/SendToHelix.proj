@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsPublic)' == 'true'" >
-    <HelixTargetQueue Include="Windows.10.Amd64.ClientRS5.Open" />
-    <HelixTargetQueue Include="Windows.10.Amd64.ServerRS5.Open" />
+    <HelixTargetQueue Include="Windows.10.Amd64.Client21H1.Open" />
+    <HelixTargetQueue Include="Windows.10.Amd64.Server20H2.Open" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
@@ -35,11 +35,12 @@
     <HelixTargetQueue Include="Debian.9.Amd64.Open" />
     <HelixTargetQueue Include="RedHat.7.Amd64.Open" />
     <HelixTargetQueue Include="SLES.12.Amd64.Open" />
-    <HelixTargetQueue Include="Ubuntu.1804.Amd64.Open" />
+    <HelixTargetQueue Include="Ubuntu.2004.Amd64.Open" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestJob)' == 'MacOS'" >
-    <HelixTargetQueue Include="OSX.1014.Amd64.Open" />
+    <HelixTargetQueue Include="OSX.1200.Amd64.Open" />
+    <HelixTargetQueue Include="OSX.1200.Arm64.Open" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(RunAsPublic)' == 'true' ">

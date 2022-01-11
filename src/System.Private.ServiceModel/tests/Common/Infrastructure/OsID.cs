@@ -36,42 +36,18 @@ namespace Infrastructure.Common
              Windows_Server_2008 | Windows_Server_2008_R2 | Windows_Server_2012 | Windows_Server_2012_R2 | Windows_Server_2016 |
              WindowsPhone | Windows_Nano,
 
-        CentOS_7 =             0x00000800,
-        CentOS_7_3 =             0x00001000,
-        AnyCentOS = CentOS_7 | CentOS_7_3,
-
-        Debian_8 =               0x00002000,
-        Debian_9 =               0x00004000,
-        AnyDebian = Debian_8 | Debian_9,
-
-        Fedora_26 =              0x00008000,
-        Fedora_27 =              0x00010000,
-        AnyFedora = Fedora_26 | Fedora_27,
-
-        SLES_15 =                0x00020000,
-        OpenSUSE_42_3 =          0x00040000,
-        SLES_12 =                0x00080000,
-        AnyOpenSUSE = SLES_15 | OpenSUSE_42_3 | SLES_12,
-
-        OSX_10_12 =              0x00100000,
-        OSX_10_13 =              0x00200000,
-        OSX_10_14 =              0x00400000,
-        AnyOSX = OSX_10_12 | OSX_10_13 | OSX_10_14,
-
-        RHEL_7 =                 0x00800000,
-        AnyRHEL = RHEL_7,
-
-        Ubuntu_14_04 =           0x01000000,
-        Ubuntu_16_04 =           0x02000000,
-        Ubuntu_17_10 =           0x04000000,
-        AnyUbuntu = Ubuntu_14_04 | Ubuntu_16_04 | Ubuntu_17_10,
-
-        // Note, check all values to work out the next number. OSX_10_12 is out of sequence as it
-        // appeared after all the previous values has already been assigned.
+        CentOS =                 0x00000800,
+        Debian =                 0x00001000,
+        Fedora =                 0x00002000,
+        SLES =                   0x00004000,
+        OpenSUSE =               0x00008000,
+        OSX =                    0x00010000,
+        RHEL =                   0x00020000,
+        Ubuntu =                 0x00040000,
 
         // 'Any' combinations must explicitly name only known flags so "G" formatting
         // can be used to show a comma separated list of the bitmask.
-        AnyUnix = AnyCentOS | AnyDebian | AnyFedora | AnyOpenSUSE | AnyOSX | AnyRHEL | AnyUbuntu,
+        AnyUnix = CentOS | Debian | Fedora | OpenSUSE | OSX | RHEL | Ubuntu,
 
         Any = AnyUnix | AnyWindows
     }
