@@ -52,7 +52,7 @@ public class SetupValidationTests : ConditionalWcfTest
     //}
 
     //[WcfFact]
-    //[Issue(1886, OS = OSID.AnyOSX)]
+    //[Issue(1886, OS = OSID.OSX)]
     //[Condition(nameof(Client_Certificate_Installed))]
     //[OuterLoop]
     //public static void Client_Certificate_Correctly_Installed()
@@ -101,7 +101,7 @@ public class SetupValidationTests : ConditionalWcfTest
     //}
 
     //[WcfFact]
-    //[Issue(1945, OS = OSID.AnyOSX)]
+    //[Issue(1945, OS = OSID.OSX)]
     //[Condition(nameof(Peer_Certificate_Installed))]
     //[OuterLoop]
     //public static void Peer_Certificate_Correctly_Installed()

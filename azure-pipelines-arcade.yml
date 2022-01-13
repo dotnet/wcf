@@ -37,8 +37,8 @@ variables:
 
 resources:
   containers:
-  - container: ubuntu_1604_Powershell_62
-    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-16.04-coredeps-d9d81d0-20190612203614
+  - container: ubuntu_2004_20211215
+    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-coredeps-20211215184912-e6e3ac4
 
 stages:
 - stage: Build
@@ -162,10 +162,10 @@ stages:
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: Linux
           timeoutInMinutes: 90
-          container: ubuntu_1604_Powershell_62
+          container: ubuntu_2004_20211215
           pool:
             name:  NetCore1ESPool-Public
-            demands: ImageOverride -equals build.Ubuntu.1604.Amd64.Open
+            demands: ImageOverride -equals build.Ubuntu.1804.Amd64.Open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv2.westus2.cloudapp.azure.com/WcfService$(_WcfPRServiceId)

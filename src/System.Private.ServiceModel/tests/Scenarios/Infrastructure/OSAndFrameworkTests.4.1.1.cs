@@ -45,11 +45,11 @@ public class OSAndFrameworkTests
     [OuterLoop]
     public static void OSID_Name_Formats_Correctly()
     {
-        OSID id = OSID.Windows_7 | OSID.Ubuntu_14_04;
+        OSID id = OSID.Windows_7 | OSID.Ubuntu;
         string formatted = id.Name();
 
-        Assert.True(formatted.Contains("Windows_7") && formatted.Contains("Ubuntu_14_04"),
-                    String.Format("FrameworkID.Name should have contained Windows_7 and Ubuntu_14_04, but actual was \"{0}\"", formatted));
+        Assert.True(formatted.Contains("Windows_7") && formatted.Contains("Ubuntu"),
+                    String.Format("FrameworkID.Name should have contained Windows_7 and Ubuntu, but actual was \"{0}\"", formatted));
     }
 
     // Enable this test to get the RID string of lab machines.

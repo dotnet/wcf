@@ -28,34 +28,14 @@ namespace Infrastructure.Common
 
         private static List<Tuple<string, OSID>> _runtimeToOSID = new List<Tuple<string, OSID>>
         {
-            new Tuple<string, OSID>("centos.7", OSID.CentOS_7),
-            new Tuple<string, OSID>("centos.", OSID.AnyCentOS),
-
-            new Tuple<string, OSID>("debian.9", OSID.Debian_9),
-            new Tuple<string, OSID>("debian.8", OSID.Debian_8),
-            new Tuple<string, OSID>("debian", OSID.AnyDebian),
-
-            new Tuple<string, OSID>("fedora.26", OSID.Fedora_26),
-            new Tuple<string, OSID>("fedora.27", OSID.Fedora_27),
-            new Tuple<string, OSID>("fedora", OSID.AnyFedora),
-
-            new Tuple<string, OSID>("sles.12", OSID.SLES_12),
-            new Tuple<string, OSID>("opensuse.42.3", OSID.OpenSUSE_42_3),
-            new Tuple<string, OSID>("sles.15", OSID.SLES_15),
-            new Tuple<string, OSID>("opensuse", OSID.AnyOpenSUSE),
-
-            new Tuple<string, OSID>("osx.10.12", OSID.OSX_10_12),
-            new Tuple<string, OSID>("osx.10.13", OSID.OSX_10_13),
-            new Tuple<string, OSID>("osx.10.14", OSID.OSX_10_14),
-            new Tuple<string, OSID>("osx", OSID.AnyOSX),
-
-            new Tuple<string, OSID>("rhel.7", OSID.RHEL_7),
-            new Tuple<string, OSID>("rhel", OSID.AnyRHEL),
-
-            new Tuple<string, OSID>("ubuntu.14.04", OSID.Ubuntu_14_04),
-            new Tuple<string, OSID>("ubuntu.16.04", OSID.Ubuntu_16_04),
-            new Tuple<string, OSID>("ubuntu.17.10", OSID.Ubuntu_17_10),
-            new Tuple<string, OSID>("ubuntu", OSID.AnyUbuntu),
+            new Tuple<string, OSID>("centos", OSID.CentOS),
+            new Tuple<string, OSID>("debian", OSID.Debian),
+            new Tuple<string, OSID>("fedora", OSID.Fedora),
+            new Tuple<string, OSID>("sles", OSID.SLES),
+            new Tuple<string, OSID>("opensuse", OSID.OpenSUSE),
+            new Tuple<string, OSID>("osx", OSID.OSX),
+            new Tuple<string, OSID>("rhel", OSID.RHEL),
+            new Tuple<string, OSID>("ubuntu", OSID.Ubuntu),
 
             // Currently, the same RID and OS Description is used for Win10 Core, Nano and Normal
             // So can't differentiate between those three flavors of Win10
@@ -76,10 +56,7 @@ namespace Infrastructure.Common
             new Tuple<string, OSID>("Microsoft Windows 10.", OSID.Windows_10 | OSID.Windows_Server_2016),
             new Tuple<string, OSID>(MicrosoftWindowsPhoneName, OSID.WindowsPhone),
             new Tuple<string, OSID>(MicrosoftWindowsName, OSID.AnyWindows),  // reserved for "Don't know which version"
-            new Tuple<string, OSID>("Darwin 16", OSID.OSX_10_12),
-            new Tuple<string, OSID>("Darwin 17", OSID.OSX_10_13),
-            new Tuple<string, OSID>("Darwin 18", OSID.OSX_10_14),
-            new Tuple<string, OSID>("Darwin", OSID.AnyOSX),
+            new Tuple<string, OSID>("Darwin", OSID.OSX),
         };
 
         private static string CurrentOSDescription
@@ -106,7 +83,7 @@ namespace Infrastructure.Common
 
                     // Log this to the console so that lab run artifacts will show what we detected.
                     Console.WriteLine(String.Format("Detected current OSID as \"{0}\" from RuntimeEnvironment and description \"{1}\"",
-                                                     _currentOSID.Name(), 
+                                                     _currentOSID.Name(),
                                                      CurrentOSDescription));
                 }
 
