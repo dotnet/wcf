@@ -4,12 +4,12 @@
     <body>
       <trans-unit id="BearerKeyShouldNotIincludeAProofToken">
         <source>Bearer key scenarios should not include a proof token or issuer entropy in the response.</source>
-        <target state="new">Bearer key scenarios should not include a proof token or issuer entropy in the response.</target>
+        <target state="translated">Les scénarios de clé de porteur ne doivent pas inclure de jeton de preuve ou d’entropie d’émetteur dans la réponse.</target>
         <note />
       </trans-unit>
       <trans-unit id="ChannelFactoryMustSupportIRequestChannel">
         <source>ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</source>
-        <target state="new">ChannnelFactory must support 'System.ServiceModel.Channels.IRequestChannel' interface.</target>
+        <target state="translated">ChannnelFactory doit prise en charge de l’interface 'System.ServiceModel.Channels.IRequestChannel'.</target>
         <note />
       </trans-unit>
       <trans-unit id="CommunicationObjectCannotBeUsed">
@@ -24,67 +24,67 @@
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensAreOnlySupportedWithSymmetricKeyTypes">
         <source>Computed key proof tokens are only supported with symmetric key types.</source>
-        <target state="new">Computed key proof tokens are only supported with symmetric key types.</target>
+        <target state="translated">Les jetons de preuve de clé calculés sont uniquement pris en charge avec les types de clés symétriques.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireIssuerToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require issuer to supply key material via entropy.</source>
-        <target state="new">Computed key proof tokens require issuer to supply key material via entropy.</target>
+        <target state="translated">Les jetons de preuve de clé calculés nécessitent que l’émetteur fournisse du matériel de clé par le biais d’une entropie.</target>
         <note />
       </trans-unit>
       <trans-unit id="ComputedKeyProofTokensRequireRequesterToSupplyKeyMaterialViaEntropy">
         <source>Computed key proof tokens require requester to supply key material via entropy.</source>
-        <target state="new">Computed key proof tokens require requester to supply key material via entropy.</target>
+        <target state="translated">Les jetons de preuve de clé calculés nécessitent que le demandeur fournisse du matériel de clé par le biais d’une entropie.</target>
         <note />
       </trans-unit>
       <trans-unit id="EncryptedKeysForProofTokensNotSupported">
         <source>Encrypted keys for proof tokens are not supported.</source>
-        <target state="new">Encrypted keys for proof tokens are not supported.</target>
+        <target state="translated">Les clés chiffrées pour les jetons de preuve ne sont pas prises en charge.</target>
         <note />
       </trans-unit>
       <trans-unit id="IRequestChannelMustBeCreated">
         <source>The IRequestChannel must be in the created state. Was: '{0}'.</source>
-        <target state="new">The IRequestChannel must be in the created state. Was: '{0}'.</target>
+        <target state="translated">IRequestChannel doit être dans l’état créé. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedSecurityTokenParametersIncorrectType">
         <source>tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</source>
-        <target state="new">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; must be of type: WSTrustTokenParameters. Was: '{0}.</target>
+        <target state="translated">tokenRequirement.GetProperty&lt;IssuedSecurityTokenParameters&gt; doit être de type : WSTrustTokenParameters. Was: '{0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="IssuedTokenRenewalThresholdPercentageIncorrect">
         <source>IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</source>
-        <target state="new">IssuedTokenRenewalThresholdPercentage  must be greater than or equal to 1 and less than or equal to 100. Was: '{0}'.</target>
+        <target state="translated">IssuedTokenRenewalThresholdPercentage doit être supérieur ou égal à 1 et inférieur ou égal à 100. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="MaxIssuedTokenCachingTimeMustBeGreaterThanTimeSpanZero">
         <source>MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</source>
-        <target state="new">MaxIssuedTokenCachingTime must be greater than TimeSpan.Zero. Was: '{0}'.</target>
+        <target state="translated">MaxIssuedTokenCachingTime doit être supérieur à TimeSpan.Zero. Was: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySizeProvided">
         <source>No key size provided.</source>
-        <target state="new">No key size provided.</target>
+        <target state="translated">Aucune taille de clé n’est fournie.</target>
         <note />
       </trans-unit>
       <trans-unit id="OnlyPSHA1ComputedKeysAreSupported">
         <source>Only PSHA1 computed keys are supported.</source>
-        <target state="new">Only PSHA1 computed keys are supported.</target>
+        <target state="translated">Seules les clés calculées PSHA1 sont prises en charge.</target>
         <note />
       </trans-unit>
       <trans-unit id="ProtectedKeyEntropyIsNotSupported">
         <source>Protected key entropy is not supported.</source>
-        <target state="new">Protected key entropy is not supported.</target>
+        <target state="translated">L’entropie de clé protégée n’est pas prise en charge.</target>
         <note />
       </trans-unit>
       <trans-unit id="RSTRProofTokenShouldNotHaveAComputedKeyAlgorithmOrIssuerEntropy">
         <source>An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</source>
-        <target state="new">An RSTR containing a proof token should not also have a computed key algorithm or issuer entropy.</target>
+        <target state="translated">Un RSTR contenant un jeton de preuve ne doit pas non plus avoir d’algorithme de clé calculée ou d’entropie d’émetteur.</target>
         <note />
       </trans-unit>
       <trans-unit id="RequestTypeNotSupported">
         <source>The RequestType '{0}', is not supported.</source>
-        <target state="new">The RequestType '{0}', is not supported.</target>
+        <target state="translated">RequestType '{0}' n’est pas pris en charge.</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityEndpointNotFound">
@@ -99,17 +99,17 @@
       </trans-unit>
       <trans-unit id="TokenProviderUnableToGetToken">
         <source>The token provider '{0}' was unable to provide a security token.</source>
-        <target state="new">The token provider '{0}' was unable to provide a security token.</target>
+        <target state="translated">Le fournisseur de jetons '{0}' n'a pas pu fournir de jeton de sécurité.</target>
         <note />
       </trans-unit>
       <trans-unit id="UseKeysAreNotSupported">
         <source>UseKeys are not supported</source>
-        <target state="new">UseKeys are not supported</target>
+        <target state="translated">Les Userkeys ne sont pas pris en charge.</target>
         <note />
       </trans-unit>
       <trans-unit id="WsTrustVersionNotSupported">
         <source>The WsTrust wersion '{0}' is not supported.</source>
-        <target state="new">The WsTrust wersion '{0}' is not supported.</target>
+        <target state="translated">Le '{0}' WsTrust Wersion n’est pas pris en charge.</target>
         <note />
       </trans-unit>
     </body>
