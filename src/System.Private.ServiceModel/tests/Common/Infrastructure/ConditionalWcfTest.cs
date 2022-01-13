@@ -346,6 +346,11 @@ namespace Infrastructure.Common
                                      ConditionalTestDetectors.IsWindows);
         }
 
+        public static bool WindowsOrSelfHosted()
+        {
+            return GetConditionValue(nameof(WindowsOrSelfHosted), ConditionalTestDetectors.IsWindowsOrSelfHosted);
+        }
+
         // Returns the Domain if available.
         // TestProperties takes precedence, but if it has not been specified
         // and this is a Windows client, we infer it.
