@@ -65,6 +65,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     public static void NegotiateStream_Http_AmbientCredentials()
     {
         string testString = "Hello";
+        string result = "";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
 
@@ -78,27 +79,20 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                 binding,
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
             serviceProxy = factory.CreateChannel();
-#if NET5_0
-            // on NET5.0, expect non-standard port (selfhost uri) throw exception on non-windows platform
-            if (!OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+
+            if (Environment.Version.Major == 5 && !OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
             {
-                Assert.Throws<System.ServiceModel.ProtocolException>(() => { string result = serviceProxy.Echo(testString); });
+                Assert.Throws<System.ServiceModel.ProtocolException>(() => { result = serviceProxy.Echo(testString); });
             }
             else
             {
                 // *** EXECUTE *** \\
-                string result = serviceProxy.Echo(testString);
+                result = serviceProxy.Echo(testString);
 
                 // *** VALIDATE *** \\
                 Assert.Equal(testString, result);
             }
-#else
-            // *** EXECUTE *** \\
-            string result = serviceProxy.Echo(testString);
 
-            // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
-#endif
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
             factory.Close();
