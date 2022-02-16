@@ -1271,6 +1271,11 @@ namespace System.ServiceModel.Channels
                             {
                                 // specifying a range doesn't make sense in the context of WCF
                             }
+                            else if (string.Compare(name, "authorization", StringComparison.OrdinalIgnoreCase) == 0)
+                            {
+                                // allows adding authorisation that doesnt conform to header standards, eg. AWS Signiture 4 headers
+                                _httpRequestMessage.Headers.TryAddWithoutValidation(name, value);
+                            }
                             else
                             {
                                 try
