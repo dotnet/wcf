@@ -79,13 +79,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "harvest", "src\harvest\harv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests", "src\System.Private.ServiceModel\tests\Scenarios\Binding\WS\TransportWithMessageCredentialSecurity\Binding.WS.TransportWithMessageCredentialSecurity.IntegrationTests.csproj", "{161C03B5-B606-4DC2-BC10-5935D1DADDD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer", "src\svcutilcore\src\dotnet-svcutil.xmlserializer.csproj", "{EAB2959D-0A16-4F60-A453-765491E1C069}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-svcutil.xmlserializer.IntegrationTests", "src\svcutilcore\tests\dotnet-svcutil.xmlserializer.IntegrationTests.csproj", "{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1290FD2C-8148-43C3-817B-6D799EDD7E03} = {1290FD2C-8148-43C3-817B-6D799EDD7E03}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Common", "src\System.Private.ServiceModel\tests\Common\Infrastructure\Infrastructure.Common.csproj", "{38F22923-DF54-4BD5-A40D-D4CA05DE3D17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScenarioTests.Common.Tests", "src\System.Private.ServiceModel\tests\Common\Scenarios\ScenarioTests.Common.Tests.csproj", "{2325E2B7-571E-4A71-9AD0-CA575FEF6CA0}"
