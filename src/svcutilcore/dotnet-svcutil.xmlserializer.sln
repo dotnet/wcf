@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26906.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-svcutil.xmlserializer", "src\dotnet-svcutil.xmlserializer.csproj", "{EAB2959D-0A16-4F60-A453-765491E1C069}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-svcutil.xmlserializer.Tests", "tests\dotnet-svcutil.xmlserializer.Tests.csproj", "{E0A4893E-975E-415A-90B6-57871EB864E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-svcutil.xmlserializer.IntegrationTests", "tests\dotnet-svcutil.xmlserializer.IntegrationTests.csproj", "{E0A4893E-975E-415A-90B6-57871EB864E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
