@@ -39,7 +39,15 @@ namespace SvcutilTest
             }
             else
             {
-                project = MSBuildProj.DotNetNewAsync(filePath, logger, token).Result;
+                if (!string.IsNullOrEmpty(targetFramework))
+                {
+                    project = MSBuildProj.DotNetNewAsync(filePath, logger, token, " --framework " + targetFramework).Result;
+                }
+                else
+                {
+                    project = MSBuildProj.DotNetNewAsync(filePath, logger, token).Result;
+                }
+                    
                 File.Move(srcProgramFile, dstProgramFile);
             }
 
@@ -96,25 +104,35 @@ namespace SvcutilTest
                 }
 
                 using (var sw = new StreamWriter(srcPath))
-                {                    
-                    if (!csStr.Contains("using Microsoft.Tools.ServiceModel.Svcutil;"))
+                {
+                    if (csStr.Contains("optstring"))
                     {
-                        string indent = new string(' ', 12);
-                        csStr = csStr.Replace("using System;", "using System;\r\nusing Microsoft.Tools.ServiceModel.Svcutil;\r\nusing System.Linq;\r\nusing System.Text.RegularExpressions;");
-                        csStr = csStr.Replace("static void Main", "static int Main");
-                        string replacement = "var re = new Regex(@\"'[^\\\"\"]*'|[^\\\"\"^\\s]+|\"\"[^\\\"\"]*\"\"\");\r\n" +
-                            indent + "string optstring = @\"" + options + "\";\r\n" +
-                            indent + "string[] opts = re.Matches(optstring).Cast<Match>().Select(m => m.Value).ToArray();\r\n" +
-                            indent + "return Tool.Main(opts);";
-                        csStr = csStr.Replace("Console.WriteLine(\"Hello World!\");", replacement);
+                        int start = csStr.IndexOf("string optstring");
+                        int end = csStr.IndexOf("string[] opts");
+                        csStr = csStr.Replace(csStr.Substring(start, end - start), "string optstring = @\"" + options + "\";\r\n");
                         sw.Write(csStr);
                         sw.Flush();
                     }
                     else
                     {
-                        int start = csStr.IndexOf("string optstring");
-                        int end = csStr.IndexOf("string[] opts");
-                        csStr = csStr.Replace(csStr.Substring(start, end - start), "string optstring = @\"" + options + "\";\r\n");
+                        string indent = new string(' ', 12);
+                        string replacement = "var re = new Regex(@\"'[^\\\"\"]*'|[^\\\"\"^\\s]+|\"\"[^\\\"\"]*\"\"\");\r\n" +
+                                    indent + "string optstring = @\"" + options + "\";\r\n" +
+                                    indent + "string[] opts = re.Matches(optstring).Cast<Match>().Select(m => m.Value).ToArray();\r\n" +
+                                    indent + "return Tool.Main(opts);";
+
+                        if (csStr.Contains("using"))
+                        {
+                            csStr = csStr.Replace("using System;", "using System;\r\nusing Microsoft.Tools.ServiceModel.Svcutil;\r\nusing System.Linq;\r\nusing System.Text.RegularExpressions;");
+                            csStr = csStr.Replace("static void Main", "static int Main");
+                            csStr = csStr.Replace("Console.WriteLine(\"Hello World!\");", replacement);
+                        }
+                        else
+                        {
+                            replacement = replacement.Insert(0, "using System;\r\nusing Microsoft.Tools.ServiceModel.Svcutil;\r\nusing System.Linq;\r\nusing System.Text.RegularExpressions;\r\n");
+                            csStr = csStr.Replace("Console.WriteLine(\"Hello, World!\");", replacement);
+                        }
+
                         sw.Write(csStr);
                         sw.Flush();
                     }

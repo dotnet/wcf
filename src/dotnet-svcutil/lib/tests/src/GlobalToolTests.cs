@@ -94,8 +94,8 @@ namespace SvcutilTest
 
             this_TestCaseName = "FullFramework";
             TestFixture();
-            InitializeGlobal(testCaseName, targetFramework: "net46");
-
+            InitializeGlobal(testCaseName, targetFramework: "net5.0");
+            this_TestCaseProject.TargetFramework = "net46";
             var uri = Path.Combine(g_TestCasesDir, "wsdl", "WcfProjectNService", "tempuri.org.wsdl");
             var outDir = Path.Combine(this_TestCaseOutputDir, "ServiceReference");
             var options = $"{uri} -nl -d {outDir} -tf netcoreapp1.0";

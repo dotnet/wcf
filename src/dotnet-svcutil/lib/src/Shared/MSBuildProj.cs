@@ -314,7 +314,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        public static async Task<MSBuildProj> DotNetNewAsync(string fullPath, ILogger logger, CancellationToken cancellationToken)
+        public static async Task<MSBuildProj> DotNetNewAsync(string fullPath, ILogger logger, CancellationToken cancellationToken, string tfx = "")
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -349,7 +349,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             var sdkVersion = await ProjectPropertyResolver.GetSdkVersionAsync(projectDir, logger, cancellationToken).ConfigureAwait(false);
-            var dotnetNewParams = $"new console {GetNoRestoreParam(sdkVersion)} --force --type project --language C# --output . --name {projectName}";
+            var dotnetNewParams = $"new console {GetNoRestoreParam(sdkVersion)} --force --type project --language C# --output . --name {projectName}{tfx}";
             await ProcessRunner.RunAsync("dotnet", dotnetNewParams, projectDir, logger, cancellationToken).ConfigureAwait(false);
 
             project = await ParseAsync(File.ReadAllText(fullPath), fullPath, logger, cancellationToken).ConfigureAwait(false);
