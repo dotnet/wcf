@@ -40,7 +40,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             s_bindingValidationErrors.Clear();
 
-            if (!(binding is BasicHttpBinding || binding is NetHttpBinding || binding is WSHttpBinding || binding is NetTcpBinding || binding is CustomBinding))
+            if (!(binding is BasicHttpBinding || binding is NetHttpBinding || binding is WSHttpBinding || binding is NetTcpBinding || binding is WSFederationHttpBinding || binding is CustomBinding))
             {
                 s_bindingValidationErrors.Add(string.Format(SR.BindingTypeNotSupportedFormat, binding.GetType().FullName,
                     typeof(BasicHttpBinding).FullName, typeof(NetHttpBinding).FullName, typeof(WSHttpBinding).FullName, typeof(NetTcpBinding).FullName, typeof(CustomBinding).FullName));
@@ -90,6 +90,22 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             {
                                 s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", basicHttpBinding.Security.Mode));
                             }
+                            else
+                            {
+                                WS2007FederationHttpBinding ws2007FederationHttpBinding = binding as WS2007FederationHttpBinding;
+                                if (ws2007FederationHttpBinding != null && ws2007FederationHttpBinding.Security.Mode == WSFederationHttpSecurityMode.Message)
+                                {
+                                    s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", ws2007FederationHttpBinding.Security.Mode));
+                                }
+                                else
+                                {
+                                    WSFederationHttpBinding wsFederationHttpBinding = binding as WSFederationHttpBinding;
+                                    if (wsFederationHttpBinding != null && wsFederationHttpBinding.Security.Mode == WSFederationHttpSecurityMode.Message)
+                                    {
+                                        s_bindingValidationErrors.Add(string.Format(SRServiceModel.UnsupportedSecuritySetting, "Mode", wsFederationHttpBinding.Security.Mode));
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -116,7 +132,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
                 else if (bindingElement is MessageEncodingBindingElement)
                 {
-                    if (!(bindingElement is BinaryMessageEncodingBindingElement || bindingElement is TextMessageEncodingBindingElement))
+                    if (!(bindingElement is BinaryMessageEncodingBindingElement || bindingElement is TextMessageEncodingBindingElement || bindingElement is MtomMessageEncodingBindingElement))
                     {
                         s_bindingValidationErrors.Add(string.Format(SR.BindingMessageEncodingElementNotSupportedFormat, bindingElement.GetType().FullName,
                             typeof(BinaryMessageEncodingBindingElement).FullName, typeof(TextMessageEncodingBindingElement).FullName));
@@ -149,6 +165,23 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                                     MessageVersion.Soap12,
                                     MessageVersion.Soap11WSAddressing10,
                                     MessageVersion.Soap12WSAddressing10));
+                            }
+                            else
+                            {
+                                var mtomMsgEncodingElement = bindingElement as MtomMessageEncodingBindingElement;
+                                if (mtomMsgEncodingElement != null &&
+                                   mtomMsgEncodingElement.MessageVersion != MessageVersion.Soap11 &&
+                                   mtomMsgEncodingElement.MessageVersion != MessageVersion.Soap12 &&
+                                   mtomMsgEncodingElement.MessageVersion != MessageVersion.Soap11WSAddressing10 &&
+                                   mtomMsgEncodingElement.MessageVersion != MessageVersion.Soap12WSAddressing10)
+                                {
+                                    s_bindingValidationErrors.Add(string.Format(SR.BindingMtomMessageEncodingVersionNotSupportedFormat,
+                                        mtomMsgEncodingElement.MessageVersion,
+                                        MessageVersion.Soap11,
+                                        MessageVersion.Soap12,
+                                        MessageVersion.Soap11WSAddressing10,
+                                        MessageVersion.Soap12WSAddressing10));
+                                }
                             }
                         }
                     }

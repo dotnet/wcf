@@ -2674,6 +2674,16 @@ namespace NetHttp_NS
                 result.Security.Mode = System.ServiceModel.SecurityMode.None;
                 return result;
             }
+            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
+                result.Security.Mode = System.ServiceModel.SecurityMode.None;
+                return result;
+            }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
@@ -2687,6 +2697,10 @@ namespace NetHttp_NS
             {
                 return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Text");
             }
+            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Mtom");
+            }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
@@ -2696,6 +2710,8 @@ namespace NetHttp_NS
             Binary_IWcfService,
             
             Text_IWcfService,
+            
+            Mtom_IWcfService,
         }
     }
 }

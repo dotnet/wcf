@@ -2675,6 +2675,17 @@ namespace NetHttps_NS
                 result.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.None;
                 return result;
             }
+            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
+                result.Security.Mode = System.ServiceModel.SecurityMode.Transport;
+                result.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.None;
+                return result;
+            }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
@@ -2688,6 +2699,10 @@ namespace NetHttps_NS
             {
                 return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Text");
             }
+            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Mtom");
+            }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
         
@@ -2697,6 +2712,8 @@ namespace NetHttps_NS
             Binary_IWcfService,
             
             Text_IWcfService,
+            
+            Mtom_IWcfService,
         }
     }
 }
