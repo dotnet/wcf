@@ -41,7 +41,7 @@ namespace SvcutilTest
             {
                 if (!string.IsNullOrEmpty(targetFramework))
                 {
-                    project = MSBuildProj.DotNetNewAsync(filePath, logger, token, " --framework " + targetFramework).Result;
+                    project = MSBuildProj.DotNetNewAsync(filePath, logger, token, "--langVersion latest --framework " + targetFramework).Result;
                 }
                 else
                 {

@@ -115,7 +115,9 @@ namespace SvcutilTest
             this_TestCaseName = "ParamsFiles_SDK_TFM";
             TestFixture();
             var testCaseName = $"TF{targetFramework}".Replace(".", "_");
-            InitializeGlobal(testCaseName, targetFramework, g_SdkVersion);
+            InitializeGlobal(testCaseName, targetFramework: "net6.0", g_SdkVersion);
+            this_TestCaseProject.TargetFramework = targetFramework;
+            this_TestCaseProject.SaveAsync(this_TestCaseLogger, System.Threading.CancellationToken.None).Wait();
 
             var url = $"{Path.Combine(g_TestCasesDir, "wsdl", "Simple.wsdl")}";
             var ns = testCaseName.Replace(".", "_") + "_NS";
