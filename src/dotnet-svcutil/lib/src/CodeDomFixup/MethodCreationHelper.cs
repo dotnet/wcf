@@ -805,7 +805,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new CodeVariableDeclarationStatement(
                     typeof(System.ServiceModel.Federation.WSTrustTokenParameters),
                     WSTrustTokenVarName,
-                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWSFederationTokenParameters",
+                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWS2007FederationTokenParameters",
                         issuerBindingVar2, issuerAddressVar)));
             }
             else
@@ -814,7 +814,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 new CodeVariableDeclarationStatement(
                     typeof(System.ServiceModel.Federation.WSTrustTokenParameters),
                     WSTrustTokenVarName,
-                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWSFederationTokenParameters",
+                    new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(typeof(System.ServiceModel.Federation.WSTrustTokenParameters)), "CreateWS2007FederationTokenParameters",
                         issuerBindingVar, issuerAddressVar)));
             }
 
