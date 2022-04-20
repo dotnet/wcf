@@ -8,44 +8,45 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace System.Collections.Generic {
-      public partial class SynchronizedCollection<T> : IList<T>, IList
-      {
-           public SynchronizedCollection() { }
-           public SynchronizedCollection(object syncRoot) { }
-           public SynchronizedCollection(object syncRoot, IEnumerable<T> list) { }
-           public SynchronizedCollection(object syncRoot, params T[] list) { }
-           public int Count { get { return default; } }
-           protected List<T> Items { get { return default; } }
-           public object SyncRoot { get { return default; } }
-           public T this[int index] { get {return default; } set { } }
-           public void Add(T item) { }
-           public void Clear() { }
-           public void CopyTo(T[] array, int index) {}
-           public bool Contains(T item) { return default; }
-           public IEnumerator<T> GetEnumerator() { return default; }
-           public int IndexOf(T item) { return default; }
-           public void Insert(int index, T item) { }
-           public bool Remove(T item) { return default; }
-           public void RemoveAt(int index) { }
-           protected virtual void ClearItems() { }
-           protected virtual void InsertItem(int index, T item) { }
-           protected virtual void RemoveItem(int index) { }
-           protected virtual void SetItem(int index, T item) { }
-           bool ICollection<T>.IsReadOnly { get { return default; } }
-           IEnumerator IEnumerable.GetEnumerator() { return default; }
-           bool ICollection.IsSynchronized { get { return default; } }
-           object ICollection.SyncRoot { get { return default; } }
-           void ICollection.CopyTo(Array array, int index) {}
-           object IList.this[int index] { get { return default; } set { }}
-           bool IList.IsReadOnly { get { return default; } }
-           bool IList.IsFixedSize { get { return default; } }
-           int IList.Add(object value) { return default; }
-           bool IList.Contains(object value) { return default; }
-           int IList.IndexOf(object value) { return default; }
-           void IList.Insert(int index, object value) { }
-           void IList.Remove(object value) { }
-      }
+namespace System.Collections.Generic
+{
+    public partial class SynchronizedCollection<T> : IList<T>, IList
+    {
+        public SynchronizedCollection() { }
+        public SynchronizedCollection(object syncRoot) { }
+        public SynchronizedCollection(object syncRoot, IEnumerable<T> list) { }
+        public SynchronizedCollection(object syncRoot, params T[] list) { }
+        public int Count { get { return default; } }
+        protected List<T> Items { get { return default; } }
+        public object SyncRoot { get { return default; } }
+        public T this[int index] { get { return default; } set { } }
+        public void Add(T item) { }
+        public void Clear() { }
+        public void CopyTo(T[] array, int index) { }
+        public bool Contains(T item) { return default; }
+        public IEnumerator<T> GetEnumerator() { return default; }
+        public int IndexOf(T item) { return default; }
+        public void Insert(int index, T item) { }
+        public bool Remove(T item) { return default; }
+        public void RemoveAt(int index) { }
+        protected virtual void ClearItems() { }
+        protected virtual void InsertItem(int index, T item) { }
+        protected virtual void RemoveItem(int index) { }
+        protected virtual void SetItem(int index, T item) { }
+        bool ICollection<T>.IsReadOnly { get { return default; } }
+        IEnumerator IEnumerable.GetEnumerator() { return default; }
+        bool ICollection.IsSynchronized { get { return default; } }
+        object ICollection.SyncRoot { get { return default; } }
+        void ICollection.CopyTo(Array array, int index) { }
+        object IList.this[int index] { get { return default; } set { } }
+        bool IList.IsReadOnly { get { return default; } }
+        bool IList.IsFixedSize { get { return default; } }
+        int IList.Add(object value) { return default; }
+        bool IList.Contains(object value) { return default; }
+        int IList.IndexOf(object value) { return default; }
+        void IList.Insert(int index, object value) { }
+        void IList.Remove(object value) { }
+    }
     public partial class KeyedByTypeCollection<TItem> : System.Collections.ObjectModel.KeyedCollection<Type, TItem>
     {
         public KeyedByTypeCollection() { }
@@ -1154,6 +1155,22 @@ namespace System.ServiceModel.Channels
         TChannel CreateChannel(System.ServiceModel.EndpointAddress to);
         TChannel CreateChannel(System.ServiceModel.EndpointAddress to, System.Uri via);
     }
+    public partial interface IChannelListener : System.ServiceModel.ICommunicationObject
+    {
+        System.Uri Uri { get; }
+        T GetProperty<T>() where T : class;
+        bool WaitForChannel(System.TimeSpan timeout);
+        System.IAsyncResult BeginWaitForChannel(System.TimeSpan timeout, System.AsyncCallback callback, object state);
+        bool EndWaitForChannel(System.IAsyncResult result);
+    }
+    public partial interface IChannelListener<TChannel> : IChannelListener where TChannel : class, IChannel
+    {
+        TChannel AcceptChannel();
+        TChannel AcceptChannel(System.TimeSpan timeout);
+        System.IAsyncResult BeginAcceptChannel(System.AsyncCallback callback, object state);
+        System.IAsyncResult BeginAcceptChannel(TimeSpan timeout, System.AsyncCallback callback, object state);
+        TChannel EndAcceptChannel(System.IAsyncResult result);
+    }
     public partial interface IDuplexChannel : System.ServiceModel.Channels.IChannel, System.ServiceModel.Channels.IInputChannel, System.ServiceModel.Channels.IOutputChannel, System.ServiceModel.ICommunicationObject
     {
     }
@@ -1826,9 +1843,9 @@ namespace System.ServiceModel.Dispatcher
     }
     public partial class FaultContractInfo
     {
-         public FaultContractInfo(string action, Type detail) {}
-         public string Action { get { return default; } }
-         public Type Detail { get { return default; } }
+        public FaultContractInfo(string action, Type detail) { }
+        public string Action { get { return default; } }
+        public Type Detail { get { return default; } }
     }
     public partial interface IChannelInitializer
     {
@@ -1908,20 +1925,23 @@ namespace System.ServiceModel.Security
         public System.Security.Principal.TokenImpersonationLevel AllowedImpersonationLevel { get { return default; } set { } }
         public System.Net.NetworkCredential ClientCredential { get { return default; } set { } }
     }
-    public sealed partial class X509ServiceCertificateAuthentication {
+    public sealed partial class X509ServiceCertificateAuthentication
+    {
         public X509ServiceCertificateAuthentication() { }
         public System.ServiceModel.Security.X509CertificateValidationMode CertificateValidationMode { get { return default; } set { } }
         public System.IdentityModel.Selectors.X509CertificateValidator CustomCertificateValidator { get { return default; } set { } }
         public System.Security.Cryptography.X509Certificates.X509RevocationMode RevocationMode { get { return default; } set { } }
         public System.Security.Cryptography.X509Certificates.StoreLocation TrustedStoreLocation { get { return default; } set { } }
     }
-    public sealed partial class X509CertificateInitiatorClientCredential {
+    public sealed partial class X509CertificateInitiatorClientCredential
+    {
         internal X509CertificateInitiatorClientCredential() { }
         public System.Security.Cryptography.X509Certificates.X509Certificate2 Certificate { get { return default; } set { } }
         public void SetCertificate(System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.StoreName storeName, System.Security.Cryptography.X509Certificates.X509FindType findType, object findValue) { }
         public void SetCertificate(string subjectName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.StoreName storeName) { }
     }
-    public sealed partial class X509CertificateRecipientClientCredential {
+    public sealed partial class X509CertificateRecipientClientCredential
+    {
         internal X509CertificateRecipientClientCredential() { }
         public System.ServiceModel.Security.X509ServiceCertificateAuthentication Authentication { get { return default; } }
         public System.Security.Cryptography.X509Certificates.X509Certificate2 DefaultCertificate { get { return default; } set { } }
@@ -1932,7 +1952,8 @@ namespace System.ServiceModel.Security
         public void SetScopedCertificate(System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.StoreName storeName, System.Security.Cryptography.X509Certificates.X509FindType findType, object findValue, System.Uri targetService) { }
         public void SetScopedCertificate(string subjectName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, System.Security.Cryptography.X509Certificates.StoreName storeName, System.Uri targetService) { }
     }
-    public enum X509CertificateValidationMode {
+    public enum X509CertificateValidationMode
+    {
         ChainTrust = 2,
         Custom = 4,
         None = 0,
