@@ -35,11 +35,11 @@ namespace System.ServiceModel.Dispatcher
 
         internal class MethodInfoOperationSelector : IClientOperationSelector
         {
-            private Dictionary<object, string> _operationMap;
+            private Dictionary<IntPtr, string> _operationMap;
 
             internal MethodInfoOperationSelector(ContractDescription description, MessageDirection directionThatRequiresClientOpSelection)
             {
-                _operationMap = new Dictionary<object, string>();
+                _operationMap = new Dictionary<IntPtr, string>();
 
                 for (int i = 0; i < description.Operations.Count; i++)
                 {
@@ -48,26 +48,26 @@ namespace System.ServiceModel.Dispatcher
                     {
                         if (operation.SyncMethod != null)
                         {
-                            if (!_operationMap.ContainsKey(operation.SyncMethod))
+                            if (!_operationMap.ContainsKey(operation.SyncMethod.MethodHandle.Value))
                             {
-                                _operationMap.Add(operation.SyncMethod, operation.Name);
+                                _operationMap.Add(operation.SyncMethod.MethodHandle.Value, operation.Name);
                             }
                         }
 
                         if (operation.BeginMethod != null)
                         {
-                            if (!_operationMap.ContainsKey(operation.BeginMethod))
+                            if (!_operationMap.ContainsKey(operation.BeginMethod.MethodHandle.Value))
                             {
-                                _operationMap.Add(operation.BeginMethod, operation.Name);
-                                _operationMap.Add(operation.EndMethod, operation.Name);
+                                _operationMap.Add(operation.BeginMethod.MethodHandle.Value, operation.Name);
+                                _operationMap.Add(operation.EndMethod.MethodHandle.Value, operation.Name);
                             }
                         }
 
                         if (operation.TaskMethod != null)
                         {
-                            if (!_operationMap.ContainsKey(operation.TaskMethod))
+                            if (!_operationMap.ContainsKey(operation.TaskMethod.MethodHandle.Value))
                             {
-                                _operationMap.Add(operation.TaskMethod, operation.Name);
+                                _operationMap.Add(operation.TaskMethod.MethodHandle.Value, operation.Name);
                             }
                         }
                     }
@@ -81,9 +81,9 @@ namespace System.ServiceModel.Dispatcher
 
             public string SelectOperation(MethodBase method, object[] parameters)
             {
-                if (_operationMap.ContainsKey(method))
+                if (_operationMap.ContainsKey(method.MethodHandle.Value))
                 {
-                    return _operationMap[method];
+                    return _operationMap[method.MethodHandle.Value];
                 }
                 else
                 {
