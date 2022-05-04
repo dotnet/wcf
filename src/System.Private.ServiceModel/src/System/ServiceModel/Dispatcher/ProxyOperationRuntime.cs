@@ -257,7 +257,7 @@ namespace System.ServiceModel.Dispatcher
 
             Contract.Assert(methodCall != null);
             Contract.Assert(methodCall.MethodBase != null);
-            return methodCall.MethodBase.Equals(_syncMethod);
+            return methodCall.MethodBase.MethodHandle.Value.Equals(_syncMethod.MethodHandle.Value);
         }
 
         internal bool IsBeginCall(MethodCall methodCall)
@@ -269,7 +269,7 @@ namespace System.ServiceModel.Dispatcher
 
             Contract.Assert(methodCall != null);
             Contract.Assert(methodCall.MethodBase != null);
-            return methodCall.MethodBase.Equals(_beginMethod);
+            return methodCall.MethodBase.MethodHandle.Value.Equals(_beginMethod.MethodHandle.Value);
         }
 
         internal bool IsTaskCall(MethodCall methodCall)
@@ -281,7 +281,7 @@ namespace System.ServiceModel.Dispatcher
 
             Contract.Assert(methodCall != null);
             Contract.Assert(methodCall.MethodBase != null);
-            return methodCall.MethodBase.Equals(_taskMethod);
+            return methodCall.MethodBase.MethodHandle.Value.Equals(_taskMethod.MethodHandle.Value);
         }
 
         internal object[] MapSyncInputs(MethodCall methodCall, out object[] outs)
