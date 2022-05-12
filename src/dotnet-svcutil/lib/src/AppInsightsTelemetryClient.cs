@@ -92,14 +92,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                             }
 
                             TelemetryConfiguration config;
-                            try
-                            {
-                                config = TelemetryConfiguration.Active;
-                            }
-                            catch (InvalidOperationException)
-                            {
-                                config = new TelemetryConfiguration();
-                            }
+                            
+                            config = new TelemetryConfiguration();
 
                             config.TelemetryChannel.DeveloperMode = testMode;
 
@@ -123,9 +117,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
                     // DebugLogger tracks telemetry when adding exceptions. We pass null for the logger to avoid the possibility of an endless cyclic call if something goes wrong in GetSdkVersionAsync.
                     var sdkVersion = await ProjectPropertyResolver.GetSdkVersionAsync(System.IO.Directory.GetCurrentDirectory(), null /* logger */, cancellationToken).ConfigureAwait(false);
-                    context.Properties["SvcUtil.Version"] = Tool.PackageVersion;
-                    context.Properties["Dotnet.Version"] = string.IsNullOrEmpty(sdkVersion) ? "unknown" : sdkVersion;
-                    context.Properties["TestMode"] = testMode.ToString();
+                    context.GlobalProperties["SvcUtil.Version"] = Tool.PackageVersion;
+                    context.GlobalProperties["Dotnet.Version"] = string.IsNullOrEmpty(sdkVersion) ? "unknown" : sdkVersion;
+                    context.GlobalProperties["TestMode"] = testMode.ToString();
                 }
                 catch (Exception ex)
                 {
