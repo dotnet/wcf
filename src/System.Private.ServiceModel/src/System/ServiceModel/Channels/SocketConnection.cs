@@ -1480,6 +1480,18 @@ namespace System.ServiceModel.Channels
                 return new IPAddress[] { ipAddress };
             }
 
+            if ("localhost".Equals(uri.DnsSafeHost, StringComparison.OrdinalIgnoreCase))
+            {
+                if (Socket.OSSupportsIPv6)
+                {
+                    return new IPAddress[] { IPAddress.IPv6Loopback, IPAddress.Loopback };
+                }
+                else
+                {
+                    return new IPAddress[] { IPAddress.Loopback };
+                }
+            }
+
             IPAddress[] addresses = null;
 
             try
