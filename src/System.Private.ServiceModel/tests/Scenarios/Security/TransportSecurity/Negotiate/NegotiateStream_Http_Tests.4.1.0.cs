@@ -107,46 +107,6 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     [WcfFact]
     [Condition(nameof(Windows_Authentication_Available),
                nameof(Root_Certificate_Installed),
-               nameof(Ambient_Credentials_Available))]
-    [OuterLoop]
-    public static void NegotiateStream_Http_AmbientCredentialsForNet50()
-    {
-        string testString = "Hello";
-        ChannelFactory<IWcfService> factory = null;
-        IWcfService serviceProxy = null;
-
-        try
-        {
-            // *** SETUP *** \\
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string spn = GetSPN().ToLowerInvariant().Replace("host", "HTTP");
-
-            factory = new ChannelFactory<IWcfService>(
-                binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
-            serviceProxy = factory.CreateChannel();
-
-            // *** EXECUTE *** \\
-            string result = serviceProxy.Echo(testString);
-
-            // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
-
-            // *** CLEANUP *** \\
-            ((ICommunicationObject)serviceProxy).Close();
-            factory.Close();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-    }
-
-    [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available),
-               nameof(Root_Certificate_Installed),
                nameof(Explicit_Credentials_Available),
                nameof(Domain_Available))]
     [OuterLoop]

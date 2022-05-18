@@ -39,7 +39,7 @@ namespace System.ServiceModel.Channels
                         {
                             try
                             {
-                                s_machineName = Dns.GetHostEntryAsync(String.Empty).GetAwaiter().GetResult().HostName;
+                                s_machineName = Dns.GetHostEntry(string.Empty).HostName;
                             }
                             catch (SocketException)
                             {
