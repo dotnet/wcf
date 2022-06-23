@@ -81,11 +81,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         internal static List<ProjectDependency> ServiceModelPackages = new List<ProjectDependency>()
         {
+            ProjectDependency.FromPackage("Microsoft.Bcl.AsyncInterfaces", "*"),
+            ProjectDependency.FromPackage("Microsoft.Extensions.ObjectPool", "*"),
             ProjectDependency.FromPackage("Microsoft.IdentityModel.Logging", "*"),
             ProjectDependency.FromPackage("Microsoft.IdentityModel.Protocols.WsTrust", "*"),
             ProjectDependency.FromPackage("Microsoft.IdentityModel.Tokens", "*"),
             ProjectDependency.FromPackage("Microsoft.IdentityModel.Tokens.Saml", "*"),
             ProjectDependency.FromPackage("Microsoft.IdentityModel.Xml", "*"),
+            ProjectDependency.FromPackage("System.Drawing.Common", "*"),
             ProjectDependency.FromPackage("System.IO", "*"),
             ProjectDependency.FromPackage("System.Reflection.DispatchProxy", "*"),
             ProjectDependency.FromPackage("System.Runtime", "*"),
