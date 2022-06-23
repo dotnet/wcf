@@ -26,7 +26,7 @@
 
   <ItemGroup Condition="'$(TestJob)' == 'Windows' AND '$(RunAsInternal)'" >
     <HelixTargetQueue Include="Windows.10.Amd64" />
-    <HelixTargetQueue Include="(Debian.11.Amd64.Open)ubuntu.2004.amd64.open@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64-20220511124750-0ece9b3" />
+    <HelixTargetQueue Include="(Debian.11.Amd64)ubuntu.2004.amd64@mcr.microsoft.com/dotnet-buildtools/prereqs:debian-11-helix-amd64-20220511124750-0ece9b3" />
     <HelixTargetQueue Include="RedHat.7.Amd64" />
   </ItemGroup>
 
