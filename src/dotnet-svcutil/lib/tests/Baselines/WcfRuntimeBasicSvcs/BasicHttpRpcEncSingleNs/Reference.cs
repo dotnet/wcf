@@ -282,7 +282,7 @@ namespace BasicHttpRpcEncSingleNs_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_ICalculatorRpcEnc))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttpRpcEncSing" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttpRpcEncSing" +
                         "leNs.svc/Basic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));

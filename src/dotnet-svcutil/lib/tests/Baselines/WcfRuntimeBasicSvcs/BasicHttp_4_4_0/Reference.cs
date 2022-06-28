@@ -279,7 +279,7 @@ namespace BasicHttp_4_4_0_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Basic_IWcfService_4_4_0))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/BasicHttp_4_4_0.svc" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/BasicHttp_4_4_0.svc" +
                         "/Basic");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));

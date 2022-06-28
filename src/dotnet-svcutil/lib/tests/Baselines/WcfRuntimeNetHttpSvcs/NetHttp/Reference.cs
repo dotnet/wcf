@@ -2681,11 +2681,11 @@ namespace NetHttp_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Binary");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Binary");
             }
             if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Text");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/NetHttp.svc/Text");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
