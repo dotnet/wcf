@@ -36,10 +36,14 @@
     <EnableRunSettingsSupport Condition="'$(ContinuousIntegrationBuild)' != 'true'">true</EnableRunSettingsSupport>
   </PropertyGroup>
 
-
   <ItemGroup>
     <!-- Include license and third party files to packages -->
     <Content Include="$(RepoRoot)THIRD-PARTY-NOTICES.TXT" Pack="true" PackagePath="\" />
     <Content Include="$(RepoRoot)LICENSE.TXT" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- Microsoft.NET.Test.Sdk package defaults to restore the minimum supported version for its dependency Newtonsoft.Json, here force test project to reference higher version for security reason. -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>
