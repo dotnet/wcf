@@ -53,7 +53,7 @@ namespace System.ServiceModel
     }
     public sealed partial class BasicHttpsSecurity
     {
-        internal BasicHttpsSecurity() { }
+        public BasicHttpsSecurity() { }
         public System.ServiceModel.BasicHttpsSecurityMode Mode { get { return default; } set { } }
         public System.ServiceModel.HttpTransportSecurity Transport { get { return default; } set { } }
         public System.ServiceModel.BasicHttpMessageSecurity Message { get { return default; } set { } }
