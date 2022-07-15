@@ -55,7 +55,7 @@ goto :NextArg
 
 :: Make sure this script is running in elevated
 if EXIST %_logFile% del %_logFile% /f /q
-openfiles >nul 2>&1
+net session>nul 2>&1
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Please run this script with elevated permission.
     goto :Failure
@@ -181,6 +181,9 @@ if EXIST %_masterRepo% (
 )
 echo Use %_certService% for certificate service
 
+echo Build CertificateGenerator tool
+call :Run %_certRepo%\src\System.Private.ServiceModel\tools\scripts\BuildCertUtil.cmd
+if ERRORLEVEL 1 goto :Failure
 
 echo Run CertificateGenerator tool. This will take a little while...
 md %_wcfTestDir%

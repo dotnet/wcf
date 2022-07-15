@@ -4,13 +4,13 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>CertificateGenerator</RootNamespace>
     <AssemblyName>CertificateGenerator</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Crypto.dll" Version="1.8.1" GeneratePathProperty="true" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

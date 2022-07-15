@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Allow files and directories
+#!global.json
+#!NuGet.config
+#!/eng
+#!/src/System.Private.ServiceModel/tools
+#!/artifacts/bin/CertificateGenerator
+#!/artifacts/bin/SelfHostedWCFService
