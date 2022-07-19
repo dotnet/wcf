@@ -3,7 +3,7 @@
     <AssemblyVersion>1.1.1.0</AssemblyVersion>
     <AssemblyName>dotnet-svcutil.xmlserializer</AssemblyName>
     <RootNamespace>Microsoft.Tools.ServiceModel.SvcUtil.XmlSerializer</RootNamespace>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Exe</OutputType>
     <TargetExt>.dll</TargetExt>
     <NoWarn>$(NoWarn);1634;1691;649;168;169;NU5129</NoWarn>
@@ -28,38 +28,6 @@
     <MinClientVersion>2.12</MinClientVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="netstandard" />
-    <Reference Include="mscorlib" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.XmlSerializer" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.IO" />
-    <Reference Include="System.IO.FileSystem" />
-    <Reference Include="System.Runtime.Serialization.Primitives" />
-    <Reference Include="System.Runtime.Serialization.Xml" />
-    <Reference Include="System.Xml.ReaderWriter" />
-    <Reference Include="System.Collections" />
-    <Reference Include="System.Diagnostics.Debug" />
-    <Reference Include="System.Linq" />
-    <Reference Include="System.Reflection" />
-    <Reference Include="System.Reflection.Emit" />
-    <Reference Include="System.Reflection.Emit.ILGeneration" />
-    <Reference Include="System.Reflection.Extensions" />
-    <Reference Include="System.Reflection.Primitives" />
-    <Reference Include="System.Resources.ResourceManager" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.Extensions" />
-    <Reference Include="System.Runtime.InteropServices" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="System.Threading" />
-    <Reference Include="System.Console" />
-    <Reference Include="System.Threading" />
-    <Reference Include="System.Threading.Thread" />
-    <Reference Include="System.Diagnostics.StackTrace" />
-    <Reference Include="System.ObjectModel" />
-  </ItemGroup>
-
   <!--The default source produced by the .NET SDK generates different class/namespace/filename than the old SDK, which breaks existing code.-->
   <!--Modifying the generated source to work with existing code.-->
   <!--Same as in src/System.Private.ServiceModel/src/System.Private.ServiceModel.csproj-->
@@ -81,23 +49,9 @@
   </ItemGroup>
 
   <Import Project=".\GenerateThisAssemblyCs.targets" />
-  <Import Project="..\files\GenerateNupkgProps.targets" />
 
   <ItemGroup>
     <None Include="..\files\prefercliruntime" Pack="true" PackagePath="\"/>
     <None Include="..\files\dotnet-svcutil.xmlserializer.targets" Pack="true" PackagePath="build/" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <PsCmd>powershell</PsCmd>
-    <!--Current Linux official build machine uses PS 6 which requires 'pwsh' instead of 'powershell'.-->
-    <PsCmd Condition=" '$(OS)' != 'Windows_NT' ">pwsh</PsCmd>
-  </PropertyGroup>
-
-  <Target Name="ModifyPackage" AfterTargets="Pack">
-    <Message Importance="high" Text="Call $(WcfRootFolder)\src\svcutilcore\tools\scripts\UpdateSvcutilDotXmlSerializerPackage.ps1 to modify the svcutil.xmlserializer.nuspec" />
-    <Message Importance="high" Text="The value of environment variable OS is: $(OS)" />
-    <Message Importance="high" Text="The value of property 'PsCmd' is: $(PsCmd)" />
-    <Exec Command="$(PsCmd) -ExecutionPolicy UnRestricted -File $(WcfRootFolder)/src/svcutilcore/tools/scripts/UpdateSvcutilDotXmlSerializerPackage.ps1 $(PackageOutputPath)"/>
-  </Target>
 </Project>

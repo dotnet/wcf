@@ -65,6 +65,7 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
     public static void NegotiateStream_Http_AmbientCredentials()
     {
         string testString = "Hello";
+        string result = "";
         ChannelFactory<IWcfService> factory = null;
         IWcfService serviceProxy = null;
 
@@ -79,51 +80,18 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
                 new EndpointAddress(Endpoints.Https_WindowsAuth_Address));
             serviceProxy = factory.CreateChannel();
 
-            // *** EXECUTE *** \\
-            string result = serviceProxy.Echo(testString);
+            if (Environment.Version.Major == 5 && !OSID.AnyWindows.MatchesCurrent() && !TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName).Contains("/"))
+            {
+                Assert.Throws<System.ServiceModel.ProtocolException>(() => { result = serviceProxy.Echo(testString); });
+            }
+            else
+            {
+                // *** EXECUTE *** \\
+                result = serviceProxy.Echo(testString);
 
-            // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
-
-            // *** CLEANUP *** \\
-            ((ICommunicationObject)serviceProxy).Close();
-            factory.Close();
-        }
-        finally
-        {
-            // *** ENSURE CLEANUP *** \\
-            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-        }
-    }
-
-    [WcfFact]
-    [Condition(nameof(Windows_Authentication_Available),
-               nameof(Root_Certificate_Installed),
-               nameof(Ambient_Credentials_Available))]
-    [OuterLoop]
-    public static void NegotiateStream_Http_AmbientCredentialsForNet50()
-    {
-        string testString = "Hello";
-        ChannelFactory<IWcfService> factory = null;
-        IWcfService serviceProxy = null;
-
-        try
-        {
-            // *** SETUP *** \\
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
-            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
-
-            factory = new ChannelFactory<IWcfService>(
-                binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
-            serviceProxy = factory.CreateChannel();
-
-            // *** EXECUTE *** \\
-            string result = serviceProxy.Echo(testString);
-
-            // *** VALIDATE *** \\
-            Assert.Equal(testString, result);
+                // *** VALIDATE *** \\
+                Assert.Equal(testString, result);
+            }
 
             // *** CLEANUP *** \\
             ((ICommunicationObject)serviceProxy).Close();
@@ -211,10 +179,10 @@ public class NegotiateStream_Http_Tests : ConditionalWcfTest
             // *** SETUP *** \\
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
             binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-            string host = TestProperties.GetProperty(TestProperties.ServiceUri_PropertyName);
+            string spn = GetSPN().ToLowerInvariant().Replace("host", "HTTP");
             factory = new ChannelFactory<IWcfService>(
                 binding,
-                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity($"HTTP/{host}")));
+                new EndpointAddress(new Uri(Endpoints.Https_WindowsAuth_Address), new SpnEndpointIdentity(spn)));
 
             factory.Credentials.Windows.ClientCredential.Domain = GetDomain();
             factory.Credentials.Windows.ClientCredential.UserName = GetExplicitUserName();

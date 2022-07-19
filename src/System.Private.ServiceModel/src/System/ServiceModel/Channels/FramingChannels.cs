@@ -336,7 +336,12 @@ namespace System.ServiceModel.Channels
             IConnection connection;
             try
             {
-                connection = await _connectionPoolHelper.EstablishConnectionAsync(timeout);
+                // Execute socket connection code on either IO Thread (Windows) or our own new Thread (Linux)
+                // This is to mitigate sync over async Open calls from failing to progress when there's thread starvation.
+                using (TaskHelpers.RunTaskContinuationsOnOurThreads())
+                {
+                    connection = await _connectionPoolHelper.EstablishConnectionAsync(timeout);
+                }
             }
             catch (TimeoutException exception)
             {

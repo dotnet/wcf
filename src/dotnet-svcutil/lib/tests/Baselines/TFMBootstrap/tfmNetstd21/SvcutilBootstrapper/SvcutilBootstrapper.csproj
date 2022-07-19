@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>N.N</TargetFramework>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="dotnet-svcutil-lib">
+      <HintPath>$resultPath$/TestResults/TFMBootstrap/tfmNetstd21/bin/Debug/DOTNET_VERSION/dotnet-svcutil-lib.dll</HintPath>
+    </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="*" />
+  </ItemGroup>
+</Project>

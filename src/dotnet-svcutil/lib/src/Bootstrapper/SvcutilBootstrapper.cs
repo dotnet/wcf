@@ -123,16 +123,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 this.MSBuildProj = await MSBuildProj.DotNetNewAsync(projectFullPath, logger, cancellationToken).ConfigureAwait(false);
                 this.MSBuildProj.AddDependency(svcutilPkgRef);
 
+                // Comment out code below for reasons: 1. it never used for .net core later than V2.1 since when the approach is always use TF from the generated project.
+                // 2. with below code applied when target framework is netstandard2.0 client machine require netcoreapp2.0 (obsolete) for bootstrapper to work
+                // 3. keep it here for future reference in case when we need definite bootstrapper TF version
+
                 // NOTE: If post v2.0 NetStandard ships a different version from NetCore the table below needs to be updated!
-                var targetFramework = frameworkInfo.FullName;
-                if (isSupportedTFM && frameworkInfo.IsKnownDnx)
-                {
-                    if (frameworkInfo.Name == FrameworkInfo.Netstandard)
-                    {
-                        targetFramework = FrameworkInfo.Netcoreapp + TargetFrameworkHelper.NetStandardToNetCoreVersionMap[frameworkInfo.Version];
-                    }
-                    this.MSBuildProj.TargetFramework = targetFramework;
-                }
+                //var targetFramework = frameworkInfo.FullName;
+                //if (isSupportedTFM && frameworkInfo.IsKnownDnx)
+                //{
+                //    if (frameworkInfo.Name == FrameworkInfo.Netstandard)
+                //    {
+                //        targetFramework = FrameworkInfo.Netcoreapp + TargetFrameworkHelper.NetStandardToNetCoreVersionMap[frameworkInfo.Version];
+                //    }
+                //    this.MSBuildProj.TargetFramework = targetFramework;
+                //}
                 // else
                 // The TFM is unknown: either, it was not provided or it is a version not yet known to the tool,
                 // we will use the default TF from the generated project.

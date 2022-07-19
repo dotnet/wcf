@@ -9,6 +9,7 @@ using System.ServiceModel.Security.Tokens;
 using System.Net;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Runtime;
 
 namespace System.ServiceModel.Security
 {
@@ -36,9 +37,14 @@ namespace System.ServiceModel.Security
             return _token;
         }
 
-        internal override Task<SecurityToken> GetTokenCoreInternalAsync(TimeSpan timeout)
+        protected override IAsyncResult BeginGetTokenCore(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return Task.FromResult<SecurityToken>(GetTokenCore(timeout));
+            return new CompletedAsyncResult<SecurityToken>(GetTokenCore(timeout), callback, state);
+        }
+
+        protected override SecurityToken EndGetTokenCore(IAsyncResult result)
+        {
+            return CompletedAsyncResult<SecurityToken>.End(result);
         }
     }
 }

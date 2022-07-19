@@ -247,7 +247,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
             if (transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 &&
                 transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10 &&
-                transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11)
+                transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11 &&
+                transportSecurityBindingElement.MessageSecurityVersion != MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10)
             {
                 string values = string.Format(CultureInfo.InvariantCulture, "'{0}', '{1}', '{2}'",
                     MessageSecurityVersion.WSSecurity10WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10,
