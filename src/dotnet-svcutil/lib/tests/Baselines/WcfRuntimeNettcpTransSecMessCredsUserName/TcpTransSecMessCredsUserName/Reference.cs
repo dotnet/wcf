@@ -2678,7 +2678,7 @@ namespace TcpTransSecMessCredsUserName_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Tcp_message_credentials_username_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress(new System.Uri("net.tcp://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/TcpTransSecMessC" +
+                return new System.ServiceModel.EndpointAddress(new System.Uri("net.tcp://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/TcpTransSecMessC" +
                             "redsUserName.svc/Tcp-message-credentials-username"), new System.ServiceModel.DnsEndpointIdentity("localhost"));
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));

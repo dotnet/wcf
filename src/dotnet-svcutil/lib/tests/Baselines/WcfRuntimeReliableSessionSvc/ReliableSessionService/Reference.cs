@@ -245,22 +245,22 @@ namespace ReliableSessionService_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.NetHttpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/NetHttpOrdered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetHttpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/NetHttpUnordered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetHttpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/NetHttpOrdered_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetHttpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/NetHttpUnordered_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetTcpOrdered_WSReliableMessaging11_IWcfReliableService))
@@ -285,22 +285,22 @@ namespace ReliableSessionService_NS
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/WSHttpOrdered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/WSHttpUnordered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/WSHttpOrdered_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
                         "ice.svc/WSHttpUnordered_WSReliableMessagingFebruary2005");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));

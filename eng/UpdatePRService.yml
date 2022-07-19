@@ -1,6 +1,6 @@
 parameters:
   Operation: ''
-  wcfPRServiceUri: "http://wcfcoresrv2.westus2.cloudapp.azure.com/PRServiceMaster/pr.ashx"
+  wcfPRServiceUri: "http://wcfcoresrv23.westus3.cloudapp.azure.com/PRServiceMaster/pr.ashx"
   wcfPRServiceId: ''
 
 ##   Description of 'Set_Operation_PR_or_Branch' steps for Windows or Unix   ##
