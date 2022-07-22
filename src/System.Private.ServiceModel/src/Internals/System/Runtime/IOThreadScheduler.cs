@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -51,8 +52,11 @@ namespace System.Runtime
         }
 
         private static IOThreadScheduler s_current = new IOThreadScheduler(32);
+        private static SynchronizationContext s_syncContext = new IOThreadSchedulerSynchronizationContext();
+        private static TaskScheduler s_IOTaskScheduler;
         private readonly ScheduledOverlapped _overlapped;
         private readonly Slot[] _slots;
+        private static ThreadLocal<bool> s_isIoThread = new ThreadLocal<bool>();
 
         // This field holds both the head (HiWord) and tail (LoWord) indicies into the slot array.  This limits each
         // value to 64k.  In order to be able to distinguish wrapping the slot array (allowed) from wrapping the
@@ -76,6 +80,22 @@ namespace System.Runtime
             Contract.Assert((_slots.Length & SlotMask) == 0, "Capacity must be a power of two.");
 
             _overlapped = new ScheduledOverlapped();
+        }
+
+        public static TaskScheduler IOTaskScheduler
+        {
+            get
+            {
+                if (s_IOTaskScheduler == null)
+                {
+                    var savedCtx = SynchronizationContext.Current;
+                    SynchronizationContext.SetSynchronizationContext(s_syncContext);
+                    s_IOTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+                    SynchronizationContext.SetSynchronizationContext(savedCtx);
+                }
+
+                return s_IOTaskScheduler;
+            }
         }
 
         public static void ScheduleCallbackNoFlow(Action<object> callback, object state)
@@ -208,6 +228,8 @@ namespace System.Runtime
                 return _slots.Length - 1;
             }
         }
+
+        public static bool IsRunningOnIOThread => s_isIoThread.IsValueCreated && s_isIoThread.Value;
 
         ~IOThreadScheduler()
         {
@@ -436,6 +458,32 @@ namespace System.Runtime
 
             private void Callback()
             {
+                try
+                {
+                    InitThreadDebugData();
+                    CallbackCore();
+                }
+                finally
+                {
+                    ClearThreadDebugData();
+                }
+            }
+
+            [Conditional("DEBUG")]
+            private static void InitThreadDebugData()
+            {
+                s_isIoThread.Value = true;
+                Thread.CurrentThread.Name = "IOThreadScheduler.IOCallback";
+            }
+
+            [Conditional("DEBUG")]
+            private static void ClearThreadDebugData()
+            {
+                s_isIoThread.Value = false;
+            }
+
+            private void CallbackCore()
+            {
                 // Unhook the IOThreadScheduler ASAP to prevent it from leaking.
                 IOThreadScheduler iots = _scheduler;
                 _scheduler = null;
@@ -505,5 +553,12 @@ namespace System.Runtime
             }
         }
 
+        private class IOThreadSchedulerSynchronizationContext : SynchronizationContext
+        {
+            public override void Post(SendOrPostCallback d, object state)
+            {
+                ScheduleCallbackNoFlow((s) => d(s), state);
+            }
+        }
     }
 }
