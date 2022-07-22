@@ -3,16 +3,17 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace System.Runtime
 {
-    public class ServiceModelSynchronizationContext : SynchronizationContext
+    internal class ServiceModelSynchronizationContext : SynchronizationContext
     {
         public static ServiceModelSynchronizationContext Instance = new ServiceModelSynchronizationContext();
 
         public override void Post(SendOrPostCallback d, object state)
         {
-            IOThreadScheduler.ScheduleCallbackNoFlow((s) => d(s), state);
+            Task.Factory.StartNew((s) => d(s), state, default, TaskCreationOptions.RunContinuationsAsynchronously, IOThreadScheduler.IOTaskScheduler);
         }
     }
 }

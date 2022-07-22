@@ -1414,8 +1414,7 @@ namespace System.ServiceModel.Channels
             {
                 AddressFamily addressFamily = address.AddressFamily;
                 socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
-                await Task.Factory.FromAsync(socket.BeginConnect, socket.EndConnect, new IPEndPoint(address, port), null);
-                //await socket.ConnectAsync(new IPEndPoint(address, port));
+                await socket.ConnectAsync(new IPEndPoint(address, port));
                 return new SocketConnection(socket, _connectionBufferPool, false);
             }
             catch
