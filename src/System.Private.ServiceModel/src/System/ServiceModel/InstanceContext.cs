@@ -228,15 +228,14 @@ namespace System.ServiceModel
             }
         }
 
-
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new CloseAsyncResult(timeout, callback, state, this);
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            CloseAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         protected override IAsyncResult OnBeginOpen(TimeSpan timeout, AsyncCallback callback, object state)
@@ -271,8 +270,7 @@ namespace System.ServiceModel
 
         protected internal override Task OnCloseAsync(TimeSpan timeout)
         {
-            OnClose(timeout);
-            return TaskHelpers.CompletedTask();
+            return _channels.CloseAsync(timeout);
         }
 
         protected internal override Task OnOpenAsync(TimeSpan timeout)
@@ -294,36 +292,6 @@ namespace System.ServiceModel
             if (rpc.InstanceContext == this && rpc.SuccessfullyBoundInstance)
             {
                 _channels.DecrementActivityCount();
-            }
-        }
-
-        internal class CloseAsyncResult : AsyncResult
-        {
-            private InstanceContext _instanceContext;
-            private TimeoutHelper _timeoutHelper;
-
-            public CloseAsyncResult(TimeSpan timeout, AsyncCallback callback, object state, InstanceContext instanceContext)
-                : base(callback, state)
-            {
-                _timeoutHelper = new TimeoutHelper(timeout);
-                _instanceContext = instanceContext;
-                IAsyncResult result = _instanceContext._channels.BeginClose(_timeoutHelper.RemainingTime(), PrepareAsyncCompletion(new AsyncCompletion(CloseChannelsCallback)), this);
-                if (result.CompletedSynchronously && CloseChannelsCallback(result))
-                {
-                    base.Complete(true);
-                }
-            }
-
-            public static void End(IAsyncResult result)
-            {
-                AsyncResult.End<CloseAsyncResult>(result);
-            }
-
-            private bool CloseChannelsCallback(IAsyncResult result)
-            {
-                Fx.Assert(object.ReferenceEquals(this, result.AsyncState), "AsyncState should be this");
-                _instanceContext._channels.EndClose(result);
-                return true;
             }
         }
     }
