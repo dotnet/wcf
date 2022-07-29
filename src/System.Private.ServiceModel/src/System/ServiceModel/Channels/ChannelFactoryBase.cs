@@ -194,14 +194,12 @@ namespace System.ServiceModel.Channels
 
         protected override IAsyncResult OnBeginClose(TimeSpan timeout, AsyncCallback callback, object state)
         {
-            return new ChainedCloseAsyncResult(timeout, callback, state,
-                _channels.BeginClose, _channels.EndClose,
-                _channels.ToArray());
+            return OnCloseAsync(timeout).ToApm(callback, state);
         }
 
         protected override void OnEndClose(IAsyncResult result)
         {
-            ChainedCloseAsyncResult.End(result);
+            result.ToApmEnd();
         }
 
         private async Task OnCloseAsyncInternal(TimeSpan timeout)
@@ -214,15 +212,10 @@ namespace System.ServiceModel.Channels
             }
 
             // CommunicationObjectManager (_channels) is not a CommunicationObject,
-            // so just choose existing synchronous or asynchronous close
-            if (_isSynchronousClose)
-            {
-                await TaskHelpers.CallActionAsync(_channels.Close, timeoutHelper.RemainingTime());
-            }
-            else
-            {
-                await Task.Factory.FromAsync(_channels.BeginClose, _channels.EndClose, timeoutHelper.RemainingTime(), TaskCreationOptions.None);
-            }
+            // and it's close method waits for it to not be busy. Calling CloseAsync
+            // is the correct option here as there's no need to block this thread
+            // waiting on a signal from another thread to notify it's no longer busy.
+            await _channels.CloseAsync(timeoutHelper.RemainingTime());
         }
     }
 }

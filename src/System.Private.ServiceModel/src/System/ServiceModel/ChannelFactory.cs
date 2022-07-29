@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace System.ServiceModel
 {
-    public abstract class ChannelFactory : CommunicationObject, IChannelFactory, IDisposable
+    public abstract class ChannelFactory : CommunicationObject, IChannelFactory, IDisposable, IAsyncDisposable
     {
         private string _configurationName;
         private ClientCredentials _readOnlyClientCredentials;
@@ -162,6 +162,31 @@ namespace System.ServiceModel
         void IDisposable.Dispose()
         {
             Close();
+        }
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            try
+            {
+                // Only want to call Close if it is in the Opened state
+                if (State == CommunicationState.Opened)
+                {
+                    await ((IAsyncCommunicationObject)this).CloseAsync(DefaultCloseTimeout);
+                }
+                // Anything not closed by this point should be aborted
+                if (State != CommunicationState.Closed)
+                {
+                    Abort();
+                }
+            }
+            catch (CommunicationException)
+            {
+                Abort();
+            }
+            catch (TimeoutException)
+            {
+                Abort();
+            }
         }
 
         private void EnsureSecurityCredentialsManager(ServiceEndpoint endpoint)

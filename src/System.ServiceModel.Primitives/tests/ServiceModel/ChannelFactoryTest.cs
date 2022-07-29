@@ -271,4 +271,58 @@ public class ChannelFactoryTest
             }
         }
     }
+
+    [Fact]
+    public static async Task ChannelFactory_AsyncDisposable()
+    {
+        ChannelFactory<IWcfService> factory = null;
+
+        try
+        {
+            factory = new ChannelFactory<IWcfService>(
+                     new BasicHttpBinding(),
+                     new EndpointAddress(FakeAddress.HttpAddress));
+            factory.Open();
+
+            await ((IAsyncDisposable)factory).DisposeAsync();
+            Assert.Equal(CommunicationState.Closed, factory.State);
+            factory = null;
+        }
+        finally
+        {
+            if (factory != null)
+            {
+                factory.Close();
+            }
+        }
+    }
+
+    [Fact]
+    public static async Task ChannelFactory_AsyncDisposable_NoThrow()
+    {
+        ChannelFactory<IWcfService> factory = null;
+
+        try
+        {
+            BasicHttpBinding binding = new BasicHttpBinding();
+            var customBinding = new CustomBinding(binding);
+            customBinding.Elements.Insert(0, new ThrowingOnCloseBindingElement(new CommunicationException(nameof(ChannelFactory_AsyncDisposable_NoThrow)), false));
+
+            factory = new ChannelFactory<IWcfService>(
+                     customBinding,
+                     new EndpointAddress(FakeAddress.HttpAddress));
+            factory.Open();
+
+            await ((IAsyncDisposable)factory).DisposeAsync();
+            Assert.Equal(CommunicationState.Closed, factory.State);
+            factory = null;
+        }
+        finally
+        {
+            if (factory != null)
+            {
+                factory.Close();
+            }
+        }
+    }
 }
