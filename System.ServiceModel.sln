@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28728.38
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.ServiceModel.Primitives.Facade", "src\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.Facade.csproj", "{1290FD2C-8148-43C3-817B-6D799EDD7E03}"
 EndProject
@@ -255,14 +255,6 @@ Global
 		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161C03B5-B606-4DC2-BC10-5935D1DADDD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAB2959D-0A16-4F60-A453-765491E1C069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAB2959D-0A16-4F60-A453-765491E1C069}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAB2959D-0A16-4F60-A453-765491E1C069}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAB2959D-0A16-4F60-A453-765491E1C069}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AECCDD96-7C28-4302-9F34-C9ADEE21C7E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38F22923-DF54-4BD5-A40D-D4CA05DE3D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38F22923-DF54-4BD5-A40D-D4CA05DE3D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38F22923-DF54-4BD5-A40D-D4CA05DE3D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
