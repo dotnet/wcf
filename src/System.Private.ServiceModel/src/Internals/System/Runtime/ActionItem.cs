@@ -83,7 +83,7 @@ namespace System.Runtime
             // The trick here is using CallbackHelper.IOTaskSchedule as the TaskScheduler. This is a special TaskScheduler created from a sync context
             // which posts action's to the IOThreadScheduler. So instead of directly posting a Task to the IOThreadScheduler, we let the TaskScheduler
             // break up the Task into individual Action<object> delegates and post them for us.
-            Task<Task>.Factory.StartNew(callback, state, CancellationToken.None, TaskCreationOptions.DenyChildAttach, CallbackHelper.IOTaskScheduler);
+            Task<Task>.Factory.StartNew(callback, state, CancellationToken.None, TaskCreationOptions.DenyChildAttach, IOThreadScheduler.IOTaskScheduler);
         }
 
         private void ScheduleCallback(Action<object> callback)
@@ -98,25 +98,8 @@ namespace System.Runtime
 
         internal static class CallbackHelper
         {
-            private static TaskScheduler s_IOTaskScheduler;
             private static Action<object> s_invokeCallback;
             private static Func<object, Task> s_invokeAsyncCallback;
-
-            public static TaskScheduler IOTaskScheduler
-            {
-                get
-                {
-                    if (s_IOTaskScheduler == null)
-                    {
-                        using(TaskHelpers.RunTaskContinuationsOnOurThreads())
-                        {
-                            s_IOTaskScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-                        }
-                    }
-
-                    return s_IOTaskScheduler;
-                }
-            }
 
             public static Action<object> InvokeCallbackAction
             {

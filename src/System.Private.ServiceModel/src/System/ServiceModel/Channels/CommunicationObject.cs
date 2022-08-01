@@ -315,7 +315,7 @@ namespace System.ServiceModel.Channels
             else
             {
                 // This type is an external type that cannot override OnCloseAsync.
-                // If this is a synchronous close, invoke the synchronous OnClose)
+                // If this is a synchronous close, invoke the synchronous OnClose.
                 if (_isSynchronousClose)
                 {
                     await TaskHelpers.CallActionAsync(OnClose, timeout);
@@ -563,7 +563,7 @@ namespace System.ServiceModel.Channels
             else
             {
                 // This type is an external type that cannot override OnOpenAsync.
-                // If this is a synchronous open, invoke the synchronous OnOpen)
+                // If this is a synchronous open, invoke the synchronous OnOpen
                 if (_isSynchronousOpen)
                 {
                     await TaskHelpers.CallActionAsync(OnOpen, timeout);
@@ -1014,10 +1014,24 @@ namespace System.ServiceModel.Channels
         // It is used to propagate the use of either the synchronous or asynchronous methods
         internal Task OpenOtherAsync(ICommunicationObject other, TimeSpan timeout)
         {
+            // If the other object supports async open/close, we know it's an
+            // internal implementation so we can continue the open asynchronously. We need
+            // to propagate _isSynchronousOpen in case the next inner channel isn't an internal
+            // implementation.
+            if (other is CommunicationObject communicationObject && communicationObject.SupportsAsyncOpenClose)
+            {
+                communicationObject._isSynchronousOpen = _isSynchronousOpen;
+                return ((IAsyncCommunicationObject)communicationObject).OpenAsync(timeout);
+            }
+            
+            // Other object isn't an internal implementation so we need to match calling the
+            // sync/async pattern of the Open call that was initially made.
             // If the current object is being opened synchronously, use the synchronous
             // open path for the other object.
             if (_isSynchronousOpen)
             {
+                // We need to make sure the synchronous open which might block a thread happens on the
+                // thread pool so as not to block the IOThreadScheduler thread.
                 return TaskHelpers.CallActionAsync(other.Open, timeout);
             }
             else
@@ -1030,10 +1044,24 @@ namespace System.ServiceModel.Channels
         // It is used to propagate the use of either the synchronous or asynchronous methods
         internal Task CloseOtherAsync(ICommunicationObject other, TimeSpan timeout)
         {
+            // If the other object supports async open/close, we know it's an
+            // internal implementation so we can continue the close asynchronously. We need
+            // to propagate _isSynchronousClose in case the next inner channel isn't an internal
+            // implementation.
+            if (other is CommunicationObject communicationObject && communicationObject.SupportsAsyncOpenClose)
+            {
+                communicationObject._isSynchronousClose = _isSynchronousClose;
+                return ((IAsyncCommunicationObject)communicationObject).CloseAsync(timeout);
+            }
+
+            // Other object isn't an internal implementation so we need to match calling the
+            // sync/async pattern of the Close call that was initially made.
             // If the current object is being closed synchronously, use the synchronous
             // close path for the other object.
             if (_isSynchronousClose)
             {
+                // We need to make sure the synchronous close which might block a thread happens on the
+                // thread pool so as not to block the IOThreadScheduler thread.
                 return TaskHelpers.CallActionAsync(other.Close, timeout);
             }
             else
