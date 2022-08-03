@@ -308,6 +308,7 @@ namespace System.ServiceModel
         private async Task OpenAsync(TimeSpan timeout)
         {
             TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+            await TaskHelpers.EnsureDefaultTaskScheduler();
             if (!_useCachedFactory)
             {
                 await GetChannelFactory().OpenHelperAsync(timeoutHelper.RemainingTime());
@@ -368,6 +369,7 @@ namespace System.ServiceModel
                 }
 
                 TimeoutHelper timeoutHelper = new TimeoutHelper(timeout);
+                await TaskHelpers.EnsureDefaultTaskScheduler();
                 if (_channel != null)
                 {
                     await InnerChannel.CloseHelperAsync(timeoutHelper.RemainingTime());

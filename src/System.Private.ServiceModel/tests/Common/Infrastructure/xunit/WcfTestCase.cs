@@ -51,7 +51,7 @@ namespace Infrastructure.Common
             ConcurrentQueue<EventWrittenEventArgs> events = new ConcurrentQueue<EventWrittenEventArgs>();
 	        s_testListener.EventWritten = events.Enqueue;
             Timer timer = null;
-            if (_failFastDuration != System.Threading.Timeout.InfiniteTimeSpan)
+            if (_failFastDuration != System.Threading.Timeout.InfiniteTimeSpan && !System.Diagnostics.Debugger.IsAttached)
             {
                 timer = new Timer((s) => Environment.FailFast("Test timed out"),
                                   null,
