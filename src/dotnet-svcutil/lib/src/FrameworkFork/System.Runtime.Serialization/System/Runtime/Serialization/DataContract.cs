@@ -1523,9 +1523,9 @@ namespace System.Runtime.Serialization
 
             // Try to find an attribute with matching name
             // type compare does not work, because of the different types used in the FrameworkFork compared to various .NET implementations 6.0/7.0
-            object[] attributes = type.GetTypeInfo()
-                .GetCustomAttributes(false)
-                .Where(a => a.GetType().FullName == Globals.TypeOfDataContractAttribute.FullName)
+            CustomAttributeData[] attributes = type.GetTypeInfo()
+                .GetCustomAttributesData()
+                .Where(a => a.AttributeType.FullName == Globals.TypeOfDataContractAttribute.FullName)
                 .ToArray();
 
 #if DEBUG
@@ -1538,14 +1538,14 @@ namespace System.Runtime.Serialization
                 return false;
 
             // now work with reflection to get framework independent DataContractAttribute values
-            var isReferenceProperty = universalDataContractAttribute.GetType().GetProperty("IsReference", BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public);
-            var isReference = isReferenceProperty != null ? (bool?)isReferenceProperty.GetValue(universalDataContractAttribute) : null;
+            var isReferenceProperty = universalDataContractAttribute.NamedArguments?.FirstOrDefault(a => a.MemberName == "IsReference");
+            var isReference = (bool?)isReferenceProperty?.TypedValue.Value;
 
-            var namespaceProperty = universalDataContractAttribute.GetType().GetProperty("Namespace", BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public);
-            var namespaceVal = namespaceProperty != null ? (string)namespaceProperty.GetValue(universalDataContractAttribute) : null;
+            var namespaceProperty = universalDataContractAttribute.NamedArguments?.FirstOrDefault(a => a.MemberName == "Namespace");
+            var namespaceVal = (string)namespaceProperty?.TypedValue.Value;
 
-            var nameProperty = universalDataContractAttribute.GetType().GetProperty("Name", BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public);
-            var name = nameProperty != null ? (string)nameProperty.GetValue(universalDataContractAttribute) : null;
+            var nameProperty = universalDataContractAttribute.NamedArguments?.FirstOrDefault(a => a.MemberName == "Name");
+            var name = (string)nameProperty?.TypedValue.Value;
 
             // Create result DataContractAttribute (from Framework Fork)
             dataContractAttribute = new DataContractAttribute();
