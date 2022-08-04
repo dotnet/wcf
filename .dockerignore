@@ -1,10 +1,2 @@
-# Ignore everything
+# Ignore everything and use volumes
 *
-
-# Allow files and directories
-#!global.json
-#!NuGet.config
-#!/eng
-#!/src/System.Private.ServiceModel/tools
-#!/artifacts/bin/CertificateGenerator
-#!/artifacts/bin/SelfHostedWCFService
