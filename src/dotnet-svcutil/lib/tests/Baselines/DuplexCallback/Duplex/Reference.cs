@@ -111,7 +111,7 @@ namespace Duplex_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.tcp_nosecurity_callback_IWcfDuplexService))
             {
-                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv5/WcfTestService1/Duplex.svc/tcp-nosecurity-callback");
+                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv53/WcfTestService1/Duplex.svc/tcp-nosecurity-callback");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

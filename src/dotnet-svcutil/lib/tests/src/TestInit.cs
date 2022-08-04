@@ -470,6 +470,7 @@ namespace SvcutilTest
 
             fileLines1.AddRange(File.ReadAllLines(baselineFile));
             fileLines2.AddRange(File.ReadAllLines(generatedFile));
+            fileLines1.RemoveAll(l => exceptLines.Contains(l));
             fileLines2.RemoveAll(l => exceptLines.Contains(l));
 
             // to reduce noise, let's ignore empty lines in log files (only).
