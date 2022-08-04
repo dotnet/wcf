@@ -22,8 +22,14 @@ acquire_certificate()
    
     # Need to make a call as the original user as we need to write to the cert store for the current 
     # user, not as root
-    echo "Making a call to '${__service_host}/TestHost.svc/RootCert' as user '$SUDO_USER'"
-    sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "http://${__service_host}/TestHost.svc/RootCert?asPem=true" 
+	if [ "$EUID" -ne 0 ]; then 
+		echo "Making a call to '${__service_host}/TestHost.svc/RootCert' as user '$SUDO_USER'"
+        sudo -E -u $SUDO_USER $__curl_exe -o $__cafile "http://${__service_host}/TestHost.svc/RootCert?asPem=true" 
+    else
+    # Docker containers has no Sudo installed, by default it is running root user
+		echo "Making a call to '${ServiceUri}/TestHost.svc/RootCert' as root user"	
+        $__curl_exe -o $__cafile "http://${ServiceUri}/TestHost.svc/RootCert?asPem=true" 
+    fi  
     
     return $?
 }

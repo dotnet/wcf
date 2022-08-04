@@ -6,9 +6,9 @@ echo **********************************
 
 set _exitCode=0
 ::todo use vars
-set ServiceImageTag = "wcf:service"
+set "ServiceImageTag=wcf:service"
 set "ServiceContainerName=WCFServiceContainer"
-
+set "ServiceHostName=wcfservicehost"
 
 :: Make sure docker is running 
 docker ps>nul 2>&1
@@ -33,7 +33,7 @@ cd ../../../..
 echo. & echo Building Docker image for WCF service
 
 :: Building docker image.
-docker build -f ./Docker/Service/Dockerfile -t wcf:service .
+docker build -f ./Docker/Service/Dockerfile -t %ServiceImageTag% .
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Building docker image failed.
     goto :Failure
@@ -42,8 +42,8 @@ echo. & echo Building image success..
 
 :: Starting docker container from the image.
 echo. & echo Starting WCF Service Container
-:: mount current directory for wcf source as container volume - C:\wcf
-docker run --name %ServiceContainerName% --rm -it -d -v "%cd%":"C:\wcf" wcf:service
+:: run docker container and mount current directory for wcf source as container volume - C:\wcf
+docker run --name %ServiceContainerName% --rm -it -d -h %ServiceHostName% -v "%cd%":"C:\wcf" %ServiceImageTag%
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Starting WCF service container failed.
     goto :Failure
@@ -52,6 +52,7 @@ if ERRORLEVEL 1 (
 echo. & echo Started WCF Service Container.
 :: print service container IP address
 docker inspect --format="{{.NetworkSettings.Networks.nat.IPAddress}}" %ServiceContainerName%
+echo %ServiceHostName%
 
 exit /b
 

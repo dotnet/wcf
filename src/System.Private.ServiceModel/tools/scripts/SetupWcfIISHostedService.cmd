@@ -185,6 +185,13 @@ echo Use %_certService% for certificate service
 echo Run CertificateGenerator tool. This will take a little while...
 md %_wcfTestDir%
 set certGen=%_certRepo%\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe
+
+IF NOT EXIST "%certGen%" (
+	echo Build CertificateGenerator tool
+	call :Run %_certRepo%\src\System.Private.ServiceModel\tools\scripts\BuildCertUtil.cmd
+	if ERRORLEVEL 1 goto :Failure
+)
+
 echo ^<?xml version="1.0" encoding="utf-8"?^>^<configuration^>^<appSettings^>^<add key="testserverbase" value="%_certService%"/^>^<add key="CertExpirationInDay" value="%_certExpirationInDays%"/^>^<add key="CrlFileLocation" value="%_wcfTestDir%\test.crl"/^>^</appSettings^>^<startup^>^<supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5"/^>^</startup^>^</configuration^>>%certGen%.config
 call :Run %certGen%
 if ERRORLEVEL 1 goto :Failure

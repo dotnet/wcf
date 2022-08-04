@@ -13,6 +13,29 @@ echo Preparing to launch the WCF self hosted service
 
 if EXIST %_setupSemaphoreFile% del %_setupSemaphoreFile%
 
+set wcfSelfhosted=%~dp0..\..\..\..\artifacts\bin\SelfHostedWcfService\Release\SelfHostedWcfService.exe
+REM Build tools
+IF NOT EXIST "%wcfSelfhosted%" (
+	echo Building the WCF Self hosted service...
+	call %~dp0BuildWCFSelfHostedService.cmd >>%_setuplog% 
+	SET __EXITCODE=%ERRORLEVEL%
+	if NOT [%__EXITCODE%]==[0] (
+		echo ERROR: An error occurred while building WCF Self hosted Service. >>%_setuplog%
+		goto :done
+	  )
+)
+
+set certGen=%~dp0..\..\..\..\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe
+IF NOT EXIST "%certGen%" (
+	echo Building the certificate generator ...
+	call %~dp0BuildCertUtil.cmd >>%_setuplog%
+	set __EXITCODE=%ERRORLEVEL%
+	if NOT [%__EXITCODE%]==[0] (
+		echo ERROR: An error occurred while building the Certificate generator. >>%_setuplog%
+		goto :done
+	  )
+)
+
 REM Config Certs
 REM we need the direcotry to save the test.crl file. We are investigate a way to get rid of it
 md c:\wcftest
