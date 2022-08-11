@@ -34,7 +34,7 @@
     <MicrosoftPrivateCoreFxNETCoreAppPackageVersion>4.5.0-rtm</MicrosoftPrivateCoreFxNETCoreAppPackageVersion>
     <SystemReflectionDispatchProxyPackageVersion>4.7.1</SystemReflectionDispatchProxyPackageVersion>
     <SystemSecurityPrincipalWindowsPackageVersion>5.0.0</SystemSecurityPrincipalWindowsPackageVersion>
-    <SystemSecurityCryptographyXmlPackageVersion>5.0.0</SystemSecurityCryptographyXmlPackageVersion>
+    <SystemSecurityCryptographyXmlPackageVersion>6.0.1</SystemSecurityCryptographyXmlPackageVersion>
     <SystemNumericsVectorsPackageVersion>4.5.0</SystemNumericsVectorsPackageVersion>
     <MicrosoftPrivateCoreFxUAPPackageVersion>4.7.0-preview4.19164.7</MicrosoftPrivateCoreFxUAPPackageVersion>
   </PropertyGroup>
