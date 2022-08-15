@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
@@ -11,13 +12,25 @@ namespace WcfService
     [TestServiceDefinition(Schema = ServiceSchema.HTTPS, BasePath = "BasicHttpsTransSecMessCredsUserName.svc")]
     internal class BasicHttpsTransportSecurityMessageCredentialsUserNameTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "https-message-credentials-username"; } }
+        protected override IList<Binding> GetBindings()
+        {
+            return new List<Binding> { GetBufferedBinding(), GetStreamedBinding() };
+        }
 
-        protected override Binding GetBinding()
+        protected Binding GetBufferedBinding()
         {
             BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
             binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+            binding.Name = "https-message-credentials-username/Buffered";
+            return binding;
+        }
 
+        protected Binding GetStreamedBinding()
+        {
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportWithMessageCredential);
+            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+            binding.TransferMode = TransferMode.Streamed;
+            binding.Name = "https-message-credentials-username/Streamed";
             return binding;
         }
 
