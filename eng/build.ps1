@@ -143,7 +143,12 @@ foreach ($argument in $PSBoundParameters.Keys)
     "allconfigurations"    { $arguments += " /p:BuildAllConfigurations=true" }
     "arch"                 { $arguments += " /p:ArchGroup=$($PSBoundParameters[$argument]) /p:TargetArchitecture=$($PSBoundParameters[$argument])" }
     "properties"           { $arguments += " " + $properties }
-	"testscope"            { if ($testscope -eq "outerloop" -or $testscope -eq "all") { $arguments += " /p:IntegrationTest=true" }}
+	"testscope"            
+        {
+         if ($testscope -eq "outerloop" -or $testscope -eq "all") { $arguments += " /p:IntegrationTest=true" }
+         if ($testscope -eq "wcf") { $arguments += " -projects System.ServiceModel.sln /p:IntegrationTest=true" }
+         if ($testscope -eq "svcutil") { $arguments += " -projects dotnet-svcutil.sln /p:IntegrationTest=true" }
+        }
     default                { $arguments += " /p:$argument=$($PSBoundParameters[$argument])" }
   }
 }
