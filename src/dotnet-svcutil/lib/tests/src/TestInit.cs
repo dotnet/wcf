@@ -602,7 +602,7 @@ namespace SvcutilTest
 "  <packageSources>" + Environment.NewLine +
 "    <clear />" + Environment.NewLine +
 "    <add key = \"svcutilTestFeed\" value=\"$svcutilTestFeed$\" />" + Environment.NewLine +
-"    <add key = \"nuget.org\" value=\"https://api.nuget.org/v3/index.json\" />" + Environment.NewLine +
+"    <add key = \"dotnet-public\" value=\"https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-public/nuget/v3/index.json\" />" + Environment.NewLine +
 "  </packageSources>" + Environment.NewLine +
 "</configuration>" + Environment.NewLine;
 
