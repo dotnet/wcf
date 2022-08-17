@@ -3,7 +3,7 @@ jobs:
     source:
       repository: https://github.com/dotnet/wcf.git
       branchOrCommit: main
-      project: src/System.Private.ServiceModel/tests/Benchmarks/Perf/WCFCorePerf/WCFCorePerfClient.csproj
+      project: src/System.Private.ServiceModel/tests/Benchmarks/Perf/WCFCorePerfClient/WCFCorePerfClient.csproj
     isConsoleApp: true
     waitForExit: true
     variables:
