@@ -2,7 +2,7 @@ jobs:
   WCFCorePerf:
     source:
       repository: https://github.com/dotnet/wcf.git
-      branchOrCommit: master
+      branchOrCommit: main
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerf/WCFCorePerf.csproj
     isConsoleApp: true
     waitForExit: true
@@ -12,7 +12,7 @@ jobs:
   WCFCorePerfService:
     source:
       repository: https://github.com/dotnet/wcf.git
-      branchOrCommit: master
+      branchOrCommit: main
       project: src/System.Private.ServiceModel/tests/Benchmarks/WCFCorePerf/WCFCorePerfService/WCFCorePerfService.csproj
     arguments: " port:{{serverPort}}"
     isConsoleApp: true

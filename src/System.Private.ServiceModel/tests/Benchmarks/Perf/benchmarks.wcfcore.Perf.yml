@@ -8,7 +8,7 @@ jobs:
     waitForExit: true
     variables:
       Duration: 300
-    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{serverAddress}}{% if Binding == 'WSHttp' %}:{{serverPort}}{% endif %}/WCFCorePerf/TestService.svc/{{EndpointAddress}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
+    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{serverAddress}}:{{serverPort}}/WCFCorePerf/TestService.svc/{{EndpointAddress}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
   WCFCorePerfService:
     source:
       repository: https://github.com/dotnet/wcf.git
