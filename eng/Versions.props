@@ -45,10 +45,4 @@
     <!-- Needed by Infrastructure.Common.csproj -->
     <MicrosoftDotNetPlatformAbstractionsVersion>2.1.0</MicrosoftDotNetPlatformAbstractionsVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <RestoreSources>
-      $(RestoreSources);
-      https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json
-    </RestoreSources>
-  </PropertyGroup>
 </Project>
