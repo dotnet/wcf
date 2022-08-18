@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetHttps_NS
+namespace Saml2IssuedToken_mex_NS
 {
     
     
@@ -585,13 +585,13 @@ namespace NetHttps_NS
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="NetHttps_NS.IWcfService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Saml2IssuedToken_mex_NS.IWcfService")]
     public interface IWcfService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoWithTimeout", ReplyAction="http://tempuri.org/IWcfService/EchoWithTimeoutResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(NetHttps_NS.EchoWithTimeoutRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(Saml2IssuedToken_mex_NS.EchoWithTimeoutRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageRequestReply", ReplyAction="http://tempuri.org/IWcfService/MessageRequestReplyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -599,16 +599,16 @@ namespace NetHttps_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/Echo", ReplyAction="http://tempuri.org/IWcfService/EchoResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoResponse> EchoAsync(NetHttps_NS.EchoRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoResponse> EchoAsync(Saml2IssuedToken_mex_NS.EchoRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoComplex", ReplyAction="http://tempuri.org/IWcfService/EchoComplexResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoComplexResponse> EchoComplexAsync(NetHttps_NS.EchoComplexRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoComplexResponse> EchoComplexAsync(Saml2IssuedToken_mex_NS.EchoComplexRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFault", ReplyAction="http://tempuri.org/IWcfService/TestFaultResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.TestFaultResponse> TestFaultAsync(NetHttps_NS.TestFaultRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultResponse> TestFaultAsync(Saml2IssuedToken_mex_NS.TestFaultRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaultInt", ReplyAction="http://tempuri.org/IWcfService/TestFaultIntResponse")]
         [System.ServiceModel.FaultContractAttribute(typeof(int), Action="http://tempuri.org/IWcfService/TestFaultIntFault", Name="IntFault", Namespace="http://www.contoso.com/wcfnamespace")]
@@ -616,62 +616,62 @@ namespace NetHttps_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.TestFaultsResponse> TestFaultsAsync(NetHttps_NS.TestFaultsRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultsResponse> TestFaultsAsync(Saml2IssuedToken_mex_NS.TestFaultsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaultWithKnownType", ReplyAction="http://tempuri.org/IWcfService/TestFaultWithKnownTypeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(NetHttps_NS.TestFaultWithKnownTypeRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ThrowInvalidOperationException", ReplyAction="http://tempuri.org/IWcfService/ThrowInvalidOperationExceptionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(NetHttps_NS.ThrowInvalidOperationExceptionRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IWcfService/GetDataUsingDataContractResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(NetHttps_NS.GetDataUsingDataContractRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(Saml2IssuedToken_mex_NS.GetDataUsingDataContractRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ValidateMessagePropertyHeaders", ReplyAction="http://tempuri.org/IWcfService/ValidateMessagePropertyHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync(NetHttps_NS.ValidateMessagePropertyHeadersRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync(Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/UserGetAuthToken", ReplyAction="http://tempuri.org/IWcfService/UserGetAuthTokenResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(NetHttps_NS.UserGetAuthTokenRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync(Saml2IssuedToken_mex_NS.UserGetAuthTokenRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReply", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingData> MessageContractRequestReplyAsync(NetHttps_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingData> MessageContractRequestReplyAsync(Saml2IssuedToken_mex_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrapped", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyNotWrappedResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(NetHttps_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(Saml2IssuedToken_mex_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeader", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(NetHttps_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.RequestBankingData request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNec" +
             "essaryUnderstood", ReplyAction="http://tempuri.org/IWcfService/MessageContractRequestReplyWithMessageHeaderNotNec" +
             "essaryUnderstoodResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(NetHttps_NS.RequestBankingData request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(Saml2IssuedToken_mex_NS.RequestBankingData request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoHttpMessageProperty", ReplyAction="http://tempuri.org/IWcfService/EchoHttpRequestMessagePropertyResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync(NetHttps_NS.EchoHttpRequestMessagePropertyRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync(Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRestartServiceEndpoint", ReplyAction="http://tempuri.org/IWcfService/GetRestartServiceEndpointResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync(NetHttps_NS.GetRestartServiceEndpointRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync(Saml2IssuedToken_mex_NS.GetRestartServiceEndpointRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlSerializerFormat", ReplyAction="http://tempuri.org/IWcfService/EchoXmlSerializerFormatResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -687,11 +687,11 @@ namespace NetHttps_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetDataUsingXmlSerializer", ReplyAction="http://tempuri.org/IWcfService/GetDataUsingXmlSerializerResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(NetHttps_NS.XmlCompositeType composite);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(Saml2IssuedToken_mex_NS.XmlCompositeType composite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/MtcRequest/loginRequest", ReplyAction="http://www.contoso.com/MtcRequest/loginResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.LoginResponse> LoginAsync(NetHttps_NS.LoginRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.LoginResponse> LoginAsync(Saml2IssuedToken_mex_NS.LoginRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessage", ReplyAction="http://tempuri.org/IWcfService/GetIncomingMessageHeadersMessageResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -699,11 +699,11 @@ namespace NetHttps_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetStreamFromString", ReplyAction="http://tempuri.org/IWcfService/GetStreamFromStringResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(NetHttps_NS.GetStreamFromStringRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(Saml2IssuedToken_mex_NS.GetStreamFromStringRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetStringFromStream", ReplyAction="http://tempuri.org/IWcfService/GetStringFromStreamResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(NetHttps_NS.GetStringFromStreamRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(Saml2IssuedToken_mex_NS.GetStringFromStreamRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoStream", ReplyAction="http://tempuri.org/IWcfService/EchoStreamResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -711,11 +711,11 @@ namespace NetHttps_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoMessageParameter", ReplyAction="http://tempuri.org/IWcfService/EchoMessageParameterResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(NetHttps_NS.EchoMessageParameterRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(Saml2IssuedToken_mex_NS.EchoMessageParameterRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItems", ReplyAction="http://tempuri.org/IWcfService/EchoItemsResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoItemsResponse> EchoItemsAsync(NetHttps_NS.EchoItemsRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoItemsResponse> EchoItemsAsync(Saml2IssuedToken_mex_NS.EchoItemsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoItemsXml", ReplyAction="http://tempuri.org/IWcfService/EchoItems_XmlResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -727,23 +727,23 @@ namespace NetHttps_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/EchoXmlVeryComplexType", ReplyAction="http://tempuri.org/IWcfService/EchoXmlVeryComplexTypeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(NetHttps_NS.XmlVeryComplexType complex);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(Saml2IssuedToken_mex_NS.XmlVeryComplexType complex);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/ReturnContentType", ReplyAction="http://tempuri.org/IWcfService/ReturnContentTypeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(NetHttps_NS.ReturnContentTypeRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(Saml2IssuedToken_mex_NS.ReturnContentTypeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMess" +
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResponseWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(NetHttps_NS.XmlMessageContractTestRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
             "ageHeader", ReplyAction="http://www.contoso.com/IXmlMessageContarctTestService/EchoMessageResquestWithMess" +
             "ageHeaderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(NetHttps_NS.XmlMessageContractTestRequestWithMessageHeader request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabled", ReplyAction="http://tempuri.org/IWcfService/IsHttpKeepAliveDisabledResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -751,7 +751,7 @@ namespace NetHttps_NS
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/GetRequestHttpHeaders", ReplyAction="http://tempuri.org/IWcfService/GetRequestHttpHeadersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync(NetHttps_NS.GetRequestHttpHeadersRequest request);
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync(Saml2IssuedToken_mex_NS.GetRequestHttpHeadersRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -852,13 +852,13 @@ namespace NetHttps_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttps_NS.ComplexCompositeType message;
+        public Saml2IssuedToken_mex_NS.ComplexCompositeType message;
         
         public EchoComplexRequest()
         {
         }
         
-        public EchoComplexRequest(NetHttps_NS.ComplexCompositeType message)
+        public EchoComplexRequest(Saml2IssuedToken_mex_NS.ComplexCompositeType message)
         {
             this.message = message;
         }
@@ -873,13 +873,13 @@ namespace NetHttps_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttps_NS.ComplexCompositeType EchoComplexResult;
+        public Saml2IssuedToken_mex_NS.ComplexCompositeType EchoComplexResult;
         
         public EchoComplexResponse()
         {
         }
         
-        public EchoComplexResponse(NetHttps_NS.ComplexCompositeType EchoComplexResult)
+        public EchoComplexResponse(Saml2IssuedToken_mex_NS.ComplexCompositeType EchoComplexResult)
         {
             this.EchoComplexResult = EchoComplexResult;
         }
@@ -1102,13 +1102,13 @@ namespace NetHttps_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttps_NS.CompositeType composite;
+        public Saml2IssuedToken_mex_NS.CompositeType composite;
         
         public GetDataUsingDataContractRequest()
         {
         }
         
-        public GetDataUsingDataContractRequest(NetHttps_NS.CompositeType composite)
+        public GetDataUsingDataContractRequest(Saml2IssuedToken_mex_NS.CompositeType composite)
         {
             this.composite = composite;
         }
@@ -1123,13 +1123,13 @@ namespace NetHttps_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttps_NS.CompositeType GetDataUsingDataContractResult;
+        public Saml2IssuedToken_mex_NS.CompositeType GetDataUsingDataContractResult;
         
         public GetDataUsingDataContractResponse()
         {
         }
         
-        public GetDataUsingDataContractResponse(NetHttps_NS.CompositeType GetDataUsingDataContractResult)
+        public GetDataUsingDataContractResponse(Saml2IssuedToken_mex_NS.CompositeType GetDataUsingDataContractResult)
         {
             this.GetDataUsingDataContractResult = GetDataUsingDataContractResult;
         }
@@ -1197,13 +1197,13 @@ namespace NetHttps_NS
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public NetHttps_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult;
+        public Saml2IssuedToken_mex_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult;
         
         public ValidateMessagePropertyHeadersResponse()
         {
         }
         
-        public ValidateMessagePropertyHeadersResponse(NetHttps_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult)
+        public ValidateMessagePropertyHeadersResponse(Saml2IssuedToken_mex_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] ValidateMessagePropertyHeadersResult)
         {
             this.ValidateMessagePropertyHeadersResult = ValidateMessagePropertyHeadersResult;
         }
@@ -1482,13 +1482,13 @@ namespace NetHttps_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttps_NS.ResultOfstring UserGetAuthTokenResult;
+        public Saml2IssuedToken_mex_NS.ResultOfstring UserGetAuthTokenResult;
         
         public UserGetAuthTokenResponse()
         {
         }
         
-        public UserGetAuthTokenResponse(NetHttps_NS.ResultOfstring UserGetAuthTokenResult)
+        public UserGetAuthTokenResponse(Saml2IssuedToken_mex_NS.ResultOfstring UserGetAuthTokenResult)
         {
             this.UserGetAuthTokenResult = UserGetAuthTokenResult;
         }
@@ -1762,13 +1762,13 @@ namespace NetHttps_NS
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public NetHttps_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult;
+        public Saml2IssuedToken_mex_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult;
         
         public EchoHttpRequestMessagePropertyResponse()
         {
         }
         
-        public EchoHttpRequestMessagePropertyResponse(NetHttps_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult)
+        public EchoHttpRequestMessagePropertyResponse(Saml2IssuedToken_mex_NS.TestHttpRequestMessageProperty EchoHttpRequestMessagePropertyResult)
         {
             this.EchoHttpRequestMessagePropertyResult = EchoHttpRequestMessagePropertyResult;
         }
@@ -2234,26 +2234,26 @@ namespace NetHttps_NS
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute("KeyValueOfstringstring", Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public NetHttps_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult;
+        public Saml2IssuedToken_mex_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult;
         
         public GetRequestHttpHeadersResponse()
         {
         }
         
-        public GetRequestHttpHeadersResponse(NetHttps_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult)
+        public GetRequestHttpHeadersResponse(Saml2IssuedToken_mex_NS.ArrayOfKeyValueOfstringstringKeyValueOfstringstring[] GetRequestHttpHeadersResult)
         {
             this.GetRequestHttpHeadersResult = GetRequestHttpHeadersResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public interface IWcfServiceChannel : NetHttps_NS.IWcfService, System.ServiceModel.IClientChannel
+    public interface IWcfServiceChannel : Saml2IssuedToken_mex_NS.IWcfService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "99.99.99")]
-    public partial class WcfServiceClient : System.ServiceModel.ClientBase<NetHttps_NS.IWcfService>, NetHttps_NS.IWcfService
+    public partial class WcfServiceClient : System.ServiceModel.ClientBase<Saml2IssuedToken_mex_NS.IWcfService>, Saml2IssuedToken_mex_NS.IWcfService
     {
         
         /// <summary>
@@ -2290,17 +2290,17 @@ namespace NetHttps_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoWithTimeoutResponse> NetHttps_NS.IWcfService.EchoWithTimeoutAsync(NetHttps_NS.EchoWithTimeoutRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoWithTimeoutResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoWithTimeoutAsync(Saml2IssuedToken_mex_NS.EchoWithTimeoutRequest request)
         {
             return base.Channel.EchoWithTimeoutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoWithTimeoutResponse> EchoWithTimeoutAsync(string message, string serviceOperationTimeout)
         {
-            NetHttps_NS.EchoWithTimeoutRequest inValue = new NetHttps_NS.EchoWithTimeoutRequest();
+            Saml2IssuedToken_mex_NS.EchoWithTimeoutRequest inValue = new Saml2IssuedToken_mex_NS.EchoWithTimeoutRequest();
             inValue.message = message;
             inValue.serviceOperationTimeout = serviceOperationTimeout;
-            return ((NetHttps_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoWithTimeoutAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<System.ServiceModel.Channels.Message> MessageRequestReplyAsync(System.ServiceModel.Channels.Message request)
@@ -2309,42 +2309,42 @@ namespace NetHttps_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoResponse> NetHttps_NS.IWcfService.EchoAsync(NetHttps_NS.EchoRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoAsync(Saml2IssuedToken_mex_NS.EchoRequest request)
         {
             return base.Channel.EchoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.EchoResponse> EchoAsync(string message)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoResponse> EchoAsync(string message)
         {
-            NetHttps_NS.EchoRequest inValue = new NetHttps_NS.EchoRequest();
+            Saml2IssuedToken_mex_NS.EchoRequest inValue = new Saml2IssuedToken_mex_NS.EchoRequest();
             inValue.message = message;
-            return ((NetHttps_NS.IWcfService)(this)).EchoAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoComplexResponse> NetHttps_NS.IWcfService.EchoComplexAsync(NetHttps_NS.EchoComplexRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoComplexResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoComplexAsync(Saml2IssuedToken_mex_NS.EchoComplexRequest request)
         {
             return base.Channel.EchoComplexAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.EchoComplexResponse> EchoComplexAsync(NetHttps_NS.ComplexCompositeType message)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoComplexResponse> EchoComplexAsync(Saml2IssuedToken_mex_NS.ComplexCompositeType message)
         {
-            NetHttps_NS.EchoComplexRequest inValue = new NetHttps_NS.EchoComplexRequest();
+            Saml2IssuedToken_mex_NS.EchoComplexRequest inValue = new Saml2IssuedToken_mex_NS.EchoComplexRequest();
             inValue.message = message;
-            return ((NetHttps_NS.IWcfService)(this)).EchoComplexAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoComplexAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.TestFaultResponse> NetHttps_NS.IWcfService.TestFaultAsync(NetHttps_NS.TestFaultRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultResponse> Saml2IssuedToken_mex_NS.IWcfService.TestFaultAsync(Saml2IssuedToken_mex_NS.TestFaultRequest request)
         {
             return base.Channel.TestFaultAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultResponse> TestFaultAsync(string faultMsg)
         {
-            NetHttps_NS.TestFaultRequest inValue = new NetHttps_NS.TestFaultRequest();
+            Saml2IssuedToken_mex_NS.TestFaultRequest inValue = new Saml2IssuedToken_mex_NS.TestFaultRequest();
             inValue.faultMsg = faultMsg;
-            return ((NetHttps_NS.IWcfService)(this)).TestFaultAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).TestFaultAsync(inValue);
         }
         
         public System.Threading.Tasks.Task TestFaultIntAsync(int faultCode)
@@ -2353,125 +2353,125 @@ namespace NetHttps_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.TestFaultsResponse> NetHttps_NS.IWcfService.TestFaultsAsync(NetHttps_NS.TestFaultsRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultsResponse> Saml2IssuedToken_mex_NS.IWcfService.TestFaultsAsync(Saml2IssuedToken_mex_NS.TestFaultsRequest request)
         {
             return base.Channel.TestFaultsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultsResponse> TestFaultsAsync(string faultMsg, bool throwFaultDetail)
         {
-            NetHttps_NS.TestFaultsRequest inValue = new NetHttps_NS.TestFaultsRequest();
+            Saml2IssuedToken_mex_NS.TestFaultsRequest inValue = new Saml2IssuedToken_mex_NS.TestFaultsRequest();
             inValue.faultMsg = faultMsg;
             inValue.throwFaultDetail = throwFaultDetail;
-            return ((NetHttps_NS.IWcfService)(this)).TestFaultsAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).TestFaultsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.TestFaultWithKnownTypeResponse> NetHttps_NS.IWcfService.TestFaultWithKnownTypeAsync(NetHttps_NS.TestFaultWithKnownTypeRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeResponse> Saml2IssuedToken_mex_NS.IWcfService.TestFaultWithKnownTypeAsync(Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeRequest request)
         {
             return base.Channel.TestFaultWithKnownTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeResponse> TestFaultWithKnownTypeAsync(string faultMsg, object[] objects)
         {
-            NetHttps_NS.TestFaultWithKnownTypeRequest inValue = new NetHttps_NS.TestFaultWithKnownTypeRequest();
+            Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeRequest inValue = new Saml2IssuedToken_mex_NS.TestFaultWithKnownTypeRequest();
             inValue.faultMsg = faultMsg;
             inValue.objects = objects;
-            return ((NetHttps_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).TestFaultWithKnownTypeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.ThrowInvalidOperationExceptionResponse> NetHttps_NS.IWcfService.ThrowInvalidOperationExceptionAsync(NetHttps_NS.ThrowInvalidOperationExceptionRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionResponse> Saml2IssuedToken_mex_NS.IWcfService.ThrowInvalidOperationExceptionAsync(Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionRequest request)
         {
             return base.Channel.ThrowInvalidOperationExceptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionResponse> ThrowInvalidOperationExceptionAsync(string message)
         {
-            NetHttps_NS.ThrowInvalidOperationExceptionRequest inValue = new NetHttps_NS.ThrowInvalidOperationExceptionRequest();
+            Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionRequest inValue = new Saml2IssuedToken_mex_NS.ThrowInvalidOperationExceptionRequest();
             inValue.message = message;
-            return ((NetHttps_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).ThrowInvalidOperationExceptionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetDataUsingDataContractResponse> NetHttps_NS.IWcfService.GetDataUsingDataContractAsync(NetHttps_NS.GetDataUsingDataContractRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetDataUsingDataContractResponse> Saml2IssuedToken_mex_NS.IWcfService.GetDataUsingDataContractAsync(Saml2IssuedToken_mex_NS.GetDataUsingDataContractRequest request)
         {
             return base.Channel.GetDataUsingDataContractAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(NetHttps_NS.CompositeType composite)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetDataUsingDataContractResponse> GetDataUsingDataContractAsync(Saml2IssuedToken_mex_NS.CompositeType composite)
         {
-            NetHttps_NS.GetDataUsingDataContractRequest inValue = new NetHttps_NS.GetDataUsingDataContractRequest();
+            Saml2IssuedToken_mex_NS.GetDataUsingDataContractRequest inValue = new Saml2IssuedToken_mex_NS.GetDataUsingDataContractRequest();
             inValue.composite = composite;
-            return ((NetHttps_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).GetDataUsingDataContractAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.ValidateMessagePropertyHeadersResponse> NetHttps_NS.IWcfService.ValidateMessagePropertyHeadersAsync(NetHttps_NS.ValidateMessagePropertyHeadersRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersResponse> Saml2IssuedToken_mex_NS.IWcfService.ValidateMessagePropertyHeadersAsync(Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersRequest request)
         {
             return base.Channel.ValidateMessagePropertyHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersResponse> ValidateMessagePropertyHeadersAsync()
         {
-            NetHttps_NS.ValidateMessagePropertyHeadersRequest inValue = new NetHttps_NS.ValidateMessagePropertyHeadersRequest();
-            return ((NetHttps_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
+            Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersRequest inValue = new Saml2IssuedToken_mex_NS.ValidateMessagePropertyHeadersRequest();
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).ValidateMessagePropertyHeadersAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.UserGetAuthTokenResponse> NetHttps_NS.IWcfService.UserGetAuthTokenAsync(NetHttps_NS.UserGetAuthTokenRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.UserGetAuthTokenResponse> Saml2IssuedToken_mex_NS.IWcfService.UserGetAuthTokenAsync(Saml2IssuedToken_mex_NS.UserGetAuthTokenRequest request)
         {
             return base.Channel.UserGetAuthTokenAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.UserGetAuthTokenResponse> UserGetAuthTokenAsync()
         {
-            NetHttps_NS.UserGetAuthTokenRequest inValue = new NetHttps_NS.UserGetAuthTokenRequest();
-            return ((NetHttps_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
+            Saml2IssuedToken_mex_NS.UserGetAuthTokenRequest inValue = new Saml2IssuedToken_mex_NS.UserGetAuthTokenRequest();
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).UserGetAuthTokenAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingData> MessageContractRequestReplyAsync(NetHttps_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingData> MessageContractRequestReplyAsync(Saml2IssuedToken_mex_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(NetHttps_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingDataNotWrapped> MessageContractRequestReplyNotWrappedAsync(Saml2IssuedToken_mex_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyNotWrappedAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(NetHttps_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingDataWithMessageHeader> MessageContractRequestReplyWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(NetHttps_NS.RequestBankingData request)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReplyBankingDataWithMessageHeaderNotNecessaryUnderstood> MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(Saml2IssuedToken_mex_NS.RequestBankingData request)
         {
             return base.Channel.MessageContractRequestReplyWithMessageHeaderNotNecessaryUnderstoodAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoHttpRequestMessagePropertyResponse> NetHttps_NS.IWcfService.EchoHttpRequestMessagePropertyAsync(NetHttps_NS.EchoHttpRequestMessagePropertyRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoHttpRequestMessagePropertyAsync(Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyRequest request)
         {
             return base.Channel.EchoHttpRequestMessagePropertyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyResponse> EchoHttpRequestMessagePropertyAsync()
         {
-            NetHttps_NS.EchoHttpRequestMessagePropertyRequest inValue = new NetHttps_NS.EchoHttpRequestMessagePropertyRequest();
-            return ((NetHttps_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
+            Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyRequest inValue = new Saml2IssuedToken_mex_NS.EchoHttpRequestMessagePropertyRequest();
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoHttpRequestMessagePropertyAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetRestartServiceEndpointResponse> NetHttps_NS.IWcfService.GetRestartServiceEndpointAsync(NetHttps_NS.GetRestartServiceEndpointRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetRestartServiceEndpointResponse> Saml2IssuedToken_mex_NS.IWcfService.GetRestartServiceEndpointAsync(Saml2IssuedToken_mex_NS.GetRestartServiceEndpointRequest request)
         {
             return base.Channel.GetRestartServiceEndpointAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetRestartServiceEndpointResponse> GetRestartServiceEndpointAsync()
         {
-            NetHttps_NS.GetRestartServiceEndpointRequest inValue = new NetHttps_NS.GetRestartServiceEndpointRequest();
-            return ((NetHttps_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
+            Saml2IssuedToken_mex_NS.GetRestartServiceEndpointRequest inValue = new Saml2IssuedToken_mex_NS.GetRestartServiceEndpointRequest();
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).GetRestartServiceEndpointAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<string> EchoXmlSerializerFormatAsync(string message)
@@ -2489,24 +2489,24 @@ namespace NetHttps_NS
             return base.Channel.EchoXmlSerializerFormatUsingRpcAsync(message);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(NetHttps_NS.XmlCompositeType composite)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlCompositeType> GetDataUsingXmlSerializerAsync(Saml2IssuedToken_mex_NS.XmlCompositeType composite)
         {
             return base.Channel.GetDataUsingXmlSerializerAsync(composite);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.LoginResponse> NetHttps_NS.IWcfService.LoginAsync(NetHttps_NS.LoginRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.LoginResponse> Saml2IssuedToken_mex_NS.IWcfService.LoginAsync(Saml2IssuedToken_mex_NS.LoginRequest request)
         {
             return base.Channel.LoginAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.LoginResponse> LoginAsync(string clientId, string user, string pwd)
         {
-            NetHttps_NS.LoginRequest inValue = new NetHttps_NS.LoginRequest();
+            Saml2IssuedToken_mex_NS.LoginRequest inValue = new Saml2IssuedToken_mex_NS.LoginRequest();
             inValue.clientId = clientId;
             inValue.user = user;
             inValue.pwd = pwd;
-            return ((NetHttps_NS.IWcfService)(this)).LoginAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).LoginAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<string> GetIncomingMessageHeadersMessageAsync(string customHeaderName, string customHeaderNS)
@@ -2515,29 +2515,29 @@ namespace NetHttps_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetStreamFromStringResponse> NetHttps_NS.IWcfService.GetStreamFromStringAsync(NetHttps_NS.GetStreamFromStringRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetStreamFromStringResponse> Saml2IssuedToken_mex_NS.IWcfService.GetStreamFromStringAsync(Saml2IssuedToken_mex_NS.GetStreamFromStringRequest request)
         {
             return base.Channel.GetStreamFromStringAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetStreamFromStringResponse> GetStreamFromStringAsync(string data)
         {
-            NetHttps_NS.GetStreamFromStringRequest inValue = new NetHttps_NS.GetStreamFromStringRequest();
+            Saml2IssuedToken_mex_NS.GetStreamFromStringRequest inValue = new Saml2IssuedToken_mex_NS.GetStreamFromStringRequest();
             inValue.data = data;
-            return ((NetHttps_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).GetStreamFromStringAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetStringFromStreamResponse> NetHttps_NS.IWcfService.GetStringFromStreamAsync(NetHttps_NS.GetStringFromStreamRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetStringFromStreamResponse> Saml2IssuedToken_mex_NS.IWcfService.GetStringFromStreamAsync(Saml2IssuedToken_mex_NS.GetStringFromStreamRequest request)
         {
             return base.Channel.GetStringFromStreamAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetStringFromStreamResponse> GetStringFromStreamAsync(System.IO.Stream stream)
         {
-            NetHttps_NS.GetStringFromStreamRequest inValue = new NetHttps_NS.GetStringFromStreamRequest();
+            Saml2IssuedToken_mex_NS.GetStringFromStreamRequest inValue = new Saml2IssuedToken_mex_NS.GetStringFromStreamRequest();
             inValue.stream = stream;
-            return ((NetHttps_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).GetStringFromStreamAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<System.IO.Stream> EchoStreamAsync(System.IO.Stream stream)
@@ -2546,29 +2546,29 @@ namespace NetHttps_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoMessageParameterResponse> NetHttps_NS.IWcfService.EchoMessageParameterAsync(NetHttps_NS.EchoMessageParameterRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoMessageParameterResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoMessageParameterAsync(Saml2IssuedToken_mex_NS.EchoMessageParameterRequest request)
         {
             return base.Channel.EchoMessageParameterAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoMessageParameterResponse> EchoMessageParameterAsync(string name)
         {
-            NetHttps_NS.EchoMessageParameterRequest inValue = new NetHttps_NS.EchoMessageParameterRequest();
+            Saml2IssuedToken_mex_NS.EchoMessageParameterRequest inValue = new Saml2IssuedToken_mex_NS.EchoMessageParameterRequest();
             inValue.name = name;
-            return ((NetHttps_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoMessageParameterAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.EchoItemsResponse> NetHttps_NS.IWcfService.EchoItemsAsync(NetHttps_NS.EchoItemsRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoItemsResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoItemsAsync(Saml2IssuedToken_mex_NS.EchoItemsRequest request)
         {
             return base.Channel.EchoItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.EchoItemsResponse> EchoItemsAsync(object[] objects)
         {
-            NetHttps_NS.EchoItemsRequest inValue = new NetHttps_NS.EchoItemsRequest();
+            Saml2IssuedToken_mex_NS.EchoItemsRequest inValue = new Saml2IssuedToken_mex_NS.EchoItemsRequest();
             inValue.objects = objects;
-            return ((NetHttps_NS.IWcfService)(this)).EchoItemsAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoItemsAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<object[]> EchoItems_XmlAsync(object[] objects)
@@ -2581,48 +2581,48 @@ namespace NetHttps_NS
             return base.Channel.EchoItems_Xml1Async(objects);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(NetHttps_NS.XmlVeryComplexType complex)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlVeryComplexType> EchoXmlVeryComplexTypeAsync(Saml2IssuedToken_mex_NS.XmlVeryComplexType complex)
         {
             return base.Channel.EchoXmlVeryComplexTypeAsync(complex);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.ReturnContentTypeResponse> NetHttps_NS.IWcfService.ReturnContentTypeAsync(NetHttps_NS.ReturnContentTypeRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReturnContentTypeResponse> Saml2IssuedToken_mex_NS.IWcfService.ReturnContentTypeAsync(Saml2IssuedToken_mex_NS.ReturnContentTypeRequest request)
         {
             return base.Channel.ReturnContentTypeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.ReturnContentTypeResponse> ReturnContentTypeAsync(string contentType)
         {
-            NetHttps_NS.ReturnContentTypeRequest inValue = new NetHttps_NS.ReturnContentTypeRequest();
+            Saml2IssuedToken_mex_NS.ReturnContentTypeRequest inValue = new Saml2IssuedToken_mex_NS.ReturnContentTypeRequest();
             inValue.contentType = contentType;
-            return ((NetHttps_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).ReturnContentTypeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.XmlMessageContractTestResponse> NetHttps_NS.IWcfService.EchoMessageResponseWithMessageHeaderAsync(NetHttps_NS.XmlMessageContractTestRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoMessageResponseWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequest request)
         {
             return base.Channel.EchoMessageResponseWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(string Message)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResponseWithMessageHeaderAsync(string Message)
         {
-            NetHttps_NS.XmlMessageContractTestRequest inValue = new NetHttps_NS.XmlMessageContractTestRequest();
+            Saml2IssuedToken_mex_NS.XmlMessageContractTestRequest inValue = new Saml2IssuedToken_mex_NS.XmlMessageContractTestRequest();
             inValue.Message = Message;
-            return ((NetHttps_NS.IWcfService)(this)).EchoMessageResponseWithMessageHeaderAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoMessageResponseWithMessageHeaderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.XmlMessageContractTestResponse> NetHttps_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(NetHttps_NS.XmlMessageContractTestRequestWithMessageHeader request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> Saml2IssuedToken_mex_NS.IWcfService.EchoMessageResquestWithMessageHeaderAsync(Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader request)
         {
             return base.Channel.EchoMessageResquestWithMessageHeaderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.XmlMessageContractTestResponse> EchoMessageResquestWithMessageHeaderAsync(string XmlMessageContractTestRequestWithMessageHeaderMessage)
         {
-            NetHttps_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new NetHttps_NS.XmlMessageContractTestRequestWithMessageHeader();
+            Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader inValue = new Saml2IssuedToken_mex_NS.XmlMessageContractTestRequestWithMessageHeader();
             inValue.XmlMessageContractTestRequestWithMessageHeaderMessage = XmlMessageContractTestRequestWithMessageHeaderMessage;
-            return ((NetHttps_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).EchoMessageResquestWithMessageHeaderAsync(inValue);
         }
         
         public System.Threading.Tasks.Task<bool> IsHttpKeepAliveDisabledAsync()
@@ -2631,15 +2631,15 @@ namespace NetHttps_NS
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<NetHttps_NS.GetRequestHttpHeadersResponse> NetHttps_NS.IWcfService.GetRequestHttpHeadersAsync(NetHttps_NS.GetRequestHttpHeadersRequest request)
+        System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetRequestHttpHeadersResponse> Saml2IssuedToken_mex_NS.IWcfService.GetRequestHttpHeadersAsync(Saml2IssuedToken_mex_NS.GetRequestHttpHeadersRequest request)
         {
             return base.Channel.GetRequestHttpHeadersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<NetHttps_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
+        public System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.GetRequestHttpHeadersResponse> GetRequestHttpHeadersAsync()
         {
-            NetHttps_NS.GetRequestHttpHeadersRequest inValue = new NetHttps_NS.GetRequestHttpHeadersRequest();
-            return ((NetHttps_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
+            Saml2IssuedToken_mex_NS.GetRequestHttpHeadersRequest inValue = new Saml2IssuedToken_mex_NS.GetRequestHttpHeadersRequest();
+            return ((Saml2IssuedToken_mex_NS.IWcfService)(this)).GetRequestHttpHeadersAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
@@ -2654,36 +2654,108 @@ namespace NetHttps_NS
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Text_IWcfService))
             {
-                System.ServiceModel.Channels.CustomBinding result = new System.ServiceModel.Channels.CustomBinding();
-                result.Elements.Add(new System.ServiceModel.Channels.BinaryMessageEncodingBindingElement());
-                System.ServiceModel.Channels.HttpsTransportBindingElement httpsBindingElement = new System.ServiceModel.Channels.HttpsTransportBindingElement();
-                httpsBindingElement.AllowCookies = true;
-                httpsBindingElement.MaxBufferSize = int.MaxValue;
-                httpsBindingElement.MaxReceivedMessageSize = int.MaxValue;
-                result.Elements.Add(httpsBindingElement);
-                return result;
-            }
-            if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
-            {
-                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
-                result.MaxReceivedMessageSize = int.MaxValue;
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrust13"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
-                result.Security.Mode = System.ServiceModel.SecurityMode.Transport;
-                result.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.None;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                result.Security.Message.EstablishSecurityContext = false;
                 return result;
             }
-            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Text_IWcfService))
             {
-                System.ServiceModel.WSHttpBinding result = new System.ServiceModel.WSHttpBinding();
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
-                result.MaxReceivedMessageSize = int.MaxValue;
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrust13/sc"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
+                result.AllowCookies = true;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Mtom_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrust13"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
                 result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
-                result.Security.Mode = System.ServiceModel.SecurityMode.Transport;
-                result.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.None;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                result.Security.Message.EstablishSecurityContext = false;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Mtom_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrust13/sc"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
+                result.AllowCookies = true;
+                result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Text_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrustFeb2005"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
+                result.AllowCookies = true;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                result.Security.Message.EstablishSecurityContext = false;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Text_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrustFeb2005/sc"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
+                result.AllowCookies = true;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Mtom_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrustFeb2005"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
+                result.AllowCookies = true;
+                result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
+                result.Security.Message.EstablishSecurityContext = false;
+                return result;
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Mtom_IWcfService))
+            {
+                System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
+                issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
+                            "/wstrustFeb2005/sc"));
+                System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
+                System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
+                result.AllowCookies = true;
+                result.MessageEncoding = System.ServiceModel.WSMessageEncoding.Mtom;
+                result.Security.Mode = System.ServiceModel.SecurityMode.TransportWithMessageCredential;
                 return result;
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
@@ -2691,17 +2763,45 @@ namespace NetHttps_NS
         
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
-            if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/NetHttps.svc/Binary");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrust13/Text");
             }
-            if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/NetHttps.svc/Text");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrust13/sc/Text");
             }
-            if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Mtom");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrust13/Mtom");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Mtom_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrust13/sc/Mtom");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Text_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrustFeb2005/Text");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Text_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrustFeb2005/sc/Text");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Mtom_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrustFeb2005/Mtom");
+            }
+            if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Mtom_IWcfService))
+            {
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
+                        "sHttp/wstrustFeb2005/sc/Mtom");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
@@ -2709,11 +2809,21 @@ namespace NetHttps_NS
         public enum EndpointConfiguration
         {
             
-            Binary_IWcfService,
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Text_IWcfService,
             
-            Text_IWcfService,
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Text_IWcfService,
             
-            Mtom_IWcfService,
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Mtom_IWcfService,
+            
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Mtom_IWcfService,
+            
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Text_IWcfService,
+            
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Text_IWcfService,
+            
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Mtom_IWcfService,
+            
+            issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Mtom_IWcfService,
         }
     }
 }
