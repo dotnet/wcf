@@ -2,13 +2,13 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Versioning specifications:  https://github.com/dotnet/arcade/blob/master/Documentation/CorePackages/Versioning.md -->
   <PropertyGroup>
-    <ProductVersion>3.4.0</ProductVersion>
+    <ProductVersion>3.5.0</ProductVersion>
     <MajorVersion>4</MajorVersion>
-    <MinorVersion>10</MinorVersion>
-    <WcfAssemblyVersion>4.10.0.0</WcfAssemblyVersion>
+    <MinorVersion>11</MinorVersion>
+    <WcfAssemblyVersion>4.11.0.0</WcfAssemblyVersion>
     <!-- To produce shipping versions in non-official builds, instead of default fixed dummy version number (42.42.42.42). -->
     <DotNetUseShippingVersions>true</DotNetUseShippingVersions>
-    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
     <PreReleaseVersionIteration>
     </PreReleaseVersionIteration>
     <!-- Use the compiler in the CLI instead of in the sdk, since the sdk one doesn't work with netcoreapp3.0 yet -->
