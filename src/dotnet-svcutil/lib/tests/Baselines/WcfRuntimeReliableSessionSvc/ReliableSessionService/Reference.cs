@@ -245,63 +245,63 @@ namespace ReliableSessionService_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.NetHttpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/NetHttpOrdered_WSReliableMessaging11");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/NetHttpOrdered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetHttpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/NetHttpUnordered_WSReliableMessaging11");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/NetHttpUnordered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetHttpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/NetHttpOrdered_WSReliableMessagingFebruary2005");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/NetHttpOrdered_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetHttpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/NetHttpUnordered_WSReliableMessagingFebruary2005");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/NetHttpUnordered_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetTcpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv5/WcfTestService1/ReliableSessionService.svc/NetTcpOrdered_WS" +
-                        "ReliableMessaging11");
+                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv53/WcfTestService1/ReliableSessionService.svc/NetTcpOrdered_W" +
+                        "SReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetTcpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv5/WcfTestService1/ReliableSessionService.svc/NetTcpUnordered_" +
-                        "WSReliableMessaging11");
+                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv53/WcfTestService1/ReliableSessionService.svc/NetTcpUnordered" +
+                        "_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetTcpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv5/WcfTestService1/ReliableSessionService.svc/NetTcpOrdered_WS" +
-                        "ReliableMessagingFebruary2005");
+                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv53/WcfTestService1/ReliableSessionService.svc/NetTcpOrdered_W" +
+                        "SReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.NetTcpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv5/WcfTestService1/ReliableSessionService.svc/NetTcpUnordered_" +
-                        "WSReliableMessagingFebruary2005");
+                return new System.ServiceModel.EndpointAddress("net.tcp://wcfcoresrv53/WcfTestService1/ReliableSessionService.svc/NetTcpUnordered" +
+                        "_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/WSHttpOrdered_WSReliableMessaging11");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/WSHttpOrdered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessaging11_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/WSHttpUnordered_WSReliableMessaging11");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/WSHttpUnordered_WSReliableMessaging11");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpOrdered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/WSHttpOrdered_WSReliableMessagingFebruary2005");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/WSHttpOrdered_WSReliableMessagingFebruary2005");
             }
             if ((endpointConfiguration == EndpointConfiguration.WSHttpUnordered_WSReliableMessagingFebruary2005_IWcfReliableService))
             {
-                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionServ" +
-                        "ice.svc/WSHttpUnordered_WSReliableMessagingFebruary2005");
+                return new System.ServiceModel.EndpointAddress("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/ReliableSessionSer" +
+                        "vice.svc/WSHttpUnordered_WSReliableMessagingFebruary2005");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

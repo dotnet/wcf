@@ -616,8 +616,8 @@ namespace NetHttps_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(NetHttps_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<NetHttps_NS.TestFaultsResponse> TestFaultsAsync(NetHttps_NS.TestFaultsRequest request);
         
@@ -2682,11 +2682,11 @@ namespace NetHttps_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.Binary_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Binary");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/NetHttps.svc/Binary");
             }
             if ((endpointConfiguration == EndpointConfiguration.Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Text");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/NetHttps.svc/Text");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

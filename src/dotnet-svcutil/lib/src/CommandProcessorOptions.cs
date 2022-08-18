@@ -870,6 +870,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 typeof(int), // System.Runtime.dll
                 typeof(System.ServiceModel.ChannelFactory), // System.ServiceModel (svcutil private code)
+                typeof(System.Net.HttpStatusCode) // netstandard.dll, System.Net.Primitives.dll
             };
 
             foreach (var type in coreTypes)
