@@ -4,7 +4,6 @@
 
 
 using System;
-using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using Infrastructure.Common;
@@ -21,10 +20,13 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         EndpointAddress endpointAddress = null;
         NetTcpBinding binding = null;
         const string greeting = "hello";
+        const string inc = "included";
+        const string uninc = "unincluded";
+        string envVar = "callbackexception" + includeExceptionDetailInFaults.ToString().ToLower();
         WcfDuplexService_CallbackDebugBehavior_Callback callbackService = null;
         InstanceContext context = null;
         IWcfDuplexService_CallbackDebugBehavior serviceProxy = null;
-
+        
         // *** VALIDATE *** \\
 
         // *** SETUP *** \\
@@ -46,7 +48,7 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
 
         serviceProxy = factory.CreateChannel();
-
+        
         // *** EXECUTE *** \\
         try
         {
@@ -55,20 +57,21 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
         catch
         {
-            string result = File.ReadAllText(Path.Combine(Environment.GetEnvironmentVariable("temp"), "exp" + includeExceptionDetailInFaults.ToString() + ".txt"));
+            string result = Environment.GetEnvironmentVariable(envVar, EnvironmentVariableTarget.Machine);
             if (includeExceptionDetailInFaults)
             {
-                Assert.Contains(greeting, result);
+                Assert.Equal(inc, result);
             }
             else
             {
-                Assert.DoesNotContain(greeting, result);
+                Assert.Equal(uninc, result);
             }
         }
         finally
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
+            Environment.SetEnvironmentVariable(envVar, null, EnvironmentVariableTarget.Machine);
         }
     }
 }

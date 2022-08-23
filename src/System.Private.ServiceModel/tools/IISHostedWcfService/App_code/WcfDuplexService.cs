@@ -113,9 +113,13 @@ namespace WcfService
             }
             catch (Exception ex)
             {
-                using (StreamWriter sw = File.CreateText(Path.Combine(Environment.GetEnvironmentVariable("temp"), "exp"+includeExceptionDetailInFaults.ToString()+".txt")))
+                if(ex.ToString().Contains(greeting))
                 {
-                    sw.Write(ex.ToString());
+                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "included", EnvironmentVariableTarget.Machine);
+                }
+                else
+                {
+                    Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "unincluded", EnvironmentVariableTarget.Machine);
                 }
             }
 
