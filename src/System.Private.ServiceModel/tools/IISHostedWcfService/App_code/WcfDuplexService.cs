@@ -101,4 +101,33 @@ namespace WcfService
             }
         }
     }
+
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
+    public class WcfDuplexService_CallbackDebugBehavior : IWcfDuplexService_CallbackDebugBehavior
+    {
+        public string Hello(string greeting, bool includeExceptionDetailInFaults)
+        {
+            try
+            {
+                Callback.ReplyThrow(greeting);
+            }
+            catch (Exception ex)
+            {
+                using (StreamWriter sw = File.CreateText(Path.Combine(Environment.GetEnvironmentVariable("temp"), "exp"+includeExceptionDetailInFaults.ToString()+".txt")))
+                {
+                    sw.Write(ex.ToString());
+                }
+            }
+
+            return greeting;
+        }
+
+        public IWcfDuplexService_CallbackDebugBehavior_Callback Callback
+        {
+            get
+            {
+                return OperationContext.Current.GetCallbackChannel<IWcfDuplexService_CallbackDebugBehavior_Callback>();
+            }
+        }
+    }
 }

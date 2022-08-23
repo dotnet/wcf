@@ -10,34 +10,35 @@ namespace System.ServiceModel.Description
 {
     public class CallbackDebugBehavior : IEndpointBehavior
     {
-        bool includeExceptionDetailInFaults = false;
-
         public CallbackDebugBehavior(bool includeExceptionDetailInFaults)
         {
-            this.includeExceptionDetailInFaults = includeExceptionDetailInFaults;
+            IncludeExceptionDetailInFaults = includeExceptionDetailInFaults;
         }
 
         public bool IncludeExceptionDetailInFaults
         {
-            get { return this.includeExceptionDetailInFaults; }
-            set { this.includeExceptionDetailInFaults = value; }
+            get;
+            set;
         }
 
         void IEndpointBehavior.Validate(ServiceEndpoint serviceEndpoint)
         {
         }
+
         void IEndpointBehavior.AddBindingParameters(ServiceEndpoint serviceEndpoint, BindingParameterCollection bindingParameters)
         {
         }
+
         void IEndpointBehavior.ApplyDispatchBehavior(ServiceEndpoint serviceEndpoint, EndpointDispatcher endpointDispatcher)
         {
             throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(
                 SR.Format(SR.SFXEndpointBehaviorUsedOnWrongSide, typeof(CallbackDebugBehavior).Name)));
         }
+
         void IEndpointBehavior.ApplyClientBehavior(ServiceEndpoint serviceEndpoint, ClientRuntime behavior)
         {
             ChannelDispatcher channelDispatcher = behavior.CallbackDispatchRuntime.ChannelDispatcher;
-            if (channelDispatcher != null && this.includeExceptionDetailInFaults)
+            if (channelDispatcher != null && IncludeExceptionDetailInFaults)
             {
                 channelDispatcher.IncludeExceptionDetailInFaults = true;
             }
