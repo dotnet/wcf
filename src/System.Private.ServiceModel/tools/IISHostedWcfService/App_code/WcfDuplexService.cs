@@ -126,6 +126,21 @@ namespace WcfService
             return greeting;
         }
 
+        public bool GetResult(bool includeExceptionDetailInFaults)
+        {
+            string envVar = "callbackexception" + includeExceptionDetailInFaults.ToString().ToLower();
+            string result = Environment.GetEnvironmentVariable(envVar, EnvironmentVariableTarget.Machine);
+            Environment.SetEnvironmentVariable(envVar, null, EnvironmentVariableTarget.Machine);
+            if (includeExceptionDetailInFaults)
+            {
+                return result.Equals("included");
+            }
+            else
+            {
+                return result.Equals("unincluded");
+            }
+        }
+
         public IWcfDuplexService_CallbackDebugBehavior_Callback Callback
         {
             get

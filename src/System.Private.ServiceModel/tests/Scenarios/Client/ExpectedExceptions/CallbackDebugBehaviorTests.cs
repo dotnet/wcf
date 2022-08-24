@@ -16,17 +16,16 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     [InlineData(false)]
     public static void DuplexCallbackDebugBehavior_IncludeExceptionDetailInFaults_True(bool includeExceptionDetailInFaults)
     {
-        DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior> factory = null;
-        EndpointAddress endpointAddress = null;
-        NetTcpBinding binding = null;
+        DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior> factory;
+        DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior> factory2 = null;
+        EndpointAddress endpointAddress;
+        NetTcpBinding binding;
         const string greeting = "hello";
-        const string inc = "included";
-        const string uninc = "unincluded";
-        string envVar = "callbackexception" + includeExceptionDetailInFaults.ToString().ToLower();
-        WcfDuplexService_CallbackDebugBehavior_Callback callbackService = null;
-        InstanceContext context = null;
-        IWcfDuplexService_CallbackDebugBehavior serviceProxy = null;
-        
+        WcfDuplexService_CallbackDebugBehavior_Callback callbackService;
+        InstanceContext context;
+        IWcfDuplexService_CallbackDebugBehavior serviceProxy;
+        IWcfDuplexService_CallbackDebugBehavior serviceProxy2 = null;
+
         // *** VALIDATE *** \\
 
         // *** SETUP *** \\
@@ -57,21 +56,30 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
         catch
         {
-            string result = Environment.GetEnvironmentVariable(envVar, EnvironmentVariableTarget.Machine);
-            if (includeExceptionDetailInFaults)
+            var binding2 = new NetTcpBinding(SecurityMode.None);
+            var callbackService2 = new WcfDuplexService_CallbackDebugBehavior_Callback();
+            var context2 = new InstanceContext(callbackService2);
+            var endpointAddress2 = new EndpointAddress(Endpoints.DuplexCallbackDebugBehavior_Address);
+            factory2 = new DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior>(context2, binding2, endpointAddress2);
+
+            System.Collections.ObjectModel.KeyedCollection<Type, IEndpointBehavior> endpointBehaviors2 = factory2.Endpoint.EndpointBehaviors;
+            if (endpointBehaviors2.TryGetValue(typeof(CallbackDebugBehavior), out IEndpointBehavior ieb2))
             {
-                Assert.Equal(inc, result);
+                (ieb2 as CallbackDebugBehavior).IncludeExceptionDetailInFaults = includeExceptionDetailInFaults;
             }
             else
             {
-                Assert.Equal(uninc, result);
+                endpointBehaviors2.Add(new CallbackDebugBehavior(includeExceptionDetailInFaults));
             }
+
+            serviceProxy2 = factory2.CreateChannel();
+            Assert.True(serviceProxy2.GetResult(includeExceptionDetailInFaults));
         }
         finally
         {
             // *** ENSURE CLEANUP *** \\
             ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy, factory);
-            Environment.SetEnvironmentVariable(envVar, null, EnvironmentVariableTarget.Machine);
+            ScenarioTestHelpers.CloseCommunicationObjects((ICommunicationObject)serviceProxy2, factory2);
         }
     }
 }
