@@ -199,6 +199,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         {
             ImportModule importModule = null;
             var credsProvicer = new CmdCredentialsProvider();
+            credsProvicer.AcceptCert = options.AcceptCert.Value;
 
             ServiceDescriptor serviceDescriptor = options.Inputs.Count == 1 ?
                 new ServiceDescriptor(options.Inputs[0].ToString(), credsProvicer, credsProvicer, credsProvicer) :

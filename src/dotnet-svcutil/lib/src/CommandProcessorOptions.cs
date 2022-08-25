@@ -90,6 +90,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             public readonly CommandSwitch Update = new CommandSwitch(UpdateServiceReferenceKey, "u", SwitchType.FlagOrSingletonValue, OperationalContext.Project);
             public readonly CommandSwitch Verbosity = new CommandSwitch(VerbosityKey, "v", SwitchType.SingletonValue);
             public readonly CommandSwitch Wrapped = new CommandSwitch(WrappedKey, "wr", SwitchType.Flag);
+            public readonly CommandSwitch AcceptCertificate = new CommandSwitch(AccecptCertificateKey, "ac", SwitchType.Flag);
 
             public void Init() { } // provided as a way to get the static class Switches loaded early.
         }
@@ -261,6 +262,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (!this.Verbosity.HasValue)
             {
                 this.Verbosity = Svcutil.Verbosity.Normal;
+            }
+
+            if (!this.AcceptCert.HasValue)
+            {
+                this.AcceptCert = false;
             }
 
             this.Logger = logger ?? new DebugLogger();
