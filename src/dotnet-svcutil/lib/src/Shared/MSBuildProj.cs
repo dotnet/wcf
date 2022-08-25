@@ -122,7 +122,14 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             return project;
         }
 
-        public static async Task<MSBuildProj> ParseAsync(string projectText, string projectFullPath, ILogger logger, CancellationToken cancellationToken)
+        internal static async Task<MSBuildProj> FromPathAsync(string filePath, ILogger logger, string tfMonitor, CancellationToken cancellationToken)
+        {
+            var project = await ParseAsync(File.ReadAllText(filePath), filePath, logger, cancellationToken, tfMonitor).ConfigureAwait(false);
+            project._isSaved = true;
+            return project;
+        }
+
+        public static async Task<MSBuildProj> ParseAsync(string projectText, string projectFullPath, ILogger logger, CancellationToken cancellationToken, string tfMonitor = "")
         {
             using (var safeLogger = await SafeLogger.WriteStartOperationAsync(logger, $"Parsing project {Path.GetFileName(projectFullPath)}").ConfigureAwait(false))
             {
@@ -187,6 +194,20 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 }
 
                 msbuildProj._targetFramework = TargetFrameworkHelper.GetBestFitTargetFramework(msbuildProj._targetFrameworks);
+
+                if(string.IsNullOrEmpty(msbuildProj._targetFramework))
+                {
+                    if(!string.IsNullOrEmpty(tfMonitor))
+                    {
+                        msbuildProj._targetFramework = tfMonitor;
+                    }
+                    else
+                    {
+                        msbuildProj._targetFramework = string.Concat("net", TargetFrameworkHelper.NetCoreVersionReferenceTable.LastOrDefault().Key.ToString());
+                    }
+                    
+                    msbuildProj._targetFrameworks.Add(msbuildProj._targetFramework);
+                }
 
                 // Ensure target framework is valid.
                 FrameworkInfo frameworkInfo = TargetFrameworkHelper.GetValidFrameworkInfo(msbuildProj.TargetFramework);
