@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -58,13 +59,21 @@ namespace System.ServiceModel.Dispatcher
                         }
                     }
                     object result = null;
-                    if (returnsValue)
+                    try
                     {
-                        result = method.Invoke(target, inputsLocal);
+                        if (returnsValue)
+                        {
+                            result = method.Invoke(target, inputsLocal);
+                        }
+                        else
+                        {
+                            method.Invoke(target, inputsLocal);
+                        }
                     }
-                    else
+                    catch (TargetInvocationException tie)
                     {
-                        method.Invoke(target, inputsLocal);
+                        Exception actualException = tie.InnerException;
+                        ExceptionDispatchInfo.Capture(actualException).Throw(); // Keep original call stack
                     }
                     for (var i = 0; i < outputPos.Length; i++)
                     {

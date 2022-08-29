@@ -333,6 +333,22 @@ public interface IWcfDuplexServiceCallback
     void OnPingCallback(Guid guid);
 }
 
+[ServiceContract(CallbackContract = typeof(IWcfDuplexService_CallbackDebugBehavior_Callback))]
+public interface IWcfDuplexService_CallbackDebugBehavior
+{
+    [OperationContract]
+    string Hello(string greeting, bool includeExceptionDetailInFaults);
+
+    [OperationContract]
+    bool GetResult(bool includeExceptionDetailInFaults);
+}
+
+public interface IWcfDuplexService_CallbackDebugBehavior_Callback
+{
+    [OperationContract]
+    void ReplyThrow(string input);
+}
+
 [ServiceContract(CallbackContract = typeof(IWcfDuplexTaskReturnCallback))]
 public interface IWcfDuplexTaskReturnService
 {
