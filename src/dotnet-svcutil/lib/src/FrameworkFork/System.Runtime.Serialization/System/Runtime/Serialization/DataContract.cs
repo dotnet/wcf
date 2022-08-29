@@ -1521,15 +1521,40 @@ namespace System.Runtime.Serialization
         {
             dataContractAttribute = null;
 
-            object[] dataContractAttributes = type.GetTypeInfo().GetCustomAttributes(Globals.TypeOfDataContractAttribute, false).ToArray();
-            if (dataContractAttributes != null && dataContractAttributes.Length > 0)
-            {
+            // Try to find an attribute with matching name
+            // type compare does not work, because of the different types used in the FrameworkFork compared to various .NET implementations 6.0/7.0
+            CustomAttributeData[] attributes = type.GetTypeInfo()
+                .GetCustomAttributesData()
+                .Where(a => a.AttributeType.FullName == Globals.TypeOfDataContractAttribute.FullName)
+                .ToArray();
+
 #if DEBUG
-                if (dataContractAttributes.Length > 1)
-                    throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TooManyDataContracts, DataContract.GetClrTypeFullName(type))));
+            if (attributes.Length > 1)
+                throw /*System.Runtime.Serialization.*/DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidDataContractException(string.Format(SRSerialization.TooManyDataContracts, DataContract.GetClrTypeFullName(type))));
 #endif
-                dataContractAttribute = (DataContractAttribute)dataContractAttributes[0];
-            }
+
+            var universalDataContractAttribute = attributes.FirstOrDefault();
+            if (universalDataContractAttribute == null)
+                return false;
+
+            // now work with reflection to get framework independent DataContractAttribute values
+            var isReferenceProperty = universalDataContractAttribute.NamedArguments?.FirstOrDefault(a => a.MemberName == "IsReference");
+            var isReference = (bool?)isReferenceProperty?.TypedValue.Value;
+
+            var namespaceProperty = universalDataContractAttribute.NamedArguments?.FirstOrDefault(a => a.MemberName == "Namespace");
+            var namespaceVal = (string)namespaceProperty?.TypedValue.Value;
+
+            var nameProperty = universalDataContractAttribute.NamedArguments?.FirstOrDefault(a => a.MemberName == "Name");
+            var name = (string)nameProperty?.TypedValue.Value;
+
+            // Create result DataContractAttribute (from Framework Fork)
+            dataContractAttribute = new DataContractAttribute();
+            if (isReference != null)
+                dataContractAttribute.IsReference = isReference.Value;
+            if (namespaceVal != null)
+                dataContractAttribute.Namespace = namespaceVal;
+            if (name != null)
+                dataContractAttribute.Name = name;
 
             return dataContractAttribute != null;
         }
