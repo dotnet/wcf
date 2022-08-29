@@ -113,7 +113,7 @@ namespace WcfService
             }
             catch (Exception ex)
             {
-                if(ex.ToString().Contains(greeting))
+                if(ex.Message.Equals(greeting))
                 {
                     Environment.SetEnvironmentVariable("callbackexception" + includeExceptionDetailInFaults.ToString().ToLower(), "included", EnvironmentVariableTarget.Machine);
                 }
