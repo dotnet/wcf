@@ -166,12 +166,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     var targetFramework = targetFrameworkElements.Last().Value.Trim().ToLowerInvariant();
                     if (!string.IsNullOrWhiteSpace(targetFramework))
                     {
-                        var tfx = targetFramework.Split('-');
-                        if (tfx.Length > 1 && (tfx[0] == "net5.0" || tfx[0] == "net6.0"))
-                        {
-                            targetFramework = tfx[0];
-                        }
-
                         msbuildProj._targetFrameworks.Add(targetFramework);
                     }
                 }
