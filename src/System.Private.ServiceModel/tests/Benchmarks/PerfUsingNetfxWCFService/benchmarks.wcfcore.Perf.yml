@@ -3,17 +3,18 @@ jobs:
     source:
       repository: https://github.com/dotnet/wcf.git
       branchOrCommit: main
-      project: src/System.Private.ServiceModel/tests/Benchmarks/Perf/WCFCorePerfClient/WCFCorePerfClient.csproj
+      project: src/System.Private.ServiceModel/tests/Benchmarks/PerfUsingNetfxWCFService/WCFCorePerfClient/WCFCorePerfClient.csproj
     isConsoleApp: true
     waitForExit: true
     variables:
       Duration: 300
-    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{serverAddress}}:{{serverPort}}/WCFCorePerf/TestService.svc/{{EndpointAddress}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
+    arguments: " binding:{{Binding}} serviceurl:{{Protocol}}://{{serverAddress}}{% if Binding == 'WSHttp' %}:{{serverPort}}{% endif %}/WCFCorePerf/TestService.svc/{{EndpointAddress}} transfermode:{{TransferMode}} perfmeasurementduration:{{Duration}} "
   WCFCorePerfService:
     source:
       repository: https://github.com/dotnet/wcf.git
       branchOrCommit: main
-      project: src/System.Private.ServiceModel/tests/Benchmarks/Perf/WCFCorePerfService/WCFCorePerfService.csproj
+      project: src/System.Private.ServiceModel/tests/Benchmarks/PerfUsingNetfxWCFService/NetfxWCFPerfService/NetfxWCFPerfService.csproj
+    arguments: " port:{{serverPort}}"
     isConsoleApp: true
    
 
@@ -28,7 +29,7 @@ scenarios:
         EndpointAddress: BasicHttp
         Binding: BasicHttp
         TransferMode: Buffered
-        serverPort: 8080
+        serverPort: 5000
   BasicHttpWithDefault: 
     application:
       job: WCFCorePerfService
@@ -39,7 +40,7 @@ scenarios:
         EndpointAddress: BasicHttp
         Binding: BasicHttp
         TransferMode: Default
-        serverPort: 8080
+        serverPort: 5000
   WSHttp:    
     application:
       job: WCFCorePerfService
@@ -49,7 +50,7 @@ scenarios:
         Protocol: Https
         EndpointAddress: WSHttp
         Binding: WSHttp
-        serverPort: 8443
+        serverPort: 5000
   NetTcp: 
     application:
       job: WCFCorePerfService
@@ -59,7 +60,7 @@ scenarios:
         Protocol: net.tcp
         EndpointAddress: NetTcp
         Binding: NetTcp
-        serverPort: 8808
+        serverPort: 5000
 
 profiles:
   short:

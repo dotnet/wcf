@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30323.103
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCFCorePerf", "WCFCorePerf\WCFCorePerf.csproj", "{57DAD894-E349-43FD-9A55-0924F9F5D31A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WCFCorePerfClient", "WCFCorePerfClient\WCFCorePerfClient.csproj", "{57DAD894-E349-43FD-9A55-0924F9F5D31A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFCorePerfService", "WCFCorePerfService\WCFCorePerfService.csproj", "{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetfxWCFPerfService", "NetfxWCFPerfService\NetfxWCFPerfService.csproj", "{BEB8FF58-A77B-4F14-BB4F-A07C0BED0227}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
