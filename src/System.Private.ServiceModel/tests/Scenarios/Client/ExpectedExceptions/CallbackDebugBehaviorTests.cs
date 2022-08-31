@@ -17,14 +17,14 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
     public static void DuplexCallbackDebugBehavior_IncludeExceptionDetailInFaults_True(bool includeExceptionDetailInFaults)
     {
         DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior> factory;
-        DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior> factory2 = null;
+        ChannelFactory<ICheckCallbackDbgBhvService> factory2 = null;
         EndpointAddress endpointAddress;
         NetTcpBinding binding;
         const string greeting = "hello";
         WcfDuplexService_CallbackDebugBehavior_Callback callbackService;
         InstanceContext context;
         IWcfDuplexService_CallbackDebugBehavior serviceProxy;
-        IWcfDuplexService_CallbackDebugBehavior serviceProxy2 = null;
+        ICheckCallbackDbgBhvService serviceProxy2 = null;
 
         // *** VALIDATE *** \\
 
@@ -56,22 +56,8 @@ public partial class ExpectedExceptionTests : ConditionalWcfTest
         }
         catch
         {
-            var binding2 = new NetTcpBinding(SecurityMode.None);
-            var callbackService2 = new WcfDuplexService_CallbackDebugBehavior_Callback();
-            var context2 = new InstanceContext(callbackService2);
-            var endpointAddress2 = new EndpointAddress(Endpoints.DuplexCallbackDebugBehavior_Address);
-            factory2 = new DuplexChannelFactory<IWcfDuplexService_CallbackDebugBehavior>(context2, binding2, endpointAddress2);
-
-            System.Collections.ObjectModel.KeyedCollection<Type, IEndpointBehavior> endpointBehaviors2 = factory2.Endpoint.EndpointBehaviors;
-            if (endpointBehaviors2.TryGetValue(typeof(CallbackDebugBehavior), out IEndpointBehavior ieb2))
-            {
-                (ieb2 as CallbackDebugBehavior).IncludeExceptionDetailInFaults = includeExceptionDetailInFaults;
-            }
-            else
-            {
-                endpointBehaviors2.Add(new CallbackDebugBehavior(includeExceptionDetailInFaults));
-            }
-
+            var binding2 = new BasicHttpBinding();
+            factory2 = new ChannelFactory<ICheckCallbackDbgBhvService>(binding2, new EndpointAddress(Endpoints.HttpBaseAddress_BasicCheckCallbackDbgBhvService));
             serviceProxy2 = factory2.CreateChannel();
             Assert.True(serviceProxy2.GetResult(includeExceptionDetailInFaults));
         }

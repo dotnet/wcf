@@ -338,7 +338,11 @@ public interface IWcfDuplexService_CallbackDebugBehavior
 {
     [OperationContract]
     string Hello(string greeting, bool includeExceptionDetailInFaults);
+}
 
+[ServiceContract]
+public interface ICheckCallbackDbgBhvService
+{
     [OperationContract]
     bool GetResult(bool includeExceptionDetailInFaults);
 }

@@ -43,6 +43,11 @@ public static partial class Endpoints
         get { return GetEndpointAddress("BasicService1.svc//Service1"); }
     }
 
+    public static string HttpBaseAddress_BasicCheckCallbackDbgBhvService
+    {
+        get { return GetEndpointAddress("BasicCheckCallbackDbgBhvService.svc//CheckCallbackDbgBhvService"); }
+    }
+
     // Endpoint that relies on post-1.1.0 features
     public static string HttpBaseAddress_4_4_0_Basic
     {
