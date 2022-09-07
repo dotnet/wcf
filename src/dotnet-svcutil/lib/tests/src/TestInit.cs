@@ -360,7 +360,7 @@ namespace SvcutilTest
 
             // get test case baselines.
             var baselineFiles = Directory.GetFiles(this_TestCaseBaselinesDir, "*", SearchOption.AllDirectories)
-                                    .Where(f => !PathHelper.PathHasFolder(f, excludeDirs, this_TestCaseBaselinesDir)).ToList();
+                                    .Where(f => !PathHelper.PathHasFolder(f, excludeDirs, this_TestCaseBaselinesDir)).Where(f => !f.ToLower().EndsWith("nuget.config")).ToList();
 
             var nonRefbaselineFiles = baselineFiles.Where(f => f.EndsWith(".cs") && !f.EndsWith(Path.DirectorySeparatorChar + "reference.cs", StringComparison.OrdinalIgnoreCase)).ToList();
 
@@ -370,6 +370,7 @@ namespace SvcutilTest
             // place the bootstrapping dir under the test case's output dir.
             var generatedFiles = Directory.GetFiles(this_TestCaseOutputDir, "*.*", SearchOption.AllDirectories)
                                     .Where(f => !PathHelper.PathHasFolder(f, excludeDirs, this_TestCaseOutputDir))
+                                    .Where(f => !f.ToLower().EndsWith("nuget.config"))
                                     .Where(f => g_GeneratedExtensions
                                     .Any(e => e.Equals(Path.GetExtension(f), RuntimeEnvironmentHelper.FileStringComparison))).ToList();
             
