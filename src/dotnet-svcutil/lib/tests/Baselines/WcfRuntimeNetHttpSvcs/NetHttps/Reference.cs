@@ -2701,7 +2701,7 @@ namespace NetHttps_NS
             }
             if ((endpointConfiguration == EndpointConfiguration.Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/NetHttps.svc/Mtom");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/NetHttps.svc/Mtom");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

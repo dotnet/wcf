@@ -616,8 +616,8 @@ namespace Saml2IssuedToken_mex_NS
         System.Threading.Tasks.Task TestFaultIntAsync(int faultCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWcfService/TestFaults", ReplyAction="http://tempuri.org/IWcfService/TestFaultsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault2", Name="FaultDetail2", Namespace="http://www.contoso.com/wcfnamespace")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Saml2IssuedToken_mex_NS.FaultDetail), Action="http://tempuri.org/IWcfService/TestFaultFaultDetailFault", Name="FaultDetail", Namespace="http://www.contoso.com/wcfnamespace")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<Saml2IssuedToken_mex_NS.TestFaultsResponse> TestFaultsAsync(Saml2IssuedToken_mex_NS.TestFaultsRequest request);
         
@@ -2658,8 +2658,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrust13"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrust13"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2671,8 +2671,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrust13/sc"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrust13/sc"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2683,8 +2683,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrust13"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrust13"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2697,8 +2697,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrust13/sc"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrust13/sc"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWS2007FederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2710,8 +2710,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrustFeb2005"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrustFeb2005"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2723,8 +2723,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrustFeb2005/sc"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrustFeb2005/sc"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2735,8 +2735,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrustFeb2005"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrustFeb2005"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2749,8 +2749,8 @@ namespace Saml2IssuedToken_mex_NS
             {
                 System.ServiceModel.WSHttpBinding issuerBinding = new System.ServiceModel.WSHttpBinding(System.ServiceModel.SecurityMode.Transport);
                 issuerBinding.Security.Transport.ClientCredentialType = System.ServiceModel.HttpClientCredentialType.Basic;
-                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv5.westus2.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHttp" +
-                            "/wstrustFeb2005/sc"));
+                System.ServiceModel.EndpointAddress issuerAddress = new System.ServiceModel.EndpointAddress(new System.Uri("http://wcfcoresrv53.westus3.cloudapp.azure.com/WcfTestService1/LocalSTS.svc/wsHtt" +
+                            "p/wstrustFeb2005/sc"));
                 System.ServiceModel.Federation.WSTrustTokenParameters wsTrustTokenParams = System.ServiceModel.Federation.WSTrustTokenParameters.CreateWSFederationTokenParameters(issuerBinding, issuerAddress);
                 System.ServiceModel.Federation.WSFederationHttpBinding result = new System.ServiceModel.Federation.WSFederationHttpBinding(wsTrustTokenParams);
                 result.AllowCookies = true;
@@ -2765,43 +2765,43 @@ namespace Saml2IssuedToken_mex_NS
         {
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrust13/Text");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrust13/Text");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrust13/sc/Text");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrust13/sc/Text");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrust13/Mtom");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrust13/Mtom");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrust13_x002F_sc_x002F_Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrust13/sc/Mtom");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrust13/sc/Mtom");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrustFeb2005/Text");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrustFeb2005/Text");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Text_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrustFeb2005/sc/Text");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrustFeb2005/sc/Text");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrustFeb2005/Mtom");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrustFeb2005/Mtom");
             }
             if ((endpointConfiguration == EndpointConfiguration.issued_token_using_tls_x002F_wsHttp_x002F_wstrustFeb2005_x002F_sc_x002F_Mtom_IWcfService))
             {
-                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv5/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/w" +
-                        "sHttp/wstrustFeb2005/sc/Mtom");
+                return new System.ServiceModel.EndpointAddress("https://wcfcoresrv53/WcfTestService1/Saml2IssuedToken.svc/issued-token-using-tls/" +
+                        "wsHttp/wstrustFeb2005/sc/Mtom");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
