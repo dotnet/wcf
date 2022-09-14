@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <AssemblyName>System.ServiceModel.Duplex</AssemblyName>
+    <CLSCompliant>true</CLSCompliant>
+    <IsPackable>true</IsPackable>
+    <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
+    <NoWarn>$(NoWarn);NU5131</NoWarn>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+</Project>

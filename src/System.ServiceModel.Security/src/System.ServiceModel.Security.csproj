@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <AssemblyName>System.ServiceModel.Security</AssemblyName>
+    <CLSCompliant>true</CLSCompliant>
+    <IsPackable>true</IsPackable>
+    <!-- Workaround for https://github.com/NuGet/NuGet.Client/pull/3016 -->
+    <NoWarn>$(NoWarn);NU5131</NoWarn>
+    <TargetFrameworks>net6.0;net461</TargetFrameworks>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net461'">
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
+  </ItemGroup>
+
+  <!-- the following represent dependencies copied from the old package -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.ServiceModel" />
+  </ItemGroup>
+</Project>

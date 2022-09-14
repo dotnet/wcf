@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
+    <StrongNameKeyId>Microsoft</StrongNameKeyId>
+    <AssemblyName>System.ServiceModel.NetNamedPipe</AssemblyName>
+    <CLSCompliant>true</CLSCompliant>
+    <IsPackable>true</IsPackable>
+    <IsShipping>$(Ship_WcfPackages)</IsShipping>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <RootNamespace>System.ServiceModel</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.NetFramingBase\src\System.ServiceModel.NetFramingBase.csproj" />
+  </ItemGroup>
+
+  <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <GenerateSource>true</GenerateSource>
+      <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
+      <GenerateResourcesCodeAsConstants>false</GenerateResourcesCodeAsConstants>
+      <ClassName>System.SR</ClassName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Common\src\System\SR.cs">
+      <Link>Common\System\SR.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\System\ServiceModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\Common\src\Internals\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+</Project>

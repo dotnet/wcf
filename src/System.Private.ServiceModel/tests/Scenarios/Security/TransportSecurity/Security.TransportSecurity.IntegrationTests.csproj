@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), certtest.props))\certtest.props" />
   <PropertyGroup>
     <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
@@ -12,7 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <ProjectReference Include="..\..\..\..\..\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.csproj" />
     <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
