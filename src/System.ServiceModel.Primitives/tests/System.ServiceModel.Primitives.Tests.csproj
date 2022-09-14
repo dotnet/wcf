@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
     <TargetFrameworks>$(UnitTestTargetFrameworks)</TargetFrameworks>
@@ -8,7 +8,9 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\System.Private.ServiceModel\src\System.Private.ServiceModel.csproj" />
+    <ProjectReference Include="..\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.NetTcp\src\System.ServiceModel.NetTcp.csproj" />
     <ProjectReference Include="$(WcfUnitTestCommonProj)" />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>

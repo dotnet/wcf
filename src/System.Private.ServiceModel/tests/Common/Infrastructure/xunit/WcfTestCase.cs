@@ -20,7 +20,7 @@ namespace Infrastructure.Common
     {
         private string _skippedReason;
         private bool _isTheory;
-        private readonly TimeSpan _failFastDuration;
+        private TimeSpan _failFastDuration;
         private readonly IMessageSink _diagnosticMessageSink;
 
         static TestEventListener s_testListener = new TestEventListener(new List<string>() { "Microsoft-Windows-Application Server-Applications" }, EventLevel.Verbose);
@@ -53,7 +53,7 @@ namespace Infrastructure.Common
             Timer timer = null;
             if (_failFastDuration != System.Threading.Timeout.InfiniteTimeSpan && !System.Diagnostics.Debugger.IsAttached)
             {
-                timer = new Timer((s) => Environment.FailFast("Test timed out"),
+                timer = new Timer((s) => Environment.FailFast($"Test timed out after duration {_failFastDuration}"),
                                   null,
                                   (int)_failFastDuration.TotalMilliseconds,
                                   System.Threading.Timeout.Infinite);
@@ -108,12 +108,23 @@ namespace Infrastructure.Common
             base.Serialize(data);
             data.AddValue("_isTheory", _isTheory);
             data.AddValue("_skippedReason", _skippedReason);
+            data.AddValue("_failFastDuration", _failFastDuration.ToString());
         }
 
         public override void Deserialize(IXunitSerializationInfo data)
         {
             _isTheory = data.GetValue<bool>("_isTheory");
             _skippedReason = data.GetValue<string>("_skippedReason");
+            string failFastDurationStr = data.GetValue<string>("_failFastDuration");
+            if (!string.IsNullOrEmpty(failFastDurationStr))
+            {
+                _failFastDuration = TimeSpan.Parse(failFastDurationStr);
+            }
+            else
+            {
+                _failFastDuration = System.Threading.Timeout.InfiniteTimeSpan;
+            }
+
             base.Deserialize(data);
         }
     }

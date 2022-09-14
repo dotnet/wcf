@@ -36,6 +36,7 @@ namespace WcfService
                     var websocketsPort = string.IsNullOrEmpty(Environment.GetEnvironmentVariable("websocketsPort")) ? DefaultWebSocketSPort : int.Parse(Environment.GetEnvironmentVariable("websocketsPort"));
                     dict[ServiceSchema.WSS] = string.Format(@"https://localhost:{0}", websocketsPort);
                     s_baseAddresses = dict;
+                    dict[ServiceSchema.NETPIPE] = @"net.pipe://localhost";
                     Console.WriteLine("Using base addresses:");
                     foreach(var ba in dict.Values)
                     {

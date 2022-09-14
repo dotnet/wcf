@@ -33,7 +33,7 @@ namespace System.ServiceModel.Federation
         /// <param name="request">The WS-Trust request (RST).</param>
         /// <param name="response">The WS-Trust response (RSTR).</param>
         /// <returns>The proof token or null if there is no proof token.</returns>
-        internal static BinarySecretSecurityToken GetProofToken(WsTrustRequest request, RequestSecurityTokenResponse response, WsSerializationContext serializationContext, SecurityAlgorithmSuite algorithmSuite)
+        internal static BinarySecretSecurityToken GetProofToken(WsTrustRequest request, Microsoft.IdentityModel.Protocols.WsTrust.RequestSecurityTokenResponse response, WsSerializationContext serializationContext, SecurityAlgorithmSuite algorithmSuite)
         {
             // According to the WS-Trust 1.3 spec, symmetric is the default key type
             string keyType = response.KeyType ?? request.KeyType ?? serializationContext.TrustKeyTypes.Symmetric;
@@ -131,7 +131,7 @@ namespace System.ServiceModel.Federation
         {
             // Create GenericXmlSecurityToken
             // Assumes that token is first and Saml2SecurityToken.
-            RequestSecurityTokenResponse response = trustResponse.RequestSecurityTokenResponseCollection[0];
+            Microsoft.IdentityModel.Protocols.WsTrust.RequestSecurityTokenResponse response = trustResponse.RequestSecurityTokenResponseCollection[0];
 
             // Get attached and unattached references
             GenericXmlSecurityKeyIdentifierClause internalSecurityKeyIdentifierClause = null;

@@ -11,7 +11,7 @@ public static class HttpIdentityTests
     [WcfFact]
     public static void SpnEndpointIdentity_NotSupportedThrows()
     {
-        var identity = EndpointIdentity.CreateSpnIdentity("SERVICE/serverhostname");
+        var identity = new SpnEndpointIdentity("SERVICE/serverhostname");
         var endpointAddress = new EndpointAddress(new Uri("https://serverhostname/fakeService.svc"), identity);
         var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
@@ -23,7 +23,7 @@ public static class HttpIdentityTests
     [WcfFact]
     public static void UpnEndpointIdentityThrows()
     {
-        var identity = EndpointIdentity.CreateUpnIdentity("user@contoso.com");
+        var identity = new UpnEndpointIdentity("user@contoso.com");
         var endpointAddress = new EndpointAddress(new Uri("https://serverhostname/fakeService.svc"), identity);
         var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
         binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;

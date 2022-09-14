@@ -759,5 +759,18 @@ public static partial class Endpoints
         get { return GetEndpointAddress("DuplexCallbackDebugBehavior.svc/tcp", protocol: "net.tcp"); }
     }
     #endregion net.tcp Addresses
+
+    #region net.pipe Addresses
+    // net.pipe addresses
+    public static string NamedPipe_NoSecurity_Address
+    {
+        get { return GetEndpointAddress("TcpNoSecurity.svc/namedpipe-nosecurity", protocol: "net.pipe"); }
+    }
+
+    public static string NamedPipe_DefaultBinding_Address
+    {
+        get { return GetEndpointAddress("TcpDefault.svc/namedpipe-default", protocol: "net.pipe"); }
+    }
+    #endregion
 }
 

@@ -20,6 +20,7 @@ namespace WcfService
         HTTPS = 2,
         NETTCP = 4,
         WS = 8,
-        WSS = 16
+        WSS = 16,
+        NETPIPE = 32,
     }
 }

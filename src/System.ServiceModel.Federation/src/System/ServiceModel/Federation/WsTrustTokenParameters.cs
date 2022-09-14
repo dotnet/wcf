@@ -73,7 +73,7 @@ namespace System.ServiceModel.Federation
         /// Allows the addition of custom <see cref="XmlElement"/>s to the WSTrust request
         /// <para>see: http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html </para>
         /// </summary>
-        public ICollection<XmlElement> AdditionalRequestParameters { get; } = new Collection<XmlElement>();
+        public new ICollection<XmlElement> AdditionalRequestParameters { get; } = new Collection<XmlElement>();
 
         /// <summary>
         /// Gets or set a bool that controls if tokens received from that STS should be cached.
@@ -100,7 +100,19 @@ namespace System.ServiceModel.Federation
         /// <summary>
         /// Gets or sets the keysize to request from the STS
         /// </summary>
-        public int? KeySize { get; set; }
+        public new int? KeySize {
+            get
+            {
+                return base.KeySize;
+            }
+            set
+            {
+                if (value.HasValue)
+                {
+                    base.KeySize = value.Value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the maximum time an issued token will be cached before renewing it.

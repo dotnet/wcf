@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-
 using System;
-using System.ServiceModel;
 using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using Infrastructure.Common;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -505,6 +504,9 @@ public static class ServiceUtilHelper
                     break;
                 case "net.tcp":
                     builder.Port = int.Parse(TestProperties.GetProperty(TestProperties.ServiceTcpPort_PropertyName));
+                    break;
+                case "net.pipe":
+                    // No port number used with named pipes, so do nothing
                     break;
                 default:
                     break;

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>$(ScenarioTestTargetFrameworks)</TargetFrameworks>
     <CLSCompliant>false</CLSCompliant>
@@ -10,12 +10,10 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <!-- <ProjectReference Include="..\..\..\..\..\src\System.Private.ServiceModel.csproj" /> -->
-    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.Facade.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.Facade.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Security\src\System.ServiceModel.Security.Facade.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\System.ServiceModel.Federation\src\System.ServiceModel.Federation.csproj" />
-    <ProjectReference Include='$(WcfScenarioTestCommonProj)' />
+    <ProjectReference Include="$(WcfScenarioTestCommonProj)" />
     <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
   </ItemGroup>
 </Project>

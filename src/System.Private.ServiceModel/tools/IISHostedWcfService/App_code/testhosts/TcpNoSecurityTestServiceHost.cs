@@ -3,19 +3,36 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Web.Hosting;
 
 namespace WcfService
 {
-    [TestServiceDefinition(Schema = ServiceSchema.NETTCP, BasePath = "TcpNoSecurity.svc")]
+    [TestServiceDefinition(Schema = ServiceSchema.NETTCP | ServiceSchema.NETPIPE, BasePath = "TcpNoSecurity.svc")]
     public class TcpNoSecurityTestServiceHost : TestServiceHostBase<IWcfService>
     {
-        protected override string Address { get { return "tcp-nosecurity"; } }
-
-        protected override Binding GetBinding()
+        protected override IList<Binding> GetBindings()
         {
-            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false };
+            var bindings = new List<Binding>();
+            bindings.Add(GetNetTcpBinding());
+            if (!HostingEnvironment.IsHosted)
+            {
+                bindings.Add(GetNetNamedPipeBinding());
+            }
+
+            return bindings;
+        }
+
+        private Binding GetNetTcpBinding()
+        {
+            return new NetTcpBinding(SecurityMode.None) { PortSharingEnabled = false , Name = "tcp-nosecurity" };
+        }
+
+        private Binding GetNetNamedPipeBinding()
+        {
+            return new NetNamedPipeBinding(NetNamedPipeSecurityMode.None) { Name = "namedpipe-nosecurity" };
         }
 
         public TcpNoSecurityTestServiceHost(params Uri[] baseAddresses)

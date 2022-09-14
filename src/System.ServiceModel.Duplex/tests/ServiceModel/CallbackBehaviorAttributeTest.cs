@@ -40,7 +40,9 @@ public static class CallbackBehaviorAttributeTest
     [WcfTheory]
     [InlineData(ConcurrencyMode.Single)]
     [InlineData(ConcurrencyMode.Multiple)]
+#pragma warning disable CS0612 // Type or member is obsolete
     [InlineData(ConcurrencyMode.Reentrant)]
+#pragma warning restore CS0612 // Type or member is obsolete
     public static void ConcurrencyMode_Property_Is_Settable(ConcurrencyMode value)
     {
         CallbackBehaviorAttribute cba = new CallbackBehaviorAttribute();
