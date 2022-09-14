@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>System.ServiceModel</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <GenFacadesIgnoreMissingTypes>true</GenFacadesIgnoreMissingTypes>
@@ -15,7 +15,7 @@
     <StrongNameKeyId>ECMA</StrongNameKeyId>
 
     <MicrosoftTargetingPackNETFrameworkv472Package>Microsoft.TargetingPack.NETFramework.v4.7.2</MicrosoftTargetingPackNETFrameworkv472Package>
-    <IsPackable>false</IsPackable>
+    <IsPackable>false</IsPackable> 
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,11 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\System.ServiceModel.Duplex\ref\System.ServiceModel.Duplex.Ref.csproj" />
     <ProjectReference Include="..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
     <ProjectReference Include="..\System.ServiceModel.NetTcp\ref\System.ServiceModel.NetTcp.Ref.csproj" />
     <ProjectReference Include="..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
-    <ProjectReference Include="..\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0" />
   </ItemGroup>
 </Project>

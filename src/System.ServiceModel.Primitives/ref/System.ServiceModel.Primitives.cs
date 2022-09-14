@@ -4,9 +4,10 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace System.Collections.Generic {
       public partial class SynchronizedCollection<T> : IList<T>, IList
@@ -63,7 +64,11 @@ namespace System.IdentityModel.Selectors
 {
     public abstract partial class SecurityTokenAuthenticator
     {
-        internal SecurityTokenAuthenticator() { }
+        protected SecurityTokenAuthenticator() { }
+        public bool CanValidateToken(System.IdentityModel.Tokens.SecurityToken token) => default;
+        public ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> ValidateToken(System.IdentityModel.Tokens.SecurityToken token) => default;
+        protected abstract bool CanValidateTokenCore(System.IdentityModel.Tokens.SecurityToken token);
+        protected abstract ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> ValidateTokenCore(System.IdentityModel.Tokens.SecurityToken token);
     }
     public abstract partial class SecurityTokenManager
     {
@@ -99,6 +104,10 @@ namespace System.IdentityModel.Selectors
     {
         public SecurityTokenRequirement() { }
         public string TokenType { get { return default; } set { } }
+        public bool RequireCryptographicToken { get { return default; } set { } }
+        public System.IdentityModel.Tokens.SecurityKeyUsage KeyUsage { get { return default; } set { } }
+        public System.IdentityModel.Tokens.SecurityKeyType KeyType { get { return default; } set { } }
+        public int KeySize { get { return default; } set { } }
         public System.Collections.Generic.IDictionary<string, object> Properties { get { return default; } }
         public TValue GetProperty<TValue>(string propertyName) { return default; }
         public bool TryGetProperty<TValue>(string propertyName, out TValue result) { result = default; return default; }
@@ -142,6 +151,14 @@ namespace System.IdentityModel.Selectors
     {
         protected X509CertificateValidator() { }
         public abstract void Validate(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate);
+        public static X509CertificateValidator CreateChainTrustValidator(bool useMachineContext, X509ChainPolicy chainPolicy) => default;
+    }
+    public partial class X509SecurityTokenAuthenticator : SecurityTokenAuthenticator
+    {
+        public X509SecurityTokenAuthenticator() { }
+        public X509SecurityTokenAuthenticator(X509CertificateValidator validator) { }
+        protected override bool CanValidateTokenCore(System.IdentityModel.Tokens.SecurityToken token) => default;
+        protected override ReadOnlyCollection<System.IdentityModel.Policy.IAuthorizationPolicy> ValidateTokenCore(System.IdentityModel.Tokens.SecurityToken token) => default;
     }
 }
 namespace System.IdentityModel.Tokens
@@ -327,9 +344,7 @@ namespace System.ServiceModel
             event System.EventHandler System.ServiceModel.ICommunicationObject.Faulted { add { } remove { } }
             event System.EventHandler System.ServiceModel.ICommunicationObject.Opened { add { } remove { } }
             event System.EventHandler System.ServiceModel.ICommunicationObject.Opening { add { } remove { } }
-            [System.Security.SecuritySafeCriticalAttribute]
             protected System.IAsyncResult BeginInvoke(string methodName, object[] args, System.AsyncCallback callback, object state) { return default; }
-            [System.Security.SecuritySafeCriticalAttribute]
             protected object EndInvoke(string methodName, object[] args, System.IAsyncResult result) { return default; }
             void System.IDisposable.Dispose() { }
             TProperty System.ServiceModel.Channels.IChannel.GetProperty<TProperty>() { return default; }
@@ -416,10 +431,10 @@ namespace System.ServiceModel
     {
         public QueuedDeliveryRequirementsMode QueuedDeliveryRequirements { get; set; }
         public bool RequireOrderedDelivery { get; set; }
-        void IContractBehavior.AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
-        void IContractBehavior.ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime) { }
-        void IContractBehavior.ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) { }
-        void IContractBehavior.Validate(ContractDescription contractDescription, ServiceEndpoint endpoint) { }
+        void System.ServiceModel.Description.IContractBehavior.AddBindingParameters(System.ServiceModel.Description.ContractDescription contractDescription, System.ServiceModel.Description.ServiceEndpoint endpoint, System.ServiceModel.Channels.BindingParameterCollection bindingParameters) { }
+        void System.ServiceModel.Description.IContractBehavior.ApplyClientBehavior(System.ServiceModel.Description.ContractDescription contractDescription, System.ServiceModel.Description.ServiceEndpoint endpoint, System.ServiceModel.Dispatcher.ClientRuntime clientRuntime) { }
+        void System.ServiceModel.Description.IContractBehavior.ApplyDispatchBehavior(System.ServiceModel.Description.ContractDescription contractDescription, System.ServiceModel.Description.ServiceEndpoint endpoint, System.ServiceModel.Dispatcher.DispatchRuntime dispatchRuntime) { }
+        void System.ServiceModel.Description.IContractBehavior.Validate(System.ServiceModel.Description.ContractDescription contractDescription, System.ServiceModel.Description.ServiceEndpoint endpoint) { }
     }
     public partial class EndpointAddress
     {
@@ -454,9 +469,13 @@ namespace System.ServiceModel
     public abstract partial class EndpointIdentity
     {
         protected EndpointIdentity() { }
+        protected void Initialize(System.IdentityModel.Claims.Claim identityClaim) { }
+        protected void Initialize(System.IdentityModel.Claims.Claim identityClaim, IEqualityComparer<System.IdentityModel.Claims.Claim> claimComparer) { }
+        public System.IdentityModel.Claims.Claim IdentityClaim => default;
         public override bool Equals(object obj) { return default; }
         public override int GetHashCode() { return default; }
         public override string ToString() { return default; }
+        public static System.ServiceModel.EndpointIdentity CreateIdentity(System.IdentityModel.Claims.Claim identity) => default;
     }
     public partial class EndpointNotFoundException : System.ServiceModel.CommunicationException
     {
@@ -758,6 +777,7 @@ namespace System.ServiceModel
     public class OptionalReliableSession : System.ServiceModel.ReliableSession
     {
         public OptionalReliableSession() { }
+        public OptionalReliableSession(System.ServiceModel.Channels.ReliableSessionBindingElement reliableSessionBindingElement) { }
         public bool Enabled { get; set; }
     }
     public partial class ProtocolException : System.ServiceModel.CommunicationException
@@ -989,12 +1009,10 @@ namespace System.ServiceModel.Channels
         public System.Collections.ObjectModel.Collection<T> RemoveAll<T>() { return default; }
         protected override void SetItem(int index, System.ServiceModel.Channels.BindingElement item) { }
     }
-    public partial class BindingParameterCollection : System.Collections.ObjectModel.KeyedCollection<System.Type, object>
+    // TODO : Check that changing from KeyedCollection<Type,object> to KeyedByTypeCollection<object> isn't a binary break
+    public partial class BindingParameterCollection : System.Collections.Generic.KeyedByTypeCollection<object>
     {
         public BindingParameterCollection() { }
-        protected override Type GetKeyForItem(object item) { return default; }
-        protected override void SetItem(int index, object item) { }
-        protected override void InsertItem(int index, object item) { }
     }
     public abstract partial class BodyWriter
     {
@@ -1153,6 +1171,11 @@ namespace System.ServiceModel.Channels
     {
         TChannel CreateChannel(System.ServiceModel.EndpointAddress to);
         TChannel CreateChannel(System.ServiceModel.EndpointAddress to, System.Uri via);
+    }
+    public partial interface IBindingDeliveryCapabilities
+    {
+        bool AssuresOrderedDelivery { get; }
+        bool QueuedDelivery { get; }
     }
     public partial interface IDuplexChannel : System.ServiceModel.Channels.IChannel, System.ServiceModel.Channels.IInputChannel, System.ServiceModel.Channels.IOutputChannel, System.ServiceModel.ICommunicationObject
     {
@@ -1427,6 +1450,7 @@ namespace System.ServiceModel.Channels
         public object this[string name] { get { return default; } set { } }
         public System.Collections.Generic.ICollection<string> Keys { get { return default; } }
         bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Object>>.IsReadOnly { get { return default; } }
+        public System.ServiceModel.Security.SecurityMessageProperty Security { get { return default; } set { } }
         public System.Collections.Generic.ICollection<object> Values { get { return default; } }
         public System.Uri Via { get { return default; } set { } }
         public void Add(string name, object property) { }
@@ -1769,9 +1793,9 @@ namespace System.ServiceModel.Description
         public static TypedMessageConverter Create(Type messageContract, string action, DataContractFormatAttribute formatterAttribute) { return default; }
         public static TypedMessageConverter Create(Type messageContract, string action, string defaultNamespace, XmlSerializerFormatAttribute formatterAttribute) { return default; }
         public static TypedMessageConverter Create(Type messageContract, string action, string defaultNamespace, DataContractFormatAttribute formatterAttribute) { return default; }
-        public abstract Message ToMessage(object typedMessage);
-        public abstract Message ToMessage(object typedMessage, MessageVersion version);
-        public abstract object FromMessage(Message message);
+        public abstract System.ServiceModel.Channels.Message ToMessage(object typedMessage);
+        public abstract System.ServiceModel.Channels.Message ToMessage(object typedMessage, System.ServiceModel.Channels.MessageVersion version);
+        public abstract object FromMessage(System.ServiceModel.Channels.Message message);
     }
 }
 namespace System.ServiceModel.Dispatcher
@@ -1861,8 +1885,8 @@ namespace System.ServiceModel.Dispatcher
     }
     public interface IDispatchMessageInspector
     {
-        object AfterReceiveRequest(ref Message request, IClientChannel channel, System.ServiceModel.InstanceContext instanceContext);
-        void BeforeSendReply(ref Message reply, object correlationState);
+        object AfterReceiveRequest(ref System.ServiceModel.Channels.Message request, IClientChannel channel, System.ServiceModel.InstanceContext instanceContext);
+        void BeforeSendReply(ref System.ServiceModel.Channels.Message reply, object correlationState);
     }
     public partial interface IClientOperationSelector
     {
@@ -1886,6 +1910,10 @@ namespace System.ServiceModel.Security
     {
         internal HttpDigestClientCredential() { }
         public System.Net.NetworkCredential ClientCredential { get { return default; } set { } }
+    }
+    public interface ISecuritySession : System.ServiceModel.Channels.ISession
+    {
+        System.ServiceModel.EndpointIdentity RemoteIdentity { get; }
     }
     public partial class MessageSecurityException : System.ServiceModel.CommunicationException
     {

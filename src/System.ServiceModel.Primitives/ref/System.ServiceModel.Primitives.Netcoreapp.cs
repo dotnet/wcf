@@ -4,18 +4,30 @@
 // Changes to this file must follow the http://aka.ms/api-review process.
 // ------------------------------------------------------------------------------
 
-using System.Threading.Tasks;
-
 namespace System.ServiceModel
 {
     public abstract partial class ChannelFactory : System.IAsyncDisposable
     {
-        ValueTask IAsyncDisposable.DisposeAsync() { return default; }
+        System.Threading.Tasks.ValueTask IAsyncDisposable.DisposeAsync() { return default; }
     }
     public abstract partial class ClientBase<TChannel> : System.IAsyncDisposable
     {
-        public Task CloseAsync() { return default; }
-        ValueTask IAsyncDisposable.DisposeAsync() { return default; }
+        public System.Threading.Tasks.Task CloseAsync() { return default; }
+        System.Threading.Tasks.ValueTask IAsyncDisposable.DisposeAsync() { return default; }
+    }
+}
+namespace System.ServiceModel.Channels
+{
+    public abstract partial class MessageEncoder
+    {
+        public virtual System.Threading.Tasks.ValueTask<Message> ReadMessageAsync(System.IO.Stream stream, int maxSizeOfHeaders, string contentType) => default;
+        public virtual System.Threading.Tasks.ValueTask<Message> ReadMessageAsync(System.ArraySegment<byte> buffer, System.ServiceModel.Channels.BufferManager bufferManager, string contentType) => default;
+        public virtual Threading.Tasks.ValueTask WriteMessageAsync(System.ServiceModel.Channels.Message message, System.IO.Stream stream) => default;
+        public virtual System.Threading.Tasks.ValueTask<System.ArraySegment<byte>> WriteMessageAsync(System.ServiceModel.Channels.Message message, int maxMessageSize, System.ServiceModel.Channels.BufferManager bufferManager, int messageOffset) => default;
+    }
+    public interface ITransportCompressionSupport
+    {
+        bool IsCompressionFormatSupported(CompressionFormat compressionFormat);
     }
 }
 namespace System.ServiceModel.Description

@@ -5,16 +5,14 @@
     <AssemblyName>System.ServiceModel.Federation</AssemblyName>
     <CLSCompliant>true</CLSCompliant>
     <IsPackable>true</IsPackable>
-    <IsBuilding>true</IsBuilding>
     <IsHarvesting>false</IsHarvesting>
     <IsShipping>$(Ship_WcfPackages)</IsShipping>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(IsBuilding)' == 'true'">
-    <ProjectReference Include="..\..\System.ServiceModel.Primitives\ref\System.ServiceModel.Primitives.Ref.csproj" />
-    <ProjectReference Include="..\..\System.ServiceModel.Security\ref\System.ServiceModel.Security.Ref.csproj" />
-    <ProjectReference Include="..\..\System.ServiceModel.Http\ref\System.ServiceModel.Http.Ref.csproj" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Http\src\System.ServiceModel.Http.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.WsTrust" Version="$(MicrosoftIdentityModelProtocolsWsTrustPackageVersion)" />
@@ -43,9 +41,20 @@
       <Visible>true</Visible>
       <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
+    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
     <Compile Include="..\..\Common\src\Internals\**\*.cs">
       <Visible>true</Visible>
       <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="System\IdentityModel\Security\" />
+    <Folder Include="System\Runtime\" />
+    <Folder Include="System\ServiceModel\Diagnostics\" />
+    <Folder Include="System\ServiceModel\Security\" />
   </ItemGroup>
 </Project>

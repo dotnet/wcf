@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyVersion>$(WcfAssemblyVersion)</AssemblyVersion>
@@ -71,7 +71,7 @@
   </ItemGroup>
 
   <!--The default source produced by the Arcade SDK does not work with the checked-in source file SR.cs (class/namespace/filename)-->
-  <ItemGroup>
+  <!--<ItemGroup>
     <EmbeddedResource Update="Resources\Strings.resx">
       <GenerateSource>true</GenerateSource>
       <ManifestResourceName>FxResources.$(AssemblyName).SR</ManifestResourceName>
@@ -94,11 +94,15 @@
       <Visible>true</Visible>
       <Link>Common\System\ServiceModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
+    <Compile Include="..\..\Common\src\System\IdentityModel\**\*.cs">
+      <Visible>true</Visible>
+      <Link>Common\System\IdentityModel\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
     <Compile Include="..\..\Common\src\Internals\**\*.cs">
       <Visible>true</Visible>
       <Link>Common\Internals\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <None Include="$(RepositoryEngineeringDir)\_._" Pack="true" PackagePath="ref/$(TargetFramework)" />

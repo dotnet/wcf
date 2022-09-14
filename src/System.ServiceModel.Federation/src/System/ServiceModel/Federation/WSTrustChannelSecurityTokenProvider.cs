@@ -12,7 +12,7 @@ using System.Runtime.Diagnostics;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Diagnostics;
-using System.ServiceModel.Federation.System.Runtime;
+using System.Runtime;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 using System.Text;
@@ -21,7 +21,6 @@ using System.Xml;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.WsAddressing;
 using Microsoft.IdentityModel.Protocols.WsPolicy;
-using Microsoft.IdentityModel.Protocols.WsSecurity;
 using Microsoft.IdentityModel.Protocols.WsTrust;
 using SecurityToken = System.IdentityModel.Tokens.SecurityToken;
 

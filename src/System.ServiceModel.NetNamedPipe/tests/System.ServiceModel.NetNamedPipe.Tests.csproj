@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <CLSCompliant>true</CLSCompliant>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.ServiceModel.NetNamedPipe\src\System.ServiceModel.NetNamedPipe.csproj" />
+    <ProjectReference Include="..\..\System.ServiceModel.Primitives\src\System.ServiceModel.Primitives.csproj" />
+    <ProjectReference Include="$(WcfUnitTestCommonProj)" />
+    <ProjectReference Include="$(WcfInfrastructureCommonProj)" />
+  </ItemGroup>
+</Project>
