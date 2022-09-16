@@ -68,6 +68,8 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
+        internal bool AcceptCert { get; set; }
+
         public X509Certificate2Collection GetCertificates()
         {
             X509Certificate2Collection certs = new X509Certificate2Collection();
@@ -139,7 +141,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         private X509Certificate2 SelectCertificateFromCollection(X509Certificate2Collection selectedCerts, Uri serviceUri)
         {
             Console.WriteLine(string.Format(CultureInfo.InvariantCulture, SR.CertificateSelectionMessageFormat, serviceUri.Authority));
-            PromptEnterOrEscape(throwOnEscape: true);
+            if (!AcceptCert)
+            {
+                PromptEnterOrEscape(throwOnEscape: true);
+            }
 
             var candidateCerts = new List<X509Certificate2>();
             int counter = 1;
@@ -220,7 +225,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (!_validatedServerCerts.Keys.Contains(certhash))
             {
                 Console.WriteLine(string.Format(CultureInfo.InvariantCulture, SR.ErrServerCertFailedValidationFormat, sslPolicyErrors, FormatCertificate(cert)));
-                _validatedServerCerts[certhash] = PromptEnterOrEscape(throwOnEscape: false);
+                _validatedServerCerts[certhash] = AcceptCert ? true : PromptEnterOrEscape(throwOnEscape: false);
             }
 
             return _validatedServerCerts[certhash];
@@ -232,7 +237,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public object Clone()
         {
-            return new CmdCredentialsProvider();
+            return new CmdCredentialsProvider() { AcceptCert = AcceptCert };            
         }
 
         #endregion
