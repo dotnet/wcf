@@ -77,7 +77,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         }
                     }
                 }
-                types = new Type[] { };
             }
             return types;
         }
