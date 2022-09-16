@@ -1710,9 +1710,18 @@ namespace System.Runtime.Serialization
             string clrNs = type.Namespace;
             if (clrNs == null)
                 clrNs = String.Empty;
-            string ns = GetGlobalDataContractNamespace(clrNs, type.GetTypeInfo().Module.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
-            if (ns == null)
-                ns = GetGlobalDataContractNamespace(clrNs, type.GetTypeInfo().Assembly.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
+
+            string ns = null;
+            try
+            {
+                ns = GetGlobalDataContractNamespace(clrNs, type.GetTypeInfo().Module.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
+                if (ns == null)
+                    ns = GetGlobalDataContractNamespace(clrNs, type.GetTypeInfo().Assembly.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
+            }
+            catch
+            {
+                //reflect type to GetCustomAttributes could throw file loading error due to the exact assembly version not restored
+            }
 
             if (ns == null)
                 ns = GetDefaultStableNamespace(type);
