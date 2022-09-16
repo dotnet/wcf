@@ -1714,13 +1714,13 @@ namespace System.Runtime.Serialization
             string ns = null;
             try
             {
-                ns = GetGlobalDataContractNamespace(clrNs, type.GetTypeInfo().Module.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
+                ns = GetGlobalDataContractNamespace(clrNs, type.Module.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
                 if (ns == null)
-                    ns = GetGlobalDataContractNamespace(clrNs, type.GetTypeInfo().Assembly.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
+                    ns = GetGlobalDataContractNamespace(clrNs, type.Assembly.GetCustomAttributes(typeof(ContractNamespaceAttribute)).ToArray());
             }
-            catch
+            catch(System.IO.FileNotFoundException)
             {
-                //reflect type to GetCustomAttributes could throw file loading error due to the exact assembly version not restored
+                //type.Module or type.Assembly could throw if multiple assembly with same name get referenced but only one version get restored.
             }
 
             if (ns == null)
