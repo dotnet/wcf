@@ -6,11 +6,41 @@ using System;
 using Microsoft.CodeDom;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
+        private bool _generateCloseAsync = true;
+
+        public AddAsyncOpenClose(CommandProcessorOptions options)
+        {
+            if (TargetFrameworkHelper.IsSupportedFramework(options.Project.TargetFramework, out var frameworkInfo))
+            {
+                if (frameworkInfo.IsDnx)
+                {
+                    if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(frameworkInfo.Version, out var referenceTable))
+                    {
+                        string version = referenceTable.FirstOrDefault().Version;
+                        string[] vers = version.Split('.');
+                        if (vers.Length > 1)
+                        {
+                            Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
+                            if (v.CompareTo(new Version(4, 10)) >= 0)
+                            {
+                                _generateCloseAsync = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _generateCloseAsync = false;
+                    }
+                }
+            }
+        }
+
         protected override void VisitClientClass(CodeTypeDeclaration type)
         {
             base.VisitClientClass(type);
@@ -18,7 +48,10 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             using (NameScope nameScope = new CodeTypeNameScope(type))
             {
                 type.Members.Add(GenerateTaskBasedAsyncMethod("Open", nameScope));
-                type.Members.Add(GenerateTaskBasedAsyncMethod("Close", nameScope));
+                if(_generateCloseAsync)
+                {
+                    type.Members.Add(GenerateTaskBasedAsyncMethod("Close", nameScope));
+                }
             }
         }
 
