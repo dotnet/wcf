@@ -12,7 +12,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 {
     internal class AddAsyncOpenClose : ClientClassVisitor
     {
-        private bool _generateCloseAsync = true;
+        private bool _generateCloseAsync = false;
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
@@ -27,16 +27,18 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         if (vers.Length > 1)
                         {
                             Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
-                            if (v.CompareTo(new Version(4, 10)) >= 0)
+                            // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
+                            if (v.CompareTo(new Version(4, 10)) < 0)
                             {
-                                _generateCloseAsync = false;
+                                _generateCloseAsync = true;
                             }
                         }
                     }
-                    else
-                    {
-                        _generateCloseAsync = false;
-                    }
+                }
+                else
+                {
+                    // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
+                    _generateCloseAsync = true;
                 }
             }
         }
