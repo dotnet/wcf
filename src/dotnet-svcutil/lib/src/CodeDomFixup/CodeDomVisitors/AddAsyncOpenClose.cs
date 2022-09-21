@@ -16,30 +16,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         public AddAsyncOpenClose(CommandProcessorOptions options)
         {
-            if (TargetFrameworkHelper.IsSupportedFramework(options.Project.TargetFramework, out var frameworkInfo))
+            if (options.TargetFramework.IsDnx)
             {
-                if (frameworkInfo.IsDnx)
+                if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(options.TargetFramework.Version, out var referenceTable))
                 {
-                    if (TargetFrameworkHelper.NetCoreVersionReferenceTable.TryGetValue(frameworkInfo.Version, out var referenceTable))
+                    string version = referenceTable.FirstOrDefault().Version;
+                    string[] vers = version.Split('.');
+                    if (vers.Length > 1)
                     {
-                        string version = referenceTable.FirstOrDefault().Version;
-                        string[] vers = version.Split('.');
-                        if (vers.Length > 1)
+                        Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
+                        // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
+                        if (v.CompareTo(new Version(4, 10)) < 0)
                         {
-                            Version v = new Version(int.Parse(vers[0]), int.Parse(vers[1]));
-                            // For .NETCore targetframework found in the referenced table, generate CloseAsync() when WCF package version is less than 4.10
-                            if (v.CompareTo(new Version(4, 10)) < 0)
-                            {
-                                _generateCloseAsync = true;
-                            }
+                            _generateCloseAsync = true;
                         }
                     }
                 }
-                else
-                {
-                    // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
-                    _generateCloseAsync = true;
-                }
+            }
+            else
+            {
+                // For supported non-Dnx target frameworks (eg: net472, net48), generate CloseAsync() as before
+                _generateCloseAsync = true;
             }
         }
 
