@@ -7,9 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using static Microsoft.Xml.Schema.NamespaceList;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -39,7 +37,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity, ILogger logger, OperationalContext? context)
         {
-            List<Type> listType = new List<Type>();           
+            List<Type> listType = new List<Type>();
 
             try
             {
@@ -49,7 +47,9 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             {
                 string warning;
                 listType.AddRange(Array.FindAll<Type>(rtle.Types, delegate (Type t)
-                { return t != null; }));
+                {
+                    return t != null;
+                }));
 
                 //type.Module or type.Assembly could throw if multiple assembly with same name get referenced but only one version get restored.                
                 listType = listType.Except(GetUnAvailableTypes(listType)).ToList();
