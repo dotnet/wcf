@@ -852,7 +852,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void AddReferencedTypesFromAssembly(Assembly assembly, Dictionary<string, Type> foundCollectionTypes, Dictionary<string, Type> excludedTypes)
         {
-            foreach (Type type in TypeLoader.LoadTypes(assembly, this.Verbosity.Value))
+            foreach (Type type in TypeLoader.LoadTypes(assembly, this.Verbosity.Value, this.Logger, this.ToolContext))
             {
                 TypeInfo info = type.GetTypeInfo();
                 if (info.IsPublic || info.IsNestedPublic)
@@ -1025,6 +1025,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 .Where(o => o.CanSerialize)
                 .Select(o => $"{o.Name}:[{OptionValueParser.GetTelemetryValue(o)}]")
                 .Aggregate((num, s) => num + ", " + s).ToString();
-        }
+        }       
     }
 }

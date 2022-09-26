@@ -4,7 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using static Microsoft.Xml.Schema.NamespaceList;
 
 namespace Microsoft.Tools.ServiceModel.Svcutil
 {
@@ -32,20 +37,24 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity)
+        static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity, ILogger logger, OperationalContext? context)
         {
-            Type[] types;
+            List<Type> listType = new List<Type>();           
 
             try
             {
-                types = assembly.GetTypes();
+                listType.AddRange(assembly.GetTypes());
             }
             catch (ReflectionTypeLoadException rtle)
             {
                 string warning;
-                types = Array.FindAll<Type>(rtle.Types, delegate (Type t) { return t != null; });
+                listType.AddRange(Array.FindAll<Type>(rtle.Types, delegate (Type t)
+                { return t != null; }));
 
-                if (verbosity > Verbosity.Normal)
+                //type.Module or type.Assembly could throw if multiple assembly with same name get referenced but only one version get restored.                
+                listType = listType.Except(GetUnAvailableTypes(listType)).ToList();
+
+                if (verbosity > Verbosity.Normal || context == OperationalContext.Infrastructure)
                 {
                     foreach (var ex in rtle.LoaderExceptions)
                     {
@@ -54,10 +63,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         {
                             s_loadTypesWarnings.Add(warning);
                             ToolConsole.WriteWarning(warning);
+                            logger?.WriteWarningAsync(warning, true);
                         }
                     }
 
-                    if (types.Length == 0)
+                    if (listType.Count == 0)
                     {
                         warning = string.Format(SR.ErrCouldNotLoadTypesFromAssemblyAtFormat, assembly.Location);
                         if (!s_loadTypesWarnings.Contains(warning))
@@ -78,7 +88,27 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                     }
                 }
             }
-            return types;
+
+            return listType.ToArray();
+        }
+
+        static private List<Type> GetUnAvailableTypes(List<Type> types)
+        {
+            List<Type> unavailableTypes = new List<Type>();
+            foreach (Type type in types)
+            {
+                try
+                {
+                    type.Assembly.GetCustomAttributes(typeof(ContractNamespaceAttribute));
+                    type.Module.GetCustomAttributes(typeof(ContractNamespaceAttribute));
+                }
+                catch (FileNotFoundException)
+                {
+                    unavailableTypes.Add(type);
+                }
+            }
+
+            return unavailableTypes;
         }
     }
 }
