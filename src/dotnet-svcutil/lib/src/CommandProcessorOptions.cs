@@ -1025,6 +1025,6 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 .Where(o => o.CanSerialize)
                 .Select(o => $"{o.Name}:[{OptionValueParser.GetTelemetryValue(o)}]")
                 .Aggregate((num, s) => num + ", " + s).ToString();
-        }       
+        }
     }
 }
