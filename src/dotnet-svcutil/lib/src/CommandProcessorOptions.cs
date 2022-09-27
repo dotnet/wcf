@@ -852,7 +852,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         private void AddReferencedTypesFromAssembly(Assembly assembly, Dictionary<string, Type> foundCollectionTypes, Dictionary<string, Type> excludedTypes)
         {
-            foreach (Type type in TypeLoader.LoadTypes(assembly, this.Verbosity.Value, this.Logger))
+            foreach (Type type in TypeLoader.LoadTypes(assembly, this.Verbosity.Value))
             {
                 TypeInfo info = type.GetTypeInfo();
                 if (info.IsPublic || info.IsNestedPublic)

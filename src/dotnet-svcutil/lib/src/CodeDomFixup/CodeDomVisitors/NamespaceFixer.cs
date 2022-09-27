@@ -21,7 +21,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         public NamespaceFixup()
         {
             // Microsoft.Xml.dll
-            var msxmlTypes = TypeLoader.LoadTypes(typeof(Microsoft.Xml.XmlDocument).GetTypeInfo().Assembly, Verbosity.Silent, null);
+            var msxmlTypes = TypeLoader.LoadTypes(typeof(Microsoft.Xml.XmlDocument).GetTypeInfo().Assembly, Verbosity.Silent);
             foreach (var type in msxmlTypes)
             {
                 if (type.FullName.Contains(s_microsoftXml))
@@ -31,7 +31,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
 
             // Microsoft.CodeDom
-            var mscodedomTypes = TypeLoader.LoadTypes(typeof(Microsoft.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent, null);
+            var mscodedomTypes = TypeLoader.LoadTypes(typeof(Microsoft.CodeDom.CodeObject).GetTypeInfo().Assembly, Verbosity.Silent);
             
             foreach (var type in mscodedomTypes)
             {

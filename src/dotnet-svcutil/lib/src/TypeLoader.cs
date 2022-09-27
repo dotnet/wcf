@@ -35,7 +35,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity, ILogger logger)
+        static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity)
         {
             List<Type> listType = new List<Type>();
 
@@ -62,8 +62,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         if (!s_loadTypesWarnings.Contains(warning))
                         {
                             s_loadTypesWarnings.Add(warning);
-                            ToolConsole.WriteWarning(warning);
-                            logger?.WriteWarningAsync(warning, true);
+                            ToolConsole.WriteWarning(warning);                            
                         }
                     }
 
