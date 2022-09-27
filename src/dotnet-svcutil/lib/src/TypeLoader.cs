@@ -35,7 +35,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             }
         }
 
-        static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity, ILogger logger, OperationalContext? context)
+        static public Type[] LoadTypes(Assembly assembly, Verbosity verbosity, ILogger logger)
         {
             List<Type> listType = new List<Type>();
 
@@ -54,7 +54,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                 //type.Module or type.Assembly could throw if multiple assembly with same name get referenced but only one version get restored.                
                 listType = listType.Except(GetUnAvailableTypes(listType)).ToList();
 
-                if (verbosity > Verbosity.Normal || context == OperationalContext.Infrastructure)
+                if (verbosity > Verbosity.Normal)
                 {
                     foreach (var ex in rtle.LoaderExceptions)
                     {
