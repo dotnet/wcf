@@ -27,6 +27,11 @@
         <target state="translated">Valor de codificación de mensaje no admitido: "{0}". Debe ser "{1}".</target>
         <note />
       </trans-unit>
+      <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
+        <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
+        <target state="new">Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
         <source>Reliable session is not supported.</source>
         <target state="translated">La sesión de confianza no se admite.</target>
@@ -415,6 +420,11 @@ Identificador del documento: "{0}".</target>
       <trans-unit id="GeneratingFiles">
         <source>Generating files...</source>
         <target state="translated">Generando archivos...</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="HelpAcceptCertificateFormat">
+        <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
+        <target state="new">Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
