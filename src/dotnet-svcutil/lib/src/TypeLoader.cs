@@ -62,7 +62,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
                         if (!s_loadTypesWarnings.Contains(warning))
                         {
                             s_loadTypesWarnings.Add(warning);
-                            ToolConsole.WriteWarning(warning);                            
+                            ToolConsole.WriteWarning(warning);
                         }
                     }
 
