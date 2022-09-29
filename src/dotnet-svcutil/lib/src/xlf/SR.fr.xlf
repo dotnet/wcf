@@ -29,7 +29,7 @@
       </trans-unit>
       <trans-unit id="BindingMtomMessageEncodingVersionNotSupportedFormat">
         <source>Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</source>
-        <target state="new">Unsupported MTOM message encoding version: '{0}'. It must be '{1}' or '{2}' or '{3}' or '{4}'.</target>
+        <target state="translated">Version d'encodage de message MTOM non prise en charge : '{0}'. Il doit être '{1}' ou '{2}' ou '{3}' ou '{4}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="BindingReliableSessionNotSupported">
@@ -424,7 +424,7 @@ Identificateur de document : '{0}'.</target>
       </trans-unit>
       <trans-unit id="HelpAcceptCertificateFormat">
         <source>Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</source>
-        <target state="new">Accept remote certificate as trusted when downloading service metadata. (Short Form: -{0})</target>
+        <target state="translated">Acceptez le certificat distant comme approuvé lors du téléchargement des métadonnées du service. (Forme abrégée : -{0})</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpAutoSerializerFormat">
