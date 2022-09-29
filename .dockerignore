@@ -1,2 +1,6 @@
-# Ignore everything and use volumes
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+# Exclude files not relevant to the build
+# This helps to avoid unnecessarily sending large or sensitive files and directories to Docker daemon 
+
+# Ignore everything and use Docker volumes
 *

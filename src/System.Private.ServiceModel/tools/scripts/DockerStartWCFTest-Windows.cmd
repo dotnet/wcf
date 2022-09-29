@@ -4,12 +4,15 @@ echo **********************************
 echo Starting WCF Client on Docker
 echo **********************************
 
+:: Use this script to start docker Windows container for WCF Client
+
+:: Variables
 set _exitCode=0
 set "TestContainerName=WCFTestContainerWin"
 set "ServiceContainerName=WCFServiceContainer"
 set "ServiceHostName=wcfservicehost"
 
-:: Make sure docker is running 
+:: Check if docker is running 
 docker ps>nul 2>&1
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Please make sure docker is running.
@@ -18,7 +21,7 @@ if ERRORLEVEL 1 (
 
 echo. & echo Checking WCF service container status and IP address.
 
-::Switch to Windows Containers to check WCF Service status
+:: Switch to Windows Containers to check WCF Service status
 START /B /WAIT "" "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchWindowsEngine
 
 :: Check if WCF service is already running 
@@ -35,7 +38,7 @@ SET ServiceUri=%ServiceHostName%/WcfService38
 )
 echo %ServiceUri%
 
-:: change directory to wcf src
+:: Change directory to wcf src
 cd ../../../..
 
 echo. & echo Building Docker image for WCF client
@@ -57,7 +60,6 @@ if ERRORLEVEL 1 (
     echo. & echo ERROR: Starting WCF client container failed.
     goto :Failure
 )
-
 
 exit /b
 

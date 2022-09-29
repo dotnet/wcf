@@ -4,20 +4,22 @@ echo **********************************
 echo Starting WCF Service on Docker
 echo **********************************
 
+:: Use this script to start docker container for WCF Services - IIS Hosted and Self Hosted  
+
+:: Variables
 set _exitCode=0
-::todo use vars
 set "ServiceImageTag=wcf:service"
 set "ServiceContainerName=WCFServiceContainer"
 set "ServiceHostName=wcfservicehost"
 
-:: Make sure docker is running 
+:: Check if docker is running 
 docker ps>nul 2>&1
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Please make sure docker is running.
     goto :Failure
 )
 
-::make sure we are using Windows Containers
+:: Check if docker is using Windows Containers
 CALL "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchWindowsEngine
 
 :: Check if WCF service is already running 
@@ -27,7 +29,7 @@ if %%F == 'running' (
     goto :Done 
 ))
 
-:: change directory to wcf folder
+:: Change directory to wcf folder
 cd ../../../..
 
 echo. & echo Building Docker image for WCF service
@@ -42,7 +44,7 @@ echo. & echo Building image success..
 
 :: Starting docker container from the image.
 echo. & echo Starting WCF Service Container
-:: run docker container and mount current directory for wcf source as container volume - C:\wcf
+:: Run docker container and mount current directory for wcf source as container volume - C:\wcf
 docker run --name %ServiceContainerName% --rm -it -d -h %ServiceHostName% -v "%cd%":"C:\wcf" %ServiceImageTag%
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Starting WCF service container failed.
@@ -50,7 +52,8 @@ if ERRORLEVEL 1 (
 )
 
 echo. & echo Started WCF Service Container.
-:: print service container IP address
+:: Print service container IP address and host name
+echo. & echo WCF Service Container IP address and Host name:
 docker inspect --format="{{.NetworkSettings.Networks.nat.IPAddress}}" %ServiceContainerName%
 echo %ServiceHostName%
 

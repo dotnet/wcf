@@ -4,12 +4,15 @@ echo **********************************
 echo Starting WCF Client on Docker
 echo **********************************
 
+:: Use this script to start docker Linux container for WCF Client
+
+:: Variables
 set _exitCode=0
 set "TestContainerName=WCFTestContainerLinux"
 set "ServiceContainerName=WCFServiceContainer"
 set "ServiceHostName=wcfservicehost"
 
-:: Make sure docker is running 
+:: Check if docker is running 
 docker ps>nul 2>&1
 if ERRORLEVEL 1 (
     echo. & echo ERROR: Please make sure docker is running.
@@ -18,7 +21,7 @@ if ERRORLEVEL 1 (
 
 echo. & echo Checking WCF service container status and IP address.
 
-::Switch to Windows Containers to check WCF Service status
+:: Switch to Windows Containers to check WCF Service status
 START /B /WAIT "" "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchWindowsEngine
 
 :: Check if WCF service is already running 
@@ -35,10 +38,10 @@ SET ServiceUri=%ServiceHostName%/WcfService38
 )
 echo %ServiceUri%
 
-::Switch to Linux Containers to run Linux tests
+:: Switch to Linux Containers to run Linux tests
 START /B /WAIT "" "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchLinuxEngine
 
-:: change directory to wcf src
+:: Change directory to wcf src
 cd ../../../..
 
 echo. & echo Building Docker image for WCF client
@@ -56,12 +59,12 @@ echo. & echo Starting WCF client
 :: run docker container and mount current directory for wcf source as container volume '/wcf'
 :: mount volume '.dotnet-linux' CLI cache directory inside the container as '.dotnet'
 :: mount volume 'artifacts-linux' inside the container as 'artifacts'
+:: mount volumes 'artifacts/bin' and 'artifacts/obj' inside the container, since it contains the test assemblies
 docker run --name %TestContainerName% --rm -it --memory=4g -v "%cd%":"/wcf" -v "%cd%/.dotnet-linux":"/wcf/.dotnet" -v "%cd%/artifacts-linux":"/wcf/artifacts" -v "%cd%/artifacts/bin":"/wcf/artifacts/bin" -v "%cd%/artifacts/obj":"/wcf/artifacts/obj" -e ServiceUri=%ServiceUri% wcf:client
 if ERRORLEVEL 1 ( 
     echo. & echo ERROR: Starting WCF client container failed.
     goto :Failure
 )
-
 
 exit /b
 
