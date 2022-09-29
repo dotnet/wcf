@@ -103,7 +103,7 @@ public static class MessageContractTests_4_1_0
             {
                 elementFound = true;
                 reader.ReadStartElement();
-                Assert.Equal(reader.Value, MessageContractConstants.customerElementValue);
+                Assert.Equal(MessageContractConstants.customerElementValue, reader.Value);
                 break;
             }
             else
