@@ -64,10 +64,10 @@ stages:
         pool:
           ${{ if eq(variables._RunAsPublic, True) }}:
             name: NetCore-Public
-            demands: ImageOverride -equals windows.vs2017.amd64.open
+            demands: ImageOverride -equals windows.vs2022.amd64.open
           ${{ if eq(variables._RunAsInternal, True) }}:
             name: NetCore1ESPool-Internal
-            demands: ImageOverride -equals windows.vs2017.amd64
+            demands: ImageOverride -equals windows.vs2022.amd64
         variables:
         - _InternalBuildArgs: ''
         - HelixApiAccessToken: ''
@@ -224,7 +224,7 @@ stages:
           timeoutInMinutes: 90
           pool:
             name: NetCore-Public
-            demands: ImageOverride -equals windows.vs2017.amd64.open
+            demands: ImageOverride -equals windows.vs2022.amd64.open
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
