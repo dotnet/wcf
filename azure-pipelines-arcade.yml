@@ -63,9 +63,8 @@ stages:
         timeoutInMinutes: 90
         pool:
           ${{ if eq(variables._RunAsPublic, True) }}:
-            pool:
-              name: NetCore-Public
-              demands: ImageOverride -equals windows.vs2017.amd64.open
+            name: NetCore-Public
+            demands: ImageOverride -equals windows.vs2017.amd64.open
           ${{ if eq(variables._RunAsInternal, True) }}:
             name: NetCore1ESPool-Internal
             demands: ImageOverride -equals windows.vs2017.amd64
