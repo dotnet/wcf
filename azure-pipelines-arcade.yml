@@ -63,8 +63,7 @@ stages:
         timeoutInMinutes: 90
         pool:
           ${{ if eq(variables._RunAsPublic, True) }}:
-            name: NetCore-Public
-            demands: ImageOverride -equals windows-latest
+            vmImage: windows-latest
           ${{ if eq(variables._RunAsInternal, True) }}:
             name: NetCore1ESPool-Internal
             demands: ImageOverride -equals windows.vs2017.amd64
@@ -222,9 +221,7 @@ stages:
       - ${{ if eq(variables._RunAsPublic, True) }}:
         - job: MacOS
           timeoutInMinutes: 90
-          pool:
-            name: NetCore-Public
-            demands: ImageOverride -equals windows-latest
+          vmImage: windows-latest
           variables:
           - _TestArgs: /p:ServiceUri=$(_serviceUri) /p:Root_Certificate_Installed=true /p:Client_Certificate_Installed=true /p:SSL_Available=true
           - _serviceUri: wcfcoresrv23.westus3.cloudapp.azure.com/WcfService$(_WcfPRServiceId)
