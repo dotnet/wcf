@@ -17,19 +17,12 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
 
         static public Assembly LoadAssembly(string path)
         {
-            string DotDll = ".dll";
-            string DotExe = ".exe";
-
             string[] runtimeAssemblies = Directory.GetFiles(RuntimeEnvironment.GetRuntimeDirectory(), "*.dll");
             var paths = new List<string>(runtimeAssemblies);
 
             var resolver = new PathAssemblyResolver(paths);
             var mlc = new MetadataLoadContext(resolver);
-
-            if (path.EndsWith(DotDll, StringComparison.OrdinalIgnoreCase) || path.EndsWith(DotExe, StringComparison.OrdinalIgnoreCase))
-            {
-                path = path.Remove(path.Length - DotDll.Length, DotDll.Length);
-            }
+            
             try
             {
                 return mlc.LoadFromAssemblyPath(path);
