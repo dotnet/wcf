@@ -38,7 +38,7 @@ variables:
 resources:
   containers:
   - container: ubuntu_2004_20211215
-    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-coredeps-20211215184912-e6e3ac4
+    image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-coredeps
 
 stages:
 - stage: Build
