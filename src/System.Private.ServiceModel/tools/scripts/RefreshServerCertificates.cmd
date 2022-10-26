@@ -38,8 +38,8 @@ TASKKILL /F /IM SelfHostedWCFService.exe                                        
 echo call %_SCRIPTSDIR%\BuildCertUtil.cmd                                               >> %_LOGFILE%
 call %_SCRIPTSDIR%\BuildCertUtil.cmd                                                    >> %_LOGFILE%
 
-echo [%~n0] cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe       >> %_LOGFILE%
-cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe                   >> %_LOGFILE% 2>&1
+echo [%~n0] cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\net471\CertificateGenerator.exe       >> %_LOGFILE%
+cmd /c %_GITREPO%\artifacts\bin\CertificateGenerator\Release\net471\CertificateGenerator.exe                   >> %_LOGFILE% 2>&1
 
 if NOT "%ERRORLEVEL%"=="0" (
     echo Warning: An error occurred when calling CertificateGenerator.exe.                               >> %_LOGFILE%

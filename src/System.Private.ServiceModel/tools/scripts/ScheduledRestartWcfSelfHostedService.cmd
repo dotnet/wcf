@@ -56,8 +56,8 @@ echo [%~n0] %_SCRIPTSDIR%\BuildWCFSelfHostedService.cmd >> %_LOGFILE%
 CALL %_SCRIPTSDIR%\BuildWCFSelfHostedService.cmd >> %_LOGFILE% 2>&1
 
 echo [%~n0] Starting Selfhosted Service >> %_LOGFILE%
-echo [%~n0] START %_GITREPO%\artifacts\bin\SelfHostedWcfService\Release\SelfHostedWcfService.exe >> %_LOGFILE%
-start %_GITREPO%\artifacts\bin\SelfHostedWcfService\Release\SelfHostedWcfService.exe > %_SVCLOG% 2>&1
+echo [%~n0] START %_GITREPO%\artifacts\bin\SelfHostedWcfService\Release\net471\SelfHostedWcfService.exe >> %_LOGFILE%
+start %_GITREPO%\artifacts\bin\SelfHostedWcfService\Release\net471\SelfHostedWcfService.exe > %_SVCLOG% 2>&1
 
 :: Find out whether or not service is running
 :: We can't use the errorlevel of Start because it returns 0 if launched, but we don't know if the launch results 

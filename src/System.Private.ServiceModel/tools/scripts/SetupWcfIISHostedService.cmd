@@ -187,7 +187,7 @@ if ERRORLEVEL 1 goto :Failure
 
 echo Run CertificateGenerator tool. This will take a little while...
 md %_wcfTestDir%
-set certGen=%_certRepo%\artifacts\bin\CertificateGenerator\Release\CertificateGenerator.exe
+set certGen=%_certRepo%\artifacts\bin\CertificateGenerator\Release\net471\CertificateGenerator.exe
 echo ^<?xml version="1.0" encoding="utf-8"?^>^<configuration^>^<appSettings^>^<add key="testserverbase" value="%_certService%"/^>^<add key="CertExpirationInDay" value="%_certExpirationInDays%"/^>^<add key="CrlFileLocation" value="%_wcfTestDir%\test.crl"/^>^</appSettings^>^<startup^>^<supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5"/^>^</startup^>^</configuration^>>%certGen%.config
 call :Run %certGen%
 if ERRORLEVEL 1 goto :Failure
