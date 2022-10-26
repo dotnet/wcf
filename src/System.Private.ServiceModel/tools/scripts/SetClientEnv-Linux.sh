@@ -12,4 +12,4 @@ export SSL_Available=true
 export Root_Certificate_Installed=true
 export Client_Certificate_Installed=true
 export Peer_Certificate_Installed=true
-export NegotiateTestDomain=REDMOND.CORP.MICROSOFT.COM
+#export NegotiateTestDomain=
