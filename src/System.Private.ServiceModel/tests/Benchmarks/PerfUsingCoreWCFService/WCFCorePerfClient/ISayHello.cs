@@ -8,5 +8,8 @@ namespace WCFCorePerfClient
     {
         [OperationContract]
         Task<string> HelloAsync(string name);
+
+        [OperationContract]
+        string Hello(string name);
     }   
 }

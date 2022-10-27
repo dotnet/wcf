@@ -1,15 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>   
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreWCF.Http" Version="1.1.0" />
-    <PackageReference Include="CoreWCF.NetTcp" Version="1.1.0" />
-    <PackageReference Include="CoreWCF.Primitives" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <COMReference Include="{58fbcf7c-e7a9-467c-80b3-fc65e8fcca08}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>58fbcf7c-e7a9-467c-80b3-fc65e8fcca08</Guid>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreWCF.Http" Version="1.*" />
+    <PackageReference Include="CoreWCF.NetTcp" Version="1.*" />
+    <PackageReference Include="CoreWCF.Primitives" Version="1.*" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.*" />
   </ItemGroup>
 
 </Project>

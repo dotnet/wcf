@@ -1,6 +1,6 @@
-﻿using CoreWCF.IdentityModel.Selectors;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using CoreWCF.IdentityModel.Selectors;
 
 namespace WCFCorePerfService
 {
@@ -10,7 +10,7 @@ namespace WCFCorePerfService
         {            
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(password))
             {
-                return new ValueTask(Task.CompletedTask);
+                return default;
             }
             return new ValueTask(Task.FromException(new Exception("username and password cannot be empty")));
         }

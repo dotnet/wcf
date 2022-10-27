@@ -1,9 +1,11 @@
-﻿using Microsoft.Crank.EventSources;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+using System.Threading.Tasks;
+using Microsoft.Crank.EventSources;
 
 namespace WCFCorePerfClient
 {
@@ -26,7 +28,7 @@ namespace WCFCorePerfClient
         private readonly static TimeSpan s_defaultPerfMeasurementDuration = TimeSpan.FromSeconds(10);
         private string _paramTransferMode = "Buffered";
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.WriteLine("WCFCorePerf Client.");
 
@@ -34,14 +36,18 @@ namespace WCFCorePerfClient
 
             if (test.ProcessRunOptions(args))
             {
-                var startTime = DateTime.Now;
-                int request = 0;
+                BenchmarksEventSource.Register("wcfcoreperf/channelopensync", Operations.Max, Operations.Max, "Channel Open Sync Time (ms)", "Time to Open Sync Channel in ms", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/firstsyncrequest", Operations.Max, Operations.Max, "First Sync Request (ms)", "Time to first sync request in ms", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/syncrequests", Operations.Max, Operations.Sum, "Sync Requests (" + test._paramPerfMeasurementDuration.TotalMilliseconds + " ms)", "Total number of syncrequests", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/rps/maxsync", Operations.Max, Operations.Sum, "Requests/sec (maxsync)", "Max sync requests per second", "n0");
 
-                BenchmarksEventSource.Register("wcfcoreperf/channelopen", Operations.Max, Operations.Max, "Channel Open Time (ms)", "Time to Open Channel in ms", "n0");
-                BenchmarksEventSource.Register("wcfcoreperf/firstrequest", Operations.Max, Operations.Max, "First Request (ms)", "Time to first request in ms", "n0");
-                BenchmarksEventSource.Register("wcfcoreperf/requests", Operations.Max, Operations.Sum, "Requests (" + test._paramPerfMeasurementDuration.TotalMilliseconds + " ms)", "Total number of requests", "n0");
-                BenchmarksEventSource.Register("wcfcoreperf/rps/max", Operations.Max, Operations.Sum, "Requests/sec (max)", "Max requests per second", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/channelopenasync", Operations.Max, Operations.Max, "Channel Open Async Time (ms)", "Time to Open Async Channel in ms", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/firstasyncrequest", Operations.Max, Operations.Max, "First Async Request (ms)", "Time to first request in ms", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/asyncrequests", Operations.Max, Operations.Sum, "Async Requests (" + test._paramPerfMeasurementDuration.TotalMilliseconds + " ms)", "Total number of async requests", "n0");
+                BenchmarksEventSource.Register("wcfcoreperf/rps/maxasync", Operations.Max, Operations.Sum, "Requests/sec (maxasync)", "Max async requests per second", "n0");
 
+                var stopwatch = new Stopwatch();
+                stopwatch.Reset();
                 switch (test._paramBinding)
                 {
                     case TestBinding.BasicHttp:
@@ -65,85 +71,141 @@ namespace WCFCorePerfClient
                         }
 
                         Console.WriteLine($"Testing TransferMode: {binding.TransferMode}");
-                        ChannelFactory<ISayHello> factory = new ChannelFactory<ISayHello>(binding, new EndpointAddress(test._paramServiceUrl));
-                        var stopwatchChannelOpen = new Stopwatch();
-                        stopwatchChannelOpen.Start();
-                        factory.Open();
-                        BenchmarksEventSource.Measure("wcfcoreperf/channelopen", stopwatchChannelOpen.ElapsedMilliseconds);
+                        var factory = await test.RunFirstChannelOpen(test._paramBinding, binding, true, test._paramServiceUrl, stopwatch);
+                        await test.RunFirstChannelOpen(test._paramBinding, binding, false, test._paramServiceUrl, stopwatch);
 
                         var client = factory.CreateChannel();
-                        var stopwatchFirstReq = new Stopwatch();
-                        stopwatchFirstReq.Start();
-                        var result = client.HelloAsync("helloworld").Result;
-                        BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchFirstReq.ElapsedMilliseconds);
 
-                        while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
-                        {
-                            var rtnResult = client.HelloAsync("helloworld").Result;
-                            request++;
-                        }
+                        await test.RunFirstIteration(client, true, stopwatch);
+                        await test.RunFirstIteration(client, false, stopwatch);
 
-                        BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
-                        BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
+                        await test.RunMaxThroughput(client, true, test._paramPerfMeasurementDuration);
+                        await test.RunMaxThroughput(client, false, test._paramPerfMeasurementDuration);
+
                         break;
                     case TestBinding.WSHttp:
                         WSHttpBinding wsHttpBinding = new WSHttpBinding(SecurityMode.TransportWithMessageCredential);
                         wsHttpBinding.Security.Message.ClientCredentialType = MessageCredentialType.UserName;
-                        ChannelFactory<ISayHello> wsHttpFactory = new ChannelFactory<ISayHello>(wsHttpBinding, new EndpointAddress(test._paramServiceUrl));
-                        wsHttpFactory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication
-                        {
-                            CertificateValidationMode = X509CertificateValidationMode.None,
-                            RevocationMode = X509RevocationMode.NoCheck
-                        };
-                        wsHttpFactory.Credentials.UserName.UserName = "abc";
-                        wsHttpFactory.Credentials.UserName.Password = "[PLACEHOLDER]";
 
-                        var stopwatchWSHttpChannelOpen = new Stopwatch();
-                        stopwatchWSHttpChannelOpen.Start();
-                        wsHttpFactory.Open();
-                        BenchmarksEventSource.Measure("wcfcoreperf/channelopen", stopwatchWSHttpChannelOpen.ElapsedMilliseconds);
+                        var wsHttpFactory = await test.RunFirstChannelOpen(test._paramBinding, wsHttpBinding, true, test._paramServiceUrl, stopwatch);
+                        await test.RunFirstChannelOpen(test._paramBinding, wsHttpBinding, false, test._paramServiceUrl, stopwatch);
 
                         var clientWSHttp = wsHttpFactory.CreateChannel();
-                        var stopwatchWSHttpFirstReq = new Stopwatch();
-                        stopwatchWSHttpFirstReq.Start();
-                        Console.WriteLine(clientWSHttp.HelloAsync("helloworld").Result);
-                        BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchWSHttpFirstReq.ElapsedMilliseconds);
 
-                        while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
-                        {
-                            var rtnResult = clientWSHttp.HelloAsync("helloworld").Result;
-                            request++;
-                        }
+                        await test.RunFirstIteration(clientWSHttp, true, stopwatch);
+                        await test.RunFirstIteration(clientWSHttp, false, stopwatch);
 
-                        BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
-                        BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
+                        await test.RunMaxThroughput(clientWSHttp, true, test._paramPerfMeasurementDuration);
+                        await test.RunMaxThroughput(clientWSHttp, false, test._paramPerfMeasurementDuration);
                         break;
                     case TestBinding.NetTcp:
                         NetTcpBinding netTcpBinding = new NetTcpBinding(SecurityMode.None);
-                        ChannelFactory<ISayHello> netTcpFactory = new ChannelFactory<ISayHello>(netTcpBinding, new EndpointAddress(test._paramServiceUrl));
-
-                        var stopwatchNetTcpChannelOpen = new Stopwatch();
-                        stopwatchNetTcpChannelOpen.Start();
-                        netTcpFactory.Open();
-                        BenchmarksEventSource.Measure("wcfcoreperf/channelopen", stopwatchNetTcpChannelOpen.ElapsedMilliseconds);
+                        netTcpBinding.SendTimeout = TimeSpan.FromSeconds(300);
+                        netTcpBinding.ReceiveTimeout = TimeSpan.FromSeconds(300);
+                        var netTcpFactory = await test.RunFirstChannelOpen(test._paramBinding, netTcpBinding, true, test._paramServiceUrl, stopwatch);
+                        await test.RunFirstChannelOpen(test._paramBinding, netTcpBinding, false, test._paramServiceUrl, stopwatch);
 
                         var clientNetTcp = netTcpFactory.CreateChannel();
-                        var stopwatchNetTcpFirstReq = new Stopwatch();
-                        stopwatchNetTcpFirstReq.Start();
-                        var netTcpResult = clientNetTcp.HelloAsync("helloworld").Result;
-                        BenchmarksEventSource.Measure("wcfcoreperf/firstrequest", stopwatchNetTcpFirstReq.ElapsedMilliseconds);
 
-                        while (DateTime.Now <= startTime.Add(test._paramPerfMeasurementDuration))
-                        {
-                            var rtnResult = clientNetTcp.HelloAsync("helloworld").Result;
-                            request++;
-                        }
+                        await test.RunFirstIteration(clientNetTcp, true, stopwatch);
+                        await test.RunMaxThroughput(clientNetTcp, true, test._paramPerfMeasurementDuration);
 
-                        BenchmarksEventSource.Measure("wcfcoreperf/requests", request);
-                        BenchmarksEventSource.Measure("wcfcoreperf/rps/max", request / test._paramPerfMeasurementDuration.TotalSeconds);
+                        await test.RunFirstIteration(clientNetTcp, false, stopwatch);
+                        await test.RunMaxThroughput(clientNetTcp, false, test._paramPerfMeasurementDuration);
                         break;
                 }
-            }           
+            }
+        }
+
+        private ChannelFactory<ISayHello> GetChannelFactory(TestBinding testBinding, Binding binding, string address)
+        {
+            ChannelFactory<ISayHello> factory = null;
+            switch (testBinding)
+            {
+                case TestBinding.BasicHttp:
+                case TestBinding.NetTcp:
+                    factory = new ChannelFactory<ISayHello>(binding, new EndpointAddress(address));
+                    break;
+                case TestBinding.WSHttp:
+                    factory = new ChannelFactory<ISayHello>(binding, new EndpointAddress(address));
+                    factory.Credentials.ServiceCertificate.SslCertificateAuthentication = new X509ServiceCertificateAuthentication
+                    {
+                        CertificateValidationMode = X509CertificateValidationMode.None,
+                        RevocationMode = X509RevocationMode.NoCheck
+                    };
+                    factory.Credentials.UserName.UserName = "abc";
+                    factory.Credentials.UserName.Password = "[PLACEHOLDER]";
+                    break;
+            }
+
+            return factory;
+        }
+
+        private async Task RunMaxThroughput(ISayHello client, bool sync, TimeSpan time)
+        {
+            DateTime iterationStartTime, iterationEndTime, iterationDurationTime;
+            int request = 0;
+            iterationStartTime = DateTime.Now;
+            iterationDurationTime = iterationStartTime.Add(time);
+            while (DateTime.Now <= iterationDurationTime)
+            {
+                if (sync)
+                {
+                    Console.WriteLine($"Get sync result:{client.Hello("helloworld")}");
+                }
+                else
+                {
+                    Console.WriteLine($"Get async result:{await client.HelloAsync("helloworld")}");
+                }
+                request++;
+            }
+
+            iterationEndTime = DateTime.Now;
+            if (sync)
+            {
+                BenchmarksEventSource.Measure("wcfcoreperf/syncrequests", request);
+                BenchmarksEventSource.Measure("wcfcoreperf/rps/maxsync", request / (iterationEndTime - iterationStartTime).TotalSeconds);
+            }
+            else
+            {
+                BenchmarksEventSource.Measure("wcfcoreperf/asyncrequests", request);
+                BenchmarksEventSource.Measure("wcfcoreperf/rps/maxasync", request / (iterationEndTime - iterationStartTime).TotalSeconds);
+            }
+        }
+
+        private async Task RunFirstIteration(ISayHello client, bool sync, Stopwatch stopwatch)
+        {
+            stopwatch.Restart();
+            if (sync)
+            {
+                Console.WriteLine($"Get the first sync request: {client.Hello("helloworld")}");
+                BenchmarksEventSource.Measure("wcfcoreperf/firstsyncrequest", stopwatch.ElapsedMilliseconds);
+            }
+            else
+            {
+                Console.WriteLine($"Get the first async request: {await client.HelloAsync("helloworld")}");
+                BenchmarksEventSource.Measure("wcfcoreperf/firstasyncrequest", stopwatch.ElapsedMilliseconds);
+            }
+        }
+
+        private async Task<ChannelFactory<ISayHello>> RunFirstChannelOpen(TestBinding testbinding, Binding binding, bool sync, string address, Stopwatch stopwatch)
+        {
+            stopwatch.Restart();
+            ChannelFactory<ISayHello> factory = null;
+            if (sync)
+            {
+                factory = GetChannelFactory(testbinding, binding, address);
+                factory.Open();
+                BenchmarksEventSource.Measure("wcfcoreperf/channelopensync", stopwatch.ElapsedMilliseconds);
+            }
+            else
+            {
+                factory = GetChannelFactory(testbinding, binding, address);
+                await Task.Factory.FromAsync(factory.BeginOpen, factory.EndClose, null);
+                BenchmarksEventSource.Measure("wcfcoreperf/channelopenasync", stopwatch.ElapsedMilliseconds);
+            }
+
+            return factory;
         }
 
         private bool ProcessRunOptions(string[] args)
@@ -195,6 +257,6 @@ namespace WCFCorePerfClient
         {
             Console.WriteLine("Wrong parameter: " + arg);
             return false;
-        }       
+        }
     }
 }
