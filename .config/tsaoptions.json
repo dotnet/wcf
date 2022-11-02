@@ -1,0 +1,10 @@
+{  
+    "instanceUrl": "https://devdiv.visualstudio.com/",
+    "template": "TFSDEVDIV",
+    "projectName": "DEVDIV",
+    "areaPath": "DevDiv\\NET Fundamentals\\WCF\\S360",
+    "iterationPath": "DevDiv",
+    "notificationAliases": [ "wcfcoret@microsoft.com" ],
+    "repositoryName":"wcf",
+    "codebaseName": "wcf"
+}
