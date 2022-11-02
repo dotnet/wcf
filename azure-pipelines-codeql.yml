@@ -6,7 +6,7 @@ parameters:
   default: true
 
 variables:
-- template: eng/common-variables.yml
+#- template: eng/common-variables.yml
 - template: eng/common/templates/variables/pool-providers.yml
   # CG is handled in the primary CI pipeline
 - name: skipComponentGovernanceDetection
