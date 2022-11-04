@@ -45,10 +45,9 @@ jobs:
 
   steps:
 
-  - task: UseDotNet@2
-    inputs:
-      useGlobalJson: true
-
+  #- task: UseDotNet@2
+  #  inputs:
+  #    useGlobalJson: true
   - task: CodeQL3000Init@0
     displayName: CodeQL Initialize
 
