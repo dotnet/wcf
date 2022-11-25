@@ -58,7 +58,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
         internal const string WCFCSParamsFileName = "ConnectedService.json";
         internal const string BaseServiceReferenceName = "ServiceReference";
 
-        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name, Switches.ProjectFile.Name, Switches.AcceptCertificate.Name };
+        private static readonly List<string> s_cmdLineOverwriteSwitches = new List<string> { Switches.NoLogo.Name, Switches.Verbosity.Name, Switches.ToolContext.Name, Switches.ProjectFile.Name, Switches.AcceptCertificate.Name, Switches.ServiceContract.Name };
 
         internal class CommandSwitches
         {
@@ -91,6 +91,7 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             public readonly CommandSwitch Verbosity = new CommandSwitch(VerbosityKey, "v", SwitchType.SingletonValue);
             public readonly CommandSwitch Wrapped = new CommandSwitch(WrappedKey, "wr", SwitchType.Flag);
             public readonly CommandSwitch AcceptCertificate = new CommandSwitch(AccecptCertificateKey, "ac", SwitchType.Flag);
+            public readonly CommandSwitch ServiceContract = new CommandSwitch(ServiceContractKey, "sc", SwitchType.Flag);
 
             public void Init() { } // provided as a way to get the static class Switches loaded early.
         }
@@ -267,6 +268,11 @@ namespace Microsoft.Tools.ServiceModel.Svcutil
             if (!this.AcceptCert.HasValue)
             {
                 this.AcceptCert = false;
+            }
+
+            if (!this.ServiceContract.HasValue)
+            {
+                this.ServiceContract = false;
             }
 
             this.Logger = logger ?? new DebugLogger();
