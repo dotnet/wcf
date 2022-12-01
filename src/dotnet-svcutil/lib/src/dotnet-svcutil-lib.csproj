@@ -57,8 +57,8 @@
       If the tool is used on a project with a reference to a lower version the bootstrapper will fail with a nuget package downgrade error. -->
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.20.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.0" />
-    <PackageReference Include="NuGet.ProjectModel" Version="5.10.0" />
-    <PackageReference Include="NuGet.Versioning" Version="5.10.0" />
+    <PackageReference Include="NuGet.ProjectModel" Version="5.11.3" />
+    <PackageReference Include="NuGet.Versioning" Version="5.11.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Reflection.Emit" Version="4.0.1" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
